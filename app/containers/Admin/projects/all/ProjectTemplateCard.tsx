@@ -23,7 +23,7 @@ import { darken } from 'polished';
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const Image = styled.div<{src: string}>`
+const Image = styled.div<{ src: string }>`
   width: 100%;
   height: 118px;
   display: flex;
@@ -110,68 +110,75 @@ interface Props {
   className?: string;
 }
 
-const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, body, className }) => {
+const ProjectTemplateCard = memo<Props>(
+  ({ projectTemplateId, imageUrl, title, body, className }) => {
+    const [modalOpened, setModalOpened] = useState<boolean>(false);
 
-  const [modalOpened, setModalOpened] = useState<boolean>(false);
+    const onMoreDetailsBtnClick = useCallback(() => {
+      trackEventByName(tracks.moreDetailsButtonClicked, {
+        projectTemplateId,
+        title,
+      });
+      eventEmitter.emit<string>(
+        'ProjectTemplateCardClicked',
+        projectTemplateId
+      );
+    }, []);
 
-  const onMoreDetailsBtnClick = useCallback(() => {
-    trackEventByName(tracks.moreDetailsButtonClicked, { projectTemplateId, title });
-    eventEmitter.emit<string>('ProjectTemplateCardClicked', projectTemplateId);
-  }, []);
+    const onOpenModal = useCallback(() => {
+      trackEventByName(tracks.useTemplateButtonClicked, {
+        projectTemplateId,
+        title,
+      });
+      setModalOpened(true);
+    }, []);
 
-  const onOpenModal = useCallback(() => {
-    trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId, title });
-    setModalOpened(true);
-  }, []);
+    const onCloseModal = useCallback(() => {
+      trackEventByName(tracks.useTemplateModalClosed, {
+        projectTemplateId,
+        title,
+      });
+      setModalOpened(false);
+    }, []);
 
-  const onCloseModal = useCallback(() => {
-    trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId, title });
-    setModalOpened(false);
-  }, []);
+    return (
+      <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
+        {imageUrl && <Image src={imageUrl} />}
 
-  return (
-    <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
-      {imageUrl &&
-        <Image src={imageUrl} />
-      }
+        <Content>
+          <Title className="e2e-card-title">{title}</Title>
 
-      <Content>
-        <Title className="e2e-card-title">
-          {title}
-        </Title>
+          <Subtitle>{body}</Subtitle>
+        </Content>
 
-        <Subtitle>
-          {body}
-        </Subtitle>
-      </Content>
+        <Buttons>
+          <UseTemplateButton
+            onClick={onOpenModal}
+            buttonStyle="secondary"
+            fullWidth={true}
+            bgColor={darken(0.05, colors.lightGreyishBlue)}
+            bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
+          >
+            <FormattedMessage {...messages.useTemplate} />
+          </UseTemplateButton>
 
-      <Buttons>
-        <UseTemplateButton
-          onClick={onOpenModal}
-          buttonStyle="secondary"
-          fullWidth={true}
-          bgColor={darken(0.05, colors.lightGreyishBlue)}
-          bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
-        >
-          <FormattedMessage {...messages.useTemplate} />
-        </UseTemplateButton>
+          <MoreDetailsButton
+            onClick={onMoreDetailsBtnClick}
+            buttonStyle="admin-dark"
+            fullWidth={true}
+          >
+            <FormattedMessage {...messages.moreDetails} />
+          </MoreDetailsButton>
+        </Buttons>
 
-        <MoreDetailsButton
-          onClick={onMoreDetailsBtnClick}
-          buttonStyle="admin-dark"
-          fullWidth={true}
-        >
-          <FormattedMessage {...messages.moreDetails} />
-        </MoreDetailsButton>
-      </Buttons>
-
-      <UseTemplateModal
-        projectTemplateId={projectTemplateId}
-        opened={modalOpened}
-        close={onCloseModal}
-      />
-    </Container>
-  );
-});
+        <UseTemplateModal
+          projectTemplateId={projectTemplateId}
+          opened={modalOpened}
+          close={onCloseModal}
+        />
+      </Container>
+    );
+  }
+);
 
 export default ProjectTemplateCard;

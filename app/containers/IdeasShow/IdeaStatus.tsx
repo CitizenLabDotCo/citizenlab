@@ -13,7 +13,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StatusTitle = styled.div<({ tagName: string })>`
+const StatusTitle = styled.div<{ tagName: string }>`
   ${({ tagName }) => tagName} {
     color: ${colors.label};
     font-size: ${fontSizes.base}px;

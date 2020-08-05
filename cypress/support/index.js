@@ -1,2 +1,2 @@
-require('cypress-plugin-retries')
-import './commands'
+require('cypress-plugin-retries');
+import './commands';

@@ -20,7 +20,11 @@ interface State {
   clustering: IClusteringData | undefined | null | Error;
 }
 
-export type GetClusteringChildProps = IClusteringData | undefined | null | Error;
+export type GetClusteringChildProps =
+  | IClusteringData
+  | undefined
+  | null
+  | Error;
 
 export default class GetClustering extends Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -29,7 +33,7 @@ export default class GetClustering extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      clustering: undefined
+      clustering: undefined,
     };
   }
 
@@ -39,12 +43,19 @@ export default class GetClustering extends Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }) => clusteringByIdStream(id).observable)
-      )
-      .subscribe((clustering) => this.setState({ clustering: !isNilOrError(clustering) ? clustering.data : clustering }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }) => clusteringByIdStream(id).observable)
+        )
+        .subscribe((clustering) =>
+          this.setState({
+            clustering: !isNilOrError(clustering)
+              ? clustering.data
+              : clustering,
+          })
+        ),
     ];
   }
 
@@ -54,7 +65,7 @@ export default class GetClustering extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

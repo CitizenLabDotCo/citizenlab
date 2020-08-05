@@ -13,34 +13,37 @@ interface Props {
 }
 
 class FilterSidebarStatuses extends React.PureComponent<Props> {
-
   handleItemClick = (id) => () => {
     this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(id);
-  }
+  };
 
   clearFilter = () => {
     this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(null);
-  }
+  };
 
   isActive = (id) => {
     return this.props.selectedStatus === id;
-  }
+  };
 
   render() {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
-        <Menu.Item onClick={this.clearFilter} active={!this.props.selectedStatus}>
+        <Menu.Item
+          onClick={this.clearFilter}
+          active={!this.props.selectedStatus}
+        >
           <FormattedMessage {...messages.allStatuses} />
         </Menu.Item>
         <Divider />
-        {this.props.statuses && this.props.statuses.map((status) => (
-          <FilterSidebarStatusesItem
-            key={status.id}
-            status={status}
-            active={!!this.isActive(status.id)}
-            onClick={this.handleItemClick(status.id)}
-          />
-        ))}
+        {this.props.statuses &&
+          this.props.statuses.map((status) => (
+            <FilterSidebarStatusesItem
+              key={status.id}
+              status={status}
+              active={!!this.isActive(status.id)}
+              onClick={this.handleItemClick(status.id)}
+            />
+          ))}
       </Menu>
     );
   }

@@ -21,8 +21,8 @@ export interface IEventData {
       data: {
         id: string;
         type: string;
-      }
-    }
+      };
+    };
   };
 }
 
@@ -43,20 +43,36 @@ export interface IUpdatedEventProperties {
   end_at?: string;
 }
 
-export function eventsStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IEvents>({ apiEndpoint: `${API_PATH}/projects/${projectId}/events`, ...streamParams });
+export function eventsStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IEvents>({
+    apiEndpoint: `${API_PATH}/projects/${projectId}/events`,
+    ...streamParams,
+  });
 }
 
-export function eventStream(eventId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IEvent>({ apiEndpoint: `${apiEndpoint}/${eventId}`, ...streamParams });
+export function eventStream(
+  eventId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IEvent>({
+    apiEndpoint: `${apiEndpoint}/${eventId}`,
+    ...streamParams,
+  });
 }
 
 export function updateEvent(eventId: string, object: IUpdatedEventProperties) {
-  return streams.update<IEvent>(`${apiEndpoint}/${eventId}`, eventId, { event: object });
+  return streams.update<IEvent>(`${apiEndpoint}/${eventId}`, eventId, {
+    event: object,
+  });
 }
 
 export function addEvent(projectId: string, object: IUpdatedEventProperties) {
-  return streams.add<IEvent>(`${API_PATH}/projects/${projectId}/events`, { event: object });
+  return streams.add<IEvent>(`${API_PATH}/projects/${projectId}/events`, {
+    event: object,
+  });
 }
 
 export function deleteEvent(eventId: string) {

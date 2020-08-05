@@ -6,7 +6,7 @@ class FormikTextAreaMultiloc extends React.Component<FieldProps & Props> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldTouched(this.props.field.name);
     this.props.form.setFieldValue(this.props.field.name, newValue);
-  }
+  };
 
   render() {
     const { value } = this.props.field;

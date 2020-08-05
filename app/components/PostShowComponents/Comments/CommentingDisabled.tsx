@@ -46,7 +46,11 @@ interface Props extends InputProps, DataProps {}
 
 class CommentingDisabled extends PureComponent<Props> {
   calculateMessageDescriptor = () => {
-    const { authUser, commentingEnabled, commentingDisabledReason } = this.props;
+    const {
+      authUser,
+      commentingEnabled,
+      commentingDisabledReason,
+    } = this.props;
     const isLoggedIn = !isNilOrError(authUser);
 
     if (commentingEnabled && isLoggedIn) {
@@ -66,52 +70,62 @@ class CommentingDisabled extends PureComponent<Props> {
     }
 
     return messages.signInToComment;
-  }
+  };
 
   onVerify = () => {
     const { projectId, phaseId, commentingDisabledReason } = this.props;
-    const pcType = (phaseId ? 'phase' : (projectId ? 'project' : null));
-    const pcId = (pcType === 'phase' ? phaseId : (pcType === 'project' ? projectId : null));
+    const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
+    const pcId =
+      pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
 
     if (pcId && pcType && commentingDisabledReason === 'not_verified') {
       openVerificationModal({
         context: {
           action: 'commenting',
           id: pcId,
-          type: pcType
-        }
+          type: pcType,
+        },
       });
     }
-  }
+  };
 
   signUpIn = (flow: 'signin' | 'signup') => {
     const { projectId, phaseId, commentingDisabledReason } = this.props;
-    const pcType = (phaseId ? 'phase' : (projectId ? 'project' : null));
-    const pcId = (pcType === 'phase' ? phaseId : (pcType === 'project' ? projectId : null));
+    const pcType = phaseId ? 'phase' : projectId ? 'project' : null;
+    const pcId =
+      pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
 
     openSignUpInModal({
       flow,
       verification: commentingDisabledReason === 'not_verified',
-      verificationContext: !!(commentingDisabledReason === 'not_verified' && pcId && pcType) ? {
-        action: 'commenting',
-        id: pcId,
-        type: pcType
-      } : undefined
+      verificationContext: !!(
+        commentingDisabledReason === 'not_verified' &&
+        pcId &&
+        pcType
+      )
+        ? {
+            action: 'commenting',
+            id: pcId,
+            type: pcType,
+          }
+        : undefined,
     });
-  }
+  };
 
   signIn = () => {
     this.signUpIn('signin');
-  }
+  };
 
   signUp = () => {
     this.signUpIn('signup');
-  }
+  };
 
   render() {
     const { project } = this.props;
     const messageDescriptor = this.calculateMessageDescriptor();
-    const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : null);
+    const projectTitle = !isNilOrError(project)
+      ? project.attributes.title_multiloc
+      : null;
 
     if (messageDescriptor) {
       return (
@@ -120,10 +134,22 @@ class CommentingDisabled extends PureComponent<Props> {
             <FormattedMessage
               {...messageDescriptor}
               values={{
-                signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
-                signInLink: <button onClick={this.signIn}><FormattedMessage {...messages.signInLinkText} /></button>,
-                verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
-                projectName: projectTitle && <T value={projectTitle} />
+                signUpLink: (
+                  <button onClick={this.signUp}>
+                    <FormattedMessage {...messages.signUpLinkText} />
+                  </button>
+                ),
+                signInLink: (
+                  <button onClick={this.signIn}>
+                    <FormattedMessage {...messages.signInLinkText} />
+                  </button>
+                ),
+                verificationLink: (
+                  <button onClick={this.onVerify}>
+                    <FormattedMessage {...messages.verificationLinkText} />
+                  </button>
+                ),
+                projectName: projectTitle && <T value={projectTitle} />,
               }}
             />
           </Warning>
@@ -137,11 +163,13 @@ class CommentingDisabled extends PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentingDisabled {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentingDisabled {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -78,7 +78,8 @@ const HeaderImageBackground = styled.div<{ src: string | null }>`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) => theme.signedOutHeaderOverlayColor || theme.colorMain};
+  background: ${({ theme }) =>
+    theme.signedOutHeaderOverlayColor || theme.colorMain};
   opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
   position: absolute;
   top: 0;
@@ -103,12 +104,13 @@ const HeaderContent = styled.div`
 `;
 
 const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+  font-size: ${({ theme }) =>
+    theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
   width: 100%;
   max-width: 600px;
-  color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
+  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   text-align: center;
   margin: 0;
   padding: 0;
@@ -124,7 +126,7 @@ const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
   font-weight: 400;
   width: 100%;
   max-width: 375px;
-  color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
+  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
   max-width: 980px;
   text-align: center;
   text-decoration: none;
@@ -166,19 +168,34 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class SignedOutHeader extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+class SignedOutHeader extends PureComponent<
+  Props & InjectedLocalized & InjectedIntlProps,
+  State
+> {
   signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
-    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-out header' } });
+    trackEventByName(tracks.clickCreateAccountCTA, {
+      extra: { location: 'signed-out header' },
+    });
     openSignUpInModal();
-  }
+  };
 
   render() {
-    const { locale, tenant, className, localize, intl: { formatMessage } } = this.props;
+    const {
+      locale,
+      tenant,
+      className,
+      localize,
+      intl: { formatMessage },
+    } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const headerTitle = localize(tenant?.attributes?.settings?.core?.header_title) || formatMessage(messages.titleCity);
-      const headerSubtitle = localize(tenant?.attributes?.settings?.core?.header_slogan) || formatMessage(messages.subtitleCity);
+      const headerTitle =
+        localize(tenant?.attributes?.settings?.core?.header_title) ||
+        formatMessage(messages.titleCity);
+      const headerSubtitle =
+        localize(tenant?.attributes?.settings?.core?.header_slogan) ||
+        formatMessage(messages.subtitleCity);
       const headerImage = tenant?.attributes?.header_bg?.large;
 
       return (
@@ -189,12 +206,16 @@ class SignedOutHeader extends PureComponent<Props & InjectedLocalized & Injected
               <HeaderImageOverlay />
             </HeaderImage>
 
-            <HeaderContent id="hook-header-content" className="e2e-signed-out-header-title">
-              <HeaderTitle hasHeader={!!headerImage}>
-                {headerTitle}
-              </HeaderTitle>
+            <HeaderContent
+              id="hook-header-content"
+              className="e2e-signed-out-header-title"
+            >
+              <HeaderTitle hasHeader={!!headerImage}>{headerTitle}</HeaderTitle>
 
-              <HeaderSubtitle hasHeader={!!headerImage} className="e2e-signed-out-header-subtitle">
+              <HeaderSubtitle
+                hasHeader={!!headerImage}
+                className="e2e-signed-out-header-subtitle"
+              >
                 {headerSubtitle}
               </HeaderSubtitle>
 
@@ -220,13 +241,13 @@ class SignedOutHeader extends PureComponent<Props & InjectedLocalized & Injected
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
 });
 
 const SignedOutHeaderWithHoC = injectIntl(injectLocalize(SignedOutHeader));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignedOutHeaderWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <SignedOutHeaderWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

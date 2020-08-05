@@ -1,7 +1,10 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined, get } from 'lodash-es';
-import { isNilOrError, capitalizeParticipationContextType } from 'utils/helperUtils';
+import {
+  isNilOrError,
+  capitalizeParticipationContextType,
+} from 'utils/helperUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -128,8 +131,9 @@ const ActionButton = styled.button`
   margin: 0;
   cursor: pointer;
 
-  &:hover, &:focus {
-    color: ${darken(.5, colors.label)};
+  &:hover,
+  &:focus {
+    color: ${darken(0.5, colors.label)};
   }
 `;
 
@@ -162,58 +166,91 @@ interface Tracks {
   disabledAssignClick: () => void;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface State {
   processing: boolean;
 }
 
-class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlProps, State> {
+class AssignBudgetControl extends PureComponent<
+  Props & Tracks & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
-      processing: false
+      processing: false,
     };
   }
 
   isDisabled = () => {
     const { participationContextType, project, phase } = this.props;
 
-    if (participationContextType === 'phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
+    if (
+      participationContextType === 'phase' &&
+      !isNilOrError(phase) &&
+      pastPresentOrFuture([
+        phase.attributes.start_at,
+        phase.attributes.end_at,
+      ]) === 'present'
+    ) {
       return false;
-    } else if (participationContextType === 'project' && !isNilOrError(project) && project.attributes.publication_status !== 'archived') {
+    } else if (
+      participationContextType === 'project' &&
+      !isNilOrError(project) &&
+      project.attributes.publication_status !== 'archived'
+    ) {
       return false;
     }
 
     return true;
-  }
+  };
 
   assignBudget = async (event?: FormEvent<any>) => {
     event?.preventDefault();
     event?.stopPropagation();
 
-    const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    const timeout = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
     const done = async () => {
       await timeout(200);
       this.setState({ processing: false });
     };
 
     if (!isNilOrError(this.props.idea)) {
-      const { ideaId, idea, authUser, basket, participationContextId, participationContextType, disabledAssignBudgetClick } = this.props;
-      const budgetingEnabled = idea.attributes.action_descriptor.budgeting?.enabled;
-      const budgetingDisabledReason = idea.attributes.action_descriptor.budgeting?.disabled_reason;
-      const basketIdeaIds = !isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : [];
+      const {
+        ideaId,
+        idea,
+        authUser,
+        basket,
+        participationContextId,
+        participationContextType,
+        disabledAssignBudgetClick,
+      } = this.props;
+      const budgetingEnabled =
+        idea.attributes.action_descriptor.budgeting?.enabled;
+      const budgetingDisabledReason =
+        idea.attributes.action_descriptor.budgeting?.disabled_reason;
+      const basketIdeaIds = !isNilOrError(basket)
+        ? basket.relationships.ideas.data.map((idea) => idea.id)
+        : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
 
-      if (isNilOrError(authUser) && (budgetingEnabled || budgetingDisabledReason === 'not_verified')) {
+      if (
+        isNilOrError(authUser) &&
+        (budgetingEnabled || budgetingDisabledReason === 'not_verified')
+      ) {
         openSignUpInModal({
           verification: budgetingDisabledReason === 'not_verified',
-          verificationContext: budgetingDisabledReason === 'not_verified' ? {
-            action: 'budgeting',
-            id: participationContextId,
-            type: participationContextType
-          } : undefined,
-          action: () => this.assignBudget()
+          verificationContext:
+            budgetingDisabledReason === 'not_verified'
+              ? {
+                  action: 'budgeting',
+                  id: participationContextId,
+                  type: participationContextType,
+                }
+              : undefined,
+          action: () => this.assignBudget(),
         });
       } else if (!budgetingEnabled && disabledAssignBudgetClick) {
         disabledAssignBudgetClick();
@@ -224,15 +261,19 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
           let newIdeas: string[] = [];
 
           if (isInBasket) {
-            newIdeas = basket.relationships.ideas.data.filter((basketIdea) => {
-              return basketIdea.id !== idea.id;
-            }).map((basketIdea) => {
-              return basketIdea.id;
-            });
+            newIdeas = basket.relationships.ideas.data
+              .filter((basketIdea) => {
+                return basketIdea.id !== idea.id;
+              })
+              .map((basketIdea) => {
+                return basketIdea.id;
+              });
           } else {
             newIdeas = [
-              ...basket.relationships.ideas.data.map(basketIdea => basketIdea.id),
-              idea.id
+              ...basket.relationships.ideas.data.map(
+                (basketIdea) => basketIdea.id
+              ),
+              idea.id,
             ];
           }
 
@@ -240,9 +281,11 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
             await updateBasket(basket.id, {
               user_id: authUser.id,
               participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(participationContextType),
+              participation_context_type: capitalizeParticipationContextType(
+                participationContextType
+              ),
               idea_ids: newIdeas,
-              submitted_at: null
+              submitted_at: null,
             });
             done();
             this.props.ideaAddedToBasket();
@@ -255,8 +298,10 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
             await addBasket({
               user_id: authUser.id,
               participation_context_id: participationContextId,
-              participation_context_type: capitalizeParticipationContextType(participationContextType),
-              idea_ids: [idea.id]
+              participation_context_type: capitalizeParticipationContextType(
+                participationContextType
+              ),
+              idea_ids: [idea.id],
             });
             done();
             this.props.basketCreated();
@@ -266,22 +311,38 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
         }
       }
     }
-  }
+  };
 
   onCardClick = (event: FormEvent<any>) => {
     this.props.openIdea && this.props.openIdea(event);
-  }
+  };
 
   goBack = () => {
     const { project, participationContextType } = this.props;
     if (!isNilOrError(project)) {
-      clHistory.push(`/projects/${project.attributes.slug}/${participationContextType === 'project' ? 'ideas' : 'process'}`);
+      clHistory.push(
+        `/projects/${project.attributes.slug}/${
+          participationContextType === 'project' ? 'ideas' : 'process'
+        }`
+      );
     }
-  }
+  };
 
   render() {
     const { processing } = this.state;
-    const { view, ideaId, authUser, locale, tenant, idea, basket, className, participationContextId, participationContextType, intl: { formatMessage } } = this.props;
+    const {
+      view,
+      ideaId,
+      authUser,
+      locale,
+      tenant,
+      idea,
+      basket,
+      className,
+      participationContextId,
+      participationContextType,
+      intl: { formatMessage },
+    } = this.props;
 
     if (
       !isUndefined(authUser) &&
@@ -291,7 +352,9 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
       !isUndefined(basket) &&
       idea.attributes.budget
     ) {
-      const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
+      const basketIdeaIds = !isNilOrError(basket)
+        ? basket.relationships.ideas.data.map((idea) => idea.id)
+        : [];
       const isInBasket = includes(basketIdeaIds, ideaId);
       const disabled = this.isDisabled();
       const fullClassName = `e2e-assign-budget ${className}`;
@@ -302,39 +365,48 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
             <IdeaCardButton
               onClick={this.assignBudget}
               processing={processing}
-              bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
-              bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
+              bgColor={
+                disabled
+                  ? colors.disabledPrimaryButtonBg
+                  : isInBasket
+                  ? colors.adminSecondaryTextColor
+                  : colors.adminTextColor
+              }
+              bgHoverColor={
+                disabled ? colors.disabledPrimaryButtonBg : undefined
+              }
               icon={!isInBasket ? 'basket-plus' : 'remove'}
-              className={`e2e-assign-budget-button ${isInBasket ? 'in-basket' : 'not-in-basket'}`}
-              ariaLabel={!isInBasket ? formatMessage(messages.assign)
-                : formatMessage(messages.undo)}
+              className={`e2e-assign-budget-button ${
+                isInBasket ? 'in-basket' : 'not-in-basket'
+              }`}
+              ariaLabel={
+                !isInBasket
+                  ? formatMessage(messages.assign)
+                  : formatMessage(messages.undo)
+              }
             />
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
         return (
           <IdeaPageContainer className={fullClassName} aria-live="polite">
-            {(isInBasket && !processing) ?
+            {isInBasket && !processing ? (
               <AssignedLabel>
                 <AssignedIcon name="basket-checkmark" />
                 <AssignedText>
                   <FormattedMessage {...messages.assigned} />
                 </AssignedText>
                 <ActionsWrapper>
-                  <ActionButton
-                    onClick={this.assignBudget}
-                  >
+                  <ActionButton onClick={this.assignBudget}>
                     <FormattedMessage {...messages.undo} />
                   </ActionButton>
                   <Separator aria-hidden>•</Separator>
-                  <ActionButton
-                    onClick={this.goBack}
-                  >
+                  <ActionButton onClick={this.goBack}>
                     <FormattedMessage {...messages.backToOverview} />
                   </ActionButton>
                 </ActionsWrapper>
               </AssignedLabel>
-              :
+            ) : (
               <>
                 <Budget>
                   <ScreenReaderOnly>
@@ -353,8 +425,16 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
                 <Button
                   onClick={this.assignBudget}
                   processing={processing}
-                  bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
-                  bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
+                  bgColor={
+                    disabled
+                      ? colors.disabledPrimaryButtonBg
+                      : isInBasket
+                      ? colors.adminSecondaryTextColor
+                      : colors.adminTextColor
+                  }
+                  bgHoverColor={
+                    disabled ? colors.disabledPrimaryButtonBg : undefined
+                  }
                   icon="basket-plus"
                   fullWidth={true}
                   iconAriaHidden
@@ -362,7 +442,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
                   <FormattedMessage {...messages.assign} />
                 </Button>
               </>
-            }
+            )}
             <ControlWrapperHorizontalRule aria-hidden />
             <PBExpenses
               participationContextId={participationContextId}
@@ -383,31 +463,49 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phase: ({ participationContextType, participationContextId, render }) => (
+    <GetPhase
+      id={participationContextType === 'phase' ? participationContextId : null}
+    >
+      {render}
+    </GetPhase>
+  ),
   basket: ({ project, phase, participationContextType, render }) => {
     let basketId: string | null = null;
 
     if (participationContextType === 'project') {
-      basketId = (!isNilOrError(project) && project.relationships.user_basket ? get(project.relationships.user_basket.data, 'id', null) : null);
+      basketId =
+        !isNilOrError(project) && project.relationships.user_basket
+          ? get(project.relationships.user_basket.data, 'id', null)
+          : null;
     } else {
-      basketId = (!isNilOrError(phase) && phase.relationships.user_basket ? get(phase.relationships.user_basket.data, 'id', null) : null);
+      basketId =
+        !isNilOrError(phase) && phase.relationships.user_basket
+          ? get(phase.relationships.user_basket.data, 'id', null)
+          : null;
     }
 
     return <GetBasket id={basketId}>{render}</GetBasket>;
-  }
+  },
 });
 
-const AssignBudgetControlWithHoCs = injectIntl(injectTracks<Props>({
-  basketCreated: tracks.basketCreated,
-  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-  ideaAddedToBasket: tracks.ideaAddedToBasket,
-  basketSubmitted: tracks.basketSubmitted,
-  disabledAssignClick: tracks.disabledAssignClick
-})(AssignBudgetControl));
+const AssignBudgetControlWithHoCs = injectIntl(
+  injectTracks<Props>({
+    basketCreated: tracks.basketCreated,
+    ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+    ideaAddedToBasket: tracks.ideaAddedToBasket,
+    basketSubmitted: tracks.basketSubmitted,
+    disabledAssignClick: tracks.disabledAssignClick,
+  })(AssignBudgetControl)
+);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <AssignBudgetControlWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <AssignBudgetControlWithHoCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

@@ -23,6 +23,7 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.IdeasIndexPage.metaDescription',
-    defaultMessage: 'Explore all ideas that have been posted on the CitizenLab platform of {orgName}. \n Come leave your comments and cast your vote!',
+    defaultMessage:
+      'Explore all ideas that have been posted on the CitizenLab platform of {orgName}. \n Come leave your comments and cast your vote!',
   },
 });

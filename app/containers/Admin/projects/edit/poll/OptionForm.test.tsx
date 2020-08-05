@@ -8,7 +8,11 @@ import { mockOption } from 'services/__mocks__/pollOptions';
 jest.mock('components/T', () => 'T');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('semantic-ui-react', () => ({ Icon: 'Icon' }));
-jest.mock('components/admin/ResourceList', () => ({ Row: 'Row', TextCell: 'TextCell', List: 'List' }));
+jest.mock('components/admin/ResourceList', () => ({
+  Row: 'Row',
+  TextCell: 'TextCell',
+  List: 'List',
+}));
 jest.mock('./FormOptionRow', () => 'FormOptionRow');
 jest.mock('./OptionRow', () => 'OptionRow');
 jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
@@ -97,7 +101,9 @@ describe('<OptionForm/>', () => {
           pollOptions={pollOptions}
         />
       );
-      wrapper.setProps({ pollOptions: [...pollOptions, mockOption('chocolateId', 'Chocolate')] });
+      wrapper.setProps({
+        pollOptions: [...pollOptions, mockOption('chocolateId', 'Chocolate')],
+      });
       expect(wrapper.find('OptionRow').length).toBe(4);
     });
     it('List reacts to deletion', () => {

@@ -14,11 +14,13 @@ export default defineMessages({
     defaultMessage: 'Last update: {lastUpdateDate}',
   },
   editOfficialFeedbackPost: {
-    id: 'app.components.PostComponents.OfficialFeedback.editOfficialFeedbackPost',
+    id:
+      'app.components.PostComponents.OfficialFeedback.editOfficialFeedbackPost',
     defaultMessage: 'Edit',
   },
   deleteOfficialFeedbackPost: {
-    id: 'app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost',
+    id:
+      'app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost',
     defaultMessage: 'Delete',
   },
   deletionConfirmation: {
@@ -30,7 +32,8 @@ export default defineMessages({
     defaultMessage: 'Show previous updates',
   },
   officialNamePlaceholder: {
-    id: 'app.components.PostComponents.OfficialFeedback.officialNamePlaceholder',
+    id:
+      'app.components.PostComponents.OfficialFeedback.officialNamePlaceholder',
     defaultMessage: 'Choose how people see your name',
   },
   textAreaPlaceholder: {
@@ -42,7 +45,8 @@ export default defineMessages({
     defaultMessage: 'Publish',
   },
   updateButtonSaveEditForm: {
-    id: 'app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm',
+    id:
+      'app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm',
     defaultMessage: 'Update message',
   },
   updateButtonError: {

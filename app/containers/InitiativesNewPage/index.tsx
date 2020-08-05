@@ -35,46 +35,57 @@ interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends DataProps { }
+interface Props extends DataProps {}
 
 interface State {
-  locationInfo: undefined | null | {
-    location_description: string,
-    location_point_geojson: {
-      type: 'Point',
-      coordinates: number[]
-    }
-  };
+  locationInfo:
+    | undefined
+    | null
+    | {
+        location_description: string;
+        location_point_geojson: {
+          type: 'Point';
+          coordinates: number[];
+        };
+      };
 }
 
-export class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, State> {
+export class InitiativesNewPage extends React.PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
-      locationInfo: undefined
+      locationInfo: undefined,
     };
   }
 
   componentDidMount() {
     const { location } = this.props;
-    const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
-      return type === 'value' ? parseFloat(str) : str;
-    }}) as { [key: string]: string | number };
+    const { lat, lng } = parse(location.search, {
+      ignoreQueryPrefix: true,
+      decoder: (str, _defaultEncoder, _charset, type) => {
+        return type === 'value' ? parseFloat(str) : str;
+      },
+    }) as { [key: string]: string | number };
 
     this.redirectIfNotPermittedOnPage();
 
     if (isNumber(lat) && isNumber(lng)) {
       reverseGeocode([lat, lng]).then((location_description) => {
-        this.setState({ locationInfo: {
-          // When an idea is posted through the map, we Google Maps gets an approximate address,
-          // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
-          // and doesn't readjust together with the address correction/approximation
-          location_description,
-          location_point_geojson: {
-            type: 'Point',
-            coordinates: [lng, lat]
-          }
-        }});
+        this.setState({
+          locationInfo: {
+            // When an idea is posted through the map, we Google Maps gets an approximate address,
+            // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
+            // and doesn't readjust together with the address correction/approximation
+            location_description,
+            location_point_geojson: {
+              type: 'Point',
+              coordinates: [lng, lat],
+            },
+          },
+        });
       });
     } else {
       this.setState({ locationInfo: null });
@@ -89,17 +100,20 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     if (prevProps.tenant !== this.props.tenant) {
       this.redirectIfPostingNotEnabled();
     }
-
   }
 
   redirectIfNotPermittedOnPage = () => {
     const { authUser } = this.props;
-    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
+    const isPrivilegedUser =
+      !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser }) ||
+        isModerator({ data: authUser }) ||
+        isSuperAdmin({ data: authUser }));
 
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace('/sign-up');
     }
-  }
+  };
 
   redirectIfPostingNotEnabled() {
     if (!this.isPostingProposalEnabled()) {
@@ -131,7 +145,9 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     ) {
       return null;
     }
-    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    const initiativeTopics = topics.filter(
+      (topic) => !isNilOrError(topic)
+    ) as ITopicData[];
 
     return (
       <>
@@ -144,7 +160,6 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
           />
         </PageLayout>
       </>
-
     );
   }
 }
@@ -154,11 +169,15 @@ const Data = adopt<DataProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   topics: <GetTopics exclude_code={'custom'} />,
-  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
+  previousPathName: ({ render }) => (
+    <PreviousPathnameContext.Consumer>
+      {render as any}
+    </PreviousPathnameContext.Consumer>
+  ),
 });
 
 export default withRouter((inputProps: WithRouterProps) => (
   <Data>
-    {dataProps => <InitiativesNewPage {...dataProps} {...inputProps} />}
+    {(dataProps) => <InitiativesNewPage {...dataProps} {...inputProps} />}
   </Data>
 ));

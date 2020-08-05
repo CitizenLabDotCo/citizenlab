@@ -81,74 +81,88 @@ export interface InputProps {
 
 interface Props extends InputProps {}
 
-const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, availableTopics, className, setRef }: Props & InjectedLocalized) => {
-  const selectedTopics = useTopics({ topicIds: selectedTopicIds });
+const TopicsPicker = memo(
+  ({
+    onChange,
+    onBlur,
+    selectedTopicIds,
+    localize,
+    availableTopics,
+    className,
+    setRef,
+  }: Props & InjectedLocalized) => {
+    const selectedTopics = useTopics({ topicIds: selectedTopicIds });
 
-  const handleOnChange = (topicId: string) => (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    const newTopics = [...selectedTopicIds];
+    const handleOnChange = (topicId: string) => (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const newTopics = [...selectedTopicIds];
 
-    if (!selectedTopicIds) {
-      onChange([topicId]);
-    } else {
-      const i = newTopics.lastIndexOf(topicId);
-      const topicNotSelectedYet = (i === -1);
-
-      if (topicNotSelectedYet) {
-        newTopics.push(topicId);
+      if (!selectedTopicIds) {
+        onChange([topicId]);
       } else {
-        newTopics.splice(i, 1);
+        const i = newTopics.lastIndexOf(topicId);
+        const topicNotSelectedYet = i === -1;
+
+        if (topicNotSelectedYet) {
+          newTopics.push(topicId);
+        } else {
+          newTopics.splice(i, 1);
+        }
+
+        onChange(newTopics);
       }
+    };
 
-      onChange(newTopics);
+    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+    }, []);
+
+    if (!isNilOrError(availableTopics)) {
+      const numberOfSelectedTopics = selectedTopicIds.length;
+      const selectedTopicNames = !isNilOrError(selectedTopics)
+        ? selectedTopics
+            .filter((topic) => !isNilOrError(topic))
+            .map((topic: ITopicData) =>
+              localize(topic.attributes.title_multiloc)
+            )
+            .join(', ')
+        : '';
+      return (
+        <>
+          <TopicsContainer
+            onBlur={onBlur}
+            className={`${className} e2e-topics-picker`}
+          >
+            {availableTopics.map((topic, index) => {
+              const isSelected = selectedTopicIds.includes(topic.id);
+
+              return (
+                <TopicSwitch
+                  key={topic.id}
+                  onClick={handleOnChange(topic.id)}
+                  className={isSelected ? 'selected' : ''}
+                  onMouseDown={removeFocus}
+                  ref={index === 0 ? setRef : undefined}
+                  disabled={false}
+                >
+                  <T value={topic.attributes.title_multiloc} />
+                </TopicSwitch>
+              );
+            })}
+          </TopicsContainer>
+          <ScreenReaderOnly aria-live="polite">
+            <FormattedMessage
+              {...messages.selectedTopics}
+              values={{ numberOfSelectedTopics, selectedTopicNames }}
+            />
+          </ScreenReaderOnly>
+        </>
+      );
     }
-  };
 
-  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
-  if (
-    !isNilOrError(availableTopics)
-  ) {
-    const numberOfSelectedTopics = selectedTopicIds.length;
-    const selectedTopicNames = !isNilOrError(selectedTopics) ? selectedTopics
-      .filter(topic => !isNilOrError(topic))
-      .map((topic: ITopicData) => localize(topic.attributes.title_multiloc))
-      .join(', ')
-    :
-      ''
-    ;
-
-    return (
-      <>
-        <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
-          {availableTopics.map((topic, index) => {
-            const isSelected = selectedTopicIds.includes(topic.id);
-
-            return (
-              <TopicSwitch
-                key={topic.id}
-                onClick={handleOnChange(topic.id)}
-                className={isSelected ? 'selected' : ''}
-                onMouseDown={removeFocus}
-                ref={index === 0 ? setRef :  undefined}
-                disabled={false}
-              >
-                <T value={topic.attributes.title_multiloc} />
-              </TopicSwitch>
-            );
-          })}
-        </TopicsContainer>
-        <ScreenReaderOnly aria-live="polite">
-          <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />
-        </ScreenReaderOnly>
-      </>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default injectLocalize(TopicsPicker);

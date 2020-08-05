@@ -18,14 +18,21 @@ describe('<UsersDashboard />', () => {
   it('renders correctly', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
-    const wrapper = shallowWithIntl(<UsersDashboard groups={mockGetGroups} {...localizeProps} />);
+    const wrapper = shallowWithIntl(
+      <UsersDashboard groups={mockGetGroups} {...localizeProps} />
+    );
     // the component sets endAtMoment to current time, but to match snapshots we need a stable date
     wrapper.setState({ endAtMoment: moment('2010-01-01T04:06:07.000Z') });
     expect(wrapper).toMatchSnapshot();
   });
 
   it('reacts to group changes', () => {
-    const wrapper = shallowWithIntl(<UsersDashboard groups={{ ...mockGetGroups, groupsList: null }} {...localizeProps} />);
+    const wrapper = shallowWithIntl(
+      <UsersDashboard
+        groups={{ ...mockGetGroups, groupsList: null }}
+        {...localizeProps}
+      />
+    );
     let filters = wrapper.find('ChartFilters');
 
     expect(filters.prop('groupFilterOptions')).toMatchSnapshot();

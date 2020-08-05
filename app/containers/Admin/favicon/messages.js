@@ -29,6 +29,7 @@ export default defineMessages({
   },
   faviconExplaination: {
     id: 'app.containers.AdminPage.FaviconPage.faviconExplaination',
-    defaultMessage: 'It has to be a simple enough image to be seen in very little. It should be a square PNG. It can use transparency. If it doesn\'t, prefer a white background. This should be set once and changed as little as possible.',
+    defaultMessage:
+      "It has to be a simple enough image to be seen in very little. It should be a square PNG. It can use transparency. If it doesn't, prefer a white background. This should be set once and changed as little as possible.",
   },
 });

@@ -53,21 +53,38 @@ interface Props {
   className?: string;
 }
 
-const SendFeedbackComponent = React.memo<Props>((props: Props & InjectedIntlProps) => {
-  const { showFeedbackText, className, intl: { formatMessage } } = props;
+const SendFeedbackComponent = React.memo<Props>(
+  (props: Props & InjectedIntlProps) => {
+    const {
+      showFeedbackText,
+      className,
+      intl: { formatMessage },
+    } = props;
 
-  return (
-    <Container className={className} target="_blank" href={formatMessage(messages.sendFeedbackLink,  { url: location.href })}>
-      <SendFeedbackIcon name="questionMark" ariaHidden title={formatMessage(messages.sendFeedback)} className="send-feedback-icon" />
-      <SendFeedbackText>
-        {showFeedbackText ?
-          <FormattedMessage {...messages.sendFeedback} />
-          :
-          <ScreenReaderOnly>{formatMessage(messages.sendFeedback)}</ScreenReaderOnly>
-        }
-      </SendFeedbackText>
-    </Container>
-  );
-});
+    return (
+      <Container
+        className={className}
+        target="_blank"
+        href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
+      >
+        <SendFeedbackIcon
+          name="questionMark"
+          ariaHidden
+          title={formatMessage(messages.sendFeedback)}
+          className="send-feedback-icon"
+        />
+        <SendFeedbackText>
+          {showFeedbackText ? (
+            <FormattedMessage {...messages.sendFeedback} />
+          ) : (
+            <ScreenReaderOnly>
+              {formatMessage(messages.sendFeedback)}
+            </ScreenReaderOnly>
+          )}
+        </SendFeedbackText>
+      </Container>
+    );
+  }
+);
 
- export default injectIntl(SendFeedbackComponent);
+export default injectIntl(SendFeedbackComponent);

@@ -24,7 +24,13 @@ export interface ITenantSettings {
     organization_name: Multiloc;
     organization_site?: string;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
-    lifecycle_stage: 'trial' | 'expired_trial' | 'demo' | 'active' | 'churned' | 'not_applicable';
+    lifecycle_stage:
+      | 'trial'
+      | 'expired_trial'
+      | 'demo'
+      | 'active'
+      | 'churned'
+      | 'not_applicable';
     header_title?: Multiloc | null;
     header_slogan?: Multiloc | null;
     meta_title?: Multiloc | null;
@@ -104,9 +110,9 @@ export interface ITenantSettings {
     voting_threshold: number;
   };
   fragments?: {
-    allowed: boolean,
-    enabled: boolean,
-    enabled_fragments: String[]
+    allowed: boolean;
+    enabled: boolean;
+    enabled_fragments: String[];
   };
   verification?: TenantFeature;
   idea_custom_fields?: TenantFeature;
@@ -167,7 +173,9 @@ export interface ITenant {
 }
 
 export interface IUpdatedTenantProperties {
-  settings?: Partial<{[P in keyof ITenantSettings]: Partial<ITenantSettings[P]>}>;
+  settings?: Partial<
+    { [P in keyof ITenantSettings]: Partial<ITenantSettings[P]> }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;
@@ -177,8 +185,15 @@ export function currentTenantStream() {
   return streams.get<ITenant>({ apiEndpoint: currentTenantApiEndpoint });
 }
 
-export async function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
-  const tenant = await streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+export async function updateTenant(
+  tenantId: string,
+  object: IUpdatedTenantProperties
+) {
+  const tenant = await streams.update<ITenant>(
+    `${API_PATH}/tenants/${tenantId}`,
+    tenantId,
+    { tenant: object }
+  );
   await currentTenantStream().fetch();
   return tenant;
 }

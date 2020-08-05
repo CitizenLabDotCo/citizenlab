@@ -7,15 +7,20 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from './StyledComponents';
-import StatusLabel from 'components/UI/StatusLabel';
+import {
+  RowContent,
+  RowContentInner,
+  RowTitle,
+  RowButton,
+  ActionsRowContainer,
+} from './StyledComponents';
+import { IconNames, StatusLabel } from 'cl2-component-library';
 import PublicationStatusLabel from './PublicationStatusLabel';
 
 // resources
 import GetProjectGroups from 'resources/GetProjectGroups';
 
 // types
-import { IconNames } from 'cl2-component-library';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -26,18 +31,25 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 interface Props {
   publication: IAdminPublicationContent;
-  actions?: ({
-    buttonContent: JSX.Element,
-    handler: (publicationId: string) => () => void,
-    icon: IconNames,
-    processing?: boolean
-  } | 'manage'
+  actions?: (
+    | {
+        buttonContent: JSX.Element;
+        handler: (publicationId: string) => () => void;
+        icon: IconNames;
+        processing?: boolean;
+      }
+    | 'manage'
   )[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
 }
 
-export default ({ publication, actions, hidePublicationStatusLabel, className }: Props) => {
+export default ({
+  publication,
+  actions,
+  hidePublicationStatusLabel,
+  className,
+}: Props) => {
   const ManageButton = (
     <RowButton
       className={`
@@ -58,18 +70,23 @@ export default ({ publication, actions, hidePublicationStatusLabel, className }:
     <RowContent className={`e2e-admin-projects-list-item ${className}`}>
       <RowContentInner className="expand primary">
         <RowTitle value={publication.attributes.publication_title_multiloc} />
-        {publication.attributes ?.publication_visible_to === 'groups' &&
+        {publication.attributes?.publication_visible_to === 'groups' && (
           <GetProjectGroups projectId={publication.publicationId}>
             {(projectGroups) => {
               if (!isNilOrError(projectGroups)) {
                 return (
                   <StyledStatusLabel
-                    text={projectGroups.length > 0 ? (
-                      <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
-                    ) : (
+                    text={
+                      projectGroups.length > 0 ? (
+                        <FormattedMessage
+                          {...messages.xGroupsHaveAccess}
+                          values={{ groupCount: projectGroups.length }}
+                        />
+                      ) : (
                         <FormattedMessage {...messages.onlyAdminsCanView} />
-                      )}
-                    color="clBlue"
+                      )
+                    }
+                    backgroundColor="clBlue"
                     icon="lock"
                   />
                 );
@@ -78,43 +95,49 @@ export default ({ publication, actions, hidePublicationStatusLabel, className }:
               return null;
             }}
           </GetProjectGroups>
-      }
-        {publication.attributes ?.publication_visible_to === 'admins' &&
+        )}
+        {publication.attributes?.publication_visible_to === 'admins' && (
           <StyledStatusLabel
             text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-            color="clBlue"
+            backgroundColor="clBlue"
             icon="lock"
           />
-        }
+        )}
 
-        {!hidePublicationStatusLabel &&
-          <PublicationStatusLabel
-            publicationStatus={publicationStatus}
-          />
-        }
-
+        {!hidePublicationStatusLabel && (
+          <PublicationStatusLabel publicationStatus={publicationStatus} />
+        )}
       </RowContentInner>
-      {actions ?
+      {actions ? (
         <ActionsRowContainer>
-          {actions.map(action => action === 'manage' ? ManageButton :
-            <RowButton
-              key={action.icon}
-              type="button"
-              className={`
+          {actions.map((action) =>
+            action === 'manage' ? (
+              ManageButton
+            ) : (
+              <RowButton
+                key={action.icon}
+                type="button"
+                className={`
                 e2e-admin-edit-publication
-                ${publication.attributes.publication_title_multiloc ?.['en-GB'] || ''}
+                ${
+                  publication.attributes.publication_title_multiloc?.[
+                    'en-GB'
+                  ] || ''
+                }
               `}
-              onClick={action.handler(publication.publicationId)}
-              buttonStyle="secondary"
-              icon={action.icon}
-              processing={action.processing}
-            >
-              {action.buttonContent}
-            </RowButton>
+                onClick={action.handler(publication.publicationId)}
+                buttonStyle="secondary"
+                icon={action.icon}
+                processing={action.processing}
+              >
+                {action.buttonContent}
+              </RowButton>
+            )
           )}
         </ActionsRowContainer>
-        : ManageButton
-      }
+      ) : (
+        ManageButton
+      )}
     </RowContent>
   );
 };

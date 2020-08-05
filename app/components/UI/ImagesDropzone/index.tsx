@@ -71,7 +71,8 @@ const DropzoneInput = styled.input``;
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
   border: 1px dashed ${colors.border};
-  border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
+  border-radius: ${(props) =>
+    props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   position: relative;
   cursor: pointer;
   background: transparent;
@@ -79,7 +80,6 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
   outline: none;
 
   &:not(.disabled) {
-
     &:focus-within {
       ${defaultOutline};
     }
@@ -127,20 +127,25 @@ const DropzoneContentInner = styled.div`
   padding: 20px;
 `;
 
-const Image = styled.div<{ borderRadius: string | undefined, src: string, objectFit: 'cover' | 'contain' | undefined }>`
+const Image = styled.div<{
+  borderRadius: string | undefined;
+  src: string;
+  objectFit: 'cover' | 'contain' | undefined;
+}>`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: ${(props) => props.objectFit};
   background-image: url(${(props) => props.src});
   position: relative;
   box-sizing: border-box;
-  border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
+  border-radius: ${(props) =>
+    props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
 `;
 
-const Box = styled.div<{ maxWidth: string | undefined, ratio: number }>`
+const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
   width: 100%;
-  max-width: ${({ maxWidth }) => maxWidth ? maxWidth : '100%'};
+  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '100%')};
   margin-bottom: 16px;
   position: relative;
 
@@ -151,8 +156,9 @@ const Box = styled.div<{ maxWidth: string | undefined, ratio: number }>`
   ${Image},
   ${DropzoneContent} {
     width: 100%;
-    height: ${({ maxWidth, ratio }) => ratio !== 1 ? 'auto' : maxWidth};
-    padding-bottom: ${({ ratio }) => ratio !== 1 ? `${Math.round(ratio * 100)}%` : '0'};
+    height: ${({ maxWidth, ratio }) => (ratio !== 1 ? 'auto' : maxWidth)};
+    padding-bottom: ${({ ratio }) =>
+      ratio !== 1 ? `${Math.round(ratio * 100)}%` : '0'};
   }
 `;
 
@@ -210,7 +216,7 @@ interface Props {
 
 interface State {
   urlObjects: {
-    [key: string] : string
+    [key: string]: string;
   };
   errorMessage: string | null;
 }
@@ -220,7 +226,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       urlObjects: {},
-      errorMessage: null
+      errorMessage: null,
     };
   }
 
@@ -234,13 +240,19 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     if (prevProps.errorMessage !== this.props.errorMessage) {
-      const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
+      const errorMessage =
+        this.props.errorMessage &&
+        this.props.errorMessage !== this.state.errorMessage
+          ? this.props.errorMessage
+          : this.state.errorMessage;
       this.setState({ errorMessage });
     }
   }
 
   componentWillMount() {
-    forEach(this.state.urlObjects, (urlObject) => window.URL.revokeObjectURL(urlObject));
+    forEach(this.state.urlObjects, (urlObject) =>
+      window.URL.revokeObjectURL(urlObject)
+    );
   }
 
   setUrlObjects = () => {
@@ -248,12 +260,14 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     const { urlObjects } = this.state;
     const newUrlObjects = {};
 
-    images.filter(image => !urlObjects[image.base64]).forEach((image) => {
-      newUrlObjects[image.base64] = window.URL.createObjectURL(image);
-    });
+    images
+      .filter((image) => !urlObjects[image.base64])
+      .forEach((image) => {
+        newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+      });
 
     forEach(urlObjects, (urlObject, key) => {
-      if (!images.some(image => image.base64 === key)) {
+      if (!images.some((image) => image.base64 === key)) {
         window.URL.revokeObjectURL(urlObject);
       } else {
         newUrlObjects[key] = urlObject;
@@ -261,19 +275,28 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     });
 
     this.setState({ urlObjects: newUrlObjects });
-  }
+  };
 
   onDrop = async (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxItemsCount = this.props.maxNumberOfImages;
     const oldItemsCount = size(this.props.images);
     const newItemsCount = size(images);
-    const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
+    const remainingItemsCount = maxItemsCount
+      ? maxItemsCount - oldItemsCount
+      : null;
 
     this.setState({ errorMessage: null });
 
-    if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
-      const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
+    if (
+      maxItemsCount &&
+      remainingItemsCount &&
+      newItemsCount > remainingItemsCount
+    ) {
+      const errorMessage =
+        maxItemsCount === 1
+          ? formatMessage(messages.onlyOneImage)
+          : formatMessage(messages.onlyXImages, { maxItemsCount });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     } else if (images && images.length > 0) {
@@ -287,54 +310,87 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
         }
       }
 
-      this.props.onAdd(uniqBy([...this.props.images || [], ...images], 'base64') as UploadFile[]);
+      this.props.onAdd(
+        uniqBy(
+          [...(this.props.images || []), ...images],
+          'base64'
+        ) as UploadFile[]
+      );
     }
-  }
+  };
 
   onDropRejected = (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
 
-    if (images.some(image => (image.size / 1000000) > maxImageSizeInMb)) {
-      const maxSizeExceededErrorMessage = (images.length === 1 || this.props.maxNumberOfImages === 1 ? messages.errorImageMaxSizeExceeded : messages.errorImagesMaxSizeExceeded);
-      const errorMessage = formatMessage(maxSizeExceededErrorMessage, { maxFileSize: maxImageSizeInMb });
+    if (images.some((image) => image.size / 1000000 > maxImageSizeInMb)) {
+      const maxSizeExceededErrorMessage =
+        images.length === 1 || this.props.maxNumberOfImages === 1
+          ? messages.errorImageMaxSizeExceeded
+          : messages.errorImagesMaxSizeExceeded;
+      const errorMessage = formatMessage(maxSizeExceededErrorMessage, {
+        maxFileSize: maxImageSizeInMb,
+      });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
-  }
+  };
 
   removeImage = (removedImage: UploadFile) => (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.props.onRemove(removedImage);
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   getMaxImageSizeInMb = () => {
     return (this.props.maxImageFileSize || 5000000) / 1000000;
-  }
+  };
 
   render() {
-    const { id, images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
+    const {
+      id,
+      images,
+      maxImageFileSize,
+      maxNumberOfImages,
+      maxImagePreviewWidth,
+      imagePreviewRatio,
+      borderRadius,
+      className,
+    } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
-    const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
+    const remainingImages =
+      maxNumberOfImages && maxNumberOfImages !== 1
+        ? `(${maxNumberOfImages - size(images)} ${formatMessage(
+            messages.remaining
+          )})`
+        : null;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
     const acceptedFileTypes = this.props.acceptedFileTypes || '*';
-    const label = this.props.label || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImageLabel, { maxImageSizeInMb }) : formatMessage(messages.uploadMultipleImagesLabel));
+    const label =
+      this.props.label ||
+      (maxNumberOfImages && maxNumberOfImages === 1
+        ? formatMessage(messages.uploadImageLabel, { maxImageSizeInMb })
+        : formatMessage(messages.uploadMultipleImagesLabel));
     const objectFit = this.props.objectFit || 'cover';
 
     return (
       <Container className={className}>
         <ContentWrapper>
-          {(maxNumberOfImages > 1 || (maxNumberOfImages === 1 && isEmpty(images))) &&
+          {(maxNumberOfImages > 1 ||
+            (maxNumberOfImages === 1 && isEmpty(images))) && (
             <Box
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
-              className={images && maxNumberOfImages > 1 && images.length > 0 ? 'hasRightMargin' : ''}
+              className={
+                images && maxNumberOfImages > 1 && images.length > 0
+                  ? 'hasRightMargin'
+                  : ''
+              }
             >
               <Dropzone
                 accept={acceptedFileTypes}
@@ -345,42 +401,66 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               >
                 {({ getRootProps, getInputProps }) => {
                   return (
-                    <DropzoneContent {...getRootProps()} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
-                      <DropzoneInput {...getInputProps()} id={id || ''}/>
+                    <DropzoneContent
+                      {...getRootProps()}
+                      borderRadius={borderRadius}
+                      className={
+                        images && maxNumberOfImages === images.length
+                          ? 'disabled'
+                          : ''
+                      }
+                    >
+                      <DropzoneInput {...getInputProps()} id={id || ''} />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>
-                        {remainingImages && <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>}
+                        {remainingImages && (
+                          <DropzoneImagesRemaining>
+                            {remainingImages}
+                          </DropzoneImagesRemaining>
+                        )}
                       </DropzoneContentInner>
                     </DropzoneContent>
                   );
                 }}
               </Dropzone>
             </Box>
-          }
+          )}
 
-          {images && images.length > 0 && images.map((image, index) => (
-            <Box
-              key={index}
-              maxWidth={maxImagePreviewWidth}
-              ratio={imagePreviewRatio}
-              className={images && maxNumberOfImages > 1 && index !== images.length - 1 ? 'hasRightMargin' : ''}
-            >
-              <Image
-                borderRadius={borderRadius}
-                src={this.state.urlObjects[image.base64]}
-                objectFit={objectFit}
+          {images &&
+            images.length > 0 &&
+            images.map((image, index) => (
+              <Box
+                key={index}
+                maxWidth={maxImagePreviewWidth}
+                ratio={imagePreviewRatio}
+                className={
+                  images && maxNumberOfImages > 1 && index !== images.length - 1
+                    ? 'hasRightMargin'
+                    : ''
+                }
               >
-                <RemoveButton
-                  onMouseDown={this.removeFocus}
-                  onClick={this.removeImage(image)}
-                  className="remove-button"
+                <Image
+                  borderRadius={borderRadius}
+                  src={this.state.urlObjects[image.base64]}
+                  objectFit={objectFit}
                 >
-                  <RemoveIcon name="close" title={this.props.removeIconAriaTitle || formatMessage(messages.a11y_removeImage)} />
-                </RemoveButton>
-              </Image>
-            </Box>
-          ))}
+                  <RemoveButton
+                    onMouseDown={this.removeFocus}
+                    onClick={this.removeImage(image)}
+                    className="remove-button"
+                  >
+                    <RemoveIcon
+                      name="close"
+                      title={
+                        this.props.removeIconAriaTitle ||
+                        formatMessage(messages.a11y_removeImage)
+                      }
+                    />
+                  </RemoveButton>
+                </Image>
+              </Box>
+            ))}
         </ContentWrapper>
 
         <ErrorWrapper>

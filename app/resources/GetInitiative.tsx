@@ -4,7 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IInitiativeData, initiativeByIdStream, initiativeBySlugStream } from 'services/initiatives';
+import {
+  IInitiativeData,
+  initiativeByIdStream,
+  initiativeBySlugStream,
+} from 'services/initiatives';
 
 interface InputProps {
   id?: string | null;
@@ -22,20 +26,24 @@ interface State {
   initiative: IInitiativeData | undefined | null | Error;
 }
 
-export type GetInitiativeChildProps = IInitiativeData | undefined | null | Error;
+export type GetInitiativeChildProps =
+  | IInitiativeData
+  | undefined
+  | null
+  | Error;
 
 export default class GetInitiative extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      initiative: undefined
+      initiative: undefined,
     };
   }
 
@@ -45,22 +53,27 @@ export default class GetInitiative extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ initiative: undefined })),
-        switchMap(({ id, slug }) => {
-          if (isString(id)) {
-            return initiativeByIdStream(id).observable;
-          } else if (isString(slug)) {
-            return initiativeBySlugStream(slug).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ initiative: undefined })),
+          switchMap(({ id, slug }) => {
+            if (isString(id)) {
+              return initiativeByIdStream(id).observable;
+            } else if (isString(slug)) {
+              return initiativeBySlugStream(slug).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((initiative) => {
-        this.setState({ initiative: !isNilOrError(initiative) ? initiative.data : initiative });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((initiative) => {
+          this.setState({
+            initiative: !isNilOrError(initiative)
+              ? initiative.data
+              : initiative,
+          });
+        }),
     ];
   }
 
@@ -70,7 +83,7 @@ export default class GetInitiative extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

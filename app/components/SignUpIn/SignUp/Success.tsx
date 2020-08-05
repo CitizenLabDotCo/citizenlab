@@ -81,13 +81,16 @@ export default memo<Props>(({ className, onClose }) => {
     return (
       <Container id="e2e-signup-success-container" className={className || ''}>
         <ImageContainer aria-hidden>
-          <img src={success} alt="" role="presentation"/>
+          <img src={success} alt="" role="presentation" />
         </ImageContainer>
         <Title>
           <FormattedMessage {...messages.signUpSuccess} />
         </Title>
         <ButtonWrapper>
-          <Button className="e2e-signup-success-close-button" onClick={handleOnClose}>
+          <Button
+            className="e2e-signup-success-close-button"
+            onClick={handleOnClose}
+          >
             <FormattedMessage {...messages.close} />
           </Button>
         </ButtonWrapper>

@@ -30,47 +30,69 @@ interface InputProps {
   type: ManagerType;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
-export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
-  getAssigneeOptions = memoize(
-    (prospectAssignees, authUser) => {
-      const { intl: { formatMessage } } = this.props;
-      let assigneeOptions = [] as { value: string, text: string, id?: string, className?: string }[];
+export class AssigneeFilter extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
+  getAssigneeOptions = memoize((prospectAssignees, authUser) => {
+    const {
+      intl: { formatMessage },
+    } = this.props;
+    let assigneeOptions = [] as {
+      value: string;
+      text: string;
+      id?: string;
+      className?: string;
+    }[];
 
-      if (!isNilOrError(prospectAssignees.usersList) && !isNilOrError(authUser)) {
-        const dynamicOptions = prospectAssignees.usersList.filter(assignee => assignee.id !== authUser.id)
-          .map(assignee => ({
-            value: assignee.id,
-            text: formatMessage(messages.assignedTo, {
-              assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
-            }),
-            className: 'e2e-assignee-filter-other-user'
-          }));
+    if (!isNilOrError(prospectAssignees.usersList) && !isNilOrError(authUser)) {
+      const dynamicOptions = prospectAssignees.usersList
+        .filter((assignee) => assignee.id !== authUser.id)
+        .map((assignee) => ({
+          value: assignee.id,
+          text: formatMessage(messages.assignedTo, {
+            assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
+          }),
+          className: 'e2e-assignee-filter-other-user',
+        }));
 
-        // Order of assignee filter options:
-        // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
-        assigneeOptions = [
-          { value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-posts' },
-          { value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' },
-          { value: 'unassigned', text: formatMessage(messages.noOne), id: 'e2e-assignee-filter-unassigned' },
-          ...dynamicOptions
-        ];
-      }
-      return assigneeOptions;
+      // Order of assignee filter options:
+      // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
+      assigneeOptions = [
+        {
+          value: 'all',
+          text: formatMessage(messages.anyAssignment),
+          id: 'e2e-assignee-filter-all-posts',
+        },
+        {
+          value: authUser.id,
+          text: formatMessage(messages.assignedToMe),
+          id: 'e2e-assignee-filter-assigned-to-user',
+        },
+        {
+          value: 'unassigned',
+          text: formatMessage(messages.noOne),
+          id: 'e2e-assignee-filter-unassigned',
+        },
+        ...dynamicOptions,
+      ];
     }
-  );
+    return assigneeOptions;
+  });
 
   onAssigneeChange = (_event, assigneeOption) => {
-    const realFiterParam = assigneeOption.value === 'all' ? undefined : assigneeOption.value;
+    const realFiterParam =
+      assigneeOption.value === 'all' ? undefined : assigneeOption.value;
     trackEventByName(tracks.assigneeFilterUsed, {
       assignee: realFiterParam,
-      adminAtWork: this.props.authUser && this.props.authUser.id
+      adminAtWork: this.props.authUser && this.props.authUser.id,
     });
     this.props.handleAssigneeFilterChange(realFiterParam);
-  }
+  };
 
   render() {
     const { assignee, prospectAssignees, authUser } = this.props;
@@ -89,17 +111,27 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
 }
 
 const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: ({ type, projectId, render }) => type === 'ProjectIdeas' && projectId
-    ? <GetUsers canModerateProject={projectId} pageSize={250}>{render}</GetUsers>
-    : type === 'AllIdeas' ? <GetUsers canModerate pageSize={250}>{render}</GetUsers>
-      : <GetUsers canAdmin pageSize={250}>{render}</GetUsers>,
-  authUser: <GetAuthUser />
+  prospectAssignees: ({ type, projectId, render }) =>
+    type === 'ProjectIdeas' && projectId ? (
+      <GetUsers canModerateProject={projectId} pageSize={250}>
+        {render}
+      </GetUsers>
+    ) : type === 'AllIdeas' ? (
+      <GetUsers canModerate pageSize={250}>
+        {render}
+      </GetUsers>
+    ) : (
+      <GetUsers canAdmin pageSize={250}>
+        {render}
+      </GetUsers>
+    ),
+  authUser: <GetAuthUser />,
 });
 
 const AssigneeFilterWithHocs = injectIntl<Props>(AssigneeFilter);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <AssigneeFilterWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <AssigneeFilterWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -31,7 +31,7 @@ import clHistory from 'utils/cl-router/history';
 // Typings
 import { Multiloc } from 'typings';
 
-export interface Props { }
+export interface Props {}
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -47,18 +47,22 @@ export interface FormValues {
   search?: string;
 }
 
-class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
-
+class ClusteringForm extends PureComponent<
+  InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>
+> {
   resourcesToOptionList = (resources) => {
-    return resources && resources.map((resource) => ({
-      label: this.props.localize(resource.attributes.title_multiloc),
-      value: resource.id,
-    }));
-  }
+    return (
+      resources &&
+      resources.map((resource) => ({
+        label: this.props.localize(resource.attributes.title_multiloc),
+        value: resource.id,
+      }))
+    );
+  };
 
   goBack = () => {
     clHistory.push('/admin/dashboard/insights');
-  }
+  };
 
   render() {
     const { isSubmitting, errors, isValid, touched, status } = this.props;
@@ -76,20 +80,19 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldTitle} />}
             />
-            {touched.title_multiloc && <Error
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
-            />}
+            {touched.title_multiloc && (
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc as any}
+              />
+            )}
           </SectionField>
 
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldLevels} />
             </Label>
-            <Field
-              name="levels"
-              component={LevelsInput}
-            />
+            <Field name="levels" component={LevelsInput} />
           </SectionField>
 
           <SectionField>
@@ -111,13 +114,15 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
               <FormattedMessage {...messages.fieldProjects} />
             </Label>
             <GetProjects publicationStatuses={['published', 'archived']}>
-              {(projects) => (projects && isNilOrError(projects)) ? null : (
-                <Field
-                  name="projects"
-                  component={FormikMultipleSelect}
-                  options={this.resourcesToOptionList(projects.projectsList)}
-                />
-              )}
+              {(projects) =>
+                projects && isNilOrError(projects) ? null : (
+                  <Field
+                    name="projects"
+                    component={FormikMultipleSelect}
+                    options={this.resourcesToOptionList(projects.projectsList)}
+                  />
+                )
+              }
             </GetProjects>
           </SectionField>
 
@@ -126,13 +131,15 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
               <FormattedMessage {...messages.fieldTopics} />
             </Label>
             <GetTopics>
-              {(topics) => (topics && isNilOrError(topics)) ? null : (
-                <Field
-                  name="topics"
-                  component={FormikMultipleSelect}
-                  options={this.resourcesToOptionList(topics)}
-                />
-              )}
+              {(topics) =>
+                topics && isNilOrError(topics) ? null : (
+                  <Field
+                    name="topics"
+                    component={FormikMultipleSelect}
+                    options={this.resourcesToOptionList(topics)}
+                  />
+                )
+              }
             </GetTopics>
           </SectionField>
 
@@ -141,13 +148,15 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
               <FormattedMessage {...messages.fieldIdeaStatus} />
             </Label>
             <GetIdeaStatuses>
-              {(ideaStatuses) => (ideaStatuses && isNilOrError(ideaStatuses)) ? null : (
-                <Field
-                  name="ideaStatuses"
-                  component={FormikMultipleSelect}
-                  options={this.resourcesToOptionList(ideaStatuses)}
-                />
-              )}
+              {(ideaStatuses) =>
+                ideaStatuses && isNilOrError(ideaStatuses) ? null : (
+                  <Field
+                    name="ideaStatuses"
+                    component={FormikMultipleSelect}
+                    options={this.resourcesToOptionList(ideaStatuses)}
+                  />
+                )
+              }
             </GetIdeaStatuses>
           </SectionField>
 
@@ -155,11 +164,7 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
             <Label>
               <FormattedMessage {...messages.fieldSearch} />
             </Label>
-            <Field
-              name="search"
-              component={FormikInput}
-              type="text"
-            />
+            <Field name="search" component={FormikInput} type="text" />
           </SectionField>
 
           <SectionField>
@@ -196,10 +201,7 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
           </SectionField>
         </Section>
 
-        <FormikSubmitWrapper
-          {...{ isValid, isSubmitting, status, touched }}
-        />
-
+        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
       </Form>
     );
   }

@@ -46,7 +46,7 @@ const HeaderContentWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h3<({ hasHeader: boolean })>`
+const Title = styled.h3<{ hasHeader: boolean }>`
   color: #333;
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
@@ -98,31 +98,36 @@ interface Props {
   className?: string;
 }
 
-export const Card = ({ to, onClick, imageUrl, header, title, body, footer, className }: Props) => (
+export const Card = ({
+  to,
+  onClick,
+  imageUrl,
+  header,
+  title,
+  body,
+  footer,
+  className,
+}: Props) => (
   <Container
     onClick={onClick}
     to={to}
-    className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+    className={`e2e-card ${className} ${
+      !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+    }`}
   >
-    {imageUrl &&
+    {imageUrl && (
       <ImageWrapper>
         <Image src={imageUrl} alt="" />
       </ImageWrapper>
-    }
+    )}
 
     <Title className="e2e-card-title" hasHeader={!!header}>
       {title}
     </Title>
-    <HeaderContentWrapper>
-      {header}
-    </HeaderContentWrapper>
+    <HeaderContentWrapper>{header}</HeaderContentWrapper>
 
-    <Body>
-      {body}
-    </Body>
-    <Footer aria-live="polite">
-      {footer}
-    </Footer>
+    <Body>{body}</Body>
+    <Footer aria-live="polite">{footer}</Footer>
   </Container>
 );
 

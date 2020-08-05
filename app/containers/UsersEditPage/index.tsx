@@ -55,12 +55,15 @@ export default () => {
       <Container id="e2e-user-edit-profile-page">
         <UsersEditPageMeta user={authUser.data} />
         <ScreenReaderOnly>
-          <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+          <FormattedMessage
+            tagName="h1"
+            {...messages.invisibleTitleUserSettings}
+          />
         </ScreenReaderOnly>
         <Wrapper>
           <VerificationStatus />
           <ProfileForm />
-          <ProfileDeletion/>
+          <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>
       </Container>

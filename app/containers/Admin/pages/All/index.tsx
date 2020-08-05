@@ -37,18 +37,19 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class Pages extends React.Component<Props & InjectedIntlProps, State> {
-
-  handleOnDeleteClick = (pageId) => (event) => {
-    const deleteMessage = this.props.intl.formatMessage(messages.pageDeletionConfirmation);
+  handleOnDeleteClick = pageId => event => {
+    const deleteMessage = this.props.intl.formatMessage(
+      messages.pageDeletionConfirmation
+    );
     event.preventDefault();
     if (window.confirm(deleteMessage)) {
       deletePage(pageId);
     }
-  }
+  };
 
-  isBuiltInPage = (page) => {
+  isBuiltInPage = page => {
     return page && false;
-  }
+  };
 
   render() {
     const pages = this.props.pages;
@@ -74,21 +75,30 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
             </ButtonWrapper>
           </FeatureFlag>
           <List key={pages.length}>
-            {pages.map((page) => (
-              <Row
-                key={page.id}
-                id={page.id}
-              >
+            {pages.map(page => (
+              <Row key={page.id} id={page.id}>
                 <TextCell className="expand">
                   <T value={page.attributes.title_multiloc} />
                 </TextCell>
-                <Button onClick={this.handleOnDeleteClick(page.id)} buttonStyle="text" icon="delete">
+                <Button
+                  onClick={this.handleOnDeleteClick(page.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                >
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
-                <Button linkTo={`/pages/${page.attributes.slug}`} buttonStyle="text" icon="search">
+                <Button
+                  linkTo={`/pages/${page.attributes.slug}`}
+                  buttonStyle="text"
+                  icon="search"
+                >
                   <FormattedMessage {...messages.showButtonLabel} />
                 </Button>
-                <Button linkTo={`/admin/pages/${page.id}`} buttonStyle="secondary" icon="edit">
+                <Button
+                  linkTo={`/admin/pages/${page.id}`}
+                  buttonStyle="secondary"
+                  icon="edit"
+                >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>
               </Row>

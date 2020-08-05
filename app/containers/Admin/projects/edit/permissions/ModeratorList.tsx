@@ -31,15 +31,19 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
-  handleDeleteClick = (projectId: string, moderatorId: string) => (event: FormEvent) => {
-    const deleteMessage = this.props.intl.formatMessage(messages.moderatorDeletionConfirmation);
+class ModeratorList extends PureComponent<Props & InjectedIntlProps> {
+  handleDeleteClick = (projectId: string, moderatorId: string) => (
+    event: FormEvent
+  ) => {
+    const deleteMessage = this.props.intl.formatMessage(
+      messages.moderatorDeletionConfirmation
+    );
     event.preventDefault();
 
     if (window.confirm(deleteMessage)) {
       deleteModerator(projectId, moderatorId);
     }
-  }
+  };
 
   render() {
     const { moderators, projectId, authUser } = this.props;
@@ -47,37 +51,46 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
 
     return (
       <List>
-        {authUser && !isNilOrError(moderators) && moderators.map((moderator, index) => {
-          const firstName = moderator.attributes.first_name;
-          const lastName = moderator.attributes.last_name;
-          const invitationPending = moderator.attributes.invite_status === 'pending';
-          const displayName = invitationPending
-            ? <PendingInvitation>{formatMessage(messages.pendingInvitation)}</PendingInvitation>
-            : (firstName && lastName)
-              ? `${firstName} ${lastName}`
-              : <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>;
+        {authUser &&
+          !isNilOrError(moderators) &&
+          moderators.map((moderator, index) => {
+            const firstName = moderator.attributes.first_name;
+            const lastName = moderator.attributes.last_name;
+            const invitationPending =
+              moderator.attributes.invite_status === 'pending';
+            const displayName = invitationPending ? (
+              <PendingInvitation>
+                {formatMessage(messages.pendingInvitation)}
+              </PendingInvitation>
+            ) : firstName && lastName ? (
+              `${firstName} ${lastName}`
+            ) : (
+              <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>
+            );
 
-          return (
-            <Row key={moderator.id} isLastItem={(index === moderators.length - 1)}>
-              <Avatar userId={moderator.id} size="30px" />
-              <p className="expand">{displayName}</p>
-              <p className="expand">{moderator.attributes.email}</p>
-              <Button
-                onClick={this.handleDeleteClick(projectId, moderator.id)}
-                buttonStyle="text"
-                icon="delete"
-                disabled={authUser.id === moderator.id}
+            return (
+              <Row
+                key={moderator.id}
+                isLastItem={index === moderators.length - 1}
               >
-                <FormattedMessage {...messages.deleteModeratorLabel} />
-              </Button>
-            </Row>
-          );
-        })
-      }
-      {isError(moderators) &&
-        <FormattedMessage {...messages.moderatorsNotFound} />
-      }
-    </List>
+                <Avatar userId={moderator.id} size="30px" />
+                <p className="expand">{displayName}</p>
+                <p className="expand">{moderator.attributes.email}</p>
+                <Button
+                  onClick={this.handleDeleteClick(projectId, moderator.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                  disabled={authUser.id === moderator.id}
+                >
+                  <FormattedMessage {...messages.deleteModeratorLabel} />
+                </Button>
+              </Row>
+            );
+          })}
+        {isError(moderators) && (
+          <FormattedMessage {...messages.moderatorsNotFound} />
+        )}
+      </List>
     );
   }
 }
@@ -86,6 +99,6 @@ const ModeratorListWithHoc = injectIntl<Props>(ModeratorList);
 
 export default (props) => (
   <GetAuthUser {...props}>
-    {authUser => <ModeratorListWithHoc authUser={authUser} {...props}/>}
+    {(authUser) => <ModeratorListWithHoc authUser={authUser} {...props} />}
   </GetAuthUser>
 );

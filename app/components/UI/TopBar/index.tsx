@@ -14,7 +14,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
+  height: ${(props) => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 
@@ -100,7 +100,6 @@ interface Props {
 }
 
 const TopBar = memo<Props>(({ children, goBack, className }) => {
-
   const onGoBack = useCallback((event: MouseEvent) => {
     event.preventDefault();
     goBack && goBack();
@@ -110,7 +109,7 @@ const TopBar = memo<Props>(({ children, goBack, className }) => {
     <Container className={className}>
       <TopBarInner>
         <Left>
-          {!isNil(goBack) &&
+          {!isNil(goBack) && (
             <>
               <GoBackButton onClick={onGoBack}>
                 <GoBackIcon name="arrow-back" ariaHidden />
@@ -119,13 +118,9 @@ const TopBar = memo<Props>(({ children, goBack, className }) => {
                 <FormattedMessage {...messages.goBack} />
               </GoBackLabel>
             </>
-          }
+          )}
         </Left>
-        {!isNil(children) &&
-          <Right>
-            {children}
-          </Right>
-        }
+        {!isNil(children) && <Right>{children}</Right>}
       </TopBarInner>
     </Container>
   );

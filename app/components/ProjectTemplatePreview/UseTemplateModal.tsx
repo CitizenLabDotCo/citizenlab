@@ -51,7 +51,9 @@ const Content = styled.div`
   padding-bottom: 50px;
 `;
 
-const StyledInputMultilocWithLocaleSwitcher = styled(InputMultilocWithLocaleSwitcher)`
+const StyledInputMultilocWithLocaleSwitcher = styled(
+  InputMultilocWithLocaleSwitcher
+)`
   margin-bottom: 35px;
 `;
 
@@ -119,23 +121,32 @@ interface IVariables {
   timelineStartAt: string;
 }
 
-const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, intl, projectTemplateId, opened, emitSuccessEvent, showGoBackLink, close }) => {
+const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
+  ({
+    params,
+    intl,
+    projectTemplateId,
+    opened,
+    emitSuccessEvent,
+    showGoBackLink,
+    close,
+  }) => {
+    const templateId: string | undefined =
+      projectTemplateId || get(params, 'projectTemplateId');
 
-  const templateId: string | undefined = (projectTemplateId || get(params, 'projectTemplateId'));
+    const tenantLocales = useTenantLocales();
+    const graphqlTenantLocales = useGraphqlTenantLocales();
 
-  const tenantLocales = useTenantLocales();
-  const graphqlTenantLocales = useGraphqlTenantLocales();
+    const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
+    const [startDate, setStartDate] = useState<string | null>(null);
+    const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+    const [titleError, setTitleError] = useState<string | null>(null);
+    const [startDateError, setStartDateError] = useState<string | null>(null);
+    const [processing, setProcessing] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [responseError, setResponseError] = useState<any>(null);
 
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
-  const [titleError, setTitleError] = useState<string | null>(null);
-  const [startDateError, setStartDateError] = useState<string | null>(null);
-  const [processing, setProcessing] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [responseError, setResponseError] = useState<any>(null);
-
-  const TEMPLATE_TITLE_QUERY = gql`
+    const TEMPLATE_TITLE_QUERY = gql`
     {
       projectTemplate(id: "${projectTemplateId}"){
         titleMultiloc {
@@ -145,190 +156,227 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     }
   `;
 
-  const APPLY_PROJECT_TEMPLATE = gql`
-    mutation ApplyProjectTemplate(
-      $projectTemplateId: ID!
-      $titleMultiloc: MultilocAttributes!
-      $timelineStartAt: String
-    ) {
-      applyProjectTemplate(
-        projectTemplateId: $projectTemplateId
-        titleMultiloc: $titleMultiloc
-        timelineStartAt: $timelineStartAt
+    const APPLY_PROJECT_TEMPLATE = gql`
+      mutation ApplyProjectTemplate(
+        $projectTemplateId: ID!
+        $titleMultiloc: MultilocAttributes!
+        $timelineStartAt: String
       ) {
-        errors
+        applyProjectTemplate(
+          projectTemplateId: $projectTemplateId
+          titleMultiloc: $titleMultiloc
+          timelineStartAt: $timelineStartAt
+        ) {
+          errors
+        }
       }
-    }
-  `;
+    `;
 
-  const { data } = useQuery(TEMPLATE_TITLE_QUERY);
+    const { data } = useQuery(TEMPLATE_TITLE_QUERY);
 
-  const [applyProjectTemplate] = useMutation<any, IVariables>(APPLY_PROJECT_TEMPLATE);
+    const [applyProjectTemplate] = useMutation<any, IVariables>(
+      APPLY_PROJECT_TEMPLATE
+    );
 
-  const onCreateProject = useCallback(async () => {
-    const invalidTitle = isEmpty(titleMultiloc) || (titleMultiloc && Object.getOwnPropertyNames(titleMultiloc).every(key => isEmpty(titleMultiloc[`${key}`])));
-    const noDate = isEmpty(startDate);
-    const invalidDate = !moment(startDate || '', 'YYYY-MM-DD', true).isValid();
+    const onCreateProject = useCallback(async () => {
+      const invalidTitle =
+        isEmpty(titleMultiloc) ||
+        (titleMultiloc &&
+          Object.getOwnPropertyNames(titleMultiloc).every((key) =>
+            isEmpty(titleMultiloc[`${key}`])
+          ));
+      const noDate = isEmpty(startDate);
+      const invalidDate = !moment(
+        startDate || '',
+        'YYYY-MM-DD',
+        true
+      ).isValid();
 
-    trackEventByName(tracks.useTemplateModalCreateProjectButtonClicked, { projectTemplateId });
+      trackEventByName(tracks.useTemplateModalCreateProjectButtonClicked, {
+        projectTemplateId,
+      });
 
-    if (invalidTitle && !isNilOrError(tenantLocales)) {
-      if (tenantLocales.length === 1) {
-        setTitleError(intl.formatMessage(messages.projectTitleError));
-      } else {
-        setTitleError(intl.formatMessage(messages.projectTitleMultilocError));
+      if (invalidTitle && !isNilOrError(tenantLocales)) {
+        if (tenantLocales.length === 1) {
+          setTitleError(intl.formatMessage(messages.projectTitleError));
+        } else {
+          setTitleError(intl.formatMessage(messages.projectTitleMultilocError));
+        }
       }
-    }
 
-    if (noDate) {
-      setStartDateError(intl.formatMessage(messages.projectNoStartDateError));
-    } else if (invalidDate) {
-      setStartDateError(intl.formatMessage(messages.projectInvalidStartDateError));
-    }
+      if (noDate) {
+        setStartDateError(intl.formatMessage(messages.projectNoStartDateError));
+      } else if (invalidDate) {
+        setStartDateError(
+          intl.formatMessage(messages.projectInvalidStartDateError)
+        );
+      }
 
-    if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+      if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+        setResponseError(null);
+        setTitleError(null);
+        setStartDateError(null);
+        setProcessing(true);
+
+        try {
+          await applyProjectTemplate({
+            variables: {
+              titleMultiloc: transform(
+                titleMultiloc,
+                (result: Multiloc, val, key: Locale) => {
+                  result[convertToGraphqlLocale(key)] = val;
+                }
+              ),
+              projectTemplateId: templateId,
+              timelineStartAt: startDate,
+            },
+          });
+          await streams.fetchAllWith({
+            apiEndpoint: [`${API_PATH}/projects`],
+          });
+
+          if (emitSuccessEvent) {
+            eventEmitter.emit('NewProjectCreated');
+          }
+
+          setProcessing(false);
+          setSuccess(true);
+        } catch (error) {
+          setProcessing(false);
+          setResponseError(error);
+        }
+      }
+    }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
+
+    const onClose = useCallback(() => {
+      close();
+    }, []);
+
+    const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
       setResponseError(null);
       setTitleError(null);
+      setTitleMultiloc(titleMultiloc);
+    }, []);
+
+    const onSelectedLocaleChange = useCallback(
+      (newSelectedLocale: Locale) => {
+        setSelectedLocale(newSelectedLocale);
+      },
+      []
+    );
+
+    const onStartDateChange = useCallback((startDate: string) => {
+      setResponseError(null);
       setStartDateError(null);
-      setProcessing(true);
+      setStartDate(startDate);
+    }, []);
 
-      try {
-        await applyProjectTemplate({
-          variables: {
-            titleMultiloc: transform(titleMultiloc, (result: Multiloc, val, key: Locale) => {
-              result[convertToGraphqlLocale(key)] = val;
-            }),
-            projectTemplateId: templateId,
-            timelineStartAt: startDate
-          }
-        });
-        await streams.fetchAllWith({
-          apiEndpoint: [`${API_PATH}/projects`]
-        });
+    useEffect(() => {
+      setTitleMultiloc(null);
+      setStartDate(null);
+      setSelectedLocale(null);
+      setTitleError(null);
+      setStartDateError(null);
+      setProcessing(false);
+      setSuccess(false);
+      setResponseError(null);
+    }, [opened]);
 
-        if (emitSuccessEvent) {
-          eventEmitter.emit('NewProjectCreated');
+    const templateTitle = (
+      <T value={get(data, 'projectTemplate.titleMultiloc')} />
+    );
+
+    return (
+      <Modal
+        width={500}
+        opened={opened}
+        close={onClose}
+        closeOnClickOutside={false}
+        header={
+          <FormattedMessage
+            {...messages.createProjectBasedOn}
+            values={{ templateTitle }}
+          />
         }
-
-        setProcessing(false);
-        setSuccess(true);
-      } catch (error) {
-        setProcessing(false);
-        setResponseError(error);
-      }
-    }
-  }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
-
-  const onClose = useCallback(() => {
-    close();
-  }, []);
-
-  const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
-    setResponseError(null);
-    setTitleError(null);
-    setTitleMultiloc(titleMultiloc);
-  }, []);
-
-  const onSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
-    setSelectedLocale(newSelectedLocale);
-  }, []);
-
-  const onStartDateChange = useCallback((startDate: string) => {
-    setResponseError(null);
-    setStartDateError(null);
-    setStartDate(startDate);
-  }, []);
-
-  useEffect(() => {
-    setTitleMultiloc(null);
-    setStartDate(null);
-    setSelectedLocale(null);
-    setTitleError(null);
-    setStartDateError(null);
-    setProcessing(false);
-    setSuccess(false);
-    setResponseError(null);
-  }, [opened]);
-
-  const templateTitle = <T value={get(data, 'projectTemplate.titleMultiloc')} />;
-
-  return (
-    <Modal
-      width={500}
-      opened={opened}
-      close={onClose}
-      closeOnClickOutside={false}
-      header={<FormattedMessage {...messages.createProjectBasedOn} values={{ templateTitle }} />}
-      footer={
-        <Footer>
+        footer={
+          <Footer>
+            {!success ? (
+              <>
+                <CreateProjectButton
+                  buttonStyle="secondary"
+                  onClick={onCreateProject}
+                  processing={processing}
+                >
+                  <FormattedMessage {...messages.createProject} />
+                </CreateProjectButton>
+                {responseError !== null && (
+                  <Error
+                    text={<FormattedMessage {...messages.responseError} />}
+                    marginTop="0px"
+                    showBackground={false}
+                    showIcon={true}
+                  />
+                )}
+              </>
+            ) : (
+              <CloseButton buttonStyle="secondary" onClick={onClose}>
+                <FormattedMessage {...messages.close} />
+              </CloseButton>
+            )}
+          </Footer>
+        }
+      >
+        <Content>
           {!success ? (
             <>
-              <CreateProjectButton
-                buttonStyle="secondary"
-                onClick={onCreateProject}
-                processing={processing}
-              >
-                <FormattedMessage {...messages.createProject} />
-              </CreateProjectButton>
-              {responseError !== null &&
-                <Error
-                  text={<FormattedMessage {...messages.responseError} />}
-                  marginTop="0px"
-                  showBackground={false}
-                  showIcon={true}
-                />
-              }
+              <StyledInputMultilocWithLocaleSwitcher
+                id="project-title"
+                label={intl.formatMessage(messages.projectTitle)}
+                placeholder={intl.formatMessage(messages.typeProjectName)}
+                type="text"
+                valueMultiloc={titleMultiloc}
+                onChange={onTitleChange}
+                onSelectedLocaleChange={onSelectedLocaleChange}
+                error={titleError}
+                autoFocus={true}
+              />
+
+              <Input
+                id="project-start-date"
+                label={intl.formatMessage(messages.projectStartDate)}
+                type="date"
+                onChange={onStartDateChange}
+                value={startDate}
+                error={startDateError}
+                placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
+              />
             </>
           ) : (
-            <CloseButton
-              buttonStyle="secondary"
-              onClick={onClose}
-            >
-              <FormattedMessage {...messages.close} />
-            </CloseButton>
+            <Success>
+              <SuccessIcon name="round-checkmark" />
+              <SuccessText>
+                <FormattedMessage {...messages.successMessage} />
+                {showGoBackLink && (
+                  <FormattedMessage
+                    {...messages.goBackTo}
+                    values={{
+                      goBackLink: (
+                        <Link to="/admin/projects/">
+                          <FormattedMessage
+                            {...messages.projectsOverviewPage}
+                          />
+                        </Link>
+                      ),
+                    }}
+                  />
+                )}
+              </SuccessText>
+            </Success>
           )}
-        </Footer>
-      }
-    >
-      <Content>
-        {!success ? (
-          <>
-            <StyledInputMultilocWithLocaleSwitcher
-              id="project-title"
-              label={intl.formatMessage(messages.projectTitle)}
-              placeholder={intl.formatMessage(messages.typeProjectName)}
-              type="text"
-              valueMultiloc={titleMultiloc}
-              onChange={onTitleChange}
-              onSelectedLocaleChange={onSelectedLocaleChange}
-              error={titleError}
-              autoFocus={true}
-            />
-
-            <Input
-              id="project-start-date"
-              label={intl.formatMessage(messages.projectStartDate)}
-              type="date"
-              onChange={onStartDateChange}
-              value={startDate}
-              error={startDateError}
-              placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
-            />
-          </>
-        ) : (
-          <Success>
-            <SuccessIcon name="round-checkmark" />
-            <SuccessText>
-              <FormattedMessage {...messages.successMessage} />
-              {showGoBackLink &&
-                <FormattedMessage {...messages.goBackTo} values={{ goBackLink: <Link to="/admin/projects/"><FormattedMessage {...messages.projectsOverviewPage} /></Link> }} />
-              }
-            </SuccessText>
-          </Success>
-        )}
-      </Content>
-    </Modal>
-  );
-});
+        </Content>
+      </Modal>
+    );
+  }
+);
 
 export default withRouter<Props>(injectIntl(UseTemplateModal));

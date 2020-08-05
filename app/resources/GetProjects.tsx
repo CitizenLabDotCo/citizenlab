@@ -1,5 +1,13 @@
 import { Component } from 'react';
-import { isString, isEqual, get, omitBy, isNil, omit, cloneDeep } from 'lodash-es';
+import {
+  isString,
+  isEqual,
+  get,
+  omitBy,
+  isNil,
+  omit,
+  cloneDeep,
+} from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { projectsStream, IProjectData } from 'services/projects';
@@ -8,7 +16,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 
 export type SortAttribute = 'new' | 'trending' | 'popular';
-export type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
+export type Sort =
+  | 'new'
+  | '-new'
+  | 'trending'
+  | '-trending'
+  | 'popular'
+  | '-popular';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
@@ -53,7 +67,9 @@ export type GetProjectsChildProps = State & {
   onChangeSorting: (sort: Sort) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTopics: (topics: string[]) => void;
-  onChangePublicationStatus: (publicationStatus: SelectedPublicationStatus) => void;
+  onChangePublicationStatus: (
+    publicationStatus: SelectedPublicationStatus
+  ) => void;
 };
 
 interface State {
@@ -74,19 +90,19 @@ export default class GetProjects extends Component<Props, State> {
       // defaults
       queryParameters: {
         'page[number]': 1,
-        'page[size]': (props.pageSize || 250),
+        'page[size]': props.pageSize || 250,
         sort: props.sort,
         areas: props.areas,
         topics: props.topics,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
         folder: props.folderId,
-        filter_ids: props.filteredProjectIds
+        filter_ids: props.filteredProjectIds,
       },
       projectsList: undefined,
       hasMore: false,
       querying: true,
-      loadingMore: false
+      loadingMore: false,
     };
 
     const queryParameters = this.getQueryParameters(this.state, props);
@@ -96,58 +112,84 @@ export default class GetProjects extends Component<Props, State> {
 
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
-    const startAccumulatorValue: IAccumulator = { queryParameters, projects: null, hasMore: false };
+    const startAccumulatorValue: IAccumulator = {
+      queryParameters,
+      projects: null,
+      hasMore: false,
+    };
 
     this.subscriptions = [
-      this.queryParameters$.pipe(
-        distinctUntilChanged((x, y) => shallowCompare(x, y)),
-        mergeScan<IQueryParameters, IAccumulator>((acc, newQueryParameters) => {
-          const oldQueryParamsWithoutPageNumber = omit(cloneDeep(acc.queryParameters), 'page[number]');
-          const newQueryParamsWithoutPageNumber = omit(cloneDeep(newQueryParameters), 'page[number]');
-          const oldPageNumber = acc.queryParameters['page[number]'];
-          const newPageNumber = newQueryParameters['page[number]'];
-          const isLoadingMore = isEqual(oldQueryParamsWithoutPageNumber, newQueryParamsWithoutPageNumber) && oldPageNumber !== newPageNumber;
-          const pageNumber = (isLoadingMore ? newQueryParameters['page[number]'] : 1);
-          const queryParameters: IQueryParameters = {
-            ...newQueryParameters,
-            'page[number]': pageNumber
-          };
+      this.queryParameters$
+        .pipe(
+          distinctUntilChanged((x, y) => shallowCompare(x, y)),
+          mergeScan<IQueryParameters, IAccumulator>(
+            (acc, newQueryParameters) => {
+              const oldQueryParamsWithoutPageNumber = omit(
+                cloneDeep(acc.queryParameters),
+                'page[number]'
+              );
+              const newQueryParamsWithoutPageNumber = omit(
+                cloneDeep(newQueryParameters),
+                'page[number]'
+              );
+              const oldPageNumber = acc.queryParameters['page[number]'];
+              const newPageNumber = newQueryParameters['page[number]'];
+              const isLoadingMore =
+                isEqual(
+                  oldQueryParamsWithoutPageNumber,
+                  newQueryParamsWithoutPageNumber
+                ) && oldPageNumber !== newPageNumber;
+              const pageNumber = isLoadingMore
+                ? newQueryParameters['page[number]']
+                : 1;
+              const queryParameters: IQueryParameters = {
+                ...newQueryParameters,
+                'page[number]': pageNumber,
+              };
 
-          this.setState({
-            querying: !isLoadingMore,
-            loadingMore: isLoadingMore,
-          });
-
-          return projectsStream({ queryParameters }).observable.pipe(map(projects => {
-            const selfLink = get(projects, 'links.self');
-            const lastLink = get(projects, 'links.last');
-            const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-
-            if (isNilOrError(projects)) {
-              reportError({
-                message: 'There was an incorrect response for projects',
-                response: projects
+              this.setState({
+                querying: !isLoadingMore,
+                loadingMore: isLoadingMore,
               });
-            }
 
-            return {
-              queryParameters,
-              hasMore,
-              projects: !isLoadingMore
-                ? projects.data
-                : [...(acc.projects || []), ...projects.data]
-            };
-          }));
-        }, startAccumulatorValue)
-      ).subscribe(({ projects, queryParameters, hasMore }) => {
-        this.setState({
-          queryParameters,
-          hasMore,
-          projectsList: projects,
-          querying: false,
-          loadingMore: false
-        });
-      })
+              return projectsStream({ queryParameters }).observable.pipe(
+                map((projects) => {
+                  const selfLink = get(projects, 'links.self');
+                  const lastLink = get(projects, 'links.last');
+                  const hasMore =
+                    isString(selfLink) &&
+                    isString(lastLink) &&
+                    selfLink !== lastLink;
+
+                  if (isNilOrError(projects)) {
+                    reportError({
+                      message: 'There was an incorrect response for projects',
+                      response: projects,
+                    });
+                  }
+
+                  return {
+                    queryParameters,
+                    hasMore,
+                    projects: !isLoadingMore
+                      ? projects.data
+                      : [...(acc.projects || []), ...projects.data],
+                  };
+                })
+              );
+            },
+            startAccumulatorValue
+          )
+        )
+        .subscribe(({ projects, queryParameters, hasMore }) => {
+          this.setState({
+            queryParameters,
+            hasMore,
+            projectsList: projects,
+            querying: false,
+            loadingMore: false,
+          });
+        }),
     ];
   }
 
@@ -162,66 +204,74 @@ export default class GetProjects extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getQueryParameters = (state: State, props: Props) => {
     return {
       ...state.queryParameters,
-      ...omitBy({
-        'page[number]': props.pageNumber,
-        'page[size]': props.pageSize,
-        sort: props.sort,
-        areas: props.areas,
-        topics: props.topics,
-        publication_statuses: props.publicationStatuses,
-        filter_can_moderate: props.filterCanModerate,
-        folder: props.folderId,
-        filter_ids: props.filteredProjectIds
-      }, isNil)
+      ...omitBy(
+        {
+          'page[number]': props.pageNumber,
+          'page[size]': props.pageSize,
+          sort: props.sort,
+          areas: props.areas,
+          topics: props.topics,
+          publication_statuses: props.publicationStatuses,
+          filter_can_moderate: props.filterCanModerate,
+          folder: props.folderId,
+          filter_ids: props.filteredProjectIds,
+        },
+        isNil
+      ),
     };
-  }
+  };
 
   loadMore = () => {
     if (!this.state.loadingMore) {
       this.queryParameters$.next({
         ...this.state.queryParameters,
-        'page[number]': (this.state.queryParameters['page[number]'] || 0) + 1
+        'page[number]': (this.state.queryParameters['page[number]'] || 0) + 1,
       });
     }
-  }
+  };
 
   handleSortOnChange = (sort: Sort) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       sort,
-      'page[number]': 1
+      'page[number]': 1,
     });
-  }
+  };
 
   handleAreasOnChange = (areas: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       areas,
-      'page[number]': 1
+      'page[number]': 1,
     });
-  }
+  };
 
   handleTopicsOnChange = (topics: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       topics,
-      'page[number]': 1
+      'page[number]': 1,
     });
-  }
+  };
 
-  handlePublicationStatusOnChange = (publicationStatus: SelectedPublicationStatus) => {
+  handlePublicationStatusOnChange = (
+    publicationStatus: SelectedPublicationStatus
+  ) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      publication_statuses: (publicationStatus === 'all' ? ['published', 'archived'] : [publicationStatus]),
-      'page[number]': 1
+      publication_statuses:
+        publicationStatus === 'all'
+          ? ['published', 'archived']
+          : [publicationStatus],
+      'page[number]': 1,
     });
-  }
+  };
 
   render() {
     const { children } = this.props;
@@ -231,7 +281,7 @@ export default class GetProjects extends Component<Props, State> {
       onChangeSorting: this.handleSortOnChange,
       onChangeAreas: this.handleAreasOnChange,
       onChangeTopics: this.handleTopicsOnChange,
-      onChangePublicationStatus: this.handlePublicationStatusOnChange
+      onChangePublicationStatus: this.handlePublicationStatusOnChange,
     });
   }
 }

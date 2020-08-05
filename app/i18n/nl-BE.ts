@@ -6,6 +6,9 @@ import { formatTranslationMessages } from './';
 addLocaleData(nlLocaleData);
 
 const nlBETranslationMessages = require('translations/nl-BE.json');
-const translationMessages = formatTranslationMessages('nl-BE', nlBETranslationMessages);
+const translationMessages = formatTranslationMessages(
+  'nl-BE',
+  nlBETranslationMessages
+);
 
 export default translationMessages;

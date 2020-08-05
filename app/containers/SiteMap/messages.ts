@@ -7,7 +7,8 @@ export default defineMessages({
   },
   siteMapDescription: {
     id: 'containers.SiteMap.siteMapDescription',
-    defaultMessage: 'From this page, you can navigate to any content on the platform.',
+    defaultMessage:
+      'From this page, you can navigate to any content on the platform.',
   },
   homeSection: {
     id: 'containers.SiteMap.homeSection',

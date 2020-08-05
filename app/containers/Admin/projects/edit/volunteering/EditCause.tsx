@@ -11,7 +11,12 @@ import { updateCause } from 'services/causes';
 import useCause from 'hooks/useCause';
 
 // Components
-import { Section, SectionField, SectionTitle, SectionDescription } from 'components/admin/Section';
+import {
+  Section,
+  SectionField,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
@@ -29,7 +34,10 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
-import { SetBackButtonUrl, setBackButtonUrlEventName } from 'containers/Admin/projects/edit';
+import {
+  SetBackButtonUrl,
+  setBackButtonUrlEventName,
+} from 'containers/Admin/projects/edit';
 
 const Container = styled.div``;
 
@@ -48,7 +56,9 @@ interface IFormValues {
 }
 
 const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
-  const { intl: { formatMessage } } = props;
+  const {
+    intl: { formatMessage },
+  } = props;
   const causeId = props.params.causeId;
   const projectId = props.params.projectId;
   const cause = useCause({ causeId });
@@ -63,7 +73,10 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
   });
 
   useEffect(() => {
-    eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName, `/admin/projects/${projectId}/volunteering`);
+    eventEmitter.emit<SetBackButtonUrl>(
+      setBackButtonUrlEventName,
+      `/admin/projects/${projectId}/volunteering`
+    );
 
     return () => {
       eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName);
@@ -97,19 +110,22 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
     }));
   }, []);
 
-  const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc, _locale: Locale) => {
-    setTouched(true);
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      description_multiloc
-    }));
-  }, []);
+  const handleDescriptionOnChange = useCallback(
+    (description_multiloc: Multiloc, _locale: Locale) => {
+      setTouched(true);
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
+        description_multiloc,
+      }));
+    },
+    []
+  );
 
   const handleImageOnAdd = useCallback((images: UploadFile[]) => {
     setTouched(true);
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
-      image: images[0]
+      image: images[0],
     }));
   }, []);
 
@@ -117,7 +133,7 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
     setTouched(true);
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
-      image: null
+      image: null,
     }));
   }, []);
 
@@ -132,15 +148,17 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
         description_multiloc,
         title_multiloc,
         image: image?.base64,
-      }).then(() => {
-        setProcessing(false);
-        setErrors({});
-        setTouched(false);
-        clHistory.push(`/admin/projects/${projectId}/volunteering`);
-      }).catch((errorResponse) => {
-        setProcessing(false);
-        setErrors(errorResponse?.json?.errors || {});
-      });
+      })
+        .then(() => {
+          setProcessing(false);
+          setErrors({});
+          setTouched(false);
+          clHistory.push(`/admin/projects/${projectId}/volunteering`);
+        })
+        .catch((errorResponse) => {
+          setProcessing(false);
+          setErrors(errorResponse?.json?.errors || {});
+        });
     }
   }, [formValues, processing]);
 
@@ -162,7 +180,10 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
             onChange={handleTitleOnChange}
             label={formatMessage(messages.causeTitleLabel)}
           />
-          <Error fieldName="title_multiloc" apiErrors={errors?.title_multiloc} />
+          <Error
+            fieldName="title_multiloc"
+            apiErrors={errors?.title_multiloc}
+          />
         </SectionField>
 
         <SectionField>
@@ -174,7 +195,10 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
             labelTooltipText={formatMessage(messages.causeDescriptionTooltip)}
             withCTAButton
           />
-          <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
+          <Error
+            fieldName="description_multiloc"
+            apiErrors={errors?.description_multiloc}
+          />
         </SectionField>
         <SectionField>
           <Label>
@@ -203,17 +227,16 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
           <FormattedMessage {...messages.saveCause} />
         </Button>
 
-        {!isEmpty(errors) &&
+        {!isEmpty(errors) && (
           <Error
             text={formatMessage(messages.causeErrorMessage)}
             showBackground={false}
             showIcon={false}
           />
-        }
+        )}
       </ButtonContainer>
     </Container>
   );
-
 });
 
 export default withRouter(injectIntl(EditCause));

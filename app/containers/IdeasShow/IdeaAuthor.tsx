@@ -51,44 +51,46 @@ interface DataProps {
   author: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = memo<Props>(({ ideaId, ideaPublishedAt, authorId, author, className }) => {
-  const goToUserProfile = () => {
-    if (!isNilOrError(author)) {
-      clHistory.push(`/profile/${author.attributes.slug}`);
-    }
-  };
+const IdeaAuthor = memo<Props>(
+  ({ ideaId, ideaPublishedAt, authorId, author, className }) => {
+    const goToUserProfile = () => {
+      if (!isNilOrError(author)) {
+        clHistory.push(`/profile/${author.attributes.slug}`);
+      }
+    };
 
-  const noop = () => { };
+    const noop = () => {};
 
-  return (
-    <Container className={`e2e-idea-author ${className}`}>
-      <Avatar
-        userId={authorId}
-        size="36px"
-        onClick={authorId ? goToUserProfile : noop}
-      />
-      <AuthorMeta>
-        <IdeaPostedBy authorId={authorId} />
+    return (
+      <Container className={`e2e-idea-author ${className}`}>
+        <Avatar
+          userId={authorId}
+          size="36px"
+          onClick={authorId ? goToUserProfile : noop}
+        />
+        <AuthorMeta>
+          <IdeaPostedBy authorId={authorId} />
 
-        {ideaPublishedAt &&
-          <TimeAgo>
-            <FormattedRelative value={ideaPublishedAt} />
-            <ContentChangeLog postId={ideaId} postType="idea" />
-          </TimeAgo>
-        }
-      </AuthorMeta>
-    </Container>
-  );
-});
+          {ideaPublishedAt && (
+            <TimeAgo>
+              <FormattedRelative value={ideaPublishedAt} />
+              <ContentChangeLog postId={ideaId} postType="idea" />
+            </TimeAgo>
+          )}
+        </AuthorMeta>
+      </Container>
+    );
+  }
+);
 
 const Data = adopt<DataProps, InputProps>({
-  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>
+  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaAuthor {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaAuthor {...inputProps} {...dataProps} />}
   </Data>
 );

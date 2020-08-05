@@ -7,15 +7,25 @@ import { DragDropContext } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
+import {
+  globalState,
+  IAdminFullWidth,
+  IGlobalStateService,
+} from 'services/globalState';
 import { IProjectData } from 'services/projects';
 import { ITopicData } from 'services/topics';
 
 // resources
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
-import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
+import GetIdeaStatuses, {
+  GetIdeaStatusesChildProps,
+} from 'resources/GetIdeaStatuses';
+import GetInitiativeStatuses, {
+  GetInitiativeStatusesChildProps,
+} from 'resources/GetInitiativeStatuses';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
+import GetInitiatives, {
+  GetInitiativesChildProps,
+} from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -74,7 +84,7 @@ const MiddleColumn = styled.div`
 export const Sticky = styled.div`
   position: -webkit-sticky;
   position: sticky;
-  top: ${props => props.theme.menuHeight + 20}px;
+  top: ${(props) => props.theme.menuHeight + 20}px;
 `;
 
 const StyledInput = styled(Input)`
@@ -84,7 +94,7 @@ const StyledInput = styled(Input)`
 `;
 
 export type ManagerType =
-  'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
+  | 'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
   | 'ProjectIdeas' // should come with projectId
   | 'Initiatives';
 
@@ -111,7 +121,7 @@ interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
@@ -134,7 +144,7 @@ export class PostManager extends React.PureComponent<Props, State> {
       activeFilterMenu: props.visibleFilterMenus[0],
       searchTerm: undefined,
       previewPostId: null,
-      previewMode: 'view'
+      previewMode: 'view',
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -150,7 +160,10 @@ export class PostManager extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props) {
     const { visibleFilterMenus } = this.props;
 
-    if (prevProps.visibleFilterMenus !== visibleFilterMenus && !visibleFilterMenus.find(item => item === this.state.activeFilterMenu)) {
+    if (
+      prevProps.visibleFilterMenus !== visibleFilterMenus &&
+      !visibleFilterMenus.find((item) => item === this.state.activeFilterMenu)
+    ) {
       this.setState({ activeFilterMenu: visibleFilterMenus[0] });
     }
   }
@@ -161,10 +174,11 @@ export class PostManager extends React.PureComponent<Props, State> {
     if (type === 'Initiatives') return undefined;
 
     const { queryParameters } = posts as GetIdeasChildProps;
-    return Array.isArray(queryParameters.projects) && queryParameters.projects.length === 1
+    return Array.isArray(queryParameters.projects) &&
+      queryParameters.projects.length === 1
       ? queryParameters.projects[0]
       : undefined;
-  }
+  };
 
   handleSearchChange = (event) => {
     const searchTerm = event.target.value;
@@ -174,7 +188,7 @@ export class PostManager extends React.PureComponent<Props, State> {
     if (isFunction(this.props.posts.onChangeSearchTerm)) {
       this.props.posts.onChangeSearchTerm(searchTerm);
     }
-  }
+  };
 
   onChangeProjects = (projectIds: string[] | undefined) => {
     const { projects, posts, type } = this.props;
@@ -182,47 +196,49 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     const { onChangeProjects } = posts as GetIdeasChildProps;
 
-    const accessibleProjectsIds = projects ? projects.map(project => project.id) : null;
+    const accessibleProjectsIds = projects
+      ? projects.map((project) => project.id)
+      : null;
 
     if (!projectIds || projectIds.length === 0) {
       accessibleProjectsIds && onChangeProjects(accessibleProjectsIds);
     } else {
       onChangeProjects(projectIds);
     }
-  }
+  };
   // End filtering hanlders
 
   // Selection management
   isSelectionMultiple = () => {
-    return (this.state.selection.size > 1);
-  }
+    return this.state.selection.size > 1;
+  };
 
   resetSelection = () => {
     this.setState({ selection: new Set() });
-  }
+  };
 
   handleChangeSelection = (selection: Set<string>) => {
     this.setState({ selection });
-  }
+  };
   // End selection management
 
   // Filter menu
   handleChangeActiveFilterMenu = (activeFilterMenu: TFilterMenu) => {
     this.setState({ activeFilterMenu });
-  }
+  };
   // End Filter menu
 
   // Modal Preview
   openPreview = (postId: string) => {
     this.setState({ previewPostId: postId, previewMode: 'view' });
-  }
+  };
 
   openPreviewEdit = () => {
     const { selection } = this.state;
     if (selection.size === 1) {
       this.setState({ previewPostId: [...selection][0], previewMode: 'edit' });
     }
-  }
+  };
 
   switchPreviewMode = () => {
     if (this.state.previewMode === 'edit') {
@@ -230,41 +246,64 @@ export class PostManager extends React.PureComponent<Props, State> {
     } else {
       this.setState({ previewMode: 'edit' });
     }
-  }
+  };
 
   closePreview = () => {
     this.setState({ previewPostId: null });
-  }
+  };
   // End Modal Preview
 
   getNonSharedParams = () => {
     const { type } = this.props;
     if (type === 'Initiatives') {
       const posts = this.props.posts as GetInitiativesChildProps;
-      return ({
+      return {
         onChangePhase: undefined,
         selectedPhase: undefined,
-        selectedStatus: posts.queryParameters.initiative_status
-      });
+        selectedStatus: posts.queryParameters.initiative_status,
+      };
     } else if (type === 'AllIdeas' || 'ProjectIdeas') {
       const posts = this.props.posts as GetIdeasChildProps;
-      return ({
+      return {
         onChangePhase: posts.onChangePhase,
         selectedPhase: posts.queryParameters.phase,
-        selectedStatus: posts.queryParameters.idea_status
-      });
+        selectedStatus: posts.queryParameters.idea_status,
+      };
     }
-    return ({
-      onChangePhase: () => { },
+    return {
+      onChangePhase: () => {},
       selectedPhase: null,
-      selectedStatus: null
-    });
-  }
+      selectedStatus: null,
+    };
+  };
 
   render() {
-    const { previewPostId, previewMode, searchTerm, selection, activeFilterMenu } = this.state;
-    const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus, topics } = this.props;
-    const { list, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
+    const {
+      previewPostId,
+      previewMode,
+      searchTerm,
+      selection,
+      activeFilterMenu,
+    } = this.state;
+    const {
+      type,
+      projectId,
+      projects,
+      posts,
+      phases,
+      postStatuses,
+      visibleFilterMenus,
+      topics,
+    } = this.props;
+    const {
+      list,
+      onChangeTopics,
+      onChangeStatus,
+      queryParameters,
+      onChangeAssignee,
+      onChangeFeedbackFilter,
+      onResetParams,
+    } = posts;
 
     const selectedTopics = queryParameters.topics;
     const selectedAssignee = queryParameters.assignee;
@@ -272,17 +311,22 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     const selectedProject = this.getSelectedProject();
 
-    const { onChangePhase, selectedPhase, selectedStatus } = this.getNonSharedParams();
+    const {
+      onChangePhase,
+      selectedPhase,
+      selectedStatus,
+    } = this.getNonSharedParams();
 
     const multipleIdeasSelected = this.isSelectionMultiple();
-    const showDragAndDropInfoMessage = (
+    const showDragAndDropInfoMessage =
       this.props.type === 'AllIdeas' ||
       this.props.type === 'ProjectIdeas' ||
-      (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
-    );
+      (this.props.type === 'Initiatives' && activeFilterMenu === 'topics');
 
     if (!isNilOrError(topics)) {
-      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+      const filteredTopics = topics.filter(
+        (topic) => !isNilOrError(topic)
+      ) as ITopicData[];
 
       return (
         <>
@@ -321,26 +365,25 @@ export class PostManager extends React.PureComponent<Props, State> {
               />
             </LeftColumn>
             <MiddleColumnTop>
-              {type === 'Initiatives'
-                ? <InitiativesCount
+              {type === 'Initiatives' ? (
+                <InitiativesCount
                   feedbackNeeded={feedbackNeeded}
                   topics={selectedTopics}
                   initiativeStatus={selectedStatus}
                   searchTerm={searchTerm}
                   assignee={selectedAssignee}
                 />
-                : type === 'AllIdeas' || type === 'ProjectIdeas'
-                  ? <IdeasCount
-                    feedbackNeeded={feedbackNeeded}
-                    project={selectedProject}
-                    phase={selectedPhase}
-                    topics={selectedTopics}
-                    ideaStatus={selectedStatus}
-                    searchTerm={searchTerm}
-                    assignee={selectedAssignee}
-                  />
-                  : null
-              }
+              ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+                <IdeasCount
+                  feedbackNeeded={feedbackNeeded}
+                  project={selectedProject}
+                  phase={selectedPhase}
+                  topics={selectedTopics}
+                  ideaStatus={selectedStatus}
+                  searchTerm={searchTerm}
+                  assignee={selectedAssignee}
+                />
+              ) : null}
               <StyledInput icon="search" onChange={this.handleSearchChange} />
             </MiddleColumnTop>
           </ThreeColumns>
@@ -364,17 +407,24 @@ export class PostManager extends React.PureComponent<Props, State> {
                   onChangeStatusFilter={onChangeStatus}
                   onChangeProjectFilter={this.onChangeProjects}
                 />
-                {multipleIdeasSelected && showDragAndDropInfoMessage &&
+                {multipleIdeasSelected && showDragAndDropInfoMessage && (
                   <Message
                     info={true}
                     attached="bottom"
                     icon="info"
-                    content={type === 'AllIdeas' || type === 'ProjectIdeas' ?
-                      <FormattedMessage {...messages.multiDragAndDropHelpIdeas} /> :
-                      <FormattedMessage {...messages.multiDragAndDropHelpInitiatives} />
+                    content={
+                      type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+                        <FormattedMessage
+                          {...messages.multiDragAndDropHelpIdeas}
+                        />
+                      ) : (
+                        <FormattedMessage
+                          {...messages.multiDragAndDropHelpInitiatives}
+                        />
+                      )
                     }
                   />
-                }
+                )}
               </Sticky>
             </LeftColumn>
             <MiddleColumn>
@@ -410,11 +460,11 @@ export class PostManager extends React.PureComponent<Props, State> {
               onSwitchPreviewMode={this.switchPreviewMode}
             />
           </Suspense>
-          {type === 'Initiatives' &&
+          {type === 'Initiatives' && (
             <Suspense fallback={null}>
               <LazyStatusChangeModal />
             </Suspense>
-          }
+          )}
         </>
       );
     }
@@ -426,21 +476,50 @@ export class PostManager extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   posts: ({ type, projectId, projects, render }) => {
     if (type === 'Initiatives') {
-      return <GetInitiatives type="paginated" pageSize={10} sort="new">{render}</GetInitiatives>;
+      return (
+        <GetInitiatives type="paginated" pageSize={10} sort="new">
+          {render}
+        </GetInitiatives>
+      );
     }
 
     if (type === 'ProjectIdeas') {
-      return <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={projectId ? [projectId] : undefined}>{render}</GetIdeas>;
+      return (
+        <GetIdeas
+          type="paginated"
+          pageSize={10}
+          sort="new"
+          projectIds={projectId ? [projectId] : undefined}
+        >
+          {render}
+        </GetIdeas>
+      );
     }
 
     if (type === 'AllIdeas') {
-      const projectIds = !!(projects && projects.length > 0) ? projects.map(project => project.id) : undefined;
-      return <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={projectIds}>{render}</GetIdeas>;
+      const projectIds = !!(projects && projects.length > 0)
+        ? projects.map((project) => project.id)
+        : undefined;
+      return (
+        <GetIdeas
+          type="paginated"
+          pageSize={10}
+          sort="new"
+          projectIds={projectIds}
+        >
+          {render}
+        </GetIdeas>
+      );
     }
 
     return null;
   },
-  postStatuses: ({ type, render }) => type === 'Initiatives' ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses> : <GetIdeaStatuses>{render}</GetIdeaStatuses>,
+  postStatuses: ({ type, render }) =>
+    type === 'Initiatives' ? (
+      <GetInitiativeStatuses>{render}</GetInitiativeStatuses>
+    ) : (
+      <GetIdeaStatuses>{render}</GetIdeaStatuses>
+    ),
   topics: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return <GetTopics exclude_code="custom">{render}</GetTopics>;
@@ -458,12 +537,16 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);
+const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(
+  PostManager
+);
 
 export default (inputProps: InputProps) => {
   return (
     <Data {...inputProps}>
-      {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
+      {(dataProps) => (
+        <PostManagerWithDragDropContext {...inputProps} {...dataProps} />
+      )}
     </Data>
   );
 };

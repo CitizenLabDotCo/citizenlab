@@ -25,7 +25,8 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{ windowHeight: string }>`
   width: 100vw;
-  height: ${props => `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
+  height: ${props =>
+    `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
   left: 0;
@@ -53,7 +54,8 @@ const Container = styled.div<{ windowHeight: string }>`
   }
 
   ${media.smallerThanMaxTablet`
-    height: ${props => `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
+    height: ${props =>
+      `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
     top: 0;
     bottom: ${props => props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
@@ -118,15 +120,14 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.subscription = fromEvent(window, 'resize').pipe(
-      debounceTime(50),
-      distinctUntilChanged()
-    ).subscribe((event) => {
-      if (event.target) {
-        const height = event.target['innerHeight'] as number;
-        this.setState({ windowHeight: `${height}px` });
-      }
-    });
+    this.subscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(50), distinctUntilChanged())
+      .subscribe(event => {
+        if (event.target) {
+          const height = event.target['innerHeight'] as number;
+          this.setState({ windowHeight: `${height}px` });
+        }
+      });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -146,30 +147,38 @@ class FullscreenModal extends PureComponent<Props, State> {
     const { locale, url, goBackUrl } = this.props;
 
     if (!isNilOrError(locale) && url) {
-      this.url = `${window.location.origin}/${locale}${removeLocale(url).pathname}`;
-      this.goBackUrl = `${window.location.origin}/${locale}${removeLocale(goBackUrl || window.location.pathname).pathname}`;
+      this.url = `${window.location.origin}/${locale}${
+        removeLocale(url).pathname
+      }`;
+      this.goBackUrl = `${window.location.origin}/${locale}${
+        removeLocale(goBackUrl || window.location.pathname).pathname
+      }`;
       window.history.pushState({ path: this.url }, '', this.url);
       window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
       window.addEventListener('keydown', this.handleKeypress, useCapture);
       this.unlisten = clHistory.listen(() => this.props.close());
       trackPage(this.url, { modal: true });
     }
-  }
+  };
 
-  handleKeypress = (event) => {
+  handleKeypress = event => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.props.close();
     }
-  }
+  };
 
   handlePopstateEvent = () => {
     this.props.close();
-  }
+  };
 
   cleanup = () => {
     if (this.goBackUrl) {
-      window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
+      window.removeEventListener(
+        'popstate',
+        this.handlePopstateEvent,
+        useCapture
+      );
       window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
       if (window.location.href === this.url) {
@@ -184,11 +193,19 @@ class FullscreenModal extends PureComponent<Props, State> {
       this.unlisten();
       this.unlisten = null;
     }
-  }
+  };
 
   render() {
     const { windowHeight } = this.state;
-    const { children, opened, topBar, bottomBar, animateInOut, navbarRef, mobileNavbarRef } = this.props;
+    const {
+      children,
+      opened,
+      topBar,
+      bottomBar,
+      animateInOut,
+      navbarRef,
+      mobileNavbarRef
+    } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement = document?.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
@@ -204,9 +221,7 @@ class FullscreenModal extends PureComponent<Props, State> {
         >
           <StyledFocusOn shards={shards}>
             {topBar}
-            <Content>
-              {children}
-            </Content>
+            <Content>{children}</Content>
             {bottomBar}
           </StyledFocusOn>
         </Container>
@@ -214,7 +229,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (animateInOut) {
-      return ReactDOM.createPortal((
+      return ReactDOM.createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
@@ -228,8 +243,9 @@ class FullscreenModal extends PureComponent<Props, State> {
           exit={true}
         >
           {modalContent}
-        </CSSTransition>
-      ), document.getElementById('modal-portal') as HTMLElement);
+        </CSSTransition>,
+        document.getElementById('modal-portal') as HTMLElement
+      );
     }
 
     if (!animateInOut && opened && modalPortalElement) {

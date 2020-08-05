@@ -45,45 +45,47 @@ export class Container extends PureComponent<Props, State> {
     super(props);
     this.state = {
       isDialogOpen: false,
-      isCancelling: false
+      isCancelling: false,
     };
   }
 
   componentDidMount() {
     this.subscriptions = [
-      eventEmitter.observeEvent('openConsentManager').subscribe(this.openDialog)
+      eventEmitter
+        .observeEvent('openConsentManager')
+        .subscribe(this.openDialog),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   openDialog = () => {
     this.setState({
-      isDialogOpen: true
+      isDialogOpen: true,
     });
-  }
+  };
 
   closeDialog = () => {
     this.setState({
-      isDialogOpen: false
+      isDialogOpen: false,
     });
-  }
+  };
 
   handleBannerAccept = () => {
     const { saveConsent } = this.props;
 
     saveConsent();
-  }
+  };
 
   handleCategoryChange = (category: string, value: boolean) => {
     const { setPreferences } = this.props;
 
     setPreferences({
-      [category]: value
+      [category]: value,
     });
-  }
+  };
 
   validate = () => {
     let res = true;
@@ -94,7 +96,7 @@ export class Container extends PureComponent<Props, State> {
       }
     }
     return res;
-  }
+  };
 
   handleSave = (e: FormEvent<any>) => {
     e.preventDefault();
@@ -106,15 +108,17 @@ export class Container extends PureComponent<Props, State> {
     const { saveConsent } = this.props;
 
     this.setState({
-      isDialogOpen: false
+      isDialogOpen: false,
     });
     saveConsent();
-  }
+  };
 
   handleCancel = () => {
     const { resetPreferences, isConsentRequired, preferences } = this.props;
 
-    const isEmpty = Object.keys(preferences).every(e => preferences[e] === null);
+    const isEmpty = Object.keys(preferences).every(
+      (e) => preferences[e] === null
+    );
 
     // Only show the cancel confirmation if there's unconsented destinations...
     // or if the user made a choice and we want to confirm aborting it
@@ -124,30 +128,32 @@ export class Container extends PureComponent<Props, State> {
       this.setState({ isDialogOpen: false });
       resetPreferences();
     }
-  }
+  };
 
   handleCancelBack = () => {
     this.setState({ isCancelling: false });
-  }
+  };
 
   handleCancelConfirm = () => {
     const { resetPreferences } = this.props;
 
     this.setState({
       isCancelling: false,
-      isDialogOpen: false
+      isDialogOpen: false,
     });
     resetPreferences();
-  }
+  };
 
   render() {
     const {
       preferences,
       isConsentRequired,
-      categorizedDestinations
+      categorizedDestinations,
     } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
-    const noDestinations = Object.values(categorizedDestinations).every(array => array.length === 0);
+    const noDestinations = Object.values(categorizedDestinations).every(
+      (array) => array.length === 0
+    );
     const mode = noDestinations
       ? 'noDestinations'
       : !isCancelling
@@ -160,21 +166,23 @@ export class Container extends PureComponent<Props, State> {
           opened={isDialogOpen}
           close={this.closeDialog}
           header={<FormattedMessage {...messages.title} />}
-          footer={<Footer
-            validate={this.validate}
-            mode={mode}
-            handleCancelBack={this.handleCancelBack}
-            handleCancelConfirm={this.handleCancelConfirm}
-            handleCancel={this.handleCancel}
-            handleSave={this.handleSave}
-          />}
+          footer={
+            <Footer
+              validate={this.validate}
+              mode={mode}
+              handleCancelBack={this.handleCancelBack}
+              handleCancelConfirm={this.handleCancelConfirm}
+              handleCancel={this.handleCancel}
+              handleSave={this.handleSave}
+            />
+          }
         >
-          {noDestinations &&
+          {noDestinations && (
             <ContentContainer role="dialog" aria-modal>
               <FormattedMessage {...messages.noDestinations} tagName="h1" />
             </ContentContainer>
-          }
-          {!noDestinations && !isCancelling &&
+          )}
+          {!noDestinations && !isCancelling && (
             <PreferencesDialog
               onChange={this.handleCategoryChange}
               categoryDestinations={categorizedDestinations}
@@ -182,12 +190,12 @@ export class Container extends PureComponent<Props, State> {
               advertising={preferences.advertising}
               functional={preferences.functional}
             />
-          }
-          {!noDestinations && isCancelling &&
+          )}
+          {!noDestinations && isCancelling && (
             <ContentContainer role="dialog" aria-modal>
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>
-          }
+          )}
         </LoadableModal>
         {isConsentRequired && (
           <Banner

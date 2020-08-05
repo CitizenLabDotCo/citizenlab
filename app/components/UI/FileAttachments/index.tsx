@@ -13,19 +13,21 @@ const Container = styled.div`
 `;
 
 interface Props {
-  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | IIdeaFileData[] | IInitiativeFileData[];
+  files:
+    | IProjectFileData[]
+    | IPhaseFileData[]
+    | IEventFileData[]
+    | IPageFileData[]
+    | IIdeaFileData[]
+    | IInitiativeFileData[];
   className?: string;
 }
 
 const FileAttachments = ({ files, className }: Props) => {
   return (
     <Container className={className}>
-      {Array.isArray(files) && files.map(file => (
-        <FileDisplay
-          key={file.id}
-          file={file}
-        />
-      ))}
+      {Array.isArray(files) &&
+        files.map((file) => <FileDisplay key={file.id} file={file} />)}
     </Container>
   );
 };

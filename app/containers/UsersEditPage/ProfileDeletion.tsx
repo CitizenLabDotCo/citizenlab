@@ -26,8 +26,7 @@ const Row = styled.div`
   }
 `;
 
-interface Props {
-}
+interface Props {}
 
 interface State {
   dialogOpened: boolean;
@@ -37,46 +36,44 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dialogOpened: false
+      dialogOpened: false,
     };
   }
 
   onCloseDialog = () => {
     this.setState({ dialogOpened: false });
-  }
+  };
 
   openDialog = () => {
     this.setState({ dialogOpened: true });
-  }
+  };
 
   render() {
     const { dialogOpened } = this.state;
 
     return (
       <>
-      <FormSection>
-        <FormSectionTitle message={messages.deletionSection} subtitleMessage={messages.deletionSubtitle}/>
-        <Row>
-          <Button
-            buttonStyle="delete"
-            id="deletion"
-            onClick={this.openDialog}
-            width="auto"
-            justifyWrapper="left"
-            className="e2e-delete-profile"
-          >
-            <FormattedMessage {...messages.deleteMyAccount} />
-          </Button>
-        </Row>
-      </FormSection>
-      <LoadableModal
-        opened={dialogOpened}
-        close={this.onCloseDialog}
-      >
-        <DeletionDialog
-          closeDialog={this.onCloseDialog}
-        />
-      </LoadableModal>
+        <FormSection>
+          <FormSectionTitle
+            message={messages.deletionSection}
+            subtitleMessage={messages.deletionSubtitle}
+          />
+          <Row>
+            <Button
+              buttonStyle="delete"
+              id="deletion"
+              onClick={this.openDialog}
+              width="auto"
+              justifyWrapper="left"
+              className="e2e-delete-profile"
+            >
+              <FormattedMessage {...messages.deleteMyAccount} />
+            </Button>
+          </Row>
+        </FormSection>
+        <LoadableModal opened={dialogOpened} close={this.onCloseDialog}>
+          <DeletionDialog closeDialog={this.onCloseDialog} />
+        </LoadableModal>
       </>
     );
   }

@@ -32,7 +32,7 @@ describe('Project selection page', () => {
           descriptionPreview: folderShortDescription,
           description: randomString(),
           publicationStatus: 'published',
-          projectIds: [projectOneId, projectTwoId]
+          projectIds: [projectOneId, projectTwoId],
         }).then((folder) => {
           folderId = folder.body.data.id;
 
@@ -44,10 +44,19 @@ describe('Project selection page', () => {
   });
 
   it('shows the title, description, progress bar and cta', () => {
-    cy.get('.e2e-folder-card').contains(folderTitle).closest('.e2e-folder-card').as('folderCard');
-    cy.get('@folderCard').get('.e2e-folder-card-folder-title').contains(folderTitle);
-    cy.get('@folderCard').get('.e2e-folder-card-folder-description-preview').contains(folderShortDescription);
-    cy.get('@folderCard').get('.e2e-folder-card-numberofprojects').contains('2');
+    cy.get('.e2e-folder-card')
+      .contains(folderTitle)
+      .closest('.e2e-folder-card')
+      .as('folderCard');
+    cy.get('@folderCard')
+      .get('.e2e-folder-card-folder-title')
+      .contains(folderTitle);
+    cy.get('@folderCard')
+      .get('.e2e-folder-card-folder-description-preview')
+      .contains(folderShortDescription);
+    cy.get('@folderCard')
+      .get('.e2e-folder-card-numberofprojects')
+      .contains('2');
   });
 
   after(() => {

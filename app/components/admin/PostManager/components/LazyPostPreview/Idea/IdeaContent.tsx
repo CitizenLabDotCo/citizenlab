@@ -23,12 +23,18 @@ import { Top, Content, Container } from '../PostPreview';
 import { deleteIdea } from 'services/ideas';
 
 // resources
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
+import GetIdeaImages, {
+  GetIdeaImagesChildProps,
+} from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetPermission, {
+  GetPermissionChildProps,
+} from 'resources/GetPermission';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -157,10 +163,15 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+export class IdeaContent extends PureComponent<
+  Props & InjectedLocalized & InjectedIntlProps,
+  State
+> {
   handleClickDelete = () => {
     const { idea, closePreview } = this.props;
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
+    const message = this.props.intl.formatMessage(
+      messages.deleteIdeaConfirmation
+    );
 
     if (!isNilOrError(idea)) {
       if (window.confirm(message)) {
@@ -168,7 +179,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
         closePreview();
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -184,53 +195,56 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
     if (!isNilOrError(idea)) {
       const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
-      const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
-      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
-      const ideaAddress = (idea.attributes.location_description || null);
+      const ideaImageLarge =
+        !isNilOrError(ideaImages) && ideaImages.length > 0
+          ? get(ideaImages[0], 'attributes.versions.large', null)
+          : null;
+      const ideaGeoPosition = idea.attributes.location_point_geojson || null;
+      const ideaAddress = idea.attributes.location_description || null;
 
       return (
         <Container>
           <Top>
-            <Button
-              icon="edit"
-              buttonStyle="text"
-              onClick={handleClickEdit}
-            >
-              <FormattedMessage {...messages.edit}/>
+            <Button icon="edit" buttonStyle="text" onClick={handleClickEdit}>
+              <FormattedMessage {...messages.edit} />
             </Button>
             <Button
               icon="delete"
               buttonStyle="text"
               onClick={this.handleClickDelete}
             >
-              <FormattedMessage {...messages.delete}/>
+              <FormattedMessage {...messages.delete} />
             </Button>
           </Top>
           <Content>
-            {!isNilOrError(project) &&
+            {!isNilOrError(project) && (
               <BelongsToProject>
                 <FormattedMessage
                   {...messages.postedIn}
                   values={{
-                    projectLink:
-                      <ProjectLink className="e2e-project-link" to={`/projects/${project.attributes.slug}`}>
+                    projectLink: (
+                      <ProjectLink
+                        className="e2e-project-link"
+                        to={`/projects/${project.attributes.slug}`}
+                      >
                         <T value={project.attributes.title_multiloc} />
                       </ProjectLink>
+                    ),
                   }}
                 />
               </BelongsToProject>
-            }
+            )}
 
-            <StyledTitle
-              postId={ideaId}
-              postType="idea"
-              title={ideaTitle}
-            />
+            <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
             <Row>
               <Left>
-                {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt="" className="e2e-ideaImage"/>
-                }
+                {ideaImageLarge && (
+                  <IdeaImage
+                    src={ideaImageLarge}
+                    alt=""
+                    className="e2e-ideaImage"
+                  />
+                )}
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
                   ideaPublishedAt={idea.attributes.published_at}
@@ -243,17 +257,17 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   body={localize(idea.attributes.body_multiloc)}
                 />
 
-                {!isNilOrError(project) && ideaGeoPosition && ideaAddress &&
+                {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
                   <StyledMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
                     projectId={project.id}
                   />
-                }
+                )}
 
-                {ideaFiles && !isNilOrError(ideaFiles) &&
+                {ideaFiles && !isNilOrError(ideaFiles) && (
                   <FileAttachments files={ideaFiles} />
-                }
+                )}
 
                 <StyledOfficialFeedback
                   postId={ideaId}
@@ -261,15 +275,12 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   permissionToPost
                 />
 
-                <StyledComments
-                  postId={ideaId}
-                  postType="idea"
-                />
+                <StyledComments postId={ideaId} postType="idea" />
               </Left>
               <Right>
-                <VotePreview ideaId={ideaId}/>
+                <VotePreview ideaId={ideaId} />
 
-                {idea.attributes.budget && !isNilOrError(tenant) &&
+                {idea.attributes.budget && !isNilOrError(tenant) && (
                   <>
                     <BudgetBox>
                       <FormattedNumber
@@ -280,15 +291,26 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                         maximumFractionDigits={0}
                       />
                       <Picks>
-                        <FormattedMessage {...messages.picks} values={{ picksNumber: idea.attributes.baskets_count }} />
+                        <FormattedMessage
+                          {...messages.picks}
+                          values={{
+                            picksNumber: idea.attributes.baskets_count,
+                          }}
+                        />
                         &nbsp;
-                        <IconTooltip content={<FormattedMessage {...messages.basketsCountTooltip} />} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.basketsCountTooltip}
+                            />
+                          }
+                        />
                       </Picks>
                     </BudgetBox>
                   </>
-                }
+                )}
 
-                <FeedbackSettings ideaId={ideaId}/>
+                <FeedbackSettings ideaId={ideaId} />
               </Right>
             </Row>
           </Content>
@@ -302,17 +324,34 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>
+  project: ({ idea, render }) => (
+    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
+      {render}
+    </GetProject>
+  ),
+  ideaFiles: ({ ideaId, render }) => (
+    <GetResourceFiles resourceId={ideaId} resourceType="idea">
+      {render}
+    </GetResourceFiles>
+  ),
+  ideaImages: ({ ideaId, render }) => (
+    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
+  ),
+  postOfficialFeedbackPermission: ({ project, render }) => (
+    <GetPermission
+      item={!isNilOrError(project) ? project : null}
+      action="moderate"
+    >
+      {render}
+    </GetPermission>
+  ),
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
 
 const WrappedIdeaContent = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaContentWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaContentWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
 

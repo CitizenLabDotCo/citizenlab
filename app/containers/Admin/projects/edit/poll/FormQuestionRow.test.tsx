@@ -25,7 +25,9 @@ describe('<FormQuestionRow />', () => {
     it('shows the passed in locale by default', () => {
       const wrapper = shallow<Component<Props, State>>(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           onSave={onSave}
           onCancel={onCancel}
@@ -40,7 +42,9 @@ describe('<FormQuestionRow />', () => {
     it('handles changing field locale', () => {
       const wrapper = shallow<Component<Props, State>>(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           onSave={onSave}
           onCancel={onCancel}
@@ -57,7 +61,9 @@ describe('<FormQuestionRow />', () => {
     it('passes down initial value', () => {
       const wrapper = shallow<Component<Props, State>>(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           onSave={onSave}
           onCancel={onCancel}
@@ -81,7 +87,9 @@ describe('<FormQuestionRow />', () => {
       );
       wrapper.find(Input).prop('onChange' as any)('What is your favourite ice cream flavour ?', 'en');
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith({ en: 'What is your favourite ice cream flavour ?' });
+      expect(onChange).toHaveBeenCalledWith({
+        en: 'What is your favourite ice cream flavour ?',
+      });
     });
 
     it('reacts to content changes', () => {

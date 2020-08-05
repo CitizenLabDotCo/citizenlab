@@ -35,7 +35,11 @@ const Container = styled.div`
     border-bottom: 1px solid ${colors.separation};
   }
 
-  h1, h2, h3, h4, h5 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     font-weight: 500;
     margin-bottom: ${remCalc(10)};
   }
@@ -113,24 +117,38 @@ export const TextCell = styled.div`
   line-height: 20px;
 `;
 
-export const List = memo<{ id?: string, className?: string, children: ReactNode }>(({ id, className, children }) => (
+export const List = memo<{
+  id?: string;
+  className?: string;
+  children: ReactNode;
+}>(({ id, className, children }) => (
   <StyledList id={id || ''} className={`e2e-admin-list ${className || ''}`}>
-    <TransitionGroup>
-      {children}
-    </TransitionGroup>
+    <TransitionGroup>{children}</TransitionGroup>
   </StyledList>
 ));
 
-export const Row = memo<{ id?: string, className?: string, children: ReactNode, isLastItem?: boolean }>(({ id, className, children, isLastItem }) => (
+export const Row = memo<{
+  id?: string;
+  className?: string;
+  children: ReactNode;
+  isLastItem?: boolean;
+}>(({ id, className, children, isLastItem }) => (
   <CSSTransition classNames="list-item" timeout={timeout}>
-    <Container id={id || ''} className={`e2e-admin-list-row ${className || ''} ${isLastItem ? 'last-item' : ''}`}>
+    <Container
+      id={id || ''}
+      className={`e2e-admin-list-row ${className || ''} ${
+        isLastItem ? 'last-item' : ''
+      }`}
+    >
       {children}
     </Container>
   </CSSTransition>
 ));
 
-export const HeadRow = memo<{ className?: string, children: ReactNode }>(({ className, children }) => (
-  <Container className={`e2e-admin-list-head-row ${className || ''}`}>
-    {children}
-  </Container>
-));
+export const HeadRow = memo<{ className?: string; children: ReactNode }>(
+  ({ className, children }) => (
+    <Container className={`e2e-admin-list-head-row ${className || ''}`}>
+      {children}
+    </Container>
+  )
+);

@@ -12,8 +12,12 @@ import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // resources
-import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
-import GetInitiativesCount, { GetInitiativesCountChildProps } from 'resources/GetInitiativesCount';
+import GetIdeasCount, {
+  GetIdeasCountChildProps,
+} from 'resources/GetIdeasCount';
+import GetInitiativesCount, {
+  GetInitiativesCountChildProps,
+} from 'resources/GetInitiativesCount';
 
 // typings
 import { ManagerType } from '../..';
@@ -35,22 +39,26 @@ const ToggleContainer: any = styled.div`
   display: flex;
   align-items: center;
 
-  ${(props: any) => props.disabled && css`
-    opacity: 0.25;
+  ${(props: any) =>
+    props.disabled &&
+    css`
+      opacity: 0.25;
 
-    i,
-    i:before {
-      cursor: not-allowed;
-    }
-  `};
+      i,
+      i:before {
+        cursor: not-allowed;
+      }
+    `};
 
-  ${(props: any) => props.checked && css`
-    i {
-      padding-right: ${padding}px !important;
-      padding-left: ${size}px !important;
-      background: ${colors.clGreen} !important;
-    }
-  `};
+  ${(props: any) =>
+    props.checked &&
+    css`
+      i {
+        padding-right: ${padding}px !important;
+        padding-left: ${size}px !important;
+        background: ${colors.clGreen} !important;
+      }
+    `};
 
   input {
     display: none;
@@ -104,36 +112,39 @@ interface DataProps {
   feedbackNeededCount: GetIdeasCountChildProps | GetInitiativesCountChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 type State = {};
 
 export class FeedbackToggle extends React.PureComponent<Props, State> {
-
   componentDidUpdate(prevProps) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       if (isFunction(this.props.feedbackNeededCount.onChangeSearchTerm)) {
-        this.props.feedbackNeededCount.onChangeSearchTerm(this.props.searchTerm || '');
+        this.props.feedbackNeededCount.onChangeSearchTerm(
+          this.props.searchTerm || ''
+        );
       }
     }
   }
 
   handleOnClick = () => {
     this.props.onChange(!this.props.value || undefined);
-  }
+  };
 
   render() {
     const { value, feedbackNeededCount, type } = this.props;
 
     return (
-      <Container id="e2e-feedback_needed_filter_toggle" className="feedback_needed_filter_toggle">
+      <Container
+        id="e2e-feedback_needed_filter_toggle"
+        className="feedback_needed_filter_toggle"
+      >
         <StyledLabel onClick={this.handleOnClick}>
-          { type === 'Initiatives'
-            ? <FormattedMessage {...messages.anyFeedbackStatusInitiatives} />
-            : type === 'AllIdeas' || type === 'ProjectIdeas'
-              ? <FormattedMessage {...messages.anyFeedbackStatusIdeas} />
-              : null
-          }
+          {type === 'Initiatives' ? (
+            <FormattedMessage {...messages.anyFeedbackStatusInitiatives} />
+          ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+            <FormattedMessage {...messages.anyFeedbackStatusIdeas} />
+          ) : null}
         </StyledLabel>
         <ToggleContainer onClick={this.handleOnClick} checked={value}>
           <input type="checkbox" role="checkbox" aria-checked={value} />
@@ -141,7 +152,9 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
           <FormattedMessage {...messages.needFeedback} />
-          {!isNilOrError(feedbackNeededCount.count) && <CountBadge count={feedbackNeededCount.count} />}
+          {!isNilOrError(feedbackNeededCount.count) && (
+            <CountBadge count={feedbackNeededCount.count} />
+          )}
         </StyledLabel>
       </Container>
     );
@@ -149,36 +162,43 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt({
-  feedbackNeededCount: ({ project, phase, topics, status, assignee, render, type }) => {
+  feedbackNeededCount: ({
+    project,
+    phase,
+    topics,
+    status,
+    assignee,
+    render,
+    type,
+  }) => {
     const projectIds = [project];
 
-    return type === 'Initiatives'
-      ? (
-        <GetInitiativesCount
-          feedbackNeeded={true}
-          assignee={assignee}
-          topics={topics}
-          initiativeStatusId={status}
-        >
-          {render}
-        </GetInitiativesCount>
-      ) : (
-        <GetIdeasCount
-          feedbackNeeded={true}
-          assignee={assignee}
-          projectIds={projectIds}
-          phaseId={phase}
-          topics={topics}
-          ideaStatusId={status}
-        >
-          {render}
-        </GetIdeasCount>
-      );
-  }
+    return type === 'Initiatives' ? (
+      <GetInitiativesCount
+        feedbackNeeded={true}
+        assignee={assignee}
+        topics={topics}
+        initiativeStatusId={status}
+      >
+        {render}
+      </GetInitiativesCount>
+    ) : (
+      <GetIdeasCount
+        feedbackNeeded={true}
+        assignee={assignee}
+        projectIds={projectIds}
+        phaseId={phase}
+        topics={topics}
+        ideaStatusId={status}
+      >
+        {render}
+      </GetIdeasCount>
+    );
+  },
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FeedbackToggle {...inputProps} {...dataProps} />}
+    {(dataProps) => <FeedbackToggle {...inputProps} {...dataProps} />}
   </Data>
 );

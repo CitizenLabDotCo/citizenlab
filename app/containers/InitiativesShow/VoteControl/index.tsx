@@ -2,14 +2,21 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
+import { media, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import moment from 'moment';
 import messages from './messages';
-import { InitiativeStatusCode, IInitiativeStatusData } from 'services/initiativeStatuses';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
+import {
+  InitiativeStatusCode,
+  IInitiativeStatusData,
+} from 'services/initiativeStatuses';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeStatus, {
+  GetInitiativeStatusChildProps,
+} from 'resources/GetInitiativeStatus';
 import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -28,9 +35,8 @@ const Container = styled.div`
   ${media.biggerThanMaxTablet`
     margin-bottom: 45px;
     padding: 35px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border: 1px solid #e0e0e0;
+    ${defaultCardStyle};
   `}
 
   ${media.smallerThanMaxTablet`
@@ -50,7 +56,9 @@ interface VoteControlComponentProps {
 
 type TComponentMap = {
   [key in InitiativeStatusCode]: {
-    [key in 'voted' | 'notVoted']: React.ComponentType<VoteControlComponentProps>
+    [key in 'voted' | 'notVoted']: React.ComponentType<
+      VoteControlComponentProps
+    >;
   };
 };
 
@@ -101,7 +109,6 @@ interface State {}
 interface Props extends InputProps, DataProps {}
 
 class VoteControl extends PureComponent<Props, State> {
-
   handleOnvote = () => {
     const { initiative, authUser } = this.props;
 
@@ -110,22 +117,32 @@ class VoteControl extends PureComponent<Props, State> {
         addVote(initiative.id, { mode: 'up' });
       } else {
         openSignUpInModal({
-          action: () => this.handleOnvote()
+          action: () => this.handleOnvote(),
         });
       }
     }
-  }
+  };
 
   handleOnCancelVote = () => {
     const { initiative } = this.props;
 
-    if (!isNilOrError(initiative) && initiative.relationships?.user_vote?.data?.id) {
+    if (
+      !isNilOrError(initiative) &&
+      initiative.relationships?.user_vote?.data?.id
+    ) {
       deleteVote(initiative.id, initiative.relationships.user_vote.data.id);
     }
-  }
+  };
 
   render() {
-    const { initiative, initiativeStatus, tenant, className, onScrollToOfficialFeedback, id } = this.props;
+    const {
+      initiative,
+      initiativeStatus,
+      tenant,
+      className,
+      onScrollToOfficialFeedback,
+      id,
+    } = this.props;
 
     if (
       isNilOrError(initiative) ||
@@ -136,20 +153,28 @@ class VoteControl extends PureComponent<Props, State> {
       return null;
     }
 
-    const expiresAt = moment(initiative.attributes.expires_at, 'YYYY-MM-DDThh:mm:ss.SSSZ');
-    const durationAsSeconds = moment.duration(expiresAt.diff(moment())).asSeconds();
-    const isExpired = (durationAsSeconds < 0);
-    const statusCode = initiativeStatus.attributes.code === 'proposed' && isExpired ? 'expired' : initiativeStatus.attributes.code;
-    const userVoted = !!(initiative.relationships.user_vote && initiative.relationships.user_vote.data);
-    const StatusComponent = componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
+    const expiresAt = moment(
+      initiative.attributes.expires_at,
+      'YYYY-MM-DDThh:mm:ss.SSSZ'
+    );
+    const durationAsSeconds = moment
+      .duration(expiresAt.diff(moment()))
+      .asSeconds();
+    const isExpired = durationAsSeconds < 0;
+    const statusCode =
+      initiativeStatus.attributes.code === 'proposed' && isExpired
+        ? 'expired'
+        : initiativeStatus.attributes.code;
+    const userVoted = !!(
+      initiative.relationships.user_vote &&
+      initiative.relationships.user_vote.data
+    );
+    const StatusComponent =
+      componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container
-        id={id || ''}
-        className={className || ''}
-        aria-live="polite"
-      >
+      <Container id={id || ''} className={className || ''} aria-live="polite">
         <ScreenReaderOnly>
           <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
         </ScreenReaderOnly>
@@ -170,10 +195,22 @@ class VoteControl extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
   initiativeStatus: ({ initiative, render }) => {
-    if (!isNilOrError(initiative) && initiative.relationships.initiative_status && initiative.relationships.initiative_status.data) {
-      return <GetInitiativeStatus id={initiative.relationships.initiative_status.data.id}>{render}</GetInitiativeStatus>;
+    if (
+      !isNilOrError(initiative) &&
+      initiative.relationships.initiative_status &&
+      initiative.relationships.initiative_status.data
+    ) {
+      return (
+        <GetInitiativeStatus
+          id={initiative.relationships.initiative_status.data.id}
+        >
+          {render}
+        </GetInitiativeStatus>
+      );
     }
 
     return null;
@@ -182,6 +219,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <VoteControl {...inputProps} {...dataProps} />}
+    {(dataProps) => <VoteControl {...inputProps} {...dataProps} />}
   </Data>
 );

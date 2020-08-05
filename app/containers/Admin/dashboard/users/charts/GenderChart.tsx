@@ -16,14 +16,21 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner, PieChartStyleFixesDiv } from '../..';
+import {
+  NoDataContainer,
+  GraphCardHeader,
+  GraphCardTitle,
+  GraphCard,
+  GraphCardInner,
+  PieChartStyleFixesDiv,
+} from '../..';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
 import { usersByGenderStream, IUsersByGender } from 'services/stats';
 
 type State = {
-  serie: { name: string, value: number, code: string }[] | null;
+  serie: { name: string; value: number; code: string }[] | null;
 };
 
 interface QueryProps {
@@ -55,47 +62,50 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
-    const {
+    const { startAt, endAt, currentGroupFilter } = this.props;
+
+    this.queryProps$ = new BehaviorSubject({
       startAt,
       endAt,
       currentGroupFilter,
-    } = this.props;
-
-    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter });
+    });
 
     this.subscriptions = [
-      this.queryProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ startAt, endAt, currentGroupFilter }) => usersByGenderStream({
-          queryParameters: {
-            start_at: startAt,
-            end_at: endAt,
-            group: currentGroupFilter,
-          }
-        }).observable))
+      this.queryProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(
+            ({ startAt, endAt, currentGroupFilter }) =>
+              usersByGenderStream({
+                queryParameters: {
+                  start_at: startAt,
+                  end_at: endAt,
+                  group: currentGroupFilter,
+                },
+              }).observable
+          )
+        )
         .subscribe((serie) => {
           const convertedSerie = serie && this.convertToGraphFormat(serie);
           this.setState({ serie: convertedSerie });
-        })
+        }),
     ];
   }
 
   componentDidUpdate(prevProps: Props) {
-    const {
-      startAt,
-      endAt,
-      currentGroupFilter,
-    } = this.props;
+    const { startAt, endAt, currentGroupFilter } = this.props;
 
-    if (startAt !== prevProps.startAt
-      || endAt !== prevProps.endAt
-      || currentGroupFilter !== prevProps.currentGroupFilter) {
+    if (
+      startAt !== prevProps.startAt ||
+      endAt !== prevProps.endAt ||
+      currentGroupFilter !== prevProps.currentGroupFilter
+    ) {
       this.queryProps$.next({ startAt, endAt, currentGroupFilter });
     }
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   convertToGraphFormat = (data: IUsersByGender) => {
@@ -105,7 +115,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
       code: key,
     }));
     return res.length > 0 ? res : null;
-  }
+  };
 
   render() {
     const {
@@ -113,7 +123,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
       chartLabelSize,
       chartLabelColor,
       animationDuration,
-      animationBegin
+      animationBegin,
     } = this.props['theme'];
     const { className } = this.props;
     const { serie } = this.state;
@@ -126,12 +136,11 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
           </GraphCardHeader>
-          {!serie
-            ?
+          {!serie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
-            :
+          ) : (
             <PieChartStyleFixesDiv>
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
@@ -146,14 +155,17 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                     label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
                   >
                     {serie.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={labelColors[entry.code]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip isAnimationActive={false} />
                 </PieChart>
               </ResponsiveContainer>
             </PieChartStyleFixesDiv>
-          }
+          )}
         </GraphCardInner>
       </GraphCard>
     );

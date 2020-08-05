@@ -14,8 +14,20 @@ import { media } from 'utils/styleUtils';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
+import {
+  BarChart,
+  Bar,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from 'recharts';
+import {
+  GraphCard,
+  NoDataContainer,
+  GraphCardInner,
+  GraphCardHeaderWithFilter,
+} from '../..';
 import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
@@ -52,7 +64,13 @@ interface DataProps {
   serie: IGraphFormat;
 }
 
-type ISupportedData = IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject;
+type ISupportedData =
+  | IIdeasByTopic
+  | IVotesByTopic
+  | ICommentsByTopic
+  | IIdeasByProject
+  | IVotesByProject
+  | ICommentsByProject;
 
 interface QueryProps {
   startAt: string | null | undefined;
@@ -67,14 +85,20 @@ interface QueryProps {
 }
 
 interface InputProps extends QueryProps {
-  convertSerie: (serie: IGraphFormat | null) => { convertedSerie: IGraphFormat | null, selectedCount: any, selectedName: any };
+  convertSerie: (
+    serie: IGraphFormat | null
+  ) => {
+    convertedSerie: IGraphFormat | null;
+    selectedCount: any;
+    selectedName: any;
+  };
   className?: string;
   onResourceByXChange: (option: IOption) => void;
   currentSelectedResource: IResource;
   resourceOptions: IOption[];
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
   render() {
@@ -85,29 +109,30 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
       chartLabelColor,
       barFill,
       animationBegin,
-      animationDuration
+      animationDuration,
     } = this.props['theme'];
     const {
       className,
       onResourceByXChange,
       currentSelectedResource,
       resourceOptions,
-      intl: {
-        formatMessage
-      },
+      intl: { formatMessage },
       currentFilter,
       byWhat,
       convertSerie,
-      serie
+      serie,
     } = this.props;
-    const selectedResourceName = currentSelectedResource && formatMessage(messages[currentSelectedResource]);
+    const selectedResourceName =
+      currentSelectedResource &&
+      formatMessage(messages[currentSelectedResource]);
     const { convertedSerie, selectedCount, selectedName } = convertSerie(serie);
-    const unitName = (currentFilter && serie)
-      ? formatMessage(messages.resourceByDifference, {
-        selectedResourceName,
-        selectedName
-      })
-      : selectedResourceName;
+    const unitName =
+      currentFilter && serie
+        ? formatMessage(messages.resourceByDifference, {
+            selectedResourceName,
+            selectedName,
+          })
+        : selectedResourceName;
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -116,7 +141,9 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               <FormattedMessage {...messages[`participationPer${byWhat}`]} />
             </GraphCardTitle>
             <SHiddenLabel>
-              <FormattedMessage {...messages[`hiddenLabelPickResourceBy${byWhat}`]} />
+              <FormattedMessage
+                {...messages[`hiddenLabelPickResourceBy${byWhat}`]}
+              />
               <Select
                 id={`select${byWhat}`}
                 onChange={onResourceByXChange}
@@ -125,20 +152,27 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               />
             </SHiddenLabel>
           </GraphCardHeaderWithFilter>
-          {!serie ?
+          {!serie ? (
             <NoDataContainer>
-              {currentFilter && selectedCount ?
+              {currentFilter && selectedCount ? (
                 <FormattedMessage
                   {...messages.totalCount}
                   values={{ selectedCount, selectedName, selectedResourceName }}
                 />
-                : <FormattedMessage {...messages.noData} />
-              }
+              ) : (
+                <FormattedMessage {...messages.noData} />
+              )}
             </NoDataContainer>
-            :
+          ) : (
             <>
-              {currentFilter && <FormattedMessage tagName="p" {...messages.totalCount} values={{ selectedCount, selectedName, selectedResourceName }} />}
-              <ResponsiveContainer height={serie.length * 50} >
+              {currentFilter && (
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.totalCount}
+                  values={{ selectedCount, selectedName, selectedResourceName }}
+                />
+              )}
+              <ResponsiveContainer height={serie.length * 50}>
                 <BarChart data={convertedSerie} layout="vertical">
                   <Bar
                     dataKey="value"
@@ -170,17 +204,19 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 </BarChart>
               </ResponsiveContainer>
             </>
-          }
+          )}
         </GraphCardInner>
       </GraphCard>
     );
   }
 }
 
-const SelectableResourceChartWithHoCs = injectIntl<Props>(withTheme(SelectableResourceChart as any) as any);
+const SelectableResourceChartWithHoCs = injectIntl<Props>(
+  withTheme(SelectableResourceChart as any) as any
+);
 
 export default (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
-    {serie => <SelectableResourceChartWithHoCs {...serie} {...inputProps} />}
+    {(serie) => <SelectableResourceChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );

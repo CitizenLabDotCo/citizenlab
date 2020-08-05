@@ -20,25 +20,50 @@ describe('<UserComments />', () => {
   });
   it('renders correctly when empty and own profile', () => {
     const commentsAsReturned = { commentsList: [] };
-    const Wrapper = shallow(<UserComments comments={commentsAsReturned} userId="someUser" authUser={{ id: 'someUser' }} />);
+    const Wrapper = shallow(
+      <UserComments
+        comments={commentsAsReturned}
+        userId="someUser"
+        authUser={{ id: 'someUser' }}
+      />
+    );
     expect(Wrapper).toMatchSnapshot();
   });
   it('renders correctly when error', () => {
-    const commentsAsReturned = { commentsList: new Error };
+    const commentsAsReturned = { commentsList: new Error() };
     const Wrapper = shallow(<UserComments comments={commentsAsReturned} />);
     expect(Wrapper).toMatchSnapshot();
   });
   it('renders correctly with actual comments', () => {
-    const commentsAsReturned = { commentsList: makeComments([{ ideaId: 'idea1' }, { ideaId: 'idea2' }, { ideaId: 'idea2' }]).data };
+    const commentsAsReturned = {
+      commentsList: makeComments([
+        { ideaId: 'idea1' },
+        { ideaId: 'idea2' },
+        { ideaId: 'idea2' },
+      ]).data,
+    };
     const Wrapper = shallow(<UserComments comments={commentsAsReturned} />);
     expect(Wrapper).toMatchSnapshot();
   });
-  it('renders correctly with actual comments and more', () => {
+  it('renders correctly with actual comments and load more button', () => {
     const loadMore = jest.fn();
-    const commentsAsReturned = { loadMore, hasMore: true, commentsList: makeComments([{ ideaId: 'idea1' }]).data };
+    const commentsAsReturned = {
+      loadMore,
+      hasMore: true,
+      commentsList: makeComments([{ ideaId: 'idea1' }]).data,
+    };
     const Wrapper = shallow(<UserComments comments={commentsAsReturned} theme={theme} />);
-    Wrapper.find('WithTheme(Button)').prop('onClick')();
-    expect(Wrapper.find('WithTheme(Button)')).toMatchSnapshot();
+    expect(Wrapper).toMatchSnapshot();
+  });
+  it('loads more comments when the load more button is clicked', () => {
+    const loadMore = jest.fn();
+    const commentsAsReturned = {
+      loadMore,
+      hasMore: true,
+      commentsList: makeComments([{ ideaId: 'idea1' }]).data,
+    };
+    const Wrapper = shallow(<UserComments comments={commentsAsReturned} theme={theme} />);
+    Wrapper.find('UserComments__LoadMoreButton').simulate('click');
     expect(loadMore).toHaveBeenCalledTimes(1);
   });
 });

@@ -13,7 +13,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // i18n
-import {  InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -119,18 +119,30 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class SharingModalContent extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+class SharingModalContent extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized,
+  State
+> {
   componentDidMount() {
     const { postId, postType } = this.props;
 
     trackEventByName(tracks.sharingModalOpened.name, {
       postId,
-      postType
+      postType,
     });
   }
 
   render() {
-    const { postType, post, authUser, localize, locale, className, title, subtitle } = this.props;
+    const {
+      postType,
+      post,
+      authUser,
+      localize,
+      locale,
+      className,
+      title,
+      subtitle,
+    } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!isNilOrError(post) && !isNilOrError(authUser)) {
@@ -151,21 +163,21 @@ class SharingModalContent extends PureComponent<Props & InjectedIntlProps & Inje
           <Title className={`e2e-${postType}-social-sharing-modal-title`}>
             {title}
           </Title>
-          <Description>
-            {subtitle}
-          </Description>
+          <Description>{subtitle}</Description>
           <SharingWrapper>
             <Sharing
               context={postType}
               location="modal"
               url={postUrl}
-              twitterMessage={formatMessage(messages.twitterMessage, { postTitle })}
+              twitterMessage={formatMessage(messages.twitterMessage, {
+                postTitle,
+              })}
               emailSubject={formatMessage(emailSharingSubject, { postTitle })}
               emailBody={formatMessage(emailSharingBody, { postUrl })}
               utmParams={{
                 source: `share_${postType}`,
                 campaign: `${postType}flow`,
-                content: authUser.id
+                content: authUser.id,
               }}
             />
           </SharingWrapper>
@@ -181,17 +193,25 @@ class SharingModalContent extends PureComponent<Props & InjectedIntlProps & Inje
   }
 }
 
-const SharingModalContentWithHoCs = injectIntl<Props>(localize(SharingModalContent));
+const SharingModalContentWithHoCs = injectIntl<Props>(
+  localize(SharingModalContent)
+);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>
+  post: ({ postId, postType, render }) => (
+    <GetPost id={postId} type={postType}>
+      {render}
+    </GetPost>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SharingModalContentWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <SharingModalContentWithHoCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

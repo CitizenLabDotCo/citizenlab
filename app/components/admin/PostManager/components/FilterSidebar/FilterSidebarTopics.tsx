@@ -13,33 +13,43 @@ interface Props {
 }
 
 export default class FilterSidebarTopics extends React.PureComponent<Props> {
-
   handleItemClick = (id) => (event) => {
     if (event.ctrlKey) {
       const selectedTopics = xor(this.props.selectedTopics || [], [id]);
-      this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter(selectedTopics);
+      this.props.onChangeTopicsFilter &&
+        this.props.onChangeTopicsFilter(selectedTopics);
     } else {
       this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter([id]);
     }
-  }
+  };
 
   clearFilter = () => {
     this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter([]);
-  }
+  };
 
   isActive = (id) => {
-    return this.props.selectedTopics && this.props.selectedTopics.indexOf(id) >= 0;
-  }
+    return (
+      this.props.selectedTopics && this.props.selectedTopics.indexOf(id) >= 0
+    );
+  };
 
   render() {
     const { selectableTopics, selectedTopics } = this.props;
     return (
-      <Menu id="e2e-idea-manager-topic-filters" secondary={true} vertical={true} fluid={true}>
-        <Menu.Item onClick={this.clearFilter} active={!selectedTopics || selectedTopics.length === 0}>
+      <Menu
+        id="e2e-idea-manager-topic-filters"
+        secondary={true}
+        vertical={true}
+        fluid={true}
+      >
+        <Menu.Item
+          onClick={this.clearFilter}
+          active={!selectedTopics || selectedTopics.length === 0}
+        >
           <FormattedMessage {...messages.allTopics} />
         </Menu.Item>
         <Divider />
-        {selectableTopics.map(topic => (
+        {selectableTopics.map((topic) => (
           <FilterSidebarTopicsItem
             key={topic.id}
             topic={topic}

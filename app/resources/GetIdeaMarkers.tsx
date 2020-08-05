@@ -16,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaMarkers: IGeotaggedIdeaData[] | undefined| null;
+  ideaMarkers: IGeotaggedIdeaData[] | undefined | null;
 }
 
-export type GetIdeaMarkersChildProps = IGeotaggedIdeaData[] | undefined| null;
+export type GetIdeaMarkersChildProps = IGeotaggedIdeaData[] | undefined | null;
 
 export default class GetIdeaMarkers extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +28,7 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaMarkers: undefined
+      ideaMarkers: undefined,
     };
   }
 
@@ -38,21 +38,23 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectIds, phaseId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ projectIds, phaseId }) => {
-          return ideasMarkersStream({
-            queryParameters: {
-              projects: projectIds,
-              phase: phaseId
-            }
-          }).observable;
-        })
-      ).subscribe((ideaMarkers) => {
-        this.setState({
-          ideaMarkers: (ideaMarkers ? ideaMarkers.data : null),
-        });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ projectIds, phaseId }) => {
+            return ideasMarkersStream({
+              queryParameters: {
+                projects: projectIds,
+                phase: phaseId,
+              },
+            }).observable;
+          })
+        )
+        .subscribe((ideaMarkers) => {
+          this.setState({
+            ideaMarkers: ideaMarkers ? ideaMarkers.data : null,
+          });
+        }),
     ];
   }
 
@@ -62,7 +64,7 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

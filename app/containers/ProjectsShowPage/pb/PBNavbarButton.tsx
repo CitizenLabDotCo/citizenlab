@@ -5,8 +5,7 @@ import bowser from 'bowser';
 import { IParticipationContextType } from 'typings';
 
 // components
-import Dropdown from 'components/UI/Dropdown';
-import { Icon } from 'cl2-component-library';
+import { Dropdown, Icon } from 'cl2-component-library';
 import PBBasket from './PBBasket';
 
 // i18n
@@ -40,7 +39,7 @@ const ManageBudgetButton = styled.button`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex:  0 0 18px;
+  flex: 0 0 18px;
   height: 18px;
   margin-right: 9px;
 `;
@@ -67,16 +66,22 @@ export default class PBNavbarButton extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpened: false
+      dropdownOpened: false,
     };
   }
 
   toggleDropdown = () => {
-    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
-  }
+    this.setState(({ dropdownOpened }) => ({
+      dropdownOpened: !dropdownOpened,
+    }));
+  };
 
   render() {
-    const { participationContextType, participationContextId, className } = this.props;
+    const {
+      participationContextType,
+      participationContextId,
+      className,
+    } = this.props;
     const { dropdownOpened } = this.state;
 
     return (

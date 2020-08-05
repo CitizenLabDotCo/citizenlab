@@ -35,7 +35,8 @@ const Container = styled.div`
 const TabbedNav = styled.nav`
   flex: 0 0 55px;
   background: #fcfcfc;
-  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
+  border-radius: ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 30px;
   display: flex;
   align-items: stretch;
@@ -77,7 +78,8 @@ const Content = styled.div`
   flex-direction: column;
   background: #fff;
   border: solid 1px ${colors.adminBorder};
-  border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
+  border-radius: 0 0 ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius};
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 30px;
@@ -145,34 +147,36 @@ class InfoPane extends PureComponent<Props, State> {
     super(props);
     this.state = {
       normalization: 'absolute',
-      selectedTab: 'votes'
+      selectedTab: 'votes',
     };
   }
 
   selectedIdeas = () => {
     return uniq(flatten(map(this.comparisonSet(), ideasUnder)));
-  }
+  };
 
   comparisonIdeas = () => {
     return this.props.selectedNodes.map((selectedNode) => {
       return uniq(flatten(map(selectedNode, ideasUnder)));
     });
-  }
+  };
 
   handleOnChangeNormalization = (normalization: 'absolute' | 'relative') => {
-    trackEventByName(tracks.switchNormalization.name, { extra: { normalization } });
+    trackEventByName(tracks.switchNormalization.name, {
+      extra: { normalization },
+    });
     this.setState({ normalization });
-  }
+  };
 
   comparisonSet = () => {
     return this.props.selectedNodes[this.props.activeComparison] || [];
-  }
+  };
 
   handleTabOnClick = (tabName: TabName) => (event: any) => {
     event.preventDefault();
     trackEventByName(tracks.changeTab.name, { extra: { tab: tabName } });
     this.setState({ selectedTab: tabName });
-  }
+  };
 
   render() {
     const { selectedNodes } = this.props;
@@ -182,29 +186,42 @@ class InfoPane extends PureComponent<Props, State> {
     return (
       <Container className={this.props['className']}>
         <TabbedNav>
-          <Tab onClick={this.handleTabOnClick('votes')} data-tab="votes" className={`${selectedTab === 'votes' && 'active'}`}>
+          <Tab
+            onClick={this.handleTabOnClick('votes')}
+            data-tab="votes"
+            className={`${selectedTab === 'votes' && 'active'}`}
+          >
             <FormattedMessage {...messages.votes} />
           </Tab>
-          <Tab onClick={this.handleTabOnClick('details')} data-tab="details" className={`${selectedTab === 'details' && 'active'}`}>
+          <Tab
+            onClick={this.handleTabOnClick('details')}
+            data-tab="details"
+            className={`${selectedTab === 'details' && 'active'}`}
+          >
             <FormattedMessage {...messages.details} />
           </Tab>
         </TabbedNav>
         <Content>
-          <ComparisonLegend
-            selectedNodes={this.props.selectedNodes}
-          />
+          <ComparisonLegend selectedNodes={this.props.selectedNodes} />
           {selectedTab === 'details' && (
             <Details>
-              {selectedNodes.length === 1 && comparisonSet.length >= 1 && comparisonSet[0].type === 'idea' &&
-                <IdeaDetails ideaId={comparisonSet[0].id} />
-              }
-              {selectedNodes.length === 1 && comparisonSet.length >= 1 && comparisonSet[0].type !== 'idea' &&
-                <ClusterDetails node={comparisonSet[0] as ParentNode} ideaIds={this.selectedIdeas()} />
-              }
+              {selectedNodes.length === 1 &&
+                comparisonSet.length >= 1 &&
+                comparisonSet[0].type === 'idea' && (
+                  <IdeaDetails ideaId={comparisonSet[0].id} />
+                )}
+              {selectedNodes.length === 1 &&
+                comparisonSet.length >= 1 &&
+                comparisonSet[0].type !== 'idea' && (
+                  <ClusterDetails
+                    node={comparisonSet[0] as ParentNode}
+                    ideaIds={this.selectedIdeas()}
+                  />
+                )}
             </Details>
           )}
 
-          {selectedTab === 'votes' &&
+          {selectedTab === 'votes' && (
             <>
               <RadioButtons>
                 <StyledRadio
@@ -220,23 +237,42 @@ class InfoPane extends PureComponent<Props, State> {
                   onChange={this.handleOnChangeNormalization}
                   currentValue={this.state.normalization}
                   value="relative"
-                  label={(
+                  label={
                     <>
                       <FormattedMessage {...messages.relative} />
-                      <IconTooltip content={<FormattedMessage {...messages.relativeTooltip} />} />
+                      <IconTooltip
+                        content={
+                          <FormattedMessage {...messages.relativeTooltip} />
+                        }
+                      />
                     </>
-                  )}
+                  }
                   name="normalization"
                 />
               </RadioButtons>
-              <ChartTitle><FormattedMessage {...messages.gender} /></ChartTitle>
-              <StyledGenderChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
-              <ChartTitle><FormattedMessage {...messages.age} /></ChartTitle>
-              <StyledAgeChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
-              <ChartTitle><FormattedMessage {...messages.domicile} /></ChartTitle>
-              <StyledDomicileChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
+              <ChartTitle>
+                <FormattedMessage {...messages.gender} />
+              </ChartTitle>
+              <StyledGenderChart
+                ideaIdsComparisons={this.comparisonIdeas()}
+                normalization={normalization}
+              />
+              <ChartTitle>
+                <FormattedMessage {...messages.age} />
+              </ChartTitle>
+              <StyledAgeChart
+                ideaIdsComparisons={this.comparisonIdeas()}
+                normalization={normalization}
+              />
+              <ChartTitle>
+                <FormattedMessage {...messages.domicile} />
+              </ChartTitle>
+              <StyledDomicileChart
+                ideaIdsComparisons={this.comparisonIdeas()}
+                normalization={normalization}
+              />
             </>
-          }
+          )}
         </Content>
       </Container>
     );

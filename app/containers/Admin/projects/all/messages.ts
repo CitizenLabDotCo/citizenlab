@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   overviewPageTitle: {
@@ -9,10 +7,12 @@ export default defineMessages({
   },
   overviewPageSubtitle: {
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle',
-    defaultMessage: 'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
+    defaultMessage:
+      'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
   },
   overviewPageSubtitleModerator: {
-    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator',
+    id:
+      'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator',
     defaultMessage: 'Here are the projects on the platform you are moderating.',
   },
   createAProject: {
@@ -86,5 +86,5 @@ export default defineMessages({
   existingProjects: {
     id: 'app.containers.AdminPage.projects.all.existingProjects',
     defaultMessage: 'Existing projects',
-  }
+  },
 });

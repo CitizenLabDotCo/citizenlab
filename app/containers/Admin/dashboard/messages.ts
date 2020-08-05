@@ -3,9 +3,7 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Index
@@ -135,7 +133,8 @@ export default defineMessages({
   },
   activeUsersDescription: {
     id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
-    defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
+    defaultMessage:
+      'The number of users that either voted, commented or posted an idea on a given day.',
   },
   ideasByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
@@ -166,7 +165,8 @@ export default defineMessages({
     defaultMessage: 'Participation per project',
   },
   hiddenLabelPickResourceByProject: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByProject',
+    id:
+      'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByProject',
     defaultMessage: 'Pick resource to show by project',
   },
   selectedProject: {
@@ -187,7 +187,8 @@ export default defineMessages({
   },
   totalCount: {
     id: 'app.containers.AdminPage.DashboardPage.totalCount',
-    defaultMessage: '{selectedResourceName} total in {selectedName} : {selectedCount}',
+    defaultMessage:
+      '{selectedResourceName} total in {selectedName} : {selectedCount}',
   },
   resourceByDifference: {
     id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
@@ -228,7 +229,8 @@ export default defineMessages({
   },
   top10activeUsersDescription: {
     id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
-    defaultMessage: 'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.'
+    defaultMessage:
+      'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.',
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -240,7 +242,8 @@ export default defineMessages({
   },
   subtitleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',
-    defaultMessage: 'Get immediate and easy-to-grasp analytics into what’s moving on the platform.',
+    defaultMessage:
+      'Get immediate and easy-to-grasp analytics into what’s moving on the platform.',
   },
   titleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
@@ -248,15 +251,18 @@ export default defineMessages({
   },
   mapHelperText: {
     id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
-    defaultMessage: 'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+    defaultMessage:
+      'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
   },
   startLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
-    defaultMessage: 'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
+    defaultMessage:
+      'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
   },
   thenLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',
-    defaultMessage: 'Fun Fact: it will probably be way faster the next time you come here!',
+    defaultMessage:
+      'Fun Fact: it will probably be way faster the next time you come here!',
   },
   lastLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',

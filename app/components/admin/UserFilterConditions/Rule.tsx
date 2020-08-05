@@ -51,25 +51,24 @@ type Props = {
 type State = {};
 
 class Rule extends PureComponent<Props, State> {
-
   handleChangeField = (fieldDescriptor: FieldDescriptor) => {
     const newRule = clone(fieldDescriptor) as TRule;
     this.props.onChange(newRule);
-  }
+  };
 
   fieldDescriptorFromRule = (rule: TRule): FieldDescriptor => {
     return pick(rule, ['ruleType', 'customFieldId']);
-  }
+  };
 
   handleChangePredicate = (predicate: TRule['predicate']) => {
     const newRule = omit({ ...this.props.rule, predicate }, 'value') as TRule;
     this.props.onChange(newRule);
-  }
+  };
 
   handleChangeValue = (value: any) => {
     const newRule = { ...this.props.rule, value };
     this.props.onChange(newRule);
-  }
+  };
 
   ruleToValueSelector = (rule: TRule) => {
     if (rule.ruleType) {
@@ -79,11 +78,14 @@ class Rule extends PureComponent<Props, State> {
         return ruleTypeConstraints[ruleType][rule.predicate];
       }
     }
-  }
+  };
 
   render() {
     const { rule, onRemove, showLabels, ruleName } = this.props;
-    const hasValue = (rule.ruleType && rule.predicate ? ruleTypeConstraints[rule.ruleType as any][rule.predicate] : true);
+    const hasValue =
+      rule.ruleType && rule.predicate
+        ? ruleTypeConstraints[rule.ruleType as any][rule.predicate]
+        : true;
 
     return (
       <Container>
@@ -104,28 +106,32 @@ class Rule extends PureComponent<Props, State> {
           />
         </SelectorCell>
         <SelectorCell>
-          {rule.ruleType &&
+          {rule.ruleType && (
             <Fragment key={rule.ruleType}>
-              {showLabels && <FormattedMessage {...messages.rulesFormLabelPredicate} />}
+              {showLabels && (
+                <FormattedMessage {...messages.rulesFormLabelPredicate} />
+              )}
               <PredicateSelector
                 ruleType={rule.ruleType}
                 predicate={rule.predicate}
                 onChange={this.handleChangePredicate}
               />
             </Fragment>
-          }
+          )}
         </SelectorCell>
         <SelectorCell>
-          {rule.predicate &&
+          {rule.predicate && (
             <Fragment key={rule.ruleType}>
-              {showLabels && hasValue && <FormattedMessage {...messages.rulesFormLabelValue} />}
+              {showLabels && hasValue && (
+                <FormattedMessage {...messages.rulesFormLabelValue} />
+              )}
               <ValueSelector
                 rule={rule}
                 value={(rule as any).value}
                 onChange={this.handleChangeValue}
               />
             </Fragment>
-          }
+          )}
         </SelectorCell>
       </Container>
     );

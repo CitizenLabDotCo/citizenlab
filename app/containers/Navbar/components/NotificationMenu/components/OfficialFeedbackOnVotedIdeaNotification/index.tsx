@@ -14,7 +14,7 @@ interface Props {
   notification: IOfficialFeedbackOnVotedIdeaNotificationData;
 }
 
-const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
+const OfficialFeedbackOnVotedIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -27,7 +27,9 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.officialFeedbackOnVotedIdea}
         values={{
-          officialName: <T value={notification.attributes.official_feedback_author} />
+          officialName: (
+            <T value={notification.attributes.official_feedback_author} />
+          ),
         }}
       />
     </NotificationWrapper>

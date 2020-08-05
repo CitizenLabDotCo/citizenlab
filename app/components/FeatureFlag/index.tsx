@@ -29,7 +29,9 @@ export default class FeatureFlag extends PureComponent<Props, State> {
 
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
-    this.subscription = currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }));
+    this.subscription = currentTenant$.subscribe((currentTenant) =>
+      this.setState({ currentTenant })
+    );
   }
 
   componentWillUnmount() {
@@ -41,17 +43,16 @@ export default class FeatureFlag extends PureComponent<Props, State> {
   render() {
     const { currentTenant } = this.state;
     const { name, onlyCheckAllowed } = this.props;
-    const showFeature = (!name || (
-      get(currentTenant, `data.attributes.settings.${name}.allowed`) === true &&
-      (onlyCheckAllowed || get(currentTenant, `data.attributes.settings.${name}.enabled`) === true)
-    ));
+    const showFeature =
+      !name ||
+      (get(currentTenant, `data.attributes.settings.${name}.allowed`) ===
+        true &&
+        (onlyCheckAllowed ||
+          get(currentTenant, `data.attributes.settings.${name}.enabled`) ===
+            true));
 
     if (this.props.children && showFeature) {
-      return (
-        <React.Fragment>
-          {this.props.children}
-        </React.Fragment>
-      );
+      return <React.Fragment>{this.props.children}</React.Fragment>;
     }
 
     return null;

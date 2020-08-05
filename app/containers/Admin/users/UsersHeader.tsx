@@ -98,7 +98,7 @@ interface Tracks {
 class UsersHeader extends PureComponent<Props & Tracks, State> {
   handleSearchChange = (newValue: string) => {
     this.props.onSearch(newValue);
-  }
+  };
 
   render() {
     if (this.props.title) {
@@ -108,8 +108,22 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
           <TextAndButtons>
             <T as="h1" value={this.props.title} />
             <Buttons>
-              <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="text" onClick={this.props.onEdit} />
-              <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={this.props.onDelete} />
+              <Button
+                iconTitle={<FormattedMessage {...messages.editGroup} />}
+                hiddenText={<FormattedMessage {...messages.editGroup} />}
+                padding=".65em"
+                icon="edit"
+                buttonStyle="text"
+                onClick={this.props.onEdit}
+              />
+              <Button
+                iconTitle={<FormattedMessage {...messages.deleteGroup} />}
+                hiddenText={<FormattedMessage {...messages.deleteGroup} />}
+                padding=".65em"
+                icon="delete"
+                buttonStyle="text"
+                onClick={this.props.onDelete}
+              />
             </Buttons>
           </TextAndButtons>
           <Spacer />
@@ -134,5 +148,5 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
 }
 
 export default injectTracks<Props>({
-  trackSearchInput: tracks.searchInput,
+  trackSearchInput: tracks.searchInput
 })(UsersHeader);

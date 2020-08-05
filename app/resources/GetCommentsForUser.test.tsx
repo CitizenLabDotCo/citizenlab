@@ -6,14 +6,17 @@ import { shallow } from 'enzyme';
 import GetCommentsForUser from './GetCommentsForUser';
 
 // mocks
-import { commentsForUserStream, __setMockCommentsForUser, makeComments } from 'services/comments';
+import {
+  commentsForUserStream,
+  __setMockCommentsForUser,
+  makeComments,
+} from 'services/comments';
 // typescript struggles when using both mocked things and real ones
 // this the way I found to minimize the errors, and to have autocomplethin on the .mock object
 
 jest.mock('services/comments');
 
 describe('<GetCommentsForUser />', () => {
-
   let child: jest.Mock;
 
   beforeEach(() => {
@@ -37,37 +40,46 @@ describe('<GetCommentsForUser />', () => {
     shallow(<GetCommentsForUser userId="id3">{child}</GetCommentsForUser>);
     const commentsList = makeComments([{ id: 'comment1' }]);
     __setMockCommentsForUser(commentsList);
-    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual(commentsList.data);
+    expect(
+      child.mock.calls[child.mock.calls.length - 1][0].commentsList
+    ).toEqual(commentsList.data);
   });
 
   it('passes and Error to the child function when it receives and Error from the streams', () => {
     shallow(<GetCommentsForUser userId="id4">{child}</GetCommentsForUser>);
-    const error = new Error;
+    const error = new Error();
     __setMockCommentsForUser(error);
-    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual(error);
+    expect(
+      child.mock.calls[child.mock.calls.length - 1][0].commentsList
+    ).toEqual(error);
   });
 
   it('adds new comments on load more', () => {
-    const wrapper = shallow(<GetCommentsForUser userId="id5">{child}</GetCommentsForUser>);
+    const wrapper = shallow(
+      <GetCommentsForUser userId="id5">{child}</GetCommentsForUser>
+    );
     const commentsList1 = makeComments([{ id: 'comment1' }]);
     commentsList1.links = {
       self: 'api/comments/page1',
       first: 'api/comments/page1',
       prev: '',
       next: 'api/comments/page2',
-      last: 'api/comments/page3'
+      last: 'api/comments/page3',
     };
     __setMockCommentsForUser(commentsList1);
 
-    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual(commentsList1.data);
+    expect(
+      child.mock.calls[child.mock.calls.length - 1][0].commentsList
+    ).toEqual(commentsList1.data);
 
     child.mock.calls[child.mock.calls.length - 1][0].loadMore();
     const commentsList2 = makeComments([{ id: 'comment2' }]);
     __setMockCommentsForUser(commentsList2);
 
-    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList)
-      .toEqual([...commentsList1.data, ...commentsList2.data]);
-    });
+    expect(
+      child.mock.calls[child.mock.calls.length - 1][0].commentsList
+    ).toEqual([...commentsList1.data, ...commentsList2.data]);
+  });
 
   // it('reacts correctly to a userId change', () => {
   //   let userId = 'id6';

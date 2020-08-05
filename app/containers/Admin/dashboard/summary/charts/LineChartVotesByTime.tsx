@@ -7,11 +7,33 @@ import { map, isEmpty } from 'lodash-es';
 import { withTheme } from 'styled-components';
 
 // services
-import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
+import {
+  votesByTimeCumulativeStream,
+  IVotesByTimeCumulative,
+} from 'services/stats';
 
 // components
-import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
-import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import {
+  LineChart,
+  Line,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
+import {
+  IResolution,
+  GraphCard,
+  NoDataContainer,
+  GraphCardInner,
+  GraphCardHeader,
+  GraphCardTitle,
+  GraphCardFigureContainer,
+  GraphCardFigure,
+  GraphCardFigureChange,
+} from '../..';
 
 // i18n
 import messages from '../../messages';
@@ -19,11 +41,11 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 type IVotesInGraphFormat = {
-  date: string | number,
-  up: number,
-  down: number,
-  total: number,
-  code: string
+  date: string | number;
+  up: number;
+  down: number;
+  total: number;
+  code: string;
 }[];
 
 type State = {
@@ -40,13 +62,16 @@ type Props = {
   currentTopicFilter: string | undefined;
 };
 
-class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
+class LineChartVotesByTime extends React.PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   subscription: Subscription;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null
+      serie: null,
     };
   }
 
@@ -57,7 +82,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter
+      currentProjectFilter,
     } = this.props;
 
     this.resubscribe(
@@ -77,15 +102,16 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter
+      currentProjectFilter,
     } = this.props;
 
-    if (startAt !== prevProps.startAt
-      || endAt !== prevProps.endAt
-      || resolution !== prevProps.resolution
-      || currentGroupFilter !== prevProps.currentGroupFilter
-      || currentTopicFilter !== prevProps.currentTopicFilter
-      || currentProjectFilter !== prevProps.currentProjectFilter
+    if (
+      startAt !== prevProps.startAt ||
+      endAt !== prevProps.endAt ||
+      resolution !== prevProps.resolution ||
+      currentGroupFilter !== prevProps.currentGroupFilter ||
+      currentTopicFilter !== prevProps.currentTopicFilter ||
+      currentProjectFilter !== prevProps.currentProjectFilter
     ) {
       this.resubscribe(
         startAt,
@@ -111,7 +137,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
         down: down[key],
         up: up[key],
         date: key,
-        code: key
+        code: key,
       }));
     }
 
@@ -138,7 +164,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
         project: currentProjectFilter,
         group: currentGroupFilter,
         topic: currentTopicFilter,
-      }
+      },
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie);
       this.setState({ serie: convertedSerie });
@@ -150,21 +176,21 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     const { formatDate } = this.props.intl;
 
     return formatDate(date, {
-      day: (resolution === 'month' ? undefined : '2-digit'),
-      month: 'short'
+      day: resolution === 'month' ? undefined : '2-digit',
+      month: 'short',
     });
-  }
+  };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
     const { formatDate } = this.props.intl;
 
     return formatDate(date, {
-      day: (resolution === 'month' ? undefined : '2-digit'),
+      day: resolution === 'month' ? undefined : '2-digit',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     });
-  }
+  };
 
   formatSerieChange = (serieChange: number) => {
     if (serieChange > 0) {
@@ -173,7 +199,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       return `(${serieChange.toString()})`;
     }
     return null;
-  }
+  };
 
   getFormattedNumbers(serie: IVotesInGraphFormat | null) {
     if (serie) {
@@ -198,7 +224,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     return {
       totalNumber: null,
       formattedSerieChange: null,
-      typeOfChange: ''
+      typeOfChange: '',
     };
   }
 
@@ -210,13 +236,17 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       chartStrokeGreen,
       chartStrokeRed,
       animationBegin,
-      animationDuration
+      animationDuration,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;
     const formattedNumbers = this.getFormattedNumbers(serie);
-    const { totalNumber, formattedSerieChange, typeOfChange } = formattedNumbers;
+    const {
+      totalNumber,
+      formattedSerieChange,
+      typeOfChange,
+    } = formattedNumbers;
 
     return (
       <GraphCard className={className}>
@@ -226,21 +256,17 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
               <FormattedMessage {...messages.ideaVotesByTimeTitle} />
             </GraphCardTitle>
             <GraphCardFigureContainer>
-              <GraphCardFigure>
-                {totalNumber}
-              </GraphCardFigure>
-              <GraphCardFigureChange
-                className={typeOfChange}
-              >
+              <GraphCardFigure>{totalNumber}</GraphCardFigure>
+              <GraphCardFigureChange className={typeOfChange}>
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardHeader>
-          {!serie ?
+          {!serie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
-            :
+          ) : (
             <ResponsiveContainer>
               <LineChart data={serie} margin={{ right: 40 }}>
                 <CartesianGrid strokeDasharray="5 5" />
@@ -252,10 +278,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                 />
-                <YAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                />
+                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
@@ -288,12 +311,12 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                 />
                 <Legend
                   wrapperStyle={{
-                    paddingTop: '20px'
+                    paddingTop: '20px',
                   }}
                 />
               </LineChart>
             </ResponsiveContainer>
-          }
+          )}
         </GraphCardInner>
       </GraphCard>
     );

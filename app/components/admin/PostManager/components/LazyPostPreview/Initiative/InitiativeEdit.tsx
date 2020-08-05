@@ -5,10 +5,18 @@ import { adopt } from 'react-adopt';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps
+} from 'resources/GetTenantLocales';
+import GetInitiative, {
+  GetInitiativeChildProps
+} from 'resources/GetInitiative';
+import GetInitiativeImages, {
+  GetInitiativeImagesChildProps
+} from 'resources/GetInitiativeImages';
+import GetResourceFileObjects, {
+  GetResourceFileObjectsChildProps
+} from 'resources/GetResourceFileObjects';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
@@ -44,7 +52,7 @@ interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface State {
   selectedLocale: GetLocaleChildProps;
@@ -54,7 +62,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as Props);
     this.state = {
-      selectedLocale: props.locale,
+      selectedLocale: props.locale
     };
   }
 
@@ -67,10 +75,18 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 
   onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
-  }
+  };
 
   render() {
-    const { locale, initiative, initiativeImages, goBack, initiativeFiles, topics, tenantLocales } = this.props;
+    const {
+      locale,
+      initiative,
+      initiativeImages,
+      goBack,
+      initiativeFiles,
+      topics,
+      tenantLocales
+    } = this.props;
     const { selectedLocale } = this.state;
 
     if (
@@ -82,8 +98,12 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
       initiativeFiles === undefined ||
       isError(initiativeFiles) ||
       isNilOrError(topics)
-    ) return null;
-    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    ) {
+      return null;
+    }
+    const initiativeTopics = topics.filter(
+      topic => !isNilOrError(topic)
+    ) as ITopicData[];
 
     return (
       <Container>
@@ -106,7 +126,11 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
           <InitiativesEditFormWrapper
             locale={selectedLocale}
             initiative={initiative}
-            initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
+            initiativeImage={
+              isNilOrError(initiativeImages) || initiativeImages.length === 0
+                ? null
+                : initiativeImages[0]
+            }
             onPublished={goBack}
             initiativeFiles={initiativeFiles}
             topics={initiativeTopics}
@@ -121,9 +145,19 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   topics: <GetTopics exclude_code={'custom'} />,
   tenantLocales: <GetTenantLocales />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
-  initiativeFiles: ({ initiativeId, render }) => <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  initiativeImages: ({ initiativeId, render }) => (
+    <GetInitiativeImages initiativeId={initiativeId}>
+      {render}
+    </GetInitiativeImages>
+  ),
+  initiativeFiles: ({ initiativeId, render }) => (
+    <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">
+      {render}
+    </GetResourceFileObjects>
+  )
 });
 
 export default (inputProps: InputProps) => (

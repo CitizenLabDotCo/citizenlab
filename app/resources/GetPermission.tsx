@@ -30,7 +30,7 @@ export default class GetPermission extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      permission: undefined
+      permission: undefined,
     };
   }
 
@@ -40,16 +40,18 @@ export default class GetPermission extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ item, action, context });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ item, action, context }) => {
-          if (!isNilOrError(item)) {
-            return hasPermission({ item, action, context });
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ item, action, context }) => {
+            if (!isNilOrError(item)) {
+              return hasPermission({ item, action, context });
+            }
 
-          return of(false);
-        })
-      ).subscribe((permission) => this.setState({ permission }))
+            return of(false);
+          })
+        )
+        .subscribe((permission) => this.setState({ permission })),
     ];
   }
 
@@ -59,7 +61,7 @@ export default class GetPermission extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
