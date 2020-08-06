@@ -644,6 +644,7 @@ class IdeaForm extends PureComponent<
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.title?.description
                 }
+                subtextSupportsHtml={true}
               />
               <Input
                 id="title"
@@ -670,6 +671,7 @@ class IdeaForm extends PureComponent<
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.body?.description
                 }
+                subtextSupportsHtml={true}
               />
               <QuillEditor
                 id="editor"
@@ -731,6 +733,7 @@ class IdeaForm extends PureComponent<
                         locale || ''
                       ]?.properties?.topic_ids?.description
                     }
+                    subtextSupportsHtml={true}
                   />
                   <TopicsPicker
                     selectedTopicIds={selectedTopics}
@@ -759,6 +762,7 @@ class IdeaForm extends PureComponent<
                         locale || ''
                       ]?.properties?.location?.description
                     }
+                    subtextSupportsHtml={true}
                   >
                     <LocationInput
                       className="e2e-idea-form-location-input-field"
@@ -790,6 +794,7 @@ class IdeaForm extends PureComponent<
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.images?.description
                 }
+                subtextSupportsHtml={true}
               />
               <ImagesDropzone
                 id="idea-image-dropzone"
@@ -820,6 +825,7 @@ class IdeaForm extends PureComponent<
                       locale || ''
                     ]?.properties?.attachments?.description
                   }
+                  subtextSupportsHtml={true}
                 >
                   <FileUploader
                     onFileAdd={this.handleIdeaFileOnAdd}
