@@ -57,6 +57,14 @@ export default defineMessages({
     id: 'app.container.IdeaForm.budgetIsTooBig',
     defaultMessage: 'The provided budget is too big',
   },
+  estimatedBudgetLabel: {
+    id: 'app.container.IdeaForm.estimatedBudgetLabel',
+    defaultMessage: 'Estimated budget (in {currency})',
+  },
+  noEstimatedBudgetError: {
+    id: 'app.container.IdeaForm.noEstimatedBudgetError',
+    defaultMessage: 'Please provide a budget estimation',
+  },
   fileAttachmentsTitle: {
     id: 'app.container.IdeaForm.fileAttachmentsTitle',
     defaultMessage: 'Attachments',

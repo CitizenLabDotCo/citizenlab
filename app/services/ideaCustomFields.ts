@@ -9,7 +9,8 @@ export type CustomFieldCodes =
   | 'topic_ids'
   | 'location'
   | 'images'
-  | 'attachments';
+  | 'attachments'
+  | 'estimated_budget';
 type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
