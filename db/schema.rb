@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_094026) do
+ActiveRecord::Schema.define(version: 2020_08_05_132331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -340,6 +340,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
     t.datetime "assigned_at"
+    t.integer "estimated_budget"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
