@@ -112,6 +112,9 @@ kl:
       location:
         title: Sumi
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:     
       images:
         title: Assit
         description:

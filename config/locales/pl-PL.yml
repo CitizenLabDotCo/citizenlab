@@ -112,6 +112,9 @@ pl:
       location:
         title: Lokalizacja
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:     
       images:
         title: Zdjęcia
         description:
