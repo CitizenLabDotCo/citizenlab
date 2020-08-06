@@ -33,12 +33,12 @@ export const FormLabelWithIcon = memo(
     hidden,
     noSpace,
     iconName,
-    iconAriaHidden
+    iconAriaHidden,
   }: FormLabelWithIconProps) => (
     <FormLabelStyled
       id={id}
-      className={[className, hidden ? 'hidden' : null, 'invisible']
-        .filter(item => item)
+      className={[className, hidden ? 'invisible' : null]
+        .filter((item) => item)
         .join(' ')}
       htmlFor={htmlFor}
     >
