@@ -58,7 +58,7 @@ class CustomField < ApplicationRecord
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
       self.description_multiloc,
-      %i{decoration link}
+      %i{decoration link list title}
     )
     self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
