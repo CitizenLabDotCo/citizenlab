@@ -112,6 +112,9 @@ fr-BE:
       location:
         title: Adresse
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:     
       images:
         title: Images
         description:

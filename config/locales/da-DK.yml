@@ -112,6 +112,9 @@ da:
       location:
         title: Beliggenhed
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:               
       images:
         title: Billeder
         description:
