@@ -112,6 +112,9 @@ nb:
       location:
         title: Lokalitet
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:     
       images:
         title: Bilder
         description:
