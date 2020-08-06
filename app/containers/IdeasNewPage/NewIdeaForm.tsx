@@ -68,6 +68,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: string[];
   budget: number | null;
+  estimatedBudget: number | null;
   position: string;
   imageFile: UploadFile[];
   submitError: boolean;
@@ -88,6 +89,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description: null,
       selectedTopics: [],
       budget: null,
+      estimatedBudget: null,
       position: '',
       imageFile: [],
       submitError: false,
@@ -108,6 +110,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description,
           selectedTopics,
           budget,
+          estimatedBudget,
           position,
           imageFile,
           submitError,
@@ -119,6 +122,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
             description,
             selectedTopics,
             budget,
+            estimatedBudget,
             position,
             imageFile,
             submitError,
@@ -142,6 +146,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description,
       selectedTopics,
       budget,
+      estimatedBudget,
       address: position,
       imageFile,
       ideaFiles,
@@ -151,6 +156,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description,
       selectedTopics,
       budget,
+      estimatedBudget,
       position,
       imageFile,
       ideaFiles,
@@ -164,6 +170,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description,
       selectedTopics,
       budget,
+      estimatedBudget,
       position,
       imageFile,
     } = this.state;
@@ -181,6 +188,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           budget={budget}
+          estimatedBudget={estimatedBudget}
           address={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
