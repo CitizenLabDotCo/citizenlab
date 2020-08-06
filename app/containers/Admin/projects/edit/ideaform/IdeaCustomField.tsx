@@ -17,8 +17,8 @@ import {
 
 // components
 import Icon from 'components/UI/Icon';
-const TextAreaMultilocWithLocaleSwitcher = lazy(() =>
-  import('components/UI/TextAreaMultilocWithLocaleSwitcher')
+const QuillMutilocWithLocaleSwitcher = lazy(() =>
+  import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
 );
 import Toggle from 'components/UI/Toggle';
 import IconToolTip from 'components/UI/IconTooltip';
@@ -311,11 +311,14 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
 
                 {fieldEnabled && (
                   <Suspense fallback={<Spinner />}>
-                    <TextAreaMultilocWithLocaleSwitcher
+                    <QuillMutilocWithLocaleSwitcher
+                      id={`${ideaCustomField.id}-description`}
+                      noImages={true}
+                      noVideos={true}
+                      noAlign={true}
                       valueMultiloc={descriptionMultiloc}
                       onChange={handleDescriptionOnChange}
-                      rows={3}
-                      labelTextElement={
+                      label={
                         <LocaleSwitcherLabelText>
                           <FormattedMessage {...messages.descriptionLabel} />
                         </LocaleSwitcherLabelText>
