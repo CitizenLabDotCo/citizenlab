@@ -23,7 +23,7 @@ const Container = styled.div`
   position: relative;
 
   & .hasBorder textarea:focus {
-    border-color: ${defaultStyles.borderColorFocused} !important;
+    border-color: ${colors.focussedBorder} !important;
     box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
