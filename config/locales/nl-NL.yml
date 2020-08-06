@@ -113,6 +113,9 @@ nl:
       location:
         title: Locatie
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:     
       images:
         title: Afbeeldingen
         description:

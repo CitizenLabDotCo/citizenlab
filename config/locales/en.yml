@@ -250,6 +250,9 @@ en:
       location:
         title: Location
         description:
+      estimated_budget:
+        title: Budget estimate
+        description:
       images:
         title: Images
         description:

@@ -112,6 +112,9 @@ hu:
       location:
         title: Location
         description:
+      estimated_budget:
+        title: <to-translate>
+        description:     
       images:
         title: Images
         description:
