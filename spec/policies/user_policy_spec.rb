@@ -13,6 +13,7 @@ describe UserPolicy do
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
     it { should_not permit(:index) }
+    it { should_not permit(:index_xlsx) }
 
     it "should index the user through the scope" do
       subject_user.save
@@ -31,6 +32,7 @@ describe UserPolicy do
       it { should     permit(:update)  }
       it { should     permit(:destroy) }
       it { should_not permit(:index) }
+      it { should_not permit(:index_xlsx) }
 
       it "should index the user through the scope" do
         subject_user.save
@@ -46,6 +48,7 @@ describe UserPolicy do
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
       it { should_not permit(:index) }
+      it { should_not permit(:index_xlsx) }
 
       it "should index the users through the scope" do
         subject_user.save
@@ -65,7 +68,8 @@ describe UserPolicy do
       it { should     permit(:create)  }
       it { should     permit(:update)  }
       it { should     permit(:destroy) }
-      it { should     permit(:index) }
+      it { should_not permit(:index) }
+      it { should_not permit(:index_xlsx) }
 
       it "should index the user through the scope" do
         subject_user.save
@@ -80,7 +84,8 @@ describe UserPolicy do
       it { should     permit(:create)  }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
-      it { should     permit(:index) }
+      it { should_not permit(:index) }
+      it { should_not permit(:index_xlsx) }
 
       it "should index the users through the scope" do
         subject_user.save
@@ -100,6 +105,7 @@ describe UserPolicy do
       it { should     permit(:update)  }
       it { should     permit(:destroy) }
       it { should     permit(:index) }
+      it { should     permit(:index_xlsx) }
 
       it "should index the user through the scope" do
         subject_user.save
@@ -115,6 +121,7 @@ describe UserPolicy do
       it { should     permit(:update)  }
       it { should     permit(:destroy) }
       it { should     permit(:index) }
+      it { should     permit(:index_xlsx) }
 
       it "should index the users through the scope" do
         subject_user.save
