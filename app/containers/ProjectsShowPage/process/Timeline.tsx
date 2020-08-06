@@ -17,7 +17,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
 

@@ -15,7 +15,7 @@ import {
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Success from 'components/UI/Success';
+import { Success } from 'cl2-component-library';
 import IdeaCustomField from './IdeaCustomField';
 import {
   Section,

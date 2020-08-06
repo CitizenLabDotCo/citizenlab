@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ParentComment from './ParentComment';
 import CommentSorting from './CommentSorting';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // services
 import { ICommentData, CommentsSort } from 'services/comments';

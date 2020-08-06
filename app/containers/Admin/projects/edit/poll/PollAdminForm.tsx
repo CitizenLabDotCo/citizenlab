@@ -11,7 +11,7 @@ import {
   deletePollQuestion,
   updatePollQuestion,
   reorderPollQuestion,
-  IPollQuestion,
+  IPollQuestion
 } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -27,7 +27,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, Locale, IParticipationContextType } from 'typings';
+import { Multiloc, IParticipationContextType } from 'typings';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -37,7 +37,6 @@ interface Props {
   participationContextId: string;
   participationContextType: IParticipationContextType;
   pollQuestions: IPollQuestion[] | null | undefined;
-  locale: Locale;
 }
 
 interface State {
@@ -58,7 +57,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
       editingQuestionTitle: {},
       editingOptionsId: null,
       itemsWhileDragging: null,
-      isProcessing: false,
+      isProcessing: false
     };
   }
 
@@ -67,10 +66,10 @@ export class PollAdminForm extends PureComponent<Props, State> {
     const { itemsWhileDragging } = this.state;
     const prevCustomFieldsIds =
       prevProps.pollQuestions &&
-      prevProps.pollQuestions.map((customField) => customField.id);
+      prevProps.pollQuestions.map(customField => customField.id);
     const nextCustomFieldsIds =
       this.props.pollQuestions &&
-      this.props.pollQuestions.map((customField) => customField.id);
+      this.props.pollQuestions.map(customField => customField.id);
 
     if (
       itemsWhileDragging &&
@@ -98,7 +97,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
 
     if (!listItems) return;
 
-    const field = listItems.find((listItem) => listItem.id === fieldId);
+    const field = listItems.find(listItem => listItem.id === fieldId);
 
     if (field && field.attributes.ordering !== toIndex) {
       this.setState({ isProcessing: true });
@@ -121,7 +120,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.setState({ newQuestionTitle: {}, editingOptionsId: null });
   };
 
-  changeNewQuestion = (value) => {
+  changeNewQuestion = value => {
     this.setState({ newQuestionTitle: value });
   };
 
@@ -138,10 +137,10 @@ export class PollAdminForm extends PureComponent<Props, State> {
         participationContextId,
         participationContextType,
         newQuestionTitle
-      ).then((res) => {
+      ).then(res => {
         this.setState({
           newQuestionTitle: null,
-          editingOptionsId: res.data.id,
+          editingOptionsId: res.data.id
         });
       });
     }
@@ -155,11 +154,11 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.setState({
       editingQuestionId: questionId,
       editingQuestionTitle: currentTitle,
-      editingOptionsId: null,
+      editingOptionsId: null
     });
   };
 
-  changeEditingQuestion = (value) => {
+  changeEditingQuestion = value => {
     this.setState({ editingQuestionTitle: value });
   };
 
@@ -167,7 +166,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
     const { editingQuestionTitle, editingQuestionId } = this.state;
     editingQuestionId &&
       updatePollQuestion(editingQuestionId, {
-        title_multiloc: editingQuestionTitle,
+        title_multiloc: editingQuestionTitle
       }).then(() => {
         this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
       });
@@ -187,7 +186,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
   };
 
   // Option edition
-  editOptions = (questionId) => () => {
+  editOptions = questionId => () => {
     this.setState({ editingOptionsId: questionId });
   };
 
@@ -197,13 +196,11 @@ export class PollAdminForm extends PureComponent<Props, State> {
 
   render() {
     const listItems = this.listItems() || [];
-
-    const { locale } = this.props;
     const {
       newQuestionTitle,
       editingQuestionId,
       editingQuestionTitle,
-      editingOptionsId,
+      editingOptionsId
     } = this.state;
     return (
       <>
@@ -216,14 +213,12 @@ export class PollAdminForm extends PureComponent<Props, State> {
                     titleMultiloc={editingQuestionTitle}
                     onChange={this.changeEditingQuestion}
                     onSave={this.saveEditingQuestion}
-                    locale={locale}
                     onCancel={this.cancelEditQuestion}
                   />
                 ) : editingOptionsId === question.id ? (
                   <OptionForm
                     question={question}
                     collapse={this.closeEditingOptions}
-                    locale={locale}
                   />
                 ) : (
                   <QuestionRow
@@ -251,7 +246,6 @@ export class PollAdminForm extends PureComponent<Props, State> {
               onChange={this.changeNewQuestion}
               onSave={this.saveNewQuestion}
               onCancel={this.cancelNewQuestion}
-              locale={locale}
             />
           )}
         </StyledList>

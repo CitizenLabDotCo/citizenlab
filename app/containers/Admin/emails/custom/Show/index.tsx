@@ -24,20 +24,18 @@ import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
-import StatusLabel from 'components/UI/StatusLabel';
+import { StatusLabel, IconTooltip } from 'cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
+import Stamp from './Stamp';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
-import IconTooltip from 'components/UI/IconTooltip';
-
-import Stamp from './Stamp';
 
 const Container = styled.div``;
 
@@ -234,12 +232,12 @@ class Show extends React.Component<Props, State> {
               </PageTitle>
               {isDraft(campaign) ? (
                 <StatusLabel
-                  color="draftYellow"
+                  backgroundColor="draftYellow"
                   text={<FormattedMessage {...messages.draft} />}
                 />
               ) : (
                 <StatusLabel
-                  color="clGreenSuccess"
+                  backgroundColor="clGreenSuccess"
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}

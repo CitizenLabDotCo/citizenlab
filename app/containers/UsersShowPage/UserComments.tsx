@@ -54,6 +54,8 @@ const MessageContainer = styled.div`
   font-weight: 400;
 `;
 
+const LoadMoreButton = styled(Button)``;
+
 interface InputProps {
   userId: string;
 }
@@ -133,7 +135,7 @@ export const UserComments = memo<Props>(
 
             {comments.hasMore && (
               <Footer>
-                <Button
+                <LoadMoreButton
                   onClick={comments.loadMore}
                   processing={comments.loadingMore}
                   icon="showMore"
@@ -145,7 +147,7 @@ export const UserComments = memo<Props>(
                   height="50px"
                 >
                   <FormattedMessage {...messages.loadMoreComments} />
-                </Button>
+                </LoadMoreButton>
               </Footer>
             )}
           </Container>

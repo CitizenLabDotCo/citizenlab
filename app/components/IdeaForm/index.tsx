@@ -10,8 +10,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import Input from 'components/UI/Input';
-import LocationInput from 'components/UI/LocationInput';
+import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
@@ -20,7 +19,7 @@ import FileUploader from 'components/UI/FileUploader';
 import {
   FormSection,
   FormSectionTitle,
-  FormLabel,
+  FormLabel
 } from 'components/UI/FormComponents';
 
 // services
@@ -32,12 +31,12 @@ import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaCustomFieldsSchemasStream,
   IIdeaCustomFieldsSchemas,
-  CustomFieldCodes,
+  CustomFieldCodes
 } from 'services/ideaCustomFields';
 
 // resources
 import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
+  GetFeatureFlagChildProps
 } from 'resources/GetFeatureFlag';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -48,7 +47,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -122,16 +121,16 @@ interface State {
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
-  titleError: string | JSX.Element | null;
+  titleError: string | null;
   description: string;
-  descriptionError: string | JSX.Element | null;
+  descriptionError: string | null;
   selectedTopics: string[];
-  topicsError: string | JSX.Element | null;
-  locationError: string | JSX.Element | null;
-  imageError: string | JSX.Element | null;
-  attachmentsError: string | JSX.Element | null;
+  topicsError: string | null;
+  locationError: string | null;
+  imageError: string | null;
+  attachmentsError: string | null;
   budget: number | null;
-  budgetError: string | JSX.Element | null;
+  budgetError: string | null;
   address: string;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
@@ -169,7 +168,7 @@ class IdeaForm extends PureComponent<
       ideaCustomFieldsSchemas: null,
       locationError: null,
       imageError: null,
-      attachmentsError: null,
+      attachmentsError: null
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -188,7 +187,7 @@ class IdeaForm extends PureComponent<
     const pbContext$: Observable<
       IProjectData | IPhaseData | null
     > = project$.pipe(
-      switchMap((project) => {
+      switchMap(project => {
         if (project) {
           if (project.data.attributes.participation_method === 'budgeting') {
             return of(project.data);
@@ -196,10 +195,9 @@ class IdeaForm extends PureComponent<
 
           if (project.data.attributes.process_type === 'timeline') {
             return phasesStream(project.data.id).observable.pipe(
-              map((phases) => {
+              map(phases => {
                 const pbPhase = phases.data.find(
-                  (phase) =>
-                    phase.attributes.participation_method === 'budgeting'
+                  phase => phase.attributes.participation_method === 'budgeting'
                 );
                 return pbPhase || null;
               })
@@ -217,19 +215,19 @@ class IdeaForm extends PureComponent<
       combineLatest(locale$, tenant$).subscribe(([locale, tenant]) => {
         this.setState({
           locale,
-          tenant,
+          tenant
         });
       }),
 
-      pbContext$.subscribe((pbContext) => this.setState({ pbContext })),
+      pbContext$.subscribe(pbContext => this.setState({ pbContext })),
 
-      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) =>
+      ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas =>
         this.setState({ ideaCustomFieldsSchemas })
       ),
 
       eventEmitter
         .observeEvent('IdeaFormSubmitEvent')
-        .subscribe(this.handleOnSubmit),
+        .subscribe(this.handleOnSubmit)
     ];
   }
 
@@ -240,7 +238,7 @@ class IdeaForm extends PureComponent<
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   mapPropsToState = () => {
@@ -251,7 +249,7 @@ class IdeaForm extends PureComponent<
       address,
       budget,
       imageFile,
-      remoteIdeaFiles,
+      remoteIdeaFiles
     } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
@@ -262,14 +260,14 @@ class IdeaForm extends PureComponent<
       ideaFiles,
       address,
       title: title || '',
-      description: description || '',
+      description: description || ''
     });
   };
 
   handleTitleOnChange = (title: string) => {
     this.setState({
       title,
-      titleError: null,
+      titleError: null
     });
   };
 
@@ -278,7 +276,7 @@ class IdeaForm extends PureComponent<
 
     this.setState(({ descriptionError }) => ({
       description,
-      descriptionError: isDescriptionEmpty ? descriptionError : null,
+      descriptionError: isDescriptionEmpty ? descriptionError : null
     }));
   };
 
@@ -292,20 +290,20 @@ class IdeaForm extends PureComponent<
 
   handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
-      imageFile: [imageFile[0]],
+      imageFile: [imageFile[0]]
     });
   };
 
   handleUploadOnRemove = () => {
     this.setState({
-      imageFile: [],
+      imageFile: []
     });
   };
 
   handleBudgetOnChange = (budget: string) => {
     this.setState({
       budget: Number(budget),
-      budgetError: null,
+      budgetError: null
     });
   };
 
@@ -319,11 +317,9 @@ class IdeaForm extends PureComponent<
 
   validateTitle = (title: string | null) => {
     if (!title) {
-      return <FormattedMessage {...messages.titleEmptyError} />;
-    }
-
-    if (title && title.length < 10) {
-      return <FormattedMessage {...messages.titleLengthError} />;
+      return this.props.intl.formatMessage(messages.titleEmptyError);
+    } else if (title && title.length < 10) {
+      return this.props.intl.formatMessage(messages.titleLengthError);
     }
 
     return null;
@@ -331,9 +327,9 @@ class IdeaForm extends PureComponent<
 
   validateDescription = (description: string | null) => {
     if (!description) {
-      return <FormattedMessage {...messages.descriptionEmptyError} />;
+      return this.props.intl.formatMessage(messages.descriptionEmptyError);
     } else if (description && description.length < 30) {
-      return <FormattedMessage {...messages.descriptionLengthError} />;
+      return this.props.intl.formatMessage(messages.descriptionLengthError);
     }
 
     return null;
@@ -350,7 +346,7 @@ class IdeaForm extends PureComponent<
       );
 
       if (topicsRequired && selectedTopics.length === 0) {
-        return <FormattedMessage {...messages.noTopicsError} />;
+        return this.props.intl.formatMessage(messages.noTopicsError);
       }
     }
 
@@ -368,7 +364,7 @@ class IdeaForm extends PureComponent<
       );
 
       if (locationRequired && !address) {
-        return <FormattedMessage {...messages.noLocationError} />;
+        return this.props.intl.formatMessage(messages.noLocationError);
       }
     }
 
@@ -386,7 +382,7 @@ class IdeaForm extends PureComponent<
       );
 
       if (imagesRequired && imageFiles.length === 0) {
-        return <FormattedMessage {...messages.noImageError} />;
+        return this.props.intl.formatMessage(messages.noImageError);
       }
     }
 
@@ -404,7 +400,7 @@ class IdeaForm extends PureComponent<
       );
 
       if (attachmentsRequired && ideaFiles.length === 0) {
-        return <FormattedMessage {...messages.noAttachmentsError} />;
+        return this.props.intl.formatMessage(messages.noAttachmentsError);
       }
     }
 
@@ -431,7 +427,7 @@ class IdeaForm extends PureComponent<
       pbContext && pbContext.attributes.max_budget
         ? pbContext.attributes.max_budget
         : null;
-    let budgetError: JSX.Element | null = null;
+    let budgetError: string | null = null;
 
     if (pbContext) {
       if (
@@ -440,14 +436,14 @@ class IdeaForm extends PureComponent<
           (pbContext.type === 'phase' &&
             pastPresentOrFuture([
               (pbContext as IPhaseData).attributes.start_at,
-              (pbContext as IPhaseData).attributes.end_at,
+              (pbContext as IPhaseData).attributes.end_at
             ]) === 'present'))
       ) {
-        budgetError = <FormattedMessage {...messages.noBudgetError} />;
+        budgetError = this.props.intl.formatMessage(messages.noBudgetError);
       } else if (budget === 0) {
-        budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
+        budgetError = this.props.intl.formatMessage(messages.budgetIsZeroError);
       } else if (pbMaxBudget && budget && budget > pbMaxBudget) {
-        budgetError = <FormattedMessage {...messages.budgetIsTooBig} />;
+        budgetError = this.props.intl.formatMessage(messages.budgetIsTooBig);
       }
     }
 
@@ -458,7 +454,7 @@ class IdeaForm extends PureComponent<
       topicsError,
       locationError,
       imageError,
-      attachmentsError,
+      attachmentsError
     });
 
     // scroll to erroneous title/description fields
@@ -466,7 +462,7 @@ class IdeaForm extends PureComponent<
       scrollToComponent(this.titleInputElement, {
         align: 'top',
         offset: -240,
-        duration: 300,
+        duration: 300
       });
       setTimeout(
         () => this.titleInputElement && this.titleInputElement.focus(),
@@ -476,7 +472,7 @@ class IdeaForm extends PureComponent<
       scrollToComponent(this.descriptionElement, {
         align: 'top',
         offset: -200,
-        duration: 300,
+        duration: 300
       });
       setTimeout(
         () => this.descriptionElement && this.descriptionElement.focus(),
@@ -498,16 +494,16 @@ class IdeaForm extends PureComponent<
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
     this.setState(({ ideaFiles }) => ({
-      ideaFiles: [...ideaFiles, ideaFileToAdd],
+      ideaFiles: [...ideaFiles, ideaFileToAdd]
     }));
   };
 
   handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {
     this.setState(({ ideaFiles, ideaFilesToRemove }) => ({
       ideaFiles: ideaFiles.filter(
-        (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
+        ideaFile => ideaFile.base64 !== ideaFileToRemove.base64
       ),
-      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
+      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove]
     }));
   };
 
@@ -520,7 +516,7 @@ class IdeaForm extends PureComponent<
       budget,
       imageFile,
       ideaFiles,
-      ideaFilesToRemove,
+      ideaFilesToRemove
     } = this.state;
     const formIsValid = this.validate(
       title,
@@ -541,7 +537,7 @@ class IdeaForm extends PureComponent<
         budget,
         description,
         ideaFiles,
-        ideaFilesToRemove,
+        ideaFilesToRemove
       };
 
       this.props.onSubmit(output);
@@ -592,7 +588,7 @@ class IdeaForm extends PureComponent<
       topicsError,
       locationError,
       imageError,
-      attachmentsError,
+      attachmentsError
     } = this.state;
     const tenantCurrency = tenant
       ? tenant.data.attributes.settings.core.currency
@@ -622,7 +618,7 @@ class IdeaForm extends PureComponent<
       const showTopics = topicsEnabled && topics && topics.length > 0;
       const showLocation = locationEnabled;
       const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
+        topic => !isNilOrError(topic)
       ) as ITopicData[];
 
       return (
@@ -697,7 +693,7 @@ class IdeaForm extends PureComponent<
                       labelMessage={messages.budgetLabel}
                       labelMessageValues={{
                         currency: tenantCurrency,
-                        maxBudget: pbContext?.attributes.max_budget,
+                        maxBudget: pbContext?.attributes.max_budget
                       }}
                       htmlFor="budget"
                       iconName="admin"
@@ -843,13 +839,13 @@ const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
-  },
+  }
 });
 
 const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaFormWitHOCs {...dataProps} {...inputProps} />}
+    {dataProps => <IdeaFormWitHOCs {...dataProps} {...inputProps} />}
   </Data>
 );

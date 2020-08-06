@@ -6,9 +6,8 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Error from 'components/UI/Error';
-import IconTooltip from 'components/UI/IconTooltip';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
@@ -20,7 +19,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-  HelpImage,
+  HelpImage
 } from './styles';
 
 // hooks
@@ -30,8 +29,9 @@ import useAuthUser from 'hooks/useAuthUser';
 import { verifyIDLookup } from 'services/verify';
 
 // i18n
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
 // typings
@@ -46,13 +46,13 @@ interface Props {
   method: IDLookupMethod;
 }
 
-const VerificationFormLookup = memo<Props>(
-  ({ onCancel, onVerified, showHeader, inModal, className, method }) => {
+const VerificationFormLookup = memo<Props & InjectedIntlProps>(
+  ({ onCancel, onVerified, showHeader, inModal, className, method, intl }) => {
     const authUser = useAuthUser();
 
     const [cardId, setCardId] = useState<string>('');
-    const [cardIdError, setCardIdError] = useState<JSX.Element | null>(null);
-    const [formError, setFormError] = useState<JSX.Element | null>(null);
+    const [cardIdError, setCardIdError] = useState<string | null>(null);
+    const [formError, setFormError] = useState<string | null>(null);
     const [showHelp, setShowHelp] = useState<boolean>(false);
 
     const onCardIdChange = useCallback((cardId: string) => {
@@ -63,6 +63,8 @@ const VerificationFormLookup = memo<Props>(
     const onSubmit = useCallback(
       async (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
+
+        const { formatMessage } = intl;
         let hasEmptyFields = false;
 
         // first reset the errors
@@ -70,7 +72,7 @@ const VerificationFormLookup = memo<Props>(
         setFormError(null);
 
         if (isEmpty(cardId)) {
-          setCardIdError(<FormattedMessage {...messages.emptyFieldError} />);
+          setCardIdError(formatMessage(messages.emptyFieldError));
           hasEmptyFields = true;
         }
 
@@ -80,11 +82,11 @@ const VerificationFormLookup = memo<Props>(
 
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,
-              `${API_PATH}/projects`,
+              `${API_PATH}/projects`
             ];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`,
+              `${API_PATH}/ideas/`
             ];
 
             if (!isNilOrError(authUser)) {
@@ -93,26 +95,22 @@ const VerificationFormLookup = memo<Props>(
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch,
+              partialApiEndpoint: partialEndpointsToRefetch
             });
 
             onVerified();
           } catch (error) {
             if (get(error, 'json.errors.base[0].error') === 'taken') {
-              setFormError(<FormattedMessage {...messages.takenFormError} />);
+              setFormError(formatMessage(messages.takenFormError));
             } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
-              setFormError(<FormattedMessage {...messages.noMatchFormError} />);
+              setFormError(formatMessage(messages.noMatchFormError));
             } else if (
               get(error, 'json.errors.cardId[0].error') === 'invalid'
             ) {
-              setCardIdError(
-                <FormattedMessage {...messages.invalidCardIdError} />
-              );
+              setCardIdError(formatMessage(messages.invalidCardIdError));
             } else {
               reportError(error);
-              setFormError(
-                <FormattedMessage {...messages.somethingWentWrongError} />
-              );
+              setFormError(formatMessage(messages.somethingWentWrongError));
             }
           }
         }
@@ -125,7 +123,7 @@ const VerificationFormLookup = memo<Props>(
     }, []);
 
     const onToggleHelpButtonClick = useCallback(() => {
-      setShowHelp((showHelp) => !showHelp);
+      setShowHelp(showHelp => !showHelp);
     }, []);
 
     return (
@@ -190,4 +188,4 @@ const VerificationFormLookup = memo<Props>(
   }
 );
 
-export default VerificationFormLookup;
+export default injectIntl<Props>(VerificationFormLookup);

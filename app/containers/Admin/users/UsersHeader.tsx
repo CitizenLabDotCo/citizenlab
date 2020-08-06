@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Multiloc } from 'typings';
 
 // Components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import SearchInput from 'components/UI/SearchInput';
@@ -18,7 +18,6 @@ import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
-import rgba from 'polished/lib/color/rgba';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const TitleWrapper = styled.div`
@@ -45,26 +44,20 @@ const FirstRow = styled.div`
 const OnlyRow = styled(FirstRow)`
   min-height: 105px;
   margin-bottom: 30px;
+  display: flex;
+  align-items: flex-start;
 `;
 
 const Spacer = styled.div`
   flex: 1;
 `;
 
-const TitleIcon = styled(Icon)`
-  flex: 0 0 56px;
-  width: 56px;
-  height: 47px;
-  margin-right: 10px;
-  margin-left: -15px;
-
-  .cl-icon-primary {
-    fill: ${colors.adminOrangeIcons};
-  }
-
-  .cl-icon-background {
-    fill: ${rgba(colors.adminOrangeIcons, 0.1)};
-  }
+const SmartGroupIcon = styled(Icon)`
+  flex: 0 0 13px;
+  width: 13px;
+  fill: ${colors.adminOrangeIcons};
+  margin-top: 10px;
+  margin-right: 12px;
 `;
 
 const TextAndButtons = styled.div`
@@ -87,7 +80,6 @@ const Buttons = styled.div`
 const StyledSearchInput = styled(SearchInput)`
   flex: 0 0 250px;
   width: 250px;
-  margin-top: -10px;
 `;
 
 interface Props {
@@ -112,7 +104,7 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
     if (this.props.title) {
       return (
         <OnlyRow>
-          {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
+          {this.props.smartGroup && <SmartGroupIcon name="lightningBolt" />}
           <TextAndButtons>
             <T as="h1" value={this.props.title} />
             <Buttons>
@@ -121,7 +113,7 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
                 hiddenText={<FormattedMessage {...messages.editGroup} />}
                 padding=".65em"
                 icon="edit"
-                buttonStyle="secondary"
+                buttonStyle="text"
                 onClick={this.props.onEdit}
               />
               <Button
@@ -156,5 +148,5 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
 }
 
 export default injectTracks<Props>({
-  trackSearchInput: tracks.searchInput,
+  trackSearchInput: tracks.searchInput
 })(UsersHeader);

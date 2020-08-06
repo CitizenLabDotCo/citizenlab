@@ -6,18 +6,19 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
+import { postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`
   width: 100%;
   height: 50px;
-  background-color: rgba(132, 147, 158, 0.06);
   color: ${colors.label};
+  background: rgba(132, 147, 158, 0.06);
   border-bottom: 1px solid ${colors.adminSeparation};
 `;
 
 const Inner = styled.div`
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth}px;
   height: 100%;
   margin: 0 auto;
   padding-left: 60px;

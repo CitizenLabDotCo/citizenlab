@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import useAdminPublications, {
   InputProps as HookProps,
   IOutput,
@@ -13,7 +14,7 @@ interface Props extends HookProps {
   prefetchProjects?: boolean;
 }
 
-const GetAdminPublications: React.SFC<Props> = (props) => {
+const GetAdminPublications: FC<Props> = (props) => {
   let adminPublications: IOutput;
   if (props.prefetchProjects) {
     adminPublications = useAdminPublicationsPrefetchProjects(

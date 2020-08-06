@@ -19,9 +19,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import Badge from 'components/admin/Badge';
-import Toggle from 'components/UI/Toggle';
-
+import { Toggle, Badge } from 'cl2-component-library';
 // services
 import {
   IUserCustomFieldData,

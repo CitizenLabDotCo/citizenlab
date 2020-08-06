@@ -3,7 +3,7 @@ import { includes, isNil } from 'lodash-es';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
-import Dropdown from 'components/UI/Dropdown';
+import { Dropdown } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -143,18 +143,18 @@ export default class ValuesList extends PureComponent<Props, State> {
     left: undefined,
     mobileLeft: undefined,
     right: undefined,
-    mobileRight: undefined,
+    mobileRight: undefined
   };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   };
 
-  handleOnToggleCheckbox = (entry) => (_event: React.ChangeEvent) => {
+  handleOnToggleCheckbox = entry => (_event: React.ChangeEvent) => {
     this.props.onChange(entry.value);
   };
 
-  handleOnSelectSingleValue = (entry) => (
+  handleOnSelectSingleValue = entry => (
     event: React.MouseEvent | React.KeyboardEvent
   ) => {
     if (
@@ -186,7 +186,7 @@ export default class ValuesList extends PureComponent<Props, State> {
       mobileLeft,
       right,
       mobileRight,
-      name,
+      name
     } = this.props;
 
     // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
@@ -219,9 +219,9 @@ export default class ValuesList extends PureComponent<Props, State> {
                     entry.value !== '-new' ? entry.value : 'old'
                   }`,
                   !multipleSelectionAllowed && checked ? 'selected' : '',
-                  last ? 'last' : '',
+                  last ? 'last' : ''
                 ]
-                  .filter((item) => !isNil(item))
+                  .filter(item => !isNil(item))
                   .join(' ');
 
                 return multipleSelectionAllowed ? (

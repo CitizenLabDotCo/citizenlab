@@ -12,12 +12,12 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import clickOutside from 'utils/containers/clickOutside';
 
 // resources
 import GetWindowSize, {
-  GetWindowSizeChildProps,
+  GetWindowSizeChildProps
 } from 'resources/GetWindowSize';
 
 // animations
@@ -33,8 +33,8 @@ import {
   media,
   colors,
   fontSizes,
-  boxShadowOutline,
-  viewportWidths,
+  defaultOutline,
+  viewportWidths
 } from 'utils/styleUtils';
 
 const desktopOpacityTimeout = 500;
@@ -65,8 +65,8 @@ export const ModalContentContainer = styled.div<{
 `;
 
 const CloseButton = styled.button`
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   top: 20px;
   right: 25px;
@@ -84,11 +84,11 @@ const CloseButton = styled.button`
   outline: none !important;
 
   &:hover {
-    background: #ececec;
+    background: #e0e0e0;
   }
 
   &.focus-visible {
-    ${boxShadowOutline};
+    ${defaultOutline};
   }
 
   ${media.smallerThanMinTablet`
@@ -135,7 +135,7 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
 
   ${media.smallerThanMinTablet`
     max-width: calc(100vw - 30px);
-    max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
+    max-height: ${props => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
 
     &.fixedHeight {
@@ -334,13 +334,13 @@ class Modal extends PureComponent<Props, State> {
 
   static defaultProps = {
     fixedHeight: false,
-    width: 650,
+    width: 650
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      windowHeight: `${window.innerHeight}px`,
+      windowHeight: `${window.innerHeight}px`
     };
     this.unlisten = null;
     this.subscription = null;
@@ -349,7 +349,7 @@ class Modal extends PureComponent<Props, State> {
   componentDidMount() {
     this.subscription = fromEvent(window, 'resize')
       .pipe(debounceTime(50), distinctUntilChanged())
-      .subscribe((event) => {
+      .subscribe(event => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
           this.setState({ windowHeight: `${height}px` });
@@ -387,7 +387,7 @@ class Modal extends PureComponent<Props, State> {
     this.closeModal();
   };
 
-  handleKeypress = (event) => {
+  handleKeypress = event => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.closeModal();
@@ -431,7 +431,7 @@ class Modal extends PureComponent<Props, State> {
       footer,
       hasSkipButton,
       skipText,
-      noClose,
+      noClose
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
@@ -514,11 +514,11 @@ class Modal extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
+  windowSize: <GetWindowSize />
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <Modal {...inputProps} {...dataProps} />}
+    {dataProps => <Modal {...inputProps} {...dataProps} />}
   </Data>
 );
