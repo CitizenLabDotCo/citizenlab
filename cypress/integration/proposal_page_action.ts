@@ -30,7 +30,7 @@ describe('Initiative show page actions', () => {
       const officialFeedbackAuthor = randomString();
 
       // input
-      cy.get('.e2e-locale-switch').each((button) => {
+      cy.get('.e2e-localeswitcher').each((button) => {
         cy.wrap(button).click();
         cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
         cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
