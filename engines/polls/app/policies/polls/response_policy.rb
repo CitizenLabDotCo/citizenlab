@@ -18,6 +18,7 @@ module Polls
     end
 
     def index_xlsx?
+      # TODO moderators cant download for other project
       user&.active? && (
         user.admin? ||
         user.project_moderator?

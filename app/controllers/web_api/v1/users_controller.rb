@@ -28,9 +28,9 @@ class WebApi::V1::UsersController < ::ApplicationController
         @users.order(last_name: :asc)
       when "-last_name"
         @users.order(last_name: :desc)
-      when "email"
+      when "email" # TODO only if admin?
         @users.order(email: :asc)
-      when "-email"
+      when "-email" # TODO only if admin?
         @users.order(email: :desc)
       when "role"
         @users.order_role(:asc)

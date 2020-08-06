@@ -25,6 +25,7 @@ class XlsxService
   end
 
   def generate_users_xlsx users
+    # TODO hide private attributes for non-admins
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
@@ -48,6 +49,7 @@ class XlsxService
   end
 
   def generate_ideas_xlsx ideas
+    # TODO hide private attributes for non-admins
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
@@ -113,6 +115,7 @@ class XlsxService
   end
 
   def generate_initiatives_xlsx initiatives
+    # TODO hide private attributes for non-admins
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
@@ -158,6 +161,7 @@ class XlsxService
   end
 
   def generate_idea_comments_xlsx comments
+    # TODO hide private attributes for non-admins
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
@@ -193,6 +197,7 @@ class XlsxService
   end
 
   def generate_initiative_comments_xlsx comments
+    # TODO hide private attributes for non-admins
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
@@ -239,6 +244,7 @@ class XlsxService
   end
 
   def generate_invites_xlsx invites
+    # TODO hide private attributes for non-admins
     fields = invite_fields
     hash_array = invites.map do |invite|
       fields.each_with_object({}){|(field, f), object| object[field] = f.call(invite)}
