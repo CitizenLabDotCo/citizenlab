@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 
 type Props = {
   value: string;

@@ -5,7 +5,7 @@ import GetCampaignRecipients, {
 import { isNilOrError } from 'utils/helperUtils';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import GetUser from 'resources/GetUser';
-import StatusLabel from 'components/UI/StatusLabel';
+import { StatusLabel } from 'cl2-component-library';
 import { IDeliveryData } from 'services/campaigns';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -59,7 +59,7 @@ class RecipientsTable extends React.PureComponent<Props> {
                       {user.attributes.email}
                     </TextCell>
                     <StatusLabel
-                      color={
+                      backgroundColor={
                         statusColorMapping[recipient.attributes.delivery_status]
                       }
                       text={

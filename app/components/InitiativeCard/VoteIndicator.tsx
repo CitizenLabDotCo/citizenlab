@@ -9,7 +9,7 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ProgressBar from 'components/UI/ProgressBar';
 
 import { adopt } from 'react-adopt';

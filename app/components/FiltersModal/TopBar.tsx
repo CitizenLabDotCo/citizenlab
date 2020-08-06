@@ -1,7 +1,7 @@
 import React, { memo, MouseEvent } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

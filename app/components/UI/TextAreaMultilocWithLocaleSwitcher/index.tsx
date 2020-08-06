@@ -3,12 +3,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
-import Label from 'components/UI/Label';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
+import useTenantLocales from 'hooks/useTenantLocales';
 
 // style
 import styled from 'styled-components';
@@ -36,7 +35,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   width: auto;
 `;
 
@@ -64,6 +63,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
   const locale = useLocale();
+  const tenantLocales = useTenantLocales();
 
   useEffect(() => {
     !isNilOrError(locale) && setSelectedLocale(locale);
@@ -103,8 +103,9 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
             <Spacer />
           )}
 
-          <StyledFormLocaleSwitcher
-            onLocaleChange={handleOnSelectedLocaleChange}
+          <StyledLocaleSwitcher
+            onSelectedLocaleChange={handleOnSelectedLocaleChange}
+            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
             values={{ valueMultiloc }}
           />

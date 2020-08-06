@@ -5,10 +5,11 @@ import { shallow } from 'enzyme';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 
 jest.mock('utils/cl-intl');
-import { intl } from 'utils/cl-intl';
+const Intl = require('utils/cl-intl/__mocks__/');
+const { intl } = Intl;
+
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('components/UI/Select', () => 'Select');
-jest.mock('components/UI/Input', () => 'Input');
+jest.mock('cl2-component-library', () => ({ Input: 'Input', Select: 'Select' }));
 jest.mock('./WrongMaxChoiceIndicator', () => 'WrongMaxChoiceIndicator');
 jest.mock('components/admin/ResourceList', () => ({ Row: 'Row' }));
 

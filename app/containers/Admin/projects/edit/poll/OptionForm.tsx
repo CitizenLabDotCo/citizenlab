@@ -19,9 +19,6 @@ import FormOptionRow from './FormOptionRow';
 import OptionRow from './OptionRow';
 import QuestionDetailsForm from './QuestionDetailsForm';
 
-// Typings
-import { Locale } from 'typings';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -48,7 +45,6 @@ const DisabledDragHandle = styled.div`
 interface InputProps {
   question: IPollQuestion;
   collapse: () => void;
-  locale: Locale;
 }
 
 interface DataProps {
@@ -86,7 +82,7 @@ export class OptionForm extends PureComponent<Props, State> {
   };
 
   render() {
-    const { question, collapse, locale, pollOptions } = this.props;
+    const { question, collapse, pollOptions } = this.props;
     const { editingId } = this.state;
     return (
       <Container
@@ -129,7 +125,6 @@ export class OptionForm extends PureComponent<Props, State> {
                   editingId === pollOption.id ? (
                     <FormOptionRow
                       key={pollOption.id}
-                      locale={locale}
                       mode="edit"
                       closeRow={this.closeRow}
                       optionId={pollOption.id}
@@ -150,7 +145,6 @@ export class OptionForm extends PureComponent<Props, State> {
             {editingId === 'new' ? (
               <FormOptionRow
                 key="new"
-                locale={locale}
                 mode="new"
                 questionId={question.id}
                 closeRow={this.closeRow}
@@ -179,8 +173,10 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-export default (inputProps: InputProps) => (
+const OptionFormWithData = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(dataProps) => <OptionForm {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default OptionFormWithData;
