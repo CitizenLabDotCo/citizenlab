@@ -128,7 +128,7 @@ const Container = styled.div<{
   }
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: #000;
+    border-color: ${colors.focussedBorder};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
 
