@@ -4,6 +4,7 @@ module Volunteering
     @@multiloc_service = MultilocService.new
 
     def generate_xlsx pc, volunteers
+      # TODO hide private attributes for non-admins
       pa = Axlsx::Package.new
       wb = pa.workbook
       pc.causes.order(:ordering).each do |cause|

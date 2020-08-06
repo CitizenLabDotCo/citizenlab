@@ -1,5 +1,5 @@
 class WebApi::V1::ModeratorSerializer < WebApi::V1::BaseSerializer
-  attributes :first_name, :last_name, :slug, :roles, :email
+  attributes :first_name, :last_name, :slug, :roles, :email # TODO hide email for non-admins
 
   attribute :avatar, if: Proc.new { |object|
     object.avatar
