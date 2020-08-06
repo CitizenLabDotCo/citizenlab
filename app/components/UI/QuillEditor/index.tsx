@@ -21,7 +21,13 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
+import {
+  colors,
+  quillEditedContent,
+  media,
+  fontSizes,
+  defaultStyles,
+} from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -123,7 +129,7 @@ const Container = styled.div<{
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: #000;
-    box-shadow: inset 0px 0px 0px 1px #000;
+    box-shadow: ${defaultStyles.boxShadowFocused};
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -132,7 +138,7 @@ const Container = styled.div<{
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.clRedError};
-    box-shadow: inset 0px 0px 0px 1px ${colors.clRedError};
+    box-shadow: ${defaultStyles.boxShadowError};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -144,7 +150,7 @@ const Container = styled.div<{
     border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) =>
   theme.borderRadius};
     border: 1px solid ${colors.border};
-    box-shadow: inset 0px 0px 0px 1px transparent;
+    box-shadow: none;
     overflow-y: auto;
     transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
     transform: translate3d(0,0,0);
