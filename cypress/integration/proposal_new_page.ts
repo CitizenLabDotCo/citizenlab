@@ -95,47 +95,35 @@ describe('Initiative new page', () => {
     cy.get('#e2e-initiative-file-upload');
 
     // add an image
-    cy.fixture('cy.png', 'base64')
-      .then((fileContent) => {
-        return cy.get('#e2e-iniatiative-img-dropzone').upload(
-          {
-            fileContent,
-            fileName: 'cy.png',
-            mimeType: 'image/png',
-          },
-          {
-            subjectType: 'drag-n-drop',
-          }
-        );
-      })
-      .then(() => {
-        cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
+    cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
 
-        // save the form
-        cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
-        // wait 3s for page redirection to finish
-        cy.wait(3000);
+    // save the form
+    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
 
-        // verify the content of the newly created initiative page
-        cy.location('pathname').should(
-          'eq',
-          `/en-GB/initiatives/${initiativeTitle}`
-        );
-        cy.get('#e2e-initiative-show');
-        cy.get('#e2e-initiative-show')
-          .find('#e2e-initiative-title')
-          .contains(initiativeTitle);
-        cy.get('#e2e-initiative-show')
-          .find('#e2e-initiative-description')
-          .contains(initiativeContent);
-        cy.get('#e2e-initiative-show')
-          .find('#e2e-initiative-topics')
-          .find('.e2e-initiative-topic')
-          .should('have.length', 1);
-        cy.get('#e2e-initiative-show')
-          .find('#e2e-map-toggle')
-          .contains('Boulevard Anspach');
-      });
+    // wait 3s for page redirection to finish
+    cy.wait(3000);
+
+    // verify the content of the newly created initiative page
+    cy.location('pathname').should(
+      'eq',
+      `/en-GB/initiatives/${initiativeTitle}`
+    );
+    cy.get('#e2e-initiative-show');
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-initiative-title')
+      .contains(initiativeTitle);
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-initiative-description')
+      .contains(initiativeContent);
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-initiative-topics')
+      .find('.e2e-initiative-topic')
+      .should('have.length', 1);
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-map-toggle')
+      .contains('Boulevard Anspach');
   });
 });
