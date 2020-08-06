@@ -5,14 +5,14 @@ import {
   colors,
   invisibleA11yText,
   media,
-  defaultCardStyle
+  defaultCardStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import {
   Messages,
-  FormattedMessage as OriginalFormattedMessage
+  FormattedMessage as OriginalFormattedMessage,
 } from 'react-intl';
 import Button from '../Button';
 import messages from './messages';
@@ -129,12 +129,12 @@ export const FormLabel = memo<FormLabelProps>(
     className,
     hidden,
     noSpace,
-    optional
+    optional,
   }) => (
     <FormLabelStyled
       id={id}
-      className={[className, hidden ? 'hidden' : null, 'invisible']
-        .filter(item => item)
+      className={[className, hidden ? 'invisible' : null]
+        .filter((item) => item)
         .join(' ')}
       htmlFor={htmlFor}
     >
@@ -178,12 +178,12 @@ export const FormLabelValue = memo(
     className,
     hidden,
     noSpace,
-    optional
+    optional,
   }: FormLabelValueProps) => (
     <FormLabelStyled
       id={id}
-      className={[className, hidden ? 'hidden' : null, 'invisible']
-        .filter(item => item)
+      className={[className, hidden ? 'invisible' : null]
+        .filter((item) => item)
         .join(' ')}
       htmlFor={htmlFor}
     >
