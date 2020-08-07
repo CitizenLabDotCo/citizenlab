@@ -2,9 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  # TODO test common password
-  # TODO test empty string password
-
   describe "Default factory" do
     it "is valid" do
       expect(build(:user)).to be_valid
@@ -85,7 +82,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'is valid when its a strong password' do
-      u = build(:user, password: '9tAc4NdcGdkzVO0XvRiu1d2ytlSd')
+      u = build(:user, password: '9x6TUuzSfkzyQrQFhxN9')
       expect(u).to be_valid
     end
   end
