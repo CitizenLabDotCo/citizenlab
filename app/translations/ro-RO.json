@@ -1788,7 +1788,7 @@
   "app.containers.SignIn.noValidEmailError": "Aceasta nu pare să fie o adresă de e-mail validă",
   "app.containers.SignIn.or": "Sau",
   "app.containers.SignIn.passwordLabel": "Parola",
-  "app.containers.SignIn.signInError": "Informațiile furnizate nu sunt corecte. Faceți clic pe „Parola uitată“ de mai sus pentru a vă reseta parola.",
+  "app.containers.SignIn.signInError": "Informațiile furnizate nu sunt corecte. Faceți clic pe „Parola uitată“ pentru a vă reseta parola.",
   "app.containers.SignIn.signUp": "Înscrie-te",
   "app.containers.SignIn.somethingWentWrong": "A apărut o eroare. Vă rugăm să încercați din nou mai târziu.",
   "app.containers.SignIn.submit": "Autentificare",
