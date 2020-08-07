@@ -1788,7 +1788,7 @@
   "app.containers.SignIn.noValidEmailError": "Isto não parece um e-mail válido.",
   "app.containers.SignIn.or": "Ou",
   "app.containers.SignIn.passwordLabel": "Senha",
-  "app.containers.SignIn.signInError": "A informação fornecida não está correcta. Clique em 'Senha esquecida' acima para redefinir sua senha.",
+  "app.containers.SignIn.signInError": "A informação fornecida não está correcta. Clique em 'Senha esquecida' para redefinir sua senha.",
   "app.containers.SignIn.signUp": "faça o login",
   "app.containers.SignIn.somethingWentWrong": "Alguma coisa deu errado e não te podemos cadastrar agora mesmo. Por favor, tente novamente mais tarde.",
   "app.containers.SignIn.submit": "Iniciar Sessão",
