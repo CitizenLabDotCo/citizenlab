@@ -94,9 +94,9 @@ describe('Initiative form page', () => {
 
     // save the form
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(3000);
 
     // verify updated initiative page
+    cy.get('#e2e-initiative-show');
     cy.location('pathname').should(
       'eq',
       `/en-GB/initiatives/${initiativeTitle}`
