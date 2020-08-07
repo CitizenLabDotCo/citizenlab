@@ -102,6 +102,9 @@ end
 
 
 if ['public','example_org'].include? Apartment::Tenant.current
+  # rake db:reset clears all instances before repopulating the db.
+  CommonPassword.initialize!
+  
   t = Tenant.create!({
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
@@ -359,7 +362,7 @@ end
 admin = {
   id: "386d255e-2ff1-4192-8e50-b3022576be50",
   email: 'admin@citizenlab.co',
-  password: 'testtest',
+  password: 'g23cTKme6TJp8EgSkwpk',
   roles: [
     {type: "admin"},
   ],
@@ -368,13 +371,13 @@ admin = {
 moderator = {
   id: "61caabce-f7e5-4804-b9df-36d7d7d73e4d",
   email: 'moderator@citizenlab.co',
-  password: 'testtest',
+  password: 'q8t6a6WRP63D9cHScajz',
   roles: []
 }
 user = {
   id: "546335a3-33b9-471c-a18a-d5b58ebf173a",
   email: 'user@citizenlab.co',
-  password: 'testtest',
+  password: '9x6TUuzSfkzyQrQFhxN9',
   roles: []
 }
 
@@ -425,7 +428,7 @@ if Apartment::Tenant.current == 'localhost'
 
   if SEED_SIZE != 'empty'
     num_users.times do
-      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'testtest'})
+      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: '9x6TUuzSfkzyQrQFhxN9'})
     end
 
     Area.create!({
