@@ -152,8 +152,6 @@ const Container = styled.div<{
     border: 1px solid ${colors.border};
     box-shadow: none;
     overflow-y: auto;
-    transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
-    transform: translate3d(0,0,0);
     ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {
