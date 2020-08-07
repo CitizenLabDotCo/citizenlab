@@ -1788,7 +1788,7 @@
   "app.containers.SignIn.noValidEmailError": "Dit lijkt geen geldige e-mail te zijn",
   "app.containers.SignIn.or": "Of",
   "app.containers.SignIn.passwordLabel": "Wachtwoord",
-  "app.containers.SignIn.signInError": "De ingevoerde informatie is niet correct. Klik hieronder op 'Wachtwoord vergeten' om je wachtwoord opnieuw in te stellen.",
+  "app.containers.SignIn.signInError": "De ingevoerde informatie is niet correct. Klik op 'Wachtwoord vergeten' om je wachtwoord opnieuw in te stellen.",
   "app.containers.SignIn.signUp": "Registreren",
   "app.containers.SignIn.somethingWentWrong": "Er ging iets mis en we kunnen je blijkbaar niet inloggen. Probeer het over een paar minuten opnieuw.",
   "app.containers.SignIn.submit": "Inloggen",
