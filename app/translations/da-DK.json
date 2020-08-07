@@ -1788,7 +1788,7 @@
   "app.containers.SignIn.noValidEmailError": "Det ser ikke ud til, at dette er en gyldig e-mail.",
   "app.containers.SignIn.or": "Eller",
   "app.containers.SignIn.passwordLabel": "Adgangskode",
-  "app.containers.SignIn.signInError": "De angivne oplysninger er ikke korrekte. Klik \"Glemt dit password\" ovenfor for at nulstille dit password.",
+  "app.containers.SignIn.signInError": "De angivne oplysninger er ikke korrekte. Klik \"Glemt dit password\" for at nulstille dit password.",
   "app.containers.SignIn.signUp": "Registrer dig",
   "app.containers.SignIn.somethingWentWrong": "Der gik noget galt, og vi kan ikke logge på dig lige nu. Prøv igen senere.",
   "app.containers.SignIn.submit": "Log ind",
