@@ -4,9 +4,6 @@ require 'rspec_api_documentation/dsl'
 
 resource "Users" do
 
-  # TODO test common password
-  # TODO test empty string password
-
   explanation "Citizens and city administrators."
 
   before do
