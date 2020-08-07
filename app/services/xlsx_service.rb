@@ -56,7 +56,7 @@ class XlsxService
           "id",
           "title",
           "body",
-          "estimated_budget",
+          "proposed_budget", # aka 'estimated_budget'
           "author_name",
           "author_email",
           "publication_status",
