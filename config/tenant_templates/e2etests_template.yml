@@ -425,7 +425,7 @@ models:
     domicile:
     education:
     registration_completed_at: '2018-03-28 13:34:57'
-    password: testtest
+    password: 9x6TUuzSfkzyQrQFhxN9
     remote_avatar_url:
     roles:
     - type: admin
@@ -442,7 +442,7 @@ models:
     birthyear:
     domicile:
     education:
-    password: testtest
+    password: 9x6TUuzSfkzyQrQFhxN9
     remote_avatar_url:
     created_at: '2018-03-28 13:35:02'
     registration_completed_at: '2018-03-28 13:35:02'
@@ -458,7 +458,7 @@ models:
     birthyear:
     domicile:
     education:
-    password: testtest
+    password: 9x6TUuzSfkzyQrQFhxN9
     remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:57'
@@ -475,7 +475,7 @@ models:
     birthyear:
     domicile:
     education:
-    password: testtest
+    password: 9x6TUuzSfkzyQrQFhxN9
     remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:57'
@@ -492,7 +492,7 @@ models:
     birthyear:
     domicile:
     education:
-    password: testtest
+    password: 9x6TUuzSfkzyQrQFhxN9
     remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:57'
