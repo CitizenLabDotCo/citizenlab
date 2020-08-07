@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
+  # TODO test common password
+  # TODO test empty string password
+
   describe "Default factory" do
     it "is valid" do
       expect(build(:user)).to be_valid
@@ -63,6 +66,27 @@ RSpec.describe User, type: :model do
       u1 = build(:user, email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(u1).to be_invalid
       expect(u1.errors.details[:email]).to eq [{error: :domain_blacklisted, value: "039b1ee.netsolhost.com"}]
+    end
+  end
+
+  describe 'password' do
+    before do
+      CommonPassword.initialize!
+    end
+
+    it 'is invalid when set to empty string' do
+      u = build(:user, password: '')
+      expect(u).to be_invalid
+    end
+
+    it 'is invalid if its a common password' do
+      u = build(:user, password: 'batman')
+      expect(u).to be_invalid
+    end
+
+    it 'is valid when its a strong password' do
+      u = build(:user, password: '9tAc4NdcGdkzVO0XvRiu1d2ytlSd')
+      expect(u).to be_valid
     end
   end
 
