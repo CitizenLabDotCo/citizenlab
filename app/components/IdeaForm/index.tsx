@@ -785,7 +785,7 @@ class IdeaForm extends PureComponent<
                     subtext={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
-                      ]?.properties?.topic_ids?.description
+                      ]?.properties?.estimated_budget?.description
                     }
                     subtextSupportsHtml={true}
                   />
