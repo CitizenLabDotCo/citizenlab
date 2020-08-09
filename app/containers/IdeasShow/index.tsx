@@ -126,8 +126,8 @@ const Container = styled.main`
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-  props
-) => props.theme.mobileTopBarHeight}px);
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 
   &.content-enter {
@@ -364,7 +364,7 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface IActionInfos {
   participationContextType: IParticipationContextType | null;
@@ -385,7 +385,7 @@ interface State {
 export class IdeasShow extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
-  > {
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -437,14 +437,14 @@ export class IdeasShow extends PureComponent<
         idea.attributes.action_descriptor.voting.future_enabled;
       const pbProject =
         project.attributes.process_type === 'continuous' &&
-          project.attributes.participation_method === 'budgeting'
+        project.attributes.participation_method === 'budgeting'
           ? project
           : null;
       const pbPhase =
         !pbProject && !isNilOrError(phases)
           ? phases.find(
-            (phase) => phase.attributes.participation_method === 'budgeting'
-          )
+              (phase) => phase.attributes.participation_method === 'budgeting'
+            )
           : null;
       const pbPhaseIsActive =
         pbPhase &&
@@ -457,9 +457,9 @@ export class IdeasShow extends PureComponent<
         : null;
       const lastPhaseHasPassed = lastPhase
         ? pastPresentOrFuture([
-          lastPhase.attributes.start_at,
-          lastPhase.attributes.end_at,
-        ]) === 'past'
+            lastPhase.attributes.start_at,
+            lastPhase.attributes.end_at,
+          ]) === 'past'
         : false;
       const pbPhaseIsLast = pbPhase && lastPhase && lastPhase.id === pbPhase.id;
       const showBudgetControl = !!(
@@ -553,7 +553,7 @@ export class IdeasShow extends PureComponent<
   ) => {
     return (
       ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
-      'ui:widget'
+        'ui:widget'
       ] !== 'hidden'
     );
   };
@@ -645,14 +645,14 @@ export class IdeasShow extends PureComponent<
 
       const utmParams = !isNilOrError(authUser)
         ? {
-          source: 'share_idea',
-          campaign: 'share_content',
-          content: authUser.id,
-        }
+            source: 'share_idea',
+            campaign: 'share_content',
+            content: authUser.id,
+          }
         : {
-          source: 'share_idea',
-          campaign: 'share_content',
-        };
+            source: 'share_idea',
+            campaign: 'share_content',
+          };
       const showTranslateButton =
         !isNilOrError(idea) &&
         !isNilOrError(locale) &&

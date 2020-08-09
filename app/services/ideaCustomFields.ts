@@ -71,6 +71,7 @@ export interface IIdeaCustomFieldsSchemas {
         title: JSONSchemaObject;
         body: JSONSchemaObject;
         topic_ids: JSONSchemaObject;
+        estimated_budget: JSONSchemaObject;
         location: JSONSchemaObject;
         images: JSONSchemaObject;
         attachments: JSONSchemaObject;
@@ -83,6 +84,7 @@ export interface IIdeaCustomFieldsSchemas {
       title: UISchemaObject;
       body: UISchemaObject;
       topic_ids: UISchemaObject;
+      estimated_budget: UISchemaObject;
       location: UISchemaObject;
       images: UISchemaObject;
       attachments: UISchemaObject;
