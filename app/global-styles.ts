@@ -13,13 +13,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   * {
-    outline: none;
-
-    &.focus-visible {
-      outline-color: #000;
-      outline-style: solid;
-      outline-width: 2px;
-      outline-offset: 0px;
+    &:not(.focus-visible) {
+      outline: none;
     }
   }
 
@@ -38,7 +33,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea, .ql-container, .ql-toolbar.ql-snow {
-    font-family: ${(props: any) => props.theme.fontFamily}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-family: ${(props: any) =>
+      props.theme
+        .fontFamily}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
 
   h3 {

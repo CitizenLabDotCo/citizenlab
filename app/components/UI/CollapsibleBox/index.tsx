@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState, Suspense } from 'react';
 
 // components
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -78,7 +78,7 @@ const ArrowIcon = styled(Icon)`
   height: 13px;
   fill: ${colors.label};
   transform: rotate(90deg);
-  transition: all .2s linear;
+  transition: all 0.2s linear;
 
   &.open {
     transform: rotate(0deg);
@@ -90,7 +90,7 @@ const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
   overflow: hidden;
   z-index: 2;
   padding: 20px;
-  background-color: ${props => props.contentBackgroundColor || '#fff'};
+  background-color: ${(props) => props.contentBackgroundColor || '#fff'};
   margin-top: 1px;
 
   ${media.largePhone`
@@ -143,19 +143,21 @@ const CollapsibleBox = memo<Props>((props) => {
     title,
     children,
     contentBackgroundColor,
-    e2eId
+    e2eId,
   } = props;
 
   return (
     <Container className={className}>
-      <ContentToggleButton id={e2eId || ''} aria-expanded={showContent} onClick={handleContentToggle}>
+      <ContentToggleButton
+        id={e2eId || ''}
+        aria-expanded={showContent}
+        onClick={handleContentToggle}
+      >
         <Title>
           {titleIconName && <TitleIcon name={titleIconName} />}
-          <ContentLabel>
-            {title}
-          </ContentLabel>
+          <ContentLabel>{title}</ContentLabel>
         </Title>
-        <ArrowIcon name="dropdown" className={showContent ? 'open' : ''}/>
+        <ArrowIcon name="dropdown" className={showContent ? 'open' : ''} />
       </ContentToggleButton>
       <CSSTransition
         classNames="content"
@@ -166,14 +168,11 @@ const CollapsibleBox = memo<Props>((props) => {
         exit={true}
       >
         <Wrapper contentBackgroundColor={contentBackgroundColor}>
-          <Suspense fallback={null}>
-            {children}
-          </Suspense>
+          <Suspense fallback={null}>{children}</Suspense>
         </Wrapper>
       </CSSTransition>
     </Container>
   );
-
 });
 
 export default CollapsibleBox;

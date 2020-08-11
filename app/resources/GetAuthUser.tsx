@@ -23,7 +23,7 @@ export default class GetAuthUser extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      authUser: undefined
+      authUser: undefined,
     };
   }
 
@@ -32,13 +32,13 @@ export default class GetAuthUser extends React.Component<Props, State> {
 
     this.subscriptions = [
       authUser$.subscribe((authUser) => {
-        this.setState({ authUser: (authUser ? authUser.data : null) });
-      })
+        this.setState({ authUser: authUser ? authUser.data : null });
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

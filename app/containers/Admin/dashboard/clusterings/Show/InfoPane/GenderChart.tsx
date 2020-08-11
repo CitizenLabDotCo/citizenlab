@@ -1,7 +1,15 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { isEqual, isEmpty } from 'lodash-es';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ReferenceLine,
+  ResponsiveContainer,
+} from 'recharts';
 import { votesByGenderStream, IVotesByGender } from 'services/stats';
 import styled, { withTheme } from 'styled-components';
 
@@ -37,7 +45,10 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) || !isEqual(this.props.normalization, prevProps.normalization)) {
+    if (
+      !isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) ||
+      !isEqual(this.props.normalization, prevProps.normalization)
+    ) {
       this.resubscribe();
     }
   }
@@ -55,20 +66,25 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
       series.forEach((serie, index) => {
         record[`up ${index + 1}`] = serie.series.up[gender] || 0;
         record[`down ${index + 1}`] = -serie.series.down[gender] || 0;
-        record[`sum ${index + 1}`] = serie.series.up[gender] - serie.series.down[gender] || 0;
+        record[`sum ${index + 1}`] =
+          serie.series.up[gender] - serie.series.down[gender] || 0;
       });
       return record;
     });
-  }
+  };
 
   resubscribe() {
     if (this.subscription) this.subscription.unsubscribe();
     this.subscription = combineLatest(
-      this.props.ideaIdsComparisons.map((ideaIds) => (
-        votesByGenderStream({
-          queryParameters: { ideas: ideaIds, normalization: this.props.normalization }}
-        ).observable
-      ))
+      this.props.ideaIdsComparisons.map(
+        (ideaIds) =>
+          votesByGenderStream({
+            queryParameters: {
+              ideas: ideaIds,
+              normalization: this.props.normalization,
+            },
+          }).observable
+      )
     ).subscribe((series) => {
       this.setState({ series: this.convertToGraphFormat(series) });
     });
@@ -92,16 +108,44 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             <YAxis />
             <Tooltip />
             <ReferenceLine y={0} stroke="#000" />
-            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar key={`up ${index + 1}`} dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-            ))}
-            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar key={`down ${index + 1}`} dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-            ))}
-            {ideaIdsComparisons.length === 1 &&
-              <Bar key="up 1" dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
-            {ideaIdsComparisons.length === 1 &&
-              <Bar key="down 1" dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
+            {ideaIdsComparisons.length > 1 &&
+              ideaIdsComparisons.map((_, index) => (
+                <Bar
+                  key={`up ${index + 1}`}
+                  dataKey={`up ${index + 1}`}
+                  fill={theme.comparisonColors[index]}
+                  stackId={`votes ${index}`}
+                  maxBarSize={20}
+                />
+              ))}
+            {ideaIdsComparisons.length > 1 &&
+              ideaIdsComparisons.map((_, index) => (
+                <Bar
+                  key={`down ${index + 1}`}
+                  dataKey={`down ${index + 1}`}
+                  fill={theme.comparisonColors[index]}
+                  stackId={`votes ${index}`}
+                  maxBarSize={20}
+                />
+              ))}
+            {ideaIdsComparisons.length === 1 && (
+              <Bar
+                key="up 1"
+                dataKey="up 1"
+                fill={theme.upvotes}
+                stackId="votes 1"
+                maxBarSize={20}
+              />
+            )}
+            {ideaIdsComparisons.length === 1 && (
+              <Bar
+                key="down 1"
+                dataKey="down 1"
+                fill={theme.downvotes}
+                stackId="votes 1"
+                maxBarSize={20}
+              />
+            )}
           </BarChart>
         </ResponsiveContainer>
       </Container>

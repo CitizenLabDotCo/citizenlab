@@ -8,7 +8,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { isError } from 'util';
 import { UploadFile } from 'typings';
 
@@ -16,14 +16,16 @@ import { UploadFile } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-const Container = styled.div<{error: boolean}>`
+const Container = styled.div<{ error: boolean }>`
   display: flex;
   align-items: center;
   padding: 10px 20px;
   margin-bottom: 10px;
   margin-top: 10px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${({ error }) => error ? lighten(.4, colors.clRed) : lighten(.4, colors.label)};
+  border: 1px solid
+    ${({ error }) =>
+      error ? lighten(0.4, colors.clRed) : lighten(0.4, colors.label)};
 `;
 
 const Paperclip = styled(Icon)`
@@ -40,8 +42,8 @@ const FileInfo = styled.div`
   align-items: center;
 `;
 
-const FileDownloadLink = styled.a<{error: boolean}>`
-  color: ${({ error }) => error ? colors.clRed : colors.label};
+const FileDownloadLink = styled.a<{ error: boolean }>`
+  color: ${({ error }) => (error ? colors.clRed : colors.label)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -57,8 +59,8 @@ const FileDownloadLink = styled.a<{error: boolean}>`
   }
 `;
 
-const FileSize = styled.span<{error: boolean}>`
-  color: ${({ error }) => error ? colors.clRed : colors.label};
+const FileSize = styled.span<{ error: boolean }>`
+  color: ${({ error }) => (error ? colors.clRed : colors.label)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -102,24 +104,39 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
       <Container error={!!file.error}>
         <Paperclip name="paperclip" ariaHidden />
         <FileInfo>
-          <FileDownloadLink error={!!file.error} href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
-            {!!file.error
-              ? <FormattedMessage {...messages[file.error[0]]} values={{ fileName: file.filename }} />
-              : <>
-                  <ScreenReaderOnly>
-                    <FormattedMessage {...messages.a11y_file} />
-                  </ScreenReaderOnly>
-                  {file.filename}
-                </>
-            }
+          <FileDownloadLink
+            error={!!file.error}
+            href={file.url}
+            download={file.filename}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {!!file.error ? (
+              <FormattedMessage
+                {...messages[file.error[0]]}
+                values={{ fileName: file.filename }}
+              />
+            ) : (
+              <>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_file} />
+                </ScreenReaderOnly>
+                {file.filename}
+              </>
+            )}
           </FileDownloadLink>
-          <FileSize error={!!file.error}>({returnFileSize(file.size)})</FileSize>
+          <FileSize error={!!file.error}>
+            ({returnFileSize(file.size)})
+          </FileSize>
         </FileInfo>
-        {onDeleteClick &&
+        {onDeleteClick && (
           <DeleteButton type="button" onClick={onDeleteClick}>
-            <TrashIcon name="delete" title={<FormattedMessage {...messages.a11y_removeFile} />} />
+            <TrashIcon
+              name="delete"
+              title={<FormattedMessage {...messages.a11y_removeFile} />}
+            />
           </DeleteButton>
-        }
+        )}
       </Container>
     );
   }

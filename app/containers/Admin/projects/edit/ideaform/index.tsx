@@ -7,14 +7,22 @@ import { isEmpty } from 'lodash-es';
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
 
 // services
-import { updateIdeaCustomField, IUpdatedIdeaCustomFieldProperties } from 'services/ideaCustomFields';
+import {
+  updateIdeaCustomField,
+  IUpdatedIdeaCustomFieldProperties,
+} from 'services/ideaCustomFields';
 
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Success from 'components/UI/Success';
+import { Success } from 'cl2-component-library';
 import IdeaCustomField from './IdeaCustomField';
-import { Section, SectionTitle, SectionDescription, SubSectionTitle } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -81,175 +89,200 @@ interface IChanges {
   };
 }
 
-const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, className, intl: { formatMessage } }) => {
-  const projectId = params.projectId;
+const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
+  ({ params, className, intl: { formatMessage } }) => {
+    const projectId = params.projectId;
 
-  const [changes, setChanges] = useState<IChanges>({});
-  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
-  const [processing, setProcessing] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+    const [changes, setChanges] = useState<IChanges>({});
+    const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
+    const [processing, setProcessing] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
-  const ideaCustomFields = useIdeaCustomFields({ projectId });
+    const ideaCustomFields = useIdeaCustomFields({ projectId });
 
-  const allExpanded = Object.getOwnPropertyNames(collapsed).every(key => collapsed[key] === false);
+    const allExpanded = Object.getOwnPropertyNames(collapsed).every(
+      (key) => collapsed[key] === false
+    );
 
-  useEffect(() => {
-    if (!isNilOrError(ideaCustomFields) && isEmpty(collapsed)) {
-      const newCollapsed = {};
-      ideaCustomFields.data.forEach((ideaCustomField) => {
-        newCollapsed[ideaCustomField.id] = true;
-      });
-      setCollapsed(newCollapsed);
-    }
-  }, [ideaCustomFields, collapsed]);
-
-  const handleIdeaCustomFieldOnCollapseExpand = useCallback((ideaCustomFieldId: string) => {
-    setSuccess(false);
-    setError(false);
-    setCollapsed((collapsed) => ({
-      ...collapsed,
-      [ideaCustomFieldId]: !collapsed[ideaCustomFieldId]
-    }));
-  }, []);
-
-  const handleCollapseExpandAll = useCallback(() => {
-    const newCollapsed = {};
-
-    if (!allExpanded) {
-      Object.keys(collapsed).forEach((key) => newCollapsed[key] = false);
-    } else {
-      Object.keys(collapsed).forEach((key) => newCollapsed[key] = true);
-    }
-
-    setCollapsed(newCollapsed);
-  }, [collapsed, allExpanded]);
-
-  const handleIdeaCustomFieldOnChange = useCallback((
-    ideaCustomFieldId: string,
-    updatedProperties: IUpdatedIdeaCustomFieldProperties,
-  ) => {
-    setSuccess(false);
-    setError(false);
-    setChanges((changes) => {
-      const fieldChanges = changes[ideaCustomFieldId] ? ({
-        ...changes[ideaCustomFieldId],
-        ...updatedProperties
-      }) : ({
-        ...updatedProperties
-      });
-
-      return ({
-        ...changes,
-        [ideaCustomFieldId]: {
-          ...fieldChanges
-        }
-      });
-    });
-  }, []);
-
-  const handleOnSubmit = useCallback(async () => {
-    if (!isNilOrError(ideaCustomFields)) {
-      setProcessing(true);
-
-      try {
-        const promises: Promise<any>[] = Object.keys(changes).map((ideaCustomFieldId) => {
-          const ideaCustomFieldCode = ideaCustomFields.data.find(item => item.id === ideaCustomFieldId)?.attributes?.code;
-          return ideaCustomFieldCode
-            ? updateIdeaCustomField(projectId, ideaCustomFieldId, ideaCustomFieldCode, changes[ideaCustomFieldId])
-            : Promise.resolve();
+    useEffect(() => {
+      if (!isNilOrError(ideaCustomFields) && isEmpty(collapsed)) {
+        const newCollapsed = {};
+        ideaCustomFields.data.forEach((ideaCustomField) => {
+          newCollapsed[ideaCustomField.id] = true;
         });
-
-        await Promise.all(promises);
-        setChanges({});
-        setProcessing(false);
-        setSuccess(true);
-        setError(false);
-      } catch (error) {
-        setProcessing(false);
-        setSuccess(false);
-        setError(true);
+        setCollapsed(newCollapsed);
       }
-    }
-  }, [changes, ideaCustomFields]);
+    }, [ideaCustomFields, collapsed]);
 
-  if (!isNilOrError(ideaCustomFields)) {
-    return (
-      <Container className={className || ''}>
-        <Header>
-          <TitleContainer>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.title} />
-            </StyledSectionTitle>
-          </TitleContainer>
-          <SectionDescription>
-            <FormattedMessage {...messages.description} />
-          </SectionDescription>
-        </Header>
+    const handleIdeaCustomFieldOnCollapseExpand = useCallback(
+      (ideaCustomFieldId: string) => {
+        setSuccess(false);
+        setError(false);
+        setCollapsed((collapsed) => ({
+          ...collapsed,
+          [ideaCustomFieldId]: !collapsed[ideaCustomFieldId],
+        }));
+      },
+      []
+    );
 
-        <Content>
-          <Section>
-            <StyledSubSectionTitle>
-              <CollapseExpandAllButton
-                buttonStyle="secondary"
-                padding="7px 10px"
-                onClick={handleCollapseExpandAll}
-                text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
-              />
-            </StyledSubSectionTitle>
-            {ideaCustomFields.data.map((ideaCustomField, index) => {
-              return (
-                <IdeaCustomField
-                  key={ideaCustomField.id}
-                  collapsed={collapsed[ideaCustomField.id]}
-                  first={index === 0}
-                  ideaCustomField={ideaCustomField}
-                  onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
-                  onChange={handleIdeaCustomFieldOnChange}
-                />
-              );
-            })}
-          </Section>
-        </Content>
+    const handleCollapseExpandAll = useCallback(() => {
+      const newCollapsed = {};
 
-        <Footer>
-          <Button
-            buttonStyle="admin-dark"
-            onClick={handleOnSubmit}
-            processing={processing}
-            disabled={isEmpty(changes)}
-            id="e2e-ideaform-settings-submit"
-          >
-            {success
-              ? <FormattedMessage {...messages.saved} />
-              : <FormattedMessage {...messages.save} />
+      if (!allExpanded) {
+        Object.keys(collapsed).forEach((key) => (newCollapsed[key] = false));
+      } else {
+        Object.keys(collapsed).forEach((key) => (newCollapsed[key] = true));
+      }
+
+      setCollapsed(newCollapsed);
+    }, [collapsed, allExpanded]);
+
+    const handleIdeaCustomFieldOnChange = useCallback(
+      (
+        ideaCustomFieldId: string,
+        updatedProperties: IUpdatedIdeaCustomFieldProperties
+      ) => {
+        setSuccess(false);
+        setError(false);
+        setChanges((changes) => {
+          const fieldChanges = changes[ideaCustomFieldId]
+            ? {
+                ...changes[ideaCustomFieldId],
+                ...updatedProperties,
+              }
+            : {
+                ...updatedProperties,
+              };
+
+          return {
+            ...changes,
+            [ideaCustomFieldId]: {
+              ...fieldChanges,
+            },
+          };
+        });
+      },
+      []
+    );
+
+    const handleOnSubmit = useCallback(async () => {
+      if (!isNilOrError(ideaCustomFields)) {
+        setProcessing(true);
+
+        try {
+          const promises: Promise<any>[] = Object.keys(changes).map(
+            (ideaCustomFieldId) => {
+              const ideaCustomFieldCode = ideaCustomFields.data.find(
+                (item) => item.id === ideaCustomFieldId
+              )?.attributes?.code;
+              return ideaCustomFieldCode
+                ? updateIdeaCustomField(
+                    projectId,
+                    ideaCustomFieldId,
+                    ideaCustomFieldCode,
+                    changes[ideaCustomFieldId]
+                  )
+                : Promise.resolve();
             }
-          </Button>
+          );
 
-          {success &&
-            <Success
-              text={formatMessage(messages.saveSuccessMessage)}
-              showBackground={false}
-              showIcon={false}
-            />
-          }
+          await Promise.all(promises);
+          setChanges({});
+          setProcessing(false);
+          setSuccess(true);
+          setError(false);
+        } catch (error) {
+          setProcessing(false);
+          setSuccess(false);
+          setError(true);
+        }
+      }
+    }, [changes, ideaCustomFields]);
 
-          {error &&
-            <ErrorWrapper>
-              <Error
-                text={formatMessage(messages.errorMessage)}
+    if (!isNilOrError(ideaCustomFields)) {
+      return (
+        <Container className={className || ''}>
+          <Header>
+            <TitleContainer>
+              <StyledSectionTitle>
+                <FormattedMessage {...messages.title} />
+              </StyledSectionTitle>
+            </TitleContainer>
+            <SectionDescription>
+              <FormattedMessage {...messages.description} />
+            </SectionDescription>
+          </Header>
+
+          <Content>
+            <Section>
+              <StyledSubSectionTitle>
+                <CollapseExpandAllButton
+                  buttonStyle="secondary"
+                  padding="7px 10px"
+                  onClick={handleCollapseExpandAll}
+                  text={
+                    !allExpanded
+                      ? formatMessage(messages.expandAll)
+                      : formatMessage(messages.collapseAll)
+                  }
+                />
+              </StyledSubSectionTitle>
+              {ideaCustomFields.data.map((ideaCustomField, index) => {
+                return (
+                  <IdeaCustomField
+                    key={ideaCustomField.id}
+                    collapsed={collapsed[ideaCustomField.id]}
+                    first={index === 0}
+                    ideaCustomField={ideaCustomField}
+                    onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
+                    onChange={handleIdeaCustomFieldOnChange}
+                  />
+                );
+              })}
+            </Section>
+          </Content>
+
+          <Footer>
+            <Button
+              buttonStyle="admin-dark"
+              onClick={handleOnSubmit}
+              processing={processing}
+              disabled={isEmpty(changes)}
+              id="e2e-ideaform-settings-submit"
+            >
+              {success ? (
+                <FormattedMessage {...messages.saved} />
+              ) : (
+                <FormattedMessage {...messages.save} />
+              )}
+            </Button>
+
+            {success && (
+              <Success
+                text={formatMessage(messages.saveSuccessMessage)}
                 showBackground={false}
                 showIcon={false}
               />
-            </ErrorWrapper>
-          }
+            )}
 
-        </Footer>
-      </Container>
-    );
+            {error && (
+              <ErrorWrapper>
+                <Error
+                  text={formatMessage(messages.errorMessage)}
+                  showBackground={false}
+                  showIcon={false}
+                />
+              </ErrorWrapper>
+            )}
+          </Footer>
+        </Container>
+      );
+    }
+
+    return null;
   }
-
-  return null;
-});
+);
 
 export default withRouter(injectIntl(IdeaForm));

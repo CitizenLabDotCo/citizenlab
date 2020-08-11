@@ -11,14 +11,21 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from 'recharts';
 import {
   IGraphUnit,
   NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
-  GraphCardInner
+  GraphCardInner,
 } from '../..';
 
 // resources
@@ -26,17 +33,27 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByBirthyear, IUsersByRegistrationField, IUsersByDomicile } from 'services/stats';
+import {
+  IUsersByBirthyear,
+  IUsersByRegistrationField,
+  IUsersByDomicile,
+} from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
 }
 
-type ISupportedDataType = IUsersByBirthyear | IUsersByRegistrationField | IUsersByDomicile;
+type ISupportedDataType =
+  | IUsersByBirthyear
+  | IUsersByRegistrationField
+  | IUsersByDomicile;
 
 interface InputProps {
-  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<ISupportedDataType>;
+  stream: (
+    streamParams?: IStreamParams | null,
+    customId?: string
+  ) => IStream<ISupportedDataType>;
   convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
@@ -47,9 +64,11 @@ interface InputProps {
   customId?: string;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-export class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
+export class BarChartByCategory extends React.PureComponent<
+  Props & InjectedIntlProps
+> {
   render() {
     const {
       chartFill,
@@ -58,33 +77,30 @@ export class BarChartByCategory extends React.PureComponent<Props & InjectedIntl
       chartLabelColor,
       barHoverColor,
       animationBegin,
-      animationDuration
+      animationDuration,
     } = this.props['theme'];
     const {
       className,
       graphTitleString,
       serie,
-      intl: {
-        formatMessage
-      },
-      graphUnit
+      intl: { formatMessage },
+      graphUnit,
     } = this.props;
-    const noData = !serie || (serie.every(item => isEmpty(item)) || serie.length <= 0);
+    const noData =
+      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
     const unitName = formatMessage(messages[graphUnit]);
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <GraphCardTitle>
-              {graphTitleString}
-            </GraphCardTitle>
+            <GraphCardTitle>{graphTitleString}</GraphCardTitle>
           </GraphCardHeader>
-          {noData ?
+          {noData ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
-            :
+          ) : (
             <ResponsiveContainer>
               <BarChart data={serie} margin={{ right: 40 }}>
                 <Bar
@@ -101,10 +117,7 @@ export class BarChartByCategory extends React.PureComponent<Props & InjectedIntl
                   fontSize={chartLabelSize}
                   tick={{ transform: 'translate(0, 7)' }}
                 />
-                <YAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                />
+                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
                 <Tooltip
                   isAnimationActive={false}
                   cursor={{
@@ -112,18 +125,21 @@ export class BarChartByCategory extends React.PureComponent<Props & InjectedIntl
                   }}
                 />
               </BarChart>
-            </ResponsiveContainer>}
+            </ResponsiveContainer>
+          )}
         </GraphCardInner>
       </GraphCard>
     );
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl<Props>(withTheme(BarChartByCategory as any) as any);
+const BarChartByCategoryWithHoCs = injectIntl<Props>(
+  withTheme(BarChartByCategory as any) as any
+);
 
 const WrappedBarChartByCategory = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
-    {serie => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
+    {(serie) => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
 

@@ -6,7 +6,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -24,7 +24,10 @@ interface InputProps {
   permissionId: string;
   permittedBy: 'everyone' | 'groups' | 'admins_moderators';
   groupIds?: string[];
-  onChange: (permittedBy: Props['permittedBy'], groupIds: Props['groupIds']) => void;
+  onChange: (
+    permittedBy: Props['permittedBy'],
+    groupIds: Props['groupIds']
+  ) => void;
 }
 
 interface DataProps {
@@ -34,9 +37,10 @@ interface DataProps {
 export interface Props extends InputProps, DataProps, InjectedLocalized {}
 
 class ActionForm extends PureComponent<Props> {
-
   groupsOptions = () => {
-    const { groups: { groupsList } } = this.props;
+    const {
+      groups: { groupsList },
+    } = this.props;
     if (isNilOrError(groupsList)) {
       return [];
     } else {
@@ -45,17 +49,20 @@ class ActionForm extends PureComponent<Props> {
         value: group.id,
       }));
     }
-  }
+  };
 
   handlePermittedByUpdate = (value: InputProps['permittedBy']) => () => {
     const { groupIds, onChange } = this.props;
     onChange(value, groupIds);
-  }
+  };
 
-  handleGroupIdsUpdate = (options: {value: string}[]) => {
+  handleGroupIdsUpdate = (options: { value: string }[]) => {
     const { permittedBy, onChange } = this.props;
-    onChange(permittedBy, options.map(o => o.value));
-  }
+    onChange(
+      permittedBy,
+      options.map((o) => o.value)
+    );
+  };
 
   render() {
     const { permissionId, permittedBy, groupIds } = this.props;
@@ -87,24 +94,28 @@ class ActionForm extends PureComponent<Props> {
             onChange={this.handlePermittedByUpdate('groups')}
             id={`participation-permission-certain-groups-${permissionId}`}
           />
-          {permittedBy === 'groups' &&
+          {permittedBy === 'groups' && (
             <StyledMultipleSelect
               value={groupIds || []}
               options={groupsOptions}
               onChange={this.handleGroupIdsUpdate}
               placeholder={<FormattedMessage {...messages.selectGroups} />}
             />
-          }
+          )}
         </StyledFieldset>
       </form>
     );
   }
 }
 
-const ActionPermissionFormWithHOCs = localize<InputProps & DataProps>(ActionForm);
+const ActionPermissionFormWithHOCs = localize<InputProps & DataProps>(
+  ActionForm
+);
 
 export default (inputProps: InputProps) => (
   <GetGroups>
-    {(groups) => <ActionPermissionFormWithHOCs {...inputProps} groups={groups} />}
+    {(groups) => (
+      <ActionPermissionFormWithHOCs {...inputProps} groups={groups} />
+    )}
   </GetGroups>
 );

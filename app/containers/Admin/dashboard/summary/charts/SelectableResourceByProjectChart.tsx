@@ -18,7 +18,7 @@ import {
   ICommentsByProject,
   commentsByProjectStream,
   IVotesByProject,
-  votesByProjectStream
+  votesByProjectStream,
 } from 'services/stats';
 import { IOption, IGraphFormat } from 'typings';
 import { IResource } from '..';
@@ -39,15 +39,18 @@ interface InputProps {
   projectOptions: IOption[];
 }
 
-interface Props extends InputProps, QueryProps { }
+interface Props extends InputProps, QueryProps {}
 
-interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
+interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized {}
 
 class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
-  convertToGraphFormat = (data: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
+  convertToGraphFormat = (
+    data: IIdeasByProject | IVotesByProject | ICommentsByProject
+  ) => {
     const { series, projects } = data;
     const { localize, currentResourceByProject } = this.props;
-    const dataKey = currentResourceByProject === 'votes' ? 'total' : currentResourceByProject;
+    const dataKey =
+      currentResourceByProject === 'votes' ? 'total' : currentResourceByProject;
 
     const mapped = map(series[dataKey], (count: number, projectId: string) => ({
       name: localize(projects[projectId].title_multiloc) as string,
@@ -57,43 +60,48 @@ class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
     const res = sortBy(mapped, 'name');
 
     return res.length > 0 ? res : null;
-  }
+  };
 
   convertSerie = (serie: IGraphFormat | null) => {
     const {
       currentProjectFilter,
       currentResourceByProject,
       projectOptions,
-      intl: {
-        formatMessage
-      }
+      intl: { formatMessage },
     } = this.props;
 
     if (serie && currentResourceByProject) {
-      const selectedProject = serie.find(item => item.code === currentProjectFilter);
+      const selectedProject = serie.find(
+        (item) => item.code === currentProjectFilter
+      );
       const selectedCount = selectedProject ? selectedProject.value : 0;
 
       let selectedName;
       if (selectedProject) {
         selectedName = selectedProject.name;
       } else {
-        const foundOption = projectOptions.find(option => option.value === currentProjectFilter);
-        selectedName = foundOption ? foundOption.label : formatMessage(messages.selectedProject);
+        const foundOption = projectOptions.find(
+          (option) => option.value === currentProjectFilter
+        );
+        selectedName = foundOption
+          ? foundOption.label
+          : formatMessage(messages.selectedProject);
       }
 
       const convertedSerie = serie
-      .filter(item => item.code !== currentProjectFilter)
-      .map(item => {
-        const { value, name, ...rest } = item;
-        const shortenedName = name.length > 60 ? `${name.substring(0, 61)}...` : name;
-        return { value: value - selectedCount, name: shortenedName, ...rest };
-      });
+        .filter((item) => item.code !== currentProjectFilter)
+        .map((item) => {
+          const { value, name, ...rest } = item;
+          const shortenedName =
+            name.length > 60 ? `${name.substring(0, 61)}...` : name;
+          return { value: value - selectedCount, name: shortenedName, ...rest };
+        });
 
       return { convertedSerie, selectedCount, selectedName };
     }
 
-    return ({ convertedSerie: serie, selectedCount: null, selectedName: null });
-  }
+    return { convertedSerie: serie, selectedCount: null, selectedName: null };
+  };
 
   getCurrentStream(currentResourceByProject) {
     if (currentResourceByProject === 'ideas') {
@@ -109,7 +117,7 @@ class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
     const {
       currentResourceByProject,
       currentProjectFilter,
-      onResourceByProjectChange
+      onResourceByProjectChange,
     } = this.props;
 
     return (
@@ -127,4 +135,8 @@ class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByProjectChart as any) as any);
+export default localize<Props>(
+  injectIntl<Props & InjectedLocalized>(
+    SelectableResourceByProjectChart as any
+  ) as any
+);

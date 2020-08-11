@@ -14,10 +14,16 @@ import T from 'components/T';
 
 // typings
 import { Node } from 'services/clusterings';
-import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
+import {
+  globalState,
+  IGlobalStateService,
+  IAdminFullWidth,
+} from 'services/globalState';
 
 // resources
-import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
+import GetClustering, {
+  GetClusteringChildProps,
+} from 'resources/GetClustering';
 
 // styling
 import styled, { ThemeProvider } from 'styled-components';
@@ -32,7 +38,7 @@ const TwoColumns = styled.div`
   flex-grow: 1;
   flex-basis: auto;
   width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 85px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 85px);
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
@@ -53,7 +59,7 @@ const StyledCircles = styled(Circles)`
 `;
 
 const StyledInfoPane = styled(InfoPane)`
-  flex:  0 0 350px;
+  flex: 0 0 350px;
   margin-left: 20px;
 
   ${media.smallerThan1280px`
@@ -65,7 +71,7 @@ const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 20px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   clustering: GetClusteringChildProps;
@@ -80,14 +86,17 @@ interface TrackProps {
   trackShiftClickIdea: Function;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   activeComparisonCount: number;
   selectedNodes: Node[][];
 }
 
-class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, State> {
+class ClusterViewer extends PureComponent<
+  Props & WithRouterProps & TrackProps,
+  State
+> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
@@ -116,31 +125,34 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
       upvotes: theme.colors.clGreen,
       downvotes: theme.colors.clRed,
       chartLabelColor: '#999999',
-      chartLabelSize: 13
+      chartLabelSize: 13,
     };
-  }
+  };
 
   handleOnChangeActiveComparison = (activeComparisonCount: number) => {
     this.setState({ activeComparisonCount });
-  }
+  };
 
   handleOnAddComparison = () => {
     this.setState(({ selectedNodes }) => ({
       selectedNodes: [...selectedNodes, []],
-      activeComparisonCount: selectedNodes.length
+      activeComparisonCount: selectedNodes.length,
     }));
-  }
+  };
 
   handleOnDeleteComparison = (index: number) => {
     const { activeComparisonCount, selectedNodes } = this.state;
     const newSelectedNodes = clone(selectedNodes);
     newSelectedNodes.splice(index, 1);
-    const newActiveComparison = activeComparisonCount >= index ? newSelectedNodes.length - 1 : activeComparisonCount;
+    const newActiveComparison =
+      activeComparisonCount >= index
+        ? newSelectedNodes.length - 1
+        : activeComparisonCount;
     this.setState({
       selectedNodes: newSelectedNodes,
       activeComparisonCount: newActiveComparison,
     });
-  }
+  };
 
   handleOnClickNode = (node: Node) => {
     if (node.type === 'idea') {
@@ -150,41 +162,53 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     }
     this.setState({
       selectedNodes: [[node]],
-      activeComparisonCount: 0
+      activeComparisonCount: 0,
     });
-  }
+  };
 
   handleOnShiftClickNode = (node: Node) => {
     if (node.type === 'idea') {
       this.props.trackShiftClickIdea({ extra: { id: node.id } });
     } else {
-      this.props.trackShiftClickCluster({ extra: { type: node.type, id: node.id } });
+      this.props.trackShiftClickCluster({
+        extra: { type: node.type, id: node.id },
+      });
     }
 
     const selectedNodes = clone(this.state.selectedNodes);
-    selectedNodes[this.state.activeComparisonCount] = [...this.state.selectedNodes[this.state.activeComparisonCount], node];
+    selectedNodes[this.state.activeComparisonCount] = [
+      ...this.state.selectedNodes[this.state.activeComparisonCount],
+      node,
+    ];
     this.setState({ selectedNodes });
-  }
+  };
 
   handleOnCtrlClickNode = (node: Node) => {
     if (node.type === 'idea') {
       this.props.trackCtrlClickIdea({ extra: { id: node.id } });
     } else {
-      this.props.trackCtrlClickCluster({ extra: { type: node.type, id: node.id } });
+      this.props.trackCtrlClickCluster({
+        extra: { type: node.type, id: node.id },
+      });
     }
     const { selectedNodes } = this.state;
     // prevents selecting twice the same node by looking for [node] in the selected nodes array.
-    if (selectedNodes.length < 4 && selectedNodes.findIndex(item => item.length === 1 && item[0].id === node.id) < 0) {
+    if (
+      selectedNodes.length < 4 &&
+      selectedNodes.findIndex(
+        (item) => item.length === 1 && item[0].id === node.id
+      ) < 0
+    ) {
       this.setState(({ selectedNodes }) => ({
         selectedNodes: [...selectedNodes, [node]],
-        activeComparisonCount: selectedNodes.length
+        activeComparisonCount: selectedNodes.length,
       }));
     }
-  }
+  };
 
   goBack = () => {
     clHistory.push('/admin/dashboard/insights');
-  }
+  };
 
   render() {
     const { clustering } = this.props;
@@ -233,6 +257,8 @@ const ClusterViewerWithHocs = injectTracks<Props>({
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetClustering id={inputProps.params.clusteringId}>
-    {(clustering) => <ClusterViewerWithHocs {...inputProps} clustering={clustering} />}
+    {(clustering) => (
+      <ClusterViewerWithHocs {...inputProps} clustering={clustering} />
+    )}
   </GetClustering>
 ));

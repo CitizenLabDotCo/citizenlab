@@ -20,37 +20,39 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 type Props = {};
 
 export default class New extends React.Component<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     addTopic({
-      ...values
+      ...values,
     })
-    .then(() => {
-      clHistory.push('/admin/settings/topics');
-    })
-    .catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+      .then(() => {
+        clHistory.push('/admin/settings/topics');
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   renderFn = (props) => {
     return <TopicForm {...props} />;
-  }
+  };
 
   goBack = () => {
     clHistory.push('/admin/settings/topics');
-  }
+  };
 
   initialValues = () => ({
     title_multiloc: {},
-    description_multiloc: {}
-  })
+    description_multiloc: {},
+  });
 
   render() {
     return (

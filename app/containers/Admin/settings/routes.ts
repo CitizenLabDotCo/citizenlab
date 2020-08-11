@@ -8,13 +8,13 @@ export default () => ({
   component: Loadable({
     loader: () => import('containers/Admin/settings'),
     loading: LoadableLoadingAdmin,
-    delay: 500
+    delay: 500,
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/settings/general'),
       loading: LoadableLoadingAdmin,
-      delay: 500
+      delay: 500,
     }),
   },
   childRoutes: [
@@ -22,28 +22,28 @@ export default () => ({
       path: 'general',
       component: Loadable({
         loader: () => import('containers/Admin/settings/general'),
-        loading: () => null
+        loading: () => null,
       }),
     },
     {
       path: 'customize',
       component: Loadable({
         loader: () => import('containers/Admin/settings/customize'),
-        loading: () => null
+        loading: () => null,
       }),
     },
     {
       path: 'pages',
       component: Loadable({
         loader: () => import('containers/Admin/settings/pages'),
-        loading: () => null
+        loading: () => null,
       }),
     },
     {
       path: 'registration',
       component: Loadable({
         loader: () => import('containers/Admin/settings/registration'),
-        loading: () => null
+        loading: () => null,
       }),
     },
     topicsRoutes(),
@@ -51,7 +51,7 @@ export default () => ({
       path: 'widgets',
       component: Loadable({
         loader: () => import('containers/Admin/settings/widgets'),
-        loading: () => null
+        loading: () => null,
       }),
     },
   ],

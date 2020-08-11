@@ -15,7 +15,8 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { omit } from 'lodash-es';
 
-interface Props extends Omit<DateRangePickerShape, 'focusedInput' | 'onFocusChange'> {
+interface Props
+  extends Omit<DateRangePickerShape, 'focusedInput' | 'onFocusChange'> {
   className?: string;
 }
 
@@ -44,8 +45,10 @@ const StylingWrapper = styled.div`
 `;
 
 /** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
-class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State> {
-
+class OurDateRangePicker extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,11 +58,11 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
 
   handleFocusChange = (focusedInput: 'startDate' | 'endDate') => {
     this.setState({ focusedInput });
-  }
+  };
 
   handleIsOutsideRange = () => {
     return false;
-  }
+  };
 
   render() {
     return (
@@ -70,8 +73,12 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
           endDateId="endAt"
           focusedInput={this.state.focusedInput}
           onFocusChange={this.handleFocusChange}
-          startDatePlaceholderText={this.props.intl.formatMessage(messages.startDatePlaceholder)}
-          endDatePlaceholderText={this.props.intl.formatMessage(messages.endDatePlaceholder)}
+          startDatePlaceholderText={this.props.intl.formatMessage(
+            messages.startDatePlaceholder
+          )}
+          endDatePlaceholderText={this.props.intl.formatMessage(
+            messages.endDatePlaceholder
+          )}
           isOutsideRange={this.handleIsOutsideRange}
         />
       </StylingWrapper>

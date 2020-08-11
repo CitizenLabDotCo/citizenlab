@@ -55,7 +55,8 @@ export default defineMessages({
   },
   losePhaseInfoConfirmation: {
     id: 'app.components.admin.PostManager.losePhaseInfoConfirmation',
-    defaultMessage: 'Moving \'{ideaTitle}\' away from its current project will lose the information about its assigned phases. Do you want to proceed?',
+    defaultMessage:
+      "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   },
   edit: {
     id: 'app.components.admin.PostManager.edit',
@@ -103,11 +104,13 @@ export default defineMessages({
   },
   multiDragAndDropHelpIdeas: {
     id: 'app.components.admin.PostManager.multiDragAndDropHelpIdeas',
-    defaultMessage: 'Drag and drop the ideas on an item above to assign them all at once.',
+    defaultMessage:
+      'Drag and drop the ideas on an item above to assign them all at once.',
   },
   multiDragAndDropHelpInitiatives: {
     id: 'app.components.admin.PostManager.multiDragAndDropHelpInitiatives',
-    defaultMessage: 'Drag and drop the initiatives on an item above to assign them all at once.',
+    defaultMessage:
+      'Drag and drop the initiatives on an item above to assign them all at once.',
   },
   timelineTab: {
     id: 'app.components.admin.PostManager.timelineTab',
@@ -115,7 +118,8 @@ export default defineMessages({
   },
   timelineTabTooltip: {
     id: 'app.components.admin.PostManager.timelineTabTooltip',
-    defaultMessage: 'Drag and drop selected ideas to the phase you want to add them to. By doing so, they will also remain in the current phase(s).',
+    defaultMessage:
+      'Drag and drop selected ideas to the phase you want to add them to. By doing so, they will also remain in the current phase(s).',
   },
   topicsTab: {
     id: 'app.components.admin.PostManager.topicsTab',
@@ -123,7 +127,8 @@ export default defineMessages({
   },
   topicsTabTooltip: {
     id: 'app.components.admin.PostManager.topicsTabTooltip',
-    defaultMessage: 'Drag and drop selected ideas to the topic you want to assign them to. An idea can have any number of topics.',
+    defaultMessage:
+      'Drag and drop selected ideas to the topic you want to assign them to. An idea can have any number of topics.',
   },
   projectsTab: {
     id: 'app.components.admin.PostManager.projectsTab',
@@ -131,7 +136,8 @@ export default defineMessages({
   },
   projectsTabTooltip: {
     id: 'app.components.admin.PostManager.projectsTabTooltip',
-    defaultMessage: 'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
+    defaultMessage:
+      'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
   },
   statusesTab: {
     id: 'app.components.admin.PostManager.statusesTab',
@@ -139,11 +145,13 @@ export default defineMessages({
   },
   statusesTabTooltip: {
     id: 'app.components.admin.PostManager.statusesTabTooltip',
-    defaultMessage: 'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
+    defaultMessage:
+      'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
   },
   basketsCountTooltip: {
     id: 'app.components.admin.PostManager.basketsCountTooltip',
-    defaultMessage: 'The number of users that added this idea to their participatory budget',
+    defaultMessage:
+      'The number of users that added this idea to their participatory budget',
   },
   exportIdeas: {
     id: 'app.components.admin.PostManager.exportIdeas',
@@ -247,11 +255,12 @@ export default defineMessages({
   },
   changeStatusModalTitle: {
     id: 'app.components.admin.PostManager.changeStatusModalTitle',
-    defaultMessage: 'Change this initiative\'s status',
+    defaultMessage: "Change this initiative's status",
   },
   statusChange: {
     id: 'app.components.admin.PostManager.statusChange',
-    defaultMessage: 'To change {initiativeTitle}\'s status to {newStatus}, please provide feedback to the community.',
+    defaultMessage:
+      "To change {initiativeTitle}'s status to {newStatus}, please provide feedback to the community.",
   },
   feedbackBodyPlaceholder: {
     id: 'app.components.admin.PostManager.feedbackBodyPlaceholder',
@@ -275,7 +284,8 @@ export default defineMessages({
   },
   statusChangeGenericError: {
     id: 'app.components.admin.PostManager.statusChangeGenericError',
-    defaultMessage: 'There was an error, please try again later or contact support.',
+    defaultMessage:
+      'There was an error, please try again later or contact support.',
   },
   newFeedbackMode: {
     id: 'app.components.admin.PostManager.newFeedbackMode',

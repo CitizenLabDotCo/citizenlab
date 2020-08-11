@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 
 type Props = {
   value: string;
@@ -10,20 +10,13 @@ type Props = {
 type State = {};
 
 class TextValueSelector extends React.PureComponent<Props, State> {
-
   handleOnChange = (value) => {
     this.props.onChange(value);
-  }
+  };
 
   render() {
     const { value } = this.props;
-    return (
-      <Input
-        type="text"
-        value={value}
-        onChange={this.handleOnChange}
-      />
-    );
+    return <Input type="text" value={value} onChange={this.handleOnChange} />;
   }
 }
 

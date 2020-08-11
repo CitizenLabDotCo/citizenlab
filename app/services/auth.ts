@@ -27,14 +27,21 @@ export interface ILockedField {
 }
 
 export function lockedFieldsStream() {
-  return streams.get<{ data: ILockedField[]}>({ apiEndpoint: `${authApiEndpoint}/locked_attributes` });
+  return streams.get<{ data: ILockedField[] }>({
+    apiEndpoint: `${authApiEndpoint}/locked_attributes`,
+  });
 }
 
 export async function signIn(email: string, password: string) {
   try {
     const bodyData = { auth: { email, password } };
     const httpMethod: IHttpMethod = { method: 'POST' };
-    const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
+    const { jwt } = await request<IUserToken>(
+      `${API_PATH}/user_token`,
+      bodyData,
+      httpMethod,
+      null
+    );
     setJwt(jwt);
     const authUser = await getAuthUserAsync();
     await streams.reset(authUser);
@@ -59,15 +66,18 @@ export async function signUp(
     password,
     locale,
     first_name: firstName,
-    last_name: lastName
+    last_name: lastName,
   };
 
   const httpMethod: IHttpMethod = {
-    method: 'POST'
+    method: 'POST',
   };
 
   try {
-    const signUpEndpoint = (isInvitation === true ? `${API_PATH}/invites/by_token/${token}/accept` : `${API_PATH}/users`);
+    const signUpEndpoint =
+      isInvitation === true
+        ? `${API_PATH}/invites/by_token/${token}/accept`
+        : `${API_PATH}/users`;
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
     await request(signUpEndpoint, bodyData, httpMethod, null);
     const authenticatedUser = await signIn(email, password);
@@ -93,7 +103,10 @@ export function signOut() {
       streams.reset(null);
       const { pathname } = removeLocale(location.pathname);
 
-      if (pathname && (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))) {
+      if (
+        pathname &&
+        (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))
+      ) {
         clHistory.push('/');
       }
     }
@@ -114,26 +127,33 @@ export function signOutAndDeleteAccountPart2() {
 
       const { provider, sub } = decodedJwt;
 
-      deleteUser(sub).then((_res) => {
-        removeJwt();
-        if (decodedJwt.logout_supported) {
-          const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
-          window.location.href = url;
-        } else {
-          streams.reset(null);
-        }
-        clHistory.push('/');
-        resolve(true);
-      }).catch((_res) => {
-        resolve(false);
-      });
+      deleteUser(sub)
+        .then((_res) => {
+          removeJwt();
+          if (decodedJwt.logout_supported) {
+            const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
+            window.location.href = url;
+          } else {
+            streams.reset(null);
+          }
+          clHistory.push('/');
+          resolve(true);
+        })
+        .catch((_res) => {
+          resolve(false);
+        });
     }
   });
 }
 
 export async function getAuthUserAsync() {
   try {
-    const authenticatedUser = await request<IUser>(authApiEndpoint, null, null, null);
+    const authenticatedUser = await request<IUser>(
+      authApiEndpoint,
+      null,
+      null,
+      null
+    );
     return authenticatedUser;
   } catch {
     signOut();
@@ -145,11 +165,16 @@ export async function sendPasswordResetMail(email: string) {
   try {
     const bodyData = {
       user: {
-        email
-      }
+        email,
+      },
     };
     const httpMethod: IHttpMethod = { method: 'POST' };
-    const response = await request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null);
+    const response = await request(
+      `${API_PATH}/users/reset_password_email`,
+      bodyData,
+      httpMethod,
+      null
+    );
     return response;
   } catch (error) {
     throw error;
@@ -161,11 +186,16 @@ export async function resetPassword(password: string, token: string) {
     const bodyData = {
       user: {
         password,
-        token
-      }
+        token,
+      },
     };
     const httpMethod: IHttpMethod = { method: 'POST' };
-    const response = await request(`${API_PATH}/users/reset_password`, bodyData, httpMethod, null);
+    const response = await request(
+      `${API_PATH}/users/reset_password`,
+      bodyData,
+      httpMethod,
+      null
+    );
     return response;
   } catch (error) {
     throw error;

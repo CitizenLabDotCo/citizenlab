@@ -21,14 +21,14 @@ class SortFilterDropdown extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: ['random']
+      selectedValue: ['random'],
     };
   }
 
   handleOnChange = (selectedValue: string[]) => {
     this.setState({ selectedValue });
     this.props.onChange(selectedValue[0]);
-  }
+  };
 
   render() {
     const { alignment } = this.props;

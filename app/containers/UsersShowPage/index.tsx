@@ -22,7 +22,7 @@ import UserComments from './UserComments';
 import { adopt } from 'react-adopt';
 
 const Container = styled.main`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,7 +30,9 @@ const Container = styled.main`
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -74,7 +76,7 @@ export class UsersShowPage extends PureComponent<Props, State> {
     super(props);
     this.state = {
       currentTab: 'ideas',
-      savedScrollIndex: 0
+      savedScrollIndex: 0,
     };
   }
 
@@ -82,7 +84,7 @@ export class UsersShowPage extends PureComponent<Props, State> {
     const oldScroll = this.state.savedScrollIndex;
     this.setState({ currentTab: toTab, savedScrollIndex: window.pageYOffset });
     window.scrollTo(0, oldScroll);
-  }
+  };
 
   render() {
     const { user, className } = this.props;
@@ -93,7 +95,7 @@ export class UsersShowPage extends PureComponent<Props, State> {
         <>
           <UsersShowPageMeta user={user} />
           <Container id="e2e-usersshowpage" className={className}>
-            <UserHeader userSlug={user.attributes.slug}/>
+            <UserHeader userSlug={user.attributes.slug} />
 
             <UserNavbar
               currentTab={currentTab}
@@ -102,7 +104,7 @@ export class UsersShowPage extends PureComponent<Props, State> {
             />
 
             <StyledContentContainer>
-              {currentTab === 'ideas' &&
+              {currentTab === 'ideas' && (
                 <UserIdeas>
                   <IdeaCards
                     type="load-more"
@@ -110,13 +112,9 @@ export class UsersShowPage extends PureComponent<Props, State> {
                     invisibleTitleMessage={messages.invisibleTitleIdeasList}
                   />
                 </UserIdeas>
-              }
+              )}
 
-              {currentTab === 'comments' &&
-                <UserComments
-                  userId={user.id}
-                />
-              }
+              {currentTab === 'comments' && <UserComments userId={user.id} />}
             </StyledContentContainer>
           </Container>
         </>
@@ -128,11 +126,11 @@ export class UsersShowPage extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  user: ({ params, render }) =>  <GetUser slug={params.slug}>{render}</GetUser>
+  user: ({ params, render }) => <GetUser slug={params.slug}>{render}</GetUser>,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <UsersShowPage {...inputProps} {...dataProps} />}
+    {(dataProps) => <UsersShowPage {...inputProps} {...dataProps} />}
   </Data>
 ));

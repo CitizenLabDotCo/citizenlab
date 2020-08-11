@@ -11,7 +11,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // resources
-import GetInitiativesCount, { GetInitiativesCountChildProps } from 'resources/GetInitiativesCount';
+import GetInitiativesCount, {
+  GetInitiativesCountChildProps,
+} from 'resources/GetInitiativesCount';
 
 const Container = styled.div`
   height: 100%;
@@ -37,7 +39,6 @@ interface Props extends InputProps, DataProps {}
 type State = {};
 
 export class InitiativesCount extends React.PureComponent<Props, State> {
-
   componentDidUpdate(prevProps) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       if (isFunction(this.props.initiativesCount.onChangeSearchTerm)) {
@@ -56,18 +57,29 @@ export class InitiativesCount extends React.PureComponent<Props, State> {
           If there are no initiatives, we have an 'empty container' to indicate there are no initiatives matching the filters.
           Hence we only show this count when there's at least 1 initiative.
         */}
-        {!isNilOrError(initiativesMatchingFiltersCount) && initiativesMatchingFiltersCount > 0 && (initiativesMatchingFiltersCount === 1 ?
-          <FormattedMessage {...messages.oneInitiative} />
-        :
-          <FormattedMessage {...messages.multipleInitiatives} values={{ initiativesCount: initiativesMatchingFiltersCount }} />
-        )}
+        {!isNilOrError(initiativesMatchingFiltersCount) &&
+          initiativesMatchingFiltersCount > 0 &&
+          (initiativesMatchingFiltersCount === 1 ? (
+            <FormattedMessage {...messages.oneInitiative} />
+          ) : (
+            <FormattedMessage
+              {...messages.multipleInitiatives}
+              values={{ initiativesCount: initiativesMatchingFiltersCount }}
+            />
+          ))}
       </Container>
     );
   }
 }
 
 const Data = adopt({
-  initiativesCount: ({ topics, initiativeStatus, assignee, feedbackNeeded, render }) => {
+  initiativesCount: ({
+    topics,
+    initiativeStatus,
+    assignee,
+    feedbackNeeded,
+    render,
+  }) => {
     return (
       <GetInitiativesCount
         feedbackNeeded={feedbackNeeded === true ? true : undefined}
@@ -78,11 +90,16 @@ const Data = adopt({
         {render}
       </GetInitiativesCount>
     );
-  }
+  },
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativesCount {...inputProps} initiativesCount={dataProps.initiativesCount}/>}
+    {(dataProps) => (
+      <InitiativesCount
+        {...inputProps}
+        initiativesCount={dataProps.initiativesCount}
+      />
+    )}
   </Data>
 );

@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';
@@ -27,13 +27,15 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -101,7 +103,8 @@ export const H4 = styled.h4`
 
 const NavItem = styled.button`
   cursor: pointer;
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     text-decoration: underline;
   }
 `;
@@ -112,19 +115,25 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends DataProps { }
+interface Props extends DataProps {}
 
 const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const successStories = !isNilOrError(tenant) ? tenant.attributes.settings?.initiatives?.success_stories : [];
+  const successStories = !isNilOrError(tenant)
+    ? tenant.attributes.settings?.initiatives?.success_stories
+    : [];
 
-  const scrollTo = component => (event: any) => {
+  const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
     // https://github.com/facebook/react/issues/3907
     if (event.detail === 0) {
       component.current.focus();
     }
-    scrollToComponent(component.current, { align: 'top', offset: -90, duration: 300 });
+    scrollToComponent(component.current, {
+      align: 'top',
+      offset: -90,
+      duration: 300,
+    });
   };
 
   const removeFocus = (event: React.MouseEvent<HTMLElement>) => {
@@ -138,17 +147,18 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const draftSection = useRef(null);
   const initiativesSection = useRef(null);
   const userSpaceSection = useRef(null);
-  const hasProjectSubsection = archivedSection.current || draftSection.current || currentSection.current;
+  const hasProjectSubsection =
+    archivedSection.current || draftSection.current || currentSection.current;
 
   return (
     <Container>
       <SiteMapMeta />
-      {!loaded &&
+      {!loaded && (
         <Loading>
           <Spinner />
         </Loading>
-      }
-      {loaded &&
+      )}
+      {loaded && (
         <PageContent>
           <StyledContentContainer>
             <QuillEditedContent>
@@ -177,49 +187,54 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       <FormattedMessage {...messages.userSpaceSection} />
                     </NavItem>
                   </li>
-                  {!isNilOrError(projects) && <li>
-                    <NavItem
-                      onMouseDown={removeFocus}
-                      onClick={scrollTo(projectsSection)}
-                    >
-                      <FormattedMessage {...messages.projectsSection} />
-                    </NavItem>
-                    {hasProjectSubsection &&
-                      <ProjectsSubsectionUl>
-                        {currentSection.current && (
-                          <li>
-                            <NavItem
-                              onMouseDown={removeFocus}
-                              onClick={scrollTo(currentSection)}
-                            >
-                              <FormattedMessage {...messages.projectsCurrent} />
-                            </NavItem>
-                          </li>
-                        )}
-                        {archivedSection.current && (
-                          <li>
-                            <NavItem
-                              onMouseDown={removeFocus}
-                              onClick={scrollTo(archivedSection)}
-                            >
-                              <FormattedMessage {...messages.projectsArchived} />
-                            </NavItem>
-                          </li>
-                        )}
-                        {draftSection.current && (
-                          <li>
-                            <NavItem
-                              onMouseDown={removeFocus}
-                              onClick={scrollTo(draftSection)}
-                            >
-                              <FormattedMessage {...messages.projectsDraft} />
-                            </NavItem>
-                          </li>
-                        )}
-                      </ProjectsSubsectionUl>
-                    }
-                  </li>
-                  }
+                  {!isNilOrError(projects) && (
+                    <li>
+                      <NavItem
+                        onMouseDown={removeFocus}
+                        onClick={scrollTo(projectsSection)}
+                      >
+                        <FormattedMessage {...messages.projectsSection} />
+                      </NavItem>
+                      {hasProjectSubsection && (
+                        <ProjectsSubsectionUl>
+                          {currentSection.current && (
+                            <li>
+                              <NavItem
+                                onMouseDown={removeFocus}
+                                onClick={scrollTo(currentSection)}
+                              >
+                                <FormattedMessage
+                                  {...messages.projectsCurrent}
+                                />
+                              </NavItem>
+                            </li>
+                          )}
+                          {archivedSection.current && (
+                            <li>
+                              <NavItem
+                                onMouseDown={removeFocus}
+                                onClick={scrollTo(archivedSection)}
+                              >
+                                <FormattedMessage
+                                  {...messages.projectsArchived}
+                                />
+                              </NavItem>
+                            </li>
+                          )}
+                          {draftSection.current && (
+                            <li>
+                              <NavItem
+                                onMouseDown={removeFocus}
+                                onClick={scrollTo(draftSection)}
+                              >
+                                <FormattedMessage {...messages.projectsDraft} />
+                              </NavItem>
+                            </li>
+                          )}
+                        </ProjectsSubsectionUl>
+                      )}
+                    </li>
+                  )}
                   <FeatureFlag name="initiatives">
                     <li>
                       <NavItem
@@ -282,24 +297,22 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     </li>
                   </>
                 ) : (
-                    <>
-                      <li>
-                        <Link to={`/profile/${authUser.attributes.slug}`}>
-                          <FormattedMessage {...messages.profilePage} />
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/profile/edit">
-                          <FormattedMessage {...messages.profileSettings} />
-                        </Link>
-                      </li>
-                    </>
-                  )}
+                  <>
+                    <li>
+                      <Link to={`/profile/${authUser.attributes.slug}`}>
+                        <FormattedMessage {...messages.profilePage} />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/profile/edit">
+                        <FormattedMessage {...messages.profileSettings} />
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
 
-              <ProjectsSection
-                projectsSectionRef={projectsSection}
-              />
+              <ProjectsSection projectsSectionRef={projectsSection} />
               <FeatureFlag name="initiatives">
                 <H2 ref={initiativesSection} tabIndex={-1}>
                   <FormattedMessage {...messages.initiativesSection} />
@@ -319,7 +332,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     <li>
                       <FormattedMessage {...messages.successStories} />
                       <ul>
-                        {successStories.map(story => (
+                        {successStories.map((story) => (
                           <li key={story.page_slug}>
                             <StoryLink story={story} />
                           </li>
@@ -332,19 +345,17 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
             </QuillEditedContent>
           </StyledContentContainer>
         </PageContent>
-      }
+      )}
     </Container>
   );
 };
 
 const Data = adopt<DataProps>({
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} />,
+  projects: (
+    <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
+  ),
   tenant: <GetTenant />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
 });
 
-export default () => (
-  <Data>
-    {dataprops => <SiteMap {...dataprops} />}
-  </Data>
-);
+export default () => <Data>{(dataprops) => <SiteMap {...dataprops} />}</Data>;

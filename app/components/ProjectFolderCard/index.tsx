@@ -7,7 +7,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import LazyImage from 'components/LazyImage';
 
 // i18n
@@ -20,8 +20,14 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -34,9 +40,7 @@ const Container = styled(Link)`
   margin-bottom: 25px;
   position: relative;
   cursor: pointer;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   &.large {
     width: 100%;
@@ -85,12 +89,7 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 150ms ease-out;
-
-    &:hover {
-      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
-      transform: translate(0px, -2px);
-    }
+    ${defaultCardHoverStyle};
   }
 
   ${media.smallerThanMinTablet`
@@ -263,122 +262,133 @@ const MapIconDescription = styled.span`
   color: ${({ theme }) => theme.colorSecondary};
 `;
 
-export interface InputProps {
+export interface Props {
   publication: IAdminPublicationContent;
   size: 'small' | 'medium' | 'large';
   layout: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
-interface Props extends InputProps {
-  theme?: any;
-}
+const ProjectFolderCard = memo<Props>(
+  ({ publication, size, layout, className }) => {
+    const projectFolderImages = useProjectFolderImages(
+      publication.publicationId
+    );
 
-const ProjectFolderCard = memo(({
-  publication,
-  size,
-  layout,
-  className,
-  theme,
-}: Props) => {
-  const projectFolderImages = useProjectFolderImages(publication.publicationId);
+    const handleProjectCardOnClick = useCallback(
+      (projectFolderId: string) => () => {
+        trackEventByName(tracks.clickOnProjectCard, {
+          extra: { projectFolderId },
+        });
+      },
+      []
+    );
 
-  const handleProjectCardOnClick = useCallback((projectFolderId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
-  }, []);
+    const handleProjectTitleOnClick = useCallback(
+      (projectFolderId: string) => () => {
+        trackEventByName(tracks.clickOnProjectTitle, {
+          extra: { projectFolderId },
+        });
+      },
+      []
+    );
 
-  const handleProjectTitleOnClick = useCallback((projectFolderId: string) => () => {
-    trackEventByName(tracks.clickOnProjectTitle, { extra: { projectFolderId } });
-  }, []);
+    const imageUrl =
+      !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
+        ? projectFolderImages.data?.[0].attributes?.versions.medium
+        : null;
 
-  const imageUrl = !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
-    ? projectFolderImages.data ?.[0].attributes ?.versions.medium
-      : null;
+    const folderUrl = `/folders/${publication.attributes.publication_slug}`;
+    const numberOfProjects = publication.attributes.visible_children_count;
 
-  const folderUrl = `/folders/${publication.attributes.publication_slug}`;
-  const numberOfProjects = publication.attributes.visible_children_count;
-
-  const contentHeader = (
-    <ContentHeader className={`${size} hasContent`}>
-      <MapIcon
-        name="folder"
-        ariaHidden
-        colorTheme={{
-          clIconPrimary: `${theme.colorSecondary}`,
-          clIconSecondary: `${theme.colorSecondary}`,
-        }}
-      />
-      <MapIconDescription aria-hidden className="e2e-folder-card-numberofprojects">
-        {numberOfProjects}
-      </MapIconDescription>
-      <ScreenReaderOnly>
-        <FormattedMessage {...messages.numberOfFolders} values={{ numberOfProjects }} />
-      </ScreenReaderOnly>
-    </ContentHeader>
-  );
-
-  const screenReaderContent = (
-    <ScreenReaderOnly>
-      <FolderTitle>
-        <FormattedMessage {...messages.a11y_folderTitle} />
-        <T value={publication.attributes.publication_title_multiloc} />
-      </FolderTitle>
-
-      <FolderDescription>
-        <FormattedMessage {...messages.a11y_folderDescription} />
-        <T value={publication.attributes.publication_description_preview_multiloc} />
-      </FolderDescription>
-    </ScreenReaderOnly>
-  );
-
-  return (
-    <Container
-      className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-folder-card e2e-admin-publication-card`}
-      to={folderUrl}
-      onClick={handleProjectCardOnClick(publication.publicationId)}
-    >
-      {screenReaderContent}
-      {size !== 'large' && contentHeader}
-
-      <FolderImageContainer className={size}>
-        <FolderImagePlaceholder>
-          <FolderImagePlaceholderIcon name="project" />
-        </FolderImagePlaceholder>
-
-        {imageUrl &&
-          <FolderImage
-            src={imageUrl}
-            alt=""
-            cover={true}
+    const contentHeader = (
+      <ContentHeader className={`${size} hasContent`}>
+        <MapIcon name="folder" ariaHidden />
+        <MapIconDescription
+          aria-hidden
+          className="e2e-folder-card-numberofprojects"
+        >
+          {numberOfProjects}
+        </MapIconDescription>
+        <ScreenReaderOnly>
+          <FormattedMessage
+            {...messages.numberOfFolders}
+            values={{ numberOfProjects }}
           />
-        }
-      </FolderImageContainer>
+        </ScreenReaderOnly>
+      </ContentHeader>
+    );
 
-      <FolderContent className={size}>
-        {size === 'large' && contentHeader}
+    const screenReaderContent = (
+      <ScreenReaderOnly>
+        <FolderTitle>
+          <FormattedMessage {...messages.a11y_folderTitle} />
+          <T value={publication.attributes.publication_title_multiloc} />
+        </FolderTitle>
 
-        <ContentBody className={size} aria-hidden>
-          <FolderTitle onClick={handleProjectTitleOnClick(publication.publicationId)} className="e2e-folder-card-folder-title">
-            <T value={publication.attributes.publication_title_multiloc} />
-          </FolderTitle>
+        <FolderDescription>
+          <FormattedMessage {...messages.a11y_folderDescription} />
+          <T
+            value={
+              publication.attributes.publication_description_preview_multiloc
+            }
+          />
+        </FolderDescription>
+      </ScreenReaderOnly>
+    );
 
-          <T value={publication.attributes.publication_description_preview_multiloc}>
-            {(description) => {
-              if (!isEmpty(description)) {
-                return (
-                  <FolderDescription className="e2e-folder-card-folder-description-preview">
-                    {description}
-                  </FolderDescription>
-                );
+    return (
+      <Container
+        className={`${className} ${layout} ${size} ${
+          !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+        } e2e-folder-card e2e-admin-publication-card`}
+        to={folderUrl}
+        onClick={handleProjectCardOnClick(publication.publicationId)}
+      >
+        {screenReaderContent}
+        {size !== 'large' && contentHeader}
+
+        <FolderImageContainer className={size}>
+          <FolderImagePlaceholder>
+            <FolderImagePlaceholderIcon name="project" />
+          </FolderImagePlaceholder>
+
+          {imageUrl && <FolderImage src={imageUrl} alt="" cover={true} />}
+        </FolderImageContainer>
+
+        <FolderContent className={size}>
+          {size === 'large' && contentHeader}
+
+          <ContentBody className={size} aria-hidden>
+            <FolderTitle
+              onClick={handleProjectTitleOnClick(publication.publicationId)}
+              className="e2e-folder-card-folder-title"
+            >
+              <T value={publication.attributes.publication_title_multiloc} />
+            </FolderTitle>
+
+            <T
+              value={
+                publication.attributes.publication_description_preview_multiloc
               }
+            >
+              {(description) => {
+                if (!isEmpty(description)) {
+                  return (
+                    <FolderDescription className="e2e-folder-card-folder-description-preview">
+                      {description}
+                    </FolderDescription>
+                  );
+                }
 
-              return null;
-            }}
-          </T>
-        </ContentBody>
-      </FolderContent>
-    </Container>
-  );
-});
+                return null;
+              }}
+            </T>
+          </ContentBody>
+        </FolderContent>
+      </Container>
+    );
+  }
+);
 
-export default withTheme(ProjectFolderCard);
+export default ProjectFolderCard;

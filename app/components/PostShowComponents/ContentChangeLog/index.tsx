@@ -2,8 +2,12 @@
 import React, { PureComponent } from 'react';
 
 // resourcs
-import GetIdeaActivities, { GetIdeaActivitiesChildProps } from 'resources/GetIdeaActivities';
-import GetInitiativeActivities, { GetInitiativeActivitiesChildProps } from 'resources/GetInitiativeActivities';
+import GetIdeaActivities, {
+  GetIdeaActivitiesChildProps,
+} from 'resources/GetIdeaActivities';
+import GetInitiativeActivities, {
+  GetInitiativeActivitiesChildProps,
+} from 'resources/GetInitiativeActivities';
 
 // Components
 import Entry from './ChangeLogEntry';
@@ -60,10 +64,12 @@ interface InputProps {
 }
 
 interface DataProps {
-  postActivities: GetIdeaActivitiesChildProps | GetInitiativeActivitiesChildProps;
+  postActivities:
+    | GetIdeaActivitiesChildProps
+    | GetInitiativeActivitiesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   modalOpen: boolean;
@@ -73,39 +79,53 @@ class ContentChangeLog extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen: false
+      modalOpen: false,
     };
   }
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   openModal = () => {
     this.setState({ modalOpen: true });
-  }
+  };
 
   closeModal = () => {
     this.setState({ modalOpen: false });
-  }
+  };
 
   render() {
     const { postActivities, postType } = this.props;
 
     // Render only if there is more than the "published" activity
-    if (postActivities && postActivities.length > 0 && (postActivities.length > 1 || postActivities[0].attributes.action !== 'published')) {
+    if (
+      postActivities &&
+      postActivities.length > 0 &&
+      (postActivities.length > 1 ||
+        postActivities[0].attributes.action !== 'published')
+    ) {
       const lastUpdated = postActivities[0].attributes.acted_at;
-      const lastChangesTitleMessage = (postType === 'idea' ? messages.lastChangesTitleIdea : messages.lastChangesTitleInitiative);
+      const lastChangesTitleMessage =
+        postType === 'idea'
+          ? messages.lastChangesTitleIdea
+          : messages.lastChangesTitleInitiative;
 
       return (
         <Container className={this.props.className}>
           <Separator>-</Separator>
-          <LinkButton onMouseDown={this.removeFocus} onClick={this.openModal} className="e2e-post-last-modified-button">
+          <LinkButton
+            onMouseDown={this.removeFocus}
+            onClick={this.openModal}
+            className="e2e-post-last-modified-button"
+          >
             <FormattedMessage
               {...messages.lastUpdated}
               values={{
                 modificationTime: <FormattedRelative value={lastUpdated} />,
-                translatedPostType: <FormattedMessage {...messages[postType]} />
+                translatedPostType: (
+                  <FormattedMessage {...messages[postType]} />
+                ),
               }}
             />
           </LinkButton>
@@ -118,7 +138,11 @@ class ContentChangeLog extends PureComponent<Props, State> {
           >
             <Entries className="e2e-activities-changelog">
               {postActivities.map((activity) => (
-                <Entry key={activity.id} activity={activity} postType={postType} />
+                <Entry
+                  key={activity.id}
+                  activity={activity}
+                  postType={postType}
+                />
               ))}
             </Entries>
           </Modal>
@@ -130,14 +154,17 @@ class ContentChangeLog extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => inputProps.postType === 'idea'
-  ? (
+export default (inputProps: InputProps) =>
+  inputProps.postType === 'idea' ? (
     <GetIdeaActivities ideaId={inputProps.postId}>
-      {postActivities => <ContentChangeLog {...inputProps} postActivities={postActivities} />}
+      {(postActivities) => (
+        <ContentChangeLog {...inputProps} postActivities={postActivities} />
+      )}
     </GetIdeaActivities>
-  )
-  : (
+  ) : (
     <GetInitiativeActivities initiativeId={inputProps.postId}>
-      {postActivities => <ContentChangeLog {...inputProps} postActivities={postActivities} />}
+      {(postActivities) => (
+        <ContentChangeLog {...inputProps} postActivities={postActivities} />
+      )}
     </GetInitiativeActivities>
   );

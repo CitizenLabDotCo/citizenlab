@@ -1,77 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="preload" crossorigin="anonymous" href="/larsseit-light.woff2" as="font" type="font/woff2">
-  <link rel="preload" crossorigin="anonymous" href="/larsseit.woff2" as="font" type="font/woff2">
-  <link rel="preload" crossorigin="anonymous" href="/larsseit-medium.woff2" as="font" type="font/woff2">
-  <link rel="preload" crossorigin="anonymous" href="/larsseit-bold.woff2" as="font" type="font/woff2">
-  <script
-    src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Intl.~locale.en,Intl.~locale.en-GB,Intl.~locale.en-CA,Intl.~locale.fr-BE,Intl.~locale.fr-FR,Intl.~locale.nl-BE,Intl.~locale.nl-NL,Intl.~locale.de-DE,Intl.~locale.da-DK,Intl.~locale.nb-NO,Intl.~locale.es-ES,Intl.~locale.es-CL,Intl.~locale.pl-PL,Intl.~locale.hu-HU,Intl.~locale.kl-GL,Intl.~locale.ro-RO,Intl.~locale.pt-BR"></script>
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #app {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    .app-loading-container {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-      padding: 0;
-    }
-
-    .app-loading-spinner {
-      width: 32px;
-      height: 32px;
-      animation: spin 800ms infinite linear;
-      border-style: solid;
-      border-right-color: transparent !important;
-      border-width: 3px;
-      border-color: #666;
-      border-radius: 50%;
-      padding: 0;
-      margin: 0;
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-light.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-medium.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <link
+      rel="preload"
+      crossorigin="anonymous"
+      href="/larsseit-bold.woff2"
+      as="font"
+      type="font/woff2"
+    />
+    <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Intl.~locale.en,Intl.~locale.en-GB,Intl.~locale.en-CA,Intl.~locale.fr-BE,Intl.~locale.fr-FR,Intl.~locale.nl-BE,Intl.~locale.nl-NL,Intl.~locale.de-DE,Intl.~locale.da-DK,Intl.~locale.nb-NO,Intl.~locale.es-ES,Intl.~locale.es-CL,Intl.~locale.pl-PL,Intl.~locale.hu-HU,Intl.~locale.kl-GL,Intl.~locale.ro-RO,Intl.~locale.pt-BR"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
       }
 
-      100% {
-        transform: rotate(360deg);
+      #app {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <div id="app">
-    <div class="app-loading-container">
-      <div class="app-loading-spinner"></div>
+      .app-loading-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .app-loading-spinner {
+        width: 32px;
+        height: 32px;
+        animation: spin 800ms infinite linear;
+        border-style: solid;
+        border-right-color: transparent !important;
+        border-width: 3px;
+        border-color: #666;
+        border-radius: 50%;
+        padding: 0;
+        margin: 0;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="app-loading-container">
+        <div class="app-loading-spinner"></div>
+      </div>
     </div>
-  </div>
 
-  <script>
-    window.myCallbackFunc = function () { }
-  </script>
+    <script>
+      window.myCallbackFunc = function () {};
+    </script>
 
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=myCallbackFunc"></script>
-</body>
-
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=myCallbackFunc"
+    ></script>
+  </body>
 </html>

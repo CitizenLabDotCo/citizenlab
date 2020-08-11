@@ -2,10 +2,14 @@ import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeStatus, {
+  GetInitiativeStatusChildProps,
+} from 'resources/GetInitiativeStatus';
 
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ProgressBar from 'components/UI/ProgressBar';
 
 import { adopt } from 'react-adopt';
@@ -22,7 +26,7 @@ import { get } from 'lodash-es';
 
 const Container = styled.div``;
 
-const StatusBadge = styled.div<{color: string}>`
+const StatusBadge = styled.div<{ color: string }>`
   font-size: ${fontSizes.small}px;
   line-height: 18px;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -131,18 +135,21 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class VoteIndicator extends PureComponent<Props & { theme: any }> {
-
   render() {
     const { initiative, initiativeStatus, theme, tenant } = this.props;
     if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
 
     const statusCode = initiativeStatus.attributes.code;
     const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit: number = get(tenant, 'attributes.settings.initiatives.voting_threshold', 1);
+    const voteLimit: number = get(
+      tenant,
+      'attributes.settings.initiatives.voting_threshold',
+      1
+    );
 
     return (
       <Container className="e2e-initiative-card-vote-indicator">
-        {statusCode === 'proposed' &&
+        {statusCode === 'proposed' && (
           <div>
             <VoteCounter>
               <VoteIcon name="upvote" ariaHidden />
@@ -160,14 +167,14 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             />
             <ScreenReaderOnly>
               <FormattedMessage
-                  {...messages.xVotesOfY}
-                  values={{ xVotes: voteCount, votingThreshold: voteLimit }}
+                {...messages.xVotesOfY}
+                values={{ xVotes: voteCount, votingThreshold: voteLimit }}
               />
             </ScreenReaderOnly>
           </div>
-        }
+        )}
 
-        {statusCode === 'expired' &&
+        {statusCode === 'expired' && (
           <div>
             <ExpiredText>
               <ExpiredIcon name="clock" ariaHidden />
@@ -180,9 +187,9 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               bgShaded={true}
             />
           </div>
-        }
+        )}
 
-        {statusCode === 'threshold_reached' &&
+        {statusCode === 'threshold_reached' && (
           <div>
             <VoteCounter>
               <VoteIcon name="upvote" ariaHidden />
@@ -205,39 +212,33 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               bgShaded={false}
             />
           </div>
-        }
+        )}
 
-        {statusCode === 'answered' &&
-          <AnsweredStatusBadge
-            color={initiativeStatus.attributes.color}
-          >
+        {statusCode === 'answered' && (
+          <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
             <AnsweredBadgeIcon name="round-checkmark" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>
           </AnsweredStatusBadge>
-        }
+        )}
 
-        {statusCode === 'ineligible' &&
-          <IneligibleStatusBadge
-            color={initiativeStatus.attributes.color}
-          >
+        {statusCode === 'ineligible' && (
+          <IneligibleStatusBadge color={initiativeStatus.attributes.color}>
             <IneligibleBadgeIcon name="halt" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>
           </IneligibleStatusBadge>
-        }
+        )}
 
-        {statusCode === 'custom' &&
-          <CustomStatusBadge
-            color={initiativeStatus.attributes.color}
-          >
+        {statusCode === 'custom' && (
+          <CustomStatusBadge color={initiativeStatus.attributes.color}>
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>
           </CustomStatusBadge>
-        }
+        )}
       </Container>
     );
   }
@@ -245,14 +246,22 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeStatus: ({ initiative, render }) => <GetInitiativeStatus id={get(initiative, 'relationships.initiative_status.data.id')}>{render}</GetInitiativeStatus>
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  initiativeStatus: ({ initiative, render }) => (
+    <GetInitiativeStatus
+      id={get(initiative, 'relationships.initiative_status.data.id')}
+    >
+      {render}
+    </GetInitiativeStatus>
+  ),
 });
 
 const VoteIndicatorWithHOCs = withTheme(VoteIndicator);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <VoteIndicatorWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <VoteIndicatorWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

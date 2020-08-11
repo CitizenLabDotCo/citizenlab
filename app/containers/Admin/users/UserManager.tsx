@@ -32,11 +32,11 @@ interface DataProps {
   users: GetUsersChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 type error = {
-  errorName: string,
-  errorElement: JSX.Element
+  errorName: string;
+  errorElement: JSX.Element;
 };
 
 type selectedUsersType = string[] | 'none' | 'all';
@@ -69,38 +69,58 @@ export class UserManager extends PureComponent<Props, State> {
   // Listening to events coming from the different actions to print messages in case of errors
   componentDidMount() {
     this.subscriptions = [
-      eventEmitter.observeEvent<JSX.Element>(events.userDeletionFailed).subscribe(({ eventName, eventValue }) => {
-        this.handleError(eventName, eventValue);
-      }),
-      eventEmitter.observeEvent<JSX.Element>(events.membershipDeleteFailed).subscribe(({ eventName, eventValue }) => {
-        this.handleError(eventName, eventValue);
-      }),
-      eventEmitter.observeEvent<JSX.Element>(events.membershipAddFailed).subscribe(({ eventName, eventValue }) => {
-        this.handleError(eventName, eventValue);
-      }),
-      eventEmitter.observeEvent<JSX.Element>(events.userRoleChangeFailed).subscribe(({ eventName, eventValue }) => {
-        this.handleError(eventName, eventValue);
-      })
+      eventEmitter
+        .observeEvent<JSX.Element>(events.userDeletionFailed)
+        .subscribe(({ eventName, eventValue }) => {
+          this.handleError(eventName, eventValue);
+        }),
+      eventEmitter
+        .observeEvent<JSX.Element>(events.membershipDeleteFailed)
+        .subscribe(({ eventName, eventValue }) => {
+          this.handleError(eventName, eventValue);
+        }),
+      eventEmitter
+        .observeEvent<JSX.Element>(events.membershipAddFailed)
+        .subscribe(({ eventName, eventValue }) => {
+          this.handleError(eventName, eventValue);
+        }),
+      eventEmitter
+        .observeEvent<JSX.Element>(events.userRoleChangeFailed)
+        .subscribe(({ eventName, eventValue }) => {
+          this.handleError(eventName, eventValue);
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   // When an error occurs, print it for 4 seconds then remove the message from the component state
   handleError = (errorName, errorElement) => {
-    this.setState({ errors: [...this.state.errors, { errorName, errorElement }] });
-    setTimeout(() => this.setState({ errors: this.state.errors.filter(err => err.errorName !== errorName) }), 4000);
-  }
+    this.setState({
+      errors: [...this.state.errors, { errorName, errorElement }],
+    });
+    setTimeout(
+      () =>
+        this.setState({
+          errors: this.state.errors.filter(
+            (err) => err.errorName !== errorName
+          ),
+        }),
+      4000
+    );
+  };
 
   toggleAllUsers = () => {
-    this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
-  }
+    this.setState((state) => ({
+      selectedUsers: state.selectedUsers === 'all' ? 'none' : 'all',
+    }));
+  };
 
   unselectAllUsers = () => {
     this.setState({ selectedUsers: 'none' });
-  }
+  };
 
   handleUserSelectedOnChange = (allUsersIds: string[]) => (userId: string) => {
     this.setState((state) => {
@@ -108,31 +128,37 @@ export class UserManager extends PureComponent<Props, State> {
 
       if (isArray(state.selectedUsers)) {
         if (includes(state.selectedUsers, userId)) {
-          const userIds = state.selectedUsers.filter(item => item !== userId);
-          newSelectedUsers = (userIds.length > 0 ? userIds : 'none');
+          const userIds = state.selectedUsers.filter((item) => item !== userId);
+          newSelectedUsers = userIds.length > 0 ? userIds : 'none';
         } else {
           newSelectedUsers = [...state.selectedUsers, userId];
         }
       } else if (state.selectedUsers === 'none') {
         newSelectedUsers = [userId];
       } else if (isArray(allUsersIds)) {
-        newSelectedUsers = allUsersIds.filter(user => user !== userId).map(user => user);
+        newSelectedUsers = allUsersIds
+          .filter((user) => user !== userId)
+          .map((user) => user);
       }
 
       return { selectedUsers: newSelectedUsers };
     });
-  }
+  };
 
   render() {
     const { users, groupType, groupId, search } = this.props;
     const { selectedUsers, errors } = this.state;
 
     if (isArray(users.usersList) && users.usersList.length === 0) {
-      return (search ? <NoUsers noSuchSearchResult={true} /> : <NoUsers smartGroup={groupType === 'rules'}/>);
+      return search ? (
+        <NoUsers noSuchSearchResult={true} />
+      ) : (
+        <NoUsers smartGroup={groupType === 'rules'} />
+      );
     }
 
     if (isArray(users.usersList) && users.usersList.length > 0) {
-      const allUsersIds = users.usersList.map(user => user.id);
+      const allUsersIds = users.usersList.map((user) => user.id);
 
       return (
         <>
@@ -146,9 +172,11 @@ export class UserManager extends PureComponent<Props, State> {
             deleteUsersFromGroup={this.props.deleteUsersFromGroup}
           />
 
-          {errors && errors.length > 0 && errors.map((err) => (
-            <Error text={err.errorElement} key={err.errorName} />
-          ))}
+          {errors &&
+            errors.length > 0 &&
+            errors.map((err) => (
+              <Error text={err.errorElement} key={err.errorName} />
+            ))}
 
           <GetAuthUser>
             {(authUser) => (

@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 
 // components
-import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
+import QuillEditor, {
+  Props as QuillEditorProps,
+} from 'components/UI/QuillEditor';
 
 // style
 import styled from 'styled-components';
@@ -10,7 +12,9 @@ import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,7 +32,8 @@ const LanguageExtension = styled.span`
   margin-left: 4px;
 `;
 
-export interface InputProps extends Omit<QuillEditorProps, 'value' | 'onChange'> {
+export interface InputProps
+  extends Omit<QuillEditorProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
   onChange?: (arg: Multiloc) => void;
 }
@@ -37,24 +42,23 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
 class QuillMultiloc extends PureComponent<Props, State> {
-
   handleOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChange) {
       this.props.onChange({
         ...this.props.valueMultiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
-  }
+  };
 
   handleOnBlur = () => {
     this.props.onBlur?.();
-  }
+  };
 
   render() {
     const {
@@ -74,12 +78,14 @@ class QuillMultiloc extends PureComponent<Props, State> {
 
     if (!isNilOrError(tenantLocales)) {
       return (
-        <Container className={`${className || ''} e2e-multiloc-editor`} >
+        <Container className={`${className || ''} e2e-multiloc-editor`}>
           {tenantLocales.map((locale, index) => {
             const label = this.props.label ? (
               <>
                 <span>{this.props.label}</span>
-                {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
+                {tenantLocales.length > 1 && (
+                  <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>
+                )}
               </>
             ) : null;
 
@@ -115,6 +121,8 @@ class QuillMultiloc extends PureComponent<Props, State> {
 
 export default (InputProps: InputProps) => (
   <GetTenantLocales>
-    {tenantLocales => <QuillMultiloc {...InputProps} tenantLocales={tenantLocales} />}
+    {(tenantLocales) => (
+      <QuillMultiloc {...InputProps} tenantLocales={tenantLocales} />
+    )}
   </GetTenantLocales>
 );

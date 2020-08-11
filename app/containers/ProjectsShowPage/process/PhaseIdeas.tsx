@@ -49,7 +49,10 @@ class PhaseIdeas extends PureComponent<Props, State> {
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
 
-      if ((participationMethod === 'ideation' || participationMethod === 'budgeting')) {
+      if (
+        participationMethod === 'ideation' ||
+        participationMethod === 'budgeting'
+      ) {
         return (
           <Container className={className}>
             <StyledIdeaCards
@@ -74,11 +77,11 @@ class PhaseIdeas extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PhaseIdeas {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseIdeas {...inputProps} {...dataProps} />}
   </Data>
 );

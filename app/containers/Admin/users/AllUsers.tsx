@@ -18,7 +18,6 @@ interface State {
 }
 
 export default class AllUsers extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,9 +27,9 @@ export default class AllUsers extends PureComponent<Props, State> {
 
   searchUser = (searchTerm: string) => {
     this.setState({
-      search: (isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '')
+      search: isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '',
     });
-  }
+  };
 
   render() {
     const { search } = this.state;

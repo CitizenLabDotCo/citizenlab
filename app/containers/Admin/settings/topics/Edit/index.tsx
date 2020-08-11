@@ -25,36 +25,38 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class Edit extends React.PureComponent<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     const { topic } = this.props;
 
     if (isNilOrError(topic)) return;
 
     updateTopic(topic.id, {
-      ...values
+      ...values,
     })
-    .then(() => {
-      clHistory.push('/admin/settings/topics');
-    })
-    .catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+      .then(() => {
+        clHistory.push('/admin/settings/topics');
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   renderFn = (props) => {
     return <TopicForm {...props} />;
-  }
+  };
 
   goBack = () => {
     clHistory.push('/admin/settings/topics');
-  }
+  };
 
   render() {
     const { topic } = this.props;
@@ -64,23 +66,23 @@ class Edit extends React.PureComponent<Props> {
         <SectionTitle>
           <FormattedMessage {...messages.editTopicFormTitle} />
         </SectionTitle>
-        {!isNilOrError(topic) &&
+        {!isNilOrError(topic) && (
           <Formik
             initialValues={{
               title_multiloc: topic.attributes.title_multiloc,
-              description_multiloc: topic.attributes.description_multiloc
+              description_multiloc: topic.attributes.description_multiloc,
             }}
             render={this.renderFn}
             onSubmit={this.handleSubmit}
           />
-        }
+        )}
       </Section>
     );
   }
 }
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetTopic id={inputProps.params.topicId} >
-    {topic => (<Edit topic={topic} />)}
+  <GetTopic id={inputProps.params.topicId}>
+    {(topic) => <Edit topic={topic} />}
   </GetTopic>
 ));

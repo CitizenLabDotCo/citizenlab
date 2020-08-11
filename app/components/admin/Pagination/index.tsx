@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 
@@ -10,7 +9,6 @@ interface Props {
 }
 
 class Pagination extends React.PureComponent<Props> {
-
   constructor(props) {
     super(props);
     this.handleItemClick = this.handleItemClick.bind(this);
@@ -63,7 +61,7 @@ class Pagination extends React.PureComponent<Props> {
               name={item < 0 ? '...' : item.toString()}
               active={item === currentPage}
               onClick={this.handleItemClick}
-              disabled={(item < 0) || item === currentPage}
+              disabled={item < 0 || item === currentPage}
             />
           ))}
         </Menu>

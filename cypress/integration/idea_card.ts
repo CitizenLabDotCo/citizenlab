@@ -15,22 +15,32 @@ describe('Idea card component', () => {
   let childCommentId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then((user) => {
-      userId = user.body.data.id;
-      return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
-    }).then((project) => {
-      projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-    }).then((idea) => {
-      ideaId = idea.body.data.id;
-      return cy.apiAddComment(ideaId, 'idea', commentContent);
-    }).then((parentComment) => {
-      parentCommentId = parentComment.body.data.id;
-      return cy.apiAddComment(ideaId, 'idea', commentContent, parentCommentId);
-    }).then((childComment) => {
-      childCommentId = childComment.body.data.id;
-      cy.wait(500);
-    });
+    cy.apiSignup(firstName, lastName, email, password)
+      .then((user) => {
+        userId = user.body.data.id;
+        return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
+      })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+      })
+      .then((idea) => {
+        ideaId = idea.body.data.id;
+        return cy.apiAddComment(ideaId, 'idea', commentContent);
+      })
+      .then((parentComment) => {
+        parentCommentId = parentComment.body.data.id;
+        return cy.apiAddComment(
+          ideaId,
+          'idea',
+          commentContent,
+          parentCommentId
+        );
+      })
+      .then((childComment) => {
+        childCommentId = childComment.body.data.id;
+        cy.wait(500);
+      });
   });
 
   beforeEach(() => {
@@ -51,8 +61,18 @@ describe('Idea card component', () => {
   });
 
   it('increments and decrements the vote count accordingly when the up and downvote buttons are clicked', () => {
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+    cy.get('#e2e-ideas-list')
+      .find('.e2e-idea-card')
+      .contains(ideaTitle)
+      .closest('.e2e-idea-card')
+      .find('.e2e-ideacard-upvote-button')
+      .as('upvoteBtn');
+    cy.get('#e2e-ideas-list')
+      .find('.e2e-idea-card')
+      .contains(ideaTitle)
+      .closest('.e2e-idea-card')
+      .find('.e2e-ideacard-downvote-button')
+      .as('downvoteBtn');
 
     // check initial upvotes & downvotes
     cy.get('@upvoteBtn').contains('1');
@@ -78,7 +98,12 @@ describe('Idea card component', () => {
   });
 
   it('shows the correct comment count', () => {
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-comment-count').contains('2');
+    cy.get('#e2e-ideas-list')
+      .find('.e2e-idea-card')
+      .contains(ideaTitle)
+      .closest('.e2e-idea-card')
+      .find('.e2e-ideacard-comment-count')
+      .contains('2');
   });
 
   after(() => {

@@ -16,7 +16,6 @@ jest.mock('services/stats');
 jest.mock('services/projects');
 
 describe('<GetIdeasCount />', () => {
-
   let child: jest.Mock;
 
   beforeEach(() => {
@@ -29,10 +28,20 @@ describe('<GetIdeasCount />', () => {
   });
 
   it('calls the ideasCount stream whith the passed in parameters', () => {
-    shallow(<GetIdeasCount assignee="User_ID" feedbackNeeded={true}>{child}</GetIdeasCount>);
-    expect(ideasCount.mock.calls[0][0].queryParameters.assignee).toEqual('User_ID');
-    expect(ideasCount.mock.calls[0][0].queryParameters.feedback_needed).toEqual(true);
-    expect(ideasCount.mock.calls[0][0].queryParameters.project_id).toEqual(undefined);
+    shallow(
+      <GetIdeasCount assignee="User_ID" feedbackNeeded={true}>
+        {child}
+      </GetIdeasCount>
+    );
+    expect(ideasCount.mock.calls[0][0].queryParameters.assignee).toEqual(
+      'User_ID'
+    );
+    expect(ideasCount.mock.calls[0][0].queryParameters.feedback_needed).toEqual(
+      true
+    );
+    expect(ideasCount.mock.calls[0][0].queryParameters.project_id).toEqual(
+      undefined
+    );
   });
 
   it('passes undefined to the child function initially', () => {
@@ -42,7 +51,7 @@ describe('<GetIdeasCount />', () => {
 
   it('passes the idea data to the child function received from the streams', () => {
     const mockIdeasCount = {
-      count: 6
+      count: 6,
     };
     __setMockIdeasCount(mockIdeasCount);
 
@@ -65,15 +74,19 @@ describe('<GetIdeasCount />', () => {
 
   it('reacts to assignee filter change', () => {
     const mockIdeasCount = {
-      count: 6
+      count: 6,
     };
     __setMockIdeasCount(mockIdeasCount);
     const component = shallow(<GetIdeasCount>{child}</GetIdeasCount>);
-    expect(ideasCount.mock.calls[0][0].queryParameters.assignee).toEqual(undefined);
+    expect(ideasCount.mock.calls[0][0].queryParameters.assignee).toEqual(
+      undefined
+    );
     child.mock.calls[1][0].onChangeAssignee('User_ID');
 
     __setMockIdeasCount(null);
-    expect(ideasCount.mock.calls[1][0].queryParameters.assignee).toEqual('User_ID');
+    expect(ideasCount.mock.calls[1][0].queryParameters.assignee).toEqual(
+      'User_ID'
+    );
     expect(child.mock.calls[2][0].count).toBeNull;
   });
 });

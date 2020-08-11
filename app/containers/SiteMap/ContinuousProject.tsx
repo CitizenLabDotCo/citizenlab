@@ -9,25 +9,26 @@ interface InputProps {
   project: IProjectData;
 }
 
-interface Props extends InputProps { }
+interface Props extends InputProps {}
 
 const ContinuousProject = ({ project }: Props) => (
   <>
-    {(project.attributes.participation_method === 'ideation' || project.attributes.participation_method === 'budgeting') && (
+    {(project.attributes.participation_method === 'ideation' ||
+      project.attributes.participation_method === 'budgeting') && (
       <li>
         <Link to={`/projects/${project.attributes.slug}/ideas`}>
           <FormattedMessage {...messages.projectIdeas} />
         </Link>
       </li>
     )}
-    {(project.attributes.participation_method === 'poll') && (
+    {project.attributes.participation_method === 'poll' && (
       <li>
         <Link to={`/projects/${project.attributes.slug}/poll`}>
           <FormattedMessage {...messages.projectPoll} />
         </Link>
       </li>
     )}
-    {(project.attributes.participation_method === 'survey') && (
+    {project.attributes.participation_method === 'survey' && (
       <li>
         <Link to={`/projects/${project.attributes.slug}/info`}>
           <FormattedMessage {...messages.projectSurvey} />

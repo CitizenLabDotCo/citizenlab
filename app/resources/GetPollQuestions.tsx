@@ -23,7 +23,11 @@ interface State {
   pollQuestions: IPollQuestion[] | undefined | null | Error;
 }
 
-export type GetPollQuestionsChildProps = IPollQuestion[] | undefined | null | Error;
+export type GetPollQuestionsChildProps =
+  | IPollQuestion[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetPollQuestions extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -32,26 +36,49 @@ export default class GetPollQuestions extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      pollQuestions: undefined
+      pollQuestions: undefined,
     };
   }
 
   componentDidMount() {
     const { participationContextType, participationContextId } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ participationContextType, participationContextId });
+    this.inputProps$ = new BehaviorSubject({
+      participationContextType,
+      participationContextId,
+    });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => this.setState({ pollQuestions: undefined })),
-        filter(({ participationContextType, participationContextId }) =>
-          isString(participationContextId) && ['project', 'phase'].includes(participationContextType)),
-        switchMap(({ participationContextType, participationContextId }: { participationContextId: string, participationContextType: IParticipationContextType }) =>
-          pollQuestionsStream(participationContextId, participationContextType).observable)
-      )
-        .subscribe(pollQuestions =>
-          this.setState({ pollQuestions: !isNilOrError(pollQuestions) ? pollQuestions.data : pollQuestions }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => this.setState({ pollQuestions: undefined })),
+          filter(
+            ({ participationContextType, participationContextId }) =>
+              isString(participationContextId) &&
+              ['project', 'phase'].includes(participationContextType)
+          ),
+          switchMap(
+            ({
+              participationContextType,
+              participationContextId,
+            }: {
+              participationContextId: string;
+              participationContextType: IParticipationContextType;
+            }) =>
+              pollQuestionsStream(
+                participationContextId,
+                participationContextType
+              ).observable
+          )
+        )
+        .subscribe((pollQuestions) =>
+          this.setState({
+            pollQuestions: !isNilOrError(pollQuestions)
+              ? pollQuestions.data
+              : pollQuestions,
+          })
+        ),
     ];
   }
 
@@ -61,7 +88,7 @@ export default class GetPollQuestions extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

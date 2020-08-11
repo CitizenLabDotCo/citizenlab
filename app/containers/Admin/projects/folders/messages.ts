@@ -8,7 +8,8 @@ export default defineMessages({
   },
   subtitleSettingsTab: {
     id: 'app.containers.AdminPage.FoldersEdit.subtitleSettingsTab',
-    defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
+    defaultMessage:
+      'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
   viewPublicProjectFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.viewPublicProjectFolder',
@@ -31,7 +32,8 @@ export default defineMessages({
     defaultMessage: 'Short description',
   },
   shortDescriptionInputLabelTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip',
+    id:
+      'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip',
     defaultMessage: 'shown in the landing page',
   },
   descriptionInputLabel: {
@@ -72,7 +74,8 @@ export default defineMessages({
   },
   subtitleNewFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.subtitleNewFolder',
-    defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
+    defaultMessage:
+      'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
   projectsAlreadyAdded: {
     id: 'app.containers.AdminPage.FoldersEdit.projectsAlreadyAdded',
@@ -108,11 +111,13 @@ export default defineMessages({
   },
   deleteFolderError: {
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderError',
-    defaultMessage: 'There was an issue removing this folder. Please try again.',
+    defaultMessage:
+      'There was an issue removing this folder. Please try again.',
   },
   deleteFolderConfirmation: {
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation',
-    defaultMessage: 'Are you sure you want to delete this folder and all the projects it contains?',
+    defaultMessage:
+      'Are you sure you want to delete this folder and all the projects it contains?',
   },
   noProjectsToAdd: {
     id: 'app.containers.AdminPage.FoldersEdit.noProjectsToAdd',
@@ -124,7 +129,8 @@ export default defineMessages({
   },
   fileUploadLabelTooltip: {
     id: 'app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip',
-    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the folder page.',
+    defaultMessage:
+      'Files should not be larger than 50Mb. Added files will be shown on the folder page.',
   },
   statusLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.statusLabel',
@@ -132,7 +138,8 @@ export default defineMessages({
   },
   publicationStatusTooltip: {
     id: 'app.containers.AdminPage.FoldersEdit.publicationStatusTooltip',
-    defaultMessage: 'Choose whether this folder is "draft", "published" or "archived".',
+    defaultMessage:
+      'Choose whether this folder is "draft", "published" or "archived".',
   },
   draftStatus: {
     id: 'app.containers.AdminPage.FoldersEdit.draftStatus',

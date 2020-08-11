@@ -3,198 +3,212 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   HTMLTitle: {
     id: 'containers.Admin.onboarding.HTMLTitle',
-    defaultMessage: 'Welcome to the admin panel'
+    defaultMessage: 'Welcome to the admin panel',
   },
   HTMLDescription: {
     id: 'containers.Admin.onboarding.HTMLDescription',
-    defaultMessage: 'This page will be your guide'
+    defaultMessage: 'This page will be your guide',
   },
   title: {
     id: 'containers.Admin.onboarding.title',
-    defaultMessage: 'Guide'
+    defaultMessage: 'Guide',
   },
   readCompleteGuide: {
     id: 'containers.Admin.onboarding.readCompleteGuide',
-    defaultMessage: 'Read complete guide'
+    defaultMessage: 'Read complete guide',
   },
   // Setup section
   setupSectionTitle: {
     id: 'containers.Admin.onboarding.setupSectionTitle',
-    defaultMessage: 'Setup'
+    defaultMessage: 'Setup',
   },
   setupSectionLink: {
     id: 'containers.Admin.onboarding.setupSectionLink',
-    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step'
+    defaultMessage:
+      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step',
   },
   setupArticle1Link: {
     id: 'containers.Admin.onboarding.setupArticle1Link',
-    defaultMessage: '/admin/projects/new'
+    defaultMessage: '/admin/projects/new',
   },
   setupArticle1Title: {
     id: 'containers.Admin.onboarding.setupArticle1Title',
-    defaultMessage: 'Create your first projects'
+    defaultMessage: 'Create your first projects',
   },
   setupArticle1Description: {
     id: 'containers.Admin.onboarding.setupArticle1Description',
-    defaultMessage: 'Projects are the beating heart of the platform. Admins and project moderators can customize and edit the projects at any time: information, files, images, areas, timeline, participation methods, planned activities, etc...'
+    defaultMessage:
+      'Projects are the beating heart of the platform. Admins and project moderators can customize and edit the projects at any time: information, files, images, areas, timeline, participation methods, planned activities, etc...',
   },
   setupArticle2Link: {
     id: 'containers.Admin.onboarding.setupArticle2Link',
-    defaultMessage: '/admin/settings/registration'
+    defaultMessage: '/admin/settings/registration',
   },
   setupArticle2Title: {
     id: 'containers.Admin.onboarding.setupArticle2Title',
-    defaultMessage: 'Define what you want to know from your users'
+    defaultMessage: 'Define what you want to know from your users',
   },
   setupArticle2Description: {
     id: 'containers.Admin.onboarding.setupArticle2Description',
-    defaultMessage: 'You can ask your users additional information while registering. Use the registration fields to get better insights, or to segment your users into groups, for example by age, area, interests, etc...'
+    defaultMessage:
+      'You can ask your users additional information while registering. Use the registration fields to get better insights, or to segment your users into groups, for example by age, area, interests, etc...',
   },
   setupArticle3Link: {
     id: 'containers.Admin.onboarding.setupArticle3Link',
-    defaultMessage: '/admin/settings/widgets'
+    defaultMessage: '/admin/settings/widgets',
   },
   setupArticle3Title: {
     id: 'containers.Admin.onboarding.setupArticle3Title',
-    defaultMessage: 'Link the platform to third party websites using a widget'
+    defaultMessage: 'Link the platform to third party websites using a widget',
   },
   setupArticle3Description: {
     id: 'containers.Admin.onboarding.setupArticle3Description',
-    defaultMessage: 'A personalized widget brings people from other websites to your platform.'
+    defaultMessage:
+      'A personalized widget brings people from other websites to your platform.',
   },
   // Engage section
   engageSectionTitle: {
     id: 'containers.Admin.onboarding.engageSectionTitle',
-    defaultMessage: 'Engage'
+    defaultMessage: 'Engage',
   },
   engageSectionLink: {
     id: 'containers.Admin.onboarding.engageSectionLink',
-    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step'
+    defaultMessage:
+      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step',
   },
   engageArticle1Link: {
     id: 'containers.Admin.onboarding.engageArticle1Link',
-    defaultMessage: '/admin/invitations'
+    defaultMessage: '/admin/invitations',
   },
   engageArticle1Title: {
     id: 'containers.Admin.onboarding.engageArticle1Title',
-    defaultMessage: 'Involve admins and project moderators'
+    defaultMessage: 'Involve admins and project moderators',
   },
   engageArticle1Description: {
     id: 'containers.Admin.onboarding.engageArticle1Description',
-    defaultMessage: 'Send them an invitation, give them admin or moderator rights and add a brief personal message explaining what they can do.'
+    defaultMessage:
+      'Send them an invitation, give them admin or moderator rights and add a brief personal message explaining what they can do.',
   },
   engageArticle2Link: {
     id: 'containers.Admin.onboarding.engageArticle2Link',
-    defaultMessage: '/admin/invitations'
+    defaultMessage: '/admin/invitations',
   },
   engageArticle2Title: {
     id: 'containers.Admin.onboarding.engageArticle2Title',
-    defaultMessage: 'Invite your target audience'
+    defaultMessage: 'Invite your target audience',
   },
   engageArticle2Description: {
     id: 'containers.Admin.onboarding.engageArticle2Description',
-    defaultMessage: 'Add a personal message with a clear call-to-action. If you have a list of email addresses from people that participated in an offline event, easily add this list to the platform.'
+    defaultMessage:
+      'Add a personal message with a clear call-to-action. If you have a list of email addresses from people that participated in an offline event, easily add this list to the platform.',
   },
   engageArticle3Link: {
     id: 'containers.Admin.onboarding.engageArticle3Link',
-    defaultMessage: '/admin/emails/custom'
+    defaultMessage: '/admin/emails/custom',
   },
   engageArticle3Title: {
     id: 'containers.Admin.onboarding.engageArticle3Title',
-    defaultMessage: 'Send emails to keep your users updated'
+    defaultMessage: 'Send emails to keep your users updated',
   },
   engageArticle3Description: {
     id: 'containers.Admin.onboarding.engageArticle3Description',
-    defaultMessage: 'Inform your audience on a project entering a new phase, invite them for a project related event, warn them on an approaching deadline, etc.. You can do all this by creating custom email campaigns.'
+    defaultMessage:
+      'Inform your audience on a project entering a new phase, invite them for a project related event, warn them on an approaching deadline, etc.. You can do all this by creating custom email campaigns.',
   },
   // Manage section
   manageSectionTitle: {
     id: 'containers.Admin.onboarding.manageSectionTitle',
-    defaultMessage: 'manage'
+    defaultMessage: 'manage',
   },
   manageSectionLink: {
     id: 'containers.Admin.onboarding.manageSectionLink',
-    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step'
+    defaultMessage:
+      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step',
   },
   manageArticle1Link: {
     id: 'containers.Admin.onboarding.manageArticle1Link',
-    defaultMessage: '/admin/projects'
+    defaultMessage: '/admin/projects',
   },
   manageArticle1Title: {
     id: 'containers.Admin.onboarding.manageArticle1Title',
-    defaultMessage: 'Moderate inside your projects'
+    defaultMessage: 'Moderate inside your projects',
   },
   manageArticle1Description: {
     id: 'containers.Admin.onboarding.manageArticle1Description',
-    defaultMessage: 'Don’t make your audience wait for your feedback. Interact with them regularly. Leave a comment, send them an email. Reach out to them individually or to a group per age, area, or project that they participated in.'
+    defaultMessage:
+      'Don’t make your audience wait for your feedback. Interact with them regularly. Leave a comment, send them an email. Reach out to them individually or to a group per age, area, or project that they participated in.',
   },
   manageArticle2Link: {
     id: 'containers.Admin.onboarding.manageArticle2Link',
-    defaultMessage: '/admin/users'
+    defaultMessage: '/admin/users',
   },
   manageArticle2Title: {
     id: 'containers.Admin.onboarding.manageArticle2Title',
-    defaultMessage: 'Manage your users'
+    defaultMessage: 'Manage your users',
   },
   manageArticle2Description: {
     id: 'containers.Admin.onboarding.manageArticle2Description',
-    defaultMessage: 'Create groups to be able to contact specific groups or define permissions per group.'
+    defaultMessage:
+      'Create groups to be able to contact specific groups or define permissions per group.',
   },
   manageArticle3Link: {
     id: 'containers.Admin.onboarding.manageArticle3Link',
-    defaultMessage: '/unused'
+    defaultMessage: '/unused',
   },
   manageArticle3Title: {
     id: 'containers.Admin.onboarding.manageArticle3Title',
-    defaultMessage: 'Not yet used'
+    defaultMessage: 'Not yet used',
   },
   manageArticle3Description: {
     id: 'containers.Admin.onboarding.manageArticle3Description',
-    defaultMessage: 'Not yet used'
+    defaultMessage: 'Not yet used',
   },
   // Decide section
   decideSectionTitle: {
     id: 'containers.Admin.onboarding.decideSectionTitle',
-    defaultMessage: 'decide'
+    defaultMessage: 'decide',
   },
   decideSectionLink: {
     id: 'containers.Admin.onboarding.decideSectionLink',
-    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step'
+    defaultMessage:
+      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step',
   },
   decideArticle1Link: {
     id: 'containers.Admin.onboarding.decideArticle1Link',
-    defaultMessage: '/admin/ideas'
+    defaultMessage: '/admin/ideas',
   },
   decideArticle1Title: {
     id: 'containers.Admin.onboarding.decideArticle1Title',
-    defaultMessage: 'Manage the ideas'
+    defaultMessage: 'Manage the ideas',
   },
   decideArticle1Description: {
     id: 'containers.Admin.onboarding.decideArticle1Description',
-    defaultMessage: 'Add topics to ideas or change the idea status. Mark ideas as spam if they are offending. The author is notified when you change the status or comment on his/her idea.'
+    defaultMessage:
+      'Add topics to ideas or change the idea status. Mark ideas as spam if they are offending. The author is notified when you change the status or comment on his/her idea.',
   },
   decideArticle2Link: {
     id: 'containers.Admin.onboarding.decideArticle2Link',
-    defaultMessage: '/admin/insights'
+    defaultMessage: '/admin/insights',
   },
   decideArticle2Title: {
     id: 'containers.Admin.onboarding.decideArticle2Title',
-    defaultMessage: 'Use the insights'
+    defaultMessage: 'Use the insights',
   },
   decideArticle2Description: {
     id: 'containers.Admin.onboarding.decideArticle2Description',
-    defaultMessage: 'Get immediate and easy-to-grasp analytics, and monitor closely what’s happening on the platform.'
+    defaultMessage:
+      'Get immediate and easy-to-grasp analytics, and monitor closely what’s happening on the platform.',
   },
   decideArticle3Link: {
     id: 'containers.Admin.onboarding.decideArticle3Link',
-    defaultMessage: '/unused'
+    defaultMessage: '/unused',
   },
   decideArticle3Title: {
     id: 'containers.Admin.onboarding.decideArticle3Title',
-    defaultMessage: 'Not yet used'
+    defaultMessage: 'Not yet used',
   },
   decideArticle3Description: {
     id: 'containers.Admin.onboarding.decideArticle3Description',
-    defaultMessage: 'Not yet used'
+    defaultMessage: 'Not yet used',
   },
 });

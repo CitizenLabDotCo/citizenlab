@@ -6,11 +6,21 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Error from 'components/UI/Error';
-import IconTooltip from 'components/UI/IconTooltip';
 import Collapse from 'components/UI/Collapse';
-import { FormContainer, Title, Form, FormField, StyledLabel, LabelTextContainer, Footer, SubmitButton, CancelButton, HelpImage } from './styles';
+import {
+  FormContainer,
+  Title,
+  Form,
+  FormField,
+  StyledLabel,
+  LabelTextContainer,
+  Footer,
+  SubmitButton,
+  CancelButton,
+  HelpImage,
+} from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -19,8 +29,9 @@ import useAuthUser from 'hooks/useAuthUser';
 import { verifyIDLookup } from 'services/verify';
 
 // i18n
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
 // typings
@@ -35,90 +46,108 @@ interface Props {
   method: IDLookupMethod;
 }
 
-const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, showHeader, inModal, className, method }) => {
+const VerificationFormLookup = memo<Props & InjectedIntlProps>(
+  ({ onCancel, onVerified, showHeader, inModal, className, method, intl }) => {
+    const authUser = useAuthUser();
 
-  const authUser = useAuthUser();
+    const [cardId, setCardId] = useState<string>('');
+    const [cardIdError, setCardIdError] = useState<string | null>(null);
+    const [formError, setFormError] = useState<string | null>(null);
+    const [showHelp, setShowHelp] = useState<boolean>(false);
 
-  const [cardId, setCardId] = useState<string>('');
-  const [cardIdError, setCardIdError] = useState<JSX.Element | null>(null);
-  const [formError, setFormError] = useState<JSX.Element | null>(null);
-  const [showHelp, setShowHelp] = useState<boolean>(false);
+    const onCardIdChange = useCallback((cardId: string) => {
+      setCardIdError(null);
+      setCardId(cardId);
+    }, []);
 
-  const onCardIdChange = useCallback((cardId: string) => {
-    setCardIdError(null);
-    setCardId(cardId);
-  }, []);
+    const onSubmit = useCallback(
+      async (event: React.FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
 
-  const onSubmit = useCallback(async (event: React.FormEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    let hasEmptyFields = false;
+        const { formatMessage } = intl;
+        let hasEmptyFields = false;
 
-    // first reset the errors
-    setCardIdError(null);
-    setFormError(null);
+        // first reset the errors
+        setCardIdError(null);
+        setFormError(null);
 
-    if (isEmpty(cardId)) {
-      setCardIdError(<FormattedMessage {...messages.emptyFieldError} />);
-      hasEmptyFields = true;
-    }
-
-    if (!hasEmptyFields) {
-      try {
-        await verifyIDLookup(cardId);
-
-        const endpointsToRefetch = [`${API_PATH}/users/me`, `${API_PATH}/projects`];
-        const partialEndpointsToRefetch = [`${API_PATH}/projects/`, `${API_PATH}/ideas/`];
-
-        if (!isNilOrError(authUser)) {
-          endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+        if (isEmpty(cardId)) {
+          setCardIdError(formatMessage(messages.emptyFieldError));
+          hasEmptyFields = true;
         }
 
-        await streams.fetchAllWith({
-          apiEndpoint: endpointsToRefetch,
-          partialApiEndpoint: partialEndpointsToRefetch
-        });
+        if (!hasEmptyFields) {
+          try {
+            await verifyIDLookup(cardId);
 
-        onVerified();
-      } catch (error) {
+            const endpointsToRefetch = [
+              `${API_PATH}/users/me`,
+              `${API_PATH}/projects`,
+            ];
+            const partialEndpointsToRefetch = [
+              `${API_PATH}/projects/`,
+              `${API_PATH}/ideas/`,
+            ];
 
-        if (get(error, 'json.errors.base[0].error') === 'taken') {
-          setFormError(<FormattedMessage {...messages.takenFormError} />);
-        } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
-          setFormError(<FormattedMessage {...messages.noMatchFormError} />);
-        } else if (get(error, 'json.errors.cardId[0].error') === 'invalid') {
-          setCardIdError(<FormattedMessage {...messages.invalidCardIdError} />);
-        } else {
-          reportError(error);
-          setFormError(<FormattedMessage {...messages.somethingWentWrongError} />);
+            if (!isNilOrError(authUser)) {
+              endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+            }
+
+            await streams.fetchAllWith({
+              apiEndpoint: endpointsToRefetch,
+              partialApiEndpoint: partialEndpointsToRefetch,
+            });
+
+            onVerified();
+          } catch (error) {
+            if (get(error, 'json.errors.base[0].error') === 'taken') {
+              setFormError(formatMessage(messages.takenFormError));
+            } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
+              setFormError(formatMessage(messages.noMatchFormError));
+            } else if (
+              get(error, 'json.errors.cardId[0].error') === 'invalid'
+            ) {
+              setCardIdError(formatMessage(messages.invalidCardIdError));
+            } else {
+              reportError(error);
+              setFormError(formatMessage(messages.somethingWentWrongError));
+            }
+          }
         }
-      }
-    }
+      },
+      [cardId, authUser]
+    );
 
-  }, [cardId, authUser]);
+    const onCancelButtonClicked = useCallback(() => {
+      onCancel();
+    }, []);
 
-  const onCancelButtonClicked = useCallback(() => {
-    onCancel();
-  }, []);
+    const onToggleHelpButtonClick = useCallback(() => {
+      setShowHelp((showHelp) => !showHelp);
+    }, []);
 
-  const onToggleHelpButtonClick = useCallback(() => {
-    setShowHelp(showHelp => !showHelp);
-  }, []);
+    return (
+      <FormContainer className={className} inModal={inModal}>
+        {showHeader && (
+          <Title>
+            <strong>
+              <FormattedMessage {...messages.verifyYourIdentity} />
+            </strong>
+          </Title>
+        )}
 
-  return (
-    <FormContainer className={className} inModal={inModal}>
-      {showHeader &&
-        <Title>
-          <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
-        </Title>
-      }
-
-      <Form inModal={inModal}>
-        <FormField>
-          <StyledLabel htmlFor="cardId">
-            <LabelTextContainer>
-              <T value={method.attributes.card_id_multiloc} />
-              <IconTooltip maxTooltipWidth={200} content={<T value={method.attributes.card_id_tooltip_multiloc} />} />
-            </LabelTextContainer>
+        <Form inModal={inModal}>
+          <FormField>
+            <StyledLabel htmlFor="cardId">
+              <LabelTextContainer>
+                <T value={method.attributes.card_id_multiloc} />
+                <IconTooltip
+                  maxTooltipWidth={200}
+                  content={
+                    <T value={method.attributes.card_id_tooltip_multiloc} />
+                  }
+                />
+              </LabelTextContainer>
               <Input
                 id="cardId"
                 type="text"
@@ -127,31 +156,36 @@ const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, showHeader, 
                 value={cardId}
                 error={cardIdError}
               />
-          </StyledLabel>
-          <Collapse
-            opened={showHelp}
-            onToggle={onToggleHelpButtonClick}
-            label={<FormattedMessage {...messages.showCOWHelp} />}
-          >
-            <HelpImage src={method.attributes.explainer_image_url} alt="help" />
-          </Collapse>
-        </FormField>
+            </StyledLabel>
+            <Collapse
+              opened={showHelp}
+              onToggle={onToggleHelpButtonClick}
+              label={<FormattedMessage {...messages.showCOWHelp} />}
+            >
+              <HelpImage
+                src={method.attributes.explainer_image_url}
+                alt="help"
+              />
+            </Collapse>
+          </FormField>
 
-        {formError &&
-          <Error text={formError} />
-        }
+          {formError && <Error text={formError} />}
 
-        <Footer>
-          <SubmitButton onClick={onSubmit}>
-            <FormattedMessage {...messages.submit} />
-          </SubmitButton>
-          <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
-            <FormattedMessage {...messages.cancel} />
-          </CancelButton>
-        </Footer>
-      </Form>
-    </FormContainer>
-  );
-});
+          <Footer>
+            <SubmitButton onClick={onSubmit}>
+              <FormattedMessage {...messages.submit} />
+            </SubmitButton>
+            <CancelButton
+              onClick={onCancelButtonClicked}
+              buttonStyle="secondary"
+            >
+              <FormattedMessage {...messages.cancel} />
+            </CancelButton>
+          </Footer>
+        </Form>
+      </FormContainer>
+    );
+  }
+);
 
-export default VerificationFormLookup;
+export default injectIntl<Props>(VerificationFormLookup);

@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ParentComment from './ParentComment';
 import CommentSorting from './CommentSorting';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // services
 import { ICommentData, CommentsSort } from 'services/comments';
@@ -74,91 +74,102 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props & InjectedIntlProps>(({
-  postId,
-  postType,
-  comments,
-  sortOrder,
-  loading,
-  onSortOrderChange,
-  className,
-  intl: { formatMessage }
-}) => {
-  const [commentPostedMessage, setCommentPostedMessage] = useState('');
-  const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
+const CommentsSection = memo<Props & InjectedIntlProps>(
+  ({
+    postId,
+    postType,
+    comments,
+    sortOrder,
+    loading,
+    onSortOrderChange,
+    className,
+    intl: { formatMessage },
+  }) => {
+    const [commentPostedMessage, setCommentPostedMessage] = useState('');
+    const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
 
-  const sortedParentComments = useMemo(() => {
-    if (!isNilOrError(comments) && comments.length > 0) {
-      return comments.filter(comment => comment.relationships.parent.data === null);
-    }
-    return null;
-  }, [sortOrder, comments]);
+    const sortedParentComments = useMemo(() => {
+      if (!isNilOrError(comments) && comments.length > 0) {
+        return comments.filter(
+          (comment) => comment.relationships.parent.data === null
+        );
+      }
+      return null;
+    }, [sortOrder, comments]);
 
-  const handleSortOrderChange = useCallback(
-    (sortOrder: CommentsSort) => {
+    const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
       trackEventByName(tracks.clickCommentsSortOrder);
       onSortOrderChange(sortOrder);
-    }, []
-  );
+    }, []);
 
-  useEffect(() => {
-    const subscriptions = [
-      commentAdded$.subscribe(() => {
-        setCommentPostedMessage(formatMessage(messages.a11y_commentPosted));
-        setTimeout(() => setCommentPostedMessage(''), 1000);
-      }),
-      commentDeleted$.subscribe(() => {
-        setCommentDeletedMessage(formatMessage(messages.a11y_commentDeleted));
-        setTimeout(() => setCommentDeletedMessage(''), 1000);
-      })
-    ];
+    useEffect(() => {
+      const subscriptions = [
+        commentAdded$.subscribe(() => {
+          setCommentPostedMessage(formatMessage(messages.a11y_commentPosted));
+          setTimeout(() => setCommentPostedMessage(''), 1000);
+        }),
+        commentDeleted$.subscribe(() => {
+          setCommentDeletedMessage(formatMessage(messages.a11y_commentDeleted));
+          setTimeout(() => setCommentDeletedMessage(''), 1000);
+        }),
+      ];
 
-    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
-  }, []);
+      return () =>
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+    }, []);
 
-  return (
-    <Container className={`e2e-comments-container ${className}`}>
-      <LiveMessage message={commentPostedMessage || commentDeletedMessage} aria-live="polite" />
-
-      {loading &&
-        <SpinnerWrapper>
-          <Spinner />
-        </SpinnerWrapper>
-      }
-
-      {sortedParentComments && sortedParentComments.length > 0 &&
-        <StyledCommentSorting
-          onChange={handleSortOrderChange}
-          selectedValue={[sortOrder]}
+    return (
+      <Container className={`e2e-comments-container ${className}`}>
+        <LiveMessage
+          message={commentPostedMessage || commentDeletedMessage}
+          aria-live="polite"
         />
-      }
 
-      {sortedParentComments && sortedParentComments.map((parentComment, _index) => {
-        const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
-          if (
-            comment.relationships.parent.data &&
-            comment.relationships.parent.data.id === parentComment.id &&
-            comment.attributes.publication_status !== 'deleted'
-          ) {
-            return true;
-          }
+        {loading && (
+          <SpinnerWrapper>
+            <Spinner />
+          </SpinnerWrapper>
+        )}
 
-          return false;
-        }).map(comment => comment.id));
-
-        return (
-          <StyledParentComment
-            key={parentComment.id}
-            postId={postId}
-            postType={postType}
-            commentId={parentComment.id}
-            childCommentIds={childCommentIds}
-            className={loading ? 'loading' : ''}
+        {sortedParentComments && sortedParentComments.length > 0 && (
+          <StyledCommentSorting
+            onChange={handleSortOrderChange}
+            selectedValue={[sortOrder]}
           />
-        );
-      })}
-    </Container>
-  );
-});
+        )}
+
+        {sortedParentComments &&
+          sortedParentComments.map((parentComment, _index) => {
+            const childCommentIds =
+              !isNilOrError(comments) &&
+              comments
+                .filter((comment) => {
+                  if (
+                    comment.relationships.parent.data &&
+                    comment.relationships.parent.data.id === parentComment.id &&
+                    comment.attributes.publication_status !== 'deleted'
+                  ) {
+                    return true;
+                  }
+
+                  return false;
+                })
+                .map((comment) => comment.id);
+
+            return (
+              <StyledParentComment
+                key={parentComment.id}
+                postId={postId}
+                postType={postType}
+                commentId={parentComment.id}
+                childCommentIds={childCommentIds}
+                className={loading ? 'loading' : ''}
+              />
+            );
+          })}
+      </Container>
+    );
+  }
+);
 
 export default injectIntl(CommentsSection);

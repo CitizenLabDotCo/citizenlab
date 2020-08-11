@@ -7,16 +7,16 @@ export interface Parameters {
   projectId: string;
 }
 
-export default function useProjectTopics({
-  projectId,
-}: Parameters) {
-  const [projectTopics, setProjectTopics] = useState<IProjectTopicData[] | undefined | null | Error>(undefined);
+export default function useProjectTopics({ projectId }: Parameters) {
+  const [projectTopics, setProjectTopics] = useState<
+    IProjectTopicData[] | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
-    let observable: Observable<IProjectTopicData[]| null> = of(null);
+    let observable: Observable<IProjectTopicData[] | null> = of(null);
 
     observable = projectTopicsStream(projectId).observable.pipe(
-      map(topics => topics.data.filter(topic => topic))
+      map((topics) => topics.data.filter((topic) => topic))
     );
 
     const subscription = observable.subscribe((topics) => {

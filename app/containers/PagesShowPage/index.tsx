@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -18,10 +18,14 @@ import { PageLink } from 'services/pageLink';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -32,17 +36,19 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -112,9 +118,7 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
   transition: all 200ms ease;
 
   &:hover {
@@ -142,12 +146,20 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PagesShowPage extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+class PagesShowPage extends PureComponent<
+  Props & WithRouterProps & InjectedIntlProps,
+  State
+> {
   render() {
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isUndefined(page) && !isUndefined(pageLinks)) {
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenantLocales) &&
+      !isUndefined(page) &&
+      !isUndefined(pageLinks)
+    ) {
       let seoTitle: string;
       let seoDescription: string;
       let blockIndexing: boolean;
@@ -156,7 +168,11 @@ class PagesShowPage extends PureComponent<Props & WithRouterProps & InjectedIntl
       let pageSlug: string;
 
       if (!isNilOrError(page)) {
-        seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
+        seoTitle = getLocalized(
+          page.attributes.title_multiloc,
+          locale,
+          tenantLocales
+        );
         seoDescription = '';
         blockIndexing = false;
         pageSlug = page.attributes.slug;
@@ -171,7 +187,9 @@ class PagesShowPage extends PureComponent<Props & WithRouterProps & InjectedIntl
         seoDescription = formatMessage(messages.notFoundDescription);
         blockIndexing = true;
         pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-        pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
+        pageDescription = (
+          <FormattedMessage {...messages.notFoundDescription} />
+        );
         pageSlug = '';
       }
 
@@ -185,42 +203,46 @@ class PagesShowPage extends PureComponent<Props & WithRouterProps & InjectedIntl
 
           <PageContent>
             <StyledContentContainer>
-              <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
-                <PageTitle>
-                  {pageTitle}
-                </PageTitle>
+              <Fragment
+                name={
+                  !isNilOrError(page) ? `pages/${page && page.id}/content` : ''
+                }
+              >
+                <PageTitle>{pageTitle}</PageTitle>
                 <PageDescription>
-                  <QuillEditedContent>
-                    {pageDescription}
-                  </QuillEditedContent>
+                  <QuillEditedContent>{pageDescription}</QuillEditedContent>
                 </PageDescription>
               </Fragment>
             </StyledContentContainer>
-            {!isNilOrError(pageFiles) && pageFiles.length > 0 &&
+            {!isNilOrError(pageFiles) && pageFiles.length > 0 && (
               <AttachmentsContainer>
                 <FileAttachments files={pageFiles} />
               </AttachmentsContainer>
-            }
+            )}
           </PageContent>
 
-          {!isNilOrError(pageLinks) && pageLinks.length > 0 &&
+          {!isNilOrError(pageLinks) && pageLinks.length > 0 && (
             <PagesNavWrapper>
               <PagesNav>
                 <StyledContentContainer>
-                  {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
-                    <StyledLink
-                      className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
-                      to={`/pages/${pageLink.attributes.linked_page_slug}`}
-                      key={pageLink.id}
-                    >
-                      <T value={pageLink.attributes.linked_page_title_multiloc} />
-                      <LinkIcon name="chevron-right" />
-                    </StyledLink>
-                  ))}
+                  {pageLinks
+                    .filter((pageLink) => !isNilOrError(pageLink))
+                    .map((pageLink: PageLink) => (
+                      <StyledLink
+                        className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
+                        to={`/pages/${pageLink.attributes.linked_page_slug}`}
+                        key={pageLink.id}
+                      >
+                        <T
+                          value={pageLink.attributes.linked_page_title_multiloc}
+                        />
+                        <LinkIcon name="chevron-right" />
+                      </StyledLink>
+                    ))}
                 </StyledContentContainer>
               </PagesNav>
             </PagesNavWrapper>
-          }
+          )}
         </Container>
       );
     }
@@ -233,14 +255,27 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
-  pageFiles: ({ page, render }) => <GetResourceFiles resourceId={!isNilOrError(page) ? page.id : null} resourceType="page">{render}</GetResourceFiles>,
-  pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
+  pageFiles: ({ page, render }) => (
+    <GetResourceFiles
+      resourceId={!isNilOrError(page) ? page.id : null}
+      resourceType="page"
+    >
+      {render}
+    </GetResourceFiles>
+  ),
+  pageLinks: ({ page, render }) => (
+    <GetPageLinks pageId={!isNilOrError(page) ? page.id : null}>
+      {render}
+    </GetPageLinks>
+  ),
 });
 
-const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(PagesShowPage);
+const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(
+  PagesShowPage
+);
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <PagesShowPageWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <PagesShowPageWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 ));

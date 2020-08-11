@@ -4,7 +4,11 @@ import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import shallowCompare from 'utils/shallowCompare';
-import { projectByIdStream, projectBySlugStream, IProjectData } from 'services/projects';
+import {
+  projectByIdStream,
+  projectBySlugStream,
+  IProjectData,
+} from 'services/projects';
 
 interface InputProps {
   projectId?: string | null;
@@ -29,13 +33,13 @@ export default class GetProject extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      project: undefined
+      project: undefined,
     };
   }
 
@@ -45,22 +49,25 @@ export default class GetProject extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectId, projectSlug });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ project: undefined })),
-        switchMap(({ projectId, projectSlug }) => {
-          if (isString(projectId)) {
-            return projectByIdStream(projectId).observable;
-          } else if (isString(projectSlug)) {
-            return projectBySlugStream(projectSlug).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ project: undefined })),
+          switchMap(({ projectId, projectSlug }) => {
+            if (isString(projectId)) {
+              return projectByIdStream(projectId).observable;
+            } else if (isString(projectSlug)) {
+              return projectBySlugStream(projectSlug).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((project) => {
-        this.setState({ project: !isNilOrError(project) ? project.data : project });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((project) => {
+          this.setState({
+            project: !isNilOrError(project) ? project.data : project,
+          });
+        }),
     ];
   }
 
@@ -70,7 +77,7 @@ export default class GetProject extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

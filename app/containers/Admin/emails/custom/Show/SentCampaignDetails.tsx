@@ -33,17 +33,18 @@ interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class SentCampaignDetails extends React.Component<Props> {
-
   render() {
     const { campaign } = this.props;
     return (
       <PageWrapper>
         <PaddedCampaignStats campaignId={campaign.id} />
         <PaddedPreviewFrame campaignId={campaign.id} />
-        <h2><FormattedMessage {...messages.recipientsTitle} /></h2>
+        <h2>
+          <FormattedMessage {...messages.recipientsTitle} />
+        </h2>
         <PaddedRecipientsTable campaignId={campaign.id} />
       </PageWrapper>
     );
@@ -52,6 +53,10 @@ class SentCampaignDetails extends React.Component<Props> {
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>
-    {campaign => isNilOrError(campaign) ? null : <SentCampaignDetails {...inputProps} campaign={campaign} />}
+    {(campaign) =>
+      isNilOrError(campaign) ? null : (
+        <SentCampaignDetails {...inputProps} campaign={campaign} />
+      )
+    }
   </GetCampaign>
 );

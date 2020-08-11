@@ -11,17 +11,14 @@ export default class AdminSettingsPages extends PureComponent {
   render() {
     return (
       <>
-      <SectionTitle>
-        <FormattedMessage {...messages.titlePages} />
-      </SectionTitle>
-      <SectionDescription>
-        <FormattedMessage {...messages.subtitlePages} />
-      </SectionDescription>
+        <SectionTitle>
+          <FormattedMessage {...messages.titlePages} />
+        </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.subtitlePages} />
+        </SectionDescription>
         {LEGAL_PAGES.map((slug) => (
-          <PageEditor
-            key={slug}
-            slug={slug}
-          />
+          <PageEditor key={slug} slug={slug} />
         ))}
       </>
     );

@@ -2,7 +2,7 @@ import React from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,26 +16,26 @@ type Props = {
 
 type State = {};
 
-class ProjectValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
-
+class ProjectValueSelector extends React.PureComponent<
+  Props & InjectedLocalized,
+  State
+> {
   generateOptions = (): IOption[] => {
     const { projects, localize } = this.props;
 
     if (!isNilOrError(projects) && projects.projectsList) {
-      return projects.projectsList.map((project) => (
-        {
-          value: project.id,
-          label: localize(project.attributes.title_multiloc),
-        }
-      ));
+      return projects.projectsList.map((project) => ({
+        value: project.id,
+        label: localize(project.attributes.title_multiloc),
+      }));
     } else {
       return [];
     }
-  }
+  };
 
   handleOnChange = (option: IOption) => {
     this.props.onChange(option.value);
-  }
+  };
 
   render() {
     const { value } = this.props;
@@ -54,6 +54,8 @@ const ProjectValueSelectorWithHOC = localize(ProjectValueSelector);
 
 export default (inputProps) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
-    {(projects) => <ProjectValueSelectorWithHOC {...inputProps} projects={projects} />}
+    {(projects) => (
+      <ProjectValueSelectorWithHOC {...inputProps} projects={projects} />
+    )}
   </GetProjects>
 );

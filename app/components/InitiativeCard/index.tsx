@@ -5,13 +5,17 @@ import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Author from 'components/Author';
 import VoteIndicator from './VoteIndicator';
 
 // resources
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeImage, { GetInitiativeImageChildProps } from 'resources/GetInitiativeImage';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeImage, {
+  GetInitiativeImageChildProps,
+} from 'resources/GetInitiativeImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // utils
@@ -85,7 +89,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
-
   onCardClick = (event: FormEvent) => {
     event.preventDefault();
 
@@ -95,13 +98,19 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: initiative.id,
         slug: initiative.attributes.slug,
-        type: 'initiative'
+        type: 'initiative',
       });
     }
-  }
+  };
 
   render() {
-    const { initiative, initiativeImage, initiativeAuthor, localize, className } = this.props;
+    const {
+      initiative,
+      initiativeImage,
+      initiativeAuthor,
+      localize,
+      className,
+    } = this.props;
 
     if (
       !isNilOrError(initiative) &&
@@ -109,15 +118,23 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
       !isUndefined(initiativeAuthor)
     ) {
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
-      const initiativeAuthorId = !isNilOrError(initiativeAuthor) ? initiativeAuthor.id : null;
-      const initiativeImageUrl: string | null = get(initiativeImage, 'attributes.versions.medium', null);
+      const initiativeAuthorId = !isNilOrError(initiativeAuthor)
+        ? initiativeAuthor.id
+        : null;
+      const initiativeImageUrl: string | null = get(
+        initiativeImage,
+        'attributes.versions.medium',
+        null
+      );
       const commentsCount = initiative.attributes.comments_count;
       const cardClassNames = [
         className,
         'e2e-initiative-card',
         get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
         commentsCount > 0 ? 'e2e-has-comments' : null,
-      ].filter(item => isString(item) && item !== '').join(' ');
+      ]
+        .filter((item) => isString(item) && item !== '')
+        .join(' ');
 
       return (
         <Card
@@ -140,11 +157,17 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
               <Spacer />
               <CommentInfo>
                 <CommentIcon name="comments" ariaHidden />
-                <CommentCount aria-hidden className="e2e-initiativecard-comment-count">
+                <CommentCount
+                  aria-hidden
+                  className="e2e-initiativecard-comment-count"
+                >
                   {commentsCount}
                 </CommentCount>
                 <ScreenReaderOnly>
-                  <FormattedMessage {...messages.xComments} values={{ commentsCount }} />
+                  <FormattedMessage
+                    {...messages.xComments}
+                    values={{ commentsCount }}
+                  />
                 </ScreenReaderOnly>
               </CommentInfo>
             </FooterInner>
@@ -158,15 +181,31 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeImage: ({ initiativeId, initiative, render }) => <GetInitiativeImage initiativeId={initiativeId} initiativeImageId={get(initiative, 'relationships.initiative_images.data[0].id')}>{render}</GetInitiativeImage>,
-  initiativeAuthor: ({ initiative, render }) => <GetUser id={get(initiative, 'relationships.author.data.id')}>{render}</GetUser>
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  initiativeImage: ({ initiativeId, initiative, render }) => (
+    <GetInitiativeImage
+      initiativeId={initiativeId}
+      initiativeImageId={get(
+        initiative,
+        'relationships.initiative_images.data[0].id'
+      )}
+    >
+      {render}
+    </GetInitiativeImage>
+  ),
+  initiativeAuthor: ({ initiative, render }) => (
+    <GetUser id={get(initiative, 'relationships.author.data.id')}>
+      {render}
+    </GetUser>
+  ),
 });
 
 const InitiativeCardWithHoC = injectLocalize(InitiativeCard);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativeCardWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <InitiativeCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

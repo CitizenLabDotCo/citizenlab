@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Author from 'components/Author';
 import Link from 'utils/cl-router/Link';
 
@@ -84,15 +84,16 @@ interface InputProps {
   onClose: () => void;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class IdeaPane extends PureComponent<Props, State> {
   trackLinkClick = () => {
-    const slug = !isNilOrError(this.props.idea) && this.props.idea.attributes.slug;
+    const slug =
+      !isNilOrError(this.props.idea) && this.props.idea.attributes.slug;
     trackEventByName(tracks.clickIdeaOnMap.name, { extra: { slug } });
-  }
+  };
 
   render() {
     const { idea, className, onClose } = this.props;
@@ -101,18 +102,24 @@ class IdeaPane extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <CloseButton
-          onClick={onClose}
-        >
+        <CloseButton onClick={onClose}>
           <CloseIcon name="close" />
-        </CloseButton >
+        </CloseButton>
 
-        <Link to={`/ideas/${idea.attributes.slug}`} target="_blank" onClick={this.trackLinkClick}>
+        <Link
+          to={`/ideas/${idea.attributes.slug}`}
+          target="_blank"
+          onClick={this.trackLinkClick}
+        >
           <T as="h4" value={idea.attributes.title_multiloc} />
         </Link>
 
         <StyledAuthor
-          authorId={idea.relationships.author.data ? idea.relationships.author.data.id : null}
+          authorId={
+            idea.relationships.author.data
+              ? idea.relationships.author.data.id
+              : null
+          }
           createdAt={idea.attributes.published_at}
           size="34px"
           notALink
@@ -127,6 +134,6 @@ class IdeaPane extends PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetIdea ideaId={inputProps.ideaId}>
-    {idea => <IdeaPane {...inputProps} idea={idea} />}
+    {(idea) => <IdeaPane {...inputProps} idea={idea} />}
   </GetIdea>
 );

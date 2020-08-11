@@ -32,7 +32,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
       return [
         ...range(0, 100, 10).map((minAge) => {
           let numberOfUsers = 0;
-          const maxAge = (minAge + 9);
+          const maxAge = minAge + 9;
 
           forOwn(data.series.users, (userCount, birthYear) => {
             const age = currentYear - parseInt(birthYear, 10);
@@ -45,14 +45,14 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
           return {
             name: `${minAge} - ${maxAge}`,
             value: numberOfUsers,
-            code: `${minAge}`
+            code: `${minAge}`,
           };
         }),
         {
           name: props.intl.formatMessage(messages._blank),
           value: get(data.series.users, '_blank', 0),
-          code: ''
-        }
+          code: '',
+        },
       ];
     }
 

@@ -8,13 +8,18 @@ import eventEmitter from 'utils/eventEmitter';
 import { addCause } from 'services/causes';
 
 // Components
-import { Section, SectionField, SectionTitle, SectionDescription } from 'components/admin/Section';
+import {
+  Section,
+  SectionField,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -26,7 +31,10 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
-import { SetBackButtonUrl, setBackButtonUrlEventName } from 'containers/Admin/projects/edit';
+import {
+  SetBackButtonUrl,
+  setBackButtonUrlEventName,
+} from 'containers/Admin/projects/edit';
 
 const Container = styled.div``;
 
@@ -45,7 +53,9 @@ interface IFormValues {
 }
 
 const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
-  const { intl: { formatMessage } } = props;
+  const {
+    intl: { formatMessage },
+  } = props;
 
   const [touched, setTouched] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -62,7 +72,10 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
   const participationContextId = phaseId || projectId;
 
   useEffect(() => {
-    eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName, `/admin/projects/${projectId}/volunteering`);
+    eventEmitter.emit<SetBackButtonUrl>(
+      setBackButtonUrlEventName,
+      `/admin/projects/${projectId}/volunteering`
+    );
 
     return () => {
       eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName);
@@ -77,19 +90,22 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
     }));
   }, []);
 
-  const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc, _locale: Locale) => {
-    setTouched(true);
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      description_multiloc
-    }));
-  }, []);
+  const handleDescriptionOnChange = useCallback(
+    (description_multiloc: Multiloc, _locale: Locale) => {
+      setTouched(true);
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
+        description_multiloc,
+      }));
+    },
+    []
+  );
 
   const handleImageOnAdd = useCallback((images: UploadFile[]) => {
     setTouched(true);
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
-      image: images[0]
+      image: images[0],
     }));
   }, []);
 
@@ -97,7 +113,7 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
     setTouched(true);
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
-      image: null
+      image: null,
     }));
   }, []);
 
@@ -123,15 +139,17 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
         participation_context_type: PCType,
         participation_context_id: participationContextId,
         image: image?.base64,
-      }).then(() => {
-        setProcessing(false);
-        setErrors({});
-        setTouched(false);
-        clHistory.push(`/admin/projects/${projectId}/volunteering`);
-      }).catch((errorResponse) => {
-        setProcessing(false);
-        setErrors(errorResponse?.json?.errors || {});
-      });
+      })
+        .then(() => {
+          setProcessing(false);
+          setErrors({});
+          setTouched(false);
+          clHistory.push(`/admin/projects/${projectId}/volunteering`);
+        })
+        .catch((errorResponse) => {
+          setProcessing(false);
+          setErrors(errorResponse?.json?.errors || {});
+        });
     }
   }, [formValues, processing]);
 
@@ -153,7 +171,10 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
             onChange={handleTitleOnChange}
             label={formatMessage(messages.causeTitleLabel)}
           />
-          <Error fieldName="title_multiloc" apiErrors={errors?.title_multiloc} />
+          <Error
+            fieldName="title_multiloc"
+            apiErrors={errors?.title_multiloc}
+          />
         </SectionField>
 
         <SectionField>
@@ -165,7 +186,10 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
             labelTooltipText={formatMessage(messages.causeDescriptionTooltip)}
             withCTAButton
           />
-          <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
+          <Error
+            fieldName="description_multiloc"
+            apiErrors={errors?.description_multiloc}
+          />
         </SectionField>
         <SectionField>
           <Label>
@@ -194,17 +218,16 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
           <FormattedMessage {...messages.saveCause} />
         </Button>
 
-        {!isEmpty(errors) &&
+        {!isEmpty(errors) && (
           <Error
             text={formatMessage(messages.causeErrorMessage)}
             showBackground={false}
             showIcon={false}
           />
-        }
+        )}
       </ButtonContainer>
     </Container>
   );
-
 });
 
 export default withRouter(injectIntl(NewCause));

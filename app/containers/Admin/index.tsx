@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { withRouter, WithRouterProps } from 'react-router';
-import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
+import {
+  globalState,
+  IAdminFullWidth,
+  IAdminNoPadding,
+  IGlobalStateService,
+} from 'services/globalState';
 
 // components
 import Sidebar from './sideBar/';
@@ -25,11 +30,19 @@ const Container = styled.div`
     background: #fff;
   }
 
-  .ui, .ui.menu .item, .ui.table th, .ui a, .ui input, .ui .active td {
+  .ui,
+  .ui.menu .item,
+  .ui.table th,
+  .ui a,
+  .ui input,
+  .ui .active td {
     color: ${colors.adminTextColor} !important;
   }
 
-  .Select-control, .Select-value-label, .Select-value-icon, .Select-option {
+  .Select-control,
+  .Select-value-label,
+  .Select-value-icon,
+  .Select-option {
     color: ${colors.adminTextColor} !important;
   }
 
@@ -39,13 +52,13 @@ const Container = styled.div`
 `;
 
 const RightColumn = styled.div`
-  flex-grow : 1;
-  flex-shrink : 1;
-  flex-basis : 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   display: flex;
   flex-direction: column;
   max-width: 1200px;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   padding-top: 45px;
   padding-right: 51px;
   padding-bottom: 0px;
@@ -62,7 +75,7 @@ const RightColumn = styled.div`
 
   @media print {
     padding: 0;
-    max-width: none,
+    max-width: none;
   }
 
   ${media.smallerThan1280px`
@@ -99,26 +112,40 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
     const NoPadding$ = this.NoPadding.observable;
 
     this.subscriptions = [
-      FullWidth$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled })),
-      NoPadding$.subscribe(({ enabled }) => this.setState({ adminNoPadding: enabled })),
+      FullWidth$.subscribe(({ enabled }) =>
+        this.setState({ adminFullWidth: enabled })
+      ),
+      NoPadding$.subscribe(({ enabled }) =>
+        this.setState({ adminNoPadding: enabled })
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
-    const { children, className, location: { pathname } } = this.props;
+    const {
+      children,
+      className,
+      location: { pathname },
+    } = this.props;
     const { adminNoPadding } = this.state;
-    const adminFullWidth = (this.state.adminFullWidth === true || endsWith(pathname, 'admin/moderation'));
+    const adminFullWidth =
+      this.state.adminFullWidth === true ||
+      endsWith(pathname, 'admin/moderation');
     const adminWhiteBg = endsWith(pathname, 'admin/moderation');
 
     return (
       <>
         <Container className={`${className} ${adminWhiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
-          <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
+          <RightColumn
+            className={`${adminFullWidth && 'fullWidth'} ${
+              adminNoPadding && 'noPadding'
+            }`}
+          >
             {children}
           </RightColumn>
         </Container>

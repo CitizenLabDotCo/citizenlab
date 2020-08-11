@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -14,17 +14,19 @@ export interface Props {
 // Centered spinner taking the navbar height (and admin sidebar) into account
 const FullPageContainer: any = styled.div`
   position: fixed;
-  top: ${props => props.theme.menuHeight}px;
+  top: ${(props) => props.theme.menuHeight}px;
   // 260px is the width of the admin sidebar
-  left: ${(props: Props) => props.admin ? '260px' : '0'};
-  width: ${(props: Props) => props.admin ? 'calc(100% - 260px)' : '100%'}; ;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  left: ${(props: Props) => (props.admin ? '260px' : '0')};
+  width: ${(props: Props) => (props.admin ? 'calc(100% - 260px)' : '100%')};
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   justify-content: center;
   align-items: center;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 

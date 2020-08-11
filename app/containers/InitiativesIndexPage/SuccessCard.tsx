@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import LazyImage from 'components/LazyImage';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 // intl
 import messages from './messages';
@@ -22,9 +22,7 @@ import Link from 'utils/cl-router/Link';
 const Container: any = styled(Link)`
   flex: 1;
   padding: 18px 20px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   &:not(:last-child) {
     margin-right: 20px;
@@ -126,7 +124,7 @@ interface DataProps {
   page: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
   if (isNilOrError(page)) return null;
@@ -143,13 +141,7 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
           {location}
         </LocationIndication>
 
-        {imageUrl &&
-          <SuccessImage
-            src={imageUrl}
-            alt=""
-            cover={true}
-          />
-        }
+        {imageUrl && <SuccessImage src={imageUrl} alt="" cover={true} />}
       </SuccessImageContainer>
       <SuccessIndication>
         <FormattedMessage {...messages.success} />
@@ -167,6 +159,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <SuccessCard {...inputProps} {...dataprops} />}
+    {(dataprops) => <SuccessCard {...inputProps} {...dataprops} />}
   </Data>
 );

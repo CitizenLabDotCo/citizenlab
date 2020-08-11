@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // Data loading
-import GetGeotaggedIdeas, { GetGeotaggedIdeasChildProps } from 'resources/GetGeotaggedIdeas';
+import GetGeotaggedIdeas, {
+  GetGeotaggedIdeasChildProps,
+} from 'resources/GetGeotaggedIdeas';
 import { IGeotaggedIdeaData } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import Map from 'components/Map';
 import IdeaPane from './IdeaPane';
 import Warning from 'components/UI/Warning';
@@ -60,11 +62,11 @@ const Panel = styled.div`
 `;
 
 // typings
-interface InputProps { }
+interface InputProps {}
 interface DataProps {
   ideas: GetGeotaggedIdeasChildProps;
 }
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface State {
   selectedIdeaId: string | null;
@@ -78,17 +80,25 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
     this.state = {
       selectedIdeaId: null,
       panelOpened: false,
-      loadingMessage: null
+      loadingMessage: null,
     };
   }
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState({ loadingMessage: <FormattedMessage {...messages.startLoadingMessage} /> });
+      this.setState({
+        loadingMessage: <FormattedMessage {...messages.startLoadingMessage} />,
+      });
       setTimeout(() => {
-        this.setState({ loadingMessage: <FormattedMessage {...messages.thenLoadingMessage} /> });
+        this.setState({
+          loadingMessage: <FormattedMessage {...messages.thenLoadingMessage} />,
+        });
         setTimeout(() => {
-          this.setState({ loadingMessage: <FormattedMessage {...messages.lastLoadingMessage} /> });
+          this.setState({
+            loadingMessage: (
+              <FormattedMessage {...messages.lastLoadingMessage} />
+            ),
+          });
         }, 30000);
       }, 30000);
     }, 2000);
@@ -96,15 +106,13 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
 
   getPoints = (ideas: IGeotaggedIdeaData[]) => {
     return ideas
-      .filter(idea => idea.attributes.location_point_geojson)
-      .map(idea => (
-        {
-          ...idea.attributes.location_point_geojson,
-          id: idea.id,
-          title: this.props.localize(idea.attributes.title_multiloc)
-        }
-      ));
-  }
+      .filter((idea) => idea.attributes.location_point_geojson)
+      .map((idea) => ({
+        ...idea.attributes.location_point_geojson,
+        id: idea.id,
+        title: this.props.localize(idea.attributes.title_multiloc),
+      }));
+  };
 
   handleIdeaClick = (id: string) => {
     const { panelOpened, selectedIdeaId } = this.state;
@@ -120,10 +128,10 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
         this.setState({ panelOpened: true });
       }
     }
-  }
+  };
   closePanel = () => {
     this.setState({ panelOpened: false });
-  }
+  };
 
   render() {
     const { ideas } = this.props;
@@ -133,14 +141,12 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
       return (
         <SpinnerContainer>
           <Spinner />
-          {this.state.loadingMessage || <Placeholder/>}
+          {this.state.loadingMessage || <Placeholder />}
         </SpinnerContainer>
       );
     }
     if (isNilOrError(ideas)) {
-      return (
-        <ServerError />
-      );
+      return <ServerError />;
     }
     return (
       <div>
@@ -153,16 +159,13 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
             onMarkerClick={this.handleIdeaClick}
             mapHeight={600}
           />
-          {panelOpened &&
+          {panelOpened && (
             <Panel>
-              {selectedIdeaId &&
-                <IdeaPane
-                  onClose={this.closePanel}
-                  ideaId={selectedIdeaId}
-                />
-              }
+              {selectedIdeaId && (
+                <IdeaPane onClose={this.closePanel} ideaId={selectedIdeaId} />
+              )}
             </Panel>
-          }
+          )}
         </MapWrapper>
       </div>
     );
@@ -173,6 +176,6 @@ const DashboardMapMapWithLoc = injectLocalize(DashboardMap);
 
 export default (inputProps: InputProps) => (
   <GetGeotaggedIdeas>
-    {ideas => <DashboardMapMapWithLoc ideas={ideas} {...inputProps} />}
+    {(ideas) => <DashboardMapMapWithLoc ideas={ideas} {...inputProps} />}
   </GetGeotaggedIdeas>
 );

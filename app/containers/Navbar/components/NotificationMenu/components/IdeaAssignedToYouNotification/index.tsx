@@ -38,25 +38,25 @@ type State = {};
 class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
   onClickUserName = (event) => {
     event.stopPropagation();
-  }
+  };
 
-  getNotificationMessage = () : JSX.Element => {
+  getNotificationMessage = (): JSX.Element => {
     const { notification } = this.props;
     const sharedValues = {
-      postTitle: <T value={notification.attributes.post_title_multiloc} />
+      postTitle: <T value={notification.attributes.post_title_multiloc} />,
     };
 
     if (isNilOrError(notification.attributes.initiating_user_slug)) {
-      return(
+      return (
         <FormattedMessage
           {...messages.postAssignedToYou}
           values={{
-            ...sharedValues
+            ...sharedValues,
           }}
         />
       );
     } else {
-      return(
+      return (
         <FormattedMessage
           {...messages.xAssignedPostToYou}
           values={{
@@ -68,26 +68,29 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>
-              ),
+            ),
           }}
         />
       );
     }
-  }
+  };
 
   getLinkTo = () => {
     const { authUser, project } = this.props;
 
     if (authUser) {
       if (isAdmin({ data: authUser })) {
-       return '/admin/ideas';
-      } else if (!isNilOrError(project) && isProjectModerator({ data: authUser })) {
-       return `/admin/projects/${project.id}/ideas`;
+        return '/admin/ideas';
+      } else if (
+        !isNilOrError(project) &&
+        isProjectModerator({ data: authUser })
+      ) {
+        return `/admin/projects/${project.id}/ideas`;
       }
     }
 
     return null;
-  }
+  };
 
   render() {
     const { notification } = this.props;
@@ -112,12 +115,20 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  idea: ({ notification, render }) => <GetIdea ideaSlug={notification?.attributes?.post_slug}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  idea: ({ notification, render }) => (
+    <GetIdea ideaSlug={notification?.attributes?.post_slug}>{render}</GetIdea>
+  ),
+  project: ({ idea, render }) => (
+    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
+      {render}
+    </GetProject>
+  ),
 });
 
 export default (inputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaAssignedToYouNotification {...dataProps} {...inputProps} />}
+    {(dataProps) => (
+      <IdeaAssignedToYouNotification {...dataProps} {...inputProps} />
+    )}
   </Data>
 );

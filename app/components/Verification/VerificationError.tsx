@@ -6,7 +6,7 @@ import messages from './messages';
 
 // components
 import { Title } from './styles';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -48,7 +48,6 @@ interface Props {
 }
 
 export default memo<Props>(({ className, context }) => {
-
   let message = messages.errorGenericSubtitle;
 
   if (context) {
@@ -63,7 +62,9 @@ export default memo<Props>(({ className, context }) => {
     <Container id="e2e-verification-errror" className={className}>
       <StyledIcon name="error" />
       <Title className="e2e-user-verified-errror-modal-content">
-        <strong><FormattedMessage {...messages.errorTitle} /></strong>
+        <strong>
+          <FormattedMessage {...messages.errorTitle} />
+        </strong>
       </Title>
       <Subtitle>
         <FormattedMessage {...message} />

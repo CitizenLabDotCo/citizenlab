@@ -3,7 +3,13 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export type Visibility = 'admins' | 'public';
-export type CustomFieldCodes = 'title' | 'body' | 'topic_ids' | 'location' | 'images' | 'attachments';
+export type CustomFieldCodes =
+  | 'title'
+  | 'body'
+  | 'topic_ids'
+  | 'location'
+  | 'images'
+  | 'attachments';
 type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
@@ -12,14 +18,14 @@ export interface IIdeaCustomFieldData {
   attributes: {
     key: CustomFieldKeys;
     input_type: 'text' | 'multiselect' | 'custom';
-    title_multiloc: Multiloc,
-    description_multiloc: Multiloc,
+    title_multiloc: Multiloc;
+    description_multiloc: Multiloc;
     required: boolean;
     ordering: null;
     enabled: boolean;
     code: CustomFieldCodes;
     created_at: null;
-    updated_at: null
+    updated_at: null;
     visible_to: Visibility;
   };
 }
@@ -58,8 +64,8 @@ export interface UISchemaObject {
 export interface IIdeaCustomFieldsSchemas {
   json_schema_multiloc: {
     [locale: string]: {
-      type: 'object',
-      additionalProperties: boolean,
+      type: 'object';
+      additionalProperties: boolean;
       properties: {
         title: JSONSchemaObject;
         body: JSONSchemaObject;
@@ -84,7 +90,10 @@ export interface IIdeaCustomFieldsSchemas {
   };
 }
 
-export function ideaCustomFieldsStream(projectId: string, streamParams: IStreamParams | null = null) {
+export function ideaCustomFieldsStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null
+) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields`;
   return streams.get<IIdeaCustomFields>({ apiEndpoint, ...streamParams });
 }
@@ -98,9 +107,15 @@ export function ideaCustomFieldByCodeStream(
   return streams.get<IIdeaCustomField>({ apiEndpoint, ...streamParams });
 }
 
-export function ideaCustomFieldsSchemasStream(projectId: string, streamParams: IStreamParams | null = null) {
+export function ideaCustomFieldsSchemasStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null
+) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
-  return streams.get<IIdeaCustomFieldsSchemas>({ apiEndpoint, ...streamParams });
+  return streams.get<IIdeaCustomFieldsSchemas>({
+    apiEndpoint,
+    ...streamParams,
+  });
 }
 
 export function ideaCustomFieldStream(
@@ -120,5 +135,9 @@ export function updateIdeaCustomField(
 ) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${code}`;
   const updateObject = { custom_field: object };
-  return streams.update<IIdeaCustomField>(apiEndpoint, ideaCustomFieldId, updateObject);
+  return streams.update<IIdeaCustomField>(
+    apiEndpoint,
+    ideaCustomFieldId,
+    updateObject
+  );
 }

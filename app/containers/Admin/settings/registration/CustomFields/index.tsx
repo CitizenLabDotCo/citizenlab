@@ -6,10 +6,6 @@ type State = {};
 
 export default class CustomFieldsDashboard extends PureComponent<Props, State> {
   render() {
-    return (
-      <>
-        {this.props.children}
-      </>
-    );
+    return <>{this.props.children}</>;
   }
 }

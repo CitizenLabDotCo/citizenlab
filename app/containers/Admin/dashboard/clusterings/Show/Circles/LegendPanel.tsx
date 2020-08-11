@@ -15,7 +15,8 @@ const Container = styled(clickOutside)`
 const TabbedNav = styled.nav`
   flex: 0 0 55px;
   background: #fcfcfc;
-  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
+  border-radius: ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 30px;
   display: flex;
   align-items: stretch;
@@ -38,7 +39,6 @@ const Tab = styled.li`
     text-transform: uppercase;
   }
 
-
   &.active {
     color: ${colors.adminTextColor};
     border-color: ${colors.clBlueDark};
@@ -55,12 +55,13 @@ const Content: any = styled.div`
   flex-direction: column;
   background: #fff;
   border: solid 1px ${colors.adminBorder};
-  border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
+  border-radius: 0 0 ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius};
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 20px;
   overflow: hidden;
-  display: ${props => (props as any).showContent ? 'block' : 'none'};
+  display: ${(props) => ((props as any).showContent ? 'block' : 'none')};
 `;
 
 const ListItem = styled.div`
@@ -82,7 +83,7 @@ const ListItem = styled.div`
 
 const StyledCircle: any = styled.circle`
   position: relative;
-  fill: ${props => props.color};
+  fill: ${(props) => props.color};
 `;
 const StyledEmptyCircle: any = styled.circle`
   position: relative;
@@ -109,25 +110,36 @@ export default class LegendPanel extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'legend'
+      selectedTab: 'legend',
     };
   }
 
   handleTabOnClick = (tabName: 'legend' | 'controls') => (event: any) => {
     event.preventDefault();
     this.setState({ selectedTab: tabName });
-  }
+  };
 
   render() {
     const { selectedTab } = this.state;
     const { onClickOutside } = this.props;
     return (
-      <Container className={this.props['className']} onClickOutside={onClickOutside}>
+      <Container
+        className={this.props['className']}
+        onClickOutside={onClickOutside}
+      >
         <TabbedNav>
-          <Tab onClick={this.handleTabOnClick('legend')} data-tab="legend" className={`${selectedTab === 'legend' && 'active'}`}>
+          <Tab
+            onClick={this.handleTabOnClick('legend')}
+            data-tab="legend"
+            className={`${selectedTab === 'legend' && 'active'}`}
+          >
             <FormattedMessage {...messages.legend} />
           </Tab>
-          <Tab onClick={this.handleTabOnClick('controls')} data-tab="controls" className={`${selectedTab === 'controls' && 'active'}`}>
+          <Tab
+            onClick={this.handleTabOnClick('controls')}
+            data-tab="controls"
+            className={`${selectedTab === 'controls' && 'active'}`}
+          >
             <FormattedMessage {...messages.controls} />
           </Tab>
         </TabbedNav>
@@ -160,21 +172,15 @@ export default class LegendPanel extends PureComponent<Props, State> {
         </Content>
         <Content showContent={selectedTab === 'controls'}>
           <ListItem>
-            <span className="key">
-              Click
-            </span>
+            <span className="key">Click</span>
             <FormattedMessage {...messages.clickLegend} />
           </ListItem>
           <ListItem>
-            <span className="key">
-              Shift
-            </span>
+            <span className="key">Shift</span>
             <FormattedMessage {...messages.shiftLegend} />
           </ListItem>
           <ListItem>
-            <span className="key">
-              Ctrl
-            </span>
+            <span className="key">Ctrl</span>
             <FormattedMessage {...messages.ctrlLegend} />
           </ListItem>
         </Content>

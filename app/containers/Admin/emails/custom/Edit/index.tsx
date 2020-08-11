@@ -3,7 +3,11 @@ import { updateCampaign, ICampaignData } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, validateCampaignForm, PageTitle } from '../CampaignForm';
+import CampaignForm, {
+  FormValues,
+  validateCampaignForm,
+  PageTitle,
+} from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,13 +23,15 @@ interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps, WithRouterProps { }
+interface Props extends InputProps, DataProps, WithRouterProps {}
 
 class Edit extends React.Component<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     updateCampaign(this.props.campaign.id, {
-      ...values
+      ...values,
     })
       .then(() => {
         clHistory.push(`/admin/emails/custom/${this.props.campaign.id}`);
@@ -39,32 +45,27 @@ class Edit extends React.Component<Props> {
         }
         setSubmitting(false);
       });
-  }
+  };
 
-  initialValues = () : FormValues => {
+  initialValues = (): FormValues => {
     const { campaign } = this.props;
     return {
       sender: campaign.attributes.sender,
       reply_to: campaign.attributes.reply_to,
       subject_multiloc: campaign.attributes.subject_multiloc,
       body_multiloc: campaign.attributes.body_multiloc,
-      group_ids: campaign.relationships.groups.data.map(d => d.id),
+      group_ids: campaign.relationships.groups.data.map((d) => d.id),
     };
-  }
+  };
 
   renderFn = (props) => {
-    return (
-      <CampaignForm
-        {...props}
-        mode="edit"
-      />
-    );
-  }
+    return <CampaignForm {...props} mode="edit" />;
+  };
 
   goBack = () => {
     const { id } = this.props.campaign;
     clHistory.push(`/admin/emails/custom/${id}`);
-  }
+  };
 
   render() {
     return (
@@ -88,6 +89,10 @@ const EditWithHOCs = withRouter(Edit);
 
 export default (inputProps: InputProps & WithRouterProps) => (
   <GetCampaign id={inputProps.params.campaignId}>
-    {campaign => isNilOrError(campaign) ? null : <EditWithHOCs {...inputProps} campaign={campaign} />}
+    {(campaign) =>
+      isNilOrError(campaign) ? null : (
+        <EditWithHOCs {...inputProps} campaign={campaign} />
+      )
+    }
   </GetCampaign>
 );

@@ -7,7 +7,11 @@ import Error from 'components/UI/Error';
 import ButtonBar from 'components/ButtonBar';
 
 // services
-import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
+import {
+  globalState,
+  IGlobalStateService,
+  IIdeasPageGlobalState,
+} from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -58,7 +62,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
     this.state = {
       submitError: false,
       processing: false,
-      fileOrImageError: false
+      fileOrImageError: false,
     };
     this.globalState = globalState.init<IIdeasPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
@@ -68,30 +72,32 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
     const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
-      globalState$.subscribe(({ submitError, processing, fileOrImageError }) => {
-        this.setState({ submitError, processing, fileOrImageError });
-      })
+      globalState$.subscribe(
+        ({ submitError, processing, fileOrImageError }) => {
+          this.setState({ submitError, processing, fileOrImageError });
+        }
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleOnSubmitButtonClick = () => {
     eventEmitter.emit('IdeaFormSubmitEvent');
-  }
+  };
 
   render() {
     const { processing, fileOrImageError, submitError } = this.state;
     let { form } = this.props;
-    const submitErrorMessage = submitError
-      ? <FormattedMessage {...messages.submitError} />
-      : fileOrImageError
-        ? <FormattedMessage {...messages.fileOrImageError} />
-        : null;
+    const submitErrorMessage = submitError ? (
+      <FormattedMessage {...messages.submitError} />
+    ) : fileOrImageError ? (
+      <FormattedMessage {...messages.fileOrImageError} />
+    ) : null;
 
-    form = (form || '');
+    form = form || '';
 
     return (
       <ButtonBar>
@@ -104,9 +110,14 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
             text={<FormattedMessage {...messages.submit} />}
             onClick={this.handleOnSubmitButtonClick}
           />
-          {submitErrorMessage &&
-            <Error text={submitErrorMessage} marginTop="0px" showBackground={false} showIcon={true} />
-          }
+          {submitErrorMessage && (
+            <Error
+              text={submitErrorMessage}
+              marginTop="0px"
+              showBackground={false}
+              showIcon={true}
+            />
+          )}
         </ButtonBarInner>
       </ButtonBar>
     );
