@@ -44,7 +44,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
@@ -504,11 +510,11 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
     this.desktopSearchInputClearButton = element;
-  }
+  };
 
   handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
     this.mobileSearchInputClearButton = element;
-  }
+  };
 
   filterMessage = (<FormattedMessage {...messages.filter} />);
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
@@ -546,13 +552,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-        {filtersActive &&
+        {filtersActive && (
           <ClearFiltersButton onClick={this.handleIdeaFiltersOnResetAndApply}>
             <ClearFiltersText>
               <FormattedMessage {...messages.resetFilters} />
             </ClearFiltersText>
           </ClearFiltersButton>
-        }
+        )}
 
         <ScreenReaderOnly aria-live="polite">
           {ideasFilterCounts && (

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   ColorPickerInput,
-  ColorPickerInputProps as VanillaInputProps
+  ColorPickerInputProps as VanillaInputProps,
 } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 
@@ -11,7 +11,7 @@ class FormikColorPickerInput extends React.Component<
   FieldProps & VanillaInputProps,
   State
 > {
-  handleOnChange = newValue => {
+  handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   };
 
