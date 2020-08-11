@@ -444,7 +444,7 @@ module AdminApi
     end
 
     def yml_ideas shift_timestamps: 0
-      @project.ideas.published.map do |i|
+      @project.ideas.published.where.not(author_id: nil).map do |i|
         yml_idea = {
           'title_multiloc'         => i.title_multiloc,
           'body_multiloc'          => i.body_multiloc,

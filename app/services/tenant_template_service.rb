@@ -851,7 +851,7 @@ class TenantTemplateService
   end
 
   def yml_ideas
-    Idea.published.map do |i|
+    Idea.published.where.not(author_id: nil).map do |i|
       yml_idea = {
         'title_multiloc'         => i.title_multiloc,
         'body_multiloc'          => i.body_multiloc,
