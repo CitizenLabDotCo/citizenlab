@@ -293,7 +293,7 @@ module AdminApi
         yml_map_config = {
           'project_ref'            => lookup_ref(map_config.project_id, :project),
           'center_geojson'         => map_config.center_geojson,
-          'zoom_level'             => map_config.zoom_level.to_f,
+          'zoom_level'             => map_config.zoom_level&.to_f,
           'tile_provider'          => map_config.tile_provider,
           'created_at'             => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
           'updated_at'             => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
@@ -444,7 +444,7 @@ module AdminApi
     end
 
     def yml_ideas shift_timestamps: 0
-      @project.ideas.published.map do |i|
+      @project.ideas.published.where.not(author_id: nil).map do |i|
         yml_idea = {
           'title_multiloc'         => i.title_multiloc,
           'body_multiloc'          => i.body_multiloc,

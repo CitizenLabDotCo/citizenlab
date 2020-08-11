@@ -851,7 +851,7 @@ class TenantTemplateService
   end
 
   def yml_ideas
-    Idea.published.map do |i|
+    Idea.published.where.not(author_id: nil).map do |i|
       yml_idea = {
         'title_multiloc'         => i.title_multiloc,
         'body_multiloc'          => i.body_multiloc,
@@ -1184,7 +1184,7 @@ class TenantTemplateService
       yml_map_config = {
         'project_ref'            => lookup_ref(map_config.project_id, :project),
         'center_geojson'         => map_config.center_geojson,
-        'zoom_level'             => map_config.zoom_level.to_f,
+        'zoom_level'             => map_config.zoom_level&.to_f,
         'tile_provider'          => map_config.tile_provider,
         'created_at'             => map_config.created_at.to_s,
         'updated_at'             => map_config.updated_at.to_s
