@@ -20,7 +20,7 @@ import {
   Section,
   SectionTitle,
   SectionField,
-  SectionDescription
+  SectionDescription,
 } from 'components/admin/Section';
 
 // services
@@ -28,7 +28,7 @@ import {
   currentTenantStream,
   updateTenant,
   IUpdatedTenantProperties,
-  ITenantData
+  ITenantData,
 } from 'services/tenant';
 
 // Utils
@@ -62,7 +62,7 @@ class SettingsGeneralTab extends PureComponent<
       loading: false,
       errors: {},
       hasUrlError: false,
-      saved: false
+      saved: false,
     };
   }
 
@@ -70,50 +70,50 @@ class SettingsGeneralTab extends PureComponent<
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => {
+      currentTenant$.subscribe((currentTenant) => {
         this.setState({ tenant: currentTenant.data });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subsription => subsription.unsubscribe());
+    this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
   handleCoreMultilocSettingOnChange = (propertyName: string) => (
     multiloc: Multiloc
   ) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       attributesDiff: {
         ...state.attributesDiff,
         settings: {
           ...get(state.attributesDiff, 'settings', {}),
           core: {
             ...get(state.attributesDiff, 'settings.core', {}),
-            [propertyName]: multiloc
-          }
-        }
-      }
+            [propertyName]: multiloc,
+          },
+        },
+      },
     }));
   };
 
   handleLocalesOnChange = (selectedLocaleOptions: IOption[]) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       attributesDiff: {
         ...state.attributesDiff,
         settings: {
           ...get(state.attributesDiff, 'settings', {}),
           core: {
             ...get(state.attributesDiff, 'settings.core', {}),
-            locales: selectedLocaleOptions.map(option => option.value)
-          }
-        }
-      }
+            locales: selectedLocaleOptions.map((option) => option.value),
+          },
+        },
+      },
     }));
   };
 
   handleUrlOnChange = (url: string) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       hasUrlError: false,
       attributesDiff: {
         ...state.attributesDiff,
@@ -121,10 +121,10 @@ class SettingsGeneralTab extends PureComponent<
           ...get(state.attributesDiff, 'settings', {}),
           core: {
             ...get(state.attributesDiff, 'settings.core', {}),
-            organization_site: url
-          }
-        }
-      }
+            organization_site: url,
+          },
+        },
+      },
     }));
   };
 
@@ -138,14 +138,14 @@ class SettingsGeneralTab extends PureComponent<
         loading: true,
         saved: false,
         hasUrlError: false,
-        errors: {}
+        errors: {},
       });
 
       updateTenant(tenant.id, attributesDiff)
         .then(() => {
           this.setState({ saved: true, attributesDiff: {}, loading: false });
         })
-        .catch(e => {
+        .catch((e) => {
           if (isCLErrorJSON(e)) {
             const errors = e.json.errors;
             this.setState({ errors, loading: false });
@@ -153,7 +153,7 @@ class SettingsGeneralTab extends PureComponent<
             // Needs to be reimplemented to use frontend validation when converted to a Formik form.
             if (errors.settings && errors.settings.length > 0) {
               const foundUrlError = !!errors.settings.find(
-                error => error.error.fragment === '#/core/organization_site'
+                (error) => error.error.fragment === '#/core/organization_site'
               );
               if (foundUrlError) {
                 this.setState({ hasUrlError: true });
@@ -169,14 +169,14 @@ class SettingsGeneralTab extends PureComponent<
   localeOptions = () => {
     return map(appLocalePairs, (label, locale) => ({
       label,
-      value: locale
+      value: locale,
     }));
   };
 
-  localesToOptions = locales => {
-    return locales.map(locale => ({
+  localesToOptions = (locales) => {
+    return locales.map((locale) => ({
       value: locale,
-      label: appLocalePairs[locale]
+      label: appLocalePairs[locale],
     }));
   };
 
@@ -189,7 +189,7 @@ class SettingsGeneralTab extends PureComponent<
 
     if (tenant) {
       const {
-        intl: { formatMessage }
+        intl: { formatMessage },
       } = this.props;
       const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
@@ -289,7 +289,7 @@ class SettingsGeneralTab extends PureComponent<
                 buttonSave: messages.save,
                 buttonSuccess: messages.saveSuccess,
                 messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage
+                messageSuccess: messages.saveSuccessMessage,
               }}
             />
           </Section>
