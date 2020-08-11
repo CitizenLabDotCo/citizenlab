@@ -872,7 +872,7 @@ class TenantTemplateService
   end
 
   def yml_areas_ideas
-    AreasIdea.where(idea: Idea.published).map do |a|
+    AreasIdea.where(idea: Idea.published.where.not(author_id: nil)).map do |a|
       if lookup_ref(a.idea_id, :idea)
         {
           'area_ref' => lookup_ref(a.area_id, :area),
@@ -883,7 +883,7 @@ class TenantTemplateService
   end
 
   def yml_baskets_ideas
-    BasketsIdea.where(idea: Idea.published).map do |b|
+    BasketsIdea.where(idea: Idea.published.where.not(author_id: nil)).map do |b|
       if lookup_ref(b.idea_id, :idea)
         {
           'basket_ref' => lookup_ref(b.basket_id, :basket),
@@ -894,7 +894,7 @@ class TenantTemplateService
   end
 
   def yml_idea_files
-    IdeaFile.where(idea: Idea.published).map do |i|
+    IdeaFile.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
       {
         'idea_ref'        => lookup_ref(i.idea_id, :idea),
         'name'            => i.name,
@@ -907,7 +907,7 @@ class TenantTemplateService
   end
 
   def yml_idea_images
-    IdeaImage.where(idea: Idea.published).map do |i|
+    IdeaImage.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
       {
         'idea_ref'         => lookup_ref(i.idea_id, :idea),
         'remote_image_url' => i.image_url,
@@ -919,7 +919,7 @@ class TenantTemplateService
   end
 
   def yml_ideas_phases
-    IdeasPhase.where(idea: Idea.published).map do |i|
+    IdeasPhase.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
         'phase_ref'  => lookup_ref(i.phase_id, :phase),
@@ -930,7 +930,7 @@ class TenantTemplateService
   end
 
   def yml_ideas_topics
-    IdeasTopic.where(idea: Idea.published).map do |i|
+    IdeasTopic.where(idea: Idea.published.where.not(author_id: nil)).map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
         'topic_ref'  => lookup_ref(i.topic_id, :topic)
@@ -1038,7 +1038,7 @@ class TenantTemplateService
   end
 
   def yml_official_feedback
-    OfficialFeedback.all.map do |a|
+    OfficialFeedback.where.not(post_id: Idea.where(author_id: nil)).map do |a|
       yml_official_feedback = {
         'user_ref'        => lookup_ref(a.user_id, :user),
         'post_ref'        => lookup_ref(a.post_id, [:idea, :initiative]),
@@ -1053,7 +1053,8 @@ class TenantTemplateService
   end
 
   def yml_comments
-    (Comment.where('parent_id IS NULL')+Comment.where('parent_id IS NOT NULL')).map do |c|
+    comments = Comment.where.not(post_id: Idea.where(author_id: nil))
+    (comments.where('parent_id IS NULL')+comments.where('parent_id IS NOT NULL')).map do |c|
       yml_comment = {
         'author_ref'         => lookup_ref(c.author_id, :user),
         'post_ref'           => lookup_ref(c.post_id, [:idea, :initiative]),
@@ -1070,7 +1071,7 @@ class TenantTemplateService
   end
 
   def yml_votes
-    Vote.where('user_id IS NOT NULL').map do |v|
+    Vote.where('user_id IS NOT NULL').where.not(votable_id: Idea.where(author_id: nil)).map do |v|
       yml_vote = {
         'votable_ref' => lookup_ref(v.votable_id, [:idea, :initiative, :comment]),
         'user_ref'    => lookup_ref(v.user_id, :user),
