@@ -25,7 +25,7 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{ windowHeight: string }>`
   width: 100vw;
-  height: ${props =>
+  height: ${(props) =>
     `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
@@ -54,14 +54,14 @@ const Container = styled.div<{ windowHeight: string }>`
   }
 
   ${media.smallerThanMaxTablet`
-    height: ${props =>
+    height: ${(props) =>
       `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
     top: 0;
-    bottom: ${props => props.theme.mobileMenuHeight}px;
+    bottom: ${(props) => props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
 
     &.hasBottomBar {
-      height: ${props => props.windowHeight};
+      height: ${(props) => props.windowHeight};
       bottom: 0;
     }
   `}
@@ -115,14 +115,14 @@ class FullscreenModal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      windowHeight: `${window.innerHeight}px`
+      windowHeight: `${window.innerHeight}px`,
     };
   }
 
   componentDidMount() {
     this.subscription = fromEvent(window, 'resize')
       .pipe(debounceTime(50), distinctUntilChanged())
-      .subscribe(event => {
+      .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
           this.setState({ windowHeight: `${height}px` });
@@ -161,7 +161,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
   };
 
-  handleKeypress = event => {
+  handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.props.close();
@@ -204,7 +204,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       bottomBar,
       animateInOut,
       navbarRef,
-      mobileNavbarRef
+      mobileNavbarRef,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement = document?.getElementById('modal-portal');
@@ -235,7 +235,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           in={opened}
           timeout={{
             enter: slideInOutTimeout,
-            exit: slideInOutTimeout
+            exit: slideInOutTimeout,
           }}
           mountOnEnter={true}
           unmountOnExit={true}
@@ -257,11 +257,11 @@ class FullscreenModal extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
-  locale: <GetLocale />
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FullscreenModal {...inputProps} {...dataProps} />}
+    {(dataProps) => <FullscreenModal {...inputProps} {...dataProps} />}
   </Data>
 );

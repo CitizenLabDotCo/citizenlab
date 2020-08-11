@@ -9,5 +9,5 @@ export {
   rightColumnWidthDesktop,
   columnsGapTablet,
   rightColumnWidthTablet,
-  postPageContentMaxWidth
+  postPageContentMaxWidth,
 };

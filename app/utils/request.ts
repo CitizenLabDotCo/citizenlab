@@ -43,21 +43,21 @@ export default function request<T>(
       const response = result[0];
       const json = result[1];
 
-    if (response.ok || response.status === 200) {
-      return json;
-    }
-    const errorMessage = isString(json?.error)
-      ? json.error
-      : response.statusText || 'unknown error';
-    const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
-    if (!!json) {
-      // The error reasons may be encoded in the
-      // json content (this happens e.g. for
-      // xlsx invites).
-      Object.assign(error, { json });
-    }
-    throw error;
-  });
+      if (response.ok || response.status === 200) {
+        return json;
+      }
+      const errorMessage = isString(json?.error)
+        ? json.error
+        : response.statusText || 'unknown error';
+      const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
+      if (!!json) {
+        // The error reasons may be encoded in the
+        // json content (this happens e.g. for
+        // xlsx invites).
+        Object.assign(error, { json });
+      }
+      throw error;
+    });
 }
 
 // we use xhr rather than fetch API, to enforce response type
