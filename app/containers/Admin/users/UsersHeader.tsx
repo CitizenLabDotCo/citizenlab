@@ -98,7 +98,7 @@ const UsersHeader = memo(
     if (title) {
       return (
         <OnlyRow>
-          {smartGroup && <TitleIcon name="lightingBolt" />}
+          {smartGroup && <SmartGroupIcon name="lightningBolt" />}
           <TextAndButtons>
             <T as="h1" value={title} />
             <Buttons>
