@@ -107,7 +107,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 type State = {
   dropdownOpened: boolean;
