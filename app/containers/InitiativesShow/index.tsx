@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -37,24 +37,24 @@ import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
 import GetResourceFiles, {
-  GetResourceFilesChildProps,
+  GetResourceFilesChildProps
 } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
+  GetInitiativeImagesChildProps
 } from 'resources/GetInitiativeImages';
 import GetInitiative, {
-  GetInitiativeChildProps,
+  GetInitiativeChildProps
 } from 'resources/GetInitiative';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
-  GetWindowSizeChildProps,
+  GetWindowSizeChildProps
 } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps,
+  GetOfficialFeedbacksChildProps
 } from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
-  GetPermissionChildProps,
+  GetPermissionChildProps
 } from 'resources/GetPermission';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
@@ -70,17 +70,14 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  postPageContentMaxWidth,
-  viewportWidths,
-} from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
   columnsGapTablet,
   rightColumnWidthTablet,
+  pageContentMaxWidth
 } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -101,12 +98,12 @@ const Loading = styled.div`
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${props =>
+      props.theme.mobileMenuHeight}px - ${props =>
+    props.theme.mobileTopBarHeight}px);
   `}
 
   &.content-enter {
@@ -126,7 +123,7 @@ const Container = styled.main`
 
 const InitiativeContainer = styled.div`
   width: 100%;
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${pageContentMaxWidth}px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -210,7 +207,7 @@ const InitiativeBannerImage = styled.div<{ src: string }>`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(${(props) => props.src});
+  background-image: url(${props => props.src});
 `;
 
 const InitiativeHeaderOverlay = styled.div`
@@ -345,7 +342,7 @@ export class InitiativesShow extends PureComponent<
       spamModalVisible: false,
       initiativeIdForSocialSharing: null,
       translateButtonClicked: false,
-      a11y_pronounceLatestOfficialFeedbackPost: false,
+      a11y_pronounceLatestOfficialFeedbackPost: false
     };
   }
 
@@ -390,7 +387,7 @@ export class InitiativesShow extends PureComponent<
   };
 
   onTranslateInitiative = () => {
-    this.setState((prevState) => {
+    this.setState(prevState => {
       // analytics
       if (prevState.translateButtonClicked === true) {
         trackEvent(tracks.clickGoBackToOriginalInitiativeCopyButton);
@@ -399,7 +396,7 @@ export class InitiativesShow extends PureComponent<
       }
 
       return {
-        translateButtonClicked: !prevState.translateButtonClicked,
+        translateButtonClicked: !prevState.translateButtonClicked
       };
     });
   };
@@ -409,7 +406,7 @@ export class InitiativesShow extends PureComponent<
       this.officialFeedbackElement.current.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
-        inline: 'center',
+        inline: 'center'
       });
     }
 
@@ -431,13 +428,13 @@ export class InitiativesShow extends PureComponent<
       windowSize,
       className,
       postOfficialFeedbackPermission,
-      tenant,
+      tenant
     } = this.props;
     const {
       loaded,
       initiativeIdForSocialSharing,
       translateButtonClicked,
-      a11y_pronounceLatestOfficialFeedbackPost,
+      a11y_pronounceLatestOfficialFeedbackPost
     } = this.state;
     const { formatMessage } = this.props.intl;
     const initiativeSettings = !isNilOrError(tenant)
@@ -466,7 +463,7 @@ export class InitiativesShow extends PureComponent<
         initiative?.attributes?.location_point_geojson;
       const initiativeAddress = initiative?.attributes?.location_description;
       const topicIds =
-        initiative?.relationships?.topics?.data?.map((item) => item.id) || [];
+        initiative?.relationships?.topics?.data?.map(item => item.id) || [];
       const initiativeUrl = location.href;
       const initiativeId = initiative?.id;
       const initiativeBody = localize(initiative?.attributes?.body_multiloc);
@@ -480,11 +477,11 @@ export class InitiativesShow extends PureComponent<
         ? {
             source: 'share_initiative',
             campaign: 'share_content',
-            content: authUser.id,
+            content: authUser.id
           }
         : {
             source: 'share_initiative',
-            campaign: 'share_content',
+            campaign: 'share_content'
           };
       const showTranslateButton =
         !isNilOrError(initiative) &&
@@ -636,14 +633,14 @@ export class InitiativesShow extends PureComponent<
                     context="initiative"
                     url={initiativeUrl}
                     twitterMessage={formatMessage(messages.twitterMessage, {
-                      initiativeTitle,
+                      initiativeTitle
                     })}
                     emailSubject={formatMessage(messages.emailSharingSubject, {
-                      initiativeTitle,
+                      initiativeTitle
                     })}
                     emailBody={formatMessage(messages.emailSharingBody, {
                       initiativeUrl,
-                      initiativeTitle,
+                      initiativeTitle
                     })}
                     utmParams={utmParams}
                   />
@@ -672,7 +669,7 @@ export class InitiativesShow extends PureComponent<
                         context="initiative"
                         url={initiativeUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, {
-                          initiativeTitle,
+                          initiativeTitle
                         })}
                         emailSubject={formatMessage(
                           messages.emailSharingSubject,
@@ -680,7 +677,7 @@ export class InitiativesShow extends PureComponent<
                         )}
                         emailBody={formatMessage(messages.emailSharingBody, {
                           initiativeUrl,
-                          initiativeTitle,
+                          initiativeTitle
                         })}
                         utmParams={utmParams}
                       />
@@ -711,7 +708,7 @@ export class InitiativesShow extends PureComponent<
           in={loaded}
           timeout={{
             enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0,
+            exit: 0
           }}
           enter={true}
           exit={false}
@@ -735,7 +732,7 @@ export class InitiativesShow extends PureComponent<
                 title={formatMessage(messages.shareTitle)}
                 subtitle={formatMessage(messages.shareSubtitle, {
                   votingThreshold,
-                  daysLimit,
+                  daysLimit
                 })}
               />
             )}
@@ -780,11 +777,11 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetPermission>
-  ),
+  )
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <InitiativesShowWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativesShowWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

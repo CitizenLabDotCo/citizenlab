@@ -11,7 +11,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Radio from 'components/UI/Radio';
+import { Radio, IconTooltip } from 'cl2-component-library';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -22,7 +22,6 @@ import {
 } from 'components/admin/Section';
 import Moderators from './Moderators';
 import Granular from './Granular';
-import IconTooltip from 'components/UI/IconTooltip';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 

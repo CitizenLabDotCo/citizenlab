@@ -1,7 +1,7 @@
 import React from 'react';
 import { IOption } from 'typings';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';

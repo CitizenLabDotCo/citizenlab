@@ -1,11 +1,18 @@
 // Libraries
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { Input, LocaleSwitcher } from 'cl2-component-library';
 import { TextCell, Row } from 'components/admin/ResourceList';
-import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
+
+// Resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps
+} from 'resources/GetTenantLocales';
 
 // Typings
 import { Multiloc, Locale } from 'typings';
@@ -21,38 +28,48 @@ import messages from './messages';
  * edit mode : titleMultiloc and optionId defined, question Id not used
  * new mode : question Id defined, titleMultiloc and optionId not used
  */
-interface Props {
+interface InputProps {
   titleMultiloc?: Multiloc;
-  locale: Locale;
   mode: 'new' | 'edit';
   questionId?: string;
   closeRow: () => void;
   optionId?: string;
 }
 
-interface State {
-  selectedLocale: Locale;
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+}
+
+export interface Props extends DataProps, InputProps {}
+
+export interface State {
+  selectedLocale: Locale | null;
   titleMultiloc: Multiloc;
 }
 
-class FormOptionRow extends PureComponent<Props, State> {
+export class FormOptionRow extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedLocale: props.locale,
-      titleMultiloc: props.titleMultiloc || {},
+      selectedLocale: props.locale || null,
+      titleMultiloc: props.titleMultiloc || {}
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { optionId, titleMultiloc, locale } = this.props;
-
-    if (prevProps.optionId !== optionId) {
-      this.setState({ titleMultiloc: titleMultiloc || {} });
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (!isNilOrError(props.locale) && !state.selectedLocale) {
+      return {
+        selectedLocale: props.locale
+      };
     }
 
-    if (prevProps.locale !== locale) {
-      this.setState({ selectedLocale: locale });
+    return null;
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.optionId !== this.props.optionId) {
+      this.setState({ titleMultiloc: this.props.titleMultiloc || {} });
     }
   }
 
@@ -62,11 +79,11 @@ class FormOptionRow extends PureComponent<Props, State> {
 
   onChangeTitle = (value: string, locale: Locale | undefined) => {
     if (locale) {
-      this.setState((state) => ({
+      this.setState(state => ({
         titleMultiloc: {
           ...state.titleMultiloc,
-          [locale]: value,
-        },
+          [locale]: value
+        }
       }));
     }
   };
@@ -90,14 +107,15 @@ class FormOptionRow extends PureComponent<Props, State> {
 
   render() {
     const { selectedLocale, titleMultiloc } = this.state;
-    const { closeRow } = this.props;
+    const { closeRow, tenantLocales } = this.props;
 
     return (
       <Row className="e2e-form-option-row">
         <TextCell>
           {selectedLocale && (
-            <FormLocaleSwitcher
-              onLocaleChange={this.onSelectedLocaleChange}
+            <LocaleSwitcher
+              onSelectedLocaleChange={this.onSelectedLocaleChange}
+              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
               selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
@@ -105,13 +123,15 @@ class FormOptionRow extends PureComponent<Props, State> {
         </TextCell>
 
         <TextCell className="expand">
-          <Input
-            autoFocus
-            value={titleMultiloc[selectedLocale]}
-            locale={selectedLocale}
-            type="text"
-            onChange={this.onChangeTitle}
-          />
+          {selectedLocale && (
+            <Input
+              autoFocus
+              value={titleMultiloc?.[selectedLocale]}
+              locale={selectedLocale}
+              type="text"
+              onChange={this.onChangeTitle}
+            />
+          )}
         </TextCell>
 
         <Button
@@ -134,4 +154,15 @@ class FormOptionRow extends PureComponent<Props, State> {
   }
 }
 
-export default FormOptionRow;
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />
+});
+
+const FormOptionRowWithData = (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <FormOptionRow {...dataProps} {...inputProps} />}
+  </Data>
+);
+
+export default FormOptionRowWithData;

@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectTemplatePreview from './ProjectTemplatePreview';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

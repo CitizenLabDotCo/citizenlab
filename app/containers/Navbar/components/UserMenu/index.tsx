@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import Dropdown from 'components/UI/Dropdown';
+import { Dropdown } from 'cl2-component-library';
 import HasPermission from 'components/HasPermission';
 
 // services

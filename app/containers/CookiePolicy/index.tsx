@@ -16,12 +16,12 @@ import { LEGAL_PAGES } from 'services/pages';
 // components
 import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -29,20 +29,20 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 // but : https://github.com/styled-components/styled-components/issues/1063
 
 const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${props =>
+      props.theme.mobileMenuHeight}px - ${props =>
+    props.theme.mobileTopBarHeight}px);
   `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  max-width: calc(${props => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
@@ -113,11 +113,8 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
-  transition: all 200ms ease;
+  transition: all 80ms ease-out;
+  ${defaultCardStyle};
 
   &:hover {
     color: #000;
@@ -126,8 +123,7 @@ const StyledLink = styled(Link)`
 `;
 
 const LinkIcon = styled(Icon)`
-  width: 11px;
-  height: 1em;
+  width: 10px;
 `;
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {
@@ -169,7 +165,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                           {...messages.changePreferencesButtonText}
                         />
                       </StyledButton>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage tagName="h2" {...messages.whoAreWeTitle} />
@@ -184,7 +180,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         CitizenLab
                       </a>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage
@@ -204,7 +200,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.wikipediaCookieLinkText)}
                       </a>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
@@ -224,7 +220,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.analyticsLinkText)}
                       </a>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage tagName="h3" {...messages.advertisingTitle} />
@@ -239,7 +235,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.advertisingLinkText)}
                       </a>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage tagName="h3" {...messages.functionalTitle} />
@@ -254,7 +250,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.functionalLinkText)}
                       </a>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage
@@ -268,7 +264,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.cookiesListButtonText)}
                       </StyledButton>
-                    ),
+                    )
                   }}
                 />
                 <FormattedMessage
@@ -279,7 +275,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a href="mailto:support@citizenlab.co" role="button">
                         <FormattedMessage {...messages.contactLinkText} />
                       </a>
-                    ),
+                    )
                   }}
                 />
               </QuillEditedContent>
@@ -291,7 +287,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
       <PagesNavWrapper>
         <PagesNav>
           <StyledContentContainer>
-            {LEGAL_PAGES.map((pageSlug) => (
+            {LEGAL_PAGES.map(pageSlug => (
               <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
                 <FormattedMessage {...messages[`${pageSlug}PageName`]} />
                 <LinkIcon name="chevron-right" />
