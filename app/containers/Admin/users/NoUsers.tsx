@@ -48,7 +48,7 @@ const NoUsers = memo(({ smartGroup, noSuchSearchResult }: Props) => {
   if (noSuchSearchResult) {
     return (
       <NoUsersPage>
-        <Icon name="search2" />
+        <Icon name="search" />
         <FormattedMessage {...messages.noUserMatchesYourSearch} />
       </NoUsersPage>
     );
