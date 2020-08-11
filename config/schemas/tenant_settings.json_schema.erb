@@ -701,6 +701,18 @@
         }
       },
 
+      "smart_groups": {
+        "type": "object",
+        "title": "Smart Groups",
+        "description":  "Users can automatically be assigned to a group based on certain criteria.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },      
+
       "ideas_overview": {
         "type": "object",
         "title": "Idea Overview",

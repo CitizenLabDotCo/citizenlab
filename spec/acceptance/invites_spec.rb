@@ -94,6 +94,18 @@ resource "Invites" do
       example_request "XLSX export" do
         expect(status).to eq 200
       end
+
+      describe do
+        before do 
+          @user = create(:user)
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+          header 'Authorization', "Bearer #{token}"
+        end
+        
+        example_request '[error] XLSX export by a normal user', document: false do
+          expect(status).to eq 401
+        end
+      end
     end
 
     post "web_api/v1/invites/bulk_create" do
