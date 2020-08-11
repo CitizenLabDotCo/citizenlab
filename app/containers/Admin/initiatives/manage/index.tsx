@@ -11,7 +11,6 @@ const StyledDiv = styled.div`
 `;
 
 export default class InitiativesManagePage extends PureComponent {
-
   render() {
     return (
       <>

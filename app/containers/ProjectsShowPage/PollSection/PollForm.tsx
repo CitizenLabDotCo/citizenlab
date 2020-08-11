@@ -9,7 +9,7 @@ import { IPollQuestion } from 'services/pollQuestions';
 import { addPollResponse } from 'services/pollResponses';
 
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,9 +28,7 @@ const PollContainer = styled.div`
 export const QuestionContainer = styled.div`
   width: 100%;
   padding: 20px;
-  background: #fff;
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  ${defaultCardStyle};
 `;
 
 export const Question = styled.h3`
@@ -88,18 +86,20 @@ export class PollForm extends PureComponent<Props, State> {
   }
 
   changeAnswerSingle = (questionId: string, optionId: string) => () => {
-    this.setState(state => ({ answers: { ...state.answers, [questionId]: [optionId] } }));
-  }
+    this.setState((state) => ({
+      answers: { ...state.answers, [questionId]: [optionId] },
+    }));
+  };
 
   changeAnswerMultiple = (questionId: string, optionId: string) => () => {
-    this.setState(state => {
+    this.setState((state) => {
       const oldAnswer = state.answers[questionId] || [];
 
       toggleElementInArray(oldAnswer, optionId);
 
-      return ({ answers: { ...state.answers, [questionId]: oldAnswer } });
+      return { answers: { ...state.answers, [questionId]: oldAnswer } };
     });
-  }
+  };
 
   sendAnswer = () => {
     const { id, type, projectId } = this.props;
@@ -107,20 +107,31 @@ export class PollForm extends PureComponent<Props, State> {
     if (this.validate() && id) {
       addPollResponse(id, type, Object.values(answers).flat(), projectId);
     }
-  }
+  };
 
   validate = () => {
     const { answers } = this.state;
     const { questions, disabled } = this.props;
     // you can submit the form...
-    return !disabled // when it's not disabled and...
-    // each question has at least one answer, and this answer is a string (representing the option) and...
-    && questions.every(question => typeof (answers[question.id] || [])[0] === 'string')
-    // for multiple options questions...
-    && questions.filter(question => question.attributes.question_type === 'multiple_options')
-    // the number of answers must not be greater than the maximum of answer allowed.
-      .every(question =>  question.attributes.max_options && answers[question.id].length <= question.attributes.max_options);
-  }
+    return (
+      !disabled && // when it's not disabled and...
+      // each question has at least one answer, and this answer is a string (representing the option) and...
+      questions.every(
+        (question) => typeof (answers[question.id] || [])[0] === 'string'
+      ) &&
+      // for multiple options questions...
+      questions
+        .filter(
+          (question) => question.attributes.question_type === 'multiple_options'
+        )
+        // the number of answers must not be greater than the maximum of answer allowed.
+        .every(
+          (question) =>
+            question.attributes.max_options &&
+            answers[question.id].length <= question.attributes.max_options
+        )
+    );
+  };
 
   //
 
@@ -134,25 +145,27 @@ export class PollForm extends PureComponent<Props, State> {
       return (
         <>
           <PollContainer className="e2e-poll-form">
-            {questions.map((question, questionIndex) => question.attributes.question_type === 'single_option' ? (
-              <PollSingleChoice
-                key={questionIndex}
-                question={question}
-                index={questionIndex}
-                value={(answers[question.id] || [])[0]}
-                disabled={disabled}
-                onChange={this.changeAnswerSingle}
-              />
-            ) : (
-              <PollMultipleChoice
-                key={questionIndex}
-                question={question}
-                index={questionIndex}
-                value={answers[question.id]}
-                disabled={disabled}
-                onChange={this.changeAnswerMultiple}
-              />
-            ))}
+            {questions.map((question, questionIndex) =>
+              question.attributes.question_type === 'single_option' ? (
+                <PollSingleChoice
+                  key={questionIndex}
+                  question={question}
+                  index={questionIndex}
+                  value={(answers[question.id] || [])[0]}
+                  disabled={disabled}
+                  onChange={this.changeAnswerSingle}
+                />
+              ) : (
+                <PollMultipleChoice
+                  key={questionIndex}
+                  question={question}
+                  index={questionIndex}
+                  value={answers[question.id]}
+                  disabled={disabled}
+                  onChange={this.changeAnswerMultiple}
+                />
+              )
+            )}
           </PollContainer>
           <Button
             onClick={this.sendAnswer}

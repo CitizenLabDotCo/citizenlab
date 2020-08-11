@@ -10,7 +10,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import LazyImage from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -20,7 +20,9 @@ import { getIdeaPostingRules } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetProjectImages, {
+  GetProjectImagesChildProps,
+} from 'resources/GetProjectImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
@@ -37,7 +39,13 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 
@@ -49,9 +57,7 @@ const Container = styled(Link)`
   margin-bottom: 25px;
   position: relative;
   cursor: pointer;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   &.large {
     width: 100%;
@@ -100,12 +106,7 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 150ms ease-out;
-
-    &:hover {
-      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
-      transform: translate(0px, -2px);
-    }
+    ${defaultCardHoverStyle};
   }
 
   ${media.smallerThanMinTablet`
@@ -114,7 +115,7 @@ const Container = styled(Link)`
   `}
 `;
 
-const ProjectImageContainer =  styled.div`
+const ProjectImageContainer = styled.div`
   width: 100%;
   height: 254px;
   flex-grow: 0;
@@ -142,7 +143,7 @@ const ProjectImagePlaceholder = styled.div`
   background: ${colors.placeholderBg};
 `;
 
-const ProjectImagePlaceholderIcon = styled(Icon) `
+const ProjectImagePlaceholderIcon = styled(Icon)`
   height: 45px;
   fill: #fff;
 `;
@@ -451,53 +452,100 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
     };
   }
 
-  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
+  handleIntersection = (
+    event: IntersectionObserverEntry,
+    unobserve: () => void
+  ) => {
     if (event.isIntersecting) {
       this.setState({ visible: true });
       unobserve();
     }
-  }
+  };
 
   handleProjectCardOnClick = (projectId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
-  }
+  };
 
   handleCTAOnClick = (projectId: string) => () => {
     trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
-  }
+  };
 
   handleProjectTitleOnClick = (projectId: string) => () => {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
-  }
+  };
 
   render() {
     const { visible } = this.state;
-    const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
+    const {
+      authUser,
+      project,
+      phase,
+      size,
+      projectImages,
+      intl: { formatMessage },
+      layout,
+      className,
+    } = this.props;
 
     if (!isNilOrError(project)) {
-      const postingPermission = getIdeaPostingRules({ project, phase, authUser });
-      const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
-      const canPost = !!((!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled) && postingPermission.enabled);
-      const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'attributes.action_descriptor.voting.enabled'));
-      const canComment = !!((!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled) && get(project, 'attributes.action_descriptor.commenting.enabled'));
-      const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
+      const postingPermission = getIdeaPostingRules({
+        project,
+        phase,
+        authUser,
+      });
+      const participationMethod = !isNilOrError(phase)
+        ? phase.attributes.participation_method
+        : project.attributes.participation_method;
+      const canPost = !!(
+        (!isNilOrError(phase)
+          ? phase.attributes.posting_enabled
+          : project.attributes.posting_enabled) && postingPermission.enabled
+      );
+      const canVote = !!(
+        (!isNilOrError(phase)
+          ? phase.attributes.voting_enabled
+          : project.attributes.voting_enabled) &&
+        get(project, 'attributes.action_descriptor.voting.enabled')
+      );
+      const canComment = !!(
+        (!isNilOrError(phase)
+          ? phase.attributes.commenting_enabled
+          : project.attributes.commenting_enabled) &&
+        get(project, 'attributes.action_descriptor.commenting.enabled')
+      );
+      const imageUrl =
+        !isNilOrError(projectImages) && projectImages.length > 0
+          ? projectImages[0].attributes.versions.medium
+          : null;
       const projectUrl = getProjectUrl(project);
-      const isFinished = (project.attributes.timeline_active === 'past');
-      const isArchived = (project.attributes.publication_status === 'archived');
+      const isFinished = project.attributes.timeline_active === 'past';
+      const isArchived = project.attributes.publication_status === 'archived';
       const ideasCount = project.attributes.ideas_count;
       const commentsCount = project.attributes.comments_count;
-      const hasAvatars = (project.relationships.avatars && project.relationships.avatars.data && project.relationships.avatars.data.length > 0);
-      const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
-      const showCommentsCount = (commentsCount > 0);
-      const showFooter = (hasAvatars || showIdeasCount || showCommentsCount);
-      const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
+      const hasAvatars =
+        project.relationships.avatars &&
+        project.relationships.avatars.data &&
+        project.relationships.avatars.data.length > 0;
+      const showIdeasCount =
+        !(
+          project.attributes.process_type === 'continuous' &&
+          project.attributes.participation_method !== 'ideation'
+        ) && ideasCount > 0;
+      const showCommentsCount = commentsCount > 0;
+      const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
+      const avatarIds =
+        project.relationships.avatars && project.relationships.avatars.data
+          ? project.relationships.avatars.data.map((avatar) => avatar.id)
+          : [];
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
-      const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
+      const timeRemaining = endAt
+        ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
+        : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
@@ -514,18 +562,31 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           </ContentHeaderLabel>
         );
       } else if (timeRemaining) {
-        const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
-        const pastDays = (timeRemaining ? moment.duration(moment(moment()).diff(moment(startAt))).asDays() : null);
-        const progress = (timeRemaining && isNumber(pastDays) && isNumber(totalDays) ?  round((pastDays / totalDays) * 100, 1) : null);
+        const totalDays = timeRemaining
+          ? moment.duration(moment(endAt).diff(moment(startAt))).asDays()
+          : null;
+        const pastDays = timeRemaining
+          ? moment.duration(moment(moment()).diff(moment(startAt))).asDays()
+          : null;
+        const progress =
+          timeRemaining && isNumber(pastDays) && isNumber(totalDays)
+            ? round((pastDays / totalDays) * 100, 1)
+            : null;
 
         countdown = (
           <Countdown className="e2e-project-card-time-remaining">
             <TimeRemaining className={size}>
-              <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
+              <FormattedMessage
+                {...messages.remaining}
+                values={{ timeRemaining }}
+              />
             </TimeRemaining>
             <Observer onChange={this.handleIntersection}>
               <ProgressBar aria-hidden>
-                <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
+                <ProgressBarOverlay
+                  progress={progress}
+                  className={visible ? 'visible' : ''}
+                />
               </ProgressBar>
             </Observer>
           </Countdown>
@@ -551,20 +612,29 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       }
 
       const contentHeader = (
-        <ContentHeader className={`${size} ${!ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'} ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!ctaMessage && !countdown ? 'noContent' : ''}`}>
-          {countdown !== null &&
-            <ContentHeaderLeft className={size}>
-              {countdown}
-            </ContentHeaderLeft>
-          }
+        <ContentHeader
+          className={`${size} ${
+            !ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'
+          } ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${
+            !ctaMessage && !countdown ? 'noContent' : ''
+          }`}
+        >
+          {countdown !== null && (
+            <ContentHeaderLeft className={size}>{countdown}</ContentHeaderLeft>
+          )}
 
-          {ctaMessage !== null && !isFinished && !isArchived &&
-            <ContentHeaderRight className={`${size} ${countdown ? 'hasProgressBar' : ''}`}>
-              <ProjectLabel onClick={this.handleCTAOnClick(project.id)} className="e2e-project-card-cta">
+          {ctaMessage !== null && !isFinished && !isArchived && (
+            <ContentHeaderRight
+              className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
+            >
+              <ProjectLabel
+                onClick={this.handleCTAOnClick(project.id)}
+                className="e2e-project-card-cta"
+              >
                 {ctaMessage}
               </ProjectLabel>
             </ContentHeaderRight>
-          }
+          )}
         </ContentHeader>
       );
 
@@ -584,7 +654,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card e2e-admin-publication-card`}
+          className={`${className} ${layout} ${size} ${
+            isArchived ? 'archived' : ''
+          } ${
+            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+          } e2e-project-card e2e-admin-publication-card`}
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >
@@ -596,20 +670,17 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ProjectImagePlaceholderIcon name="project" />
             </ProjectImagePlaceholder>
 
-            {imageUrl &&
-              <ProjectImage
-                src={imageUrl}
-                alt=""
-                cover={true}
-              />
-            }
+            {imageUrl && <ProjectImage src={imageUrl} alt="" cover={true} />}
           </ProjectImageContainer>
 
           <ProjectContent className={size}>
             {size === 'large' && contentHeader}
 
             <ContentBody className={size} aria-hidden>
-              <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
+              <ProjectTitle
+                className="e2e-project-card-project-title"
+                onClick={this.handleProjectTitleOnClick(project.id)}
+              >
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
@@ -630,7 +701,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
               <ContentFooterLeft>
-                {hasAvatars &&
+                {hasAvatars && (
                   <AvatarBubbles
                     size={32}
                     limit={3}
@@ -638,34 +709,30 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                     avatarIds={avatarIds}
                     userCount={project.attributes.avatars_count}
                   />
-                }
+                )}
               </ContentFooterLeft>
 
               <ContentFooterRight>
                 <ProjectMetaItems>
-                  {showIdeasCount &&
+                  {showIdeasCount && (
                     <MetaItem className="first">
                       <MetaItemIcon ariaHidden name="idea2" />
-                      <MetaItemText aria-hidden>
-                        {ideasCount}
-                      </MetaItemText>
+                      <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
                         {formatMessage(messages.xIdeas, { ideasCount })}
                       </ScreenReaderOnly>
                     </MetaItem>
-                  }
+                  )}
 
-                  {showCommentsCount &&
+                  {showCommentsCount && (
                     <MetaItem>
                       <CommentIcon ariaHidden name="comments" />
-                      <MetaItemText aria-hidden>
-                        {commentsCount}
-                      </MetaItemText>
+                      <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
                       <ScreenReaderOnly>
                         {formatMessage(messages.xComments, { commentsCount })}
                       </ScreenReaderOnly>
                     </MetaItem>
-                  }
+                  )}
                 </ProjectMetaItems>
               </ContentFooterRight>
             </ContentFooter>
@@ -680,9 +747,17 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  projectImages: ({ projectId, render }) => (
+    <GetProjectImages projectId={projectId}>{render}</GetProjectImages>
+  ),
+  phase: ({ project, render }) => (
+    <GetPhase id={get(project, 'relationships.current_phase.data.id')}>
+      {render}
+    </GetPhase>
+  ),
 });
 
 const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));

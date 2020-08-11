@@ -6,12 +6,15 @@ import GetCampaignConsents from 'resources/GetCampaignConsents';
 
 export default () => (
   <GetCampaignConsents>
-    {(consents) => !isNilOrError(consents) ?
-      <ConsentForm
-        trackEventName={tracks.clickChangeEmailNotificationProfileSettings.name}
-        consents={consents}
-      />
-      : null
+    {(consents) =>
+      !isNilOrError(consents) ? (
+        <ConsentForm
+          trackEventName={
+            tracks.clickChangeEmailNotificationProfileSettings.name
+          }
+          consents={consents}
+        />
+      ) : null
     }
   </GetCampaignConsents>
 );

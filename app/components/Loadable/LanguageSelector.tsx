@@ -12,7 +12,7 @@ const LoadableLanguageSelector = Loadable({
     const LanguageSelector = loaded.default;
 
     return <LanguageSelector {...props} />;
-  }
+  },
 });
 
 export default LoadableLanguageSelector;

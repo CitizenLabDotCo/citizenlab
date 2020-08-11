@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -27,7 +27,8 @@ const Container = styled.button`
 
   &:hover,
   &:focus {
-    fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
+    fill: ${({ theme }) =>
+      theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
   }
 `;
 
@@ -41,10 +42,17 @@ const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
-  background: ${({ theme }) => theme.invertedNavbarColors && theme.navbarTextColor ? theme.colorText : colors.clRed};
+  background: ${({ theme }) =>
+    theme.invertedNavbarColors && theme.navbarTextColor
+      ? theme.colorText
+      : colors.clRed};
   padding: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px ${({ theme }) => theme.invertedNavbarColors && theme.navbarBackgroundColor ? theme.navbarBackgroundColor : '#fff'};
+  border: solid 1px
+    ${({ theme }) =>
+      theme.invertedNavbarColors && theme.navbarBackgroundColor
+        ? theme.navbarBackgroundColor
+        : '#fff'};
   position: absolute;
   top: -9px;
   left: 15px;
@@ -60,10 +68,13 @@ type Props = {
 
 type State = {};
 
-class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> {
+class NotificationCount extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
     const { count, dropdownOpened } = this.props;
@@ -74,14 +85,13 @@ class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> 
         onClick={this.props.onClick}
         aria-expanded={dropdownOpened}
       >
-        <NotificationIcon title={this.props.intl.formatMessage(messages.notificationsLabel)} name="notification" />
-        {(isNumber(count) && count > 0) ?
-          <NewNotificationsIndicator>
-            {count}
-          </NewNotificationsIndicator>
-          :
-          null
-        }
+        <NotificationIcon
+          title={this.props.intl.formatMessage(messages.notificationsLabel)}
+          name="notification"
+        />
+        {isNumber(count) && count > 0 ? (
+          <NewNotificationsIndicator>{count}</NewNotificationsIndicator>
+        ) : null}
       </Container>
     );
   }

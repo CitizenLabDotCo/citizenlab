@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isFunction, compact } from 'lodash-es';
@@ -21,12 +23,13 @@ import { media } from 'utils/styleUtils';
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-const Container = styled.div`
+const Container = styled.div<{ windowHeight: string }>`
+  width: 100vw;
+  height: ${(props) =>
+    `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
-  bottom: 0;
   left: 0;
-  right: 0;
   display: flex;
   overflow: hidden;
   background: #fff;
@@ -51,13 +54,14 @@ const Container = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
+    height: ${(props) =>
+      `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
     top: 0;
-    bottom: ${props => props.theme.mobileMenuHeight}px;
-    // there is no top navbar at this screen size, so okay
-    // that it is higher than the z-index of NavBar here
-    z-index: 1005;
+    bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
 
     &.hasBottomBar {
+      height: ${(props) => props.windowHeight};
       bottom: 0;
     }
   `}
@@ -96,14 +100,35 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  windowHeight: string;
+}
 
 const useCapture = false;
 
 class FullscreenModal extends PureComponent<Props, State> {
+  subscription: Subscription | null = null;
   unlisten: Function | null = null;
   url: string | null | undefined = null;
   goBackUrl: string | null | undefined = null;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      windowHeight: `${window.innerHeight}px`,
+    };
+  }
+
+  componentDidMount() {
+    this.subscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(50), distinctUntilChanged())
+      .subscribe((event) => {
+        if (event.target) {
+          const height = event.target['innerHeight'] as number;
+          this.setState({ windowHeight: `${height}px` });
+        }
+      });
+  }
 
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.opened && this.props.opened) {
@@ -114,6 +139,7 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.subscription?.unsubscribe();
     this.cleanup();
   }
 
@@ -121,30 +147,38 @@ class FullscreenModal extends PureComponent<Props, State> {
     const { locale, url, goBackUrl } = this.props;
 
     if (!isNilOrError(locale) && url) {
-      this.url = `${window.location.origin}/${locale}${removeLocale(url).pathname}`;
-      this.goBackUrl = `${window.location.origin}/${locale}${removeLocale(goBackUrl || window.location.pathname).pathname}`;
+      this.url = `${window.location.origin}/${locale}${
+        removeLocale(url).pathname
+      }`;
+      this.goBackUrl = `${window.location.origin}/${locale}${
+        removeLocale(goBackUrl || window.location.pathname).pathname
+      }`;
       window.history.pushState({ path: this.url }, '', this.url);
       window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
       window.addEventListener('keydown', this.handleKeypress, useCapture);
       this.unlisten = clHistory.listen(() => this.props.close());
       trackPage(this.url, { modal: true });
     }
-  }
+  };
 
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.props.close();
     }
-  }
+  };
 
   handlePopstateEvent = () => {
     this.props.close();
-  }
+  };
 
   cleanup = () => {
     if (this.goBackUrl) {
-      window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
+      window.removeEventListener(
+        'popstate',
+        this.handlePopstateEvent,
+        useCapture
+      );
       window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
       if (window.location.href === this.url) {
@@ -159,25 +193,35 @@ class FullscreenModal extends PureComponent<Props, State> {
       this.unlisten();
       this.unlisten = null;
     }
-  }
+  };
 
   render() {
-    const { children, opened, topBar, bottomBar, animateInOut, navbarRef, mobileNavbarRef } = this.props;
+    const { windowHeight } = this.state;
+    const {
+      children,
+      opened,
+      topBar,
+      bottomBar,
+      animateInOut,
+      navbarRef,
+      mobileNavbarRef,
+    } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement = document?.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
+
+    console.log(windowHeight);
 
     if (animateInOut || (!animateInOut && opened)) {
       modalContent = (
         <Container
           id="e2e-fullscreenmodal-content"
           className={bottomBar ? 'hasBottomBar' : ''}
+          windowHeight={windowHeight}
         >
           <StyledFocusOn shards={shards}>
             {topBar}
-            <Content>
-              {children}
-            </Content>
+            <Content>{children}</Content>
             {bottomBar}
           </StyledFocusOn>
         </Container>
@@ -185,13 +229,13 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (animateInOut) {
-      return ReactDOM.createPortal((
+      return ReactDOM.createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
           timeout={{
             enter: slideInOutTimeout,
-            exit: slideInOutTimeout
+            exit: slideInOutTimeout,
           }}
           mountOnEnter={true}
           unmountOnExit={true}
@@ -199,8 +243,9 @@ class FullscreenModal extends PureComponent<Props, State> {
           exit={true}
         >
           {modalContent}
-        </CSSTransition>
-      ), document.getElementById('modal-portal') as HTMLElement);
+        </CSSTransition>,
+        document.getElementById('modal-portal') as HTMLElement
+      );
     }
 
     if (!animateInOut && opened && modalPortalElement) {
@@ -212,11 +257,11 @@ class FullscreenModal extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
-  locale: <GetLocale />
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FullscreenModal {...inputProps} {...dataProps} />}
+    {(dataProps) => <FullscreenModal {...inputProps} {...dataProps} />}
   </Data>
 );

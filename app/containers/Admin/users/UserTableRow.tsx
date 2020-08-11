@@ -6,9 +6,8 @@ import clHistory from 'utils/cl-router/history';
 
 // Components
 import Avatar from 'components/Avatar';
-import Toggle from 'components/UI/Toggle';
+import { Toggle, Icon } from 'cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
-import Icon from 'components/UI/Icon';
 import Tippy from '@tippyjs/react';
 
 // Translation
@@ -31,7 +30,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const StyledCheckbox = styled(Checkbox) `
+const StyledCheckbox = styled(Checkbox)`
   margin-left: 5px;
 `;
 
@@ -40,7 +39,7 @@ const MoreOptionsWrapper = styled.div`
   position: relative;
 `;
 
-const MoreOptionsIcon = styled(Icon) `
+const MoreOptionsIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.adminSecondaryTextColor};
@@ -93,7 +92,7 @@ const DropdownListButton = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${lighten(.1, colors.adminMenuBackground)};
+    background: ${lighten(0.1, colors.adminMenuBackground)};
   }
 `;
 
@@ -112,7 +111,7 @@ const IconWrapper = styled.div`
   .cl-icon-primary,
   .cl-icon-secondary,
   .cl-icon-accent {
-  	fill: currentColor;
+    fill: currentColor;
   }
 `;
 
@@ -134,54 +133,62 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       isAdmin: isAdmin({ data: this.props.user }),
-      createdAt: moment(this.props.user.attributes.created_at).format('LL')
+      createdAt: moment(this.props.user.attributes.created_at).format('LL'),
     };
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
     return {
       isAdmin: isAdmin({ data: nextProps.user }),
-      createdAt: moment(nextProps.user.attributes.created_at).format('LL')
+      createdAt: moment(nextProps.user.attributes.created_at).format('LL'),
     };
   }
 
   isUserAdmin = () => {
     return isAdmin({ data: this.props.user });
-  }
+  };
 
   handleUserSelectedOnChange = () => {
     this.props.toggleSelect();
-  }
+  };
 
   handleAdminRoleOnChange = () => {
     this.props.toggleAdmin();
-  }
+  };
 
   handleDeleteClick = (event: FormEvent) => {
     const { authUser, user } = this.props;
-    const deleteMessage = this.props.intl.formatMessage(messages.userDeletionConfirmation);
+    const deleteMessage = this.props.intl.formatMessage(
+      messages.userDeletionConfirmation
+    );
 
     event.preventDefault();
 
     if (window.confirm(deleteMessage)) {
       if (authUser && authUser.id === user.id) {
-        eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
+        eventEmitter.emit<JSX.Element>(
+          events.userDeletionFailed,
+          <FormattedMessage {...messages.youCantDeleteYourself} />
+        );
       } else {
         deleteUser(user.id).catch(() => {
-          eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
+          eventEmitter.emit<JSX.Element>(
+            events.userDeletionFailed,
+            <FormattedMessage {...messages.userDeletionFailed} />
+          );
         });
       }
     }
-  }
+  };
 
   goToUserProfile = (slug: string) => (event: FormEvent) => {
     event.preventDefault();
     clHistory.push(`/profile/${slug}`);
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
     const { user, selected } = this.props;
@@ -199,19 +206,15 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
           />
         </td>
         <td>
-          <Avatar
-            userId={user.id}
-            size="30px"
-          />
+          <Avatar userId={user.id} size="30px" />
         </td>
-        <td>{user.attributes.first_name} {user.attributes.last_name}</td>
+        <td>
+          {user.attributes.first_name} {user.attributes.last_name}
+        </td>
         <td>{user.attributes.email}</td>
         <CreatedAt>{this.state.createdAt}</CreatedAt>
         <td>
-          <Toggle
-            checked={isAdmin}
-            onChange={this.handleAdminRoleOnChange}
-          />
+          <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </td>
         <td>
           <MoreOptionsWrapper>
@@ -222,7 +225,11 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
               duration={[200, 0]}
               content={
                 <DropdownList>
-                  <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>
+                  <DropdownListButton
+                    onClick={this.goToUserProfile(
+                      this.props.user.attributes.slug
+                    )}
+                  >
                     <FormattedMessage {...messages.seeProfile} />
                     <IconWrapper>
                       <Icon name="eye" />

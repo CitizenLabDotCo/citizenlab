@@ -27,13 +27,13 @@ export default class GetInvitedUser extends React.Component<Props, State> {
   private subscription: Subscription;
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      user: undefined
+      user: undefined,
     };
   }
 
@@ -42,13 +42,17 @@ export default class GetInvitedUser extends React.Component<Props, State> {
 
     this.inputProps$ = new BehaviorSubject(this.props.token);
 
-    this.subscription = this.inputProps$.pipe(
-      distinctUntilChanged(),
-      tap(() => resetOnChange && this.setState({ user: undefined })),
-      switchMap((token) => isString(token) ? userByInviteStream(token).observable : of(null))
-    ).subscribe((user) => {
-      this.setState({ user: !isNilOrError(user) ? user.data : null });
-    });
+    this.subscription = this.inputProps$
+      .pipe(
+        distinctUntilChanged(),
+        tap(() => resetOnChange && this.setState({ user: undefined })),
+        switchMap((token) =>
+          isString(token) ? userByInviteStream(token).observable : of(null)
+        )
+      )
+      .subscribe((user) => {
+        this.setState({ user: !isNilOrError(user) ? user.data : null });
+      });
   }
 
   componentDidUpdate() {

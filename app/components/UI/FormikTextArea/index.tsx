@@ -18,12 +18,12 @@ class FormikTextArea extends React.Component<Props & VanillaProps, State> {
 
   handleOnChange = (formikContext: FormikContext<any>) => (value: string) => {
     formikContext.setFieldValue(this.props.name, value);
-  }
+  };
 
   render() {
     return (
       <FormikConsumer>
-        {formikContext => (
+        {(formikContext) => (
           <Textarea
             {...this.props}
             value={formikContext.values[this.props.name] || ''}

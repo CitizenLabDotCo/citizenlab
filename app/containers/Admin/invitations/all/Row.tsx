@@ -6,7 +6,7 @@ import messages from '../messages';
 import { IInviteData, deleteInvite } from 'services/invites';
 import GetUser from 'resources/GetUser';
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
-import Badge from 'components/admin/Badge';
+import { Badge } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -15,30 +15,37 @@ interface InputProps {
 
 export default (inputProps: InputProps) => (
   <GetUser id={inputProps.invite.relationships.invitee.data.id}>
-    {user => {
-      const handleOnDeleteInvite = (inviteId: string) => () => deleteInvite(inviteId);
+    {(user) => {
+      const handleOnDeleteInvite = (inviteId: string) => () =>
+        deleteInvite(inviteId);
 
       if (isNilOrError(user)) return null;
 
       return (
         // To test invitation flow, we need the token, hence this className
-        <Table.Row key={inputProps.invite.id} className={inputProps.invite.attributes.token}>
+        <Table.Row
+          key={inputProps.invite.id}
+          className={inputProps.invite.attributes.token}
+        >
+          <Table.Cell>{user.attributes.email}</Table.Cell>
           <Table.Cell>
-            {user.attributes.email}
-          </Table.Cell>
-          <Table.Cell>
-            <span>{user.attributes.first_name} {user.attributes.last_name}</span>
+            <span>
+              {user.attributes.first_name} {user.attributes.last_name}
+            </span>
           </Table.Cell>
           <Table.Cell>
             <FormattedDate value={inputProps.invite.attributes.created_at} />
           </Table.Cell>
           <Table.Cell textAlign="center">
-            {user.attributes.invite_status === 'pending'
-            ?
-              <Badge><FormattedMessage {...messages.inviteStatusPending} /></Badge>
-            :
-              <Badge color={colors.clGreen}><FormattedMessage {...messages.inviteStatusAccepted} /></Badge>
-            }
+            {user.attributes.invite_status === 'pending' ? (
+              <Badge>
+                <FormattedMessage {...messages.inviteStatusPending} />
+              </Badge>
+            ) : (
+              <Badge color={colors.clGreen}>
+                <FormattedMessage {...messages.inviteStatusAccepted} />
+              </Badge>
+            )}
           </Table.Cell>
           <Table.Cell textAlign="center">
             <Popup

@@ -10,12 +10,14 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Body from 'components/PostShowComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -85,7 +87,7 @@ const Description = styled.div`
   &::after {
     background: linear-gradient(0deg, white, rgba(255, 255, 255, 0));
     bottom: 0;
-    content: "";
+    content: '';
     display: block;
     height: 3rem;
     left: 0;
@@ -146,8 +148,10 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> {
-
+class InitiativePreview extends PureComponent<
+  Props & InjectedLocalized,
+  State
+> {
   createInitiativeClickHandler = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
@@ -157,16 +161,19 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: initiative.id,
         slug: initiative.attributes.slug,
-        type: 'initiative'
+        type: 'initiative',
       });
     }
-  }
+  };
 
   render() {
     const { initiative, locale, className, localize } = this.props;
 
     if (!isNilOrError(initiative)) {
-      const initiativeAddress = get(initiative, 'attributes.location_description');
+      const initiativeAddress = get(
+        initiative,
+        'attributes.location_description'
+      );
       const initiativeBody = localize(initiative.attributes.body_multiloc);
 
       return (
@@ -175,12 +182,12 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
             <T value={initiative.attributes.title_multiloc} />
           </Title>
 
-          {initiativeAddress &&
+          {initiativeAddress && (
             <Address>
               <MapMarkerIcon name="mapmarker" />
               {initiativeAddress}
             </Address>
-          }
+          )}
 
           <Description>
             <Body
@@ -216,11 +223,15 @@ const InitiativePreviewWithHOCs = injectLocalize<Props>(InitiativePreview);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativePreviewWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <InitiativePreviewWithHOCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

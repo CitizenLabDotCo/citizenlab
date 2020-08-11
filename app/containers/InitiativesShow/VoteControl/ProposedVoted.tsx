@@ -11,7 +11,7 @@ import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,11 +38,11 @@ const StyledIcon = styled(Icon)`
   fill: ${colors.clGreenSuccess};
   width: 63px;
   height: 63px;
-  animation: ${scaleIn} 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 const VotedTitle = styled.h4`
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
   text-align: center;
@@ -53,7 +53,7 @@ const VotedTitle = styled.h4`
 `;
 
 const VotedText = styled.p`
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
@@ -63,12 +63,12 @@ const VotedText = styled.p`
 `;
 
 const UnvoteButton = styled.button`
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   text-decoration: underline;
 
   &:hover {
-    color: ${props => darken(0.12, props.theme.colorText)};
+    color: ${(props) => darken(0.12, props.theme.colorText)};
     text-decoration: underline;
     cursor: pointer;
   }
@@ -96,7 +96,7 @@ const VoteTextLeft = styled.div`
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
 `;
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -116,13 +116,16 @@ interface DataProps {}
 interface Props extends InputProps, DataProps {}
 
 class ProposedVoted extends PureComponent<Props & { theme: any }> {
-
   handleOnCancelVote = () => {
     this.props.onCancelVote();
-  }
+  };
 
   render() {
-    const { initiative, initiativeSettings: { voting_threshold }, theme } = this.props;
+    const {
+      initiative,
+      initiativeSettings: { voting_threshold },
+      theme,
+    } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
     const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
@@ -145,7 +148,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
                     values={{ x: daysLeft }}
                   />
                 </b>
-              )
+              ),
             }}
           />
         </VotedText>
@@ -158,18 +161,24 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
         <VoteCounter>
           <VoteText aria-hidden={true}>
             <VoteTextLeft id="e2e-initiative-voted-vote-count">
-              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: voteCount }}
+              />
             </VoteTextLeft>
-            <VoteTextRight>
-              {voteLimit}
-            </VoteTextRight>
+            <VoteTextRight>{voteLimit}</VoteTextRight>
           </VoteText>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVotesOfY}
               values={{
-                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
-                votingThreshold: voteLimit
+                xVotes: (
+                  <FormattedMessage
+                    {...messages.xVotes}
+                    values={{ count: voteCount }}
+                  />
+                ),
+                votingThreshold: voteLimit,
               }}
             />
           </ScreenReaderOnly>

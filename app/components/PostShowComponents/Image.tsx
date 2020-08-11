@@ -16,9 +16,5 @@ interface Props {
 }
 
 export default memo<Props>(({ src, alt, id }) => (
-  <Image
-    src={src}
-    alt={alt}
-    id={id}
-  />
+  <Image src={src} alt={alt} id={id} />
 ));

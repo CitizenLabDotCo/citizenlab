@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import Dropdown from 'components/UI/Dropdown';
+import { Dropdown } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import ExportButtons from './ExportButtons';
 
@@ -41,7 +41,7 @@ export default class ExportMenu extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpened: false
+      dropdownOpened: false,
     };
   }
 
@@ -62,21 +62,26 @@ export default class ExportMenu extends PureComponent<Props, State> {
     }
 
     return { exportQueryParameter, exportType };
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
-  }
+    this.setState(({ dropdownOpened }) => ({
+      dropdownOpened: !dropdownOpened,
+    }));
+  };
 
   render() {
     const { className, type } = this.props;
     const { dropdownOpened } = this.state;
-    const { exportQueryParameter, exportType } = this.getExportQueryParameters();
+    const {
+      exportQueryParameter,
+      exportType,
+    } = this.getExportQueryParameters();
 
     return (
       <Container className={className}>
@@ -97,13 +102,13 @@ export default class ExportMenu extends PureComponent<Props, State> {
           mobileRight="-5px"
           opened={dropdownOpened}
           onClickOutside={this.toggleDropdown}
-          content={(
+          content={
             <ExportButtons
               type={type}
               exportQueryParameter={exportQueryParameter}
               exportType={exportType}
             />
-          )}
+          }
         />
       </Container>
     );

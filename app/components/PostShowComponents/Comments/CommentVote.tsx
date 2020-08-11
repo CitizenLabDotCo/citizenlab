@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { LiveMessage } from 'react-aria-live';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
@@ -13,7 +13,9 @@ import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetCommentVote, { GetCommentVoteChildProps } from 'resources/GetCommentVote';
+import GetCommentVote, {
+  GetCommentVoteChildProps,
+} from 'resources/GetCommentVote';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -167,7 +169,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       voted: false,
-      upvoteCount: 0
+      upvoteCount: 0,
     };
   }
 
@@ -176,15 +178,21 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
 
     this.setState({
       voted: !isNilOrError(commentVote),
-      upvoteCount: !isNilOrError(comment) ? comment.attributes.upvotes_count : 0
+      upvoteCount: !isNilOrError(comment)
+        ? comment.attributes.upvotes_count
+        : 0,
     });
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
     const { comment, commentVote } = this.props;
     const { voted } = this.state;
-    const prevUpvoteCount = !isNilOrError(prevProps.comment) ? prevProps.comment?.attributes?.upvotes_count : 0;
-    const upvoteCount = !isNilOrError(comment) ? comment?.attributes?.upvotes_count : 0;
+    const prevUpvoteCount = !isNilOrError(prevProps.comment)
+      ? prevProps.comment?.attributes?.upvotes_count
+      : 0;
+    const upvoteCount = !isNilOrError(comment)
+      ? comment?.attributes?.upvotes_count
+      : 0;
 
     // Whenever the upvote count number returned by the GetComment resource component has changed
     // we update the value kept in the state to make sure we always use the correct and up-to-date upvote count coming back from the server
@@ -192,11 +200,19 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
       this.setState({ upvoteCount });
     }
 
-    if (voted === false && isNilOrError(prevProps.commentVote) && !isNilOrError(commentVote)) {
+    if (
+      voted === false &&
+      isNilOrError(prevProps.commentVote) &&
+      !isNilOrError(commentVote)
+    ) {
       this.setState({ voted: true });
     }
 
-    if (voted === true && !isNilOrError(prevProps.commentVote) && isNilOrError(commentVote)) {
+    if (
+      voted === true &&
+      !isNilOrError(prevProps.commentVote) &&
+      isNilOrError(commentVote)
+    ) {
       this.setState({ voted: false });
     }
   }
@@ -204,19 +220,32 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   onVote = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    const { postId, postType, commentId, commentType, commentingDisabledReason, authUser, comment, commentVote } = this.props;
+    const {
+      postId,
+      postType,
+      commentId,
+      commentType,
+      commentingDisabledReason,
+      authUser,
+      comment,
+      commentVote,
+    } = this.props;
     const oldVotedValue = cloneDeep(this.state.voted);
     const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-    const authUserIsVerified = !isNilOrError(authUser) && authUser.attributes.verified;
+    const authUserIsVerified =
+      !isNilOrError(authUser) && authUser.attributes.verified;
 
     if (!isNilOrError(authUser) && !commentingDisabledReason) {
       if (!oldVotedValue) {
         try {
-          this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
+          this.setState((state) => ({
+            voted: true,
+            upvoteCount: state.upvoteCount + 1,
+          }));
 
           await addCommentVote(postId, postType, commentId, {
             user_id: authUser.id,
-            mode: 'up'
+            mode: 'up',
           });
 
           if (commentType === 'parent') {
@@ -231,9 +260,16 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
         }
       }
 
-      if (oldVotedValue && !isNilOrError(comment) && !isNilOrError(commentVote)) {
+      if (
+        oldVotedValue &&
+        !isNilOrError(comment) &&
+        !isNilOrError(commentVote)
+      ) {
         try {
-          this.setState(state => ({ voted: false, upvoteCount: state.upvoteCount - 1 }));
+          this.setState((state) => ({
+            voted: false,
+            upvoteCount: state.upvoteCount - 1,
+          }));
           await deleteCommentVote(comment.id, commentVote.id);
 
           if (commentType === 'parent') {
@@ -247,18 +283,27 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
       }
-    } else if (!isNilOrError(authUser) && !authUserIsVerified && commentingDisabledReason === 'not_verified') {
+    } else if (
+      !isNilOrError(authUser) &&
+      !authUserIsVerified &&
+      commentingDisabledReason === 'not_verified'
+    ) {
       openVerificationModal();
     } else if (!authUser) {
       openSignUpInModal({
         verification: commentingDisabledReason === 'not_verified',
-        action: () => this.onVote()
+        action: () => this.onVote(),
       });
     }
-  }
+  };
 
   render() {
-    const { className, comment, disabled, intl: { formatMessage } } = this.props;
+    const {
+      className,
+      comment,
+      disabled,
+      intl: { formatMessage },
+    } = this.props;
     const { voted, upvoteCount } = this.state;
 
     if (!isNilOrError(comment)) {
@@ -280,38 +325,42 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}
                 `}
-                title={!voted ?
-                  formatMessage(messages.upvoteComment)
-                  :
-                  formatMessage(messages.a11y_undoUpvote)
+                title={
+                  !voted
+                    ? formatMessage(messages.upvoteComment)
+                    : formatMessage(messages.a11y_undoUpvote)
                 }
               />
             </UpvoteButton>
           </UpvoteButtonWrapper>
 
-          <LiveMessage message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })} aria-live="polite" />
+          <LiveMessage
+            message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })}
+            aria-live="polite"
+          />
 
           <UpvoteCount className={disabled ? 'disabled' : 'enabled'}>
             {upvoteCount}
           </UpvoteCount>
 
-          {!disabled &&
+          {!disabled && (
             <UpvoteLabel onClick={this.onVote}>
               {/* To be displayed, not picked up by screen readers */}
               <span aria-hidden>
-                {!voted
-                  ? <FormattedMessage {...messages.commentUpvote} />
-                  : <FormattedMessage {...messages.commentCancelUpvote} />
-                }
+                {!voted ? (
+                  <FormattedMessage {...messages.commentUpvote} />
+                ) : (
+                  <FormattedMessage {...messages.commentCancelUpvote} />
+                )}
               </span>
               {/* For screen readers */}
               <ScreenReaderOnly>
-                {!voted ?
-                  formatMessage(messages.upvoteComment) : formatMessage(messages.a11y_undoUpvote)
-                }
+                {!voted
+                  ? formatMessage(messages.upvoteComment)
+                  : formatMessage(messages.a11y_undoUpvote)}
               </ScreenReaderOnly>
             </UpvoteLabel>
-          }
+          )}
         </Container>
       );
     }
@@ -324,12 +373,24 @@ const CommentVoteWithHOCs = injectIntl(CommentVote);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  commentVote: ({ comment, render }) => <GetCommentVote voteId={!isNilOrError(comment) ? comment?.relationships?.user_vote?.data?.id : undefined}>{render}</GetCommentVote>
+  comment: ({ commentId, render }) => (
+    <GetComment id={commentId}>{render}</GetComment>
+  ),
+  commentVote: ({ comment, render }) => (
+    <GetCommentVote
+      voteId={
+        !isNilOrError(comment)
+          ? comment?.relationships?.user_vote?.data?.id
+          : undefined
+      }
+    >
+      {render}
+    </GetCommentVote>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentVoteWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentVoteWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

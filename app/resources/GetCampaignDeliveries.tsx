@@ -12,7 +12,9 @@ interface InputProps {
   pageNumber?: number;
 }
 
-type children = (renderProps: GetCampaignDeliveriesChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetCampaignDeliveriesChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -28,7 +30,10 @@ export type GetCampaignDeliveriesChildProps = State & {
   onChangePage: (pageNumber: number) => void;
 };
 
-export default class GetCampaignDeliveries extends React.Component<Props, State> {
+export default class GetCampaignDeliveries extends React.Component<
+  Props,
+  State
+> {
   private inputProps$: BehaviorSubject<InputProps>;
   private pageChanges$: BehaviorSubject<number>;
   private subscriptions: Subscription[];
@@ -49,29 +54,34 @@ export default class GetCampaignDeliveries extends React.Component<Props, State>
     this.pageChanges$ = new BehaviorSubject(pageNumber || 1);
 
     this.subscriptions = [
-      combineLatest(
-        this.inputProps$,
-        this.pageChanges$
-      ).pipe(
-        map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ campaignId, pageSize, pageNumber }) => {
-          if (campaignId) {
-            return listCampaignDeliveries(campaignId, { queryParameters: {
-              'page[size]': pageSize,
-              'page[number]': pageNumber,
-            }}).observable;
-          } else {
-            return of(null);
-          }
-        })
-      ).subscribe((deliveries) => {
-        this.setState({
-          deliveries: !isNilOrError(deliveries) ? deliveries.data : deliveries,
-          currentPage: getPageNumberFromUrl(deliveries && deliveries.links.self) || 1,
-          lastPage: getPageNumberFromUrl(deliveries && deliveries.links.last) || 1
-        });
-      })
+      combineLatest(this.inputProps$, this.pageChanges$)
+        .pipe(
+          map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ campaignId, pageSize, pageNumber }) => {
+            if (campaignId) {
+              return listCampaignDeliveries(campaignId, {
+                queryParameters: {
+                  'page[size]': pageSize,
+                  'page[number]': pageNumber,
+                },
+              }).observable;
+            } else {
+              return of(null);
+            }
+          })
+        )
+        .subscribe((deliveries) => {
+          this.setState({
+            deliveries: !isNilOrError(deliveries)
+              ? deliveries.data
+              : deliveries,
+            currentPage:
+              getPageNumberFromUrl(deliveries && deliveries.links.self) || 1,
+            lastPage:
+              getPageNumberFromUrl(deliveries && deliveries.links.last) || 1,
+          });
+        }),
     ];
   }
 
@@ -81,12 +91,12 @@ export default class GetCampaignDeliveries extends React.Component<Props, State>
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleOnPageChange = (pageNumber: number) => {
     this.pageChanges$.next(pageNumber);
-  }
+  };
 
   render() {
     const { children } = this.props;

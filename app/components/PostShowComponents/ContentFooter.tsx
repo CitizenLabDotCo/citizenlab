@@ -5,11 +5,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ContentChangeLog from 'components/PostShowComponents/ContentChangeLog';
 
 // resources
-import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';
+import GetRandomAvatars, {
+  GetRandomAvatarsChildProps,
+} from 'resources/GetRandomAvatars';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -101,56 +103,82 @@ interface Props extends InputProps, DataProps {}
 
 const avatarLimit = 3;
 
-const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, randomAvatars, className, postId }) => {
+const ContentFooter = memo<Props>(
+  ({
+    postType,
+    publishedAt,
+    commentsCount,
+    randomAvatars,
+    className,
+    postId,
+  }) => {
+    const contributorAvatarIds =
+      !isNilOrError(randomAvatars) && randomAvatars.data.length > 0
+        ? randomAvatars.data.map((avatar) => avatar.id)
+        : [];
+    const contributorUserCount = !isNilOrError(randomAvatars)
+      ? randomAvatars.meta.total
+      : undefined;
 
-  const contributorAvatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
-  const contributorUserCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
+    return (
+      <Container
+        id={`e2e-${postType}-content-footer`}
+        className={className || ''}
+      >
+        <Left>
+          {!isEmpty(contributorAvatarIds) && (
+            <StyledAvatarBubbles
+              size={26}
+              limit={avatarLimit}
+              avatarIds={contributorAvatarIds}
+              userCount={contributorUserCount}
+            />
+          )}
 
-  return (
-    <Container id={`e2e-${postType}-content-footer`} className={className || ''}>
-      <Left>
-        {!isEmpty(contributorAvatarIds) &&
-          <StyledAvatarBubbles
-            size={26}
-            limit={avatarLimit}
-            avatarIds={contributorAvatarIds}
-            userCount={contributorUserCount}
-          />
-        }
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.a11y_numberOfContributors}
+              values={{ numberOfContributors: contributorUserCount }}
+            />
+          </ScreenReaderOnly>
 
-        <ScreenReaderOnly>
-          <FormattedMessage
-            {...messages.a11y_numberOfContributors}
-            values={{ numberOfContributors: contributorUserCount }}
-          />
-        </ScreenReaderOnly>
+          <TimeAgo>
+            <FormattedMessage
+              {...messages.createdTimeAgo}
+              values={{ timeAgo: <FormattedRelative value={publishedAt} /> }}
+            />
+            <StyledContentChangeLog postId={postId} postType={postType} />
+          </TimeAgo>
+        </Left>
 
-        <TimeAgo>
-          <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
-          <StyledContentChangeLog postId={postId} postType={postType} />
-        </TimeAgo>
-      </Left>
-
-      <Right>
-        <CommentsIcon name="comments" ariaHidden />
-        <CommentsCount aria-hidden>{commentsCount}</CommentsCount>
-        <ScreenReaderOnly>
-          <FormattedMessage
-            {...messages.a11y_commentsCount}
-            values={{ commentsCount }}
-          />
-        </ScreenReaderOnly>
-      </Right>
-    </Container>
-  );
-});
+        <Right>
+          <CommentsIcon name="comments" ariaHidden />
+          <CommentsCount aria-hidden>{commentsCount}</CommentsCount>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.a11y_commentsCount}
+              values={{ commentsCount }}
+            />
+          </ScreenReaderOnly>
+        </Right>
+      </Container>
+    );
+  }
+);
 
 const Data = adopt<DataProps, InputProps>({
-  randomAvatars: ({ postId, postType, render }) => <GetRandomAvatars limit={avatarLimit} context={{ id: postId, type: postType }}>{render}</GetRandomAvatars>,
+  randomAvatars: ({ postId, postType, render }) => (
+    <GetRandomAvatars
+      limit={avatarLimit}
+      context={{ id: postId, type: postType }}
+    >
+      {render}
+    </GetRandomAvatars>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ContentFooter {...inputProps} {...dataProps} />}
+    {(dataProps) => <ContentFooter {...inputProps} {...dataProps} />}
   </Data>
 );

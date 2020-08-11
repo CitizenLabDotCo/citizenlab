@@ -11,8 +11,14 @@ import { injectIntl } from 'utils/cl-intl';
 
 export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   private tabs = [
-    { label: this.props.intl.formatMessage(messages.settingsTab), url: '/admin/initiatives' },
-    { label: this.props.intl.formatMessage(messages.manageTab), url: '/admin/initiatives/manage' },
+    {
+      label: this.props.intl.formatMessage(messages.settingsTab),
+      url: '/admin/initiatives',
+    },
+    {
+      label: this.props.intl.formatMessage(messages.manageTab),
+      url: '/admin/initiatives/manage',
+    },
   ];
   private resource = {
     title: this.props.intl.formatMessage(messages.titleInitiatives),
@@ -21,10 +27,7 @@ export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   render() {
     const { children } = this.props;
     return (
-      <TabbedResource
-        resource={this.resource}
-        tabs={this.tabs}
-      >
+      <TabbedResource resource={this.resource} tabs={this.tabs}>
         <HelmetIntl
           title={messages.metaTitle}
           description={messages.metaDescription}

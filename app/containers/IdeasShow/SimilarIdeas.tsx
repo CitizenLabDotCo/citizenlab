@@ -10,11 +10,13 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // resources
-import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilarIdeas';
+import GetSimilarIdeas, {
+  GetSimilarIdeasChildProps,
+} from 'resources/GetSimilarIdeas';
 
 // components
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // utils
@@ -82,12 +84,12 @@ interface DataProps {
   ideas: GetSimilarIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class SimilarIdeas extends PureComponent<Props> {
   onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
-  }
+  };
 
   render() {
     const { ideas, className } = this.props;

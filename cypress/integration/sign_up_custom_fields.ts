@@ -1,7 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Sign up - custom fields step', () => {
-
   describe('No custom fields', () => {
     before(() => {
       const firstName = randomString();
@@ -27,7 +26,7 @@ describe('Sign up - custom fields step', () => {
     let customFieldId: string;
 
     before(() => {
-        cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+      cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.setLoginCookie(email, password);
@@ -69,7 +68,10 @@ describe('Sign up - custom fields step', () => {
       cy.get('#e2e-signup-custom-fields-container');
       cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
-      cy.get('#e2e-signup-custom-fields-container .e2e-error-message').should('contain', 'This field is required');
+      cy.get('#e2e-signup-custom-fields-container .e2e-error-message').should(
+        'contain',
+        'This field is required'
+      );
     });
 
     after(() => {
@@ -108,5 +110,4 @@ describe('Sign up - custom fields step', () => {
       cy.apiRemoveCustomField(customFieldId);
     });
   });
-
 });

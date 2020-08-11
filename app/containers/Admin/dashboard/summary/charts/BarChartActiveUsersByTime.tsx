@@ -14,7 +14,14 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from 'recharts';
 import {
   IGraphUnit,
   GraphCard,
@@ -22,10 +29,10 @@ import {
   GraphCardHeader,
   GraphCardTitle,
   NoDataContainer,
-  IResolution
+  IResolution,
 } from '../..';
 import { Popup } from 'semantic-ui-react';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -54,7 +61,7 @@ type State = {
 type Props = {
   className?: string;
   graphUnit: IGraphUnit;
-  graphUnitMessageKey: string,
+  graphUnitMessageKey: string;
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
@@ -66,7 +73,10 @@ type Props = {
   infoMessage?: string;
 };
 
-class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
+class BarChartActiveUsersByTime extends React.PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -83,7 +93,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter
+      currentProjectFilter,
     } = this.props;
     this.resubscribe(
       startAt,
@@ -96,16 +106,31 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter } = this.props;
+    const {
+      startAt,
+      endAt,
+      resolution,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter,
+    } = this.props;
 
-    if (startAt !== prevProps.startAt
-      || endAt !== prevProps.endAt
-      || resolution !== prevProps.resolution
-      || currentGroupFilter !== prevProps.currentGroupFilter
-      || currentTopicFilter !== prevProps.currentTopicFilter
-      || currentProjectFilter !== prevProps.currentProjectFilter
+    if (
+      startAt !== prevProps.startAt ||
+      endAt !== prevProps.endAt ||
+      resolution !== prevProps.resolution ||
+      currentGroupFilter !== prevProps.currentGroupFilter ||
+      currentTopicFilter !== prevProps.currentTopicFilter ||
+      currentProjectFilter !== prevProps.currentProjectFilter
     ) {
-      this.resubscribe(startAt, endAt, resolution, currentProjectFilter, currentGroupFilter, currentTopicFilter);
+      this.resubscribe(
+        startAt,
+        endAt,
+        resolution,
+        currentProjectFilter,
+        currentGroupFilter,
+        currentTopicFilter
+      );
     }
   }
 
@@ -120,12 +145,12 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
       return map(data.series[graphUnit], (value, key) => ({
         value,
         name: key,
-        code: key
+        code: key,
       }));
     }
 
     return null;
-  }
+  };
 
   resubscribe(
     startAt: string | null | undefined,
@@ -149,7 +174,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
         project: currentProjectFilter,
         group: currentGroupFilter,
         topic: currentTopicFilter,
-      }
+      },
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie);
       this.setState({ serie: convertedSerie });
@@ -161,32 +186,39 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
     const { formatDate } = this.props.intl;
 
     return formatDate(date, {
-      day: (resolution === 'month' ? undefined : '2-digit'),
+      day: resolution === 'month' ? undefined : '2-digit',
       month: 'short',
     });
-  }
+  };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
     const { formatDate } = this.props.intl;
 
     return formatDate(date, {
-      day: (resolution === 'month' ? undefined : '2-digit'),
+      day: resolution === 'month' ? undefined : '2-digit',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     });
-  }
+  };
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitleMessageKey, graphUnitMessageKey, infoMessage } = this.props;
+    const {
+      className,
+      graphTitleMessageKey,
+      graphUnitMessageKey,
+      infoMessage,
+    } = this.props;
     const { serie } = this.state;
-    const { chartFill,
+    const {
+      chartFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
       animationBegin,
-      animationDuration } = this.props['theme'];
+      animationDuration,
+    } = this.props['theme'];
 
     return (
       <GraphCard className={className}>
@@ -194,23 +226,25 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages[graphTitleMessageKey]} />
-              {infoMessage && <Popup
-                basic
-                trigger={
-                  <div>
-                    <InfoIcon name="info" />
-                  </div>
-                }
-                content={infoMessage}
-                position="top left"
-              />}
+              {infoMessage && (
+                <Popup
+                  basic
+                  trigger={
+                    <div>
+                      <InfoIcon name="info" />
+                    </div>
+                  }
+                  content={infoMessage}
+                  position="top left"
+                />
+              )}
             </GraphCardTitle>
           </GraphCardHeader>
-          {!serie ?
+          {!serie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
-            :
+          ) : (
             <StyledResponsiveContainer>
               <BarChart data={serie}>
                 <Bar
@@ -227,21 +261,21 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                 />
-                <YAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                />
+                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                   cursor={{ fill: barHoverColor }}
                 />
               </BarChart>
-            </StyledResponsiveContainer>}
+            </StyledResponsiveContainer>
+          )}
         </GraphCardInner>
       </GraphCard>
     );
   }
 }
 
-export default injectIntl<Props>(withTheme(BarChartActiveUsersByTime as any) as any);
+export default injectIntl<Props>(
+  withTheme(BarChartActiveUsersByTime as any) as any
+);

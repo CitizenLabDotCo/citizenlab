@@ -3,7 +3,8 @@ export default {
   addUsersToGroup: {
     name: 'Clicked add users to group button',
   },
-  addedRedundantUserToGroup: { // Is fired once even if a user tries to add several redundant users
+  addedRedundantUserToGroup: {
+    // Is fired once even if a user tries to add several redundant users
     name: 'Tried to add again one or more existing group member(s)',
   },
   toggleAllUsers: {

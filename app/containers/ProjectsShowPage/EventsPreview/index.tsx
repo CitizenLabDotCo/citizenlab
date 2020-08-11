@@ -90,18 +90,29 @@ interface DataProps {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  events: ({ project, render }) => (
+    <GetEvents projectId={!isNilOrError(project) ? project.id : null}>
+      {render}
+    </GetEvents>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
       if (!isNilOrError(project) && events && events.length > 0) {
-        const futureEvents = events.filter((event) => {
-          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
-          return (eventTime === 'present' || eventTime === 'future');
-        }).slice(0, 3);
+        const futureEvents = events
+          .filter((event) => {
+            const eventTime = pastPresentOrFuture([
+              event.attributes.start_at,
+              event.attributes.end_at,
+            ]);
+            return eventTime === 'present' || eventTime === 'future';
+          })
+          .slice(0, 3);
 
         if (futureEvents.length > 0) {
           return (
@@ -118,7 +129,12 @@ export default (inputProps: InputProps) => (
 
                 <Events>
                   {futureEvents.map((event, index) => (
-                    <EventBlock event={event} key={event.id} projectSlug={project.attributes.slug} isLast={(index === 2)} />
+                    <EventBlock
+                      event={event}
+                      key={event.id}
+                      projectSlug={project.attributes.slug}
+                      isLast={index === 2}
+                    />
                   ))}
                 </Events>
               </ContentContainer>

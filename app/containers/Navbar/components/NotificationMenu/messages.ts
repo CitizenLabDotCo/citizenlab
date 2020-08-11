@@ -12,7 +12,7 @@ export default defineMessages({
   },
   error: {
     id: 'app.containers.NotificationMenu.error',
-    defaultMessage: 'Couldn\'t load notifications',
+    defaultMessage: "Couldn't load notifications",
   },
   loadMore: {
     id: 'app.containers.NotificationMenu.loadMore',
@@ -20,7 +20,7 @@ export default defineMessages({
   },
   noNotifications: {
     id: 'app.containers.NotificationMenu.noNotifications',
-    defaultMessage: 'You don\'t have any notifications yet',
+    defaultMessage: "You don't have any notifications yet",
   },
   userCommentedOnYourIdea: {
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
@@ -40,19 +40,19 @@ export default defineMessages({
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
-    defaultMessage: '{name} reported a comment on \'{postTitle}\' as spam',
+    defaultMessage: "{name} reported a comment on '{postTitle}' as spam",
   },
   userMarkedPostAsSpam: {
     id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
-    defaultMessage: '{name} reported \'{postTitle}\' as spam',
+    defaultMessage: "{name} reported '{postTitle}' as spam",
   },
   statusChangedOfYourIdea: {
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
-    defaultMessage: '\'{ideaTitle}\' status has changed to {status}',
+    defaultMessage: "'{ideaTitle}' status has changed to {status}",
   },
   statusChangedOfYourInitiative: {
     id: 'app.containers.NotificationMenu.statusChangedOfYourInitiative',
-    defaultMessage: '\'{initiativeTitle}\' status has changed to {status}',
+    defaultMessage: "'{initiativeTitle}' status has changed to {status}",
   },
   statusChangeOnVotedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
@@ -60,15 +60,18 @@ export default defineMessages({
   },
   statusChangeOnVotedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',
-    defaultMessage: 'The status of an initiative you voted for changed to {status}',
+    defaultMessage:
+      'The status of an initiative you voted for changed to {status}',
   },
   statusChangeOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedIdea',
-    defaultMessage: 'The status of an idea you commented on changed to {status}',
+    defaultMessage:
+      'The status of an idea you commented on changed to {status}',
   },
   statusChangeOnCommentedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedInitiative',
-    defaultMessage: 'The status of an initiative you commented on changed to {status}',
+    defaultMessage:
+      'The status of an initiative you commented on changed to {status}',
   },
   thresholdReachedForAdmin: {
     id: 'app.containers.NotificationMenu.thresholdReachedForAdmin',
@@ -90,11 +93,11 @@ export default defineMessages({
   },
   projectModerationRightsReceived: {
     id: 'app.containers.NotificationMenu.projectModerationRightsReceived',
-    defaultMessage: 'You\'re now a moderator of {projectLink}',
+    defaultMessage: "You're now a moderator of {projectLink}",
   },
   adminRightsReceived: {
     id: 'app.containers.NotificationMenu.adminRightsReceived',
-    defaultMessage: 'You\'re now an administrator of the platform',
+    defaultMessage: "You're now an administrator of the platform",
   },
   notificationsLabel: {
     id: 'app.containers.NotificationMenu.notificationsLabel',
@@ -114,19 +117,23 @@ export default defineMessages({
   },
   officialFeedbackOnVotedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIdea',
-    defaultMessage: '{officialName} gave an official update on an idea you voted for',
+    defaultMessage:
+      '{officialName} gave an official update on an idea you voted for',
   },
   officialFeedbackOnVotedInitiative: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnVotedInitiative',
-    defaultMessage: '{officialName} gave an official update on an initiative you voted for',
+    defaultMessage:
+      '{officialName} gave an official update on an initiative you voted for',
   },
   officialFeedbackOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
-    defaultMessage: '{officialName} gave an official update on an idea you commented on',
+    defaultMessage:
+      '{officialName} gave an official update on an idea you commented on',
   },
   officialFeedbackOnCommentedInitiative: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedInitiative',
-    defaultMessage: '{officialName} gave an official update on an initiative you commented on',
+    defaultMessage:
+      '{officialName} gave an official update on an initiative you commented on',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',

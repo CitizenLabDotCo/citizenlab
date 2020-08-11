@@ -31,7 +31,8 @@ export default defineMessages({
   },
   fileOrImageError: {
     id: 'app.containers.IdeasNewPage.fileOrImageError',
-    defaultMessage: 'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
+    defaultMessage:
+      'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
   },
   metaTitle: {
     id: 'app.containers.IdeasNewPage.metaTitle',
@@ -39,6 +40,7 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.IdeasNewPage.metaDescription',
-    defaultMessage: 'Add a new idea for {projectName} and have a say in this project\'s outcome'
+    defaultMessage:
+      "Add a new idea for {projectName} and have a say in this project's outcome",
   },
 });

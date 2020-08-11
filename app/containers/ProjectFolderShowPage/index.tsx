@@ -8,14 +8,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import ProjectFolderInfo from './ProjectFolderInfo';
 import ContentContainer from 'components/ContentContainer';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjectFolder, {
+  GetProjectFolderChildProps,
+} from 'resources/GetProjectFolder';
 
 // i18n
 import messages from './messages';
@@ -29,13 +31,15 @@ import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 const Container = styled.main`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
     background: ${colors.background};
   `}
 
@@ -89,58 +93,62 @@ interface DataProps {
   projectFolder: GetProjectFolderChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   hasEvents: boolean;
   loaded: boolean;
 }
 
-class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State> {
+class ProjectFolderShowPage extends PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   render() {
     const { locale, tenant, projectFolder } = this.props;
     const { slug } = this.props.params;
     const folderNotFound = isError(projectFolder);
-    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder));
+    const loading =
+      isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder);
 
     return (
       <>
         <ProjectFolderShowPageMeta projectFolderSlug={slug} />
-        <Container className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}>
+        <Container
+          className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
+        >
           {folderNotFound ? (
             <NotFoundWrapper>
-              <p><FormattedMessage {...messages.noFolderFoundHere} /></p>
+              <p>
+                <FormattedMessage {...messages.noFolderFoundHere} />
+              </p>
               <Button
                 linkTo="/projects"
                 text={<FormattedMessage {...messages.goBackToList} />}
                 icon="arrow-back"
               />
             </NotFoundWrapper>
-          ) : (
-              loading ? (
-                <Loading>
-                  <Spinner />
-                </Loading>
-              ) : (
-                !isNilOrError(projectFolder) ? (
-                  <>
-                    <Header projectFolderId={projectFolder.id} />
-                    <Content>
-                      <StyledContentContainer mode="page">
-                        <ProjectFolderInfo projectFolderId={projectFolder.id} />
-                        <ProjectAndFolderCards
-                          pageSize={50}
-                          publicationStatusFilter={['published', 'archived']}
-                          showTitle={false}
-                          layout="twocolumns"
-                          folderId={projectFolder.id}
-                        />
-                      </StyledContentContainer>
-                    </Content>
-                  </>
-                ) : null
-              )
-            )}
+          ) : loading ? (
+            <Loading>
+              <Spinner />
+            </Loading>
+          ) : !isNilOrError(projectFolder) ? (
+            <>
+              <Header projectFolderId={projectFolder.id} />
+              <Content>
+                <StyledContentContainer mode="page">
+                  <ProjectFolderInfo projectFolderId={projectFolder.id} />
+                  <ProjectAndFolderCards
+                    pageSize={50}
+                    publicationStatusFilter={['published', 'archived']}
+                    showTitle={false}
+                    layout="twocolumns"
+                    folderId={projectFolder.id}
+                  />
+                </StyledContentContainer>
+              </Content>
+            </>
+          ) : null}
         </Container>
       </>
     );
@@ -153,11 +161,15 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  projectFolder: ({ params, render }) => <GetProjectFolder projectFolderSlug={params.slug}>{render}</GetProjectFolder>,
+  projectFolder: ({ params, render }) => (
+    <GetProjectFolder projectFolderSlug={params.slug}>
+      {render}
+    </GetProjectFolder>
+  ),
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectFolderShowPage {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectFolderShowPage {...inputProps} {...dataProps} />}
   </Data>
 ));

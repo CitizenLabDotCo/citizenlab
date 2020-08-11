@@ -7,11 +7,13 @@ import styled from 'styled-components';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 const StyledIframe = styled.iframe`
   border: 0;
-  height: ${props => props.height ? `${props.height}px` : 'auto'};
+  height: ${(props) => (props.height ? `${props.height}px` : 'auto')};
   width: 100%;
 `;
 
@@ -36,47 +38,54 @@ interface State {
 /**
  * Wrap content in a named fragment to allow the content to be overridden
  * for a specific tenant
-*/
+ */
 class Fragment extends PureComponent<Props, State> {
-
   iframeNode: HTMLIFrameElement;
 
   constructor(props) {
     super(props);
     this.state = {
-      iframeHeight: undefined
+      iframeHeight: undefined,
     };
   }
 
-  fragmentUrl = () : string => {
+  fragmentUrl = (): string => {
     const { tenant } = this.props;
     if (!isNilOrError(tenant)) {
       return `/fragments/${tenant.id}/${this.props.name}.html`;
     } else {
       return '';
     }
-  }
+  };
 
-  fragmentActive = () : boolean => {
+  fragmentActive = (): boolean => {
     const { tenant, fragmentsFeatureFlag } = this.props;
-    if (isNilOrError(tenant) || !fragmentsFeatureFlag || !tenant.attributes.settings.fragments) {
+    if (
+      isNilOrError(tenant) ||
+      !fragmentsFeatureFlag ||
+      !tenant.attributes.settings.fragments
+    ) {
       return false;
-    } {
-      return tenant.attributes.settings.fragments.enabled_fragments.includes(this.props.name);
     }
-  }
+    {
+      return tenant.attributes.settings.fragments.enabled_fragments.includes(
+        this.props.name
+      );
+    }
+  };
 
   setIframeRef = (ref) => {
     this.iframeNode = ref;
-  }
+  };
 
   setIframeHeight = () => {
     if (this.iframeNode && this.iframeNode.contentWindow) {
       this.setState({
-        iframeHeight: this.iframeNode.contentWindow.document.body.scrollHeight * 1.1,
+        iframeHeight:
+          this.iframeNode.contentWindow.document.body.scrollHeight * 1.1,
       });
     }
-  }
+  };
 
   render() {
     const { children, title, className } = this.props;
@@ -96,13 +105,12 @@ class Fragment extends PureComponent<Props, State> {
     } else {
       return children;
     }
-
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />
+  fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />,
 });
 
 export default (inputProps: InputProps) => (

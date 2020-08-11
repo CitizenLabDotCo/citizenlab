@@ -39,7 +39,8 @@ export default defineMessages({
   },
   showXInitiatives: {
     id: 'app.components.InitiativeCards.showXInitiatives',
-    defaultMessage: 'Show {initiativesCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
+    defaultMessage:
+      'Show {initiativesCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
   },
   map: {
     id: 'app.components.InitiativeCards.map',
@@ -51,7 +52,8 @@ export default defineMessages({
   },
   xInitiatives: {
     id: 'app.components.InitiativeCards.xInitiatives',
-    defaultMessage: '{initiativesCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
+    defaultMessage:
+      '{initiativesCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
   },
   showMore: {
     id: 'app.components.InitiativeCards.showMore',
@@ -67,10 +69,11 @@ export default defineMessages({
   },
   tryOtherFilter: {
     id: 'app.components.InitiativeCards.tryOtherFilter',
-    defaultMessage: "Try adjusting your search or filter to find what you're looking for",
+    defaultMessage:
+      "Try adjusting your search or filter to find what you're looking for",
   },
   a11y_totalInitiatives: {
     id: 'app.containers.IdeaCards.a11y_totalInitiatives',
     defaultMessage: 'Total initiatives: {initiativeCount}',
-  }
+  },
 });

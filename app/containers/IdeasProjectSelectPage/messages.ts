@@ -8,15 +8,17 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   pageTitle: {
     id: 'app.containers.IdeasProjectSelect.pageTitle',
-    defaultMessage: 'What\'s your idea about?',
+    defaultMessage: "What's your idea about?",
   },
   cityProjects: {
     id: 'app.containers.IdeasProjectSelect.cityProjects',
-    defaultMessage: '{orgType, select, generic {Projects} other {City projects}}',
+    defaultMessage:
+      '{orgType, select, generic {Projects} other {City projects}}',
   },
   cityProjectsExplanation: {
     id: 'app.containers.IdeasProjectSelect.cityProjectsExplanation',
-    defaultMessage: 'These are the projects {orgName} is currently working on. Contribute by giving your input.',
+    defaultMessage:
+      'These are the projects {orgName} is currently working on. Contribute by giving your input.',
   },
   openProject: {
     id: 'app.containers.IdeasProjectSelect.openProject',
@@ -24,7 +26,8 @@ export default defineMessages({
   },
   openProjectExplanation: {
     id: 'app.containers.IdeasProjectSelect.openProjectExplanation',
-    defaultMessage: 'Have an idea about something else? See whether {orgType, select, generic {others} other {fellow citizens}} agree and make {orgName} notice!',
+    defaultMessage:
+      'Have an idea about something else? See whether {orgType, select, generic {others} other {fellow citizens}} agree and make {orgName} notice!',
   },
   continueButton: {
     id: 'app.containers.IdeasProjectSelect.continueButton',
@@ -36,7 +39,8 @@ export default defineMessages({
   },
   postingPossibleFuture: {
     id: 'app.containers.IdeasProjectSelect.postingPossibleFuture',
-    defaultMessage: 'Adding ideas to this project will be possible from {date}.',
+    defaultMessage:
+      'Adding ideas to this project will be possible from {date}.',
   },
   postingNotPossible: {
     id: 'app.containers.IdeasProjectSelect.postingNotPossible',
@@ -48,15 +52,15 @@ export default defineMessages({
   },
   postingDisabledNoPermissions: {
     id: 'app.containers.IdeasProjectSelect.postingDisabledNoPermissions',
-    defaultMessage: 'You don\'t have the rights to post in this project.',
+    defaultMessage: "You don't have the rights to post in this project.",
   },
   postingDisabledMaybeNoPermissions: {
     id: 'app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions',
-    defaultMessage: 'Only certain users can post in this project. Please sign in first.',
+    defaultMessage:
+      'Only certain users can post in this project. Please sign in first.',
   },
   noProjects: {
     id: 'app.containers.IdeasProjectSelect.noProjects',
     defaultMessage: 'Sorry, there currently are no projects to add ideas to.',
   },
-
 });

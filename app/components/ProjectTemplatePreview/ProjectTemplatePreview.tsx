@@ -11,8 +11,7 @@ import { useQuery } from '@apollo/react-hooks';
 
 // components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
-import Spinner from 'components/UI/Spinner';
+import { Icon, Spinner } from 'cl2-component-library';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import T from 'components/T';
 
@@ -264,11 +263,13 @@ const PhaseContainer = styled.div`
   position: relative;
 
   &.first ${PhaseBar} {
-    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
+      ${(props: any) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0px;
+    border-radius: 0px ${(props: any) => props.theme.borderRadius}
+      ${(props: any) => props.theme.borderRadius} 0px;
   }
 `;
 
@@ -319,14 +320,14 @@ export interface Props {
   className?: string;
 }
 
-const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) => {
+const ProjectTemplatePreview = memo<Props>(
+  ({ projectTemplateId, className }) => {
+    const localize = useLocalize();
+    const graphqlTenantLocales = useGraphqlTenantLocales();
 
-  const localize = useLocalize();
-  const graphqlTenantLocales = useGraphqlTenantLocales();
+    const [linkCopied, setLinkCopied] = useState(false);
 
-  const [linkCopied, setLinkCopied] = useState(false);
-
-  const TEMPLATE_QUERY = gql`
+    const TEMPLATE_QUERY = gql`
     {
       projectTemplate(id: "${projectTemplateId}"){
         id
@@ -371,127 +372,156 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
     }
   `;
 
-  const { loading, data } = useQuery(TEMPLATE_QUERY);
+    const { loading, data } = useQuery(TEMPLATE_QUERY);
 
-  const copyLink = useCallback(() => {
-    clipboard.writeText(`${window.location.origin}/templates/${projectTemplateId}`);
-    setLinkCopied(true);
-    trackEventByName(tracks.linkCopied, { projectTemplateId });
-  }, [projectTemplateId]);
+    const copyLink = useCallback(() => {
+      clipboard.writeText(
+        `${window.location.origin}/templates/${projectTemplateId}`
+      );
+      setLinkCopied(true);
+      trackEventByName(tracks.linkCopied, { projectTemplateId });
+    }, [projectTemplateId]);
 
-  useEffect(() => {
-    if (linkCopied) {
-      setTimeout(() => setLinkCopied(false), 2000);
-    }
-  }, [linkCopied]);
-
-  return (
-    <Container className={className}>
-      {loading &&
-        <SpinnerWrapper>
-          <Spinner />
-        </SpinnerWrapper>
+    useEffect(() => {
+      if (linkCopied) {
+        setTimeout(() => setLinkCopied(false), 2000);
       }
+    }, [linkCopied]);
 
-      {!loading && data &&
-        <>
-          <Header>
-            <HeaderLeft>
-              <Title>
-                <T value={data.projectTemplate.titleMultiloc} />
-              </Title>
-              <Subtitle>
-                <T value={data.projectTemplate.subtitleMultiloc} />
-              </Subtitle>
-            </HeaderLeft>
+    return (
+      <Container className={className}>
+        {loading && (
+          <SpinnerWrapper>
+            <Spinner />
+          </SpinnerWrapper>
+        )}
 
-            <HeaderRight>
-              <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
-                <LinkCopiedIcon name="checkmark" />
-                <FormattedMessage {...messages.copied} />
-              </LinkCopied>
-              <CopyLinkButton
-                onClick={copyLink}
-                icon="link"
-                buttonStyle="secondary"
-              >
-                <FormattedMessage {...messages.copyLink} />
-              </CopyLinkButton>
-            </HeaderRight>
-          </Header>
+        {!loading && data && (
+          <>
+            <Header>
+              <HeaderLeft>
+                <Title>
+                  <T value={data.projectTemplate.titleMultiloc} />
+                </Title>
+                <Subtitle>
+                  <T value={data.projectTemplate.subtitleMultiloc} />
+                </Subtitle>
+              </HeaderLeft>
 
-          <MetaInfo>
-            <MetaInfoLeft>
-              {data.projectTemplate.departments && data.projectTemplate.departments.map((department) => (
-                <Department key={department.id}>
-                  <T value={department.titleMultiloc} />
-                </Department>
-              ))}
-            </MetaInfoLeft>
-            <MetaInfoRight>
-              {data.projectTemplate.purposes && data.projectTemplate.purposes.length > 0 &&
-                <MetaInfoRightBox>
-                  <MetaInfoRightBoxIcon name="purpose" />
-                  <MetaInfoRightBoxText>
-                    {data.projectTemplate.purposes.map((purpose) => localize(purpose.titleMultiloc)).join(', ')}
-                  </MetaInfoRightBoxText>
-                </MetaInfoRightBox>
-              }
-              {data.projectTemplate.participationLevels && data.projectTemplate.participationLevels.length > 0 &&
-                <MetaInfoRightBox className="last">
-                  <MetaInfoRightBoxIcon name="participationLevel" />
-                  <MetaInfoRightBoxText>
-                    {data.projectTemplate.participationLevels.map((participationLevel) => localize(participationLevel.titleMultiloc)).join(', ')}
-                  </MetaInfoRightBoxText>
-                </MetaInfoRightBox>
-              }
-            </MetaInfoRight>
-          </MetaInfo>
+              <HeaderRight>
+                <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
+                  <LinkCopiedIcon name="checkmark" />
+                  <FormattedMessage {...messages.copied} />
+                </LinkCopied>
+                <CopyLinkButton
+                  onClick={copyLink}
+                  icon="link"
+                  buttonStyle="secondary"
+                >
+                  <FormattedMessage {...messages.copyLink} />
+                </CopyLinkButton>
+              </HeaderRight>
+            </Header>
 
-          <Content>
-            {data.projectTemplate.headerImage &&
-              <HeaderImage src={data.projectTemplate.headerImage} />
-            }
+            <MetaInfo>
+              <MetaInfoLeft>
+                {data.projectTemplate.departments &&
+                  data.projectTemplate.departments.map((department) => (
+                    <Department key={department.id}>
+                      <T value={department.titleMultiloc} />
+                    </Department>
+                  ))}
+              </MetaInfoLeft>
+              <MetaInfoRight>
+                {data.projectTemplate.purposes &&
+                  data.projectTemplate.purposes.length > 0 && (
+                    <MetaInfoRightBox>
+                      <MetaInfoRightBoxIcon name="purpose" />
+                      <MetaInfoRightBoxText>
+                        {data.projectTemplate.purposes
+                          .map((purpose) => localize(purpose.titleMultiloc))
+                          .join(', ')}
+                      </MetaInfoRightBoxText>
+                    </MetaInfoRightBox>
+                  )}
+                {data.projectTemplate.participationLevels &&
+                  data.projectTemplate.participationLevels.length > 0 && (
+                    <MetaInfoRightBox className="last">
+                      <MetaInfoRightBoxIcon name="participationLevel" />
+                      <MetaInfoRightBoxText>
+                        {data.projectTemplate.participationLevels
+                          .map((participationLevel) =>
+                            localize(participationLevel.titleMultiloc)
+                          )
+                          .join(', ')}
+                      </MetaInfoRightBoxText>
+                    </MetaInfoRightBox>
+                  )}
+              </MetaInfoRight>
+            </MetaInfo>
 
-            <QuillEditedContent textColor={colors.adminTextColor}>
-              <div dangerouslySetInnerHTML={{ __html: localize(data.projectTemplate.descriptionMultilocs) }} />
-            </QuillEditedContent>
-          </Content>
+            <Content>
+              {data.projectTemplate.headerImage && (
+                <HeaderImage src={data.projectTemplate.headerImage} />
+              )}
 
-          {data.projectTemplate.phases && data.projectTemplate.phases.length > 0 &&
-            <Phases>
-              {data.projectTemplate.phases.map((phase, index) => (
-                <PhaseContainer key={index} className={`${index === 0 ? 'first' : ''} ${index === data.projectTemplate.phases.length - 1 ? 'last' : ''}`}>
-                  <PhaseBar>
-                    {index + 1}
-                    <PhaseArrow name="phase_arrow" />
-                  </PhaseBar>
-                  <PhaseText>
-                    <T value={phase} />
-                  </PhaseText>
-                </PhaseContainer>
-              ))}
-            </Phases>
-          }
+              <QuillEditedContent textColor={colors.adminTextColor}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: localize(data.projectTemplate.descriptionMultilocs),
+                  }}
+                />
+              </QuillEditedContent>
+            </Content>
 
-          {data.projectTemplate.successCases && data.projectTemplate.successCases.length > 0 &&
-            <Footer>
-              <SuccessCasesTitle>
-                <FormattedMessage {...messages.alsoUsedIn} />
-              </SuccessCasesTitle>
-              <SuccessCases>
-                { data.projectTemplate.successCases.map((successCase) => (
-                  <SuccessCase key={successCase.id} href={successCase.href} target="_blank">
-                    <SuccessCaseImage src={successCase.image} />
-                  </SuccessCase>
-                ))}
-              </SuccessCases>
-            </Footer>
-          }
-        </>
-      }
-    </Container>
-  );
-});
+            {data.projectTemplate.phases &&
+              data.projectTemplate.phases.length > 0 && (
+                <Phases>
+                  {data.projectTemplate.phases.map((phase, index) => (
+                    <PhaseContainer
+                      key={index}
+                      className={`${index === 0 ? 'first' : ''} ${
+                        index === data.projectTemplate.phases.length - 1
+                          ? 'last'
+                          : ''
+                      }`}
+                    >
+                      <PhaseBar>
+                        {index + 1}
+                        <PhaseArrow name="phase_arrow" />
+                      </PhaseBar>
+                      <PhaseText>
+                        <T value={phase} />
+                      </PhaseText>
+                    </PhaseContainer>
+                  ))}
+                </Phases>
+              )}
+
+            {data.projectTemplate.successCases &&
+              data.projectTemplate.successCases.length > 0 && (
+                <Footer>
+                  <SuccessCasesTitle>
+                    <FormattedMessage {...messages.alsoUsedIn} />
+                  </SuccessCasesTitle>
+                  <SuccessCases>
+                    {data.projectTemplate.successCases.map((successCase) => (
+                      <SuccessCase
+                        key={successCase.id}
+                        href={successCase.href}
+                        target="_blank"
+                      >
+                        <SuccessCaseImage src={successCase.image} />
+                      </SuccessCase>
+                    ))}
+                  </SuccessCases>
+                </Footer>
+              )}
+          </>
+        )}
+      </Container>
+    );
+  }
+);
 
 export default ProjectTemplatePreview;

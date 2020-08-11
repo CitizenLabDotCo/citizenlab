@@ -46,7 +46,7 @@ export default class HasPermission extends PureComponent<Props, State> {
     this.subscription = hasPermission(this.props).subscribe((granted) => {
       this.setState({ granted });
     });
-  }
+  };
 
   render() {
     const children = this.props.children;
@@ -54,9 +54,21 @@ export default class HasPermission extends PureComponent<Props, State> {
     if (granted === null) {
       return null;
     } else if (granted) {
-      return <>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? null : c)}</>;
+      return (
+        <>
+          {React.Children.map(children, (c: any) =>
+            c.type === HasPermission.No ? null : c
+          )}
+        </>
+      );
     } else {
-      return <>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</>;
+      return (
+        <>
+          {React.Children.map(children, (c: any) =>
+            c.type === HasPermission.No ? c : null
+          )}
+        </>
+      );
     }
   }
 }

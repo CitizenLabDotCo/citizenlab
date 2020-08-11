@@ -1,10 +1,19 @@
 import React, { memo } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  invisibleA11yText,
+  media,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
-import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
+import {
+  Messages,
+  FormattedMessage as OriginalFormattedMessage,
+} from 'react-intl';
 import Button from '../Button';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
@@ -15,9 +24,7 @@ export const FormSection = styled.div`
   padding: 40px 40px 30px;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 15px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   ${media.smallerThanMaxTablet`
     min-width: auto;
@@ -45,18 +52,20 @@ interface FormSectionTitleProps extends IMessageInfo {
   subtitleMessage?: Messages['key'];
 }
 
-export const FormSectionTitle = memo(({ message, values, subtitleMessage }: FormSectionTitleProps) => (
-  <TitleContainer>
-    <FormSectionTitleStyled>
-      <FormattedMessage {...message} values={values} />
-    </FormSectionTitleStyled>
-    {subtitleMessage &&
-      <FormSectionDescriptionStyled>
-        <FormattedMessage {...subtitleMessage} />
-      </FormSectionDescriptionStyled>
-    }
-  </TitleContainer>
-));
+export const FormSectionTitle = memo(
+  ({ message, values, subtitleMessage }: FormSectionTitleProps) => (
+    <TitleContainer>
+      <FormSectionTitleStyled>
+        <FormattedMessage {...message} values={values} />
+      </FormSectionTitleStyled>
+      {subtitleMessage && (
+        <FormSectionDescriptionStyled>
+          <FormattedMessage {...subtitleMessage} />
+        </FormSectionDescriptionStyled>
+      )}
+    </TitleContainer>
+  )
+);
 
 export const FormLabelStyled = styled.label`
   width: 100%;
@@ -107,75 +116,90 @@ export interface FormLabelProps extends FormLabelGenericProps {
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
 }
 
-export const FormLabel = memo<FormLabelProps>(({
-  labelMessage,
-  labelMessageValues,
-  subtext,
-  subtextMessage,
-  subtextMessageValues,
-  id,
-  htmlFor,
-  children,
-  className,
-  hidden,
-  noSpace,
-  optional
-}) => (
-  <FormLabelStyled
-    id={id}
-    className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`}
-    htmlFor={htmlFor}
-  >
-    <FormattedMessage {...labelMessage} values={labelMessageValues} />
-    {optional &&
-      <OptionalText>
-        {' ('}
-        <FormattedMessage {...messages.optional} />
-        {')'}
-      </OptionalText>
-    }
-    {(subtextMessage || subtext) &&
-      <FormSubtextStyled>
-        {subtextMessage ? <FormattedMessage {...subtextMessage} values={subtextMessageValues} /> : subtext}
-      </FormSubtextStyled>
-    }
-    {!noSpace && <Spacer />}
-    {children}
-  </FormLabelStyled>
-));
+export const FormLabel = memo<FormLabelProps>(
+  ({
+    labelMessage,
+    labelMessageValues,
+    subtext,
+    subtextMessage,
+    subtextMessageValues,
+    id,
+    htmlFor,
+    children,
+    className,
+    hidden,
+    noSpace,
+    optional,
+  }) => (
+    <FormLabelStyled
+      id={id}
+      className={[className, hidden ? 'invisible' : null]
+        .filter((item) => item)
+        .join(' ')}
+      htmlFor={htmlFor}
+    >
+      <FormattedMessage {...labelMessage} values={labelMessageValues} />
+      {optional && (
+        <OptionalText>
+          {' ('}
+          <FormattedMessage {...messages.optional} />
+          {')'}
+        </OptionalText>
+      )}
+      {(subtextMessage || subtext) && (
+        <FormSubtextStyled>
+          {subtextMessage ? (
+            <FormattedMessage
+              {...subtextMessage}
+              values={subtextMessageValues}
+            />
+          ) : (
+            subtext
+          )}
+        </FormSubtextStyled>
+      )}
+      {!noSpace && <Spacer />}
+      {children}
+    </FormLabelStyled>
+  )
+);
 
 interface FormLabelValueProps extends FormLabelGenericProps {
   labelValue: JSX.Element | string;
   subtextValue?: JSX.Element;
 }
 
-export const FormLabelValue = memo(({
-  labelValue,
-  subtextValue,
-  id,
-  htmlFor,
-  className,
-  hidden,
-  noSpace,
-  optional
-}: FormLabelValueProps) => (
-    <FormLabelStyled id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
+export const FormLabelValue = memo(
+  ({
+    labelValue,
+    subtextValue,
+    id,
+    htmlFor,
+    className,
+    hidden,
+    noSpace,
+    optional,
+  }: FormLabelValueProps) => (
+    <FormLabelStyled
+      id={id}
+      className={[className, hidden ? 'invisible' : null]
+        .filter((item) => item)
+        .join(' ')}
+      htmlFor={htmlFor}
+    >
       {labelValue}
-      {optional &&
+      {optional && (
         <OptionalText>
           {' ('}
           <FormattedMessage {...messages.optional} />
           {')'}
         </OptionalText>
-      }
-      {subtextValue &&
-        <FormSubtextStyled>
-          {subtextValue}
-        </FormSubtextStyled>
-      }
+      )}
+      {subtextValue && <FormSubtextStyled>{subtextValue}</FormSubtextStyled>}
       {!noSpace && <Spacer />}
     </FormLabelStyled>
-  ));
+  )
+);
 
 interface FormSubmitFooterProps extends IMessageInfo {
   disabled?: boolean;
@@ -224,44 +248,54 @@ const SubmitFooterInner = styled.div`
   `}
 `;
 
-export const FormSubmitFooter = withTheme(memo(({
-  message,
-  values,
-  theme,
-  onSubmit,
-  className,
-  error,
-  errorMessage,
-  disabled,
-  ...otherProps
-}: FormSubmitFooterProps) => (
-    <SubmitFooterContainer className={className}>
-      <StyledContentContainer mode="page">
-        <SubmitFooterInner>
-          <Button
-            fontWeight="500"
-            padding="13px 22px"
-            bgColor={theme.colorMain}
-            textColor="#FFF"
-            type="submit"
-            onClick={onSubmit}
-            className="e2e-submit-form"
-            disabled={disabled}
-            ariaDisabled={disabled}
-            {...otherProps}
-          >
-            <FormattedMessage {...message} values={values} />
-          </Button>
-          <ScreenReaderOnly aria-live="polite">
-            {disabled ? <FormattedMessage {...messages.buttonDisabled} /> : <FormattedMessage {...messages.buttonEnabled} />}
-          </ScreenReaderOnly>
-          {error && <ErrorContainer className="e2e-error-form">
-            <FormattedMessage {...errorMessage} />
-          </ErrorContainer>}
-        </SubmitFooterInner>
-      </StyledContentContainer>
-    </SubmitFooterContainer>
-  )));
+export const FormSubmitFooter = withTheme(
+  memo(
+    ({
+      message,
+      values,
+      theme,
+      onSubmit,
+      className,
+      error,
+      errorMessage,
+      disabled,
+      ...otherProps
+    }: FormSubmitFooterProps) => (
+      <SubmitFooterContainer className={className}>
+        <StyledContentContainer mode="page">
+          <SubmitFooterInner>
+            <Button
+              fontWeight="500"
+              padding="13px 22px"
+              bgColor={theme.colorMain}
+              textColor="#FFF"
+              type="submit"
+              onClick={onSubmit}
+              className="e2e-submit-form"
+              disabled={disabled}
+              ariaDisabled={disabled}
+              {...otherProps}
+            >
+              <FormattedMessage {...message} values={values} />
+            </Button>
+            <ScreenReaderOnly aria-live="polite">
+              {disabled ? (
+                <FormattedMessage {...messages.buttonDisabled} />
+              ) : (
+                <FormattedMessage {...messages.buttonEnabled} />
+              )}
+            </ScreenReaderOnly>
+            {error && (
+              <ErrorContainer className="e2e-error-form">
+                <FormattedMessage {...errorMessage} />
+              </ErrorContainer>
+            )}
+          </SubmitFooterInner>
+        </StyledContentContainer>
+      </SubmitFooterContainer>
+    )
+  )
+);
 
 const ErrorContainer = styled.div`
   color: ${colors.clRedError};

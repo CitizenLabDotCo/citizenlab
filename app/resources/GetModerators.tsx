@@ -17,16 +17,16 @@ interface Props extends InputProps {
 }
 
 interface State {
-  moderators : GetModeratorsChildProps;
+  moderators: GetModeratorsChildProps;
 }
 
 export default class GetModerators extends React.Component<Props, State> {
-  private subscriptions : Subscription[];
+  private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      moderators: undefined
+      moderators: undefined,
     };
   }
 
@@ -35,13 +35,18 @@ export default class GetModerators extends React.Component<Props, State> {
 
     this.subscriptions = [
       moderatorsStream(projectId).observable.subscribe((moderators) => {
-        this.setState({ moderators: !isNilOrError(moderators) && !isEmpty(moderators?.data) ? moderators.data : null });
-      })
+        this.setState({
+          moderators:
+            !isNilOrError(moderators) && !isEmpty(moderators?.data)
+              ? moderators.data
+              : null,
+        });
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

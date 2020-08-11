@@ -7,15 +7,18 @@ export default defineMessages({
   },
   votingDisabledPhaseCompleted: {
     id: 'app.components.VoteControl.votingDisabledPhaseCompleted',
-    defaultMessage: 'Voting on this idea is no longer possible because the phase it belongs to has ended',
+    defaultMessage:
+      'Voting on this idea is no longer possible because the phase it belongs to has ended',
   },
   votingDisabledPhaseNotYetStarted: {
     id: 'app.components.VoteControl.votingDisabledPhaseNotYetStarted',
-    defaultMessage: 'Voting on this idea will be possible starting from {enabledFromDate}',
+    defaultMessage:
+      'Voting on this idea will be possible starting from {enabledFromDate}',
   },
   votingDisabledPossibleLater: {
     id: 'app.components.VoteControl.votingDisabledPossibleLater',
-    defaultMessage: 'Voting on ideas in {projectName} will be possible starting from {enabledFromDate}',
+    defaultMessage:
+      'Voting on ideas in {projectName} will be possible starting from {enabledFromDate}',
   },
   votingDisabled: {
     id: 'app.components.VoteControl.votingDisabled',
@@ -23,7 +26,8 @@ export default defineMessages({
   },
   votingDisabledMaxReached: {
     id: 'app.components.VoteControl.votingDisabledMaxReached',
-    defaultMessage: "You've reached your maximum number of votes in {projectName}",
+    defaultMessage:
+      "You've reached your maximum number of votes in {projectName}",
   },
   votingDisabledNotPermitted: {
     id: 'app.components.VoteControl.votingDisabledNotPermitted',
@@ -31,11 +35,12 @@ export default defineMessages({
   },
   votingDisabledNotVerified: {
     id: 'app.components.VoteControl.votingDisabledNotVerified',
-    defaultMessage: 'Voting on this idea requires verification of your account. {verificationLink}',
+    defaultMessage:
+      'Voting on this idea requires verification of your account. {verificationLink}',
   },
   verificationLinkText: {
     id: 'app.components.VoteControl.verificationLinkText',
-    defaultMessage: 'Verify your account now.'
+    defaultMessage: 'Verify your account now.',
   },
   upvote: {
     id: 'app.components.VoteControl.upvote',
@@ -47,7 +52,8 @@ export default defineMessages({
   },
   a11y_upvotesDownvotes: {
     id: 'app.containers.VoteControl.a11y_upvotesDownvotes',
-    defaultMessage: 'Total upvotes: {upvotesCount}, total downvotes: {downvotesCount}',
+    defaultMessage:
+      'Total upvotes: {upvotesCount}, total downvotes: {downvotesCount}',
   },
   voteSuccessTitle: {
     id: 'app.containers.VoteControl.voteSuccessTitle',
@@ -59,7 +65,8 @@ export default defineMessages({
   },
   voteErrorSubTitle: {
     id: 'app.containers.VoteControl.voteErrorSubTitle',
-    defaultMessage: 'Due to an error your vote could not being registered. Please try again in a few minutes.',
+    defaultMessage:
+      'Due to an error your vote could not being registered. Please try again in a few minutes.',
   },
   close: {
     id: 'app.containers.VoteControl.close',

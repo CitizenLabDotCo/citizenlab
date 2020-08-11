@@ -1,28 +1,39 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { IGeotaggedInitiativeData, initiativesMarkersStream } from 'services/initiatives';
+import {
+  IGeotaggedInitiativeData,
+  initiativesMarkersStream,
+} from 'services/initiatives';
 
 interface InputProps {}
 
-type children = (renderProps: GetInitiativeMarkersChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetInitiativeMarkersChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  initiativeMarkers: IGeotaggedInitiativeData[] | undefined| null;
+  initiativeMarkers: IGeotaggedInitiativeData[] | undefined | null;
 }
 
-export type GetInitiativeMarkersChildProps = IGeotaggedInitiativeData[] | undefined| null;
+export type GetInitiativeMarkersChildProps =
+  | IGeotaggedInitiativeData[]
+  | undefined
+  | null;
 
-export default class GetInitiativeMarkers extends React.Component<Props, State> {
+export default class GetInitiativeMarkers extends React.Component<
+  Props,
+  State
+> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      initiativeMarkers: undefined
+      initiativeMarkers: undefined,
     };
   }
 
@@ -30,14 +41,14 @@ export default class GetInitiativeMarkers extends React.Component<Props, State> 
     this.subscriptions = [
       initiativesMarkersStream().observable.subscribe((initiativeMarkers) => {
         this.setState({
-          initiativeMarkers: (initiativeMarkers ? initiativeMarkers.data : null),
+          initiativeMarkers: initiativeMarkers ? initiativeMarkers.data : null,
         });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

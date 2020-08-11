@@ -41,45 +41,66 @@ export interface IGroupMembershipsFoundUsers {
   data: IGroupMembershipsFoundUserData[];
 }
 
-export function getGroupMemberships(groupId: string, streamParams: IStreamParams | null = null) {
+export function getGroupMemberships(
+  groupId: string,
+  streamParams: IStreamParams | null = null
+) {
   return streams.get<IGroupMemberships>({
     apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`,
     ...streamParams,
-    cacheStream: false
+    cacheStream: false,
   });
 }
 
-export function searchGroupMemberships(groupId: string, search: string, streamParams: IStreamParams | null = null) {
+export function searchGroupMemberships(
+  groupId: string,
+  search: string,
+  streamParams: IStreamParams | null = null
+) {
   const apiEndpoint = `${API_PATH}/groups/${groupId}/memberships/users_search`;
 
   const mergedStreamParams: IStreamParams = {
     ...streamParams,
     queryParameters: {
-      ...(streamParams && streamParams.queryParameters ? streamParams.queryParameters : null),
-      search
-    }
+      ...(streamParams && streamParams.queryParameters
+        ? streamParams.queryParameters
+        : null),
+      search,
+    },
   };
 
   const streamInputParams: IInputStreamParams = {
     apiEndpoint,
     ...mergedStreamParams,
-    cacheStream: false
+    cacheStream: false,
   };
 
   return streams.get<IGroupMembershipsFoundUsers>(streamInputParams);
 }
 
 export async function deleteGroupMembership(membershipId: string) {
-  const response = await streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
+  const response = await streams.delete(
+    `${API_PATH}/memberships/${membershipId}`,
+    membershipId
+  );
   return response;
 }
 
 export async function addGroupMembership(groupId: string, user_id: string) {
-  const response = await streams.add<IGroupMembership>(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
+  const response = await streams.add<IGroupMembership>(
+    `${API_PATH}/groups/${groupId}/memberships`,
+    { membership: { user_id } }
+  );
   return response;
 }
 
-export async function deleteMembershipByUserId(groupId: string, userId: string) {
-  const response = await streams.delete(`${API_PATH}/groups/${groupId}/memberships/by_user_id/${userId}`, userId);
+export async function deleteMembershipByUserId(
+  groupId: string,
+  userId: string
+) {
+  const response = await streams.delete(
+    `${API_PATH}/groups/${groupId}/memberships/by_user_id/${userId}`,
+    userId
+  );
   return response;
 }

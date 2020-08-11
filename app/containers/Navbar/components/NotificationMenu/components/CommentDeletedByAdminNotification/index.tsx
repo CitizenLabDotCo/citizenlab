@@ -9,7 +9,9 @@ interface Props {
   notification: ICommentDeletedByAdminNotificationData;
 }
 
-const mapPostTypeToLink = (notification: ICommentDeletedByAdminNotificationData) : string => {
+const mapPostTypeToLink = (
+  notification: ICommentDeletedByAdminNotificationData
+): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;
@@ -18,7 +20,7 @@ const mapPostTypeToLink = (notification: ICommentDeletedByAdminNotificationData)
   }
 };
 
-export const CommentDeletedByAdminNotification = memo<Props>(props => {
+export const CommentDeletedByAdminNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (

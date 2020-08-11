@@ -57,14 +57,24 @@ describe('Landing page - signed in', () => {
   it('shows correct content', () => {
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
-    cy.get('#e2e-singed-in-header-verifiaction .e2e-singed-in-header-accept-btn').click();
+    cy.get(
+      '#e2e-singed-in-header-verifiaction .e2e-singed-in-header-accept-btn'
+    ).click();
     cy.get('#e2e-verification-wizard-root');
     cy.get('.e2e-modal-close-button').click();
-    cy.get('#e2e-singed-in-header-verifiaction .e2e-singed-in-header-verification-skip-btn').click();
-    cy.get('#e2e-singed-in-header-complete-profile .e2e-singed-in-header-accept-btn a').should('have.attr', 'href').and('include', '/en-GB/profile/edit');
+    cy.get(
+      '#e2e-singed-in-header-verifiaction .e2e-singed-in-header-verification-skip-btn'
+    ).click();
+    cy.get(
+      '#e2e-singed-in-header-complete-profile .e2e-singed-in-header-accept-btn a'
+    )
+      .should('have.attr', 'href')
+      .and('include', '/en-GB/profile/edit');
 
     // shows the "custom CTA" header when skipping the "complete your profile" header
-    cy.get('#e2e-singed-in-header-complete-profile').get('.e2e-singed-in-header-complete-skip-btn').click();
+    cy.get('#e2e-singed-in-header-complete-profile')
+      .get('.e2e-singed-in-header-complete-skip-btn')
+      .click();
     cy.wait(1000);
     cy.get('#e2e-singed-in-header-default-cta');
   });

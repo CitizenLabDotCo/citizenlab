@@ -21,13 +21,13 @@ export default class GetWindowSize extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    debounce: 50
+    debounce: 50,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      size: undefined
+      size: undefined,
     };
   }
 
@@ -35,20 +35,22 @@ export default class GetWindowSize extends React.Component<Props, State> {
     this.setState({ size: window.innerWidth });
 
     this.subscriptions = [
-      fromEvent(window, 'resize').pipe(
-        debounceTime(this.props.debounce as number),
-        distinctUntilChanged()
-      ).subscribe((event) => {
-        if (event.target) {
-          const size = event.target['innerWidth'] as number;
-          this.setState({ size });
-        }
-      })
+      fromEvent(window, 'resize')
+        .pipe(
+          debounceTime(this.props.debounce as number),
+          distinctUntilChanged()
+        )
+        .subscribe((event) => {
+          if (event.target) {
+            const size = event.target['innerWidth'] as number;
+            this.setState({ size });
+          }
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

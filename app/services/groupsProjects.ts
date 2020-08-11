@@ -11,7 +11,7 @@ export interface IGroupsProjectsData {
         type: 'group';
       };
       type: 'groups_project';
-    }
+    };
   };
 }
 
@@ -20,23 +20,33 @@ export interface IGroupsProjects {
 }
 
 export function groupsProjectsByIdStream(groupsProjectsId: string) {
-  return streams.get<IGroupsProjects>({ apiEndpoint: `${API_PATH}/groups_projects/${groupsProjectsId}` });
+  return streams.get<IGroupsProjects>({
+    apiEndpoint: `${API_PATH}/groups_projects/${groupsProjectsId}`,
+  });
 }
 
 export function groupsProjectsByProjectIdStream(projectId: string) {
-  return streams.get<IGroupsProjects>({ apiEndpoint: `${API_PATH}/projects/${projectId}/groups_projects` });
+  return streams.get<IGroupsProjects>({
+    apiEndpoint: `${API_PATH}/projects/${projectId}/groups_projects`,
+  });
 }
 
 export async function addGroupProject(projectId: string, groupId: string) {
   const bodyData = {
-    groups_project:{
-      group_id: groupId
-    }
+    groups_project: {
+      group_id: groupId,
+    },
   };
 
-  return streams.add<IGroupsProjects>(`${API_PATH}/projects/${projectId}/groups_projects`, bodyData);
+  return streams.add<IGroupsProjects>(
+    `${API_PATH}/projects/${projectId}/groups_projects`,
+    bodyData
+  );
 }
 
 export async function deleteGroupProject(groupProjectId: string) {
-  return streams.delete(`${API_PATH}/groups_projects/${groupProjectId}`, groupProjectId);
+  return streams.delete(
+    `${API_PATH}/groups_projects/${groupProjectId}`,
+    groupProjectId
+  );
 }

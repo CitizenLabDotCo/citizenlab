@@ -7,7 +7,9 @@ import Button from 'components/UI/Button';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
 
 // resources
-import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
+import GetOfficialFeedbacks, {
+  GetOfficialFeedbacksChildProps,
+} from 'resources/GetOfficialFeedbacks';
 
 // styles
 import styled from 'styled-components';
@@ -85,15 +87,35 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
+class OfficialFeedbackFeed extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   render() {
-    const { officialFeedbacks, editingAllowed, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
+    const {
+      officialFeedbacks,
+      editingAllowed,
+      className,
+      a11y_pronounceLatestOfficialFeedbackPost,
+    } = this.props;
 
     if (officialFeedbacks) {
-      const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
+      const {
+        officialFeedbacksList,
+        querying,
+        hasMore,
+        loadingMore,
+        onLoadMore,
+      } = officialFeedbacks;
 
-      if (!isNilOrError(officialFeedbacksList) && officialFeedbacksList.data && officialFeedbacksList.data.length > 0) {
-        const updateDate = (officialFeedbacksList.data[0].attributes.updated_at || officialFeedbacksList.data[0].attributes.created_at);
+      if (
+        !isNilOrError(officialFeedbacksList) &&
+        officialFeedbacksList.data &&
+        officialFeedbacksList.data.length > 0
+      ) {
+        const updateDate =
+          officialFeedbacksList.data[0].attributes.updated_at ||
+          officialFeedbacksList.data[0].attributes.created_at;
         const formattedDate = (
           <FormattedDate
             value={updateDate}
@@ -104,7 +126,10 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
         );
 
         return (
-          <Container aria-live="polite" className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
+          <Container
+            aria-live="polite"
+            className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}
+          >
             <FeedbackHeader>
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
@@ -112,7 +137,9 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               <FeedbackSubtitle>
                 <FormattedMessage
                   {...messages.lastUpdate}
-                  values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
+                  values={{
+                    lastUpdateDate: <StyledSpan>{formattedDate}</StyledSpan>,
+                  }}
                 />
               </FeedbackSubtitle>
             </FeedbackHeader>
@@ -124,22 +151,23 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
                   postType="initiative"
-                  a11y_pronounceLatestOfficialFeedbackPost={i === 0 && a11y_pronounceLatestOfficialFeedbackPost}
+                  a11y_pronounceLatestOfficialFeedbackPost={
+                    i === 0 && a11y_pronounceLatestOfficialFeedbackPost
+                  }
                 />
               );
             })}
 
-            {!querying && hasMore &&
+            {!querying && hasMore && (
               <LoadMoreButton
                 onClick={onLoadMore}
                 text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}
                 icon="showMore"
                 buttonStyle="secondary-outlined"
-                textColor={colors.clRedError}
-                textHoverColor={colors.clRedError}
+                padding="12px"
               />
-            }
+            )}
           </Container>
         );
       }
@@ -150,14 +178,20 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
 }
 
 const Data = adopt<DataProps, InputProps>({
-  officialFeedbacks: ({ postId, postType, render }) => <GetOfficialFeedbacks postId={postId} postType={postType}>{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ postId, postType, render }) => (
+    <GetOfficialFeedbacks postId={postId} postType={postType}>
+      {render}
+    </GetOfficialFeedbacks>
+  ),
 });
 
 const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
 
 const WrappedOfficialFeedback = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <OfficialFeedbackFeedWithIntl {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <OfficialFeedbackFeedWithIntl {...inputProps} {...dataProps} />
+    )}
   </Data>
 );
 

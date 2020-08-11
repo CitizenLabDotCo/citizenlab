@@ -7,8 +7,7 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-import Select from 'components/UI/Select';
-import Input from 'components/UI/Input';
+import { Select, Input } from 'cl2-component-library';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings
@@ -41,10 +40,9 @@ interface InputProps {
   question: IPollQuestion;
 }
 
-interface DataProps {
-}
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   maxAnswers: number | null;
@@ -52,14 +50,18 @@ interface State {
   typeOptions: IOption[];
 }
 
-export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps, State> {
+export class QuestionDetailsForm extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   typeOptions: IOption[];
-  constructor(props) {
+
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       maxAnswers: props.question.attributes.max_options,
       questionType: props.question.attributes.question_type,
-      typeOptions: []
+      typeOptions: [],
     };
   }
 
@@ -69,38 +71,49 @@ export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps
       typeOptions: [
         {
           label: formatMessage(messages.singleOption),
-          value: 'single_option'
+          value: 'single_option',
         },
         {
           label: formatMessage(messages.multipleOption),
-          value: 'multiple_options'
-        }
-      ]
+          value: 'multiple_options',
+        },
+      ],
     });
   }
 
   changeMaxAnswers = (maxAnswers: string) => {
     this.setState({ maxAnswers: Number(maxAnswers) });
-  }
+  };
 
   changeQuestionType = (option: IOption) => {
     const newType = option.value;
-    this.setState({ questionType: newType, maxAnswers: newType === 'single_option' ? null : 2 });
-  }
+    this.setState({
+      questionType: newType,
+      maxAnswers: newType === 'single_option' ? null : 2,
+    });
+  };
 
   validate = () => {
     const { question } = this.props;
     const { questionType, maxAnswers } = this.state;
     const diff = {
-      ...(questionType !== question.attributes.question_type ? { question_type: questionType } : {}),
-      ...(maxAnswers !== question.attributes.max_options ? { max_options: maxAnswers } : {})
+      ...(questionType !== question.attributes.question_type
+        ? { question_type: questionType }
+        : {}),
+      ...(maxAnswers !== question.attributes.max_options
+        ? { max_options: maxAnswers }
+        : {}),
     };
     return {
       diff,
-      isValid: (Object.keys(diff).length > 0) &&
-       ((questionType === 'multiple_options' && typeof maxAnswers === 'number' && maxAnswers >= 2) || (questionType === 'single_option' && maxAnswers === null))
+      isValid:
+        Object.keys(diff).length > 0 &&
+        ((questionType === 'multiple_options' &&
+          typeof maxAnswers === 'number' &&
+          maxAnswers >= 2) ||
+          (questionType === 'single_option' && maxAnswers === null)),
     };
-  }
+  };
 
   onSave = () => {
     const { question } = this.props;
@@ -108,7 +121,7 @@ export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps
     if (isValid) {
       updatePollQuestion(question.id, diff);
     }
-  }
+  };
 
   render() {
     const { question } = this.props;
@@ -122,14 +135,14 @@ export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps
             value={questionType}
             onChange={this.changeQuestionType}
           />
-          {questionType === 'multiple_options' &&
+          {questionType === 'multiple_options' && (
             <StyledInput
               type="number"
               onChange={this.changeMaxAnswers}
               value={String(maxAnswers)}
               min="2"
             />
-          }
+          )}
         </FormContainer>
         <FormContainer>
           <WrongMaxChoiceIndicator

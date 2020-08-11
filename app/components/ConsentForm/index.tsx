@@ -1,5 +1,11 @@
 import React, { PureComponent } from 'react';
-import { IConsentData, updateConsent, IConsent, updateConsentWithToken, getCategorizedConsents } from 'services/campaignConsents';
+import {
+  IConsentData,
+  updateConsent,
+  IConsent,
+  updateConsentWithToken,
+  getCategorizedConsents,
+} from 'services/campaignConsents';
 
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -20,7 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 
 const timeout = 400;
@@ -37,7 +43,7 @@ const ArrowIcon = styled(Icon)`
   width: 12px;
   height: 12px;
   transform: rotate(90deg);
-  transition: all .2s linear;
+  transition: all 0.2s linear;
   margin-left: 5px;
 
   &.open {
@@ -134,7 +140,6 @@ interface State {
 }
 
 export default class ConsentForm extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -150,9 +155,15 @@ export default class ConsentForm extends PureComponent<Props, State> {
     const categorizedConsents = getCategorizedConsents(this.props.consents);
     const isCategoryOpen = {} as { [category: string]: boolean };
 
-    Object.keys(categorizedConsents).forEach((category) =>
-      isCategoryOpen[category] = !categorizedConsents[category].every(consent => consent.attributes.consented)
-      && !categorizedConsents[category].every(consent => !consent.attributes.consented)
+    Object.keys(categorizedConsents).forEach(
+      (category) =>
+        (isCategoryOpen[category] =
+          !categorizedConsents[category].every(
+            (consent) => consent.attributes.consented
+          ) &&
+          !categorizedConsents[category].every(
+            (consent) => !consent.attributes.consented
+          ))
     );
 
     this.setState({ categorizedConsents, isCategoryOpen });
@@ -167,69 +178,90 @@ export default class ConsentForm extends PureComponent<Props, State> {
 
   handleOnChange = (consent: IConsentData) => () => {
     const becomesConsented = this.isConsented(consent.id);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       consentChanges: {
         ...prevState.consentChanges,
         [consent.id]: !becomesConsented,
       },
-      saveButtonStatus: 'enabled'
+      saveButtonStatus: 'enabled',
     }));
-  }
+  };
 
   consent = (consent: IConsentData) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       consentChanges: {
         ...prevState.consentChanges,
         [consent.id]: true,
       },
-      saveButtonStatus: 'enabled'
+      saveButtonStatus: 'enabled',
     }));
-  }
+  };
 
   unconsent = (consent: IConsentData) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       consentChanges: {
         ...prevState.consentChanges,
         [consent.id]: false,
       },
-      saveButtonStatus: 'enabled'
+      saveButtonStatus: 'enabled',
     }));
-  }
+  };
 
   handleOnChangeCategory = (category) => () => {
     const { categorizedConsents } = this.state;
 
-    if (categorizedConsents[category].every(consent => this.isConsented(consent.id))) {
-      categorizedConsents[category].forEach(consent => this.unconsent(consent));
+    if (
+      categorizedConsents[category].every((consent) =>
+        this.isConsented(consent.id)
+      )
+    ) {
+      categorizedConsents[category].forEach((consent) =>
+        this.unconsent(consent)
+      );
     } else {
-      categorizedConsents[category].forEach(consent => this.consent(consent));
-      this.setState(({ isCategoryOpen }) => ({ isCategoryOpen: { ...isCategoryOpen, [category]: false } }));
+      categorizedConsents[category].forEach((consent) => this.consent(consent));
+      this.setState(({ isCategoryOpen }) => ({
+        isCategoryOpen: { ...isCategoryOpen, [category]: false },
+      }));
     }
-  }
+  };
 
   handleToggleOpenCategory = (category) => (event) => {
     event.stopPropagation();
-    this.setState(({ isCategoryOpen }) => ({ isCategoryOpen: { ...isCategoryOpen, [category]: !isCategoryOpen[category] } }));
-  }
+    this.setState(({ isCategoryOpen }) => ({
+      isCategoryOpen: {
+        ...isCategoryOpen,
+        [category]: !isCategoryOpen[category],
+      },
+    }));
+  };
 
   isConsented = (consentId) => {
     const { consents } = this.props;
-    const consent = consents.find(consent => consent.id === consentId);
-    if (typeof (this.state.consentChanges[consentId]) === 'undefined') {
-      return (consent && consent.attributes.consented);
+    const consent = consents.find((consent) => consent.id === consentId);
+    if (typeof this.state.consentChanges[consentId] === 'undefined') {
+      return consent && consent.attributes.consented;
     } else {
       return this.state.consentChanges[consentId];
     }
-  }
+  };
 
   isConsentedCategory = (category) => {
     const { categorizedConsents } = this.state;
-    if (categorizedConsents[category].find(consent => this.isConsented(consent.id))) {
-      return categorizedConsents[category].every(consent => this.isConsented(consent.id)) || 'mixed';
+    if (
+      categorizedConsents[category].find((consent) =>
+        this.isConsented(consent.id)
+      )
+    ) {
+      return (
+        categorizedConsents[category].every((consent) =>
+          this.isConsented(consent.id)
+        ) || 'mixed'
+      );
     } else {
       return false;
     }
-  }
+  };
 
   handleOnSubmit = () => {
     const { trackEventName, token, runOnSave } = this.props;
@@ -241,93 +273,132 @@ export default class ConsentForm extends PureComponent<Props, State> {
 
     this.setState({ isSaving: true, saveButtonStatus: 'disabled' });
     if (consentChanges) {
-      consentUpdates = Object.keys(consentChanges).map(consentId => {
-        return token ? updateConsentWithToken(consentId, this.isConsented(consentId), token) : updateConsent(consentId, this.isConsented(consentId));
+      consentUpdates = Object.keys(consentChanges).map((consentId) => {
+        return token
+          ? updateConsentWithToken(
+              consentId,
+              this.isConsented(consentId),
+              token
+            )
+          : updateConsent(consentId, this.isConsented(consentId));
       });
     }
 
-    Promise.all(consentUpdates).then(() => {
-      this.setState({
-        consentChanges: {},
-        isSaving: false,
-        saveButtonStatus: 'success'
+    Promise.all(consentUpdates)
+      .then(() => {
+        this.setState({
+          consentChanges: {},
+          isSaving: false,
+          saveButtonStatus: 'success',
+        });
+        runOnSave && runOnSave();
+      })
+      .catch(() => {
+        this.setState({ saveButtonStatus: 'error' });
       });
-      runOnSave && runOnSave();
-    }).catch(() => {
-      this.setState({ saveButtonStatus: 'error' });
-    });
-  }
+  };
 
   render() {
-    const { isSaving, saveButtonStatus, categorizedConsents, isCategoryOpen } = this.state;
+    const {
+      isSaving,
+      saveButtonStatus,
+      categorizedConsents,
+      isCategoryOpen,
+    } = this.state;
 
     return (
       <FormSection id="e2e-consent-form">
         <form action="">
-          <FormSectionTitle message={messages.notificationsTitle} subtitleMessage={messages.notificationsSubTitle} />
+          <FormSectionTitle
+            message={messages.notificationsTitle}
+            subtitleMessage={messages.notificationsSubTitle}
+          />
 
-          {Object.entries(categorizedConsents).map(([category, consents], index) => (
-            <ConsentList
-              key={category}
-              className={`${index === 0 ? 'first' : ''} ${index === Object.entries(categorizedConsents).length - 1 ? 'last' : ''}`}
-            >
-              <CategoryCheckboxContainer>
-                <StyledCheckboxWithPartialCheck
-                  id={category}
-                  checked={this.isConsentedCategory(category)}
-                  onChange={this.handleOnChangeCategory(category)}
-                  label={<FormattedMessage {...messages[`${category}Category`]} />}
-                />
-                {consents.length > 1 &&
-                  <Button
-                    onClick={this.handleToggleOpenCategory(category)}
-                    buttonStyle="text"
-                    type="button"
-                    ariaExpanded={isCategoryOpen[category]}
-                    padding="0px"
-                  >
-                    {isCategoryOpen[category]
-                      ? <FormattedMessage {...messages.collapse} />
-                      : <FormattedMessage {...messages.expand} />
-                    }
-                    <ArrowIcon name="dropdown" className={isCategoryOpen[category] ? 'open' : ''} ariaHidden />
-                  </Button>
-                }
-              </CategoryCheckboxContainer>
-              <CSSTransition
-                classNames="collapse"
-                in={isCategoryOpen[category]}
-                appear={isCategoryOpen[category]}
-                timeout={timeout}
-                mounOnEnter={false}
-                unmountOnExit={false}
-                enter={true}
-                exit={true}
+          {Object.entries(categorizedConsents).map(
+            ([category, consents], index) => (
+              <ConsentList
+                key={category}
+                className={`${index === 0 ? 'first' : ''} ${
+                  index === Object.entries(categorizedConsents).length - 1
+                    ? 'last'
+                    : ''
+                }`}
               >
-                <AnimatedFieldset>
-                  <ScreenReaderOnly>
-                    <legend>
-                      <FormattedMessage {...messages.ally_categoryLabel} />
-                    </legend>
-                  </ScreenReaderOnly>
-
-                  {consents.length > 1 && consents.map((consent, index) => (
-                    <CheckboxContainer
-                      key={consent.id}
-                      className={`${index === 0 ? 'first' : ''} ${index === consents.length - 1 ? 'last' : ''}`}
+                <CategoryCheckboxContainer>
+                  <StyledCheckboxWithPartialCheck
+                    id={category}
+                    checked={this.isConsentedCategory(category)}
+                    onChange={this.handleOnChangeCategory(category)}
+                    label={
+                      <FormattedMessage {...messages[`${category}Category`]} />
+                    }
+                  />
+                  {consents.length > 1 && (
+                    <Button
+                      onClick={this.handleToggleOpenCategory(category)}
+                      buttonStyle="text"
+                      type="button"
+                      ariaExpanded={isCategoryOpen[category]}
+                      padding="0px"
                     >
-                      <Checkbox
-                        size="20px"
-                        checked={this.isConsented(consent.id)}
-                        onChange={this.handleOnChange(consent)}
-                        label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                      {isCategoryOpen[category] ? (
+                        <FormattedMessage {...messages.collapse} />
+                      ) : (
+                        <FormattedMessage {...messages.expand} />
+                      )}
+                      <ArrowIcon
+                        name="dropdown"
+                        className={isCategoryOpen[category] ? 'open' : ''}
+                        ariaHidden
                       />
-                    </CheckboxContainer>
-                  ))}
-                </AnimatedFieldset>
-              </CSSTransition>
-            </ConsentList>
-          ))}
+                    </Button>
+                  )}
+                </CategoryCheckboxContainer>
+                <CSSTransition
+                  classNames="collapse"
+                  in={isCategoryOpen[category]}
+                  appear={isCategoryOpen[category]}
+                  timeout={timeout}
+                  mounOnEnter={false}
+                  unmountOnExit={false}
+                  enter={true}
+                  exit={true}
+                >
+                  <AnimatedFieldset>
+                    <ScreenReaderOnly>
+                      <legend>
+                        <FormattedMessage {...messages.ally_categoryLabel} />
+                      </legend>
+                    </ScreenReaderOnly>
+
+                    {consents.length > 1 &&
+                      consents.map((consent, index) => (
+                        <CheckboxContainer
+                          key={consent.id}
+                          className={`${index === 0 ? 'first' : ''} ${
+                            index === consents.length - 1 ? 'last' : ''
+                          }`}
+                        >
+                          <Checkbox
+                            size="20px"
+                            checked={this.isConsented(consent.id)}
+                            onChange={this.handleOnChange(consent)}
+                            label={
+                              <T
+                                value={
+                                  consent.attributes
+                                    .campaign_type_description_multiloc
+                                }
+                              />
+                            }
+                          />
+                        </CheckboxContainer>
+                      ))}
+                  </AnimatedFieldset>
+                </CSSTransition>
+              </ConsentList>
+            )
+          )}
 
           <StyledSubmitWrapper
             status={saveButtonStatus}

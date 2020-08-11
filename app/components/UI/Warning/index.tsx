@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { isPage } from 'utils/helperUtils';
 
@@ -68,18 +68,17 @@ interface Props {
 }
 
 export default class Warning extends PureComponent<Props> {
-
   render() {
     const className = this.props['className'];
     const { text, children, icon } = this.props;
     const adminPage = isPage('admin', location.pathname);
 
     return (
-      <Container className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}>
+      <Container
+        className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}
+      >
         <StyledIcon name={icon || 'info'} />
-        <Text>
-          {text || children}
-        </Text>
+        <Text>{text || children}</Text>
       </Container>
     );
   }

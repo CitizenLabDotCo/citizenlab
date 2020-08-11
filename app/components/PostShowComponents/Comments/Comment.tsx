@@ -8,7 +8,7 @@ import { get } from 'lodash-es';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
@@ -136,42 +136,65 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
     hasBottomBorder: true,
     hasChildComment: false,
     canReply: true,
-    last: false
+    last: false,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      editing: false
+      editing: false,
     };
   }
 
   onEditing = () => {
     this.setState({ editing: true });
-  }
+  };
 
   onCancelEditing = () => {
     this.setState({ editing: false });
-  }
+  };
 
   onCommentSaved = () => {
     this.setState({ editing: false });
-  }
+  };
 
   render() {
-    const { postId, postType, projectId, commentType, comment, author, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
+    const {
+      postId,
+      postType,
+      projectId,
+      commentType,
+      comment,
+      author,
+      hasBottomBorder,
+      hasChildComments,
+      last,
+      className,
+      canReply,
+    } = this.props;
     const { editing } = this.state;
 
     if (!isNilOrError(comment)) {
       const commentId = comment.id;
-      const authorId = (!isNilOrError(author) ? author.id : null);
-      const lastComment = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last === true));
-      const moderator = !isNilOrError(author) && canModerate(projectId, { data: author });
+      const authorId = !isNilOrError(author) ? author.id : null;
+      const lastComment =
+        (commentType === 'parent' && !hasChildComments) ||
+        (commentType === 'child' && last === true);
+      const moderator =
+        !isNilOrError(author) && canModerate(projectId, { data: author });
 
       return (
-        <Container className={`${className || ''} ${commentType} ${commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'} e2e-comment`}>
-          <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''} ${hasBottomBorder ? 'hasBottomBorder' : ''}`}>
-            {comment.attributes.publication_status === 'published' &&
+        <Container
+          className={`${className || ''} ${commentType} ${
+            commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
+          } e2e-comment`}
+        >
+          <ContainerInner
+            className={`${commentType} ${lastComment ? 'lastComment' : ''} ${
+              hasBottomBorder ? 'hasBottomBorder' : ''
+            }`}
+          >
+            {comment.attributes.publication_status === 'published' && (
               <>
                 <CommentHeader
                   projectId={projectId}
@@ -204,14 +227,14 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                   </BodyAndFooter>
                 </Content>
               </>
-            }
+            )}
 
-            {comment.attributes.publication_status === 'deleted' &&
+            {comment.attributes.publication_status === 'deleted' && (
               <DeletedComment>
                 <DeletedIcon name="delete" />
                 <FormattedMessage {...messages.commentDeletedPlaceholder} />
               </DeletedComment>
-            }
+            )}
           </ContainerInner>
         </Container>
       );
@@ -222,14 +245,20 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
+  comment: ({ commentId, render }) => (
+    <GetComment id={commentId}>{render}</GetComment>
+  ),
+  author: ({ comment, render }) => (
+    <GetUser id={get(comment, 'relationships.author.data.id')}>
+      {render}
+    </GetUser>
+  ),
 });
 
 const CommentWithHoCs = injectIntl<Props>(Comment);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

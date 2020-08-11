@@ -17,11 +17,7 @@ interface Props {
 }
 
 const TranslateButton = (props: Props) => {
-  const {
-    translateButtonClicked,
-    className,
-    onClick
-  } = props;
+  const { translateButtonClicked, className, onClick } = props;
 
   return (
     <Button
@@ -32,11 +28,11 @@ const TranslateButton = (props: Props) => {
       fontSize={`${fontSizes.small}px`}
       padding="5px 10px"
     >
-      {translateButtonClicked ?
+      {translateButtonClicked ? (
         <FormattedMessage {...messages.seeOriginal} />
-        :
+      ) : (
         <FormattedMessage {...messages.seeTranslation} />
-      }
+      )}
     </Button>
   );
 };

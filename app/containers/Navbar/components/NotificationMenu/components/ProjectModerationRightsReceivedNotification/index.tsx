@@ -17,7 +17,7 @@ interface Props {
   notification: IProjectModerationRightsReceivedNotificationData;
 }
 
-const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
+const ProjectModerationRightsReceivedNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -30,13 +30,14 @@ const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.projectModerationRightsReceived}
         values={{
-          projectLink:
+          projectLink: (
             <Link
               to={`admin/projects/${notification.attributes.project_id}/ideas`}
               onClick={stopPropagation}
             >
               <T value={notification.attributes.project_title_multiloc} />
-            </Link>,
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

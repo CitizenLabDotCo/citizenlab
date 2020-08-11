@@ -51,14 +51,18 @@ const getFontSize = (size: number, digits: number) => {
 
 const EmptyContainer = styled.div``;
 
-const Container = styled.div<{ width: number, height: number }>`
+const Container = styled.div<{ width: number; height: number }>`
   flex-shrink: 0;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   position: relative;
 `;
 
-const AvatarImageBubble = styled.img<{ overlap: number, index: number, size: number }>`
+const AvatarImageBubble = styled.img<{
+  overlap: number;
+  index: number;
+  size: number;
+}>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border-radius: 50%;
@@ -69,7 +73,12 @@ const AvatarImageBubble = styled.img<{ overlap: number, index: number, size: num
   left: ${(props) => props.index * (props.size - props.overlap)}px;
 `;
 
-const UserCountBubble = styled.div<{ overlap: number, index: number, size: number, bgColor: string }>`
+const UserCountBubble = styled.div<{
+  overlap: number;
+  index: number;
+  size: number;
+  bgColor: string;
+}>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   display: flex;
@@ -84,7 +93,7 @@ const UserCountBubble = styled.div<{ overlap: number, index: number, size: numbe
   left: ${(props) => props.index * (props.size - props.overlap)}px;
 `;
 
-const UserCountBubbleInner = styled.div<{ size: number, digits: number }>`
+const UserCountBubbleInner = styled.div<{ size: number; digits: number }>`
   color: #fff;
   font-size: ${({ size, digits }) => getFontSize(size, digits)}px;
   font-weight: 500;
@@ -92,11 +101,11 @@ const UserCountBubbleInner = styled.div<{ size: number, digits: number }>`
 `;
 
 /* InputProps
-* limit: the number of avatars you need, you'll get one extra bubble with the remaining count, defaults to 3
-* context: extra info if you use the component in a specific context, defaults to platform-wide
-* size: image size, each bubble will be 4px bigger because of margins, defaults to 30px
-* overlap: the number of pixel the bubbles overlap, defaults to 7
-*/
+ * limit: the number of avatars you need, you'll get one extra bubble with the remaining count, defaults to 3
+ * context: extra info if you use the component in a specific context, defaults to platform-wide
+ * size: image size, each bubble will be 4px bigger because of margins, defaults to 30px
+ * overlap: the number of pixel the bubbles overlap, defaults to 7
+ */
 interface InputProps {
   limit?: number;
   context?: {
@@ -124,26 +133,42 @@ const defaultLimit = 4;
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     limit: defaultLimit,
-    size: 34
+    size: 34,
   };
 
   render() {
-    const { avatars, avatarIds, context, size, overlap, userCount, className, intl: { formatMessage } } = this.props;
+    const {
+      avatars,
+      avatarIds,
+      context,
+      size,
+      overlap,
+      userCount,
+      className,
+      intl: { formatMessage },
+    } = this.props;
 
     if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
       const bubbleSize = (size as number) + 4;
       const bubbleOverlap = overlap || 10;
-      const imageSize = (bubbleSize > 160 ? 'large' : 'medium');
-      const avatarsWithImage = avatars.filter(avatar => (!isError(avatar) && avatar.attributes.avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
+      const imageSize = bubbleSize > 160 ? 'large' : 'medium';
+      const avatarsWithImage = avatars.filter(
+        (avatar) =>
+          !isError(avatar) &&
+          avatar.attributes.avatar &&
+          avatar.attributes.avatar[imageSize]
+      ) as IAvatarData[];
       const avatarImagesCount = avatarsWithImage.length;
-      const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
+      const userCountBgColor =
+        this.props.userCountBgColor || colors.clIconSecondary;
       const remainingUsers = userCount - avatarImagesCount;
       const remainingUsersDigits = remainingUsers.toString().length;
       const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
       const containerHeight = bubbleSize + 2;
-      const containerWidth = bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
+      const containerWidth =
+        bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
-      if (avatarIds || context || (avatarImagesCount > 0)) {
+      if (avatarIds || context || avatarImagesCount > 0) {
         return (
           <Container
             className={className}
@@ -160,7 +185,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
                 alt=""
               />
             ))}
-            {remainingUsers > 0 &&
+            {remainingUsers > 0 && (
               <UserCountBubble
                 index={avatarsWithImage.length}
                 overlap={bubbleOverlap}
@@ -175,15 +200,17 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
                   +{remainingUsers}
                 </UserCountBubbleInner>
                 <ScreenReaderOnly>
-                  {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}
+                  {formatMessage(messages.numberOfUsers, {
+                    numberOfUsers: userCount,
+                  })}
                 </ScreenReaderOnly>
               </UserCountBubble>
-            }
+            )}
           </Container>
         );
       }
     } else if (avatars !== undefined) {
-       return <EmptyContainer className={className} />;
+      return <EmptyContainer className={className} />;
     }
 
     return null;
@@ -196,14 +223,28 @@ export default (inputProps: InputProps) => {
   if (inputProps.avatarIds) {
     return (
       <GetAvatars ids={inputProps.avatarIds}>
-        {avatars => <AvatarBubblesWithHoCs {...inputProps} avatars={!isNilOrError(avatars) ? avatars : null} />}
+        {(avatars) => (
+          <AvatarBubblesWithHoCs
+            {...inputProps}
+            avatars={!isNilOrError(avatars) ? avatars : null}
+          />
+        )}
       </GetAvatars>
     );
   }
 
   return (
-    <GetRandomAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
-      {avatars => <AvatarBubblesWithHoCs {...inputProps} avatars={!isNilOrError(avatars) ? avatars.data : null} userCount={!isNilOrError(avatars) ? avatars.meta.total : undefined} />}
+    <GetRandomAvatars
+      limit={inputProps.limit || defaultLimit}
+      context={inputProps.context}
+    >
+      {(avatars) => (
+        <AvatarBubblesWithHoCs
+          {...inputProps}
+          avatars={!isNilOrError(avatars) ? avatars.data : null}
+          userCount={!isNilOrError(avatars) ? avatars.meta.total : undefined}
+        />
+      )}
     </GetRandomAvatars>
   );
 };

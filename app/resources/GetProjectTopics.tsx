@@ -1,7 +1,13 @@
 import { IProjectTopicData } from 'services/projectTopics';
-import useProjectTopics, { Parameters as HookProps } from 'hooks/useProjectTopics';
+import useProjectTopics, {
+  Parameters as HookProps,
+} from 'hooks/useProjectTopics';
 
-export type GetProjectTopicsChildProps = IProjectTopicData[] | undefined | null | Error;
+export type GetProjectTopicsChildProps =
+  | IProjectTopicData[]
+  | undefined
+  | null
+  | Error;
 
 type children = (renderProps: GetProjectTopicsChildProps) => JSX.Element | null;
 

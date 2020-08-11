@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
@@ -114,41 +114,57 @@ interface DataProps {
   ideaAuthor: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   showVotingDisabled: 'votingDisabled' | null;
   showAssignBudgetDisabled: 'assignBudgetDisabled' | null;
 }
 
-class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+class IdeaCard extends PureComponent<
+  Props & InjectedLocalized & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
       showVotingDisabled: null,
-      showAssignBudgetDisabled: null
+      showAssignBudgetDisabled: null,
     };
   }
 
-  componentDidUpdate(prevProps : Props) {
+  componentDidUpdate(prevProps: Props) {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
 
     if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
       const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
-      const prevVotingEnabled = prevIdea.attributes.action_descriptor.voting.enabled;
-      const votingDisabledReason = idea.attributes.action_descriptor.voting.disabled_reason;
-      const prevVotingDisabledReason = prevIdea.attributes.action_descriptor.voting.disabled_reason;
-      const ideaBudgetingEnabled =  idea.attributes?.action_descriptor?.budgeting?.enabled;
-      const prevIdeaBudgetingEnabled = prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
-      const ideaBudgetingDisabledReason = idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
-      const prevIdeaBudgetingDisabledReason = prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+      const prevVotingEnabled =
+        prevIdea.attributes.action_descriptor.voting.enabled;
+      const votingDisabledReason =
+        idea.attributes.action_descriptor.voting.disabled_reason;
+      const prevVotingDisabledReason =
+        prevIdea.attributes.action_descriptor.voting.disabled_reason;
+      const ideaBudgetingEnabled =
+        idea.attributes?.action_descriptor?.budgeting?.enabled;
+      const prevIdeaBudgetingEnabled =
+        prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
+      const ideaBudgetingDisabledReason =
+        idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+      const prevIdeaBudgetingDisabledReason =
+        prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
 
-      if ((votingEnabled !== prevVotingEnabled) || (votingDisabledReason !== prevVotingDisabledReason)) {
+      if (
+        votingEnabled !== prevVotingEnabled ||
+        votingDisabledReason !== prevVotingDisabledReason
+      ) {
         this.setState({ showVotingDisabled: null });
       }
 
-      if ((ideaBudgetingEnabled !== prevIdeaBudgetingEnabled) || (ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason)) {
+      if (
+        ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
+        ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
+      ) {
         this.setState({ showAssignBudgetDisabled: null });
       }
     }
@@ -163,18 +179,18 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
-        type: 'idea'
+        type: 'idea',
       });
     }
-  }
+  };
 
   disabledVoteClick = () => {
     this.setState({ showVotingDisabled: 'votingDisabled' });
-  }
+  };
 
   disabledAssignBudgetClick = () => {
     this.setState({ showAssignBudgetDisabled: 'assignBudgetDisabled' });
-  }
+  };
 
   render() {
     const {
@@ -186,7 +202,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
       participationContextId,
       participationContextType,
       localize,
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props;
     const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
@@ -197,12 +213,23 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
       !isUndefined(ideaAuthor)
     ) {
       const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
-      const commentingDescriptor = idea?.attributes?.action_descriptor?.commenting;
-      const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting;
+      const commentingDescriptor =
+        idea?.attributes?.action_descriptor?.commenting;
+      const budgetingDescriptor =
+        idea?.attributes?.action_descriptor?.budgeting;
       const projectId = idea?.relationships?.project.data?.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
-      const a11y_ideaTitle = <ScreenReaderOnly>{formatMessage(messages.a11y_ideaTitle)}</ScreenReaderOnly>;
-      const title = <span>{a11y_ideaTitle}{ideaTitle}</span>;
+      const a11y_ideaTitle = (
+        <ScreenReaderOnly>
+          {formatMessage(messages.a11y_ideaTitle)}
+        </ScreenReaderOnly>
+      );
+      const title = (
+        <span>
+          {a11y_ideaTitle}
+          {ideaTitle}
+        </span>
+      );
       const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
       const ideaBudget = idea?.attributes?.budget;
       const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
@@ -211,10 +238,16 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
         this.props.className,
         'e2e-idea-card',
         idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
-        commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
+        commentingDescriptor && commentingDescriptor.enabled
+          ? 'e2e-comments-enabled'
+          : 'e2e-comments-disabled',
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-        votingDescriptor && votingDescriptor.downvoting_enabled ? 'e2e-downvoting-enabled' : 'e2e-downvoting-disabled'
-      ].filter(item => isString(item) && item !== '').join(' ');
+        votingDescriptor && votingDescriptor.downvoting_enabled
+          ? 'e2e-downvoting-enabled'
+          : 'e2e-downvoting-disabled',
+      ]
+        .filter((item) => isString(item) && item !== '')
+        .join(' ');
       const commentsCount = idea.attributes.comments_count;
 
       return (
@@ -223,17 +256,19 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
           onClick={this.onCardClick}
           to={`/ideas/${idea.attributes.slug}`}
           imageUrl={ideaImageUrl}
-          header={participationMethod === 'budgeting' && ideaBudget ?
-            <IdeaBudget>
-              <FormattedNumber
-                value={ideaBudget}
-                style="currency"
-                currency={tenantCurrency}
-                minimumFractionDigits={0}
-                maximumFractionDigits={0}
-              />
-            </IdeaBudget>
-          : undefined}
+          header={
+            participationMethod === 'budgeting' && ideaBudget ? (
+              <IdeaBudget>
+                <FormattedNumber
+                  value={ideaBudget}
+                  style="currency"
+                  currency={tenantCurrency}
+                  minimumFractionDigits={0}
+                  maximumFractionDigits={0}
+                />
+              </IdeaBudget>
+            ) : undefined
+          }
           title={title}
           body={
             <StyledAuthor
@@ -245,9 +280,9 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
           }
           footer={
             <>
-              {!showVotingDisabled && !showAssignBudgetDisabled &&
+              {!showVotingDisabled && !showAssignBudgetDisabled && (
                 <FooterInner>
-                  {participationMethod !== 'budgeting' &&
+                  {participationMethod !== 'budgeting' && (
                     <VoteControl
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
@@ -255,60 +290,79 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       ariaHidden={true}
                       showDownvote={votingDescriptor.downvoting_enabled}
                     />
-                  }
+                  )}
 
-                  {participationMethod === 'budgeting' && ideaBudget && participationContextId && participationContextType &&
-                    <AssignBudgetControl
-                      view="ideaCard"
-                      ideaId={idea.id}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      openIdea={this.onCardClick}
-                      disabledAssignBudgetClick={this.disabledAssignBudgetClick}
-                      projectId={projectId}
-                    />
-                  }
+                  {participationMethod === 'budgeting' &&
+                    ideaBudget &&
+                    participationContextId &&
+                    participationContextType && (
+                      <AssignBudgetControl
+                        view="ideaCard"
+                        ideaId={idea.id}
+                        participationContextId={participationContextId}
+                        participationContextType={participationContextType}
+                        openIdea={this.onCardClick}
+                        disabledAssignBudgetClick={
+                          this.disabledAssignBudgetClick
+                        }
+                        projectId={projectId}
+                      />
+                    )}
 
                   <Spacer aria-hidden />
 
-                  <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
+                  <CommentInfo
+                    className={`${
+                      commentingDescriptor && commentingDescriptor.enabled
+                        ? 'enabled'
+                        : ''
+                    }`}
+                  >
                     <CommentIcon name="comments" ariaHidden />
-                    <CommentCount aria-hidden className="e2e-ideacard-comment-count">
+                    <CommentCount
+                      aria-hidden
+                      className="e2e-ideacard-comment-count"
+                    >
                       {commentsCount}
                     </CommentCount>
                     <ScreenReaderOnly>
-                      <FormattedMessage {...messages.xComments} values={{ commentsCount }} />
+                      <FormattedMessage
+                        {...messages.xComments}
+                        values={{ commentsCount }}
+                      />
                     </ScreenReaderOnly>
                   </CommentInfo>
                 </FooterInner>
-              }
+              )}
 
-              {showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId &&
-                <BottomBounceUp icon="lock-outlined">
-                  <DisabledWrapper>
-                    <VotingDisabled
-                      votingDescriptor={votingDescriptor}
-                      projectId={projectId}
-                    />
-                  </DisabledWrapper>
-                </BottomBounceUp>
-              }
+              {showVotingDisabled === 'votingDisabled' &&
+                votingDescriptor &&
+                projectId && (
+                  <BottomBounceUp icon="lock-outlined">
+                    <DisabledWrapper>
+                      <VotingDisabled
+                        votingDescriptor={votingDescriptor}
+                        projectId={projectId}
+                      />
+                    </DisabledWrapper>
+                  </BottomBounceUp>
+                )}
 
               {showAssignBudgetDisabled === 'assignBudgetDisabled' &&
-               budgetingDescriptor &&
-               projectId &&
-               participationContextId &&
-               participationContextType &&
-                <BottomBounceUp icon="lock-outlined">
-                  <DisabledWrapper>
-                    <AssignBudgetDisabled
-                      budgetingDescriptor={budgetingDescriptor}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                    />
-                  </DisabledWrapper>
-                </BottomBounceUp>
-              }
+                budgetingDescriptor &&
+                projectId &&
+                participationContextId &&
+                participationContextType && (
+                  <BottomBounceUp icon="lock-outlined">
+                    <DisabledWrapper>
+                      <AssignBudgetDisabled
+                        budgetingDescriptor={budgetingDescriptor}
+                        participationContextId={participationContextId}
+                        participationContextType={participationContextType}
+                      />
+                    </DisabledWrapper>
+                  </BottomBounceUp>
+                )}
             </>
           }
         />
@@ -322,14 +376,23 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(idea, 'relationships.idea_images.data[0].id')}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
+  ideaImage: ({ ideaId, idea, render }) => (
+    <GetIdeaImage
+      ideaId={ideaId}
+      ideaImageId={get(idea, 'relationships.idea_images.data[0].id')}
+    >
+      {render}
+    </GetIdeaImage>
+  ),
+  ideaAuthor: ({ idea, render }) => (
+    <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
+  ),
 });
 
 const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

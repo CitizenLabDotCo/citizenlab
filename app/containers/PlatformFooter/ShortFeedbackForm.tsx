@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
@@ -78,7 +78,7 @@ interface State {
   feedbackValueError: JSX.Element | null;
 }
 
-class ShortFeedbackForm extends PureComponent<Props, State>{
+class ShortFeedbackForm extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
   constructor(props) {
@@ -87,29 +87,37 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
       emailValue: '',
       feedbackValue: '',
       submitted: false,
-      feedbackValueError: null
+      feedbackValueError: null,
     };
   }
 
   componentDidMount() {
     this.subscriptions = [
-      eventEmitter.observeEvent('ShortFeedbackFormSubmitEvent').subscribe(() => {
-        this.onSubmit();
-      })
+      eventEmitter
+        .observeEvent('ShortFeedbackFormSubmitEvent')
+        .subscribe(() => {
+          this.onSubmit();
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onChangeFeedback = (feedbackValue: string) => {
-    this.setState(prev => ({ feedbackValue, apiErrors: omit(prev.apiErrors, 'message') }));
-  }
+    this.setState((prev) => ({
+      feedbackValue,
+      apiErrors: omit(prev.apiErrors, 'message'),
+    }));
+  };
 
   onChangeEmail = (emailValue: string) => {
-    this.setState(prev => ({ emailValue, apiErrors: omit(prev.apiErrors, 'email') }));
-  }
+    this.setState((prev) => ({
+      emailValue,
+      apiErrors: omit(prev.apiErrors, 'email'),
+    }));
+  };
 
   validateFeedbackValue = () => {
     const { feedbackValue } = this.state;
@@ -118,7 +126,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     }
 
     return null;
-  }
+  };
 
   validateForm = () => {
     const feedbackValueError = this.validateFeedbackValue();
@@ -130,7 +138,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     } else {
       return false;
     }
-  }
+  };
 
   onSubmit = async () => {
     const { emailValue, feedbackValue } = this.state;
@@ -145,7 +153,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
           locale: this.props.locale || undefined,
           answer: 'no',
           email: emailValue.length > 0 ? emailValue : null,
-          message: feedbackValue
+          message: feedbackValue,
         });
         this.setState({ submitted: true });
         this.props.submitting(false);
@@ -155,15 +163,20 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
           this.props.submitting(false);
           this.setState({
             submitted: false,
-            apiErrors: error.json.errors
+            apiErrors: error.json.errors,
           });
         }
       }
     }
-  }
+  };
 
   render() {
-    const { emailValue, feedbackValue, submitted, feedbackValueError } = this.state;
+    const {
+      emailValue,
+      feedbackValue,
+      submitted,
+      feedbackValueError,
+    } = this.state;
 
     return (
       <Container aria-live="polite">
@@ -174,7 +187,10 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
         ) : (
           <Form>
             <SectionField className="fullWidth">
-              <FormLabel labelMessage={messages.feedback} htmlFor="short-feedback-textarea" />
+              <FormLabel
+                labelMessage={messages.feedback}
+                htmlFor="short-feedback-textarea"
+              />
               <TextArea
                 autofocus={true}
                 name="feedback"
@@ -183,11 +199,16 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
                 id="short-feedback-textarea"
               />
               {feedbackValueError && <Error text={feedbackValueError} />}
-              {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.message} />}
+              {this.state.apiErrors && (
+                <Error apiErrors={this.state.apiErrors.message} />
+              )}
             </SectionField>
 
             <SectionField className="fullWidth">
-              <FormLabel labelMessage={messages.email} htmlFor="short-feedback-email" />
+              <FormLabel
+                labelMessage={messages.email}
+                htmlFor="short-feedback-email"
+              />
               <Input
                 type="text"
                 value={emailValue}
@@ -195,7 +216,9 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
                 autocomplete="email"
                 id="short-feedback-email"
               />
-              {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.email} />}
+              {this.state.apiErrors && (
+                <Error apiErrors={this.state.apiErrors.email} />
+              )}
             </SectionField>
           </Form>
         )}
@@ -205,11 +228,11 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
 }
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale/>
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ShortFeedbackForm {...inputProps} {...dataProps} />}
+    {(dataProps) => <ShortFeedbackForm {...inputProps} {...dataProps} />}
   </Data>
 );
