@@ -794,6 +794,7 @@ class IdeaForm extends PureComponent<
                     error={estimatedBudgetError}
                     value={String(estimatedBudget)}
                     type="number"
+                    min="0"
                     onChange={this.handleEstimatedBudgetOnChange}
                   />
                 </FormElement>
