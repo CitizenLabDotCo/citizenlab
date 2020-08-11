@@ -3,10 +3,10 @@ import { Row, TextCell } from 'components/admin/ResourceList';
 import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import { StatusLabel } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { FormattedDate, FormattedTime } from 'react-intl';
-import StatusLabel from 'components/UI/StatusLabel';
 
 interface Props {
   campaign: ICampaignData;
@@ -23,7 +23,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
       <FormattedTime value={campaign.attributes.updated_at} />
     </div>
     <StatusLabel
-      color="clGreenSuccess"
+      backgroundColor="clGreenSuccess"
       text={<FormattedMessage {...messages.sent} />}
     />
     <Button

@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
-import { colors, fontSizes, boxShadowOutline, media } from 'utils/styleUtils';
 import {
   HeaderContainer,
   HeaderTitle,
-  ModalContentContainer,
+  ModalContentContainer
 } from 'components/UI/Modal';
+import { colors, fontSizes, defaultOutline, media } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ export const Option = styled.div`
     outline: none;
 
     &.focus-visible {
-      ${boxShadowOutline};
+      ${defaultOutline};
     }
 
     &:hover {
@@ -67,7 +67,7 @@ export const Option = styled.div`
 export const StyledHeaderContainer = styled(HeaderContainer)<{
   inModal: boolean;
 }>`
-  ${(props) =>
+  ${props =>
     !props.inModal &&
     css`
       padding-top: 0px;
@@ -83,7 +83,7 @@ export const StyledHeaderContainer = styled(HeaderContainer)<{
 `;
 
 export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
-  ${(props) =>
+  ${props =>
     !props.inModal &&
     css`
       font-size: ${fontSizes.xxxl}px;
@@ -95,7 +95,7 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
   windowHeight: string;
   headerHeight: string;
 }>`
-  ${(props) =>
+  ${props =>
     props.inModal &&
     css`
       padding-top: 20px;
@@ -103,12 +103,12 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
       max-height: calc(85vh - ${props.headerHeight});
 
       ${media.smallerThanMinTablet`
-      max-height: ${(props) =>
+      max-height: ${props =>
         `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
     `}
     `}
 
-  ${(props) =>
+  ${props =>
     !props.inModal &&
     css`
       padding-top: 10px;

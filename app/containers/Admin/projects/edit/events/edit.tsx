@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import ErrorComponent from 'components/UI/Error';
@@ -16,7 +15,7 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip, Label } from 'cl2-component-library';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';

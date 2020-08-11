@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';

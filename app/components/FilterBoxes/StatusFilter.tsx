@@ -8,11 +8,11 @@ import messages from './messages';
 
 // components
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
@@ -32,10 +32,7 @@ const Container = styled.div`
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 const Count = styled.span`

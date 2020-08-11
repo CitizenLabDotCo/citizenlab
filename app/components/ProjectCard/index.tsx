@@ -10,7 +10,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import LazyImage from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -39,7 +39,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 
@@ -51,10 +51,7 @@ const Container = styled(Link)`
   margin-bottom: 25px;
   position: relative;
   cursor: pointer;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   &.large {
     width: 100%;
@@ -103,13 +100,7 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 150ms ease-out;
-
-    &:hover {
-      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35),
-        0px 2px 2px -1px rgba(152, 162, 179, 0.3);
-      transform: translate(0px, -2px);
-    }
+    ${defaultCardHoverStyle};
   }
 
   ${media.smallerThanMinTablet`

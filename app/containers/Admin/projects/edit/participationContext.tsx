@@ -5,24 +5,26 @@ import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import {
+  Input,
+  Radio,
+  IconTooltip,
+  Toggle,
+  Label
+} from 'cl2-component-library';
 import Error from 'components/UI/Error';
-import Label from 'components/UI/Label';
-import Radio from 'components/UI/Radio';
-import Toggle from 'components/UI/Toggle';
 import {
   Section,
   SectionField,
-  SubSectionTitle,
+  SubSectionTitle
 } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
-  SurveyServices,
+  SurveyServices
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -183,7 +185,7 @@ class ParticipationContext extends PureComponent<
       loaded: false,
       noVotingLimit: null,
       noBudgetingAmount: null,
-      poll_anonymous: false,
+      poll_anonymous: false
     };
     this.subscriptions = [];
   }
@@ -199,7 +201,7 @@ class ParticipationContext extends PureComponent<
     }
 
     this.subscriptions = [
-      data$.subscribe((data) => {
+      data$.subscribe(data => {
         if (data) {
           const participation_method = data.data.attributes
             .participation_method as ParticipationMethod;
@@ -214,7 +216,7 @@ class ParticipationContext extends PureComponent<
             max_budget,
             survey_embed_url,
             survey_service,
-            poll_anonymous,
+            poll_anonymous
           } = data.data.attributes;
 
           this.setState({
@@ -230,7 +232,7 @@ class ParticipationContext extends PureComponent<
             survey_embed_url,
             survey_service,
             poll_anonymous,
-            loaded: true,
+            loaded: true
           });
         } else {
           this.setState({ loaded: true });
@@ -243,7 +245,7 @@ class ParticipationContext extends PureComponent<
         .subscribe(() => {
           const output = this.getOutput();
           this.props.onSubmit(output);
-        }),
+        })
     ];
   }
 
@@ -260,13 +262,13 @@ class ParticipationContext extends PureComponent<
       max_budget,
       survey_embed_url,
       survey_service,
-      poll_anonymous,
+      poll_anonymous
     } = this.state;
     let output: IParticipationContextConfig = {} as any;
 
     if (participation_method === 'information') {
       output = {
-        participation_method,
+        participation_method
       };
     } else if (participation_method === 'ideation') {
       output = omitBy(
@@ -281,7 +283,7 @@ class ParticipationContext extends PureComponent<
             voting_enabled && voting_method === 'limited'
               ? voting_limited_max
               : null,
-          downvoting_enabled: voting_enabled ? downvoting_enabled : null,
+          downvoting_enabled: voting_enabled ? downvoting_enabled : null
         },
         isNil
       ) as IParticipationContextConfig;
@@ -289,16 +291,16 @@ class ParticipationContext extends PureComponent<
       output = {
         participation_method,
         survey_embed_url,
-        survey_service,
+        survey_service
       };
     } else if (participation_method === 'poll') {
       output = {
         participation_method,
-        poll_anonymous,
+        poll_anonymous
       };
     } else if (participation_method === 'volunteering') {
       output = {
-        participation_method,
+        participation_method
       };
     } else if (participation_method === 'budgeting') {
       output = omitBy(
@@ -306,7 +308,7 @@ class ParticipationContext extends PureComponent<
           participation_method,
           max_budget,
           commenting_enabled,
-          presentation_mode,
+          presentation_mode
         },
         isNil
       ) as IParticipationContextConfig;
@@ -336,7 +338,7 @@ class ParticipationContext extends PureComponent<
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleParticipationMethodOnChange = (
@@ -357,7 +359,7 @@ class ParticipationContext extends PureComponent<
       presentation_mode: participation_method === 'ideation' ? 'card' : null,
       survey_embed_url: null,
       survey_service: participation_method === 'survey' ? 'typeform' : null,
-      max_budget: participation_method === 'budgeting' ? 1000 : null,
+      max_budget: participation_method === 'budgeting' ? 1000 : null
     });
   };
 
@@ -370,30 +372,30 @@ class ParticipationContext extends PureComponent<
   };
 
   togglePostingEnabled = () => {
-    this.setState((state) => ({ posting_enabled: !state.posting_enabled }));
+    this.setState(state => ({ posting_enabled: !state.posting_enabled }));
   };
 
   toggleCommentingEnabled = () => {
-    this.setState((state) => ({
-      commenting_enabled: !state.commenting_enabled,
+    this.setState(state => ({
+      commenting_enabled: !state.commenting_enabled
     }));
   };
 
   toggleVotingEnabled = () => {
-    this.setState((state) => ({ voting_enabled: !state.voting_enabled }));
+    this.setState(state => ({ voting_enabled: !state.voting_enabled }));
   };
 
   handeVotingMethodOnChange = (voting_method: 'unlimited' | 'limited') => {
     this.setState({
       voting_method,
-      voting_limited_max: voting_method === 'unlimited' ? null : 5,
+      voting_limited_max: voting_method === 'unlimited' ? null : 5
     });
   };
 
   handleVotingLimitOnChange = (voting_limited_max: string) => {
     this.setState({
       voting_limited_max: parseInt(voting_limited_max, 10),
-      noVotingLimit: null,
+      noVotingLimit: null
     });
   };
 
@@ -408,12 +410,12 @@ class ParticipationContext extends PureComponent<
   handleBudgetingAmountChange = (max_budget: string) => {
     this.setState({
       max_budget: parseInt(max_budget, 10),
-      noBudgetingAmount: null,
+      noBudgetingAmount: null
     });
   };
 
   togglePollAnonymous = () => {
-    this.setState((state) => ({ poll_anonymous: !state.poll_anonymous }));
+    this.setState(state => ({ poll_anonymous: !state.poll_anonymous }));
   };
 
   validate() {
@@ -424,7 +426,7 @@ class ParticipationContext extends PureComponent<
       voting_method,
       voting_limited_max,
       participation_method,
-      max_budget,
+      max_budget
     } = this.state;
 
     if (
@@ -459,7 +461,7 @@ class ParticipationContext extends PureComponent<
       surveys_enabled,
       typeform_enabled,
       survey_monkey_enabled,
-      google_forms_enabled,
+      google_forms_enabled
     } = this.props;
     const className = this.props['className'];
     const {
@@ -477,7 +479,7 @@ class ParticipationContext extends PureComponent<
       noVotingLimit,
       noBudgetingAmount,
       poll_anonymous,
-      presentation_mode,
+      presentation_mode
     } = this.state;
     const tenantCurrency = !isNilOrError(tenant)
       ? tenant.attributes.settings.core.currency
@@ -824,7 +826,7 @@ class ParticipationContext extends PureComponent<
                     }
                   />
                 </SubSectionTitle>
-                {['card', 'map'].map((key) => (
+                {['card', 'map'].map(key => (
                   <Radio
                     key={key}
                     onChange={this.handleIdeasDisplayChange}
@@ -884,14 +886,14 @@ class ParticipationContext extends PureComponent<
                                   {...messages.surveyServiceTooltipLinkText}
                                 />
                               </StyledA>
-                            ),
+                            )
                           }}
                         />
                       }
                     />
                   </SubSectionTitle>
                   {['typeform', 'survey_monkey', 'google_forms'].map(
-                    (provider) => {
+                    provider => {
                       if (this.props[`${provider}_enabled`]) {
                         return (
                           <Radio
@@ -936,14 +938,14 @@ const Data = adopt<DataProps, {}>({
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
-  tenant: <GetTenant />,
+  tenant: <GetTenant />
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => (
+    {dataProps => (
       <ParticipationContextWithIntl {...inputProps} {...dataProps} />
     )}
   </Data>

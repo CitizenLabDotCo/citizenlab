@@ -85,26 +85,31 @@ describe('Initiative form page', () => {
 
     // add an image
     cy.get('#e2e-iniatiative-banner-dropzone');
-    cy.fixture('cy.png', 'base64').then((fileContent) => {
-      cy.get('#e2e-iniatiative-img-dropzone').upload(
-        { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
-        { subjectType: 'drag-n-drop' }
-      );
-      cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
-    });
+
+    // add an image
+    cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
+
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
     // save the form
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(3000);
 
-    // TODO
     // verify updated initiative page
-    // cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeSlug}`);
+    cy.get('#e2e-initiative-show');
+    cy.location('pathname').should(
+      'eq',
+      `/en-GB/initiatives/${initiativeTitle}`
+    );
 
     // verify modal with edit changelog
-    // cy.get('#e2e-initiative-show').find('.e2e-initiative-last-modified-button').click();
-    // cy.wait(1000);
-    // cy.get('.e2e-activities-changelog').find('.e2e-activities-changelog-entry').should('have.length', 2);
+    cy.get('#e2e-initiative-show')
+      .find('.e2e-post-last-modified-button')
+      .click();
+    cy.wait(1000);
+    cy.get('.e2e-activities-changelog')
+      .find('.e2e-idea-changelog-entry')
+      .should('have.length', 2);
   });
 
   after(() => {

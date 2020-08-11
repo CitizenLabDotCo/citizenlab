@@ -1,21 +1,14 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { FormikConsumer, FormikContext } from 'formik';
-import Radio, { Props as VanillaProps } from 'components/UI/Radio';
+import { Radio, RadioProps } from 'cl2-component-library';
 
 // Typings
-export interface Props {
+type Props = RadioProps & {
   name: string;
-}
+};
 
-export interface State {}
-
-class FormikRadio extends React.Component<Props & VanillaProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+class FormikRadio extends PureComponent<Props> {
   handleOnChange = (formikContext: FormikContext<any>) => (value: string) => {
     formikContext.setFieldValue(this.props.name, value);
   };
@@ -23,7 +16,7 @@ class FormikRadio extends React.Component<Props & VanillaProps, State> {
   render() {
     return (
       <FormikConsumer>
-        {(formikContext) => (
+        {formikContext => (
           <Radio
             {...this.props}
             currentValue={formikContext.values[this.props.name] || ''}

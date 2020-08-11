@@ -8,7 +8,7 @@ import { get } from 'lodash-es';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';

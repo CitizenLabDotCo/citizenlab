@@ -7,12 +7,10 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import Select from 'components/UI/Select';
-import Icon from 'components/UI/Icon';
+import { Icon, IconTooltip, Select } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
@@ -25,7 +23,7 @@ import {
   updateModerationStatus,
   IModerationData,
   TModerationStatuses,
-  TModeratableTypes,
+  TModeratableTypes
 } from 'services/moderations';
 
 // i18n
@@ -161,7 +159,7 @@ const EmptyMessage = styled.div`
   text-align: center;
 `;
 
-const StyledSearch = styled(SearchInput)`
+const StyledSearchInput = styled(SearchInput)`
   margin-left: auto;
   width: 320px;
 `;
@@ -174,31 +172,31 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const moderationStatuses = [
     {
       value: 'unread',
-      label: intl.formatMessage(messages.unread),
+      label: intl.formatMessage(messages.unread)
     },
     {
       value: 'read',
-      label: intl.formatMessage(messages.read),
-    },
+      label: intl.formatMessage(messages.read)
+    }
   ];
 
   const pageSizes = [
     {
       value: 10,
-      label: '10',
+      label: '10'
     },
     {
       value: 25,
-      label: '25',
+      label: '25'
     },
     {
       value: 50,
-      label: '50',
+      label: '50'
     },
     {
       value: 100,
-      label: '100',
-    },
+      label: '100'
+    }
   ];
 
   const {
@@ -212,13 +210,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onPageSizeChange,
     onModeratableTypesChange,
     onProjectIdsChange,
-    onSearchTermChange,
+    onSearchTermChange
   } = useModerations({
     pageSize: pageSizes[1].value,
     moderationStatus: 'unread',
     moderatableTypes: [],
     projectIds: [],
-    searchTerm: '',
+    searchTerm: ''
   });
 
   const [moderationItems, setModerationItems] = useState(list);
@@ -232,7 +230,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       if (!isNilOrError(moderationItems) && !processing) {
         const newSelectedRows =
           selectedRows.length < moderationItems.length
-            ? moderationItems.map((item) => item.id)
+            ? moderationItems.map(item => item.id)
             : [];
         setSelectedRows(newSelectedRows);
       }
@@ -287,7 +285,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     (searchTerm: string) => {
       onSearchTermChange(searchTerm);
       trackEventByName(tracks.searchUsed, {
-        searchTerm,
+        searchTerm
       });
     },
     [onSearchTermChange]
@@ -297,7 +295,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     (selectedModerationId: string) => {
       if (!processing) {
         const newSelectedRows = includes(selectedRows, selectedModerationId)
-          ? selectedRows.filter((id) => id !== selectedModerationId)
+          ? selectedRows.filter(id => id !== selectedModerationId)
           : [...selectedRows, selectedModerationId];
         setSelectedRows(newSelectedRows);
       }
@@ -321,12 +319,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           { selectedItemsCount: selectedRows.length }
         );
         setProcessing(true);
-        const moderations = selectedRows.map((moderationId) =>
-          moderationItems.find((item) => item.id === moderationId)
+        const moderations = selectedRows.map(moderationId =>
+          moderationItems.find(item => item.id === moderationId)
         ) as IModerationData[];
         const updatedModerationStatus =
           moderationStatus === 'read' ? 'unread' : 'read';
-        const promises = moderations.map((moderation) =>
+        const promises = moderations.map(moderation =>
           updateModerationStatus(
             moderation.id,
             moderation.attributes.moderatable_type,
@@ -406,7 +404,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               />
             </>
           )}
-          <StyledSearch onChange={handleSearchTermChange} />
+          <StyledSearchInput onChange={handleSearchTermChange} />
         </Filters>
 
         <StyledTable>
@@ -443,7 +441,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           </thead>
           {moderationItems.length > 0 && (
             <tbody>
-              {moderationItems.map((moderationItem) => (
+              {moderationItems.map(moderationItem => (
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
@@ -472,7 +470,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <PageSizeSelect
                 options={pageSizes}
                 onChange={handleOnPageSizeChange}
-                value={pageSizes.find((item) => item.value === pageSize)}
+                value={pageSizes.find(item => item.value === pageSize)}
               />
             </RowsPerPage>
           </Footer>

@@ -6,7 +6,7 @@ import { IEventData } from 'services/events';
 
 // Components
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // Utils

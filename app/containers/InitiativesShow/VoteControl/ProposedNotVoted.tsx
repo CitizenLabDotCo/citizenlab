@@ -11,8 +11,7 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
 import CountDown from './CountDown';
-import Icon from 'components/UI/Icon';
-import IconTooltip from 'components/UI/IconTooltip';
+import { Icon, IconTooltip } from 'cl2-component-library';
 
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';

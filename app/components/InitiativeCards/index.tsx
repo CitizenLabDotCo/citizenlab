@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,8 +10,7 @@ import tracks from './tracks';
 // components
 import InitiativeCard from 'components/InitiativeCard';
 import InitiativesMap from 'components/InitiativesMap';
-import Icon from 'components/UI/Icon';
-import Spinner from 'components/UI/Spinner';
+import { Icon, Spinner } from 'cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -45,7 +44,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
@@ -71,17 +70,14 @@ const InitialLoading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
     height: 150px;
   `}
 `;
 
-const MobileSearchFilter = styled(SearchInput)`
+const MobileSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 `;
 
@@ -162,10 +158,7 @@ const EmptyContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 const EmptyContainerInner = styled.div`
@@ -281,7 +274,7 @@ const ClearFiltersButton = styled.button`
   }
 `;
 
-const StyledSearchInput = styled(SearchInput)`
+const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
@@ -343,6 +336,9 @@ interface State {
 }
 
 class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
+  desktopSearchInputClearButton: HTMLButtonElement | null = null;
+  mobileSearchInputClearButton: HTMLButtonElement | null = null;
+
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -459,6 +455,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         topics: null,
       };
 
+      this.desktopSearchInputClearButton?.click();
+      this.mobileSearchInputClearButton?.click();
+
       this.props.initiatives.onInitiativeFiltering(selectedInitiativeFilters);
 
       return { selectedInitiativeFilters };
@@ -497,9 +496,13 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedView });
   };
 
-  removeFocus = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
+    this.desktopSearchInputClearButton = element;
+  }
+
+  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
+    this.mobileSearchInputClearButton = element;
+  }
 
   filterMessage = (<FormattedMessage {...messages.filter} />);
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
@@ -534,16 +537,13 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-        {filtersActive && (
-          <ClearFiltersButton
-            onMouseDown={this.removeFocus}
-            onClick={this.handleInitiativeFiltersOnResetAndApply}
-          >
-            <ClearFiltersText>
-              <FormattedMessage {...messages.resetFilters} />
-            </ClearFiltersText>
-          </ClearFiltersButton>
-        )}
+          {filtersActive &&
+            <ClearFiltersButton onClick={this.handleInitiativeFiltersOnResetAndApply}>
+              <ClearFiltersText>
+                <FormattedMessage {...messages.resetFilters} />
+              </ClearFiltersText>
+            </ClearFiltersButton>
+          }
 
         <ScreenReaderOnly aria-live="polite">
           {initiativesFilterCounts && (
@@ -554,9 +554,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
           )}
         </ScreenReaderOnly>
 
-        <StyledSearchInput
+        <DesktopSearchInput
           placeholder={this.searchPlaceholder}
           ariaLabel={this.searchAriaLabel}
+          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
         />
         <StyledInitiativesStatusFilter
@@ -643,9 +644,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </MobileFiltersSidebarWrapper>
                 </FullscreenModal>
 
-                <MobileSearchFilter
+                <MobileSearchInput
                   placeholder={this.searchPlaceholder}
                   ariaLabel={this.searchAriaLabel}
+                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
                 />
 

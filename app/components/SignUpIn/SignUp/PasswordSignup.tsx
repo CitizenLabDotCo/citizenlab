@@ -6,7 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';

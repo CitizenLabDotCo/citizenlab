@@ -9,6 +9,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 const Title = styled.h2`
@@ -35,7 +36,7 @@ const Bold = styled.span`
   font-weight: 600;
 `;
 
-const InitiativeInfoContent = memo(() => {
+const InitiativeInfoContent = memo<InjectedLocalized>(({ localize }) => {
   const tenant = useTenant();
 
   if (!isNilOrError(tenant)) {
@@ -67,6 +68,7 @@ const InitiativeInfoContent = memo(() => {
                 <FormattedMessage {...messages.readMore} />
               </Link>
             ),
+            orgName: localize(tenant.data.attributes.settings.core.organization_name)
           }}
         />
       </Content>
@@ -76,4 +78,4 @@ const InitiativeInfoContent = memo(() => {
   return null;
 });
 
-export default InitiativeInfoContent;
+export default injectLocalize(InitiativeInfoContent);

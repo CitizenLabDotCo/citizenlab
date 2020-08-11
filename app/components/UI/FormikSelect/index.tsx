@@ -1,12 +1,12 @@
 import React from 'react';
-import Select, { Props as VanillaInputProps } from 'components/UI/Select';
+import { Select, SelectProps } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
 type State = {};
 
 class FormikInput extends React.Component<
-  FieldProps & VanillaInputProps,
+  FieldProps & SelectProps,
   State
 > {
   handleOnChange = (newOption: IOption) => {

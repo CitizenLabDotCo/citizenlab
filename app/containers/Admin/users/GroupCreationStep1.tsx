@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 
 // Components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // hooks
@@ -17,7 +17,7 @@ import messages from './messages';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, transparentize } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -43,16 +43,42 @@ const GroupType = styled.div`
   }
 `;
 
+const GroupIconWrapper = styled.div`
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ManualGroupIconWrapper = styled(GroupIconWrapper)`
+  background: ${transparentize(.9, colors.adminTextColor)};
+`;
+
+const SmartGroupIconWrapper = styled(GroupIconWrapper)`
+  background: ${transparentize(.9, colors.adminOrangeIcons)};
+`;
+
 const GroupIcon = styled(Icon)`
-  width: 4.5rem;
-  height: 4.5rem;
-  margin-bottom: 1rem;
+  width: 28px;
+  height: 28px;
+  fill: ${colors.adminTextColor};
+`;
+
+const ManualGroupIcon = styled(GroupIcon)`
+  fill: ${colors.adminTextColor};
+`;
+
+const SmartGroupIcon = styled(GroupIcon)`
+  fill: ${colors.adminOrangeIcons};
 `;
 
 const GroupName = styled.p`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
+  margin-top: 15px;
 `;
 
 const GroupDescription = styled.div`
@@ -141,7 +167,9 @@ const GroupCreationStep1 = memo(
     return (
       <Container>
         <GroupType className="manual">
-          <GroupIcon name="database" />
+          <ManualGroupIconWrapper>
+            <ManualGroupIcon name="database" />
+          </ManualGroupIconWrapper>
           <GroupName>
             <FormattedMessage {...messages.step1TypeNameNormal} />
           </GroupName>
@@ -162,7 +190,9 @@ const GroupCreationStep1 = memo(
           </Step2Button>
         </GroupType>
         <GroupType className="rules">
-          <GroupIcon name="lightingBolt" />
+          <SmartGroupIconWrapper>
+            <SmartGroupIcon name="lightningBolt" />
+          </SmartGroupIconWrapper>
           <GroupName>
             <FormattedMessage {...messages.step1TypeNameSmart} />
           </GroupName>

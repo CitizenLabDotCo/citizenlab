@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ContentChangeLog from 'components/PostShowComponents/ContentChangeLog';
 
 // resources

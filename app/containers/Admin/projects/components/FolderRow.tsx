@@ -1,13 +1,13 @@
 import React, { memo, useState } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
-  ActionsRowContainer,
+  ActionsRowContainer
 } from './StyledComponents';
 
 // styles
@@ -27,7 +27,7 @@ const FolderIcon = styled(Icon)`
 
 // types & services
 import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
+  GetAdminPublicationsChildProps
 } from 'resources/GetAdminPublications';
 import { adopt } from 'react-adopt';
 import ProjectRow from './ProjectRow';
@@ -102,7 +102,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
     !!adminPublications.list?.length &&
     adminPublications.list.length > 0;
   const [folderOpen, setFolderOpen] = useState(false);
-  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
+  const toggleExpand = () => setFolderOpen(folderOpen => !folderOpen);
 
   return (
     <Container>
@@ -128,9 +128,8 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
         </RowContentInner>
         <ActionsRowContainer>
           <RowButton
-            className={`e2e-admin-edit-project ${
-              publication.attributes.publication_title_multiloc['en-GB'] || ''
-            }`}
+            className={`e2e-admin-edit-project ${publication.attributes
+              .publication_title_multiloc['en-GB'] || ''}`}
             linkTo={`/admin/projects/folders/${publication.publicationId}`}
             buttonStyle="secondary"
             icon="edit"
@@ -142,7 +141,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
 
       {hasProjects && folderOpen && (
         <ProjectRows>
-          {adminPublications?.list?.map((publication) => (
+          {adminPublications?.list?.map(publication => (
             <InFolderProjectRow
               publication={publication}
               key={publication.id}
@@ -162,11 +161,11 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetAdminPublications>
-  ),
+  )
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <FolderRow {...inputProps} {...dataprops} />}
+    {dataprops => <FolderRow {...inputProps} {...dataprops} />}
   </Data>
 );

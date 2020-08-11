@@ -6,7 +6,7 @@ import messages from '../messages';
 import { IInviteData, deleteInvite } from 'services/invites';
 import GetUser from 'resources/GetUser';
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
-import Badge from 'components/admin/Badge';
+import { Badge } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -15,7 +15,7 @@ interface InputProps {
 
 export default (inputProps: InputProps) => (
   <GetUser id={inputProps.invite.relationships.invitee.data.id}>
-    {(user) => {
+    {user => {
       const handleOnDeleteInvite = (inviteId: string) => () =>
         deleteInvite(inviteId);
 
