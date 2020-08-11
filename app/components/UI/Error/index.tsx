@@ -99,15 +99,15 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   display: flex;
   align-items: flex-start;
-  margin-left: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 `;
 
 const Bullet = styled.span`
-  font-size: ${fontSizes.xxl}px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
-  margin-right: 10px;
+  line-height: ${fontSizes.base}px;
+  margin-right: 8px;
 `;
 
 interface DefaultProps {
