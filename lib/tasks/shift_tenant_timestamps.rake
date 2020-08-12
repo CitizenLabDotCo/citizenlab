@@ -21,9 +21,9 @@ namespace :cl2back do
           timestamp_attrs.delete('created_at') if claz.name == Activity.name
           if timestamp_attrs.present?
             query = timestamp_attrs.map do |timestamp_attr|
-              "#{timestamp_attr} = (#{timestamp_attr} + '#{args[:days].to_i} DAY'::INTERVAL)"
+              "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
             end.join(', ')
-            claz.update_all query
+            claz.update_all([query, num_days: args[:days].to_i])
           end
         end
         LogActivityJob.perform_later(tenant, 'timestamps_shifted', nil, Time.now.to_i, payload: {days_shifted: args[:days]})
