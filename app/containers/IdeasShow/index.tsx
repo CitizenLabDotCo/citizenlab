@@ -39,7 +39,7 @@ import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
-import ActionBar from './ActionBar';
+import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
 
@@ -213,6 +213,8 @@ const IdeaHeader = styled.div`
     margin-bottom: 45px;
   `}
 `;
+
+const StyledProjectLink = styled(ProjectLink)``;
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
@@ -646,11 +648,7 @@ export class IdeasShow extends PureComponent<
         <>
           <IdeaMeta ideaId={ideaId} />
 
-          <ActionBar
-            ideaId={ideaId}
-            translateButtonClicked={translateButtonClicked}
-            onTranslateIdea={this.onTranslateIdea}
-          />
+          <StyledProjectLink projectId={projectId} />
 
           <IdeaContainer>
             <FeatureFlag name="machine_translations">
