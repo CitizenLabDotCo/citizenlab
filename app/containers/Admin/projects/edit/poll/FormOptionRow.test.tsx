@@ -3,8 +3,14 @@ import { shallow } from 'enzyme';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('services/pollOptions', () => ({
-  addPollOption: jest.fn((_id, _type, title) => { return new Promise((resolve) => resolve({ data: mockOption('newOption', title) })); }),
-  updatePollOption: jest.fn(() => { return new Promise((resolve) => resolve); })
+  addPollOption: jest.fn((_id, _type, title) => {
+    return new Promise((resolve) =>
+      resolve({ data: mockOption('newOption', title) })
+    );
+  }),
+  updatePollOption: jest.fn(() => {
+    return new Promise((resolve) => resolve);
+  }),
 }));
 
 import * as pollOptionsService from 'services/pollOptions';
@@ -13,8 +19,14 @@ const updatePollOptionSpy = jest.spyOn(pollOptionsService, 'updatePollOption');
 
 import { Input, LocaleSwitcher } from 'cl2-component-library';
 
-jest.mock('cl2-component-library', () => ({ Input: 'Input', LocaleSwitcher: 'LocaleSwitcher' }));
-jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
+jest.mock('cl2-component-library', () => ({
+  Input: 'Input',
+  LocaleSwitcher: 'LocaleSwitcher',
+}));
+jest.mock('components/admin/ResourceList', () => ({
+  TextCell: 'TextCell',
+  Row: 'Row',
+}));
 jest.mock('components/UI/InputMultiloc', () => 'InputMultiloc');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
@@ -187,11 +199,16 @@ describe('<FormOptionRow />', () => {
         );
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(addPollOptionSpy).toHaveBeenCalledTimes(1);
-        expect(addPollOptionSpy).toHaveBeenCalledWith(questionId, titleMultiloc);
+        expect(addPollOptionSpy).toHaveBeenCalledWith(
+          questionId,
+          titleMultiloc
+        );
         // resolve the promise the test the callback
-        return pollOptionsService.addPollOption(questionId, titleMultiloc).then(() => {
-          expect(closeRow).toHaveBeenCalledTimes(1);
-        });
+        return pollOptionsService
+          .addPollOption(questionId, titleMultiloc)
+          .then(() => {
+            expect(closeRow).toHaveBeenCalledTimes(1);
+          });
       });
     });
 

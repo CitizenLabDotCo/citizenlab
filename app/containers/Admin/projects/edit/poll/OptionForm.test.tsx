@@ -18,18 +18,19 @@ jest.mock('./OptionRow', () => 'OptionRow');
 jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
-const question = mockQuestion('questionId', 'What is your favourite ice cream flavour ?');
-const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) => mockOption(index, item)) as IPollOption[];
+const question = mockQuestion(
+  'questionId',
+  'What is your favourite ice cream flavour ?'
+);
+const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) =>
+  mockOption(index, item)
+) as IPollOption[];
 
 describe('<OptionForm/>', () => {
   it('clicking done calls the collapse handler', () => {
     const collapse = jest.fn();
     const wrapper = shallow(
-      <OptionForm
-        question={question}
-        collapse={collapse}
-        pollOptions={null}
-      />
+      <OptionForm question={question} collapse={collapse} pollOptions={null} />
     );
     wrapper.find('.e2e-collapse-option-form').simulate('click');
     expect(collapse).toHaveBeenCalledTimes(1);
@@ -49,11 +50,7 @@ describe('<OptionForm/>', () => {
     });
     it('renders correctly with when pollOptions is []', () => {
       const wrapper = shallow(
-        <OptionForm
-          question={question}
-          collapse={jest.fn()}
-          pollOptions={[]}
-        />
+        <OptionForm question={question} collapse={jest.fn()} pollOptions={[]} />
       );
       expect(wrapper.find('OptionRow').exists()).toBe(false);
       expect(wrapper.find('.e2e-add-option').exists()).toBe(true);
@@ -91,7 +88,11 @@ describe('<OptionForm/>', () => {
           pollOptions={[mockOption('vanillaId', 'Vanilla')] as IPollOption[]}
         />
       );
-      expect(wrapper.find('OptionRow').find((item: any) => item.prop('pollOptionId') === 'vanillaId')).toBeTruthy();
+      expect(
+        wrapper
+          .find('OptionRow')
+          .find((item: any) => item.prop('pollOptionId') === 'vanillaId')
+      ).toBeTruthy();
     });
     it('List reacts to addition', () => {
       const wrapper = shallow(

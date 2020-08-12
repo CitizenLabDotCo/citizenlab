@@ -258,12 +258,9 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
       setTitleMultiloc(titleMultiloc);
     }, []);
 
-    const onSelectedLocaleChange = useCallback(
-      (newSelectedLocale: Locale) => {
-        setSelectedLocale(newSelectedLocale);
-      },
-      []
-    );
+    const onSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
+      setSelectedLocale(newSelectedLocale);
+    }, []);
 
     const onStartDateChange = useCallback((startDate: string) => {
       setResponseError(null);

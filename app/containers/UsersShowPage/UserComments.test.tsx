@@ -52,7 +52,9 @@ describe('<UserComments />', () => {
       hasMore: true,
       commentsList: makeComments([{ ideaId: 'idea1' }]).data,
     };
-    const Wrapper = shallow(<UserComments comments={commentsAsReturned} theme={theme} />);
+    const Wrapper = shallow(
+      <UserComments comments={commentsAsReturned} theme={theme} />
+    );
     expect(Wrapper).toMatchSnapshot();
   });
   it('loads more comments when the load more button is clicked', () => {
@@ -62,7 +64,9 @@ describe('<UserComments />', () => {
       hasMore: true,
       commentsList: makeComments([{ ideaId: 'idea1' }]).data,
     };
-    const Wrapper = shallow(<UserComments comments={commentsAsReturned} theme={theme} />);
+    const Wrapper = shallow(
+      <UserComments comments={commentsAsReturned} theme={theme} />
+    );
     Wrapper.find('UserComments__LoadMoreButton').simulate('click');
     expect(loadMore).toHaveBeenCalledTimes(1);
   });

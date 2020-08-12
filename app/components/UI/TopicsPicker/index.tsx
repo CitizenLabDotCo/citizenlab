@@ -143,7 +143,7 @@ const TopicsPicker = memo(
                   onClick={handleOnChange(topic.id)}
                   className={[
                     'e2e-topics-picker-item',
-                    isSelected ? 'selected' : null
+                    isSelected ? 'selected' : null,
                   ]
                     .filter((item) => item)
                     .join(' ')}

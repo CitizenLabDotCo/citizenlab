@@ -39,7 +39,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings

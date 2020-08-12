@@ -8,12 +8,19 @@ jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
 jest.mock('components/PostShowComponents/DropdownMap', () => 'DropdownMap');
-jest.mock('components/PostShowComponents/OfficialFeedback', () => 'OfficialFeedback');
+jest.mock(
+  'components/PostShowComponents/OfficialFeedback',
+  () => 'OfficialFeedback'
+);
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('cl2-component-library', () => ({ IconTooltip: 'IconTooltip' }));
-jest.mock('../PostPreview', () => ({ Top: 'Top', Content: 'Content', Container: 'Container' }));
+jest.mock('../PostPreview', () => ({
+  Top: 'Top',
+  Content: 'Content',
+  Container: 'Container',
+}));
 jest.mock('./FeedbackSettings', () => 'FeedbackSettings');
 jest.mock('./VotePreview', () => 'VotePreview');
 jest.mock('utils/cl-router/Link', () => 'Link');
@@ -30,11 +37,11 @@ jest.mock('utils/styleUtils', () => ({
   colors: {
     label: '#000',
     separation: '#000',
-    adminTextColor: '#000'
+    adminTextColor: '#000',
   },
   fontSizes: {
-    base: 16
-  }
+    base: 16,
+  },
 }));
 
 import { IdeaContent } from './IdeaContent';

@@ -19,7 +19,7 @@ import FileUploader from 'components/UI/FileUploader';
 import {
   FormSection,
   FormSectionTitle,
-  FormLabel
+  FormLabel,
 } from 'components/UI/FormComponents';
 
 // services
@@ -31,12 +31,12 @@ import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaCustomFieldsSchemasStream,
   IIdeaCustomFieldsSchemas,
-  CustomFieldCodes
+  CustomFieldCodes,
 } from 'services/ideaCustomFields';
 
 // resources
 import GetFeatureFlag, {
-  GetFeatureFlagChildProps
+  GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -168,7 +168,7 @@ class IdeaForm extends PureComponent<
       ideaCustomFieldsSchemas: null,
       locationError: null,
       imageError: null,
-      attachmentsError: null
+      attachmentsError: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -187,7 +187,7 @@ class IdeaForm extends PureComponent<
     const pbContext$: Observable<
       IProjectData | IPhaseData | null
     > = project$.pipe(
-      switchMap(project => {
+      switchMap((project) => {
         if (project) {
           if (project.data.attributes.participation_method === 'budgeting') {
             return of(project.data);
@@ -195,9 +195,10 @@ class IdeaForm extends PureComponent<
 
           if (project.data.attributes.process_type === 'timeline') {
             return phasesStream(project.data.id).observable.pipe(
-              map(phases => {
+              map((phases) => {
                 const pbPhase = phases.data.find(
-                  phase => phase.attributes.participation_method === 'budgeting'
+                  (phase) =>
+                    phase.attributes.participation_method === 'budgeting'
                 );
                 return pbPhase || null;
               })
@@ -215,19 +216,19 @@ class IdeaForm extends PureComponent<
       combineLatest(locale$, tenant$).subscribe(([locale, tenant]) => {
         this.setState({
           locale,
-          tenant
+          tenant,
         });
       }),
 
-      pbContext$.subscribe(pbContext => this.setState({ pbContext })),
+      pbContext$.subscribe((pbContext) => this.setState({ pbContext })),
 
-      ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas =>
+      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) =>
         this.setState({ ideaCustomFieldsSchemas })
       ),
 
       eventEmitter
         .observeEvent('IdeaFormSubmitEvent')
-        .subscribe(this.handleOnSubmit)
+        .subscribe(this.handleOnSubmit),
     ];
   }
 
@@ -238,7 +239,7 @@ class IdeaForm extends PureComponent<
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   mapPropsToState = () => {
@@ -249,7 +250,7 @@ class IdeaForm extends PureComponent<
       address,
       budget,
       imageFile,
-      remoteIdeaFiles
+      remoteIdeaFiles,
     } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
@@ -260,14 +261,14 @@ class IdeaForm extends PureComponent<
       ideaFiles,
       address,
       title: title || '',
-      description: description || ''
+      description: description || '',
     });
   };
 
   handleTitleOnChange = (title: string) => {
     this.setState({
       title,
-      titleError: null
+      titleError: null,
     });
   };
 
@@ -276,7 +277,7 @@ class IdeaForm extends PureComponent<
 
     this.setState(({ descriptionError }) => ({
       description,
-      descriptionError: isDescriptionEmpty ? descriptionError : null
+      descriptionError: isDescriptionEmpty ? descriptionError : null,
     }));
   };
 
@@ -290,20 +291,20 @@ class IdeaForm extends PureComponent<
 
   handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
-      imageFile: [imageFile[0]]
+      imageFile: [imageFile[0]],
     });
   };
 
   handleUploadOnRemove = () => {
     this.setState({
-      imageFile: []
+      imageFile: [],
     });
   };
 
   handleBudgetOnChange = (budget: string) => {
     this.setState({
       budget: Number(budget),
-      budgetError: null
+      budgetError: null,
     });
   };
 
@@ -436,7 +437,7 @@ class IdeaForm extends PureComponent<
           (pbContext.type === 'phase' &&
             pastPresentOrFuture([
               (pbContext as IPhaseData).attributes.start_at,
-              (pbContext as IPhaseData).attributes.end_at
+              (pbContext as IPhaseData).attributes.end_at,
             ]) === 'present'))
       ) {
         budgetError = this.props.intl.formatMessage(messages.noBudgetError);
@@ -454,7 +455,7 @@ class IdeaForm extends PureComponent<
       topicsError,
       locationError,
       imageError,
-      attachmentsError
+      attachmentsError,
     });
 
     // scroll to erroneous title/description fields
@@ -462,7 +463,7 @@ class IdeaForm extends PureComponent<
       scrollToComponent(this.titleInputElement, {
         align: 'top',
         offset: -240,
-        duration: 300
+        duration: 300,
       });
       setTimeout(
         () => this.titleInputElement && this.titleInputElement.focus(),
@@ -472,7 +473,7 @@ class IdeaForm extends PureComponent<
       scrollToComponent(this.descriptionElement, {
         align: 'top',
         offset: -200,
-        duration: 300
+        duration: 300,
       });
       setTimeout(
         () => this.descriptionElement && this.descriptionElement.focus(),
@@ -494,16 +495,16 @@ class IdeaForm extends PureComponent<
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
     this.setState(({ ideaFiles }) => ({
-      ideaFiles: [...ideaFiles, ideaFileToAdd]
+      ideaFiles: [...ideaFiles, ideaFileToAdd],
     }));
   };
 
   handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {
     this.setState(({ ideaFiles, ideaFilesToRemove }) => ({
       ideaFiles: ideaFiles.filter(
-        ideaFile => ideaFile.base64 !== ideaFileToRemove.base64
+        (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
       ),
-      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove]
+      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
     }));
   };
 
@@ -516,7 +517,7 @@ class IdeaForm extends PureComponent<
       budget,
       imageFile,
       ideaFiles,
-      ideaFilesToRemove
+      ideaFilesToRemove,
     } = this.state;
     const formIsValid = this.validate(
       title,
@@ -537,7 +538,7 @@ class IdeaForm extends PureComponent<
         budget,
         description,
         ideaFiles,
-        ideaFilesToRemove
+        ideaFilesToRemove,
       };
 
       this.props.onSubmit(output);
@@ -588,7 +589,7 @@ class IdeaForm extends PureComponent<
       topicsError,
       locationError,
       imageError,
-      attachmentsError
+      attachmentsError,
     } = this.state;
     const tenantCurrency = tenant
       ? tenant.data.attributes.settings.core.currency
@@ -618,7 +619,7 @@ class IdeaForm extends PureComponent<
       const showTopics = topicsEnabled && topics && topics.length > 0;
       const showLocation = locationEnabled;
       const filteredTopics = topics.filter(
-        topic => !isNilOrError(topic)
+        (topic) => !isNilOrError(topic)
       ) as ITopicData[];
 
       return (
@@ -693,7 +694,7 @@ class IdeaForm extends PureComponent<
                       labelMessage={messages.budgetLabel}
                       labelMessageValues={{
                         currency: tenantCurrency,
-                        maxBudget: pbContext?.attributes.max_budget
+                        maxBudget: pbContext?.attributes.max_budget,
                       }}
                       htmlFor="budget"
                       iconName="admin"
@@ -839,13 +840,13 @@ const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
-  }
+  },
 });
 
 const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaFormWitHOCs {...dataProps} {...inputProps} />}
+    {(dataProps) => <IdeaFormWitHOCs {...dataProps} {...inputProps} />}
   </Data>
 );

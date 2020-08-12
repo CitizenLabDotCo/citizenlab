@@ -26,7 +26,13 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, media, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  media,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 20px;
