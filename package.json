@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "3.1.3",
-    "@babel/runtime": "7.11.0",
+    "@babel/runtime": "7.11.2",
     "@researchgate/react-intersection-observer": "1.3.2",
     "@segment/consent-manager": "4.0.1",
     "@segment/snippet": "4.12.0",
