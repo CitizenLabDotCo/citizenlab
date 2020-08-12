@@ -23,6 +23,7 @@ import IdeaMeta from './IdeaMeta';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
+import IdeaEstimatedBudget from './IdeaEstimatedBudget';
 import Body from 'components/PostShowComponents/Body';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
@@ -211,6 +212,12 @@ const IdeaHeader = styled.div`
     margin-top: 0px;
     margin-bottom: 45px;
   `}
+`;
+
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 28px;
 `;
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
@@ -595,6 +602,7 @@ export class IdeasShow extends PureComponent<
         idea?.relationships?.topics?.data?.map((item) => item.id) || [];
       const ideaUrl = location.href;
       const ideaId = idea.id;
+      const estimatedBudget = idea?.attributes?.estimated_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
       const participationContextType =
         actionInfos?.participationContextType || null;
@@ -627,6 +635,13 @@ export class IdeasShow extends PureComponent<
         ideaCustomFieldsSchemas,
         locale
       );
+      const estimatedBudgetEnabled = this.isFieldEnabled(
+        'estimated_budget',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+      const hasMultipleBodyAttributes =
+        estimatedBudget !== null && estimatedBudgetEnabled && !!ideaBody;
 
       const utmParams = !isNilOrError(authUser)
         ? {
@@ -712,6 +727,23 @@ export class IdeasShow extends PureComponent<
                     {...messages.invisibleTitleContent}
                   />
                 </ScreenReaderOnly>
+
+                {estimatedBudgetEnabled &&
+                  estimatedBudget !== null &&
+                  hasMultipleBodyAttributes && (
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.estimatedBudgetTitle} />
+                    </BodySectionTitle>
+                  )}
+                {estimatedBudgetEnabled && estimatedBudget !== null && (
+                  <IdeaEstimatedBudget estimatedBudget={estimatedBudget} />
+                )}
+
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                )}
                 <Body
                   postType="idea"
                   postId={ideaId}

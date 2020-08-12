@@ -169,7 +169,12 @@ interface Props {
   className?: string;
 }
 
-const disablableFields = ['topic_ids', 'location', 'attachments'];
+const disablableFields = [
+  'topic_ids',
+  'location',
+  'attachments',
+  'estimated_budget',
+];
 const alwaysRequiredFields = ['title', 'body'];
 
 const IdeaCustomField = memo<Props & InjectedLocalized>(

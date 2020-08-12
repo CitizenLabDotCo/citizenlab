@@ -116,4 +116,12 @@ export default defineMessages({
     id: 'app.components.IdeasShow.or',
     defaultMessage: 'or',
   },
+  estimatedBudgetTitle: {
+    id: 'app.components.IdeasShow.estimatedBudgetTitle',
+    defaultMessage: 'Estimated budget',
+  },
+  bodyTitle: {
+    id: 'app.components.IdeasShow.bodyTitle',
+    defaultMessage: 'Description',
+  },
 });
