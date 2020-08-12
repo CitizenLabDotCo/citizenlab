@@ -6,7 +6,13 @@ import LoadingComments from './Comments/LoadingComments';
 // styling
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
-import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet, postPageContentMaxWidth } from './styleConstants';
+import {
+  columnsGapDesktop,
+  rightColumnWidthDesktop,
+  columnsGapTablet,
+  rightColumnWidthTablet,
+  postPageContentMaxWidth,
+} from './styleConstants';
 
 const Container = styled.div`
   flex: 1 1 auto;

@@ -5,10 +5,7 @@ import { IOption } from 'typings';
 
 type State = {};
 
-class FormikInput extends React.Component<
-  FieldProps & SelectProps,
-  State
-> {
+class FormikInput extends React.Component<FieldProps & SelectProps, State> {
   handleOnChange = (newOption: IOption) => {
     this.props.form.setFieldValue(this.props.field.name, newOption.value);
   };

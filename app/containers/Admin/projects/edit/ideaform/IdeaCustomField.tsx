@@ -17,7 +17,9 @@ import {
 
 // components
 import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
-const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
+const TextAreaMultilocWithLocaleSwitcher = lazy(() =>
+  import('components/UI/TextAreaMultilocWithLocaleSwitcher')
+);
 
 // i18n
 import T from 'components/T';

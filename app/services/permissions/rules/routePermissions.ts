@@ -28,12 +28,11 @@ definePermissionRule(
       }
 
       if (
-        isModerator(user) &&
-        item.path === '/admin/dashboard' ||
-        (item.path === '/admin/projects' ||
-          item.path === '/admin/emails' ||
-          item.path === '/admin/ideas' ||
-          item.path === '/admin/workshops')
+        (isModerator(user) && item.path === '/admin/dashboard') ||
+        item.path === '/admin/projects' ||
+        item.path === '/admin/emails' ||
+        item.path === '/admin/ideas' ||
+        item.path === '/admin/workshops'
       ) {
         return true;
       }

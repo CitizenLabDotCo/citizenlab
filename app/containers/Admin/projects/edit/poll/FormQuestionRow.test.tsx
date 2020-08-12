@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-jest.mock('cl2-component-library', () => ({ Input: 'Input', LocaleSwitcher: 'LocaleSwitcher' }));
-jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
+jest.mock('cl2-component-library', () => ({
+  Input: 'Input',
+  LocaleSwitcher: 'LocaleSwitcher',
+}));
+jest.mock('components/admin/ResourceList', () => ({
+  TextCell: 'TextCell',
+  Row: 'Row',
+}));
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
@@ -71,7 +77,9 @@ describe('<FormQuestionRow />', () => {
           tenantLocales={['en', 'fr-BE']}
         />
       );
-      expect(wrapper.find(Input).prop('value')).toEqual('What is your favourite ice cream flavour ?');
+      expect(wrapper.find(Input).prop('value')).toEqual(
+        'What is your favourite ice cream flavour ?'
+      );
     });
 
     it('reacts to user input', () => {
@@ -85,7 +93,10 @@ describe('<FormQuestionRow />', () => {
           tenantLocales={['en', 'fr-BE']}
         />
       );
-      wrapper.find(Input).prop('onChange' as any)('What is your favourite ice cream flavour ?', 'en');
+      wrapper.find(Input).prop('onChange' as any)(
+        'What is your favourite ice cream flavour ?',
+        'en'
+      );
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith({
         en: 'What is your favourite ice cream flavour ?',
@@ -103,8 +114,14 @@ describe('<FormQuestionRow />', () => {
           tenantLocales={['en', 'fr-BE']}
         />
       );
-      wrapper.setProps({ titleMultiloc: getTitleMultiloc('What is your favourite ice cream flavour ?') });
-      expect(wrapper.find(Input).prop('value')).toEqual('What is your favourite ice cream flavour ?');
+      wrapper.setProps({
+        titleMultiloc: getTitleMultiloc(
+          'What is your favourite ice cream flavour ?'
+        ),
+      });
+      expect(wrapper.find(Input).prop('value')).toEqual(
+        'What is your favourite ice cream flavour ?'
+      );
     });
   });
 
