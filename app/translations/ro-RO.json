@@ -2028,6 +2028,8 @@
   "app.errors.password_blank": "Acest câmp este obligatoriu",
   "app.errors.password_too_short": "Parola trebuie să fie de cel puțin 8 caractere",
   "app.errors.title_multiloc_blank": "Titlul nu poate fi gol.",
+  "app.errors.too_common": "",
+  "app.errors.too_long": "",
   "app.errors.too_short": "",
   "app.errors.unknown_group": "Grupul {value} găsit în rândul {row} nu este un grup cunoscut",
   "app.errors.unknown_locale": "Limbajul {value} găsit în rândul {row} nu este o limbă configurată",
