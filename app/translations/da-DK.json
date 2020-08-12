@@ -2028,6 +2028,7 @@
   "app.errors.password_blank": "Dette kan ikke være tomt",
   "app.errors.password_too_short": "Adgangskoden skal være på mindst 8 tegn",
   "app.errors.title_multiloc_blank": "Titlen skal være udfyldt",
+  "app.errors.too_short": "",
   "app.errors.unknown_group": "Gruppen {value} fundet i række {row} er ikke en kendt gruppe",
   "app.errors.unknown_locale": "Sproget {value} fundet i række {row} er ikke et konfigureret sprog",
   "app.errors.unparseable_excel": "Den valgte Excel-fil kunne ikke behandles",
