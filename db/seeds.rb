@@ -362,7 +362,7 @@ end
 admin = {
   id: "386d255e-2ff1-4192-8e50-b3022576be50",
   email: 'admin@citizenlab.co',
-  password: 'g23cTKme6TJp8EgSkwpk',
+  password: 'democracy2.0',
   roles: [
     {type: "admin"},
   ],
@@ -371,13 +371,13 @@ admin = {
 moderator = {
   id: "61caabce-f7e5-4804-b9df-36d7d7d73e4d",
   email: 'moderator@citizenlab.co',
-  password: 'q8t6a6WRP63D9cHScajz',
+  password: 'democracy2.0',
   roles: []
 }
 user = {
   id: "546335a3-33b9-471c-a18a-d5b58ebf173a",
   email: 'user@citizenlab.co',
-  password: '9x6TUuzSfkzyQrQFhxN9',
+  password: 'democracy2.0',
   roles: []
 }
 
@@ -428,7 +428,7 @@ if Apartment::Tenant.current == 'localhost'
 
   if SEED_SIZE != 'empty'
     num_users.times do
-      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: '9x6TUuzSfkzyQrQFhxN9'})
+      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'democracy2.0'})
     end
 
     Area.create!({

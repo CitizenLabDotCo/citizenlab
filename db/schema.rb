@@ -130,7 +130,6 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
 
   create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "password"
-    t.integer "freq_ordering"
     t.index ["password"], name: "index_common_passwords_on_password"
   end
 
