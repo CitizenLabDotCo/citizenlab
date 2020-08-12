@@ -2028,6 +2028,7 @@
   "app.errors.password_blank": "",
   "app.errors.password_too_short": "",
   "app.errors.title_multiloc_blank": "",
+  "app.errors.too_short": "",
   "app.errors.unknown_group": "",
   "app.errors.unknown_locale": "",
   "app.errors.unparseable_excel": "",
