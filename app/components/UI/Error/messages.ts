@@ -63,6 +63,14 @@ export default defineMessages({
     id: 'app.errors.too_short',
     defaultMessage: 'Must be at least 8 characters long',
   },
+  too_long: {
+    id: 'app.errors.too_long',
+    defaultMessage: 'Must be at most 72 characters long',
+  },
+  too_common: {
+    id: 'app.errors.too_common',
+    defaultMessage: 'Is too easy to guess',
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',
