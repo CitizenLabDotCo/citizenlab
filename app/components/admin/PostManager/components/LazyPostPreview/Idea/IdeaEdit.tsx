@@ -75,6 +75,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: string[];
   budget: number | null;
+  estimatedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
@@ -95,6 +96,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: [],
       budget: null,
+      estimatedBudget: null,
       address: null,
       imageFile: [],
       imageId: null,
@@ -167,6 +169,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
+            estimatedBudget: idea.data.attributes.estimated_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
           });
@@ -201,6 +204,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       selectedTopics,
       address: ideaFormAddress,
       budget,
+      estimatedBudget,
       ideaFiles,
       ideaFilesToRemove,
     } = ideaFormOutput;
@@ -237,6 +241,7 @@ class IdeaEdit extends PureComponent<Props, State> {
 
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
+      estimated_budget: estimatedBudget,
       title_multiloc: {
         ...titleMultiloc,
         [locale]: title,
@@ -283,6 +288,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         submitError,
         processing,
         budget,
+        estimatedBudget,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -314,6 +320,7 @@ class IdeaEdit extends PureComponent<Props, State> {
                 description={description}
                 selectedTopics={selectedTopics}
                 budget={budget}
+                estimatedBudget={estimatedBudget}
                 address={address || ''}
                 imageFile={imageFile}
                 onSubmit={this.handleIdeaFormOutput}
