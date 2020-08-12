@@ -1,26 +1,24 @@
-import React from 'react';
+import { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-
-// services
 import { getProjectUrl } from 'services/projects';
+import useProject from 'hooks/useProject';
 
-// resources
-import GetProject from 'resources/GetProject';
+const ProjectPageMain = memo<WithRouterProps>(({ params }) => {
+  const project = useProject({ projectSlug: params.slug });
 
-export default withRouter((props: WithRouterProps) => (
-  <GetProject projectSlug={props.params.slug}>
-    {(project) => {
-      if (!isNilOrError(project)) {
-        const redirectUrl = getProjectUrl(project);
+  if (!isNilOrError(project)) {
+    const redirectUrl = getProjectUrl(project);
 
-        if (window.location.pathname !== redirectUrl) {
-          clHistory.replace(redirectUrl);
-        }
-      }
+    if (window.location.pathname !== redirectUrl) {
+      clHistory.replace(redirectUrl);
+    }
+  }
 
-      return null;
-    }}
-  </GetProject>
-));
+  return null;
+});
+
+const ProjectPageMainWithHoC = withRouter(ProjectPageMain);
+
+export default ProjectPageMainWithHoC;
