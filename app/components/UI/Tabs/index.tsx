@@ -1,7 +1,7 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
 // components
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';

@@ -16,13 +16,10 @@ import {
 } from 'services/ideaCustomFields';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
 const QuillMutilocWithLocaleSwitcher = lazy(() =>
   import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
 );
-import Toggle from 'components/UI/Toggle';
-import IconToolTip from 'components/UI/IconTooltip';
-import Spinner from 'components/UI/Spinner';
 
 // i18n
 import T from 'components/T';
@@ -285,7 +282,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         ).toLowerCase()}-enabled-toggle-label
                       `}
                       />
-                      <IconToolTip
+                      <IconTooltip
                         content={
                           <FormattedMessage {...messages.enabledTooltip} />
                         }
@@ -305,7 +302,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         ).toLowerCase()}-required-toggle-label
                       `}
                       />
-                      <IconToolTip
+                      <IconTooltip
                         content={
                           <FormattedMessage {...messages.requiredTooltip} />
                         }
@@ -323,7 +320,8 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                       noAlign={true}
                       valueMultiloc={descriptionMultiloc}
                       onChange={handleDescriptionOnChange}
-                      label={
+                      rows={3}
+                      labelTextElement={
                         <LocaleSwitcherLabelText>
                           <FormattedMessage {...messages.descriptionLabel} />
                         </LocaleSwitcherLabelText>

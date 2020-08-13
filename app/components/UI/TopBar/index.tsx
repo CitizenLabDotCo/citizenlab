@@ -2,7 +2,7 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import { isNil } from 'lodash-es';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

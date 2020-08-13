@@ -5,8 +5,7 @@ import bowser from 'bowser';
 import { IParticipationContextType } from 'typings';
 
 // components
-import Dropdown from 'components/UI/Dropdown';
-import Icon from 'components/UI/Icon';
+import { Dropdown, Icon } from 'cl2-component-library';
 import PBBasket from './PBBasket';
 
 // i18n

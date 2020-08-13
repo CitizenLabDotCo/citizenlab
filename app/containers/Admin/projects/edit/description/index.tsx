@@ -21,7 +21,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Success from 'components/UI/Success';
+import { Success } from 'cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

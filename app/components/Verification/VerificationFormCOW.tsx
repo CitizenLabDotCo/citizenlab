@@ -6,9 +6,8 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Error from 'components/UI/Error';
-import IconTooltip from 'components/UI/IconTooltip';
 import Collapse from 'components/UI/Collapse';
 import {
   FormContainer,
@@ -30,8 +29,9 @@ import useAuthUser from 'hooks/useAuthUser';
 import { verifyCOW } from 'services/verify';
 
 // i18n
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // images
 import helpImage from './COWHelpImage.png';
@@ -44,15 +44,15 @@ interface Props {
   className?: string;
 }
 
-const VerificationFormCOW = memo<Props>(
-  ({ onCancel, onVerified, showHeader, inModal, className }) => {
+const VerificationFormCOW = memo<Props & InjectedIntlProps>(
+  ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
     const authUser = useAuthUser();
 
     const [run, setRun] = useState('');
     const [idSerial, setIdSerial] = useState('');
-    const [runError, setRunError] = useState<JSX.Element | null>(null);
-    const [idError, setIdError] = useState<JSX.Element | null>(null);
-    const [formError, setFormError] = useState<JSX.Element | null>(null);
+    const [runError, setRunError] = useState<string | null>(null);
+    const [idError, setIdError] = useState<string | null>(null);
+    const [formError, setFormError] = useState<string | null>(null);
     const [showHelp, setShowHelp] = useState(false);
     const [processing, setProcessing] = useState(false);
 
@@ -69,6 +69,8 @@ const VerificationFormCOW = memo<Props>(
     const onSubmit = useCallback(
       async (event: React.FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
+
+        const { formatMessage } = intl;
         let hasEmptyFields = false;
 
         // first reset the errors
@@ -77,12 +79,12 @@ const VerificationFormCOW = memo<Props>(
         setFormError(null);
 
         if (isEmpty(run)) {
-          setRunError(<FormattedMessage {...messages.emptyFieldError} />);
+          setRunError(formatMessage(messages.emptyFieldError));
           hasEmptyFields = true;
         }
 
         if (isEmpty(idSerial)) {
-          setIdError(<FormattedMessage {...messages.emptyFieldError} />);
+          setIdError(formatMessage(messages.emptyFieldError));
           hasEmptyFields = true;
         }
 
@@ -117,33 +119,27 @@ const VerificationFormCOW = memo<Props>(
             setProcessing(false);
 
             if (get(error, 'json.errors.base[0].error') === 'taken') {
-              setFormError(<FormattedMessage {...messages.takenFormError} />);
+              setFormError(formatMessage(messages.takenFormError));
             } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
-              setFormError(<FormattedMessage {...messages.noMatchFormError} />);
+              setFormError(formatMessage(messages.noMatchFormError));
             } else if (
               get(error, 'json.errors.base[0].error') === 'not_entitled'
             ) {
-              setFormError(
-                <FormattedMessage {...messages.notEntitledFormError} />
-              );
+              setFormError(formatMessage(messages.notEntitledFormError));
             } else if (get(error, 'json.errors.run[0].error') === 'invalid') {
-              setRunError(<FormattedMessage {...messages.invalidRunError} />);
+              setRunError(formatMessage(messages.invalidRunError));
             } else if (
               get(error, 'json.errors.id_serial[0].error') === 'invalid'
             ) {
-              setIdError(
-                <FormattedMessage {...messages.invalidIdSerialError} />
-              );
+              setIdError(formatMessage(messages.invalidIdSerialError));
             } else {
               reportError(error);
-              setFormError(
-                <FormattedMessage {...messages.somethingWentWrongError} />
-              );
+              setFormError(formatMessage(messages.somethingWentWrongError));
             }
           }
         }
       },
-      [run, idSerial, processing]
+      [run, idSerial, processing, intl]
     );
 
     const onCancelButtonClicked = useCallback(() => {
@@ -206,7 +202,7 @@ const VerificationFormCOW = memo<Props>(
             <Collapse
               opened={showHelp}
               onToggle={onToggleHelpButtonClick}
-              label={<FormattedMessage {...messages.showCOWHelp} />}
+              label={intl.formatMessage(messages.showCOWHelp)}
             >
               <HelpImage src={helpImage} alt="help" />
             </Collapse>
@@ -231,4 +227,4 @@ const VerificationFormCOW = memo<Props>(
   }
 );
 
-export default VerificationFormCOW;
+export default injectIntl(VerificationFormCOW);

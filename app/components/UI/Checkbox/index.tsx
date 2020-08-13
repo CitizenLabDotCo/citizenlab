@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, boxShadowOutline } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { colors, defaultOutline } from 'utils/styleUtils';
+import { Icon } from 'cl2-component-library';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
 
@@ -54,7 +54,7 @@ const StyledCheckbox = styled.div<{
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
-    ${boxShadowOutline};
+    ${defaultOutline};
   }
 
   &.enabled {

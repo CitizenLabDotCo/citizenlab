@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 const Container = styled.div`
   display: flex;

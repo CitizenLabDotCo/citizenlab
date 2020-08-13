@@ -141,7 +141,12 @@ const TopicsPicker = memo(
                 <TopicSwitch
                   key={topic.id}
                   onClick={handleOnChange(topic.id)}
-                  className={isSelected ? 'selected' : ''}
+                  className={[
+                    'e2e-topics-picker-item',
+                    isSelected ? 'selected' : null,
+                  ]
+                    .filter((item) => item)
+                    .join(' ')}
                   onMouseDown={removeFocus}
                   ref={index === 0 ? setRef : undefined}
                   disabled={false}

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import StatusLabel from 'components/UI/StatusLabel';
+import { StatusLabel } from 'cl2-component-library';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -27,7 +27,7 @@ const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
     return (
       <StatusLabel
         text={<FormattedMessage {...messages[publicationStatus]} />}
-        color={publicationStatusColor}
+        backgroundColor={publicationStatusColor}
       />
     );
   }

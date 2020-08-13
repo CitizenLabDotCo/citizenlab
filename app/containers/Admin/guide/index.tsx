@@ -9,7 +9,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import FeatureFlag from 'components/FeatureFlag';
 import { PageTitle } from 'components/admin/Section';

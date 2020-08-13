@@ -5,9 +5,8 @@ import { isString } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, Success } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import Success from 'components/UI/Success';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';

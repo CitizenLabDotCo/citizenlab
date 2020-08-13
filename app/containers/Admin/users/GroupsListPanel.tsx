@@ -16,7 +16,7 @@ import events, { MembershipAdd } from './events';
 
 // Components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import T from 'components/T';
 
 // i18n
@@ -258,7 +258,7 @@ export class GroupsListPanel extends React.PureComponent<
                 className={highlightedGroups.has(group.id) ? 'highlight' : ''}
               >
                 {group.attributes.membership_type === 'rules' && (
-                  <LightningBolt name="lightingBolt2" />
+                  <LightningBolt name="lightningBolt" />
                 )}
                 <GroupName>
                   <T value={group.attributes.title_multiloc} />
