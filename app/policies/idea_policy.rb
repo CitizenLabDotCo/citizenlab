@@ -67,7 +67,7 @@ class IdeaPolicy < ApplicationPolicy
       :project_id,
       :author_id,
       :location_description,
-      :estimated_budget,
+      :proposed_budget,
       location_point_geojson: [:type, coordinates: []],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       body_multiloc: CL2_SUPPORTED_LOCALES,

@@ -865,7 +865,7 @@ class TenantTemplateService
         'location_description'   => i.location_description,
         'idea_status_ref'        => lookup_ref(i.idea_status_id, :idea_status),
         'budget'                 => i.budget,
-        'estimated_budget'       => i.estimated_budget
+        'proposed_budget'       => i.proposed_budget
       }
       store_ref yml_idea, i.id, :idea
       yml_idea

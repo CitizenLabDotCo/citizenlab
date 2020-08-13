@@ -17,7 +17,7 @@ describe IdeaCustomFieldService do
         'body',
         'topic_ids',
         'location',
-        'estimated_budget',
+        'proposed_budget',
         'images',
         'attachments',
         nil
@@ -49,7 +49,7 @@ describe IdeaCustomFieldService do
         'body',
         'topic_ids',
         'location',
-        'estimated_budget',
+        'proposed_budget',
         'images',
         'attachments',
       ]
