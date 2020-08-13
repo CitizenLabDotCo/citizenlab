@@ -56,7 +56,7 @@ class XlsxService
           "id",
           "title",
           "body",
-          "proposed_budget", # aka 'estimated_budget'
+          "proposed_budget",
           "author_name",
           "author_email",
           "publication_status",
@@ -85,7 +85,7 @@ class XlsxService
             idea.id,
             @@multiloc_service.t(idea.title_multiloc),
             convert_to_text(@@multiloc_service.t(idea.body_multiloc)),
-            idea.estimated_budget,
+            idea.proposed_budget,
             idea.author_name,
             idea.author&.email,
             idea.publication_status,
