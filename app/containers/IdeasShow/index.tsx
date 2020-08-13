@@ -214,7 +214,10 @@ const IdeaHeader = styled.div`
   `}
 `;
 
-const StyledProjectLink = styled(ProjectLink)``;
+const StyledProjectLink = styled(ProjectLink)`
+  margin-bottom: 70px;
+  display: block;
+`;
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
@@ -648,9 +651,9 @@ export class IdeasShow extends PureComponent<
         <>
           <IdeaMeta ideaId={ideaId} />
 
-          <StyledProjectLink projectId={projectId} />
-
           <IdeaContainer>
+            <StyledProjectLink projectId={projectId} />
+
             <FeatureFlag name="machine_translations">
               {showTranslateButton && smallerThanSmallTablet && (
                 <StyledTranslateButtonMobile

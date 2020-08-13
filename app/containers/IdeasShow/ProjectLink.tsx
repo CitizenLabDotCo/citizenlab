@@ -9,6 +9,7 @@ import { Icon } from 'cl2-component-library';
 
 interface Props {
   projectId: string;
+  className?: string;
 }
 
 const StyledLink = styled(Link)`
@@ -30,13 +31,13 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const ProjectLink = memo(({ projectId }: Props) => {
+const ProjectLink = memo(({ projectId, className }: Props) => {
   const project = useProject({ projectId });
   const localize = useLocalize();
 
   if (!isNilOrError(project)) {
     return (
-      <Container>
+      <Container className={className}>
         {/* <StyledIcon name='circle-arrow-left' /> */}
         <StyledLink to={`/projects/${project.attributes.slug}`}>
           {localize(project.attributes.title_multiloc)}
