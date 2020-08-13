@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -10,12 +9,12 @@ import Header from './Header';
 import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useTenant from 'hooks/useTenant';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
+import useEvents from 'hooks/useEvents';
 
 // i18n
 import messages from './messages';
@@ -24,6 +23,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+
+// typings
+import { IProjectData } from 'services/projects';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -76,94 +78,79 @@ const ProjectNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-export interface InputProps {}
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  events: GetEventsChildProps;
+interface Props {
+  project: IProjectData | null | undefined;
+  projectSlug: string;
 }
 
-interface Props extends InputProps, DataProps {}
+const ProjectsShowPage = memo<Props>(({ project, projectSlug }) => {
+  const locale = useLocale();
+  const tenant = useTenant();
+  const phases = usePhases(project?.id);
+  const events = useEvents(project?.id);
 
-interface State {
-  hasEvents: boolean;
-  loaded: boolean;
-}
+  const projectNotFound = isError(project);
+  const loading =
+    isUndefined(locale) ||
+    isUndefined(tenant) ||
+    isUndefined(project) ||
+    isUndefined(phases) ||
+    isUndefined(events);
+  const currentPath = location.pathname;
+  const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
 
-class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
-  render() {
-    const { children, locale, tenant, project, phases, events } = this.props;
-    const { slug } = this.props.params;
-    const projectNotFound = isError(project);
-    const loading =
-      isUndefined(locale) ||
-      isUndefined(tenant) ||
-      isUndefined(project) ||
-      isUndefined(phases) ||
-      isUndefined(events);
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-
-    return (
-      <>
-        <ProjectsShowPageMeta projectSlug={slug} />
-        <Container
-          className={`${
-            lastUrlSegment === 'events' || lastUrlSegment === 'info'
-              ? 'greyBackground'
-              : ''
-          } ${!loading ? 'loaded' : 'loading'}`}
-        >
-          {projectNotFound ? (
-            <ProjectNotFoundWrapper>
-              <p>
-                <FormattedMessage {...messages.noProjectFoundHere} />
-              </p>
-              <Button
-                linkTo="/projects"
-                text={<FormattedMessage {...messages.goBackToList} />}
-                icon="arrow-back"
-              />
-            </ProjectNotFoundWrapper>
-          ) : loading ? (
-            <Loading>
-              <Spinner />
-            </Loading>
-          ) : (
-            <>
-              <Header projectSlug={this.props.params.slug} />
-              <Content>{children}</Content>
-            </>
-          )}
-        </Container>
-      </>
-    );
-  }
-}
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locale: <GetLocale />,
-  tenant: <GetTenant />,
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
-  ),
-  phases: ({ project, render }) => (
-    <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
-      {render}
-    </GetPhases>
-  ),
-  events: ({ project, render }) => (
-    <GetEvents projectId={!isNilOrError(project) ? project.id : null}>
-      {render}
-    </GetEvents>
-  ),
+  return (
+    <>
+      <ProjectsShowPageMeta projectSlug={projectSlug} />
+      <Container
+        className={`${
+          lastUrlSegment === 'events' || lastUrlSegment === 'info'
+            ? 'greyBackground'
+            : ''
+        } ${!loading ? 'loaded' : 'loading'}`}
+      >
+        {projectNotFound ? (
+          <ProjectNotFoundWrapper>
+            <p>
+              <FormattedMessage {...messages.noProjectFoundHere} />
+            </p>
+            <Button
+              linkTo="/projects"
+              text={<FormattedMessage {...messages.goBackToList} />}
+              icon="arrow-back"
+            />
+          </ProjectNotFoundWrapper>
+        ) : loading ? (
+          <Loading>
+            <Spinner />
+          </Loading>
+        ) : (
+          <>
+            <Header projectSlug={projectSlug} />
+            <div>Test</div>
+            {/* <Content>{children}</Content> */}
+          </>
+        )}
+      </Container>
+    </>
+  );
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectsShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+const ProjectsShowPageWrapper = memo<WithRouterProps>(({ params }) => {
+  const project = useProject({ projectSlug: params.slug });
+
+  if (params.slug) {
+    return (
+      <ProjectsShowPage
+        projectSlug={params.slug}
+        project={!isNilOrError(project) ? project : undefined}
+      />
+    );
+  }
+
+  return null;
+});
+
+const ProjectsShowPageWrapperWithHoC = withRouter(ProjectsShowPageWrapper);
+
+export default ProjectsShowPageWrapperWithHoC;
