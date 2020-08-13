@@ -22,7 +22,7 @@ class XlsxService
       {header: 'gender', f: -> (u) { u.gender }},
       {header: 'verified', f: -> (u) { u.verified }},
       {header: 'birthyear', f: -> (u) { u.birthyear }},
-      {header: 'domicile', f: -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) },
+      {header: 'domicile', f: -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) }},
       {header: 'education', f: -> (u) { u.education }},
       {header: 'created_at', f: -> (u) { u.created_at }}
       *custom_field_columns
