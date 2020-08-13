@@ -2028,6 +2028,7 @@
   "app.errors.password_blank": "To pole nie może być puste",
   "app.errors.password_too_short": "Hasło musi mieć długość co najmniej 8 znaków",
   "app.errors.title_multiloc_blank": "Tytuł nie może być pusty.",
+  "app.errors.too_short": "",
   "app.errors.unknown_group": "Grupa {value} znajdująca się w rzędzie {row} nie jest znaną grupą",
   "app.errors.unknown_locale": "Język {value} znajdujący się w wierszu {row} nie jest skonfigurowany",
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",
