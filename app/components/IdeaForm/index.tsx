@@ -312,14 +312,14 @@ class IdeaForm extends PureComponent<
 
   handleBudgetOnChange = (budget: string) => {
     this.setState({
-      budget: Number(budget),
+      budget: budget === '' ? null : Number(budget),
       budgetError: null,
     });
   };
 
   handleEstimatedBudgetOnChange = (estimatedBudget: string) => {
     this.setState({
-      estimatedBudget: Number(estimatedBudget),
+      estimatedBudget: estimatedBudget === '' ? null : Number(estimatedBudget),
       estimatedBudgetError: null,
     });
   };
@@ -759,7 +759,7 @@ class IdeaForm extends PureComponent<
                     <Input
                       id="budget"
                       error={budgetError}
-                      value={String(budget)}
+                      value={budget !== null ? String(budget) : ''}
                       type="number"
                       onChange={this.handleBudgetOnChange}
                     />
@@ -792,7 +792,9 @@ class IdeaForm extends PureComponent<
                   <Input
                     id="estimated-budget"
                     error={estimatedBudgetError}
-                    value={String(estimatedBudget)}
+                    value={
+                      estimatedBudget !== null ? String(estimatedBudget) : ''
+                    }
                     type="number"
                     min="0"
                     onChange={this.handleEstimatedBudgetOnChange}
