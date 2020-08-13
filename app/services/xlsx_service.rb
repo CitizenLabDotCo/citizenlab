@@ -59,7 +59,7 @@ class XlsxService
       {header: 'latitude', f: -> (i) { i.location_point&.coordinates&.last }, skip_sanitization: true},
       {header: 'longitude', f: -> (i) { i.location_point&.coordinates&.first }, skip_sanitization: true},
       {header: 'location_description', f: -> (i) { i.location_description }},
-      {header: 'comments_count', f: -> (i) { i.comments_count }}, skip_sanitization: true,
+      {header: 'comments_count', f: -> (i) { i.comments_count }}, skip_sanitization: true},
       {header: 'attachments_count', f: -> (i) { i.idea_files.size }, skip_sanitization: true},
       {header: 'attachmens', f: -> (i) { i.idea_files.map{|f| f.file.url}.join("\n") }, skip_sanitization: true}
     ]
