@@ -8,46 +8,33 @@ class XlsxService
     s.add_style  :bg_color => "99ccff", :fg_color => "2626ff", :sz => 16, :alignment => { :horizontal=> :center }
   end
 
-  def user_fields areas, view_private_attributes: false
-    fields = {
-      "id" => -> (u) { u.id },
-      "first_name" => -> (u) { u.first_name },
-      "last_name" => -> (u) { u.last_name },
-      "slug" => -> (u) { u.slug },
-      "created_at" => -> (u) { u.created_at }
-    }
-    if view_private_attributes
-      fields['email'] = -> (u) { u.email }
-      fields['gender'] = -> (u) { u.gender }
-      fields['verified'] = -> (u) { u.verified }
-      fields['birthyear'] = -> (u) { u.birthyear }
-      fields['domicile'] = -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) }
-      fields['education'] = -> (u) { u.education }
-    end
-    fields
-  end
-
   def generate_users_xlsx users, view_private_attributes: false
-    pa = Axlsx::Package.new
-    wb = pa.workbook
-    wb.styles do |s|
-      wb.add_worksheet(:name => "Users") do |sheet|
-
-        areas = Area.all.map{|a| [a.id, a]}.to_h
-        fields = user_fields(areas, view_private_attributes: view_private_attributes)
-        custom_fields = CustomField.with_resource_type('User')&.map(&:key)
-        sheet.add_row fields.keys.concat(custom_fields), style: header_style(s)
-
-        users.each do |user|
-          row = [
-            *fields.map{|key, f| f.call(user)},
-            *custom_fields.map{|key| user.custom_field_values[key] }
-          ]
-          sheet.add_row row
-        end
+    areas = Area.all.map{|a| [a.id, a]}.to_h
+    custom_field_columns = CustomField.with_resource_type('User')&.map(&:key).map do |key|
+      {header: key, f: -> (u) { u.custom_field_values[key] }}
+    end
+    columns = [
+      {header: 'id', f: -> (u) { u.id }},
+      {header: 'email', f: -> (u) { u.email }},
+      {header: 'first_name', f: -> (u) { u.first_name }},
+      {header: 'last_name', f: -> (u) { u.last_name }},
+      {header: 'slug', f: -> (u) { u.slug }},
+      {header: 'gender', f: -> (u) { u.gender }},
+      {header: 'verified', f: -> (u) { u.verified }},
+      {header: 'birthyear', f: -> (u) { u.birthyear }},
+      {header: 'domicile', f: -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) },
+      {header: 'education', f: -> (u) { u.education }},
+      {header: 'created_at', f: -> (u) { u.created_at }}
+      *custom_field_columns
+    ]
+    if !view_private_attributes
+      priv_attrs = %w(email gender verified birthyear domicile education)
+      priv_attrs += custom_field_columns.map{|c| c[:header]}
+      columns.filter! do |c|
+        priv_attrs.include? c[:header]
       end
     end
-    pa.to_stream
+    generate_xlsx 'Users', columns, users
   end
 
   def generate_ideas_xlsx ideas
@@ -292,6 +279,28 @@ class XlsxService
         [worksheet[0][cell.column]&.value, cell.value] if cell.value
       end.compact.to_h
     end.compact
+  end
+
+
+  private 
+
+  def generate_xlsx sheetname, columns, instances
+    columns = columns.uniq{ |c| c[:header] }
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+    wb.styles do |s|
+      wb.add_worksheet(name: sheetname) do |sheet|
+        header = columns.map{|c| c[:header]}
+        sheet.add_row header, style: header_style(s)
+        instances.each do |instance|
+          row = columns.map do |c|
+            c[:f].call instance
+          end
+          sheet.add_row row
+        end
+      end
+    end
+    pa.to_stream
   end
 
 end
