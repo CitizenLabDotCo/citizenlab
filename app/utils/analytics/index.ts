@@ -34,6 +34,7 @@ const pageChanges$ = new Subject<IPageChange>();
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
+      window._paq.push(['trackEvent', event.name, event.properties.values]);
       analytics.track(
         event.name,
         {
@@ -50,6 +51,11 @@ combineLatest(tenant$, authUser$, events$).subscribe(
 combineLatest(tenant$, authUser$, pageChanges$).subscribe(
   ([tenant, user, pageChange]) => {
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
+      window._paq.push([
+        'setDocumentTitle',
+        document.domain + '/' + document.title,
+      ]);
+      window._paq.push(['trackPageView']);
       analytics.page(
         '',
         {
@@ -66,6 +72,7 @@ combineLatest(tenant$, authUser$, pageChanges$).subscribe(
 );
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
+  // TODO
   if (
     !isNilOrError(tenant) &&
     isFunction(get(window, 'analytics.identify')) &&
