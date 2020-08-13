@@ -4,7 +4,7 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
@@ -49,7 +49,7 @@ export default class NoUsers extends React.PureComponent<Props> {
     if (this.props.noSuchSearchResult) {
       return (
         <NoUsersPage>
-          <Icon name="search2" />
+          <Icon name="search" />
           <FormattedMessage {...messages.noUserMatchesYourSearch} />
         </NoUsersPage>
       );

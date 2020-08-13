@@ -1,5 +1,5 @@
 // Libraries
-import React, { SFC } from 'react';
+import React, { memo, ReactNode } from 'react';
 
 // Style
 import styled from 'styled-components';
@@ -117,38 +117,38 @@ export const TextCell = styled.div`
   line-height: 20px;
 `;
 
-export const List: SFC<{ className?: string; id?: string }> = ({
-  children,
-  className,
-  id,
-}) => (
-  <StyledList
-    key={Date.now()}
-    className="e2e-admin-list"
-    {...{ className, id }}
-  >
+export const List = memo<{
+  id?: string;
+  className?: string;
+  children: ReactNode;
+}>(({ id, className, children }) => (
+  <StyledList id={id || ''} className={`e2e-admin-list ${className || ''}`}>
     <TransitionGroup>{children}</TransitionGroup>
   </StyledList>
-);
+));
 
-export const Row: SFC<{
-  className?: string;
+export const Row = memo<{
   id?: string;
+  className?: string;
+  children: ReactNode;
   isLastItem?: boolean;
-}> = ({ children, className, isLastItem }) => (
+}>(({ id, className, children, isLastItem }) => (
   <CSSTransition classNames="list-item" timeout={timeout}>
     <Container
+      id={id || ''}
       className={`e2e-admin-list-row ${className || ''} ${
-        isLastItem && 'last-item'
+        isLastItem ? 'last-item' : ''
       }`}
     >
       {children}
     </Container>
   </CSSTransition>
-);
+));
 
-export const HeadRow: SFC = ({ children, ...props }) => (
-  <Container className={`e2e-admin-list-head-row ${props['className']}`}>
-    {children}
-  </Container>
+export const HeadRow = memo<{ className?: string; children: ReactNode }>(
+  ({ className, children }) => (
+    <Container className={`e2e-admin-list-head-row ${className || ''}`}>
+      {children}
+    </Container>
+  )
 );

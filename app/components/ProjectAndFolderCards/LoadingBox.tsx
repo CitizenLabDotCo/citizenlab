@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import styled from 'styled-components';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -8,10 +9,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 interface Props {

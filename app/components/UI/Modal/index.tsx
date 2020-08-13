@@ -12,7 +12,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import clickOutside from 'utils/containers/clickOutside';
 
 // resources
@@ -33,7 +33,7 @@ import {
   media,
   colors,
   fontSizes,
-  boxShadowOutline,
+  defaultOutline,
   viewportWidths,
 } from 'utils/styleUtils';
 
@@ -65,8 +65,8 @@ export const ModalContentContainer = styled.div<{
 `;
 
 const CloseButton = styled.button`
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   top: 20px;
   right: 25px;
@@ -84,11 +84,11 @@ const CloseButton = styled.button`
   outline: none !important;
 
   &:hover {
-    background: #ececec;
+    background: #e0e0e0;
   }
 
   &.focus-visible {
-    ${boxShadowOutline};
+    ${defaultOutline};
   }
 
   ${media.smallerThanMinTablet`

@@ -19,9 +19,8 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
-
 import Checkbox from 'components/UI/Checkbox';
-import StatusLabel from 'components/UI/StatusLabel';
+import { StatusLabel } from 'cl2-component-library';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -142,7 +141,7 @@ class InitiativeRow extends React.PureComponent<
         return (
           <StatusLabel
             text={<T value={selectedStatusObject.attributes.title_multiloc} />}
-            color={selectedStatusObject.attributes.color}
+            backgroundColor={selectedStatusObject.attributes.color}
           />
         );
       }

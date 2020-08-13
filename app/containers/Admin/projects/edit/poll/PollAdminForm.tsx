@@ -27,7 +27,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, Locale, IParticipationContextType } from 'typings';
+import { Multiloc, IParticipationContextType } from 'typings';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -37,7 +37,6 @@ interface Props {
   participationContextId: string;
   participationContextType: IParticipationContextType;
   pollQuestions: IPollQuestion[] | null | undefined;
-  locale: Locale;
 }
 
 interface State {
@@ -197,8 +196,6 @@ export class PollAdminForm extends PureComponent<Props, State> {
 
   render() {
     const listItems = this.listItems() || [];
-
-    const { locale } = this.props;
     const {
       newQuestionTitle,
       editingQuestionId,
@@ -216,14 +213,12 @@ export class PollAdminForm extends PureComponent<Props, State> {
                     titleMultiloc={editingQuestionTitle}
                     onChange={this.changeEditingQuestion}
                     onSave={this.saveEditingQuestion}
-                    locale={locale}
                     onCancel={this.cancelEditQuestion}
                   />
                 ) : editingOptionsId === question.id ? (
                   <OptionForm
                     question={question}
                     collapse={this.closeEditingOptions}
-                    locale={locale}
                   />
                 ) : (
                   <QuestionRow
@@ -251,7 +246,6 @@ export class PollAdminForm extends PureComponent<Props, State> {
               onChange={this.changeNewQuestion}
               onSave={this.saveNewQuestion}
               onCancel={this.cancelNewQuestion}
-              locale={locale}
             />
           )}
         </StyledList>

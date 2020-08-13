@@ -16,12 +16,12 @@ import { LEGAL_PAGES } from 'services/pages';
 // components
 import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -113,11 +113,8 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
-  transition: all 200ms ease;
+  transition: all 80ms ease-out;
+  ${defaultCardStyle};
 
   &:hover {
     color: #000;
@@ -126,8 +123,7 @@ const StyledLink = styled(Link)`
 `;
 
 const LinkIcon = styled(Icon)`
-  width: 11px;
-  height: 1em;
+  width: 10px;
 `;
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {

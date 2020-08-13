@@ -1,7 +1,8 @@
 import React from 'react';
-import ColorPickerInput, {
-  Props as VanillaInputProps,
-} from 'components/UI/ColorPickerInput';
+import {
+  ColorPickerInput,
+  ColorPickerInputProps as VanillaInputProps,
+} from 'cl2-component-library';
 import { FieldProps } from 'formik';
 
 type State = {};

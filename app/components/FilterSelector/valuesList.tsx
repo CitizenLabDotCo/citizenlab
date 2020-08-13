@@ -3,7 +3,7 @@ import { includes, isNil } from 'lodash-es';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
-import Dropdown from 'components/UI/Dropdown';
+import { Dropdown } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';

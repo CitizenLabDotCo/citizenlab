@@ -7,12 +7,10 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import Select from 'components/UI/Select';
-import Icon from 'components/UI/Icon';
+import { Icon, IconTooltip, Select } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
@@ -161,7 +159,7 @@ const EmptyMessage = styled.div`
   text-align: center;
 `;
 
-const StyledSearch = styled(SearchInput)`
+const StyledSearchInput = styled(SearchInput)`
   margin-left: auto;
   width: 320px;
 `;
@@ -406,7 +404,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               />
             </>
           )}
-          <StyledSearch onChange={handleSearchTermChange} />
+          <StyledSearchInput onChange={handleSearchTermChange} />
         </Filters>
 
         <StyledTable>

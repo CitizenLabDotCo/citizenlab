@@ -6,7 +6,7 @@ require('leaflet-simplestyle');
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Legend from './Legend';
 
 // resources
@@ -21,7 +21,7 @@ import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, boxShadowOutline } from 'utils/styleUtils';
+import { media, defaultOutline } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
 import legendMarkerIcon from './legend-marker.svg';
 
@@ -76,7 +76,7 @@ const CloseButton = styled.button`
   }
 
   &.focus-visible {
-    ${boxShadowOutline};
+    ${defaultOutline};
   }
 
   ${media.smallerThanMinTablet`

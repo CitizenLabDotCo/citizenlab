@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
 // typings

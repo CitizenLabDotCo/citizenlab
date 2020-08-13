@@ -14,9 +14,8 @@ import {
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import Input from 'components/UI/Input';
+import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
-import LocationInput from 'components/UI/LocationInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
@@ -439,7 +438,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               >
                 <LocationInput
                   className="e2e-initiative-location-input"
-                  inCitizen
                   value={position || ''}
                   onChange={onChangePosition}
                   onBlur={this.onBlur('position')}

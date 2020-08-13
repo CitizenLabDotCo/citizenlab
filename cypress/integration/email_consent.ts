@@ -1,5 +1,3 @@
-import 'cypress-iframe';
-
 describe('email consent', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();

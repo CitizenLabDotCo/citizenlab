@@ -10,7 +10,7 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import LazyImage from 'components/LazyImage';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
@@ -26,17 +26,20 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, media, viewportWidths } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  media,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 20px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   margin-bottom: 20px;
   display: flex;
   align-items: stretch;
+  ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
     flex-direction: column;

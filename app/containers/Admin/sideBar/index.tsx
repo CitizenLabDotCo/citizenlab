@@ -9,7 +9,7 @@ import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import MenuItem from './MenuItem';
 import HasPermission from 'components/HasPermission';

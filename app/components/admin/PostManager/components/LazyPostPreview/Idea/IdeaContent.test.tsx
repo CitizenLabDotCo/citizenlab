@@ -4,12 +4,6 @@ import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 
-jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
-jest.mock('resources/GetIdea', () => 'GetIdea');
-jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
-jest.mock('resources/GetTenant', () => 'GetTenant');
-jest.mock('resources/GetProject', () => 'GetProject');
-jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
@@ -21,18 +15,34 @@ jest.mock(
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('components/UI/IconTooltip', () => 'IconTooltip');
+jest.mock('cl2-component-library', () => ({ IconTooltip: 'IconTooltip' }));
+jest.mock('../PostPreview', () => ({
+  Top: 'Top',
+  Content: 'Content',
+  Container: 'Container',
+}));
 jest.mock('./FeedbackSettings', () => 'FeedbackSettings');
 jest.mock('./VotePreview', () => 'VotePreview');
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('components/T', () => 'T');
-jest.mock('../', () => ({
-  Top: () => 'Top',
-  Content: () => 'Content',
-  Container: () => 'Container',
-}));
 jest.mock('services/ideas');
+jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
+jest.mock('resources/GetIdea', () => 'GetIdea');
+jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
+jest.mock('resources/GetTenant', () => 'GetTenant');
+jest.mock('resources/GetProject', () => 'GetProject');
+jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('utils/cl-intl');
+jest.mock('utils/styleUtils', () => ({
+  colors: {
+    label: '#000',
+    separation: '#000',
+    adminTextColor: '#000',
+  },
+  fontSizes: {
+    base: 16,
+  },
+}));
 
 import { IdeaContent } from './IdeaContent';
 
