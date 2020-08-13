@@ -14,17 +14,17 @@ class XlsxService
       {header: key, f: -> (u) { u.custom_field_values[key] }}
     end
     columns = [
-      {header: 'id', f: -> (u) { u.id }},
+      {header: 'id', f: -> (u) { u.id }, skip_sanitization: true},
       {header: 'email', f: -> (u) { u.email }},
       {header: 'first_name', f: -> (u) { u.first_name }},
       {header: 'last_name', f: -> (u) { u.last_name }},
-      {header: 'slug', f: -> (u) { u.slug }},
+      {header: 'slug', f: -> (u) { u.slug }, skip_sanitization: true},
       {header: 'gender', f: -> (u) { u.gender }},
-      {header: 'verified', f: -> (u) { u.verified }},
+      {header: 'verified', f: -> (u) { u.verified }, skip_sanitization: true},
       {header: 'birthyear', f: -> (u) { u.birthyear }},
       {header: 'domicile', f: -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) }},
       {header: 'education', f: -> (u) { u.education }},
-      {header: 'created_at', f: -> (u) { u.created_at }},
+      {header: 'created_at', f: -> (u) { u.created_at }, skip_sanitization: true},
       *custom_field_columns
     ]
     if !view_private_attributes
@@ -37,37 +37,39 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_ideas_xlsx ideas
+  def generate_ideas_xlsx ideas, view_private_attributes: false
+    columns = [
+      {header: 'id', f: -> (i) { i.id }},
+      {header: 'title', f: -> (i) { @@multiloc_service.t(i.title_multiloc) }},
+      {header: 'body', f: -> (i) { convert_to_text(@@multiloc_service.t(idea.body_multiloc)) }},
+      {header: 'author_name', f: -> (i) { i.id }},
+      {header: 'author_email', f: -> (i) { i.id }},
+      {header: 'publication_status', f: -> (i) { i.id }},
+      {header: 'published_at', f: -> (i) { i.id }},
+      {header: 'upvotes_count', f: -> (i) { i.id }},
+      {header: 'downvotes_count', f: -> (i) { i.id }},
+      {header: 'baskets_count', f: -> (i) { i.id }},
+      {header: 'url', f: -> (i) { i.id }},
+      {header: 'project', f: -> (i) { i.id }},
+      {header: 'topics', f: -> (i) { i.id }},
+      {header: 'areas', f: -> (i) { i.id }},
+      {header: 'idea_status', f: -> (i) { i.id }},
+      {header: 'assignee', f: -> (i) { i.id }},
+      {header: 'assignee_email', f: -> (i) { i.id }},
+      {header: 'latitude', f: -> (i) { i.id }},
+      {header: 'longitude', f: -> (i) { i.id }},
+      {header: 'location_description', f: -> (i) { i.id }},
+      {header: 'comments_count', f: -> (i) { i.id }},
+      {header: 'attachments_count', f: -> (i) { i.id }},
+      {header: 'attachmens', f: -> (i) { i.id }}
+    ]
+    generate_xlsx 'Ideas', columns, ideas
+
     # TODO hide private attributes for non-admins
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
       wb.add_worksheet(name: "Ideas") do |sheet|
-        sheet.add_row [
-          "id",
-          "title",
-          "body",
-          "author_name",
-          "author_email",
-          "publication_status",
-          "published_at",
-          "upvotes_count",
-          "downvotes_count",
-          "baskets_count",
-          "url",
-          "project",
-          "topics",
-          "areas",
-          "idea_status",
-          "assignee",
-          "assignee_email",
-          "latitude",
-          "longitude",
-          "location_description",
-          "comments_count",
-          "attachments_count",
-          "attachmens"
-        ], style: header_style(s)
         ideas.each do |idea|
           lat, lon = [nil, nil]
           lon, lat = idea.location_point.coordinates if idea.location_point.present?
@@ -294,13 +296,25 @@ class XlsxService
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
           row = columns.map do |c|
-            c[:f].call instance
+            value = c[:f].call instance
+            if c[:skip_sanitization]
+              value 
+            else 
+              value
+              # sanitize_text_value value.to_s
+            end
           end
           sheet.add_row row
         end
       end
     end
     pa.to_stream
+  end
+
+  def sanitize_text_value text
+    text = text.gsub "=", "'="
+    text.gsub!       "+", "'+"
+    text.gsub        "-", "'-"
   end
 
 end
