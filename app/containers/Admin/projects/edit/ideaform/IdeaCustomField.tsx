@@ -320,8 +320,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                       noAlign={true}
                       valueMultiloc={descriptionMultiloc}
                       onChange={handleDescriptionOnChange}
-                      rows={3}
-                      labelTextElement={
+                      label={
                         <LocaleSwitcherLabelText>
                           <FormattedMessage {...messages.descriptionLabel} />
                         </LocaleSwitcherLabelText>
