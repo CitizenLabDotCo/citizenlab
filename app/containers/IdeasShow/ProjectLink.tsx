@@ -22,7 +22,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledIcon = styled(Icon)`
-
+  fill: '#84939E';
 `;
 
 const Container = styled.div`
@@ -37,7 +37,7 @@ const ProjectLink = memo(({ projectId }: Props) => {
   if (!isNilOrError(project)) {
     return (
       <Container>
-        <StyledIcon name='arrowLeft' />
+        {/* <StyledIcon name='circle-arrow-left' /> */}
         <StyledLink to={`/projects/${project.attributes.slug}`}>
           {localize(project.attributes.title_multiloc)}
         </StyledLink>
