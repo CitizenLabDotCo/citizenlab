@@ -47,7 +47,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
