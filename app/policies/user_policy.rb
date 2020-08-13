@@ -61,7 +61,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def view_private_attributes?
-    (user && (record&.id == user.id || user.admin?)) || record&.invite_pending?
+    # When the policy was created with a class
+    # instead of an instance, record is set to
+    # that class.
+    instance = if record.is_a? Class
+      nil
+    else
+      record
+    end
+    (user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?
   end
 
   def permitted_attributes
