@@ -56,7 +56,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = policy_scope(User).all
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
-    xlsx = XlsxService.new.generate_users_xlsx @users
+    xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
 
     LogActivityJob.perform_later(current_user, 'exported_users_sheet', current_user, Time.now.to_i)
 

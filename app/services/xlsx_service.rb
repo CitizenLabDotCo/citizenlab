@@ -8,31 +8,33 @@ class XlsxService
     s.add_style  :bg_color => "99ccff", :fg_color => "2626ff", :sz => 16, :alignment => { :horizontal=> :center }
   end
 
-  def user_fields areas
-    {
+  def user_fields areas, view_private_attributes: false
+    fields = {
       "id" => -> (u) { u.id },
-      "email" => -> (u) { u.email },
       "first_name" => -> (u) { u.first_name },
       "last_name" => -> (u) { u.last_name },
       "slug" => -> (u) { u.slug },
-      "gender" => -> (u) { u.gender },
-      "verified" => -> (u) { u.verified },
-      "birthyear" => -> (u) { u.birthyear },
-      "domicile" => -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) },
-      "education" => -> (u) { u.education },
       "created_at" => -> (u) { u.created_at }
     }
+    if view_private_attributes
+      fields['email'] = -> (u) { u.email }
+      fields['gender'] = -> (u) { u.gender }
+      fields['verified'] = -> (u) { u.verified }
+      fields['birthyear'] = -> (u) { u.birthyear }
+      fields['domicile'] = -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) }
+      fields['education'] = -> (u) { u.education }
+    end
+    fields
   end
 
-  def generate_users_xlsx users
-    # TODO hide private attributes for non-admins
+  def generate_users_xlsx users, view_private_attributes: false
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
       wb.add_worksheet(:name => "Users") do |sheet|
 
         areas = Area.all.map{|a| [a.id, a]}.to_h
-        fields = user_fields(areas)
+        fields = user_fields(areas, view_private_attributes: view_private_attributes)
         custom_fields = CustomField.with_resource_type('User')&.map(&:key)
         sheet.add_row fields.keys.concat(custom_fields), style: header_style(s)
 
