@@ -99,7 +99,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
           >
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
-                label={<FormattedMessage {...messages.moreOptions} />}
+                ariaLabel={<FormattedMessage {...messages.moreOptions} />}
                 id="e2e-idea-more-actions"
                 actions={[
                   {
@@ -125,7 +125,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
                       handler: this.openSpamModal,
                     },
                   ]}
-                  label={<FormattedMessage {...messages.moreOptions} />}
+                  ariaLabel={<FormattedMessage {...messages.moreOptions} />}
                 />
               </HasPermission.No>
             </HasPermission>
