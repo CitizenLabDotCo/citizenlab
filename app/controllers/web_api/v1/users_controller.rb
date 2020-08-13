@@ -28,10 +28,10 @@ class WebApi::V1::UsersController < ::ApplicationController
         @users.order(last_name: :asc)
       when "-last_name"
         @users.order(last_name: :desc)
-      when "email" # TODO only if admin?
-        @users.order(email: :asc)
-      when "-email" # TODO only if admin?
-        @users.order(email: :desc)
+      when "email"
+        @users.order(email: :asc) if view_private_attributes?
+      when "-email"
+        @users.order(email: :desc) if view_private_attributes?
       when "role"
         @users.order_role(:asc)
       when "-role"
@@ -220,6 +220,10 @@ class WebApi::V1::UsersController < ::ApplicationController
         params[:user][:custom_field_values][clear_key] = nil
       end
     end
+  end
+
+  def view_private_attributes?
+    Pundit.policy!(current_user, @user).view_private_attributes?
   end
 
 end
