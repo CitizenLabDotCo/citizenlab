@@ -8,8 +8,11 @@ module Surveys
         rescue_from TypeformApiParser::AuthorizationError, with: :typeform_authorization_error
 
         def index_xlsx
-          # TODO moderators cant download for other project
-          authorize [:surveys, :response], :index_xlsx?
+          if @participation_context
+            authorize Project.find_by!(id: @participation_context.id), :index_xlsx?
+          else
+            authorize [:surveys, :response], :index_xlsx?
+          end
 
           # If the real-time API request ever gets problematic, this uses the saved webhook responses instead
           # @responses = policy_scope(Response)
