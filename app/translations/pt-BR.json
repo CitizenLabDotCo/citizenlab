@@ -2028,6 +2028,7 @@
   "app.errors.password_blank": "Isto não pode ficar vazio.",
   "app.errors.password_too_short": "A senha deve ter pelo menos 8 caracteres",
   "app.errors.title_multiloc_blank": "O título não pode ficar vazio.",
+  "app.errors.too_short": "",
   "app.errors.unknown_group": "O grupo {value} encontrado na linha {row} não é um grupo conhecido",
   "app.errors.unknown_locale": "O idioma {value} encontrado na linha {row} não é um idioma configurado",
   "app.errors.unparseable_excel": "O arquivo Excel selecionado não pôde ser processado.",
