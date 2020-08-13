@@ -30,8 +30,8 @@ class XlsxService
     if !view_private_attributes
       priv_attrs = %w(email gender verified birthyear domicile education)
       priv_attrs += custom_field_columns.map{|c| c[:header]}
-      columns.filter! do |c|
-        priv_attrs.include? c[:header]
+      columns.select! do |c|
+        !priv_attrs.include?(c[:header])
       end
     end
     generate_xlsx 'Users', columns, users
@@ -39,70 +39,36 @@ class XlsxService
 
   def generate_ideas_xlsx ideas, view_private_attributes: false
     columns = [
-      {header: 'id', f: -> (i) { i.id }},
+      {header: 'id', f: -> (i) { i.id }, skip_sanitization: true},
       {header: 'title', f: -> (i) { @@multiloc_service.t(i.title_multiloc) }},
-      {header: 'body', f: -> (i) { convert_to_text(@@multiloc_service.t(idea.body_multiloc)) }},
-      {header: 'author_name', f: -> (i) { i.id }},
-      {header: 'author_email', f: -> (i) { i.id }},
-      {header: 'publication_status', f: -> (i) { i.id }},
-      {header: 'published_at', f: -> (i) { i.id }},
-      {header: 'upvotes_count', f: -> (i) { i.id }},
-      {header: 'downvotes_count', f: -> (i) { i.id }},
-      {header: 'baskets_count', f: -> (i) { i.id }},
-      {header: 'url', f: -> (i) { i.id }},
-      {header: 'project', f: -> (i) { i.id }},
-      {header: 'topics', f: -> (i) { i.id }},
-      {header: 'areas', f: -> (i) { i.id }},
-      {header: 'idea_status', f: -> (i) { i.id }},
-      {header: 'assignee', f: -> (i) { i.id }},
-      {header: 'assignee_email', f: -> (i) { i.id }},
-      {header: 'latitude', f: -> (i) { i.id }},
-      {header: 'longitude', f: -> (i) { i.id }},
-      {header: 'location_description', f: -> (i) { i.id }},
-      {header: 'comments_count', f: -> (i) { i.id }},
-      {header: 'attachments_count', f: -> (i) { i.id }},
-      {header: 'attachmens', f: -> (i) { i.id }}
+      {header: 'body', f: -> (i) { convert_to_text(@@multiloc_service.t(i.body_multiloc)) }},
+      {header: 'author_name', f: -> (i) { i.author_name }},
+      {header: 'author_email', f: -> (i) { i.author&.email }},
+      {header: 'publication_status', f: -> (i) { i.publication_status }, skip_sanitization: true},
+      {header: 'published_at', f: -> (i) { i.published_at }, skip_sanitization: true},
+      {header: 'upvotes_count', f: -> (i) { i.upvotes_count }, skip_sanitization: true},
+      {header: 'downvotes_count', f: -> (i) { i.downvotes_count }, skip_sanitization: true},
+      {header: 'baskets_count', f: -> (i) { i.baskets_count }, skip_sanitization: true},
+      {header: 'url', f: -> (i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true},
+      {header: 'project', f: -> (i) { @@multiloc_service.t(i&.project&.title_multiloc) }},
+      {header: 'topics', f: -> (i) { i.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(',') }},
+      {header: 'areas', f: -> (i) { i.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',') }},
+      {header: 'idea_status', f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
+      {header: 'assignee', f: -> (i) { i.assignee&.display_name }},
+      {header: 'assignee_email', f: -> (i) { i.assignee&.email }},
+      {header: 'latitude', f: -> (i) { i.location_point&.coordinates&.last }, skip_sanitization: true},
+      {header: 'longitude', f: -> (i) { i.location_point&.coordinates&.first }, skip_sanitization: true},
+      {header: 'location_description', f: -> (i) { i.location_description }},
+      {header: 'comments_count', f: -> (i) { i.comments_count }}, skip_sanitization: true,
+      {header: 'attachments_count', f: -> (i) { i.idea_files.size }, skip_sanitization: true},
+      {header: 'attachmens', f: -> (i) { i.idea_files.map{|f| f.file.url}.join("\n") }, skip_sanitization: true}
     ]
-    generate_xlsx 'Ideas', columns, ideas
-
-    # TODO hide private attributes for non-admins
-    pa = Axlsx::Package.new
-    wb = pa.workbook
-    wb.styles do |s|
-      wb.add_worksheet(name: "Ideas") do |sheet|
-        ideas.each do |idea|
-          lat, lon = [nil, nil]
-          lon, lat = idea.location_point.coordinates if idea.location_point.present?
-          sheet.add_row [
-            idea.id,
-            @@multiloc_service.t(idea.title_multiloc),
-            convert_to_text(@@multiloc_service.t(idea.body_multiloc)),
-            idea.author_name,
-            idea.author&.email,
-            idea.publication_status,
-            idea.published_at,
-            idea.upvotes_count,
-            idea.downvotes_count,
-            idea.baskets_count,
-            Frontend::UrlService.new.model_to_url(idea),
-            @@multiloc_service.t(idea&.project&.title_multiloc),
-            idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
-            idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
-            @@multiloc_service.t(idea&.idea_status&.title_multiloc),
-            idea.assignee&.display_name,
-            idea.assignee&.email,
-            lat,
-            lon,
-            idea.location_description,
-            idea.comments_count,
-            idea.idea_files.size,
-            idea.idea_files.map{|f| f.file.url}.join("\n")
-          ]
-        end
-        sheet.column_info[2].width = 65
+    if !view_private_attributes
+      columns.select! do |c|
+        !%w(author_email assignee_email).include?(c[:header])
       end
     end
-    pa.to_stream
+    generate_xlsx 'Ideas', columns, ideas
   end
 
   def generate_initiatives_xlsx initiatives
