@@ -194,90 +194,99 @@ export default function createRoutes() {
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),
-          indexRoute: {
-            name: 'Project page',
-            component: Loadable({
-              loader: () => import('containers/ProjectsShowPage/main'),
-              loading: LoadableLoadingCitizen,
-              delay: 500,
-            }),
-          },
-          childRoutes: [
-            {
-              path: 'process',
-              name: "Project's process page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/process'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'timeline',
-              name: "Project's process page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/process'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'info',
-              name: "Project's info page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/info'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'events',
-              name: "Project's events page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/events'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'ideas',
-              name: "Project's ideas page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/ideas'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'survey',
-              name: "Project's survey page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/survey'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'poll',
-              name: "Project's poll page",
-              component: Loadable({
-                loader: () => import('containers/ProjectsShowPage/poll'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-            {
-              path: 'volunteering',
-              name: "Project's volunteering page",
-              component: Loadable({
-                loader: () =>
-                  import('containers/ProjectsShowPage/volunteering'),
-                loading: LoadableLoadingCitizen,
-                delay: 500,
-              }),
-            },
-          ],
         },
+        // {
+        //   path: 'projects/:slug',
+        //   name: 'Project page',
+        //   component: Loadable({
+        //     loader: () => import('containers/ProjectsShowPage'),
+        //     loading: LoadableLoadingCitizen,
+        //     delay: 500,
+        //   }),
+        //   indexRoute: {
+        //     name: 'Project page',
+        //     component: Loadable({
+        //       loader: () => import('containers/ProjectsShowPage/main'),
+        //       loading: LoadableLoadingCitizen,
+        //       delay: 500,
+        //     }),
+        //   },
+        //   childRoutes: [
+        //     {
+        //       path: 'process',
+        //       name: "Project's process page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/process'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'timeline',
+        //       name: "Project's process page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/process'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'info',
+        //       name: "Project's info page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/info'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'events',
+        //       name: "Project's events page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/events'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'ideas',
+        //       name: "Project's ideas page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/ideas'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'survey',
+        //       name: "Project's survey page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/survey'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'poll',
+        //       name: "Project's poll page",
+        //       component: Loadable({
+        //         loader: () => import('containers/ProjectsShowPage/poll'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //     {
+        //       path: 'volunteering',
+        //       name: "Project's volunteering page",
+        //       component: Loadable({
+        //         loader: () =>
+        //           import('containers/ProjectsShowPage/volunteering'),
+        //         loading: LoadableLoadingCitizen,
+        //         delay: 500,
+        //       }),
+        //     },
+        //   ],
+        // },
         {
           path: 'pages/cookie-policy',
           name: 'cookiePolicy',

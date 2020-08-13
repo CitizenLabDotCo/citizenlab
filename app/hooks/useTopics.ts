@@ -68,6 +68,5 @@ export default function useTopics(parameters: Parameters) {
     return () => subscription.unsubscribe();
   }, [topicIds]);
 
-  console.log(topics);
   return topics;
 }

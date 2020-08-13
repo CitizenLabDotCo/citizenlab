@@ -210,8 +210,6 @@ class FullscreenModal extends PureComponent<Props, State> {
     const modalPortalElement = document?.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
 
-    console.log(windowHeight);
-
     if (animateInOut || (!animateInOut && opened)) {
       modalContent = (
         <Container
