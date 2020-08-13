@@ -114,16 +114,16 @@ class IdeaCustomFieldService
       CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          key: 'estimated_budget',
-          code: 'estimated_budget',
+          key: 'proposed_budget',
+          code: 'proposed_budget',
           input_type: 'number',
           title_multiloc: ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.estimated_budget.title',
+              'custom_fields.ideas.proposed_budget.title',
               locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
                                   ml_s.i18n_to_multiloc(
-                                      'custom_fields.ideas.estimated_budget.description',
+                                      'custom_fields.ideas.proposed_budget.description',
                                       locales: CL2_SUPPORTED_LOCALES
                                   )
                                 rescue
