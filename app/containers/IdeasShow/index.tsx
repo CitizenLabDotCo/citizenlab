@@ -36,6 +36,7 @@ import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
+import IdeaMoreActions from './IdeaMoreActions';
 import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
@@ -242,9 +243,15 @@ const StyledMobileIdeaStatus = styled(IdeaStatus)`
   `}
 `;
 
+const AuthorActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+`;
+
 const StyledIdeaAuthor = styled(IdeaAuthor)`
   margin-left: -4px;
-  margin-bottom: 50px;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -684,11 +691,17 @@ export class IdeasShow extends PureComponent<
                 )}
 
                 {biggerThanLargeTablet && (
-                  <StyledIdeaAuthor
-                    ideaId={ideaId}
-                    authorId={authorId}
-                    ideaPublishedAt={ideaPublishedAt}
-                  />
+                  <AuthorActionsContainer>
+                    <StyledIdeaAuthor
+                      ideaId={ideaId}
+                      authorId={authorId}
+                      ideaPublishedAt={ideaPublishedAt}
+                    />
+                    <IdeaMoreActions
+                      idea={idea}
+                      hasLeftMargin={true}
+                    />
+                  </AuthorActionsContainer>
                 )}
 
                 {ideaImageLarge && (

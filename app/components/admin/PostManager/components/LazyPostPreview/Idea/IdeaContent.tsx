@@ -144,6 +144,10 @@ const Picks = styled.div`
   align-items: center;
 `;
 
+const StyledIdeaAuthor = styled(IdeaAuthor)`
+  margin-bottom: 25px;
+`;
+
 interface State {}
 
 export interface InputProps {
@@ -245,7 +249,7 @@ export class IdeaContent extends PureComponent<
                     className="e2e-ideaImage"
                   />
                 )}
-                <IdeaAuthor
+                <StyledIdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
                   ideaPublishedAt={idea.attributes.published_at}
                   ideaId={ideaId}
