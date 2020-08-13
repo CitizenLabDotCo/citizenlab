@@ -9,7 +9,7 @@ module Surveys
 
         def index_xlsx
           if @participation_context
-            authorize Project.find_by!(id: @participation_context.id), :index_xlsx?
+            authorize Project.find_by!(id: @participation_context.project.id), :index_xlsx?
           else
             authorize [:surveys, :response], :index_xlsx?
           end
