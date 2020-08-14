@@ -16,7 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
-import Link from 'utils/cl-router/Link';
 import VerificationBadge from './VerificationBadge';
 
 const Container = styled.div`
@@ -84,44 +83,18 @@ const UserName = ({
     const lastName = get(user, 'attributes.last_name', '');
     const isVerified = !!user.attributes.verified;
 
-    const nameComponent = (
-      <Name
-        emphasize={emphasize}
-        className={`${linkToProfile ? 'linkToProfile' : ''}
-          ${canModerate ? 'canModerate' : ''}
-          e2e-username`}
-        color={color}
-      >
-        {`${firstName} ${hideLastName ? '' : lastName}`}
-      </Name>
-    );
-
-    if (linkToProfile) {
-      return (
-        <Link
-          to={`/profile/${user.attributes.slug}`}
-          className={`e2e-author-link ${className || ''}`}
-        >
-          <Container>
-            {nameComponent}
-            {verificationBadge &&
-              <VerificationBadge
-                isVerified={isVerified}
-              />
-            }
-          </Container>
-        </Link>
-      );
-    }
-
     return (
       <Container className={className || ''}>
-        {nameComponent}
-        {verificationBadge &&
-          <VerificationBadge
-            isVerified={isVerified}
-          />
-        }
+        <Name
+          emphasize={emphasize}
+          className={`${linkToProfile ? 'linkToProfile' : ''}
+          ${canModerate ? 'canModerate' : ''}
+          e2e-username`}
+          color={color}
+        >
+          {`${firstName} ${hideLastName ? '' : lastName}`}
+        </Name>{' '}
+        {verificationBadge && <VerificationBadge isVerified={isVerified} />}
       </Container>
     );
   }
