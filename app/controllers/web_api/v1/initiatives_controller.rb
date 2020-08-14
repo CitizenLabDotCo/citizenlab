@@ -76,7 +76,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         .includes(:author, :topics, :areas, :initiative_status)
         .where(publication_status: 'published')
       @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
-      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives
+      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'initiatives.xlsx'
     end
   end
