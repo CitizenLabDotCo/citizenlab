@@ -5,9 +5,9 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ProjectsShowPageMeta from './ProjectsShowPageMeta';
-import Header from './Header';
 import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
+import ProjectInfo from './ProjectInfo';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -33,38 +33,40 @@ const Container = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
+  align-items: center;
   background: #fff;
-
-  &.greyBackground {
-    background: ${colors.background};
-  }
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
-    background: ${colors.background};
-  `}
-
-  ${media.biggerThanMinTablet`
-    &.loaded {
-      min-height: 900px;
-    }
   `}
 `;
 
-const Loading = styled.div`
+const LoadingWrapper = styled.div`
   flex: 1 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const Content = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 1285px;
+  padding-left: 50px;
+  padding-right: 50px;
+`;
+
+const ProjectHeaderImage = styled.div<{ src: string | null | undefined }>`
+  width: 100%;
+  height: 250px;
+  background-image: url(${(props: any) => props.src});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  margin-top: 40px;
+  margin-bottom: 50px;
 `;
 
 const ProjectNotFoundWrapper = styled.div`
@@ -78,63 +80,70 @@ const ProjectNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-interface Props {
-  project: IProjectData | null | undefined;
-  projectSlug: string;
-}
+const ProjectsShowPage = memo(
+  ({
+    project,
+    projectSlug,
+  }: {
+    project: IProjectData | null | undefined;
+    projectSlug: string;
+  }) => {
+    const locale = useLocale();
+    const tenant = useTenant();
+    const phases = usePhases(project?.id);
+    const events = useEvents(project?.id);
 
-const ProjectsShowPage = memo<Props>(({ project, projectSlug }) => {
-  const locale = useLocale();
-  const tenant = useTenant();
-  const phases = usePhases(project?.id);
-  const events = useEvents(project?.id);
+    const projectNotFound = isError(project);
+    const loading =
+      isUndefined(locale) ||
+      isUndefined(tenant) ||
+      isUndefined(project) ||
+      isUndefined(phases) ||
+      isUndefined(events);
+    const currentPath = location.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
 
-  const projectNotFound = isError(project);
-  const loading =
-    isUndefined(locale) ||
-    isUndefined(tenant) ||
-    isUndefined(project) ||
-    isUndefined(phases) ||
-    isUndefined(events);
-  const currentPath = location.pathname;
-  const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    let content = (
+      <ContentWrapper>
+        <ProjectHeaderImage src={projectHeaderImageLarge} />
+        {project?.id && <ProjectInfo projectId={project.id} />}
+      </ContentWrapper>
+    );
 
-  return (
-    <>
-      <ProjectsShowPageMeta projectSlug={projectSlug} />
-      <Container
-        className={`${
-          lastUrlSegment === 'events' || lastUrlSegment === 'info'
-            ? 'greyBackground'
-            : ''
-        } ${!loading ? 'loaded' : 'loading'}`}
-      >
-        {projectNotFound ? (
-          <ProjectNotFoundWrapper>
-            <p>
-              <FormattedMessage {...messages.noProjectFoundHere} />
-            </p>
-            <Button
-              linkTo="/projects"
-              text={<FormattedMessage {...messages.goBackToList} />}
-              icon="arrow-back"
-            />
-          </ProjectNotFoundWrapper>
-        ) : loading ? (
-          <Loading>
-            <Spinner />
-          </Loading>
-        ) : (
-          <>
-            <Header projectSlug={projectSlug} />
-            <div>Test</div>
-            {/* <Content>{children}</Content> */}
-          </>
+    if (loading) {
+      content = (
+        <LoadingWrapper>
+          <Spinner />
+        </LoadingWrapper>
+      );
+    }
+
+    if (projectNotFound) {
+      content = (
+        <ProjectNotFoundWrapper>
+          <p>
+            <FormattedMessage {...messages.noProjectFoundHere} />
+          </p>
+          <Button
+            linkTo="/projects"
+            text={<FormattedMessage {...messages.goBackToList} />}
+            icon="arrow-back"
+          />
+        </ProjectNotFoundWrapper>
+      );
+    }
+
+    return (
+      <Container>
+        {projectSlug && !projectNotFound && (
+          <ProjectsShowPageMeta projectSlug={projectSlug} />
         )}
+        {content}
       </Container>
-    </>
-  );
-});
+    );
+  }
+);
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(({ params }) => {
   const project = useProject({ projectSlug: params.slug });
