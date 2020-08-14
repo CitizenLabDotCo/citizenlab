@@ -4,7 +4,6 @@ import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // components
-import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -144,10 +143,6 @@ const Picks = styled.div`
   align-items: center;
 `;
 
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-bottom: 25px;
-`;
-
 interface State {}
 
 export interface InputProps {
@@ -249,11 +244,6 @@ export class IdeaContent extends PureComponent<
                     className="e2e-ideaImage"
                   />
                 )}
-                <StyledIdeaAuthor
-                  authorId={get(idea, 'relationships.author.data.id', null)}
-                  ideaPublishedAt={idea.attributes.published_at}
-                  ideaId={ideaId}
-                />
 
                 <StyledBody
                   postId={ideaId}
