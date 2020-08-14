@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // components
 import { Helmet } from 'react-helmet';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useTenantLocales from 'hooks/useTenantLocales';
+import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -25,26 +22,16 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-interface InputProps {
+interface Props {
   projectSlug: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
-  project: GetProjectChildProps;
-  authUser: GetAuthUserChildProps;
-}
+const Meta = memo<Props & InjectedIntlProps>(({ projectSlug, intl }) => {
+  const locale = useLocale();
+  const tenantLocales = useTenantLocales();
+  const authUser = useAuthUser();
+  const project = useProject({ projectSlug });
 
-interface Props extends InputProps, DataProps {}
-
-const Meta: React.SFC<Props & InjectedIntlProps> = ({
-  locale,
-  tenantLocales,
-  project,
-  authUser,
-  intl,
-}) => {
   if (
     !isNilOrError(locale) &&
     !isNilOrError(tenantLocales) &&
@@ -75,8 +62,9 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({
       <Helmet>
         <title>
           {`${
-            authUser && authUser.attributes.unread_notifications
-              ? `(${authUser.attributes.unread_notifications}) `
+            !isNilOrError(authUser) &&
+            authUser.data.attributes.unread_notifications
+              ? `(${authUser.data.attributes.unread_notifications}) `
               : ''
           }
             ${metaTitle}`}
@@ -103,21 +91,8 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({
   }
 
   return null;
-};
-
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
-  project: ({ projectSlug, render }) => (
-    <GetProject projectSlug={projectSlug}>{render}</GetProject>
-  ),
-  authUser: <GetAuthUser />,
 });
 
 const MetaWithHoc = injectIntl<Props>(Meta);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <MetaWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default MetaWithHoc;
