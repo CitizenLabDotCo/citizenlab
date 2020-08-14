@@ -4,9 +4,74 @@ class XlsxService
 
   @@multiloc_service = MultilocService.new
 
+
   def escape_formula text
     text = "'"+text if '=+-@'.include? text.first
     text
+  end
+
+  # Converts this hash array: 
+  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
+  # into this xlsx:
+  # | name  | size | age |
+  # | Ron   | xl   |     |
+  # | John  |      | 35  |
+  def hash_array_to_xlsx hash_array
+    headers = hash_array.flat_map{|hash| hash.keys}.uniq
+
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+
+    wb.styles do |s|
+      wb.add_worksheet do |sheet|
+        sheet.add_row headers, style: header_style(s)
+        hash_array.each do |hash|
+          sheet.add_row headers.map{|header| hash[header]}
+        end
+      end
+    end
+    
+    pa.to_stream
+  end
+
+  # Converts this xlsx:
+  # | name  | size | age |
+  # | Ron   | xl   |     |
+  # | John  |      | 35  |
+  # into this hash array: 
+  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
+  def xlsx_to_hash_array xlsx
+    workbook = RubyXL::Parser.parse_buffer(xlsx)
+    worksheet = workbook.worksheets[0]
+    worksheet.drop(1).map do |row|
+      (row&.cells || []).compact.map do |cell|
+        [worksheet[0][cell.column]&.value, cell.value] if cell.value
+      end.compact.to_h
+    end.compact
+  end
+
+  def generate_xlsx sheetname, columns, instances
+    columns = columns.uniq{ |c| c[:header] }
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+    wb.styles do |s|
+      wb.add_worksheet(name: sheetname) do |sheet|
+        header = columns.map{|c| c[:header]}
+        sheet.add_row header, style: header_style(s)
+        instances.each do |instance|
+          row = columns.map do |c|
+            value = c[:f].call instance
+            if c[:skip_sanitization]
+              value 
+            else 
+              escape_formula value.to_s
+            end
+          end
+          sheet.add_row row
+        end
+      end
+    end
+    pa.to_stream
   end
 
   def generate_users_xlsx users, view_private_attributes: false
@@ -161,72 +226,8 @@ class XlsxService
     generate_xlsx 'Invites', columns, invites
   end
 
-  # Converts this hash array: 
-  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
-  # into this xlsx:
-  # | name  | size | age |
-  # | Ron   | xl   |     |
-  # | John  |      | 35  |
-  def hash_array_to_xlsx hash_array
-    headers = hash_array.flat_map{|hash| hash.keys}.uniq
 
-    pa = Axlsx::Package.new
-    wb = pa.workbook
-
-    wb.styles do |s|
-      wb.add_worksheet do |sheet|
-        sheet.add_row headers, style: header_style(s)
-        hash_array.each do |hash|
-          sheet.add_row headers.map{|header| hash[header]}
-        end
-      end
-    end
-    
-    pa.to_stream
-  end
-
-  # Converts this xlsx:
-  # | name  | size | age |
-  # | Ron   | xl   |     |
-  # | John  |      | 35  |
-  # into this hash array: 
-  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
-  def xlsx_to_hash_array xlsx
-    workbook = RubyXL::Parser.parse_buffer(xlsx)
-    worksheet = workbook.worksheets[0]
-    worksheet.drop(1).map do |row|
-      (row&.cells || []).compact.map do |cell|
-        [worksheet[0][cell.column]&.value, cell.value] if cell.value
-      end.compact.to_h
-    end.compact
-  end
-
-
-  private 
-
-  def generate_xlsx sheetname, columns, instances
-    columns = columns.uniq{ |c| c[:header] }
-    pa = Axlsx::Package.new
-    wb = pa.workbook
-    wb.styles do |s|
-      wb.add_worksheet(name: sheetname) do |sheet|
-        header = columns.map{|c| c[:header]}
-        sheet.add_row header, style: header_style(s)
-        instances.each do |instance|
-          row = columns.map do |c|
-            value = c[:f].call instance
-            if c[:skip_sanitization]
-              value 
-            else 
-              escape_formula value.to_s
-            end
-          end
-          sheet.add_row row
-        end
-      end
-    end
-    pa.to_stream
-  end
+  private
 
   def header_style s
     s.add_style  :bg_color => "99ccff", :fg_color => "2626ff", :sz => 16, :alignment => { :horizontal=> :center }
