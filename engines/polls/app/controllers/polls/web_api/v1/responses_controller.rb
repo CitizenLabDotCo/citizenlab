@@ -12,10 +12,10 @@ module Polls
 			    end
 					@responses = policy_scope(Response)
 						.where(participation_context: @participation_context)
-						.includes(response_options: [:option])
+						.includes(:user, response_options: [:option])
 						.order(:created_at)
 			    I18n.with_locale(current_user&.locale) do
-			      xlsx = ExportService.new.generate_poll_results_xlsx @participation_context, @responses
+			      xlsx = XlsxService.new.generate_poll_results_xlsx @participation_context, @responses
 			      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'polling_results.xlsx'
 			    end
 			  end
