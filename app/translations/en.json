@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "Starts on {date}",
   "app.containers.Projects.submitMyExpenses": "Submit my expenses",
   "app.containers.Projects.totalBudget": "Total budget",
+  "app.containers.Projects.twitterMessage": "{title}: Share your ideas on",
   "app.containers.Projects.upcomingEvents": "Upcoming events",
   "app.containers.Projects.yourExpenses": "Your expenses",
   "app.containers.ProjectsIndexPage.metaDescription": "Explore all ongoing projects of {orgName} to understand how you can participate.\n Come discuss local projects that matter most to you.",

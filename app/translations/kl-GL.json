@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "Ulloq aallartiffissaq {date}",
   "app.containers.Projects.submitMyExpenses": "Akiligassakka nassiutikkit",
   "app.containers.Projects.totalBudget": "Missingersuutit katillugit",
+  "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Siunissami pisussat",
   "app.containers.Projects.yourExpenses": "Akiligassatit",
   "app.containers.ProjectsIndexPage.metaDescription": "Uani {orgName} suliniutit ingerlasut tamaasa paasiniarlugu sumi peqataasinnaanerlutit misissukkit. Sumiiffimmi suliniutit ilinnut pingaarutillit oqallisiginiarlugit aggerit. ",

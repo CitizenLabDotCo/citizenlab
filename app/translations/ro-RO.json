@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "Începe pe {date}",
   "app.containers.Projects.submitMyExpenses": "Trimite cheltuielile mele",
   "app.containers.Projects.totalBudget": "Buget total",
+  "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Evenimente viitoare",
   "app.containers.Projects.yourExpenses": "Cheltuielile dumneavoastră",
   "app.containers.ProjectsIndexPage.metaDescription": "Explorează toate proiectele în curs de desfășurare a {orgName} pentru a înțelege modul în care puteți să participați.\n Vino și discută proiectele locale care contează cel mai mult pentru tine.",

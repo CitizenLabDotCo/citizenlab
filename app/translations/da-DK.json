@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "{tenantName, select, DeloitteDK {Debatten starter den {date}} other {Starter den {date}}}",
   "app.containers.Projects.submitMyExpenses": "Indsend mine udgifter",
   "app.containers.Projects.totalBudget": "Samlet budget",
+  "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Kommende begivenheder",
   "app.containers.Projects.yourExpenses": "Dine udgifter",
   "app.containers.ProjectsIndexPage.metaDescription": "Udforsk alle igangværende projekter af {orgName} for at forstå, hvordan du kan deltage.\nKom og diskutér lokale projekter, der har betydning for dig.",
