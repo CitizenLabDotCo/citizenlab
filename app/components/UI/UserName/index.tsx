@@ -16,8 +16,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
-import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
+import VerificationBadge from './VerificationBadge';
 
 const Container = styled.div`
   display: inline-block;
@@ -52,20 +52,6 @@ const Name = styled.div<{ color?: string; emphasize?: boolean }>`
   }
 `;
 
-const Badge = styled.div`
-  color: #fff;
-  font-size: 10px;
-  line-height: normal;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 1px 6px;
-  display: inline-block;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 2px;
-  background-color: ${(props: any) => props.color};
-`;
-
 interface DataProps {
   user: GetUserChildProps;
 }
@@ -96,6 +82,8 @@ const UserName = ({
   if (!isNilOrError(user)) {
     const firstName = get(user, 'attributes.first_name', '');
     const lastName = get(user, 'attributes.last_name', '');
+    const isVerified = !!user.attributes.verified;
+
     const nameComponent = (
       <Name
         emphasize={emphasize}
@@ -107,17 +95,6 @@ const UserName = ({
         {`${firstName} ${hideLastName ? '' : lastName}`}
       </Name>
     );
-    const verificationBadgeComponent = (isVerified?: boolean) => (
-      <FeatureFlag name="verification">
-        <Badge color={isVerified ? colors.clGreen : colors.label}>
-          {isVerified ? (
-            <FormattedMessage {...messages.verified} />
-          ) : (
-            <FormattedMessage {...messages.notVerified} />
-          )}
-        </Badge>
-      </FeatureFlag>
-    );
 
     if (linkToProfile) {
       return (
@@ -128,7 +105,10 @@ const UserName = ({
           <Container>
             {nameComponent}
             {verificationBadge &&
-              verificationBadgeComponent(user.attributes.verified)}
+              <VerificationBadge
+                isVerified={isVerified}
+              />
+            }
           </Container>
         </Link>
       );
@@ -138,7 +118,10 @@ const UserName = ({
       <Container className={className || ''}>
         {nameComponent}
         {verificationBadge &&
-          verificationBadgeComponent(user.attributes.verified)}
+          <VerificationBadge
+            isVerified={isVerified}
+          />
+        }
       </Container>
     );
   }
