@@ -11,6 +11,7 @@ import {
   isProjectModerator,
 } from 'services/permissions/roles';
 import { IUser } from 'services/users';
+import { removeUrlLocale, localeStream } from 'services/locale';
 
 export interface IEvent {
   name: string;
@@ -33,8 +34,13 @@ const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
+    const paqEvent = ['trackEvent', event.name] as any[];
+    console.log(event.properties);
+    Object.values(event.properties).length > 0 &&
+      paqEvent.push(Object.values(event.properties));
+    window._paq.push(paqEvent);
+    console.log('sent event', paqEvent);
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
-      window._paq.push(['trackEvent', event.name, event.properties.values]);
       analytics.track(
         event.name,
         {
@@ -48,31 +54,36 @@ combineLatest(tenant$, authUser$, events$).subscribe(
   }
 );
 
-combineLatest(tenant$, authUser$, pageChanges$).subscribe(
-  ([tenant, user, pageChange]) => {
-    if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
-      window._paq.push([
-        'setDocumentTitle',
-        document.domain + '/' + document.title,
-      ]);
-      window._paq.push(['trackPageView']);
-      analytics.page(
-        '',
-        {
-          path: pageChange.path,
-          url: `https://${tenant.data.attributes.host}${pageChange.path}`,
-          title: null,
-          ...tenantInfo(tenant.data),
-          ...pageChange.properties,
-        },
-        { integrations: integrations(user) }
-      );
-    }
+localeStream().observable.subscribe((locale) => {
+  window._paq.push(['setCustomDimension', 3, locale]);
+  console.log('sent locale ' + locale);
+});
+
+tenant$.subscribe((tenant) => {
+  if (!isNilOrError(tenant)) {
+    console.log(
+      'sent tenant ' + tenant.data.attributes.name + ' ' + tenant.data.id
+    );
+    window._paq.push(['setCustomDimension', 1, tenant.data.attributes.name]);
+    window._paq.push(['setCustomDimension', 2, tenant.data.id]);
   }
-);
+});
+//
+pageChanges$.subscribe(({ path }) => {
+  window._paq.push(['setCustomUrl', removeUrlLocale(path)]);
+  window._paq.push(['trackPageView']);
+  console.log('sent page ' + removeUrlLocale(path));
+
+  if (isFunction(get(window, 'analytics.page'))) {
+    analytics.page('');
+  }
+});
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
   // TODO
+  window._paq.push(['setUserId']);
+
+  console.log('sent user ' + user.data.id);
   if (
     !isNilOrError(tenant) &&
     isFunction(get(window, 'analytics.identify')) &&
@@ -121,6 +132,7 @@ combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
         integrations: integrations(user),
         Intercom: { hideDefaultLauncher: true },
       } as any);
+      window._paq.push(['resetUserId']);
     }
   }
 });
