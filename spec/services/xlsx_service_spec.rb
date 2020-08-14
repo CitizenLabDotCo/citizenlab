@@ -1,8 +1,22 @@
 require "rails_helper"
 require 'rubyXL'
 
+# TODO add specs for hiding private attributes
+
 describe XlsxService do
   let(:service) { XlsxService.new }
+
+  describe "escape_formula" do
+    it "retains normal text" do
+      text = '1 + 2 = 3'
+      expect(service.escape_formula(text)).to eq text
+    end
+
+    it "escapes formula injections" do
+      text = "=cmd|' /C notepad'!'A1'"
+      expect(service.escape_formula(text)).not_to eq text
+    end
+  end
 
   describe "generate_users_xlsx" do
 
