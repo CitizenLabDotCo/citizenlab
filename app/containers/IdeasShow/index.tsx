@@ -34,8 +34,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
-import IdeaPostedBy from './IdeaPostedBy';
-import IdeaAuthor from './IdeaAuthor';
+import PostedBy from './PostedBy';
 import IdeaMoreActions from './IdeaMoreActions';
 import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
@@ -227,14 +226,6 @@ const StyledProjectLink = styled(ProjectLink)`
   display: block;
 `;
 
-const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-  margin-top: 4px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
 const StyledMobileIdeaStatus = styled(IdeaStatus)`
   margin-bottom: 30px;
 
@@ -248,14 +239,6 @@ const AuthorActionsContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
-`;
-
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-left: -4px;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const StyledDropdownMap = styled(DropdownMap)`
@@ -680,10 +663,6 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
-
-                  {smallerThanLargeTablet && (
-                    <StyledMobileIdeaPostedBy authorId={authorId} />
-                  )}
                 </IdeaHeader>
 
                 {statusId && smallerThanLargeTablet && (
@@ -692,10 +671,9 @@ export class IdeasShow extends PureComponent<
 
                 {biggerThanLargeTablet && (
                   <AuthorActionsContainer>
-                    <StyledIdeaAuthor
-                      ideaId={ideaId}
+                    <PostedBy
                       authorId={authorId}
-                      ideaPublishedAt={ideaPublishedAt}
+                      ideaId={ideaId}
                     />
                     <IdeaMoreActions
                       idea={idea}
