@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+import User from 'components/UI/User';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
@@ -118,7 +118,7 @@ class Author extends PureComponent<Props, State> {
       showModeration &&
       canModerate(projectId, { data: author });
     const authorName = (
-      <UserName
+      <User
         userId={authorId}
         linkToProfile={!notALink}
         canModerate={authorCanModerate}

@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+import User from 'components/UI/User';
 import { Dropdown } from 'cl2-component-library';
 import HasPermission from 'components/HasPermission';
 
@@ -30,7 +30,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const StyledUserName = styled(UserName)`
+const StyledUserName = styled(User)`
   margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;

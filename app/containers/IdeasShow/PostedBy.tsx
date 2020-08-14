@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import UserName from 'components/UI/UserName';
+import User from 'components/UI/User';
 import Avatar from 'components/Avatar';
 
 // i18n
@@ -16,7 +16,6 @@ import { fontSizes, media } from 'utils/styleUtils';
 
 // hooks
 import useIdea from 'hooks/useIdea';
-
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -33,30 +32,32 @@ const Container = styled.div`
 
 interface Props {
   authorId: string | null;
-  ideaId: string
+  ideaId: string;
   className?: string;
 }
 
 const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
-  const userName = <UserName userId={authorId} linkToProfile emphasize />;
+  const userName = <User userId={authorId} linkToProfile emphasize />;
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
     const ideaPublishedAtDate = idea.attributes.published_at;
-    const date = <FormattedDate
-      value={ideaPublishedAtDate}
-      year="numeric"
-      month="long"
-      day="numeric"
-    />;
+    const date = (
+      <FormattedDate
+        value={ideaPublishedAtDate}
+        year="numeric"
+        month="long"
+        day="numeric"
+      />
+    );
 
     return (
       <Container className={className}>
-          <Avatar
-            userId={authorId}
-            size="36px"
-            // onClick={authorId ? goToUserProfile : noop}
-          />
+        <Avatar
+          userId={authorId}
+          size="36px"
+          // onClick={authorId ? goToUserProfile : noop}
+        />
         <FormattedMessage {...messages.by} values={{ userName, date }} />
       </Container>
     );
