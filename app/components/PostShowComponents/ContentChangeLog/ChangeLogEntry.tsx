@@ -5,7 +5,7 @@ import React, { memo } from 'react';
 import { IdeaActivity } from 'services/ideas';
 
 // Components
-import UserName from 'components/UI/UserName';
+import User from 'components/UI/User';
 import Avatar from 'components/Avatar';
 
 // i18n
@@ -60,7 +60,7 @@ const ChangeLogEntry = memo<Props>(({ activity, postType }) => {
           <FormattedMessage
             {...changeLogEntryMessage}
             values={{
-              userName: <UserName userId={userId} />,
+              userName: <User userId={userId} />,
               changeType: activity.attributes.action,
             }}
           />

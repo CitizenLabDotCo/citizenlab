@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
-import UserName from 'components/UI/UserName';
+import User from 'components/UI/User';
 import Link from 'utils/cl-router/Link';
 
 // styling
@@ -62,7 +62,7 @@ const PostedBy = memo<Props>(
   ({ authorId, className, showAboutInitiatives }) => {
     if (authorId) {
       const authorName = (
-        <UserName userId={authorId} emphasize linkToProfile hideLastName />
+        <User userId={authorId} emphasize linkToProfile hideLastName />
       );
 
       return (
