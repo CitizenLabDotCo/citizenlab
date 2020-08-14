@@ -34,12 +34,20 @@ const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
-    const paqEvent = ['trackEvent', event.name] as any[];
-    console.log(event.properties);
-    Object.values(event.properties).length > 0 &&
-      paqEvent.push(Object.values(event.properties));
-    window._paq.push(paqEvent);
-    console.log('sent event', paqEvent);
+    window._paq.push([
+      'trackEvent',
+      event.name,
+      ...(Object.values(event.properties || {}) || []).filter(
+        (item) => typeof item === 'string'
+      ),
+    ]);
+    console.log('sent event', [
+      'trackEvent',
+      event.name,
+      ...(Object.values(event.properties || {}) || []).filter(
+        (item) => typeof item === 'string'
+      ),
+    ]);
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
       analytics.track(
         event.name,
