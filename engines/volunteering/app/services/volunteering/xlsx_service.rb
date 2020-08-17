@@ -13,7 +13,7 @@ module Volunteering
       ]
       if !view_private_attributes
         columns.select! do |c|
-          !%w(author_email assignee_email).include?(c[:header])
+          !%w(email).include?(c[:header])
         end
       end
       pa = Axlsx::Package.new
