@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const Container = styled.div<{ color?: string; emphasize?: boolean }>`
+const Container = styled.span<{ color?: string; emphasize?: boolean }>`
   color: ${({ color, theme }) => color || theme.colorText};
   font-weight: ${({ emphasize }) => (emphasize ? 500 : 'normal')};
   text-decoration: none;
@@ -17,7 +17,7 @@ interface Props {
   className?: string;
 }
 
-const DeletedUser = ({ className }: Props) => {
+const UnknownUser = ({ className }: Props) => {
   return (
     // TODO: check if color prop is needed here
     <Container className={`${className} e2e-username`}>
@@ -26,4 +26,4 @@ const DeletedUser = ({ className }: Props) => {
   );
 };
 
-export default DeletedUser;
+export default UnknownUser;
