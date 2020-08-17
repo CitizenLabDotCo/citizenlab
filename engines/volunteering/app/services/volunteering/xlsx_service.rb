@@ -4,6 +4,7 @@ module Volunteering
     @@multiloc_service = MultilocService.new
 
     def generate_xlsx pc, volunteers, view_private_attributes: false
+      xlsx_service = XlsxService.new
       columns = [
         {header: 'first_name', f: -> (v) { v.user.first_name }},
         {header: 'last_name',  f: -> (v) { v.user.last_name }},
@@ -19,7 +20,7 @@ module Volunteering
       pc.causes.order(:ordering).each do |cause|
         # Sheet names can only be 31 characters long
         sheetname = @@multiloc_service.t(cause.title_multiloc)[0..30]
-        generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
+        xlsx_service.generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end
       pa.to_stream
     end
