@@ -11,26 +11,12 @@ const Container = styled.span<{ color?: string; emphasize?: boolean }>`
   text-decoration: none;
   hyphens: auto;
 
-  &.linkToProfile {
-    transition: all 80ms ease-out;
+  &.canModerate {
+    color: ${colors.clRedError};
 
     &:hover {
-      cursor: pointer;
-      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
-      text-decoration: underline;
+      color: ${darken(0.15, colors.clRedError)};
     }
-
-    &.canModerate {
-      color: ${colors.clRedError};
-
-      &:hover {
-        color: ${darken(0.15, colors.clRedError)};
-      }
-    }
-  }
-
-  &.deleted-user {
-    font-style: italic;
   }
 `;
 
