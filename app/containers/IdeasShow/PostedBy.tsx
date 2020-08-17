@@ -30,6 +30,10 @@ const Container = styled.div`
   `}
 `;
 
+const StyledAvatar = styled(Avatar)`
+  margin-right: 5px;
+`;
+
 interface Props {
   authorId: string | null;
   ideaId: string;
@@ -53,7 +57,7 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
 
     return (
       <Container className={className}>
-        <Avatar
+        <StyledAvatar
           userId={authorId}
           size="36px"
           // onClick={authorId ? goToUserProfile : noop}
