@@ -71,11 +71,13 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def index_xlsx
     authorize :initiative, :index_xlsx?
+
+    @initiatives = policy_scope(Initiative)
+      .includes(:author, :topics, :areas, :initiative_status)
+      .where(publication_status: 'published')
+    @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
+
     I18n.with_locale(current_user&.locale) do
-      @initiatives = policy_scope(Initiative)
-        .includes(:author, :topics, :areas, :initiative_status)
-        .where(publication_status: 'published')
-      @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
       xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'initiatives.xlsx'
     end

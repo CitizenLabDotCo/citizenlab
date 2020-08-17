@@ -29,9 +29,10 @@ module Volunteering
             .where(volunteering_causes: {participation_context_id: @participation_context})
             .includes(:user, :cause)
 
-          xlsx = Volunteering::XlsxService.new.generate_xlsx(@participation_context, @volunteers)
-
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'volunteers.xlsx'
+          I18n.with_locale(current_user&.locale) do
+            xlsx = Volunteering::XlsxService.new.generate_xlsx @participation_context, @volunteers, , view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+            send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'volunteers.xlsx'
+          end
         end
 
         def create
