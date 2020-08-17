@@ -21,17 +21,6 @@ module Surveys
 
           @responses = TypeformApiParser.new.get_responses(@participation_context.typeform_form_id)
 
-          # hash_array = @responses.map do |response|
-          #   {
-          #     submitted_at: response.submitted_at,
-          #     started_at: response.started_at
-          #   }.tap do |row|
-          #     answers = response.answers.each do |answer|
-          #       row[answer['question_text']] = answer['value']
-          #     end
-          #   end
-          # end
-
           I18n.with_locale(current_user&.locale) do
             xlsx = XlsxService.new.generate_survey_results_xlsx @responses
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'survey_responses.xlsx'

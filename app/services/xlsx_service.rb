@@ -53,9 +53,14 @@ class XlsxService
   def generate_xlsx sheetname, columns, instances
     columns = columns.uniq{ |c| c[:header] }
     pa = Axlsx::Package.new
-    wb = pa.workbook
-    wb.styles do |s|
-      wb.add_worksheet(name: sheetname) do |sheet|
+    generate_sheet pa.workbook, sheetname, columns, instances
+    pa.to_stream
+  end
+
+  def generate_sheet workbook, sheetname, columns, instances
+    columns = columns.uniq{ |c| c[:header] }
+    workbook.styles do |s|
+      workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.map{|c| c[:header]}
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
@@ -71,7 +76,6 @@ class XlsxService
         end
       end
     end
-    pa.to_stream
   end
 
   def generate_users_xlsx users, view_private_attributes: false
