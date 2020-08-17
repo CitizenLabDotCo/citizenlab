@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import User from 'components/UI/User';
+import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
 // i18n
@@ -37,7 +37,7 @@ interface Props {
 }
 
 const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
-  const userName = <User userId={authorId} linkToProfile emphasize />;
+  const userName = <UserName userId={authorId} linkToProfile emphasize />;
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {

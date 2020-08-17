@@ -8,7 +8,7 @@ import withProfileLink from './withProfileLink';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
-import UserName from './UserName';
+import Name from './Name';
 import DeletedUser from './DeletedUser';
 
 interface DataProps {
@@ -31,7 +31,7 @@ interface InputProps extends UserNameProps {
 
 interface Props extends InputProps, DataProps {}
 
-const User = (props: Props) => {
+const UserName = (props: Props) => {
   const { user, className, linkToProfile, ...userNameProps } = props;
 
   if (!isNilOrError(user)) {
@@ -39,8 +39,8 @@ const User = (props: Props) => {
     const lastName = get(user, 'attributes.last_name', '');
     const profileLink = `/profile/${user.attributes.slug}`;
 
-    const Component = (
-      <UserName
+    const NameComponent = (
+      <Name
         firstName={firstName}
         lastName={lastName}
         className={className}
@@ -49,8 +49,8 @@ const User = (props: Props) => {
     );
 
     return linkToProfile
-      ? withProfileLink(Component, profileLink, className)
-      : Component;
+      ? withProfileLink(NameComponent, profileLink, className)
+      : NameComponent;
   }
 
   return <DeletedUser className={className} />;
@@ -62,6 +62,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <User {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserName {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/User';
+import UserName from 'components/UI/UserName';
 import VerificationBadge from './VerificationBadge';
 
 // style
