@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Publicată de {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "De ce vrei să raportezi acest lucru ca spam?",
   "app.containers.InitiativesShow.twitterMessage": "Votează pentru {initiativeTitle} pe",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Acum ești un administrator al platformei",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Comentariul tău de pe „{postTitle}“ a fost șters de către un admin, deoarece: {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Autor necunoscut",

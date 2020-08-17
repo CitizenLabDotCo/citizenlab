@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Publisert av {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Hvorfor ønsker du å rapportere dette som spam?",
   "app.containers.InitiativesShow.twitterMessage": "Stem på {initiativeTitle} på",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Du er nå administrator på plattformen",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Kommentaren din til '{postTitle}' har blitt slettet av en administrator fordi: {reasonCode, select, irrelevant {det er irrelevant} upassende { innholdet er upassende} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Ukjent forfatter",

@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "",
   "app.containers.InitiativesShow.twitterMessage": "",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "",
   "app.containers.NotificationMenu.deletedUser": "",
