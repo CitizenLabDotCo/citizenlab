@@ -251,8 +251,6 @@
   "app.components.PostComponents.lastChangesTitleInitiative": "Innuttaasunit siunnersuummut uunga allannguutit kingulliit",
   "app.components.PostComponents.lastUpdated": "Aaqqissorneqarpoq {modificationTime}",
   "app.components.PostComponents.linkToHomePage": "Nittartakkamut iserneq innersuussut",
-  "app.components.PostComponents.seeOriginal": "Allaqqaarnera takutiguk",
-  "app.components.PostComponents.seeTranslation": "Nutsernera takujuk",
   "app.components.Project.projectModeratorIndicator": "{tenantName, select, DeloitteDK {Nunarsuaq tamakkerlugu anguniakkanut uunga oqallinnermi aqutsisuuvutit.} other {Suliniummut uunga oqallinnermi aqutsisuuvutit.}}",
   "app.components.ProjectArchivedIndicator.archivedProject": "{tenantName, select, DeloitteDK {Ajoraluartumik uunga nunarsuaq tamakkerlugu anguniakkanut peqataasinnaajunnaarputit, toqqorneqarmat} other {Ajoraluartumik uunga suliamut peqataasinnaajunnaarputit, toqqorneqarmat}}",
   "app.components.ProjectCard.a11y_projectDescription": "Suliassap allaaserineqarnera:",
