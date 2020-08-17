@@ -134,7 +134,7 @@
   "app.components.IdeasMap.seeIdea": "",
   "app.components.IdeasMap.signInLinkText": "",
   "app.components.IdeasMap.signUpLinkText": "",
-  "app.components.IdeasShow.by": "",
+  "app.components.IdeasShow.byUserOnDate": "",
   "app.components.IdeasShow.createdTimeAgo": "",
   "app.components.IdeasShow.deleteIdea": "",
   "app.components.IdeasShow.deleteIdeaConfirmation": "",

@@ -134,7 +134,7 @@
   "app.components.IdeasMap.seeIdea": "A se vedea ideea completă",
   "app.components.IdeasMap.signInLinkText": "Autentificare",
   "app.components.IdeasMap.signUpLinkText": "Înscrie-te",
-  "app.components.IdeasShow.by": "",
+  "app.components.IdeasShow.byUserOnDate": "",
   "app.components.IdeasShow.createdTimeAgo": "Creat {timeAgo}",
   "app.components.IdeasShow.deleteIdea": "Șterge ideea",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Sunteți sigur că doriți să ștergeți această idee?",
