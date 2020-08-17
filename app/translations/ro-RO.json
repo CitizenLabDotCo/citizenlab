@@ -251,8 +251,6 @@
   "app.components.PostComponents.lastChangesTitleInitiative": "Ultimele modificări la această propunere",
   "app.components.PostComponents.lastUpdated": "Ultima modificare {modificationTime}",
   "app.components.PostComponents.linkToHomePage": "Link către pagina de start",
-  "app.components.PostComponents.seeOriginal": "A se vedea versiunea originală",
-  "app.components.PostComponents.seeTranslation": "Vezi traducerea",
   "app.components.Project.projectModeratorIndicator": "You're a project manager of this project",
   "app.components.ProjectArchivedIndicator.archivedProject": "Din păcate nu mai poți participa la acest proiect, deoarece a fost arhivat",
   "app.components.ProjectCard.a11y_projectDescription": "Descrierea proiectului:",

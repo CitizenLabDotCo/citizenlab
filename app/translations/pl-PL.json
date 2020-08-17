@@ -251,8 +251,6 @@
   "app.components.PostComponents.lastChangesTitleInitiative": "Ostatnie zmiany tej propozycji",
   "app.components.PostComponents.lastUpdated": "Ostatnio zmodyfikowane {modificationTime}",
   "app.components.PostComponents.linkToHomePage": "Link do strony głównej",
-  "app.components.PostComponents.seeOriginal": "Zobacz oryginał",
-  "app.components.PostComponents.seeTranslation": "Patrz tłumaczenie",
   "app.components.Project.projectModeratorIndicator": "Jesteś moderatorem tego projektu",
   "app.components.ProjectArchivedIndicator.archivedProject": "Niestety, nie możesz już uczestniczyć w tym projekcie, ponieważ został on zarchiwizowany",
   "app.components.ProjectCard.a11y_projectDescription": "Opis projektu:",
