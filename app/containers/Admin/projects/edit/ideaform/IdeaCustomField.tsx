@@ -170,7 +170,7 @@ const disablableFields = [
   'topic_ids',
   'location',
   'attachments',
-  'estimated_budget',
+  'proposed_budget',
 ];
 const alwaysRequiredFields = ['title', 'body'];
 

@@ -46,7 +46,7 @@ export interface IIdeaData {
     location_point_geojson: GeoJSON.Point;
     location_description: string | null;
     budget: number | null;
-    estimated_budget: number | null;
+    proposed_budget: number | null;
     created_at: string;
     updated_at: string;
     published_at: string;
@@ -167,7 +167,7 @@ export interface IIdeaAdd {
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
   budget: number | null;
-  estimated_budget: number | null;
+  proposed_budget: number | null;
 }
 
 export interface IIdeasFilterCounts {

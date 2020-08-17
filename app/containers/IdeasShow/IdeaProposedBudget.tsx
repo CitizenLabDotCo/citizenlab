@@ -30,19 +30,19 @@ interface DataProps {
 
 interface InputProps {
   className?: string;
-  estimatedBudget: number;
+  proposedBudget: number;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaEstimatedBudget = memo<Props>(
-  ({ estimatedBudget, className, locale, tenant }) => {
+const IdeaProposedBudget = memo<Props>(
+  ({ proposedBudget, className, locale, tenant }) => {
     if (isNilOrError(locale) || isNilOrError(tenant)) return null;
 
     const currency = tenant.attributes.settings.core.currency;
     const formattedBudget = getFormattedBudget(
       locale,
-      estimatedBudget,
+      proposedBudget,
       currency
     );
 
@@ -61,6 +61,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaEstimatedBudget {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaProposedBudget {...inputProps} {...dataProps} />}
   </Data>
 );

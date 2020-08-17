@@ -91,7 +91,7 @@ export interface IIdeaFormOutput {
   selectedTopics: string[];
   address: string;
   budget: number | null;
-  estimatedBudget: number | null;
+  proposedBudget: number | null;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
@@ -103,7 +103,7 @@ interface InputProps {
   description: string | null;
   selectedTopics: string[];
   budget: number | null;
-  estimatedBudget: number | null;
+  proposedBudget: number | null;
   address: string;
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
@@ -133,8 +133,8 @@ interface State {
   attachmentsError: string | null;
   budget: number | null;
   budgetError: string | null;
-  estimatedBudget: number | null;
-  estimatedBudgetError: string | null;
+  proposedBudget: number | null;
+  proposedBudgetError: string | null;
   address: string;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
@@ -167,8 +167,8 @@ class IdeaForm extends PureComponent<
       imageFile: [],
       budget: null,
       budgetError: null,
-      estimatedBudget: null,
-      estimatedBudgetError: null,
+      proposedBudget: null,
+      proposedBudgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
       ideaCustomFieldsSchemas: null,
@@ -255,7 +255,7 @@ class IdeaForm extends PureComponent<
       selectedTopics,
       address,
       budget,
-      estimatedBudget,
+      proposedBudget,
       imageFile,
       remoteIdeaFiles,
     } = this.props;
@@ -264,7 +264,7 @@ class IdeaForm extends PureComponent<
     this.setState({
       selectedTopics,
       budget,
-      estimatedBudget,
+      proposedBudget,
       imageFile,
       ideaFiles,
       address,
@@ -316,10 +316,10 @@ class IdeaForm extends PureComponent<
     });
   };
 
-  handleEstimatedBudgetOnChange = (estimatedBudget: string) => {
+  handleproposedBudgetOnChange = (proposedBudget: string) => {
     this.setState({
-      estimatedBudget: estimatedBudget === '' ? null : Number(estimatedBudget),
-      estimatedBudgetError: null,
+      proposedBudget: proposedBudget === '' ? null : Number(proposedBudget),
+      proposedBudgetError: null,
     });
   };
 
@@ -423,18 +423,18 @@ class IdeaForm extends PureComponent<
     return null;
   };
 
-  validateEstimatedBudget = (estimatedBudget: number | null) => {
+  validateproposedBudget = (proposedBudget: number | null) => {
     const { ideaCustomFieldsSchemas, locale } = this.state;
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      const estimatedBudgetRequired = this.isFieldRequired(
-        'estimated_budget',
+      const proposedBudgetRequired = this.isFieldRequired(
+        'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
       );
 
-      if (estimatedBudgetRequired && estimatedBudget === null) {
-        return this.props.intl.formatMessage(messages.noEstimatedBudgetError);
+      if (proposedBudgetRequired && proposedBudget === null) {
+        return this.props.intl.formatMessage(messages.noproposedBudgetError);
       }
     }
 
@@ -445,7 +445,7 @@ class IdeaForm extends PureComponent<
     title: string | null,
     description: string | null,
     budget: number | null,
-    estimatedBudget: number | null,
+    proposedBudget: number | null,
     selectedTopics: string[],
     address: string,
     imageFiles: UploadFile[],
@@ -458,7 +458,7 @@ class IdeaForm extends PureComponent<
     const locationError = this.validateLocation(address);
     const imageError = this.validateImage(imageFiles);
     const attachmentsError = this.validateAttachments(ideaFiles);
-    const estimatedBudgetError = this.validateEstimatedBudget(estimatedBudget);
+    const proposedBudgetError = this.validateproposedBudget(proposedBudget);
     const pbMaxBudget =
       pbContext && pbContext.attributes.max_budget
         ? pbContext.attributes.max_budget
@@ -487,7 +487,7 @@ class IdeaForm extends PureComponent<
       titleError,
       descriptionError,
       budgetError,
-      estimatedBudgetError,
+      proposedBudgetError,
       topicsError,
       locationError,
       imageError,
@@ -521,7 +521,7 @@ class IdeaForm extends PureComponent<
       !titleError &&
       !descriptionError &&
       !budgetError &&
-      !estimatedBudgetError &&
+      !proposedBudgetError &&
       !topicsError &&
       !locationError &&
       !imageError &&
@@ -552,7 +552,7 @@ class IdeaForm extends PureComponent<
       selectedTopics,
       address,
       budget,
-      estimatedBudget,
+      proposedBudget,
       imageFile,
       ideaFiles,
       ideaFilesToRemove,
@@ -561,7 +561,7 @@ class IdeaForm extends PureComponent<
       title,
       description,
       budget,
-      estimatedBudget,
+      proposedBudget,
       selectedTopics,
       address,
       imageFile,
@@ -575,7 +575,7 @@ class IdeaForm extends PureComponent<
         address,
         imageFile,
         budget,
-        estimatedBudget,
+        proposedBudget,
         description,
         ideaFiles,
         ideaFilesToRemove,
@@ -623,12 +623,12 @@ class IdeaForm extends PureComponent<
       selectedTopics,
       address,
       budget,
-      estimatedBudget,
+      proposedBudget,
       imageFile,
       titleError,
       descriptionError,
       budgetError,
-      estimatedBudgetError,
+      proposedBudgetError,
       ideaFiles,
       ideaCustomFieldsSchemas,
       topicsError,
@@ -660,15 +660,15 @@ class IdeaForm extends PureComponent<
         ideaCustomFieldsSchemas,
         locale
       );
-      const estimatedBudgetEnabled = this.isFieldEnabled(
-        'estimated_budget',
+      const proposedBudgetEnabled = this.isFieldEnabled(
+        'proposed_budget',
         ideaCustomFieldsSchemas,
         locale
       );
       const showPBBudget = pbContext && pbEnabled;
       const showTopics = topicsEnabled && topics && topics.length > 0;
       const showLocation = locationEnabled;
-      const showEstimatedBudget = estimatedBudgetEnabled;
+      const showproposedBudget = proposedBudgetEnabled;
       const filteredTopics = topics.filter(
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
@@ -764,17 +764,17 @@ class IdeaForm extends PureComponent<
                 </HasPermission>
               )}
 
-              {showEstimatedBudget && (
+              {showproposedBudget && (
                 <FormElement>
                   <FormLabel
                     htmlFor="estimated-budget"
-                    labelMessage={messages.estimatedBudgetLabel}
+                    labelMessage={messages.proposedBudgetLabel}
                     labelMessageValues={{
                       currency: tenantCurrency,
                     }}
                     optional={
                       !this.isFieldRequired(
-                        'estimated_budget',
+                        'proposed_budget',
                         ideaCustomFieldsSchemas,
                         locale
                       )
@@ -782,19 +782,19 @@ class IdeaForm extends PureComponent<
                     subtext={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
-                      ]?.properties?.estimated_budget?.description
+                      ]?.properties?.proposed_budget?.description
                     }
                     subtextSupportsHtml={true}
                   />
                   <Input
                     id="estimated-budget"
-                    error={estimatedBudgetError}
+                    error={proposedBudgetError}
                     value={
-                      estimatedBudget !== null ? String(estimatedBudget) : ''
+                      proposedBudget !== null ? String(proposedBudget) : ''
                     }
                     type="number"
                     min="0"
-                    onChange={this.handleEstimatedBudgetOnChange}
+                    onChange={this.handleproposedBudgetOnChange}
                   />
                 </FormElement>
               )}
