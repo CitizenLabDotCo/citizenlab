@@ -1,15 +1,9 @@
 import React from 'react';
-import VerificationBadge from './VerificationBadge';
 
 // styles
 import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 const Name = styled.span<{ color?: string; emphasize?: boolean }>`
   color: ${({ color, theme }) => color || theme.colorText};
@@ -48,8 +42,6 @@ interface Props {
   emphasize?: boolean;
   color?: string;
   canModerate?: boolean;
-  verificationBadge?: boolean;
-  isVerified: boolean;
 }
 
 const UserName = ({
@@ -60,25 +52,19 @@ const UserName = ({
   emphasize,
   color,
   canModerate,
-  verificationBadge,
-  isVerified,
 }: Props) => {
   return (
-    <Container>
-      <Name
-        emphasize={emphasize}
-        className={`
+    <Name
+      emphasize={emphasize}
+      className={`
         ${className || ''}
         ${canModerate ? 'canModerate' : ''}
         e2e-username
       `}
-        color={color}
-      >
-        {`${firstName} ${hideLastName ? '' : lastName}`}
-      </Name>
-      {/* TODO: check margin here */}
-      {verificationBadge && <VerificationBadge isVerified={isVerified} />}
-    </Container>
+      color={color}
+    >
+      {`${firstName} ${hideLastName ? '' : lastName}`}
+    </Name>
   );
 };
 
