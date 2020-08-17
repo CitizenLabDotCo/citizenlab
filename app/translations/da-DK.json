@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Slået op af {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Hvorfor vil du rapportere dette som spam?",
   "app.containers.InitiativesShow.twitterMessage": "Stem på {initiativeTitle} på",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Du er nu administrator af platformen",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Din kommentar til '{postTitle}' er blevet slettet af en administrator, fordi\n       {reasonCode, vælg, irrelevant {det er irrelevant} upassende {dets indhold er upassende} andet {{otherReason}}}\n",
   "app.containers.NotificationMenu.deletedUser": "Ukendt forfatter",

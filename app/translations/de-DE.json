@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Gepostet von {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Warum wollen Sie dies als Spam melden?",
   "app.containers.InitiativesShow.twitterMessage": "Stimme für {initiativeTitle} auf",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Nun bist du ein Administrator der Plattform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Dein Kommentar zu '{postTitle}' wurde von einem Administrator gelöscht, weil {reasonCode, select, irrelevant {er sachfremd war} inappropriate {sein Inhalt unangemessen war} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Unbekannter Autor",

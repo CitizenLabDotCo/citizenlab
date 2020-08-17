@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Publicado por {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "¿Por qué quieres reportar esto como spam?",
   "app.containers.InitiativesShow.twitterMessage": "Vota por {initiativeTitle} en",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Ahora eres un administrador de la plataforma",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Tu comentario en '{postTitle}' ha sido eliminado por un administrador porque\n      {reasonCode, select, irrelevant {es irrelevante} inappropriate {su contenido es inapropiado} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Autor desconocido",
