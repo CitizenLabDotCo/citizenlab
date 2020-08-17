@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import User from 'components/UI/User';
+import UserName from 'components/UI/UserName';
 
 // styling
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ interface Props {
 const PostedBy = memo<Props>(({ authorId, className }) => {
   if (authorId) {
     const authorName = (
-      <User
+      <UserName
         userId={authorId}
         emphasize
         linkToProfile

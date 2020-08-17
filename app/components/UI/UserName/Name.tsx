@@ -5,7 +5,7 @@ import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
-const Name = styled.span<{ color?: string; emphasize?: boolean }>`
+const Container = styled.span<{ color?: string; emphasize?: boolean }>`
   color: ${({ color, theme }) => color || theme.colorText};
   font-weight: ${({ emphasize }) => (emphasize ? 500 : 'normal')};
   text-decoration: none;
@@ -44,7 +44,7 @@ interface Props {
   canModerate?: boolean;
 }
 
-const UserName = ({
+const Name = ({
   className,
   firstName,
   lastName,
@@ -54,7 +54,7 @@ const UserName = ({
   canModerate,
 }: Props) => {
   return (
-    <Name
+    <Container
       emphasize={emphasize}
       className={`
         ${className || ''}
@@ -64,8 +64,8 @@ const UserName = ({
       color={color}
     >
       {`${firstName} ${hideLastName ? '' : lastName}`}
-    </Name>
+    </Container>
   );
 };
 
-export default UserName;
+export default Name;
