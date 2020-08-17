@@ -7,6 +7,9 @@ declare global {
   interface Function {
     displayName?: string;
   }
+  interface Window {
+    _paq: any;
+  }
 }
 
 export interface IRelationship {
