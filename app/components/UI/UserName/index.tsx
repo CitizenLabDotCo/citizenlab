@@ -1,6 +1,5 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import withProfileLink from './withProfileLink';
 
@@ -9,7 +8,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
 import Name from './Name';
-import DeletedUser from './DeletedUser';
+import UnknownUser from './UnknownUser';
 
 interface DataProps {
   user: GetUserChildProps;
@@ -35,25 +34,31 @@ const UserName = (props: Props) => {
   const { user, className, linkToProfile, ...userNameProps } = props;
 
   if (!isNilOrError(user)) {
-    const firstName = get(user, 'attributes.first_name', '');
-    const lastName = get(user, 'attributes.last_name', '');
+    const firstName = user.attributes.first_name;
+    const lastName = user.attributes.last_name;
+
     const profileLink = `/profile/${user.attributes.slug}`;
 
-    const NameComponent = (
-      <Name
-        firstName={firstName}
-        lastName={lastName}
-        className={className}
-        {...userNameProps}
-      />
-    );
+    if (firstName) {
+      // Sometimes we have a user, but names don't load (in dev mode)
+      // Built in this check to make sure we don't show an empty space
+      // See Name.tsx for why only firstName is required
+      const NameComponent = (
+        <Name
+          firstName={firstName}
+          lastName={lastName}
+          className={className}
+          {...userNameProps}
+        />
+      );
 
-    return linkToProfile
-      ? withProfileLink(NameComponent, profileLink, className)
-      : NameComponent;
+      return linkToProfile
+        ? withProfileLink(NameComponent, profileLink, className)
+        : NameComponent;
+    }
   }
 
-  return <DeletedUser className={className} />;
+  return <UnknownUser className={className} />;
 };
 
 const Data = adopt<DataProps, InputProps>({
