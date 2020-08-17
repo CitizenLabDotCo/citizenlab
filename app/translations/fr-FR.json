@@ -134,7 +134,7 @@
   "app.components.IdeasMap.seeIdea": "Lire plus",
   "app.components.IdeasMap.signInLinkText": "vous connecter",
   "app.components.IdeasMap.signUpLinkText": "s'inscrire",
-  "app.components.IdeasShow.by": "",
+  "app.components.IdeasShow.byUserOnDate": "",
   "app.components.IdeasShow.createdTimeAgo": "Créé {timeAgo}",
   "app.components.IdeasShow.deleteIdea": "Supprimer l’idée",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Êtes-vous sûr de vouloir supprimer cette idée ?",
