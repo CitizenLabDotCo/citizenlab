@@ -134,7 +134,7 @@
   "app.components.IdeasMap.seeIdea": "Veja a ideia completa",
   "app.components.IdeasMap.signInLinkText": "conectar",
   "app.components.IdeasMap.signUpLinkText": "cadastrar-se",
-  "app.components.IdeasShow.by": "",
+  "app.components.IdeasShow.byUserOnDate": "",
   "app.components.IdeasShow.createdTimeAgo": "Criado {timeAgo}",
   "app.components.IdeasShow.deleteIdea": "Excluir ideia",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Tem certeza que deseja apagar essa idéia?",
