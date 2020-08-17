@@ -205,6 +205,7 @@ export class IdeaContent extends PureComponent<
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
       const ideaAddress = idea.attributes.location_description || null;
+      // AuthorId can be null if user has been deleted
       const authorId = idea.relationships.author.data?.id || null;
 
       return (
