@@ -104,8 +104,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
   },
-  by: {
-    id: 'app.components.IdeasShow.by',
+  byUserOnDate: {
+    id: 'app.components.IdeasShow.byUserOnDate',
     defaultMessage: 'By {userName} on {date}',
   },
   createdTimeAgo: {

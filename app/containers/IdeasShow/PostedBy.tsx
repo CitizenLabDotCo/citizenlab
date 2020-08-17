@@ -58,7 +58,10 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
           size="36px"
           // onClick={authorId ? goToUserProfile : noop}
         />
-        <FormattedMessage {...messages.by} values={{ userName, date }} />
+        <FormattedMessage
+          {...messages.byUserOnDate}
+          values={{ userName, date }}
+        />
       </Container>
     );
   }
