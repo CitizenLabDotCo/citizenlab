@@ -7,8 +7,11 @@ class XlsxService
 
   def escape_formula text
     # After https://docs.servicenow.com/bundle/orlando-platform-administration/page/administer/security/reference/escape-excel-formula.html and http://rorsecurity.info/portfolio/excel-injection-via-rails-downloads
-    text = "'"+text if '=+-@'.include? text.first
-    text
+    if '=+-@'.include?(text.first) && !text.empty?
+      text = "'"+text
+    else
+      text
+    end
   end
 
   # Converts this hash array: 
