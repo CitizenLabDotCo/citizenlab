@@ -17,7 +17,6 @@ const StyledUserName = styled(UserName)`
   margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
