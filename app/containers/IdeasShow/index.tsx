@@ -39,7 +39,7 @@ import IdeaMoreActions from './IdeaMoreActions';
 import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
-import TranslateButton from 'components/PostShowComponents/TranslateButton';
+import TranslateButton from 'components/UI/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
 
 // utils

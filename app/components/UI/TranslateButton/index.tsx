@@ -8,12 +8,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { withTheme } from 'styled-components';
 
 interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   className?: string;
+  theme: any;
 }
 
 const TranslateButton = (props: Props) => {
@@ -23,14 +25,13 @@ const TranslateButton = (props: Props) => {
     <Button
       buttonStyle="secondary-outlined"
       onClick={onClick}
-      spinnerColor={colors.label}
       className={className}
-      fontSize={`${fontSizes.small}px`}
-      padding="5px 10px"
-      fontWeight="500"
       icon="translate"
-      borderColor={colors.separation}
-      width="fit-content"
+      iconColor={colors.label}
+      fontSize={`${fontSizes.small}px`}
+      fontWeight={'bold'}
+      padding="5px 10px"
+      textColor={props.theme.colorText}
     >
       {translateButtonClicked ? (
         <FormattedMessage {...messages.original} />
@@ -41,4 +42,4 @@ const TranslateButton = (props: Props) => {
   );
 };
 
-export default TranslateButton;
+export default withTheme(TranslateButton);
