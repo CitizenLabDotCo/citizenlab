@@ -20,7 +20,6 @@ interface UserNameProps {
   emphasize?: boolean;
   color?: string;
   canModerate?: boolean;
-  verificationBadge?: boolean;
 }
 
 interface InputProps extends UserNameProps {
@@ -38,22 +37,20 @@ const User = (props: Props) => {
   if (!isNilOrError(user)) {
     const firstName = get(user, 'attributes.first_name', '');
     const lastName = get(user, 'attributes.last_name', '');
-    const isVerified = !!user.attributes.verified;
     const profileLink = `/profile/${user.attributes.slug}`;
 
-    const UserNameComponent = (
+    const Component = (
       <UserName
         firstName={firstName}
         lastName={lastName}
-        isVerified={isVerified}
         className={className}
         {...userNameProps}
       />
     );
 
     return linkToProfile
-      ? withProfileLink(UserNameComponent, profileLink, className)
-      : UserNameComponent;
+      ? withProfileLink(Component, profileLink, className)
+      : Component;
   }
 
   return <DeletedUser className={className} />;
