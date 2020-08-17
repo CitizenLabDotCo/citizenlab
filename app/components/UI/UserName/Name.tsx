@@ -18,29 +18,28 @@ const Container = styled.span<{ color?: string; emphasize?: boolean }>`
       color: ${darken(0.15, colors.clRedError)};
     }
   }
+
+  &.isUnknownUser {
+    font-style: italic;
+  }
 `;
 
 interface Props {
+  name: string;
   className?: string;
-  firstName: string;
-  // See users.ts
-  // lastName can be null when user exists since CL1
-  // or when signing up with Google
-  lastName: string | null;
-  hideLastName?: boolean;
   emphasize?: boolean;
   color?: string;
   canModerate?: boolean;
+  isUnknownUser?: boolean;
 }
 
 const Name = ({
   className,
-  firstName,
-  lastName,
-  hideLastName,
+  name,
   emphasize,
   color,
   canModerate,
+  isUnknownUser,
 }: Props) => {
   return (
     <Container
@@ -48,11 +47,12 @@ const Name = ({
       className={`
         ${className || ''}
         ${canModerate ? 'canModerate' : ''}
+        ${isUnknownUser ? 'isUnknownUser' : ''}
         e2e-username
       `}
       color={color}
     >
-      {`${firstName} ${!hideLastName && lastName ? lastName : ''}`}
+      {name}
     </Container>
   );
 };
