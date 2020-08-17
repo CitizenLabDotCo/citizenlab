@@ -5,6 +5,7 @@ import { get } from 'lodash-es';
 
 // components
 import Title from 'components/PostShowComponents/Title';
+import PostedBy from 'containers/IdeasShow/PostedBy';
 import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
@@ -47,7 +48,11 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const StyledTitle = styled(Title)`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+`;
+
+const StyledPostedBy = styled(PostedBy)`
+  margin-bottom: 20px;
 `;
 
 const Row = styled.div`
@@ -200,6 +205,7 @@ export class IdeaContent extends PureComponent<
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
       const ideaAddress = idea.attributes.location_description || null;
+      const authorId = idea.relationships.author.data?.id || null;
 
       return (
         <Container>
@@ -235,6 +241,7 @@ export class IdeaContent extends PureComponent<
             )}
 
             <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+            <StyledPostedBy ideaId={ideaId} authorId={authorId} />
             <Row>
               <Left>
                 {ideaImageLarge && (
