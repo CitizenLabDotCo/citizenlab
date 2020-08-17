@@ -21,7 +21,7 @@ describe XlsxService do
   describe "generate_users_xlsx" do
 
     let(:users) { create_list(:user, 5) }
-    let(:xlsx) { service.generate_users_xlsx(users) }
+    let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
