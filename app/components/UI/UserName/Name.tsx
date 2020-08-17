@@ -37,7 +37,10 @@ const Container = styled.span<{ color?: string; emphasize?: boolean }>`
 interface Props {
   className?: string;
   firstName: string;
-  lastName: string;
+  // See users.ts
+  // lastName can be null when user exists since CL1
+  // or when signing up with Google
+  lastName: string | null;
   hideLastName?: boolean;
   emphasize?: boolean;
   color?: string;
@@ -63,7 +66,7 @@ const Name = ({
       `}
       color={color}
     >
-      {`${firstName} ${hideLastName ? '' : lastName}`}
+      {`${firstName} ${!hideLastName && lastName ? lastName : ''}`}
     </Container>
   );
 };
