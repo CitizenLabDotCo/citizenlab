@@ -36,12 +36,11 @@ const UserName = (props: Props) => {
   if (!isNilOrError(user)) {
     const firstName = user.attributes.first_name;
     const lastName = user.attributes.last_name;
-
     const profileLink = `/profile/${user.attributes.slug}`;
 
     if (firstName) {
-      // Sometimes we have a user, but names don't load (in dev mode)
-      // Built in this check to make sure we don't show an empty space
+      // Sometimes we have a user, but names don't load (only seen in dev mode)
+      // Built in this check to make sure we don't show an empty space (in production)
       // See Name.tsx for why only firstName is required
       const NameComponent = (
         <Name
