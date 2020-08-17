@@ -68,7 +68,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: string[];
   budget: number | null;
-  estimatedBudget: number | null;
+  proposedBudget: number | null;
   position: string;
   imageFile: UploadFile[];
   submitError: boolean;
@@ -89,7 +89,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description: null,
       selectedTopics: [],
       budget: null,
-      estimatedBudget: null,
+      proposedBudget: null,
       position: '',
       imageFile: [],
       submitError: false,
@@ -110,7 +110,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description,
           selectedTopics,
           budget,
-          estimatedBudget,
+          proposedBudget,
           position,
           imageFile,
           submitError,
@@ -122,7 +122,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
             description,
             selectedTopics,
             budget,
-            estimatedBudget,
+            proposedBudget,
             position,
             imageFile,
             submitError,
@@ -146,7 +146,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description,
       selectedTopics,
       budget,
-      estimatedBudget,
+      proposedBudget,
       address: position,
       imageFile,
       ideaFiles,
@@ -156,7 +156,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description,
       selectedTopics,
       budget,
-      estimatedBudget,
+      proposedBudget,
       position,
       imageFile,
       ideaFiles,
@@ -170,7 +170,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description,
       selectedTopics,
       budget,
-      estimatedBudget,
+      proposedBudget,
       position,
       imageFile,
     } = this.state;
@@ -188,7 +188,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           budget={budget}
-          estimatedBudget={estimatedBudget}
+          proposedBudget={proposedBudget}
           address={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}

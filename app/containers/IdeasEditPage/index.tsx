@@ -104,7 +104,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: string[];
   budget: number | null;
-  estimatedBudget: number | null;
+  proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
@@ -124,7 +124,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: [],
       budget: null,
-      estimatedBudget: null,
+      proposedBudget: null,
       address: null,
       imageFile: [],
       imageId: null,
@@ -196,7 +196,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
-            estimatedBudget: idea.data.attributes.estimated_budget,
+            proposedBudget: idea.data.attributes.proposed_budget,
             imageFile: ideaImage ? [ideaImage] : [],
             imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
           });
@@ -232,7 +232,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       selectedTopics,
       address: ideaFormAddress,
       budget,
-      estimatedBudget,
+      proposedBudget,
       ideaFiles,
       ideaFilesToRemove,
     } = ideaFormOutput;
@@ -269,7 +269,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
-      estimated_budget: estimatedBudget,
+      proposed_budget: proposedBudget,
       title_multiloc: {
         ...titleMultiloc,
         [locale]: title,
@@ -310,7 +310,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
         address,
         imageFile,
         budget,
-        estimatedBudget,
+        proposedBudget,
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description =
@@ -333,7 +333,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
                 description={description}
                 selectedTopics={selectedTopics}
                 budget={budget}
-                estimatedBudget={estimatedBudget}
+                proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
                 onSubmit={this.handleIdeaFormOutput}

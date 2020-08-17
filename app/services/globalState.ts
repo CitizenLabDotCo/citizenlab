@@ -22,7 +22,7 @@ export interface IIdeasPageGlobalState {
   description: string | null;
   selectedTopics: string[];
   budget: number | null;
-  estimatedBudget: number | null;
+  proposedBudget: number | null;
   position: string;
   position_coordinates: GeoJSON.Point | null;
   submitError: boolean;

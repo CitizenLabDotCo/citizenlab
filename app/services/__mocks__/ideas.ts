@@ -35,7 +35,7 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
     updated_at: '2019-03-26T14: 32: 32.000Z',
     published_at: '2019-03-19T00: 00: 00.000Z',
     budget: 60,
-    estimated_budget: 45,
+    proposed_budget: 45,
     baskets_count: 0,
     action_descriptor: {
       voting: {

@@ -95,7 +95,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       description: null,
       selectedTopics: [],
       budget: null,
-      estimatedBudget: null,
+      proposedBudget: null,
       position: '',
       position_coordinates: null,
       submitError: false,
@@ -181,7 +181,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           description,
           selectedTopics,
           budget,
-          estimatedBudget,
+          proposedBudget,
           position,
           position_coordinates,
           imageFile,
@@ -195,7 +195,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           isString(position) && !isEmpty(position) ? position : null;
         const ideaObject: IIdeaAdd = {
           budget,
-          estimated_budget: estimatedBudget,
+          proposed_budget: proposedBudget,
           author_id: authUser.id,
           publication_status: 'published',
           title_multiloc: ideaTitle,
