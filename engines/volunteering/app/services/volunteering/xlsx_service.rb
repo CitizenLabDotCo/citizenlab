@@ -4,7 +4,7 @@ module Volunteering
     @@multiloc_service = MultilocService.new
 
     def generate_xlsx pc, volunteers, view_private_attributes: false
-      xlsx_service = XlsxService.new
+      xlsx_service = ::XlsxService.new
       columns = [
         {header: 'first_name', f: -> (v) { v.user.first_name }},
         {header: 'last_name',  f: -> (v) { v.user.last_name }},
