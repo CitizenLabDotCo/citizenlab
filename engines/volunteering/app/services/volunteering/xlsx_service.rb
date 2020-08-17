@@ -16,11 +16,10 @@ module Volunteering
         end
       end
       pa = Axlsx::Package.new
-      wb = pa.workbook
       pc.causes.order(:ordering).each do |cause|
         # Sheet names can only be 31 characters long
         sheet_name = @@multiloc_service.t(cause.title_multiloc)[0..30]
-        generate_sheet workbook, sheetname, columns, volunteers.where(cause: cause)
+        generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end
       pa.to_stream
     end
