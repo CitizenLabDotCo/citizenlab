@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Zgłoszone przez {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Dlaczego chcesz zgłosić to jako spam?",
   "app.containers.InitiativesShow.twitterMessage": "Głosuj na {initiativeTitle} na",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Jesteś teraz administratorem platformy",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Twój komentarz do \"{postTitle}\" został usunięty przez administratora ponieważ: {reasonCode, select, irrelevant {jest nie na temat} inappropriate {jest nieodpowiednia} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Niewiadomy autor",

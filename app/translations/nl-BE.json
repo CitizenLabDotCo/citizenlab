@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Geplaatst door {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Waarom wil je dit als spam markeren?",
   "app.containers.InitiativesShow.twitterMessage": "Stem voor {initiativeTitle} op",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Je bent nu een beheerder van het platform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Je reactie op '{postTitle}' werd verwijderd door een beheerder omdat\n      {reasonCode, select, irrelevant {ze irrelevant is} inappropriate {ze ongepast is} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Onbekende auteur",

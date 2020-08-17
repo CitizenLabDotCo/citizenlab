@@ -1634,6 +1634,8 @@
   "app.containers.InitiativesShow.postedByShort": "Uuminnga ikkunneqarsimasoq {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Sooq una spamisut nalunaarutiginiarpiuk",
   "app.containers.InitiativesShow.twitterMessage": "{tenantName, select, DeloitteDK {Isumarnik ikkussigit {initiativeTitle}} other {Uani {postTitle} toqqaagit}}",
+  "app.containers.Navbar.unverified": "",
+  "app.containers.Navbar.verified": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Maanna illit isaaffimmut aaqqissuisunngorputit",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Din kommentar til '{postTitle}' er blevet slettet af en administrator, fordi: {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dets indhold er upassende}other {{otherReason}}}\n",
   "app.containers.NotificationMenu.deletedUser": "Allattoq ilisimaneqanngilaq",
