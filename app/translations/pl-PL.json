@@ -1713,6 +1713,7 @@
   "app.containers.Projects.a11y_phasesOverview": "Przegląd etapów",
   "app.containers.Projects.a11y_projectNav": "Nawigacja projektu",
   "app.containers.Projects.a11y_selectedPhaseX": "Wybrany etap. Etap {selectedPhaseNumber}: {selectedPhaseTitle}",
+  "app.containers.Projects.aboutThisProject": "",
   "app.containers.Projects.allEvents": "Wszystkie wydarzenia",
   "app.containers.Projects.archived": "Zarchiwizowany",
   "app.containers.Projects.budgetExceeded": "Twoje wydatki przekraczają całkowity budżet jaki masz do dyspozycji",
