@@ -42,6 +42,7 @@ import { Spinner } from 'cl2-component-library';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
+import MetaInformation from './MetaInformation';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -852,6 +853,7 @@ export class IdeasShow extends PureComponent<
                     <FeatureFlag name="similar_ideas">
                       <StyledSimilarIdeas ideaId={ideaId} />
                     </FeatureFlag>
+                    <MetaInformation />
                   </MetaContent>
                 </RightColumnDesktop>
               )}
