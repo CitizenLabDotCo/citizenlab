@@ -1,10 +1,11 @@
-import React, { memo, useCallback, FormEvent } from 'react';
+import React, { memo, useCallback, useState, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Fragment from 'components/Fragment';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
+import ProjectMetaDataSidebar from './ProjectMetaDataSidebar';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -55,9 +56,13 @@ const ProjectDescription = styled.div`
   position: relative;
   max-height: 200px;
   overflow: hidden;
+
+  &.expanded {
+    max-height: unset;
+  }
 `;
 
-const PrReadMoreOuterWrapper = styled.div`
+const ReadMoreOuterWrapper = styled.div`
   height: 100px;
   content: '';
   display: flex;
@@ -89,9 +94,15 @@ const ProjectInfo = memo(
     const project = useProject({ projectId });
     const projectFiles = useProjectFiles(projectId);
 
-    const onReadMore = useCallback((event: FormEvent<HTMLButtonElement>) => {
-      // empty
-    }, []);
+    const [expanded, setExpanded] = useState(false);
+
+    const HandleReadMoreClicked = useCallback(
+      (event: FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        setExpanded(true);
+      },
+      []
+    );
 
     if (!isNilOrError(project)) {
       return (
@@ -101,7 +112,7 @@ const ProjectInfo = memo(
               <ProjectTitle>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
-              <ProjectDescription>
+              <ProjectDescription className={expanded ? 'expanded' : ''}>
                 <QuillEditedContent
                   fontSize="large"
                   textColor={theme.colorText}
@@ -111,23 +122,25 @@ const ProjectInfo = memo(
                     supportHtml={true}
                   />
                 </QuillEditedContent>
-                <PrReadMoreOuterWrapper>
-                  <ReadMoreInnerWrapper>
-                    <ReadMoreButton
-                      buttonStyle="text"
-                      onClick={onReadMore}
-                      textDecoration="underline"
-                      textDecorationHover="underline"
-                      textColor={colors.label}
-                      textHoverColor={theme.colorText}
-                      fontWeight="500"
-                      fontSize={`${fontSizes.large}px`}
-                      padding="0"
-                    >
-                      Read more
-                    </ReadMoreButton>
-                  </ReadMoreInnerWrapper>
-                </PrReadMoreOuterWrapper>
+                {!expanded && (
+                  <ReadMoreOuterWrapper>
+                    <ReadMoreInnerWrapper>
+                      <ReadMoreButton
+                        buttonStyle="text"
+                        onClick={HandleReadMoreClicked}
+                        textDecoration="underline"
+                        textDecorationHover="underline"
+                        textColor={colors.label}
+                        textHoverColor={theme.colorText}
+                        fontWeight="500"
+                        fontSize={`${fontSizes.large}px`}
+                        padding="0"
+                      >
+                        Read more
+                      </ReadMoreButton>
+                    </ReadMoreInnerWrapper>
+                  </ReadMoreOuterWrapper>
+                )}
               </ProjectDescription>
               {!isNilOrError(projectFiles) &&
                 projectFiles &&
@@ -136,7 +149,9 @@ const ProjectInfo = memo(
                 )}
             </Left>
 
-            <Right>Sidebar</Right>
+            <Right>
+              <ProjectMetaDataSidebar projectId={project.id} />
+            </Right>
           </Fragment>
         </Container>
       );
