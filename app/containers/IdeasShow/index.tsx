@@ -28,7 +28,6 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
-import FileAttachments from 'components/UI/FileAttachments';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
@@ -46,9 +45,6 @@ import MetaInformation from './MetaInformation';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps
-} from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, {
   GetIdeaImagesChildProps
@@ -332,7 +328,6 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
@@ -543,7 +538,6 @@ export class IdeasShow extends PureComponent<
 
   render() {
     const {
-      ideaFiles,
       locale,
       idea,
       localize,
@@ -598,11 +592,6 @@ export class IdeasShow extends PureComponent<
       const smallerThanSmallTablet = windowSize
         ? windowSize <= viewportWidths.smallTablet
         : false;
-      const attachmentsEnabled = this.isFieldEnabled(
-        'attachments',
-        ideaCustomFieldsSchemas,
-        locale
-      );
 
       const utmParams = !isNilOrError(authUser)
         ? {
@@ -684,10 +673,6 @@ export class IdeasShow extends PureComponent<
                   body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
                 />
-
-                {attachmentsEnabled &&
-                  !isNilOrError(ideaFiles) &&
-                  ideaFiles.length > 0 && <FileAttachments files={ideaFiles} />}
 
                 {showBudgetControl &&
                   participationContextId &&
@@ -818,7 +803,7 @@ export class IdeasShow extends PureComponent<
                     <FeatureFlag name="similar_ideas">
                       <StyledSimilarIdeas ideaId={ideaId} />
                     </FeatureFlag>
-                    <MetaInformation idea={idea} />
+                    <MetaInformation ideaId={ideaId} />
                   </MetaContent>
                 </RightColumnDesktop>
               )}
@@ -892,11 +877,6 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => (
     <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
-  ),
-  ideaFiles: ({ ideaId, render }) => (
-    <GetResourceFiles resourceId={ideaId} resourceType="idea">
-      {render}
-    </GetResourceFiles>
   ),
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
