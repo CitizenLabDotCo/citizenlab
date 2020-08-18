@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "Starter {date}",
   "app.containers.Projects.submitMyExpenses": "Send inn mine utgifter",
   "app.containers.Projects.totalBudget": "Totalbudsjett",
+  "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Kommende hendelser",
   "app.containers.Projects.yourExpenses": "Dine utgifter",
   "app.containers.ProjectsIndexPage.metaDescription": "Utforsk alle pågående prosjekter av {orgName} for å forstå hvordan du kan delta.\nKom og diskutere lokale prosjekter som har betydning for deg.",

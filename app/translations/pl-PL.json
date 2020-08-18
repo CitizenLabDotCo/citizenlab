@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "Zaczyna się {date}",
   "app.containers.Projects.submitMyExpenses": "Prześlij moje wydatki",
   "app.containers.Projects.totalBudget": "Budżet całkowity",
+  "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Nadchodzące wydarzenia",
   "app.containers.Projects.yourExpenses": "Twoje wydatki",
   "app.containers.ProjectsIndexPage.metaDescription": "Poznaj wszystkie trwające projekty {orgName}, aby zrozumieć, jak możesz w nich uczestniczyć.\n Przyjdź i omów lokalne projekty, które są dla Ciebie najważniejsze.",
