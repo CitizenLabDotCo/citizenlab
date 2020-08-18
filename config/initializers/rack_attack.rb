@@ -44,17 +44,15 @@ class Rack::Attack
   end
 
   # Password reset email by email account.
-  throttle('password_reset_email/email', limit: 10, period: 20.seconds) do |req|
+  throttle('password_reset_email/email', limit: 1, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users/reset_password_email' && req.post?
-      byebug
-      req.ip
+      JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
     end
   end
 
-  # Accept invite by email IP.
+  # Accept invite by IP.
   throttle('accept_invite/ip', limit: 10, period: 20.seconds) do |req|
-    # byebug if req.path.include? '/web_api/v1/invites/by_token'
-    if req.path == '/web_api/v1/invites/by_token' && req.post?
+    if req.path.starts_with?('/web_api/v1/invites/by_token') &&  req.path.ends_with?('accept') && req.post?
       req.ip
     end
   end
