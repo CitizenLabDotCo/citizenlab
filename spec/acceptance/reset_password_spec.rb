@@ -22,9 +22,9 @@ resource "Users" do
       end
 
       describe "Email matching on password reset" do
-        before do
-          Rack::Attack.reset_throttle 'password_reset_email/email', email
-        end
+        # before do
+        #   Rack::Attack.reset_throttle 'password_reset_email/email', email
+        # end
 
         example "is case insensitive" do
           do_request(user: {email: 'S.Hoorens@gmail.com'})
