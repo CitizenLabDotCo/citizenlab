@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -9,11 +10,15 @@ import messages from './messages';
 import { colors, fontSizes } from 'cl2-component-library';
 
 // components
-import Status from './Status';
+// import Status from './Status';
 import Location from './Location';
+import Attachments from './Attachments';
+// import Attachment from './Attachment';
 import Topics from 'components/PostShowComponents/Topics';
 
-import { IIdeaData } from 'services/ideas';
+// hooks
+import useIdea from 'hooks/useIdea';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 const Container = styled.div`
   width: 100%;
@@ -35,66 +40,85 @@ const Header = styled.h3`
 `;
 
 interface Props {
-  idea: IIdeaData;
+  ideaId: string;
 }
 
-const MetaInformation = ({ idea }: Props) => {
-  const topicIds =
-  idea.relationships.topics?.data.map(item => item.id) || [];
-  const address = idea.attributes.location_description || null;
-  const geoPosition = idea.attributes.location_point_geojson || null;
+const MetaInformation = ({ ideaId }: Props) => {
+  const idea = useIdea({ ideaId });
+  const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
 
-  const topicsEnabled = true; // to do
-  // const topicsEnabled = this.isFieldEnabled(
-  //   'topic_ids',
-  //   ideaCustomFieldsSchemas,
-  //   locale
-  // );
-  const locationEnabled = true; // to do
-  // const locationEnabled = this.isFieldEnabled(
-  //   'location',
-  //   ideaCustomFieldsSchemas,
-  //   locale
-  // );
+  if (!isNilOrError(idea)) {
+    const topicIds =
+    idea.relationships.topics?.data.map(item => item.id) || [];
+    const address = idea.attributes.location_description || null;
+    const geoPosition = idea.attributes.location_point_geojson || null;
 
-  return (
-    <Container>
-      <Item>
-        <Header>
-          <FormattedMessage {...messages.currentStatus} />
-        </Header>
-      </Item>
-      {topicsEnabled && topicIds.length > 0 &&
+    const topicsEnabled = true; // to do
+    // const topicsEnabled = this.isFieldEnabled(
+    //   'topic_ids',
+    //   ideaCustomFieldsSchemas,
+    //   locale
+    // );
+    const locationEnabled = true; // to do
+    // const locationEnabled = this.isFieldEnabled(
+    //   'location',
+    //   ideaCustomFieldsSchemas,
+    //   locale
+    // );
+    const attachmentsEnabled = true; // to do
+    // const attachmentsEnabled = this.isFieldEnabled(
+    //   'attachments',
+    //   ideaCustomFieldsSchemas,
+    //   locale
+    // );
+
+    return (
+      <Container>
         <Item>
           <Header>
-            <FormattedMessage {...messages.topics} />
+            <FormattedMessage {...messages.currentStatus} />
           </Header>
-          <Topics
-            postType="idea"
-            topicIds={topicIds}
-          />
         </Item>
-      }
-      {locationEnabled && address && geoPosition &&
+        {topicsEnabled && topicIds.length > 0 &&
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.topics} />
+            </Header>
+            <Topics
+              postType="idea"
+              topicIds={topicIds}
+            />
+          </Item>
+        }
+        {locationEnabled && address && geoPosition &&
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.location} />
+            </Header>
+            <Location address={address} />
+          </Item>
+        }
+        {attachmentsEnabled &&
+          !isNilOrError(files) &&
+          files.length > 0 &&
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.attachments} />
+            </Header>
+            <Attachments files={files} />
+          </Item>
+        }
+
         <Item>
           <Header>
-            <FormattedMessage {...messages.location} />
+            <FormattedMessage {...messages.similarIdeas} />
           </Header>
-          <Location address={address} />
         </Item>
-      }
-      <Item>
-        <Header>
-          <FormattedMessage {...messages.attachments} />
-        </Header>
-      </Item>
-      <Item>
-        <Header>
-          <FormattedMessage {...messages.similarIdeas} />
-        </Header>
-      </Item>
-    </Container>
-  );
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default MetaInformation;
