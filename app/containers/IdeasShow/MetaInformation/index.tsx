@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
+import isFieldEnabled from '../isFieldEnabled';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,6 +20,8 @@ import Topics from 'components/PostShowComponents/Topics';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useResourceFiles from 'hooks/useResourceFiles';
+import useLocale from 'hooks/useLocale';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
 const Container = styled.div`
   width: 100%;
@@ -41,36 +44,36 @@ const Header = styled.h3`
 
 interface Props {
   ideaId: string;
+  projectId: string;
 }
 
-const MetaInformation = ({ ideaId }: Props) => {
+const MetaInformation = ({ ideaId, projectId }: Props) => {
   const idea = useIdea({ ideaId });
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
+  const locale = useLocale();
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId })
 
-  if (!isNilOrError(idea)) {
+  if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicIds =
     idea.relationships.topics?.data.map(item => item.id) || [];
     const address = idea.attributes.location_description || null;
     const geoPosition = idea.attributes.location_point_geojson || null;
 
-    const topicsEnabled = true; // to do
-    // const topicsEnabled = this.isFieldEnabled(
-    //   'topic_ids',
-    //   ideaCustomFieldsSchemas,
-    //   locale
-    // );
-    const locationEnabled = true; // to do
-    // const locationEnabled = this.isFieldEnabled(
-    //   'location',
-    //   ideaCustomFieldsSchemas,
-    //   locale
-    // );
-    const attachmentsEnabled = true; // to do
-    // const attachmentsEnabled = this.isFieldEnabled(
-    //   'attachments',
-    //   ideaCustomFieldsSchemas,
-    //   locale
-    // );
+    const topicsEnabled = isFieldEnabled(
+      'topic_ids',
+      ideaCustomFieldsSchemas,
+      locale
+    );
+    const locationEnabled = isFieldEnabled(
+      'location',
+      ideaCustomFieldsSchemas,
+      locale
+    );
+    const attachmentsEnabled = isFieldEnabled(
+      'attachments',
+      ideaCustomFieldsSchemas,
+      locale
+    );
 
     return (
       <Container>
