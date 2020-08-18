@@ -8,9 +8,9 @@ import messages from './messages';
 // styles
 import { colors, fontSizes } from 'cl2-component-library';
 
-// i18n
-
+// components
 import Status from './Status';
+import Location from './Location';
 
 const Container = styled.div`
   width: 100%;
@@ -48,6 +48,7 @@ const MetaInformation = () => {
         <Header>
           <FormattedMessage {...messages.location} />
         </Header>
+        <Location />
       </Item>
       <Item>
         <Header>
