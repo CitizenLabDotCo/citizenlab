@@ -664,7 +664,7 @@
   "app.containers.Admin.Workshop.manageWorkshops": "Manage your workshops",
   "app.containers.Admin.Workshop.pageDescription": "Hold live video meetings, facilitate simultaneous group discussions and debates. Gather input, vote and reach consensus, just like you would offline.",
   "app.containers.Admin.Workshop.pageTitle": "Online workshops",
-  "app.containers.Admin.Workshop.supportGuideLinkCopy": "Read our introductory guide",
+  "app.containers.Admin.Workshop.supportGuideLinkCopy": "Citiți ghidul nostru introductiv",
   "app.containers.Admin.Workshop.supportGuideLinkUrl": "https://res.cloudinary.com/citizenlabco/image/upload/v1592316475/Online%20Workshop%20Guide%20-%20Clients/CitizenLab_Guide_-_Online_citizen_workshops_1__compressed.pdf",
   "app.containers.Admin.Workshop.workshopsIntro": "{readSupportGuideLink} to learn about our Workshops or dive straight in and {createWorkshopArticleLink}.",
   "app.containers.Admin.clusterViewer.absolute": "Absolute",
