@@ -6,8 +6,9 @@ describe XlsxService do
   let(:service) { Volunteering::XlsxService.new }
 
   describe "generate_ideas_xlsx" do
-    let(:volunteers) { create_list(:volunteer, 5) }
-    let(:xlsx) { service.generate_xlsx(volunteers) }
+    let(:cause) { create(:cause) }
+    let!(:volunteers) { create_list(:volunteer, 5, cause: cause) }
+    let(:xlsx) { service.generate_xlsx(cause.participation_context, Volunteering::Volunteer.all) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
@@ -20,7 +21,7 @@ describe XlsxService do
     end
 
     describe do
-      let(:xlsx) { service.generate_volunteers_xlsx(volunteers, view_private_attributes: false) }
+      let(:xlsx) { service.generate_xlsx(cause.participation_context, Volunteering::Volunteer.all, view_private_attributes: false) }
 
       it "hides private attributes" do
         expect(worksheet[0].cells.map(&:value)).not_to include 'email'
