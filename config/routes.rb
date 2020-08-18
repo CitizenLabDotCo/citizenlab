@@ -186,6 +186,7 @@ Rails.application.routes.draw do
         get 'users_count', **route_params
         get 'users_by_time', **route_params
         get 'users_by_time_cumulative', **route_params
+        get 'users_by_time_cumulative_as_xlsx', **route_params
         get 'active_users_by_time', **route_params
         get 'users_by_gender', **route_params
         get 'users_by_birthyear', **route_params
@@ -193,7 +194,6 @@ Rails.application.routes.draw do
         get 'users_by_education', **route_params
         get 'users_engagement_scores', **route_params
         get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
-
 
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params

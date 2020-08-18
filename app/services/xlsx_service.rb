@@ -47,6 +47,23 @@ class XlsxService
     pa.to_stream
   end
 
+  def generate_stats_xlsx serie
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+    wb.styles do |s|
+      wb.add_worksheet(:name => "Stats") do |sheet|
+        serie.each do |date, amount|
+          row = [
+            *date,
+            *amount
+          ]
+          sheet.add_row  row
+        end
+      end
+    end
+    pa.to_stream
+  end
+
   def generate_ideas_xlsx ideas
     pa = Axlsx::Package.new
     wb = pa.workbook
