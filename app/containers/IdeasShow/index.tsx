@@ -20,7 +20,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
@@ -236,14 +235,6 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
 
   ${media.smallerThanMaxTablet`
     display: none;
-  `}
-`;
-
-const StyledDropdownMap = styled(DropdownMap)`
-  margin-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
   `}
 `;
 
@@ -588,8 +579,6 @@ export class IdeasShow extends PureComponent<
       const statusId = idea?.relationships?.idea_status?.data?.id || null;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
-      const ideaGeoPosition = idea?.attributes?.location_point_geojson || null;
-      const ideaAddress = idea?.attributes?.location_description || null;
       const ideaUrl = location.href;
       const ideaId = idea.id;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
@@ -609,11 +598,6 @@ export class IdeasShow extends PureComponent<
       const smallerThanSmallTablet = windowSize
         ? windowSize <= viewportWidths.smallTablet
         : false;
-      const locationEnabled = this.isFieldEnabled(
-        'location',
-        ideaCustomFieldsSchemas,
-        locale
-      );
       const attachmentsEnabled = this.isFieldEnabled(
         'attachments',
         ideaCustomFieldsSchemas,
@@ -687,13 +671,6 @@ export class IdeasShow extends PureComponent<
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
                 )}
 
-                {locationEnabled && ideaGeoPosition && ideaAddress && (
-                  <StyledDropdownMap
-                    address={ideaAddress}
-                    position={ideaGeoPosition}
-                    projectId={projectId}
-                  />
-                )}
                 <ScreenReaderOnly>
                   <FormattedMessage
                     tagName="h2"

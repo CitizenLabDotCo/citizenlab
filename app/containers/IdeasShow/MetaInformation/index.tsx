@@ -41,9 +41,18 @@ interface Props {
 const MetaInformation = ({ idea }: Props) => {
   const topicIds =
   idea.relationships.topics?.data.map(item => item.id) || [];
+  const address = idea.attributes.location_description || null;
+  const geoPosition = idea.attributes.location_point_geojson || null;
+
   const topicsEnabled = true; // to do
   // const topicsEnabled = this.isFieldEnabled(
   //   'topic_ids',
+  //   ideaCustomFieldsSchemas,
+  //   locale
+  // );
+  const locationEnabled = true; // to do
+  // const locationEnabled = this.isFieldEnabled(
+  //   'location',
   //   ideaCustomFieldsSchemas,
   //   locale
   // );
@@ -66,12 +75,14 @@ const MetaInformation = ({ idea }: Props) => {
           />
         </Item>
       }
-      <Item>
-        <Header>
-          <FormattedMessage {...messages.location} />
-        </Header>
-        <Location />
-      </Item>
+      {locationEnabled && address && geoPosition &&
+        <Item>
+          <Header>
+            <FormattedMessage {...messages.location} />
+          </Header>
+          <Location address={address} />
+        </Item>
+      }
       <Item>
         <Header>
           <FormattedMessage {...messages.attachments} />
