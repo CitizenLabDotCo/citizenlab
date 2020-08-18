@@ -1,4 +1,4 @@
-  import React, { memo } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
