@@ -4,11 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // typings
-import { IParticipationContextType, Locale } from 'typings';
-import {
-  IIdeaCustomFieldsSchemas,
-  CustomFieldCodes
-} from 'services/ideaCustomFields';
+import { IParticipationContextType } from 'typings';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -62,9 +58,6 @@ import GetOfficialFeedbacks, {
 import GetPermission, {
   GetPermissionChildProps
 } from 'resources/GetPermission';
-import GetIdeaCustomFieldsSchemas, {
-  GetIdeaCustomFieldsSchemasChildProps
-} from 'resources/GetIdeaCustomFieldsSchemas';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -332,7 +325,6 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface InputProps {
@@ -524,18 +516,6 @@ export class IdeasShow extends PureComponent<
     });
   };
 
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
-    locale: Locale
-  ) => {
-    return (
-      ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
-        'ui:widget'
-      ] !== 'hidden'
-    );
-  };
-
   render() {
     const {
       locale,
@@ -547,7 +527,6 @@ export class IdeasShow extends PureComponent<
       className,
       postOfficialFeedbackPermission,
       projectId,
-      ideaCustomFieldsSchemas
     } = this.props;
     const {
       loaded,
@@ -560,7 +539,6 @@ export class IdeasShow extends PureComponent<
 
     if (
       !isNilOrError(idea) &&
-      !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale) &&
       loaded
     ) {
@@ -803,7 +781,7 @@ export class IdeasShow extends PureComponent<
                     <FeatureFlag name="similar_ideas">
                       <StyledSimilarIdeas ideaId={ideaId} />
                     </FeatureFlag>
-                    <MetaInformation ideaId={ideaId} />
+                    <MetaInformation ideaId={ideaId} projectId={projectId} />
                   </MetaContent>
                 </RightColumnDesktop>
               )}
@@ -897,11 +875,6 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetPermission>
   ),
-  ideaCustomFieldsSchemas: ({ projectId, render }) => (
-    <GetIdeaCustomFieldsSchemas projectId={projectId}>
-      {render}
-    </GetIdeaCustomFieldsSchemas>
-  )
 });
 
 export default (inputProps: InputProps) => (
