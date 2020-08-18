@@ -21,7 +21,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
@@ -591,8 +590,6 @@ export class IdeasShow extends PureComponent<
         ideaImages?.[0]?.attributes?.versions?.large || null;
       const ideaGeoPosition = idea?.attributes?.location_point_geojson || null;
       const ideaAddress = idea?.attributes?.location_description || null;
-      const topicIds =
-        idea?.relationships?.topics?.data?.map(item => item.id) || [];
       const ideaUrl = location.href;
       const ideaId = idea.id;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
@@ -612,11 +609,6 @@ export class IdeasShow extends PureComponent<
       const smallerThanSmallTablet = windowSize
         ? windowSize <= viewportWidths.smallTablet
         : false;
-      const topicsEnabled = this.isFieldEnabled(
-        'topic_ids',
-        ideaCustomFieldsSchemas,
-        locale
-      );
       const locationEnabled = this.isFieldEnabled(
         'location',
         ideaCustomFieldsSchemas,
@@ -665,10 +657,6 @@ export class IdeasShow extends PureComponent<
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                {topicsEnabled && topicIds.length > 0 && (
-                  <Topics postType="idea" topicIds={topicIds} />
-                )}
-
                 <IdeaHeader>
                   <Title
                     postType="idea"
@@ -853,7 +841,7 @@ export class IdeasShow extends PureComponent<
                     <FeatureFlag name="similar_ideas">
                       <StyledSimilarIdeas ideaId={ideaId} />
                     </FeatureFlag>
-                    <MetaInformation />
+                    <MetaInformation idea={idea} />
                   </MetaContent>
                 </RightColumnDesktop>
               )}

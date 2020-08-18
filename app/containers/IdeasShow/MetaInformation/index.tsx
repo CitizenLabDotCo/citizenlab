@@ -11,6 +11,9 @@ import { colors, fontSizes } from 'cl2-component-library';
 // components
 import Status from './Status';
 import Location from './Location';
+import Topics from 'components/PostShowComponents/Topics';
+
+import { IIdeaData } from 'services/ideas';
 
 const Container = styled.div`
   width: 100%;
@@ -31,7 +34,20 @@ const Header = styled.h3`
   margin-bottom: 15px;
 `;
 
-const MetaInformation = () => {
+interface Props {
+  idea: IIdeaData;
+}
+
+const MetaInformation = ({ idea }: Props) => {
+  const topicIds =
+  idea.relationships.topics?.data.map(item => item.id) || [];
+  const topicsEnabled = true; // to do
+  // const topicsEnabled = this.isFieldEnabled(
+  //   'topic_ids',
+  //   ideaCustomFieldsSchemas,
+  //   locale
+  // );
+
   return (
     <Container>
       <Item>
@@ -39,11 +55,17 @@ const MetaInformation = () => {
           <FormattedMessage {...messages.currentStatus} />
         </Header>
       </Item>
-      <Item>
-        <Header>
-          <FormattedMessage {...messages.topics} />
-        </Header>
-      </Item>
+      {topicsEnabled && topicIds.length > 0 &&
+        <Item>
+          <Header>
+            <FormattedMessage {...messages.topics} />
+          </Header>
+          <Topics
+            postType="idea"
+            topicIds={topicIds}
+          />
+        </Item>
+      }
       <Item>
         <Header>
           <FormattedMessage {...messages.location} />
