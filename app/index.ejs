@@ -100,7 +100,7 @@
       (function () {
         var u = 'https://citizenlab.matomo.cloud/';
         _paq.push(['setTrackerUrl', u + 'matomo.php']);
-        _paq.push(['setSiteId', '3']);
+        _paq.push(['setSiteId', '<%= matomoSiteId %>']);
         var d = document,
           g = d.createElement('script'),
           s = d.getElementsByTagName('script')[0];
@@ -113,7 +113,7 @@
     <noscript
       ><p>
         <img
-          src="https://citizenlab.matomo.cloud/matomo.php?idsite=1&amp;rec=1"
+          src="https://citizenlab.matomo.cloud/matomo.php?idsite=<%= matomoSiteId %>&amp;rec=1"
           style="border: 0;"
           alt=""
         /></p

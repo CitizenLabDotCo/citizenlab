@@ -76,7 +76,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(tsx?)|(js)$/,
+        test: /.tsx?|\.js$/,
         include: path.join(process.cwd(), 'app'),
         use: {
           loader: 'babel-loader',
@@ -147,8 +147,12 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'app/index.ejs',
+      templateParameters: {
+        matomoSiteId: '3'
+      }
     }),
+    // TODO for production release matomoSiteId: isProd ? '3' : '4'
 
     // new BundleAnalyzerPlugin(),
 
