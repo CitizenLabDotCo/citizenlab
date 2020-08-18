@@ -53,7 +53,7 @@ class Rack::Attack
 
   # Accept invite by email IP.
   throttle('accept_invite/ip', limit: 10, period: 20.seconds) do |req|
-    byebug if if req.path,include? '/web_api/v1/invites/by_token'
+    # byebug if req.path.include? '/web_api/v1/invites/by_token'
     if req.path == '/web_api/v1/invites/by_token' && req.post?
       req.ip
     end
