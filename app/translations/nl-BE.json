@@ -1751,6 +1751,7 @@
   "app.containers.Projects.startsOn": "Begint op {date}",
   "app.containers.Projects.submitMyExpenses": "Bevestig mijn uitgaven",
   "app.containers.Projects.totalBudget": "Totaalbedrag",
+  "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Aankomende activiteiten",
   "app.containers.Projects.yourExpenses": "Jouw uitgaven",
   "app.containers.ProjectsIndexPage.metaDescription": "Verken alle lopende projecten van {orgName} en ontdek hoe jij kan deelnemen.\nBespreek die lokale projecten die voor jou het belangrijkst zijn.",
