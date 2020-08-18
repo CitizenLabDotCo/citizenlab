@@ -68,6 +68,10 @@ gem "active_model_serializers", "~> 0.10.8"
 gem "knock", github: 'CitizenLabDotCo/knock'
 gem "sidekiq" # , "~> 5.0.5"
 
+gem 'activerecord-postgis-adapter', '~> 6.0.0'
+gem "activerecord-import", '~> 1.0'
+gem "activerecord_json_validator", "~> 1.3.0"
+
 # This branch must be used because the latest version (2.1.1) 
 # requires activerecord < 6.0, while activerecord = 6.0.1 is
 # required by Rails 6.0.1.
@@ -77,7 +81,7 @@ gem "carrierwave", "~> 2.0.2"
 gem "carrierwave-base64", "~> 2.6"
 gem "kaminari", "~> 1.2"
 gem 'api-pagination', "~> 4.8.2"
-gem "activerecord_json_validator", "~> 1.3.0"
+
 gem 'rails-i18n', '~> 6.0.0'
 
 gem "rest-client"
@@ -93,7 +97,6 @@ gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
-gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem 'simple_segment', '~> 0.3'
 gem 'okcomputer'
 gem 'sentry-raven'
