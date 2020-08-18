@@ -77,10 +77,32 @@ tenant$.subscribe((tenant) => {
   }
 });
 //
+const exp = new RegExp(
+  '(?<before>^/(ideas|initiatives|projects|users|folders|workshops|admin/(projects(/(folders|templates))|emails/custom)?)/)(?<match>([A-Za-z0-9]|-)*)(?<after>/?(.*))',
+  'g'
+);
 pageChanges$.subscribe(({ path }) => {
-  window._paq.push(['setCustomUrl', removeUrlLocale(path)]);
-  window._paq.push(['trackPageView']);
-  console.log('sent page ' + removeUrlLocale(path));
+  const unlocalizedPath = removeUrlLocale(path);
+  const pathParts = exp.exec(unlocalizedPath)?.groups;
+  console.log('hi');
+  console.log([
+    'trackPageView',
+    pathParts
+      ? `${pathParts.before}identifier${pathParts.after}`
+      : unlocalizedPath,
+    pathParts ? { dimension4: pathParts.match } : undefined,
+  ]);
+  window._paq.push(['setCustomUrl', unlocalizedPath]);
+  window._paq.push([
+    'trackPageView',
+    pathParts
+      ? `${pathParts.before}identifier${pathParts.after}`
+      : unlocalizedPath,
+    pathParts ? { dimension4: pathParts.match } : undefined,
+  ]);
+
+  const content = document.getElementById('app');
+  window._paq.push(['FormAnalytics::scanForForms', content]);
 
   if (isFunction(get(window, 'analytics.page'))) {
     analytics.page('');
