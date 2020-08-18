@@ -64,14 +64,10 @@ combineLatest(tenant$, authUser$, events$).subscribe(
 
 localeStream().observable.subscribe((locale) => {
   window._paq.push(['setCustomDimension', 3, locale]);
-  console.log('sent locale ' + locale);
 });
 
 tenant$.subscribe((tenant) => {
   if (!isNilOrError(tenant)) {
-    console.log(
-      'sent tenant ' + tenant.data.attributes.name + ' ' + tenant.data.id
-    );
     window._paq.push(['setCustomDimension', 1, tenant.data.attributes.name]);
     window._paq.push(['setCustomDimension', 2, tenant.data.id]);
   }
@@ -110,10 +106,9 @@ pageChanges$.subscribe(({ path }) => {
 });
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  // TODO
-  window._paq.push(['setUserId']);
-
-  console.log('sent user ' + user.data.id);
+  if (user?.data?.id) {
+    window._paq.push(['setUserId', user.data.id]);
+  }
   if (
     !isNilOrError(tenant) &&
     isFunction(get(window, 'analytics.identify')) &&
