@@ -10,6 +10,24 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     :active_users_by_time,
   ]
 
+    def index_xlsx
+    if params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    else
+      authorize :idea, :index_xlsx?
+    end
+
+    I18n.with_locale(current_user&.locale) do
+      @ideas = policy_scope(Idea)
+        .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
+        .where(publication_status: 'published')
+      @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+      @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
+      xlsx = XlsxService.new.generate_ideas_xlsx @ideas
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    end
+  end
+
   def users_count
     count = User.active
       .where(registration_completed_at: @start_at..@end_at)
@@ -70,6 +88,36 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       params[:interval]
     )
     render json: {series: {users: serie}}
+  end
+
+  def users_by_time_cumulative_as_xlsx
+    users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
+
+    if params[:project]
+      project = Project.find(params[:project])
+      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users_scope = users_scope.merge(group.members)
+    end
+
+    if params[:topic]
+      users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
+    end
+
+    @serie = @@stats_service.group_by_time_cumulative(
+      users_scope,
+      'registration_completed_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+
+    xlsx = XlsxService.new.generate_stats_xlsx @serie
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    
   end
 
   def active_users_by_time
