@@ -17,17 +17,13 @@ namespace :cl2back do
       raise 'Attempted to shift timestamps of churned tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'churned'
       Apartment::Tenant.switch(tenant.schema_name) do
         data_listing.cl2_tenant_models.each do |claz|
-          claz.find_each do |object|
-            timestamp_attrs = data_listing.timestamp_attributes claz
-            timestamp_attrs.delete('created_at') if claz.name == Activity.name
-            changes = {}
-            timestamp_attrs.each do |ts| 
-              value = object.send ts
-              if value
-                changes[ts] = value + args[:days].to_i.days
-              end
-            end
-            object.update_columns changes if changes.present?
+          timestamp_attrs = data_listing.timestamp_attributes claz
+          timestamp_attrs.delete('created_at') if claz.name == Activity.name
+          if timestamp_attrs.present?
+            query = timestamp_attrs.map do |timestamp_attr|
+              "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
+            end.join(', ')
+            claz.update_all([query, num_days: args[:days].to_i])
           end
         end
         LogActivityJob.perform_later(tenant, 'timestamps_shifted', nil, Time.now.to_i, payload: {days_shifted: args[:days]})
