@@ -43,6 +43,7 @@ const UserName = (props: Props & InjectedIntlProps) => {
     hideLastName,
     ...styleProps
   } = props;
+  let isUnknownUser = false;
 
   const getName = () => {
     if (!isNilOrError(user)) {
@@ -56,6 +57,7 @@ const UserName = (props: Props & InjectedIntlProps) => {
       }
     }
 
+    isUnknownUser = true;
     return formatMessage(messages.deletedUser);
   };
 
@@ -75,13 +77,12 @@ const UserName = (props: Props & InjectedIntlProps) => {
 
   const name = getName();
   const profileLink = getProfileLink();
-  const isUnknownUser = isNilOrError(user);
 
   const NameComponent = (
     <Name
       name={name}
       className={className}
-      isUnknownUser={isUnknownUser}
+      isUnknownUser={isUnknownUser || isNilOrError(user)}
       {...styleProps}
     />
   );
