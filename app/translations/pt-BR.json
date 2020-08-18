@@ -1713,6 +1713,7 @@
   "app.containers.Projects.a11y_phasesOverview": "Visão geral das fases",
   "app.containers.Projects.a11y_projectNav": "Navegação do projeto",
   "app.containers.Projects.a11y_selectedPhaseX": "Fase seleccionada. Fase {selectedPhaseNumber}: {selectedPhaseTitle}",
+  "app.containers.Projects.aboutThisProject": "",
   "app.containers.Projects.allEvents": "Todos os eventos",
   "app.containers.Projects.archived": "Arquivados",
   "app.containers.Projects.budgetExceeded": "As suas despesas excedem o orçamento total atribuível",
