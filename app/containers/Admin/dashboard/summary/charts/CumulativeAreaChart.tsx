@@ -7,6 +7,10 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import { requestBlob } from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
+import { reportError } from 'utils/loggingUtils';
+import { saveAs } from 'file-saver';
 
 // styling
 import { withTheme } from 'styled-components';
@@ -42,6 +46,7 @@ import { IGraphFormat } from 'typings';
 
 type State = {
   serie: IGraphFormat | null;
+  exporting: boolean;
 };
 
 type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
@@ -57,18 +62,22 @@ type Props = {
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
+  onDownloadSvg: (name: string, ref: any) => void;
 };
 
 export class CumulativeAreaChart extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
+  // private currentChart: SVGSVGElement | null = null;
   subscription: Subscription;
+  currentChart = React.createRef<SVGSVGElement>();
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
       serie: null,
+      exporting: false,
     };
   }
 
@@ -225,6 +234,50 @@ export class CumulativeAreaChart extends PureComponent<
     };
   }
 
+  downloadXlsx = async () => {
+    // const { exportQueryParameter } = this.props;
+    const {
+      startAt,
+      endAt,
+      resolution,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter,
+    } = this.props;
+
+    const queryParametersObject = {
+      start_at: startAt,
+      end_at: endAt,
+      interval: resolution,
+      project: currentProjectFilter,
+      group: currentGroupFilter,
+      topic: currentTopicFilter,
+      as_xlsx: true,
+    };
+    // if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
+    //   queryParametersObject['project'] = exportQueryParameter;
+    // } else if (!isString(exportQueryParameter)) {
+    //   queryParametersObject['ideas'] = exportQueryParameter;
+    // }
+
+    try {
+      this.setState({ exporting: true });
+      const blob = await requestBlob(
+        `${API_PATH}/stats/users_by_time_cumulative`,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        queryParametersObject
+      );
+      saveAs(blob, 'ideas-export.xlsx');
+      this.setState({ exporting: false });
+    } catch (error) {
+      reportError(error);
+      this.setState({ exporting: false });
+    }
+
+    // track this click for user analytics
+    // trackEventByName(tracks.clickExportIdeas.name);
+  };
+
   render() {
     const {
       graphTitleMessageKey,
@@ -267,35 +320,56 @@ export class CumulativeAreaChart extends PureComponent<
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
-            <ResponsiveContainer>
-              <AreaChart data={serie} margin={{ right: 40 }}>
-                <CartesianGrid strokeDasharray="5 5" />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  name={formatMessage(messages[graphUnit])}
-                  dot={false}
-                  fill={rgba(chartFill, 0.25)}
-                  fillOpacity={1}
-                  stroke={chartStroke}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                />
-                <XAxis
-                  dataKey="name"
-                  interval="preserveStartEnd"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tick={{ transform: 'translate(0, 7)' }}
-                  tickFormatter={this.formatTick}
-                />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
-                <Tooltip
-                  isAnimationActive={false}
-                  labelFormatter={this.formatLabel}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <>
+              <div>
+                <button
+                  onClick={() =>
+                    this.props.onDownloadSvg(
+                      formatMessage(messages[graphTitleMessageKey]),
+                      this.currentChart.container.children[0]
+                    )
+                  }
+                >
+                  Download svg
+                </button>
+              </div>
+              <div>
+                <button onClick={this.downloadXlsx}>Download xls</button>
+              </div>
+              <ResponsiveContainer>
+                <AreaChart
+                  data={serie}
+                  margin={{ right: 40 }}
+                  ref={(chart) => (this.currentChart = chart)}
+                >
+                  <CartesianGrid strokeDasharray="5 5" />
+                  <Area
+                    type="monotone"
+                    dataKey="value"
+                    name={formatMessage(messages[graphUnit])}
+                    dot={false}
+                    fill={rgba(chartFill, 0.25)}
+                    fillOpacity={1}
+                    stroke={chartStroke}
+                    animationDuration={animationDuration}
+                    animationBegin={animationBegin}
+                  />
+                  <XAxis
+                    dataKey="name"
+                    interval="preserveStartEnd"
+                    stroke={chartLabelColor}
+                    fontSize={chartLabelSize}
+                    tick={{ transform: 'translate(0, 7)' }}
+                    tickFormatter={this.formatTick}
+                  />
+                  <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                  <Tooltip
+                    isAnimationActive={false}
+                    labelFormatter={this.formatLabel}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </>
           )}
         </GraphCardInner>
       </GraphCard>

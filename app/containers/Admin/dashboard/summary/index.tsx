@@ -69,8 +69,11 @@ interface State {
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
   currentProjectFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   currentTopicFilter: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
   projectFilterOptions: IOption[];
@@ -109,8 +112,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           ? projectsList[0].id
           : undefined
         : undefined,
+      currentProjectFilterLabel: undefined,
       currentGroupFilter: undefined,
+      currentGroupFilterLabel: undefined,
       currentTopicFilter: undefined,
+      currentTopicFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
       projectFilterOptions: this.generateProjectOptions(),
@@ -154,6 +160,33 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     }
   }
 
+  handleDownloadSvg = (name: string, chart: any) => {
+    let svgContent = new XMLSerializer().serializeToString(chart);
+    let svgBlob = new Blob([svgContent], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+
+    const {
+      startAtMoment,
+      endAtMoment,
+      currentGroupFilterLabel,
+      currentTopicFilterLabel,
+      currentProjectFilterLabel,
+    } = this.state;
+
+    const startAt = startAtMoment && startAtMoment.toISOString().split('T')[0];
+    const endAt = endAtMoment && endAtMoment.toISOString().split('T')[0];
+
+    const fileName = `${name}${startAt ? '_from-' + startAt : ''}${
+      endAt ? '_until-' + endAt : ''
+    }${
+      currentProjectFilterLabel ? '_project-' + currentProjectFilterLabel : ''
+    }${currentGroupFilterLabel ? '_group-' + currentGroupFilterLabel : ''}${
+      currentTopicFilterLabel ? '_topic-' + currentTopicFilterLabel : ''
+    }.svg`;
+    saveAs(svgBlob, fileName);
+  };
+
   handleChangeResolution = (resolution: IResolution) => {
     this.setState({ resolution });
   };
@@ -178,17 +211,26 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
-    this.setState({ currentProjectFilter: filter.value });
+    this.setState({
+      currentProjectFilter: filter.value,
+      currentProjectFilterLabel: filter.label,
+    });
   };
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({ currentGroupFilter: filter.value });
+    this.setState({
+      currentGroupFilter: filter.value,
+      currentGroupFilterLabel: filter.label,
+    });
   };
 
   handleOnTopicFilter = (filter) => {
     this.props.trackFilterOnTopic({ extra: { topic: filter } });
-    this.setState({ currentTopicFilter: filter.value });
+    this.setState({
+      currentTopicFilter: filter.value,
+      currentTopicFilterLabel: filter.label,
+    });
   };
 
   onResourceByTopicChange = (option) => {
@@ -343,6 +385,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 stream={usersByTimeCumulativeStream}
                 className="e2e-users-by-time-cumulative-chart"
+                onDownloadSvg={this.handleDownloadSvg}
                 {...this.state}
               />
               <BarChartActiveUsersByTime
@@ -363,6 +406,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 stream={ideasByTimeCumulativeStream}
                 className="e2e-ideas-chart"
+                onDownloadSvg={this.handleDownloadSvg}
                 {...this.state}
               />
               <CumulativeAreaChart
@@ -372,6 +416,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 stream={commentsByTimeCumulativeStream}
                 className="e2e-comments-chart"
+                onDownloadSvg={this.handleDownloadSvg}
                 {...this.state}
               />
               <Column>
