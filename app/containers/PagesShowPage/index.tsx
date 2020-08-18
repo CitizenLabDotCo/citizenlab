@@ -192,8 +192,6 @@ class PagesShowPage extends PureComponent<
         );
         pageSlug = '';
       }
-      console.log(pageSlug);
-
       return (
         <Container className={`e2e-page-${pageSlug}`}>
           <Helmet>
@@ -214,9 +212,6 @@ class PagesShowPage extends PureComponent<
                   <QuillEditedContent>{pageDescription}</QuillEditedContent>
                 </PageDescription>
               </Fragment>
-              {pageSlug === 'privacy-policy' && (
-                <iframe src="https://citizenlab.matomo.cloud/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=&fontColor=&fontSize=&fontFamily=" />
-              )}
             </StyledContentContainer>
             {!isNilOrError(pageFiles) && pageFiles.length > 0 && (
               <AttachmentsContainer>
