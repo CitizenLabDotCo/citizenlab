@@ -28,9 +28,25 @@ import {
 
 import { isNilOrError } from 'utils/helperUtils';
 
+export type ResourceType = 'project' | 'phase' | 'event' | 'page' | 'idea' | 'initiative';
+
+export type IResourceFileData = IProjectFileData
+| IPhaseFileData
+| IEventFileData
+| IPageFileData
+| IIdeaFileData
+| IInitiativeFileData;
+
+export type IResourceFiles = IProjectFiles
+| IPhaseFiles
+| IEventFiles
+| IPageFiles
+| IIdeaFiles
+| IInitiativeFiles;
+
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase' | 'event' | 'page' | 'idea' | 'initiative';
+  resourceType: ResourceType;
   resourceId: string | null;
 }
 
@@ -42,12 +58,7 @@ interface Props extends InputProps {
 
 interface State {
   files:
-    | IProjectFileData[]
-    | IPhaseFileData[]
-    | IEventFileData[]
-    | IPageFileData[]
-    | IIdeaFileData[]
-    | IInitiativeFileData[]
+    | IResourceFileData[]
     | undefined
     | null
     | Error;
@@ -110,12 +121,7 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               }
 
               return streamFn(resourceId).observable as Observable<
-                | IProjectFiles
-                | IPhaseFiles
-                | IEventFiles
-                | IPageFiles
-                | IIdeaFiles
-                | IInitiativeFiles
+                | IResourceFiles
                 | null
               >;
             }
