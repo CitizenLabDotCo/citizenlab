@@ -5,7 +5,7 @@ import { IEventFileData } from 'services/eventFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
 
 // components
-import { Icon, colors } from 'cl2-component-library';
+import { Icon, colors, media } from 'cl2-component-library';
 
 const Container = styled.div`
   display: flex;
