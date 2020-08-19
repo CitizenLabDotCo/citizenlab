@@ -282,7 +282,7 @@ export function ideaActivities(ideaId: string) {
   });
 }
 
-export function similarIdeas(
+export function similarIdeasStream(
   ideaId: string,
   streamParams: IStreamParams | null = null
 ) {
