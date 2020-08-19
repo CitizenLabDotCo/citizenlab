@@ -144,7 +144,6 @@
   "app.components.IdeasShow.or": "imaluunniit",
   "app.components.IdeasShow.reportAsSpam": "Spam-imik nalunaarutiginnigit",
   "app.components.IdeasShow.send": "Nassiutiguk",
-  "app.components.IdeasShow.similarIdeas": "{tenantName, select, DeloitteDK {Ilanngussat assigusut} other {Isumassarsiat assigusut}}",
   "app.components.IdeasShow.skipSharing": "Kingusinnerusukkut siammarumaarpara",
   "app.components.IdeasShowPage.goBack": "Uterit",
   "app.components.IdeasShowPage.goBackToList": "Allattuiffimmut uterit",
