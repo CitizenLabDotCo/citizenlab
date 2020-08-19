@@ -1,46 +1,43 @@
-import React, { memo } from 'react';
+import React from 'react';
 
-// components
-import StatusBadge from 'components/StatusBadge';
+// services
+import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import T from 'components/T';
 
-// styling
+// style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div``;
+// utils
+import { fontSizes } from 'utils/styleUtils';
 
-const StatusTitle = styled.div<{ tagName: string }>`
-  ${({ tagName }) => tagName} {
-    color: ${colors.label};
-    font-size: ${fontSizes.base}px;
-    line-height: normal;
-    font-weight: 300;
-  }
-
-  margin: 0;
-  margin-bottom: 7px;
-  padding: 0;
+const Container = styled.div`
+  color: #fff;
+  font-size: ${fontSizes.xs}px;
+  line-height: 16px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  padding: 6px 12px;
+  display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  background-color: ${(props: any) => props.color};
 `;
 
 interface Props {
-  statusId: string;
+  ideaStatus: IIdeaStatusData;
   className?: string;
-  tagName: 'h3' | 'h2';
 }
 
-const IdeaStatus = memo<Props>(({ statusId, className, tagName }) => {
+const Status = ({ ideaStatus, className }: Props) => {
+  const color = ideaStatus ? ideaStatus.attributes.color : '#bbb';
+
   return (
-    <Container className={className}>
-      <StatusTitle tagName={tagName}>
-        <FormattedMessage tagName={tagName} {...messages.currentStatus} />
-      </StatusTitle>
-      <StatusBadge id="e2e-idea-status-badge" statusId={statusId} />
+    <Container className={className} color={color}>
+      <T value={ideaStatus.attributes.title_multiloc} />
     </Container>
   );
-});
+}
 
-export default IdeaStatus;
+export default Status;
