@@ -1,6 +1,7 @@
 require 'simplecov'
 require 'simplecov-rcov'
 require 'webmock/rspec'
+require 'rack/attack'
 
 WebMock.allow_net_connect!
 
@@ -9,6 +10,8 @@ SimpleCov.formatters = [
   SimpleCov::Formatter::RcovFormatter
 ]
 SimpleCov.start 'rails'
+
+Rack::Attack.enabled = false
 
 require 'factory_bot_rails'
 require 'rspec_api_documentation'
