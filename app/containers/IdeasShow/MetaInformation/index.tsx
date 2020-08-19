@@ -16,6 +16,7 @@ import Location from './Location';
 import Attachments from './Attachments';
 // import Attachment from './Attachment';
 import Topics from 'components/PostShowComponents/Topics';
+import FeatureFlag from 'components/FeatureFlag';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -112,11 +113,13 @@ const MetaInformation = ({ ideaId, projectId }: Props) => {
           </Item>
         }
 
-        <Item>
-          <Header>
-            <FormattedMessage {...messages.similarIdeas} />
-          </Header>
-        </Item>
+        {/* <FeatureFlag name="similar_ideas"> */}
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.similarIdeas} />
+            </Header>
+          </Item>
+        {/* </FeatureFlag> */}
       </Container>
     );
   }
