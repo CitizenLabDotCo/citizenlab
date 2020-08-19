@@ -66,6 +66,27 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'password' do
+    before do
+      CommonPassword.initialize!
+    end
+
+    it 'is invalid when set to empty string' do
+      u = build(:user, password: '')
+      expect(u).to be_invalid
+    end
+
+    it 'is invalid if its a common password' do
+      u = build(:user, password: 'batman')
+      expect(u).to be_invalid
+    end
+
+    it 'is valid when its a strong password' do
+      u = build(:user, password: '9x6TUuzSfkzyQrQFhxN9')
+      expect(u).to be_valid
+    end
+  end
+
   describe "bio sanitizer" do
     it "sanitizes script tags in the body" do
       user = create(:user, bio_multiloc: {

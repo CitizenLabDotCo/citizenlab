@@ -62,6 +62,8 @@ class User < ApplicationRecord
   }, if: [:custom_field_values_changed?, :active?]
 
   validates :password, length: { in: 5..72 }, allow_nil: true
+  validate :validate_password_not_common
+
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
@@ -305,6 +307,16 @@ class User < ApplicationRecord
       if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
         errors.add(:email, :domain_blacklisted, value: domain)
       end
+    end
+  end
+
+  def validate_password_not_common
+    if self.password && CommonPassword.check(self.password)
+      self.errors.add(
+        :password,
+        :too_common,
+        message: 'The chosen password matched with our common password blacklist'
+      )
     end
   end
 
