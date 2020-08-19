@@ -194,6 +194,14 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "minimum_length": {
+            "type": "number",
+            "title": "Minimum password length",
+            "description": "The minimum length user passwords are required to have. The higher, the more secure. This only applies when creating a new account or updating the password.",
+            "minimum": 5,
+            "maximum": 72,
+            "default": 8
+          },
           "phone": {
             "title": "Phone",
             "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
