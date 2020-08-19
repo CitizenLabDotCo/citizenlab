@@ -61,7 +61,7 @@ class User < ApplicationRecord
     message: ->(errors) { errors }
   }, if: [:custom_field_values_changed?, :active?]
 
-  validates :password, length: { in: 5..72 }, allow_nil: true
+  validates :password, length: { in: Tenant.current.settings.dig('password_login', 'minimum_length')..72 }, allow_nil: true
   validate :validate_password_not_common
 
   validate do |record|
