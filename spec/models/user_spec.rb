@@ -87,6 +87,24 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'password' do
+    it 'is invalid when shorter than minimum length' do
+      tn = Tenant.current
+      tn.settings['password_login']['minimum_length'] = 12
+      tn.save!
+      u = build(:user, password: 'FetGaVW856')
+      expect(u).to be_invalid
+    end
+
+    it 'is valid when longer than minimum length' do
+      tn = Tenant.current
+      tn.settings['password_login']['minimum_length'] = 5
+      tn.save!
+      u = build(:user, password: 'zen3F28')
+      expect(u).to valid
+    end
+  end
+
   describe "bio sanitizer" do
     it "sanitizes script tags in the body" do
       user = create(:user, bio_multiloc: {

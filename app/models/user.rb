@@ -61,7 +61,8 @@ class User < ApplicationRecord
     message: ->(errors) { errors }
   }, if: [:custom_field_values_changed?, :active?]
 
-  validates :password, length: { in: Tenant.current.settings.dig('password_login', 'minimum_length')..72 }, allow_nil: true
+  validates :password, length: { maximum: 72 }, allow_nil: true
+  validate :validate_minimum_password_length
   validate :validate_password_not_common
 
   validate do |record|
@@ -307,6 +308,16 @@ class User < ApplicationRecord
       if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
         errors.add(:email, :domain_blacklisted, value: domain)
       end
+    end
+  end
+
+  def validate_minimum_password_length
+    if self.password && password.size < Tenant.current.settings.dig('password_login', 'minimum_length')
+      self.errors.add(
+        :password,
+        :too_short,
+        message: 'The chosen password is shorter than the minimum required character length'
+      )
     end
   end
 
