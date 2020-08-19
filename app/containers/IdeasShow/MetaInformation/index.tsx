@@ -11,7 +11,7 @@ import messages from './messages';
 import { colors, fontSizes } from 'cl2-component-library';
 
 // components
-// import Status from './Status';
+import Status from './Status';
 import Location from './Location';
 import Attachments from './Attachments';
 // import Attachment from './Attachment';
@@ -25,6 +25,7 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import useSimilarIdeas from 'hooks/useSimilarIdeas';
+import useIdeaStatus from 'hooks/useIdeaStatus';
 
 const Container = styled.div`
   width: 100%;
@@ -48,14 +49,16 @@ const Header = styled.h3`
 interface Props {
   ideaId: string;
   projectId: string;
+  statusId: string;
 }
 
-const MetaInformation = ({ ideaId, projectId }: Props) => {
+const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
   const idea = useIdea({ ideaId });
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
   const locale = useLocale();
-  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId })
-  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 })
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
+  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+  const ideaStatus = useIdeaStatus({ statusId });
 
   if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicIds =
@@ -81,11 +84,14 @@ const MetaInformation = ({ ideaId, projectId }: Props) => {
 
     return (
       <Container>
-        <Item>
-          <Header>
-            <FormattedMessage {...messages.currentStatus} />
-          </Header>
-        </Item>
+        {!isNilOrError(ideaStatus) &&
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.currentStatus} />
+            </Header>
+            <Status ideaStatus={ideaStatus} />
+          </Item>
+        }
         {topicsEnabled && topicIds.length > 0 &&
           <Item>
             <Header>
@@ -115,7 +121,6 @@ const MetaInformation = ({ ideaId, projectId }: Props) => {
             <Attachments files={files} />
           </Item>
         }
-
         {/* <FeatureFlag name="similar_ideas"> */}
           {!isNilOrError(similarIdeas) &&
             <Item>

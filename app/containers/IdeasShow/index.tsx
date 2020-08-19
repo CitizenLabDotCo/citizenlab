@@ -772,7 +772,7 @@ export class IdeasShow extends PureComponent<
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
-                    <MetaInformation ideaId={ideaId} projectId={projectId} />
+                    <MetaInformation ideaId={ideaId} projectId={projectId} statusId={statusId} />
                   </MetaContent>
                 </RightColumnDesktop>
               )}
