@@ -5,10 +5,6 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // resources
 import GetSimilarIdeas, {
   GetSimilarIdeasChildProps,
@@ -16,7 +12,6 @@ import GetSimilarIdeas, {
 
 // components
 import T from 'components/T';
-import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // utils
@@ -28,21 +23,6 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 const Container = styled.aside``;
-
-const Title = styled.h3`
-  font-size: ${fontSizes.large}px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colorText};
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 18px;
-`;
-
-const SimilarIdeasIcon = styled(Icon)`
-  margin-right: 10px;
-`;
 
 const IdeaList = styled.ul`
   background-color: ${colors.background};
