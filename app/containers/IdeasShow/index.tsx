@@ -26,7 +26,6 @@ import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
@@ -295,10 +294,6 @@ const AssignBudgetControlMobile = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const StyledSimilarIdeas = styled(SimilarIdeas)`
-  margin-top: 45px;
 `;
 
 const SharingMobile = styled(Sharing)`
@@ -777,10 +772,6 @@ export class IdeasShow extends PureComponent<
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
-
-                    <FeatureFlag name="similar_ideas">
-                      <StyledSimilarIdeas ideaId={ideaId} />
-                    </FeatureFlag>
                     <MetaInformation ideaId={ideaId} projectId={projectId} />
                   </MetaContent>
                 </RightColumnDesktop>
