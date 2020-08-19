@@ -336,7 +336,7 @@
   "app.components.UI.TranslateButton.seeTranslation": "Vezi traducerea",
   "app.components.Upload.a11y_removeImage": "Elimină",
   "app.components.Upload.errorImageMaxSizeExceeded": "Imaginea selectată este mai mare decât {maxFileSize} MB",
-  "app.components.Upload.errorImagesMaxSizeExceeded": "Unul sau mai multe imagini selectate sunt mai mari decât {maxFileSize} MB",
+  "app.components.Upload.errorImagesMaxSizeExceeded": "Una sau mai multe imagini selectate sunt mai mari decât {maxFileSize} MB",
   "app.components.Upload.onlyOneImage": "Puteți încărca doar 1 imagine",
   "app.components.Upload.onlyXImages": "Puteți încărca {maxItemsCount} imagini",
   "app.components.Upload.remaining": "rămas",
