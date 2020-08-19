@@ -1,14 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-// resources
-import GetSimilarIdeas, {
-  GetSimilarIdeasChildProps,
-} from 'resources/GetSimilarIdeas';
+// hooks
+import useSimilarIdeas from 'hooks/useSimilarIdeas';
 
 // components
 import T from 'components/T';
@@ -55,27 +53,17 @@ const IdeaLink = styled(Link)`
   }
 `;
 
-interface InputProps {
+interface Props {
   ideaId: string;
   className?: string;
 }
 
-interface DataProps {
-  ideas: GetSimilarIdeasChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-class SimilarIdeas extends PureComponent<Props> {
-  onClickIdeaLink = (index: number) => () => {
+const SimilarIdeas = ({ ideaId, className }: Props) => {
+  const onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   };
 
-  render() {
-    const { ideas, className } = this.props;
-
-    if (isNilOrError(ideas) || isEmpty(ideas)) return null;
-
+  if (!isNilOrError(ideas) && !isEmpty(ideas)) {
     return (
       <Container className={className}>
         <IdeaList>
@@ -83,7 +71,7 @@ class SimilarIdeas extends PureComponent<Props> {
             <IdeaListItem key={idea.id}>
               <IdeaLink
                 to={`/ideas/${idea.attributes.slug}`}
-                onClick={this.onClickIdeaLink(index)}
+                onClick={onClickIdeaLink(index)}
               >
                 <T value={idea.attributes.title_multiloc} />
               </IdeaLink>
@@ -93,12 +81,8 @@ class SimilarIdeas extends PureComponent<Props> {
       </Container>
     );
   }
+
+  return null;
 }
 
-const SimilarIdeasWrapper = (inputProps: InputProps) => (
-  <GetSimilarIdeas ideaId={inputProps.ideaId} pageSize={5}>
-    {(ideas) => <SimilarIdeas {...inputProps} ideas={ideas} />}
-  </GetSimilarIdeas>
-);
-
-export default SimilarIdeasWrapper;
+export default SimilarIdeas;
