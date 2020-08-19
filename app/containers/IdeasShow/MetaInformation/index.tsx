@@ -17,12 +17,14 @@ import Attachments from './Attachments';
 // import Attachment from './Attachment';
 import Topics from 'components/PostShowComponents/Topics';
 import FeatureFlag from 'components/FeatureFlag';
+import SimilarIdeas from './SimilarIdeas';
 
 // hooks
 import useIdea from 'hooks/useIdea';
 import useResourceFiles from 'hooks/useResourceFiles';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useSimilarIdeas from 'hooks/useSimilarIdeas';
 
 const Container = styled.div`
   width: 100%;
@@ -53,6 +55,7 @@ const MetaInformation = ({ ideaId, projectId }: Props) => {
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId })
+  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 })
 
   if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicIds =
@@ -114,11 +117,14 @@ const MetaInformation = ({ ideaId, projectId }: Props) => {
         }
 
         {/* <FeatureFlag name="similar_ideas"> */}
-          <Item>
-            <Header>
-              <FormattedMessage {...messages.similarIdeas} />
-            </Header>
-          </Item>
+          {!isNilOrError(similarIdeas) &&
+            <Item>
+              <Header>
+                <FormattedMessage {...messages.similarIdeas} />
+              </Header>
+              <SimilarIdeas similarIdeas={similarIdeas} />
+            </Item>
+          }
         {/* </FeatureFlag> */}
       </Container>
     );
