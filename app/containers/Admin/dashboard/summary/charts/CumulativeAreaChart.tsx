@@ -13,8 +13,9 @@ import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 
 // styling
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { rgba } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 // components
 import {
@@ -38,15 +39,27 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from '../..';
+import Button from 'components/UI/Button';
+import { Dropdown } from 'cl2-component-library';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
+const DropdownButton = styled(Button)``;
+
+const Container = styled.div`
+  display: flex;
+  align-items: end;
+  position: relative;
+  cursor: pointer;
+`;
+
 type State = {
   serie: IGraphFormat | null;
   exporting: boolean;
+  dropdownOpened: boolean;
 };
 
 type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
@@ -69,15 +82,15 @@ export class CumulativeAreaChart extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  // private currentChart: SVGSVGElement | null = null;
   subscription: Subscription;
-  currentChart = React.createRef<SVGSVGElement>();
+  currentChart = React.createRef<HTMLDivElement>();
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
       serie: null,
       exporting: false,
+      dropdownOpened: false,
     };
   }
 
@@ -252,7 +265,6 @@ export class CumulativeAreaChart extends PureComponent<
       project: currentProjectFilter,
       group: currentGroupFilter,
       topic: currentTopicFilter,
-      as_xlsx: true,
     };
     // if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
     //   queryParametersObject['project'] = exportQueryParameter;
@@ -263,7 +275,7 @@ export class CumulativeAreaChart extends PureComponent<
     try {
       this.setState({ exporting: true });
       const blob = await requestBlob(
-        `${API_PATH}/stats/users_by_time_cumulative`,
+        `${API_PATH}/stats/users_by_time_cumulative_as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         queryParametersObject
       );
@@ -278,6 +290,17 @@ export class CumulativeAreaChart extends PureComponent<
     // trackEventByName(tracks.clickExportIdeas.name);
   };
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  };
+
+  toggleDropdown = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    this.setState(({ dropdownOpened }) => ({
+      dropdownOpened: !dropdownOpened,
+    }));
+  };
+
   render() {
     const {
       graphTitleMessageKey,
@@ -285,7 +308,7 @@ export class CumulativeAreaChart extends PureComponent<
       className,
       intl: { formatMessage },
     } = this.props;
-    const { serie } = this.state;
+    const { serie, exporting, dropdownOpened } = this.state;
     const {
       chartFill,
       chartLabelSize,
@@ -314,6 +337,50 @@ export class CumulativeAreaChart extends PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
+            <Container className={className}>
+              <DropdownButton
+                buttonStyle="admin-dark-text"
+                onClick={this.toggleDropdown}
+                icon="download"
+                iconPos="right"
+                padding="0px"
+              />
+              <Dropdown
+                width="100%"
+                top="35px"
+                right="-5px"
+                mobileRight="-5px"
+                opened={dropdownOpened}
+                onClickOutside={this.toggleDropdown}
+                content={
+                  <>
+                    <Button
+                      onClick={() =>
+                        this.props.onDownloadSvg(
+                          formatMessage(messages[graphTitleMessageKey]),
+                          this.currentChart
+                        )
+                      }
+                      buttonStyle="text"
+                      processing={exporting}
+                      padding="0"
+                      fontSize={`${fontSizes.small}px`}
+                    >
+                      Download svg
+                    </Button>
+                    <Button
+                      onClick={this.downloadXlsx}
+                      buttonStyle="text"
+                      processing={exporting}
+                      padding="0"
+                      fontSize={`${fontSizes.small}px`}
+                    >
+                      Download xls
+                    </Button>
+                  </>
+                }
+              />
+            </Container>
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -321,26 +388,14 @@ export class CumulativeAreaChart extends PureComponent<
             </NoDataContainer>
           ) : (
             <>
-              <div>
-                <button
-                  onClick={() =>
-                    this.props.onDownloadSvg(
-                      formatMessage(messages[graphTitleMessageKey]),
-                      this.currentChart.container.children[0]
-                    )
-                  }
-                >
-                  Download svg
-                </button>
-              </div>
-              <div>
-                <button onClick={this.downloadXlsx}>Download xls</button>
-              </div>
               <ResponsiveContainer>
                 <AreaChart
                   data={serie}
                   margin={{ right: 40 }}
-                  ref={(chart) => (this.currentChart = chart)}
+                  id="currentChart"
+                  ref={(chart) =>
+                    (this.currentChart = chart?.container?.children[0])
+                  }
                 >
                   <CartesianGrid strokeDasharray="5 5" />
                   <Area
