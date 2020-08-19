@@ -184,9 +184,9 @@ Rails.application.routes.draw do
       scope 'stats' do
         route_params = {controller: 'stats_users'}
         get 'users_count', **route_params
+
         get 'users_by_time', **route_params
         get 'users_by_time_cumulative', **route_params
-        get 'users_by_time_cumulative_as_xlsx', **route_params
         get 'active_users_by_time', **route_params
         get 'users_by_gender', **route_params
         get 'users_by_birthyear', **route_params
@@ -195,8 +195,19 @@ Rails.application.routes.draw do
         get 'users_engagement_scores', **route_params
         get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
+        get 'users_by_time_as_xlsx', **route_params
+        get 'users_by_time_cumulative_as_xlsx', **route_params
+        get 'active_users_by_time_as_xlsx', **route_params
+        get 'users_by_gender_as_xlsx', **route_params
+        get 'users_by_birthyear_as_xlsx', **route_params
+        get 'users_by_domicile_as_xlsx', **route_params
+        get 'users_by_education_as_xlsx', **route_params
+        #TODO get 'users_engagement_scores_as_xlsx', **route_params
+        get 'users_by_custom_field/:custom_field_id_as_xlsx', action: :users_by_custom_field, **route_params
+
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params
+        
         get 'ideas_by_time', **route_params
         get 'ideas_by_time_cumulative', **route_params
         get 'ideas_by_topic', **route_params
