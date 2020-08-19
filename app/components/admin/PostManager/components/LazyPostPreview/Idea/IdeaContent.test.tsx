@@ -42,6 +42,9 @@ jest.mock('utils/styleUtils', () => ({
   fontSizes: {
     base: 16,
   },
+  media: {
+    smallerThanMinTablet: (x) => x,
+  },
 }));
 
 import { IdeaContent } from './IdeaContent';
