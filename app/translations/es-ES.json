@@ -2034,6 +2034,8 @@
   "app.errors.password_blank": "Esto no puede estar vacío",
   "app.errors.password_too_short": "La contraseña debe tener al menos 8 caracteres",
   "app.errors.title_multiloc_blank": "El título no puede estar vacío.",
+  "app.errors.too_common": "",
+  "app.errors.too_long": "",
   "app.errors.too_short": "",
   "app.errors.unknown_group": "El grupo {value} en la fila {row} no es un grupo conocido",
   "app.errors.unknown_locale": "El idioma {value} en la fila {row} no es un idioma configurado",

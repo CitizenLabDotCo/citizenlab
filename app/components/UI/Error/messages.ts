@@ -63,6 +63,15 @@ export default defineMessages({
     id: 'app.errors.too_short',
     defaultMessage: 'Must be at least 8 characters long',
   },
+  too_long: {
+    id: 'app.errors.too_long',
+    defaultMessage: 'Please choose a shorter password (max 72 characters)',
+  },
+  too_common: {
+    id: 'app.errors.too_common',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password.',
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',
