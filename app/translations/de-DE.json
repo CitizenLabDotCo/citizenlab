@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Erreiche mehr Leute und lasse sie deine Stimme hören.",
   "app.containers.IdeasShow.shareTitle": "Herzlichen Glückwunsch, deine Idee ist veröffentlicht worden!",
   "app.containers.IdeasShow.twitterMessage": "Stimmen Sie für {ideaTitle} auf",
-  "app.containers.IdeasShow.voteOnThisIdea": "{orgName, select, München {Bewerte diesen Mangel} other {Stimme zu dieser Idee ab}}",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Weniger als ein Tag} one {Ein Tag} other {# Tage}} übrig",
   "app.containers.InitiativesEditPage.metaDescription": "Bearbeite deinen Vorschlag. Füge weitere Informationen hinzu, um sie noch besser zu gestalten.",
   "app.containers.InitiativesEditPage.metaTitle": "Dein Vorschlag bearbeiten • {orgName}",

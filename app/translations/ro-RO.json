@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Adună cat mai multă audiență si fă-ți vocea auzită.",
   "app.containers.IdeasShow.shareTitle": "Felicitări, ideea ta a fost postată cu succes!",
   "app.containers.IdeasShow.twitterMessage": "Vot pentru {ideaTitle} pe",
-  "app.containers.IdeasShow.voteOnThisIdea": "Votează această idee",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
   "app.containers.InitiativesEditPage.metaDescription": "Editeză-ți propunerea. Adaugă mai multe informații pentru a o face mai atractivă.",
   "app.containers.InitiativesEditPage.metaTitle": "Edita-ți propunerea dvs. • {orgName}",

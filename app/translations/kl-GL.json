@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Amerlanerit anngukkit tusaaneqarlutillu",
   "app.containers.IdeasShow.shareTitle": "Pilluarit, isumassarsiat iluatsittumik nassiuppoq!",
   "app.containers.IdeasShow.twitterMessage": "{tenantName, select, DeloitteDK {Isumarnik ikkussigit {ideaTitle}} other {Uani {postTitle} toqqaagit}}",
-  "app.containers.IdeasShow.voteOnThisIdea": "Isumassarsiaq una taaguk",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Mindre end en dag} one {En dag} other {# dage}} tilbage",
   "app.containers.InitiativesEditPage.metaDescription": "Innuttaasutut siunnersuutit aaqqissuutiguk. Paasissutissat amerlanerit ilanngutikkit pitsaanerulersinniarlugu.",
   "app.containers.InitiativesEditPage.metaTitle": "Innuttaasutut siunnersuutit aaqqissuutiguk • {orgName}",
