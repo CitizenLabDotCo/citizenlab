@@ -31,9 +31,9 @@ const CTABox = ({ ideaId, projectId }: Props) => {
   if (!isNilOrError(idea)) {
     const commentingEnabled = idea.attributes.action_descriptor.commenting.enabled;
 
+    // TODO: a11y title
     return (
       <Container>
-        // TODO: a11y title
         <StyledVoting ideaId={ideaId} projectId={projectId} />
         {commentingEnabled && <StyledGoToCommentsButton />}
         <ShareButton />
