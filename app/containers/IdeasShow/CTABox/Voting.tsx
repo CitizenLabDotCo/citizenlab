@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import PopContainer from 'components/UI/PopContainer';
@@ -6,7 +7,10 @@ import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
+const Container = styled.div``;
+
 interface InputProps {
+  className?: string;
   ideaId?: string;
   projectId: string;
 }
@@ -56,7 +60,7 @@ class VoteWrapper extends PureComponent<Props, State> {
   };
 
   render() {
-    const { ideaId, projectId, idea } = this.props;
+    const { className, ideaId, projectId, idea } = this.props;
     const { error } = this.state;
 
     const votingDescriptor = isNilOrError(idea)
@@ -66,7 +70,7 @@ class VoteWrapper extends PureComponent<Props, State> {
     if (!ideaId || !votingDescriptor) return null;
 
     return (
-      <>
+      <Container className={className}>
         {!error && (
           <VoteControl
             ideaId={ideaId}
@@ -83,7 +87,7 @@ class VoteWrapper extends PureComponent<Props, State> {
             />
           </PopContainer>
         )}
-      </>
+      </Container>
     );
   }
 }
