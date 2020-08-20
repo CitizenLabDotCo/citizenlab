@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Alcance mais pessoas e faça ouvir a sua voz.",
   "app.containers.IdeasShow.shareTitle": "Parabéns, a sua proposta foi postada com sucesso!",
   "app.containers.IdeasShow.twitterMessage": "Votar por {ideaTitle} em",
-  "app.containers.IdeasShow.voteOnThisIdea": "Votar nesta ideia",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Menos de um dia} one {Um dia} other {# dias}} esquerda",
   "app.containers.InitiativesEditPage.metaDescription": "Edite sua proposta. Adicione mais informações para torná-la ainda melhor.",
   "app.containers.InitiativesEditPage.metaTitle": "Edite a sua proposta - {orgName}",
