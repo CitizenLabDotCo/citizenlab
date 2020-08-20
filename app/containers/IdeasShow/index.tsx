@@ -28,7 +28,7 @@ import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import VoteWrapper from './VoteWrapper';
+import VoteWrapper from './CTABox/Voting';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -42,6 +42,7 @@ import { Spinner } from 'cl2-component-library';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
+import CTABox from './CTABox';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -774,7 +775,8 @@ export class IdeasShow extends PureComponent<
               {biggerThanLargeTablet && (
                 <RightColumnDesktop>
                   <MetaContent>
-                    {(showVoteControl || showBudgetControl || statusId) && (
+                    <CTABox ideaId={ideaId} projectId={projectId} />
+                    {(showVoteControl || showBudgetControl) && (
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {(showVoteControl || showBudgetControl) && (
                           <ScreenReaderOnly>
@@ -819,14 +821,6 @@ export class IdeasShow extends PureComponent<
                               budgetingDescriptor={budgetingDescriptor}
                             />
                           )}
-
-                        {(showVoteControl || showBudgetControl) && (
-                          <ControlWrapperHorizontalRule aria-hidden />
-                        )}
-
-                        {statusId && (
-                          <IdeaStatus tagName="h3" statusId={statusId} />
-                        )}
                       </ControlWrapper>
                     )}
 
