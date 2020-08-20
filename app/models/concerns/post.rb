@@ -34,11 +34,9 @@ module Post
       post.validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
       post.validates :body_multiloc, presence: true, multiloc: {presence: true}
       post.validates :author, presence: true, on: :create
-      post.validates :author_name, presence: true, on: :create
       post.validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
       post.before_validation :strip_title
-      post.before_validation :set_author_name
       post.before_validation :generate_slug
       post.after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
       post.after_validation :set_assigned_at, if: ->(post){ post.assignee_id && post.assignee_id_changed? }
@@ -79,6 +77,10 @@ module Post
       upvotes_count - downvotes_count
     end
 
+    def author_name
+      author.full_name
+    end
+
     
     private
 
@@ -93,10 +95,6 @@ module Post
         title = MultilocService.new.t self.title_multiloc, self.author
         self.slug ||= SlugService.new.generate_slug self, title
       end
-    end
-
-    def set_author_name
-      self.author_name ||= self.author.full_name if self.author
     end
 
     def set_published_at
