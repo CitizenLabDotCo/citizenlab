@@ -119,6 +119,10 @@ class Tenant < ApplicationRecord
   def location
     RGeo::Geographic.spherical_factory(:srid => 4326).point(settings.dig('maps', 'map_center', 'long'), settings.dig('maps', 'map_center', 'lat'))
   end
+
+  def shallow_anonymization?
+    has_feature? "display_names"
+  end
   
   private
 
