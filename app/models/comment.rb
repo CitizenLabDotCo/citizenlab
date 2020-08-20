@@ -51,7 +51,7 @@ class Comment < ApplicationRecord
   scope :published, -> {where publication_status: 'published'}
   
   def set_author_name
-    self.author_name = self.author.display_name if self.author
+    self.author_name = self.author.full_name if self.author
   end
 
   def published?
