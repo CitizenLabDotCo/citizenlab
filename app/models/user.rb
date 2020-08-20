@@ -312,7 +312,7 @@ class User < ApplicationRecord
   end
 
   def validate_minimum_password_length
-    if self.password && password.size < Tenant.current.settings.dig('password_login', 'minimum_length')
+    if self.password && password.size < (Tenant.current.settings.dig('password_login', 'minimum_length') || 0)
       self.errors.add(
         :password,
         :too_short,
