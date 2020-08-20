@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Dotrzyj do większej ilości osób i spraw, by twój głos był słyszalny.",
   "app.containers.IdeasShow.shareTitle": "Gratulacje, Twój pomysł został pomyślnie zamieszczony!",
   "app.containers.IdeasShow.twitterMessage": "Głosuj na {ideaTitle} w",
-  "app.containers.IdeasShow.voteOnThisIdea": "Głosujcie na ten pomysł",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Mniej niż jeden dzień } one {Jeden dzień} few {# dni} many {# dni} other {# dni}} do końca",
   "app.containers.InitiativesEditPage.metaDescription": "Edytuj swoją propozycję. Dodaj więcej informacji i uczyń ją jeszcze lepiej.",
   "app.containers.InitiativesEditPage.metaTitle": "Edytuj swoją propozycję • {orgName}",
