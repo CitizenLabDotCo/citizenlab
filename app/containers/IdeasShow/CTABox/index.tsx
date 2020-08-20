@@ -33,6 +33,7 @@ const CTABox = ({ ideaId, projectId }: Props) => {
 
     return (
       <Container>
+        // TODO: a11y title
         <StyledVoting ideaId={ideaId} projectId={projectId} />
         {commentingEnabled && <StyledGoToCommentsButton />}
         <ShareButton />

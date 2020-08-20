@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.a11y_budgetControl',
     defaultMessage: 'Idea assignment ans status',
   },
-  voteOnThisIdea: {
-    id: 'app.containers.IdeasShow.voteOnThisIdea',
-    defaultMessage: 'Vote on this idea',
-  },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea: {ideaTitle}',

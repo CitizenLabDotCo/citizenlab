@@ -28,7 +28,6 @@ import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import VoteWrapper from './CTABox/Voting';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -84,7 +83,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import { media, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -282,26 +281,6 @@ const ControlWrapper = styled.div`
   padding: 35px;
   border: 1px solid #e0e0e0;
   ${defaultCardStyle};
-`;
-
-const ControlWrapperHorizontalRule = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: ${colors.separation};
-  margin: 35px 0;
-`;
-
-const VoteLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-bottom: 12px;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -602,7 +581,6 @@ export class IdeasShow extends PureComponent<
         actionInfos?.participationContextId || null;
       const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
       const showBudgetControl = actionInfos?.showBudgetControl || null;
-      const showVoteControl = actionInfos?.showVoteControl || null;
       const biggerThanLargeTablet = windowSize
         ? windowSize > viewportWidths.largeTablet
         : false;
@@ -776,50 +754,29 @@ export class IdeasShow extends PureComponent<
                 <RightColumnDesktop>
                   <MetaContent>
                     <CTABox ideaId={ideaId} projectId={projectId} />
-                    {(showVoteControl || showBudgetControl) && (
+                    {showBudgetControl && (
                       <ControlWrapper className="e2e-vote-controls-desktop">
-                        {(showVoteControl || showBudgetControl) && (
-                          <ScreenReaderOnly>
-                            {showVoteControl && (
-                              <FormattedMessage
-                                tagName="h2"
-                                {...messages.a11y_voteControl}
-                              />
-                            )}
-                            {showBudgetControl && (
-                              <FormattedMessage
-                                tagName="h2"
-                                {...messages.a11y_budgetControl}
-                              />
-                            )}
-                          </ScreenReaderOnly>
-                        )}
-                        {showVoteControl && (
-                          <>
-                            <VoteLabel>
-                              <FormattedMessage {...messages.voteOnThisIdea} />
-                            </VoteLabel>
-
-                            <VoteWrapper
-                              ideaId={ideaId}
-                              projectId={projectId}
-                            />
-                          </>
-                        )}
-
-                        {showBudgetControl &&
-                          participationContextId &&
+                        {participationContextId &&
                           participationContextType &&
                           budgetingDescriptor && (
-                            <AssignBudgetWrapper
-                              ideaId={ideaId}
-                              projectId={projectId}
-                              participationContextId={participationContextId}
-                              participationContextType={
-                                participationContextType
-                              }
-                              budgetingDescriptor={budgetingDescriptor}
-                            />
+                            <>
+                              <ScreenReaderOnly>
+                                <FormattedMessage
+                                  tagName="h2"
+                                  {...messages.a11y_budgetControl}
+                                />
+                              </ScreenReaderOnly>
+                              <AssignBudgetWrapper
+                                ideaId={ideaId}
+                                projectId={projectId}
+                                participationContextId={participationContextId}
+                                participationContextType={
+                                  participationContextType
+                                }
+                                budgetingDescriptor={budgetingDescriptor}
+                              />
+                            </>
+
                           )}
                       </ControlWrapper>
                     )}
