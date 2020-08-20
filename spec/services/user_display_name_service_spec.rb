@@ -33,6 +33,12 @@ describe UserDisplayNameService do
       display_name = name_service.display_name(@another_user)
       expect(display_name).to eq 'Another U.'
     end
+
+    it "unknown users shouldn't see full names" do
+      name_service = UserDisplayNameService.new(@tenant, nil)
+      display_name = name_service.display_name(@another_user)
+      expect(display_name).to eq 'Another U.'
+    end
   end
 
   describe "when shallow anonymization is disabled" do

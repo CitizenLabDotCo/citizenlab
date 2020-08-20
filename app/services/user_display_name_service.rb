@@ -6,9 +6,10 @@ class UserDisplayNameService
 
   # @param [Tenant] tenant
   # @param [User] current_user
-  def initialize(tenant, current_user)
+  def initialize(tenant, current_user = nil)
     @tenant = tenant
     @current_user = current_user
+    @is_admin = !!@current_user&.admin?
   end
 
   # @param [User] user
@@ -29,7 +30,11 @@ class UserDisplayNameService
   # @return [Boolean]
   def can_see_fullname_of?(user)
     return true unless @tenant.shallow_anonymization?
-    (user == @current_user) || @current_user.admin?
+    is_admin? || (user == @current_user)
+  end
+
+  def is_admin?
+    @is_admin
   end
 
   # @param [String] name
