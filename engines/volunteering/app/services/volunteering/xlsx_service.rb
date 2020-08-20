@@ -3,30 +3,24 @@ module Volunteering
 
     @@multiloc_service = MultilocService.new
 
-    def generate_xlsx pc, volunteers
-      pa = Axlsx::Package.new
-      wb = pa.workbook
-      pc.causes.order(:ordering).each do |cause|
-        wb.styles do |s|
-          # Sheet names can only be 31 characters long
-          sheet_name = @@multiloc_service.t(cause.title_multiloc)[0..30]
-          wb.add_worksheet(name: sheet_name) do |sheet|
-            sheet.add_row [
-              "first_name",
-              "last_name",
-              "email",
-              "date",
-            ], style: ::XlsxService.new.header_style(s)
-            volunteers.where(cause: cause).each do |v|
-              sheet.add_row [
-                v.user.first_name,
-                v.user.last_name,
-                v.user.email,
-                v.created_at,
-              ]
-            end
-          end
+    def generate_xlsx pc, volunteers, view_private_attributes: false
+      xlsx_service = ::XlsxService.new
+      columns = [
+        {header: 'first_name', f: -> (v) { v.user.first_name }},
+        {header: 'last_name',  f: -> (v) { v.user.last_name }},
+        {header: 'email',      f: -> (v) { v.user.email }},
+        {header: 'date',       f: -> (v) { v.created_at }, skip_sanitization: true}
+      ]
+      if !view_private_attributes
+        columns.select! do |c|
+          !%w(email).include?(c[:header])
         end
+      end
+      pa = Axlsx::Package.new
+      pc.causes.order(:ordering).each do |cause|
+        # Sheet names can only be 31 characters long
+        sheetname = @@multiloc_service.t(cause.title_multiloc)[0..30]
+        xlsx_service.generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end
       pa.to_stream
     end
