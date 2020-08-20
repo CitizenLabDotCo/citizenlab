@@ -75,7 +75,7 @@ describe MentionService do
 
     it "processes a single mention as it should" do
       result = service.process_mentions(@u1_mention)
-      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-user-slug=\"#{@u1.slug}\">@#{@u1.display_name}</span>", [@u1.id]]
+      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-user-slug=\"#{@u1.slug}\">@#{@u1.full_name}</span>", [@u1.id]]
     end
 
     it "processes multiple mentions as it should" do

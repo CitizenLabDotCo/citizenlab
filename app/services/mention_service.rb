@@ -40,7 +40,7 @@ class MentionService
 
   def add_span_around text, user
     mention = user_to_mention(user)
-    text.gsub(/#{mention}/i, "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{user.display_name}</span>")
+    text.gsub(/#{mention}/i, "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{user.full_name}</span>")
   end
 
   def process_mentions text
