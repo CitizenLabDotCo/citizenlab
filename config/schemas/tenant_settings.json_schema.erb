@@ -857,6 +857,18 @@
         }
       },
 
+      "display_names": {
+        "type": "object",
+        "title": "Shallow anonymization",
+        "description":  "Last name is cropped when shown to non-admin users.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "private_projects": {
         "type": "object",
         "title": "Private projects",
@@ -871,7 +883,7 @@
 
       "fragments": {
         "type": "object",
-        "title": "Fragments",
+        "title": "The Fragments",
         "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
