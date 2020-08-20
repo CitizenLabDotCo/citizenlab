@@ -29,8 +29,7 @@ const ShareButton = () => {
     </div>
   );
   const dropdownContent = <DropdownContainer>test</DropdownContainer>;
-
-  console.log(`${buttonWidth}px`);
+  const dropdownWidth = `${buttonWidth}px`;
 
   return (
     <ButtonWithDropdown
@@ -38,7 +37,7 @@ const ShareButton = () => {
       dropdownContent={dropdownContent}
       dropdownOpened={dropdownOpened}
       onClickOutside={toggleDropdown}
-      dropdownWidth={`${buttonWidth}px`}
+      dropdownWidth={dropdownWidth}
     />
   )
 }
