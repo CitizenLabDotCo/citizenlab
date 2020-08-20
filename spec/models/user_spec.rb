@@ -91,9 +91,9 @@ RSpec.describe User, type: :model do
     it 'is invalid when shorter than minimum length' do
       tn = Tenant.current
       tn.settings['password_login'] = {
-        "enabled" => true,
-        "allowed" => true,
-        "minimum_length" => 12
+        'enabled' => true,
+        'allowed' => true,
+        'minimum_length' => 12
       }
       tn.save!
       u = build(:user, password: 'FetGaVW856')
@@ -103,9 +103,9 @@ RSpec.describe User, type: :model do
     it 'is valid when longer than minimum length' do
       tn = Tenant.current
       tn.settings['password_login'] = {
-        "enabled" => true,
-        "allowed" => true,
-        "minimum_length" => 5
+        'enabled' => true,
+        'allowed' => true,
+        'minimum_length' => 5
       }
       tn.save!
       u = build(:user, password: 'zen3F28')
