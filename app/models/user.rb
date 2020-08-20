@@ -316,7 +316,8 @@ class User < ApplicationRecord
       self.errors.add(
         :password,
         :too_short,
-        message: 'The chosen password is shorter than the minimum required character length'
+        message: 'The chosen password is shorter than the minimum required character length',
+        count: Tenant.current.settings.dig('password_login', 'minimum_length')
       )
     end
   end

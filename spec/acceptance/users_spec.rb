@@ -156,6 +156,15 @@ resource "Users" do
       end
 
       describe do
+        before do
+          tn = Tenant.current
+          tn.settings['password_login'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'minimum_length' => 5
+          }
+          tn.save!
+        end
         let(:password) { "ab" }
 
         example_request "[error] Create an invalid user", document: false do
