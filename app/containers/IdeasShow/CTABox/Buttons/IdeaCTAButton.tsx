@@ -9,9 +9,10 @@ interface Props {
   copy: string;
   theme: any;
   iconName?: IconNames;
+  onClick: () => void;
 }
 
-const IdeaCTAButton = ({ className, copy, theme, iconName }: Props) => {
+const IdeaCTAButton = ({ className, copy, theme, iconName, onClick }: Props) => {
   const buttonColor = "white"
   const boxShadow = "0px 4px 3px rgba(0, 0, 0, 0.05)";
   const boxShadowOnHover = "0px 4px 3px rgba(0, 0, 0, 0.1)";
@@ -26,6 +27,8 @@ const IdeaCTAButton = ({ className, copy, theme, iconName }: Props) => {
       bgHoverColor={buttonColor}
       textHoverColor={darken(0.1, theme.colorText)}
       boxShadowHover={boxShadowOnHover}
+      fontWeight="bold"
+      onClick={onClick}
     >
       {copy}
     </Button>

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Voting from './Voting';
 import GoToCommentsButton from './Buttons/GoToCommentsButton';
 import ShareButton from './Buttons/ShareButton';
+import useIdea from 'hooks/useIdea';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   background-color: #e6ebec; // TODO: add color to component library
@@ -24,13 +26,21 @@ interface Props {
 }
 
 const CTABox = ({ ideaId, projectId }: Props) => {
-  return (
-    <Container>
-      <StyledVoting ideaId={ideaId} projectId={projectId} />
-      <StyledGoToCommentsButton />
-      <ShareButton />
-    </Container>
-  );
+  const idea = useIdea({ ideaId });
+
+  if (!isNilOrError(idea)) {
+    const commentingEnabled = idea.attributes.action_descriptor.commenting.enabled;
+
+    return (
+      <Container>
+        <StyledVoting ideaId={ideaId} projectId={projectId} />
+        {commentingEnabled && <StyledGoToCommentsButton />}
+        <ShareButton />
+      </Container>
+    );
+  }
+
+  return null;
 }
 
 export default CTABox;

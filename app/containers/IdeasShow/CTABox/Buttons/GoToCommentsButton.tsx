@@ -1,13 +1,19 @@
 import React from 'react';
-import CTAButton from './IdeaCTAButton';
+import IdeaCTAButton from './IdeaCTAButton';
 
 interface Props {
   className?: string;
 }
 
 const GoToCommentsButton = ({ className }: Props) => {
+  const onClick = () => {
+    const commentInputField = document.getElementById("comment-input");
+
+    // TODO: check after comments have been redesigned
+    commentInputField && commentInputField.scrollIntoView({ behavior: "smooth" })
+  }
   // TODO: add icon
-  return <CTAButton className={className} copy="Join the discussion" />;
+  return <IdeaCTAButton onClick={onClick} className={className} copy="Join the discussion" />;
 }
 
 export default GoToCommentsButton;
