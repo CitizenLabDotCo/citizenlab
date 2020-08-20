@@ -96,7 +96,7 @@ class XlsxService
             idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
             idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
             @@multiloc_service.t(idea&.idea_status&.title_multiloc),
-            idea.assignee&.display_name,
+            idea.assignee&.full_name,
             idea.assignee&.email,
             lat,
             lon,
@@ -147,7 +147,7 @@ class XlsxService
             initiative.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
             initiative.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
             @@multiloc_service.t(initiative&.initiative_status&.title_multiloc),
-            initiative.assignee&.display_name,
+            initiative.assignee&.full_name,
             initiative.assignee&.email
           ]
         end
