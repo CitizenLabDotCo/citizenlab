@@ -2034,6 +2034,8 @@
   "app.errors.password_blank": "Cela ne peut pas être vide",
   "app.errors.password_too_short": "Le mot de passe doit comporter au moins 8 caractères",
   "app.errors.title_multiloc_blank": "Le titre ne peut être vide.",
+  "app.errors.too_common": "",
+  "app.errors.too_long": "",
   "app.errors.too_short": "",
   "app.errors.unknown_group": "Le groupe {value} trouvé à la ligne {row} n'est pas un groupe connu",
   "app.errors.unknown_locale": "La langue {value} trouvée ligne {row} ne fait pas partie des langues paramétrées",
