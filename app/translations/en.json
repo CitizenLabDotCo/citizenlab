@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Reach more people and make your voice heard.",
   "app.containers.IdeasShow.shareTitle": "Congratulations, your idea was successfully posted!",
   "app.containers.IdeasShow.twitterMessage": "Vote for {ideaTitle} on",
-  "app.containers.IdeasShow.voteOnThisIdea": "Vote on this idea",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
   "app.containers.InitiativesEditPage.metaDescription": "Edit your proposal. Add more information and make it even better.",
   "app.containers.InitiativesEditPage.metaTitle": "Edit your proposal • {orgName}",

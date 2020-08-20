@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Nå flere og bliv hørt.",
   "app.containers.IdeasShow.shareTitle": "{tenantName, select, DeloitteDK {Tillykke, dit indlæg blev oprettet!} other {Tillykke, din ide blev sendt korrekt!}}",
   "app.containers.IdeasShow.twitterMessage": "Stem på {ideaTitle} på",
-  "app.containers.IdeasShow.voteOnThisIdea": "{tenantName, select, DeloitteDK {Stem på dette indlæg} other {Stem på denne idé}}",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Mindre end en dag} one {En dag} other {# dage}} tilbage\n\n",
   "app.containers.InitiativesEditPage.metaDescription": "Redigér dit borgerforslag. Tilføj flere oplysninger og gør det endnu bedre.",
   "app.containers.InitiativesEditPage.metaTitle": "Redigér dit borgerforslag • {orgName}",

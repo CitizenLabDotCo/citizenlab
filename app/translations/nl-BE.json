@@ -1562,7 +1562,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Bereik meer mensen en laat je stem horen.",
   "app.containers.IdeasShow.shareTitle": "Gefeliciteerd, je idee werd geplaatst!",
   "app.containers.IdeasShow.twitterMessage": "Stem voor {ideaTitle} op",
-  "app.containers.IdeasShow.voteOnThisIdea": "Stem voor of tegen dit idee",
   "app.containers.IdeasShow.xDaysLeft": "Nog {x, plural, =0 {minder dan een dag} one {één dag} other {# dagen}}",
   "app.containers.InitiativesEditPage.metaDescription": "Bewerk je voorstel. Voeg meer informatie toe en maak het nog beter.",
   "app.containers.InitiativesEditPage.metaTitle": "Bewerk je voorstel • {orgName}",
