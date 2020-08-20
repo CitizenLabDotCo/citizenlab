@@ -45,17 +45,18 @@ class Comment < ApplicationRecord
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
-  before_validation :set_author_name, :set_publication_status, on: :create
+  before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
 
   scope :published, -> {where publication_status: 'published'}
-  
-  def set_author_name
-    self.author_name = self.author.full_name if self.author
-  end
+
 
   def published?
     self.publication_status == 'published'
+  end
+
+  def author_name
+    author.full_name
   end
 
   private
