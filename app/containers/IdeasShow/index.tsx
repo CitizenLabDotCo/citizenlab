@@ -542,7 +542,6 @@ export class IdeasShow extends PureComponent<
       const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      // If you're not an admin/mod, statusId can be null
       const statusId = idea?.relationships?.idea_status?.data?.id || null;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
