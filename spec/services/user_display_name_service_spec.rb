@@ -4,14 +4,8 @@ describe UserDisplayNameService do
 
 
   before(:all) do
-    @regular_user = build(:user)
-    @regular_user.first_name = 'Regular'
-    @regular_user.last_name = 'User'
-
-    @another_user = build(:user)
-    @another_user.first_name = 'Another'
-    @another_user.last_name = 'User'
-
+    @regular_user = build(:user, first_name: 'Regular', last_name: 'User')
+    @another_user = build(:user, first_name: 'Another', last_name: 'User')
     @admin = build(:admin)
   end
 
