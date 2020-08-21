@@ -25,9 +25,9 @@ class WebApi::V1::IdeasController < ApplicationController
         when "-popular"
           @ideas.order_popular(:asc)
         when "author_name"
-          @ideas.order(author_name: :asc)
+          @ideas.order("users.first_name ASC", "users.last_name ASC")
         when "-author_name"
-          @ideas.order(author_name: :desc)
+          @ideas.order("users.first_name DESC", "users.last_name DESC")
         when "upvotes_count"
           @ideas.order(upvotes_count: :asc)
         when "-upvotes_count"
