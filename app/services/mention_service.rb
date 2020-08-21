@@ -83,13 +83,6 @@ class MentionService
     [new_text, new_users_mentioned]
   end
 
-  # @param [String] text
-  # @return [User::ActiveRecord_Relation] users
-  def extract_mentioned_users text
-    mentions = extract_mentions(text)
-    User.where(slug: mentions)
-  end
-
   # @param [String] old_text
   # @param [String] new_text
   # @return [User::ActiveRecord_Relation] users
