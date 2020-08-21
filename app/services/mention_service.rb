@@ -1,24 +1,9 @@
 class MentionService
 
-  # @param [String] mention
-  # @return [String] slug
-  def mention_to_slug mention
-    mention[1..-1]
-  end
-
   # @param [User] user
   # @return [String] mention
   def user_to_mention user
     "@#{user.slug}"
-  end
-
-  # @param [String] text
-  # @return [Array<String>] list of slugs
-  def extract_mentions text
-    full_mentions = text.scan(/(@\w+-[\w-]+)/).flatten
-    full_mentions.map do |fm|
-      mention_to_slug(fm)
-    end
   end
 
   # @param [String] text
@@ -30,22 +15,6 @@ class MentionService
       mention.attr('data-user-id')
     end
     User.where(id: user_ids.uniq)
-  end
-
-  # @param [String] text
-  # @return [String] text without mention tags
-  def remove_expanded_mentions text
-    doc = Nokogiri::HTML.fragment(text)
-    expanded_mentions = doc.css("span.cl-mention-user")
-    expanded_mentions.each do |el|
-      user = User.find_by(id: el.attributes["data-user-id"].inner_html)
-      if user
-        el.replace(user_to_mention(user))
-      else
-        el.replace(el.inner_html)
-      end
-    end
-    doc.to_s
   end
 
   # @param [String] text
@@ -105,6 +74,39 @@ class MentionService
       .where(comments: {post_id: post.id})
       .limit(limit)
     [author.slug =~ /^#{cleaned_slug}/ && author, *commenters].compact.uniq
+  end
+
+  private
+
+  # @param [String] text
+  # @return [String] text without mention tags
+  def remove_expanded_mentions text
+    doc = Nokogiri::HTML.fragment(text)
+    expanded_mentions = doc.css("span.cl-mention-user")
+    expanded_mentions.each do |el|
+      user = User.find_by(id: el.attributes["data-user-id"].inner_html)
+      if user
+        el.replace(user_to_mention(user))
+      else
+        el.replace(el.inner_html)
+      end
+    end
+    doc.to_s
+  end
+
+  # @param [String] text
+  # @return [Array<String>] list of slugs
+  def extract_mentions text
+    full_mentions = text.scan(/(@\w+-[\w-]+)/).flatten
+    full_mentions.map do |fm|
+      mention_to_slug(fm)
+    end
+  end
+
+  # @param [String] mention
+  # @return [String] slug
+  def mention_to_slug mention
+    mention[1..-1]
   end
 
 end
