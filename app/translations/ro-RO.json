@@ -1475,7 +1475,7 @@
   "app.containers.CookiePolicy.wikipediaCookieLinkHref": "https://en.wikipedia.org/wiki/HTTP_cookie",
   "app.containers.CookiePolicy.wikipediaCookieLinkText": "Acest articol Wikipedia",
   "app.containers.IdeaButton.postingHereImpossible": "Pentru moment nu este posibilă publicarea unei idei aici.",
-  "app.containers.IdeaButton.postingMaybeNotPermitted": "Pentru a ști dacă puteți posta idei aici, vă rugăm să {signInLink} pe platformă mai întâi.",
+  "app.containers.IdeaButton.postingMaybeNotPermitted": "Pentru a ști dacă puteți posta idei aici, vă rugăm să vă logați {signInLink} pe platformă mai întâi.",
   "app.containers.IdeaButton.postingNotActivePhase": "Nu puteți posta idei într-o fază a proiectului trecută sau viitoare.",
   "app.containers.IdeaButton.postingNotPermitted": "Din păcate, nu aveți dreptul de a posta idei aici.",
   "app.containers.IdeaButton.postingNotVerified": "Trebuie să confirmați identitatea pentru a posta o idee aici. {verificationLink}",
