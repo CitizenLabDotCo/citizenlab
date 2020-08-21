@@ -8,9 +8,16 @@ module Post
   PUBLICATION_STATUSES = %w(draft published closed spam)
 
   included do
-    pg_search_scope :search_by_all, 
-      :against => [:title_multiloc, :body_multiloc],
-      :using => { :tsearch => {:prefix => true} }
+    pg_search_scope :search_by_all,
+                    against: [:title_multiloc, :body_multiloc],
+                    associated_against: {author: [:first_name, :last_name]},
+                    using: { :tsearch => {:prefix => true} }
+
+    # Note from: https://github.com/Casecommons/pg_search
+    # > Searching through associations
+    # > It is possible to search columns on associated models. Note that if you do this,
+    # > it will be impossible to speed up searches with database indexes. However, it
+    # > is supported as a quick way to try out cross-model searching.
 
     belongs_to :author, class_name: 'User', optional: true
 
