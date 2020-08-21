@@ -24,11 +24,12 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
+      name_service = UserDisplayNameService(Tenant.current, recipient)
       [{
         event_payload: {
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: notification.post.author_name,
+          post_author_name: name_service.display_name(notification.post.author),
           post_type: notification.post_type,
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
