@@ -95,13 +95,14 @@ class WebApi::V1::IdeasController < ApplicationController
       authorize :idea, :index_xlsx?
     end
 
+    @ideas = policy_scope(Idea)
+      .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
+      .where(publication_status: 'published')
+    @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+    @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
+
     I18n.with_locale(current_user&.locale) do
-      @ideas = policy_scope(Idea)
-        .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
-        .where(publication_status: 'published')
-      @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
-      @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
-      xlsx = XlsxService.new.generate_ideas_xlsx @ideas
+      xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
