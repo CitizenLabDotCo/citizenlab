@@ -9,7 +9,7 @@ module Post
 
   included do
     pg_search_scope :search_by_all, 
-      :against => [:title_multiloc, :body_multiloc, :author_name],
+      :against => [:title_multiloc, :body_multiloc],
       :using => { :tsearch => {:prefix => true} }
 
     belongs_to :author, class_name: 'User', optional: true
