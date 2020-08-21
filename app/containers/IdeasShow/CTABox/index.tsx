@@ -7,7 +7,7 @@ import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
-  background-color: #e6ebec; // TODO: add color to component library
+  background-color: #EDEFF0; // TODO: add color to component library
   border-radius: 2px;
   padding: 25px 15px;
 `;

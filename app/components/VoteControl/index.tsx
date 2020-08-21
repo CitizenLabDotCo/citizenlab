@@ -40,7 +40,6 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 
 // style
 import styled, { css, keyframes } from 'styled-components';
-import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 interface IVoteComponent {
@@ -81,8 +80,9 @@ const VoteIconContainer = styled.div<{
   justify-content: center;
   margin-right: 1px;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 60ms ease-out;
+  background-color: white;
+  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05); // TODO: add to styleutils
 
   ${(props) =>
     !props.votingEnabled

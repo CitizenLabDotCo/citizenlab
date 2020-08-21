@@ -34,7 +34,7 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
-  background: #fff;
+  background-color: #EDEFF0; // TODO: add color to component library
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 
@@ -83,8 +83,8 @@ const GoBackButton = styled.button`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
+  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
 
   &:hover {
     border-color: #000;
