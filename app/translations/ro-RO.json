@@ -1550,7 +1550,7 @@
   "app.containers.IdeasShow.a11y_voteControl": "Votul și status-ul",
   "app.containers.IdeasShow.currentStatus": "Status-ul curent",
   "app.containers.IdeasShow.deletedUser": "autor necunoscut",
-  "app.containers.IdeasShow.emailSharingBody": "Ce părere ai despre această idee? Votează-o și împărtășește discuția la {ideaUrl} pentru a-ți face vocea auzită!",
+  "app.containers.IdeasShow.emailSharingBody": "Ce părere ai despre această idee? Votează-o și distribuie discuția la {ideaUrl} pentru a-ți face vocea auzită!",
   "app.containers.IdeasShow.emailSharingSubject": "Votează ideea mea: {ideaTitle}",
   "app.containers.IdeasShow.idea": "Ideea",
   "app.containers.IdeasShow.ideaOgDescription": "Ce părere ai despre această idee? Alătură-te discuției și votează-o pentru a-ți face vocea auzită .",
