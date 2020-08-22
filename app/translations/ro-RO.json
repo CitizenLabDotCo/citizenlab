@@ -1558,7 +1558,7 @@
   "app.containers.IdeasShow.metaOgTitle": "Susțineți ideea mea: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Ideea • {ideaTitle}",
   "app.containers.IdeasShow.postedIn": "Postat în {projectLink}",
-  "app.containers.IdeasShow.reportAsSpamModalTitle": "De ce vrei să raportezi acest lucru ca spam?",
+  "app.containers.IdeasShow.reportAsSpamModalTitle": "De ce dorești să raportezi acest lucru ca spam?",
   "app.containers.IdeasShow.shareSubtitle": "Adună cat mai multă audiență si fă-ți vocea auzită.",
   "app.containers.IdeasShow.shareTitle": "Felicitări, ideea ta a fost postată cu succes!",
   "app.containers.IdeasShow.twitterMessage": "Vot pentru {ideaTitle} pe",
