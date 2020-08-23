@@ -1713,6 +1713,7 @@
   "app.containers.Projects.a11y_phasesOverview": "Oversikt over fasene",
   "app.containers.Projects.a11y_projectNav": "Prosjekt navigasjon",
   "app.containers.Projects.a11y_selectedPhaseX": "Valgt fase. Fase {selectedPhaseNumber}: {selectedPhaseTitle}",
+  "app.containers.Projects.aboutThisProject": "",
   "app.containers.Projects.allEvents": "Alle hendelser",
   "app.containers.Projects.archived": "Arkivert",
   "app.containers.Projects.budgetExceeded": "Dine utgifter er høyere enn hva som kan tildeles budsjettet",
