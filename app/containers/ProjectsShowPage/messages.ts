@@ -186,4 +186,36 @@ export default defineMessages({
     id: 'app.containers.Projects.aboutThisProject',
     defaultMessage: 'About this project',
   },
+  startedOn: {
+    id: 'app.containers.Projects.startedOn',
+    defaultMessage:
+      'Started on {date}',
+  },
+  xIdeas: {
+    id: 'app.containers.Projects.xIdeas',
+    defaultMessage:
+      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
+  xParticipants: {
+    id: 'app.containers.Projects.xParticipants',
+    defaultMessage:
+      '{participantsCount, plural, no {# participants} one {# participant} other {# participants}}',
+  },
+  xEvents: {
+    id: 'app.containers.Projects.xEvents',
+    defaultMessage:
+      '{eventsCount, plural, no {# events} one {# event} other {# events}}',
+  },
+  seeTheIdeas: {
+    id: 'app.containers.Projects.seeTheIdeas',
+    defaultMessage: 'See the ideas',
+  },
+  seeTheTimeline: {
+    id: 'app.containers.Projects.seeTheTimeline',
+    defaultMessage: 'See the timeline',
+  },
+  postYourIdea: {
+    id: 'app.containers.Projects.postYourIdea',
+    defaultMessage: 'Post your idea',
+  },
 });

@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Fragment from 'components/Fragment';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
-import ProjectMetaDataSidebar from './ProjectMetaDataSidebar';
+import ProjectMetaData from './ProjectMetaData';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -150,7 +150,7 @@ const ProjectInfo = memo(
             </Left>
 
             <Right>
-              <ProjectMetaDataSidebar projectId={project.id} />
+              <ProjectMetaData projectId={project.id} />
             </Right>
           </Fragment>
         </Container>
