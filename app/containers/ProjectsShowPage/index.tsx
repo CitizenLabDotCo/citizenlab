@@ -5,9 +5,11 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ProjectsShowPageMeta from './ProjectsShowPageMeta';
+import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
 import ProjectInfo from './ProjectInfo';
+import ProjectIdeas from './ProjectIdeas';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -50,12 +52,12 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-const ContentWrapper = styled.div`
-  width: 100%;
-  max-width: 1285px;
-  padding-left: 50px;
-  padding-right: 50px;
-`;
+// const ContentWrapper = styled.div`
+//   width: 100%;
+//   max-width: 1285px;
+//   padding-left: 50px;
+//   padding-right: 50px;
+// `;
 
 const ProjectHeaderImage = styled.div<{ src: string | null | undefined }>`
   width: 100%;
@@ -100,15 +102,28 @@ const ProjectsShowPage = memo(
       isUndefined(project) ||
       isUndefined(phases) ||
       isUndefined(events);
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    // const currentPath = location.pathname;
+    // const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
     const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+    const projectId = project?.id;
+    const projectType = project?.attributes.process_type;
+    const participationMethod = project?.attributes.participation_method;
+    const showIdeas = !!(
+      projectType === 'continuous' &&
+      (participationMethod === 'budgeting' ||
+        participationMethod === 'ideation')
+    );
 
     let content = (
-      <ContentWrapper>
+      <ContentContainer>
         <ProjectHeaderImage src={projectHeaderImageLarge} />
-        {project?.id && <ProjectInfo projectId={project.id} />}
-      </ContentWrapper>
+        {projectId && (
+          <>
+            <ProjectInfo projectId={projectId} />
+            {showIdeas && <ProjectIdeas projectId={projectId} />}
+          </>
+        )}
+      </ContentContainer>
     );
 
     if (loading) {

@@ -145,7 +145,9 @@ export const shortenedAppLocalePairs = {
   ach: 'Acholi',
 };
 
+// see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 export const appLocalesMomentPairs = {
+  en: 'en-us',
   'en-GB': 'en-gb',
   'en-CA': 'en-ca',
   'fr-BE': 'fr',

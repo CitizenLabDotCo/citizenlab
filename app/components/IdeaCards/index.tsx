@@ -18,6 +18,7 @@ import { MessageDescriptor, IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   width: 100%;
+  border: solid 1px red;
 `;
 
 interface Props extends GetIdeasInputProps {
@@ -35,7 +36,7 @@ interface Props extends GetIdeasInputProps {
 const IdeaCards = memo<Props>(
   ({ className, invisibleTitleMessage, ...props }) => {
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
         </ScreenReaderOnly>
