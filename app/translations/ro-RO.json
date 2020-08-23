@@ -1671,7 +1671,7 @@
   "app.containers.PasswordRecovery.emailError": "Aceasta nu pare să fie o adresă de e-mail validă",
   "app.containers.PasswordRecovery.emailLabel": "E-mail",
   "app.containers.PasswordRecovery.emailPlaceholder": "Adresa mea de email",
-  "app.containers.PasswordRecovery.helmetDescription": "Resetează parola",
+  "app.containers.PasswordRecovery.helmetDescription": "Resetează pagina de parolă",
   "app.containers.PasswordRecovery.helmetTitle": "Resetează parola",
   "app.containers.PasswordRecovery.resetPassword": "Trimite un link de resetare a parolei",
   "app.containers.PasswordRecovery.submitError": "Nu am putut găsi un cont legat de acestă adresă de e-mail. În schimb vă puteți înscrie.",
