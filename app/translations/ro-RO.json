@@ -1713,6 +1713,7 @@
   "app.containers.Projects.a11y_phasesOverview": "Rezumatul fazelor",
   "app.containers.Projects.a11y_projectNav": "Navigheză in proiect",
   "app.containers.Projects.a11y_selectedPhaseX": "Fază selectată. Faza {selectedPhaseNumber}: {selectedPhaseTitle}",
+  "app.containers.Projects.aboutThisProject": "",
   "app.containers.Projects.allEvents": "Toate evenimentele",
   "app.containers.Projects.archived": "Arhivat",
   "app.containers.Projects.budgetExceeded": "Cheltuielile dvs. depășesc bugetul total alocat",

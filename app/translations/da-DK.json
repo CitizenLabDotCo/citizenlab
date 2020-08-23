@@ -1713,6 +1713,7 @@
   "app.containers.Projects.a11y_phasesOverview": "Faseoversigt",
   "app.containers.Projects.a11y_projectNav": "Projektnavigation",
   "app.containers.Projects.a11y_selectedPhaseX": "Valgt fase. Fase {selectedPhaseNumber}: {selectedPhaseTitle}",
+  "app.containers.Projects.aboutThisProject": "",
   "app.containers.Projects.allEvents": "Alle begivenheder",
   "app.containers.Projects.archived": "Arkiveret",
   "app.containers.Projects.budgetExceeded": "Dine udgifter overstiger det samlede tildelte budget",
