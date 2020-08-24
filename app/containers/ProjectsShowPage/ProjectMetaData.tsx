@@ -20,7 +20,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -44,14 +44,10 @@ const Content = styled.div`
 
 const ProjectMetaData = memo(
   ({ projectId, className }: { projectId: string; className?: string }) => {
-    const theme: any = useTheme();
     const locale = useLocale();
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
     const events = useEvents(projectId);
-
-    console.log(project);
-    console.log(phases);
 
     const upcomingEvents = !isNilOrError(events)
       ? events.filter((event) => {
@@ -122,11 +118,6 @@ const ProjectMetaData = memo(
             publication_status !== 'archived' && (
               <IdeaButton
                 projectId={project.id}
-                // height="58px"
-                // bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
-                // textColor={theme.projectNavbarIdeaButtonTextColor}
-                // opacityDisabled="0.5"
-                // borderRadius="0px"
                 participationContextType="project"
               />
             )}

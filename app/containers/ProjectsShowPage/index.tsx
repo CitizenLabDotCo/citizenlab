@@ -52,23 +52,15 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-// const ContentWrapper = styled.div`
-//   width: 100%;
-//   max-width: 1285px;
-//   padding-left: 50px;
-//   padding-right: 50px;
-// `;
-
-const ProjectHeaderImage = styled.div<{ src: string | null | undefined }>`
+const ProjectHeaderImage = styled.div<{ src: string }>`
   width: 100%;
-  height: 250px;
+  height: 200px;
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 40px;
-  margin-bottom: 50px;
 `;
 
 const ProjectNotFoundWrapper = styled.div`
@@ -80,6 +72,10 @@ const ProjectNotFoundWrapper = styled.div`
   padding: 4rem;
   font-size: ${fontSizes.large}px;
   color: ${colors.label};
+`;
+
+const StyledProjectInfo = styled(ProjectInfo)`
+  margin-top: 50px;
 `;
 
 const ProjectsShowPage = memo(
@@ -116,10 +112,12 @@ const ProjectsShowPage = memo(
 
     let content = (
       <ContentContainer>
-        <ProjectHeaderImage src={projectHeaderImageLarge} />
+        {projectHeaderImageLarge && (
+          <ProjectHeaderImage src={projectHeaderImageLarge} />
+        )}
         {projectId && (
           <>
-            <ProjectInfo projectId={projectId} />
+            <StyledProjectInfo projectId={projectId} />
             {showIdeas && <ProjectIdeas projectId={projectId} />}
           </>
         )}
@@ -160,20 +158,22 @@ const ProjectsShowPage = memo(
   }
 );
 
-const ProjectsShowPageWrapper = memo<WithRouterProps>(({ params }) => {
-  const project = useProject({ projectSlug: params.slug });
+const ProjectsShowPageWrapper = memo<WithRouterProps>(
+  ({ params: { slug } }) => {
+    const project = useProject({ projectSlug: slug });
 
-  if (params.slug) {
-    return (
-      <ProjectsShowPage
-        projectSlug={params.slug}
-        project={!isNilOrError(project) ? project : undefined}
-      />
-    );
+    if (slug) {
+      return (
+        <ProjectsShowPage
+          projectSlug={slug}
+          project={!isNilOrError(project) ? project : undefined}
+        />
+      );
+    }
+
+    return null;
   }
-
-  return null;
-});
+);
 
 const ProjectsShowPageWrapperWithHoC = withRouter(ProjectsShowPageWrapper);
 

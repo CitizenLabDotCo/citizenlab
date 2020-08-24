@@ -152,7 +152,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
             className={secondUrlSegment === 'ideas' ? 'active' : ''}
           >
             <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="ideas" />
+              <NavigationIcon ariaHidden name="idea" />
             </NavigationIconWrapper>
             <NavigationLabel>
               <FormattedMessage {...messages.mobilePageIdeas} />
