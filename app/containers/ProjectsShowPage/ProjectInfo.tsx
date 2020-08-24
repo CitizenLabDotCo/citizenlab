@@ -1,4 +1,10 @@
-import React, { memo, useCallback, useState, FormEvent } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useState,
+  useEffect,
+  FormEvent,
+} from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -6,6 +12,7 @@ import Fragment from 'components/Fragment';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
 import ProjectMetaData from './ProjectMetaData';
+import ReactResizeDetector from 'react-resize-detector';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -15,9 +22,11 @@ import useProjectFiles from 'hooks/useProjectFiles';
 import T from 'components/T';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+const collapsedDescriptionMaxHeight = 200;
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +63,8 @@ const ProjectTitle = styled.h1`
 
 const ProjectDescription = styled.div`
   position: relative;
-  max-height: 200px;
+  height: 100%;
+  max-height: ${collapsedDescriptionMaxHeight}px;
   overflow: hidden;
 
   &.expanded {
@@ -89,30 +99,47 @@ const ReadMoreButton = styled(Button)`
   left: 0;
 `;
 
-const ProjectInfo = memo(
-  ({ projectId, theme }: { projectId: string; theme: any }) => {
-    const project = useProject({ projectId });
-    const projectFiles = useProjectFiles(projectId);
+interface Props {
+  projectId: string;
+  className?: string;
+}
 
-    const [expanded, setExpanded] = useState(false);
+const ProjectInfo = memo<Props>(({ projectId, className }) => {
+  const theme: any = useTheme();
+  const project = useProject({ projectId });
+  const projectFiles = useProjectFiles(projectId);
 
-    const HandleReadMoreClicked = useCallback(
-      (event: FormEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setExpanded(true);
-      },
-      []
-    );
+  const [expanded, setExpanded] = useState(false);
+  const [descriptionHeight, setDescriptionHeight] = useState<number | null>(
+    null
+  );
 
-    if (!isNilOrError(project)) {
-      return (
-        <Container className="e2e-project-info">
-          <Fragment name={`projects/${project.id}/info`}>
-            <Left>
-              <ProjectTitle>
-                <T value={project.attributes.title_multiloc} />
-              </ProjectTitle>
-              <ProjectDescription className={expanded ? 'expanded' : ''}>
+  useEffect(() => {
+    setExpanded(false);
+  }, [projectId]);
+
+  const handleReadMoreClicked = useCallback(
+    (event: FormEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      setExpanded(true);
+    },
+    []
+  );
+
+  const onResize = (_width, height) => {
+    setDescriptionHeight(height);
+  };
+
+  if (!isNilOrError(project)) {
+    return (
+      <Container className={`${className || ''} e2e-project-info`}>
+        <Fragment name={`projects/${project.id}/info`}>
+          <Left>
+            <ProjectTitle>
+              <T value={project.attributes.title_multiloc} />
+            </ProjectTitle>
+            <ProjectDescription className={expanded ? 'expanded' : ''}>
+              <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
                 <QuillEditedContent
                   fontSize="large"
                   textColor={theme.colorText}
@@ -122,12 +149,15 @@ const ProjectInfo = memo(
                     supportHtml={true}
                   />
                 </QuillEditedContent>
-                {!expanded && (
+              </ReactResizeDetector>
+              {descriptionHeight &&
+                descriptionHeight > collapsedDescriptionMaxHeight &&
+                !expanded && (
                   <ReadMoreOuterWrapper>
                     <ReadMoreInnerWrapper>
                       <ReadMoreButton
                         buttonStyle="text"
-                        onClick={HandleReadMoreClicked}
+                        onClick={handleReadMoreClicked}
                         textDecoration="underline"
                         textDecorationHover="underline"
                         textColor={colors.label}
@@ -141,26 +171,23 @@ const ProjectInfo = memo(
                     </ReadMoreInnerWrapper>
                   </ReadMoreOuterWrapper>
                 )}
-              </ProjectDescription>
-              {!isNilOrError(projectFiles) &&
-                projectFiles &&
-                projectFiles.data.length > 0 && (
-                  <FileAttachments files={projectFiles.data} />
-                )}
-            </Left>
+            </ProjectDescription>
+            {!isNilOrError(projectFiles) &&
+              projectFiles &&
+              projectFiles.data.length > 0 && (
+                <FileAttachments files={projectFiles.data} />
+              )}
+          </Left>
 
-            <Right>
-              <ProjectMetaData projectId={project.id} />
-            </Right>
-          </Fragment>
-        </Container>
-      );
-    }
-
-    return null;
+          <Right>
+            <ProjectMetaData projectId={project.id} />
+          </Right>
+        </Fragment>
+      </Container>
+    );
   }
-);
 
-const ProjectInfoWhithHoC = withTheme(ProjectInfo);
+  return null;
+});
 
-export default ProjectInfoWhithHoC;
+export default ProjectInfo;
