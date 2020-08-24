@@ -1563,7 +1563,7 @@
   "app.containers.IdeasShow.metaOgTitle": "Vota por mi idea: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idea • {ideaTitle}",
   "app.containers.IdeasShow.postedIn": "Publicado en {projectLink}",
-  "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
+  "app.containers.IdeasShow.proposedBudgetTitle": "Presupuesto propuesto",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "¿Por qué quiere reportar esto como spam?",
   "app.containers.IdeasShow.shareSubtitle": "Llegue a más personas y dese a conocer.",
   "app.containers.IdeasShow.shareTitle": "¡Felicitaciones, tu idea fue publicada!",
