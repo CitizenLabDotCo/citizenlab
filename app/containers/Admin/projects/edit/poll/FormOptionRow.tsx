@@ -11,7 +11,7 @@ import Button from 'components/UI/Button';
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, {
-  GetTenantLocalesChildProps
+  GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
 
 // Typings
@@ -53,14 +53,14 @@ export class FormOptionRow extends PureComponent<Props, State> {
     super(props);
     this.state = {
       selectedLocale: props.locale || null,
-      titleMultiloc: props.titleMultiloc || {}
+      titleMultiloc: props.titleMultiloc || {},
     };
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
     if (!isNilOrError(props.locale) && !state.selectedLocale) {
       return {
-        selectedLocale: props.locale
+        selectedLocale: props.locale,
       };
     }
 
@@ -79,11 +79,11 @@ export class FormOptionRow extends PureComponent<Props, State> {
 
   onChangeTitle = (value: string, locale: Locale | undefined) => {
     if (locale) {
-      this.setState(state => ({
+      this.setState((state) => ({
         titleMultiloc: {
           ...state.titleMultiloc,
-          [locale]: value
-        }
+          [locale]: value,
+        },
       }));
     }
   };
@@ -156,12 +156,12 @@ export class FormOptionRow extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />
+  tenantLocales: <GetTenantLocales />,
 });
 
 const FormOptionRowWithData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FormOptionRow {...dataProps} {...inputProps} />}
+    {(dataProps) => <FormOptionRow {...dataProps} {...inputProps} />}
   </Data>
 );
 
