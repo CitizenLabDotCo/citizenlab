@@ -18,7 +18,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     render json: { count: count }
   end
 
-  def users_by_time_serie params
+  def users_by_time_serie
     users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:project]
@@ -45,16 +45,16 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time
-    render json: {series: {users: users_by_time_serie(params)}}
+    render json: {series: {users: users_by_time_serie}}
   end
 
   def users_by_time_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_serie(params), 'users_by_time'
+    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_serie, 'users_by_time'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time.xlsx'
   end
 
 
-  def users_by_time_cumulative_serie params
+  def users_by_time_cumulative_serie
     users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:project]
@@ -81,15 +81,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time_cumulative
-    render json: {series: {users: users_by_time_cumulative_serie(params)}}
+    render json: {series: {users: users_by_time_cumulative_serie}}
   end
 
   def users_by_time_cumulative_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie(params), 'users_by_time_cumulative'
+    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie, 'users_by_time_cumulative'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time_cumulative.xlsx'
   end
 
-  def active_users_by_time_serie params
+  def active_users_by_time_serie
     activities_scope = Activity
       .select(:user_id).distinct
       .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
@@ -123,15 +123,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time
-    render json: {series: {users: active_users_by_time_serie(params)}}
+    render json: {series: {users: active_users_by_time_serie}}
   end
 
   def active_users_by_time_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie(params), 'active_users_by_time'
+    xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie, 'active_users_by_time'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
   end
 
-  def users_by_gender_serie params
+  def users_by_gender_serie
     users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
@@ -150,15 +150,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_gender
-    render json: {series: {users: users_by_gender_serie(params)}}
+    render json: {series: {users: users_by_gender_serie}}
   end
 
   def users_by_gender_as_xlsx
-    xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie(params), 'users_by_gender'
+    xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie, 'users_by_gender'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
   end
 
-  def users_by_birthyear_serie params
+  def users_by_birthyear_serie
     users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
@@ -177,11 +177,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_birthyear
-    render json: {series: {users: users_by_birthyear_serie(params)}}
+    render json: {series: {users: users_by_birthyear_serie}}
   end
 
   def users_by_birthyear_as_xlsx
-    xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie(params), 'users_by_birthyear'
+    xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie, 'users_by_birthyear'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
   end
 
