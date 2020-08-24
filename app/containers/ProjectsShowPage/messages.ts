@@ -182,29 +182,33 @@ export default defineMessages({
     id: 'app.containers.Projects.twitterMessage',
     defaultMessage: '{title}: Share your ideas on',
   },
-  aboutThisProject: {
-    id: 'app.containers.Projects.aboutThisProject',
-    defaultMessage: 'About this project',
+  about: {
+    id: 'app.containers.Projects.about',
+    defaultMessage: 'About',
   },
   startedOn: {
     id: 'app.containers.Projects.startedOn',
-    defaultMessage:
-      'Started on {date}',
+    defaultMessage: 'Started on {date}',
   },
   xIdeas: {
     id: 'app.containers.Projects.xIdeas',
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
+  xPhases: {
+    id: 'app.containers.Projects.xPhases',
+    defaultMessage:
+      '{phasesCount, plural, no {# phases} one {# phase} other {# phases}}',
+  },
   xParticipants: {
     id: 'app.containers.Projects.xParticipants',
     defaultMessage:
       '{participantsCount, plural, no {# participants} one {# participant} other {# participants}}',
   },
-  xEvents: {
-    id: 'app.containers.Projects.xEvents',
+  xUpcomingEvents: {
+    id: 'app.containers.Projects.xUpcomingEvents',
     defaultMessage:
-      '{eventsCount, plural, no {# events} one {# event} other {# events}}',
+      '{upcomingEventsCount, plural, no {# upcoming events} one {# upcoming event} other {# upcoming events}}',
   },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',

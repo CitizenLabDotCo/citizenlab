@@ -26,7 +26,7 @@ import styled, { useTheme } from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const collapsedDescriptionMaxHeight = 200;
+const collapsedDescriptionMaxHeight = 300;
 
 const Container = styled.div`
   display: flex;
@@ -42,8 +42,8 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 0 0 320px;
-  width: 320px;
+  flex: 0 0 300px;
+  width: 300px;
   margin-left: 120px;
 `;
 
@@ -73,7 +73,7 @@ const ProjectDescription = styled.div`
 `;
 
 const ReadMoreOuterWrapper = styled.div`
-  height: 100px;
+  height: 120px;
   content: '';
   display: flex;
   position: absolute;
@@ -140,15 +140,17 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
             </ProjectTitle>
             <ProjectDescription className={expanded ? 'expanded' : ''}>
               <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-                <QuillEditedContent
-                  fontSize="large"
-                  textColor={theme.colorText}
-                >
-                  <T
-                    value={project.attributes.description_multiloc}
-                    supportHtml={true}
-                  />
-                </QuillEditedContent>
+                <div>
+                  <QuillEditedContent
+                    fontSize="medium"
+                    textColor={theme.colorText}
+                  >
+                    <T
+                      value={project.attributes.description_multiloc}
+                      supportHtml={true}
+                    />
+                  </QuillEditedContent>
+                </div>
               </ReactResizeDetector>
               {descriptionHeight &&
                 descriptionHeight > collapsedDescriptionMaxHeight &&

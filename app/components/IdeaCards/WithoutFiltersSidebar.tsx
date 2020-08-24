@@ -39,7 +39,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
@@ -309,7 +315,7 @@ class WithoutFiltersSidebar extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
+        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
           'ui:widget'
         ] !== 'hidden'
       );

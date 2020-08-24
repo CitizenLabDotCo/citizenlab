@@ -60,7 +60,7 @@ const DraftCampaignDetailsWithHOCs = injectIntl<InputProps & DataProps>(
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>
-    {campaign =>
+    {(campaign) =>
       isNilOrError(campaign) ? null : (
         <DraftCampaignDetailsWithHOCs {...inputProps} campaign={campaign} />
       )

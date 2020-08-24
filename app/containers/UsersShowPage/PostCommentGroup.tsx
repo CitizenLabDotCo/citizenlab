@@ -181,7 +181,7 @@ export class PostCommentGroup extends PureComponent<Props> {
             <PostLinkLeft>
               <StyledIcon
                 ariaHidden
-                name={postType === 'idea' ? 'idea2' : 'initiatives'}
+                name={postType === 'idea' ? 'idea' : 'initiatives'}
               />
               <T value={title_multiloc} className="text" />
             </PostLinkLeft>
