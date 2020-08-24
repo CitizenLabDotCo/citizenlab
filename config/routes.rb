@@ -234,6 +234,12 @@ Rails.application.routes.draw do
         get 'comments_by_topic', **route_params
         get 'comments_by_project', **route_params
 
+        get 'comments_count_as_xlsx', **route_params
+        get 'comments_by_time_as_xlsx', **route_params
+        get 'comments_by_time_cumulative_as_xlsx', **route_params
+        get 'comments_by_topic_as_xlsx', **route_params
+        get 'comments_by_project_as_xlsx', **route_params
+
         route_params = { controller: 'stats_votes' }
         get 'votes_count', **route_params
         get 'votes_by_birthyear', **route_params

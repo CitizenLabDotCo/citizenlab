@@ -155,7 +155,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_gender_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie, 'users_by_gender'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
   end
 
   def users_by_birthyear_serie
