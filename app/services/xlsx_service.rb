@@ -83,7 +83,6 @@ class XlsxService
   end
 
   def generate_time_stats_xlsx serie, name
-    # debugger
     columns = [
       {header: 'date',   f: -> (item) {item[0]}},
       {header: 'amount', f: -> (item) {item[1]}}
