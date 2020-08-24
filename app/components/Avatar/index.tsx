@@ -3,14 +3,15 @@
  * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
  */
 
-import React, { PureComponent, FormEvent } from 'react';
-import { isFunction, isNumber } from 'lodash-es';
+import React, { PureComponent } from 'react';
+import { isNumber } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -116,7 +117,7 @@ interface InputProps {
   userId: string | null;
   size: string;
   badgeSize?: string;
-  onClick?: (event: FormEvent) => void;
+  isLinkToProfile?: boolean;
   hasHoverEffect?: boolean;
   hideIfNoAvatar?: boolean | undefined;
   padding?: string;
@@ -151,15 +152,11 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     bgColor: 'transparent',
   };
 
-  handleOnClick = (event: FormEvent) => {
-    this.props.onClick && this.props.onClick(event);
-  };
-
   render() {
     const {
       hideIfNoAvatar,
       user,
-      onClick,
+      isLinkToProfile,
       fillColor,
       fillHoverColor,
       borderColor,
@@ -171,6 +168,9 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
+      const profileLink = `/profile/${user.attributes.slug}`;
+      // In dev mode, user.attributes.slug is sometimes undefined, to be sovled properly
+      const hasValidProfileLink = profileLink !== '/profile/undefined';
       const size = parseInt(this.props.size, 10);
       const padding = parseInt(this.props.padding as string, 10);
       const borderThickness = parseInt(
@@ -178,7 +178,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
         10
       );
       const hasHoverEffect = !!(
-        isFunction(onClick) || this.props.hasHoverEffect
+        (isLinkToProfile && hasValidProfileLink) || this.props.hasHoverEffect
       );
       const imageSize = size > 160 ? 'large' : 'medium';
       const avatarSrc =
@@ -188,11 +188,10 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
         ? parseInt(this.props.badgeSize, 10)
         : size / (size < 40 ? 1.8 : 2.3);
 
-      return (
+      const Component = (
         <Container
           aria-hidden
           className={className}
-          onClick={this.handleOnClick}
           size={containerSize}
         >
           {avatarSrc ? (
@@ -247,6 +246,18 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           )}
         </Container>
       );
+
+      if (isLinkToProfile && hasValidProfileLink) {
+        return (
+          <Link
+            to={profileLink}
+          >
+            {Component}
+          </Link>
+        )
+      }
+
+      return Component;
     }
 
     return null;
