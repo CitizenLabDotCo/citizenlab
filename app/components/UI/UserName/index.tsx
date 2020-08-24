@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import withProfileLink from './withProfileLink';
+import ProfileLink from './ProfileLink';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -87,9 +87,18 @@ const UserName = (props: Props & InjectedIntlProps) => {
     />
   );
 
-  return linkToProfile && profileLink
-    ? withProfileLink(NameComponent, profileLink, className)
-    : NameComponent;
+  if (linkToProfile && profileLink) {
+    return (
+      <ProfileLink
+        profileLink={profileLink}
+        className={`e2e-author-link ${className || ''}`}
+      >
+        {NameComponent}
+      </ProfileLink>
+    );
+  }
+
+  return NameComponent;
 };
 
 const Data = adopt<DataProps, InputProps>({

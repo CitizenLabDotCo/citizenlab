@@ -15,19 +15,21 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function withProfileLink(
-  UserNameComponent: JSX.Element,
-  profileLink: string,
-  className?: string
-) {
+interface Props {
+  className?: string;
+  profileLink: string;
+  children: JSX.Element;
+}
+
+const ProfileLink = ({ className, profileLink, children }: Props) => {
   return (
     <StyledLink
       to={profileLink}
-      className={`e2e-author-link ${className || ''}`}
+      className={className}
     >
-      {UserNameComponent}
+      {children}
     </StyledLink>
   );
 }
 
-export default withProfileLink;
+export default ProfileLink;
