@@ -1,5 +1,7 @@
 class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
+  @@multiloc_service = MultilocService.new
+
   before_action :render_no_data, only: [:comments_by_time, :comments_by_time_cumulative]
   before_action :render_no_data_as_xlsx, only: [:comments_by_time_as_xlsx, :comments_by_time_cumulative_as_xlsx]
 
@@ -34,7 +36,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx comments_by_time_serie, 'comments_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('comments_by_time')
   end
 
 
@@ -60,7 +62,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx comments_by_time_cumulative_serie, 'comments_by_time_cumulative'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time_cumulative.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_name_with_filters('comments_by_time_cumulative')
   end
 
   def comments_by_topic
@@ -97,6 +99,22 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   private
+
+  def render_name_with_filters name
+    if params[:project]
+      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
+    end
+
+    if params[:group]
+      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
+    end
+
+    if params[:topic]
+      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
+    end
+
+    name + (project_name ? "_p_#{project_name}" : '') + (group_name ? "_g_#{group_name}" : '') + (topic_name ? "_t_#{topic_name}" : '') + '.xlsx'
+  end
 
   def apply_project_filter comments
     if params[:project]

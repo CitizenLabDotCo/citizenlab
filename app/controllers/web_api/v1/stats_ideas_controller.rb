@@ -1,5 +1,7 @@
 class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
+  @@multiloc_service = MultilocService.new
+
   before_action :render_no_data, only: [
     :ideas_by_time,
     :ideas_by_time_cumulative,
@@ -93,8 +95,9 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, 'ideas_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_time.xlsx'
+    name = 'ideas_by_time'
+    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name(name)
   end
 
   def ideas_by_time_cumulative_serie
@@ -119,12 +122,29 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time_cumulative_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, 'ideas_by_time_cumulative'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_time_cumulative.xlsx'
+    name = 'ideas_by_time_cumulative'
+    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, name
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name(name)
   end
 
 
   private
+
+  def render_xlsx_file_name name
+    if params[:project]
+      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
+    end
+
+    if params[:group]
+      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
+    end
+
+    if params[:topic]
+      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
+    end
+
+    name + (project_name ? "_project_#{project_name}" : '') + (group_name ? "_group_#{group_name}" : '') + (topic_name ? "_topic_#{topic_name}" : '') + '.xlsx'
+  end
 
   def apply_group_filter ideas
     if params[:group]
