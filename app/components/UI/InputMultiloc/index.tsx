@@ -5,7 +5,7 @@ import { InputMultiloc, InputMultilocProps } from 'cl2-component-library';
 
 export interface Props extends Omit<InputMultilocProps, 'locales'> {}
 
-const InputMultilocWrapper = memo<Props>(props => {
+const InputMultilocWrapper = memo<Props>((props) => {
   const tenantLocales = useTenantLocales();
 
   if (!isNilOrError(tenantLocales)) {

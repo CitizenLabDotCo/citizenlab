@@ -136,10 +136,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
           className={secondUrlSegment === 'projects' ? 'active' : ''}
         >
           <NavigationIconWrapper>
-            <NavigationIcon
-              ariaHidden
-              name="folder"
-            />
+            <NavigationIcon ariaHidden name="folder" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
@@ -152,7 +149,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
             className={secondUrlSegment === 'ideas' ? 'active' : ''}
           >
             <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="idea" />
+              <NavigationIcon ariaHidden name="idea2" />
             </NavigationIconWrapper>
             <NavigationLabel>
               <FormattedMessage {...messages.mobilePageIdeas} />

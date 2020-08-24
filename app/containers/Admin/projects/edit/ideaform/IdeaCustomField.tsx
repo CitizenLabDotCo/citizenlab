@@ -17,7 +17,9 @@ import {
 
 // components
 import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
-const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
+const QuillMutilocWithLocaleSwitcher = lazy(() =>
+  import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
+);
 
 // i18n
 import T from 'components/T';
@@ -164,7 +166,12 @@ interface Props {
   className?: string;
 }
 
-const disablableFields = ['topic_ids', 'location', 'attachments'];
+const disablableFields = [
+  'topic_ids',
+  'location',
+  'attachments',
+  'proposed_budget',
+];
 const alwaysRequiredFields = ['title', 'body'];
 
 const IdeaCustomField = memo<Props & InjectedLocalized>(
@@ -306,11 +313,14 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
 
                 {fieldEnabled && (
                   <Suspense fallback={<Spinner />}>
-                    <TextAreaMultilocWithLocaleSwitcher
+                    <QuillMutilocWithLocaleSwitcher
+                      id={`${ideaCustomField.id}-description`}
+                      noImages={true}
+                      noVideos={true}
+                      noAlign={true}
                       valueMultiloc={descriptionMultiloc}
                       onChange={handleDescriptionOnChange}
-                      rows={3}
-                      labelTextElement={
+                      label={
                         <LocaleSwitcherLabelText>
                           <FormattedMessage {...messages.descriptionLabel} />
                         </LocaleSwitcherLabelText>

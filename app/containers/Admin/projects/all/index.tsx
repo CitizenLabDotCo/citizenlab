@@ -95,7 +95,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedProjectTemplateId: null
+      selectedProjectTemplateId: null,
     };
     this.subscriptions = [];
   }
@@ -136,7 +136,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             window.scrollTo(0, 0);
             this.setState({ selectedProjectTemplateId });
           }
-        })
+        }),
     ];
   }
 
@@ -151,7 +151,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     this.cleanup();
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   closeTemplatePreview = () => {
@@ -248,11 +248,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <AdminProjectsList {...inputProps} {...dataProps} />}
+    {(dataProps) => <AdminProjectsList {...inputProps} {...dataProps} />}
   </Data>
 );

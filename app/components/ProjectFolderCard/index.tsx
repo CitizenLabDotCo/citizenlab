@@ -26,7 +26,7 @@ import {
   colors,
   fontSizes,
   defaultCardStyle,
-  defaultCardHoverStyle
+  defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
@@ -278,7 +278,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectCard, {
-          extra: { projectFolderId }
+          extra: { projectFolderId },
         });
       },
       []
@@ -287,7 +287,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectTitleOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectTitle, {
-          extra: { projectFolderId }
+          extra: { projectFolderId },
         });
       },
       []
@@ -372,7 +372,7 @@ const ProjectFolderCard = memo<Props>(
                 publication.attributes.publication_description_preview_multiloc
               }
             >
-              {description => {
+              {(description) => {
                 if (!isEmpty(description)) {
                   return (
                     <FolderDescription className="e2e-folder-card-folder-description-preview">
