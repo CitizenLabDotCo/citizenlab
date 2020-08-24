@@ -69,7 +69,8 @@ export default defineMessages({
   },
   too_common: {
     id: 'app.errors.too_common',
-    defaultMessage: 'This password can be easily guessed. Please choose a stronger password.',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password.',
   },
   after_end_at: {
     id: 'app.errors.after_end_at',
