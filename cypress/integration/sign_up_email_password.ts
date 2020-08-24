@@ -53,7 +53,9 @@ describe('Sign up - Email + password step', () => {
   });
 
   it('has a working password field', () => {
-    cy.get('#password').type('democracy2.0').should('have.value', 'democracy2.0');
+    cy.get('#password')
+      .type('democracy2.0')
+      .should('have.value', 'democracy2.0');
   });
 
   it('shows an error when no password is provided', () => {

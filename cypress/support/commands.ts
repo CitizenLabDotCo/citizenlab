@@ -583,27 +583,29 @@ export function apiAddComment(
       },
     });
   } else {
-    return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-      const adminJwt = response.body.jwt;
+    return cy
+      .apiLogin('admin@citizenlab.co', 'democracy2.0')
+      .then((response) => {
+        const adminJwt = response.body.jwt;
 
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'POST',
-        url: `web_api/v1/${postType}s/${postId}/comments`,
-        body: {
-          comment: {
-            body_multiloc: {
-              'en-GB': commentContent,
-              'nl-BE': commentContent,
-            },
-            parent_id: commentParentId,
+        return cy.request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
           },
-        },
+          method: 'POST',
+          url: `web_api/v1/${postType}s/${postId}/comments`,
+          body: {
+            comment: {
+              body_multiloc: {
+                'en-GB': commentContent,
+                'nl-BE': commentContent,
+              },
+              parent_id: commentParentId,
+            },
+          },
+        });
       });
-    });
   }
 }
 
