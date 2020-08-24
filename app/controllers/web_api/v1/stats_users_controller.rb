@@ -4,6 +4,9 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   #   attr_accesor :group, :project, :topic, :start_at, :end_at
   # end
 
+  @@multiloc_service = MultilocService.new
+
+
   before_action :render_no_data, only: [
     :users_by_time,
     :users_by_time_cumulative,
@@ -56,7 +59,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_serie, 'users_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_time')
   end
 
 
@@ -92,8 +95,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie, 'users_by_time_cumulative'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time_cumulative.xlsx'
-  end
+
+    send_data xlsx,
+     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+     filename: render_xlsx_file_name('users_by_time_cumulative')
+ end
 
   def active_users_by_time_serie
     activities_scope = Activity
@@ -134,7 +140,9 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def active_users_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie, 'active_users_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
+    send_data xlsx,
+     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+     filename: render_xlsx_file_name('active_users_by_time')
   end
 
   def users_by_gender_serie
@@ -380,6 +388,22 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   private
+
+  def render_xlsx_file_name name
+    if params[:project]
+      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
+    end
+
+    if params[:group]
+      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
+    end
+
+    if params[:topic]
+      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
+    end
+
+    name + (project_name ? "_p_#{project_name}" : '') + (group_name ? "_g_#{group_name}" : '') + (topic_name ? "_t_#{topic_name}" : '') + '.xlsx'
+  end
 
   def render_no_data
     if @no_data
