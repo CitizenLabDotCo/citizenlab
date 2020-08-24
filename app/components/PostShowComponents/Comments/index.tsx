@@ -158,6 +158,12 @@ const CommentsSection = memo<Props>(
                 postType={postType}
               />
 
+              <ParentCommentForm
+                postId={postId}
+                postType={postType}
+                postingComment={handleCommentPosting}
+              />
+
               <Comments
                 postId={postId}
                 postType={postType}
@@ -180,12 +186,6 @@ const CommentsSection = memo<Props>(
                   </LoadingMoreMessage>
                 </LoadingMore>
               )}
-
-              <ParentCommentForm
-                postId={postId}
-                postType={postType}
-                postingComment={handleCommentPosting}
-              />
             </>
           ) : (
             <LoadingComments />
