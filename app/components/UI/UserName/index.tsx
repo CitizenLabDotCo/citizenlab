@@ -28,7 +28,7 @@ interface InputProps extends StyleProps {
   // if user was deleted, userId can be null
   userId: string | null;
   className?: string;
-  linkToProfile?: boolean;
+  isLinkToProfile?: boolean;
   hideLastName?: boolean;
 }
 
@@ -39,7 +39,7 @@ const UserName = (props: Props & InjectedIntlProps) => {
     intl: { formatMessage },
     user,
     className,
-    linkToProfile,
+    isLinkToProfile,
     hideLastName,
     ...styleProps
   } = props;
@@ -87,7 +87,7 @@ const UserName = (props: Props & InjectedIntlProps) => {
     />
   );
 
-  if (linkToProfile && profileLink) {
+  if (isLinkToProfile && profileLink) {
     return (
       <ProfileLink
         profileLink={profileLink}
