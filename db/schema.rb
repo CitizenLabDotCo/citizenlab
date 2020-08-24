@@ -345,6 +345,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
     t.datetime "assigned_at"
+    t.integer "proposed_budget"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
