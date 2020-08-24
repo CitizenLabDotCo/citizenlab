@@ -5,6 +5,11 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     :ideas_by_time_cumulative,
   ]
 
+  before_action :render_no_data_as_xlsx, only: [
+    :ideas_by_time_as_xlsx,
+    :ideas_by_time_cumulative_as_xlsx,
+  ]
+
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
@@ -157,6 +162,12 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def render_no_data
     if @no_data
       render json: {series: {ideas: {}}}
+    end
+  end
+
+  def render_no_data_as_xlsx
+    if @no_data
+      render json: {errors: "no data for this period"}, status: :unprocessable_entity
     end
   end
 

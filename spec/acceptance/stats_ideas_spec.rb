@@ -263,6 +263,18 @@ resource "Stats - Ideas" do
       expect(json_response[:series][:ideas].size).to eq end_at.yday
       expect(json_response[:series][:ideas].values.inject(&:+)).to eq 11
     end
+
+    describe "with time filter outside of platform lifetime" do
+      let(:start_at) { now - 10.year }
+      let(:end_at) { now - 10.year + 1.day}
+
+      it "returns no entries" do
+        do_request
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response).to eq({series: { ideas: {} }})
+      end
+    end
   end
 
   get "web_api/v1/stats/ideas_by_time_cumulative" do
@@ -317,6 +329,17 @@ resource "Stats - Ideas" do
       amount_col = worksheet.map {|col| col.cells[1].value}
       header, *amounts = amount_col
       expect(amounts.inject(&:+)).to eq 11
+    end
+
+    describe "with time filter outside of platform lifetime" do
+      let(:start_at) { now - 10.year }
+      let(:end_at) { now - 10.year + 1.day}
+      let(:interval) { 'day' }
+
+      it "returns no entries" do
+        do_request
+        expect(response_status).to eq 422
+      end
     end
   end
 
