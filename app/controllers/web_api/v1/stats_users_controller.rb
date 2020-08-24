@@ -18,7 +18,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     render json: { count: count }
   end
 
-  def users_by_time
+  def users_by_time_serie params
     users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:project]
@@ -35,47 +35,26 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
     end
 
-    serie = @@stats_service.group_by_time(
+    @@stats_service.group_by_time(
       users_scope,
       'registration_completed_at',
       @start_at,
       @end_at,
       params[:interval]
     )
-    render json: {series: {users: serie}}
+  end
+
+  def users_by_time
+    render json: {series: {users: users_by_time_serie(params)}}
   end
 
   def users_by_time_as_xlsx
-    users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-    if params[:project]
-      project = Project.find(params[:project])
-      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
-    end
-
-    if params[:group]
-      group = Group.find(params[:group])
-      users_scope = users_scope.merge(group.members)
-    end
-
-    if params[:topic]
-      users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
-    end
-
-    serie = @@stats_service.group_by_time(
-      users_scope,
-      'registration_completed_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-
-    xlsx = XlsxService.new.generate_time_stats_xlsx @serie, 'users_by_time'
+    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_serie(params), 'users_by_time'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time.xlsx'
   end
 
 
-  def users_by_time_cumulative
+  def users_by_time_cumulative_serie params
     users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:project]
@@ -92,119 +71,67 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
     end
 
-    serie = @@stats_service.group_by_time_cumulative(
+    @@stats_service.group_by_time_cumulative(
       users_scope,
       'registration_completed_at',
       @start_at,
       @end_at,
       params[:interval]
     )
-    render json: {series: {users: serie}}
+  end
+
+  def users_by_time_cumulative
+    render json: {series: {users: users_by_time_cumulative_serie(params)}}
   end
 
   def users_by_time_cumulative_as_xlsx
-    users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
+    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie(params), 'users_by_time_cumulative'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time_cumulative.xlsx'
+  end
+
+  def active_users_by_time_serie params
+    activities_scope = Activity
+      .select(:user_id).distinct
+      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
+
+    ps = ParticipantsService.new
+    activities_scope = ps.filter_engaging_activities(activities_scope)
 
     if params[:project]
       project = Project.find(params[:project])
-      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+      participants = ps.projects_participants([project])
+      activities_scope = activities_scope.where(user_id: participants)
     end
 
     if params[:group]
       group = Group.find(params[:group])
-      users_scope = users_scope.merge(group.members)
+      activities_scope = activities_scope.where(user_id: group.members)
     end
 
     if params[:topic]
-      users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
+      users_scope = @@stats_service.filter_users_by_topic(User, params[:topic])
+      activities_scope = activities_scope.where(user_id: users_scope)
     end
 
-    @serie = @@stats_service.group_by_time_cumulative(
-      users_scope,
-      'registration_completed_at',
+    @@stats_service.group_by_time(
+      activities_scope,
+      'acted_at',
       @start_at,
       @end_at,
       params[:interval]
     )
-
-    xlsx = XlsxService.new.generate_time_stats_xlsx @serie, 'users_by_time_cumulative'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time_cumulative.xlsx'
-
   end
 
   def active_users_by_time
-
-    activities_scope = Activity
-      .select(:user_id).distinct
-      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
-
-    ps = ParticipantsService.new
-    activities_scope = ps.filter_engaging_activities(activities_scope)
-
-    if params[:project]
-      project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
-      activities_scope = activities_scope.where(user_id: participants)
-    end
-
-    if params[:group]
-      group = Group.find(params[:group])
-      activities_scope = activities_scope.where(user_id: group.members)
-    end
-
-    if params[:topic]
-      users_scope = @@stats_service.filter_users_by_topic(User, params[:topic])
-      activities_scope = activities_scope.where(user_id: users_scope)
-    end
-
-    serie = @@stats_service.group_by_time(
-      activities_scope,
-      'acted_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-    render json: {series: {users: serie}}
+    render json: {series: {users: active_users_by_time_serie(params)}}
   end
 
   def active_users_by_time_as_xlsx
-
-    activities_scope = Activity
-      .select(:user_id).distinct
-      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
-
-    ps = ParticipantsService.new
-    activities_scope = ps.filter_engaging_activities(activities_scope)
-
-    if params[:project]
-      project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
-      activities_scope = activities_scope.where(user_id: participants)
-    end
-
-    if params[:group]
-      group = Group.find(params[:group])
-      activities_scope = activities_scope.where(user_id: group.members)
-    end
-
-    if params[:topic]
-      users_scope = @@stats_service.filter_users_by_topic(User, params[:topic])
-      activities_scope = activities_scope.where(user_id: users_scope)
-    end
-
-    serie = @@stats_service.group_by_time(
-      activities_scope,
-      'acted_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-
-    xlsx = XlsxService.new.generate_time_stats_xlsx @serie, 'active_users_by_time'
+    xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie(params), 'active_users_by_time'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
   end
 
-  def users_by_gender
+  def users_by_gender_serie params
     users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
@@ -218,10 +145,20 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .order(Arel.sql("custom_field_values->'gender'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-    render json: {series: {users: serie}}
+
+    serie
+  end
+
+  def users_by_gender
+    render json: {series: {users: users_by_gender_serie(params)}}
   end
 
   def users_by_gender_as_xlsx
+    xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie(params), 'users_by_gender'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
+  end
+
+  def users_by_birthyear_serie params
     users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
@@ -231,48 +168,21 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
-      .group("custom_field_values->'gender'")
-      .order(Arel.sql("custom_field_values->'gender'"))
+      .group("custom_field_values->'birthyear'")
+      .order(Arel.sql("custom_field_values->'birthyear'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
 
-    xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_gender'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
+    serie
   end
 
   def users_by_birthyear
-    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-    if params[:group]
-      group = Group.find(params[:group])
-      users = users.merge(group.members)
-    end
-
-    serie = users
-      .where(registration_completed_at: @start_at..@end_at)
-      .group("custom_field_values->'birthyear'")
-      .order(Arel.sql("custom_field_values->'birthyear'"))
-      .count
-    serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-    render json: {series: {users: serie}}
+    render json: {series: {users: users_by_birthyear_serie(params)}}
   end
 
-  def users_by_birthyear_as_xslx
-    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-    if params[:group]
-      group = Group.find(params[:group])
-      users = users.merge(group.members)
-    end
-
-    serie = users
-      .where(registration_completed_at: @start_at..@end_at)
-      .group("custom_field_values->'birthyear'")
-      .order(Arel.sql("custom_field_values->'birthyear'"))
-      .count
-    serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-    xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_birthyear'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear.xlsx'
+  def users_by_birthyear_as_xlsx
+    xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie(params), 'users_by_birthyear'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
   end
 
   def users_by_domicile
