@@ -90,6 +90,16 @@ class XlsxService
     generate_xlsx name, columns, serie
   end
 
+  def generate_votes_by_time_xlsx serie, name
+    columns = [
+      {header: 'date',   f: -> (item) {item["date"]}},
+      {header: 'up', f: -> (item) {item["up"]}},
+      {header: 'down', f: -> (item) {item["down"]}},
+      {header: 'total', f: -> (item) {item["total"]}}
+    ]
+    generate_xlsx name, columns, serie
+  end
+
   def generate_users_xlsx users, view_private_attributes: false
     areas = Area.all.map{|a| [a.id, a]}.to_h
     custom_field_columns = CustomField.with_resource_type('User')&.map(&:key).map do |key|

@@ -1,14 +1,23 @@
 class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
+  before_action :render_no_data, only: [
+    :votes_by_time,
+    :votes_by_time_cumulative,
+  ]
+  before_action :render_no_data_as_xlsx, only: [
+    :votes_by_time_as_xlsx,
+    :votes_by_time_cumulative_as_xlsx,
+  ]
+
   def votes_count
     count = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
       .group(:mode)
       .count
-    render json: { 
-      up: count["up"], 
-      down: count["down"], 
+    render json: {
+      up: count["up"],
+      down: count["down"],
       total: (count["up"] || 0) + (count["down"] || 0)
     }
   end
@@ -34,12 +43,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     render json: {series: votes_by_custom_field_key(custom_field.key, params, params[:normalization] || 'absolute')}
   end
 
-  def votes_by_time
-    if @no_data
-      render json: {series: {up:{}, down: {}, total: {}}}
-      return
-    end
-
+  def votes_by_time_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
@@ -55,15 +59,19 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    render json: {series: double_grouped_by_to_nested_hashes(serie)}
   end
 
-  def votes_by_time_cumulative
-    if @no_data
-      render json: {series: {up:{}, down: {}, total: {}}}
-      return
-    end
+  def votes_by_time
+    render json: {series: double_grouped_by_to_nested_hashes(votes_by_time_serie)}
+  end
 
+  def votes_by_time_as_xlsx
+    xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_serie), 'votes_by_time'
+
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('votes_by_time')
+  end
+
+  def votes_by_time_cumulative_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
@@ -79,8 +87,18 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    render json: {series: double_grouped_by_to_nested_hashes(serie)}
   end
+
+  def votes_by_time_cumulative
+    render json: {series: double_grouped_by_to_nested_hashes(votes_by_time_cumulative_serie)}
+  end
+
+  def votes_by_time_cumulative_as_xlsx
+    xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_cumulative_serie), 'votes_by_time_cumulative'
+
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('votes_by_time_cumulative')
+  end
+
 
   def votes_by_topic
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
@@ -117,7 +135,23 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     render json: {series: {total: serie}, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h}
   end
 
-  private 
+  private
+
+  def render_xlsx_file_name name
+    if params[:project]
+      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
+    end
+
+    if params[:group]
+      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
+    end
+
+    if params[:topic]
+      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
+    end
+
+    name + (project_name ? "_p_#{project_name}" : '') + (group_name ? "_g_#{group_name}" : '') + (topic_name ? "_t_#{topic_name}" : '') + '.xlsx'
+  end
 
   def apply_group_filter votes
     if params[:group]
@@ -179,7 +213,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       [
         mode,
         serie.keys.select do |key_mode, _|
-          key_mode == mode 
+          key_mode == mode
         end.map do |_, value|
           [(value || "_blank"), serie[[mode,value]]]
         end.to_h
@@ -211,6 +245,24 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
   end
 
+  def double_grouped_by_to_object_array serie
+    res = []
+    serie.each do |((mode, date), count)|
+      found_index = res.index {|item| item["date"] == date }
+      if found_index
+        res[found_index][mode] = count
+        res[found_index]["total"] += count
+      else
+        res.push({
+          "date" => date,
+          mode => count,
+          "total" => count
+        })
+      end
+    end
+    res
+  end
+
 
   def normalize_votes data, key
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
@@ -223,6 +275,18 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
         end.to_h
       ]
     end.to_h
+  end
+
+  def render_no_data
+    if @no_data
+      render json: {series: {up:{}, down: {}, total: {}}}
+    end
+  end
+
+  def render_no_data_as_xlsx
+    if @no_data
+      render json: {errors: "no data for this period"}, status: :unprocessable_entity
+    end
   end
 
   def do_authorize
