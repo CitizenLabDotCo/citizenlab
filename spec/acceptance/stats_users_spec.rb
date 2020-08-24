@@ -42,7 +42,7 @@ resource "Stats - Users" do
       travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month - 1.days) do
         create(:user)
       end
-      
+
       travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month + 10.days) do
         create(:user)
         create(:user)
@@ -99,7 +99,7 @@ resource "Stats - Users" do
         let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
         let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
-        
+
         before do
           travel_to start_at + 5.day do
             create_list(:admin, 2)
@@ -121,7 +121,7 @@ resource "Stats - Users" do
         let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
         let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
-        
+
         before do
           travel_to start_at + 8.days do
             @group1 = create(:group)
@@ -145,7 +145,7 @@ resource "Stats - Users" do
         let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
         let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
-        
+
         before do
           travel_to start_at + 26.days do
             @topic1 = create(:topic)
@@ -277,6 +277,123 @@ resource "Stats - Users" do
           expect(json_response[:series][:users].values.last).to eq 3
         end
       end
+    end
+
+    get "web_api/v1/stats/users_by_time_cumulative_as_xlsx" do
+      time_series_parameters self
+      group_filter_parameter self
+      topic_filter_parameter self
+      parameter :project, "Project ID. Only return users that can access the given project.", required: false
+
+      describe "with time filters only" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
+        example_request "Users by time (cumulative) as xlsx" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet.count).to eq start_at.end_of_month.day + 1
+          # monotonically increasing
+          expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+          amount_col = worksheet.map {|col| col.cells[1].value}
+          header, *amounts = amount_col
+          expect(amounts.sort).to eq amounts
+          expect(amount_col.last).to eq 10
+        end
+      end
+
+      describe "with project filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
+        before do
+          travel_to start_at + 7.days do
+            create_list(:admin, 4)
+            @project = create(:private_admins_project)
+          end
+        end
+
+        let(:project) { @project.id }
+
+        example_request "Users by time (cumulative) filtered by project as xlsx" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet.count).to eq start_at.end_of_month.day + 1
+          # monotonically increasing
+          expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+          amount_col = worksheet.map {|col| col.cells[1].value}
+          header, *amounts = amount_col
+          expect(amounts.sort).to eq amounts
+          expect(amount_col.last).to eq 5
+        end
+      end
+
+      describe "with group filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
+        before do
+          travel_to start_at + 14.days do
+            @group1 = create(:group)
+            @group2 = create(:group)
+            @user1 = create(:user, manual_groups: [@group1])
+            @user2 = create(:user, manual_groups: [@group2])
+          end
+        end
+
+        let(:group) { @group1.id }
+
+        example_request "Users by time (cumulative) filtered by group as xlsx" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet.count).to eq start_at.end_of_month.day + 1
+          # monotonically increasing
+          expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+          amount_col = worksheet.map {|col| col.cells[1].value}
+          header, *amounts = amount_col
+          expect(amounts.sort).to eq amounts
+          expect(amount_col.last).to eq 1
+        end
+      end
+
+      describe "with topic filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
+        before do
+          travel_to start_at + 5.days do
+            @topic1 = create(:topic)
+            @topic2 = create(:topic)
+            project = create(:project, topics: [@topic1, @topic2])
+            @user1 = create(:user)
+            @user2 = create(:user)
+            @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)
+            @idea2 = create(:idea, topics: [@topic2], project: project)
+            @idea3 = create(:idea)
+            @comment1 = create(:comment, author: @user2, idea: @idea1)
+            @comment2 = create(:comment, post: @idea2)
+            create(:vote, votable: @idea1)
+          end
+        end
+
+        let(:topic) { @topic1.id }
+
+        example_request "Users by time (cumulative) filtered by topic as xlsx" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet.count).to eq start_at.end_of_month.day + 1
+          # monotonically increasing
+          expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+          amount_col = worksheet.map {|col| col.cells[1].value}
+          header, *amounts = amount_col
+          expect(amounts.sort).to eq amounts
+          expect(amount_col.last).to eq 3
+      end
+    end
     end
 
     get "web_api/v1/stats/active_users_by_time" do

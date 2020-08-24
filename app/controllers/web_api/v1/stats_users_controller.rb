@@ -70,7 +70,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       params[:interval]
     )
 
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+    xlsx = XlsxService.new.generate_time_stats_xlsx @serie, 'users_by_time'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time.xlsx'
   end
 
@@ -127,9 +127,9 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       params[:interval]
     )
 
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+    xlsx = XlsxService.new.generate_time_stats_xlsx @serie, 'users_by_time_cumulative'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time_cumulative.xlsx'
-    
+
   end
 
   def active_users_by_time
@@ -199,8 +199,8 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+
+    xlsx = XlsxService.new.generate_time_stats_xlsx @serie, 'active_users_by_time'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'active_users_by_time.xlsx'
   end
 
@@ -235,8 +235,8 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .order(Arel.sql("custom_field_values->'gender'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-    
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+
+    xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_gender'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
   end
 
@@ -271,7 +271,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .order(Arel.sql("custom_field_values->'birthyear'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+    xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_birthyear'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear.xlsx'
   end
 
@@ -309,7 +309,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
     #TODO : show domicile title instead of id in XLSX file
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+    xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_domicile'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile.xlsx'
   end
 
@@ -344,7 +344,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .order(Arel.sql("custom_field_values->'education'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-    xlsx = XlsxService.new.generate_stats_xlsx @serie
+    xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_education'
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education.xlsx'
   end
 
@@ -428,7 +428,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
         .count
       serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-      xlsx = XlsxService.new.generate_stats_xlsx @serie
+      xlsx = XlsxService.new.generate_field_stats_xlsx @serie, 'users_by_custom_field'
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
     else
       head :not_implemented
@@ -447,7 +447,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     engaging_activities = ps.filter_engaging_activities(activities)
     scored_activities = ps.with_engagement_scores(engaging_activities)
-   
+
     serie = Activity
       .from(scored_activities.select(:user_id).where(acted_at: @start_at..@end_at))
       .group(:user_id)
@@ -457,7 +457,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .limit(10)
 
     render json: WebApi::V1::EngagementScoreSerializer.new(
-      serie, 
+      serie,
       params: fastjson_params,
       include: [:user]
       ).serialized_json

@@ -82,21 +82,13 @@ class XlsxService
     end
   end
 
-  def generate_stats_xlsx serie
-    pa = Axlsx::Package.new
-    wb = pa.workbook
-    wb.styles do |s|
-      wb.add_worksheet(:name => "Stats") do |sheet|
-        serie.each do |date, amount|
-          row = [
-            *date,
-            *amount
-          ]
-          sheet.add_row  row
-        end
-      end
-    end
-    pa.to_stream
+  def generate_time_stats_xlsx serie, name
+    # debugger
+    columns = [
+      {header: 'date',   f: -> (item) {item[0]}},
+      {header: 'amount', f: -> (item) {item[1]}}
+    ]
+    generate_xlsx name, columns, serie
   end
 
   def generate_users_xlsx users, view_private_attributes: false
