@@ -16,7 +16,6 @@ import GetSimilarIdeas, {
 
 // components
 import T from 'components/T';
-import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // utils
@@ -38,10 +37,6 @@ const Title = styled.h3`
   padding: 0;
   margin: 0;
   margin-bottom: 18px;
-`;
-
-const SimilarIdeasIcon = styled(Icon)`
-  margin-right: 10px;
 `;
 
 const IdeaList = styled.ul`
@@ -99,7 +94,6 @@ class SimilarIdeas extends PureComponent<Props> {
     return (
       <Container className={className}>
         <Title>
-          <SimilarIdeasIcon name="similarIdeas" />
           <FormattedMessage {...messages.similarIdeas} />
         </Title>
         <IdeaList>
