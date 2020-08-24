@@ -20,11 +20,11 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // a11y
@@ -46,6 +46,22 @@ const SpinnerWrapper = styled.div`
   right: 0;
   z-index: 2;
 `;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
+const Title = styled.h2`
+  font-size: ${fontSizes.xxxl}px;
+  font-weight: 500;
+  line-height: 40px;
+  color: ${(props: any) => props.theme.colorText};
+`;
+
+const CommentCount = styled.span``;
 
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
@@ -87,6 +103,7 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
   }) => {
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
+    const commentCount = comments.length;
 
     const sortedParentComments = useMemo(() => {
       if (!isNilOrError(comments) && comments.length > 0) {
@@ -131,12 +148,19 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
           </SpinnerWrapper>
         )}
 
-        {sortedParentComments && sortedParentComments.length > 0 && (
-          <StyledCommentSorting
-            onChange={handleSortOrderChange}
-            selectedValue={[sortOrder]}
-          />
-        )}
+        <Header>
+          <Title>
+            <FormattedMessage {...messages.invisibleTitleComments} />
+            {' '}
+            <CommentCount>({commentCount})</CommentCount>
+          </Title>
+          {sortedParentComments && sortedParentComments.length > 0 && (
+            <StyledCommentSorting
+              onChange={handleSortOrderChange}
+              selectedValue={[sortOrder]}
+            />
+          )}
+        </Header>
 
         {sortedParentComments &&
           sortedParentComments.map((parentComment, _index) => {
