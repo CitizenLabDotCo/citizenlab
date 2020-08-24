@@ -25,16 +25,12 @@ class StatUserPolicy < ApplicationPolicy
   def users_count?
     user&.active? && (user.admin? || user.project_moderator?)
   end
-  
+
   def users_by_time?
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
   def users_by_time_cumulative?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
-
-  def users_by_time_cumulative_as_xlsx?
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
@@ -63,6 +59,41 @@ class StatUserPolicy < ApplicationPolicy
   end
 
   def users_engagement_scores?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+  def users_count?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_time_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_time_cumulative_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def active_users_by_time_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_gender_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_birthyear_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_domicile_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_education_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def users_by_custom_field_as_xlsx?
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
