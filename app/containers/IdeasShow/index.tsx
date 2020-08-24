@@ -703,12 +703,12 @@ export class IdeasShow extends PureComponent<
                   />
                 </ScreenReaderOnly>
                 <FeatureFlag name="machine_translations">
-                {showTranslateButton && (
-                  <StyledTranslateButton
-                    translateButtonClicked={translateButtonClicked}
-                    onClick={this.onTranslateIdea}
-                  />
-                )}
+                  {showTranslateButton && (
+                    <StyledTranslateButton
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateIdea}
+                    />
+                  )}
                 </FeatureFlag>
                 <Body
                   postType="idea"
