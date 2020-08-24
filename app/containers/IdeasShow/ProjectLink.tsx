@@ -23,7 +23,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: '#84939E';
+  fill: #84939E;
 `;
 
 const Container = styled.div`

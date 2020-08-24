@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 import VerificationBadge from './VerificationBadge';
@@ -30,12 +30,12 @@ const StyledUserName = styled(UserName)`
 const StyledAvatar = styled(Avatar)``;
 
 interface Props {
-  theme: any;
   userId: string;
   isVerified: boolean;
 }
 
-const User = ({ theme, userId, isVerified }: Props) => {
+const User = ({ userId, isVerified }: Props) => {
+  const theme: any = useTheme();
   return (
     <>
       <UserNameContainer>
@@ -51,13 +51,11 @@ const User = ({ theme, userId, isVerified }: Props) => {
         userId={userId}
         size="30px"
         hasHoverEffect={false}
-        fillColor={
-          theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label
-        }
+        fillColor={theme?.navbarTextColor || colors.label}
         verified
       />
     </>
   );
 };
 
-export default withTheme(User);
+export default User;
