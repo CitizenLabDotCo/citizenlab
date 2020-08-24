@@ -41,7 +41,7 @@ interface Props {
 }
 
 const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
-  const userName = <UserName userId={authorId} linkToProfile emphasize />;
+  const userName = <UserName userId={authorId} isLinkToProfile emphasize />;
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
@@ -60,7 +60,7 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
         <StyledAvatar
           userId={authorId}
           size="36px"
-          // onClick={authorId ? goToUserProfile : noop}
+          isLinkToProfile={!!authorId}
         />
         <FormattedMessage
           {...messages.byUserOnDate}
