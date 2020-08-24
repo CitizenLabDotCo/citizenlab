@@ -20,6 +20,7 @@ import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentingDisabled from './CommentingDisabled';
 import Warning from 'components/UI/Warning';
+import CommentSorting from './CommentSorting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,6 +36,33 @@ import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
 
 const Container = styled.div``;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
+const Title = styled.h2`
+  font-size: ${fontSizes.xxxl}px;
+  font-weight: 500;
+  line-height: 40px;
+  color: ${(props: any) => props.theme.colorText};
+`;
+
+const CommentCount = styled.span``;
+
+const StyledCommentSorting = styled(CommentSorting)`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+
+  ${media.smallerThanMinTablet`
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  `}
+`;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -127,6 +155,7 @@ const CommentsSection = memo<Props>(
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
+      const commentCount = commentsList.length;
 
       return (
         <Container className={className || ''}>
@@ -157,6 +186,20 @@ const CommentsSection = memo<Props>(
                 postId={postId}
                 postType={postType}
               />
+
+              <Header>
+                <Title>
+                  <FormattedMessage {...messages.invisibleTitleComments} />
+                  {' '}
+                  <CommentCount>({commentCount})</CommentCount>
+                </Title>
+                {sortedParentComments && sortedParentComments.length > 0 && (
+                  <StyledCommentSorting
+                    onChange={handleSortOrderChange}
+                    selectedValue={[sortOrder]}
+                  />
+                )}
+              </Header>
 
               <ParentCommentForm
                 postId={postId}

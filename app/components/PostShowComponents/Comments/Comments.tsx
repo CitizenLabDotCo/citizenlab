@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
-import CommentSorting from './CommentSorting';
 import { Spinner } from 'cl2-component-library';
 
 // services
@@ -45,33 +44,6 @@ const SpinnerWrapper = styled.div`
   left: 0;
   right: 0;
   z-index: 2;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-`;
-
-const Title = styled.h2`
-  font-size: ${fontSizes.xxxl}px;
-  font-weight: 500;
-  line-height: 40px;
-  color: ${(props: any) => props.theme.colorText};
-`;
-
-const CommentCount = styled.span``;
-
-const StyledCommentSorting = styled(CommentSorting)`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 15px;
-
-  ${media.smallerThanMinTablet`
-    justify-content: flex-start;
-    margin-bottom: 15px;
-  `}
 `;
 
 const StyledParentComment = styled(ParentComment)`
@@ -147,20 +119,6 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
             <Spinner />
           </SpinnerWrapper>
         )}
-
-        <Header>
-          <Title>
-            <FormattedMessage {...messages.invisibleTitleComments} />
-            {' '}
-            <CommentCount>({commentCount})</CommentCount>
-          </Title>
-          {sortedParentComments && sortedParentComments.length > 0 && (
-            <StyledCommentSorting
-              onChange={handleSortOrderChange}
-              selectedValue={[sortOrder]}
-            />
-          )}
-        </Header>
 
         {sortedParentComments &&
           sortedParentComments.map((parentComment, _index) => {
