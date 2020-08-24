@@ -66,7 +66,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     render json: {series: {ideas: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
 
-  def ideas_by_time
+  def ideas_by_time_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 
     ideas = apply_project_filter(ideas)
@@ -74,32 +74,48 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = apply_topic_filter(ideas)
     ideas = apply_feedback_needed_filter(ideas)
 
-    serie = @@stats_service.group_by_time(
+    @@stats_service.group_by_time(
       ideas,
       'published_at',
       @start_at,
       @end_at,
       params[:interval]
     )
-    render json: {series: {ideas: serie}}
+  end
+
+  def ideas_by_time
+    render json: {series: {ideas: ideas_by_time_serie}}
+  end
+
+  def ideas_by_time_as_xlsx
+    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, 'ideas_by_time'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_time.xlsx'
+  end
+
+  def ideas_by_time_cumulative_serie
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+
+    ideas = apply_project_filter(ideas)
+    ideas = apply_group_filter(ideas)
+    ideas = apply_topic_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
+
+    @@stats_service.group_by_time_cumulative(
+      ideas,
+      'published_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
   end
 
   def ideas_by_time_cumulative
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    render json: {series: {ideas: ideas_by_time_cumulative_serie}}
+  end
 
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
-
-    serie = @@stats_service.group_by_time_cumulative(
-      ideas,
-      'published_at',
-      @start_at,
-      @end_at,
-      params[:interval]
-    )
-    render json: {series: {ideas: serie}}
+  def ideas_by_time_cumulative_as_xlsx
+    xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, 'ideas_by_time_cumulative'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_time_cumulative.xlsx'
   end
 
 
