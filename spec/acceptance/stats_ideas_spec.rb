@@ -90,7 +90,7 @@ resource "Stats - Ideas" do
         assignee = create(:admin)
         create(:idea, idea_status: @proposed, assignee: assignee)
         do_request assignee: assignee.id
-        
+
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:count]).to eq 1
@@ -294,6 +294,65 @@ resource "Stats - Ideas" do
         # monotonically increasing
         expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
         expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
+      end
+    end
+  end
+
+  get "web_api/v1/stats/ideas_by_time_as_xlsx" do
+    time_series_parameters self
+    project_filter_parameter self
+    topic_filter_parameter self
+    group_filter_parameter self
+    feedback_needed_filter_parameter self
+
+    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+    let(:interval) { 'day' }
+
+    example_request "Ideas by time (published_at)" do
+      expect(response_status).to eq 200
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      expect(worksheet.count).to eq end_at.yday + 1
+      expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+      amount_col = worksheet.map {|col| col.cells[1].value}
+      header, *amounts = amount_col
+      expect(amounts.inject(&:+)).to eq 11
+    end
+  end
+
+  get "web_api/v1/stats/ideas_by_time_cumulative_as_xlsx" do
+    time_series_parameters self
+    project_filter_parameter self
+    topic_filter_parameter self
+    group_filter_parameter self
+    feedback_needed_filter_parameter self
+
+    describe "without time filters" do
+      let(:interval) { 'day' }
+
+      example "Ideas by time (published_at) cumulative without time filters", document: false do
+        do_request
+        expect(response_status).to eq 200
+      end
+    end
+
+    describe "with time filters" do
+
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+      let(:interval) { 'day' }
+
+      example_request "Ideas by time (published_at) cumulative" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq end_at.yday + 1
+        expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+        # monotonically increasing
+        amount_col = worksheet.map {|col| col.cells[1].value}
+        header, *amounts = amount_col
+        expect(amounts.sort).to eq amounts
+
+        expect(amounts.last).to eq Idea.published.count
       end
     end
 
