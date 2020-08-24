@@ -6,7 +6,7 @@ class CustomField < ApplicationRecord
 
   FIELDABLE_TYPES = %w(User CustomForm)
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
-  CODES = %w(gender birthyear domicile education title body topic_ids location images attachments)
+  CODES = %w(gender birthyear domicile education title body topic_ids location proposed_budget images attachments)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
   validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
@@ -58,7 +58,7 @@ class CustomField < ApplicationRecord
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
       self.description_multiloc,
-      %i{decoration link}
+      %i{decoration link list title}
     )
     self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)

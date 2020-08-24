@@ -112,6 +112,9 @@ fr:
       location:
         title: Adresse
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:     
       images:
         title: Images
         description:

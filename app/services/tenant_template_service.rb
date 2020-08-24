@@ -864,7 +864,8 @@ class TenantTemplateService
         'location_point_geojson' => i.location_point_geojson,
         'location_description'   => i.location_description,
         'idea_status_ref'        => lookup_ref(i.idea_status_id, :idea_status),
-        'budget'                 => i.budget
+        'budget'                 => i.budget,
+        'proposed_budget'       => i.proposed_budget
       }
       store_ref yml_idea, i.id, :idea
       yml_idea
