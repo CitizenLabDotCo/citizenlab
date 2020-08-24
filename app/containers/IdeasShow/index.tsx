@@ -702,14 +702,14 @@ export class IdeasShow extends PureComponent<
                     {...messages.invisibleTitleContent}
                   />
                 </ScreenReaderOnly>
-                {/* <FeatureFlag name="machine_translations"> */}
+                <FeatureFlag name="machine_translations">
                 {showTranslateButton && (
                   <StyledTranslateButton
                     translateButtonClicked={translateButtonClicked}
                     onClick={this.onTranslateIdea}
                   />
                 )}
-                {/* </FeatureFlag> */}
+                </FeatureFlag>
                 <Body
                   postType="idea"
                   postId={ideaId}
