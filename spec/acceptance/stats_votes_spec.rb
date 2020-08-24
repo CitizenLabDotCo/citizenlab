@@ -95,8 +95,8 @@ resource "Stats - Votes" do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {:"1984" => 2, :"1992" => 1, :"_blank" => 1}, 
-            down: {:"1984" => 1, :"1992" => 1}, 
+            up: {:"1984" => 2, :"1992" => 1, :"_blank" => 1},
+            down: {:"1984" => 1, :"1992" => 1},
             total: {:"1984" => 3, :"1992" => 2, :"_blank" => 1}
           }
         })
@@ -128,8 +128,8 @@ resource "Stats - Votes" do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {@eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1}, 
-            down: {@eversem.to_sym => 1, @wolvertem.to_sym => 1}, 
+            up: {@eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1},
+            down: {@eversem.to_sym => 1, @wolvertem.to_sym => 1},
             total: {@eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1}
           }
         })
@@ -159,8 +159,8 @@ resource "Stats - Votes" do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {:"2" => 2, :"7" => 1, :"_blank" => 1}, 
-            down: {:"2" => 1, :"7" => 1}, 
+            up: {:"2" => 2, :"7" => 1, :"_blank" => 1},
+            down: {:"2" => 1, :"7" => 1},
             total: {:"2" => 3, :"7" => 2, :"_blank" => 1}
           }
         })
@@ -190,8 +190,8 @@ resource "Stats - Votes" do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {:"female" => 2, :"male" => 1, :"_blank" => 1}, 
-            down: {:"female" => 1, :"male" => 1}, 
+            up: {:"female" => 2, :"male" => 1, :"_blank" => 1},
+            down: {:"female" => 1, :"male" => 1},
             total: {:"female" => 3, :"male" => 2, :"_blank" => 1}
           }
         })
@@ -227,8 +227,8 @@ resource "Stats - Votes" do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {@opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1}, 
-            down: {@opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1}, 
+            up: {@opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1},
+            down: {@opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1},
             total: {@opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1}
           }
         })
@@ -286,6 +286,48 @@ resource "Stats - Votes" do
       end
     end
 
+    get "web_api/v1/stats/votes_by_time_as_xlsx" do
+      time_series_parameters self
+      project_filter_parameter self
+      group_filter_parameter self
+      topic_filter_parameter self
+
+      let(:interval) { 'day' }
+
+      describe "filtered by time" do
+        let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
+        let(:end_at) { now.in_time_zone(@timezone).end_of_week }
+
+        example_request "Votes by time" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
+
+
+          expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
+          up_col = worksheet.map {|col| col.cells[1].value}
+          header, *ups = up_col
+          expect(ups.inject(&:+)).to eq 3
+          down_col = worksheet.map {|col| col.cells[2].value}
+          header, *downs = down_col
+          expect(downs.inject(&:+)).to eq 2
+          total_col = worksheet.map {|col| col.cells[3].value}
+          header, *totals = total_col
+          expect(totals.inject(&:+)).to eq 5
+        end
+      end
+
+      describe "filtered by time outside of the tenant lifecycle" do
+        let(:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_week }
+        let(:end_at) { (now-1.year).in_time_zone(@timezone).end_of_week }
+
+        it "returns no results" do
+          do_request
+          expect(response_status).to eq 422
+        end
+      end
+    end
+
     get "web_api/v1/stats/votes_by_time_cumulative" do
       time_series_parameters self
       project_filter_parameter self
@@ -303,6 +345,36 @@ resource "Stats - Votes" do
         expect(json_response[:series][:up].values.last).to eq 4
         expect(json_response[:series][:down].values.last).to eq 2
         expect(json_response[:series][:total].values.last).to eq 6
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_time_cumulative_as_xlsx" do
+      time_series_parameters self
+      project_filter_parameter self
+      group_filter_parameter self
+      topic_filter_parameter self
+
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_week }
+      let(:interval) { 'day' }
+      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
+
+      example_request "Votes by time (cumulative)" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
+
+
+        expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
+        up_col = worksheet.map {|col| col.cells[1].value}
+        header, *ups = up_col
+        expect(ups.inject(&:+)).to eq 4
+        down_col = worksheet.map {|col| col.cells[2].value}
+        header, *downs = down_col
+        expect(downs.inject(&:+)).to eq 2
+        total_col = worksheet.map {|col| col.cells[3].value}
+        header, *totals = total_col
+        expect(totals.inject(&:+)).to eq 6
       end
     end
   end
