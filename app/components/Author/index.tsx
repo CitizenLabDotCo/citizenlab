@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
@@ -91,14 +88,6 @@ class Author extends PureComponent<Props, State> {
     showAvatar: true,
   };
 
-  goToUserProfile = () => {
-    const { author } = this.props;
-
-    if (!isNilOrError(author)) {
-      clHistory.push(`/profile/${author.attributes.slug}`);
-    }
-  };
-
   render() {
     const {
       authorId,
@@ -117,10 +106,11 @@ class Author extends PureComponent<Props, State> {
       !isNilOrError(author) &&
       showModeration &&
       canModerate(projectId, { data: author });
+    const isLinkToProfle = !notALink;
     const authorName = (
       <UserName
         userId={authorId}
-        linkToProfile={!notALink}
+        isLinkToProfile={isLinkToProfle}
         canModerate={authorCanModerate}
         emphasize={emphasize}
       />
@@ -133,7 +123,7 @@ class Author extends PureComponent<Props, State> {
             <StyledAvatar
               userId={authorId}
               size={size}
-              onClick={notALink ? undefined : this.goToUserProfile}
+              isLinkToProfile={isLinkToProfle}
               moderator={authorCanModerate}
               bgColor={avatarBadgeBgColor}
             />
