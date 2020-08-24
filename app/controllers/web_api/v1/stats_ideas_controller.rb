@@ -38,6 +38,32 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     render json: {series: {ideas: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
+  def ideas_by_topic_as_xlsx
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+
+    ideas = apply_project_filter(ideas)
+    ideas = apply_group_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
+    res = []
+    serie = ideas
+      .where(published_at: @start_at..@end_at)
+      .joins(:ideas_topics)
+      .group("ideas_topics.topic_id")
+      .order("ideas_topics.topic_id")
+      .count
+
+    serie.each {|topic_id, count|
+      res.push({
+        "topic" => @@multiloc_service.t(Topic.find(topic_id).title_multiloc),
+        "ideas" => count
+      })
+    }
+
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "topic"
+
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_topic")
+  end
+
   def ideas_by_project
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 

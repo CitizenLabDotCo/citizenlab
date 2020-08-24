@@ -160,6 +160,61 @@ resource "Stats - Ideas" do
     end
   end
 
+  get "web_api/v1/stats/ideas_by_topic_as_xlsx" do
+    time_boundary_parameters self
+    project_filter_parameter self
+    group_filter_parameter self
+    feedback_needed_filter_parameter self
+
+    describe "with project filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
+      before do
+        topic = create(:topic)
+        @project = create(:project, topics: [topic])
+        travel_to start_at + 2.months do
+          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea)
+        end
+      end
+
+      let(:project) { @project.id }
+
+      example_request "Ideas by topic filtered by project" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'ideas']
+        amount_col = worksheet.map {|col| col.cells[1].value}
+        header, *amounts = amount_col
+        expect(amounts.inject(&:+)).to eq 1
+      end
+    end
+
+    describe "with group filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
+      before do
+        travel_to start_at + 2.months do
+          @group = create(:group)
+          create(:idea_with_topics, topics_count: 2, author: create(:user, manual_groups: [@group]))
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Ideas by topic filtered by group" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'ideas']
+        amount_col = worksheet.map {|col| col.cells[1].value}
+        header, *amounts = amount_col
+        expect(amounts.inject(&:+)).to eq 2
+      end
+    end
+  end
+
   get "web_api/v1/stats/ideas_by_project" do
     time_boundary_parameters self
     topic_filter_parameter self

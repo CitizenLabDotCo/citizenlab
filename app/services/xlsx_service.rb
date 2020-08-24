@@ -90,11 +90,19 @@ class XlsxService
     generate_xlsx name, columns, serie
   end
 
+  def generate_res_stats_xlsx serie, resource_name, grouped_by
+    columns = [
+      {header: grouped_by,    f: -> (item) {item[grouped_by]}},
+      {header: resource_name, f: -> (item) {item[resource_name]}}
+    ]
+    generate_xlsx resource_name + '_by_' + grouped_by, columns, serie
+  end
+
   def generate_votes_by_time_xlsx serie, name
     columns = [
-      {header: 'date',   f: -> (item) {item["date"]}},
-      {header: 'up', f: -> (item) {item["up"]}},
-      {header: 'down', f: -> (item) {item["down"]}},
+      {header: 'date',  f: -> (item) {item["date"]}},
+      {header: 'up',    f: -> (item) {item["up"]}},
+      {header: 'down',  f: -> (item) {item["down"]}},
       {header: 'total', f: -> (item) {item["total"]}}
     ]
     generate_xlsx name, columns, serie
