@@ -5,7 +5,7 @@ import {
   Button,
   ButtonProps,
   ButtonContainerProps as ComponentLibraryButtonContainerProps,
-  ButtonStyles as ComponentLibraryButtonStyles
+  ButtonStyles as ComponentLibraryButtonStyles,
 } from 'cl2-component-library';
 
 interface Props extends Omit<ButtonProps, 'locale'> {}
@@ -26,8 +26,4 @@ const ButtonWrapper = memo<Props>((props) => {
 
 export default ButtonWrapper;
 
-export {
-  Props,
-  ButtonContainerProps,
-  ButtonStyles
-};
+export { Props, ButtonContainerProps, ButtonStyles };

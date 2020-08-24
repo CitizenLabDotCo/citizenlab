@@ -49,11 +49,11 @@ const GroupIconWrapper = styled.div`
 `;
 
 const ManualGroupIconWrapper = styled(GroupIconWrapper)`
-  background: ${transparentize(.9, colors.adminTextColor)};
+  background: ${transparentize(0.9, colors.adminTextColor)};
 `;
 
 const SmartGroupIconWrapper = styled(GroupIconWrapper)`
-  background: ${transparentize(.9, colors.adminOrangeIcons)};
+  background: ${transparentize(0.9, colors.adminOrangeIcons)};
 `;
 
 const GroupIcon = styled(Icon)`

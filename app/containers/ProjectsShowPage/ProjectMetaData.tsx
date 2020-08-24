@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 import moment from 'moment';
@@ -10,7 +10,9 @@ import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 
 // components
+import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
+import { Icon } from 'cl2-component-library';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -34,12 +36,51 @@ const Title = styled.h2`
   font-weight: 600;
   margin: 0;
   padding: 0;
-  padding-top: 12px;
+  padding-bottom: 8px;
+  padding-top: 8px;
 `;
 
-const Content = styled.div`
+const List = styled.div`
+  padding-top: 5px;
+  padding-bottom: 5px;
   border-top: solid 1px ${colors.separation};
-  border-bottom: solid px ${colors.separation};
+  border-bottom: solid 1px ${colors.separation};
+`;
+
+const ListItem = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  &.link {
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: #000;
+      text-decoration: underline;
+    }
+  }
+`;
+
+const ListItemIcon = styled(Icon)`
+  height: 18px;
+  width: 16px;
+  fill: ${colors.label};
+  margin-right: 14px;
+`;
+
+const ActionButtons = styled.div`
+  margin-top: 20px;
+`;
+
+const SeeIdeasButton = styled(Button)`
+  margin-bottom: 10px;
 `;
 
 const ProjectMetaData = memo(
@@ -59,6 +100,24 @@ const ProjectMetaData = memo(
         })
       : [];
 
+    const scrollToIdeas = useCallback((event: FormEvent) => {
+      event.preventDefault();
+      document?.getElementById('project-ideas')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'start',
+      });
+    }, []);
+
+    const scrollToEvents = useCallback((event: FormEvent) => {
+      event.preventDefault();
+      document?.getElementById('project-events')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'start',
+      });
+    }, []);
+
     if (!isNilOrError(locale) && !isNilOrError(project)) {
       const {
         process_type,
@@ -72,55 +131,78 @@ const ProjectMetaData = memo(
       return (
         <Container className={className || ''}>
           <Title>
-            <FormattedMessage {...messages.aboutThisProject} />
+            <FormattedMessage {...messages.about} />
           </Title>
-          <Content>
+          <List>
             {process_type === 'continuous' && (
-              <div>
+              <ListItem>
+                <ListItemIcon name="flag" />
                 <FormattedMessage
                   {...messages.startedOn}
                   values={{
                     date: moment(created_at).format('LL'),
                   }}
                 />
-              </div>
+              </ListItem>
             )}
-            {isNumber(avatars_count) && (
-              <div>
+            {isNumber(avatars_count) && avatars_count > 0 && (
+              <ListItem>
+                <ListItemIcon name="person" />
                 <FormattedMessage
                   {...messages.xParticipants}
                   values={{ participantsCount: avatars_count }}
                 />
-              </div>
+              </ListItem>
             )}
+            {process_type === 'timeline' &&
+              !isNilOrError(phases) &&
+              phases.length > 0 && (
+                <ListItem>
+                  <ListItemIcon name="timeline" />
+                  <FormattedMessage
+                    {...messages.xPhases}
+                    values={{ phasesCount: phases.length }}
+                  />
+                </ListItem>
+              )}
             {process_type === 'continuous' &&
               participation_method === 'ideation' &&
               isNumber(ideas_count) && (
-                <div>
+                <ListItem className="link" onClick={scrollToIdeas}>
+                  <ListItemIcon name="idea-filled" />
                   <FormattedMessage
                     {...messages.xIdeas}
                     values={{ ideasCount: ideas_count }}
                   />
-                </div>
+                </ListItem>
               )}
             {upcomingEvents.length > 0 && (
-              <div>
+              <ListItem className="link" onClick={scrollToEvents}>
+                <ListItemIcon name="event" />
                 <FormattedMessage
-                  {...messages.xEvents}
-                  values={{ eventsCount: upcomingEvents.length }}
+                  {...messages.xUpcomingEvents}
+                  values={{ upcomingEventsCount: upcomingEvents.length }}
                 />
-              </div>
+              </ListItem>
             )}
-          </Content>
-          {/* Continuous Ideation Idea Button desktop */}
-          {process_type === 'continuous' &&
-            participation_method === 'ideation' &&
-            publication_status !== 'archived' && (
-              <IdeaButton
-                projectId={project.id}
-                participationContextType="project"
-              />
-            )}
+          </List>
+          <ActionButtons>
+            {process_type === 'continuous' &&
+              participation_method === 'ideation' && (
+                <SeeIdeasButton buttonStyle="secondary" onClick={scrollToIdeas}>
+                  <FormattedMessage {...messages.seeTheIdeas} />
+                </SeeIdeasButton>
+              )}
+
+            {process_type === 'continuous' &&
+              participation_method === 'ideation' &&
+              publication_status !== 'archived' && (
+                <IdeaButton
+                  projectId={project.id}
+                  participationContextType="project"
+                />
+              )}
+          </ActionButtons>
         </Container>
       );
     }

@@ -371,28 +371,30 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 handleHeight
                 onResize={this.onResize}
               >
-                <StyledHeaderContainer inModal={!!metaData.inModal}>
-                  <StyledHeaderTitle inModal={!!metaData.inModal}>
-                    <FormattedMessage {...messages.signUp2} />
-                  </StyledHeaderTitle>
+                <div>
+                  <StyledHeaderContainer inModal={!!metaData.inModal}>
+                    <StyledHeaderTitle inModal={!!metaData.inModal}>
+                      <FormattedMessage {...messages.signUp2} />
+                    </StyledHeaderTitle>
 
-                  {hasHeaderSubtitle && (
-                    <HeaderSubtitle>
-                      {showStepsCount ? (
-                        <FormattedMessage
-                          {...messages.headerSubtitle}
-                          values={{
-                            activeStepNumber,
-                            stepName,
-                            totalStepsCount,
-                          }}
-                        />
-                      ) : (
-                        stepName
-                      )}
-                    </HeaderSubtitle>
-                  )}
-                </StyledHeaderContainer>
+                    {hasHeaderSubtitle && (
+                      <HeaderSubtitle>
+                        {showStepsCount ? (
+                          <FormattedMessage
+                            {...messages.headerSubtitle}
+                            values={{
+                              activeStepNumber,
+                              stepName,
+                              totalStepsCount,
+                            }}
+                          />
+                        ) : (
+                          stepName
+                        )}
+                      </HeaderSubtitle>
+                    )}
+                  </StyledHeaderContainer>
+                </div>
               </ReactResizeDetector>
             </div>
           )}

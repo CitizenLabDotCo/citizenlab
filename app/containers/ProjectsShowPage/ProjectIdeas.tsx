@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import PBExpenses from './pb/PBExpenses';
@@ -16,9 +15,23 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
+import { viewportWidths, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
+
+const Title = styled.h2`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.xxxl}px;
+  line-height: normal;
+  font-weight: 500;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  margin: 0;
+  margin-bottom: 25px;
+  padding: 0;
+`;
 
 interface Props {
   projectId: string;
@@ -47,6 +60,7 @@ const ProjectIdeas = memo<Props>(({ projectId, className }) => {
             viewMode={smallerThanBigTablet ? 'column' : 'row'}
           />
         )}
+        <Title>Ideas</Title>
         <IdeaCards
           type="load-more"
           projectIds={projectIds}

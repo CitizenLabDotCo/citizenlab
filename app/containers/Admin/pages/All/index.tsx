@@ -37,7 +37,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class Pages extends React.Component<Props & InjectedIntlProps, State> {
-  handleOnDeleteClick = pageId => event => {
+  handleOnDeleteClick = (pageId) => (event) => {
     const deleteMessage = this.props.intl.formatMessage(
       messages.pageDeletionConfirmation
     );
@@ -47,7 +47,7 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
     }
   };
 
-  isBuiltInPage = page => {
+  isBuiltInPage = (page) => {
     return page && false;
   };
 
@@ -75,7 +75,7 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
             </ButtonWrapper>
           </FeatureFlag>
           <List key={pages.length}>
-            {pages.map(page => (
+            {pages.map((page) => (
               <Row key={page.id} id={page.id}>
                 <TextCell className="expand">
                   <T value={page.attributes.title_multiloc} />
@@ -114,6 +114,6 @@ const PagesWithInjectedIntl = injectIntl<Props>(Pages);
 
 export default (inputProps: InputProps) => (
   <GetPages>
-    {pages => <PagesWithInjectedIntl {...inputProps} pages={pages} />}
+    {(pages) => <PagesWithInjectedIntl {...inputProps} pages={pages} />}
   </GetPages>
 );

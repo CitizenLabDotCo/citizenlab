@@ -10,6 +10,7 @@ import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
 import ProjectInfo from './ProjectInfo';
 import ProjectIdeas from './ProjectIdeas';
+import ProjectEvents from './ProjectEvents';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -54,13 +55,14 @@ const LoadingWrapper = styled.div`
 
 const ProjectHeaderImage = styled.div<{ src: string }>`
   width: 100%;
-  height: 200px;
+  height: 220px;
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 40px;
+  transform: translate3d(0, 0, 0);
 `;
 
 const ProjectNotFoundWrapper = styled.div`
@@ -75,7 +77,20 @@ const ProjectNotFoundWrapper = styled.div`
 `;
 
 const StyledProjectInfo = styled(ProjectInfo)`
-  margin-top: 50px;
+  margin-top: 40px;
+`;
+
+const ProjectIdeasContentContainer = styled(ContentContainer)`
+  padding-top: 60px;
+  padding-bottom: 80px;
+  background: ${colors.background};
+  border-top: solid 1px #e8e8e8;
+  border-bottom: solid 1px #e8e8e8;
+`;
+
+const ProjectEventsContentContainer = styled(ContentContainer)`
+  padding-top: 60px;
+  padding-bottom: 80px;
 `;
 
 const ProjectsShowPage = memo(
@@ -110,19 +125,7 @@ const ProjectsShowPage = memo(
         participationMethod === 'ideation')
     );
 
-    let content = (
-      <ContentContainer>
-        {projectHeaderImageLarge && (
-          <ProjectHeaderImage src={projectHeaderImageLarge} />
-        )}
-        {projectId && (
-          <>
-            <StyledProjectInfo projectId={projectId} />
-            {showIdeas && <ProjectIdeas projectId={projectId} />}
-          </>
-        )}
-      </ContentContainer>
-    );
+    let content: JSX.Element | null = null;
 
     if (loading) {
       content = (
@@ -130,9 +133,7 @@ const ProjectsShowPage = memo(
           <Spinner />
         </LoadingWrapper>
       );
-    }
-
-    if (projectNotFound) {
+    } else if (projectNotFound) {
       content = (
         <ProjectNotFoundWrapper>
           <p>
@@ -144,6 +145,25 @@ const ProjectsShowPage = memo(
             icon="arrow-back"
           />
         </ProjectNotFoundWrapper>
+      );
+    } else if (projectId) {
+      content = (
+        <>
+          <ContentContainer>
+            {projectHeaderImageLarge && (
+              <ProjectHeaderImage src={projectHeaderImageLarge} />
+            )}
+            <StyledProjectInfo projectId={projectId} />
+          </ContentContainer>
+          {showIdeas && (
+            <ProjectIdeasContentContainer id="project-ideas">
+              <ProjectIdeas projectId={projectId} />
+            </ProjectIdeasContentContainer>
+          )}
+          <ProjectEventsContentContainer id="project-events">
+            <ProjectEvents projectId={projectId} />
+          </ProjectEventsContentContainer>
+        </>
       );
     }
 

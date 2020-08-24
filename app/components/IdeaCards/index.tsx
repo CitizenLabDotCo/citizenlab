@@ -18,7 +18,6 @@ import { MessageDescriptor, IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   width: 100%;
-  border: solid 1px red;
 `;
 
 interface Props extends GetIdeasInputProps {
