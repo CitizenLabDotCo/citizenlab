@@ -9,17 +9,17 @@ import messages from './messages';
 
 // styles
 import { fontSizes, colors } from 'utils/styleUtils';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   className?: string;
-  theme: any;
 }
 
 const TranslateButton = (props: Props) => {
   const { translateButtonClicked, className, onClick } = props;
+  const theme: any = useTheme();
 
   return (
     <Button
@@ -31,7 +31,7 @@ const TranslateButton = (props: Props) => {
       fontSize={`${fontSizes.small}px`}
       fontWeight={'bold'}
       padding="5px 10px"
-      textColor={props.theme.colorText}
+      textColor={theme.colorText}
     >
       {translateButtonClicked ? (
         <FormattedMessage {...messages.original} />
@@ -42,4 +42,4 @@ const TranslateButton = (props: Props) => {
   );
 };
 
-export default withTheme(TranslateButton);
+export default TranslateButton;
