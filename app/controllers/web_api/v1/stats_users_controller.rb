@@ -9,6 +9,12 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     :users_by_time_cumulative,
     :active_users_by_time,
   ]
+  before_action :render_no_data_as_xlsx, only: [
+    :users_by_time_as_xlsx,
+    :users_by_time_cumulative_as_xlsx,
+    :active_users_by_time_as_xlsx
+  ]
+
 
   def users_count
     count = User.active
@@ -373,13 +379,17 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       ).serialized_json
   end
 
-  #TODO users_engagement_scores as xlsx ? is it really needed ?
-
   private
 
   def render_no_data
     if @no_data
       render json: {series: {users: {}}}
+    end
+  end
+
+  def render_no_data_as_xlsx
+    if @no_data
+      render json: {errors: "no data for this period"}, status: :unprocessable_entity
     end
   end
 

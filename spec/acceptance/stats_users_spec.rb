@@ -71,6 +71,18 @@ resource "Stats - Users" do
       topic_filter_parameter self
       parameter :project, "Project ID. Only return users that can access the given project.", required: false
 
+      describe "with time filter outside of platform lifetime" do
+        let(:start_at) { now - 10.year }
+        let(:end_at) { now - 10.year + 1.day}
+
+        it "returns no entries" do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to eq({series: { users: {} }})
+        end
+      end
+
       describe "without time range filters" do
         let(:interval) { 'day' }
 
@@ -191,6 +203,17 @@ resource "Stats - Users" do
           amount_col = worksheet.map {|col| col.cells[1].value}
           header, *amounts = amount_col
           expect(amounts.inject(&:+)).to eq 11
+        end
+      end
+
+      describe "with time filter outside of platform lifetime" do
+        let(:start_at) { now - 10.year }
+        let(:end_at) { now - 10.year + 1.day}
+        let(:interval) { 'day' }
+
+        it "returns no entries" do
+          do_request
+          expect(response_status).to eq 422
         end
       end
 
