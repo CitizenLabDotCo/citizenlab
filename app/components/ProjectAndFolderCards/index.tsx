@@ -43,7 +43,12 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  fontSizes,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 

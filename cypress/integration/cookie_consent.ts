@@ -49,7 +49,7 @@ describe('Cookie consent form', () => {
 
       cy.acceptCookies();
 
-      cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+      cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
 
         return cy.request({
