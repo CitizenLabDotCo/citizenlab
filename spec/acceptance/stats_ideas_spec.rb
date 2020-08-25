@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-@@multiloc_service = MultilocService.new
+multiloc_service = MultilocService.new
 
 def time_boundary_parameters s
   s.parameter :start_at, "Date defining from where results should start", required: false
@@ -302,7 +302,7 @@ resource "Stats - Ideas" do
 
         project_name_col = worksheet.map {|col| col.cells[0].value}
         header, *project_names = project_name_col
-        expect(project_names).to match_array [@@multiloc_service.t(@project1.title_multiloc), @@multiloc_service.t(@project2.title_multiloc), @@multiloc_service.t(@project3.title_multiloc)]
+        expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc), multiloc_service.t(@project3.title_multiloc)]
 
         idea_col = worksheet.map {|col| col.cells[2].value}
         header, *ideas = idea_col

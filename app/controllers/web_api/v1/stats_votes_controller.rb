@@ -125,13 +125,14 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_topic_as_xlsx
-    res = []
-    votes_by_topic_serie.each {|topic_id, count|
-      res.push({
-        "topic" => @@multiloc_service.t(Topic.find(topic_id).title_multiloc),
+    serie = votes_by_topic_serie
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    res = serie.map {|topic_id, count|
+      {
+        "topic" => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
         "topic_id" => topic_id,
         "votes" => count
-      })
+      }
     }
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "topic"
@@ -161,13 +162,14 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_project_as_xlsx
-    res = []
-    votes_by_project_serie.each {|project_id, count|
-      res.push({
-        "project" => @@multiloc_service.t(Project.find(project_id).title_multiloc),
+    serie = votes_by_project_serie
+    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
+    res = serie.map {|project_id, count|
+      {
+        "project" => @@multiloc_service.t(projects.find(project_id).title_multiloc),
         "project_id" => project_id,
         "votes" => count
-      })
+      }
     }
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "project"

@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-@@multiloc_service = MultilocService.new
+multiloc_service = MultilocService.new
 
 def time_boundary_parameters s
   s.parameter :start_at, "Date defining from where results should start", required: false
@@ -1200,7 +1200,7 @@ resource "Stats - Users" do
 
           option_titles_col = worksheet.map {|col| col.cells[0].value}
           header, *option_titles = option_titles_col
-          expect(option_titles).to match_array [@@multiloc_service.t(@option1.title_multiloc), @@multiloc_service.t(@option2.title_multiloc), "unknown"]
+          expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), "unknown"]
 
           option_ids_col = worksheet.map {|col| col.cells[1].value}
           header, *option_ids = option_ids_col
@@ -1246,7 +1246,7 @@ resource "Stats - Users" do
 
           option_titles_col = worksheet.map {|col| col.cells[0].value}
           header, *option_titles = option_titles_col
-          expect(option_titles).to match_array [@@multiloc_service.t(@option1.title_multiloc), @@multiloc_service.t(@option2.title_multiloc), "unknown"]
+          expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), "unknown"]
 
           users_col = worksheet.map {|col| col.cells[2].value}
           header, *users = users_col
