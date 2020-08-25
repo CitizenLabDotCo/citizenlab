@@ -39,7 +39,13 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 
@@ -710,7 +716,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <ProjectMetaItems>
                   {showIdeasCount && (
                     <MetaItem className="first">
-                      <MetaItemIcon ariaHidden name="idea2" />
+                      <MetaItemIcon ariaHidden name="idea" />
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
                         {formatMessage(messages.xIdeas, { ideasCount })}
