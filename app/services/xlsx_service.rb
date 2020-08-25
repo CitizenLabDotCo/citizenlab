@@ -89,6 +89,13 @@ class XlsxService
     ]
     generate_xlsx name, columns, serie
   end
+  def generate_field_stats_xlsx serie, key_name, value_name
+    columns = [
+      {header: key_name,   f: -> (item) {item[0]}},
+      {header: value_name, f: -> (item) {item[1]}}
+    ]
+    generate_xlsx value_name + '_by_' + key_name, columns, serie
+  end
 
   def generate_res_stats_xlsx serie, resource_name, grouped_by
     grouped_by_id = "#{grouped_by}_id"

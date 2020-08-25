@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+@@multiloc_service = MultilocService.new
 
 def time_boundary_parameters s
   s.parameter :start_at, "Date defining from where results should start", required: false
@@ -794,6 +795,38 @@ resource "Stats - Users" do
       end
     end
 
+    get "web_api/v1/stats/users_by_gender_as_xlsx" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      before do
+        travel_to start_at + 16.days do
+          create_list(:user, 2, gender: 'female')
+          create_list(:user, 1, gender: 'male')
+          create(:user, gender: 'unspecified')
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Users by gender" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['gender', 'users']
+
+        genders_col = worksheet.map {|col| col.cells[0].value}
+        header, *genders = genders_col
+        expect(genders).to match_array ['_blank', 'unspecified', 'male', 'female']
+
+        amount_col = worksheet.map {|col| col.cells[1].value}
+        header, *amounts = amount_col
+        expect(amounts).to match_array [0, 1, 1, 2]
+      end
+    end
+
     get "web_api/v1/stats/users_by_birthyear" do
       time_boundary_parameters self
       group_filter_parameter self
@@ -822,6 +855,37 @@ resource "Stats - Users" do
             }
           }
         })
+      end
+    end
+
+    get "web_api/v1/stats/users_by_birthyear_as_xlsx" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      before do
+        travel_to start_at + 16.days do
+          create_list(:user, 2, birthyear: 1980)
+          create(:user, birthyear: 1976)
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user, birthyear: 1980)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Users by birthyear" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['birthyear', 'users']
+
+        birthyears_col = worksheet.map {|col| col.cells[0].value}
+        header, *birthyears = birthyears_col
+        expect(birthyears).to match_array [1976, 1980, "_blank"]
+
+        amount_col = worksheet.map {|col| col.cells[1].value}
+        header, *amounts = amount_col
+        expect(amounts).to match_array [1, 2, 0]
       end
     end
 
@@ -861,6 +925,38 @@ resource "Stats - Users" do
       end
     end
 
+    get "web_api/v1/stats/users_by_domicile_as_xlsx" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      before do
+        travel_to start_at + 16.days do
+          @area1, @area2, @area3 = create_list(:area, 3)
+          create_list(:user, 2, domicile: @area1.id)
+          create(:user, domicile: @area2.id)
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user, birthyear: 1980)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Users by domicile" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ["area", "area_id", "users"]
+
+        areas_col = worksheet.map {|col| col.cells[1].value}
+        header, *areas = areas_col
+        expect(areas).to match_array [@area1.id, @area2.id, "_blank"]
+
+        amount_col = worksheet.map {|col| col.cells[2].value}
+        header, *amounts = amount_col
+        expect(amounts).to match_array [0, 1, 2]
+      end
+    end
+
     get "web_api/v1/stats/users_by_education" do
       time_boundary_parameters self
       group_filter_parameter self
@@ -889,6 +985,36 @@ resource "Stats - Users" do
             }
           }
         })
+      end
+    end
+    get "web_api/v1/stats/users_by_education_as_xlsx" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      before do
+        travel_to start_at + 24.days do
+          create_list(:user, 2, education: '3')
+          create(:user, education: '5')
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user, education: '3')
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Users by education" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ["education", "users"]
+
+        areas_col = worksheet.map {|col| col.cells[0].value}
+        header, *areas = areas_col
+        expect(areas).to match_array [3, 5, "_blank"]
+
+        amount_col = worksheet.map {|col| col.cells[1].value}
+        header, *amounts = amount_col
+        expect(amounts).to match_array [2, 1, 0]
       end
     end
 
@@ -1031,5 +1157,139 @@ resource "Stats - Users" do
       end
     end
 
+    get "web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      describe "with select field" do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_select)
+          @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+
+          # We create an option on a different custom_field, but with the same
+          # key. This covers a regressions that mixed up custom field options
+          # between fields
+          @custom_field2 = create(:custom_field_select)
+          create(:custom_field_option, key: @option1.key, title_multiloc: {en: 'different'}, custom_field: @custom_field2)
+
+          travel_to(start_at - 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          end
+
+          travel_to(start_at + 4.days) do
+            create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => @option2.key}, manual_groups: [@group])
+            create(:user, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => @option3.key})
+          end
+
+          travel_to(end_at + 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          end
+
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request "Users by custom field (select)" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet[0].cells.map(&:value)).to match ["option", "option_id", "users"]
+
+          option_titles_col = worksheet.map {|col| col.cells[0].value}
+          header, *option_titles = option_titles_col
+          expect(option_titles).to match_array [@@multiloc_service.t(@option1.title_multiloc), @@multiloc_service.t(@option2.title_multiloc), "unknown"]
+
+          option_ids_col = worksheet.map {|col| col.cells[1].value}
+          header, *option_ids = option_ids_col
+          expect(option_ids).to match_array [@option1.key, @option2.key, "_blank"]
+
+          users_col = worksheet.map {|col| col.cells[2].value}
+          header, *users = users_col
+          expect(users).to match_array [1, 1, 1]
+        end
+
+      end
+
+
+      describe "with multiselect field" do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_multiselect)
+          @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+          travel_to(start_at - 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          end
+
+          travel_to(start_at + 6.days) do
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key]}, manual_groups: [@group])
+            create(:user, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => [@option3.key]})
+          end
+
+          travel_to(end_at + 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          end
+
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request "Users by custom field (multiselect)" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet[0].cells.map(&:value)).to match ["option", "option_id", "users"]
+
+          option_titles_col = worksheet.map {|col| col.cells[0].value}
+          header, *option_titles = option_titles_col
+          expect(option_titles).to match_array [@@multiloc_service.t(@option1.title_multiloc), @@multiloc_service.t(@option2.title_multiloc), "unknown"]
+
+          users_col = worksheet.map {|col| col.cells[2].value}
+          header, *users = users_col
+          expect(users).to match_array [2, 1, 1]
+        end
+      end
+
+      describe "with checkbox field" do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_checkbox)
+          travel_to(start_at - 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          end
+
+          travel_to(start_at + 24.days) do
+            create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+            create(:user, manual_groups: [@group])
+          end
+
+          travel_to(end_at + 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+          end
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request "Users by custom field (checkbox)" do
+          expect(response_status).to eq 200
+          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+          expect(worksheet[0].cells.map(&:value)).to match ["option", "users"]
+
+          option_ids_col = worksheet.map {|col| col.cells[0].value}
+          header, *option_ids = option_ids_col
+          expect(option_ids).to match_array ["_blank", "false", "true"]
+
+          users_col = worksheet.map {|col| col.cells[1].value}
+          header, *users = users_col
+          expect(users).to match_array [1, 1, 1]
+        end
+      end
+    end
   end
 end
