@@ -225,8 +225,10 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_domicile_as_xlsx
-    res = users_by_domicile_serie.map { |area_id, users|
-      area = area_id != "_blank" ? @@multiloc_service.t(Area.find(area_id).title_multiloc) : "unknown"
+    serie = users_by_domicile_serie
+    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
+    res = serie.map { |area_id, users|
+      area = area_id != "_blank" ? @@multiloc_service.t(areas.find(area_id).title_multiloc) : "unknown"
       {
         "area_id" => area_id,
         "area" => area,

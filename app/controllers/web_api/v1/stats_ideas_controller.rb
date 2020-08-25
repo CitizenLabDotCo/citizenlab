@@ -36,15 +36,20 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_topic
-    topics = Topic.where(id: ideas_by_project_serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: ideas_by_topic_serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    serie = ideas_by_topic_serie
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {series: {ideas: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_topic_as_xlsx
+    serie = ideas_by_topic_serie
+
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+
     res = []
-    ideas_by_topic_serie.each {|topic_id, count|
+    serie.each {|topic_id, count|
       res.push({
-        "topic" => @@multiloc_service.t(Topic.find(topic_id).title_multiloc),
+        "topic" => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
         "topic_id" => topic_id,
         "ideas" => count
       })
@@ -70,18 +75,21 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_project
-    projects = Project.where(id: ideas_by_project_serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: ideas_by_project_serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    serie = ideas_by_project_serie
+    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {series: {ideas: serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_project_as_xlsx
-    res = []
-    ideas_by_project_serie.each {|project_id, count|
-      res.push({
-        "project" => @@multiloc_service.t(Project.find(project_id).title_multiloc),
+    serie = ideas_by_project_serie
+    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
+
+    res = serie.map {|project_id, count|
+      {
+        "project" => @@multiloc_service.t(projects.find(project_id).title_multiloc),
         "project_id" => project_id,
         "ideas" => count
-      })
+      }
     }
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "project"
