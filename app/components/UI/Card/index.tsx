@@ -7,7 +7,11 @@ import LazyImage from 'components/LazyImage';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
+import {
+  fontSizes,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+} from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: 100%;

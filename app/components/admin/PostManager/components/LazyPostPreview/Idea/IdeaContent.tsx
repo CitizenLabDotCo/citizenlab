@@ -7,6 +7,7 @@ import { get } from 'lodash-es';
 import Title from 'components/PostShowComponents/Title';
 import PostedBy from 'containers/IdeasShow/PostedBy';
 import Body from 'components/PostShowComponents/Body';
+import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Comments from 'components/PostShowComponents/Comments';
@@ -100,6 +101,12 @@ const IdeaImage = styled.img`
 
 const StyledBody = styled(Body)`
   margin-bottom: 20px;
+`;
+
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 28px;
 `;
 
 const StyledMap = styled(DropdownMap)`
@@ -207,6 +214,8 @@ export class IdeaContent extends PureComponent<
       const ideaAddress = idea.attributes.location_description || null;
       // AuthorId can be null if user has been deleted
       const authorId = idea.relationships.author.data?.id || null;
+      const ideaProposedBudget = idea.attributes.proposed_budget;
+      const hasMultipleBodyAttributes = ideaProposedBudget !== null;
 
       return (
         <Container>
@@ -253,6 +262,22 @@ export class IdeaContent extends PureComponent<
                   />
                 )}
 
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                )}
+                {idea.attributes.proposed_budget !== null && (
+                  <IdeaProposedBudget
+                    proposedBudget={idea.attributes.proposed_budget}
+                  />
+                )}
+
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                )}
                 <StyledBody
                   postId={ideaId}
                   postType="idea"

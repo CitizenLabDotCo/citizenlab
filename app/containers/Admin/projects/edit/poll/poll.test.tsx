@@ -122,22 +122,18 @@ describe('<AdminProjectPoll/>', () => {
           locale={'en'}
         />
       );
-      wrapper
-        .find('GetPollQuestions')
-        .every((item) =>
-          expect(item.props()).toMatchObject({
-            participationContextId: 'MockPhasePollId',
-            participationContextType: 'phase',
-          })
-        );
-      wrapper
-        .find('ExportPollButton')
-        .every((item) =>
-          expect(item.props()).toMatchObject({
-            participationContextId: 'MockPhasePollId',
-            participationContextType: 'phase',
-          })
-        );
+      wrapper.find('GetPollQuestions').every((item) =>
+        expect(item.props()).toMatchObject({
+          participationContextId: 'MockPhasePollId',
+          participationContextType: 'phase',
+        })
+      );
+      wrapper.find('ExportPollButton').every((item) =>
+        expect(item.props()).toMatchObject({
+          participationContextId: 'MockPhasePollId',
+          participationContextType: 'phase',
+        })
+      );
     });
   });
 });

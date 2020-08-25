@@ -15,7 +15,7 @@ interface InputProps {
 
 export default (inputProps: InputProps) => (
   <GetUser id={inputProps.invite.relationships.invitee.data.id}>
-    {user => {
+    {(user) => {
       const handleOnDeleteInvite = (inviteId: string) => () =>
         deleteInvite(inviteId);
 

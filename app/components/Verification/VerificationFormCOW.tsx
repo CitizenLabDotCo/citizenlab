@@ -19,7 +19,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-  HelpImage
+  HelpImage,
 } from './styles';
 
 // hooks
@@ -96,11 +96,11 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
 
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,
-              `${API_PATH}/projects`
+              `${API_PATH}/projects`,
             ];
             const partialEndpointsToRefetch = [
               `${API_PATH}/projects/`,
-              `${API_PATH}/ideas/`
+              `${API_PATH}/ideas/`,
             ];
 
             if (!isNilOrError(authUser)) {
@@ -109,7 +109,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
 
             await streams.fetchAllWith({
               apiEndpoint: endpointsToRefetch,
-              partialApiEndpoint: partialEndpointsToRefetch
+              partialApiEndpoint: partialEndpointsToRefetch,
             });
 
             setProcessing(false);
@@ -147,7 +147,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
     }, [onCancel]);
 
     const onToggleHelpButtonClick = useCallback(() => {
-      setShowHelp(showHelp => !showHelp);
+      setShowHelp((showHelp) => !showHelp);
     }, []);
 
     return (

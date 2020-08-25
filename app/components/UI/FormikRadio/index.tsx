@@ -16,7 +16,7 @@ class FormikRadio extends PureComponent<Props> {
   render() {
     return (
       <FormikConsumer>
-        {formikContext => (
+        {(formikContext) => (
           <Radio
             {...this.props}
             currentValue={formikContext.values[this.props.name] || ''}
