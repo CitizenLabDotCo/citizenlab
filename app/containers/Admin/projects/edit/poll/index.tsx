@@ -139,7 +139,9 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                     <PollAdminForm
                       participationContextType="phase"
                       participationContextId={phase.id}
-                      pollQuestions={isError(pollQuestions) ? null : pollQuestions}
+                      pollQuestions={
+                        isError(pollQuestions) ? null : pollQuestions
+                      }
                     />
                   )}
                 </GetPollQuestions>

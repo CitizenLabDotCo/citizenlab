@@ -14,7 +14,7 @@ import {
   invisibleA11yText,
   remCalc,
   calculateContrastRatio,
-  hexToRgb
+  hexToRgb,
 } from 'cl2-component-library';
 
 export {
@@ -33,5 +33,5 @@ export {
   invisibleA11yText,
   remCalc,
   calculateContrastRatio,
-  hexToRgb
+  hexToRgb,
 };

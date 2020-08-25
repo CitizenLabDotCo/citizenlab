@@ -9,7 +9,9 @@ import Button from 'components/UI/Button';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,7 +32,7 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-export interface Props extends DataProps, InputProps { }
+export interface Props extends DataProps, InputProps {}
 
 export interface State {
   selectedLocale: Locale | null;
@@ -40,14 +42,14 @@ export class FormQuestionRow extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedLocale: null
+      selectedLocale: null,
     };
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
     if (!isNilOrError(props.locale) && !state.selectedLocale) {
       return {
-        selectedLocale: props.locale
+        selectedLocale: props.locale,
       };
     }
 
@@ -75,18 +77,18 @@ export class FormQuestionRow extends PureComponent<Props, State> {
     return (
       <Row className="e2e-form-question-row">
         <TextCell>
-          {selectedLocale &&
+          {selectedLocale && (
             <LocaleSwitcher
               onSelectedLocaleChange={this.onChangeLocale}
               locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
               selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
-          }
+          )}
         </TextCell>
 
         <TextCell className="expand">
-          {selectedLocale &&
+          {selectedLocale && (
             <Input
               autoFocus
               value={titleMultiloc[selectedLocale]}
@@ -94,7 +96,7 @@ export class FormQuestionRow extends PureComponent<Props, State> {
               type="text"
               onChange={this.onChangeTitle}
             />
-          }
+          )}
         </TextCell>
 
         <Button
@@ -118,12 +120,12 @@ export class FormQuestionRow extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />
+  tenantLocales: <GetTenantLocales />,
 });
 
 const FormQuestionRowWithData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FormQuestionRow {...dataProps} {...inputProps} />}
+    {(dataProps) => <FormQuestionRow {...dataProps} {...inputProps} />}
   </Data>
 );
 
