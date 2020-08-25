@@ -66,7 +66,7 @@ export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
   size: string;
-  notALink?: boolean;
+  isLinkToProfile?: boolean;
   projectId?: string | null;
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
@@ -93,7 +93,7 @@ class Author extends PureComponent<Props, State> {
       authorId,
       createdAt,
       size,
-      notALink,
+      isLinkToProfile,
       projectId,
       showAvatar,
       showModeration,
@@ -106,11 +106,10 @@ class Author extends PureComponent<Props, State> {
       !isNilOrError(author) &&
       showModeration &&
       canModerate(projectId, { data: author });
-    const isLinkToProfle = !notALink;
     const authorName = (
       <UserName
         userId={authorId}
-        isLinkToProfile={isLinkToProfle}
+        isLinkToProfile={isLinkToProfile}
         canModerate={authorCanModerate}
         emphasize={emphasize}
       />
@@ -123,7 +122,7 @@ class Author extends PureComponent<Props, State> {
             <StyledAvatar
               userId={authorId}
               size={size}
-              isLinkToProfile={isLinkToProfle}
+              isLinkToProfile={isLinkToProfile}
               moderator={authorCanModerate}
               bgColor={avatarBadgeBgColor}
             />

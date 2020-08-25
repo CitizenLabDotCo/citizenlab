@@ -55,13 +55,14 @@ export default class CommentHeader extends PureComponent<Props, State> {
       commentCreatedAt,
       moderator,
     } = this.props;
+    const hasAuthorId = !!authorId;
 
     return (
       <Container>
         <Left>
           <StyledAuthor
             authorId={authorId}
-            notALink={authorId ? false : true}
+            isLinkToProfile={hasAuthorId}
             size="32px"
             projectId={projectId}
             showModeration={moderator}
