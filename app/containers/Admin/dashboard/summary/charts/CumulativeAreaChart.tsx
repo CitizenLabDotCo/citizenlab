@@ -41,6 +41,7 @@ import {
 } from '../..';
 import Button from 'components/UI/Button';
 import { Dropdown } from 'cl2-component-library';
+import ExportMenu from '../../components/ExportMenu';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -83,7 +84,7 @@ export class CumulativeAreaChart extends PureComponent<
   State
 > {
   subscription: Subscription;
-  currentChart = React.createRef<HTMLDivElement>();
+  currentChart = Node;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
@@ -337,6 +338,13 @@ export class CumulativeAreaChart extends PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
+            <ExportMenu
+              exporting={exporting}
+              className={className}
+              handleDownloadXls={this.downloadXlsx}
+              svgNode={this.currentChart}
+            />
+
             <Container className={className}>
               <DropdownButton
                 buttonStyle="admin-dark-text"
