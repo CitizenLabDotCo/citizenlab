@@ -67,10 +67,6 @@ class StatCommentPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
-  def comments_count_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
-
   def comments_by_time_as_xlsx?
     user&.active? && (user.admin? || user.project_moderator?)
   end
