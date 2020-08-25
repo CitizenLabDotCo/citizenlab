@@ -101,7 +101,7 @@
   "app.components.FiltersModal.resetFilters": "Réinitialiser",
   "app.components.FolderFolderCard.a11y_folderDescription": "Description du dossier :",
   "app.components.FolderFolderCard.a11y_folderTitle": "Titre du dossier :",
-  "app.components.FolderFolderCard.numberOfFolders": "{numberOfFolders, plural, no {# dossiers} one {# dossier} other {# dossiers}}",
+  "app.components.FolderFolderCard.numberOfProjectsInFolder": "",
   "app.components.GoBackButton.group.edit.goBack": "Retour",
   "app.components.IdeaCards.empty": "Il n'y a pas encore d'idées.",
   "app.components.IdeaCards.loadMore": "Afficher plus d'idées",

@@ -101,7 +101,7 @@
   "app.components.FiltersModal.resetFilters": "Restablecer los filtros",
   "app.components.FolderFolderCard.a11y_folderDescription": "Descripción de la carpeta:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Título de la carpeta:",
-  "app.components.FolderFolderCard.numberOfFolders": "{numberOfFolders, plural, no {# carpetas} one {# carpeta} other {# carpetas}}",
+  "app.components.FolderFolderCard.numberOfProjectsInFolder": "",
   "app.components.GoBackButton.group.edit.goBack": "Volver",
   "app.components.IdeaCards.empty": "No hay ideas aquí todavía.",
   "app.components.IdeaCards.loadMore": "Carga más ideas",

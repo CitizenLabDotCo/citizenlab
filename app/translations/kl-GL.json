@@ -101,7 +101,7 @@
   "app.components.FiltersModal.resetFilters": "Immikkoortitikkat aallaqqaataanit aallartittussangorlugu aaqqikkit",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappip allaaserinera:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappip taaguutaa:",
-  "app.components.FolderFolderCard.numberOfFolders": "{numberOfFolders, plural, no {# mappit} one {# mappi} other {# mappit}}",
+  "app.components.FolderFolderCard.numberOfProjectsInFolder": "",
   "app.components.GoBackButton.group.edit.goBack": "Uterit",
   "app.components.IdeaCards.empty": "{tenantName, select, DeloitteDK {Suli ilanngussaqanngilaq.} other {Suli isumassarsiaqanngilaq.}}",
   "app.components.IdeaCards.loadMore": "{tenantName, select, DeloitteDK {Ilanngussanik amerlanernik immiussigit} other {Isumassarsianik amerlanernik immiussigit}}",

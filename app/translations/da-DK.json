@@ -101,7 +101,7 @@
   "app.components.FiltersModal.resetFilters": "Nulstil filtre",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappebeskrivelse:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetitel:",
-  "app.components.FolderFolderCard.numberOfFolders": "{numberOfFolders, plural, no {# mapper} one {# mappe} other {# mapper}}",
+  "app.components.FolderFolderCard.numberOfProjectsInFolder": "",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
   "app.components.IdeaCards.empty": "{tenantName, select, DeloitteDK {Her er der ingen indlæg endnu.} other {Her er der ingen idéer endnu.}}",
   "app.components.IdeaCards.loadMore": "{tenantName, select, DeloitteDK {Indlæs flere indlæg} other {Indlæs flere ideer}}",
