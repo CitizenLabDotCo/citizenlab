@@ -13,11 +13,11 @@ import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   AreaChart,
   CartesianGrid,
@@ -39,24 +39,11 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from '../..';
-import Button from 'components/UI/Button';
-import { Dropdown } from 'cl2-component-library';
-import ExportMenu from '../../components/ExportMenu';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
-import ReactDOM from 'react-dom';
-
-const DropdownButton = styled(Button)``;
-
-const Container = styled.div`
-  display: flex;
-  align-items: end;
-  position: relative;
-  cursor: pointer;
-`;
 
 type State = {
   serie: IGraphFormat | null;
@@ -85,8 +72,7 @@ export class CumulativeAreaChart extends PureComponent<
   State
 > {
   subscription: Subscription;
-  currentChart: React.Ref<any>;
-  setRef: (element: any) => void;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
@@ -117,8 +103,6 @@ export class CumulativeAreaChart extends PureComponent<
       currentTopicFilter,
       currentProjectFilter
     );
-
-    console.log(this.currentChart);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -315,7 +299,7 @@ export class CumulativeAreaChart extends PureComponent<
       className,
       intl: { formatMessage },
     } = this.props;
-    const { serie, exporting, dropdownOpened } = this.state;
+    const { serie, exporting } = this.state;
     const {
       chartFill,
       chartLabelSize,
@@ -349,6 +333,7 @@ export class CumulativeAreaChart extends PureComponent<
               className={className}
               handleDownloadXls={this.downloadXlsx}
               svgNode={this.currentChart}
+              title={messages[graphTitleMessageKey].defaultMessage}
             />
           </GraphCardHeader>
           {!serie ? (

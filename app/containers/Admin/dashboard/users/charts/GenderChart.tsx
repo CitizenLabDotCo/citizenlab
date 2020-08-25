@@ -16,6 +16,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   NoDataContainer,
   GraphCardHeader,
@@ -53,12 +54,14 @@ const labelColors = {
 class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   private subscriptions: Subscription[];
   private queryProps$: BehaviorSubject<QueryProps>;
+  private currentChart: React.RefObject<any>;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       serie: null,
     };
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -135,6 +138,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             <GraphCardTitle>
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
+            <ExportMenu className={className} svgNode={this.currentChart} />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -143,16 +147,16 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
           ) : (
             <PieChartStyleFixesDiv>
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
-                <PieChart>
+                <PieChart ref={this.currentChart}>
                   <Pie
                     isAnimationActive={false}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
                     data={serie}
                     dataKey="value"
-                    innerRadius={60}
+                    outerRadius={60}
                     fill={colorMain}
-                    label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
+                    label={(entry) => entry.name + ' : ' + entry.value}
                   >
                     {serie.map((entry, index) => (
                       <Cell

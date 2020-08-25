@@ -14,6 +14,7 @@ import { media } from 'utils/styleUtils';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -33,6 +34,7 @@ import { HiddenLabel } from 'utils/a11y';
 
 const SHiddenLabel = styled(HiddenLabel)`
   flex: 1;
+  margin-right: 15px;
   @media (max-width: 1300px) {
     width: 100%;
   }
@@ -101,6 +103,11 @@ interface InputProps extends QueryProps {
 interface Props extends InputProps, DataProps {}
 
 class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
+  currentChart: React.RefObject<any>;
+  constructor(props: Props & InjectedIntlProps) {
+    super(props as any);
+    this.currentChart = React.createRef();
+  }
   render() {
     const {
       chartFill,
@@ -151,6 +158,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 options={resourceOptions}
               />
             </SHiddenLabel>
+            <ExportMenu className={className} svgNode={this.currentChart} />
           </GraphCardHeaderWithFilter>
           {!serie ? (
             <NoDataContainer>
@@ -173,7 +181,11 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 />
               )}
               <ResponsiveContainer height={serie.length * 50}>
-                <BarChart data={convertedSerie} layout="vertical">
+                <BarChart
+                  data={convertedSerie}
+                  layout="vertical"
+                  ref={this.currentChart}
+                >
                   <Bar
                     dataKey="value"
                     name={unitName}

@@ -10,6 +10,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   IGraphUnit,
   PieChart,
@@ -63,6 +64,12 @@ const labelColors = ['#5D99C6 ', '#C37281 ', '#B0CDC4 ', '#C0C2CE'];
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
 > {
+  currentChart: React.RefObject<any>;
+
+  constructor(props: Props & InjectedIntlProps) {
+    super(props as any);
+    this.currentChart = React.createRef();
+  }
   render() {
     const {
       colorMain,
@@ -78,6 +85,7 @@ class PieChartByCategory extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
+            <ExportMenu className={className} svgNode={this.currentChart} />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -96,6 +104,7 @@ class PieChartByCategory extends React.PureComponent<
                     innerRadius={60}
                     fill={colorMain}
                     label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
+                    ref={this.currentChart}
                   >
                     {serie.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={labelColors[index]} />

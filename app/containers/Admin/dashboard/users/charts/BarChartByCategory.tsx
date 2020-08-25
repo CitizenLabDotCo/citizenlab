@@ -11,6 +11,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -69,6 +70,11 @@ interface Props extends InputProps, DataProps {}
 export class BarChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
 > {
+  currentChart: React.RefObject<any>;
+  constructor(props: Props & InjectedIntlProps) {
+    super(props as any);
+    this.currentChart = React.createRef();
+  }
   render() {
     const {
       chartFill,
@@ -95,6 +101,7 @@ export class BarChartByCategory extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
+            <ExportMenu className={className} svgNode={this.currentChart} />
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>
@@ -102,7 +109,12 @@ export class BarChartByCategory extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <BarChart data={serie} margin={{ right: 40 }}>
+              <BarChart
+                data={serie}
+                margin={{ right: 40 }}
+                ref={this.currentChart}
+                layout="horizontal"
+              >
                 <Bar
                   dataKey="value"
                   name={unitName}

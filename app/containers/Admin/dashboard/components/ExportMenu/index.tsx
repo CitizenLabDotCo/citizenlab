@@ -1,5 +1,6 @@
 // libraries
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 
 // styling
 import styled from 'styled-components';
@@ -8,7 +9,6 @@ import { fontSizes } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
 import { Dropdown } from 'cl2-component-library';
-import ReactDOM from 'react-dom';
 
 const DropdownButton = styled(Button)``;
 
@@ -20,10 +20,11 @@ const Container = styled.div`
 `;
 
 interface ExportMenuProps {
-  exporting: boolean;
+  exporting?: boolean;
   className?: string;
+  title?: string;
   // handleDownloadSvg: (name: string, ref: any) => void;
-  handleDownloadXls: () => void;
+  handleDownloadXls?: () => void;
   svgNode: React.RefObject<any>;
 }
 
@@ -32,19 +33,20 @@ const ExportMenu: React.SFC<ExportMenuProps> = ({
   className,
   exporting,
   handleDownloadXls,
+  title,
 }) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   // const [exportingXls, setExportingXls] = useState(false);
 
-  const handleDownloadSvg = (name: string) => () => {
+  const handleDownloadSvg = (name?: string) => () => {
     const node = ReactDOM.findDOMNode(svgNode.current);
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
         type: 'image/svg+xml;charset=utf-8',
       });
-
-      saveAs(svgBlob, name + 'svg');
+      setDropdownOpened(false);
+      saveAs(svgBlob, name);
     }
 
     // const {
@@ -67,16 +69,11 @@ const ExportMenu: React.SFC<ExportMenuProps> = ({
     // }.svg`;
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpened(!dropdownOpened);
-  };
-  console.log(svgNode);
-
   return (
     <Container className={className}>
       <DropdownButton
         buttonStyle="admin-dark-text"
-        onClick={toggleDropdown}
+        onClick={() => setDropdownOpened(!dropdownOpened)}
         icon="download"
         iconPos="right"
         padding="0px"
@@ -87,11 +84,11 @@ const ExportMenu: React.SFC<ExportMenuProps> = ({
         right="-5px"
         mobileRight="-5px"
         opened={dropdownOpened}
-        onClickOutside={toggleDropdown}
+        onClickOutside={() => setDropdownOpened(false)}
         content={
           <>
             <Button
-              onClick={handleDownloadSvg('name')}
+              onClick={handleDownloadSvg(title)}
               buttonStyle="text"
               padding="0"
               fontSize={`${fontSizes.small}px`}
