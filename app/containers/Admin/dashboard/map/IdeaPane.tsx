@@ -122,7 +122,6 @@ class IdeaPane extends PureComponent<Props, State> {
           }
           createdAt={idea.attributes.published_at}
           size="34px"
-          notALink
         />
         <TextContainer>
           <T value={idea.attributes.body_multiloc} supportHtml />
