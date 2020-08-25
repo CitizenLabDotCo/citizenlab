@@ -13,41 +13,52 @@ export interface Props {
   className?: string;
 }
 
-const SearchInputWrapper = memo<Props & InjectedIntlProps>(({
-  placeholder,
-  ariaLabel,
-  debounce,
-  setClearButtonRef,
-  onChange,
-  className,
-  intl: { formatMessage }
-}) => {
+const SearchInputWrapper = memo<Props & InjectedIntlProps>(
+  ({
+    placeholder,
+    ariaLabel,
+    debounce,
+    setClearButtonRef,
+    onChange,
+    className,
+    intl: { formatMessage },
+  }) => {
+    const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
-  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+    const handleOnChange = useCallback(
+      (searchTerm: string | null) => {
+        setSearchTerm(searchTerm);
+        onChange(searchTerm);
+      },
+      [onChange]
+    );
 
-  const handleOnChange = useCallback((searchTerm: string | null) => {
-    setSearchTerm(searchTerm);
-    onChange(searchTerm);
-  }, [onChange]);
+    const handleClearButtonRef = useCallback(
+      (element: HTMLButtonElement) => {
+        setClearButtonRef?.(element);
+      },
+      [setClearButtonRef]
+    );
 
-  const handleClearButtonRef = useCallback((element: HTMLButtonElement) => {
-    setClearButtonRef?.(element);
-  }, [setClearButtonRef]);
-
-  return (
-    <SearchInput
-      placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
-      ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
-      debounce={debounce}
-      className={className}
-      setClearButtonRef={handleClearButtonRef}
-      onChange={handleOnChange}
-      i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
-      i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, { searchTerm })}
-      i18nSearchTermBlankMessage={formatMessage(messages.a11y_searchTermBlank)}
-    />
-  );
-});
+    return (
+      <SearchInput
+        placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
+        ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
+        debounce={debounce}
+        className={className}
+        setClearButtonRef={handleClearButtonRef}
+        onChange={handleOnChange}
+        i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
+        i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
+          searchTerm,
+        })}
+        i18nSearchTermBlankMessage={formatMessage(
+          messages.a11y_searchTermBlank
+        )}
+      />
+    );
+  }
+);
 
 const SearchInputWrapperWithHoC = injectIntl(SearchInputWrapper);
 

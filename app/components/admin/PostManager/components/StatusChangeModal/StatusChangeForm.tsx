@@ -7,7 +7,7 @@ import { IOfficialFeedbackData } from 'services/officialFeedback';
 
 // resources
 import GetTenantLocales, {
-  GetTenantLocalesChildProps
+  GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
 
 // intl
@@ -82,7 +82,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedLocale: props.intl.locale as Locale
+      selectedLocale: props.intl.locale as Locale,
     };
   }
 
@@ -91,7 +91,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
       latestOfficialFeedback,
       mode,
       onChangeMode,
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props;
 
     if (!latestOfficialFeedback) return null;
@@ -135,7 +135,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     if (locale && this.props.onChangeBody) {
       this.props.onChangeBody({
         ...this.props.newOfficialFeedback.body_multiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
   };
@@ -144,7 +144,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     if (locale && this.props.onChangeAuthor) {
       this.props.onChangeAuthor({
         ...this.props.newOfficialFeedback.author_multiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
   };
@@ -153,7 +153,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     const {
       intl: { formatMessage },
       newOfficialFeedback,
-      tenantLocales
+      tenantLocales,
     } = this.props;
     const { selectedLocale } = this.state;
 
@@ -201,7 +201,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
       submit,
       loading,
       error,
-      valid
+      valid,
     } = this.props;
 
     return (
@@ -228,12 +228,12 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
 const StatusChangeFormWithHoC = injectIntl(StatusChangeForm);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />
+  tenantLocales: <GetTenantLocales />,
 });
 
 const StatusChangeFormWithData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <StatusChangeFormWithHoC {...dataProps} {...inputProps} />}
+    {(dataProps) => <StatusChangeFormWithHoC {...dataProps} {...inputProps} />}
   </Data>
 );
 

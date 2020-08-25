@@ -17,6 +17,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
+import IdeaProposedBudget from './IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
@@ -29,9 +30,10 @@ import FeatureFlag from 'components/FeatureFlag';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
+import IdeaMoreActions from './IdeaMoreActions';
 import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
-import ActionBar from './ActionBar';
+import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
 import MetaInformation from './MetaInformation';
@@ -42,20 +44,20 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, {
-  GetIdeaImagesChildProps
+  GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
-  GetWindowSizeChildProps
+  GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, {
-  GetOfficialFeedbacksChildProps
+  GetOfficialFeedbacksChildProps,
 } from 'resources/GetOfficialFeedbacks';
 import GetPermission, {
-  GetPermissionChildProps
+  GetPermissionChildProps,
 } from 'resources/GetPermission';
 
 // i18n
@@ -70,14 +72,20 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
   columnsGapTablet,
   rightColumnWidthTablet,
-  pageContentMaxWidth
+  pageContentMaxWidth,
 } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -86,13 +94,13 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${props => props.theme.menuHeight}px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px);
+    height: calc(100vh - ${(props) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -101,7 +109,7 @@ const Container = styled.main<{ insideModal: boolean }>`
   flex-direction: column;
   min-height: calc(
     100vh -
-      ${props =>
+      ${(props) =>
         props.insideModal
           ? props.theme.menuHeight
           : props.theme.menuHeight + props.theme.footerHeight}px
@@ -110,10 +118,10 @@ const Container = styled.main<{ insideModal: boolean }>`
   opacity: 0;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props =>
+    min-height: calc(100vh - ${(props) =>
       props.insideModal
         ? props.theme.mobileMenuHeight
-        : props.theme.mobileMenuHeight}px - ${props =>
+        : props.theme.mobileMenuHeight}px - ${(props) =>
     props.theme.mobileTopBarHeight}px);
   `}
 
@@ -181,6 +189,14 @@ const LeftColumn = styled.div`
   `}
 `;
 
+const StyledTranslateButton = styled(TranslateButton)`
+  margin-bottom: 20px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
 const StyledTranslateButtonMobile = styled(TranslateButton)`
   display: none;
   width: fit-content;
@@ -201,6 +217,17 @@ const IdeaHeader = styled.div`
   `}
 `;
 
+const StyledProjectLink = styled(ProjectLink)`
+  margin-bottom: 70px;
+  display: block;
+`;
+
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 28px;
+`;
+
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
 
@@ -217,9 +244,15 @@ const StyledMobileIdeaStatus = styled(IdeaStatus)`
   `}
 `;
 
+const AuthorActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+`;
+
 const StyledIdeaAuthor = styled(IdeaAuthor)`
   margin-left: -4px;
-  margin-bottom: 50px;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -358,7 +391,7 @@ export class IdeasShow extends PureComponent<
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      actionInfos: null
+      actionInfos: null,
     };
   }
 
@@ -408,22 +441,22 @@ export class IdeasShow extends PureComponent<
       const pbPhase =
         !pbProject && !isNilOrError(phases)
           ? phases.find(
-              phase => phase.attributes.participation_method === 'budgeting'
+              (phase) => phase.attributes.participation_method === 'budgeting'
             )
           : null;
       const pbPhaseIsActive =
         pbPhase &&
         pastPresentOrFuture([
           pbPhase.attributes.start_at,
-          pbPhase.attributes.end_at
+          pbPhase.attributes.end_at,
         ]) === 'present';
       const lastPhase = !isNilOrError(phases)
-        ? last(sortBy(phases, [phase => phase.attributes.end_at]))
+        ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
         : null;
       const lastPhaseHasPassed = lastPhase
         ? pastPresentOrFuture([
             lastPhase.attributes.start_at,
-            lastPhase.attributes.end_at
+            lastPhase.attributes.end_at,
           ]) === 'past'
         : false;
       const pbPhaseIsLast = pbPhase && lastPhase && lastPhase.id === pbPhase.id;
@@ -469,8 +502,8 @@ export class IdeasShow extends PureComponent<
           participationContextId,
           budgetingDescriptor,
           showBudgetControl,
-          showVoteControl
-        }
+          showVoteControl,
+        },
       };
     }
 
@@ -497,7 +530,7 @@ export class IdeasShow extends PureComponent<
   };
 
   onTranslateIdea = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       // analytics
       if (prevState.translateButtonClicked === true) {
         trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
@@ -506,7 +539,7 @@ export class IdeasShow extends PureComponent<
       }
 
       return {
-        translateButtonClicked: !prevState.translateButtonClicked
+        translateButtonClicked: !prevState.translateButtonClicked,
       };
     });
   };
@@ -527,16 +560,12 @@ export class IdeasShow extends PureComponent<
       loaded,
       ideaIdForSocialSharing,
       translateButtonClicked,
-      actionInfos
+      actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (
-      !isNilOrError(idea) &&
-      !isNilOrError(locale) &&
-      loaded
-    ) {
+    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
@@ -547,6 +576,7 @@ export class IdeasShow extends PureComponent<
         ideaImages?.[0]?.attributes?.versions?.large || null;
       const ideaUrl = location.href;
       const ideaId = idea.id;
+      const proposedBudget = idea?.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
       const participationContextType =
         actionInfos?.participationContextType || null;
@@ -564,16 +594,18 @@ export class IdeasShow extends PureComponent<
       const smallerThanSmallTablet = windowSize
         ? windowSize <= viewportWidths.smallTablet
         : false;
+      const hasMultipleBodyAttributes =
+        proposedBudget !== null && proposedBudgetEnabled && !!ideaBody;
 
       const utmParams = !isNilOrError(authUser)
         ? {
             source: 'share_idea',
             campaign: 'share_content',
-            content: authUser.id
+            content: authUser.id,
           }
         : {
             source: 'share_idea',
-            campaign: 'share_content'
+            campaign: 'share_content',
           };
       const showTranslateButton =
         !isNilOrError(idea) &&
@@ -584,13 +616,9 @@ export class IdeasShow extends PureComponent<
         <>
           <IdeaMeta ideaId={ideaId} />
 
-          <ActionBar
-            ideaId={ideaId}
-            translateButtonClicked={translateButtonClicked}
-            onTranslateIdea={this.onTranslateIdea}
-          />
-
           <IdeaContainer>
+            <StyledProjectLink projectId={projectId} />
+
             <FeatureFlag name="machine_translations">
               {showTranslateButton && smallerThanSmallTablet && (
                 <StyledTranslateButtonMobile
@@ -621,11 +649,14 @@ export class IdeasShow extends PureComponent<
                 )}
 
                 {biggerThanLargeTablet && (
-                  <StyledIdeaAuthor
-                    ideaId={ideaId}
-                    authorId={authorId}
-                    ideaPublishedAt={ideaPublishedAt}
-                  />
+                  <AuthorActionsContainer>
+                    <StyledIdeaAuthor
+                      ideaId={ideaId}
+                      authorId={authorId}
+                      ideaPublishedAt={ideaPublishedAt}
+                    />
+                    <IdeaMoreActions idea={idea} hasLeftMargin={true} />
+                  </AuthorActionsContainer>
                 )}
 
                 {ideaImageLarge && (
@@ -638,6 +669,33 @@ export class IdeasShow extends PureComponent<
                     {...messages.invisibleTitleContent}
                   />
                 </ScreenReaderOnly>
+                <FeatureFlag name="machine_translations">
+                  {showTranslateButton && (
+                    <StyledTranslateButton
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateIdea}
+                    />
+                  )}
+                </FeatureFlag>
+
+                {proposedBudgetEnabled &&
+                  proposedBudget !== null &&
+                  hasMultipleBodyAttributes && (
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+                  )}
+
+                {proposedBudgetEnabled && proposedBudget !== null && (
+                  <IdeaProposedBudget proposedBudget={proposedBudget} />
+                )}
+
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                )}
+
                 <Body
                   postType="idea"
                   postId={ideaId}
@@ -680,14 +738,14 @@ export class IdeasShow extends PureComponent<
                     context="idea"
                     url={ideaUrl}
                     twitterMessage={formatMessage(messages.twitterMessage, {
-                      ideaTitle
+                      ideaTitle,
                     })}
                     emailSubject={formatMessage(messages.emailSharingSubject, {
-                      ideaTitle
+                      ideaTitle,
                     })}
                     emailBody={formatMessage(messages.emailSharingBody, {
                       ideaUrl,
-                      ideaTitle
+                      ideaTitle,
                     })}
                     utmParams={utmParams}
                   />
@@ -758,7 +816,7 @@ export class IdeasShow extends PureComponent<
                         context="idea"
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, {
-                          ideaTitle
+                          ideaTitle,
                         })}
                         emailSubject={formatMessage(
                           messages.emailSharingSubject,
@@ -766,12 +824,16 @@ export class IdeasShow extends PureComponent<
                         )}
                         emailBody={formatMessage(messages.emailSharingBody, {
                           ideaUrl,
-                          ideaTitle
+                          ideaTitle,
                         })}
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
-                    <MetaInformation ideaId={ideaId} projectId={projectId} statusId={statusId} />
+                    <MetaInformation
+                      ideaId={ideaId}
+                      projectId={projectId}
+                      statusId={statusId}
+                    />
                   </MetaContent>
                 </RightColumnDesktop>
               )}
@@ -798,7 +860,7 @@ export class IdeasShow extends PureComponent<
           in={loaded}
           timeout={{
             enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0
+            exit: 0,
           }}
           enter={true}
           exit={false}
@@ -869,6 +931,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

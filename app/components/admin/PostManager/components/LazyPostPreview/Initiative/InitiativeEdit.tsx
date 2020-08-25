@@ -6,16 +6,16 @@ import { adopt } from 'react-adopt';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, {
-  GetTenantLocalesChildProps
+  GetTenantLocalesChildProps,
 } from 'resources/GetTenantLocales';
 import GetInitiative, {
-  GetInitiativeChildProps
+  GetInitiativeChildProps,
 } from 'resources/GetInitiative';
 import GetInitiativeImages, {
-  GetInitiativeImagesChildProps
+  GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
 import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps
+  GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -62,7 +62,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as Props);
     this.state = {
-      selectedLocale: props.locale
+      selectedLocale: props.locale,
     };
   }
 
@@ -85,7 +85,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
       goBack,
       initiativeFiles,
       topics,
-      tenantLocales
+      tenantLocales,
     } = this.props;
     const { selectedLocale } = this.state;
 
@@ -102,7 +102,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
       return null;
     }
     const initiativeTopics = topics.filter(
-      topic => !isNilOrError(topic)
+      (topic) => !isNilOrError(topic)
     ) as ITopicData[];
 
     return (
@@ -157,11 +157,11 @@ const Data = adopt<DataProps, InputProps>({
     <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">
       {render}
     </GetResourceFileObjects>
-  )
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativesEditPage {...dataProps} {...inputProps} />}
+    {(dataProps) => <InitiativesEditPage {...dataProps} {...inputProps} />}
   </Data>
 );
