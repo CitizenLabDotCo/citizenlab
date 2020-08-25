@@ -7,10 +7,6 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
-import { reportError } from 'utils/loggingUtils';
-import { saveAs } from 'file-saver';
 
 // styling
 import { withTheme } from 'styled-components';
@@ -47,8 +43,6 @@ import { IGraphFormat } from 'typings';
 
 type State = {
   serie: IGraphFormat | null;
-  exporting: boolean;
-  dropdownOpened: boolean;
 };
 
 type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
@@ -63,8 +57,11 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
-  onDownloadSvg: (name: string, ref: any) => void;
+  xlsxEndpoint: string;
 };
 
 export class CumulativeAreaChart extends PureComponent<
@@ -78,8 +75,6 @@ export class CumulativeAreaChart extends PureComponent<
     super(props as any);
     this.state = {
       serie: null,
-      exporting: false,
-      dropdownOpened: false,
     };
 
     this.currentChart = React.createRef();
@@ -238,60 +233,6 @@ export class CumulativeAreaChart extends PureComponent<
     };
   }
 
-  downloadXlsx = async () => {
-    // const { exportQueryParameter } = this.props;
-    const {
-      startAt,
-      endAt,
-      resolution,
-      currentGroupFilter,
-      currentTopicFilter,
-      currentProjectFilter,
-    } = this.props;
-
-    const queryParametersObject = {
-      start_at: startAt,
-      end_at: endAt,
-      interval: resolution,
-      project: currentProjectFilter,
-      group: currentGroupFilter,
-      topic: currentTopicFilter,
-    };
-    // if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
-    //   queryParametersObject['project'] = exportQueryParameter;
-    // } else if (!isString(exportQueryParameter)) {
-    //   queryParametersObject['ideas'] = exportQueryParameter;
-    // }
-
-    try {
-      this.setState({ exporting: true });
-      const blob = await requestBlob(
-        `${API_PATH}/stats/users_by_time_cumulative_as_xlsx`,
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        queryParametersObject
-      );
-      saveAs(blob, 'ideas-export.xlsx');
-      this.setState({ exporting: false });
-    } catch (error) {
-      reportError(error);
-      this.setState({ exporting: false });
-    }
-
-    // track this click for user analytics
-    // trackEventByName(tracks.clickExportIdeas.name);
-  };
-
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
-  toggleDropdown = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-    this.setState(({ dropdownOpened }) => ({
-      dropdownOpened: !dropdownOpened,
-    }));
-  };
-
   render() {
     const {
       graphTitleMessageKey,
@@ -299,7 +240,7 @@ export class CumulativeAreaChart extends PureComponent<
       className,
       intl: { formatMessage },
     } = this.props;
-    const { serie, exporting } = this.state;
+    const { serie } = this.state;
     const {
       chartFill,
       chartLabelSize,
@@ -329,11 +270,9 @@ export class CumulativeAreaChart extends PureComponent<
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
             <ExportMenu
-              exporting={exporting}
-              className={className}
-              handleDownloadXls={this.downloadXlsx}
+              {...this.props}
               svgNode={this.currentChart}
-              title={messages[graphTitleMessageKey].defaultMessage}
+              name={messages[graphTitleMessageKey].defaultMessage}
             />
           </GraphCardHeader>
           {!serie ? (
