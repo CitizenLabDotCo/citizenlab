@@ -1,5 +1,5 @@
 // libraries
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import { get, isUndefined, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
@@ -15,7 +15,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 
 // components
-import LoadingComments from './LoadingComments';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentingDisabled from './CommentingDisabled';
@@ -28,12 +27,15 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 const Container = styled.div``;
 
@@ -116,6 +118,7 @@ const CommentsSection = memo<Props>(
     } = comments;
 
     const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
+      trackEventByName(tracks.clickCommentsSortOrder);
       onChangeSort(sortOrder);
       setSortOrder(sortOrder);
     }, []);
@@ -134,112 +137,105 @@ const CommentsSection = memo<Props>(
       setPosting(isPosting);
     }, []);
 
-    if (!isNilOrError(post)) {
-      const commentingEnabled = get(
-        post,
-        'attributes.action_descriptor.commenting.enabled',
-        true
-      ) as boolean;
-      const commentingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.commenting.disabled_reason',
-        null
-      ) as IdeaCommentingDisabledReason | null;
-      const userIsAdmin = !isNilOrError(authUser)
-        ? isAdmin({ data: authUser })
-        : false;
-      const loaded =
-        !isNilOrError(post) &&
-        !isNilOrError(commentsList) &&
-        !isUndefined(project);
-      const phaseId = isNilOrError(project)
-        ? undefined
-        : project.relationships?.current_phase?.data?.id;
-      const commentCount = commentsList.length;
+    const sortedParentComments = useMemo(() => {
+      if (!isNilOrError(commentsList) && commentsList.length > 0) {
+        return commentsList.filter(
+          (comment) => comment.relationships.parent.data === null
+        );
+      }
+      return null;
+    }, [sortOrder, comments]);
 
-      return (
-        <Container className={className || ''}>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h2"
-              {...messages.invisibleTitleComments}
+    if (
+      !isNilOrError(post) &&
+      !isNilOrError(commentsList) &&
+      !isUndefined(project)
+    ) {
+    const commentingEnabled = get(
+      post,
+      'attributes.action_descriptor.commenting.enabled',
+      true
+    ) as boolean;
+    const commentingDisabledReason = get(
+      post,
+      'attributes.action_descriptor.commenting.disabled_reason',
+      null
+    ) as IdeaCommentingDisabledReason | null;
+    const userIsAdmin = !isNilOrError(authUser)
+      ? isAdmin({ data: authUser })
+      : false;
+    const phaseId = isNilOrError(project)
+      ? undefined
+      : project.relationships?.current_phase?.data?.id;
+    const commentCount = commentsList.length;
+
+    return (
+      <Container className={className || ''}>
+        {/*
+          Show warning messages when there are no comments and you're logged in as an admin.
+          Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
+        */}
+        {isEmpty(commentsList) && userIsAdmin && (
+          <StyledWarning>
+            <FormattedMessage {...messages.noComments} />
+          </StyledWarning>
+        )}
+
+        <CommentingDisabled
+          commentingEnabled={commentingEnabled}
+          commentingDisabledReason={commentingDisabledReason}
+          projectId={get(post, 'relationships.project.data.id')}
+          phaseId={phaseId}
+          postId={postId}
+          postType={postType}
+        />
+
+        <Header>
+          <Title>
+            <FormattedMessage {...messages.invisibleTitleComments} />
+            {' '}
+            <CommentCount>({commentCount})</CommentCount>
+          </Title>
+          {sortedParentComments && sortedParentComments.length > 0 && (
+            <StyledCommentSorting
+              onChange={handleSortOrderChange}
+              selectedValue={[sortOrder]}
             />
-          </ScreenReaderOnly>
-
-          {loaded && !isNilOrError(commentsList) ? (
-            <>
-              {/*
-              Show warning messages when there are no comments and you're logged in as an admin.
-              Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
-            */}
-              {isEmpty(commentsList) && userIsAdmin && (
-                <StyledWarning>
-                  <FormattedMessage {...messages.noComments} />
-                </StyledWarning>
-              )}
-
-              <CommentingDisabled
-                commentingEnabled={commentingEnabled}
-                commentingDisabledReason={commentingDisabledReason}
-                projectId={get(post, 'relationships.project.data.id')}
-                phaseId={phaseId}
-                postId={postId}
-                postType={postType}
-              />
-
-              <Header>
-                <Title>
-                  <FormattedMessage {...messages.invisibleTitleComments} />
-                  {' '}
-                  <CommentCount>({commentCount})</CommentCount>
-                </Title>
-                {sortedParentComments && sortedParentComments.length > 0 && (
-                  <StyledCommentSorting
-                    onChange={handleSortOrderChange}
-                    selectedValue={[sortOrder]}
-                  />
-                )}
-              </Header>
-
-              <ParentCommentForm
-                postId={postId}
-                postType={postType}
-                postingComment={handleCommentPosting}
-              />
-
-              <Comments
-                postId={postId}
-                postType={postType}
-                comments={commentsList}
-                sortOrder={sortOrder}
-                loading={loadingInital}
-                onSortOrderChange={handleSortOrderChange}
-              />
-
-              {hasMore && !loadingMore && (
-                <Observer onChange={handleIntersection} rootMargin="3000px">
-                  <LoadMore />
-                </Observer>
-              )}
-
-              {loadingMore && !posting && (
-                <LoadingMore>
-                  <LoadingMoreMessage>
-                    <FormattedMessage {...messages.loadingMoreComments} />
-                  </LoadingMoreMessage>
-                </LoadingMore>
-              )}
-            </>
-          ) : (
-            <LoadingComments />
           )}
-        </Container>
-      );
-    }
+        </Header>
 
-    return null;
+        <ParentCommentForm
+          postId={postId}
+          postType={postType}
+          postingComment={handleCommentPosting}
+        />
+
+        <Comments
+          postId={postId}
+          postType={postType}
+          comments={commentsList}
+          loading={loadingInital}
+        />
+
+        {hasMore && !loadingMore && (
+          <Observer onChange={handleIntersection} rootMargin="3000px">
+            <LoadMore />
+          </Observer>
+        )}
+
+        {loadingMore && !posting && (
+          <LoadingMore>
+            <LoadingMoreMessage>
+              <FormattedMessage {...messages.loadingMoreComments} />
+            </LoadingMoreMessage>
+          </LoadingMore>
+        )}
+      </Container>
+    );
   }
-);
+
+  return null;
+});
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
