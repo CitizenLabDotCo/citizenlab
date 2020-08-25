@@ -33,9 +33,9 @@ const TranslateButton = (props: Props) => {
       width="fit-content"
     >
       {translateButtonClicked ? (
-        <FormattedMessage {...messages.seeOriginal} />
+        <FormattedMessage {...messages.original} />
       ) : (
-        <FormattedMessage {...messages.seeTranslation} />
+        <FormattedMessage {...messages.translate} />
       )}
     </Button>
   );

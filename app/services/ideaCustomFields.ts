@@ -9,7 +9,8 @@ export type CustomFieldCodes =
   | 'topic_ids'
   | 'location'
   | 'images'
-  | 'attachments';
+  | 'attachments'
+  | 'proposed_budget';
 type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
@@ -70,6 +71,7 @@ export interface IIdeaCustomFieldsSchemas {
         title: JSONSchemaObject;
         body: JSONSchemaObject;
         topic_ids: JSONSchemaObject;
+        proposed_budget: JSONSchemaObject;
         location: JSONSchemaObject;
         images: JSONSchemaObject;
         attachments: JSONSchemaObject;
@@ -82,6 +84,7 @@ export interface IIdeaCustomFieldsSchemas {
       title: UISchemaObject;
       body: UISchemaObject;
       topic_ids: UISchemaObject;
+      proposed_budget: UISchemaObject;
       location: UISchemaObject;
       images: UISchemaObject;
       attachments: UISchemaObject;
