@@ -72,6 +72,10 @@ type Props = {
   currentTopicFilter: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage?: string;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
+  xlsxEndpoint: string;
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
@@ -243,7 +247,11 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                 />
               )}
             </GraphCardTitle>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              svgNode={this.currentChart}
+              name={formatMessage(messages[graphTitleMessageKey])}
+              {...this.props}
+            />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>

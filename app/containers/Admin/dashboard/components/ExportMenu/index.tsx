@@ -27,7 +27,7 @@ const Container = styled.div`
 
 interface ExportMenuProps {
   className?: string;
-  name?: string;
+  name: string;
   svgNode: React.RefObject<any>;
   xlsxEndpoint: string;
   startAt: string | null | undefined;

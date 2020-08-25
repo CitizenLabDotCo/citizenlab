@@ -9,6 +9,7 @@ import { withTheme } from 'styled-components';
 // services
 import {
   votesByTimeCumulativeStream,
+  votesByTimeCumulativeXlsxEndpoint,
   IVotesByTimeCumulative,
 } from 'services/stats';
 
@@ -61,6 +62,9 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
 };
 
 class LineChartVotesByTime extends React.PureComponent<
@@ -265,7 +269,12 @@ class LineChartVotesByTime extends React.PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              svgNode={this.currentChart}
+              xlsxEndpoint={votesByTimeCumulativeXlsxEndpoint}
+              name={formatMessage(messages.ideaVotesByTimeTitle)}
+              {...this.props}
+            />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
