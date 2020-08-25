@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -8,22 +8,17 @@ import ParentComment from './ParentComment';
 import { Spinner } from 'cl2-component-library';
 
 // services
-import { ICommentData, CommentsSort } from 'services/comments';
+import { ICommentData } from 'services/comments';
 
 // events
 import { commentAdded$, commentDeleted$ } from './events';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // a11y
@@ -56,9 +51,7 @@ interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   comments: ICommentData[];
-  sortOrder: CommentsSort;
   loading: boolean;
-  onSortOrderChange: (sortOrder: CommentsSort) => void;
   className?: string;
 }
 
@@ -67,29 +60,12 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
     postId,
     postType,
     comments,
-    sortOrder,
     loading,
-    onSortOrderChange,
     className,
     intl: { formatMessage },
   }) => {
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
-    const commentCount = comments.length;
-
-    const sortedParentComments = useMemo(() => {
-      if (!isNilOrError(comments) && comments.length > 0) {
-        return comments.filter(
-          (comment) => comment.relationships.parent.data === null
-        );
-      }
-      return null;
-    }, [sortOrder, comments]);
-
-    const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
-      trackEventByName(tracks.clickCommentsSortOrder);
-      onSortOrderChange(sortOrder);
-    }, []);
 
     useEffect(() => {
       const subscriptions = [
@@ -120,8 +96,8 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
           </SpinnerWrapper>
         )}
 
-        {sortedParentComments &&
-          sortedParentComments.map((parentComment, _index) => {
+        {comments &&
+          comments.map((parentComment, _index) => {
             const childCommentIds =
               !isNilOrError(comments) &&
               comments
