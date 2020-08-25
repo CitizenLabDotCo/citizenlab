@@ -28,7 +28,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   &.child {
-    background: #fbfbfb;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
@@ -41,10 +40,6 @@ const ContainerInner = styled.div`
 
   &.parent {
     padding-top: 28px;
-  }
-
-  &.hasBottomBorder {
-    border-bottom: solid 1px #e8e8e8;
   }
 
   &.lastComment {

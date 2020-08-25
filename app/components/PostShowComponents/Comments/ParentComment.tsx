@@ -28,13 +28,12 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 const Container = styled.div`
   margin-bottom: 30px;
   position: relative;
-  ${defaultCardStyle};
 `;
 
 const ParentCommentContainer = styled.div`
