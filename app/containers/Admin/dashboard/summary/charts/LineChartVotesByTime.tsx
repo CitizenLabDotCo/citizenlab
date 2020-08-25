@@ -13,6 +13,7 @@ import {
 } from 'services/stats';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   LineChart,
   Line,
@@ -67,12 +68,15 @@ class LineChartVotesByTime extends React.PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -261,6 +265,7 @@ class LineChartVotesByTime extends React.PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
+            <ExportMenu className={className} svgNode={this.currentChart} />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -268,7 +273,11 @@ class LineChartVotesByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <LineChart data={serie} margin={{ right: 40 }}>
+              <LineChart
+                data={serie}
+                margin={{ right: 40 }}
+                ref={this.currentChart}
+              >
                 <CartesianGrid strokeDasharray="5 5" />
                 <XAxis
                   dataKey="date"

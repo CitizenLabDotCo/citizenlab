@@ -14,6 +14,7 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -78,12 +79,15 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -239,6 +243,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                 />
               )}
             </GraphCardTitle>
+            <ExportMenu className={className} svgNode={this.currentChart} />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -246,7 +251,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <StyledResponsiveContainer>
-              <BarChart data={serie}>
+              <BarChart data={serie} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
                   name={formatMessage(messages[graphUnitMessageKey])}
