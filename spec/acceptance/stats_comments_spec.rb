@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+@@multiloc_service = MultilocService.new
 
 def time_boundary_parameters s
   s.parameter :start_at, "Date defining from where results should start", required: false
@@ -368,6 +369,110 @@ resource "Stats - Comments" do
 
   end
 
+  get "web_api/v1/stats/comments_by_topic_as_xlsx" do
+    time_boundary_parameters self
+    project_filter_parameter self
+    group_filter_parameter self
+
+    describe "without time filters" do
+
+      example "Comments by topic", document: false do
+        do_request
+        expect(response_status).to eq 200
+      end
+    end
+
+    describe "with time filtering only" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+      before do
+        travel_to start_at + 1.day do
+          @topic1 = create(:topic)
+          @topic2 = create(:topic)
+          topic3 = create(:topic)
+          project = create(:project, topics: [@topic1, @topic2, topic3])
+          idea1 = create(:idea, topics: [@topic1], project: project)
+          idea2 = create(:idea, topics: [@topic2], project: project)
+          idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
+          idea4 = create(:idea)
+          comment1 = create(:comment, post: idea1)
+          comment2 = create(:comment, post: idea1)
+          comment3 = create(:comment, post: idea2)
+          comment4 = create(:comment, post: idea3)
+        end
+        comment5 = create(:comment)
+      end
+
+      example_request "Comments by topic" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
+
+        topic_ids_col = worksheet.map {|col| col.cells[1].value}
+        header, *topic_ids = topic_ids_col
+        expect(topic_ids).to match_array [@topic1.id, @topic2.id]
+
+        amount_col = worksheet.map {|col| col.cells[2].value}
+        header, *amounts = amount_col
+        expect(amounts).to match_array [3, 2]
+      end
+
+    end
+
+    describe "filtered by project" do
+      before do
+        travel_to start_at + 5.day do
+          @project = create(:project)
+          idea = create(:idea_with_topics, topics_count: 2, project: @project)
+          create(:comment, post: idea)
+          create(:comment, post: create(:idea_with_topics))
+        end
+      end
+
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+      let(:project) { @project.id }
+
+      example_request "Comments by topic filtered by project" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
+
+        amount_col = worksheet.map {|col| col.cells[2].value}
+        header, *amounts = amount_col
+        expect(amounts.inject(&:+)).to eq 2
+      end
+    end
+
+    describe "filtered by group" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+      before do
+        travel_to start_at + 3.day do
+          @group = create(:group)
+          idea = create(:idea_with_topics, topics_count: 2)
+          create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
+          create(:comment, post: create(:idea_with_topics))
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Comments by topic filtered by group" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
+
+        amount_col = worksheet.map {|col| col.cells[2].value}
+        header, *amounts = amount_col
+        expect(amounts.inject(&:+)).to eq 2
+      end
+    end
+
+  end
+
   get "web_api/v1/stats/comments_by_project" do
     time_boundary_parameters self
     topic_filter_parameter self
@@ -393,7 +498,6 @@ resource "Stats - Comments" do
       end
 
       example_request "Comments by project" do
-        expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:comments].stringify_keys).to match({
           @project1.id => 3,
@@ -448,6 +552,105 @@ resource "Stats - Comments" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
+      end
+    end
+  end
+
+  get "web_api/v1/stats/comments_by_project_as_xlsx" do
+    time_boundary_parameters self
+    topic_filter_parameter self
+    group_filter_parameter self
+
+    describe "with time filtering only" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+      before do
+        travel_to start_at + 14.day do
+          @project1 = create(:project)
+          @project2 = create(:project)
+          idea1 = create(:idea, project: @project1)
+          idea2 = create(:idea, project: @project1)
+          idea3 = create(:idea, project: @project2)
+          idea4 = create(:idea)
+          comment1 = create(:comment, post: idea1)
+          comment2 = create(:comment, post: idea1)
+          comment3 = create(:comment, post: idea2)
+          comment4 = create(:comment, post: idea3)
+        end
+      end
+
+      example_request "Comments by project" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
+        project_id_col = worksheet.map {|col| col.cells[1].value}
+        header, *project_ids = project_id_col
+        expect(project_ids).to match_array [@project1.id, @project2.id]
+
+        project_name_col = worksheet.map {|col| col.cells[0].value}
+        header, *project_names = project_name_col
+        expect(project_names).to match_array [@@multiloc_service.t(@project1.title_multiloc), @@multiloc_service.t(@project2.title_multiloc)]
+
+        comment_col = worksheet.map {|col| col.cells[2].value}
+        header, *comments = comment_col
+        expect(comments).to match_array [3,1]
+      end
+
+    end
+
+    describe "filtered by topic" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+      before do
+        travel_to start_at + 17.day do
+          @topic = create(:topic)
+          project = create(:project, topics: [@topic])
+          idea1 = create(:idea, topics: [@topic], project: project)
+          idea2 = create(:idea_with_topics)
+          create(:comment, post: idea1)
+          create(:comment, post: idea2)
+        end
+      end
+
+      let(:topic) { @topic.id }
+
+      example_request "Comments by project filtered by topic" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
+
+        amount_col = worksheet.map {|col| col.cells[2].value}
+        header, *amounts = amount_col
+        expect(amounts.inject(&:+)).to eq 1
+      end
+    end
+
+    describe "filtered by group" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+      before do
+        travel_to start_at + 12.day do
+          @group = create(:group)
+          project = create(:project)
+          idea = create(:idea, project: project)
+          create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
+          create(:comment, post: idea)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Comments by project filtered by group" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
+
+        amount_col = worksheet.map {|col| col.cells[2].value}
+        header, *amounts = amount_col
+        expect(amounts.inject(&:+)).to eq 1
       end
     end
   end
