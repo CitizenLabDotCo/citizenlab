@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import QuillEditor, {
-  Props as QuillEditorProps
+  Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
 import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
 
@@ -51,7 +51,7 @@ export interface Props
   onChange: (value: Multiloc, locale: Locale) => void;
 }
 
-const QuillMutilocWithLocaleSwitcher = memo<Props>(props => {
+const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   const {
     valueMultiloc,
     onChange,
@@ -74,7 +74,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>(props => {
     (value: string, locale: Locale) => {
       const newValueMultiloc = {
         ...(valueMultiloc || {}),
-        [locale]: value
+        [locale]: value,
       } as Multiloc;
 
       onChange(newValueMultiloc, locale);

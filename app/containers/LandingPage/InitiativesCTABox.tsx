@@ -6,7 +6,13 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // styling
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  viewportWidths,
+  defaultCardStyle,
+} from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
