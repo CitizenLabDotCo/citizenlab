@@ -60,9 +60,6 @@ class StatVotePolicy < ApplicationPolicy
   def votes_by_project?
     user&.active? && (user.admin? || user.project_moderator?)
   end
-  def votes_count_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
 
   def votes_by_birthyear_as_xlsx?
     user&.active? && (user.admin? || user.project_moderator?)

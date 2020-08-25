@@ -251,7 +251,6 @@ Rails.application.routes.draw do
         get 'votes_by_topic', **route_params
         get 'votes_by_project', **route_params
 
-        get 'votes_count_as_xlsx', **route_params
         get 'votes_by_birthyear_as_xlsx', **route_params
         get 'votes_by_education_as_xlsx', **route_params
         get 'votes_by_domicile_as_xlsx', **route_params
