@@ -47,6 +47,7 @@ import ExportMenu from '../../components/ExportMenu';
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
+import ReactDOM from 'react-dom';
 
 const DropdownButton = styled(Button)``;
 
@@ -84,7 +85,8 @@ export class CumulativeAreaChart extends PureComponent<
   State
 > {
   subscription: Subscription;
-  currentChart = Node;
+  currentChart: React.Ref<any>;
+  setRef: (element: any) => void;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
@@ -93,6 +95,8 @@ export class CumulativeAreaChart extends PureComponent<
       exporting: false,
       dropdownOpened: false,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -113,6 +117,8 @@ export class CumulativeAreaChart extends PureComponent<
       currentTopicFilter,
       currentProjectFilter
     );
+
+    console.log(this.currentChart);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -344,51 +350,6 @@ export class CumulativeAreaChart extends PureComponent<
               handleDownloadXls={this.downloadXlsx}
               svgNode={this.currentChart}
             />
-
-            <Container className={className}>
-              <DropdownButton
-                buttonStyle="admin-dark-text"
-                onClick={this.toggleDropdown}
-                icon="download"
-                iconPos="right"
-                padding="0px"
-              />
-              <Dropdown
-                width="100%"
-                top="35px"
-                right="-5px"
-                mobileRight="-5px"
-                opened={dropdownOpened}
-                onClickOutside={this.toggleDropdown}
-                content={
-                  <>
-                    <Button
-                      onClick={() =>
-                        this.props.onDownloadSvg(
-                          formatMessage(messages[graphTitleMessageKey]),
-                          this.currentChart
-                        )
-                      }
-                      buttonStyle="text"
-                      processing={exporting}
-                      padding="0"
-                      fontSize={`${fontSizes.small}px`}
-                    >
-                      Download svg
-                    </Button>
-                    <Button
-                      onClick={this.downloadXlsx}
-                      buttonStyle="text"
-                      processing={exporting}
-                      padding="0"
-                      fontSize={`${fontSizes.small}px`}
-                    >
-                      Download xls
-                    </Button>
-                  </>
-                }
-              />
-            </Container>
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -400,10 +361,7 @@ export class CumulativeAreaChart extends PureComponent<
                 <AreaChart
                   data={serie}
                   margin={{ right: 40 }}
-                  id="currentChart"
-                  ref={(chart) =>
-                    (this.currentChart = chart?.container?.children[0])
-                  }
+                  ref={this.currentChart}
                 >
                   <CartesianGrid strokeDasharray="5 5" />
                   <Area

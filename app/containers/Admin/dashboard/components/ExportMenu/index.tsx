@@ -8,6 +8,7 @@ import { fontSizes } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
 import { Dropdown } from 'cl2-component-library';
+import ReactDOM from 'react-dom';
 
 const DropdownButton = styled(Button)``;
 
@@ -23,19 +24,28 @@ interface ExportMenuProps {
   className?: string;
   // handleDownloadSvg: (name: string, ref: any) => void;
   handleDownloadXls: () => void;
-  svgNode: Node;
+  svgNode: React.RefObject<any>;
 }
 
-const ExportMenu: React.SFC<ExportMenuProps> = (props) => {
+const ExportMenu: React.SFC<ExportMenuProps> = ({
+  svgNode,
+  className,
+  exporting,
+  handleDownloadXls,
+}) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   // const [exportingXls, setExportingXls] = useState(false);
 
-  const handleDownloadSvg = (name: string) => {
-    console.log(props.svgNode);
-    let svgContent = new XMLSerializer().serializeToString(props.svgNode);
-    let svgBlob = new Blob([svgContent], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
+  const handleDownloadSvg = (name: string) => () => {
+    const node = ReactDOM.findDOMNode(svgNode.current);
+    if (node) {
+      const svgContent = new XMLSerializer().serializeToString(node);
+      const svgBlob = new Blob([svgContent], {
+        type: 'image/svg+xml;charset=utf-8',
+      });
+
+      saveAs(svgBlob, name + 'svg');
+    }
 
     // const {
     //   startAtMoment,
@@ -55,15 +65,18 @@ const ExportMenu: React.SFC<ExportMenuProps> = (props) => {
     // }${currentGroupFilterLabel ? '_group-' + currentGroupFilterLabel : ''}${
     //   currentTopicFilterLabel ? '_topic-' + currentTopicFilterLabel : ''
     // }.svg`;
-
-    saveAs(svgBlob, name + 'svg');
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpened(!dropdownOpened);
+  };
+  console.log(svgNode);
+
   return (
-    <Container className={props.className}>
+    <Container className={className}>
       <DropdownButton
         buttonStyle="admin-dark-text"
-        onClick={() => setDropdownOpened(!dropdownOpened)}
+        onClick={toggleDropdown}
         icon="download"
         iconPos="right"
         padding="0px"
@@ -74,11 +87,11 @@ const ExportMenu: React.SFC<ExportMenuProps> = (props) => {
         right="-5px"
         mobileRight="-5px"
         opened={dropdownOpened}
-        onClickOutside={() => setDropdownOpened(!dropdownOpened)}
+        onClickOutside={toggleDropdown}
         content={
           <>
             <Button
-              onClick={() => handleDownloadSvg('test')}
+              onClick={handleDownloadSvg('name')}
               buttonStyle="text"
               padding="0"
               fontSize={`${fontSizes.small}px`}
@@ -86,9 +99,9 @@ const ExportMenu: React.SFC<ExportMenuProps> = (props) => {
               Download svg
             </Button>
             <Button
-              onClick={props.handleDownloadXls}
+              onClick={handleDownloadXls}
               buttonStyle="text"
-              processing={props.exporting}
+              processing={exporting}
               padding="0"
               fontSize={`${fontSizes.small}px`}
             >
