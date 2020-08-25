@@ -48,6 +48,10 @@ import {
   activeUsersByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
+  usersByTimeCumulativeXlsxEndpoint,
+  activeUsersByTimeXlsxEndpoint,
+  ideasByTimeCumulativeXlsxEndpoint,
+  commentsByTimeCumulativeXlsxEndpoint,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -159,33 +163,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       this.setState({ groupFilterOptions: this.generateGroupsOptions() });
     }
   }
-
-  handleDownloadSvg = (name: string, chart: any) => {
-    let svgContent = new XMLSerializer().serializeToString(chart);
-    let svgBlob = new Blob([svgContent], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
-
-    const {
-      startAtMoment,
-      endAtMoment,
-      currentGroupFilterLabel,
-      currentTopicFilterLabel,
-      currentProjectFilterLabel,
-    } = this.state;
-
-    const startAt = startAtMoment && startAtMoment.toISOString().split('T')[0];
-    const endAt = endAtMoment && endAtMoment.toISOString().split('T')[0];
-
-    const fileName = `${name}${startAt ? '_from-' + startAt : ''}${
-      endAt ? '_until-' + endAt : ''
-    }${
-      currentProjectFilterLabel ? '_project-' + currentProjectFilterLabel : ''
-    }${currentGroupFilterLabel ? '_group-' + currentGroupFilterLabel : ''}${
-      currentTopicFilterLabel ? '_topic-' + currentTopicFilterLabel : ''
-    }.svg`;
-    saveAs(svgBlob, fileName);
-  };
 
   handleChangeResolution = (resolution: IResolution) => {
     this.setState({ resolution });
@@ -380,12 +357,12 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             <GraphsContainer>
               <CumulativeAreaChart
                 graphTitleMessageKey="usersByTimeTitle"
+                xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
                 graphUnit="users"
                 startAt={startAt}
                 endAt={endAt}
                 stream={usersByTimeCumulativeStream}
                 className="e2e-users-by-time-cumulative-chart"
-                onDownloadSvg={this.handleDownloadSvg}
                 {...this.state}
               />
               <BarChartActiveUsersByTime
@@ -394,6 +371,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphTitleMessageKey="activeUsersByTimeTitle"
                 startAt={startAt}
                 endAt={endAt}
+                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
                 stream={activeUsersByTimeStream}
                 infoMessage={infoMessage}
                 className="e2e-active-users-chart"
@@ -404,9 +382,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphUnit="ideas"
                 startAt={startAt}
                 endAt={endAt}
+                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
                 stream={ideasByTimeCumulativeStream}
                 className="e2e-ideas-chart"
-                onDownloadSvg={this.handleDownloadSvg}
                 {...this.state}
               />
               <CumulativeAreaChart
@@ -415,8 +393,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 startAt={startAt}
                 endAt={endAt}
                 stream={commentsByTimeCumulativeStream}
+                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
                 className="e2e-comments-chart"
-                onDownloadSvg={this.handleDownloadSvg}
                 {...this.state}
               />
               <Column>
