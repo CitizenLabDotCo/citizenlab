@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+@@multiloc_service = MultilocService.new
 
 def time_boundary_parameters s
   s.parameter :start_at, "Date defining from where results should start", required: false
@@ -184,8 +185,8 @@ resource "Stats - Ideas" do
       example_request "Ideas by topic filtered by project" do
         expect(response_status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'ideas']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'ideas']
+        amount_col = worksheet.map {|col| col.cells[2].value}
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end
@@ -207,8 +208,8 @@ resource "Stats - Ideas" do
       example_request "Ideas by topic filtered by group" do
         expect(response_status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'ideas']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'ideas']
+        amount_col = worksheet.map {|col| col.cells[2].value}
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 2
       end
@@ -281,6 +282,84 @@ resource "Stats - Ideas" do
     end
 
   end
+  get "web_api/v1/stats/ideas_by_project_as_xlsx" do
+    time_boundary_parameters self
+    topic_filter_parameter self
+    group_filter_parameter self
+    feedback_needed_filter_parameter self
+
+    describe "with time filters only" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
+      example_request "Ideas by project" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'ideas']
+        project_col = worksheet.map {|col| col.cells[1].value}
+        header, *projects = project_col
+        expect(projects).to match_array [@project1.id, @project2.id, @project3.id]
+
+        project_name_col = worksheet.map {|col| col.cells[0].value}
+        header, *project_names = project_name_col
+        expect(project_names).to match_array [@@multiloc_service.t(@project1.title_multiloc), @@multiloc_service.t(@project2.title_multiloc), @@multiloc_service.t(@project3.title_multiloc)]
+
+        idea_col = worksheet.map {|col| col.cells[2].value}
+        header, *ideas = idea_col
+        expect(ideas).to match_array [5,5,1]
+      end
+    end
+
+    describe "with topic filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
+      before do
+        travel_to start_at + 4.months do
+          idea = create(:idea_with_topics)
+          create(:idea)
+          @topic = idea.topics.first
+        end
+      end
+
+      let(:topic) { @topic.id}
+
+      example_request "Ideas by project filtered by topic" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'ideas']
+        idea_col = worksheet.map {|col| col.cells[2].value}
+        header, *ideas = idea_col
+        expect(ideas.inject(&:+)).to eq 1
+      end
+    end
+
+    describe "with group filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
+      before do
+        travel_to start_at + 8.months do
+          @group = create(:group)
+          user = create(:user, manual_groups: [@group])
+          idea = create(:idea, author: user)
+          create(:idea)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request "Ideas by project filtered by group" do
+        expect(response_status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'ideas']
+        idea_col = worksheet.map {|col| col.cells[2].value}
+        header, *ideas = idea_col
+        expect(ideas.inject(&:+)).to eq 1
+      end
+    end
+
+  end
 
   get "web_api/v1/stats/ideas_by_area" do
     time_boundary_parameters self
@@ -298,6 +377,32 @@ resource "Stats - Ideas" do
       expected_areas = @ideas_with_areas.flat_map{|i| i.areas_ideas.map(&:area_id)}.uniq
       expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
       expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
+    end
+  end
+
+  get "web_api/v1/stats/ideas_by_area_as_xlsx" do
+    time_boundary_parameters self
+    project_filter_parameter self
+    topic_filter_parameter self
+    group_filter_parameter self
+    feedback_needed_filter_parameter self
+
+    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
+    example_request "Ideas by area" do
+      expect(response_status).to eq 200
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      expect(worksheet[0].cells.map(&:value)).to match ['area', 'area_id', 'ideas']
+      expected_areas = @ideas_with_areas.flat_map{|i| i.areas_ideas.map(&:area_id)}.uniq
+
+      area_id_col = worksheet.map {|col| col.cells[1].value}
+      header, *area_ids = area_id_col
+      expect(area_ids.map(&:to_s).compact.uniq - expected_areas).to eq []
+
+      idea_col = worksheet.map {|col| col.cells[2].value}
+      header, *ideas = idea_col
+      expect(ideas.map(&:class).uniq).to eq [Integer]
     end
   end
 

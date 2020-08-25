@@ -20,41 +20,32 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     render json: { count: ideas.count }
   end
 
-  def ideas_by_topic
+  def ideas_by_topic_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 
     ideas = apply_project_filter(ideas)
     ideas = apply_group_filter(ideas)
     ideas = apply_feedback_needed_filter(ideas)
 
-    serie = ideas
+    ideas
       .where(published_at: @start_at..@end_at)
       .joins(:ideas_topics)
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
       .count
+  end
 
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  def ideas_by_topic
+    topics = Topic.where(id: ideas_by_project_serie.keys).select(:id, :title_multiloc)
+    render json: {series: {ideas: ideas_by_topic_serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_topic_as_xlsx
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
     res = []
-    serie = ideas
-      .where(published_at: @start_at..@end_at)
-      .joins(:ideas_topics)
-      .group("ideas_topics.topic_id")
-      .order("ideas_topics.topic_id")
-      .count
-
-    serie.each {|topic_id, count|
+    ideas_by_topic_serie.each {|topic_id, count|
       res.push({
         "topic" => @@multiloc_service.t(Topic.find(topic_id).title_multiloc),
+        "topic_id" => topic_id,
         "ideas" => count
       })
     }
@@ -64,24 +55,41 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_topic")
   end
 
-  def ideas_by_project
+  def ideas_by_project_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 
     ideas = apply_topic_filter(ideas)
     ideas = apply_group_filter(ideas)
     ideas = apply_feedback_needed_filter(ideas)
 
-    serie = ideas
+    ideas
       .where(published_at: @start_at..@end_at)
       .group(:project_id)
       .order(:project_id)
       .count
-
-    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
-  def ideas_by_area
+  def ideas_by_project
+    projects = Project.where(id: ideas_by_project_serie.keys).select(:id, :title_multiloc)
+    render json: {series: {ideas: ideas_by_project_serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  end
+
+  def ideas_by_project_as_xlsx
+    res = []
+    ideas_by_project_serie.each {|project_id, count|
+      res.push({
+        "project" => @@multiloc_service.t(Project.find(project_id).title_multiloc),
+        "project_id" => project_id,
+        "ideas" => count
+      })
+    }
+
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "project"
+
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_project")
+  end
+
+  def ideas_by_area_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 
     ideas = apply_project_filter(ideas)
@@ -89,14 +97,33 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = apply_topic_filter(ideas)
     ideas = apply_feedback_needed_filter(ideas)
 
-    serie = ideas
+    ideas
       .where(published_at: @start_at..@end_at)
       .joins(:areas_ideas)
       .group("areas_ideas.area_id")
       .order("areas_ideas.area_id")
       .count
+  end
+
+  def ideas_by_area
+    serie = ideas_by_area_serie
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
     render json: {series: {ideas: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+  end
+
+  def ideas_by_area_as_xlsx
+    res = []
+    ideas_by_area_serie.each {|area_id, count|
+      res.push({
+        "area" => @@multiloc_service.t(Area.find(area_id).title_multiloc),
+        "area_id" => area_id,
+        "ideas" => count
+      })
+    }
+
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "area"
+
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_project")
   end
 
   def ideas_by_time_serie

@@ -44,10 +44,6 @@ class StatIdeaPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
-  def ideas_count_as_xlsx?
-    user&.active? && (user.admin? || user.project_moderator?)
-  end
-
   def ideas_by_topic_as_xlsx?
     user&.active? && (user.admin? || user.project_moderator?)
   end
