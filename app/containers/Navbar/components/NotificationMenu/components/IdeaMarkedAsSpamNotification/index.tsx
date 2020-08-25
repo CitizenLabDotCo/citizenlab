@@ -29,7 +29,7 @@ const IdeaMarkedAsSpamNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
-      icon="idea2"
+      icon="idea"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

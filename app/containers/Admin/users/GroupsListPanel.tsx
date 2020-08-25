@@ -184,7 +184,7 @@ export class GroupsListPanel extends React.PureComponent<
   constructor(props) {
     super(props);
     this.state = {
-      highlightedGroups: new Set([])
+      highlightedGroups: new Set([]),
     };
   }
 
@@ -200,14 +200,14 @@ export class GroupsListPanel extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 
   removeHighlights = () => {
     this.setState({ highlightedGroups: new Set([]) });
   };
 
-  handleCreateGroup = event => {
+  handleCreateGroup = (event) => {
     event.preventDefault();
     this.props.trackCreateGroup();
     this.props.onCreateGroup();
@@ -216,7 +216,7 @@ export class GroupsListPanel extends React.PureComponent<
   render() {
     const {
       usercount,
-      groups: { groupsList }
+      groups: { groupsList },
     } = this.props;
     const { highlightedGroups } = this.state;
 
@@ -250,7 +250,7 @@ export class GroupsListPanel extends React.PureComponent<
         </MenuTitle>
         <GroupsList className="e2e-groups-list">
           {!isNilOrError(groupsList) &&
-            groupsList.map(group => (
+            groupsList.map((group) => (
               <MenuLink
                 key={group.id}
                 to={`/admin/users/${group.id}`}
@@ -276,15 +276,15 @@ export class GroupsListPanel extends React.PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   groups: <GetGroups />,
-  usercount: <GetUserCount />
+  usercount: <GetUserCount />,
 });
 
 const GroupsListPanelWithHoc = injectTracks<Props>({
-  trackCreateGroup: tracks.createGroup
+  trackCreateGroup: tracks.createGroup,
 })(GroupsListPanel);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <GroupsListPanelWithHoc {...inputProps} {...dataProps} />}
+    {(dataProps) => <GroupsListPanelWithHoc {...inputProps} {...dataProps} />}
   </Data>
 );
