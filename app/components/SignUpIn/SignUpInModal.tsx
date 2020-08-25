@@ -102,7 +102,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     // If the user presses the close button (x) in the modal top right corner when the cusom-fields step is shown and
     // when this step -does not- have required fields, then this action is the equivalent of pressing the 'skip this step' button
     // and therefore should trigger completeRegistration() in order for the user to have a valid account.
-    // If completeRegistration() is not executed, the user will be logged in but will not have a valid account and therefore 
+    // If completeRegistration() is not executed, the user will be logged in but will not have a valid account and therefore
     // will not be able to perform any actions (e.g. voting, posting, commenting, ...)!
     if (
       signUpActiveStep === 'custom-fields' &&

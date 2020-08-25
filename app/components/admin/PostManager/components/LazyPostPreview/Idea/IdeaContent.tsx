@@ -7,6 +7,7 @@ import { get } from 'lodash-es';
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
+import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Comments from 'components/PostShowComponents/Comments';
@@ -98,6 +99,12 @@ const StyledBody = styled(Body)`
   margin-bottom: 20px;
 `;
 
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 28px;
+`;
+
 const StyledMap = styled(DropdownMap)`
   margin-bottom: 40px;
 `;
@@ -142,6 +149,10 @@ const Picks = styled.div`
   display: flex;
   font-size: ${fontSizes.base}px;
   align-items: center;
+`;
+
+const StyledIdeaAuthor = styled(IdeaAuthor)`
+  margin-bottom: 25px;
 `;
 
 interface State {}
@@ -201,6 +212,8 @@ export class IdeaContent extends PureComponent<
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
       const ideaAddress = idea.attributes.location_description || null;
+      const ideaProposedBudget = idea.attributes.proposed_budget;
+      const hasMultipleBodyAttributes = ideaProposedBudget !== null;
 
       return (
         <Container>
@@ -245,12 +258,28 @@ export class IdeaContent extends PureComponent<
                     className="e2e-ideaImage"
                   />
                 )}
-                <IdeaAuthor
+                <StyledIdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
                   ideaPublishedAt={idea.attributes.published_at}
                   ideaId={ideaId}
                 />
 
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                )}
+                {idea.attributes.proposed_budget !== null && (
+                  <IdeaProposedBudget
+                    proposedBudget={idea.attributes.proposed_budget}
+                  />
+                )}
+
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                )}
                 <StyledBody
                   postId={ideaId}
                   postType="idea"

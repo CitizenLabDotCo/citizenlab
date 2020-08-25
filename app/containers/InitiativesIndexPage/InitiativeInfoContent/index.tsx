@@ -68,7 +68,9 @@ const InitiativeInfoContent = memo<InjectedLocalized>(({ localize }) => {
                 <FormattedMessage {...messages.readMore} />
               </Link>
             ),
-            orgName: localize(tenant.data.attributes.settings.core.organization_name)
+            orgName: localize(
+              tenant.data.attributes.settings.core.organization_name
+            ),
           }}
         />
       </Content>

@@ -148,5 +148,5 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
 }
 
 export default injectTracks<Props>({
-  trackSearchInput: tracks.searchInput
+  trackSearchInput: tracks.searchInput,
 })(UsersHeader);
