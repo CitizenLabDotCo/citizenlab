@@ -25,7 +25,7 @@ import {
   Field,
   FastField,
   InjectedFormikProps,
-  FormikErrors
+  FormikErrors,
 } from 'formik';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
@@ -102,30 +102,30 @@ class CampaignForm extends React.Component<
         value: 'author',
         label:
           !isNilOrError(user) &&
-          `${user.attributes.first_name} ${user.attributes.last_name}`
+          `${user.attributes.first_name} ${user.attributes.last_name}`,
       },
       {
         value: 'organization',
         label:
           !isNilOrError(tenant) &&
-          localize(tenant.attributes.settings.core.organization_name)
-      }
+          localize(tenant.attributes.settings.core.organization_name),
+      },
     ];
   };
 
   groupsOptions = (groups: GetGroupsChildProps) => {
     const groupList =
       !isNilOrError(groups) && !isNilOrError(groups.groupsList)
-        ? groups.groupsList.map(group => ({
+        ? groups.groupsList.map((group) => ({
             label: this.props.localize(group.attributes.title_multiloc),
-            value: group.id
+            value: group.id,
           }))
         : [];
 
     return groupList;
   };
 
-  renderFormikQuillMultiloc = props => {
+  renderFormikQuillMultiloc = (props) => {
     return (
       <FormikQuillMultiloc
         label={this.props.intl.formatMessage(messages.fieldBody)}
@@ -173,7 +173,7 @@ class CampaignForm extends React.Component<
               />
             </Label>
             <GetGroups>
-              {groups =>
+              {(groups) =>
                 isNilOrError(groups) ? null : (
                   <Field
                     name="group_ids"
@@ -259,7 +259,7 @@ class CampaignForm extends React.Component<
             messageError:
               Object.keys(errors).length > 0
                 ? messages.formErrorMessage
-                : messages.formUnexpectedErrorMessage
+                : messages.formUnexpectedErrorMessage,
           }}
         />
       </Form>
@@ -269,13 +269,13 @@ class CampaignForm extends React.Component<
 
 const Data = adopt<DataProps, InputProps>({
   user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetTenant>{render}</GetTenant>
+  tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
 });
 
 const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CampaignFormWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <CampaignFormWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

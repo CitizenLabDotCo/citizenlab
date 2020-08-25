@@ -9,7 +9,10 @@ const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('cl2-component-library', () => ({ Input: 'Input', Select: 'Select' }));
+jest.mock('cl2-component-library', () => ({
+  Input: 'Input',
+  Select: 'Select',
+}));
 jest.mock('./WrongMaxChoiceIndicator', () => 'WrongMaxChoiceIndicator');
 jest.mock('components/admin/ResourceList', () => ({ Row: 'Row' }));
 
