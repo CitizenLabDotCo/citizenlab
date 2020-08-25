@@ -28,6 +28,7 @@ import {
   NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
+  IResolution,
 } from '../..';
 import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
@@ -77,13 +78,18 @@ type ISupportedData =
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
   stream: (streamParams?: IStreamParams | null) => IStream<ISupportedData>;
   convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | undefined;
   byWhat: 'Topic' | 'Project';
+  xlsxEndpoint: string;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
+  resolution: IResolution;
 }
 
 interface InputProps extends QueryProps {
@@ -158,7 +164,12 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 options={resourceOptions}
               />
             </SHiddenLabel>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              className=""
+              svgNode={this.currentChart}
+              name={formatMessage(messages[`participationPer${byWhat}`])}
+              {...this.props}
+            />
           </GraphCardHeaderWithFilter>
           {!serie ? (
             <NoDataContainer>
