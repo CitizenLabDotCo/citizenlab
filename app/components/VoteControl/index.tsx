@@ -74,7 +74,6 @@ const Container = styled.div`
 const VoteIconContainer = styled.div<{
   size: '1' | '2' | '3';
   votingEnabled: boolean | null;
-  style: 'border' | 'shadow';
 }>`
   cursor: pointer;
   display: flex;
@@ -85,17 +84,13 @@ const VoteIconContainer = styled.div<{
   transition: all 60ms ease-out;
   background-color: white;
 
-  ${(props) =>
-    props.style === 'border' &&
-    css`
-      border: solid 1px ${lighten(0.2, colors.label)};
-    `}
+  &.border {
+    border: solid 1px ${lighten(0.2, colors.label)};
+  }
 
-  ${(props) =>
-    props.style === 'shadow' &&
-    css`
-      box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05); // TODO: add to styleutils
-    `}
+  &.shadow {
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05); // TODO: add to styleutils
+  }
 
   ${(props) =>
     !props.votingEnabled
@@ -806,7 +801,7 @@ class VoteControl extends PureComponent<
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer
-              style={style}
+              className={style}
               size={size}
               votingEnabled={upvotingEnabled}
             >
@@ -840,7 +835,7 @@ class VoteControl extends PureComponent<
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer
-                style={style}
+                className={style}
                 size={size}
                 votingEnabled={downvotingEnabled}
               >
