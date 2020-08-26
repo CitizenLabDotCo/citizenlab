@@ -1,9 +1,12 @@
 class MentionService
 
+
   # @param [User] user
   # @return [String] mention
   def user_to_mention user
-    "@#{user.slug}"
+    name_service = UserDisplayNameService.new(Tenant.current)
+    slug_service = SlugService.new
+    "@#{slug_service.slugify(name_service.display_name(user))}"
   end
 
   # @param [String] text
@@ -22,7 +25,7 @@ class MentionService
   # @return [String] text with plain mentions replaced by mention tags.
   def add_span_around text, user
     mention = user_to_mention(user)
-    name_service = UserDisplayNameService(Tenant.current)
+    name_service = UserDisplayNameService.new(Tenant.current)
     text.gsub(
         /#{mention}/i,
         "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{name_service.display_name(user)}</span>"
@@ -66,14 +69,9 @@ class MentionService
   # @param [Integer] limit
   # @return [Array<User>]
   def users_from_post slug, post, limit
-    author = post.author
-    cleaned_slug = SlugService.new.slugify(slug)
-    commenters = User
-      .joins(:comments)
-      .where("users.slug LIKE ?", "#{cleaned_slug}%")
-      .where(comments: {post_id: post.id})
-      .limit(limit)
-    [author.slug =~ /^#{cleaned_slug}/ && author, *commenters].compact.uniq
+    commenter_ids = User.joins(:comments).where(comments: {post_id: post.id}).ids.uniq
+    user_ids = commenter_ids << post.author.id
+    User.where(id: user_ids).by_username(slug).limit(limit).to_a
   end
 
   private
