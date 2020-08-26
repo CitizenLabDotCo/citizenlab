@@ -65,7 +65,7 @@ module EmailCampaigns
     end
 
     def assigned_ideas recipient:, time:
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       recipient.assigned_ideas
         .feedback_needed
         .order(published_at: :desc)
@@ -86,7 +86,7 @@ module EmailCampaigns
     end
 
     def assigned_initiatives recipient:, time:
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       recipient.assigned_initiatives.published
         .where('assigned_at > ?', time - 1.week)
         .order(assigned_at: :desc)
@@ -115,7 +115,7 @@ module EmailCampaigns
     end
 
     def succesful_assigned_initiatives recipient:, time:
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       threshold_reached_id = InitiativeStatus.where(code: 'threshold_reached').ids.first
       recipient.assigned_initiatives
         .joins(:initiative_status_changes)
