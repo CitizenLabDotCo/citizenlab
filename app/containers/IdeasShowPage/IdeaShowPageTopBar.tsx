@@ -34,7 +34,7 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
-  background-color: #EDEFF0; // TODO: add color to component library
+  background-color: #edeff0; // TODO: add color to component library
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 
@@ -186,6 +186,7 @@ const IdeaShowPageTopBar = memo<Props>(
             </Left>
             <Right>
               <VoteControl
+                style="shadow"
                 size="1"
                 ideaId={ideaId}
                 disabledVoteClick={onDisabledVoteClick}
