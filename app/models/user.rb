@@ -16,6 +16,18 @@ class User < ApplicationRecord
     :against => [:first_name, :last_name, :email], 
     :using => { :tsearch => {:prefix => true} }
 
+  pg_search_scope :by_full_name,
+                  :against => [:first_name, :last_name],
+                  :using => { :tsearch => {:prefix => true} }
+
+  pg_search_scope :by_first_name,
+                  :against => [:first_name],
+                  :using => { :tsearch => {:prefix => true} }
+
+  scope :by_username, -> (username) {
+    Tenant.current.shallow_anonymization? ? by_first_name(username) : by_full_name(username)
+  }
+
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
