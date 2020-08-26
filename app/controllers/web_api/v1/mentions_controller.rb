@@ -4,7 +4,7 @@ class WebApi::V1::MentionsController < ApplicationController
 
   def users
     limit = params[:limit]&.to_i || 5
-    query = params[:mention].gsub(/[^\w]/, "\s")
+    query = params[:mention].gsub(/\W/, "\s")
 
     @users = []
     if (post_id = params[:post_id]) && (post_type = params[:post_type])
