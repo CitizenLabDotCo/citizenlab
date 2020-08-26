@@ -275,15 +275,11 @@ class User < ApplicationRecord
 
   def generate_slug
     return if self.slug.present?
-    if shallow_anonymization?
+    if Tenant.current.shallow_anonymization?
       self.slug = SecureRandom.uuid
     elsif self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.full_name
     end
-  end
-
-  def shallow_anonymization?
-    Tenant.current.shallow_anonymization?
   end
 
   def sanitize_bio_multiloc
