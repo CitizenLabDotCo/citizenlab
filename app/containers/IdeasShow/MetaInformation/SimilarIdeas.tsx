@@ -20,7 +20,7 @@ import tracks from '../tracks';
 // services
 import { IMinimalIdeaData } from 'services/ideas';
 
-const Container = styled.aside``;
+const Container = styled.div``;
 
 const IdeaList = styled.ul`
   background-color: ${colors.background};
@@ -83,6 +83,6 @@ const SimilarIdeas = ({ similarIdeas, className }: Props) => {
   }
 
   return null;
-}
+};
 
 export default SimilarIdeas;
