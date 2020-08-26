@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'services/eventFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
+import { darken } from 'polished';
 
 // components
 import { Icon, colors, media } from 'cl2-component-library';
@@ -17,9 +18,10 @@ const FileDownloadLink = styled.a`
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
+  text-decoration: underline;
 
   &:hover {
-    color: inherit;
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 
@@ -32,31 +34,27 @@ const PaperclipIcon = styled(Icon)`
   width: 12px;
   height: 20px;
   fill: ${colors.label};
-  margin-right: 8px;
+  margin-right: 10px;
 `;
 
 export interface Props {
-  file: IPhaseFileData
-    | IIdeaFileData
-    | IEventFileData
+  file: IPhaseFileData | IIdeaFileData | IEventFileData;
 }
 
-const DropdownMap = memo<Props>(
-  ({ file }) => {
-    return (
-      <Container>
-        <PaperclipIcon name="paperclip" ariaHidden />
-        <FileDownloadLink
-          href={file.attributes.file.url}
-          download={file.attributes.name}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {file.attributes.name}
-        </FileDownloadLink>
-      </Container>
-    );
-  }
-);
+const DropdownMap = memo<Props>(({ file }) => {
+  return (
+    <Container>
+      <PaperclipIcon name="paperclip" ariaHidden />
+      <FileDownloadLink
+        href={file.attributes.file.url}
+        download={file.attributes.name}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {file.attributes.name}
+      </FileDownloadLink>
+    </Container>
+  );
+});
 
 export default DropdownMap;

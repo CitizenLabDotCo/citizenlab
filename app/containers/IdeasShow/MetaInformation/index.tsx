@@ -14,7 +14,6 @@ import { colors, fontSizes } from 'cl2-component-library';
 import Status from './Status';
 import Location from './Location';
 import Attachments from './Attachments';
-// import Attachment from './Attachment';
 import Topics from 'components/PostShowComponents/Topics';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
@@ -60,9 +59,13 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
   const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
   const ideaStatus = useIdeaStatus({ statusId });
 
-  if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
+  if (
+    !isNilOrError(idea) &&
+    !isNilOrError(locale) &&
+    !isNilOrError(ideaCustomFieldsSchemas)
+  ) {
     const topicIds =
-    idea.relationships.topics?.data.map(item => item.id) || [];
+      idea.relationships.topics?.data.map((item) => item.id) || [];
     const address = idea.attributes.location_description || null;
     const geoPosition = idea.attributes.location_point_geojson || null;
 
@@ -84,52 +87,47 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
 
     return (
       <Container>
-        {!isNilOrError(ideaStatus) &&
+        {!isNilOrError(ideaStatus) && (
           <Item>
             <Header>
               <FormattedMessage {...messages.currentStatus} />
             </Header>
             <Status ideaStatus={ideaStatus} />
           </Item>
-        }
-        {topicsEnabled && topicIds.length > 0 &&
+        )}
+        {topicsEnabled && topicIds.length > 0 && (
           <Item>
             <Header>
               <FormattedMessage {...messages.topics} />
             </Header>
-            <Topics
-              postType="idea"
-              topicIds={topicIds}
-            />
+            <Topics postType="idea" topicIds={topicIds} />
           </Item>
-        }
-        {locationEnabled && address && geoPosition &&
+        )}
+        {locationEnabled && address && geoPosition && (
           <Item>
             <Header>
               <FormattedMessage {...messages.location} />
             </Header>
             <Location address={address} />
           </Item>
-        }
-        {attachmentsEnabled &&
-          !isNilOrError(files) &&
-          files.length > 0 &&
+        )}
+        {attachmentsEnabled && !isNilOrError(files) && files.length > 0 && (
           <Item>
             <Header>
               <FormattedMessage {...messages.attachments} />
             </Header>
             <Attachments files={files} />
           </Item>
-        }
+        )}
         {/* <FeatureFlag name="similar_ideas"> */}
-          {!isNilOrError(similarIdeas) &&
-            <Item>
-              <Header>
-                <FormattedMessage {...messages.similarIdeas} />
-              </Header>
-              <SimilarIdeas similarIdeas={similarIdeas} />
-            </Item>
-          }
+        {!isNilOrError(similarIdeas) && (
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.similarIdeas} />
+            </Header>
+            <SimilarIdeas similarIdeas={similarIdeas} />
+          </Item>
+        )}
         {/* </FeatureFlag> */}
       </Container>
     );
