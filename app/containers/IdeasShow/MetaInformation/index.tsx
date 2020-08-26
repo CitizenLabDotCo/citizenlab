@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import isFieldEnabled from '../isFieldEnabled';
@@ -15,7 +16,6 @@ import Status from './Status';
 import Location from './Location';
 import Attachments from './Attachments';
 import Topics from 'components/PostShowComponents/Topics';
-import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 
 // hooks
@@ -26,14 +26,20 @@ import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import useSimilarIdeas from 'hooks/useSimilarIdeas';
 import useIdeaStatus from 'hooks/useIdeaStatus';
 
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
-const Item = styled.div`
-  border-bottom: 1px solid ${colors.separation};
+const Item = styled.div<{ isLastItem: boolean }>`
+  border-bottom: ${({ isLastItem }) =>
+    !isLastItem ? `1px solid ${colors.separation}` : 'none'};
   padding-top: 25px;
   padding-bottom: 30px;
 `;
@@ -45,13 +51,24 @@ const Header = styled.h3`
   margin-bottom: 15px;
 `;
 
-interface Props {
+interface InputProps {
   ideaId: string;
   projectId: string;
   statusId: string;
 }
 
-const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
+interface DataProps {
+  similarIdeasEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const MetaInformation = ({
+  ideaId,
+  projectId,
+  statusId,
+  similarIdeasEnabled,
+}: Props) => {
   const idea = useIdea({ ideaId });
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
   const locale = useLocale();
@@ -85,10 +102,30 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
       locale
     );
 
+    const calculateLastItem = () => {
+      if (similarIdeasEnabled && !isNilOrError(similarIdeas)) {
+        return 'similarIdeas';
+      } else if (
+        attachmentsEnabled &&
+        !isNilOrError(files) &&
+        files.length > 0
+      ) {
+        return 'attachments';
+      } else if (locationEnabled && address && geoPosition) {
+        return 'location';
+      } else if (topicsEnabled && topicIds.length > 0) {
+        return 'topics';
+      } else {
+        return 'ideaStatus';
+      }
+    };
+
+    const lastItem = calculateLastItem();
+
     return (
       <Container>
         {!isNilOrError(ideaStatus) && (
-          <Item>
+          <Item isLastItem={lastItem === 'ideaStatus'}>
             <Header>
               <FormattedMessage {...messages.currentStatus} />
             </Header>
@@ -96,7 +133,7 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
           </Item>
         )}
         {topicsEnabled && topicIds.length > 0 && (
-          <Item>
+          <Item isLastItem={lastItem === 'topics'}>
             <Header>
               <FormattedMessage {...messages.topics} />
             </Header>
@@ -104,7 +141,7 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
           </Item>
         )}
         {locationEnabled && address && geoPosition && (
-          <Item>
+          <Item isLastItem={lastItem === 'location'}>
             <Header>
               <FormattedMessage {...messages.location} />
             </Header>
@@ -116,23 +153,21 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
           </Item>
         )}
         {attachmentsEnabled && !isNilOrError(files) && files.length > 0 && (
-          <Item>
+          <Item isLastItem={lastItem === 'attachments'}>
             <Header>
               <FormattedMessage {...messages.attachments} />
             </Header>
             <Attachments files={files} />
           </Item>
         )}
-        {/* <FeatureFlag name="similar_ideas"> */}
-        {!isNilOrError(similarIdeas) && (
-          <Item>
+        {similarIdeasEnabled && !isNilOrError(similarIdeas) && (
+          <Item isLastItem={lastItem === 'similarIdeas'}>
             <Header>
               <FormattedMessage {...messages.similarIdeas} />
             </Header>
             <SimilarIdeas similarIdeas={similarIdeas} />
           </Item>
         )}
-        {/* </FeatureFlag> */}
       </Container>
     );
   }
@@ -140,4 +175,17 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
   return null;
 };
 
-export default MetaInformation;
+const Data = adopt({
+  similarIdeasEnabled: <GetFeatureFlag name="similar_ideas" />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {({ similarIdeasEnabled }) => (
+      <MetaInformation
+        {...inputProps}
+        similarIdeasEnabled={similarIdeasEnabled}
+      />
+    )}
+  </Data>
+);
