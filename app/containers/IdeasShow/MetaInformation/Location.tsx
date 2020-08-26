@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
 import ModalWithMap from './ModalWithMap';
-import Button from 'components/UI/Button';
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,15 @@ const StyledIcon = styled(Icon)`
   margin-right: 8px;
 `;
 
-const OpenMapModalButton = styled(Button)``;
+const OpenMapModalButton = styled.button`
+  color: ${colors.label};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.2, colors.label)};
+    cursor: pointer;
+  }
+`;
 
 export interface Props {
   className?: string;
