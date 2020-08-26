@@ -809,6 +809,18 @@
         }
       },
 
+      "display_names": {
+        "type": "object",
+        "title": "Abbreviated User Name",
+        "description": "NOTE: Once you have selected this option, you cannot change it back. User names are shown on the platform as first name + first initial (Jane D. instead of Jane Doe).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "moderation": {
         "type": "object",
         "title": "Moderation",
@@ -854,18 +866,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "display_names": {
-        "type": "object",
-        "title": "Shallow anonymization",
-        "description":  "Last name is cropped when shown to non-admin users.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
