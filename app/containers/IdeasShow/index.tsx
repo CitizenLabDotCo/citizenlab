@@ -299,6 +299,10 @@ const MetaContent = styled.div`
   flex-direction: column;
 `;
 
+const StyledCTABox = styled(CTABox)`
+  margin-bottom: 20px;
+`;
+
 const ControlWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -802,7 +806,7 @@ export class IdeasShow extends PureComponent<
               {biggerThanLargeTablet && (
                 <RightColumnDesktop>
                   <MetaContent>
-                    <CTABox ideaId={ideaId} projectId={projectId} />
+                    <StyledCTABox ideaId={ideaId} projectId={projectId} />
                     {showBudgetControl && (
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {participationContextId &&
