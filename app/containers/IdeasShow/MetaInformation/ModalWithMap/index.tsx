@@ -16,7 +16,7 @@ const ModalWithMap = ({
   onCloseModal,
 }: Props) => {
   return (
-    <Modal opened={isOpened} close={onCloseModal}>
+    <Modal padding={'70px 30px 30px'} opened={isOpened} close={onCloseModal}>
       <Map position={position} projectId={projectId} />
     </Modal>
   );
