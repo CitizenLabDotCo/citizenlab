@@ -24,7 +24,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       initiating_user_last_name = name_service.last_name(notification.initiating_user) if comment.author.present?
       [{
         event_payload: {

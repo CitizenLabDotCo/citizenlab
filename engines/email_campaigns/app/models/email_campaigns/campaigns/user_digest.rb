@@ -32,7 +32,7 @@ module EmailCampaigns
       time ||= Time.now
       top_ideas = top_ideas recipient
       discover_projects = discover_projects recipient
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @succesful_initiatives ||= succesful_initiatives(name_service, time: time)
       @initiative_ids ||= (@new_initiatives + @succesful_initiatives).map do |d|
@@ -90,7 +90,7 @@ module EmailCampaigns
     end
 
     def top_idea_payload idea, recipient
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       {
         title_multiloc: idea.title_multiloc,
         body_multiloc: idea.body_multiloc,

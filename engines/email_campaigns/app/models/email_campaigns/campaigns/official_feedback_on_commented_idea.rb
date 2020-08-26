@@ -24,7 +24,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       [{
         event_payload: {
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,

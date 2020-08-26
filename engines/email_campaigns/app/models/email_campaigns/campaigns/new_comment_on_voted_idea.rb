@@ -30,7 +30,7 @@ module EmailCampaigns
     def generate_commands recipient:, activity:, time: nil
       comment = activity.item
       return [] if comment.post_type != 'Idea'
-      name_service = UserDisplayNameService(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       initiating_user_last_name = name_service.last_name(comment.author) if comment.author.present?
       [{
         event_payload: {
