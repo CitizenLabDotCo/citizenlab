@@ -578,16 +578,16 @@ export class IdeasShow extends PureComponent<
       loaded
     ) {
       // If the user deletes their profile, authorId can be null
-      const authorId = idea?.relationships?.author?.data?.id || null;
+      const authorId = idea.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      const statusId = idea?.relationships?.idea_status?.data?.id || null;
+      const statusId = idea.relationships.idea_status.data.id;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
       const ideaUrl = location.href;
       const ideaId = idea.id;
-      const proposedBudget = idea?.attributes?.proposed_budget;
+      const proposedBudget = idea.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
       const participationContextType =
         actionInfos?.participationContextType || null;
