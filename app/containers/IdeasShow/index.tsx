@@ -40,6 +40,7 @@ import MetaInformation from './MetaInformation';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import isFieldEnabled from './isFieldEnabled';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -59,6 +60,9 @@ import GetOfficialFeedbacks, {
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
+import GetIdeaCustomFieldsSchemas, {
+  GetIdeaCustomFieldsSchemasChildProps,
+} from 'resources/GetIdeaCustomFieldsSchemas';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -222,7 +226,7 @@ const StyledProjectLink = styled(ProjectLink)`
   display: block;
 `;
 
-const BodySectionTitle = styled.h2`
+export const BodySectionTitle = styled.h2`
   font-size: ${(props) => props.theme.fontSizes.medium}px;
   font-weight: 400;
   line-height: 28px;
@@ -353,6 +357,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
+  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface InputProps {
@@ -555,6 +560,7 @@ export class IdeasShow extends PureComponent<
       className,
       postOfficialFeedbackPermission,
       projectId,
+      ideaCustomFieldsSchemas,
     } = this.props;
     const {
       loaded,
@@ -565,7 +571,12 @@ export class IdeasShow extends PureComponent<
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+    if (
+      !isNilOrError(idea) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      loaded
+    ) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
@@ -594,8 +605,11 @@ export class IdeasShow extends PureComponent<
       const smallerThanSmallTablet = windowSize
         ? windowSize <= viewportWidths.smallTablet
         : false;
-      const hasMultipleBodyAttributes =
-        proposedBudget !== null && proposedBudgetEnabled && !!ideaBody;
+      const proposedBudgetEnabled = isFieldEnabled(
+        'proposed_budget',
+        ideaCustomFieldsSchemas,
+        locale
+      );
 
       const utmParams = !isNilOrError(authUser)
         ? {
@@ -678,19 +692,11 @@ export class IdeasShow extends PureComponent<
                   )}
                 </FeatureFlag>
 
-                {proposedBudgetEnabled &&
-                  proposedBudget !== null &&
-                  hasMultipleBodyAttributes && (
-                    <BodySectionTitle>
-                      <FormattedMessage {...messages.proposedBudgetTitle} />
-                    </BodySectionTitle>
-                  )}
-
-                {proposedBudgetEnabled && proposedBudget !== null && (
+                {proposedBudget && (
                   <IdeaProposedBudget proposedBudget={proposedBudget} />
                 )}
 
-                {hasMultipleBodyAttributes && (
+                {proposedBudget && proposedBudgetEnabled && (
                   <BodySectionTitle>
                     <FormattedMessage {...messages.bodyTitle} />
                   </BodySectionTitle>
@@ -927,6 +933,13 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetPermission>
   ),
+  ideaCustomFieldsSchemas: ({ projectId, render }) => {
+    return (
+      <GetIdeaCustomFieldsSchemas projectId={projectId}>
+        {render}
+      </GetIdeaCustomFieldsSchemas>
+    );
+  },
 });
 
 export default (inputProps: InputProps) => (
