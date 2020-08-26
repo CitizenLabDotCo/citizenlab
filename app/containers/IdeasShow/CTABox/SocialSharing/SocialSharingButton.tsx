@@ -1,10 +1,7 @@
 import React from 'react';
 
 const SocialSharingButton = () => {
-
-  return (
-
-  );
-}
+  return <div>SocialSharingButton</div>;
+};
 
 export default SocialSharingButton;
