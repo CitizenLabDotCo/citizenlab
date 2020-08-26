@@ -108,7 +108,11 @@ const MetaInformation = ({ ideaId, projectId, statusId }: Props) => {
             <Header>
               <FormattedMessage {...messages.location} />
             </Header>
-            <Location address={address} />
+            <Location
+              position={geoPosition}
+              address={address}
+              projectId={projectId}
+            />
           </Item>
         )}
         {attachmentsEnabled && !isNilOrError(files) && files.length > 0 && (

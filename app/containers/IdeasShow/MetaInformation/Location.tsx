@@ -1,9 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
-// const Map = React.lazy(() => import('./Map'));
+import ModalWithMap from './ModalWithMap';
+import Button from 'components/UI/Button';
 
 const Container = styled.div`
   display: flex;
@@ -17,22 +18,40 @@ const StyledIcon = styled(Icon)`
   margin-right: 8px;
 `;
 
+const OpenMapModalButton = styled(Button)``;
+
 export interface Props {
+  className?: string;
   address: string;
-  // position: GeoJSON.Point;
-  // className?: string;
-  // projectId?: string | null;
+  position: GeoJSON.Point;
+  projectId: string;
 }
 
-const DropdownMap = memo<Props>(
-  ({ address }) => {
-    return (
+const Location = memo<Props>(({ address, position, projectId }) => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const closeModal = () => {
+    setIsOpened(false);
+  };
+
+  const openModal = () => {
+    setIsOpened(true);
+  };
+
+  return (
+    <>
       <Container>
         <StyledIcon name="position" />
-        {address}
+        <OpenMapModalButton onClick={openModal}>{address}</OpenMapModalButton>
       </Container>
-    );
-  }
-);
+      <ModalWithMap
+        position={position}
+        projectId={projectId}
+        isOpened={isOpened}
+        onCloseModal={closeModal}
+      />
+    </>
+  );
+});
 
-export default DropdownMap;
+export default Location;
