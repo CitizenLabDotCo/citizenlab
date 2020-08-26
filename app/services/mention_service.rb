@@ -4,9 +4,7 @@ class MentionService
   # @param [User] user
   # @return [String] mention
   def user_to_mention user
-    name_service = UserDisplayNameService.new(Tenant.current)
-    slug_service = SlugService.new
-    "@#{slug_service.slugify(name_service.display_name(user))}"
+    "@#{user.slug}"
   end
 
   # @param [String] text
@@ -64,14 +62,14 @@ class MentionService
     new_users - old_users
   end
 
-  # @param [String] slug
+  # @param [String] query
   # @param [Post] post
   # @param [Integer] limit
   # @return [Array<User>]
-  def users_from_post slug, post, limit
+  def users_from_post query, post, limit
     commenter_ids = User.joins(:comments).where(comments: {post_id: post.id}).ids.uniq
     user_ids = commenter_ids << post.author.id
-    User.where(id: user_ids).by_username(slug).limit(limit).to_a
+    User.where(id: user_ids).by_username(query).limit(limit).to_a
   end
 
   private
