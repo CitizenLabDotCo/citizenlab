@@ -6,7 +6,7 @@ describe UserDisplayNameService do
   before(:all) do
     @regular_user = build(:user, first_name: 'Regular', last_name: 'User')
     @another_user = build(:user, first_name: 'Another', last_name: 'User')
-    @admin = build(:admin)
+    @admin = build(:admin, first_name: "Almighty", last_name: "Admin")
   end
 
   describe "when shallow anonymization is enabled" do
@@ -38,6 +38,16 @@ describe UserDisplayNameService do
       name_service = UserDisplayNameService.new(@tenant, nil)
       display_name = name_service.display_name(@another_user)
       expect(display_name).to eq 'Another U.'
+    end
+
+    it "unknown and regular users should see the full name of admins" do
+      name_service = UserDisplayNameService.new(@tenant, @regular_user)
+      display_name = name_service.display_name(@admin)
+      expect(display_name).to eq 'Almighty Admin'
+
+      name_service = UserDisplayNameService.new(@tenant, nil)
+      display_name = name_service.display_name(@admin)
+      expect(display_name).to eq 'Almighty Admin'
     end
   end
 

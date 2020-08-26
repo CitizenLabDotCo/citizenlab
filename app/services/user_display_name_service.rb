@@ -29,7 +29,7 @@ class UserDisplayNameService
   # @param [User] user
   # @return [Boolean]
   def can_see_fullname_of?(user)
-    return true unless @tenant.shallow_anonymization? || user.admin?
+    return true if user.admin? || !@tenant.shallow_anonymization?
     is_admin? || (user == @current_user)
   end
 
