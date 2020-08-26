@@ -73,6 +73,7 @@ class VoteWrapper extends PureComponent<Props, State> {
       <Container className={className}>
         {!error && (
           <VoteControl
+            style="shadow"
             ideaId={ideaId}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
