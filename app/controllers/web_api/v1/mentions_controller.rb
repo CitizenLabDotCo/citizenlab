@@ -7,7 +7,7 @@ class WebApi::V1::MentionsController < ApplicationController
     slug_service = SlugService.new
     limit = params[:limit]&.to_i || 5
 
-    mention_pattern = slug_service.slugify(params[:mention])
+    mention_pattern = slug_service.slugify(params[:mention]).split('-').reject(&:empty?)
 
     @users = []
     if (post_id = params[:post_id]) && (post_type = params[:post_type])
@@ -17,12 +17,14 @@ class WebApi::V1::MentionsController < ApplicationController
     end
 
     if @users.size < limit
-      @users += User
-        .where("slug ILIKE ?", "#{mention_pattern}%")
-        .limit(limit - @users.size)
-        .where.not(id: @users)
-        .all
+      @users << User.by_username(mention_pattern)
+                    .where.not(id: @users)
+                    .limit(limit - @users.size)
+                    .all
     end
+
+    puts "yolow"
+    puts @users.inspect
 
     render json: WebApi::V1::UserSerializer.new(
         @users,
