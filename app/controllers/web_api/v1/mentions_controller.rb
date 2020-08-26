@@ -3,28 +3,20 @@ class WebApi::V1::MentionsController < ApplicationController
   skip_after_action :verify_authorized, only: [:users]
 
   def users
-    service = MentionService.new
-    slug_service = SlugService.new
     limit = params[:limit]&.to_i || 5
-
-    mention_pattern = slug_service.slugify(params[:mention]).split('-').reject(&:empty?)
+    query = params[:mention].gsub(/[^\w]/, "\s")
 
     @users = []
     if (post_id = params[:post_id]) && (post_type = params[:post_type])
       post_class = post_type_to_class(post_type)
       post = post_class.find(post_id)
-      @users = service.users_from_post mention_pattern, post, limit
+      @users = MentionService.new.users_from_post(query, post, limit)
     end
 
-    if @users.size < limit
-      @users << User.by_username(mention_pattern)
-                    .where.not(id: @users)
-                    .limit(limit - @users.size)
-                    .all
+    nb_missing_users = limit - @users.size
+    if nb_missing_users > 0
+      @users += User.by_username(query).where.not(id: @users).limit(nb_missing_users)
     end
-
-    puts "yolow"
-    puts @users.inspect
 
     render json: WebApi::V1::UserSerializer.new(
         @users,
