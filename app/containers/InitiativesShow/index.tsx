@@ -171,7 +171,7 @@ const LeftColumn = styled.div`
 `;
 
 const StyledTopics = styled(Topics)`
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 5px;
