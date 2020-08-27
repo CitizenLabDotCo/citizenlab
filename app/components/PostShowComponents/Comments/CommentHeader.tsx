@@ -12,7 +12,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 13px;
+
+  &.marginBottom {
+    margin-bottom: 13px;
+  }
 `;
 
 const Left = styled.div`
@@ -34,6 +37,7 @@ const StyledAuthor = styled(Author)`
 `;
 
 interface InputProps {
+  className?: string;
   projectId?: string | null;
   authorId: string | null;
   commentId: string;
@@ -54,10 +58,11 @@ export default class CommentHeader extends PureComponent<Props, State> {
       commentType,
       commentCreatedAt,
       moderator,
+      className,
     } = this.props;
 
     return (
-      <Container>
+      <Container className={className}>
         <Left>
           <StyledAuthor
             authorId={authorId}

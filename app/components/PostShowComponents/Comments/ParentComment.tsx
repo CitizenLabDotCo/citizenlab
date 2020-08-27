@@ -32,7 +32,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 const Container = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   position: relative;
 `;
 
@@ -235,7 +235,6 @@ class ParentComment extends PureComponent<Props, State> {
               projectId={projectId}
               commentId={comment.id}
               commentType="parent"
-              hasBottomBorder={!(canLoadMore && !hasLoadedMore)}
               hasChildComments={hasChildComments}
               canReply={canReply}
             />
