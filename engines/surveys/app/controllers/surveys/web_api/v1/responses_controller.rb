@@ -8,7 +8,11 @@ module Surveys
         rescue_from TypeformApiParser::AuthorizationError, with: :typeform_authorization_error
 
         def index_xlsx
-          authorize [:surveys, :response], :index_xlsx?
+          if @participation_context
+            authorize Project.find_by!(id: @participation_context.project.id), :index_xlsx?
+          else
+            authorize [:surveys, :response], :index_xlsx?
+          end
 
           # If the real-time API request ever gets problematic, this uses the saved webhook responses instead
           # @responses = policy_scope(Response)
@@ -17,20 +21,10 @@ module Surveys
 
           @responses = TypeformApiParser.new.get_responses(@participation_context.typeform_form_id)
 
-          hash_array = @responses.map do |response|
-            {
-              submitted_at: response.submitted_at,
-              started_at: response.started_at
-            }.tap do |row|
-              answers = response.answers.each do |answer|
-                row[answer['question_text']] = answer['value']
-              end
-            end
+          I18n.with_locale(current_user&.locale) do
+            xlsx = XlsxService.new.generate_survey_results_xlsx @responses
+            send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'survey_responses.xlsx'
           end
-
-          xlsx = XlsxService.new.hash_array_to_xlsx(hash_array)
-
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'survey_responses.xlsx'
         end
 
         def set_participation_context

@@ -113,6 +113,9 @@ nl:
       location:
         title: Locatie
         description:
+      proposed_budget:
+        title: Voorgesteld budget
+        description:
       images:
         title: Afbeeldingen
         description:

@@ -29,9 +29,9 @@ class WebApi::V1::UsersController < ::ApplicationController
       when "-last_name"
         @users.order(last_name: :desc)
       when "email"
-        @users.order(email: :asc)
+        @users.order(email: :asc) if view_private_attributes?
       when "-email"
-        @users.order(email: :desc)
+        @users.order(email: :desc) if view_private_attributes?
       when "role"
         @users.order_role(:asc)
       when "-role"
@@ -56,7 +56,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = policy_scope(User).all
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
-    xlsx = XlsxService.new.generate_users_xlsx @users
+    xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
 
     LogActivityJob.perform_later(current_user, 'exported_users_sheet', current_user, Time.now.to_i)
 
@@ -220,6 +220,10 @@ class WebApi::V1::UsersController < ::ApplicationController
         params[:user][:custom_field_values][clear_key] = nil
       end
     end
+  end
+
+  def view_private_attributes?
+    Pundit.policy!(current_user, (@user || User)).view_private_attributes?
   end
 
 end

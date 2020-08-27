@@ -112,6 +112,9 @@ nb:
       location:
         title: Lokalitet
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:
       images:
         title: Bilder
         description:

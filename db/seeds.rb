@@ -102,6 +102,9 @@ end
 
 
 if ['public','example_org'].include? Apartment::Tenant.current
+  # rake db:reset clears all instances before repopulating the db.
+  CommonPassword.initialize!
+  
   t = Tenant.create!({
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
@@ -359,7 +362,7 @@ end
 admin = {
   id: "386d255e-2ff1-4192-8e50-b3022576be50",
   email: 'admin@citizenlab.co',
-  password: 'testtest',
+  password: 'democracy2.0',
   roles: [
     {type: "admin"},
   ],
@@ -368,13 +371,13 @@ admin = {
 moderator = {
   id: "61caabce-f7e5-4804-b9df-36d7d7d73e4d",
   email: 'moderator@citizenlab.co',
-  password: 'testtest',
+  password: 'democracy2.0',
   roles: []
 }
 user = {
   id: "546335a3-33b9-471c-a18a-d5b58ebf173a",
   email: 'user@citizenlab.co',
-  password: 'testtest',
+  password: 'democracy2.0',
   roles: []
 }
 
@@ -425,7 +428,7 @@ if Apartment::Tenant.current == 'localhost'
 
   if SEED_SIZE != 'empty'
     num_users.times do
-      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'testtest'})
+      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'democracy2.0'})
     end
 
     Area.create!({
@@ -616,6 +619,7 @@ if Apartment::Tenant.current == 'localhost'
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
         budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
+        proposed_budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
         assignee: rand(5) == 0 ? rand_instance(User.admin.or(User.project_moderator(project.id))) : nil
       })
 

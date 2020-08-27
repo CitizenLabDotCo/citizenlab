@@ -456,7 +456,8 @@ module AdminApi
           'updated_at'             => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
           'location_point_geojson' => i.location_point_geojson,
           'location_description'   => i.location_description,
-          'budget'                 => i.budget
+          'budget'                 => i.budget,
+          'proposed_budget'       => i.proposed_budget,
         }
         store_ref yml_idea, i.id, :idea
         yml_idea
