@@ -56,7 +56,6 @@ const LoadMore = styled.button`
   width: 100%;
   min-height: 45px;
   padding: 0;
-  margin: 0;
   border: none;
   border-top: solid 1px #e8e8e8;
   border-bottom: solid 1px #e8e8e8;
@@ -65,6 +64,8 @@ const LoadMore = styled.button`
   align-items: center;
   justify-content: center;
   transition: all 150ms ease-out;
+  margin-bottom: 20px;
+  margin-left: 30px;
 
   &.clickable {
     cursor: pointer;
@@ -213,6 +214,7 @@ class ParentComment extends PureComponent<Props, State> {
             .map((comment) => comment.id)
         : this.props.childCommentIds;
       const canReply = comment.attributes.publication_status !== 'deleted';
+      const showLoadMore = canLoadMore && !hasLoadedMore;
 
       // hide parent comments that are deleted when they have no children
       if (
@@ -239,7 +241,7 @@ class ParentComment extends PureComponent<Props, State> {
             />
           </ParentCommentContainer>
 
-          {canLoadMore && !hasLoadedMore && (
+          {showLoadMore && (
             <LoadMore
               onMouseDown={this.removeFocus}
               onClick={this.loadMore}
