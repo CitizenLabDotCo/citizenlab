@@ -1,6 +1,7 @@
 // libraries
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { trackEventByName } from 'utils/analytics';
 
 // styling
 import styled from 'styled-components';
@@ -84,6 +85,8 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
       setDropdownOpened(false);
       saveAs(svgBlob, `${fileName}.svg`);
     }
+
+    trackEventByName('Clicked export svg', { graph: name });
   };
 
   const toggleDropdown = (value?: boolean) => () => {
@@ -115,7 +118,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
     }
 
     // track this click for user analytics
-    // trackEventByName("Clicked export xlsx", { graph: name});
+    trackEventByName('Clicked export xlsx', { graph: name });
   };
 
   return (
