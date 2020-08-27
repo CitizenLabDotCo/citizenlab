@@ -13,7 +13,7 @@ describe UserDisplayNameService do
 
     before(:all) do
       @tenant = build(:tenant)
-      @tenant.settings["display_names"] = {"allowed"=>true, "enabled"=>true}
+      @tenant.settings["abbreviated_user_names"] = {allowed: true, enabled: true}
     end
 
     it "admins should see full names" do
@@ -55,7 +55,7 @@ describe UserDisplayNameService do
 
     before(:all) do
       @tenant = build(:tenant)
-      @tenant.settings["display_names"] = {"allowed"=>false, "enabled"=>false}
+      @tenant.settings["abbreviated_user_names"] = {allowed: false, enabled: false}
     end
 
     it "admins should see full names" do
