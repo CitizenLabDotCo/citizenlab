@@ -6,7 +6,7 @@ import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import { Form, Field, InjectedFormikProps } from 'formik';
 import Error from 'components/UI/Error';
 import { SectionField } from 'components/admin/Section';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 

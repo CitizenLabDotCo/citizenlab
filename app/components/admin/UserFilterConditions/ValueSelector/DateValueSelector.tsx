@@ -1,7 +1,7 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
 
-import DateInput from 'components/UI/DateInput';
+import { DateInput } from 'cl2-component-library';
 
 type Props = {
   value: string;

@@ -90,7 +90,7 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
                 <Button
                   linkTo={`/pages/${page.attributes.slug}`}
                   buttonStyle="text"
-                  icon="search2"
+                  icon="search"
                 >
                   <FormattedMessage {...messages.showButtonLabel} />
                 </Button>

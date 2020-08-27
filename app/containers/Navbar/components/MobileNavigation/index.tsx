@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -136,14 +136,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
           className={secondUrlSegment === 'projects' ? 'active' : ''}
         >
           <NavigationIconWrapper>
-            <NavigationIcon
-              ariaHidden
-              name="folder"
-              colorTheme={{
-                clIconPrimary: `${colors.clIconPrimary}`,
-                clIconSecondary: `${colors.clIconAccent}`,
-              }}
-            />
+            <NavigationIcon ariaHidden name="folder" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
@@ -156,7 +149,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
             className={secondUrlSegment === 'ideas' ? 'active' : ''}
           >
             <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="ideas" />
+              <NavigationIcon ariaHidden name="idea2" />
             </NavigationIconWrapper>
             <NavigationLabel>
               <FormattedMessage {...messages.mobilePageIdeas} />

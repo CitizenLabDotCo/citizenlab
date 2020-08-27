@@ -46,16 +46,17 @@ export default function request<T>(
       if (response.ok || response.status === 200) {
         return json;
       }
-
       const errorMessage = isString(json?.error)
         ? json.error
         : response.statusText || 'unknown error';
-      throw new Error(`error for ${urlWithParams}: ${errorMessage}`);
-    })
-    .catch((error) => {
-      throw new Error(
-        `error for ${urlWithParams}: ${error || 'unknown error'}`
-      );
+      const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
+      if (!!json) {
+        // The error reasons may be encoded in the
+        // json content (this happens e.g. for
+        // xlsx invites).
+        Object.assign(error, { json });
+      }
+      throw error;
     });
 }
 

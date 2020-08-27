@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
 
@@ -6,7 +6,6 @@ const SortableLink = styled.a`
   color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: flex;
-  flex-wrap: no-wrap;
 `;
 
 interface Props {
@@ -14,7 +13,7 @@ interface Props {
   onToggle: () => void;
 }
 
-const SortableTableHeader: React.SFC<Props> = ({ children, ...props }) => {
+const SortableTableHeader: FC<Props> = ({ children, ...props }) => {
   const { direction, onToggle } = props;
 
   return (

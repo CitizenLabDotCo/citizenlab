@@ -9,7 +9,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import Body from 'components/PostShowComponents/Body';

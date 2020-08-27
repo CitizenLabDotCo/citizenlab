@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 

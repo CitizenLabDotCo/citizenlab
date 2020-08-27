@@ -6,7 +6,7 @@ import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 

@@ -165,8 +165,7 @@ class OfficialFeedbackFeed extends PureComponent<
                 processing={loadingMore}
                 icon="showMore"
                 buttonStyle="secondary-outlined"
-                textColor={colors.clRedError}
-                textHoverColor={colors.clRedError}
+                padding="12px"
               />
             )}
           </Container>

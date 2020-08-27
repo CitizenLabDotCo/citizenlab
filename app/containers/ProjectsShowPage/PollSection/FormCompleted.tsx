@@ -3,7 +3,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import Illustration from './Illustration';
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled.div`
   font-size: ${fontSizes.xl}px;
@@ -14,10 +14,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: 100px 50px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
     padding: 70px 30px;

@@ -375,7 +375,7 @@ export class AdminProjectEdition extends PureComponent<
                 <Button
                   id="e2e-new-idea"
                   buttonStyle="cl-blue-outlined"
-                  icon="idea2"
+                  icon="idea"
                   linkTo={`/projects/${project.attributes.slug}/ideas/new`}
                   text={formatMessage(messages.addNewIdea)}
                   onClick={this.onNewIdea(pathname)}

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 const doubleBounce = keyframes`

@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 
 // Components
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // Styling

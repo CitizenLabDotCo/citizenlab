@@ -1,5 +1,5 @@
 import { IPollQuestion } from 'services/pollQuestions';
-export const mockQuestion = (id, titleEn, question_type: 'single_option' | 'multiple_options' = 'single_option', max_options = null, ordering = 0, options, pcId, pcType) => ({
+export const mockQuestion = (id, titleEn, question_type: 'single_option' | 'multiple_options' = 'single_option', max_options: number | null = null, ordering = 0, options?, pcId?, pcType?) => ({
   id,
   type: 'poll_question',
   attributes: {

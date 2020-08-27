@@ -27,7 +27,7 @@ describe('Idea show page actions', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
-      cy.get('.e2e-locale-switch').each((button) => {
+      cy.get('.e2e-localeswitcher').each((button) => {
         // input
         cy.wrap(button).click();
         cy.get('#official-feedback-form textarea').type(officialFeedbackBody);

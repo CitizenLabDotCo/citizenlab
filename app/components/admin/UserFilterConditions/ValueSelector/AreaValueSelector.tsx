@@ -2,7 +2,7 @@ import React from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 

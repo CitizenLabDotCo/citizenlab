@@ -4,7 +4,7 @@ import { isEmpty, every } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
