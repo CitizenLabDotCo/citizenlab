@@ -58,6 +58,12 @@ import {
   IIdeasByProject,
   ICommentsByProject,
   IVotesByProject,
+  ideasByTopicXlsxEndpoint,
+  ideasByProjectXlsxEndpoint,
+  commentsByTopicXlsxEndpoint,
+  commentsByProjectXlsxEndpoint,
+  votesByTopicXlsxEndpoint,
+  votesByProjectXlsxEndpoint,
 } from 'services/stats';
 import { IStreamParams, IStream } from 'utils/streams';
 import { IResource } from '..';
@@ -82,7 +88,6 @@ interface QueryProps {
   convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | undefined;
   byWhat: 'Topic' | 'Project';
-  xlsxEndpoint: string;
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
@@ -146,6 +151,16 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
             selectedName,
           })
         : selectedResourceName;
+
+    const xlsxEndpointTable = {
+      ideasTopic: ideasByTopicXlsxEndpoint,
+      commentsTopic: commentsByTopicXlsxEndpoint,
+      votesTopic: votesByTopicXlsxEndpoint,
+      ideasProject: ideasByProjectXlsxEndpoint,
+      commentsProject: commentsByProjectXlsxEndpoint,
+      votesProject: votesByProjectXlsxEndpoint,
+    };
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -169,6 +184,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               svgNode={this.currentChart}
               name={formatMessage(messages[`participationPer${byWhat}`])}
               {...this.props}
+              xlsxEndpoint={xlsxEndpointTable[currentSelectedResource + byWhat]}
             />
           </GraphCardHeaderWithFilter>
           {!serie ? (

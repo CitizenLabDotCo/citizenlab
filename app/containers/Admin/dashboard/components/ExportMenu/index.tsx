@@ -110,6 +110,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
       }
       saveAs(blob, `${fileName}.xlsx`);
       setExportingXls(false);
+      setDropdownOpened(false);
     } catch (error) {
       reportError(error);
       setExportingXls(false);
