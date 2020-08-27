@@ -73,6 +73,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
             horizontalLayout
+            emphasize
           />
         </Left>
 
