@@ -57,7 +57,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "topic"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_topic")
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_topic"
   end
 
   def ideas_by_project_serie
@@ -94,7 +94,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "project"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_project")
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_project"
   end
 
   def ideas_by_area_serie
@@ -131,7 +131,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "area"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("ideas_by_project")
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_project"
   end
 
   def ideas_by_time_serie
@@ -158,7 +158,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_time_as_xlsx
     name = 'ideas_by_time'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name(name)
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name
   end
 
   def ideas_by_time_cumulative_serie
@@ -185,27 +185,11 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_time_cumulative_as_xlsx
     name = 'ideas_by_time_cumulative'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name(name)
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name
   end
 
 
   private
-
-  def render_xlsx_file_name name
-    if params[:project]
-      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
-    end
-
-    if params[:group]
-      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
-    end
-
-    if params[:topic]
-      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
-    end
-
-    name + (project_name ? "_project_#{project_name}" : '') + (group_name ? "_group_#{group_name}" : '') + (topic_name ? "_topic_#{topic_name}" : '') + '.xlsx'
-  end
 
   def apply_group_filter ideas
     if params[:group]

@@ -59,7 +59,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_serie, 'users_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_time')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time'
   end
 
 
@@ -98,7 +98,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     send_data xlsx,
      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: render_xlsx_file_name('users_by_time_cumulative')
+     filename: 'users_by_time_cumulative'
  end
 
   def active_users_by_time_serie
@@ -142,7 +142,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie, 'active_users_by_time'
     send_data xlsx,
      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: render_xlsx_file_name('active_users_by_time')
+     filename: 'active_users_by_time'
   end
 
   def users_by_gender_serie
@@ -170,7 +170,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_gender_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie, 'gender', 'users'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_gender')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender'
   end
 
   def users_by_birthyear_serie
@@ -197,7 +197,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_birthyear_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie, 'birthyear', 'users'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_birthyear')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear'
   end
 
   def users_by_domicile_serie
@@ -236,7 +236,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       }
     }
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_domicile')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile'
   end
 
   def users_by_education_serie
@@ -262,7 +262,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_education_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_education_serie, 'education', 'users'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_education')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education'
   end
 
   def users_by_custom_field_serie
@@ -330,10 +330,10 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         }
       }
       xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_custom_field')
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field'
     else
       xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_serie, 'option', 'users'
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('users_by_custom_field')
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field'
     end
 
   end
@@ -367,22 +367,6 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   private
-
-  def render_xlsx_file_name name
-    if params[:project]
-      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
-    end
-
-    if params[:group]
-      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
-    end
-
-    if params[:topic]
-      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
-    end
-
-    name + (project_name ? "_p_#{project_name}" : '') + (group_name ? "_g_#{group_name}" : '') + (topic_name ? "_t_#{topic_name}" : '') + '.xlsx'
-  end
 
   def render_no_data
     if @no_data
