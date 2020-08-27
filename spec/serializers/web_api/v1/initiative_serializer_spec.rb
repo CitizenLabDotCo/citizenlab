@@ -36,7 +36,5 @@ describe WebApi::V1::InitiativeSerializer do
                       .dig(:data, :attributes, :author_name)
       expect(last_name).to eq "Thomas Anderson"
     end
-
   end
-
 end
