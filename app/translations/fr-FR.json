@@ -1952,7 +1952,7 @@
   "app.containers.app.navbar.mobilePageIdeas": "Idées",
   "app.containers.app.navbar.mobilePageInitiatives": "Propositions",
   "app.containers.app.navbar.mobilePageProjects": "{tenantName, select, frw {Communes} UrbanLab {Quartiers} other {Projets}}",
-  "app.containers.app.navbar.myProfile": "Mon profil",
+  "app.containers.app.navbar.myProfile": "Mon activité",
   "app.containers.app.navbar.pageIdeas": "Idées",
   "app.containers.app.navbar.pageInformation": "{tenantName, select, UrbanLab {UrbanLab} other {À propos}}",
   "app.containers.app.navbar.pageInitiatives": "Propositions",
