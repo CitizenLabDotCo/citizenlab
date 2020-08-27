@@ -105,6 +105,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
           topic: currentTopicFilter,
         }
       );
+      setDropdownOpened(false);
       saveAs(blob, `${fileName}.xlsx`);
       setExportingXls(false);
     } catch (error) {
