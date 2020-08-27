@@ -97,8 +97,10 @@ export class BarChartByCategory extends React.PureComponent<
       intl: { formatMessage },
       graphUnit,
     } = this.props;
+
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+
     const unitName = formatMessage(messages[graphUnit]);
 
     return (
@@ -106,13 +108,15 @@ export class BarChartByCategory extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            <ExportMenu
-              name={graphTitleString}
-              svgNode={this.currentChart}
-              xlsxEndpoint={xlsxEndpoint}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-              currentGroupFilter={currentGroupFilter}
-            />
+            {!noData && (
+              <ExportMenu
+                name={graphTitleString}
+                svgNode={this.currentChart}
+                xlsxEndpoint={xlsxEndpoint}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                currentGroupFilter={currentGroupFilter}
+              />
+            )}
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>

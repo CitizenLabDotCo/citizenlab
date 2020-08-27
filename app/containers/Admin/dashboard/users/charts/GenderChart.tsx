@@ -148,13 +148,15 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             <GraphCardTitle>
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
-            <ExportMenu
-              name={formatMessage(messages.usersByGenderTitle)}
-              svgNode={this.currentChart}
-              xlsxEndpoint={usersByGenderXlsxEndpoint}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-              currentGroupFilter={currentGroupFilter}
-            />
+            {serie && (
+              <ExportMenu
+                name={formatMessage(messages.usersByGenderTitle)}
+                svgNode={this.currentChart}
+                xlsxEndpoint={usersByGenderXlsxEndpoint}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+                currentGroupFilter={currentGroupFilter}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
