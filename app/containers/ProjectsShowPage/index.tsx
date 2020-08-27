@@ -88,9 +88,9 @@ const ProjectIdeasContentContainer = styled(ContentContainer)`
   border-bottom: solid 1px #e8e8e8;
 `;
 
-const ProjectEventsContentContainer = styled(ContentContainer)`
-  padding-top: 60px;
-  padding-bottom: 80px;
+const StyledProjectEvents = styled(ProjectEvents)`
+  margin-top: 60px;
+  margin-bottom: 80px;
 `;
 
 const ProjectsShowPage = memo(
@@ -124,7 +124,6 @@ const ProjectsShowPage = memo(
       (participationMethod === 'budgeting' ||
         participationMethod === 'ideation')
     );
-
     let content: JSX.Element | null = null;
 
     if (loading) {
@@ -160,9 +159,7 @@ const ProjectsShowPage = memo(
               <ProjectIdeas projectId={projectId} />
             </ProjectIdeasContentContainer>
           )}
-          <ProjectEventsContentContainer id="project-events">
-            <ProjectEvents projectId={projectId} />
-          </ProjectEventsContentContainer>
+          <StyledProjectEvents projectId={projectId} />
         </>
       );
     }
