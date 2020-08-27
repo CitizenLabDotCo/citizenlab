@@ -39,6 +39,11 @@ const ParentCommentContainer = styled.div`
   position: relative;
 `;
 
+const StyledChildCommentForm = styled(ChildCommentForm)`
+  margin-left: 30px;
+  margin-bottom: 50px;
+`;
+
 const LoadMoreText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -273,7 +278,7 @@ class ParentComment extends PureComponent<Props, State> {
             ))}
 
           {showCommentForm && (
-            <ChildCommentForm
+            <StyledChildCommentForm
               postId={postId}
               postType={postType}
               projectId={projectId}
