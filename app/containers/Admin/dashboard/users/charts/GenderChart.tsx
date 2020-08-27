@@ -141,7 +141,6 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.props;
     const { serie } = this.state;
 
-    const getLabel = (entry) => `${entry.name} : ${entry.value}`;
     return (
       <GraphCard className={className}>
         <GraphCardInner>
