@@ -368,13 +368,13 @@ resource "Stats - Votes" do
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
         up_col = worksheet.map {|col| col.cells[1].value}
         header, *ups = up_col
-        expect(ups.inject(&:+)).to eq 5
+        expect(ups.inject(&:+)).to eq 7
         down_col = worksheet.map {|col| col.cells[2].value}
         header, *downs = down_col
         expect(downs.inject(&:+)).to eq 2
         total_col = worksheet.map {|col| col.cells[3].value}
         header, *totals = total_col
-        expect(totals.inject(&:+)).to eq 7
+        expect(totals.inject(&:+)).to eq 9
       end
     end
   end

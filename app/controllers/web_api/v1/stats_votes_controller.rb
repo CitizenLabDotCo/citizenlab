@@ -70,7 +70,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_time_as_xlsx
     xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_serie), 'votes_by_time'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('votes_by_time')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time'
   end
 
   def votes_by_time_cumulative_serie
@@ -98,7 +98,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_cumulative_serie), 'votes_by_time_cumulative'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name('votes_by_time_cumulative')
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time_cumulative'
   end
 
 
@@ -137,7 +137,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "topic"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("votes_by_topic")
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_topic"
   end
 
   def votes_by_project_serie
@@ -174,26 +174,10 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "project"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: render_xlsx_file_name("votes_by_project")
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_project"
   end
 
   private
-
-  def render_xlsx_file_name name
-    if params[:project]
-      project_name = @@multiloc_service.t(Project.find(params[:project]).title_multiloc)
-    end
-
-    if params[:group]
-      group_name = @@multiloc_service.t(Group.find(params[:group]).title_multiloc) || params[:group]
-    end
-
-    if params[:topic]
-      topic_name = @@multiloc_service.t(Topic.find(params[:topic]).title_multiloc)
-    end
-
-    name + (project_name ? "_p_#{project_name}" : '') + (group_name ? "_g_#{group_name}" : '') + (topic_name ? "_t_#{topic_name}" : '') + '.xlsx'
-  end
 
   def apply_group_filter votes
     if params[:group]
