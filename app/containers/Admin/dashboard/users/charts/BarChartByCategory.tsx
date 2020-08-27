@@ -101,8 +101,6 @@ export class BarChartByCategory extends React.PureComponent<
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
     const unitName = formatMessage(messages[graphUnit]);
 
-    console.log(xlsxEndpoint);
-
     return (
       <GraphCard className={className}>
         <GraphCardInner>

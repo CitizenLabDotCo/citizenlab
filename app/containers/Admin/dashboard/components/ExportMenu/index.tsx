@@ -96,9 +96,8 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   const downloadXlsx = async () => {
     try {
       setExportingXls(true);
-      console.log(xlsxEndpoint);
       const blob = await requestBlob(
-        xlsxEndpoint,
+        'xlsxEndpoint',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
           start_at: startAt,
@@ -109,9 +108,12 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
           topic: currentTopicFilter,
         }
       );
-      setDropdownOpened(false);
+      if (blob.size <= 2467) {
+        throw new Error(`Empty xlsx : ${xlsxEndpoint}`);
+      }
       saveAs(blob, `${fileName}.xlsx`);
       setExportingXls(false);
+      setDropdownOpened(false);
     } catch (error) {
       reportError(error);
       setExportingXls(false);
