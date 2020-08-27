@@ -64,7 +64,6 @@ describe MentionService do
       @u2 = create(:user)
       @u2_mention = service.user_to_mention(@u2)
       @u2_mention_expanded = service.add_span_around @u2_mention, @u2
-
     end
 
     it "returns the same text when there's no mention" do
@@ -125,4 +124,26 @@ describe MentionService do
     end
   end
 
+  context "with shallow anonymization enabled" do  # aka abbreviated user names
+
+    before do
+      settings = Tenant.current.settings
+      settings['display_names'] = {"allowed" => true, "enabled" => true}
+      Tenant.current.update!(settings: settings)
+
+      @jane = create(:user, first_name: "Jane", last_name: "Doe")
+    end
+
+    it "adds a span tag" do
+      result = service.add_span_around("<p>This is an html text with a mention to @#{@jane.slug}</p>", @jane)
+      expect(result).to eq "<p>This is an html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{@jane.id}\" data-user-slug=\"#{@jane.slug}\">@Jane D.</span></p>"
+    end
+
+    it "extract expanded mentions" do
+      text = "<p>This is an html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{@jane.id}\" data-user-slug=\"#{@jane.slug}\">@Jane D.</span></p>"
+      result = service.extract_expanded_mention_users(text)
+      expect(result).to match_array [@jane]
+    end
+
+  end
 end
