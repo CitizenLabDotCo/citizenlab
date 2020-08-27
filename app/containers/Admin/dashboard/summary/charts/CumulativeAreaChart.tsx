@@ -269,11 +269,13 @@ export class CumulativeAreaChart extends PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
-            <ExportMenu
-              {...this.props}
-              svgNode={this.currentChart}
-              name={messages[graphTitleMessageKey].defaultMessage}
-            />
+            {serie && (
+              <ExportMenu
+                {...this.props}
+                svgNode={this.currentChart}
+                name={messages[graphTitleMessageKey].defaultMessage}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>

@@ -228,6 +228,9 @@ class BarChartActiveUsersByTime extends React.PureComponent<
       animationDuration,
     } = this.props['theme'];
 
+    const noData =
+      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -247,13 +250,15 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                 />
               )}
             </GraphCardTitle>
-            <ExportMenu
-              svgNode={this.currentChart}
-              name={formatMessage(messages[graphTitleMessageKey])}
-              {...this.props}
-            />
+            {!noData && (
+              <ExportMenu
+                svgNode={this.currentChart}
+                name={formatMessage(messages[graphTitleMessageKey])}
+                {...this.props}
+              />
+            )}
           </GraphCardHeader>
-          {!serie ? (
+          {noData ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
