@@ -134,18 +134,10 @@ const CommentsSection = memo<Props>(
       setPosting(isPosting);
     }, []);
 
-    const sortedParentComments = useMemo(() => {
-      if (!isNilOrError(commentsList) && commentsList.length > 0) {
-        return commentsList.filter(
-          (comment) => comment.relationships.parent.data === null
-        );
-      }
-      return null;
-    }, [sortOrder, comments]);
-
     if (
       !isNilOrError(post) &&
       !isNilOrError(commentsList) &&
+      commentsList.length > 0 &&
       !isUndefined(project)
     ) {
       const commentingEnabled = get(
@@ -179,12 +171,10 @@ const CommentsSection = memo<Props>(
               <FormattedMessage {...messages.invisibleTitleComments} />{' '}
               <CommentCount>({commentCount})</CommentCount>
             </Title>
-            {sortedParentComments && sortedParentComments.length > 0 && (
-              <StyledCommentSorting
-                onChange={handleSortOrderChange}
-                selectedValue={[sortOrder]}
-              />
-            )}
+            <StyledCommentSorting
+              onChange={handleSortOrderChange}
+              selectedValue={[sortOrder]}
+            />
           </Header>
 
           <StyledParentCommentForm
@@ -196,7 +186,7 @@ const CommentsSection = memo<Props>(
           <Comments
             postId={postId}
             postType={postType}
-            comments={commentsList}
+            allComments={commentsList}
             loading={loadingInital}
           />
 
