@@ -179,13 +179,17 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 options={resourceOptions}
               />
             </SHiddenLabel>
-            <ExportMenu
-              className=""
-              svgNode={this.currentChart}
-              name={formatMessage(messages[`participationPer${byWhat}`])}
-              {...this.props}
-              xlsxEndpoint={xlsxEndpointTable[currentSelectedResource + byWhat]}
-            />
+            {serie && (
+              <ExportMenu
+                className=""
+                svgNode={this.currentChart}
+                name={formatMessage(messages[`participationPer${byWhat}`])}
+                {...this.props}
+                xlsxEndpoint={
+                  xlsxEndpointTable[currentSelectedResource + byWhat]
+                }
+              />
+            )}
           </GraphCardHeaderWithFilter>
           {!serie ? (
             <NoDataContainer>

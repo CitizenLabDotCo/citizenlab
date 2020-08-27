@@ -94,13 +94,15 @@ class PieChartByCategory extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            <ExportMenu
-              name={graphTitleString}
-              svgNode={this.currentChart}
-              xlsxEndpoint={xlsxEndpoint}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
+            {serie && (
+              <ExportMenu
+                name={graphTitleString}
+                svgNode={this.currentChart}
+                xlsxEndpoint={xlsxEndpoint}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>

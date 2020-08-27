@@ -269,12 +269,14 @@ class LineChartVotesByTime extends React.PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
-            <ExportMenu
-              svgNode={this.currentChart}
-              xlsxEndpoint={votesByTimeCumulativeXlsxEndpoint}
-              name={formatMessage(messages.ideaVotesByTimeTitle)}
-              {...this.props}
-            />
+            {serie && (
+              <ExportMenu
+                svgNode={this.currentChart}
+                xlsxEndpoint={votesByTimeCumulativeXlsxEndpoint}
+                name={formatMessage(messages.ideaVotesByTimeTitle)}
+                {...this.props}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
