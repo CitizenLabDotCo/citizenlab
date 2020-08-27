@@ -57,7 +57,6 @@ const Body = memo<Props>(
         <QuillEditedContent
           textColor={theme.colorText}
           fontSize={smallerThanSmallTablet ? 'base' : 'large'}
-          fontWeight={300}
         >
           <div aria-live="polite">
             {translateButtonClicked && locale ? (

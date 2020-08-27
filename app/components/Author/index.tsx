@@ -57,7 +57,6 @@ const AuthorNameContainer = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 16px;
-  font-weight: 400;
   text-decoration: none;
   hyphens: manual;
 
@@ -68,7 +67,6 @@ const AuthorNameContainer = styled.div`
 
 const TimeAgo = styled.div`
   color: ${colors.label};
-  font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 17px;
   margin-top: 3px;
