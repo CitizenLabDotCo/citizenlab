@@ -121,9 +121,15 @@ class Tenant < ApplicationRecord
   end
 
   def shallow_anonymization?
-    has_feature? "display_names"
+    has_feature? "abbreviated_user_names"
   end
-  
+
+  # @todo could be done dynamically for all settings (using :method_missing)
+  def turn_on_abbreviated_user_names
+    self.settings['abbreviated_user_names'] = {allowed: true, enabled: true}
+    self.save!
+  end
+
   private
 
   def create_apartment_tenant

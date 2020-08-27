@@ -127,10 +127,7 @@ describe MentionService do
   context "with shallow anonymization enabled" do  # aka abbreviated user names
 
     before do
-      settings = Tenant.current.settings
-      settings['display_names'] = {"allowed" => true, "enabled" => true}
-      Tenant.current.update!(settings: settings)
-
+      Tenant.current.turn_on_abbreviated_user_names
       @jane = create(:user, first_name: "Jane", last_name: "Doe")
     end
 
