@@ -15,7 +15,8 @@ import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 import { IResolution } from '../..';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 const DropdownButton = styled(Button)``;
 
@@ -56,24 +57,40 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   currentGroupFilterLabel,
   currentTopicFilterLabel,
   currentProjectFilterLabel,
-  intl,
+  intl: { formatMessage, formatDate },
 }) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
 
   const readableDate = (date: string) => {
-    return intl.formatDate(date, {
+    return formatDate(date, {
       day: resolution === 'month' ? undefined : '2-digit',
       month: 'long',
       year: 'numeric',
     });
   };
 
-  const fileName = `${name}${startAt ? `_from-${readableDate(startAt)}` : ''}${
-    endAt ? `_until-${readableDate(endAt)}` : ''
-  }${currentProjectFilterLabel ? `_project-${currentProjectFilterLabel}` : ''}${
-    currentGroupFilterLabel ? `_group-${currentGroupFilterLabel}` : ''
-  }${currentTopicFilterLabel ? `_topic-${currentTopicFilterLabel}` : ''}`;
+  const fileName = `${name}${
+    startAt
+      ? `_${formatMessage(messages.fromFilter)}-${readableDate(startAt)}`
+      : ''
+  }${
+    endAt
+      ? `_${formatMessage(messages.untilFilter)}-${readableDate(endAt)}`
+      : ''
+  }${
+    currentProjectFilterLabel
+      ? `_${formatMessage(messages.projectFilter)}-${currentProjectFilterLabel}`
+      : ''
+  }${
+    currentGroupFilterLabel
+      ? `_${formatMessage(messages.groupFilter)}-${currentGroupFilterLabel}`
+      : ''
+  }${
+    currentTopicFilterLabel
+      ? `_${formatMessage(messages.topicFilter)}-${currentTopicFilterLabel}`
+      : ''
+  }`;
 
   const handleDownloadSvg = () => {
     const node = ReactDOM.findDOMNode(svgNode.current);
@@ -97,7 +114,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
     try {
       setExportingXls(true);
       const blob = await requestBlob(
-        'xlsxEndpoint',
+        xlsxEndpoint,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
           start_at: startAt,
@@ -147,7 +164,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
               padding="0"
               fontSize={`${fontSizes.small}px`}
             >
-              Download svg
+              <FormattedMessage {...messages.downloadSvg} />
             </Button>
             <Button
               onClick={downloadXlsx}
@@ -156,7 +173,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
               padding="0"
               fontSize={`${fontSizes.small}px`}
             >
-              Download xls
+              <FormattedMessage {...messages.downloadXlsx} />
             </Button>
           </>
         }
