@@ -1,7 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
 import ParentComment from './ParentComment';
@@ -50,7 +47,7 @@ const StyledParentComment = styled(ParentComment)`
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
-  comments: ICommentData[];
+  allComments: ICommentData[];
   loading: boolean;
   className?: string;
 }
@@ -59,7 +56,7 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
   ({
     postId,
     postType,
-    comments,
+    allComments,
     loading,
     className,
     intl: { formatMessage },
@@ -83,6 +80,14 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
     }, []);
 
+    const getParentComments = () => {
+      return allComments.filter(
+        (comment) => comment.relationships.parent.data === null
+      );
+    };
+
+    const parentComments = useMemo(() => getParentComments(), [allComments]);
+
     return (
       <Container className={`e2e-comments-container ${className}`}>
         <LiveMessage
@@ -96,35 +101,32 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
           </SpinnerWrapper>
         )}
 
-        {comments &&
-          comments.map((parentComment, _index) => {
-            const childCommentIds =
-              !isNilOrError(comments) &&
-              comments
-                .filter((comment) => {
-                  if (
-                    comment.relationships.parent.data &&
-                    comment.relationships.parent.data.id === parentComment.id &&
-                    comment.attributes.publication_status !== 'deleted'
-                  ) {
-                    return true;
-                  }
+        {parentComments.map((parentComment, _index) => {
+          const childCommentIds = allComments
+            .filter((comment) => {
+              if (
+                comment.relationships.parent.data &&
+                comment.relationships.parent.data.id === parentComment.id &&
+                comment.attributes.publication_status !== 'deleted'
+              ) {
+                return true;
+              }
 
-                  return false;
-                })
-                .map((comment) => comment.id);
+              return false;
+            })
+            .map((comment) => comment.id);
 
-            return (
-              <StyledParentComment
-                key={parentComment.id}
-                postId={postId}
-                postType={postType}
-                commentId={parentComment.id}
-                childCommentIds={childCommentIds}
-                className={loading ? 'loading' : ''}
-              />
-            );
-          })}
+          return (
+            <StyledParentComment
+              key={parentComment.id}
+              postId={postId}
+              postType={postType}
+              commentId={parentComment.id}
+              childCommentIds={childCommentIds}
+              className={loading ? 'loading' : ''}
+            />
+          );
+        })}
       </Container>
     );
   }
