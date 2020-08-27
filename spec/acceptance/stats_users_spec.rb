@@ -911,7 +911,8 @@ resource "Stats - Users" do
         expect(json_response).to match({
           areas: {
             @area1.id.to_sym => { title_multiloc: @area1.title_multiloc.symbolize_keys },
-            @area2.id.to_sym => { title_multiloc: @area2.title_multiloc.symbolize_keys }
+            @area2.id.to_sym => { title_multiloc: @area2.title_multiloc.symbolize_keys },
+            @area3.id.to_sym => { title_multiloc: @area3.title_multiloc.symbolize_keys }
           },
           series: {
             users: {
@@ -948,11 +949,11 @@ resource "Stats - Users" do
 
         areas_col = worksheet.map {|col| col.cells[1].value}
         header, *areas = areas_col
-        expect(areas).to match_array [@area1.id, @area2.id, "_blank"]
+        expect(areas).to match_array [@area1.id, @area2.id, @area3.id, "_blank"]
 
         amount_col = worksheet.map {|col| col.cells[2].value}
         header, *amounts = amount_col
-        expect(amounts).to match_array [0, 1, 2]
+        expect(amounts).to match_array [0, 1, 2, 0]
       end
     end
 
