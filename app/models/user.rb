@@ -25,7 +25,7 @@ class User < ApplicationRecord
                   :using => { :tsearch => {:prefix => true} }
 
   scope :by_username, -> (username) {
-    Tenant.current.shallow_anonymization? ? by_first_name(username) : by_full_name(username)
+    Tenant.current.abbreviated_user_names_enabled? ? by_first_name(username) : by_full_name(username)
   }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
@@ -287,7 +287,7 @@ class User < ApplicationRecord
 
   def generate_slug
     return if self.slug.present?
-    if Tenant.current.shallow_anonymization?
+    if Tenant.current.abbreviated_user_names_enabled?
       self.slug = SecureRandom.uuid
     elsif self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.full_name

@@ -120,7 +120,7 @@ class Tenant < ApplicationRecord
     RGeo::Geographic.spherical_factory(:srid => 4326).point(settings.dig('maps', 'map_center', 'long'), settings.dig('maps', 'map_center', 'lat'))
   end
 
-  def shallow_anonymization?
+  def abbreviated_user_names_enabled?
     has_feature? "abbreviated_user_names"
   end
 
