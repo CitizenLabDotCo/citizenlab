@@ -32,7 +32,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 const Container = styled.div`
-  margin-bottom: 50px;
   position: relative;
 `;
 

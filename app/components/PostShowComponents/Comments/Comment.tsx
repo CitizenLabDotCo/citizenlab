@@ -27,6 +27,8 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
+  margin-bottom: 50px;
+
   &.child {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
