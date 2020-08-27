@@ -147,7 +147,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
         onClick={toggleDropdown()}
         icon="download"
         iconPos="right"
-        padding="0px"
+        padding="10px"
       />
       <Dropdown
         width="100%"
