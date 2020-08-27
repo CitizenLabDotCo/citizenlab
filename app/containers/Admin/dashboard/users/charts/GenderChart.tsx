@@ -131,6 +131,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     const { className } = this.props;
     const { serie } = this.state;
 
+    const getLabel = (entry) => `${entry.name} : ${entry.value}`;
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -138,7 +139,11 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             <GraphCardTitle>
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              className={className}
+              svgNode={this.currentChart}
+              {...this.props}
+            />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -156,7 +161,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                     dataKey="value"
                     outerRadius={60}
                     fill={colorMain}
-                    label={(entry) => entry.name + ' : ' + entry.value}
+                    label={getLabel}
                   >
                     {serie.map((entry, index) => (
                       <Cell
