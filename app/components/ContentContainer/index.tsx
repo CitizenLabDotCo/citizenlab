@@ -22,7 +22,7 @@ const Outer = styled.div`
   }
 `;
 
-const Inner: any = styled.div<{ maxWidth?: string }>`
+const Inner = styled.div<{ maxWidth?: string | number }>`
   width: 100%;
   max-width: ${({ maxWidth }) =>
     isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};

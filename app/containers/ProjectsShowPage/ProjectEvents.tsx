@@ -7,6 +7,7 @@ import useEvents from 'hooks/useEvents';
 
 // components
 import ProjectEvent from './ProjectEvent';
+import ContentContainer from 'components/ContentContainer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,15 +32,6 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const EventList = styled.div``;
-
-const NoEvents = styled.div`
-  color: ${colors.clGreyOnGreyBackground};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -60,25 +52,20 @@ const ProjectEvents = memo<Props>(({ projectId, className }) => {
         })
       : null;
 
-    return (
-      <Container className={className || ''}>
-        <Title>
-          <FormattedMessage {...messages.upcomingEvents} />
-        </Title>
-
-        {upcomingEvents && upcomingEvents.length > 0 ? (
-          <EventList className={className}>
+    if (upcomingEvents && upcomingEvents.length > 0) {
+      return (
+        <Container id="project-events" className={className || ''}>
+          <ContentContainer>
+            <Title>
+              <FormattedMessage {...messages.upcomingEvents} />
+            </Title>
             {upcomingEvents.map((event) => (
               <ProjectEvent key={event.id} event={event} />
             ))}
-          </EventList>
-        ) : (
-          <NoEvents>
-            <FormattedMessage {...messages.noUpcomingEvents} />
-          </NoEvents>
-        )}
-      </Container>
-    );
+          </ContentContainer>
+        </Container>
+      );
+    }
   }
 
   return null;
