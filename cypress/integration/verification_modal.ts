@@ -16,7 +16,12 @@ describe('Verification modal', () => {
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
     });
-    cy.apiSignup(anotherfirstName, anotherlastName, anotheremail, anotherpassword).then((user) => {
+    cy.apiSignup(
+      anotherfirstName,
+      anotherlastName,
+      anotheremail,
+      anotherpassword
+    ).then((user) => {
       anotheruserId = user.body.data.id;
     });
   });
@@ -33,7 +38,9 @@ describe('Verification modal', () => {
       cy.get('#e2e-user-edit-profile-page');
       cy.get('#e2e-verify-user-button').click();
       cy.get('#e2e-verification-wizard-method-selection-step');
-      cy.get('#e2e-verification-wizard-method-selection-step #e2e-bogus-button').click();
+      cy.get(
+        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
+      ).click();
       cy.get('#e2e-verification-bogus-form');
       cy.get('#e2e-verification-bogus-submit-button').click();
       cy.get('#e2e-verification-success');
@@ -64,5 +71,4 @@ describe('Verification modal', () => {
   after(() => {
     cy.apiRemoveUser(userId);
   });
-
 });

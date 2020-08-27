@@ -2,11 +2,10 @@ import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon, Spinner } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Spinner from 'components/UI/Spinner';
 import { Title, Subtitle } from './styles';
 
 // hooks
@@ -94,7 +93,7 @@ const Content = styled.div`
 `;
 
 const Context = styled.div`
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -121,7 +120,7 @@ const ContextItem = styled.span`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   line-height: normal;
-  border-radius: ${props => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid #ccc;
   padding: 6px 13px;
   margin-bottom: 5px;
@@ -131,7 +130,7 @@ const ContextItem = styled.span`
   text-overflow: ellipsis;
 
   &:first-letter {
-    text-transform: capitalize
+    text-transform: capitalize;
   }
 
   ${media.largePhone`
@@ -195,138 +194,191 @@ interface Props {
   className?: string;
 }
 
-const VerificationMethods = memo<Props>(({
-  context,
-  showHeader,
-  skippable,
-  inModal,
-  onMethodSelected,
-  onSkipped,
-  className
-}) => {
+const VerificationMethods = memo<Props>(
+  ({
+    context,
+    showHeader,
+    skippable,
+    inModal,
+    onMethodSelected,
+    onSkipped,
+    className,
+  }) => {
+    const participationConditions = useParticipationConditions(
+      isProjectContext(context) ? context : null
+    );
 
-  const participationConditions = useParticipationConditions(isProjectContext(context) ? context : null);
+    const authUser = useAuthUser();
+    const verificationMethods = useVerificationMethods();
+    const filteredVerificationMethods = !isNilOrError(verificationMethods)
+      ? verificationMethods.data.filter((method) =>
+          ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(
+            method.attributes.name
+          )
+        )
+      : [];
 
-  const authUser = useAuthUser();
-  const verificationMethods = useVerificationMethods();
-  const filteredVerificationMethods = !isNilOrError(verificationMethods) ? verificationMethods.data.filter(method => ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(method.attributes.name)) : [];
+    const withContext =
+      !isNilOrError(participationConditions) &&
+      participationConditions.length > 0;
 
-  const withContext = !isNilOrError(participationConditions) && participationConditions.length > 0;
+    const onVerifyBOSAButtonClick = useCallback(() => {
+      const jwt = getJwt();
+      window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
+        window.location.pathname
+      )}`;
+    }, []);
 
-  const onVerifyBOSAButtonClick = useCallback(() => {
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
-  }, []);
+    const onSelectMethodButtonClick = useCallback(
+      (method) => () => {
+        if (method.attributes.name === 'bosa_fas') {
+          onVerifyBOSAButtonClick();
+        } else {
+          onMethodSelected(method);
+        }
+      },
+      [onVerifyBOSAButtonClick, onMethodSelected]
+    );
 
-  const onSelectMethodButtonClick = useCallback((method) => () => {
-    if (method.attributes.name === 'bosa_fas') {
-      onVerifyBOSAButtonClick();
-    } else {
-      onMethodSelected(method);
+    const onSkipButtonClicked = useCallback(() => {
+      onSkipped?.();
+    }, [onSkipped]);
+
+    if (
+      verificationMethods === undefined ||
+      participationConditions === undefined
+    ) {
+      return (
+        <Loading>
+          <Spinner />
+        </Loading>
+      );
     }
-  }, [onVerifyBOSAButtonClick, onMethodSelected]);
 
-  const onSkipButtonClicked = useCallback(() => {
-    onSkipped?.();
-  }, [onSkipped]);
+    if (
+      verificationMethods !== undefined &&
+      participationConditions !== undefined
+    ) {
+      return (
+        <Container
+          id="e2e-verification-wizard-method-selection-step"
+          className={className || ''}
+        >
+          {showHeader && (
+            <Header>
+              <AboveTitle aria-hidden>
+                <StyledAvatar
+                  userId={!isNilOrError(authUser) ? authUser.data.id : null}
+                  size="55px"
+                />
+                <ShieldIcon name="verify_dark" />
+              </AboveTitle>
+              <Title id="modal-header">
+                <strong>
+                  <FormattedMessage {...messages.verifyYourIdentity} />
+                </strong>
+                {withContext ? (
+                  <FormattedMessage {...messages.toParticipateInThisProject} />
+                ) : (
+                  <FormattedMessage
+                    {...messages.andUnlockYourCitizenPotential}
+                  />
+                )}
+              </Title>
+            </Header>
+          )}
 
-  if (verificationMethods === undefined || participationConditions === undefined) {
-    return (
-      <Loading>
-        <Spinner />
-      </Loading>
-    );
-  }
+          <Content className={`${inModal ? 'inModal' : ''}`}>
+            {withContext &&
+              !isNilOrError(participationConditions) &&
+              participationConditions.length > 0 && (
+                <Context>
+                  <Subtitle>
+                    <FormattedMessage {...messages.participationConditions} />
+                  </Subtitle>
 
-  if (verificationMethods !== undefined && participationConditions !== undefined) {
-    return (
-      <Container
-        id="e2e-verification-wizard-method-selection-step"
-        className={className || ''}
-      >
-        {showHeader &&
-          <Header>
-            <AboveTitle aria-hidden>
-              <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
-              <ShieldIcon name="verify_dark" />
-            </AboveTitle>
-            <Title id="modal-header">
-              <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
-              {withContext
-                ? <FormattedMessage {...messages.toParticipateInThisProject} />
-                : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />
-              }
-            </Title>
-          </Header>
-        }
+                  <ContextLabel>
+                    <FormattedMessage {...messages.peopleMatchingConditions} />
+                  </ContextLabel>
 
-        <Content className={`${inModal ? 'inModal' : ''}`}>
-          {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
-            <Context>
-              <Subtitle>
-                <FormattedMessage {...messages.participationConditions} />
-              </Subtitle>
+                  {participationConditions.map((rulesSet, index) => {
+                    const rules = rulesSet.map((rule, ruleIndex) => (
+                      <ContextItem className="e2e-rule-item" key={ruleIndex}>
+                        <T value={rule} />
+                      </ContextItem>
+                    ));
+                    return index === 0 ? (
+                      rules
+                    ) : (
+                      <Fragment key={index}>
+                        <Or>
+                          <FormattedMessage {...messages.or} />
+                        </Or>
+                        {rules}
+                      </Fragment>
+                    );
+                  })}
+                </Context>
+              )}
 
-              <ContextLabel>
-                <FormattedMessage {...messages.peopleMatchingConditions} />
-              </ContextLabel>
+            <ButtonsContainer
+              className={`${withContext ? 'withContext' : 'withoutContext'} ${
+                inModal ? 'inModal' : ''
+              }`}
+            >
+              {filteredVerificationMethods.map((method, index) => (
+                <MethodButton
+                  key={method.id}
+                  id={`e2e-${method.attributes.name}-button`}
+                  className={
+                    index + 1 === filteredVerificationMethods.length
+                      ? 'last'
+                      : ''
+                  }
+                  icon="shieldVerified"
+                  iconSize="22px"
+                  onClick={onSelectMethodButtonClick(method)}
+                  buttonStyle="white"
+                  fullWidth={true}
+                  justify="left"
+                  whiteSpace="wrap"
+                  borderColor="#ccc"
+                  boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+                  boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                >
+                  {method.attributes.name === 'cow' && (
+                    <FormattedMessage {...messages.verifyCow} />
+                  )}
+                  {method.attributes.name === 'bosa_fas' && (
+                    <FormattedMessage {...messages.verifyBOSA} />
+                  )}
+                  {method.attributes.name === 'id_card_lookup' && (
+                    <T value={method.attributes.method_name_multiloc} />
+                  )}
+                  {method.attributes.name === 'bogus' &&
+                    'Bogus verification (testing)'}
+                </MethodButton>
+              ))}
+            </ButtonsContainer>
+          </Content>
 
-              {participationConditions.map((rulesSet, index) => {
-                const rules = rulesSet.map((rule, ruleIndex) => (
-                  <ContextItem className="e2e-rule-item" key={ruleIndex}>
-                    <T value={rule} />
-                  </ContextItem>
-                ));
-                return index === 0 ? rules : (
-                  <Fragment key={index}>
-                    <Or>
-                      <FormattedMessage {...messages.or} />
-                    </Or>
-                    {rules}
-                  </Fragment>
-                );
-              })}
-            </Context>
-          }
-
-          <ButtonsContainer className={`${withContext ? 'withContext' : 'withoutContext'} ${inModal ? 'inModal' : ''}`}>
-            {filteredVerificationMethods.map((method, index) => (
-              <MethodButton
-                key={method.id}
-                id={`e2e-${method.attributes.name}-button`}
-                className={index + 1 === filteredVerificationMethods.length ? 'last' : ''}
-                icon="shieldVerified"
-                iconSize="22px"
-                onClick={onSelectMethodButtonClick(method)}
-                buttonStyle="white"
-                fullWidth={true}
-                justify="left"
-                whiteSpace="wrap"
-                borderColor="#ccc"
-                boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-                boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+          {skippable && (
+            <SkipButtonContainer>
+              <Button
+                buttonStyle="text"
+                padding="0px"
+                onClick={onSkipButtonClicked}
               >
-                {method.attributes.name === 'cow' && <FormattedMessage {...messages.verifyCow} />}
-                {method.attributes.name === 'bosa_fas' && <FormattedMessage {...messages.verifyBOSA} />}
-                {method.attributes.name === 'id_card_lookup' && <T value={method.attributes.method_name_multiloc} />}
-                {method.attributes.name === 'bogus' && 'Bogus verification (testing)'}
-              </MethodButton>
-            ))}
-          </ButtonsContainer>
-        </Content>
+                <FormattedMessage {...messages.skipThisStep} />
+              </Button>
+            </SkipButtonContainer>
+          )}
+        </Container>
+      );
+    }
 
-        {skippable &&
-          <SkipButtonContainer>
-            <Button buttonStyle="text" padding="0px" onClick={onSkipButtonClicked}>
-              <FormattedMessage {...messages.skipThisStep} />
-            </Button>
-          </SkipButtonContainer>
-        }
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default VerificationMethods;

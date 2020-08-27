@@ -5,9 +5,12 @@ import T from 'components/T';
 import { Segment, Header } from 'semantic-ui-react';
 import { handlePreviewCLick, StyledLink } from './';
 
-export default (props: { postId: string, openPreview: (id: string) => void }) => (
+export default (props: {
+  postId: string;
+  openPreview: (id: string) => void;
+}) => (
   <GetIdea ideaId={props.postId}>
-    {(post) =>  {
+    {(post) => {
       if (isNilOrError(post)) return null;
 
       return (

@@ -18,33 +18,36 @@ interface Props {
   notification: IIdeaMarkedAsSpamNotificationData;
 }
 
-const IdeaMarkedAsSpamNotification = memo<Props>(props => {
+const IdeaMarkedAsSpamNotification = memo<Props>((props) => {
   const { notification } = props;
 
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser =
+    isNilOrError(notification.attributes.initiating_user_first_name) ||
+    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
       linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
-      icon="idea2"
+      icon="idea"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
         {...messages.userMarkedPostAsSpam}
         values={{
-          name: deletedUser ?
+          name: deletedUser ? (
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
-            :
+          ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={stopPropagation}
             >
               {notification.attributes.initiating_user_first_name}
-            </Link>,
-          postTitle: <T value={notification.attributes.post_title_multiloc} />
+            </Link>
+          ),
+          postTitle: <T value={notification.attributes.post_title_multiloc} />,
         }}
       />
     </NotificationWrapper>

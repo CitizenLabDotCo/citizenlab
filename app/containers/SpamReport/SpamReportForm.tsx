@@ -9,7 +9,7 @@ import getSubmitState from 'utils/getSubmitState';
 
 // Components
 import { SectionField } from 'components/admin/Section';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 import TextArea from 'components/UI/TextArea';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
@@ -71,22 +71,29 @@ import { CRUDParams } from 'typings';
 interface Props extends CRUDParams {
   reasonCodes: Report['reason_code'][];
   diff: Report | null;
-  onReasonChange: {(value: Report['reason_code']): void};
-  onTextChange: {(value: string): void};
-  onSubmit: {(event): void};
+  onReasonChange: { (value: Report['reason_code']): void };
+  onTextChange: { (value: string): void };
+  onSubmit: { (event): void };
 }
 
 interface State {}
 
-class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor (props) {
+class SpamReportForm extends React.PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
+  constructor(props) {
     super(props);
     this.state = {};
   }
 
-  render () {
+  render() {
     const { formatMessage } = this.props.intl;
-    const submitStatus = getSubmitState({ errors: this.props.errors, saved: this.props.saved, diff: this.props.diff });
+    const submitStatus = getSubmitState({
+      errors: this.props.errors,
+      saved: this.props.saved,
+      diff: this.props.diff,
+    });
 
     return (
       <form onSubmit={this.props.onSubmit}>
@@ -105,7 +112,7 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
         </SectionField>
 
         <TransitionGroup>
-          {(this.props.diff && this.props.diff.reason_code === 'other') ? (
+          {this.props.diff && this.props.diff.reason_code === 'other' ? (
             <CSSTransition
               classNames="reason"
               timeout={timeout}
@@ -116,7 +123,9 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
                 <SectionField>
                   <TextArea
                     name="reasonText"
-                    value={this.props.diff ? this.props.diff.other_reason || '' : ''}
+                    value={
+                      this.props.diff ? this.props.diff.other_reason || '' : ''
+                    }
                     onChange={this.props.onTextChange}
                     placeholder={formatMessage(messages.otherReasonPlaceholder)}
                   />

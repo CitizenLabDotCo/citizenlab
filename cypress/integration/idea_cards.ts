@@ -7,12 +7,14 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   let ideaId: string;
 
   before(() => {
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
-      projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-    }).then((idea) => {
-      ideaId = idea.body.data.id;
-    });
+    cy.getProjectBySlug('an-idea-bring-it-to-your-council')
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+      })
+      .then((idea) => {
+        ideaId = idea.body.data.id;
+      });
   });
 
   beforeEach(() => {
@@ -26,7 +28,10 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     cy.wait(1000);
     cy.get('.e2e-search-input input').should('have.value', ideaTitle);
     cy.get('#e2e-ideas-list');
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
+    cy.get('#e2e-ideas-list')
+      .find('.e2e-idea-card')
+      .should('have.length', 1)
+      .contains(ideaTitle);
   });
 
   it('lets you sort the ideas', () => {
@@ -55,7 +60,9 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card').first().contains('Repellendus reprehenderit quae voluptas quia');
+    cy.get('.e2e-idea-card')
+      .first()
+      .contains('Repellendus reprehenderit quae voluptas quia');
 
     // sort by oldest first
     cy.get('#e2e-ideas-sort-dropdown').click();
@@ -70,7 +77,10 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   it('lets you filter the ideas by topic', () => {
     cy.get('#e2e-idea-filter-selector').click();
     cy.get('.e2e-sort-items').contains('waste').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains('The idea about waste');
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-idea-card')
+      .should('have.length', 1)
+      .contains('The idea about waste');
   });
 
   after(() => {
@@ -91,27 +101,34 @@ describe('Idea cards without filter sidebar pagination', () => {
   let ideaId3: string;
 
   before(() => {
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
-      projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
-    }).then((idea1) => {
-      ideaId1 = idea1.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
-    }).then((idea2) => {
-      ideaId2 = idea2.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle3, ideaContent3);
-    }).then((idea3) => {
-      ideaId3 = idea3.body.data.id;
-      cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
-      cy.get('#e2e-ideas-container');
-      cy.wait(1000);
-    });
+    cy.getProjectBySlug('an-idea-bring-it-to-your-council')
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
+      })
+      .then((idea1) => {
+        ideaId1 = idea1.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
+      })
+      .then((idea2) => {
+        ideaId2 = idea2.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle3, ideaContent3);
+      })
+      .then((idea3) => {
+        ideaId3 = idea3.body.data.id;
+        cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+        cy.get('#e2e-ideas-container');
+        cy.wait(1000);
+      });
   });
 
   it('lets you load more ideas', () => {
     cy.get('#e2e-idea-cards-show-more-button').click();
     cy.wait(1000);
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').its('length').should('be.gte', 12);
+    cy.get('#e2e-ideas-list')
+      .find('.e2e-idea-card')
+      .its('length')
+      .should('be.gte', 12);
   });
 
   after(() => {

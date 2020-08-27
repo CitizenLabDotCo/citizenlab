@@ -42,7 +42,7 @@ export default class StatusBadge extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      ideaStatus: null
+      ideaStatus: null,
     };
     this.subscriptions = [];
   }
@@ -52,12 +52,12 @@ export default class StatusBadge extends PureComponent<Props, State> {
     const ideaStatus$ = ideaStatusStream(statusId).observable;
 
     this.subscriptions = [
-      ideaStatus$.subscribe(ideaStatus => this.setState({ ideaStatus }))
+      ideaStatus$.subscribe((ideaStatus) => this.setState({ ideaStatus })),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
@@ -65,10 +65,10 @@ export default class StatusBadge extends PureComponent<Props, State> {
     const { className, id } = this.props;
 
     if (ideaStatus !== null) {
-      const color = (ideaStatus ? ideaStatus.data.attributes.color : '#bbb');
+      const color = ideaStatus ? ideaStatus.data.attributes.color : '#bbb';
 
       return (
-        <Container id={id} className={className} color={color} >
+        <Container id={id} className={className} color={color}>
           <T value={ideaStatus.data.attributes.title_multiloc} />
         </Container>
       );

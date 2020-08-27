@@ -1,4 +1,4 @@
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
@@ -6,7 +6,7 @@ import { fontSizes, media } from 'utils/styleUtils';
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
   flex-direction: column;
-  align-items: ${props => props.inModal ? 'center' : 'stretch'};
+  align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
 `;
 
 export const Title = styled.h1`
@@ -42,7 +42,7 @@ export const Subtitle = styled.h2`
 
 export const Form = styled.form<{ inModal: boolean }>`
   width: 100%;
-  max-width: ${props => props.inModal ? '380px' : 'unset'};
+  max-width: ${(props) => (props.inModal ? '380px' : 'unset')};
   display: flex;
   flex-direction: column;
   align-items: stretch;

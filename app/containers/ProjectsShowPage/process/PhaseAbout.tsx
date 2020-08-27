@@ -8,7 +8,9 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,7 +35,10 @@ const Container = styled.div`
 `;
 
 const InformationBody = styled.div`
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     color: ${colors.text} !important;
   }
 `;
@@ -61,23 +66,30 @@ class PhaseAbout extends PureComponent<Props & InjectedLocalized, State> {
   render() {
     const { phase, phaseFiles, className, localize } = this.props;
     const content = localize(phase?.attributes?.description_multiloc);
-    const contentIsEmpty = (content === '' || content === '<p></p>' || content === '<p><br></p>');
+    const contentIsEmpty =
+      content === '' || content === '<p></p>' || content === '<p><br></p>';
 
     if (!contentIsEmpty || !isEmpty(phaseFiles)) {
       return (
         <Container className={className}>
           <ScreenReaderOnly>
-            <FormattedMessage tagName="h3" {...messages.invisibleTitlePhaseAbout} />
+            <FormattedMessage
+              tagName="h3"
+              {...messages.invisibleTitlePhaseAbout}
+            />
           </ScreenReaderOnly>
           <InformationBody>
             <QuillEditedContent textColor="#5E6B75">
-              <T value={phase?.attributes?.description_multiloc} supportHtml={true} />
+              <T
+                value={phase?.attributes?.description_multiloc}
+                supportHtml={true}
+              />
             </QuillEditedContent>
           </InformationBody>
 
-          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
+          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
             <StyledFileAttachments files={phaseFiles} />
-          }
+          )}
         </Container>
       );
     }
@@ -90,11 +102,15 @@ const PhaseAboutWithHOCs = injectLocalize(PhaseAbout);
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-  phaseFiles: ({ phaseId, render }) => <GetResourceFiles resourceType="phase" resourceId={phaseId}>{render}</GetResourceFiles>
+  phaseFiles: ({ phaseId, render }) => (
+    <GetResourceFiles resourceType="phase" resourceId={phaseId}>
+      {render}
+    </GetResourceFiles>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PhaseAboutWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseAboutWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

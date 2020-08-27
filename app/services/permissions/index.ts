@@ -6,8 +6,6 @@ import './rules/commentPermissions';
 import './rules/projectPermissions';
 import './rules/campaignPermissions';
 
-export {
-  hasPermission
-};
+export { hasPermission };
 
 export * from './permissions';

@@ -10,11 +10,12 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // resources
-import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilarIdeas';
+import GetSimilarIdeas, {
+  GetSimilarIdeasChildProps,
+} from 'resources/GetSimilarIdeas';
 
 // components
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 
 // utils
@@ -36,10 +37,6 @@ const Title = styled.h3`
   padding: 0;
   margin: 0;
   margin-bottom: 18px;
-`;
-
-const SimilarIdeasIcon = styled(Icon)`
-  margin-right: 10px;
 `;
 
 const IdeaList = styled.ul`
@@ -82,12 +79,12 @@ interface DataProps {
   ideas: GetSimilarIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class SimilarIdeas extends PureComponent<Props> {
   onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
-  }
+  };
 
   render() {
     const { ideas, className } = this.props;
@@ -97,7 +94,6 @@ class SimilarIdeas extends PureComponent<Props> {
     return (
       <Container className={className}>
         <Title>
-          <SimilarIdeasIcon name="similarIdeas" />
           <FormattedMessage {...messages.similarIdeas} />
         </Title>
         <IdeaList>

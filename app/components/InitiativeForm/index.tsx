@@ -6,12 +6,16 @@ import { media } from 'utils/styleUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
 // Components
-import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
+import {
+  FormSection,
+  FormSectionTitle,
+  FormLabel,
+  FormSubmitFooter,
+} from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import Input from 'components/UI/Input';
+import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
-import LocationInput from 'components/UI/LocationInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
@@ -105,13 +109,16 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     const errors = {};
-    InitiativeForm.requiredFields.forEach(fieldName => {
+    InitiativeForm.requiredFields.forEach((fieldName) => {
       errors[fieldName] = this.validations[fieldName]();
     });
     this.setState({ errors });
 
     if (!bowser.mobile && this.titleInputElement !== null) {
-      setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
+      setTimeout(
+        () => (this.titleInputElement as HTMLInputElement).focus(),
+        50
+      );
     }
   }
 
@@ -120,7 +127,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     // sent, we want to have the publish button active as soon as it's usable
 
     // getting the non null errors
-    const errorEntries = Object.entries(this.state.errors).filter(entry => entry[1]);
+    const errorEntries = Object.entries(this.state.errors).filter(
+      (entry) => entry[1]
+    );
     // if there's only one
     if (errorEntries.length === 1) {
       // if the value of this field was changed
@@ -136,16 +145,25 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     // if the form is valid
     if (errorEntries.length === 0) {
       // find what prop whas changed and run its validation
-      Object.entries(prevProps).filter(entry => entry[1] !== this.props[entry[0]])
-        .forEach(entry => this.validations[entry[0]] && this.validate(entry[0]));
+      Object.entries(prevProps)
+        .filter((entry) => entry[1] !== this.props[entry[0]])
+        .forEach(
+          (entry) => this.validations[entry[0]] && this.validate(entry[0])
+        );
     }
   }
 
   validations = {
     title_multiloc: () => {
       const { title_multiloc } = this.props;
-      const title = title_multiloc ? title_multiloc[this.props.locale] : undefined;
-      if (title && title.length < InitiativeForm.titleMinLength && title.length > 0) {
+      const title = title_multiloc
+        ? title_multiloc[this.props.locale]
+        : undefined;
+      if (
+        title &&
+        title.length < InitiativeForm.titleMinLength &&
+        title.length > 0
+      ) {
         return { message: messages.titleLengthError };
       } else if (!title || title === '') {
         return { message: messages.titleEmptyError };
@@ -155,7 +173,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     body_multiloc: () => {
       const { body_multiloc } = this.props;
       const body = body_multiloc ? body_multiloc[this.props.locale] : undefined;
-      if (body && stripHtmlTags(body).length < InitiativeForm.bodyMinLength && body.length > 0) {
+      if (
+        body &&
+        stripHtmlTags(body).length < InitiativeForm.bodyMinLength &&
+        body.length > 0
+      ) {
         return { message: messages.descriptionLengthError };
       } else if (!body || body === '') {
         return { message: messages.descriptionEmptyError };
@@ -182,7 +204,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     const errors = Object.assign({}, this.state.errors);
     errors[fieldName] = get(this.validations, fieldName, () => undefined)();
     this.setState({ errors });
-  }
+  };
 
   onBlur = (fieldName: string) => () => {
     // making sure the props are updated before validation and save.
@@ -194,88 +216,110 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       this.setState({ touched, errors });
       this.props.onSave();
     }, 5);
-  }
+  };
 
   handleOnPublish = () => {
     const { errors, touched } = this.state;
-    if (Object.values(errors).every(val => val === undefined)) {
+    if (Object.values(errors).every((val) => val === undefined)) {
       this.props.onPublish();
     } else {
       const newTouched = Object.assign({}, touched);
       const newErrors = Object.assign({}, errors);
-      InitiativeForm.requiredFields.forEach(fieldName => {
+      InitiativeForm.requiredFields.forEach((fieldName) => {
         newTouched[fieldName] = true;
-        newErrors[fieldName] = get(this.validations, fieldName, () => undefined)();
+        newErrors[fieldName] = get(
+          this.validations,
+          fieldName,
+          () => undefined
+        )();
       });
       this.setState({ touched: newTouched, errors: newErrors });
 
       if (newErrors.title_multiloc && this.titleInputElement) {
-        scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
-        setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
+        scrollToComponent(this.titleInputElement, {
+          align: 'top',
+          offset: -240,
+          duration: 300,
+        });
+        setTimeout(
+          () => this.titleInputElement && this.titleInputElement.focus(),
+          300
+        );
       } else if (newErrors.body_multiloc && this.descriptionElement) {
-        scrollToComponent(this.descriptionElement, { align: 'top', offset: -200, duration: 300 });
-        setTimeout(() => this.descriptionElement && this.descriptionElement.focus(), 300);
+        scrollToComponent(this.descriptionElement, {
+          align: 'top',
+          offset: -200,
+          duration: 300,
+        });
+        setTimeout(
+          () => this.descriptionElement && this.descriptionElement.focus(),
+          300
+        );
       } else if (newErrors.topic_ids && this.topicElement) {
-        scrollToComponent(this.topicElement, { align: 'top', offset: -200, duration: 300 });
+        scrollToComponent(this.topicElement, {
+          align: 'top',
+          offset: -200,
+          duration: 300,
+        });
         setTimeout(() => this.topicElement?.focus(), 300);
       }
     }
-  }
+  };
 
   changeAndSaveTopics = (topic_ids) => {
     this.props.onChangeTopics(topic_ids);
     this.onBlur('topic_ids')();
-  }
+  };
 
   addBanner = (banner: UploadFile[]) => {
     this.props.onChangeBanner(banner[0]);
     this.onBlur('banner')();
-  }
+  };
 
   removeBanner = () => {
     this.props.onChangeBanner(null);
     this.onBlur('banner')();
-  }
+  };
 
   addImage = (image: UploadFile[]) => {
     this.props.onChangeImage(image[0]);
     this.onBlur('image')();
-  }
+  };
 
   removeImage = () => {
     this.props.onChangeImage(null);
     this.onBlur('image')();
-  }
+  };
 
   handleTitleInputSetRef = (element: HTMLInputElement) => {
     this.titleInputElement = element;
-  }
+  };
 
   handleDescriptionSetRef = (element: HTMLDivElement) => {
     this.descriptionElement = element;
-  }
+  };
 
   handleTopicsPickerSetRef = (element: HTMLButtonElement) => {
     this.topicElement = element;
-  }
+  };
 
-  handleTitleOnChange = (value: string, locale: Locale |undefined) => {
+  handleTitleOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChangeTitle) {
       this.props.onChangeTitle({
         ...this.props.title_multiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
-  }
+  };
 
-  handleBodyOnChange = (value: string, locale: Locale |undefined) => {
+  handleBodyOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChangeBody) {
       this.props.onChangeBody({
         ...this.props.body_multiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -294,15 +338,15 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       publishError,
       intl: { formatMessage },
       apiErrors,
-      topics
+      topics,
     } = this.props;
 
     const { touched, errors } = this.state;
 
-    if (
-      !isNilOrError(topics)
-    ) {
-      const availableTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    if (!isNilOrError(topics)) {
+      const availableTopics = topics.filter(
+        (topic) => !isNilOrError(topic)
+      ) as ITopicData[];
 
       return (
         <Form id="initiative-form">
@@ -324,10 +368,14 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   autocomplete="off"
                   setRef={this.handleTitleInputSetRef}
                 />
-                {touched.title_multiloc && errors.title_multiloc
-                  ? <Error message={errors.title_multiloc.message} />
-                  : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
-                }
+                {touched.title_multiloc && errors.title_multiloc ? (
+                  <Error message={errors.title_multiloc.message} />
+                ) : (
+                  apiErrors &&
+                  apiErrors.title_multiloc && (
+                    <Error apiErrors={apiErrors.title_multiloc} />
+                  )
+                )}
               </FormLabel>
             </SectionField>
 
@@ -348,10 +396,14 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onBlur={this.onBlur('body_multiloc')}
                 setRef={this.handleDescriptionSetRef}
               />
-              {touched.body_multiloc && errors.body_multiloc
-                ? <Error message={errors.body_multiloc.message} />
-                : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
-              }
+              {touched.body_multiloc && errors.body_multiloc ? (
+                <Error message={errors.body_multiloc.message} />
+              ) : (
+                apiErrors &&
+                apiErrors.body_multiloc && (
+                  <Error apiErrors={apiErrors.body_multiloc} />
+                )
+              )}
             </SectionField>
           </StyledFormSection>
 
@@ -371,10 +423,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 setRef={this.handleTopicsPickerSetRef}
                 availableTopics={availableTopics}
               />
-              {touched.topic_ids && errors.topic_ids
-                ? <Error message={errors.topic_ids.message} />
-                : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
-              }
+              {touched.topic_ids && errors.topic_ids ? (
+                <Error message={errors.topic_ids.message} />
+              ) : (
+                apiErrors &&
+                apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+              )}
             </SectionField>
             <SectionField>
               <FormLabel
@@ -384,7 +438,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               >
                 <LocationInput
                   className="e2e-initiative-location-input"
-                  inCitizen
                   value={position || ''}
                   onChange={onChangePosition}
                   onBlur={this.onBlur('position')}
@@ -411,7 +464,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onAdd={this.addBanner}
                 onRemove={this.removeBanner}
               />
-              {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />}
+              {apiErrors && apiErrors.header_bg && (
+                <Error apiErrors={apiErrors.header_bg} />
+              )}
             </SectionField>
             <SectionField id="e2e-iniatiative-img-dropzone">
               <FormLabel
@@ -429,9 +484,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onAdd={this.addImage}
                 onRemove={this.removeImage}
               />
-              {touched.image
-                && errors.image
-                && <Error message={errors.image.message} />}
+              {touched.image && errors.image && (
+                <Error message={errors.image.message} />
+              )}
             </SectionField>
             <SectionField>
               <FormLabel

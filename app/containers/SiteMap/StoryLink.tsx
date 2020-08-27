@@ -14,20 +14,23 @@ interface DataProps {
   page: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const StoryLink = ({ page, story }: Props) => !isNilOrError(page) ? (
-  <Link to={`/pages/${story.page_slug}`} >
-    <T value={page.attributes.title_multiloc} />
-  </Link>
-) : null;
+const StoryLink = ({ page, story }: Props) =>
+  !isNilOrError(page) ? (
+    <Link to={`/pages/${story.page_slug}`}>
+      <T value={page.attributes.title_multiloc} />
+    </Link>
+  ) : null;
 
 const Data = adopt<DataProps, InputProps>({
-  page: ({ story, render }) => <GetPage slug={story.page_slug}>{render}</GetPage>
+  page: ({ story, render }) => (
+    <GetPage slug={story.page_slug}>{render}</GetPage>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <StoryLink {...inputProps} {...dataprops} />}
+    {(dataprops) => <StoryLink {...inputProps} {...dataprops} />}
   </Data>
 );

@@ -18,7 +18,9 @@ interface Props {
   notification: ICommentMarkedAsSpamNotificationData;
 }
 
-const mapPostTypeToLink = (notification: ICommentMarkedAsSpamNotificationData) : string => {
+const mapPostTypeToLink = (
+  notification: ICommentMarkedAsSpamNotificationData
+): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;
@@ -27,10 +29,12 @@ const mapPostTypeToLink = (notification: ICommentMarkedAsSpamNotificationData) :
   }
 };
 
-const CommentMarkedAsSpamNotification = memo<Props>(props => {
-  const { notification } =  props;
+const CommentMarkedAsSpamNotification = memo<Props>((props) => {
+  const { notification } = props;
 
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser =
+    isNilOrError(notification.attributes.initiating_user_first_name) ||
+    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -42,18 +46,19 @@ const CommentMarkedAsSpamNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.userReportedCommentAsSpam}
         values={{
-          name: deletedUser ?
+          name: deletedUser ? (
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
-            :
+          ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={stopPropagation}
             >
               {notification.attributes.initiating_user_first_name}
-            </Link>,
-          postTitle: <T value={notification.attributes.post_title_multiloc} />
+            </Link>
+          ),
+          postTitle: <T value={notification.attributes.post_title_multiloc} />,
         }}
       />
     </NotificationWrapper>

@@ -29,13 +29,13 @@ export default class GetIdea extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      idea: undefined
+      idea: undefined,
     };
   }
 
@@ -45,22 +45,23 @@ export default class GetIdea extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId, ideaSlug });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ idea: undefined })),
-        switchMap(({ ideaId, ideaSlug }) => {
-          if (isString(ideaId)) {
-            return ideaByIdStream(ideaId).observable;
-          } else if (isString(ideaSlug)) {
-            return ideaBySlugStream(ideaSlug).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ idea: undefined })),
+          switchMap(({ ideaId, ideaSlug }) => {
+            if (isString(ideaId)) {
+              return ideaByIdStream(ideaId).observable;
+            } else if (isString(ideaSlug)) {
+              return ideaBySlugStream(ideaSlug).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((idea) => {
-        this.setState({ idea: !isNilOrError(idea) ? idea.data : idea });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((idea) => {
+          this.setState({ idea: !isNilOrError(idea) ? idea.data : idea });
+        }),
     ];
   }
 
@@ -70,7 +71,7 @@ export default class GetIdea extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

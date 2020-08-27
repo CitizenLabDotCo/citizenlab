@@ -5,22 +5,28 @@ import { GraphqlLocale } from 'typings';
 import { includes } from 'lodash-es';
 
 export default function useGraphqlTenantLocales() {
-  const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<GraphqlLocale[] | undefined | null | Error>(undefined);
+  const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<
+    GraphqlLocale[] | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
-    const subscription = currentTenantStream().observable.subscribe((currentTenant) => {
-      if (!isNilOrError(currentTenant)) {
-        const graphqlLocales = currentTenant.data.attributes.settings.core.locales.map(locale => convertToGraphqlLocale(locale));
+    const subscription = currentTenantStream().observable.subscribe(
+      (currentTenant) => {
+        if (!isNilOrError(currentTenant)) {
+          const graphqlLocales = currentTenant.data.attributes.settings.core.locales.map(
+            (locale) => convertToGraphqlLocale(locale)
+          );
 
-        if (!includes(graphqlLocales, 'en')) {
-          graphqlLocales.push('en');
+          if (!includes(graphqlLocales, 'en')) {
+            graphqlLocales.push('en');
+          }
+
+          setGraphqlTenantLocales(graphqlLocales);
+        } else {
+          setGraphqlTenantLocales(currentTenant);
         }
-
-        setGraphqlTenantLocales(graphqlLocales);
-      } else {
-        setGraphqlTenantLocales(currentTenant);
       }
-    });
+    );
 
     return () => subscription.unsubscribe();
   }, []);

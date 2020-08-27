@@ -13,7 +13,7 @@ type IAdmin = {
   type: 'admin';
 };
 
-export type  IRole = IAdmin | IProjectModerator;
+export type IRole = IAdmin | IProjectModerator;
 
 export interface IUserData {
   id: string;
@@ -23,10 +23,10 @@ export interface IUserData {
     last_name: string | null;
     slug: string;
     locale: Locale;
-    avatar?: ImageSizes,
-    roles?: IRole[],
-    highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user',
-    bio_multiloc: Multiloc,
+    avatar?: ImageSizes;
+    roles?: IRole[];
+    highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
+    bio_multiloc: Multiloc;
     registration_completed_at: string | null;
     created_at: string;
     updated_at: string;
@@ -84,28 +84,47 @@ export function userByIdStream(userId: string) {
 }
 
 export function userBySlugStream(userSlug: string) {
-  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/by_slug/${userSlug}` });
+  return streams.get<IUser>({
+    apiEndpoint: `${apiEndpoint}/by_slug/${userSlug}`,
+  });
 }
 
-export function userByInviteStream(token: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/by_invite/${token}`, ...streamParams });
+export function userByInviteStream(
+  token: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IUser>({
+    apiEndpoint: `${apiEndpoint}/by_invite/${token}`,
+    ...streamParams,
+  });
 }
 
 export async function updateUser(userId: string, object: IUserUpdate) {
-  const response = await streams.update<IUser>(`${apiEndpoint}/${userId}`, userId, { user: object });
+  const response = await streams.update<IUser>(
+    `${apiEndpoint}/${userId}`,
+    userId,
+    { user: object }
+  );
   return response;
 }
 
 export async function deleteUser(userId: string) {
   const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`, `${API_PATH}/stats/users_count`]
+    apiEndpoint: [
+      `${API_PATH}/groups`,
+      `${API_PATH}/users`,
+      `${API_PATH}/stats/users_count`,
+    ],
   });
   return response;
 }
 
 export async function completeRegistration(customFieldValues: object) {
-  const authUser = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
+  const authUser = await streams.add<IUser>(
+    `${apiEndpoint}/complete_registration`,
+    { user: { custom_field_values: customFieldValues } }
+  );
   await streams.reset(authUser);
   return authUser;
 }
@@ -117,7 +136,7 @@ export function mapUserToDiff(user: IUserData): IUserUpdate {
     email: user.attributes.email || undefined,
     locale: user.attributes.locale || undefined,
     bio_multiloc: user.attributes.bio_multiloc || undefined,
-    custom_field_values: undefined
+    custom_field_values: undefined,
   };
 }
 

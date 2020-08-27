@@ -1,4 +1,8 @@
-import useAdminPublications, { InputProps as HookProps, IOutput } from 'hooks/useAdminPublications';
+import { FC } from 'react';
+import useAdminPublications, {
+  InputProps as HookProps,
+  IOutput,
+} from 'hooks/useAdminPublications';
 import { omit } from 'lodash-es';
 import useAdminPublicationsPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 
@@ -10,12 +14,16 @@ interface Props extends HookProps {
   prefetchProjects?: boolean;
 }
 
-const GetAdminPublications: React.SFC<Props> = (props) => {
+const GetAdminPublications: FC<Props> = (props) => {
   let adminPublications: IOutput;
   if (props.prefetchProjects) {
-    adminPublications = useAdminPublicationsPrefetchProjects(omit(props, ['children', 'prefetchProjects']));
+    adminPublications = useAdminPublicationsPrefetchProjects(
+      omit(props, ['children', 'prefetchProjects'])
+    );
   } else {
-    adminPublications = useAdminPublications(omit(props, ['children', 'prefetchProjects']));
+    adminPublications = useAdminPublications(
+      omit(props, ['children', 'prefetchProjects'])
+    );
   }
   return (props.children as children)(adminPublications);
 };

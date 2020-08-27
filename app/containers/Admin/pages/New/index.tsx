@@ -26,38 +26,34 @@ class New extends React.Component<Props> {
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
   handleSubmit = (values: any, { setErrors, setSubmitting, setStatus }) => {
     createPage({
-      ...values
+      ...values,
     })
-    .then(() => {
-      clHistory.push('/admin/pages');
-    }).catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+      .then(() => {
+        clHistory.push('/admin/pages');
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   initialValues = () => {
     return {
       title_multiloc: {},
       body_multiloc: {},
     };
-  }
+  };
 
-  renderFn = (props) => (
-    <PageForm
-      {...props}
-      mode="new"
-    />
-  )
+  renderFn = (props) => <PageForm {...props} mode="new" />;
 
   goBack = () => {
     clHistory.push('/admin/pages');
-  }
+  };
 
   render() {
     return (

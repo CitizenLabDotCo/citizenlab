@@ -55,7 +55,7 @@ export default defineMessages({
   },
   somethingWentWrongError: {
     id: 'app.components.VerificationModal.somethingWentWrongError',
-    defaultMessage: 'We can\'t verify you because something went wrong',
+    defaultMessage: "We can't verify you because something went wrong",
   },
   submit: {
     id: 'app.components.VerificationModal.submit',
@@ -71,50 +71,54 @@ export default defineMessages({
   },
   userVerifiedTitle: {
     id: 'app.components.VerificationModal.userVerifiedTitle',
-    defaultMessage: 'You’re now verified !'
+    defaultMessage: 'You’re now verified !',
   },
   userVerifiedSubtitle: {
     id: 'app.components.VerificationModal.userVerifiedSubtitle',
-    defaultMessage: 'Your identity has been verified. You’re now a full member of the community on this platform.'
+    defaultMessage:
+      'Your identity has been verified. You’re now a full member of the community on this platform.',
   },
   errorTitle: {
     id: 'app.components.VerificationModal.errorTitle',
-    defaultMessage: 'There was an issue with the verification of your account'
+    defaultMessage: 'There was an issue with the verification of your account',
   },
   errorTakenSubtitle: {
     id: 'app.components.VerificationModal.errorTakenSubtitle',
-    defaultMessage: 'Verification failed because another account is already using this identity.'
+    defaultMessage:
+      'Verification failed because another account is already using this identity.',
   },
   errorNotEntitledSubtitle: {
     id: 'app.components.VerificationModal.errorNotEntitledSubtitle',
-    defaultMessage: 'Your identity has been found, but it doesn\'t have enough civil rights to be considered verified'
+    defaultMessage:
+      "Your identity has been found, but it doesn't have enough civil rights to be considered verified",
   },
   errorGenericSubtitle: {
     id: 'app.components.VerificationModal.errorGenericSubtitle',
-    defaultMessage: 'There was an unkown issue with the verification of your account, please try again.'
+    defaultMessage:
+      'There was an unkown issue with the verification of your account, please try again.',
   },
   participationConditions: {
     id: 'app.components.VerificationModal.participationConditions',
-    defaultMessage: 'Participation conditions'
+    defaultMessage: 'Participation conditions',
   },
   peopleMatchingConditions: {
     id: 'app.components.VerificationModal.peopleMatchingConditions',
-    defaultMessage: 'People matching the following conditions:'
+    defaultMessage: 'People matching the following conditions:',
   },
   verifyNow: {
     id: 'app.components.VerificationModal.verifyNow',
-    defaultMessage: 'Verify now'
+    defaultMessage: 'Verify now',
   },
   verifyBOSA: {
     id: 'app.components.VerificationModal.verifyBOSA',
-    defaultMessage: 'Verify with itsme or eID'
+    defaultMessage: 'Verify with itsme or eID',
   },
   skipThisStep: {
     id: 'app.components.VerificationModal.skipThisStep',
-    defaultMessage: 'Skip this step'
+    defaultMessage: 'Skip this step',
   },
   close: {
     id: 'app.components.VerificationModal.close',
-    defaultMessage: 'Close'
-  }
+    defaultMessage: 'Close',
+  },
 });

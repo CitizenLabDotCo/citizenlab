@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import styled from 'styled-components';
-import { colors, boxShadowOutline } from 'utils/styleUtils';
+import { colors, defaultOutline } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ const Container = styled.div`
     }
 
     &.focus-visible {
-      ${boxShadowOutline};
+      ${defaultOutline};
     }
   }
 `;
@@ -60,13 +60,18 @@ interface ITrackProps {
 }
 
 class RangeInput extends PureComponent<Props, State> {
-
   handleOnChange = (values: number[]) => {
     this.props.onChange(values[0]);
-  }
+  };
 
   render() {
-    const track = ({ props, children } : { props: ITrackProps, children: ReactNode }) => (
+    const track = ({
+      props,
+      children,
+    }: {
+      props: ITrackProps;
+      children: ReactNode;
+    }) => (
       <div
         role="button"
         onMouseDown={props.onMouseDown}
@@ -75,7 +80,7 @@ class RangeInput extends PureComponent<Props, State> {
           ...props.style,
           height: '36px',
           display: 'flex',
-          width: '100%'
+          width: '100%',
         }}
       >
         <div
@@ -88,9 +93,9 @@ class RangeInput extends PureComponent<Props, State> {
               values: [this.props.value],
               colors: [colors.label, '#e0e0e0'],
               min: this.props.min,
-              max: this.props.max
+              max: this.props.max,
             }),
-            alignSelf: 'center'
+            alignSelf: 'center',
           }}
         >
           {children}
@@ -98,7 +103,13 @@ class RangeInput extends PureComponent<Props, State> {
       </div>
     );
 
-    const thumb = ({ props, isDragged }: { props: IThumbProps, isDragged: boolean }) => (
+    const thumb = ({
+      props,
+      isDragged,
+    }: {
+      props: IThumbProps;
+      isDragged: boolean;
+    }) => (
       <div
         {...props}
         style={{
@@ -110,7 +121,7 @@ class RangeInput extends PureComponent<Props, State> {
           alignItems: 'center',
           borderRadius: '50%',
           border: 'solid 1px #999',
-          background: 'linear-gradient(180deg, #fff 40%, #e0e0e0 100%)'
+          background: 'linear-gradient(180deg, #fff 40%, #e0e0e0 100%)',
         }}
         className={`thumb ${isDragged ? 'dragged' : ''}`}
       >
@@ -124,7 +135,7 @@ class RangeInput extends PureComponent<Props, State> {
             padding: '2px 6px',
             borderRadius: '4px',
             backgroundColor: '#333',
-            display: isDragged ? 'block' : 'none'
+            display: isDragged ? 'block' : 'none',
           }}
         >
           {this.props.value.toFixed(0)}

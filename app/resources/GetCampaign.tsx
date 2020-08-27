@@ -29,7 +29,7 @@ export default class GetCampaign extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      campaign: undefined
+      campaign: undefined,
     };
   }
 
@@ -39,12 +39,17 @@ export default class GetCampaign extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }) => campaignByIdStream(id).observable)
-      )
-      .subscribe((campaign) => this.setState({ campaign: !isNilOrError(campaign) ? campaign.data : campaign }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }) => campaignByIdStream(id).observable)
+        )
+        .subscribe((campaign) =>
+          this.setState({
+            campaign: !isNilOrError(campaign) ? campaign.data : campaign,
+          })
+        ),
     ];
   }
 
@@ -54,7 +59,7 @@ export default class GetCampaign extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

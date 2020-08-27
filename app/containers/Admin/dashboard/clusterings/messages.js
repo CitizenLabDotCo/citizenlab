@@ -3,9 +3,7 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   absolute: {
@@ -30,7 +28,8 @@ export default defineMessages({
   },
   relativeTooltip: {
     id: 'app.containers.Admin.clusterViewer.relativeTooltip',
-    defaultMessage: 'This shows the percentage of all votes (on the whole platform) of that user segment (x-axis) that have been put on ideas in the current selection. It acts as weighted scoring for voting behaviour per user segment, allowing to compare user segments regardless of segment size.',
+    defaultMessage:
+      'This shows the percentage of all votes (on the whole platform) of that user segment (x-axis) that have been put on ideas in the current selection. It acts as weighted scoring for voting behaviour per user segment, allowing to compare user segments regardless of segment size.',
   },
   addClusteringButton: {
     id: 'app.containers.Admin.clusterViewer.addClusteringButton',
@@ -70,7 +69,7 @@ export default defineMessages({
   },
   fieldDropEmpty: {
     id: 'app.containers.Admin.clusterViewer.fieldDropEmpty',
-    defaultMessage: 'Don\'t include empty clusters',
+    defaultMessage: "Don't include empty clusters",
   },
   fieldProjects: {
     id: 'app.containers.Admin.clusterViewer.fieldProjects',

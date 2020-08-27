@@ -45,7 +45,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
 
   handleChange = (category: string, value: boolean) => (_event) => {
     this.props.onChange(category, value);
-  }
+  };
 
   render() {
     const {

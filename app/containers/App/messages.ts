@@ -11,6 +11,7 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.App.metaDescription',
-    defaultMessage: 'Welcome to the online citizen engagement platform of {orgName}.\nExplore local projects and vote on your favourite ideas. Come participate in the discussions!',
+    defaultMessage:
+      'Welcome to the online citizen engagement platform of {orgName}.\nExplore local projects and vote on your favourite ideas. Come participate in the discussions!',
   },
 });

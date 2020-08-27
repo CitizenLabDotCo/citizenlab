@@ -8,7 +8,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import ProjectsShowPageMeta from './ProjectsShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -28,7 +28,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 const Container = styled.main`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -38,7 +38,9 @@ const Container = styled.main`
   }
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
     background: ${colors.background};
   `}
 
@@ -84,7 +86,7 @@ interface DataProps {
   events: GetEventsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   hasEvents: boolean;
@@ -96,35 +98,46 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
     const { children, locale, tenant, project, phases, events } = this.props;
     const { slug } = this.props.params;
     const projectNotFound = isError(project);
-    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project) || isUndefined(phases) || isUndefined(events));
+    const loading =
+      isUndefined(locale) ||
+      isUndefined(tenant) ||
+      isUndefined(project) ||
+      isUndefined(phases) ||
+      isUndefined(events);
     const currentPath = location.pathname;
     const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
 
     return (
       <>
         <ProjectsShowPageMeta projectSlug={slug} />
-        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''} ${!loading ? 'loaded' : 'loading'}`}>
+        <Container
+          className={`${
+            lastUrlSegment === 'events' || lastUrlSegment === 'info'
+              ? 'greyBackground'
+              : ''
+          } ${!loading ? 'loaded' : 'loading'}`}
+        >
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
-              <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
+              <p>
+                <FormattedMessage {...messages.noProjectFoundHere} />
+              </p>
               <Button
                 linkTo="/projects"
                 text={<FormattedMessage {...messages.goBackToList} />}
                 icon="arrow-back"
               />
             </ProjectNotFoundWrapper>
+          ) : loading ? (
+            <Loading>
+              <Spinner />
+            </Loading>
           ) : (
-              loading ? (
-                <Loading>
-                  <Spinner />
-                </Loading>
-              ) : (
-                <>
-                  <Header projectSlug={this.props.params.slug} />
-                  <Content>{children}</Content>
-                </>
-              )
-            )}
+            <>
+              <Header projectSlug={this.props.params.slug} />
+              <Content>{children}</Content>
+            </>
+          )}
         </Container>
       </>
     );
@@ -134,13 +147,23 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
-  phases: ({ project, render }) => <GetPhases projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetPhases>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
+  phases: ({ project, render }) => (
+    <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+      {render}
+    </GetPhases>
+  ),
+  events: ({ project, render }) => (
+    <GetEvents projectId={!isNilOrError(project) ? project.id : null}>
+      {render}
+    </GetEvents>
+  ),
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPage {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectsShowPage {...inputProps} {...dataProps} />}
   </Data>
 ));

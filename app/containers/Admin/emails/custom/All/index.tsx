@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -42,16 +42,15 @@ const NoCampaignsDescription = styled.p`
   max-width: 450px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps extends GetCampaignsChildProps {}
 
-export interface Props extends InputProps, DataProps { }
+export interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
-
   render() {
     const { campaigns, currentPage, lastPage } = this.props;
 
@@ -90,13 +89,14 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.addCampaignButton} />
             </Button>
           </ButtonWrapper>
-          <List key={campaigns.map(c => c.id).join()}>
-            {campaigns.map((campaign) => (
-              isDraft(campaign) ?
+          <List key={campaigns.map((c) => c.id).join()}>
+            {campaigns.map((campaign) =>
+              isDraft(campaign) ? (
                 <DraftCampaignRow key={campaign.id} campaign={campaign} />
-              :
+              ) : (
                 <SentCampaignRow key={campaign.id} campaign={campaign} />
-            ))}
+              )
+            )}
           </List>
           <Pagination
             currentPage={currentPage}
@@ -113,6 +113,8 @@ const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
 
 export default (inputProps: Props) => (
   <GetCampaigns campaignNames={['manual']} pageSize={10}>
-    {campaigns => <CampaignsWithInjectedIntl {...inputProps} {...campaigns} />}
+    {(campaigns) => (
+      <CampaignsWithInjectedIntl {...inputProps} {...campaigns} />
+    )}
   </GetCampaigns>
 );

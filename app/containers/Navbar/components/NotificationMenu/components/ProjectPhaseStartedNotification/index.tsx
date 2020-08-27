@@ -13,7 +13,7 @@ type Props = {
   notification: IProjectPhaseStartedNotificationData;
 };
 
-const ProjectPhaseStartedNotification = memo<Props>(props => {
+const ProjectPhaseStartedNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -26,7 +26,9 @@ const ProjectPhaseStartedNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.projectPhaseStarted}
         values={{
-          projectTitle: <T value={notification.attributes.project_title_multiloc} />
+          projectTitle: (
+            <T value={notification.attributes.project_title_multiloc} />
+          ),
         }}
       />
     </NotificationWrapper>

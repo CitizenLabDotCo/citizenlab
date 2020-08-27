@@ -5,9 +5,18 @@ import { adopt } from 'react-adopt';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeImages, {
+  GetInitiativeImagesChildProps,
+} from 'resources/GetInitiativeImages';
+import GetResourceFileObjects, {
+  GetResourceFileObjectsChildProps,
+} from 'resources/GetResourceFileObjects';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
@@ -17,7 +26,7 @@ import { isError } from 'util';
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { LocaleSwitcher } from 'cl2-component-library';
 import { Content, Top, Container } from '../PostPreview';
 
 // i18n
@@ -35,14 +44,15 @@ export interface InputProps {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  locale: GetLocaleChildProps;
   initiativeFiles: GetResourceFileObjectsChildProps;
   topics: GetTopicsChildProps;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface State {
   selectedLocale: GetLocaleChildProps;
@@ -65,22 +75,35 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 
   onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
-  }
+  };
 
   render() {
-    const { locale, initiative, initiativeImages, goBack, initiativeFiles, topics } = this.props;
+    const {
+      locale,
+      initiative,
+      initiativeImages,
+      goBack,
+      initiativeFiles,
+      topics,
+      tenantLocales,
+    } = this.props;
     const { selectedLocale } = this.state;
 
     if (
       isNilOrError(locale) ||
+      isNilOrError(tenantLocales) ||
       !selectedLocale ||
       isNilOrError(initiative) ||
       initiativeImages === undefined ||
       initiativeFiles === undefined ||
       isError(initiativeFiles) ||
       isNilOrError(topics)
-    ) return null;
-    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    ) {
+      return null;
+    }
+    const initiativeTopics = topics.filter(
+      (topic) => !isNilOrError(topic)
+    ) as ITopicData[];
 
     return (
       <Container>
@@ -93,17 +116,21 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
           >
             <FormattedMessage {...messages.cancelEdit} />
           </Button>
-          <FormLocaleSwitcher
-            onLocaleChange={this.onLocaleChange}
+          <LocaleSwitcher
+            onSelectedLocaleChange={this.onLocaleChange}
+            locales={tenantLocales}
             selectedLocale={selectedLocale}
-            values={{}}
           />
         </Top>
         <Content>
           <InitiativesEditFormWrapper
             locale={selectedLocale}
             initiative={initiative}
-            initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
+            initiativeImage={
+              isNilOrError(initiativeImages) || initiativeImages.length === 0
+                ? null
+                : initiativeImages[0]
+            }
             onPublished={goBack}
             initiativeFiles={initiativeFiles}
             topics={initiativeTopics}
@@ -117,13 +144,24 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   topics: <GetTopics exclude_code={'custom'} />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
-  initiativeFiles: ({ initiativeId, render }) => <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
+  tenantLocales: <GetTenantLocales />,
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  initiativeImages: ({ initiativeId, render }) => (
+    <GetInitiativeImages initiativeId={initiativeId}>
+      {render}
+    </GetInitiativeImages>
+  ),
+  initiativeFiles: ({ initiativeId, render }) => (
+    <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">
+      {render}
+    </GetResourceFileObjects>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativesEditPage {...dataProps} {...inputProps} />}
+    {(dataProps) => <InitiativesEditPage {...dataProps} {...inputProps} />}
   </Data>
 );

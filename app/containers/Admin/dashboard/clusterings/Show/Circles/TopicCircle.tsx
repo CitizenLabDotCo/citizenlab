@@ -18,7 +18,9 @@ const StyledCircle: any = styled.circle`
     stroke-width: 2px;
   }
 
-  ${props => !isNil((props as any).selectionIndex) && `
+  ${(props) =>
+    !isNil((props as any).selectionIndex) &&
+    `
     stroke: black;
     stroke-width: 2px;
     fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
@@ -39,26 +41,25 @@ interface DataProps {
   topic: GetTopicChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class TopicCircle extends PureComponent<Props, State> {
-
   handleOnClick = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onClick && this.props.onClick(node, event);
-  }
+  };
 
   handleOnMouseEnter = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseEnter && this.props.onMouseEnter(node, event);
-  }
+  };
 
   handleOnMouseLeave = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseLeave && this.props.onMouseLeave(node, event);
-  }
+  };
 
   render() {
     const { node, selectionIndex, hovered, topic } = this.props;

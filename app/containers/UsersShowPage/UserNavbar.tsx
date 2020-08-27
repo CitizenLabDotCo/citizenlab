@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { UserTab } from './';
 
 // i18n
@@ -75,7 +75,7 @@ const UserNavbarButton = styled.button`
     }
 
     &:before {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       top: 0;
@@ -112,7 +112,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UserNavbar = memo<Props>(props => {
+const UserNavbar = memo<Props>((props) => {
   const { currentTab, selectTab, ideasCount, commentsCount } = props;
 
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
@@ -129,36 +129,52 @@ const UserNavbar = memo<Props>(props => {
         aria-selected={currentTab === 'ideas'}
       >
         <Border aria-hidden />
-        <TabIcon name="idea2" ariaHidden />
-        {!isNilOrError(ideasCount) &&
-          <FormattedMessage {...messages.ideasWithCount} values={{ ideasCount }} />
-        }
+        <TabIcon name="idea" ariaHidden />
+        {!isNilOrError(ideasCount) && (
+          <FormattedMessage
+            {...messages.ideasWithCount}
+            values={{ ideasCount }}
+          />
+        )}
       </UserNavbarButton>
       <UserNavbarButton
         onMouseDown={removeFocus}
         onClick={selectTab('comments')}
-        className={`e2e-comment-section-nav ${currentTab === 'comments' ? 'active' : ''}`}
+        className={`e2e-comment-section-nav ${
+          currentTab === 'comments' ? 'active' : ''
+        }`}
         role="tab"
         aria-selected={currentTab === 'comments'}
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {!isNilOrError(commentsCount) &&
-          <FormattedMessage {...messages.commentsWithCount} values={{ commentsCount }} />
-        }
+        {!isNilOrError(commentsCount) && (
+          <FormattedMessage
+            {...messages.commentsWithCount}
+            values={{ commentsCount }}
+          />
+        )}
       </UserNavbarButton>
     </UserNavbarWrapper>
   );
 });
 
 const Data = adopt<DataProps, InputProps>({
-  ideasCount: ({ userId, render }) => <GetUserStats userId={userId} resource="ideas">{render}</GetUserStats>,
-  commentsCount: ({ userId, render }) => <GetUserStats userId={userId} resource="comments">{render}</GetUserStats>
+  ideasCount: ({ userId, render }) => (
+    <GetUserStats userId={userId} resource="ideas">
+      {render}
+    </GetUserStats>
+  ),
+  commentsCount: ({ userId, render }) => (
+    <GetUserStats userId={userId} resource="comments">
+      {render}
+    </GetUserStats>
+  ),
 });
 
 const WrappedUserNavbar = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UserNavbar {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserNavbar {...inputProps} {...dataProps} />}
   </Data>
 );
 

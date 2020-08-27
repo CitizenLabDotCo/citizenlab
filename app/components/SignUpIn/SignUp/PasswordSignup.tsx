@@ -6,7 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -23,7 +23,9 @@ import { signUp } from 'services/auth';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
@@ -88,7 +90,7 @@ interface DataProps {
   franceconnectLoginEnabled: boolean | null;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 type State = {
   token: string | null | undefined;
@@ -115,7 +117,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       token: props.metaData.token,
-      firstName:  null,
+      firstName: null,
       lastName: null,
       email: null,
       password: null,
@@ -130,7 +132,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacError: false,
       privacyError: false,
       unknownError: null,
-      apiErrors: null
+      apiErrors: null,
     };
   }
 
@@ -142,11 +144,16 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ token: metaData?.token });
 
     if (metaData?.token) {
-      request<IUser>(`${API_PATH}/users/by_invite/${metaData.token}`, null, { method: 'GET' }, null).then((response) => {
+      request<IUser>(
+        `${API_PATH}/users/by_invite/${metaData.token}`,
+        null,
+        { method: 'GET' },
+        null
+      ).then((response) => {
         this.setState({
           firstName: response?.data?.attributes?.first_name || null,
           lastName: response?.data?.attributes.last_name || null,
-          email: response?.data?.attributes?.email || null
+          email: response?.data?.attributes?.email || null,
         });
       });
     }
@@ -160,45 +167,53 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({
       token,
       invitationRedeemError: null,
-      unknownError: null
+      unknownError: null,
     });
-  }
+  };
 
   handleFirstNameOnChange = (firstName: string) => {
     this.setState((state) => ({
       firstName,
       firstNameError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.first_name', null) : null)
+      apiErrors: state.apiErrors
+        ? set(state.apiErrors, 'json.errors.first_name', null)
+        : null,
     }));
-  }
+  };
 
   handleLastNameOnChange = (lastName: string) => {
     this.setState((state) => ({
       lastName,
       lastNameError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.last_name', null) : null)
+      apiErrors: state.apiErrors
+        ? set(state.apiErrors, 'json.errors.last_name', null)
+        : null,
     }));
-  }
+  };
 
   handleEmailOnChange = (email: string) => {
     this.setState((state) => ({
       email,
       emailError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.email', null) : null)
+      apiErrors: state.apiErrors
+        ? set(state.apiErrors, 'json.errors.email', null)
+        : null,
     }));
-  }
+  };
 
   handlePasswordOnChange = (password: string) => {
     this.setState((state) => ({
       password,
       passwordError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.password', null) : null)
+      apiErrors: state.apiErrors
+        ? set(state.apiErrors, 'json.errors.password', null)
+        : null,
     }));
-  }
+  };
 
   handleOnGoToSignIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -208,21 +223,21 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     } else {
       clHistory.push('/sign-in');
     }
-  }
+  };
 
   handleTacAcceptedChange = (tacAccepted: boolean) => {
     this.setState({
       tacAccepted,
-      tacError: false
+      tacError: false,
     });
-  }
+  };
 
   handlePrivacyAcceptedChange = (privacyAccepted: boolean) => {
     this.setState({
       privacyAccepted,
-      privacyError: false
+      privacyError: false,
     });
-  }
+  };
 
   handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -231,13 +246,32 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const { isInvitation } = this.props.metaData;
     const { formatMessage } = this.props.intl;
     const { locale } = this.props;
-    const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted, processing } = this.state;
-    let invitationRedeemError = isInvitation && !token ? formatMessage(messages.noTokenError) : null;
-    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const {
+      token,
+      firstName,
+      lastName,
+      email,
+      password,
+      tacAccepted,
+      privacyAccepted,
+      processing,
+    } = this.state;
+    let invitationRedeemError =
+      isInvitation && !token ? formatMessage(messages.noTokenError) : null;
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
-    const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
-    const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
-    const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
+    const emailError = hasEmailError
+      ? !email
+        ? formatMessage(messages.noEmailError)
+        : formatMessage(messages.noValidEmailError)
+      : null;
+    const firstNameError = !firstName
+      ? formatMessage(messages.noFirstNameError)
+      : null;
+    const lastNameError = !lastName
+      ? formatMessage(messages.noLastNameError)
+      : null;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
     let passwordError: string | null = null;
@@ -248,14 +282,46 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [invitationRedeemError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError].some(error => error);
+    const hasErrors = [
+      invitationRedeemError,
+      emailError,
+      firstNameError,
+      lastNameError,
+      passwordError,
+      tacError,
+      privacyError,
+    ].some((error) => error);
 
-    this.setState({ invitationRedeemError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError });
+    this.setState({
+      invitationRedeemError,
+      emailError,
+      firstNameError,
+      lastNameError,
+      passwordError,
+      tacError,
+      privacyError,
+    });
 
-    if (!hasErrors && !processing && firstName && lastName && email && password && locale) {
+    if (
+      !hasErrors &&
+      !processing &&
+      firstName &&
+      lastName &&
+      email &&
+      password &&
+      locale
+    ) {
       try {
         this.setState({ processing: true, unknownError: null });
-        const user = await signUp(firstName, lastName, email, password, locale, isInvitation, token);
+        const user = await signUp(
+          firstName,
+          lastName,
+          email,
+          password,
+          locale,
+          isInvitation,
+          token
+        );
         this.setState({ processing: false });
         trackEventByName(tracks.signUpEmailPasswordStepCompleted);
         this.props.onCompleted(user.data.id);
@@ -268,17 +334,19 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         }
 
         if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
-          invitationRedeemError = formatMessage(messages.tokenAlreadyAcceptedError);
+          invitationRedeemError = formatMessage(
+            messages.tokenAlreadyAcceptedError
+          );
         }
 
         this.setState({
           invitationRedeemError,
           processing: false,
-          apiErrors: errors
+          apiErrors: errors,
         });
       }
     }
-  }
+  };
 
   goBackToSignUpOptions = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -288,7 +356,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     } else {
       clHistory.push('/sign-up');
     }
-  }
+  };
 
   render() {
     const {
@@ -302,7 +370,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       azureAdLoginEnabled,
       franceconnectLoginEnabled,
       metaData: { isInvitation },
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props;
     const {
       token,
@@ -316,11 +384,20 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       lastNameError,
       emailError,
       passwordError,
-      apiErrors
+      apiErrors,
     } = this.state;
-    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
-    const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const enabledProviders = [
+      passwordLoginEnabled,
+      googleLoginEnabled,
+      facebookLoginEnabled,
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
+    ].filter((provider) => provider === true);
+    const isDesktop = windowSize
+      ? windowSize > viewportWidths.largeTablet
+      : true;
 
     let unknownApiError: string | null = null;
 
@@ -329,7 +406,15 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         // weirdly TS doesn't understand my typeguard.
         const fieldKeys = keys((apiErrors as any).json.errors);
 
-        if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'base']).length > 0) {
+        if (
+          difference(fieldKeys, [
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'base',
+          ]).length > 0
+        ) {
           unknownApiError = formatMessage(messages.unknownError);
         }
       } else {
@@ -348,12 +433,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             onSubmit={this.handleOnSubmit}
             noValidate={true}
           >
-            {isInvitation && !this.props.metaData.token &&
+            {isInvitation && !this.props.metaData.token && (
               <FormElement id="e2e-token-container">
-                <FormLabel
-                  labelMessage={messages.tokenLabel}
-                  htmlFor="token"
-                />
+                <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" />
                 <Input
                   id="token"
                   type="text"
@@ -361,10 +443,12 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   placeholder={formatMessage(messages.tokenPlaceholder)}
                   error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
-                  autoFocus={!!(isDesktop && isInvitation && !this.props.metaData.token)}
+                  autoFocus={
+                    !!(isDesktop && isInvitation && !this.props.metaData.token)
+                  }
                 />
               </FormElement>
-            }
+            )}
 
             <FormElement id="e2e-firstName-container">
               <FormLabel
@@ -379,7 +463,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={firstNameError}
                 onChange={this.handleFirstNameOnChange}
                 autocomplete="given-name"
-                autoFocus={isDesktop && (!isInvitation || !!(isInvitation && this.props.metaData.token))}
+                autoFocus={
+                  isDesktop &&
+                  (!isInvitation ||
+                    !!(isInvitation && this.props.metaData.token))
+                }
               />
               <Error
                 fieldName={'first_name'}
@@ -409,7 +497,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement id="e2e-email-container">
               <FormLabel
-                labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
+                labelMessage={
+                  phone ? messages.emailOrPhoneLabel : messages.emailLabel
+                }
                 htmlFor="email"
               />
               <Input
@@ -461,7 +551,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 <Button
                   id="e2e-signup-password-button"
                   processing={processing}
-                  text={formatMessage(hasNextStep ? messages.nextStep : messages.signUp2)}
+                  text={formatMessage(
+                    hasNextStep ? messages.nextStep : messages.signUp2
+                  )}
                   onClick={this.handleOnSubmit}
                 />
               </ButtonWrapper>
@@ -481,10 +573,13 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   {...messages.goToLogIn}
                   values={{
                     goToOtherFlowLink: (
-                      <button onClick={this.handleOnGoToSignIn} className="link">
+                      <button
+                        onClick={this.handleOnGoToSignIn}
+                        className="link"
+                      >
                         {formatMessage(messages.logIn2)}
                       </button>
-                    )
+                    ),
                   }}
                 />
               )}
@@ -504,13 +599,13 @@ const Data = adopt<DataProps, InputProps>({
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 const PasswordSignupWithHoC = injectIntl<Props>(PasswordSignup);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <PasswordSignupWithHoC {...inputProps} {...dataprops} />}
+    {(dataprops) => <PasswordSignupWithHoC {...inputProps} {...dataprops} />}
   </Data>
 );

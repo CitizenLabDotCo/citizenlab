@@ -5,14 +5,14 @@ import { IEvent, trackEvent, trackPage } from '.';
 jest.mock('services/tenant');
 jest.mock('services/auth');
 
-const originalAnalytics =  (global as any).analytics;
+const originalAnalytics = (global as any).analytics;
 const identifyMock = jest.fn();
 const pageMock = jest.fn();
 const trackMock = jest.fn();
 const groupMock = jest.fn();
 
 beforeEach(() => {
-   (global as any).analytics = {
+  (global as any).analytics = {
     identify: identifyMock,
     page: pageMock,
     track: trackMock,
@@ -25,7 +25,6 @@ afterEach(() => {
 });
 
 describe('trackIdentification', () => {
-
   it('calls analytics.identify with the correct parameters', () => {
     const user = makeUser();
 
@@ -56,7 +55,7 @@ describe('trackIdentification', () => {
             All: true,
             Intercom: false,
             SatisMeter: false,
-          }
+          },
         }
       );
       expect(groupMock).toBeCalledWith(
@@ -70,28 +69,26 @@ describe('trackIdentification', () => {
           tenantName: 'wonderville',
           tenantHost: 'wonderville.com',
           tenantOrganizationType: 'medium_city',
-          tenantLifecycleStage: 'active'
+          tenantLifecycleStage: 'active',
         },
         {
           integrations: {
             Intercom: false,
-            SatisMeter: false
-          }
+            SatisMeter: false,
+          },
         }
       );
     });
   });
-
 });
 
 describe('trackEvent', () => {
   it('calls analytics.track with the correct parameters', () => {
-
     const event: IEvent = {
       name: 'Clicked button',
       properties: {
-        button_type: 'cta'
-      }
+        button_type: 'cta',
+      },
     };
 
     trackEvent(event);
@@ -105,13 +102,13 @@ describe('trackEvent', () => {
         tenantId: 'c4b400e1-1786-5be2-af55-40730c6a843d',
         tenantLifecycleStage: 'active',
         tenantName: 'wonderville',
-        tenantOrganizationType: 'medium_city'
+        tenantOrganizationType: 'medium_city',
       },
       {
         integrations: {
           Intercom: false,
           SatisMeter: false,
-        }
+        },
       }
     );
   });
@@ -119,7 +116,6 @@ describe('trackEvent', () => {
 
 describe('trackPage', () => {
   it('calls analytics.page with the correct parameters', () => {
-
     trackPage('/home', { weather: 'sunny' });
 
     expect(pageMock).toBeCalledWith(
@@ -139,7 +135,7 @@ describe('trackPage', () => {
         integrations: {
           Intercom: false,
           SatisMeter: false,
-        }
+        },
       }
     );
   });

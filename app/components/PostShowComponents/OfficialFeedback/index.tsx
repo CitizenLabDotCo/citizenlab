@@ -25,35 +25,48 @@ interface Props {
 
 const Container = styled.div``;
 
-const OfficialFeedback = memo<Props>(({ postId, postType, permissionToPost, a11y_pronounceLatestOfficialFeedbackPost, className }) => {
+const OfficialFeedback = memo<Props>(
+  ({
+    postId,
+    postType,
+    permissionToPost,
+    a11y_pronounceLatestOfficialFeedbackPost,
+    className,
+  }) => {
+    const locale = useLocale();
+    const tenantLocales = useTenantLocales();
 
-  const locale = useLocale();
-  const tenantLocales = useTenantLocales();
+    if (
+      isBoolean(permissionToPost) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(tenantLocales)
+    ) {
+      return (
+        <Container className={className || ''}>
+          {permissionToPost && (
+            <OfficialFeedbackForm
+              locale={locale}
+              tenantLocales={tenantLocales}
+              formType="new"
+              postId={postId}
+              postType={postType}
+            />
+          )}
 
-  if (isBoolean(permissionToPost) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
-    return (
-      <Container className={className || ''}>
-        {permissionToPost &&
-          <OfficialFeedbackForm
-            locale={locale}
-            tenantLocales={tenantLocales}
-            formType="new"
+          <OfficialFeedbackFeed
             postId={postId}
             postType={postType}
+            editingAllowed={permissionToPost}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
           />
-        }
+        </Container>
+      );
+    }
 
-        <OfficialFeedbackFeed
-          postId={postId}
-          postType={postType}
-          editingAllowed={permissionToPost}
-          a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
-        />
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default OfficialFeedback;

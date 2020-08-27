@@ -44,41 +44,45 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   spamModalVisible: boolean;
 }
 
-class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
-
+class InitiativeMoreActions extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
-      spamModalVisible: false
+      spamModalVisible: false,
     };
   }
 
   openSpamModal = () => {
     this.setState({ spamModalVisible: true });
-  }
+  };
 
   closeSpamModal = () => {
     this.setState({ spamModalVisible: false });
-  }
+  };
 
   onEditInitiative = () => {
     clHistory.push(`/initiatives/edit/${this.props.initiative.id}`);
-  }
+  };
 
   onDeleteInitiative = (initiativeId: string) => () => {
-    const message = this.props.intl.formatMessage(messages.deleteInitiativeConfirmation);
+    const message = this.props.intl.formatMessage(
+      messages.deleteInitiativeConfirmation
+    );
 
     if (window.confirm(message)) {
       deleteInitiative(initiativeId);
       clHistory.goBack();
     }
-  }
+  };
 
   render() {
     const { initiative, className, authUser, color, id } = this.props;
@@ -105,7 +109,7 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
                   {
                     label: <FormattedMessage {...messages.deleteInitiative} />,
                     handler: this.onDeleteInitiative(initiative.id),
-                  }
+                  },
                 ]}
               />
               <HasPermission.No>
@@ -113,10 +117,12 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
                   label={<FormattedMessage {...messages.moreOptions} />}
                   color={color}
                   id={id}
-                  actions={[{
-                    label: <FormattedMessage {...messages.reportAsSpam} />,
-                    handler: this.openSpamModal,
-                  }]}
+                  actions={[
+                    {
+                      label: <FormattedMessage {...messages.reportAsSpam} />,
+                      handler: this.openSpamModal,
+                    },
+                  ]}
                 />
               </HasPermission.No>
             </HasPermission>
@@ -147,6 +153,8 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativeMoreActionsWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <InitiativeMoreActionsWithHOCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

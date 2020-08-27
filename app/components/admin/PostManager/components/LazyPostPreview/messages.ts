@@ -14,7 +14,8 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this idea?',
   },
   deleteInitiativeConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
+    id:
+      'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
     defaultMessage: 'Are you sure you want to delete this initiative?',
   },
   voteCounts: {
@@ -35,7 +36,8 @@ export default defineMessages({
   },
   basketsCountTooltip: {
     id: 'app.components.admin.PostManager.PostPreview.basketsCountTooltip',
-    defaultMessage: 'The number of users that added this idea to their participatory budget',
+    defaultMessage:
+      'The number of users that added this idea to their participatory budget',
   },
   cancelEdit: {
     id: 'app.components.admin.PostManager.PostPreview.cancelEdit',
@@ -63,6 +65,15 @@ export default defineMessages({
   },
   xDaysLeft: {
     id: 'app.containers.IdeasShow.xDaysLeft',
-    defaultMessage: '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
+    defaultMessage:
+      '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
+  },
+  proposedBudgetTitle: {
+    id: 'app.containers.IdeasShow.proposedBudgetTitle',
+    defaultMessage: 'Proposed budget',
+  },
+  bodyTitle: {
+    id: 'app.containers.IdeasShow.bodyTitle',
+    defaultMessage: 'Description',
   },
 });

@@ -3,15 +3,19 @@ import React, { PureComponent } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
 // components
-import Input from 'components/UI/Input';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { Input, LocaleSwitcher } from 'cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
 // services
-import { addOfficialFeedbackToIdea, addOfficialFeedbackToInitiative, updateOfficialFeedback, IOfficialFeedbackData } from 'services/officialFeedback';
+import {
+  addOfficialFeedbackToIdea,
+  addOfficialFeedbackToInitiative,
+  updateOfficialFeedback,
+  IOfficialFeedbackData,
+} from 'services/officialFeedback';
 
 // utils
 import { isPage, isNilOrError } from 'utils/helperUtils';
@@ -50,7 +54,7 @@ const AddOfficialUpdateTitle = styled.h2`
   margin: 0;
 `;
 
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   width: auto;
   flex: 1;
 `;
@@ -109,8 +113,10 @@ interface State {
   success: boolean;
 }
 
-class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, State> {
-
+class OfficialFeedbackForm extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -121,7 +127,7 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
       },
       processing: false,
       error: false,
-      success: false
+      success: false,
     };
   }
 
@@ -130,14 +136,17 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
 
     this.setState({
       selectedLocale: locale,
-      formValues: formType === 'new' ? this.getEmptyFormValues() : this.getPreviouslySavedFormValues()
+      formValues:
+        formType === 'new'
+          ? this.getEmptyFormValues()
+          : this.getPreviouslySavedFormValues(),
     });
   }
 
   getEmptyFormValues = () => {
     const formValues = {
       bodyMultiloc: {},
-      authorMultiloc: {}
+      authorMultiloc: {},
     };
 
     this.props.tenantLocales.forEach((locale) => {
@@ -146,29 +155,33 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
     });
 
     return formValues;
-  }
+  };
 
   getPreviouslySavedFormValues = () => {
     const { feedback } = this.props;
 
     const formValues = {
-      authorMultiloc: (feedback as IOfficialFeedbackData).attributes.author_multiloc,
-      bodyMultiloc: {}
+      authorMultiloc: (feedback as IOfficialFeedbackData).attributes
+        .author_multiloc,
+      bodyMultiloc: {},
     };
 
-    forOwn((feedback as IOfficialFeedbackData).attributes.body_multiloc, (bodyText, locale) => {
-      formValues.bodyMultiloc[locale] = (bodyText || '').replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
-        '@[$3]($2)'
-      );
-    });
+    forOwn(
+      (feedback as IOfficialFeedbackData).attributes.body_multiloc,
+      (bodyText, locale) => {
+        formValues.bodyMultiloc[locale] = (bodyText || '').replace(
+          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
+          '@[$3]($2)'
+        );
+      }
+    );
 
     return formValues;
-  }
+  };
 
   handleOnLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
-  }
+  };
 
   handleBodyOnChange = (body: string, locale: Locale | undefined) => {
     if (locale) {
@@ -179,12 +192,12 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
           ...state.formValues,
           bodyMultiloc: {
             ...state.formValues.bodyMultiloc,
-            [locale]: body
-          }
-        }
+            [locale]: body,
+          },
+        },
       }));
     }
-  }
+  };
 
   handleAuthorOnChange = (author: string, locale: Locale | undefined) => {
     if (locale) {
@@ -195,12 +208,12 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
           ...state.formValues,
           authorMultiloc: {
             ...state.formValues.authorMultiloc,
-            [locale]: author
-          }
-        }
+            [locale]: author,
+          },
+        },
       }));
     }
-  }
+  };
 
   validate = () => {
     const { tenantLocales } = this.props;
@@ -209,21 +222,27 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
     let validated = false;
 
     tenantLocales.forEach((locale) => {
-      if (!isEmpty(formValues.authorMultiloc[locale]) && !isEmpty(formValues.bodyMultiloc[locale])) {
+      if (
+        !isEmpty(formValues.authorMultiloc[locale]) &&
+        !isEmpty(formValues.bodyMultiloc[locale])
+      ) {
         validated = true;
       }
     });
 
     tenantLocales.forEach((locale) => {
-      if ((!isEmpty(formValues.authorMultiloc[locale]) && isEmpty(formValues.bodyMultiloc[locale])) ||
-          (isEmpty(formValues.authorMultiloc[locale]) && !isEmpty(formValues.bodyMultiloc[locale]))
+      if (
+        (!isEmpty(formValues.authorMultiloc[locale]) &&
+          isEmpty(formValues.bodyMultiloc[locale])) ||
+        (isEmpty(formValues.authorMultiloc[locale]) &&
+          !isEmpty(formValues.bodyMultiloc[locale]))
       ) {
         validated = false;
       }
     });
 
     return validated;
-  }
+  };
 
   handleOnSubmit = async (event: React.FormEvent) => {
     const { postId, postType, formType, feedback, onClose } = this.props;
@@ -235,27 +254,38 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
       this.setState({
         processing: true,
         error: false,
-        success: false
+        success: false,
       });
 
       const feedbackValues = {
         author_multiloc: formValues.authorMultiloc,
-        body_multiloc: {} as Multiloc
+        body_multiloc: {} as Multiloc,
       };
 
       forOwn(formValues.bodyMultiloc, (bodyText, locale) => {
-        feedbackValues.body_multiloc[locale] = (bodyText || '').replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2');
+        feedbackValues.body_multiloc[locale] = (bodyText || '').replace(
+          /\@\[(.*?)\]\((.*?)\)/gi,
+          '@$2'
+        );
       });
 
       try {
         if (formType === 'new' && postId && postType === 'idea') {
           await addOfficialFeedbackToIdea(postId, feedbackValues);
-          trackEventByName(tracks.officialFeedbackGiven, { location: isPage('admin', location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
+          trackEventByName(tracks.officialFeedbackGiven, {
+            location: isPage('admin', location.pathname)
+              ? 'Admin/idea manager'
+              : 'Citizen/idea page',
+          });
         }
 
         if (formType === 'new' && postId && postType === 'initiative') {
           await addOfficialFeedbackToInitiative(postId, feedbackValues);
-          trackEventByName(tracks.officialFeedbackGiven, { location: isPage('admin', location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
+          trackEventByName(tracks.officialFeedbackGiven, {
+            location: isPage('admin', location.pathname)
+              ? 'Admin/initiative manager'
+              : 'Citizen/initiative page',
+          });
         }
 
         if (formType === 'edit' && !isNilOrError(feedback) && onClose) {
@@ -266,7 +296,7 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
         this.setState({
           formValues: this.getEmptyFormValues(),
           processing: false,
-          success: true
+          success: true,
         });
 
         setTimeout(() => this.setState({ success: false }), 6000);
@@ -274,33 +304,49 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
         this.setState({
           processing: false,
           error: true,
-          success: false
+          success: false,
         });
       }
     }
-  }
+  };
 
   render() {
-    const { formType, onClose, className, tenantLocales, intl: { formatMessage } } = this.props;
-    const { selectedLocale, formValues, processing, error, success } = this.state;
-    const errorMessage = error ? formatMessage(messages.updateButtonError) : null;
-    const successMessage = success ? formatMessage(messages.updateMessageSuccess) : null;
+    const {
+      formType,
+      onClose,
+      className,
+      tenantLocales,
+      intl: { formatMessage },
+    } = this.props;
+    const {
+      selectedLocale,
+      formValues,
+      processing,
+      error,
+      success,
+    } = this.state;
+    const errorMessage = error
+      ? formatMessage(messages.updateButtonError)
+      : null;
+    const successMessage = success
+      ? formatMessage(messages.updateMessageSuccess)
+      : null;
 
     if (selectedLocale) {
       return (
         <Container className={className || ''}>
           <Section id="official-feedback-form">
             <FormLabel>
-              {formType === 'new' &&
+              {formType === 'new' && (
                 <AddOfficialUpdateTitle>
                   <FormattedMessage {...messages.addOfficalUpdate} />
                 </AddOfficialUpdateTitle>
-              }
+              )}
 
-              <StyledFormLocaleSwitcher
+              <StyledLocaleSwitcher
                 locales={tenantLocales}
                 selectedLocale={selectedLocale}
-                onLocaleChange={this.handleOnLocaleChange}
+                onSelectedLocaleChange={this.handleOnLocaleChange}
                 values={formValues as any}
               />
             </FormLabel>
@@ -333,7 +379,9 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
           <ButtonContainer>
             <SubmitButton
               className="e2e-official-feedback-form-submit-button"
-              bgColor={formType === 'edit' ? colors.adminTextColor : colors.clRed}
+              bgColor={
+                formType === 'edit' ? colors.adminTextColor : colors.clRed
+              }
               icon="pen"
               textColor="white"
               fullWidth={formType === 'new'}
@@ -341,25 +389,28 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
               disabled={!this.validate()}
               processing={processing}
             >
-              {formType === 'edit'
-                ? <FormattedMessage {...messages.updateButtonSaveEditForm} />
-                : <FormattedMessage {...messages.publishButtonText} />
-              }
+              {formType === 'edit' ? (
+                <FormattedMessage {...messages.updateButtonSaveEditForm} />
+              ) : (
+                <FormattedMessage {...messages.publishButtonText} />
+              )}
             </SubmitButton>
 
-            {successMessage &&
+            {successMessage && (
               <SuccessMessage>{successMessage}</SuccessMessage>
-            }
+            )}
 
-            {onClose &&
+            {onClose && (
               <CancelButton
                 buttonStyle="secondary"
                 onClick={onClose}
-                textColor={formType === 'edit' ? colors.adminTextColor : colors.clRed}
+                textColor={
+                  formType === 'edit' ? colors.adminTextColor : colors.clRed
+                }
               >
                 <FormattedMessage {...messages.cancel} />
               </CancelButton>
-            }
+            )}
           </ButtonContainer>
         </Container>
       );

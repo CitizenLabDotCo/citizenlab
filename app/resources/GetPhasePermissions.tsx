@@ -4,13 +4,18 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
-import { IPermissionData, phasePermissions } from 'services/participationContextPermissions';
+import {
+  IPermissionData,
+  phasePermissions,
+} from 'services/participationContextPermissions';
 
 interface InputProps {
   phaseId?: string | null;
 }
 
-type children = (renderProps: GetPhasePermissionsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetPhasePermissionsChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -20,7 +25,11 @@ interface State {
   permissions: IPermissionData[] | undefined | null | Error;
 }
 
-export type GetPhasePermissionsChildProps = IPermissionData[] | undefined | null | Error;
+export type GetPhasePermissionsChildProps =
+  | IPermissionData[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetPhasePermissions extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -29,7 +38,7 @@ export default class GetPhasePermissions extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      permissions: undefined
+      permissions: undefined,
     };
   }
 
@@ -39,14 +48,19 @@ export default class GetPhasePermissions extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ phaseId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ phaseId }: { phaseId: string }) => isString(phaseId)),
-        switchMap(({ phaseId }) => phasePermissions(phaseId).observable)
-      )
-      .subscribe((permissions) => {
-        this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ phaseId }: { phaseId: string }) => isString(phaseId)),
+          switchMap(({ phaseId }) => phasePermissions(phaseId).observable)
+        )
+        .subscribe((permissions) => {
+          this.setState({
+            permissions: !isNilOrError(permissions)
+              ? permissions.data
+              : permissions,
+          });
+        }),
     ];
   }
 
@@ -56,7 +70,7 @@ export default class GetPhasePermissions extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

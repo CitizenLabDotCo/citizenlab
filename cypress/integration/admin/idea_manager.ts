@@ -1,7 +1,6 @@
 import { randomString, randomEmail } from '../../support/commands';
 
 describe('Idea manager', () => {
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -19,7 +18,6 @@ describe('Idea manager', () => {
     });
 
     it('Filters on Assigned to me', () => {
-
       cy.getAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
@@ -34,7 +32,7 @@ describe('Idea manager', () => {
           description: projectDescription,
           publicationStatus: 'published',
           participationMethod: 'ideation',
-          assigneeId: userId
+          assigneeId: userId,
         }).then((project) => {
           const projectId = project.body.data.id;
           const ideaTitle = randomString();
@@ -71,7 +69,7 @@ describe('Idea manager', () => {
           description: projectDescription,
           publicationStatus: 'published',
           participationMethod: 'ideation',
-          assigneeId: userId
+          assigneeId: userId,
         }).then((project) => {
           const projectId = project.body.data.id;
           const ideaTitle1 = randomString();
@@ -80,11 +78,15 @@ describe('Idea manager', () => {
           const ideaContent2 = randomString();
 
           // Create one idea with official feedback
-          cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then(idea => {
+          cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then((idea) => {
             const ideaId = idea.body.data.id;
             const officialFeedbackContent = randomString();
             const officialFeedbackAuthor = randomString();
-            cy.apiCreateOfficialFeedbackForIdea(ideaId, officialFeedbackContent, officialFeedbackAuthor);
+            cy.apiCreateOfficialFeedbackForIdea(
+              ideaId,
+              officialFeedbackContent,
+              officialFeedbackAuthor
+            );
 
             // Create one idea without official feedback
             cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2).then(() => {
@@ -101,7 +103,6 @@ describe('Idea manager', () => {
             });
             cy.wait(500);
           });
-
         });
       });
     });
@@ -115,14 +116,19 @@ describe('Idea manager', () => {
       // click on All ideas filter
       cy.get('#e2e-assignee-filter-all-posts').click();
       // click on title of first idea
-      cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
-        // check if the modal popped out and has the idea in it
-        cy.get('#e2e-modal-container').find('#e2e-idea-title').contains(ideaTitle.text());
-        // close modal
-        cy.get('.e2e-modal-close-button').click();
-        // check if the modal is no longer on the page
-        cy.get('#e2e-modal-container').should('have.length', 0);
-      });
+      cy.get('.e2e-idea-manager-idea-title')
+        .first()
+        .click()
+        .then((ideaTitle) => {
+          // check if the modal popped out and has the idea in it
+          cy.get('#e2e-modal-container')
+            .find('#e2e-idea-title')
+            .contains(ideaTitle.text());
+          // close modal
+          cy.get('.e2e-modal-close-button').click();
+          // check if the modal is no longer on the page
+          cy.get('#e2e-modal-container').should('have.length', 0);
+        });
     });
   });
 
@@ -133,29 +139,35 @@ describe('Idea manager', () => {
       const email = randomEmail();
       const password = randomString();
 
-      cy.apiCreateAdmin(firstName, lastName, email, password).then(newAdmin => {
-        const newAdminFirstName = newAdmin.body.data.attributes.first_name;
-        const newAdminLastName = newAdmin.body.data.attributes.last_name;
+      cy.apiCreateAdmin(firstName, lastName, email, password).then(
+        (newAdmin) => {
+          const newAdminFirstName = newAdmin.body.data.attributes.first_name;
+          const newAdminLastName = newAdmin.body.data.attributes.last_name;
 
-        // Refresh page to make sure new admin is picked up
-        cy.visit('/admin/ideas/');
-        // Select unassigned in assignee filter
-        cy.get('#e2e-select-assignee-filter').click();
-        cy.get('#e2e-assignee-filter-unassigned').click();
-        // Pick first idea in idea table and assign it to our user
-        cy.wait(500);
-        cy.get('.e2e-idea-manager-idea-row').first()
-          .find('.e2e-post-manager-post-row-assignee-select').scrollIntoView({ offset: { top: 100, left: 0 } }).click()
-          .contains(`${newAdminFirstName} ${newAdminLastName}`).click();
-        // Select this user in the assignee filter
-        cy.get('#e2e-select-assignee-filter').click()
-          .find('.e2e-assignee-filter-other-user')
-          .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`).click();
-        // Check if idea is there
-        cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
-      });
-
+          // Refresh page to make sure new admin is picked up
+          cy.visit('/admin/ideas/');
+          // Select unassigned in assignee filter
+          cy.get('#e2e-select-assignee-filter').click();
+          cy.get('#e2e-assignee-filter-unassigned').click();
+          // Pick first idea in idea table and assign it to our user
+          cy.wait(500);
+          cy.get('.e2e-idea-manager-idea-row')
+            .first()
+            .find('.e2e-post-manager-post-row-assignee-select')
+            .scrollIntoView({ offset: { top: 100, left: 0 } })
+            .click()
+            .contains(`${newAdminFirstName} ${newAdminLastName}`)
+            .click();
+          // Select this user in the assignee filter
+          cy.get('#e2e-select-assignee-filter')
+            .click()
+            .find('.e2e-assignee-filter-other-user')
+            .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`)
+            .click();
+          // Check if idea is there
+          cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
+        }
+      );
     });
   });
-
 });

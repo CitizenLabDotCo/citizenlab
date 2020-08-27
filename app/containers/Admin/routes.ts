@@ -30,10 +30,10 @@ const isUserAuthorized = (nextState, replace) => {
   combineLatest(
     hasPermission({
       item: { type: 'route', path: pathname },
-      action: 'access'
+      action: 'access',
     }),
     currentTenantStream().observable,
-    authUserStream().observable,
+    authUserStream().observable
   ).subscribe(([accessAthorized, tenant, authUser]) => {
     if (!accessAthorized) {
       if (tenant.data.attributes.settings.core.lifecycle_stage === 'churned') {
@@ -42,12 +42,21 @@ const isUserAuthorized = (nextState, replace) => {
         replace(`${urlLocale && `/${urlLocale}`}/`);
       } else {
         // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
-        const urlSegments = pathname ? pathname.replace(/^\/+/g, '').split('/') : null;
+        const urlSegments = pathname
+          ? pathname.replace(/^\/+/g, '').split('/')
+          : null;
 
         // check if a unauthorized user is trying to access a template preview page (url pattern: /admin/projects/templates/[id])
         // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
         // if not, redirect them to the sign-in page
-        if (urlSegments && urlSegments.length === 4 && urlSegments[0] === 'admin' && urlSegments[1] === 'projects' && urlSegments[2] === 'templates' && isUUID(urlSegments[3])) {
+        if (
+          urlSegments &&
+          urlSegments.length === 4 &&
+          urlSegments[0] === 'admin' &&
+          urlSegments[1] === 'projects' &&
+          urlSegments[2] === 'templates' &&
+          isUUID(urlSegments[3])
+        ) {
           replace(`/${urlLocale}/templates/${urlSegments[3]}`);
         } else {
           replace(`${urlLocale && `/${urlLocale}`}/sign-in`);
@@ -70,7 +79,7 @@ export default () => ({
       const pathNameWithLocale = nextState.location.pathname;
       const { urlLocale } = removeLocale(pathNameWithLocale);
       replace(`${urlLocale && `/${urlLocale}`}/admin/dashboard`);
-    }
+    },
   },
   childRoutes: [
     dashboardRoutes(),
@@ -79,7 +88,7 @@ export default () => ({
     projectsRoutes(),
     {
       path: 'settings/registration/custom_fields',
-      ...(customFieldRoutes()),
+      ...customFieldRoutes(),
     },
     settingsRoutes(),
     settingsAreasRoutes(),
@@ -91,7 +100,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/moderation'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -99,7 +108,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/workshops'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -107,7 +116,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/ideas'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -115,7 +124,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/favicon'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -123,7 +132,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('./dashboard/clusterings/Show'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -131,7 +140,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/guide'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
   ],

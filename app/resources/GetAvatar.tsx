@@ -28,13 +28,13 @@ export default class GetAvatar extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      avatar: undefined
+      avatar: undefined,
     };
   }
 
@@ -44,18 +44,23 @@ export default class GetAvatar extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ avatar: undefined })),
-        switchMap(({ id }) => {
-          if (isString(id)) {
-            return avatarByIdStream(id).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ avatar: undefined })),
+          switchMap(({ id }) => {
+            if (isString(id)) {
+              return avatarByIdStream(id).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((avatar) => this.setState({ avatar: !isNilOrError(avatar) ? avatar.data : avatar }))
+            return of(null);
+          })
+        )
+        .subscribe((avatar) =>
+          this.setState({
+            avatar: !isNilOrError(avatar) ? avatar.data : avatar,
+          })
+        ),
     ];
   }
 
@@ -65,7 +70,7 @@ export default class GetAvatar extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

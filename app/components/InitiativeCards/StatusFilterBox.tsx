@@ -6,8 +6,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 // resources
-import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
-import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
+import GetInitiativeStatuses, {
+  GetInitiativeStatusesChildProps,
+} from 'resources/GetInitiativeStatuses';
+import GetInitiativesFilterCounts, {
+  GetInitiativesFilterCountsChildProps,
+} from 'resources/GetInitiativesFilterCounts';
 
 // styling
 import styled from 'styled-components';
@@ -31,45 +35,59 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const StatusFilterBox = memo<Props>(({ selectedStatusId, initiativeStatuses, initiativesFilterCounts, onChange, className }) => {
-
-  const handleOnChange = useCallback((nextSelectedStatusId: string | null) => {
-    onChange(nextSelectedStatusId);
-  }, []);
-
-  if (!isNilOrError(initiativeStatuses) && initiativeStatuses.length > 0) {
-    return (
-      <Container className={className}>
-        <StatusFilter
-          type="initiative"
-          statuses={initiativeStatuses}
-          filterCounts={initiativesFilterCounts}
-          selectedStatusId={selectedStatusId}
-          onChange={handleOnChange}
-        />
-      </Container>
+const StatusFilterBox = memo<Props>(
+  ({
+    selectedStatusId,
+    initiativeStatuses,
+    initiativesFilterCounts,
+    onChange,
+    className,
+  }) => {
+    const handleOnChange = useCallback(
+      (nextSelectedStatusId: string | null) => {
+        onChange(nextSelectedStatusId);
+      },
+      []
     );
-  }
 
-  return null;
-});
+    if (!isNilOrError(initiativeStatuses) && initiativeStatuses.length > 0) {
+      return (
+        <Container className={className}>
+          <StatusFilter
+            type="initiative"
+            statuses={initiativeStatuses}
+            filterCounts={initiativesFilterCounts}
+            selectedStatusId={selectedStatusId}
+            onChange={handleOnChange}
+          />
+        </Container>
+      );
+    }
+
+    return null;
+  }
+);
 
 const Data = adopt<DataProps, InputProps>({
-  initiativeStatuses: <GetInitiativeStatuses/>,
+  initiativeStatuses: <GetInitiativeStatuses />,
   initiativesFilterCounts: ({ selectedInitiativeFilters, render }) => {
     const queryParameters = {
       ...selectedInitiativeFilters,
       initiative_status: undefined,
       project_publication_status: 'published',
-      publication_status: 'published'
+      publication_status: 'published',
     } as Partial<IQueryParameters>;
 
-    return <GetInitiativesFilterCounts queryParameters={queryParameters}>{render}</GetInitiativesFilterCounts>;
-  }
+    return (
+      <GetInitiativesFilterCounts queryParameters={queryParameters}>
+        {render}
+      </GetInitiativesFilterCounts>
+    );
+  },
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <StatusFilterBox {...inputProps} {...dataProps} />}
+    {(dataProps) => <StatusFilterBox {...inputProps} {...dataProps} />}
   </Data>
 );

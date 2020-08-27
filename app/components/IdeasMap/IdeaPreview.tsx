@@ -9,14 +9,16 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import Body from 'components/PostShowComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
@@ -96,7 +98,7 @@ const Description = styled.div`
   &::after {
     background: linear-gradient(0deg, white, rgba(255, 255, 255, 0));
     bottom: 0;
-    content: "";
+    content: '';
     display: block;
     height: 3rem;
     left: 0;
@@ -187,14 +189,14 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
-        type: 'idea'
+        type: 'idea',
       });
     }
-  }
+  };
 
   handleDisabledVoteClick = () => {
     this.setState({ showFooter: 'votingDisabled' });
-  }
+  };
 
   render() {
     const { showFooter } = this.state;
@@ -203,7 +205,9 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
     if (!isNilOrError(idea)) {
       const ideaAddress = idea?.attributes?.location_description;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
-      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+      const smallerThanSmallTablet = windowSize
+        ? windowSize <= viewportWidths.smallTablet
+        : false;
 
       return (
         <Container className={className}>
@@ -226,34 +230,34 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
           <Footer>
             <VotingAndCommenting>
-              {!showFooter &&
+              {!showFooter && (
                 <>
                   <VoteControl
                     ideaId={idea.id}
                     size={smallerThanSmallTablet ? '1' : '2'}
                     disabledVoteClick={this.handleDisabledVoteClick}
-                    showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
+                    showDownvote={
+                      idea.attributes.action_descriptor.voting
+                        .downvoting_enabled
+                    }
                   />
                   <CommentsCount>
                     <CommentIcon name="comments" />
                     {idea.attributes.comments_count}
                   </CommentsCount>
                 </>
-              }
+              )}
 
-              {showFooter === 'votingDisabled' &&
+              {showFooter === 'votingDisabled' && (
                 <VotingDisabled
                   votingDescriptor={idea.attributes.action_descriptor.voting}
                   projectId={idea.relationships.project.data.id}
                 />
-              }
+              )}
             </VotingAndCommenting>
 
             <ViewIdeaButtonContainer>
-              <Button
-                fullWidth={true}
-                onClick={this.createIdeaClickHandler}
-              >
+              <Button fullWidth={true} onClick={this.createIdeaClickHandler}>
                 <FormattedMessage {...messages.seeIdea} />
               </Button>
             </ViewIdeaButtonContainer>
@@ -271,11 +275,11 @@ const IdeaPreviewWithHOCs = injectLocalize<Props>(IdeaPreview);
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

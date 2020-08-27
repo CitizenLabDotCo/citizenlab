@@ -27,7 +27,7 @@ describe('Idea show page actions', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
-      cy.get('.e2e-locale-switch').each(button => {
+      cy.get('.e2e-localeswitcher').each((button) => {
         // input
         cy.wrap(button).click();
         cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
@@ -38,7 +38,9 @@ describe('Idea show page actions', () => {
       cy.get('.e2e-official-feedback-form-submit-button').click();
       cy.wait(2000);
       cy.get('.e2e-official-feedback-post-body').contains(officialFeedbackBody);
-      cy.get('.e2e-official-feedback-post-author').contains(officialFeedbackAuthor);
+      cy.get('.e2e-official-feedback-post-author').contains(
+        officialFeedbackAuthor
+      );
     });
   });
 
@@ -52,19 +54,25 @@ describe('Idea show page actions', () => {
         const ideaTitle = randomString();
         const ideaContent = randomString();
 
-        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
-          const projectId = project.body.data.id;
-          cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-          cy.apiSignup(firstName, lastName, email, password);
-          cy.setLoginCookie(email, password);
-          cy.visit(`/ideas/${ideaTitle}`);
-          cy.get('#e2e-idea-show');
-        });
+        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
+          (project) => {
+            const projectId = project.body.data.id;
+            cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+            cy.apiSignup(firstName, lastName, email, password);
+            cy.setLoginCookie(email, password);
+            cy.visit(`/ideas/${ideaTitle}`);
+            cy.get('#e2e-idea-show');
+          }
+        );
       });
 
       it('has working up and downvote buttons', () => {
-        cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-        cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+        cy.get('.e2e-vote-controls-desktop')
+          .find('.e2e-ideacard-upvote-button')
+          .as('upvoteBtn');
+        cy.get('.e2e-vote-controls-desktop')
+          .find('.e2e-ideacard-downvote-button')
+          .as('downvoteBtn');
 
         // initial upvote & downvote values
         cy.get('@upvoteBtn').contains('1');
@@ -110,7 +118,9 @@ describe('Idea show page actions', () => {
 
       it('shows a working comment input', () => {
         const commentBody = randomString();
-        cy.get('#submit-comment').type(commentBody).should('have.value', commentBody);
+        cy.get('#submit-comment')
+          .type(commentBody)
+          .should('have.value', commentBody);
       });
 
       describe('Comment', () => {
@@ -121,7 +131,10 @@ describe('Idea show page actions', () => {
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
           cy.get('.e2e-submit-childcomment').first().click();
           cy.wait(2000);
-          cy.get('#e2e-parent-and-childcomments').get('.e2e-childcomment').last().contains(commentBody);
+          cy.get('#e2e-parent-and-childcomments')
+            .get('.e2e-childcomment')
+            .last()
+            .contains(commentBody);
         });
       });
     });

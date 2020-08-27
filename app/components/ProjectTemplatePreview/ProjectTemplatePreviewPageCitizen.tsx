@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectTemplatePreview from './ProjectTemplatePreview';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -26,14 +26,16 @@ import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   justify-content: center;
   padding: 50px;
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 
   ${media.smallerThanMinTablet`
@@ -44,7 +46,7 @@ const Container = styled.div`
 const ContainerInner = styled.div`
   width: 100%;
   max-width: 1050px;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -63,7 +65,7 @@ const InfoboxIcon = styled(Icon)`
   flex: 0 0 31px;
   width: 31px;
   height: 31px;
-  fill: #80CFD8;
+  fill: #80cfd8;
   padding: 0px;
   margin: 0px;
   margin-right: 27px;
@@ -109,45 +111,70 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(({ params, className, authUser }) => {
-  const projectTemplateId: string | undefined = get(params, 'projectTemplateId');
+const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
+  ({ params, className, authUser }) => {
+    const projectTemplateId: string | undefined = get(
+      params,
+      'projectTemplateId'
+    );
 
-  if (projectTemplateId) {
-    if (!isNilOrError(authUser) && isAdmin({ data : authUser })) {
-      clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
-    } else {
-      // tslint:disable-next-line
-      const link = <a href="mailto:support@citizenlab.co"><FormattedMessage {...messages.citizenlabExpert} /></a>;
+    if (projectTemplateId) {
+      if (!isNilOrError(authUser) && isAdmin({ data: authUser })) {
+        clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
+      } else {
+        const link = (
+          // tslint:disable-next-line
+          <a href="mailto:support@citizenlab.co">
+            <FormattedMessage {...messages.citizenlabExpert} />
+          </a>
+        );
 
-      return (
-        <Container className={className || ''}>
-          <ContainerInner>
-            <InfoboxContainer className={className}>
-              <InfoboxIcon name="key" />
-              <InfoboxText>
-                <p><strong><FormattedMessage {...messages.infoboxLine1} /></strong></p>
-                <p><FormattedMessage {...messages.infoboxLine2} values={{ link }} /></p>
-              </InfoboxText>
-            </InfoboxContainer>
+        return (
+          <Container className={className || ''}>
+            <ContainerInner>
+              <InfoboxContainer className={className}>
+                <InfoboxIcon name="key" />
+                <InfoboxText>
+                  <p>
+                    <strong>
+                      <FormattedMessage {...messages.infoboxLine1} />
+                    </strong>
+                  </p>
+                  <p>
+                    <FormattedMessage
+                      {...messages.infoboxLine2}
+                      values={{ link }}
+                    />
+                  </p>
+                </InfoboxText>
+              </InfoboxContainer>
 
-            <ProjectTemplatePreview projectTemplateId={projectTemplateId} />
-          </ContainerInner>
-        </Container>
-      );
+              <ProjectTemplatePreview projectTemplateId={projectTemplateId} />
+            </ContainerInner>
+          </Container>
+        );
+      }
     }
+
+    return null;
   }
+);
 
-  return null;
-});
-
-const ProjectTemplatePreviewPageCitizenWithHoC = withRouter(ProjectTemplatePreviewPageCitizen);
+const ProjectTemplatePreviewPageCitizenWithHoC = withRouter(
+  ProjectTemplatePreviewPageCitizen
+);
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectTemplatePreviewPageCitizenWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <ProjectTemplatePreviewPageCitizenWithHoC
+        {...inputProps}
+        {...dataProps}
+      />
+    )}
   </Data>
 );

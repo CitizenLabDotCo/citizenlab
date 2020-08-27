@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 export const StatusWrapper = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ export const StatusWrapper = styled.div`
 
 export const StatusExplanation = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   line-height: 23px;
 
   .tooltip-icon {

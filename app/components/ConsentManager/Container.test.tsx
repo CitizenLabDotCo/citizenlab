@@ -20,39 +20,42 @@ const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
 const categorizedDestinations = {
-  advertising:
-    [{
+  advertising: [
+    {
       name: 'Google Tag Manager',
       description:
         'Google Tag Manager is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
       category: 'Tag Managers',
       website: 'http://google.com/tagManager',
-      id: 'Google Tag Manager'
+      id: 'Google Tag Manager',
     },
     {
       name: 'AdvertisingTool',
       description: 'Advertising BS',
       category: 'Advertising',
       website: 'http://random.com/advertising',
-      id: 'AdvertisingTool'
-    }],
-  functional:
-    [{
+      id: 'AdvertisingTool',
+    },
+  ],
+  functional: [
+    {
       name: 'FunctionalTool',
       description: 'Actually might be handy',
       category: 'Security & Fraud',
       website: 'http://random.com/securitycookie',
-      id: 'FunctionalTool'
-    }],
-  analytics:
-    [{
+      id: 'FunctionalTool',
+    },
+  ],
+  analytics: [
+    {
       name: 'MarketingTool',
       description:
         'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
       category: 'Analytics',
       website: 'http://random.com/marketing',
-      id: 'MarketingTool'
-    }]
+      id: 'MarketingTool',
+    },
+  ],
 };
 let setPreferences: jest.Mock;
 let resetPreferences: jest.Mock;
@@ -98,7 +101,7 @@ describe('<Container />', () => {
         categorizedDestinations={{
           analytics: [],
           functional: [],
-          advertising: []
+          advertising: [],
         }}
       />
     );
@@ -146,7 +149,7 @@ describe('<Container />', () => {
       );
       expect(wrapper.find('Banner').exists()).toBeTruthy();
     });
-    it('consent is\'t required, it doesn\'t show the banner', () => {
+    it("consent is't required, it doesn't show the banner", () => {
       const wrapper = shallow(
         <Container
           intl={intl}
@@ -177,7 +180,7 @@ describe('<Container />', () => {
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
     });
-    it('modal is initially closed when consent is\'t required', () => {
+    it("modal is initially closed when consent is't required", () => {
       const wrapper = shallow(
         <Container
           intl={intl}
@@ -256,7 +259,7 @@ describe('<Container />', () => {
           preferences={{
             analytics: true,
             functional: null,
-            advertising: null
+            advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
         />
@@ -274,7 +277,7 @@ describe('<Container />', () => {
           preferences={{
             analytics: true,
             functional: false,
-            advertising: false
+            advertising: false,
           }}
           categorizedDestinations={categorizedDestinations}
         />
@@ -320,7 +323,7 @@ describe('<Container />', () => {
           preferences={{
             analytics: true,
             functional: null,
-            advertising: null
+            advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
         />
@@ -350,7 +353,7 @@ describe('<Container />', () => {
           preferences={{
             analytics: true,
             functional: null,
-            advertising: null
+            advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
         />
@@ -378,7 +381,7 @@ describe('<Container />', () => {
           preferences={{
             analytics: true,
             functional: null,
-            advertising: null
+            advertising: null,
           }}
           categorizedDestinations={categorizedDestinations}
         />

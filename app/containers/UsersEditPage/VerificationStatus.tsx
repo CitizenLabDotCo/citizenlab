@@ -8,7 +8,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // i18n
@@ -131,9 +131,11 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
     <FeatureFlag name="verification">
       <Container
         id="e2e-verification-status"
-        className={`${className} e2e${authUserIsVerified ? '' : '-not'}-verified`}
+        className={`${className} e2e${
+          authUserIsVerified ? '' : '-not'
+        }-verified`}
       >
-        {authUserIsVerified ?
+        {authUserIsVerified ? (
           <>
             <StyledAvatar
               userId={authUser.data.id}
@@ -149,11 +151,14 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 <FormattedMessage {...messages.verifiedIdentitySubtitle} />
               </Text>
               <Text>
-                <FormattedMessage {...messages.updateverification} values={{ reverifyButton }} />
+                <FormattedMessage
+                  {...messages.updateverification}
+                  values={{ reverifyButton }}
+                />
               </Text>
             </Content>
           </>
-          :
+        ) : (
           <>
             <AvatarAndShield aria-hidden>
               <StyledAvatar
@@ -178,7 +183,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
               <FormattedMessage {...messages.verifyNow} />
             </VerifyButton>
           </>
-        }
+        )}
       </Container>
     </FeatureFlag>
   );

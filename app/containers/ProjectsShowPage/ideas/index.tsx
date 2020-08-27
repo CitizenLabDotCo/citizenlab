@@ -20,7 +20,9 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { colors, media, viewportWidths } from 'utils/styleUtils';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-top: 30px;
@@ -61,18 +63,23 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
-
-  render () {
+class ProjectTimelinePage extends PureComponent<
+  Props & WithRouterProps,
+  State
+> {
+  render() {
     const { project, params, windowSize } = this.props;
-    const smallerThanBigTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    const smallerThanBigTablet = windowSize
+      ? windowSize <= viewportWidths.smallTablet
+      : false;
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'continuous') {
         // redirect
         clHistory.push(`/projects/${params.slug}`);
       } else {
-        const isPBProject = (project.attributes.participation_method === 'budgeting');
+        const isPBProject =
+          project.attributes.participation_method === 'budgeting';
         const projectId = project.id;
         const projectIds = [projectId];
 
@@ -80,13 +87,13 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
           <>
             <StyledProjectArchivedIndicator projectId={projectId} />
             <StyledContentContainer id="e2e-project-ideas-page">
-              {isPBProject &&
+              {isPBProject && (
                 <StyledPBExpenses
                   participationContextId={projectId}
                   participationContextType="project"
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
-              }
+              )}
               <IdeaCards
                 type="load-more"
                 projectIds={projectIds}
@@ -94,7 +101,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 participationContextId={projectId}
                 participationContextType="project"
                 showViewToggle={true}
-                defaultView={(project.attributes.presentation_mode || null)}
+                defaultView={project.attributes.presentation_mode || null}
                 invisibleTitleMessage={messages.invisibleTitleIdeasList}
               />
             </StyledContentContainer>
@@ -109,12 +116,14 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
-  windowSize: <GetWindowSize />
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
+  windowSize: <GetWindowSize />,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectTimelinePage {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectTimelinePage {...inputProps} {...dataProps} />}
   </Data>
 ));

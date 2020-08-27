@@ -7,10 +7,14 @@ addLocaleData(enLocaleData);
 
 const enTranslationMessages = require('translations/en.json');
 
-export const formatTranslationMessages = (locale: Locale, messages: { translateId: string }) => {
-  const defaultFormattedMessages = locale !== DEFAULT_LOCALE
-    ? formatTranslationMessages(DEFAULT_LOCALE, enTranslationMessages)
-    : {};
+export const formatTranslationMessages = (
+  locale: Locale,
+  messages: { translateId: string }
+) => {
+  const defaultFormattedMessages =
+    locale !== DEFAULT_LOCALE
+      ? formatTranslationMessages(DEFAULT_LOCALE, enTranslationMessages)
+      : {};
   return Object.keys(messages).reduce((formattedMessages, key) => {
     let message = messages[key];
     if (!message && locale !== DEFAULT_LOCALE) {

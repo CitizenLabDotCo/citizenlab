@@ -22,7 +22,7 @@ export default class ClickOutside extends PureComponent<Props, State> {
   container: HTMLDivElement | null = null;
 
   static defaultProps = {
-    closeOnClickOutsideEnabled: true
+    closeOnClickOutsideEnabled: true,
   };
 
   componentDidMount() {
@@ -30,11 +30,17 @@ export default class ClickOutside extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (!prevProps.closeOnClickOutsideEnabled && this.props.closeOnClickOutsideEnabled) {
+    if (
+      !prevProps.closeOnClickOutsideEnabled &&
+      this.props.closeOnClickOutsideEnabled
+    ) {
       this.addEventListeners();
     }
 
-    if (prevProps.closeOnClickOutsideEnabled && !this.props.closeOnClickOutsideEnabled) {
+    if (
+      prevProps.closeOnClickOutsideEnabled &&
+      !this.props.closeOnClickOutsideEnabled
+    ) {
       this.removeEventListeners();
     }
   }
@@ -49,12 +55,12 @@ export default class ClickOutside extends PureComponent<Props, State> {
       document.addEventListener('click', this.handle, true);
       document.addEventListener('keyup', this.handle, true);
     }
-  }
+  };
 
   removeEventListeners = () => {
     document.removeEventListener('click', this.handle, true);
     document.removeEventListener('keyup', this.handle, true);
-  }
+  };
 
   handle = (event) => {
     // Press esc to close
@@ -63,36 +69,45 @@ export default class ClickOutside extends PureComponent<Props, State> {
       this.props.onClickOutside(event);
     }
 
-    if (event.type === 'keyup' && event.key === 'Tab' && this.container && !this.container.contains(event.target)) {
+    if (
+      event.type === 'keyup' &&
+      event.key === 'Tab' &&
+      this.container &&
+      !this.container.contains(event.target)
+    ) {
       this.props.onClickOutside(event);
     }
 
     // Click outside to close
-    if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
+    if (
+      event.type === 'click' &&
+      this.container &&
+      !this.container.contains(event.target)
+    ) {
       setTimeout(() => {
         if (this.container) {
           this.props.onClickOutside(event);
         }
       }, 10);
     }
-  }
+  };
 
   handleRef = (element: HTMLDivElement) => {
     this.container = element;
     this.props.setRef && this.props.setRef(element);
-  }
+  };
 
   handleOnMouseEnter = (event) => {
     this.props.onMouseEnter && this.props.onMouseEnter(event);
-  }
+  };
 
   handleOnMouseLeave = (event) => {
     this.props.onMouseLeave && this.props.onMouseLeave(event);
-  }
+  };
 
   handleOnMouseDown = (event) => {
     this.props.onMouseDown && this.props.onMouseDown(event);
-  }
+  };
 
   render() {
     const {
@@ -102,7 +117,7 @@ export default class ClickOutside extends PureComponent<Props, State> {
       className,
       onClick,
       isModal,
-      ariaLabelledBy
+      ariaLabelledBy,
     } = this.props;
 
     return (

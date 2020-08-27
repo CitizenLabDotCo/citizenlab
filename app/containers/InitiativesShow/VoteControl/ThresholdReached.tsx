@@ -2,24 +2,26 @@ import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
+// services
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
-import Icon from 'components/UI/Icon';
+// components
+import { Icon, IconTooltip } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 
+// i18n
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import IconTooltip from 'components/UI/IconTooltip';
 
 const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${props => props.theme.colorText};
+    fill: ${(props) => props.theme.colorText};
   }
   width: 40px;
   height: 40px;
@@ -28,7 +30,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   margin-top: 20px;
 `;
 
@@ -43,20 +45,24 @@ interface InputProps {
   userVoted: boolean;
   onVote: () => void;
 }
-interface DataProps { }
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
-
   handleOnVote = () => {
     this.props.onVote();
-  }
+  };
 
   render() {
-    const { initiative, initiativeSettings: { voting_threshold, threshold_reached_message }, initiativeStatus, userVoted } = this.props;
+    const {
+      initiative,
+      initiativeSettings: { voting_threshold, threshold_reached_message },
+      initiativeStatus,
+      userVoted,
+    } = this.props;
 
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
@@ -77,7 +83,7 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
                     {...messages.thresholdReachedStatusExplanationBold}
                   />
                 </b>
-              )
+              ),
             }}
           />
           {threshold_reached_message ? (
@@ -86,29 +92,33 @@ class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
               iconColor={this.props.theme.colorText}
               theme="light"
               placement="bottom"
-              content={
-                <T value={threshold_reached_message} supportHtml />
-              }
+              content={<T value={threshold_reached_message} supportHtml />}
             />
-          ) : <></>}
+          ) : (
+            <></>
+          )}
         </StatusExplanation>
         <VoteText>
           <FormattedMessage
             {...messages.xVotesOfY}
             values={{
               votingThreshold: voteLimit,
-              xVotes: <b><FormattedMessage {...messages.xVotes} values={{ count: voteCount }} /></b>
+              xVotes: (
+                <b>
+                  <FormattedMessage
+                    {...messages.xVotes}
+                    values={{ count: voteCount }}
+                  />
+                </b>
+              ),
             }}
           />
         </VoteText>
-        {!userVoted &&
-          <StyledButton
-            icon="upvote"
-            onClick={this.handleOnVote}
-          >
+        {!userVoted && (
+          <StyledButton icon="upvote" onClick={this.handleOnVote}>
             <FormattedMessage {...messages.vote} />
           </StyledButton>
-        }
+        )}
       </Container>
     );
   }

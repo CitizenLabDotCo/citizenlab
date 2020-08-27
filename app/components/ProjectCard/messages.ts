@@ -11,11 +11,13 @@ export default defineMessages({
   },
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
-    defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+    defaultMessage:
+      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   xComments: {
     id: 'app.components.ProjectCard.xComments',
-    defaultMessage: '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
+    defaultMessage:
+      '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
   },
   archived: {
     id: 'app.components.ProjectCard.archived',
@@ -68,5 +70,5 @@ export default defineMessages({
   a11y_projectDescription: {
     id: 'app.components.ProjectCard.a11y_projectDescription',
     defaultMessage: 'Project description: ',
-  }
+  },
 });
