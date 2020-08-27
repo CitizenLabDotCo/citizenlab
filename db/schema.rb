@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_094026) do
+ActiveRecord::Schema.define(version: 2020_08_07_132541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -126,6 +126,11 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.index ["post_id", "post_type"], name: "index_comments_on_post_id_and_post_type"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["rgt"], name: "index_comments_on_rgt"
+  end
+
+  create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "password"
+    t.index ["password"], name: "index_common_passwords_on_password"
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -340,6 +345,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
     t.datetime "assigned_at"
+    t.integer "proposed_budget"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
