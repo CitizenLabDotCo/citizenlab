@@ -28,7 +28,11 @@ import {
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
-import { usersByGenderStream, IUsersByGender } from 'services/stats';
+import {
+  usersByGenderStream,
+  IUsersByGender,
+  usersByGenderXlsxEndpoint,
+} from 'services/stats';
 
 type State = {
   serie: { name: string; value: number; code: string }[] | null;
@@ -41,6 +45,7 @@ interface QueryProps {
 }
 
 interface Props extends QueryProps {
+  currentGroupFilterLabel: string | undefined;
   className?: string;
 }
 
@@ -120,15 +125,20 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     return res.length > 0 ? res : null;
   };
 
+  formatEntry(entry) {
+    return `${entry.name} : ${entry.value}`;
+  }
+
   render() {
+    const { colorMain, animationDuration, animationBegin } = this.props[
+      'theme'
+    ];
     const {
-      colorMain,
-      chartLabelSize,
-      chartLabelColor,
-      animationDuration,
-      animationBegin,
-    } = this.props['theme'];
-    const { className } = this.props;
+      className,
+      intl: { formatMessage },
+      currentGroupFilter,
+      currentGroupFilterLabel,
+    } = this.props;
     const { serie } = this.state;
 
     return (
@@ -138,7 +148,13 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
             <GraphCardTitle>
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              name={formatMessage(messages.usersByGenderTitle)}
+              svgNode={this.currentChart}
+              xlsxEndpoint={usersByGenderXlsxEndpoint}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+              currentGroupFilter={currentGroupFilter}
+            />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -156,7 +172,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                     dataKey="value"
                     outerRadius={60}
                     fill={colorMain}
-                    label={(entry) => entry.name + ' : ' + entry.value}
+                    label={this.formatEntry}
                   >
                     {serie.map((entry, index) => (
                       <Cell

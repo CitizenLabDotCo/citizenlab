@@ -30,15 +30,15 @@ interface ExportMenuProps {
   name: string;
   svgNode: React.RefObject<any>;
   xlsxEndpoint: string;
-  startAt: string | null | undefined;
-  endAt: string | null;
-  resolution: IResolution;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
-  currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
+  startAt?: string | null | undefined;
+  endAt?: string | null;
+  resolution?: IResolution;
+  currentProjectFilter?: string | undefined;
+  currentGroupFilter?: string | undefined;
+  currentTopicFilter?: string | undefined;
+  currentProjectFilterLabel?: string | undefined;
+  currentGroupFilterLabel?: string | undefined;
+  currentTopicFilterLabel?: string | undefined;
 }
 
 const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
@@ -93,6 +93,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   const downloadXlsx = async () => {
     try {
       setExportingXls(true);
+      console.log(xlsxEndpoint);
       const blob = await requestBlob(
         xlsxEndpoint,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

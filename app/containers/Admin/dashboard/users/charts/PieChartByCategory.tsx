@@ -51,10 +51,12 @@ interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
-  customId?: string;
+  customId: string;
+  xlsxEndpoint: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -78,14 +80,27 @@ class PieChartByCategory extends React.PureComponent<
       chartLabelSize,
       chartLabelColor,
     } = this.props['theme'];
-    const { className, graphTitleString, serie } = this.props;
+    const {
+      className,
+      graphTitleString,
+      serie,
+      xlsxEndpoint,
+      currentGroupFilter,
+      currentGroupFilterLabel,
+    } = this.props;
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              name={graphTitleString}
+              svgNode={this.currentChart}
+              xlsxEndpoint={xlsxEndpoint}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
