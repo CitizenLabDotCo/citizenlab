@@ -16,6 +16,97 @@ exports[`<CumulativeAreaChart /> renders correctly with data 1`] = `
           className=""
         />
       </dashboard__GraphCardFigureContainer>
+      <ExportMenu
+        currentGroupFilter={null}
+        currentProjectFilter={null}
+        currentTopicFilter={null}
+        endAt="06-12-2018"
+        graphTitleMessageKey="commentsByTimeTitle"
+        graphUnit="comments"
+        intl={
+          Object {
+            "defaultFormats": Object {},
+            "defaultLocale": "en",
+            "formatDate": [Function],
+            "formatHTMLMessage": [Function],
+            "formatMessage": [Function],
+            "formatNumber": [Function],
+            "formatPlural": [Function],
+            "formatRelative": [Function],
+            "formatTime": [Function],
+            "formats": Object {},
+            "formatters": Object {
+              "getDateTimeFormat": [Function],
+              "getMessageFormat": [Function],
+              "getNumberFormat": [Function],
+              "getPluralFormat": [Function],
+              "getRelativeFormat": [Function],
+            },
+            "locale": "en",
+            "messages": Object {},
+            "now": [Function],
+            "onError": [Function],
+            "textComponent": "span",
+            "timeZone": null,
+          }
+        }
+        name="Comments"
+        resolution="day"
+        startAt="05-12-2018"
+        stream={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                Object {
+                  "queryParameters": Object {
+                    "end_at": "06-12-2018",
+                    "group": null,
+                    "interval": "day",
+                    "project": null,
+                    "start_at": "05-12-2018",
+                    "topic": null,
+                  },
+                },
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Object {
+                  "observable": BehaviorSubject {
+                    "_isScalar": false,
+                    "_value": null,
+                    "closed": false,
+                    "hasError": false,
+                    "isStopped": false,
+                    "observers": Array [],
+                    "thrownError": null,
+                  },
+                },
+              },
+            ],
+          }
+        }
+        svgNode={
+          Object {
+            "current": null,
+          }
+        }
+        theme={
+          Object {
+            "animationBegin": 50,
+            "animationDuration": 500,
+            "barFill": "#fff",
+            "barHoverColor": "rgba(1,161,177,0.25)",
+            "chartFill": "#01A1B1",
+            "chartLabelColor": "#596B7A",
+            "chartLabelSize": 13,
+            "chartStroke": "#01A1B1",
+            "chartStrokeGreen": "#04884C",
+            "chartStrokeRed": "#E52516",
+          }
+        }
+      />
     </dashboard__GraphCardHeader>
     <dashboard__NoDataContainer>
       <FormattedMessage
@@ -43,6 +134,97 @@ exports[`<CumulativeAreaChart /> renders correctly without data 1`] = `
           className=""
         />
       </dashboard__GraphCardFigureContainer>
+      <ExportMenu
+        currentGroupFilter={null}
+        currentProjectFilter={null}
+        currentTopicFilter={null}
+        endAt="06-12-2018"
+        graphTitleMessageKey="commentsByTimeTitle"
+        graphUnit="comments"
+        intl={
+          Object {
+            "defaultFormats": Object {},
+            "defaultLocale": "en",
+            "formatDate": [Function],
+            "formatHTMLMessage": [Function],
+            "formatMessage": [Function],
+            "formatNumber": [Function],
+            "formatPlural": [Function],
+            "formatRelative": [Function],
+            "formatTime": [Function],
+            "formats": Object {},
+            "formatters": Object {
+              "getDateTimeFormat": [Function],
+              "getMessageFormat": [Function],
+              "getNumberFormat": [Function],
+              "getPluralFormat": [Function],
+              "getRelativeFormat": [Function],
+            },
+            "locale": "en",
+            "messages": Object {},
+            "now": [Function],
+            "onError": [Function],
+            "textComponent": "span",
+            "timeZone": null,
+          }
+        }
+        name="Comments"
+        resolution="day"
+        startAt="05-12-2018"
+        stream={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                Object {
+                  "queryParameters": Object {
+                    "end_at": "06-12-2018",
+                    "group": null,
+                    "interval": "day",
+                    "project": null,
+                    "start_at": "05-12-2018",
+                    "topic": null,
+                  },
+                },
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Object {
+                  "observable": BehaviorSubject {
+                    "_isScalar": false,
+                    "_value": null,
+                    "closed": false,
+                    "hasError": false,
+                    "isStopped": false,
+                    "observers": Array [],
+                    "thrownError": null,
+                  },
+                },
+              },
+            ],
+          }
+        }
+        svgNode={
+          Object {
+            "current": null,
+          }
+        }
+        theme={
+          Object {
+            "animationBegin": 50,
+            "animationDuration": 500,
+            "barFill": "#fff",
+            "barHoverColor": "rgba(1,161,177,0.25)",
+            "chartFill": "#01A1B1",
+            "chartLabelColor": "#596B7A",
+            "chartLabelSize": 13,
+            "chartStroke": "#01A1B1",
+            "chartStrokeGreen": "#04884C",
+            "chartStrokeRed": "#E52516",
+          }
+        }
+      />
     </dashboard__GraphCardHeader>
     <dashboard__NoDataContainer>
       <FormattedMessage
