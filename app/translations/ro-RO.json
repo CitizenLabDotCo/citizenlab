@@ -2035,7 +2035,7 @@
   "app.errors.password_too_short": "Parola trebuie să fie de cel puțin 8 caractere",
   "app.errors.title_multiloc_blank": "Titlul nu poate fi gol.",
   "app.errors.too_common": "Este prea ușor de ghicit",
-  "app.errors.too_long": "Trebuie să aibă cel mult 72 de caractere",
+  "app.errors.too_long": "Parola trebuie să aibă cel mult 72 de caractere",
   "app.errors.too_short": "Trebuie să aibă cel mult 8 caractere",
   "app.errors.unknown_group": "Grupul {value} găsit în rândul {row} nu este un grup cunoscut",
   "app.errors.unknown_locale": "Limbajul {value} găsit în rândul {row} nu este o limbă configurată",
