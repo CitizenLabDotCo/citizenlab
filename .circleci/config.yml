@@ -295,6 +295,7 @@ workflows:
             - deploy_demo
             - reset_ci_tenants
           command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
+          store_artifacts: true
           filters:
             branches:
               only:
