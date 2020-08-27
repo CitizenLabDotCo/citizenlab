@@ -112,6 +112,9 @@ es-CL:
       location:
         title: Ubicación
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:     
       images:
         title: Imágenes
         description:
