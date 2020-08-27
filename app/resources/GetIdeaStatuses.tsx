@@ -11,10 +11,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaStatuses: IIdeaStatusData[] | undefined| null;
+  ideaStatuses: IIdeaStatusData[] | undefined | null;
 }
 
-export type GetIdeaStatusesChildProps = IIdeaStatusData[] | undefined| null;
+export type GetIdeaStatusesChildProps = IIdeaStatusData[] | undefined | null;
 
 export default class GetIdeaStatuses extends React.Component<Props, State> {
   private subscriptions: Subscription[];
@@ -22,7 +22,7 @@ export default class GetIdeaStatuses extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaStatuses: undefined
+      ideaStatuses: undefined,
     };
   }
 
@@ -30,14 +30,14 @@ export default class GetIdeaStatuses extends React.Component<Props, State> {
     this.subscriptions = [
       ideaStatusesStream().observable.subscribe((ideaStatuses) => {
         this.setState({
-          ideaStatuses: (ideaStatuses ? ideaStatuses.data : null),
+          ideaStatuses: ideaStatuses ? ideaStatuses.data : null,
         });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

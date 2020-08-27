@@ -38,34 +38,37 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const VolunteeringSection = memo<Props>(({ projectId, phaseId, project, phase, type, className }) => {
+const VolunteeringSection = memo<Props>(
+  ({ projectId, phaseId, project, phase, type, className }) => {
+    const causes = useCauses({ projectId, phaseId });
 
-  const causes = useCauses({ projectId, phaseId });
+    if (
+      !isNilOrError(causes) &&
+      (!isNilOrError(project) || (type === 'phase' && !isNilOrError(phase)))
+    ) {
+      return (
+        <Container className={className}>
+          {causes.data.map((cause) => (
+            <CauseCard key={cause.id} cause={cause} />
+          ))}
+        </Container>
+      );
+    }
 
-  if (!isNilOrError(causes) && (!isNilOrError(project) || type === 'phase' && !isNilOrError(phase))) {
-    return (
-      <Container className={className}>
-        {causes.data.map((cause) => (
-          <CauseCard
-            key={cause.id}
-            cause={cause}
-          />
-        ))}
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <VolunteeringSection {...inputProps} {...dataProps} />}
+    {(dataProps) => <VolunteeringSection {...inputProps} {...dataProps} />}
   </Data>
 );

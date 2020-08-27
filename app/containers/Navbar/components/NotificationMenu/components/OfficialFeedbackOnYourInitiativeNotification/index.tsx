@@ -15,7 +15,7 @@ interface Props {
   notification: IOfficialFeedbackOnYourInitiativeNotificationData;
 }
 
-const OfficialFeedbackOnYourInitiativeNotification = memo<Props>(props => {
+const OfficialFeedbackOnYourInitiativeNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -28,12 +28,14 @@ const OfficialFeedbackOnYourInitiativeNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.officialFeedbackOnYourInitiative}
         values={{
-          officialName: <T value={notification.attributes.official_feedback_author} />,
-          initiative: <Link
-            to={`/initiatives/${notification.attributes.post_slug}`}
-          >
-            <T value={notification.attributes.post_title_multiloc} />
-          </Link>
+          officialName: (
+            <T value={notification.attributes.official_feedback_author} />
+          ),
+          initiative: (
+            <Link to={`/initiatives/${notification.attributes.post_slug}`}>
+              <T value={notification.attributes.post_title_multiloc} />
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

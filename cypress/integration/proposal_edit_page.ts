@@ -14,12 +14,18 @@ describe('Initiative form page', () => {
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
-    cy.apiLogin(email, password).then((user) => {
-      jwt = user.body.jwt;
-      return cy.apiCreateInitiative({ initiativeTitle, initiativeContent, jwt });
-    }).then((initiative) => {
-      initiativeId = initiative.body.data.id;
-    });
+    cy.apiLogin(email, password)
+      .then((user) => {
+        jwt = user.body.jwt;
+        return cy.apiCreateInitiative({
+          initiativeTitle,
+          initiativeContent,
+          jwt,
+        });
+      })
+      .then((initiative) => {
+        initiativeId = initiative.body.data.id;
+      });
   });
 
   beforeEach(() => {
@@ -32,7 +38,9 @@ describe('Initiative form page', () => {
   it('has a working initiative edit form', () => {
     cy.get('#initiative-form');
     cy.get('#e2e-initiative-title-input').as('titleInput');
-    cy.get('#e2e-initiative-form-description-section .ql-editor').as('descriptionInput');
+    cy.get('#e2e-initiative-form-description-section .ql-editor').as(
+      'descriptionInput'
+    );
 
     // check initial values
     cy.get('@titleInput').should('have.value', initiativeTitle);
@@ -50,45 +58,61 @@ describe('Initiative form page', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // verify that the topic has been selected
-    cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
+    cy.get('.e2e-topics-picker')
+      .find('button.selected')
+      .should('have.length', 1);
 
     // add a location
     cy.get('.e2e-initiative-location-input input').type('antwerp{enter}');
-    cy.get('.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div').first().click();
+    cy.get(
+      '.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div'
+    )
+      .first()
+      .click();
 
     // verify location
-    cy.get('.e2e-initiative-location-input input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-initiative-location-input input').should('not.have.value', 'antwerp');
+    cy.get('.e2e-initiative-location-input input').should(
+      'contain.value',
+      'Antwerp'
+    );
+    cy.get('.e2e-initiative-location-input input').should(
+      'not.have.value',
+      'antwerp'
+    );
 
     // verify that image and file upload components are present
     cy.get('#e2e-initiative-file-upload');
 
     // add an image
     cy.get('#e2e-iniatiative-banner-dropzone');
-    cy.fixture('cy.png', 'base64').then(fileContent => {
-      cy.get('#e2e-iniatiative-img-dropzone').upload(
-        { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
-        { subjectType: 'drag-n-drop' },
-      );
-      cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
-    });
+
+    // add an image
+    cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
+
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
     // save the form
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(3000);
 
-    // TODO
     // verify updated initiative page
-    // cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeSlug}`);
+    cy.get('#e2e-initiative-show');
+    cy.location('pathname').should(
+      'eq',
+      `/en-GB/initiatives/${initiativeTitle}`
+    );
 
     // verify modal with edit changelog
-    // cy.get('#e2e-initiative-show').find('.e2e-initiative-last-modified-button').click();
-    // cy.wait(1000);
-    // cy.get('.e2e-activities-changelog').find('.e2e-activities-changelog-entry').should('have.length', 2);
+    cy.get('#e2e-initiative-show')
+      .find('.e2e-post-last-modified-button')
+      .click();
+    cy.wait(1000);
+    cy.get('.e2e-activities-changelog')
+      .find('.e2e-idea-changelog-entry')
+      .should('have.length', 2);
   });
 
   after(() => {
     cy.apiRemoveInitiative(initiativeId);
   });
-
 });

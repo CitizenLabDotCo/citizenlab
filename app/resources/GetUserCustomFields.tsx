@@ -1,11 +1,16 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { customFieldsForUsersStream, IUserCustomFieldData } from 'services/userCustomFields';
+import {
+  customFieldsForUsersStream,
+  IUserCustomFieldData,
+} from 'services/userCustomFields';
 import { isBoolean } from 'lodash-es';
 
-interface InputProps { }
+interface InputProps {}
 
-type children = (renderProps: GetUserCustomFieldsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetUserCustomFieldsChildProps
+) => JSX.Element | null;
 
 type IInputType = 'select' | 'multiselect' | 'checkbox';
 
@@ -19,7 +24,10 @@ interface State {
   userCustomFields: IUserCustomFieldData[] | undefined | null;
 }
 
-export type GetUserCustomFieldsChildProps = IUserCustomFieldData[] | undefined | null;
+export type GetUserCustomFieldsChildProps =
+  | IUserCustomFieldData[]
+  | undefined
+  | null;
 
 export default class GetCustomFields extends React.Component<Props, State> {
   private subscriptions: Subscription[];
@@ -27,26 +35,29 @@ export default class GetCustomFields extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      userCustomFields: undefined
+      userCustomFields: undefined,
     };
   }
 
   componentDidMount() {
     const { inputTypes, cache } = this.props;
-    const cacheStream = (isBoolean(cache) ? cache : true);
-    const userCustomFields$ = customFieldsForUsersStream({ cacheStream, queryParameters: { input_types: inputTypes } }).observable;
+    const cacheStream = isBoolean(cache) ? cache : true;
+    const userCustomFields$ = customFieldsForUsersStream({
+      cacheStream,
+      queryParameters: { input_types: inputTypes },
+    }).observable;
 
     this.subscriptions = [
       userCustomFields$.subscribe((userCustomFields) => {
         this.setState({
-          userCustomFields: userCustomFields.data
+          userCustomFields: userCustomFields.data,
         });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

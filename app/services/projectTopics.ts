@@ -11,10 +11,10 @@ export interface IProjectTopicData {
   relationships: {
     project: {
       data: IRelationship;
-    }
+    };
     topic: {
       data: IRelationship;
-    }
+    };
   };
 }
 
@@ -28,15 +28,28 @@ export interface IProjectTopics {
 
 const apiEndpoint = `${API_PATH}/projects`;
 
-export async function deleteProjectTopic(projectId: string, projectTopicId: string) {
-  const response = await streams.delete(`${API_PATH}/projects_topics/${projectTopicId}`, projectTopicId);
-  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`] });
+export async function deleteProjectTopic(
+  projectId: string,
+  projectTopicId: string
+) {
+  const response = await streams.delete(
+    `${API_PATH}/projects_topics/${projectTopicId}`,
+    projectTopicId
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`],
+  });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
-  const response = await streams.add(`${API_PATH}/projects_topics`, { project_id: projectId, topic_id: topicId });
-  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`] });
+  const response = await streams.add(`${API_PATH}/projects_topics`, {
+    project_id: projectId,
+    topic_id: topicId,
+  });
+  await streams.fetchAllWith({
+    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`],
+  });
   return response;
 }
 
@@ -49,12 +62,18 @@ export async function reorderProjectTopic(
     projectTopicId,
     {
       projects_topic: {
-        ordering: newOrder
-      }
+        ordering: newOrder,
+      },
     }
   );
 }
 
-export function projectTopicsStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IProjectTopics>({ apiEndpoint: `${apiEndpoint}/${projectId}/projects_topics`, ...streamParams });
+export function projectTopicsStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IProjectTopics>({
+    apiEndpoint: `${apiEndpoint}/${projectId}/projects_topics`,
+    ...streamParams,
+  });
 }

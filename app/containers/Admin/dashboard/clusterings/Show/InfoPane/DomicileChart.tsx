@@ -1,7 +1,15 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { isEqual, isEmpty } from 'lodash-es';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ReferenceLine,
+  ResponsiveContainer,
+} from 'recharts';
 import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,7 +40,10 @@ interface State {
 
 const Container = styled.div``;
 
-class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+class DomicileChart extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized,
+  State
+> {
   subscription: Subscription;
 
   constructor(props) {
@@ -47,7 +58,10 @@ class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLo
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) || !isEqual(this.props.normalization, prevProps.normalization)) {
+    if (
+      !isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) ||
+      !isEqual(this.props.normalization, prevProps.normalization)
+    ) {
       this.resubscribe();
     }
   }
@@ -58,7 +72,6 @@ class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLo
 
   convertToGraphFormat = (series: IVotesByDomicile[]) => {
     if (!isNilOrError(this.props.areas)) {
-
       const areaBucketsRecord = this.props.areas.map((area) => {
         const record = {
           label: this.props.localize(area.attributes.title_multiloc),
@@ -78,24 +91,30 @@ class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLo
       };
       series.forEach((serie, serieIndex) => {
         blankRecord[`up ${serieIndex + 1}`] = serie.series.up['_blank'] || 0;
-        blankRecord[`down ${serieIndex + 1}`] = -serie.series.down['_blank'] || 0;
-        blankRecord[`total ${serieIndex + 1}`] = serie.series.total['_blank'] || 0;
+        blankRecord[`down ${serieIndex + 1}`] =
+          -serie.series.down['_blank'] || 0;
+        blankRecord[`total ${serieIndex + 1}`] =
+          serie.series.total['_blank'] || 0;
       });
 
       return [...areaBucketsRecord, blankRecord];
     } else {
       return [];
     }
-  }
+  };
 
   resubscribe() {
     if (this.subscription) this.subscription.unsubscribe();
     this.subscription = combineLatest(
-      this.props.ideaIdsComparisons.map((ideaIds) => (
-        votesByDomicileStream({
-          queryParameters: { ideas: ideaIds, normalization: this.props.normalization }
-        }).observable
-      ))
+      this.props.ideaIdsComparisons.map(
+        (ideaIds) =>
+          votesByDomicileStream({
+            queryParameters: {
+              ideas: ideaIds,
+              normalization: this.props.normalization,
+            },
+          }).observable
+      )
     ).subscribe((series) => {
       this.setState({ series: this.convertToGraphFormat(series) });
     });
@@ -118,16 +137,44 @@ class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLo
             <YAxis />
             <Tooltip />
             <ReferenceLine y={0} stroke="#000" />
-            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar key={`up ${index + 1}`} dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-            ))}
-            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar key={`down ${index + 1}`} dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-            ))}
-            {ideaIdsComparisons.length === 1 &&
-              <Bar key="up 1" dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
-            {ideaIdsComparisons.length === 1 &&
-              <Bar key="down 1" dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
+            {ideaIdsComparisons.length > 1 &&
+              ideaIdsComparisons.map((_, index) => (
+                <Bar
+                  key={`up ${index + 1}`}
+                  dataKey={`up ${index + 1}`}
+                  fill={theme.comparisonColors[index]}
+                  stackId={`votes ${index}`}
+                  maxBarSize={20}
+                />
+              ))}
+            {ideaIdsComparisons.length > 1 &&
+              ideaIdsComparisons.map((_, index) => (
+                <Bar
+                  key={`down ${index + 1}`}
+                  dataKey={`down ${index + 1}`}
+                  fill={theme.comparisonColors[index]}
+                  stackId={`votes ${index}`}
+                  maxBarSize={20}
+                />
+              ))}
+            {ideaIdsComparisons.length === 1 && (
+              <Bar
+                key="up 1"
+                dataKey="up 1"
+                fill={theme.upvotes}
+                stackId="votes 1"
+                maxBarSize={20}
+              />
+            )}
+            {ideaIdsComparisons.length === 1 && (
+              <Bar
+                key="down 1"
+                dataKey="down 1"
+                fill={theme.downvotes}
+                stackId="votes 1"
+                maxBarSize={20}
+              />
+            )}
           </BarChart>
         </ResponsiveContainer>
       </Container>
@@ -135,10 +182,14 @@ class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLo
   }
 }
 
-const DomicileChartWithHOCs = withTheme(localize<Props>(injectIntl<Props & InjectedLocalized>(DomicileChart)));
+const DomicileChartWithHOCs = withTheme(
+  localize<Props>(injectIntl<Props & InjectedLocalized>(DomicileChart))
+);
 
 export default (inputProps: InputProps) => (
   <GetAreas>
-    {(areas) => areas ? <DomicileChartWithHOCs {...inputProps} areas={areas} /> : null}
+    {(areas) =>
+      areas ? <DomicileChartWithHOCs {...inputProps} areas={areas} /> : null
+    }
   </GetAreas>
 );

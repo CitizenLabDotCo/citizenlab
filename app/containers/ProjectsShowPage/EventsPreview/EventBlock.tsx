@@ -6,7 +6,7 @@ import { IEventData } from 'services/events';
 
 // Components
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // Utils
@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled(Link)`
-  width: calc(100% * (1/2) - 26px);
+  width: calc(100% * (1 / 2) - 26px);
   margin-left: 13px;
   margin-right: 13px;
   background: white;
@@ -54,7 +54,7 @@ const DateWrapper = styled.div`
 
 const Date = styled.div`
   width: 100%;
-  color: #fff;;
+  color: #fff;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   display: flex;
@@ -62,8 +62,9 @@ const Date = styled.div`
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
-  background: #DF3300;
+  border-radius: ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius} 0 0;
+  background: #df3300;
 `;
 
 const Year = styled.div`
@@ -74,7 +75,8 @@ const Year = styled.div`
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
+  border-radius: 0 0 ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius};
   background: #373737;
 `;
 
@@ -133,33 +135,36 @@ export default (props: Props) => {
   const startAtMonth = startAtMoment.format('MMM');
   const endAtMonth = endAtMoment.format('MMM');
   const startAtYear = startAtMoment.format('YYYY');
-  const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
-  const dateFormat = (!isMultiDayEvent ? 'LT' : 'D MMM LT');
+  const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
+  const dateFormat = !isMultiDayEvent ? 'LT' : 'D MMM LT';
   const startAt = moment(event.attributes.start_at).format(dateFormat);
   const endAt = moment(event.attributes.end_at).format(dateFormat);
 
   return (
-    <Container className={`${props['className']} ${isLast && 'last'}`} to={`/projects/${projectSlug}/events`}>
+    <Container
+      className={`${props['className']} ${isLast && 'last'}`}
+      to={`/projects/${projectSlug}/events`}
+    >
       <DateWrapper>
         <Date>
           <span>{startAtDay}</span>
           <span>{startAtMonth}</span>
 
-          {isMultiDayEvent &&
+          {isMultiDayEvent && (
             <>
               <span>-</span>
               <span>{endAtDay}</span>
               <span>{endAtMonth}</span>
             </>
-          }
+          )}
         </Date>
-        <Year>
-          {startAtYear}
-        </Year>
+        <Year>{startAtYear}</Year>
       </DateWrapper>
 
       <TextBlock>
-        <Time>{startAt} - {endAt}</Time>
+        <Time>
+          {startAt} - {endAt}
+        </Time>
         <Title>
           <T value={event.attributes.title_multiloc} />
         </Title>

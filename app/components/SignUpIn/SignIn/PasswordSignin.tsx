@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -15,7 +15,9 @@ import { Options, Option } from 'components/SignUpIn/styles';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // services
@@ -94,7 +96,10 @@ type State = {
   signInError: string | null;
 };
 
-class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class PasswordSignin extends PureComponent<
+  Props & InjectedIntlProps & WithRouterProps,
+  State
+> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
@@ -106,7 +111,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
       processing: false,
       emailError: null,
       passwordError: null,
-      signInError: null
+      signInError: null,
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -116,9 +121,9 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
     this.setState({
       email,
       emailError: null,
-      signInError: null
+      signInError: null,
     });
-  }
+  };
 
   componentDidMount() {
     trackEventByName(tracks.signInEmailPasswordEntered);
@@ -132,14 +137,14 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
     this.setState({
       password,
       passwordError: null,
-      signInError: null
+      signInError: null,
     });
-  }
+  };
 
   handleGoToLogInOptions = (event: React.FormEvent) => {
     event.preventDefault();
     this.props.onGoToLogInOptions();
-  }
+  };
 
   handleGoToSignUp = (event: React.FormEvent) => {
     event.preventDefault();
@@ -149,14 +154,24 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
     } else {
       clHistory.push('/sign-up');
     }
-  }
+  };
 
   validate(email: string | null, password: string | null) {
-    const { intl: { formatMessage }, tenant } = this.props;
-    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const {
+      intl: { formatMessage },
+      tenant,
+    } = this.props;
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
-    const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
-    const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
+    const emailError = hasEmailError
+      ? !email
+        ? formatMessage(messages.noEmailError)
+        : formatMessage(messages.noValidEmailError)
+      : null;
+    const passwordError = !password
+      ? formatMessage(messages.noPasswordError)
+      : null;
 
     this.setState({ emailError, passwordError });
 
@@ -168,7 +183,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
       this.passwordInputElement.focus();
     }
 
-    return (!emailError && !passwordError);
+    return !emailError && !passwordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -190,25 +205,50 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
         this.setState({ signInError, processing: false });
       }
     }
-  }
+  };
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     if (element) {
       this.emailInputElement = element;
     }
-  }
+  };
 
   handlePasswordInputSetRef = (element: HTMLInputElement) => {
     this.passwordInputElement = element;
-  }
+  };
 
   render() {
-    const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const { className, tenant, windowSize, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
+    const {
+      email,
+      password,
+      processing,
+      emailError,
+      passwordError,
+      signInError,
+    } = this.state;
+    const {
+      className,
+      tenant,
+      windowSize,
+      passwordLoginEnabled,
+      googleLoginEnabled,
+      facebookLoginEnabled,
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
+    } = this.props;
     const { formatMessage } = this.props.intl;
-    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
-    const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
+    const phone =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const enabledProviders = [
+      passwordLoginEnabled,
+      googleLoginEnabled,
+      facebookLoginEnabled,
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
+    ].filter((provider) => provider === true);
+    const isDesktop = windowSize
+      ? windowSize > viewportWidths.largeTablet
+      : true;
 
     return (
       <Container
@@ -219,7 +259,9 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
           <FormElement>
             <FormLabel
               htmlFor="email"
-              labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
+              labelMessage={
+                phone ? messages.emailOrPhoneLabel : messages.emailLabel
+              }
             />
             <Input
               type="email"
@@ -264,7 +306,10 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
 
         <Options>
           <Option>
-            <Link to="/password-recovery" className="link e2e-password-recovery-link">
+            <Link
+              to="/password-recovery"
+              className="link e2e-password-recovery-link"
+            >
               <FormattedMessage {...messages.forgotPassword2} />
             </Link>
           </Option>
@@ -278,10 +323,13 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
                 {...messages.goToSignUp}
                 values={{
                   goToOtherFlowLink: (
-                  <button onClick={this.handleGoToSignUp} className="link e2e-sign-up-link">
-                    {formatMessage(messages.signUp)}
-                  </button>
-                  )
+                    <button
+                      onClick={this.handleGoToSignUp}
+                      className="link e2e-sign-up-link"
+                    >
+                      {formatMessage(messages.signUp)}
+                    </button>
+                  ),
                 }}
               />
             )}
@@ -301,11 +349,11 @@ const Data = adopt<DataProps, {}>({
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <PasswordSigninWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <PasswordSigninWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

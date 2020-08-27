@@ -1,7 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('profile deletion', () => {
-
   const firstName = randomString();
   const lastName = randomString();
   const peasantEmail = randomEmail();

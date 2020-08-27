@@ -22,7 +22,11 @@ export interface IMentions {
 }
 
 export function mentionsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IMentions>({ apiEndpoint: `${API_PATH}/mentions/users`, ...streamParams, cacheStream: false });
+  return streams.get<IMentions>({
+    apiEndpoint: `${API_PATH}/mentions/users`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
 export function getMentionUsers(name: string, ideaId: string | null = null) {
@@ -30,7 +34,7 @@ export function getMentionUsers(name: string, ideaId: string | null = null) {
     apiEndpoint: `${API_PATH}/mentions/users`,
     queryParameters: {
       mention: name,
-      idea_id: ideaId
+      idea_id: ideaId,
     },
     cacheStream: false,
   });

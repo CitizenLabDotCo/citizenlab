@@ -43,11 +43,13 @@ export default defineMessages({
   },
   userDeletionFailed: {
     id: 'app.containers.Admin.Users.userDeletionFailed',
-    defaultMessage: 'An error occured while deleting this user, please try again.',
+    defaultMessage:
+      'An error occured while deleting this user, please try again.',
   },
   youCantDeleteYourself: {
     id: 'app.containers.Admin.Users.youCantDeleteYourself',
-    defaultMessage: 'You cannot delete your own account via the user admin page',
+    defaultMessage:
+      'You cannot delete your own account via the user admin page',
   },
   youCantUnadminYourself: {
     id: 'app.containers.Admin.Users.youCantUnadminYourself',
@@ -67,7 +69,8 @@ export default defineMessages({
   },
   usersSubtitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.usersSubtitle',
-    defaultMessage: 'Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.',
+    defaultMessage:
+      'Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
@@ -98,12 +101,15 @@ export default defineMessages({
     defaultMessage: 'Smart group',
   },
   step1TypeDescriptionNormal: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
+    id:
+      'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
     defaultMessage: 'You manually specify which users are part of this group.',
   },
   step1TypeDescriptionSmart: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
-    defaultMessage: 'You specify conditions that automatically and continuously make people part of this group.',
+    id:
+      'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
+    defaultMessage:
+      'You specify conditions that automatically and continuously make people part of this group.',
   },
   step1CreateButtonNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal',
@@ -119,7 +125,8 @@ export default defineMessages({
   },
   readMoreLink: {
     id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink',
-    defaultMessage: 'http://support.citizenlab.co/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan',
+    defaultMessage:
+      'http://support.citizenlab.co/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan',
   },
   modalHeaderStep1: {
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
@@ -139,7 +146,8 @@ export default defineMessages({
   },
   rulesExplanation: {
     id: 'app.containers.AdminPage.Users.GroupCreation.rulesExplanation',
-    defaultMessage: 'Users matching all of the following conditions will be automatically added to the group:',
+    defaultMessage:
+      'Users matching all of the following conditions will be automatically added to the group:',
   },
   select: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
@@ -159,19 +167,22 @@ export default defineMessages({
   },
   membershipAddFailed: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipAddFailed',
-    defaultMessage: 'An error occured while adding users to the groups, please try again.',
+    defaultMessage:
+      'An error occured while adding users to the groups, please try again.',
   },
   membershipDelete: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipDelete',
     defaultMessage: 'Remove from group',
   },
   membershipDeleteConfirmation: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
+    id:
+      'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
     defaultMessage: 'Delete selected users from this group?',
   },
   membershipDeleteFailed: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed',
-    defaultMessage: 'An error occured while deleting users from the group, please try again.',
+    defaultMessage:
+      'An error occured while deleting users from the group, please try again.',
   },
   exportAllUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportAllUsers',
@@ -191,6 +202,7 @@ export default defineMessages({
   },
   verificationDisabled: {
     id: 'app.containers.AdminPage.Users.UsersGroup.verificationDisabled',
-    defaultMessage: 'Verification is disabled for your platform, remove the verification rule or contact support.',
+    defaultMessage:
+      'Verification is disabled for your platform, remove the verification rule or contact support.',
   },
 });

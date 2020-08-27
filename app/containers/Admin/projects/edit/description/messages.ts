@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   save: {
@@ -25,7 +23,8 @@ export default defineMessages({
   },
   descriptionTooltip: {
     id: 'app.containers.AdminPage.ProjectDescription.descriptionTooltip',
-    defaultMessage: 'Shown on the project page. Clearly describe what the project is about, what you expect from your users and what they can expect from you.',
+    defaultMessage:
+      'Shown on the project page. Clearly describe what the project is about, what you expect from your users and what they can expect from you.',
   },
   descriptionPreviewLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel',
@@ -41,6 +40,7 @@ export default defineMessages({
   },
   subtitleDescription: {
     id: 'app.containers.AdminPage.ProjectDescription.subtitleDescription',
-    defaultMessage: 'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,… This information helps visitors to understand what your project is about.',
+    defaultMessage:
+      'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,… This information helps visitors to understand what your project is about.',
   },
 });

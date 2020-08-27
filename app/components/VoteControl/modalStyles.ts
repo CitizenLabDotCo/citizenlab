@@ -1,4 +1,4 @@
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
@@ -48,12 +48,12 @@ export const ForegroundIcon = styled(Icon)<{ color: string }>`
   flex: 0 0 60px;
   width: 60px;
   height: 60px;
-  fill: ${props => props.color};
+  fill: ${(props) => props.color};
   margin-bottom: 30px;
 `;
 
 export const Title = styled.h1<{ color: string }>`
-  color: ${props => props.color};
+  color: ${(props) => props.color};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: normal;

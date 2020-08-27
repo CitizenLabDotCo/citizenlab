@@ -31,7 +31,8 @@ export default defineMessages({
   },
   ideaOgDescription: {
     id: 'app.containers.IdeasShow.ideaOgDescription',
-    defaultMessage: 'What do you think of this idea? Join the discussion and vote to make your voice heard.',
+    defaultMessage:
+      'What do you think of this idea? Join the discussion and vote to make your voice heard.',
   },
   shareTitle: {
     id: 'app.containers.IdeasShow.shareTitle',
@@ -39,7 +40,8 @@ export default defineMessages({
   },
   shareSubtitle: {
     id: 'app.containers.IdeasShow.shareSubtitle',
-    defaultMessage: 'Share your idea to reach more people, receive more votes and have more impact.',
+    defaultMessage:
+      'Share your idea to reach more people, receive more votes and have more impact.',
   },
   twitterMessage: {
     id: 'app.containers.IdeasShow.twitterMessage',
@@ -51,7 +53,8 @@ export default defineMessages({
   },
   emailSharingBody: {
     id: 'app.containers.IdeasShow.emailSharingBody',
-    defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
+    defaultMessage:
+      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
@@ -107,10 +110,18 @@ export default defineMessages({
   },
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
-    defaultMessage: 'Created {timeAgo}'
+    defaultMessage: 'Created {timeAgo}',
   },
   or: {
     id: 'app.components.IdeasShow.or',
-    defaultMessage: 'or'
+    defaultMessage: 'or',
+  },
+  proposedBudgetTitle: {
+    id: 'app.components.IdeasShow.proposedBudgetTitle',
+    defaultMessage: 'Proposed budget',
+  },
+  bodyTitle: {
+    id: 'app.components.IdeasShow.bodyTitle',
+    defaultMessage: 'Description',
   },
 });

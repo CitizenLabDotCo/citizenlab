@@ -29,18 +29,25 @@ type State = {};
 
 class SortableRow extends React.Component<Props, State> {
   render() {
-    const { connectDropTarget, connectDragSource, isDragging, lastItem } = this.props;
+    const {
+      connectDropTarget,
+      connectDragSource,
+      isDragging,
+      lastItem,
+    } = this.props;
     const opacity = isDragging ? 0 : 1;
-    return connectDropTarget(connectDragSource(
-      <div style={{ opacity }} className={this.props.className}>
-        <Row isLastItem={lastItem}>
-          <DragHandle>
-            <Icon name="sort" />
-          </DragHandle>
-          {this.props.children}
-        </Row>
-      </div>
-    ));
+    return connectDropTarget(
+      connectDragSource(
+        <div style={{ opacity }} className={this.props.className}>
+          <Row isLastItem={lastItem}>
+            <DragHandle>
+              <Icon name="sort" />
+            </DragHandle>
+            {this.props.children}
+          </Row>
+        </div>
+      )
+    );
   }
 }
 
@@ -102,14 +109,14 @@ const dropTarget = {
     const { id } = monitor.getItem();
     const toIndex = props.index;
     props.dropRow(id, toIndex);
-  }
+  },
 };
 
-export default
-  DropTarget('ROW', dropTarget, (connect) => ({
-    connectDropTarget: connect.dropTarget(),
-  }))(
+export default DropTarget('ROW', dropTarget, (connect) => ({
+  connectDropTarget: connect.dropTarget(),
+}))(
   DragSource('ROW', dragSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
-  }))(SortableRow));
+  }))(SortableRow)
+);

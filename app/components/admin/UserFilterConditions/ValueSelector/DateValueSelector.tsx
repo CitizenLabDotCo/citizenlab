@@ -1,7 +1,7 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
 
-import DateInput from 'components/UI/DateInput';
+import { DateInput } from 'cl2-component-library';
 
 type Props = {
   value: string;
@@ -11,10 +11,9 @@ type Props = {
 type State = {};
 
 class DateValueSelector extends React.PureComponent<Props, State> {
-
   handleOnChange = (moment: Moment) => {
     this.props.onChange(moment.format('YYYY-MM-DD'));
-  }
+  };
 
   render() {
     const { value } = this.props;

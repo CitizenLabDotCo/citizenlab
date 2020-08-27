@@ -2,7 +2,7 @@ import React from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,26 +16,26 @@ type Props = {
 
 type State = {};
 
-class AreaValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
-
+class AreaValueSelector extends React.PureComponent<
+  Props & InjectedLocalized,
+  State
+> {
   generateOptions = (): IOption[] => {
     const { areas, localize } = this.props;
 
     if (!isNilOrError(areas)) {
-      return areas.map((area) => (
-        {
-          value: area.id,
-          label: localize(area.attributes.title_multiloc),
-        }
-      ));
+      return areas.map((area) => ({
+        value: area.id,
+        label: localize(area.attributes.title_multiloc),
+      }));
     } else {
       return [];
     }
-  }
+  };
 
   handleOnChange = (option: IOption) => {
     this.props.onChange(option.value);
-  }
+  };
 
   render() {
     const { value } = this.props;

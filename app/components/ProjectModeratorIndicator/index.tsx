@@ -8,7 +8,7 @@ import { isProjectModerator } from 'services/permissions/roles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 
 // i18n
@@ -25,7 +25,7 @@ const StyledContentContainer = styled(ContentContainer)``;
 const Container = styled.div`
   display: flex;
   align-items: center;
-  background: ${rgba(colors.draftYellow, .12)};
+  background: ${rgba(colors.draftYellow, 0.12)};
   padding: 16px;
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
@@ -78,7 +78,11 @@ class ProjectModeratorIndicator extends PureComponent<Props, State> {
   render() {
     const { authUser, projectId, className } = this.props;
 
-    if (authUser && projectId && isProjectModerator({ data: authUser }, projectId)) {
+    if (
+      authUser &&
+      projectId &&
+      isProjectModerator({ data: authUser }, projectId)
+    ) {
       return (
         <StyledContentContainer className={className}>
           <Container>
@@ -97,6 +101,8 @@ class ProjectModeratorIndicator extends PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetAuthUser>
-    {authUser => <ProjectModeratorIndicator {...inputProps} authUser={authUser} />}
+    {(authUser) => (
+      <ProjectModeratorIndicator {...inputProps} authUser={authUser} />
+    )}
   </GetAuthUser>
 );

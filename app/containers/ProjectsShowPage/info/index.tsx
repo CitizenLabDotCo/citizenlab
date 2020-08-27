@@ -28,7 +28,7 @@ export interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
   <GetProject projectSlug={props.params.slug}>
-    {project => {
+    {(project) => {
       if (isNilOrError(project)) return null;
 
       return (

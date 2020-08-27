@@ -74,7 +74,7 @@ export interface State {}
 
 class CommentsAdminDeletionForm extends PureComponent<Props, State> {
   validateForm = (values) => {
-    const errors: { reason_code?: any, other_reason?: any } = {};
+    const errors: { reason_code?: any; other_reason?: any } = {};
 
     if (!values.reason_code) {
       errors.reason_code = 'Required';
@@ -85,12 +85,16 @@ class CommentsAdminDeletionForm extends PureComponent<Props, State> {
     }
 
     return errors;
-  }
+  };
 
   render() {
     return (
       <Container>
-        <Formik initialValues={{ reason_code: null, other_reason: null }} onSubmit={this.props.onDeleteComment} validate={this.validateForm}>
+        <Formik
+          initialValues={{ reason_code: null, other_reason: null }}
+          onSubmit={this.props.onDeleteComment}
+          validate={this.validateForm}
+        >
           {({ values, isSubmitting, isValid }) => (
             <Form noValidate>
               <SectionField>
@@ -99,15 +103,22 @@ class CommentsAdminDeletionForm extends PureComponent<Props, State> {
                     value={code}
                     name="reason_code"
                     id={`reason_code-${code}`}
-                    label={<FormattedMessage {...messages[`deleteReason_${code}`]} />}
+                    label={
+                      <FormattedMessage {...messages[`deleteReason_${code}`]} />
+                    }
                     key={code}
                   />
                 ))}
               </SectionField>
 
               <TransitionGroup>
-                {(values.reason_code === 'other') ? (
-                  <CSSTransition classNames="reason" timeout={timeout} enter={true} exit={true} >
+                {values.reason_code === 'other' ? (
+                  <CSSTransition
+                    classNames="reason"
+                    timeout={timeout}
+                    enter={true}
+                    exit={true}
+                  >
                     <DeleteReason>
                       <SectionField>
                         <FormikTextArea name="other_reason" />
@@ -118,8 +129,23 @@ class CommentsAdminDeletionForm extends PureComponent<Props, State> {
               </TransitionGroup>
 
               <ButtonsWrapper>
-                <Button buttonStyle="secondary" onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.adminCommentDeletionCancelButton} /></Button>
-                <Button disabled={!isValid} buttonStyle="primary" processing={isSubmitting}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
+                <Button
+                  buttonStyle="secondary"
+                  onClick={this.props.onCloseDeleteModal}
+                >
+                  <FormattedMessage
+                    {...messages.adminCommentDeletionCancelButton}
+                  />
+                </Button>
+                <Button
+                  disabled={!isValid}
+                  buttonStyle="primary"
+                  processing={isSubmitting}
+                >
+                  <FormattedMessage
+                    {...messages.adminCommentDeletionConfirmButton}
+                  />
+                </Button>
               </ButtonsWrapper>
             </Form>
           )}

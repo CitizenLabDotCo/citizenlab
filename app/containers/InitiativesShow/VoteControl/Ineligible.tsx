@@ -6,9 +6,8 @@ import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
-import Icon from 'components/UI/Icon';
+import { Icon, IconTooltip } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import IconTooltip from 'components/UI/IconTooltip';
 
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
@@ -72,13 +71,16 @@ interface Props extends InputProps, DataProps {
 interface State {}
 
 class Ineligible extends PureComponent<Props, State> {
-
   handleOnReadAnswer = () => {
     this.props.onScrollToOfficialFeedback();
-  }
+  };
 
   render() {
-    const { initiative, initiativeSettings: { eligibility_criteria, voting_threshold }, initiativeStatus } = this.props;
+    const {
+      initiative,
+      initiativeSettings: { eligibility_criteria, voting_threshold },
+      initiativeStatus,
+    } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
 
@@ -94,25 +96,25 @@ class Ineligible extends PureComponent<Props, State> {
             values={{
               ineligibleStatusExplanationBold: (
                 <b>
-                  <FormattedMessage {...messages.ineligibleStatusExplanationBold} />
+                  <FormattedMessage
+                    {...messages.ineligibleStatusExplanationBold}
+                  />
                 </b>
-              )
+              ),
             }}
           >
             {(text) => (
               <>
                 {text}
-                {eligibility_criteria &&
+                {eligibility_criteria && (
                   <IconTooltip
                     icon="info"
                     iconColor={this.props.theme.colorText}
                     theme="light"
                     placement="bottom"
-                    content={
-                      <T value={eligibility_criteria} supportHtml />
-                    }
+                    content={<T value={eligibility_criteria} supportHtml />}
                   />
-                }
+                )}
               </>
             )}
           </FormattedMessage>
@@ -120,11 +122,12 @@ class Ineligible extends PureComponent<Props, State> {
         <VoteCounter>
           <VoteTexts>
             <VoteText>
-              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: voteCount }}
+              />
             </VoteText>
-            <VoteText>
-              {voteLimit}
-            </VoteText>
+            <VoteText>{voteLimit}</VoteText>
           </VoteTexts>
           <StyledProgressBar
             progress={voteCount / voteLimit}

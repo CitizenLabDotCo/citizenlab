@@ -20,14 +20,16 @@ describe('<ConsentManager />', () => {
     analytics: [
       {
         name: 'Google Analytics',
-        description: 'Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
+        description:
+          'Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
         category: 'Analytics',
         website: 'http://google.com/analytics',
         id: 'Google Analytics',
       },
       {
         name: 'MarketingTool',
-        description: 'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
+        description:
+          'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
         category: 'Tag Managers',
         website: 'http://random.com/marketing',
         id: 'MarketingTool',
@@ -49,13 +51,13 @@ describe('<ConsentManager />', () => {
         category: 'Security & Fraud',
         website: 'http://random.com/securitycookie',
         id: 'FunctionalTool',
-      }
-    ]
+      },
+    ],
   };
   const preferences = {
     analytics: true,
     advertising: null,
-    functional: null
+    functional: null,
   };
 
   beforeEach(() => {
@@ -70,7 +72,8 @@ describe('<ConsentManager />', () => {
         analytics={preferences.analytics}
         advertising={preferences.advertising}
         functional={preferences.functional}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly when there are no destinations', () => {
@@ -80,12 +83,13 @@ describe('<ConsentManager />', () => {
         categoryDestinations={{
           analytics: [],
           advertising: [],
-          functional: []
+          functional: [],
         }}
         analytics={preferences.analytics}
         advertising={preferences.advertising}
         functional={preferences.functional}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
 });

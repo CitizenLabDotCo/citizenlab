@@ -5,7 +5,11 @@ import { Subscription } from 'rxjs';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 
 // services
-import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
+import {
+  globalState,
+  IGlobalStateService,
+  IIdeasPageGlobalState,
+} from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,6 +68,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: string[];
   budget: number | null;
+  proposedBudget: number | null;
   position: string;
   imageFile: UploadFile[];
   submitError: boolean;
@@ -84,11 +89,12 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description: null,
       selectedTopics: [],
       budget: null,
+      proposedBudget: null,
       position: '',
       imageFile: [],
       submitError: false,
       processing: false,
-      fileOrImageError: false
+      fileOrImageError: false,
     };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
@@ -98,46 +104,76 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
     const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
-      globalState$.subscribe(({
-        title,
-        description,
-        selectedTopics,
-        budget,
-        position,
-        imageFile,
-        submitError,
-        processing,
-        fileOrImageError
-      }) => {
-        const newState: State = {
+      globalState$.subscribe(
+        ({
           title,
           description,
           selectedTopics,
           budget,
+          proposedBudget,
           position,
           imageFile,
           submitError,
           processing,
-          fileOrImageError
-        };
+          fileOrImageError,
+        }) => {
+          const newState: State = {
+            title,
+            description,
+            selectedTopics,
+            budget,
+            proposedBudget,
+            position,
+            imageFile,
+            submitError,
+            processing,
+            fileOrImageError,
+          };
 
-        this.setState(newState);
-      })
+          this.setState(newState);
+        }
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const { title, description, selectedTopics, budget, address: position, imageFile, ideaFiles } = ideaFormOutput;
-    this.globalState.set({ title, description, selectedTopics, budget, position, imageFile, ideaFiles });
+    const {
+      title,
+      description,
+      selectedTopics,
+      budget,
+      proposedBudget,
+      address: position,
+      imageFile,
+      ideaFiles,
+    } = ideaFormOutput;
+    this.globalState.set({
+      title,
+      description,
+      selectedTopics,
+      budget,
+      proposedBudget,
+      position,
+      imageFile,
+      ideaFiles,
+    });
     this.props.onSubmit();
-  }
+  };
 
   render() {
-    const { title, description, selectedTopics, budget, position, imageFile } = this.state;
+    const {
+      title,
+      description,
+      selectedTopics,
+      budget,
+      proposedBudget,
+      position,
+      imageFile,
+    } = this.state;
     const { projectId } = this.props;
 
     return (
@@ -152,6 +188,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           budget={budget}
+          proposedBudget={proposedBudget}
           address={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}

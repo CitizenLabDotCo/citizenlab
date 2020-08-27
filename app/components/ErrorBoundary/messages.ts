@@ -3,7 +3,8 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   genericErrorWithForm: {
     id: 'app.components.ErrorBoundary.genericErrorWithForm',
-    defaultMessage: 'An error occured and we cannot display this content. Please try again, or {openForm}!',
+    defaultMessage:
+      'An error occured and we cannot display this content. Please try again, or {openForm}!',
   },
   openFormText: {
     id: 'app.components.ErrorBoundary.openFormText',
@@ -43,11 +44,13 @@ export default defineMessages({
   },
   errorFormErrorGeneric: {
     id: 'app.components.ErrorBoundary.errorFormErrorGeneric',
-    defaultMessage: 'An unknown error occurred while submitting your report. Please try again.',
+    defaultMessage:
+      'An unknown error occurred while submitting your report. Please try again.',
   },
   errorFormErrorFormEntry: {
     id: 'app.components.ErrorBoundary.errorFormErrorFormEntry',
-    defaultMessage: 'Some fields were invalid. Please correct the errors and try again.',
+    defaultMessage:
+      'Some fields were invalid. Please correct the errors and try again.',
   },
   errorFormSuccessMessage: {
     id: 'app.components.ErrorBoundary.errorFormSuccessMessage',

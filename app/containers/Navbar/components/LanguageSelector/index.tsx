@@ -3,8 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Dropdown from 'components/UI/Dropdown';
-import Icon from 'components/UI/Icon';
+import { Icon, Dropdown } from 'cl2-component-library';
 
 // services
 import { updateLocale } from 'services/locale';
@@ -118,23 +117,25 @@ class LanguageSelector extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpened: false
+      dropdownOpened: false,
     };
   }
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
-  }
+    this.setState(({ dropdownOpened }) => ({
+      dropdownOpened: !dropdownOpened,
+    }));
+  };
 
   handleLanguageSelect = (selectedLocale: Locale) => () => {
     updateLocale(selectedLocale);
     this.setState({ dropdownOpened: false });
-  }
+  };
 
   render() {
     const { tenant, locale, className } = this.props;
@@ -145,9 +146,18 @@ class LanguageSelector extends PureComponent<Props, State> {
       const currentlySelectedLocale = locale;
 
       return (
-        <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>
-          <DropdownButton className="e2e-langage-dropdown-toggle" aria-expanded={dropdownOpened}>
-            <DropdownButtonText>{currentlySelectedLocale.substr(0, 2).toUpperCase()}</DropdownButtonText>
+        <Container
+          className={className}
+          onMouseDown={this.removeFocus}
+          onClick={this.toggleDropdown}
+        >
+          <DropdownButton
+            className="e2e-langage-dropdown-toggle"
+            aria-expanded={dropdownOpened}
+          >
+            <DropdownButtonText>
+              {currentlySelectedLocale.substr(0, 2).toUpperCase()}
+            </DropdownButtonText>
             <DropdownButtonIcon name="dropdown" />
           </DropdownButton>
 
@@ -158,24 +168,28 @@ class LanguageSelector extends PureComponent<Props, State> {
             mobileRight="5px"
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
-            content={(
+            content={
               <>
                 {tenantLocales.map((tenantLocale, index) => {
-                  const last = (index === tenantLocales.length - 1);
+                  const last = index === tenantLocales.length - 1;
 
                   return (
                     <ListItem
                       key={tenantLocale}
                       onClick={this.handleLanguageSelect(tenantLocale)}
-                      className={`e2e-langage-${tenantLocale} ${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                      className={`e2e-langage-${tenantLocale} ${
+                        tenantLocale === currentlySelectedLocale ? 'active' : ''
+                      } ${last ? 'last' : ''}`}
                       lang={tenantLocale}
                     >
-                      <ListItemText>{shortenedAppLocalePairs[tenantLocale]}</ListItemText>
+                      <ListItemText>
+                        {shortenedAppLocalePairs[tenantLocale]}
+                      </ListItemText>
                     </ListItem>
                   );
                 })}
               </>
-            )}
+            }
           />
         </Container>
       );
@@ -187,11 +201,11 @@ class LanguageSelector extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  locale: <GetLocale />
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <LanguageSelector {...inputProps} {...dataProps} />}
+    {(dataProps) => <LanguageSelector {...inputProps} {...dataProps} />}
   </Data>
 );

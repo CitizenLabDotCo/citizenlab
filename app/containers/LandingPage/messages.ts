@@ -43,26 +43,27 @@ export default defineMessages({
   },
   initiativesBoxText: {
     id: 'app.containers.landing.initiativesBoxText',
-    defaultMessage: 'Your plans don’t fit in the consultations above? Start your own initiative, gather support and make your voice heard!',
+    defaultMessage:
+      'Your plans don’t fit in the consultations above? Start your own initiative, gather support and make your voice heard!',
   },
   startInitiative: {
     id: 'app.containers.landing.startInitiative',
-    defaultMessage: 'Start an initiative'
+    defaultMessage: 'Start an initiative',
   },
   browseInitiative: {
     id: 'app.containers.landing.browseInitiative',
-    defaultMessage: 'Browse initiatives'
+    defaultMessage: 'Browse initiatives',
   },
   new: {
     id: 'app.containers.landing.new',
-    defaultMessage: 'new'
+    defaultMessage: 'new',
   },
   verifyYourIdentity: {
     id: 'app.containers.landing.verifyYourIdentity',
-    defaultMessage: 'Make a bigger impact by verifying your identity'
+    defaultMessage: 'Make a bigger impact by verifying your identity',
   },
   verifyNow: {
     id: 'app.containers.landing.verifyNow',
-    defaultMessage: 'Verify now'
-  }
+    defaultMessage: 'Verify now',
+  },
 });

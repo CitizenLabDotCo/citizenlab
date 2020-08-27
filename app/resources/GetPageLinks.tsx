@@ -21,7 +21,11 @@ interface State {
   pageLinks: (PageLink | Error)[] | undefined | null | Error;
 }
 
-export type GetPageLinksChildProps = (PageLink | Error)[] | undefined | null | Error;
+export type GetPageLinksChildProps =
+  | (PageLink | Error)[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetPage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -30,7 +34,7 @@ export default class GetPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      pageLinks: undefined
+      pageLinks: undefined,
     };
   }
 
@@ -40,25 +44,35 @@ export default class GetPage extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ pageId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ pageId }) => pageId ? pageByIdStream(pageId).observable : of(null)),
-        switchMap((page) => {
-          if (!isNilOrError(page)) {
-            const pageLinks = get(page.data.relationships.page_links, 'data');
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ pageId }) =>
+            pageId ? pageByIdStream(pageId).observable : of(null)
+          ),
+          switchMap((page) => {
+            if (!isNilOrError(page)) {
+              const pageLinks = get(page.data.relationships.page_links, 'data');
 
-            if (isArray(pageLinks) && !isEmpty(pageLinks)) {
-              return combineLatest(
-                pageLinks.map(link => getPageLink(link.id).observable)
-              );
+              if (isArray(pageLinks) && !isEmpty(pageLinks)) {
+                return combineLatest(
+                  pageLinks.map((link) => getPageLink(link.id).observable)
+                );
+              }
             }
-          }
 
-          return of(null);
-        })
-      ).subscribe((pageLinks) => {
-        this.setState({ pageLinks: pageLinks && pageLinks.map(pageLink => !isNilOrError(pageLink) ? pageLink.data : pageLink) });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((pageLinks) => {
+          this.setState({
+            pageLinks:
+              pageLinks &&
+              pageLinks.map((pageLink) =>
+                !isNilOrError(pageLink) ? pageLink.data : pageLink
+              ),
+          });
+        }),
     ];
   }
 
@@ -68,7 +82,7 @@ export default class GetPage extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -29,13 +29,13 @@ export default class GetUser extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      user: undefined
+      user: undefined,
     };
   }
 
@@ -45,21 +45,23 @@ export default class GetUser extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ user: undefined })),
-        switchMap(({ id, slug }) => {
-          if (isString(id)) {
-            return userByIdStream(id).observable;
-          } else if (isString(slug)) {
-            return userBySlugStream(slug).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ user: undefined })),
+          switchMap(({ id, slug }) => {
+            if (isString(id)) {
+              return userByIdStream(id).observable;
+            } else if (isString(slug)) {
+              return userBySlugStream(slug).observable;
+            }
 
-          return of(null);
-        })
-      ).subscribe((user) => {
-        this.setState({ user: !isNilOrError(user) ? user.data : user });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((user) => {
+          this.setState({ user: !isNilOrError(user) ? user.data : user });
+        }),
     ];
   }
 
@@ -69,7 +71,7 @@ export default class GetUser extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // utils
 import { isPage } from 'utils/helperUtils';
@@ -87,11 +87,11 @@ interface State {}
 export default class Title extends PureComponent<Props, State> {
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-  }
+  };
 
   handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.onClick(event);
-  }
+  };
 
   render() {
     const { title, opened, baseID, className } = this.props;
@@ -103,11 +103,17 @@ export default class Title extends PureComponent<Props, State> {
         onClick={this.handleOnClick}
         aria-expanded={opened}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className} ${adminPage ? 'adminpage' : ''}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${
+          opened ? 'opened' : ''
+        } ${className} ${adminPage ? 'adminpage' : ''}`}
         aria-live="polite"
       >
         <Text className="FilterSelectorTitleText">{title}</Text>
-        <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" ariaHidden />
+        <DropdownIcon
+          className="FilterSelectorTitleIcon"
+          name="dropdown"
+          ariaHidden
+        />
       </Container>
     );
   }

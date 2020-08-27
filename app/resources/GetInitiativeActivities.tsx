@@ -10,7 +10,9 @@ interface InputProps {
   initiativeId: string | null;
 }
 
-type children = (renderProps: GetInitiativeActivitiesChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetInitiativeActivitiesChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -20,16 +22,22 @@ interface State {
   initiativeActivities: InitiativeActivity[] | undefined | null;
 }
 
-export type GetInitiativeActivitiesChildProps = InitiativeActivity[] | undefined | null;
+export type GetInitiativeActivitiesChildProps =
+  | InitiativeActivity[]
+  | undefined
+  | null;
 
-export default class GetInitiativeActivities extends React.Component<Props, State> {
+export default class GetInitiativeActivities extends React.Component<
+  Props,
+  State
+> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      initiativeActivities: undefined
+      initiativeActivities: undefined,
     };
   }
 
@@ -39,13 +47,22 @@ export default class GetInitiativeActivities extends React.Component<Props, Stat
     this.inputProps$ = new BehaviorSubject({ initiativeId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ initiativeId }) => isString(initiativeId) ? initiativeActivities(initiativeId).observable : of(null))
-      )
-      .subscribe((initiativeActivities) => {
-        this.setState({ initiativeActivities: !isNilOrError(initiativeActivities) ? initiativeActivities.data : initiativeActivities });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ initiativeId }) =>
+            isString(initiativeId)
+              ? initiativeActivities(initiativeId).observable
+              : of(null)
+          )
+        )
+        .subscribe((initiativeActivities) => {
+          this.setState({
+            initiativeActivities: !isNilOrError(initiativeActivities)
+              ? initiativeActivities.data
+              : initiativeActivities,
+          });
+        }),
     ];
   }
 
@@ -55,7 +72,7 @@ export default class GetInitiativeActivities extends React.Component<Props, Stat
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

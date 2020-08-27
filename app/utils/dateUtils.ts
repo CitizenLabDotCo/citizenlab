@@ -18,7 +18,9 @@ export function pastPresentOrFuture(input: string | [string, string]) {
     const endIsoDate = moment(input[1]).format('YYYY-MM-DD');
     const currentIsoDate = moment().format('YYYY-MM-DD');
 
-    if (moment(currentIsoDate).isBetween(startIsoDate, endIsoDate, 'days', '[]')) {
+    if (
+      moment(currentIsoDate).isBetween(startIsoDate, endIsoDate, 'days', '[]')
+    ) {
       return 'present';
     } else if (moment(currentIsoDate).isAfter(endIsoDate)) {
       return 'past';
@@ -32,16 +34,17 @@ export function getIsoDate(date: string) {
   return moment(date).format('YYYY-MM-DD');
 }
 
-export function getDaysRemainingUntil(date: string) : number {
+export function getDaysRemainingUntil(date: string): number {
   return moment(date).diff(moment({ hours: 0 }), 'days');
 }
 
 export function convertSecondsToDDHHMM(seconds: number) {
   const daysLeft = Math.floor(seconds / (3600 * 24));
   const formattedDaysLeft = daysLeft < 10 ? `0${daysLeft}` : daysLeft;
-  const hoursLeft = Math.floor(seconds % (3600 * 24) / 3600);
+  const hoursLeft = Math.floor((seconds % (3600 * 24)) / 3600);
   const formattedHoursLeft = hoursLeft < 10 ? `0${hoursLeft}` : hoursLeft;
-  const minutesLeft = Math.floor(seconds % 3600 / 60);
-  const formattedMinutesLeft = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
+  const minutesLeft = Math.floor((seconds % 3600) / 60);
+  const formattedMinutesLeft =
+    minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
 }

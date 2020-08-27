@@ -4,7 +4,11 @@ import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
 import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
 
-export type InitiativePublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
+export type InitiativePublicationStatus =
+  | 'draft'
+  | 'published'
+  | 'archived'
+  | 'spam';
 
 export interface IInitiativeData {
   id: string;
@@ -111,7 +115,7 @@ export interface InitiativeActivity {
   attributes: {
     action: string;
     acted_at: string;
-    change: string[] | {[key: string]: string}[] | null;
+    change: string[] | { [key: string]: string }[] | null;
   };
   relationships: {
     user: { data: IRelationship };
@@ -119,34 +123,69 @@ export interface InitiativeActivity {
 }
 
 export function initiativeByIdStream(initiativeId: string) {
-  return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}` });
+  return streams.get<IInitiative>({
+    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}`,
+  });
 }
 
 export function initiativeBySlugStream(initiativeSlug: string) {
-  return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/by_slug/${initiativeSlug}` });
+  return streams.get<IInitiative>({
+    apiEndpoint: `${API_PATH}/initiatives/by_slug/${initiativeSlug}`,
+  });
 }
 
 export function initiativesStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IInitiatives>({ apiEndpoint: `${API_PATH}/initiatives`, ...streamParams });
+  return streams.get<IInitiatives>({
+    apiEndpoint: `${API_PATH}/initiatives`,
+    ...streamParams,
+  });
 }
 
-export function initiativesFilterCountsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IInitiativesFilterCounts>({ apiEndpoint: `${API_PATH}/initiatives/filter_counts`, ...streamParams, cacheStream: false });
+export function initiativesFilterCountsStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IInitiativesFilterCounts>({
+    apiEndpoint: `${API_PATH}/initiatives/filter_counts`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
-export function initiativesMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IGeotaggedInitiativeData[], links: IInitiativeLinks}>({ apiEndpoint: `${API_PATH}/initiatives/as_markers`, ...streamParams, cacheStream: false });
+export function initiativesMarkersStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<{
+    data: IGeotaggedInitiativeData[];
+    links: IInitiativeLinks;
+  }>({
+    apiEndpoint: `${API_PATH}/initiatives/as_markers`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
 export async function addInitiative(object: IInitiativeAdd) {
-  const response = await streams.add<IInitiative>(`${API_PATH}/initiatives`, { initiative: object });
+  const response = await streams.add<IInitiative>(`${API_PATH}/initiatives`, {
+    initiative: object,
+  });
   return response;
 }
 
-export async function updateInitiative(initiativeId: string, object: Partial<IInitiativeAdd>) {
-  const response = await streams.update<IInitiative>(`${API_PATH}/initiatives/${initiativeId}`, initiativeId, { initiative: object });
+export async function updateInitiative(
+  initiativeId: string,
+  object: Partial<IInitiativeAdd>
+) {
+  const response = await streams.update<IInitiative>(
+    `${API_PATH}/initiatives/${initiativeId}`,
+    initiativeId,
+    { initiative: object }
+  );
   streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/stats/initiatives_count`, `${API_PATH}/initiatives`, `${API_PATH}/initiatives/${initiativeId}/activities`]
+    apiEndpoint: [
+      `${API_PATH}/stats/initiatives_count`,
+      `${API_PATH}/initiatives`,
+      `${API_PATH}/initiatives/${initiativeId}/activities`,
+    ],
   });
   return response;
 }
@@ -154,13 +193,15 @@ export async function updateInitiative(initiativeId: string, object: Partial<IIn
 export async function deleteInitiative(initiativeId: string) {
   const [initiative, response] = await Promise.all([
     initiativeByIdStream(initiativeId).observable.pipe(first()).toPromise(),
-    streams.delete(`${API_PATH}/initiatives/${initiativeId}`, initiativeId)
+    streams.delete(`${API_PATH}/initiatives/${initiativeId}`, initiativeId),
   ]);
 
   const authorId = get(initiative, 'relationships.author.data.id', false);
 
   streams.fetchAllWith({
-    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`] : [])
+    apiEndpoint: authorId
+      ? [`${API_PATH}/users/${authorId}/initiatives_count`]
+      : [],
   });
 
   return response;
@@ -173,7 +214,9 @@ export interface IInitiativeAllowedTransitions {
 }
 
 export function initiativeAllowedTransitionsStream(initiativeId: string) {
-  return streams.get<IInitiativeAllowedTransitions>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/allowed_transitions` });
+  return streams.get<IInitiativeAllowedTransitions>({
+    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`,
+  });
 }
 
 export interface IInitiativesFilterCounts {
@@ -190,5 +233,7 @@ export interface IInitiativesFilterCounts {
 }
 
 export function initiativeActivities(initiativeId: string) {
-  return streams.get<{ data: InitiativeActivity[] }>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/activities` });
+  return streams.get<{ data: InitiativeActivity[] }>({
+    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/activities`,
+  });
 }

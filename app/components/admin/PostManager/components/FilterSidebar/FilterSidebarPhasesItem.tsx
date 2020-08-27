@@ -16,7 +16,15 @@ interface Props {
 
 class FilterSidebarPhasesItem extends React.PureComponent<Props> {
   render() {
-    const { phase, active, onClick, connectDropTarget, isOver, canDrop, phaseNumber } = this.props;
+    const {
+      phase,
+      active,
+      onClick,
+      connectDropTarget,
+      isOver,
+      canDrop,
+      phaseNumber,
+    } = this.props;
     const disabled = !canContainIdeas(phase);
     return connectDropTarget(
       <div>
@@ -43,7 +51,7 @@ const phaseTarget = {
   drop(props) {
     return {
       type: 'phase',
-      id: props.phase.id
+      id: props.phase.id,
     };
   },
   canDrop(props) {
@@ -57,4 +65,8 @@ const collect = (connect, monitor) => ({
   canDrop: monitor.canDrop(),
 });
 
-export default DropTarget('IDEA', phaseTarget, collect)(FilterSidebarPhasesItem);
+export default DropTarget(
+  'IDEA',
+  phaseTarget,
+  collect
+)(FilterSidebarPhasesItem);

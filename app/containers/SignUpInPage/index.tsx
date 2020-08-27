@@ -39,11 +39,13 @@ const Container = styled.main`
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.menuHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   `}
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -72,7 +74,7 @@ const Banner = styled.div`
 const Slogan = styled.div`
   width: 100%;
   max-width: 400px;
-  color: ${props => props.theme.colorMain || '#333'};
+  color: ${(props) => props.theme.colorMain || '#333'};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 44px;
   font-weight: 600;
@@ -110,9 +112,13 @@ interface State {}
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[] = [];
 
-  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
+  static getDerivedStateFromProps(
+    props: Props & WithRouterProps,
+    _state: State
+  ) {
     const { authUser, previousPathName } = props;
-    const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
+    const isLoggedIn =
+      !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
 
     if (isLoggedIn) {
       clHistory.replace(previousPathName || '/');
@@ -125,20 +131,22 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions = [
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onSignUpInCompleted = () => {
     clHistory.push(this.props.previousPathName || '/');
-  }
+  };
 
   render() {
-    const { location: { pathname } } = this.props;
+    const {
+      location: { pathname },
+    } = this.props;
     const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
 
     return (
@@ -160,7 +168,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                   flow,
                   pathname,
                   inModal: false,
-                  verification: undefined
+                  verification: undefined,
                 }}
                 onSignUpInCompleted={this.onSignUpInCompleted}
               />
@@ -177,11 +185,15 @@ const SignUpPageWithHoC = withRouter(SignUpPage);
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
+  previousPathName: ({ render }) => (
+    <PreviousPathnameContext.Consumer>
+      {render as any}
+    </PreviousPathnameContext.Consumer>
+  ),
 });
 
 export default (inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -16,30 +16,32 @@ interface Props {
 export default class ResolutionControl extends PureComponent<Props> {
   handleOnResolutionChange = (resolution: IResolution) => {
     this.props.onChange(resolution);
-  }
+  };
 
   render() {
     const { value, className } = this.props;
     const resOptions = [
       {
         value: 'day',
-        label: <FormattedMessage {...messages.resolutionday} />
+        label: <FormattedMessage {...messages.resolutionday} />,
       },
       {
         value: 'week',
-        label: <FormattedMessage {...messages.resolutionweek} />
+        label: <FormattedMessage {...messages.resolutionweek} />,
       },
       {
         value: 'month',
-        label: <FormattedMessage {...messages.resolutionmonth} />
-      }
+        label: <FormattedMessage {...messages.resolutionmonth} />,
+      },
     ];
 
     return (
       <Container className={className}>
         <Tabs
           items={resOptions}
-          selectedValue={resOptions.find(item => item.value === value)?.value as string}
+          selectedValue={
+            resOptions.find((item) => item.value === value)?.value as string
+          }
           onClick={this.handleOnResolutionChange}
         />
       </Container>

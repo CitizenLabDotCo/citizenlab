@@ -1,4 +1,4 @@
-import React, { memo,  useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
@@ -105,113 +105,117 @@ interface Props {
   children: React.ReactNode;
 }
 
-const AuthProviderButton = memo<Props>(({
-  flow,
-  authProvider,
-  className,
-  onContinue,
-  children
-}) => {
-  const [expanded, setExpanded] = useState(false);
-  const [tacAccepted, setTacAccepted] = useState(false);
-  const [tacError, setTacError] = useState(false);
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
-  const [privacyError, setPrivacyError] = useState(false);
+const AuthProviderButton = memo<Props>(
+  ({ flow, authProvider, className, onContinue, children }) => {
+    const [expanded, setExpanded] = useState(false);
+    const [tacAccepted, setTacAccepted] = useState(false);
+    const [tacError, setTacError] = useState(false);
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
+    const [privacyError, setPrivacyError] = useState(false);
 
-  useEffect(() => {
-    // reset
-    setTacAccepted(false);
-    setTacError(false);
-    setPrivacyAccepted(false);
-    setPrivacyError(false);
-  }, [expanded]);
+    useEffect(() => {
+      // reset
+      setTacAccepted(false);
+      setTacError(false);
+      setPrivacyAccepted(false);
+      setPrivacyError(false);
+    }, [expanded]);
 
-  const handleExpandButtonClicked = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
+    const handleExpandButtonClicked = useCallback(
+      (event: React.FormEvent) => {
+        event.preventDefault();
 
-    if (flow === 'signup' && authProvider !== 'email') {
-      setExpanded(prevExpanded => !prevExpanded);
-    } else {
-      trackEventByName(tracks.signInWithSSOClicked, { authProvider });
-      onContinue(authProvider);
-    }
-  }, [flow, authProvider, onContinue]);
+        if (flow === 'signup' && authProvider !== 'email') {
+          setExpanded((prevExpanded) => !prevExpanded);
+        } else {
+          trackEventByName(tracks.signInWithSSOClicked, { authProvider });
+          onContinue(authProvider);
+        }
+      },
+      [flow, authProvider, onContinue]
+    );
 
-  const handleContinueClicked = useCallback(() => {
-    if (!tacAccepted) {
-      setTacError(true);
-    }
-
-    if (!privacyAccepted) {
-      setPrivacyError(true);
-    }
-
-    if (tacAccepted && privacyAccepted) {
-      trackEventByName(tracks.signUpWithSSOClicked, { authProvider });
-      onContinue(authProvider);
-    }
-  }, [authProvider, onContinue, tacAccepted, privacyAccepted]);
-
-  const handleTacAcceptedChange = useCallback((tacAccepted: boolean) => {
-    setTacAccepted(tacAccepted);
-    setTacError(false);
-  }, []);
-
-  const handlePrivacyAcceptedChange = useCallback((privacyAccepted: boolean) => {
-    setPrivacyAccepted(privacyAccepted);
-    setPrivacyError(false);
-  }, []);
-
-  return (
-    <Container className={className}>
-      <Button
-        icon={authProvider as any}
-        iconSize="22px"
-        iconColor={authProvider === 'facebook' ? colors.facebook : colors.text}
-        buttonStyle="white"
-        fullWidth={true}
-        justify="left"
-        whiteSpace="wrap"
-        textColor={colors.text}
-        borderColor="transparent"
-        borderHoverColor="transparent"
-        onClick={handleExpandButtonClicked}
-      >
-        {children}
-      </Button>
-
-      {flow === 'signup' &&
-        <CSSTransition
-          classNames="consent"
-          in={expanded}
-          timeout={timeout}
-          mounOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          <ConsentWrapper>
-            <ConsentWrapperInner>
-              <Consent
-                tacError={tacError}
-                privacyError={privacyError}
-                onTacAcceptedChange={handleTacAcceptedChange}
-                onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
-              />
-              <ButtonWrapper>
-                <ContinueButton
-                  onClick={handleContinueClicked}
-                  disabled={!(tacAccepted && privacyAccepted)}
-                >
-                  <FormattedMessage {...messages.continue} />
-                </ContinueButton>
-              </ButtonWrapper>
-            </ConsentWrapperInner>
-          </ConsentWrapper>
-        </CSSTransition>
+    const handleContinueClicked = useCallback(() => {
+      if (!tacAccepted) {
+        setTacError(true);
       }
-    </Container>
-  );
-});
+
+      if (!privacyAccepted) {
+        setPrivacyError(true);
+      }
+
+      if (tacAccepted && privacyAccepted) {
+        trackEventByName(tracks.signUpWithSSOClicked, { authProvider });
+        onContinue(authProvider);
+      }
+    }, [authProvider, onContinue, tacAccepted, privacyAccepted]);
+
+    const handleTacAcceptedChange = useCallback((tacAccepted: boolean) => {
+      setTacAccepted(tacAccepted);
+      setTacError(false);
+    }, []);
+
+    const handlePrivacyAcceptedChange = useCallback(
+      (privacyAccepted: boolean) => {
+        setPrivacyAccepted(privacyAccepted);
+        setPrivacyError(false);
+      },
+      []
+    );
+
+    return (
+      <Container className={className}>
+        <Button
+          icon={authProvider as any}
+          iconSize="22px"
+          iconColor={
+            authProvider === 'facebook' ? colors.facebook : colors.text
+          }
+          buttonStyle="white"
+          fullWidth={true}
+          justify="left"
+          whiteSpace="wrap"
+          textColor={colors.text}
+          borderColor="transparent"
+          borderHoverColor="transparent"
+          onClick={handleExpandButtonClicked}
+        >
+          {children}
+        </Button>
+
+        {flow === 'signup' && (
+          <CSSTransition
+            classNames="consent"
+            in={expanded}
+            timeout={timeout}
+            mounOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <ConsentWrapper>
+              <ConsentWrapperInner>
+                <Consent
+                  tacError={tacError}
+                  privacyError={privacyError}
+                  onTacAcceptedChange={handleTacAcceptedChange}
+                  onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
+                />
+                <ButtonWrapper>
+                  <ContinueButton
+                    onClick={handleContinueClicked}
+                    disabled={!(tacAccepted && privacyAccepted)}
+                  >
+                    <FormattedMessage {...messages.continue} />
+                  </ContinueButton>
+                </ButtonWrapper>
+              </ConsentWrapperInner>
+            </ConsentWrapper>
+          </CSSTransition>
+        )}
+      </Container>
+    );
+  }
+);
 
 export default AuthProviderButton;

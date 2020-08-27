@@ -9,7 +9,7 @@ import { colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
+  height: ${(props) => props.theme.mobileTopBarHeight}px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -50,15 +50,15 @@ const FooterBanner: any = styled.div`
 `;
 
 const FooterMessage = styled.h2`
-    color: #fff;
-    font-size: ${fontSizes.xxxl}px;
-    line-height: normal;
-    font-weight: 600;
-    margin-bottom: 30px;
-    max-width: 500px;
-    text-align: center;
+  color: #fff;
+  font-size: ${fontSizes.xxxl}px;
+  line-height: normal;
+  font-weight: 600;
+  margin-bottom: 30px;
+  max-width: 500px;
+  text-align: center;
 
-    ${media.smallerThanMaxTablet`
+  ${media.smallerThanMaxTablet`
       font-size: ${fontSizes.xxxl}px;
     `}
 `;
@@ -81,33 +81,37 @@ const Padding = styled.div`
   `}
 `;
 
-interface Props { }
+interface Props {}
 
 const InitiativeIndexPage = memo<Props>(() => {
   const authUser = useAuthUser();
   const tenant = useTenant();
 
-  const onNewInitiativeButtonClick = useCallback((event?: React.FormEvent) => {
-    event?.preventDefault();
+  const onNewInitiativeButtonClick = useCallback(
+    (event?: React.FormEvent) => {
+      event?.preventDefault();
 
-    trackEventByName(tracks.clickStartInitiativesCTA, {
-      extra: {
-        location: 'initiatives footer',
-        authenticated: !isNilOrError(authUser)
-      }
-    });
-
-    if (!isNilOrError(authUser)) {
-      clHistory.push('/initiatives/new');
-    } else {
-      openSignUpInModal({
-        action: () => onNewInitiativeButtonClick()
+      trackEventByName(tracks.clickStartInitiativesCTA, {
+        extra: {
+          location: 'initiatives footer',
+          authenticated: !isNilOrError(authUser),
+        },
       });
-    }
-  }, [authUser]);
+
+      if (!isNilOrError(authUser)) {
+        clHistory.push('/initiatives/new');
+      } else {
+        openSignUpInModal({
+          action: () => onNewInitiativeButtonClick(),
+        });
+      }
+    },
+    [authUser]
+  );
 
   if (!isNilOrError(tenant)) {
-    const postingProposalEnabled = tenant.data.attributes.settings.initiatives?.posting_enabled;
+    const postingProposalEnabled =
+      tenant.data.attributes.settings.initiatives?.posting_enabled;
 
     return (
       <>
@@ -123,14 +127,14 @@ const InitiativeIndexPage = memo<Props>(() => {
           </StyledContentContainer>
           <FooterBanner>
             <FooterMessage>
-              {postingProposalEnabled ?
+              {postingProposalEnabled ? (
                 <FormattedMessage {...messages.footer} />
-                :
+              ) : (
                 <FormattedMessage {...messages.footerPostingDisabled} />
-              }
+              )}
             </FooterMessage>
 
-            {postingProposalEnabled &&
+            {postingProposalEnabled && (
               <Button
                 fontWeight="500"
                 padding="13px 22px"
@@ -140,7 +144,7 @@ const InitiativeIndexPage = memo<Props>(() => {
                 iconPos="right"
                 text={<FormattedMessage {...messages.startInitiative} />}
               />
-            }
+            )}
           </FooterBanner>
           <CityLogoSection />
         </Container>
@@ -149,7 +153,6 @@ const InitiativeIndexPage = memo<Props>(() => {
   }
 
   return null;
-
 });
 
 export default InitiativeIndexPage;

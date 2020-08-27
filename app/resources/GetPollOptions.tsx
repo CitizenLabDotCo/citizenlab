@@ -30,7 +30,7 @@ export default class GetPollOptions extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      pollOptions: undefined
+      pollOptions: undefined,
     };
   }
 
@@ -40,20 +40,27 @@ export default class GetPollOptions extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ questionId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => this.setState({ pollOptions: undefined })),
-        filter(({ questionId }) => isString(questionId)),
-        switchMap(({ questionId }) =>
-          pollOptionsStream(questionId).observable)
-      )
-        .subscribe(pollOptions =>
-          this.setState({ pollOptions: !isNilOrError(pollOptions) ? pollOptions.data : pollOptions }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => this.setState({ pollOptions: undefined })),
+          filter(({ questionId }) => isString(questionId)),
+          switchMap(
+            ({ questionId }) => pollOptionsStream(questionId).observable
+          )
+        )
+        .subscribe((pollOptions) =>
+          this.setState({
+            pollOptions: !isNilOrError(pollOptions)
+              ? pollOptions.data
+              : pollOptions,
+          })
+        ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

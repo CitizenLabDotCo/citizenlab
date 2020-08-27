@@ -10,7 +10,9 @@ interface InputProps {
   ideaId: string | null;
 }
 
-type children = (renderProps: GetIdeaActivitiesChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetIdeaActivitiesChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -29,7 +31,7 @@ export default class GetIdeaActivities extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaActivities: undefined
+      ideaActivities: undefined,
     };
   }
 
@@ -39,13 +41,20 @@ export default class GetIdeaActivities extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ ideaId }) => isString(ideaId) ? ideaActivities(ideaId).observable : of(null))
-      )
-      .subscribe((ideaActivities) => {
-        this.setState({ ideaActivities: !isNilOrError(ideaActivities) ? ideaActivities.data : ideaActivities });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ ideaId }) =>
+            isString(ideaId) ? ideaActivities(ideaId).observable : of(null)
+          )
+        )
+        .subscribe((ideaActivities) => {
+          this.setState({
+            ideaActivities: !isNilOrError(ideaActivities)
+              ? ideaActivities.data
+              : ideaActivities,
+          });
+        }),
     ];
   }
 
@@ -55,7 +64,7 @@ export default class GetIdeaActivities extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

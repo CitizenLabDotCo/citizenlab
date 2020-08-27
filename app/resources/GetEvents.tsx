@@ -26,13 +26,13 @@ export default class GetEvents extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      events: undefined
+      events: undefined,
     };
   }
 
@@ -42,12 +42,17 @@ export default class GetEvents extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ events: undefined })),
-        switchMap(({ projectId }) => projectId ? eventsStream(projectId).observable : of(null))
-      )
-      .subscribe((events) => this.setState({ events: (events ? events.data : null) }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ events: undefined })),
+          switchMap(({ projectId }) =>
+            projectId ? eventsStream(projectId).observable : of(null)
+          )
+        )
+        .subscribe((events) =>
+          this.setState({ events: events ? events.data : null })
+        ),
     ];
   }
 
@@ -57,7 +62,7 @@ export default class GetEvents extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -1,6 +1,10 @@
 import styled, { css } from 'styled-components';
-import { colors, fontSizes, boxShadowOutline, media } from 'utils/styleUtils';
-import { HeaderContainer, HeaderTitle, ModalContentContainer } from 'components/UI/Modal';
+import {
+  HeaderContainer,
+  HeaderTitle,
+  ModalContentContainer,
+} from 'components/UI/Modal';
+import { colors, fontSizes, defaultOutline, media } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;
@@ -43,7 +47,7 @@ export const Option = styled.div`
     outline: none;
 
     &.focus-visible {
-      ${boxShadowOutline};
+      ${defaultOutline};
     }
 
     &:hover {
@@ -60,49 +64,60 @@ export const Option = styled.div`
   }
 `;
 
-export const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
-  ${props => !props.inModal && css`
-    padding-top: 0px;
-    background: transparent;
-    border: none;
+export const StyledHeaderContainer = styled(HeaderContainer)<{
+  inModal: boolean;
+}>`
+  ${(props) =>
+    !props.inModal &&
+    css`
+      padding-top: 0px;
+      background: transparent;
+      border: none;
 
-    ${media.smallerThanMinTablet`
+      ${media.smallerThanMinTablet`
       padding-top: 0px;
       padding-left: 2px;
       padding-right: 2px;
     `}
-  `}
+    `}
 `;
 
 export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
-  ${props => !props.inModal && css`
-    font-size: ${fontSizes.xxxl}px;
-  `}
+  ${(props) =>
+    !props.inModal &&
+    css`
+      font-size: ${fontSizes.xxxl}px;
+    `}
 `;
 
 export const StyledModalContentContainer = styled(ModalContentContainer)<{
-  inModal: boolean,
-  windowHeight: string,
-  headerHeight: string
+  inModal: boolean;
+  windowHeight: string;
+  headerHeight: string;
 }>`
-  ${props => props.inModal && css`
-    padding-top: 20px;
-    padding-bottom: 0px;
-    max-height: calc(85vh - ${props.headerHeight});
+  ${(props) =>
+    props.inModal &&
+    css`
+      padding-top: 20px;
+      padding-bottom: 0px;
+      max-height: calc(85vh - ${props.headerHeight});
 
-    ${media.smallerThanMinTablet`
-      max-height: ${props => `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
+      ${media.smallerThanMinTablet`
+      max-height: ${(props) =>
+        `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
     `}
-  `}
+    `}
 
-  ${props => !props.inModal && css`
-    padding-top: 10px;
-    padding-bottom: 0px;
+  ${(props) =>
+    !props.inModal &&
+    css`
+      padding-top: 10px;
+      padding-bottom: 0px;
 
-    ${media.smallerThanMinTablet`
+      ${media.smallerThanMinTablet`
       padding-top: 10px;
       padding-left: 2px;
       padding-right: 2px;
     `}
-  `}
+    `}
 `;

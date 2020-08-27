@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   goBack: {
@@ -29,7 +27,8 @@ export default defineMessages({
   },
   infoboxLine2: {
     id: 'app.components.ProjectTemplatePreview.infoboxLine2',
-    defaultMessage: 'Reach out to the responsible person in your city administration, or contact a {link}.',
+    defaultMessage:
+      'Reach out to the responsible person in your city administration, or contact a {link}.',
   },
   citizenlabExpert: {
     id: 'app.components.ProjectTemplatePreview.citizenlabExpert',
@@ -69,7 +68,8 @@ export default defineMessages({
   },
   projectInvalidStartDateError: {
     id: 'app.components.ProjectTemplatePreview.projectInvalidStartDateError',
-    defaultMessage: 'The selected date is invalid. Please provide a date in the following format: YYYY-MM-DD',
+    defaultMessage:
+      'The selected date is invalid. Please provide a date in the following format: YYYY-MM-DD',
   },
   responseError: {
     id: 'app.components.ProjectTemplatePreview.responseError',
@@ -94,5 +94,5 @@ export default defineMessages({
   createProjectBasedOn: {
     id: 'app.components.ProjectTemplatePreview.createProjectBasedOn',
     defaultMessage: "Create a project based on the template '{templateTitle}'",
-  }
+  },
 });

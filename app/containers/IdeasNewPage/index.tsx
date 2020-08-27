@@ -17,7 +17,11 @@ import IdeasNewMeta from './IdeasNewMeta';
 import { addIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage } from 'services/ideaImages';
-import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
+import {
+  globalState,
+  IGlobalStateService,
+  IIdeasPageGlobalState,
+} from 'services/globalState';
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 
 // resources
@@ -35,20 +39,24 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   background: ${colors.background};
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
 const PageContainer = styled.main`
   width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -87,6 +95,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       description: null,
       selectedTopics: [],
       budget: null,
+      proposedBudget: null,
       position: '',
       position_coordinates: null,
       submitError: false,
@@ -96,16 +105,19 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       ideaSlug: null,
       imageFile: [],
       imageId: null,
-      ideaFiles: []
+      ideaFiles: [],
     };
     this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
   }
 
   componentDidMount() {
     const { location } = this.props;
-    const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
-      return type === 'value' ? parseFloat(str) : str;
-    }}) as { [key: string]: string | number };
+    const { lat, lng } = parse(location.search, {
+      ignoreQueryPrefix: true,
+      decoder: (str, _defaultEncoder, _charset, type) => {
+        return type === 'value' ? parseFloat(str) : str;
+      },
+    }) as { [key: string]: string | number };
 
     this.redirectIfNotPermittedOnPage();
 
@@ -118,8 +130,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           position,
           position_coordinates: {
             type: 'Point',
-            coordinates: [lng, lat]
-          }
+            coordinates: [lng, lat],
+          },
         });
       });
     }
@@ -135,27 +147,55 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
   redirectIfNotPermittedOnPage = () => {
     const { authUser, project } = this.props;
-    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
+    const isPrivilegedUser =
+      !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser }) ||
+        isModerator({ data: authUser }) ||
+        isSuperAdmin({ data: authUser }));
 
-    if (!isPrivilegedUser && (authUser === null || (!isNilOrError(project) && !project.attributes.action_descriptor.posting.enabled))) {
-      clHistory.replace(this.props.previousPathName || (!authUser ? '/sign-up' : '/'));
+    if (
+      !isPrivilegedUser &&
+      (authUser === null ||
+        (!isNilOrError(project) &&
+          !project.attributes.action_descriptor.posting.enabled))
+    ) {
+      clHistory.replace(
+        this.props.previousPathName || (!authUser ? '/sign-up' : '/')
+      );
     }
-  }
+  };
 
   handleOnIdeaSubmit = async () => {
     const { locale, authUser, project } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(authUser) && !isNilOrError(project)) {
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(authUser) &&
+      !isNilOrError(project)
+    ) {
       this.globalState.set({ submitError: false, processing: true });
 
       try {
-        const { title, description, selectedTopics, budget, position, position_coordinates, imageFile, ideaFiles } = await this.globalState.get();
+        const {
+          title,
+          description,
+          selectedTopics,
+          budget,
+          proposedBudget,
+          position,
+          position_coordinates,
+          imageFile,
+          ideaFiles,
+        } = await this.globalState.get();
         const ideaTitle = { [locale]: title as string };
-        const ideaDescription = { [locale]: (description || '') };
-        const locationGeoJSON = position_coordinates || await convertToGeoJson(position);
-        const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
+        const ideaDescription = { [locale]: description || '' };
+        const locationGeoJSON =
+          position_coordinates || (await convertToGeoJson(position));
+        const locationDescription =
+          isString(position) && !isEmpty(position) ? position : null;
         const ideaObject: IIdeaAdd = {
           budget,
+          proposed_budget: proposedBudget,
           author_id: authUser.id,
           publication_status: 'published',
           title_multiloc: ideaTitle,
@@ -163,21 +203,32 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           topic_ids: selectedTopics,
           project_id: project.id,
           location_point_geojson: locationGeoJSON,
-          location_description: locationDescription
+          location_description: locationDescription,
         };
 
         const idea = await addIdea(ideaObject);
 
         try {
-          const imageToAddPromise = (imageFile && imageFile[0] ? addIdeaImage(idea.data.id, imageFile[0].base64, 0) : Promise.resolve(null));
-          const filesToAddPromises = ideaFiles.map(file => addIdeaFile(idea.data.id, file.base64, file.name));
+          const imageToAddPromise =
+            imageFile && imageFile[0]
+              ? addIdeaImage(idea.data.id, imageFile[0].base64, 0)
+              : Promise.resolve(null);
+          const filesToAddPromises = ideaFiles.map((file) =>
+            addIdeaFile(idea.data.id, file.base64, file.name)
+          );
 
-          await Promise.all([imageToAddPromise, ...filesToAddPromises] as Promise<any>[]);
+          await Promise.all([
+            imageToAddPromise,
+            ...filesToAddPromises,
+          ] as Promise<any>[]);
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
           if (process.env.NODE_ENV === 'development') console.log(error);
           if (apiErrors && !apiErrors.idea) {
-            this.globalState.set({ submitError: false, fileOrImageError: true });
+            this.globalState.set({
+              submitError: false,
+              fileOrImageError: true,
+            });
           }
         }
 
@@ -186,20 +237,20 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           setTimeout(() => {
             clHistory.push({
               pathname: `/ideas/${idea.data.attributes.slug}`,
-              search: `?new_idea_id=${idea.data.id}`
+              search: `?new_idea_id=${idea.data.id}`,
             });
           }, 4000);
         } else {
           clHistory.push({
             pathname: `/ideas/${idea.data.attributes.slug}`,
-            search: `?new_idea_id=${idea.data.id}`
+            search: `?new_idea_id=${idea.data.id}`,
           });
         }
       } catch (error) {
         this.globalState.set({ processing: false, submitError: true });
       }
     }
-  }
+  };
 
   render() {
     const { authUser, project } = this.props;
@@ -209,10 +260,16 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
           <PageContainer className="ideaForm">
-            <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} projectId={project.id} />
+            <NewIdeaForm
+              onSubmit={this.handleOnIdeaSubmit}
+              projectId={project.id}
+            />
           </PageContainer>
           <ButtonBarContainer>
-            <IdeasNewButtonBar form="idea-form" onSubmit={this.handleOnIdeaSubmit} />
+            <IdeasNewButtonBar
+              form="idea-form"
+              onSubmit={this.handleOnIdeaSubmit}
+            />
           </ButtonBarContainer>
         </Container>
       );
@@ -225,12 +282,18 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
-  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
+  previousPathName: ({ render }) => (
+    <PreviousPathnameContext.Consumer>
+      {render as any}
+    </PreviousPathnameContext.Consumer>
+  ),
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeasNewPage {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
   </Data>
 ));

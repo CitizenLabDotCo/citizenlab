@@ -2,7 +2,10 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { customFieldForUsersStream, IUserCustomFieldData } from 'services/userCustomFields';
+import {
+  customFieldForUsersStream,
+  IUserCustomFieldData,
+} from 'services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -19,7 +22,11 @@ interface State {
   customField: IUserCustomFieldData | undefined | null | Error;
 }
 
-export type GetCustomFieldChildProps = IUserCustomFieldData | undefined | null | Error;
+export type GetCustomFieldChildProps =
+  | IUserCustomFieldData
+  | undefined
+  | null
+  | Error;
 
 export default class GetCustomField extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +35,7 @@ export default class GetCustomField extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      customField: undefined
+      customField: undefined,
     };
   }
 
@@ -38,10 +45,18 @@ export default class GetCustomField extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ id }) => customFieldForUsersStream(id).observable)
-      ).subscribe((customField) => this.setState({ customField: !isNilOrError(customField) ? customField.data : customField }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ id }) => customFieldForUsersStream(id).observable)
+        )
+        .subscribe((customField) =>
+          this.setState({
+            customField: !isNilOrError(customField)
+              ? customField.data
+              : customField,
+          })
+        ),
     ];
   }
 
@@ -51,7 +66,7 @@ export default class GetCustomField extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

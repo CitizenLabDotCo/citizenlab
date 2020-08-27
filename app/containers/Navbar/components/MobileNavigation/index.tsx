@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -40,7 +40,9 @@ const NavigationIcon = styled(Icon)`
   height: 24px;
   width: 24px;
 
-  .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary {
+  .cl-icon-primary,
+  .cl-icon-accent,
+  .cl-icon-secondary {
     fill: ${colors.label};
   }
 `;
@@ -80,7 +82,9 @@ const NavigationItem = styled(Link)`
     ${NavigationIcon} {
       fill: ${(props) => props.theme.colorMain};
 
-      .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary  {
+      .cl-icon-primary,
+      .cl-icon-accent,
+      .cl-icon-secondary {
         fill: ${(props) => props.theme.colorMain};
       }
     }
@@ -106,16 +110,18 @@ interface State {}
 class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
   handleRef = (element: HTMLElement) => {
     this.props.setRef && this.props.setRef(element);
-  }
+  };
 
   render() {
     const { location, className } = this.props;
-    const urlSegments = (!isNilOrError(location) ? location.pathname.replace(/^\/|\/$/g, '').split('/') : ['']);
-    const secondUrlSegment = (urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null);
+    const urlSegments = !isNilOrError(location)
+      ? location.pathname.replace(/^\/|\/$/g, '').split('/')
+      : [''];
+    const secondUrlSegment =
+      urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null;
 
     return (
       <Container className={className} ref={this.handleRef}>
-
         <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
           <NavigationIconWrapper>
             <NavigationIcon ariaHidden name="homeFilled" />
@@ -125,16 +131,12 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/projects" className={secondUrlSegment === 'projects' ? 'active' : ''}>
+        <NavigationItem
+          to="/projects"
+          className={secondUrlSegment === 'projects' ? 'active' : ''}
+        >
           <NavigationIconWrapper>
-            <NavigationIcon
-              ariaHidden
-              name="folder"
-              colorTheme={{
-                clIconPrimary: `${colors.clIconPrimary}`,
-                clIconSecondary: `${colors.clIconAccent}`
-              }}
-            />
+            <NavigationIcon ariaHidden name="folder" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
@@ -142,9 +144,12 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
         </NavigationItem>
 
         <FeatureFlag name="ideas_overview">
-          <NavigationItem to="/ideas" className={secondUrlSegment === 'ideas' ? 'active' : ''}>
+          <NavigationItem
+            to="/ideas"
+            className={secondUrlSegment === 'ideas' ? 'active' : ''}
+          >
             <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="ideas" />
+              <NavigationIcon ariaHidden name="idea2" />
             </NavigationIconWrapper>
             <NavigationLabel>
               <FormattedMessage {...messages.mobilePageIdeas} />
@@ -153,7 +158,10 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
         </FeatureFlag>
 
         <FeatureFlag name="initiatives">
-          <NavigationItem to="/initiatives" className={secondUrlSegment === 'initiatives' ? 'active' : ''}>
+          <NavigationItem
+            to="/initiatives"
+            className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+          >
             <NavigationIconWrapper>
               <NavigationIcon ariaHidden name="initiatives" />
             </NavigationIconWrapper>
@@ -162,7 +170,6 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
             </NavigationLabel>
           </NavigationItem>
         </FeatureFlag>
-
       </Container>
     );
   }

@@ -23,9 +23,9 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const Name = styled.div<{ color?: string, emphasize?: boolean }>`
+const Name = styled.div<{ color?: string; emphasize?: boolean }>`
   color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }) => emphasize ? 500 : 'normal'};
+  font-weight: ${({ emphasize }) => (emphasize ? 500 : 'normal')};
   text-decoration: none;
   hyphens: auto;
 
@@ -81,20 +81,27 @@ interface InputProps {
   verificationBadge?: boolean;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const UserName = ({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color, verificationBadge }: Props) => {
+const UserName = ({
+  user,
+  className,
+  hideLastName,
+  linkToProfile,
+  emphasize,
+  canModerate,
+  color,
+  verificationBadge,
+}: Props) => {
   if (!isNilOrError(user)) {
     const firstName = get(user, 'attributes.first_name', '');
     const lastName = get(user, 'attributes.last_name', '');
     const nameComponent = (
       <Name
         emphasize={emphasize}
-        className={
-          `${linkToProfile ? 'linkToProfile' : ''}
+        className={`${linkToProfile ? 'linkToProfile' : ''}
           ${canModerate ? 'canModerate' : ''}
-          e2e-username`
-        }
+          e2e-username`}
         color={color}
       >
         {`${firstName} ${hideLastName ? '' : lastName}`}
@@ -103,20 +110,25 @@ const UserName = ({ user, className, hideLastName, linkToProfile, emphasize, can
     const verificationBadgeComponent = (isVerified?: boolean) => (
       <FeatureFlag name="verification">
         <Badge color={isVerified ? colors.clGreen : colors.label}>
-          {isVerified
-            ? <FormattedMessage {...messages.verified} />
-            : <FormattedMessage {...messages.notVerified} />
-          }
+          {isVerified ? (
+            <FormattedMessage {...messages.verified} />
+          ) : (
+            <FormattedMessage {...messages.notVerified} />
+          )}
         </Badge>
       </FeatureFlag>
     );
 
     if (linkToProfile) {
       return (
-        <Link to={`/profile/${user.attributes.slug}`} className={`e2e-author-link ${className || ''}`}>
+        <Link
+          to={`/profile/${user.attributes.slug}`}
+          className={`e2e-author-link ${className || ''}`}
+        >
           <Container>
             {nameComponent}
-            {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
+            {verificationBadge &&
+              verificationBadgeComponent(user.attributes.verified)}
           </Container>
         </Link>
       );
@@ -125,7 +137,8 @@ const UserName = ({ user, className, hideLastName, linkToProfile, emphasize, can
     return (
       <Container className={className || ''}>
         {nameComponent}
-        {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
+        {verificationBadge &&
+          verificationBadgeComponent(user.attributes.verified)}
       </Container>
     );
   }
@@ -138,11 +151,11 @@ const UserName = ({ user, className, hideLastName, linkToProfile, emphasize, can
 };
 
 const Data = adopt<DataProps, InputProps>({
-  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>
+  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UserName {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserName {...inputProps} {...dataProps} />}
   </Data>
 );

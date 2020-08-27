@@ -8,7 +8,9 @@ describe('Cookie consent form', () => {
   let userId: string = null as any;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then(user => userId = user.body.data.id);
+    cy.apiSignup(firstName, lastName, email, password).then(
+      (user) => (userId = user.body.data.id)
+    );
   });
   it('Shows the correct destinations when unsigned', () => {
     cy.visit('/');
@@ -34,9 +36,9 @@ describe('Cookie consent form', () => {
   it('Lets you pick your categories and save', () => {
     cy.visit('/');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
-    cy.get('#e2e-preference-dialog').get('.e2e-category').each(question =>
-      question.find('label').first().click()
-    );
+    cy.get('#e2e-preference-dialog')
+      .get('.e2e-category')
+      .each((question) => question.find('label').first().click());
     cy.get('#e2e-preferences-save').click();
   });
   it('When you get admin, lets you consent to admin destintions', () => {
@@ -47,14 +49,13 @@ describe('Cookie consent form', () => {
 
       cy.acceptCookies();
 
-      cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+      cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
 
         return cy.request({
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`
-
+            Authorization: `Bearer ${adminJwt}`,
           },
           method: 'PATCH',
           url: `web_api/v1/users/${userId}`,
@@ -63,8 +64,8 @@ describe('Cookie consent form', () => {
               email,
               password,
               roles: [{ type: 'admin' }],
-            }
-          }
+            },
+          },
         });
       });
 

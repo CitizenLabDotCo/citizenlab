@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Icon from 'components/UI/Icon';
-import IconTooltip from 'components/UI/IconTooltip';
+import { Icon, IconTooltip } from 'cl2-component-library';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -10,13 +9,14 @@ const timeout = 400;
 
 const Container = styled.div``;
 
-const ArrowIcon = styled(Icon) `
+const ArrowIcon = styled(Icon)`
   fill: ${colors.label};
   flex: 0 0 11px;
   height: 11px;
   width: 11px;
   margin-right: 8px;
-  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1), fill 80ms ease-out;
+  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
+    fill 80ms ease-out;
 
   &.opened {
     transform: rotate(90deg);
@@ -108,15 +108,14 @@ interface Props {
 }
 
 class Collapse extends PureComponent<Props> {
-
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   handleToggle = (event: React.MouseEvent) => {
     event.preventDefault();
     this.props.onToggle(event);
-  }
+  };
 
   render() {
     const { label, labelTooltipText, children, opened, className } = this.props;
@@ -124,8 +123,15 @@ class Collapse extends PureComponent<Props> {
     return (
       <Container className={className}>
         <Label>
-          <CollapseExpandButton type="button" onMouseDown={this.removeFocus} onClick={this.handleToggle}>
-            <ArrowIcon name="chevron-right" className={`${opened && 'opened'}`} />
+          <CollapseExpandButton
+            type="button"
+            onMouseDown={this.removeFocus}
+            onClick={this.handleToggle}
+          >
+            <ArrowIcon
+              name="chevron-right"
+              className={`${opened && 'opened'}`}
+            />
             {label}
           </CollapseExpandButton>
           {labelTooltipText && <IconTooltip content={labelTooltipText} />}
@@ -140,9 +146,7 @@ class Collapse extends PureComponent<Props> {
           enter={true}
           exit={true}
         >
-          <CollapseContainer>
-            {children}
-          </CollapseContainer>
+          <CollapseContainer>{children}</CollapseContainer>
         </CSSTransition>
       </Container>
     );
