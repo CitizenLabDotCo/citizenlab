@@ -2036,7 +2036,7 @@
   "app.errors.title_multiloc_blank": "Atorfiup taaguutaa allanneqassaaq",
   "app.errors.too_common": "Is too easy to guess",
   "app.errors.too_long": "Must be at most 72 characters long",
-  "app.errors.too_short": "Must be at least 8 characters long",
+  "app.errors.too_short": "Kode isissutissaq minnerpaamik 8-nik naqinneqassaaq.",
   "app.errors.unknown_group": "Ataatsimoortut {value} titarnerni quleriiaani nassaarineqartut {row} ilisimaneqanngillat",
   "app.errors.unknown_locale": "Oqaatsit {value} titarnerni quleriiaani nassaarineqartut {row} atortussanngortinneqarsimanngillat",
   "app.errors.unparseable_excel": "Excel-fil toqqagaq suliarineqarsinnaanngilaq",
