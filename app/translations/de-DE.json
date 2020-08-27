@@ -2034,7 +2034,7 @@
   "app.errors.password_blank": "Dies kann nicht leer sein",
   "app.errors.password_too_short": "Das Passwort muss mindestens 8 Zeichen lang sein",
   "app.errors.title_multiloc_blank": "Die Überschrift kann nicht leergelassen werden.",
-  "app.errors.too_common": "Ist zu leicht zu erraten",
+  "app.errors.too_common": "Ihr Passwort ist zu leicht zu erraten. Bitte wählen Sie ein stärkeres Passwort.",
   "app.errors.too_long": "Das Passwort darf höchstens 72 Zeichen lang sein",
   "app.errors.too_short": "Dein Passwort muss mindestens 8 Zeichen enthalten",
   "app.errors.unknown_group": "Die Gruppe {value} in der Zeile {row} ist ungültig oder unbekannt.",
