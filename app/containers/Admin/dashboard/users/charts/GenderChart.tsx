@@ -28,7 +28,11 @@ import {
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
-import { usersByGenderStream, IUsersByGender } from 'services/stats';
+import {
+  usersByGenderStream,
+  IUsersByGender,
+  usersByGenderXlsxEndpoint,
+} from 'services/stats';
 
 type State = {
   serie: { name: string; value: number; code: string }[] | null;
@@ -41,6 +45,7 @@ interface QueryProps {
 }
 
 interface Props extends QueryProps {
+  currentGroupFilterLabel: string | undefined;
   className?: string;
 }
 
@@ -120,15 +125,20 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     return res.length > 0 ? res : null;
   };
 
+  formatEntry(entry) {
+    return `${entry.name} : ${entry.value}`;
+  }
+
   render() {
+    const { colorMain, animationDuration, animationBegin } = this.props[
+      'theme'
+    ];
     const {
-      colorMain,
-      chartLabelSize,
-      chartLabelColor,
-      animationDuration,
-      animationBegin,
-    } = this.props['theme'];
-    const { className } = this.props;
+      className,
+      intl: { formatMessage },
+      currentGroupFilter,
+      currentGroupFilterLabel,
+    } = this.props;
     const { serie } = this.state;
 
     const getLabel = (entry) => `${entry.name} : ${entry.value}`;
@@ -140,9 +150,11 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
             <ExportMenu
-              className={className}
+              name={formatMessage(messages.usersByGenderTitle)}
               svgNode={this.currentChart}
-              {...this.props}
+              xlsxEndpoint={usersByGenderXlsxEndpoint}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+              currentGroupFilter={currentGroupFilter}
             />
           </GraphCardHeader>
           {!serie ? (
@@ -161,7 +173,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                     dataKey="value"
                     outerRadius={60}
                     fill={colorMain}
-                    label={getLabel}
+                    label={this.formatEntry}
                   >
                     {serie.map((entry, index) => (
                       <Cell

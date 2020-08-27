@@ -9,7 +9,11 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../../messages';
 
 // services
-import { IUsersByDomicile, usersByDomicileStream } from 'services/stats';
+import {
+  IUsersByDomicile,
+  usersByDomicileStream,
+  usersByDomicileXlsxEndpoint,
+} from 'services/stats';
 
 // components
 import BarChartByCategory from './BarChartByCategory';
@@ -21,6 +25,7 @@ interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   className?: string;
 }
 
@@ -71,6 +76,7 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
       graphUnit="users"
       stream={usersByDomicileStream}
       convertToGraphFormat={convertToGraphFormat}
+      xlsxEndpoint={usersByDomicileXlsxEndpoint}
     />
   );
 };

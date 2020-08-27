@@ -59,10 +59,12 @@ interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
+  xlsxEndpoint: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -86,6 +88,9 @@ export class BarChartByCategory extends React.PureComponent<
       animationDuration,
     } = this.props['theme'];
     const {
+      currentGroupFilterLabel,
+      currentGroupFilter,
+      xlsxEndpoint,
       className,
       graphTitleString,
       serie,
@@ -96,12 +101,20 @@ export class BarChartByCategory extends React.PureComponent<
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
     const unitName = formatMessage(messages[graphUnit]);
 
+    console.log(xlsxEndpoint);
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            <ExportMenu className={className} svgNode={this.currentChart} />
+            <ExportMenu
+              name={graphTitleString}
+              svgNode={this.currentChart}
+              xlsxEndpoint={xlsxEndpoint}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+              currentGroupFilter={currentGroupFilter}
+            />
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>

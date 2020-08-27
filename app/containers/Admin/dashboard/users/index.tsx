@@ -35,6 +35,7 @@ interface State {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
 }
 
 interface DataProps {
@@ -57,6 +58,7 @@ export class UsersDashboard extends PureComponent<
       startAtMoment: undefined,
       endAtMoment: moment(),
       currentGroupFilter: undefined,
+      currentGroupFilterLabel: undefined,
     };
   }
 
@@ -69,7 +71,10 @@ export class UsersDashboard extends PureComponent<
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({ currentGroupFilter: filter.value });
+    this.setState({
+      currentGroupFilter: filter.value,
+      currentGroupFilterLabel: filter.label,
+    });
   };
 
   generateGroupFilterOptions = () => {
@@ -95,7 +100,12 @@ export class UsersDashboard extends PureComponent<
   };
 
   render() {
-    const { currentGroupFilter, endAtMoment, startAtMoment } = this.state;
+    const {
+      currentGroupFilter,
+      endAtMoment,
+      startAtMoment,
+      currentGroupFilterLabel,
+    } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(
@@ -135,11 +145,13 @@ export class UsersDashboard extends PureComponent<
               startAt={startAt}
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
             />
             <RegistrationFieldsToGraphs
               startAt={startAt}
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
             />
             <MostActiveUsersList
               currentGroupFilter={currentGroupFilter}
