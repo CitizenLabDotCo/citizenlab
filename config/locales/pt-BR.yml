@@ -112,6 +112,9 @@ pt:
       location:
         title: Localização
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:     
       images:
         title: Imagens
         description:
