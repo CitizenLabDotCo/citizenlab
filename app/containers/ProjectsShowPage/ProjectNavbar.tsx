@@ -14,12 +14,12 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, defaultStyles } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled, { withTheme } from 'styled-components';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import PBNavbarButton from './pb/PBNavbarButton';
 import IdeaButton from 'components/IdeaButton';
@@ -37,7 +37,7 @@ const ProjectNavbarWrapper = styled.div`
   top: ${({ theme }) => theme.menuHeight}px;
   z-index: 1002;
   background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: ${defaultStyles.boxShadow};
 
   ${media.smallerThanMinTablet`
     overflow-x: scroll;
@@ -253,7 +253,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                       className="e2e-project-ideas-link"
                     >
                       <ProjectNavbarIcon
-                        name="idea2"
+                        name="idea"
                         className="idea"
                         ariaHidden
                       />

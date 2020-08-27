@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
-<PostPreview__Container>
-  <PostPreview__Top>
+<Container>
+  <Top>
     <Button
       buttonStyle="text"
       icon="edit"
@@ -23,8 +23,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         id="app.components.admin.PostManager.PostPreview.delete"
       />
     </Button>
-  </PostPreview__Top>
-  <PostPreview__Content>
+  </Top>
+  <Content>
     <IdeaContent__StyledTitle
       postId="myIdeasiD"
       postType="idea"
@@ -37,6 +37,21 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           ideaId="myIdeasiD"
           ideaPublishedAt="2019-03-19T00: 00: 00.000Z"
         />
+        <IdeaContent__BodySectionTitle>
+          <FormattedMessage
+            defaultMessage="Proposed budget"
+            id="app.containers.IdeasShow.proposedBudgetTitle"
+          />
+        </IdeaContent__BodySectionTitle>
+        <Component
+          proposedBudget={45}
+        />
+        <IdeaContent__BodySectionTitle>
+          <FormattedMessage
+            defaultMessage="Description"
+            id="app.containers.IdeasShow.bodyTitle"
+          />
+        </IdeaContent__BodySectionTitle>
         <IdeaContent__StyledBody
           body="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
           postId="myIdeasiD"
@@ -61,8 +76,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         />
       </IdeaContent__Right>
     </IdeaContent__Row>
-  </PostPreview__Content>
-</PostPreview__Container>
+  </Content>
+</Container>
 `;
 
 exports[`<IdeaContent /> renders correctly when ideaId is not defined 1`] = `""`;

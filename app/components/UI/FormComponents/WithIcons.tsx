@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
-
 import styled from 'styled-components';
-import { booleanClass } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import Icon, { IconNames } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 import { FormLabelProps, FormLabelStyled, FormSubtextStyled, Spacer } from '.';
 
 interface FormLabelWithIconProps extends FormLabelProps {
@@ -39,10 +37,9 @@ export const FormLabelWithIcon = memo(
   }: FormLabelWithIconProps) => (
     <FormLabelStyled
       id={id}
-      className={`${booleanClass(className, className)}${booleanClass(
-        hidden,
-        'invisible'
-      )}`}
+      className={[className, hidden ? 'invisible' : null]
+        .filter((item) => item)
+        .join(' ')}
       htmlFor={htmlFor}
     >
       <LabelContainer>

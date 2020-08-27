@@ -16,13 +16,10 @@ import {
 } from 'services/ideaCustomFields';
 
 // components
-import Icon from 'components/UI/Icon';
-const TextAreaMultilocWithLocaleSwitcher = lazy(() =>
-  import('components/UI/TextAreaMultilocWithLocaleSwitcher')
+import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
+const QuillMutilocWithLocaleSwitcher = lazy(() =>
+  import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
 );
-import Toggle from 'components/UI/Toggle';
-import IconToolTip from 'components/UI/IconTooltip';
-import Spinner from 'components/UI/Spinner';
 
 // i18n
 import T from 'components/T';
@@ -169,7 +166,12 @@ interface Props {
   className?: string;
 }
 
-const disablableFields = ['topic_ids', 'location', 'attachments'];
+const disablableFields = [
+  'topic_ids',
+  'location',
+  'attachments',
+  'proposed_budget',
+];
 const alwaysRequiredFields = ['title', 'body'];
 
 const IdeaCustomField = memo<Props & InjectedLocalized>(
@@ -280,7 +282,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         ).toLowerCase()}-enabled-toggle-label
                       `}
                       />
-                      <IconToolTip
+                      <IconTooltip
                         content={
                           <FormattedMessage {...messages.enabledTooltip} />
                         }
@@ -300,7 +302,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         ).toLowerCase()}-required-toggle-label
                       `}
                       />
-                      <IconToolTip
+                      <IconTooltip
                         content={
                           <FormattedMessage {...messages.requiredTooltip} />
                         }
@@ -311,11 +313,14 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
 
                 {fieldEnabled && (
                   <Suspense fallback={<Spinner />}>
-                    <TextAreaMultilocWithLocaleSwitcher
+                    <QuillMutilocWithLocaleSwitcher
+                      id={`${ideaCustomField.id}-description`}
+                      noImages={true}
+                      noVideos={true}
+                      noAlign={true}
                       valueMultiloc={descriptionMultiloc}
                       onChange={handleDescriptionOnChange}
-                      rows={3}
-                      labelTextElement={
+                      label={
                         <LocaleSwitcherLabelText>
                           <FormattedMessage {...messages.descriptionLabel} />
                         </LocaleSwitcherLabelText>

@@ -16,8 +16,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import { FormattedMessage } from 'utils/cl-intl';
-import Icon from 'components/UI/Icon';
-import Radio from 'components/UI/Radio';
+import { Icon, Radio } from 'cl2-component-library';
 
 // i18n
 import T from 'components/T';

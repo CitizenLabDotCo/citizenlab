@@ -9,7 +9,7 @@ import { IGeotaggedIdeaData } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import Map from 'components/Map';
 import IdeaPane from './IdeaPane';
 import Warning from 'components/UI/Warning';

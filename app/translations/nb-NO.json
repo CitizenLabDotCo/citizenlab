@@ -1553,7 +1553,7 @@
   "app.containers.IdeasShow.a11y_budgetControl": "Idé - oppgaver og status",
   "app.containers.IdeasShow.a11y_voteControl": "Avstemming og status ",
   "app.containers.IdeasShow.bodyTitle": "Description",
-  "app.containers.IdeasShow.currentStatus": "Status",
+  "app.containers.IdeasShow.currentStatus": "Nåværende status",
   "app.containers.IdeasShow.deletedUser": "ukjent forfatter",
   "app.containers.IdeasShow.emailSharingBody": "Hva synes du om ideen? Stem på ideen og delta i diskusjonen! {ideaTitle} på {ideaUrl}!",
   "app.containers.IdeasShow.emailSharingSubject": "Stem på min idé: {ideaTitle}",

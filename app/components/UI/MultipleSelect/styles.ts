@@ -1,5 +1,4 @@
-import { colors, fontSizes } from 'utils/styleUtils';
-import { transparentize } from 'polished';
+import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 export function getSelectStyles(borderColor = colors.border) {
   return {
@@ -17,9 +16,7 @@ export function getSelectStyles(borderColor = colors.border) {
       borderRadius: '3px',
       minHeight: '48px',
       backgroundColor: '#fff',
-      boxShadow: isFocused
-        ? `0px 0px 0px 1px ${transparentize(0.4, colors.focussedBorder)}`
-        : 'none',
+      boxShadow: isFocused ? defaultStyles.boxShadowFocused : 'none',
       cursor: 'pointer',
       '&:hover': {
         borderColor: isFocused ? colors.focussedBorder : colors.hoveredBorder,

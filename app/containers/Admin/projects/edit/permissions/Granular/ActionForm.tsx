@@ -6,7 +6,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';

@@ -10,9 +10,8 @@ import bowser from 'bowser';
 import NotificationMenu from './components/NotificationMenu';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
-import Icon from 'components/UI/Icon';
+import { Icon, Dropdown } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
-import Dropdown from 'components/UI/Dropdown';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
 import Fragment from 'components/Fragment';
@@ -47,7 +46,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 const Container = styled.header`
   width: 100vw;
@@ -58,9 +57,7 @@ const Container = styled.header`
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
-  border-bottom: solid 1px
-    ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};
-  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.03);
+  box-shadow: ${defaultStyles.boxShadow};
   z-index: 1004;
 
   &.hideNavbar {
@@ -371,7 +368,7 @@ const LogInMenuItem = styled.button`
 `;
 
 const SignUpMenuItem = styled.button`
-  height: calc(100% + 1px);
+  height: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
   line-height: normal;

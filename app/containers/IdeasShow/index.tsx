@@ -23,6 +23,7 @@ import IdeaMeta from './IdeaMeta';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
+import IdeaProposedBudget from './IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
@@ -38,7 +39,7 @@ import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import Footer from 'components/PostShowComponents/Footer';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
@@ -87,8 +88,8 @@ import {
   media,
   colors,
   fontSizes,
-  postPageContentMaxWidth,
   viewportWidths,
+  defaultCardStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
@@ -96,6 +97,7 @@ import {
   rightColumnWidthDesktop,
   columnsGapTablet,
   rightColumnWidthTablet,
+  pageContentMaxWidth,
 } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -114,19 +116,25 @@ const Loading = styled.div`
   `}
 `;
 
-const Container = styled.main`
+const Container = styled.main<{ insideModal: boolean }>`
   display: flex;
   flex-direction: column;
   min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+    100vh -
+      ${(props) =>
+        props.insideModal
+          ? props.theme.menuHeight
+          : props.theme.menuHeight + props.theme.footerHeight}px
   );
   background: #fff;
   opacity: 0;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) =>
+      props.insideModal
+        ? props.theme.mobileMenuHeight
+        : props.theme.mobileMenuHeight}px - ${(props) =>
+    props.theme.mobileTopBarHeight}px);
   `}
 
   &.content-enter {
@@ -146,7 +154,7 @@ const Container = styled.main`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${pageContentMaxWidth}px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -211,6 +219,12 @@ const IdeaHeader = styled.div`
     margin-top: 0px;
     margin-bottom: 45px;
   `}
+`;
+
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 28px;
 `;
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
@@ -278,10 +292,8 @@ const ControlWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 45px;
   padding: 35px;
-  border: 1px solid #e8e8e8;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
-    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  border: 1px solid #e0e0e0;
+  ${defaultCardStyle};
 `;
 
 const ControlWrapperHorizontalRule = styled.hr`
@@ -595,6 +607,7 @@ export class IdeasShow extends PureComponent<
         idea?.relationships?.topics?.data?.map((item) => item.id) || [];
       const ideaUrl = location.href;
       const ideaId = idea.id;
+      const proposedBudget = idea?.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
       const participationContextType =
         actionInfos?.participationContextType || null;
@@ -627,6 +640,13 @@ export class IdeasShow extends PureComponent<
         ideaCustomFieldsSchemas,
         locale
       );
+      const proposedBudgetEnabled = this.isFieldEnabled(
+        'proposed_budget',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+      const hasMultipleBodyAttributes =
+        proposedBudget !== null && proposedBudgetEnabled && !!ideaBody;
 
       const utmParams = !isNilOrError(authUser)
         ? {
@@ -712,6 +732,23 @@ export class IdeasShow extends PureComponent<
                     {...messages.invisibleTitleContent}
                   />
                 </ScreenReaderOnly>
+
+                {proposedBudgetEnabled &&
+                  proposedBudget !== null &&
+                  hasMultipleBodyAttributes && (
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+                  )}
+                {proposedBudgetEnabled && proposedBudget !== null && (
+                  <IdeaProposedBudget proposedBudget={proposedBudget} />
+                )}
+
+                {hasMultipleBodyAttributes && (
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                )}
                 <Body
                   postType="idea"
                   postId={ideaId}
@@ -884,7 +921,11 @@ export class IdeasShow extends PureComponent<
           enter={true}
           exit={false}
         >
-          <Container id="e2e-idea-show" className={className}>
+          <Container
+            id="e2e-idea-show"
+            className={className}
+            insideModal={!!this.props.insideModal}
+          >
             {content}
           </Container>
         </CSSTransition>

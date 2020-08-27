@@ -6,14 +6,14 @@ import { Subscription } from 'rxjs';
 import { CLError, Multiloc, IOption } from 'typings';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
-import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
+import { Input, IconTooltip, Label } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -22,7 +22,6 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import {
@@ -36,7 +35,7 @@ import {
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-interface Props {}
+export interface Props {}
 
 interface State {
   loading: boolean;
@@ -49,7 +48,10 @@ interface State {
   hasUrlError: boolean;
 }
 
-export default class SettingsGeneralTab extends PureComponent<Props, State> {
+class SettingsGeneralTab extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -186,6 +188,9 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     const { tenant } = this.state;
 
     if (tenant) {
+      const {
+        intl: { formatMessage },
+      } = this.props;
       const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
@@ -265,7 +270,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
               <Label>
                 <FormattedMessage {...messages.urlTitle} />
                 <IconTooltip
-                  content={<FormattedMessage {...messages.urlTitleTooltip} />}
+                  content={formatMessage(messages.urlTitleTooltip)}
                 />
               </Label>
               <Input
@@ -273,11 +278,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
                 placeholder="https://..."
                 onChange={this.handleUrlOnChange}
                 value={tenantSite}
-                error={
-                  hasUrlError ? (
-                    <FormattedMessage {...messages.urlError} />
-                  ) : null
-                }
+                error={hasUrlError ? formatMessage(messages.urlError) : null}
               />
             </SectionField>
 
@@ -299,3 +300,5 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(SettingsGeneralTab);
