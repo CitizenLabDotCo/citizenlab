@@ -1,5 +1,19 @@
 # Changelog
 
+## 2020-08-27
+
+### Added
+
+- Support for rich text in field descriptions in the idea form.
+- New "Propsed buget" field in the idea form.
+
+### Changed
+
+- Password are checked against a list of common passwords before validation.
+- Improving the security around xlsx exports (escaping formula, access restrictions, etc.)
+- Adding request throttling (rate-limit) rules.
+- Improving the consistency of the focus style.
+
 ## 2020-07-30
 
 ### Added
