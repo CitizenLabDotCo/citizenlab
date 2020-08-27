@@ -155,10 +155,6 @@ export default defineMessages({
     id: 'app.components.Comments.seeOriginal',
     defaultMessage: 'See original',
   },
-  noComments: {
-    id: 'app.components.Comments.noComments',
-    defaultMessage: 'There are no comments yet.',
-  },
   loadingMoreComments: {
     id: 'app.containers.Comments.loadingMoreComments',
     defaultMessage: 'Loading more comments...',

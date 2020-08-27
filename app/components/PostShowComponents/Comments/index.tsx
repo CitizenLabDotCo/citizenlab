@@ -1,24 +1,21 @@
 // libraries
 import React, { memo, useState, useCallback, useMemo } from 'react';
-import { get, isUndefined, isEmpty } from 'lodash-es';
+import { get, isUndefined } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'services/permissions/roles';
 
 // components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentingDisabled from './CommentingDisabled';
-import Warning from 'components/UI/Warning';
 import CommentSorting from './CommentSorting';
 
 // i18n
@@ -71,10 +68,6 @@ const StyledCommentSorting = styled(CommentSorting)`
   `}
 `;
 
-const StyledWarning = styled(Warning)`
-  margin-bottom: 20px;
-`;
-
 const LoadMore = styled.div`
   width: 100%;
   height: 0px;
@@ -101,7 +94,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
   comments: GetCommentsChildProps;
   project: GetProjectChildProps;
@@ -110,7 +102,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(
-  ({ postId, postType, authUser, post, comments, project, className }) => {
+  ({ postId, postType, post, comments, project, className }) => {
     const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
     const [posting, setPosting] = useState(false);
     const {
@@ -166,9 +158,6 @@ const CommentsSection = memo<Props>(
         'attributes.action_descriptor.commenting.disabled_reason',
         null
       ) as IdeaCommentingDisabledReason | null;
-      const userIsAdmin = !isNilOrError(authUser)
-        ? isAdmin({ data: authUser })
-        : false;
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
@@ -176,16 +165,6 @@ const CommentsSection = memo<Props>(
 
       return (
         <Container className={className || ''}>
-          {/*
-          Show warning messages when there are no comments and you're logged in as an admin.
-          Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
-        */}
-          {isEmpty(commentsList) && userIsAdmin && (
-            <StyledWarning>
-              <FormattedMessage {...messages.noComments} />
-            </StyledWarning>
-          )}
-
           <CommentingDisabled
             commentingEnabled={commentingEnabled}
             commentingDisabledReason={commentingDisabledReason}
@@ -243,7 +222,6 @@ const CommentsSection = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   post: ({ postId, postType, render }) => (
     <GetPost id={postId} type={postType}>
       {render}
