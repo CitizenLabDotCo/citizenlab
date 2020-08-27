@@ -34,26 +34,14 @@ const Container = styled.div`
 `;
 
 const ContainerInner = styled.div`
-  padding-top: 25px;
-  padding-bottom: 35px;
   position: relative;
 
   &.parent {
-    padding-top: 28px;
-  }
-
-  &.lastComment {
-    border-bottom: none;
-  }
-
-  &.parent {
-    padding-left: 35px;
-    padding-right: 35px;
+    margin-bottom: 20px;
   }
 
   &.child {
-    margin-left: 75px;
-    margin-right: 35px;
+    margin-left: 30px;
   }
 
   ${media.smallerThanMinTablet`
@@ -80,6 +68,10 @@ const ContainerInner = styled.div`
 
 const Content = styled.div`
   display: flex;
+
+  &.indent {
+    margin-left: 40px;
+  }
 `;
 
 const BodyAndFooter = styled.div`
@@ -108,7 +100,6 @@ interface InputProps {
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
-  hasBottomBorder?: boolean;
   hasChildComments?: boolean;
   canReply?: boolean;
   last?: boolean;
@@ -128,7 +119,6 @@ interface State {
 
 class Comment extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
-    hasBottomBorder: true,
     hasChildComment: false,
     canReply: true,
     last: false,
@@ -161,7 +151,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
       commentType,
       comment,
       author,
-      hasBottomBorder,
       hasChildComments,
       last,
       className,
@@ -185,9 +174,7 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
           } e2e-comment`}
         >
           <ContainerInner
-            className={`${commentType} ${lastComment ? 'lastComment' : ''} ${
-              hasBottomBorder ? 'hasBottomBorder' : ''
-            }`}
+            className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
           >
             {comment.attributes.publication_status === 'published' && (
               <>
@@ -198,9 +185,10 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                   commentType={commentType}
                   commentCreatedAt={comment.attributes.created_at}
                   moderator={moderator}
+                  className={commentType === 'parent' ? 'marginBottom' : ''}
                 />
 
-                <Content>
+                <Content className={commentType === 'child' ? 'indent' : ''}>
                   <BodyAndFooter>
                     <CommentBody
                       commentId={commentId}
