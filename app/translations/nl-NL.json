@@ -556,7 +556,7 @@
   "app.container.IdeaForm.budgetLabel": "Bedrag",
   "app.container.IdeaForm.fileAttachmentsTitle": "Bijlagen",
   "app.container.IdeaForm.noBudgetError": "Gelieve een bedrag toe te voegen",
-  "app.container.IdeaForm.noproposedBudgetError": "Please provide a budget estimation",
+  "app.container.IdeaForm.noproposedBudgetError": "Geef hier een schatting van het benodigde budget",
   "app.container.IdeaForm.proposedBudgetLabel": "Voorgesteld budget in {currency}",
   "app.container.InitiativeForm.fileUploadLabel": "Bijlagen",
   "app.container.InitiativeForm.fileUploadLabelSubtext": "Voeg bijlagen toe om anderen meer informatie en context te geven",
