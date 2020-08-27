@@ -339,9 +339,11 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             aria-live="polite"
           />
 
-          <UpvoteCount className={disabled ? 'disabled' : 'enabled'}>
-            {upvoteCount}
-          </UpvoteCount>
+          {upvoteCount > 0 && (
+            <UpvoteCount className={disabled ? 'disabled' : 'enabled'}>
+              {upvoteCount}
+            </UpvoteCount>
+          )}
 
           {!disabled && (
             <UpvoteLabel onClick={this.onVote}>
