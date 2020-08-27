@@ -67,6 +67,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
             showModeration={moderator}
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
+            horizontalLayout
           />
         </Left>
 
