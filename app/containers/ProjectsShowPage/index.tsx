@@ -10,6 +10,7 @@ import ProjectHeader from './ProjectHeader';
 import ProjectIdeas from './ProjectIdeas';
 import ProjectSurvey from './ProjectSurvey';
 import ProjectPoll from './ProjectPoll';
+import ProjectVolunteering from './ProjectVolunteering';
 import ProjectEvents from './ProjectEvents';
 import ProjectTimelineContainer from './timeline';
 import { Spinner } from 'cl2-component-library';
@@ -97,6 +98,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
             <ProjectIdeas projectId={projectId} />
             <ProjectSurvey projectId={projectId} />
             <ProjectPoll projectId={projectId} />
+            <ProjectVolunteering projectId={projectId} />
           </>
         ) : (
           <ProjectTimelineContainer projectId={projectId} />

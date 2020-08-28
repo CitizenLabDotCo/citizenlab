@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import VolunteeringSection from '../volunteering/VolunteeringSection';
+import Volunteering from '../volunteering';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -43,11 +43,7 @@ class PhaseVolunteering extends PureComponent<Props, State> {
             className || ''
           }`}
         >
-          <VolunteeringSection
-            phaseId={phase.id}
-            projectId={projectId}
-            type="phase"
-          />
+          <Volunteering phaseId={phase.id} projectId={projectId} type="phase" />
         </Container>
       );
     }
