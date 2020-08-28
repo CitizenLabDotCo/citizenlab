@@ -7,20 +7,20 @@ const DropdownContainer = styled.div`
   width: 100%;
 `;
 
-const ShareButton = () => {
+const SharingButton = () => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(0);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (ref.current) {
-      setButtonWidth(ref.current.offsetWidth)
+      setButtonWidth(ref.current.offsetWidth);
     }
-  })
+  });
 
   const toggleDropdown = () => {
     setDropdownOpened(!dropdownOpened);
-  }
+  };
 
   // TODO: add icon
   const buttonComponent = (
@@ -39,7 +39,7 @@ const ShareButton = () => {
       onClickOutside={toggleDropdown}
       dropdownWidth={dropdownWidth}
     />
-  )
-}
+  );
+};
 
-export default ShareButton;
+export default SharingButton;
