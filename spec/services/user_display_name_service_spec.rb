@@ -9,7 +9,7 @@ describe UserDisplayNameService do
     @admin = build(:admin, first_name: "Almighty", last_name: "Admin")
   end
 
-  describe "when shallow anonymization is enabled" do
+  context "when 'abbreviated_user_names' is enabled" do
 
     before(:all) do
       @tenant = build(:tenant)
@@ -51,7 +51,7 @@ describe UserDisplayNameService do
     end
   end
 
-  describe "when shallow anonymization is disabled" do
+  context "when 'abbreviated_user_names' is disabled" do
 
     before(:all) do
       @tenant = build(:tenant)
