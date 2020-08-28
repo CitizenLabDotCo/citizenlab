@@ -144,7 +144,6 @@ exports.shortenedAppLocalePairs = {
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
-  en: 'en-us',
   'en-GB': 'en-gb',
   'en-CA': 'en-ca',
   'fr-BE': 'fr',
