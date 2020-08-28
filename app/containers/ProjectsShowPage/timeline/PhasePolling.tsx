@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import PollSection from '../PollSection';
+import PollSection from '../poll/PollSection';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';

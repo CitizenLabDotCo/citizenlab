@@ -11,7 +11,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Fragment from 'components/Fragment';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
-import ProjectMetaData from './ProjectMetaData';
+import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ReactResizeDetector from 'react-resize-detector';
 
 // hooks
@@ -173,16 +173,17 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                     </ReadMoreInnerWrapper>
                   </ReadMoreOuterWrapper>
                 )}
+
+              {!isNilOrError(projectFiles) &&
+                projectFiles &&
+                projectFiles.data.length > 0 && (
+                  <FileAttachments files={projectFiles.data} />
+                )}
             </ProjectDescription>
-            {!isNilOrError(projectFiles) &&
-              projectFiles &&
-              projectFiles.data.length > 0 && (
-                <FileAttachments files={projectFiles.data} />
-              )}
           </Left>
 
           <Right>
-            <ProjectMetaData projectId={project.id} />
+            <ProjectInfoSideBar projectId={project.id} />
           </Right>
         </Fragment>
       </Container>

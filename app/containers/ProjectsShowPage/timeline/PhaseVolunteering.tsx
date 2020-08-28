@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import VolunteeringSection from '../VolunteeringSection';
+import VolunteeringSection from '../volunteering/VolunteeringSection';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';

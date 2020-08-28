@@ -13,19 +13,10 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StyledIdeaCards = styled(IdeaCards)`
-  &.budgeting {
-    margin-top: 200px;
-
-    ${media.smallerThanMaxTablet`
-      margin-top: 180px;
-    `}
-  }
-`;
+const StyledIdeaCards = styled(IdeaCards)``;
 
 interface InputProps {
   projectId: string;
@@ -54,7 +45,7 @@ class PhaseIdeas extends PureComponent<Props, State> {
         participationMethod === 'budgeting'
       ) {
         return (
-          <Container className={className}>
+          <Container className={className || ''}>
             <StyledIdeaCards
               className={participationMethod}
               type="load-more"

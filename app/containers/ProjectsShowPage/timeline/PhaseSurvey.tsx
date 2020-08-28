@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Survey from './survey';
+import Survey from '../survey';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -18,6 +18,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   padding-bottom: 100px;
+  border: solid 1px red;
 `;
 
 interface InputProps {
@@ -45,7 +46,7 @@ class PhaseSurvey extends PureComponent<Props, State> {
       phase.attributes.survey_service
     ) {
       return (
-        <Container>
+        <Container className={className || ''}>
           <ScreenReaderOnly>
             <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
           </ScreenReaderOnly>

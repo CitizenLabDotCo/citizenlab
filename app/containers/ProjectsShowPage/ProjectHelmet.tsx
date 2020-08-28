@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useTenantLocales from 'hooks/useTenantLocales';
-import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
 
 // utils
@@ -22,20 +21,21 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// typings
+import { IProjectData } from 'services/projects';
+
 interface Props {
-  projectSlug: string;
+  project: IProjectData;
 }
 
-const Meta = memo<Props & InjectedIntlProps>(({ projectSlug, intl }) => {
+const ProjectHelmet = memo<Props & InjectedIntlProps>(({ project, intl }) => {
   const locale = useLocale();
   const tenantLocales = useTenantLocales();
   const authUser = useAuthUser();
-  const project = useProject({ projectSlug });
 
   if (
     !isNilOrError(locale) &&
     !isNilOrError(tenantLocales) &&
-    !isNilOrError(project) &&
     project.attributes
   ) {
     const { formatMessage } = intl;
@@ -93,6 +93,6 @@ const Meta = memo<Props & InjectedIntlProps>(({ projectSlug, intl }) => {
   return null;
 });
 
-const MetaWithHoc = injectIntl<Props>(Meta);
+const ProjectHelmetWithHoC = injectIntl<Props>(ProjectHelmet);
 
-export default MetaWithHoc;
+export default ProjectHelmetWithHoC;

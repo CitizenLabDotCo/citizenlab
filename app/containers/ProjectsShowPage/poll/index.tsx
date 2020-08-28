@@ -4,7 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import PollSection from '../PollSection';
+import PollSection from './PollSection';
 
 // resources
 import GetProject from 'resources/GetProject';

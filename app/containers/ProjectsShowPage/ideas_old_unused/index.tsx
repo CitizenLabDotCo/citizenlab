@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import EventsPreview from '../EventsPreview';
+import EventsPreview from '../EventsPreview_old_unused';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';

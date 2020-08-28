@@ -5,11 +5,11 @@ import { Subscription } from 'rxjs';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectNavbar from './ProjectNavbar';
+import ProjectNavbar from './ProjectNavbar_old_unused';
 import IdeaButton from 'components/IdeaButton';
 
 // events
-import { selectedPhase$ } from 'containers/ProjectsShowPage/process/Timeline';
+import { selectedPhase$ } from 'containers/ProjectsShowPage/timeline/Timeline';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';

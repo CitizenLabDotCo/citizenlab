@@ -4,7 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import VolunteeringSection from '../VolunteeringSection';
+import VolunteeringSection from './VolunteeringSection';
 
 // resources
 import GetProject from 'resources/GetProject';
