@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-import IdeaCTAButton from './IdeaCTAButton';
+import IdeaCTAButton from '../IdeaCTAButton';
 
 const DropdownContainer = styled.div`
   width: 100%;
 `;
 
-const SharingButton = () => {
+const SharingButtonWithDropdown = () => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(0);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -42,4 +42,4 @@ const SharingButton = () => {
   );
 };
 
-export default SharingButton;
+export default SharingButtonWithDropdown;
