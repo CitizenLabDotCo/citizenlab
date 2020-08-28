@@ -22,9 +22,9 @@ export interface IIdeaStatus {
   data: IIdeaStatusData;
 }
 
-export function ideaStatusStream(ideaId: string) {
+export function ideaStatusStream(statusId: string) {
   return streams.get<IIdeaStatus>({
-    apiEndpoint: `${API_PATH}/idea_statuses/${ideaId}`,
+    apiEndpoint: `${API_PATH}/idea_statuses/${statusId}`,
   });
 }
 
