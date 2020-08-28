@@ -23,7 +23,7 @@ import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import AssignBudgetWrapper from './AssignBudgetWrapper';
+import AssignBudgetWrapper from './CTABox/ParticipatoryBudgettingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaStatus from './IdeaStatus';
@@ -35,7 +35,8 @@ import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
-import CTABox from './CTABox';
+import VotingCTABox from './CTABox/VotingCTABox';
+import ParticipatoryBudgettingCTABox from './CTABox/ParticipatoryBudgettingCTABox';
 import MetaInformation from './MetaInformation';
 
 // utils
@@ -283,18 +284,12 @@ const MetaContent = styled.div`
   flex-direction: column;
 `;
 
-const StyledCTABox = styled(CTABox)`
+const StyledVotingCTABox = styled(VotingCTABox)`
   margin-bottom: 20px;
 `;
 
-const ControlWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 45px;
-  padding: 35px;
-  border: 1px solid #e0e0e0;
-  ${defaultCardStyle};
+const StyledPBCTABox = styled(ParticipatoryBudgettingCTABox)`
+  margin-bottom: 20px;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -738,33 +733,19 @@ export class IdeasShow extends PureComponent<
               {biggerThanLargeTablet && (
                 <RightColumnDesktop>
                   <MetaContent>
-                    <StyledCTABox ideaId={ideaId} projectId={projectId} />
-                    {showBudgetControl && (
-                      <ControlWrapper className="e2e-vote-controls-desktop">
-                        {participationContextId &&
-                          participationContextType &&
-                          budgetingDescriptor && (
-                            <>
-                              <ScreenReaderOnly>
-                                <FormattedMessage
-                                  tagName="h2"
-                                  {...messages.a11y_budgetControl}
-                                />
-                              </ScreenReaderOnly>
-                              <AssignBudgetWrapper
-                                ideaId={ideaId}
-                                projectId={projectId}
-                                participationContextId={participationContextId}
-                                participationContextType={
-                                  participationContextType
-                                }
-                                budgetingDescriptor={budgetingDescriptor}
-                              />
-                            </>
-                          )}
-                      </ControlWrapper>
-                    )}
-
+                    <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
+                    {showBudgetControl &&
+                      participationContextId &&
+                      participationContextType &&
+                      budgetingDescriptor && (
+                        <StyledPBCTABox
+                          ideaId={ideaId}
+                          projectId={projectId}
+                          participationContextId={participationContextId}
+                          participationContextType={participationContextType}
+                          budgetingDescriptor={budgetingDescriptor}
+                        />
+                      )}
                     <SharingWrapper>
                       <Sharing
                         context="idea"
