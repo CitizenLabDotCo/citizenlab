@@ -1736,6 +1736,7 @@
   "app.containers.Projects.invisibleTitleIdeasList": "Alle ideer til prosjektet",
   "app.containers.Projects.invisibleTitleIdeasListPhase": "Alle ideer for denne fasen",
   "app.containers.Projects.invisibleTitlePhaseAbout": "Om fasen",
+  "app.containers.Projects.invisibleTitlePoll": "",
   "app.containers.Projects.invisibleTitleSurvey": "Svar på undersøkelsenn",
   "app.containers.Projects.location": "Sted:",
   "app.containers.Projects.manageBudget": "Administrer utgifter",

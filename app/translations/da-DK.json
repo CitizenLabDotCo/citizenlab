@@ -1736,6 +1736,7 @@
   "app.containers.Projects.invisibleTitleIdeasList": "{tenantName, select, DeloitteDK {Alle indlæg tilhørende dette verdensmål} other {Alle ideer til dette projekt}}",
   "app.containers.Projects.invisibleTitleIdeasListPhase": "{tenantName, select, DeloitteDK {Alle indlæg i denne fase} other {Alle ideer til denne fase}}",
   "app.containers.Projects.invisibleTitlePhaseAbout": "Om denne fase\n",
+  "app.containers.Projects.invisibleTitlePoll": "",
   "app.containers.Projects.invisibleTitleSurvey": "Besvar spørgeskemaet",
   "app.containers.Projects.location": "Lokalitet:",
   "app.containers.Projects.manageBudget": "Administrer udgifter ",
