@@ -4,18 +4,29 @@ import BudgetAssignment from './BudgetAssignment';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
-  background-color: #edeff0; // TODO: add color to component library
   border-radius: 2px;
-  padding: 25px 15px;
+  border-bottom: 1px solid ${colors.separation};
+  margin-bottom: 30px;
+`;
+
+const BudgetAssignmentContainer = styled.div`
+  background-color: #edeff0; // TODO: add color to component library
+  padding: 25px 30px;
+`;
+
+const ButtonsContainer = styled.div`
+  margin-bottom: 30px;
 `;
 
 const StyledGoToCommentsButton = styled(GoToCommentsButton)`
   margin-bottom: 10px;
+  border: 1px solid #dddddd;
 `;
 
 interface Props {
@@ -37,9 +48,13 @@ const ParticipatoryBudgettingCTABox = (props: Props) => {
 
     // TODO: a11y title
     return (
-      <Container className={className}>
-        <BudgetAssignment {...props} />
-        {commentingEnabled && <StyledGoToCommentsButton />}
+      <Container>
+        <BudgetAssignmentContainer className={className}>
+          <BudgetAssignment {...props} />
+        </BudgetAssignmentContainer>
+        <ButtonsContainer>
+          {commentingEnabled && <StyledGoToCommentsButton />}
+        </ButtonsContainer>
       </Container>
     );
   }
