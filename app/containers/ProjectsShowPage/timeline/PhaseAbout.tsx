@@ -27,7 +27,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   padding: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
   ${defaultCardStyle}
 `;
 
