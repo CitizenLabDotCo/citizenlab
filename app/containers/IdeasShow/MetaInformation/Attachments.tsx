@@ -12,7 +12,7 @@ interface Props {
   className?: string;
 }
 
-const Attachments = ({ files, className /*, fileDisplayElement */ }: Props) => {
+const Attachments = ({ files, className }: Props) => {
   return (
     <Container className={className}>
       {Array.isArray(files) &&
