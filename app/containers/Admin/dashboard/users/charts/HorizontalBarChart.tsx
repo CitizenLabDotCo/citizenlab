@@ -123,7 +123,9 @@ export class HorizontalBarChart extends React.PureComponent<
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
-            <ResponsiveContainer height={serie.length * 50}>
+            <ResponsiveContainer
+              height={serie.length > 1 ? serie.length * 50 : 100}
+            >
               <BarChart data={serie} layout="vertical" ref={this.currentChart}>
                 <Bar
                   dataKey="value"
