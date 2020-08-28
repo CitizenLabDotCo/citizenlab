@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.a11y_voteControl',
     defaultMessage: 'Voting and status',
   },
-  a11y_budgetControl: {
-    id: 'app.containers.IdeasShow.a11y_budgetControl',
-    defaultMessage: 'Idea assignment ans status',
-  },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea: {ideaTitle}',

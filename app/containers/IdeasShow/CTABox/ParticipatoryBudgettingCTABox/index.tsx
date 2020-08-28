@@ -1,19 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import Voting from './Voting';
-import GoToCommentsButton from './Buttons/GoToCommentsButton';
-// import ShareButton from './Buttons/ShareButton';
+import BudgetAssignment from './BudgetAssignment';
+import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   background-color: #edeff0; // TODO: add color to component library
   border-radius: 2px;
   padding: 25px 15px;
-`;
-
-const StyledVoting = styled(Voting)`
-  margin-bottom: 30px;
 `;
 
 const StyledGoToCommentsButton = styled(GoToCommentsButton)`
@@ -22,11 +20,15 @@ const StyledGoToCommentsButton = styled(GoToCommentsButton)`
 
 interface Props {
   className?: string;
+  participationContextId: string;
+  participationContextType: IParticipationContextType;
+  budgetingDescriptor: any;
   ideaId: string;
   projectId: string;
 }
 
-const CTABox = ({ className, ideaId, projectId }: Props) => {
+const ParticipatoryBudgettingCTABox = (props: Props) => {
+  const { ideaId, className } = props;
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
@@ -36,9 +38,8 @@ const CTABox = ({ className, ideaId, projectId }: Props) => {
     // TODO: a11y title
     return (
       <Container className={className}>
-        <StyledVoting ideaId={ideaId} projectId={projectId} />
+        <BudgetAssignment {...props} />
         {commentingEnabled && <StyledGoToCommentsButton />}
-        {/* <ShareButton /> */}
       </Container>
     );
   }
@@ -46,4 +47,4 @@ const CTABox = ({ className, ideaId, projectId }: Props) => {
   return null;
 };
 
-export default CTABox;
+export default ParticipatoryBudgettingCTABox;
