@@ -170,6 +170,14 @@ const LeftColumn = styled.div`
   `}
 `;
 
+const StyledTopics = styled(Topics)`
+  margin-bottom: 30px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 5px;
+  `}
+`;
+
 const StyledTranslateButtonMobile = styled(TranslateButton)`
   width: fit-content;
   margin-bottom: 20px;
@@ -548,7 +556,7 @@ export class InitiativesShow extends PureComponent<
           <InitiativeContainer>
             <Content>
               <LeftColumn>
-                <Topics postType="initiative" topicIds={topicIds} />
+                <StyledTopics postType="initiative" topicIds={topicIds} />
 
                 {isDesktop && (
                   <InitiativeHeader>
