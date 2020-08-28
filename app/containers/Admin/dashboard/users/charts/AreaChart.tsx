@@ -16,7 +16,7 @@ import {
 } from 'services/stats';
 
 // components
-import BarChartByCategory from './BarChartByCategory';
+import HorizontalBarChart from './HorizontalBarChart';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -70,7 +70,7 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   };
 
   return (
-    <BarChartByCategory
+    <HorizontalBarChart
       {...props}
       graphTitleString={props.intl.formatMessage(messages.usersByDomicileTitle)}
       graphUnit="users"
