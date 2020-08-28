@@ -211,7 +211,9 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                   values={{ selectedCount, selectedName, selectedResourceName }}
                 />
               )}
-              <ResponsiveContainer height={serie.length * 50}>
+              <ResponsiveContainer
+                height={serie.length > 1 ? serie.length * 50 : 100}
+              >
                 <BarChart
                   data={convertedSerie}
                   layout="vertical"
