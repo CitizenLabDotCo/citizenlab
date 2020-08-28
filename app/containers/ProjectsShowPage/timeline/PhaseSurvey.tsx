@@ -18,7 +18,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   padding-bottom: 100px;
-  border: solid 1px red;
 `;
 
 interface InputProps {

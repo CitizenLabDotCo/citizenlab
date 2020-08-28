@@ -12,9 +12,9 @@ import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { getMockProject } from 'services/__mocks__/projects';
 import { mockPhasePollData } from 'services/__mocks__/phases';
 
-import { PollSection } from './';
+import { Poll } from '.';
 
-describe('<PollSection/>', () => {
+describe('<Poll/>', () => {
   describe('boundaries', () => {
     it('renders null when project is null', () => {
       const pollQuestions = [
@@ -23,7 +23,7 @@ describe('<PollSection/>', () => {
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -42,7 +42,7 @@ describe('<PollSection/>', () => {
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
@@ -61,7 +61,7 @@ describe('<PollSection/>', () => {
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
@@ -76,7 +76,7 @@ describe('<PollSection/>', () => {
     it('renders null when pollQuestions is null', () => {
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
@@ -90,7 +90,7 @@ describe('<PollSection/>', () => {
     });
     it('renders null when pollQuestions is undefined', () => {
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -104,7 +104,7 @@ describe('<PollSection/>', () => {
     });
     it('renders null when pollQuestions is error', () => {
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -124,7 +124,7 @@ describe('<PollSection/>', () => {
       ].map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
@@ -144,7 +144,7 @@ describe('<PollSection/>', () => {
       ].map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
@@ -164,7 +164,7 @@ describe('<PollSection/>', () => {
       ].map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
@@ -194,7 +194,7 @@ describe('<PollSection/>', () => {
         attributes: { action_descriptor: { taking_poll: { enabled: true } } },
       };
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -206,7 +206,7 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper
-        .find('PollSection__StyledWarning')
+        .find('Poll__StyledWarning')
         .find('FormattedMessage')
         .prop('id')
         .split('.');
@@ -231,7 +231,7 @@ describe('<PollSection/>', () => {
       };
       const mockUser = makeUser();
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -242,7 +242,7 @@ describe('<PollSection/>', () => {
         />
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(false);
-      expect(wrapper.find('PollSection__StyledWarning').length).toBe(0);
+      expect(wrapper.find('Poll__StyledWarning').length).toBe(0);
     });
     it('shows already responded if user already responded', () => {
       const pollQuestions = [
@@ -268,7 +268,7 @@ describe('<PollSection/>', () => {
       };
       const mockUser = makeUser();
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -279,7 +279,7 @@ describe('<PollSection/>', () => {
         />
       );
       expect(wrapper.find('PollForm').exists()).toBe(false);
-      expect(wrapper.find('PollSection__StyledWarning').exists()).toBe(false);
+      expect(wrapper.find('Poll__StyledWarning').exists()).toBe(false);
       expect(wrapper.find('FormCompleted').exists()).toBe(true);
     });
     it('shows a matching explicative message if the phase is not active', () => {
@@ -303,7 +303,7 @@ describe('<PollSection/>', () => {
         attributes: { start_at: '2019-05-10', end_at: '2019-05-30' },
       };
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="phase"
           phaseId={null}
           projectId="projectId"
@@ -315,7 +315,7 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper
-        .find('PollSection__StyledWarning')
+        .find('Poll__StyledWarning')
         .find('FormattedMessage')
         .prop('id')
         .split('.');
@@ -347,7 +347,7 @@ describe('<PollSection/>', () => {
       };
       const mockUser = makeUser();
       const wrapper = shallow(
-        <PollSection
+        <Poll
           type="project"
           phaseId={null}
           projectId="projectId"
@@ -359,7 +359,7 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper
-        .find('PollSection__StyledWarning')
+        .find('Poll__StyledWarning')
         .find('FormattedMessage')
         .prop('id')
         .split('.');

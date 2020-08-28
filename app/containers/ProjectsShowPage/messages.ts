@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitleSurvey',
     defaultMessage: 'Take the survey',
   },
+  invisibleTitlePoll: {
+    id: 'app.containers.Projects.invisibleTitlePoll',
+    defaultMessage: 'Take the poll',
+  },
   invisibleTitlePhaseAbout: {
     id: 'app.containers.Projects.invisibleTitlePhaseAbout',
     defaultMessage: 'About this phase',

@@ -9,6 +9,7 @@ import ProjectNotFound from './ProjectNotFound';
 import ProjectHeader from './ProjectHeader';
 import ProjectIdeas from './ProjectIdeas';
 import ProjectSurvey from './ProjectSurvey';
+import ProjectPoll from './ProjectPoll';
 import ProjectEvents from './ProjectEvents';
 import ProjectTimelineContainer from './timeline';
 import { Spinner } from 'cl2-component-library';
@@ -50,6 +51,10 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
+const ContentWrapper = styled.div`
+  width: 100%;
+`;
+
 interface Props {
   project: IProjectData | Error | null | undefined;
 }
@@ -85,18 +90,19 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
     content = <ProjectNotFound />;
   } else if (projectId && processType) {
     content = (
-      <>
+      <ContentWrapper>
         <ProjectHeader projectId={projectId} />
         {processType === 'continuous' ? (
           <>
             <ProjectIdeas projectId={projectId} />
             <ProjectSurvey projectId={projectId} />
+            <ProjectPoll projectId={projectId} />
           </>
         ) : (
           <ProjectTimelineContainer projectId={projectId} />
         )}
         <ProjectEvents projectId={projectId} />
-      </>
+      </ContentWrapper>
     );
   }
 
