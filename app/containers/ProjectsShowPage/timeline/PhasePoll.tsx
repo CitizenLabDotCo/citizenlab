@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import PollSection from '../poll/PollSection';
+import Poll from '../poll';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -41,7 +41,7 @@ class PhaseSurvey extends PureComponent<Props, State> {
         <Container
           className={`e2e-timeline-project-poll-container ${className || ''}`}
         >
-          <PollSection phaseId={phase.id} projectId={projectId} type="phase" />
+          <Poll phaseId={phase.id} projectId={projectId} type="phase" />
         </Container>
       );
     }

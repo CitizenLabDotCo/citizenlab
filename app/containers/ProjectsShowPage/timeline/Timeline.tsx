@@ -71,7 +71,7 @@ const ContainerInner = styled.div`
 
 const Phases = styled.div`
   width: 100%;
-  padding-top: 50px;
+  padding-top: 60px;
   padding-bottom: 30px;
   margin: 0;
   margin-left: auto;
@@ -119,7 +119,7 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   color: ${greyOpaque};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
   overflow: hidden;

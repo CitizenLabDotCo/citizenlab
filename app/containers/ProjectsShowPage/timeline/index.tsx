@@ -8,7 +8,7 @@ import Timeline, { selectedPhase$ } from './Timeline';
 import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
-import PhasePolling from './PhasePolling';
+import PhasePoll from './PhasePoll';
 import PhaseVolunteering from './PhaseVolunteering';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview_old_unused';
@@ -23,7 +23,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // style
 import styled from 'styled-components';
-import { colors, media, viewportWidths } from 'utils/styleUtils';
+import { colors, viewportWidths } from 'utils/styleUtils';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -42,62 +42,23 @@ const StyledTimeline = styled(Timeline)``;
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-bottom: 30px;
-
-  ${media.tablet`
-    margin-top: -30px;
-  `}
 `;
 
 const SecondRow = styled.div``;
 
 const StyledPhaseAbout = styled(PhaseAbout)``;
 
-const SecondRowContentContainer = styled(ContentContainer)`
-  z-index: 0;
-`;
+const SecondRowContentContainer = styled(ContentContainer)``;
 
-const StyledPBExpenses = styled(PBExpenses)`
-  margin-top: 70px;
-  margin-bottom: 50px;
+const StyledPBExpenses = styled(PBExpenses)``;
 
-  ${media.smallerThanMinTablet`
-    margin-top: 0px;
-    margin-bottom: 25px;
-  `}
-`;
+const StyledPhaseSurvey = styled(PhaseSurvey)``;
 
-const StyledPhaseSurvey = styled(PhaseSurvey)`
-  margin-bottom: 50px;
-`;
+const StyledPhasePoll = styled(PhasePoll)``;
 
-const StyledPhasePolling = styled(PhasePolling)`
-  margin-top: 70px;
-  margin-bottom: 50px;
+const StyledPhaseVolunteering = styled(PhaseVolunteering)``;
 
-  ${media.smallerThanMinTablet`
-    margin-top: 0px;
-    margin-bottom: 25px;
-  `}
-`;
-
-const StyledPhaseVolunteering = styled(PhaseVolunteering)`
-  margin-top: 70px;
-  margin-bottom: 50px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: 0px;
-    margin-bottom: 25px;
-  `}
-`;
-
-const StyledPhaseIdeas = styled(PhaseIdeas)`
-  margin-top: 95px;
-  margin-bottom: 100px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-  `}
-`;
+const StyledPhaseIdeas = styled(PhaseIdeas)``;
 
 interface InputProps {
   projectId: string;
@@ -181,7 +142,7 @@ class ProjectTimelineContainer extends PureComponent<Props, State> {
           </FirstRow>
           <SecondRow>
             <SecondRowContentContainer>
-              <StyledPhasePolling
+              <StyledPhasePoll
                 projectId={project.id}
                 phaseId={selectedPhaseId}
               />
