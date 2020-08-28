@@ -1,11 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 import IdeaCTAButton from '../IdeaCTAButton';
-
-const DropdownContainer = styled.div`
-  width: 100%;
-`;
+import SharingDropdownContent from './SharingDropdownContent';
 
 const SharingButtonWithDropdown = () => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -23,21 +19,17 @@ const SharingButtonWithDropdown = () => {
   };
 
   // TODO: add icon
-  const buttonComponent = (
-    <div ref={ref}>
-      <IdeaCTAButton onClick={toggleDropdown} copy="Share this idea" />
-    </div>
-  );
-  const dropdownContent = <DropdownContainer>test</DropdownContainer>;
-  const dropdownWidth = `${buttonWidth}px`;
-
   return (
     <ButtonWithDropdown
-      buttonComponent={buttonComponent}
-      dropdownContent={dropdownContent}
+      buttonComponent={
+        <div ref={ref}>
+          <IdeaCTAButton onClick={toggleDropdown} copy="Share this idea" />
+        </div>
+      }
+      dropdownContent={<SharingDropdownContent />}
       dropdownOpened={dropdownOpened}
       onClickOutside={toggleDropdown}
-      dropdownWidth={dropdownWidth}
+      dropdownWidth={`${buttonWidth}px`}
     />
   );
 };
