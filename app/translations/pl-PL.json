@@ -1736,6 +1736,7 @@
   "app.containers.Projects.invisibleTitleIdeasList": "Wszystkie pomysły do tego projektu",
   "app.containers.Projects.invisibleTitleIdeasListPhase": "Wszystkie pomysły na tym etapie",
   "app.containers.Projects.invisibleTitlePhaseAbout": "O tym etapie",
+  "app.containers.Projects.invisibleTitlePoll": "",
   "app.containers.Projects.invisibleTitleSurvey": "Weź udział w ankiecie",
   "app.containers.Projects.location": "Lokalizacja:",
   "app.containers.Projects.manageBudget": "Zarządzaj wydatkami",
