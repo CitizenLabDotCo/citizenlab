@@ -126,7 +126,8 @@ class Tenant < ApplicationRecord
 
   # @todo could be done dynamically for all settings (using :method_missing)
   def turn_on_abbreviated_user_names
-    self.settings['abbreviated_user_names'] = {"allowed" => true, "enabled" => true}
+    self.settings['abbreviated_user_names']['allowed'] = true
+    self.settings['abbreviated_user_names']['enabled'] = true
     self.save!
   end
 
