@@ -12,7 +12,7 @@ import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { getMockProject } from 'services/__mocks__/projects';
 import { mockPhasePollData } from 'services/__mocks__/phases';
 
-import { Poll } from '.';
+import { Poll } from './';
 
 describe('<Poll/>', () => {
   describe('boundaries', () => {
@@ -206,7 +206,7 @@ describe('<Poll/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper
-        .find('Poll__StyledWarning')
+        .find('poll__StyledWarning')
         .find('FormattedMessage')
         .prop('id')
         .split('.');
@@ -242,7 +242,7 @@ describe('<Poll/>', () => {
         />
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(false);
-      expect(wrapper.find('Poll__StyledWarning').length).toBe(0);
+      expect(wrapper.find('poll__StyledWarning').length).toBe(0);
     });
     it('shows already responded if user already responded', () => {
       const pollQuestions = [
@@ -279,7 +279,7 @@ describe('<Poll/>', () => {
         />
       );
       expect(wrapper.find('PollForm').exists()).toBe(false);
-      expect(wrapper.find('Poll__StyledWarning').exists()).toBe(false);
+      expect(wrapper.find('poll__StyledWarning').exists()).toBe(false);
       expect(wrapper.find('FormCompleted').exists()).toBe(true);
     });
     it('shows a matching explicative message if the phase is not active', () => {
@@ -315,7 +315,7 @@ describe('<Poll/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper
-        .find('Poll__StyledWarning')
+        .find('poll__StyledWarning')
         .find('FormattedMessage')
         .prop('id')
         .split('.');
@@ -359,7 +359,7 @@ describe('<Poll/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper
-        .find('Poll__StyledWarning')
+        .find('poll__StyledWarning')
         .find('FormattedMessage')
         .prop('id')
         .split('.');
