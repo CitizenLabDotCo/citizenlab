@@ -189,8 +189,9 @@ const EmptyContainer = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  width: 43px;
-  height: 43px;
+  flex: 0 0 35px;
+  width: 35px;
+  height: 35px;
   fill: ${colors.label};
 `;
 

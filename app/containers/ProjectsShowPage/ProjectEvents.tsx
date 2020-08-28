@@ -20,7 +20,10 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-top: 60px;
+  margin-bottom: 80px;
+`;
 
 const Title = styled.h2`
   color: ${colors.text};

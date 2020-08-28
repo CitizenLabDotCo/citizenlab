@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
-import EventsPreview from '../EventsPreview';
+import EventsPreview from '../EventsPreview_old_unused';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Fragment from 'components/Fragment';
 

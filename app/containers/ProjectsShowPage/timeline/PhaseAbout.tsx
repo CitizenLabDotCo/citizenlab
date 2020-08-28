@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
 // components
+import PhaseAboutHeader from './PhaseAboutHeader';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
@@ -19,19 +20,14 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 40px;
-  background: ${colors.background};
-
-  ${media.smallerThanMaxTablet`
-    padding: 0px;
-  `}
+  padding: 30px;
+  ${defaultCardStyle}
 `;
 
 const InformationBody = styled.div`
@@ -49,6 +45,7 @@ const StyledFileAttachments = styled(FileAttachments)`
 `;
 
 interface InputProps {
+  projectId: string;
   phaseId: string | null;
   className?: string;
 }
@@ -64,7 +61,14 @@ interface State {}
 
 class PhaseAbout extends PureComponent<Props & InjectedLocalized, State> {
   render() {
-    const { phase, phaseFiles, className, localize } = this.props;
+    const {
+      projectId,
+      phaseId,
+      phase,
+      phaseFiles,
+      className,
+      localize,
+    } = this.props;
     const content = localize(phase?.attributes?.description_multiloc);
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
@@ -78,6 +82,7 @@ class PhaseAbout extends PureComponent<Props & InjectedLocalized, State> {
               {...messages.invisibleTitlePhaseAbout}
             />
           </ScreenReaderOnly>
+          <PhaseAboutHeader projectId={projectId} selectedPhaseId={phaseId} />
           <InformationBody>
             <QuillEditedContent textColor="#5E6B75">
               <T

@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import Timeline, { selectedPhase$ } from './Timeline';
@@ -13,7 +11,7 @@ import PhaseSurvey from './PhaseSurvey';
 import PhasePolling from './PhasePolling';
 import PhaseVolunteering from './PhaseVolunteering';
 import PhaseIdeas from './PhaseIdeas';
-import EventsPreview from '../EventsPreview';
+import EventsPreview from '../EventsPreview_old_unused';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
 
@@ -31,26 +29,16 @@ import GetWindowSize, {
 } from 'resources/GetWindowSize';
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  background: ${colors.background};
 `;
 
-const FirstRow = styled.div`
-  background: #fff;
+const FirstRow = styled.div``;
 
-  ${media.smallerThanMaxTablet`
-    background: ${colors.background};
-  `}
-`;
-
-const StyledTimeline = styled(Timeline)`
-  background: #fff;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 40px;
-  `}
-`;
+const StyledTimeline = styled(Timeline)``;
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-bottom: 30px;
@@ -60,30 +48,21 @@ const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   `}
 `;
 
-const SecondRow = styled.div`
-  background: ${colors.background};
-`;
+const SecondRow = styled.div``;
 
-const StyledPhaseAbout = styled(PhaseAbout)`
-  margin-bottom: 80px;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 50px;
-  `}
-`;
+const StyledPhaseAbout = styled(PhaseAbout)``;
 
 const SecondRowContentContainer = styled(ContentContainer)`
   z-index: 0;
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
-  margin-bottom: -120px;
-  padding: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  margin-top: 70px;
+  margin-bottom: 50px;
 
-  ${media.smallerThanMaxTablet`
-    padding: 20px;
+  ${media.smallerThanMinTablet`
+    margin-top: 0px;
+    margin-bottom: 25px;
   `}
 `;
 
@@ -121,6 +100,7 @@ const StyledPhaseIdeas = styled(PhaseIdeas)`
 `;
 
 interface InputProps {
+  projectId: string;
   className?: string;
 }
 
@@ -135,11 +115,8 @@ interface State {
   selectedPhase: IPhaseData | null;
 }
 
-class ProjectTimelinePage extends PureComponent<
-  Props & WithRouterProps,
-  State
-> {
-  subscription: Subscription;
+class ProjectTimelineContainer extends PureComponent<Props, State> {
+  subscription: Subscription | null = null;
 
   constructor(props) {
     super(props);
@@ -154,23 +131,19 @@ class ProjectTimelinePage extends PureComponent<
     });
   }
 
-  componentDidUpdate(prevProps: Props & WithRouterProps, _prevState: State) {
-    if (prevProps.params.slug !== this.props.params.slug) {
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.projectId !== this.props.projectId) {
       this.setState({ selectedPhase: null });
     }
   }
 
   componentWillUnmount() {
-    this.subscription && this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
+    this.subscription = null;
   }
 
   render() {
-    const {
-      project,
-      className,
-      params: { slug },
-      windowSize,
-    } = this.props;
+    const { project, className, windowSize } = this.props;
     const { selectedPhase } = this.state;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const isPBPhase =
@@ -183,17 +156,16 @@ class ProjectTimelinePage extends PureComponent<
       : false;
 
     if (!isNilOrError(project) && selectedPhase !== undefined) {
-      if (project.attributes.process_type !== 'timeline') {
-        clHistory.push(`/projects/${slug}/info`);
-      }
-
       return (
-        <Container className={`${className} e2e-project-process-page`}>
+        <Container className={`${className || ''} e2e-project-process-page`}>
           <FirstRow>
             <StyledTimeline projectId={project.id} />
             <StyledProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
-              <StyledPhaseAbout phaseId={selectedPhaseId} />
+              <StyledPhaseAbout
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
               {isPBPhase && (
                 <StyledPBExpenses
                   participationContextId={selectedPhaseId}
@@ -241,15 +213,15 @@ class ProjectTimelinePage extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
   ),
   windowSize: <GetWindowSize />,
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <ProjectTimelinePage {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectTimelineContainer {...inputProps} {...dataProps} />}
   </Data>
-));
+);

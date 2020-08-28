@@ -48,4 +48,8 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.process.survey.logInLinkText',
     defaultMessage: 'log in',
   },
+  survey: {
+    id: 'app.containers.ProjectsShowPage.process.survey.survey',
+    defaultMessage: 'Survey',
+  },
 });

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import PBExpenses from './pb/PBExpenses';
@@ -12,12 +13,23 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths, fontSizes } from 'utils/styleUtils';
+import { viewportWidths, fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  padding-top: 60px;
+  padding-bottom: 80px;
+  background: ${colors.background};
+  border-top: solid 1px #e8e8e8;
+  border-bottom: solid 1px #e8e8e8;
+`;
 
 const Title = styled.h2`
   color: ${(props: any) => props.theme.colorText};
@@ -43,36 +55,51 @@ const ProjectIdeas = memo<Props>(({ projectId, className }) => {
   const windowSize = useWindowSize();
 
   if (!isNilOrError(project) && !isNilOrError(windowSize)) {
-    const smallerThanBigTablet = windowSize?.windowWidth
-      ? windowSize?.windowWidth <= viewportWidths.smallTablet
-      : false;
-    const isPBProject = project.attributes.participation_method === 'budgeting';
-    const projectId = project.id;
-    const projectIds = [projectId];
-
-    return (
-      <Container className={className || ''}>
-        <ProjectArchivedIndicator projectId={projectId} />
-        {isPBProject && (
-          <PBExpenses
-            participationContextId={projectId}
-            participationContextType="project"
-            viewMode={smallerThanBigTablet ? 'column' : 'row'}
-          />
-        )}
-        <Title>Ideas</Title>
-        <IdeaCards
-          type="load-more"
-          projectIds={projectIds}
-          participationMethod={project.attributes.participation_method}
-          participationContextId={projectId}
-          participationContextType="project"
-          showViewToggle={true}
-          defaultView={project.attributes.presentation_mode || null}
-          invisibleTitleMessage={messages.invisibleTitleIdeasList}
-        />
-      </Container>
+    const projectType = project?.attributes.process_type;
+    const participationMethod = project?.attributes.participation_method;
+    const showIdeas = !!(
+      projectType === 'continuous' &&
+      (participationMethod === 'budgeting' ||
+        participationMethod === 'ideation')
     );
+
+    if (showIdeas) {
+      const smallerThanBigTablet = windowSize?.windowWidth
+        ? windowSize?.windowWidth <= viewportWidths.smallTablet
+        : false;
+      const isPBProject =
+        project.attributes.participation_method === 'budgeting';
+      const projectId = project.id;
+      const projectIds = [projectId];
+
+      return (
+        <Container className={className || ''}>
+          <StyledContentContainer id="project-ideas">
+            <ProjectArchivedIndicator projectId={projectId} />
+            {isPBProject && (
+              <PBExpenses
+                participationContextId={projectId}
+                participationContextType="project"
+                viewMode={smallerThanBigTablet ? 'column' : 'row'}
+              />
+            )}
+            <Title>
+              <FormattedMessage {...messages.ideas} />
+            </Title>
+            <IdeaCards
+              type="load-more"
+              projectIds={projectIds}
+              participationMethod={project.attributes.participation_method}
+              participationContextId={projectId}
+              participationContextType="project"
+              showViewToggle={true}
+              defaultView={project.attributes.presentation_mode || null}
+              invisibleTitleMessage={messages.invisibleTitleIdeasList}
+            />
+          </StyledContentContainer>
+        </Container>
+      );
+    }
   }
 
   return null;

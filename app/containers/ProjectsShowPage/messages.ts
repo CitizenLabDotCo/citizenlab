@@ -222,4 +222,12 @@ export default defineMessages({
     id: 'app.containers.Projects.postYourIdea',
     defaultMessage: 'Post your idea',
   },
+  ideas: {
+    id: 'app.containers.Projects.ideas',
+    defaultMessage: 'Ideas',
+  },
+  survey: {
+    id: 'app.containers.Projects.survey',
+    defaultMessage: 'Survey',
+  },
 });
