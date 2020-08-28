@@ -54,6 +54,7 @@ const MenuItemLink = styled(Link)`
   &.selected,
   &.focus-visible {
     background: rgba(0, 0, 0, 0.36);
+    border-bottom: 1px solid #fff;
 
     ${Text} {
       opacity: 1;
@@ -134,7 +135,6 @@ export default ({ route }: Props) => {
           <FormattedMessage {...messages[route.message]} />
           {!!route.count && <CountBadge count={route.count} />}
         </Text>
-        <ArrowIcon name="arrowLeft" />
       </MenuItemLink>
     </HasPermission>
   );

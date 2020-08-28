@@ -36,7 +36,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
   flex: 0 0 auto;
-  width: 260px;
+  width: 210px;
 
   @media print {
     display: none;
@@ -49,7 +49,7 @@ const Menu = styled.div`
 
 const MenuInner = styled.nav`
   flex: 0 0 auto;
-  width: 260px;
+  width: 210px;
   display: flex;
   flex-direction: column;
   align-items: center;
