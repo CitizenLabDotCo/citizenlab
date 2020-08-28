@@ -77,7 +77,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -568,6 +568,7 @@ export class IdeasShow extends PureComponent<
         actionInfos?.participationContextId || null;
       const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
       const showBudgetControl = actionInfos?.showBudgetControl || null;
+      const showVoteControl = actionInfos?.showVoteControl || null;
       const biggerThanLargeTablet = windowSize
         ? windowSize > viewportWidths.largeTablet
         : false;
@@ -733,7 +734,12 @@ export class IdeasShow extends PureComponent<
               {biggerThanLargeTablet && (
                 <RightColumnDesktop>
                   <MetaContent>
-                    <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
+                    {showVoteControl && (
+                      <StyledVotingCTABox
+                        ideaId={ideaId}
+                        projectId={projectId}
+                      />
+                    )}
                     {showBudgetControl &&
                       participationContextId &&
                       participationContextType &&
