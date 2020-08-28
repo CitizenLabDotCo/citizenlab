@@ -93,7 +93,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   }`;
 
   const handleDownloadSvg = () => {
-    const node = ReactDOM.findDOMNode(svgNode.current);
+    const node = ReactDOM.findDOMNode(svgNode.current.container.children[0]);
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
