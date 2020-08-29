@@ -213,7 +213,7 @@ ro:
       voted_comment_in: "S-a votat la un comentariu cu privire la o idee cu tema %{value}"
       not_voted_comment_in: "Nu s-a votat la un comentariu cu privire la o idee pe tema %{value}"
     registration_completed_at:
-      property: "Înregistrare"
+      property: "înregistrare"
     role:
       is_admin: "Rolul este de admin"
       not_is_admin: "Rolul nu este de admin"
