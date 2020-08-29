@@ -153,11 +153,11 @@ ro:
       is_after: "%{property} este după %{value}"
     custom_field_number:
       is_equal: "%{property} este egală cu %{value}"
-      not_is_equal: "%{property} nu egală cu %{value}"
+      not_is_equal: "%{property} nu este egală cu %{value}"
       is_larger_than: "%{property} este mai mare decât %{value}"
       is_larger_than_or_equal: "%{property} este mai mare sau egală cu %{value}"
-      is_smaller_than: "%{property} este mai mic decât %{value}"
-      is_smaller_than_or_equal: "%{property} este mai mic decât sau egală cu %{value}"
+      is_smaller_than: "%{property} este mai mică decât %{value}"
+      is_smaller_than_or_equal: "%{property} este mai mică decât sau egală cu %{value}"
     custom_field_select:
       has_value: "%{property} este %{value}"
       not_has_value: "%{property} nu este %{value}"
