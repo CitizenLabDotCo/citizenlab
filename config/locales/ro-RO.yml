@@ -140,7 +140,7 @@ ro:
     default_threshold_reached_message: >
       <p> Inițiatorii sunt invitați să își prezinte propunerea la următoarea ședință de consiliu local. Vom oferi o actualizare oficială. </p>
     default_eligibility_criteria: >
-      <ul> <li> Trebuie să se încadreze în domeniile și competențele politicii locale </li> <li> Servește interesul public și nu interesul dvs. personal </li> <li> Nu face discriminări în funcție de sex, rasă, vârstă sau origine </li> <li> Nu dăunează altora </li> </ul>
+      <ul> <li> Trebuie să se încadreze în domeniile și competențele administrației locale </li> <li> Servește interesul public și nu interesul dvs. personal </li> <li> Nu face discriminări în funcție de sex, rasă, vârstă sau origine </li> <li> Nu dăunează altora </li> </ul>
   smart_group_rules:
     is_empty: "%{property} nu are valoare"
     not_is_empty: "%{property} are orice valoare"
