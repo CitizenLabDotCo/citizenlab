@@ -203,7 +203,7 @@ ro:
       not_volunteered_in: "Didn't volunteer in the project %{value}"
     participated_in_topic:
       in: "Participarea la o idee cu tema %{value}"
-      not_in: "Nicio participare într-o idee cu tema %{value}"
+      not_in: "Nicio participare la o idee cu tema %{value}"
       posted_in: "S-a postat o idee cu tema %{value}"
       not_posted_in: "Nu s-a postat o idee cu tema %{value}"
       commented_in: "S-a comentat o idee cu tema %{value}"
