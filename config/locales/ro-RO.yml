@@ -132,13 +132,13 @@ ro:
       ISCED2: Scoală primară
       ISCED3: Învățământ gimnazial (5-8)
       ISCED4: Învățământ liceal (9-12)
-      ISCED5: Educație terțiară cu ciclu scurt
+      ISCED5: Învățământ postliceal
       ISCED6: Licență sau echivalent
       ISCED7: Master sau echivalent
       ISCED8: Doctorat sau echivalent
   initiatives:
     default_threshold_reached_message: >
-      <p> Inițiatorii sunt invitați să își prezinte propunerea la următoarea ședință de consiliu. Vom oferi o actualizare oficială. </p>
+      <p> Inițiatorii sunt invitați să își prezinte propunerea la următoarea ședință de consiliu local. Vom oferi o actualizare oficială. </p>
     default_eligibility_criteria: >
       <ul> <li> Trebuie să se încadreze în domeniile și competențele politicii locale </li> <li> Servește interesul public și nu interesul dvs. personal </li> <li> Nu face discriminări în funcție de sex, rasă, vârstă sau origine </li> <li> Nu dăunează altora </li> </ul>
   smart_group_rules:
