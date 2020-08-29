@@ -41,9 +41,9 @@ ro:
       "status_change_of_voted_idea": Schimbarea statusului unei idei pe care am votat-o
       "status_change_of_voted_initiative": Schimbarea statusului unei propuneri pe care am votat-o
       "status_change_of_your_idea": Schimbarea statusului ideii mele
-      "status_change_of_your_initiative": Schimbarea stării propunerii mele
-      "threshold_reached_for_admin": Propunerea a atins pragul de vot
-      "welcome": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D202,""en"",""ro"")"),"dupa Inregistrare")'
+      "status_change_of_your_initiative": Schimbarea statusului propunerii mele
+      "threshold_reached_for_admin": Propunerea a atins pragul minim de voturi
+      "welcome": După înregistrare
       "admin_digest": Rezumate săptămânale pentru admini
       "moderator_digest": Prezentarea săptămânală pentru managerii de proiect
       "assignee_digest": Rezumate săptămânale ale ideilor atribuite
