@@ -96,9 +96,9 @@ ro:
       birthyear:
         title: Anul nașterii
       domicile:
-        title: Locul de reședință
+        title: Domiciliu
       education:
-        title: Educaţie
+        title: Educație
     ideas:
       title:
         title: Titlu
