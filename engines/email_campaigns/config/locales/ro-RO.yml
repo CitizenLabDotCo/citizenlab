@@ -4,13 +4,13 @@ ro:
       "manual": Mesajele oficiale
       "admin_rights_received": Drepturi de administrator primite
       "comment_deleted_by_admin": Ștergerea comentariului meu
-      "comment_marked_as_spam": Comentează raport de spam 
-      "comment_on_your_comment": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D164,""en"",""ro"")"),"Un raspuns la meu Comentariul")'
-      "comment_on_your_idea": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D165,""en"",""ro"")"),"Un comentariu la idee mea")'
-      "comment_on_your_initiative": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D166,""en"",""ro"")"),"Un comentariu la propunerea mea")'
+      "comment_marked_as_spam": Comentează raportul de spam
+      "comment_on_your_comment": Un răspuns la comentariul meu
+      "comment_on_your_idea": Un comentariu la ideea mea
+      "comment_on_your_initiative": Un comentariu la propunerea mea
       "first_idea_published": Publicarea primei mele idei
       "idea_assigned_to_you": Atribuirea unei idei mie
-      "idea_marked_as_spam": Idee raport de spam
+      "idea_marked_as_spam": Raportul spam despre idei
       "idea_published": Publicarea ideii mele
       "initiative_assigned_to_you": Atribuirea unei propuneri mie
       "initiative_marked_as_spam": Propunere raport de spam
