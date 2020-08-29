@@ -129,9 +129,9 @@ ro:
     domicile:
       outside: Altundeva
     education:
-      ISCED2: Studii de bază
-      ISCED3: Studii medii
-      ISCED4: Învățământ postsecundar non-terțiar
+      ISCED2: Scoală primară
+      ISCED3: Învățământ gimnazial (5-8)
+      ISCED4: Învățământ liceal (9-12)
       ISCED5: Educație terțiară cu ciclu scurt
       ISCED6: Licență sau echivalent
       ISCED7: Master sau echivalent
