@@ -45,7 +45,7 @@ ro:
       "threshold_reached_for_admin": Propunerea a atins pragul de vot
       "welcome": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D202,""en"",""ro"")"),"dupa Inregistrare")'
       "admin_digest": Rezumate săptămânale pentru admini
-      "moderator_digest": Weekly overview for project managers
+      "moderator_digest": Prezentarea săptămânală pentru managerii de proiect
       "assignee_digest": Rezumate săptămânale ale ideilor atribuite
       "user_digest": Rezumate săptămânale
       "your_proposed_initiatives_digest": Rezumate săptămânale ale propunerilor dumneavoastră
