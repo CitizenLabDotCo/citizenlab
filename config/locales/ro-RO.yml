@@ -46,16 +46,16 @@ ro:
     education_description: Educație și tineret
     culture: Cultură, sport și evenimente
     culture_description: Cultură, sport și evenimente
-    health: Îngrijire și bunăstare
-    health_description: Îngrijire și bunăstare
+    health: Sănătate și bunăstare
+    health_description: Sănătate și bunăstare
     inclusion: Incluziune socială
     inclusion_description: Incluziune socială
     community: Dezvoltare comunitară
     community_description: Dezvoltare comunitară
-    services: Serviciul Public
-    services_description: Serviciul Public
-    other: alții
-    other_description: alții
+    services: Servicii publice
+    services_description: Servicii publice
+    other: Alte
+    other_description: Alte
   pages:
     terms_and_conditions_title: Termeni și condiții
     terms_and_conditions_body: >
