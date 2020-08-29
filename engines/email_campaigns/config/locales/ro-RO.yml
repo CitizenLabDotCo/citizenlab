@@ -19,16 +19,16 @@ ro:
       "invite_reminder": Memento pentru invitație
       "mention_in_comment": Menționare într-un comentariu
       "mention_in_official_feedback": Menționare într-o actualizare
-      "new_comment_for_admin": Comentariu nou intr-un proiect pe care il moderez
+      "new_comment_for_admin": Comentariu nou într-un proiect pe care îl moderez
       "new_comment_on_commented_idea": Comentariu nou la o idee pe care am comentat-o
       "new_comment_on_commented_initiative": Comentariu nou la o propunere pe care am comentat-o
       "new_comment_on_voted_idea": Comentariu nou la o idee pe care am votat-o
       "new_comment_on_voted_initiative": Comentariu nou la o propunere pe care am votat-o
       "new_idea_for_admin": Idee nouă într-un proiect pe care îl moderez
       "new_initiative_for_admin": Propunere nouă
-      "official_feedback_on_commented_idea": Actualizare la o idee la care am comentat
-      "official_feedback_on_commented_initiative": Actualizare la o propunere la care am comentat
-      "official_feedback_on_voted_idea": Actualizare la o idee votată de către mine
+      "official_feedback_on_commented_idea": Actualizare unei idei la care am plasat un comentariu
+      "official_feedback_on_commented_initiative": Actualizare unei propuneri la care am plasat un comentariu
+      "official_feedback_on_voted_idea": Actualizare unei idei votate de mine
       "official_feedback_on_voted_initiative": Actualizare la o propunere votată de către mine
       "official_feedback_on_your_idea": Actualizare la idea mea
       "official_feedback_on_your_initiative": Actualizare la propunerea mea
