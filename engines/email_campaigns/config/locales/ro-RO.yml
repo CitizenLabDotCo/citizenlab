@@ -29,18 +29,18 @@ ro:
       "official_feedback_on_commented_idea": Actualizare unei idei la care am plasat un comentariu
       "official_feedback_on_commented_initiative": Actualizare unei propuneri la care am plasat un comentariu
       "official_feedback_on_voted_idea": Actualizare unei idei votate de mine
-      "official_feedback_on_voted_initiative": Actualizare la o propunere votată de către mine
+      "official_feedback_on_voted_initiative": Actualizare unei propuneri votate de mine
       "official_feedback_on_your_idea": Actualizare la idea mea
       "official_feedback_on_your_initiative": Actualizare la propunerea mea
       "password_reset": Resetare parolă
       "project_moderation_rights_received": Drepturile de moderare a proiectului au fost primite
-      "project_phase_started": Noua fază de proiect
+      "project_phase_started": Noua etapă a proiectului
       "project_phase_upcoming": Viitoarea etapă a proiectului
-      "status_change_of_commented_idea": Schimbarea stării unei idei la care am comentat
-      "status_change_of_commented_initiative": Schimbarea stării unei propuneri la care am comentat
-      "status_change_of_voted_idea": Schimbarea stării unei idei pe care am votat-o
-      "status_change_of_voted_initiative": Schimbarea stării unei propuneri pe care am votat-o
-      "status_change_of_your_idea": Schimbarea stării ideii mele
+      "status_change_of_commented_idea": Schimbarea statusului unei idei pe care am votat-o
+      "status_change_of_commented_initiative": Schimbarea statusului unei propuneri pe care am votat-o
+      "status_change_of_voted_idea": Schimbarea statusului unei idei pe care am votat-o
+      "status_change_of_voted_initiative": Schimbarea statusului unei propuneri pe care am votat-o
+      "status_change_of_your_idea": Schimbarea statusului ideii mele
       "status_change_of_your_initiative": Schimbarea stării propunerii mele
       "threshold_reached_for_admin": Propunerea a atins pragul de vot
       "welcome": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D202,""en"",""ro"")"),"dupa Inregistrare")'
