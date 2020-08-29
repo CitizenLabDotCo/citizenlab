@@ -6,10 +6,10 @@ ro:
     viewed_description: Această idee a fost vizualizată de către cineva din oraș
     under_consideration: în curs de examinare
     under_consideration_description: Această idee a fost luată în considerare de către oraș
-    accepted: admis
-    accepted_description: Această idee a fost acceptată și va fi implementată de către oraș
-    implemented: implementat
-    implemented_description: Această idee a fost implementată de către oraș
+    accepted: admisă
+    accepted_description: Această idee a fost acceptată și va fi implementată de către primărie
+    implemented: implementată
+    implemented_description: Această idee a fost implementată de către primărie
     rejected: respins
     rejected_description: Această idee a fost respinsă
   initiative_statuses:
@@ -19,27 +19,27 @@ ro:
     expired_description: expirat
     threshold_reached: pragul de voturi a fost atins
     threshold_reached_description: pragul de voturi a fost atins
-    answered: răspuns
-    answered_description: răspuns
+    answered: a primit răspuns
+    answered_description: a primit răspuns
     ineligible: neeligibil
     ineligible_description: neeligibil
   topics:
     nature: Natură și biodiversitate
     nature_description: Natură și biodiversitate
-    waste: Curățenia și deșeurile
-    waste_description: Curățenia și deșeurile
+    waste: Curățenie și deșeuri
+    waste_description: Curățenie și deșeuri
     sustainability: Dezvoltare durabilă
     sustainability_description: Dezvoltare durabilă
-    mobility: Mobilitate
-    mobility_description: Mobilitate
+    mobility: Mobilitate urbană
+    mobility_description: Mobilitate urbană
     technology: Energie și tehnologie
     technology_description: Energie și tehnologie
     economy: Muncă, economie și turism
     economy_description: Muncă, economie și turism
     housing: Locuințe
     housing_description: Locuințe
-    public_space: Spatii publice si cladiri
-    public_space_description: Spatii publice si cladiri
+    public_space: Spații publice și clădiri
+    public_space_description: Spații publice și clădiri
     safety: Securitate
     safety_description: Securitate
     education: Educație și tineret
