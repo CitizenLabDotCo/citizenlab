@@ -31,7 +31,7 @@ const Facebook = ({
         onClick={trackClickByEventName(tracks.clickFbShare.name)}
         aria-label={formatMessage(messages.shareOnFacebook)}
       >
-        {/* <StyledIcon name="facebook" /> */}
+        {'Facebook'}
       </FacebookButton>
     );
   }

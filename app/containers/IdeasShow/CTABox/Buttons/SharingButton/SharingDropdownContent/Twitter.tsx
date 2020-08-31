@@ -27,7 +27,7 @@ const Twitter = ({
       onClick={trackClickByEventName(tracks.clickTwitterShare.name)}
       aria-label={formatMessage(messages.shareOnTwitter)}
     >
-      {/* <StyledIcon name="twitter" /> */}
+      {'Twitter'}
     </TwitterButton>
   );
 };
