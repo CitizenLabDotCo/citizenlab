@@ -4,11 +4,12 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  
+
   def index
     @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions, custom_form: [:custom_fields]], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
 
     if params[:sort].present? && !params[:search].present?
       @ideas = case params[:sort]
@@ -79,7 +80,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def index_idea_markers
     @ideas = policy_scope(Idea).includes(:author)
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     @ideas = @ideas 
@@ -109,7 +111,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def filter_counts
     @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     counts = {
       'idea_status_id' => {},
       'area_id' => {},

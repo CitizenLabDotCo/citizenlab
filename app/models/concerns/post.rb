@@ -13,6 +13,11 @@ module Post
                     associated_against: {author: [:first_name, :last_name]},
                     using: { :tsearch => {:prefix => true} }
 
+    pg_search_scope :restricted_search,
+                    against: [:title_multiloc, :body_multiloc],
+                    associated_against: {author: [:first_name]},
+                    using: { :tsearch => {:prefix => true} }
+
     # Note from: https://github.com/Casecommons/pg_search
     # > Searching through associations
     # > It is possible to search columns on associated models. Note that if you do this,
