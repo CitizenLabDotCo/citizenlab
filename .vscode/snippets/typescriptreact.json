@@ -51,11 +51,25 @@
       "const ${1:StyledComponent} = styled(${2:OriginComponent})`${3}`;"
     ]
   },
-  "hook": {
-    "prefix": "hook",
-    "description": "Creates a new styled component base on a React Component",
+  "imp-hook": {
+    "prefix": "imp-hook",
+    "description": "Import of hook",
     "body": [
       "import use${1} from 'hooks/use${1}';"
+    ]
+  },
+  "imp-comp-lib": {
+    "prefix": "imp-comp-lib",
+    "description": "Imports component from 'cl2-component-library'",
+    "body": [
+      "import {${1}} from 'cl2-component-library';"
+    ]
+  },
+  "imp-styled": {
+    "prefix": "imp-styled",
+    "description": "Imports styled from 'styled-components'",
+    "body": [
+      "import styled from 'styled-components';"
     ]
   }
 }
