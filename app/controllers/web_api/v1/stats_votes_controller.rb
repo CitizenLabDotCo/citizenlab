@@ -70,7 +70,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_time_as_xlsx
     xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_serie), 'votes_by_time'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time.xlsx'
   end
 
   def votes_by_time_cumulative_serie
@@ -98,7 +98,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_votes_by_time_xlsx double_grouped_by_to_object_array(votes_by_time_cumulative_serie), 'votes_by_time_cumulative'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time_cumulative'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_time_cumulative.xlsx'
   end
 
 
@@ -137,7 +137,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "topic"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_topic"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_topic.xlsx"
   end
 
   def votes_by_project_serie
@@ -174,7 +174,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "project"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_project"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_project.xlsx"
   end
 
   private
