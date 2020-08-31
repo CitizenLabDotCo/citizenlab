@@ -12,15 +12,53 @@ class UserDisplayNameService
     @is_admin = !!@current_user&.admin?
   end
 
-  # @param [User] user
+  # Compute the name that should be displayed depending on the context.
+  # Returns nil when user is nil, but logs a warning.
+  #
+  # @param [User, nil] user
   # @return [String]
   def display_name(user)
+    if user.nil?
+      Rails.logger.warn({
+        message: "Trying to get the display_name of 'nil'.",
+        stack: caller
+      }.to_json)
+    end
+    display_name!(user)
+  end
+
+  # nil-friendly version of #display_name.
+  # Return nil when 'user' is nil without logging a warning.
+  #
+  # @param [User, nil] user
+  # @return [String]
+  def display_name!(user)
+    return nil if user.nil?
     [user.first_name, last_name(user)].join(' ')
   end
 
-  # @param [User] user
+  # Returns nil when user is nil, but logs a warning.
+  #
+  # @param [User, nil] user
   # @return [String]
   def last_name(user)
+    if user.nil?
+      Rails.logger.warn({
+        message: "Trying to get the last_name of 'nil'.",
+        stack: caller
+      }.to_json)
+      return nil
+    end
+    last_name!(user)
+  end
+
+  # nil-friendly version of #last_name.
+  # Returns nil when 'user' is nil without logging a warning.
+  #
+  # @param [User, nil] user
+  # @return [String]
+  def last_name!(user)
+    return nil if user.nil?
     can_see_fullname_of?(user) ? user.last_name : self.class.initial(user.last_name)
   end
 
