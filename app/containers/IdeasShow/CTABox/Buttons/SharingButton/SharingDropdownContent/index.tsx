@@ -43,85 +43,19 @@ const StyledIcon = styled(Icon)`
 
 const Buttons = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 
   .sharingButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
     padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
-    margin-right: 5px;
+    text-align: left;
+    color: ${colors.label};
+    font-size: ${fontSizes.base}px;
 
-    &.last {
-      margin-right: 0px;
-    }
-
-    ${media.largePhone`
-      flex-basis: calc(50% - 2.5px);
-
-      &:nth-child(odd) {
-        margin-right: 5px;
-
-        &.last {
-          margin-right: 0px;
-        }
-      }
-
-      &:nth-child(-n+2) {
-        margin-bottom: 5px;
-      }
-
-      &:nth-child(even) {
-        margin-right: 0;
-      }
-    `}
-
-    &.twitter {
-      background: ${colors.twitter};
-      color: #fff;
-
-      &:hover {
-        background: ${darken(0.15, colors.twitter)};
-      }
-    }
-
-    &.facebook {
-      background: ${colors.facebook};
-      color: #fff;
-
-      &:hover {
-        background: ${darken(0.15, colors.facebook)};
-      }
-    }
-
-    &.messenger {
-      background: ${colors.facebookMessenger};
-      color: #fff;
-
-      &:hover {
-        background: ${darken(0.15, colors.facebookMessenger)};
-      }
-
-      ${media.biggerThanMaxTablet`
-        display: none;
-      `}
-    }
-
-    &.email {
-      color: #fff;
-      background: ${(props: any) => props.theme.colorMain};
-
-      ${StyledIcon} {
-        fill: #fff;
-      }
-
-      &:hover {
-        background: ${(props: any) => darken(0.1, props.theme.colorMain)};
-      }
+    &:hover {
+      background-color: ${darken(0.06, 'white')};
     }
   }
 `;
@@ -177,7 +111,6 @@ const SharingDropdownContent = ({
 
   return (
     <Container id={id || ''} className={className || ''}>
-      <Title>{titleMessage}</Title>
       <Buttons>
         <Facebook url={buildUrl('facebook')} />
         {<Messenger url={buildUrl('messenger')} />}

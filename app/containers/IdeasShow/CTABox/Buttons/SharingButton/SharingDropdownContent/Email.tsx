@@ -27,7 +27,7 @@ const Email = ({
       role="button"
       aria-label={formatMessage(messages.shareByEmail)}
     >
-      {/* <StyledIcon name="messenger" /> */}
+      {'Email'}
     </a>
   );
 };
