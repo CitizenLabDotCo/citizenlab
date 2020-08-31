@@ -63,14 +63,15 @@ class UserDisplayNameService
   end
 
   def restricted?
-
+    !admin? && @tenant.abbreviated_user_names_enabled?
   end
+
   private
 
   # @param [User] user
   # @return [Boolean]
   def can_see_fullname_of?(user)
-    return true if admin? || !@tenant.abbreviated_user_names_enabled?
+    return true unless restricted?
     user.admin? || (user == @current_user)
   end
 
