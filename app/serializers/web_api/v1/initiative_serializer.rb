@@ -3,7 +3,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(Tenant.current, current_user(params))
-    name_service.display_name(object.author)
+    name_service.display_name!(object.author)
   end
 
   attribute :body_multiloc do |object|

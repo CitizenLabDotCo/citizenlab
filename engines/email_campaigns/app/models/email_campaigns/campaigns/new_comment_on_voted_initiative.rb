@@ -31,11 +31,10 @@ module EmailCampaigns
       comment = activity.item
       return [] if comment.post_type != 'Initiative'
       name_service = UserDisplayNameService.new(Tenant.current, recipient)
-      initiating_user_last_name = name_service.last_name(comment.author) if comment.author.present?
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,
-          initiating_user_last_name: initiating_user_last_name,
+          initiating_user_last_name: name_service.last_name!(comment.author),
           post_published_at: comment.post.published_at.iso8601,
           post_title_multiloc: comment.post.title_multiloc,
           comment_body_multiloc: comment.body_multiloc,

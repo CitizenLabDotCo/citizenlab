@@ -94,7 +94,7 @@ module EmailCampaigns
       {
         title_multiloc: idea.title_multiloc,
         body_multiloc: idea.body_multiloc,
-        author_name: name_service.display_name(idea.author),
+        author_name: name_service.display_name!(idea.author),
         upvotes_count: idea.upvotes_count,
         downvotes_count: idea.downvotes_count,
         comments_count: idea.comments_count,
@@ -120,7 +120,7 @@ module EmailCampaigns
         body_multiloc: comment.body_multiloc,
         created_at: comment.created_at.iso8601,
         author_first_name: comment.author&.first_name,
-        author_last_name: name_service.last_name(comment.author),
+        author_last_name: name_service.last_name!(comment.author),
         author_locale: comment.author&.locale,
         author_avatar: comment.author.avatar&.versions&.map{|k, v| [k.to_s, v.url]}&.to_h
       }
@@ -141,7 +141,7 @@ module EmailCampaigns
           title_multiloc: initiative.title_multiloc,
           url: Frontend::UrlService.new.model_to_url(initiative),
           published_at: initiative.published_at.iso8601,
-          author_name: name_service.display_name(initiative.author),
+          author_name: name_service.display_name!(initiative.author),
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
           images: initiative.initiative_images.map{ |image|
@@ -172,7 +172,7 @@ module EmailCampaigns
           title_multiloc: initiative.title_multiloc,
           url: Frontend::UrlService.new.model_to_url(initiative),
           published_at: initiative.published_at.iso8601,
-          author_name: name_service.display_name(initiative.author),
+          author_name: name_service.display_name!(initiative.author),
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
           threshold_reached_at: initiative.threshold_reached_at.iso8601,
