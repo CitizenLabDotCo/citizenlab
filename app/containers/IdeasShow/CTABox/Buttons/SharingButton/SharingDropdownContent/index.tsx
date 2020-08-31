@@ -3,13 +3,9 @@ import React from 'react';
 // components
 import { Icon } from 'cl2-component-library';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
@@ -21,17 +17,6 @@ import Email from './Email';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Title = styled.h3`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  margin-bottom: 12px;
-  padding: 0;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -67,7 +52,6 @@ export type UtmParams = {
 };
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder';
   className?: string;
   url: string;
   twitterMessage: string;
@@ -80,19 +64,12 @@ interface Props {
 const SharingDropdownContent = ({
   id,
   className,
-  context,
   url,
   utmParams,
   emailBody,
   emailSubject,
   twitterMessage,
 }: Props) => {
-  const titleMessage = {
-    idea: <FormattedMessage {...messages.shareIdea} />,
-    project: <FormattedMessage {...messages.shareThisProject} />,
-    initiative: <FormattedMessage {...messages.shareThisInitiative} />,
-    folder: <FormattedMessage {...messages.shareThisFolder} />,
-  }[context];
   const hasEmailSharing = !!(emailBody && emailSubject);
 
   const buildUrl = (medium: string) => {
