@@ -68,10 +68,10 @@ class UserDisplayNameService
   # @return [Boolean]
   def can_see_fullname_of?(user)
     return true if user.admin? || !@tenant.abbreviated_user_names_enabled?
-    is_admin? || (user == @current_user)
+    admin? || (user == @current_user)
   end
 
-  def is_admin?
+  def admin?
     @is_admin
   end
 
