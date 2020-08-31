@@ -18,7 +18,7 @@ interface Props {
   url: string;
 }
 
-const SharingButtonWithDropdown = ({
+const SharingButton = ({
   context,
   url,
   twitterMessage,
@@ -65,4 +65,4 @@ const SharingButtonWithDropdown = ({
   );
 };
 
-export default SharingButtonWithDropdown;
+export default SharingButton;
