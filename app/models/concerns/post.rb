@@ -85,7 +85,7 @@ module Post
     end
 
     def author_name
-      author.nil? ? nil : author.full_name
+      @author_name ||= author.nil? ? nil : author.full_name
     end
 
     
