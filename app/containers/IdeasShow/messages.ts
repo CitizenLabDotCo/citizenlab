@@ -35,19 +35,6 @@ export default defineMessages({
     defaultMessage:
       'Share your idea to reach more people, receive more votes and have more impact.',
   },
-  twitterMessage: {
-    id: 'app.containers.IdeasShow.twitterMessage',
-    defaultMessage: 'Vote for {ideaTitle} on',
-  },
-  emailSharingSubject: {
-    id: 'app.containers.IdeasShow.emailSharingSubject',
-    defaultMessage: 'Support my idea: {ideaTitle}.',
-  },
-  emailSharingBody: {
-    id: 'app.containers.IdeasShow.emailSharingBody',
-    defaultMessage:
-      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
-  },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',

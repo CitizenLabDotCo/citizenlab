@@ -712,7 +712,7 @@ export class IdeasShow extends PureComponent<
                   commentsCount={idea.attributes.comments_count}
                 />
 
-                {smallerThanLargeTablet && (
+                {/* {smallerThanLargeTablet && (
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
@@ -728,7 +728,7 @@ export class IdeasShow extends PureComponent<
                     })}
                     utmParams={utmParams}
                   />
-                )}
+                )} */}
               </LeftColumn>
 
               {biggerThanLargeTablet && (
@@ -752,24 +752,6 @@ export class IdeasShow extends PureComponent<
                           budgetingDescriptor={budgetingDescriptor}
                         />
                       )}
-                    <SharingWrapper>
-                      <Sharing
-                        context="idea"
-                        url={ideaUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, {
-                          ideaTitle,
-                        })}
-                        emailSubject={formatMessage(
-                          messages.emailSharingSubject,
-                          { ideaTitle }
-                        )}
-                        emailBody={formatMessage(messages.emailSharingBody, {
-                          ideaUrl,
-                          ideaTitle,
-                        })}
-                        utmParams={utmParams}
-                      />
-                    </SharingWrapper>
                     <MetaInformation
                       ideaId={ideaId}
                       projectId={projectId}
