@@ -32,7 +32,8 @@
     "description": "Inserts the basic building blocks for i18n in components",
     "body": [
       "// i18n",
-      "import { FormattedMessage } from 'utils/cl-intl';",
+      "import { FormattedMessage, injectIntl } from 'utils/cl-intl';",
+      "import { InjectedIntlProps } from 'react-intl';",
       "import messages from '${1:./messages}';"
     ]
   },
@@ -48,6 +49,13 @@
     "description": "Creates a new styled component base on a React Component",
     "body": [
       "const ${1:StyledComponent} = styled(${2:OriginComponent})`${3}`;"
+    ]
+  },
+  "hook": {
+    "prefix": "hook",
+    "description": "Creates a new styled component base on a React Component",
+    "body": [
+      "import use${1} from 'hooks/use${1}';"
     ]
   }
 }
