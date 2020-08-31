@@ -59,7 +59,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_serie, 'users_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_time.xlsx'
   end
 
 
@@ -98,7 +98,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     send_data xlsx,
      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: 'users_by_time_cumulative'
+     filename: 'users_by_time_cumulative.xlsx'
  end
 
   def active_users_by_time_serie
@@ -142,7 +142,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie, 'active_users_by_time'
     send_data xlsx,
      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: 'active_users_by_time'
+     filename: 'active_users_by_time.xlsx'
   end
 
   def users_by_gender_serie
@@ -170,7 +170,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_gender_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie, 'gender', 'users'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
   end
 
   def users_by_birthyear_serie
@@ -197,7 +197,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_birthyear_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie, 'birthyear', 'users'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear.xlsx'
   end
 
   def users_by_domicile_serie
@@ -240,7 +240,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       }) unless serie.empty?
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile.xlsx'
   end
 
   def users_by_education_serie
@@ -266,7 +266,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_education_as_xlsx
     xlsx = XlsxService.new.generate_field_stats_xlsx users_by_education_serie, 'education', 'users'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education.xlsx'
   end
 
   def users_by_custom_field_serie
@@ -334,10 +334,10 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         }
       }
       xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field'
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
     else
       xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_serie, 'option', 'users'
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field'
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
     end
 
   end

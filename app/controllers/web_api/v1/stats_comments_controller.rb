@@ -36,7 +36,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx comments_by_time_serie, 'comments_by_time'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time.xlsx'
   end
 
 
@@ -62,7 +62,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx comments_by_time_cumulative_serie, 'comments_by_time_cumulative'
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time_cumulative'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time_cumulative.xlsx'
   end
 
   def comments_by_topic_serie
@@ -99,7 +99,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "comments", "topic"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "comments_by_topic"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "comments_by_topic.xlsx"
   end
 
   def comments_by_project_serie
@@ -135,7 +135,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "comments", "project"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "comments_by_project"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "comments_by_project.xlsx"
   end
 
   private
