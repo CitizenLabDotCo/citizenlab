@@ -78,7 +78,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_idea_markers
-    @ideas = policy_scope(Idea)
+    @ideas = policy_scope(Idea).includes(:author)
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
