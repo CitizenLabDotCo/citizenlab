@@ -71,8 +71,8 @@ class XlsxService
           row = columns.map do |c|
             value = c[:f].call instance
             if c[:skip_sanitization]
-              value 
-            else 
+              value
+            else
               escape_formula value.to_s
             end
           end
@@ -118,6 +118,7 @@ class XlsxService
       {header: 'body',                 f: -> (i) { convert_to_text(@@multiloc_service.t(i.body_multiloc)) }},
       {header: 'author_name',          f: -> (i) { i.author_name }},
       {header: 'author_email',         f: -> (i) { i.author&.email }},
+      {header: 'proposed_budget',      f: -> (i) { i.proposed_budget },                           skip_sanitization: true},
       {header: 'publication_status',   f: -> (i) { i.publication_status },                        skip_sanitization: true},
       {header: 'published_at',         f: -> (i) { i.published_at },                              skip_sanitization: true},
       {header: 'upvotes_count',        f: -> (i) { i.upvotes_count },                             skip_sanitization: true},
