@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { FacebookButton } from 'react-social';
 import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../tracks';
@@ -7,6 +8,14 @@ import useTenant from 'hooks/useTenant';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { Icon } from 'cl2-component-library';
+
+const StyledIcon = styled(Icon)`
+  width: 22px;
+  height: 18px;
+  margin-right: 10px;
+  fill: #3c5a99;
+`;
 
 interface Props {
   url: string;
@@ -31,6 +40,7 @@ const Facebook = ({
         onClick={trackClickByEventName(tracks.clickFbShare.name)}
         aria-label={formatMessage(messages.shareOnFacebook)}
       >
+        <StyledIcon name="facebook" />
         {'Facebook'}
       </FacebookButton>
     );
