@@ -300,11 +300,6 @@ const AssignBudgetControlMobile = styled.div`
   `}
 `;
 
-const SharingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const SharingMobile = styled(Sharing)`
   padding: 0;
   margin: 0;
@@ -708,7 +703,7 @@ export class IdeasShow extends PureComponent<
                   permissionToPost={postOfficialFeedbackPermission}
                 />
 
-                {/* {smallerThanLargeTablet && (
+                {smallerThanLargeTablet && (
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
@@ -724,7 +719,7 @@ export class IdeasShow extends PureComponent<
                     })}
                     utmParams={utmParams}
                   />
-                )} */}
+                )}
               </LeftColumn>
 
               {biggerThanLargeTablet && (
