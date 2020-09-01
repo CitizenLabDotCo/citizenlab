@@ -77,6 +77,7 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
       stream={usersByDomicileStream}
       convertToGraphFormat={convertToGraphFormat}
       xlsxEndpoint={usersByDomicileXlsxEndpoint}
+      className="dynamicHeight"
     />
   );
 };
