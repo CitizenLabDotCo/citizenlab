@@ -25,7 +25,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     font-size: ${fontSizes.small}px;
   `}
 `;
