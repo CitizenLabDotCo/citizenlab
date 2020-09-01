@@ -71,5 +71,30 @@
     "body": [
       "import styled from 'styled-components';"
     ]
+  },
+  "flex-full-center": {
+    "prefix": "flex-full-center",
+    "description": "CSS for centering with flexbox",
+    "body": [
+      "display: flex;",
+      "justify-content: center;",
+      "align-items: center;"
+    ]
+  },
+  "flex-hor-center": {
+    "prefix": "flex-hor-center",
+    "description": "CSS for horizontal centering with flexbox",
+    "body": [
+      "display: flex;",
+      "justify-content: center;"
+    ]
+  },
+  "flex-ver-center": {
+    "prefix": "flex-ver-center",
+    "description": "CSS for vertical centering with flexbox",
+    "body": [
+      "display: flex;",
+      "align-items: center;"
+    ]
   }
 }
