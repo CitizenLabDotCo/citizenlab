@@ -184,6 +184,7 @@ Rails.application.routes.draw do
       scope 'stats' do
         route_params = {controller: 'stats_users'}
         get 'users_count', **route_params
+
         get 'users_by_time', **route_params
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
@@ -194,14 +195,29 @@ Rails.application.routes.draw do
         get 'users_engagement_scores', **route_params
         get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
+        get 'users_by_time_as_xlsx', **route_params
+        get 'users_by_time_cumulative_as_xlsx', **route_params
+        get 'active_users_by_time_as_xlsx', **route_params
+        get 'users_by_gender_as_xlsx', **route_params
+        get 'users_by_birthyear_as_xlsx', **route_params
+        get 'users_by_domicile_as_xlsx', **route_params
+        get 'users_by_education_as_xlsx', **route_params
+        get 'users_by_custom_field_as_xlsx/:custom_field_id', action: :users_by_custom_field_as_xlsx, **route_params
 
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params
+
         get 'ideas_by_time', **route_params
         get 'ideas_by_time_cumulative', **route_params
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
         get 'ideas_by_area', **route_params
+
+        get 'ideas_by_time_as_xlsx', **route_params
+        get 'ideas_by_time_cumulative_as_xlsx', **route_params
+        get 'ideas_by_topic_as_xlsx', **route_params
+        get 'ideas_by_project_as_xlsx', **route_params
+        get 'ideas_by_area_as_xlsx', **route_params
 
         route_params = { controller: 'stats_initiatives' }
         get 'initiatives_count', **route_params
@@ -217,6 +233,11 @@ Rails.application.routes.draw do
         get 'comments_by_topic', **route_params
         get 'comments_by_project', **route_params
 
+        get 'comments_by_time_as_xlsx', **route_params
+        get 'comments_by_time_cumulative_as_xlsx', **route_params
+        get 'comments_by_topic_as_xlsx', **route_params
+        get 'comments_by_project_as_xlsx', **route_params
+
         route_params = { controller: 'stats_votes' }
         get 'votes_count', **route_params
         get 'votes_by_birthyear', **route_params
@@ -228,6 +249,16 @@ Rails.application.routes.draw do
         get 'votes_by_time_cumulative', **route_params
         get 'votes_by_topic', **route_params
         get 'votes_by_project', **route_params
+
+        get 'votes_by_birthyear_as_xlsx', **route_params
+        get 'votes_by_education_as_xlsx', **route_params
+        get 'votes_by_domicile_as_xlsx', **route_params
+        get 'votes_by_gender_as_xlsx', **route_params
+        get 'votes_by_custom_field_as_xlsx', **route_params
+        get 'votes_by_time_as_xlsx', **route_params
+        get 'votes_by_time_cumulative_as_xlsx', **route_params
+        get 'votes_by_topic_as_xlsx', **route_params
+        get 'votes_by_project_as_xlsx', **route_params
       end
 
       scope 'mentions', controller: 'mentions' do

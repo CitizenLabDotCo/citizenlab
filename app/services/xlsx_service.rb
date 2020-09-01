@@ -14,7 +14,7 @@ class XlsxService
     end
   end
 
-  # Converts this hash array: 
+  # Converts this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   # into this xlsx:
   # | name  | size | age |
@@ -34,7 +34,7 @@ class XlsxService
         end
       end
     end
-    
+
     pa.to_stream
   end
 
@@ -42,7 +42,7 @@ class XlsxService
   # | name  | size | age |
   # | Ron   | xl   |     |
   # | John  |      | 35  |
-  # into this hash array: 
+  # into this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   def xlsx_to_hash_array xlsx
     workbook = RubyXL::Parser.parse_buffer(xlsx)
@@ -80,6 +80,41 @@ class XlsxService
         end
       end
     end
+  end
+
+  def generate_time_stats_xlsx serie, name
+    columns = [
+      {header: 'date',   f: -> (item) {item[0]}},
+      {header: 'amount', f: -> (item) {item[1]}}
+    ]
+    generate_xlsx name, columns, serie
+  end
+  def generate_field_stats_xlsx serie, key_name, value_name
+    columns = [
+      {header: key_name,   f: -> (item) {item[0]}},
+      {header: value_name, f: -> (item) {item[1]}}
+    ]
+    generate_xlsx value_name + '_by_' + key_name, columns, serie
+  end
+
+  def generate_res_stats_xlsx serie, resource_name, grouped_by
+    grouped_by_id = "#{grouped_by}_id"
+    columns = [
+      {header: grouped_by,    f: -> (item) {item[grouped_by]}},
+      {header: grouped_by_id,    f: -> (item) {item[grouped_by_id]}},
+      {header: resource_name, f: -> (item) {item[resource_name]}}
+    ]
+    generate_xlsx resource_name + '_by_' + grouped_by, columns, serie
+  end
+
+  def generate_votes_by_time_xlsx serie, name
+    columns = [
+      {header: 'date',  f: -> (item) {item["date"]}},
+      {header: 'up',    f: -> (item) {item["up"]}},
+      {header: 'down',  f: -> (item) {item["down"]}},
+      {header: 'total', f: -> (item) {item["total"]}}
+    ]
+    generate_xlsx name, columns, serie
   end
 
   def generate_users_xlsx users, view_private_attributes: false
