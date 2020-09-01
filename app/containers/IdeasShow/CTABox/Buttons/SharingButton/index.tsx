@@ -10,7 +10,6 @@ export type UtmParams = {
 };
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder';
   twitterMessage: string;
   emailSubject?: string;
   emailBody?: string;
@@ -19,7 +18,6 @@ interface Props {
 }
 
 const SharingButton = ({
-  context,
   url,
   twitterMessage,
   emailSubject,
@@ -50,7 +48,6 @@ const SharingButton = ({
       }
       dropdownContent={
         <SharingDropdownContent
-          context={context}
           url={url}
           twitterMessage={twitterMessage}
           emailSubject={emailSubject}

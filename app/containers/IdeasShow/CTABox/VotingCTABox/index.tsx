@@ -68,7 +68,6 @@ const CTABox = ({
         <StyledVoting ideaId={ideaId} projectId={projectId} />
         {commentingEnabled && <StyledGoToCommentsButton />}
         <SharingButton
-          context="idea"
           url={ideaUrl}
           twitterMessage={formatMessage(messages.twitterMessage, {
             ideaTitle,
