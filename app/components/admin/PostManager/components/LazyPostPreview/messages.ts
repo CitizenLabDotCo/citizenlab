@@ -68,4 +68,12 @@ export default defineMessages({
     defaultMessage:
       '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
   },
+  proposedBudgetTitle: {
+    id: 'app.containers.IdeasShow.proposedBudgetTitle',
+    defaultMessage: 'Proposed budget',
+  },
+  bodyTitle: {
+    id: 'app.containers.IdeasShow.bodyTitle',
+    defaultMessage: 'Description',
+  },
 });

@@ -211,7 +211,7 @@ class Sidebar extends PureComponent<
         {
           id: 'ideas',
           link: '/admin/ideas',
-          iconName: 'ideas',
+          iconName: 'idea2',
           message: 'ideas',
           isActive: (pathName) =>
             pathName.startsWith(

@@ -253,7 +253,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                       className="e2e-project-ideas-link"
                     >
                       <ProjectNavbarIcon
-                        name="idea2"
+                        name="idea"
                         className="idea"
                         ariaHidden
                       />
