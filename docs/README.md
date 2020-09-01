@@ -1,5 +1,11 @@
 # Changelog
 
+## 2020-09-01
+
+### Added
+
+- New platform setting: 'Abbreviated user names'. When enabled, user names are shown on the platform as first name + initial of last name (Jane D. instead of Jane Doe). This setting is intended for new platforms only. Once this options has been enabled, you MUST NOT change it back.
+
 ## 2020-08-27
 
 ### Added
@@ -69,7 +75,10 @@
 - It's no longer needed to manually refresh after deleting your account for a consistent UI
 - It's no longer needed to manually refresh after using the admin toggle in the user overview
 - The sign-in/up flow now correctly asks the user to verify if the smart group has other rules besides verification
-- `demo` is no longer an available option for `organization_type` in admin HQ
+- 
+
+
+demo` is no longer an available option for `organization_type` in admin HQ
 - An error is shown when saving a typeform URL with `?email=xxxx` in the URL, which prevented emails to be linked to survey results
 - On mobile, the info container in the proposal info page now has the right width
 - A general issue with storing cookies if fixed, noticable by missing data in GA, Intercom not showing and the cookie consent repeatedly appearing
