@@ -32,11 +32,12 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       recipient.moderatable_project_ids.map do |project_id|
         project = Project.find project_id
         statistics = statistics project
         if has_nonzero_statistics statistics
-          top_ideas = top_ideas project
+          top_ideas = top_ideas project, name_service
           idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
           {
             event_payload: {
@@ -128,7 +129,8 @@ module EmailCampaigns
       }
     end
 
-    def top_ideas project
+    # @param [UserDisplayNameService] name_service
+    def top_ideas project, name_service
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
       top_ideas = top_ideas.all.select do |idea|
@@ -145,7 +147,7 @@ module EmailCampaigns
           title_multiloc: idea.title_multiloc,
           url: Frontend::UrlService.new.model_to_url(idea),
           published_at: idea.published_at.iso8601,
-          author_name: idea.author_name,
+          author_name: name_service.display_name!(idea.author),
           upvotes_count: idea.upvotes_count,
           upvotes_increment: new_votes.where(mode: 'up').count,
           downvotes_count: idea.downvotes_count,

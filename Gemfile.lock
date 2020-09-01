@@ -306,6 +306,7 @@ GEM
       mimemagic (~> 0.3.2)
     case_transform (0.2)
       activesupport
+    coderay (1.1.3)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
     counter_culture (2.2.4)
@@ -478,6 +479,9 @@ GEM
     premailer-rails (1.10.3)
       actionmailer (>= 3)
       premailer (~> 1.7, >= 1.7.9)
+    pry (0.13.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     public_suffix (4.0.1)
     puma (4.3.5)
       nio4r (~> 2.0)
@@ -724,6 +728,7 @@ DEPENDENCIES
   pg_search (~> 2.1.2)
   polls!
   premailer-rails (~> 1.10.3)
+  pry
   public_api!
   puma
   pundit (~> 2.0)

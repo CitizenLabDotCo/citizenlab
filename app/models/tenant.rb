@@ -119,7 +119,13 @@ class Tenant < ApplicationRecord
   def location
     RGeo::Geographic.spherical_factory(:srid => 4326).point(settings.dig('maps', 'map_center', 'long'), settings.dig('maps', 'map_center', 'lat'))
   end
-  
+
+  def turn_on_abbreviated_user_names!
+    config = self.settings['abbreviated_user_names'] || {}
+    self.settings['abbreviated_user_names'] = config.merge({'allowed' => true, 'enabled' => true})
+    self.save!
+  end
+
   private
 
   def create_apartment_tenant
