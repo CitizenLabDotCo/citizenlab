@@ -5,6 +5,8 @@
 ### Added
 
 - New platform setting: 'Abbreviated user names'. When enabled, user names are shown on the platform as first name + initial of last name (Jane D. instead of Jane Doe). This setting is intended for new platforms only. Once this options has been enabled, you MUST NOT change it back.
+- You can now export all charts in the admin dashboard as xlsx or svg.
+- Translation improvements (email nl...)
 
 ## 2020-08-27
 
@@ -36,7 +38,7 @@
 
 ### Changed
 - Userid instead of email is used for hidden field in surveys (Leiden)
-- New projects have 'draft' status by default 
+- New projects have 'draft' status by default
 
 ### Fixed
 - Topics filter in ideas overview works again
@@ -75,7 +77,7 @@
 - It's no longer needed to manually refresh after deleting your account for a consistent UI
 - It's no longer needed to manually refresh after using the admin toggle in the user overview
 - The sign-in/up flow now correctly asks the user to verify if the smart group has other rules besides verification
-- 
+-
 
 
 demo` is no longer an available option for `organization_type` in admin HQ
