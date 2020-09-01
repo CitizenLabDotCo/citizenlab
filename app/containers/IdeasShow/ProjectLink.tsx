@@ -23,7 +23,8 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: #84939E;
+  fill: #84939e;
+  margin-right: 10px;
 `;
 
 const Container = styled.div`
@@ -43,7 +44,6 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
           {localize(project.attributes.title_multiloc)}
         </StyledLink>
       </Container>
-
     );
   }
 
