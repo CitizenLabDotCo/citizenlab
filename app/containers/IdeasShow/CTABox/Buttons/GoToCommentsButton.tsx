@@ -7,13 +7,20 @@ interface Props {
 
 const GoToCommentsButton = ({ className }: Props) => {
   const onClick = () => {
-    const commentInputField = document.getElementById("comment-input");
+    const commentInputField = document.getElementById('comments-main-title');
 
-    // TODO: check after comments have been redesigned
-    commentInputField && commentInputField.scrollIntoView({ behavior: "smooth" })
-  }
+    if (commentInputField) {
+      commentInputField.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   // TODO: add icon
-  return <IdeaCTAButton onClick={onClick} className={className} copy="Join the discussion" />;
-}
+  return (
+    <IdeaCTAButton
+      onClick={onClick}
+      className={className}
+      copy="Join the discussion"
+    />
+  );
+};
 
 export default GoToCommentsButton;
