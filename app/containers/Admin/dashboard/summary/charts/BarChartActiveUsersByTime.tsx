@@ -14,6 +14,7 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -71,6 +72,10 @@ type Props = {
   currentTopicFilter: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage?: string;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
+  xlsxEndpoint: string;
 };
 
 class BarChartActiveUsersByTime extends React.PureComponent<
@@ -78,12 +83,15 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -220,6 +228,9 @@ class BarChartActiveUsersByTime extends React.PureComponent<
       animationDuration,
     } = this.props['theme'];
 
+    const noData =
+      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -239,14 +250,21 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                 />
               )}
             </GraphCardTitle>
+            {!noData && (
+              <ExportMenu
+                svgNode={this.currentChart}
+                name={formatMessage(messages[graphTitleMessageKey])}
+                {...this.props}
+              />
+            )}
           </GraphCardHeader>
-          {!serie ? (
+          {noData ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <StyledResponsiveContainer>
-              <BarChart data={serie}>
+              <BarChart data={serie} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
                   name={formatMessage(messages[graphUnitMessageKey])}
