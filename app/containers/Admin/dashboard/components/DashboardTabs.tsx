@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 // typings
 import { Message } from 'typings';
@@ -13,14 +13,27 @@ import { Message } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 
+const StyledContainer = styled.div`
+  --a-font-size: ${fontSizes.base}px;
+  --a-line-height: calc(var(--a-font-size) * 1.5);
+  --a-padding: var(--a-font-size);
+  --wrapper-padding: 42px;
+  --tab-border-size: 1px;
+  --active-border-size: 3px;
+`;
+
 const TabbedNav = styled.nav`
+  position: fixed;
+  width: 100%;
   background: #fcfcfc;
+  z-index: 1000;
+  box-shadow: ${defaultStyles.boxShadow};
   border-radius: ${(props: any) => props.theme.borderRadius}
     ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
-  border: 1px solid ${colors.separation};
-  border-bottom: 1px solid transparent;
+  border: var(--tab-border-size) solid ${colors.separation};
+  border-bottom: var(--tab-border-size) solid transparent;
   @media print {
     border: none;
     padding: 0;
@@ -32,7 +45,7 @@ const Tab = styled.div`
   list-style: none;
   cursor: pointer;
   display: flex;
-  margin-bottom: -1px;
+  margin-bottom: calc(var(--tab-border-size) * -1);
 
   &:first-letter {
     text-transform: uppercase;
@@ -44,13 +57,13 @@ const Tab = styled.div`
 
   a {
     color: ${colors.label};
-    font-size: ${fontSizes.base}px;
+    font-size: var(--a-font-size);
     font-weight: 400;
-    line-height: 1.5rem;
+    line-height: var(--a-line-height);
     padding: 0;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    border-bottom: 3px solid transparent;
+    padding-top: var(--a-padding);
+    padding-bottom: var(--a-padding);
+    border-bottom: var(--active-border-size) solid transparent;
     transition: all 100ms ease-out;
   }
 
@@ -67,9 +80,13 @@ const Tab = styled.div`
 
 const ChildWrapper = styled.div`
   margin-bottom: 60px;
-  padding: 42px;
+  padding: var(--wrapper-padding);
+  padding-top: calc(
+    var(--wrapper-padding) + var(--a-line-height) + var(--a-padding) +
+      var(--a-padding) + var(--tab-border-size) + var(--active-border-size)
+  );
   max-width: 1400px;
-  margin: 0 auto;
+  margin: auto;
   background: ${colors.adminContentBackground};
 
   @media print {
@@ -113,7 +130,7 @@ class DashboardTabs extends React.PureComponent<
     const { children, tabs, location } = this.props;
 
     return (
-      <>
+      <StyledContainer>
         {tabs && tabs.length > 0 && (
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
@@ -155,7 +172,7 @@ class DashboardTabs extends React.PureComponent<
         )}
 
         <ChildWrapper>{children}</ChildWrapper>
-      </>
+      </StyledContainer>
     );
   }
 }
