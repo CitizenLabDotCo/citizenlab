@@ -1,7 +1,7 @@
 class WebApi::V1::NotificationsController < ApplicationController
 
   # This mapping is needed to serialize a collection (of notifications) of different types.
-  MODEL_TO_SERIALIZER = { 
+  MODEL_TO_SERIALIZER = {
     ::Notifications::AdminRightsReceived                   => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
     ::Notifications::CommentDeletedByAdmin                 => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
     ::Notifications::CommentMarkedAsSpam                   => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
@@ -14,6 +14,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     ::Notifications::InitiativeMarkedAsSpam                => WebApi::V1::Notifications::InitiativeMarkedAsSpamSerializer,
     ::Notifications::InviteAccepted                        => WebApi::V1::Notifications::InviteAcceptedSerializer,
     ::Notifications::MentionInComment                      => WebApi::V1::Notifications::MentionInCommentSerializer,
+    ::Notifications::MentionInOfficialFeedback             => WebApi::V1::Notifications::MentionInOfficialFeedbackSerializer,
     ::Notifications::OfficialFeedbackOnCommentedIdea       => WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
     ::Notifications::OfficialFeedbackOnCommentedInitiative => WebApi::V1::Notifications::OfficialFeedbackOnCommentedInitiativeSerializer,
     ::Notifications::OfficialFeedbackOnVotedIdea           => WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
