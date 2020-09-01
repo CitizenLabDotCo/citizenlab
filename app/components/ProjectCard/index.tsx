@@ -716,7 +716,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <ProjectMetaItems>
                   {showIdeasCount && (
                     <MetaItem className="first">
-                      <MetaItemIcon ariaHidden name="idea2" />
+                      <MetaItemIcon ariaHidden name="idea" />
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
                         {formatMessage(messages.xIdeas, { ideasCount })}
