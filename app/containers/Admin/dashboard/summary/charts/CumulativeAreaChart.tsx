@@ -13,6 +13,7 @@ import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   AreaChart,
   CartesianGrid,
@@ -56,7 +57,11 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
+  xlsxEndpoint: string;
 };
 
 export class CumulativeAreaChart extends PureComponent<
@@ -64,12 +69,15 @@ export class CumulativeAreaChart extends PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -261,6 +269,13 @@ export class CumulativeAreaChart extends PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
+            {serie && (
+              <ExportMenu
+                {...this.props}
+                svgNode={this.currentChart}
+                name={messages[graphTitleMessageKey].defaultMessage}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -297,6 +312,7 @@ export class CumulativeAreaChart extends PureComponent<
                 />
               </AreaChart>
             </ResponsiveContainer>
+
           )}
         </GraphCardInner>
       </GraphCard>
