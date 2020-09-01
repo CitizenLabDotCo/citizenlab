@@ -30,7 +30,6 @@
   "app.components.Comments.commentingNotPermitted": "Commenting on this idea is currently not allowed",
   "app.components.Comments.invisibleTitleComments": "Comments",
   "app.components.Comments.mostUpvoted": "Most voted",
-  "app.components.Comments.noComments": "There are no comments yet.",
   "app.components.Comments.official": "Official",
   "app.components.Comments.oldestToNewest": "Most recent",
   "app.components.Comments.replyToComment": "Reply to comment",
