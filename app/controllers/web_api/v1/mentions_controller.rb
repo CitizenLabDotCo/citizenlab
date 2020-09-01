@@ -1,40 +1,42 @@
 class WebApi::V1::MentionsController < ApplicationController
 
   skip_after_action :verify_authorized, only: [:users]
- 
-  def users
-    service = MentionService.new
-    slug_service = SlugService.new
-    limit = params[:limit]&.to_i || 5
 
-    mention_pattern = slug_service.slugify(params[:mention])
+  def users
+    limit = params[:limit]&.to_i || 5
+    query = params[:mention].gsub(/\W/, "\s")
 
     @users = []
-    if params[:post_id] && params[:post_type]
-      post_class = case params[:post_type]
-        when 'Idea' then Idea
-        when 'Initiative' then Initiative
-        else raise "#{params[:post_type]} is not a post type"
-      end
-      post = post_class.find(params[:post_id])
-      @users = service.users_from_post mention_pattern, post, limit
+    if (post_id = params[:post_id]) && (post_type = params[:post_type])
+      post_class = post_type_to_class(post_type)
+      post = post_class.find(post_id)
+      @users = MentionService.new.users_from_post(query, post, limit)
     end
 
-    if @users.size < limit
-      @users += User
-        .where("slug ILIKE ?", "#{mention_pattern}%")
-        .limit(limit - @users.size)
-        .where.not(id: @users)
-        .all
+    nb_missing_users = limit - @users.size
+    if nb_missing_users > 0
+      @users += User.by_username(query).where.not(id: @users).limit(nb_missing_users)
     end
 
     render json: WebApi::V1::UserSerializer.new(
-      @users, 
-      params: fastjson_params
-      ).serialized_json
+        @users,
+        params: fastjson_params
+    ).serialized_json
   end
 
   def secure_controller?
     false
+  end
+
+  private
+
+  # @param [String] type
+  # @@return [Class]
+  def post_type_to_class(type)
+    case type
+    when 'Idea' then Idea
+    when 'Initiative' then Initiative
+    else raise "#{type} is not a post type"
+    end
   end
 end
