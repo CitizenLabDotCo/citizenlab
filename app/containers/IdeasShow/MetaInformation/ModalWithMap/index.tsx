@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import Modal from 'components/UI/Modal';
-import Map from './Map';
+const Map = lazy(() => import('./Map'));
+import { Spinner } from 'cl2-component-library';
 
 interface Props {
   position: GeoJSON.Point;
@@ -17,7 +18,9 @@ const ModalWithMap = ({
 }: Props) => {
   return (
     <Modal padding={'70px 30px 30px'} opened={isOpened} close={onCloseModal}>
-      <Map position={position} projectId={projectId} />
+      <Suspense fallback={<Spinner />}>
+        <Map position={position} projectId={projectId} />
+      </Suspense>
     </Modal>
   );
 };
