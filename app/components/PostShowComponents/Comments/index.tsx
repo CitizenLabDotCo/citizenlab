@@ -60,11 +60,9 @@ const CommentCount = styled.span``;
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 15px;
 
   ${media.smallerThanMinTablet`
     justify-content: flex-start;
-    margin-bottom: 15px;
   `}
 `;
 
