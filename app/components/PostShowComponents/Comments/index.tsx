@@ -167,7 +167,7 @@ const CommentsSection = memo<Props>(
           />
 
           <Header>
-            <Title>
+            <Title id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />{' '}
               <CommentCount>({commentCount})</CommentCount>
             </Title>
