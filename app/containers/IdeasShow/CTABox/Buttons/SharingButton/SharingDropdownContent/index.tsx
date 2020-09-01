@@ -31,6 +31,8 @@ const Buttons = styled.div`
   flex-direction: column;
 
   .sharingButton {
+    display: flex;
+    align-items: center;
     padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
