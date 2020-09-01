@@ -48,6 +48,10 @@ import {
   activeUsersByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
+  usersByTimeCumulativeXlsxEndpoint,
+  activeUsersByTimeXlsxEndpoint,
+  ideasByTimeCumulativeXlsxEndpoint,
+  commentsByTimeCumulativeXlsxEndpoint,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -69,8 +73,11 @@ interface State {
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
   currentProjectFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   currentTopicFilter: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
   projectFilterOptions: IOption[];
@@ -109,8 +116,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           ? projectsList[0].id
           : undefined
         : undefined,
+      currentProjectFilterLabel: undefined,
       currentGroupFilter: undefined,
+      currentGroupFilterLabel: undefined,
       currentTopicFilter: undefined,
+      currentTopicFilterLabel: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
       projectFilterOptions: this.generateProjectOptions(),
@@ -178,17 +188,26 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
-    this.setState({ currentProjectFilter: filter.value });
+    this.setState({
+      currentProjectFilter: filter.value,
+      currentProjectFilterLabel: filter.label,
+    });
   };
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
-    this.setState({ currentGroupFilter: filter.value });
+    this.setState({
+      currentGroupFilter: filter.value,
+      currentGroupFilterLabel: filter.label,
+    });
   };
 
   handleOnTopicFilter = (filter) => {
     this.props.trackFilterOnTopic({ extra: { topic: filter } });
-    this.setState({ currentTopicFilter: filter.value });
+    this.setState({
+      currentTopicFilter: filter.value,
+      currentTopicFilterLabel: filter.label,
+    });
   };
 
   onResourceByTopicChange = (option) => {
@@ -338,6 +357,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             <GraphsContainer>
               <CumulativeAreaChart
                 graphTitleMessageKey="usersByTimeTitle"
+                xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
                 graphUnit="users"
                 startAt={startAt}
                 endAt={endAt}
@@ -351,6 +371,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphTitleMessageKey="activeUsersByTimeTitle"
                 startAt={startAt}
                 endAt={endAt}
+                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
                 stream={activeUsersByTimeStream}
                 infoMessage={infoMessage}
                 className="e2e-active-users-chart"
@@ -361,6 +382,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphUnit="ideas"
                 startAt={startAt}
                 endAt={endAt}
+                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
                 stream={ideasByTimeCumulativeStream}
                 className="e2e-ideas-chart"
                 {...this.state}
@@ -371,6 +393,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 startAt={startAt}
                 endAt={endAt}
                 stream={commentsByTimeCumulativeStream}
+                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
                 className="e2e-comments-chart"
                 {...this.state}
               />
