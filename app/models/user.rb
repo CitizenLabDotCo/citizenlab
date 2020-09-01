@@ -16,6 +16,18 @@ class User < ApplicationRecord
     :against => [:first_name, :last_name, :email], 
     :using => { :tsearch => {:prefix => true} }
 
+  pg_search_scope :by_full_name,
+                  :against => [:first_name, :last_name],
+                  :using => { :tsearch => {:prefix => true} }
+
+  pg_search_scope :by_first_name,
+                  :against => [:first_name],
+                  :using => { :tsearch => {:prefix => true} }
+
+  scope :by_username, -> (username) {
+    Tenant.current.has_feature?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
+  }
+
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
@@ -196,7 +208,7 @@ class User < ApplicationRecord
     invite_status != 'pending'
   end
 
-  def display_name
+  def full_name
     [first_name, last_name].compact.join(" ")
   end
 
@@ -274,8 +286,11 @@ class User < ApplicationRecord
   private
 
   def generate_slug
-    if !self.slug && self.first_name.present?
-      self.slug = SlugService.new.generate_slug self, self.display_name
+    return if self.slug.present?
+    if Tenant.current.has_feature?("abbreviated_user_names")
+      self.slug = SecureRandom.uuid
+    elsif self.first_name.present?
+      self.slug = SlugService.new.generate_slug self, self.full_name
     end
   end
 
