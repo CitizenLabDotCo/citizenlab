@@ -69,7 +69,7 @@ const ChildWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
   max-width: 1400px;
-  margin: auto;
+  margin: 0 auto;
   background: ${colors.adminContentBackground};
 
   @media print {
