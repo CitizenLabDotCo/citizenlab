@@ -693,12 +693,10 @@ export class IdeasShow extends PureComponent<
                   <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
                 )}
 
-                {biggerThanLargeTablet && (
-                  <AuthorActionsContainer>
-                    <PostedBy authorId={authorId} ideaId={ideaId} />
-                    <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
-                  </AuthorActionsContainer>
-                )}
+                <AuthorActionsContainer>
+                  <PostedBy authorId={authorId} ideaId={ideaId} />
+                  <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
+                </AuthorActionsContainer>
 
                 {ideaImageLarge && (
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
