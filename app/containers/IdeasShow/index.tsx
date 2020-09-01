@@ -664,14 +664,18 @@ export class IdeasShow extends PureComponent<
                   )}
                 </FeatureFlag>
 
-                {proposedBudget && (
-                  <IdeaProposedBudget proposedBudget={proposedBudget} />
-                )}
-
                 {proposedBudget && proposedBudgetEnabled && (
-                  <BodySectionTitle>
-                    <FormattedMessage {...messages.bodyTitle} />
-                  </BodySectionTitle>
+                  <>
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+
+                    <IdeaProposedBudget proposedBudget={proposedBudget} />
+
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.bodyTitle} />
+                    </BodySectionTitle>
+                  </>
                 )}
 
                 <Body
