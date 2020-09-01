@@ -38,7 +38,7 @@ interface Props {
   projectId: string;
 }
 
-const ParticipatoryBudgettingCTABox = (props: Props) => {
+const ParticipatoryBudgetingCTABox = (props: Props) => {
   const { ideaId, className } = props;
   const idea = useIdea({ ideaId });
 
@@ -62,4 +62,4 @@ const ParticipatoryBudgettingCTABox = (props: Props) => {
   return null;
 };
 
-export default ParticipatoryBudgettingCTABox;
+export default ParticipatoryBudgetingCTABox;

@@ -22,7 +22,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import AssignBudgetWrapper from './CTABox/ParticipatoryBudgettingCTABox/BudgetAssignment/AssignBudgetWrapper';
+import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaStatus from './IdeaStatus';
@@ -35,7 +35,7 @@ import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
 import VotingCTABox from './CTABox/VotingCTABox';
-import ParticipatoryBudgettingCTABox from './CTABox/ParticipatoryBudgettingCTABox';
+import ParticipatoryBudgetingCTABox from './CTABox/ParticipatoryBudgetingCTABox';
 import MetaInformation from './MetaInformation';
 
 // utils
@@ -287,7 +287,7 @@ const StyledVotingCTABox = styled(VotingCTABox)`
   margin-bottom: 20px;
 `;
 
-const StyledPBCTABox = styled(ParticipatoryBudgettingCTABox)`
+const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
   margin-bottom: 20px;
 `;
 
