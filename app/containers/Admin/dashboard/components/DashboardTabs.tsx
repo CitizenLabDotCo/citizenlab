@@ -25,7 +25,8 @@ const StyledContainer = styled.div`
 const TabbedNav = styled.nav`
   position: fixed;
   width: 100%;
-  background: #fcfcfc;
+  // TODO : set bg color in component library
+  background: #fbfbfb;
   z-index: 1000;
   box-shadow: ${defaultStyles.boxShadow};
   border-radius: ${(props: any) => props.theme.borderRadius}
@@ -74,7 +75,8 @@ const Tab = styled.div`
 
   &.active a {
     color: ${colors.adminTextColor};
-    border-color: ${colors.adminTextColor};
+    // border-color: ${colors.adminTextColor}; TODO : set accent color in component library
+    border-color: #7FBBCA;
   }
 `;
 
