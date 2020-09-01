@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { sortBy, last, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -34,8 +34,10 @@ import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
-import VotingCTABox from './CTABox/VotingCTABox';
-import ParticipatoryBudgetingCTABox from './CTABox/ParticipatoryBudgetingCTABox';
+const VotingCTABox = lazy(() => import('./CTABox/VotingCTABox'));
+const ParticipatoryBudgetingCTABox = lazy(() =>
+  import('./CTABox/ParticipatoryBudgetingCTABox')
+);
 import MetaInformation from './MetaInformation';
 
 // utils
@@ -725,24 +727,28 @@ export class IdeasShow extends PureComponent<
               {biggerThanLargeTablet && (
                 <RightColumnDesktop>
                   <MetaContent>
-                    {showVoteControl && (
-                      <StyledVotingCTABox
-                        ideaId={ideaId}
-                        projectId={projectId}
-                      />
-                    )}
-                    {showBudgetControl &&
-                      participationContextId &&
-                      participationContextType &&
-                      budgetingDescriptor && (
-                        <StyledPBCTABox
+                    <Suspense fallback={<Spinner />}>
+                      {showVoteControl && (
+                        <StyledVotingCTABox
                           ideaId={ideaId}
                           projectId={projectId}
-                          participationContextId={participationContextId}
-                          participationContextType={participationContextType}
-                          budgetingDescriptor={budgetingDescriptor}
                         />
                       )}
+                    </Suspense>
+                    <Suspense fallback={<Spinner />}>
+                      {showBudgetControl &&
+                        participationContextId &&
+                        participationContextType &&
+                        budgetingDescriptor && (
+                          <StyledPBCTABox
+                            ideaId={ideaId}
+                            projectId={projectId}
+                            participationContextId={participationContextId}
+                            participationContextType={participationContextType}
+                            budgetingDescriptor={budgetingDescriptor}
+                          />
+                        )}
+                    </Suspense>
                     <MetaInformation
                       ideaId={ideaId}
                       projectId={projectId}
