@@ -280,6 +280,7 @@ export class CumulativeAreaChart extends PureComponent<
                   stroke={chartStroke}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={false}
                 />
                 <XAxis
                   dataKey="name"

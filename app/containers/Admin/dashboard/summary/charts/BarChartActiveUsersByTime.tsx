@@ -253,6 +253,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                   fill={chartFill}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={false}
                 />
                 <XAxis
                   dataKey="name"

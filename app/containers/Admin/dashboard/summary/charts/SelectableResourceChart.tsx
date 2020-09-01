@@ -182,6 +182,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                     barSize={20}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
+                    isAnimationActive={false}
                   />
                   <YAxis
                     dataKey="name"
