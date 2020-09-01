@@ -1452,7 +1452,7 @@
   "app.containers.Comments.signInToComment": "crwdns27500:0{signInLink}crwdne27500:0",
   "app.containers.Comments.signUpLinkText": "crwdns29105:0crwdne29105:0",
   "app.containers.Comments.verificationLinkText": "crwdns28784:0crwdne28784:0",
-  "app.containers.CookiePolicy.advertisingContent": "crwdns19624:0{advertisingLink}crwdne19624:0",
+  "app.containers.CookiePolicy.advertisingContent": "crwdns19624:0{orgName}crwdne19624:0",
   "app.containers.CookiePolicy.advertisingHref": "crwdns19626:0crwdne19626:0",
   "app.containers.CookiePolicy.advertisingLinkText": "crwdns19628:0crwdne19628:0",
   "app.containers.CookiePolicy.advertisingTitle": "crwdns19630:0crwdne19630:0",
