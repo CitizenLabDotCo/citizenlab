@@ -225,8 +225,8 @@ export const chartTheme = (theme) => {
     chartLabelColor: colors.adminSecondaryTextColor,
     barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
-    animationBegin: 50,
-    animationDuration: 500,
+    // animationBegin: 50,
+    // animationDuration: 500
   };
 };
 

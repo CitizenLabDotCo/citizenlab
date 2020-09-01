@@ -91,6 +91,7 @@ class PieChartByCategory extends React.PureComponent<
                     isAnimationActive={true}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
+                    isAnimationActive={false}
                     data={serie}
                     dataKey="value"
                     innerRadius={60}

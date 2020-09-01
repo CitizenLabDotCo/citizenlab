@@ -148,6 +148,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                     isAnimationActive={false}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
+                    isAnimationActive={false}
                     data={serie}
                     dataKey="value"
                     innerRadius={60}
