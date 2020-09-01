@@ -357,7 +357,7 @@ resource "Stats - Votes" do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
-      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
+      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 4.day){ create(:vote, mode: 'down') }}
 
       example_request "Votes by time (cumulative)" do
         expect(response_status).to eq 200
@@ -368,13 +368,13 @@ resource "Stats - Votes" do
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
         up_col = worksheet.map {|col| col.cells[1].value}
         header, *ups = up_col
-        expect(ups.inject(&:+)).to eq 4
+        expect(ups.inject(&:+)).to eq 3
         down_col = worksheet.map {|col| col.cells[2].value}
         header, *downs = down_col
-        expect(downs.inject(&:+)).to eq 2
+        expect(downs.inject(&:+)).to eq 4
         total_col = worksheet.map {|col| col.cells[3].value}
         header, *totals = total_col
-        expect(totals.inject(&:+)).to eq 6
+        expect(totals.inject(&:+)).to eq 7
       end
     end
   end
