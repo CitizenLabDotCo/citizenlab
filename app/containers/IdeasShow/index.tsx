@@ -19,7 +19,6 @@ import IdeaMeta from './IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
 import IdeaProposedBudget from './IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
-import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
@@ -703,13 +702,6 @@ export class IdeasShow extends PureComponent<
                   postId={ideaId}
                   postType="idea"
                   permissionToPost={postOfficialFeedbackPermission}
-                />
-
-                <ContentFooter
-                  postType="idea"
-                  postId={ideaId}
-                  publishedAt={ideaPublishedAt}
-                  commentsCount={idea.attributes.comments_count}
                 />
 
                 {/* {smallerThanLargeTablet && (
