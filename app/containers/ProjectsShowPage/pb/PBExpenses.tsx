@@ -43,6 +43,7 @@ import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div`
   background: #fff;
+  padding: 25px;
 `;
 
 const InnerContainer = styled.div`
