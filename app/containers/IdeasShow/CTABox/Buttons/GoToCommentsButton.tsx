@@ -1,11 +1,19 @@
 import React from 'react';
 import IdeaCTAButton from './IdeaCTAButton';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 interface Props {
   className?: string;
 }
 
-const GoToCommentsButton = ({ className }: Props) => {
+const GoToCommentsButton = ({
+  className,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const onClick = () => {
     const commentInputField = document.getElementById('comments-main-title');
 
@@ -18,9 +26,10 @@ const GoToCommentsButton = ({ className }: Props) => {
     <IdeaCTAButton
       onClick={onClick}
       className={className}
-      copy="Join the discussion"
+      copy={formatMessage(messages.postComment)}
+      iconName="comments"
     />
   );
 };
 
-export default GoToCommentsButton;
+export default injectIntl(GoToCommentsButton);
