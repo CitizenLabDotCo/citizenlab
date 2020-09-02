@@ -43,7 +43,11 @@ const SharingButton = ({
     <ButtonWithDropdown
       buttonComponent={
         <div ref={ref}>
-          <IdeaCTAButton onClick={toggleDropdown} copy="Share this idea" />
+          <IdeaCTAButton
+            iconName="arrow-share"
+            onClick={toggleDropdown}
+            copy="Share this idea"
+          />
         </div>
       }
       dropdownContent={
