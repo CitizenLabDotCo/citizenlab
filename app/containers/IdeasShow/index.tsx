@@ -25,7 +25,6 @@ import Modal from 'components/UI/Modal';
 import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaMoreActions from './IdeaMoreActions';
@@ -230,14 +229,6 @@ export const BodySectionTitle = styled.h2`
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const StyledMobileIdeaStatus = styled(IdeaStatus)`
-  margin-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -626,10 +617,6 @@ export class IdeasShow extends PureComponent<
                     <StyledMobileIdeaPostedBy authorId={authorId} />
                   )}
                 </IdeaHeader>
-
-                {statusId && smallerThanLargeTablet && (
-                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
-                )}
 
                 {biggerThanLargeTablet && (
                   <AuthorActionsContainer>
