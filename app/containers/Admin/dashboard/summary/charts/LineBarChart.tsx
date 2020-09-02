@@ -29,12 +29,15 @@ import {
 } from 'recharts';
 import {
   IGraphUnit,
+  IResolution,
   GraphCard,
+  NoDataContainer,
   GraphCardInner,
   GraphCardHeader,
   GraphCardTitle,
-  NoDataContainer,
-  IResolution,
+  GraphCardFigureContainer,
+  GraphCardFigure,
+  GraphCardFigureChange,
 } from '../..';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
@@ -96,6 +99,7 @@ class LineBarChart extends React.PureComponent<
     super(props as any);
     this.state = {
       serie: null,
+      serie2: null,
     };
 
     this.currentChart = React.createRef();
@@ -257,6 +261,42 @@ class LineBarChart extends React.PureComponent<
     });
   };
 
+  formatSerieChange = (serieChange: number) => {
+    if (serieChange > 0) {
+      return `(+${serieChange.toString()})`;
+    } else if (serieChange < 0) {
+      return `(${serieChange.toString()})`;
+    }
+    return null;
+  };
+
+  getFormattedNumbers(serie: IGraphFormat | null) {
+    if (serie) {
+      const firstSerieValue = serie[0].lineValue;
+      const lastSerieValue = serie[serie.length - 1].lineValue;
+      const serieChange = lastSerieValue - firstSerieValue;
+      let typeOfChange: 'increase' | 'decrease' | '' = '';
+
+      if (serieChange > 0) {
+        typeOfChange = 'increase';
+      } else if (serieChange < 0) {
+        typeOfChange = 'decrease';
+      }
+
+      return {
+        typeOfChange,
+        totalNumber: lastSerieValue,
+        formattedSerieChange: this.formatSerieChange(serieChange),
+      };
+    }
+
+    return {
+      totalNumber: null,
+      formattedSerieChange: null,
+      typeOfChange: '',
+    };
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const {
@@ -267,7 +307,7 @@ class LineBarChart extends React.PureComponent<
     } = this.props;
     const { serie, serie2 } = this.state;
     merge(serie, serie2);
-    console.log(serie);
+
     const {
       chartFill,
       chartLabelSize,
@@ -276,6 +316,13 @@ class LineBarChart extends React.PureComponent<
       animationBegin,
       animationDuration,
     } = this.props['theme'];
+
+    const formattedNumbers = this.getFormattedNumbers(serie);
+    const {
+      totalNumber,
+      formattedSerieChange,
+      typeOfChange,
+    } = formattedNumbers;
 
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
@@ -286,7 +333,7 @@ class LineBarChart extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages[graphTitleMessageKey]} />
-              {infoMessage && (
+              {/* {infoMessage && (
                 <Popup
                   basic
                   trigger={
@@ -297,8 +344,14 @@ class LineBarChart extends React.PureComponent<
                   content={infoMessage}
                   position="top left"
                 />
-              )}
+              )} */}
             </GraphCardTitle>
+            <GraphCardFigureContainer>
+              <GraphCardFigure>{totalNumber}</GraphCardFigure>
+              <GraphCardFigureChange className={typeOfChange}>
+                {formattedSerieChange}
+              </GraphCardFigureChange>
+            </GraphCardFigureContainer>
             {!noData && (
               <ExportMenu
                 svgNode={this.currentChart}
@@ -314,24 +367,43 @@ class LineBarChart extends React.PureComponent<
           ) : (
             <StyledResponsiveContainer>
               <ComposedChart
-                width={600}
-                height={400}
                 data={serie}
-                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                margin={{ right: 40 }}
+                ref={this.currentChart}
               >
-                <CartesianGrid stroke="#f5f5f5" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
+                <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
+                <XAxis
+                  dataKey="name"
+                  interval="preserveStartEnd"
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  tick={{ transform: 'translate(0, 7)' }}
+                  tickFormatter={this.formatTick}
+                />
+                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                <Tooltip
+                  isAnimationActive={false}
+                  labelFormatter={this.formatLabel}
+                  cursor={{ strokeWidth: 1 }}
+                />
                 <Area
                   type="monotone"
                   dataKey="amt"
                   fill="#8884d8"
                   stroke="#8884d8"
                 />
-                <Bar dataKey="barValue" barSize={20} fill="#413ea0" />
-                <Line type="monotone" dataKey="lineValue" stroke="#ff7300" />
+                <Bar
+                  dataKey="barValue"
+                  barSize={20}
+                  fill={chartFill}
+                  fillOpacity={0.5}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="lineValue"
+                  stroke={chartFill}
+                  dot={false}
+                />
               </ComposedChart>
             </StyledResponsiveContainer>
           )}
