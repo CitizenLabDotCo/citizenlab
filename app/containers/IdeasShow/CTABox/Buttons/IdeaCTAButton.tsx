@@ -32,6 +32,7 @@ const IdeaCTAButton = ({
       icon={iconName}
       iconColor={colors.clIconSecondary}
       iconHoverColor={colors.clIconSecondary}
+      iconAriaHidden
       bgHoverColor={buttonColor}
       textHoverColor={darken(0.1, theme.colorText)}
       boxShadowHover={boxShadowOnHover}
