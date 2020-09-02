@@ -33,6 +33,10 @@ const Container = styled.div`
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 35px;
+  `}
 `;
 
 const ContainerInner = styled.div`
@@ -47,9 +51,6 @@ const ContainerInner = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    padding-top: 20px;
-    padding-bottom: 25px;
-
     &.parent {
       padding-left: 20px;
       padding-right: 20px;
