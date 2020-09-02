@@ -13,6 +13,7 @@ import {
   IResolution,
 } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
@@ -46,6 +47,7 @@ import { ITopicData } from 'services/topics';
 import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
+  usersByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
   usersByTimeCumulativeXlsxEndpoint,
@@ -363,6 +365,19 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 stream={usersByTimeCumulativeStream}
                 className="e2e-users-by-time-cumulative-chart"
+                {...this.state}
+              />
+              <LineBarChart
+                graphUnit="users"
+                graphUnitMessageKey="users"
+                graphTitleMessageKey="usersByTimeTitle"
+                startAt={startAt}
+                endAt={endAt}
+                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+                stream={usersByTimeCumulativeStream}
+                stream2={usersByTimeStream}
+                infoMessage={infoMessage}
+                className="e2e-active-users-chart"
                 {...this.state}
               />
               <BarChartActiveUsersByTime
