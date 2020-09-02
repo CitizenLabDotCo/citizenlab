@@ -202,20 +202,6 @@ const LeftColumn = styled.div`
 
 const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 20px;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const StyledTranslateButtonMobile = styled(TranslateButton)`
-  display: none;
-  width: fit-content;
-  margin-bottom: 40px;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
 `;
 
 const IdeaHeader = styled.div`
@@ -667,15 +653,6 @@ export class IdeasShow extends PureComponent<
 
           <IdeaContainer>
             <StyledProjectLink projectId={projectId} />
-
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && smallerThanSmallTablet && (
-                <StyledTranslateButtonMobile
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateIdea}
-                />
-              )}
-            </FeatureFlag>
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
