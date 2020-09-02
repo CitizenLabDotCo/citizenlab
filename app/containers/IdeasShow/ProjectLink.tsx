@@ -41,7 +41,7 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
   if (!isNilOrError(project)) {
     return (
       <Container className={className}>
-        <StyledIcon name="circle-arrow-left" />
+        <StyledIcon ariaHidden name="circle-arrow-left" />
         <StyledLink to={`/projects/${project.attributes.slug}`}>
           {localize(project.attributes.title_multiloc)}
         </StyledLink>
