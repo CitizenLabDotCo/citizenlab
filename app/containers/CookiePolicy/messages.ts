@@ -24,19 +24,6 @@ export default defineMessages({
     id: 'app.containers.CookiePolicy.changePreferencesButtonText',
     defaultMessage: 'you can change your preferences',
   },
-  whoAreWeTitle: {
-    id: 'app.containers.CookiePolicy.whoAreWeTitle',
-    defaultMessage: 'Who are we?',
-  },
-  whoAreWeContent: {
-    id: 'app.containers.CookiePolicy.whoAreWeContent',
-    defaultMessage:
-      'We are {citizenLabLink}, a privately owned Belgian company. As software provider, we offer a digital participation platform to (local) governments and organisations. An example of such a platform is the one you’re currently on.',
-  },
-  citizenLabHref: {
-    id: 'app.containers.CookiePolicy.citizenLabHref',
-    defaultMessage: 'https://www.citizenlab.co',
-  },
   whatAreCookiesTitle: {
     id: 'app.containers.CookiePolicy.whatAreCookiesTitle',
     defaultMessage: 'What are cookies?',
@@ -123,14 +110,6 @@ export default defineMessages({
   cookiesListButtonText: {
     id: 'app.containers.CookiePolicy.cookiesListButtonText',
     defaultMessage: 'manage your preferences',
-  },
-  contact: {
-    id: 'app.containers.CookiePolicy.contact',
-    defaultMessage: 'Further questions or remarks? {contactLink}!',
-  },
-  contactLinkText: {
-    id: 'app.containers.CookiePolicy.contactLinkText',
-    defaultMessage: 'Contact us',
   },
   informationPageName: {
     id: 'app.containers.CookiePolicy.informationPageName',
