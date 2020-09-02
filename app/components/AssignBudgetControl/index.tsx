@@ -59,6 +59,7 @@ const IdeaPageContainer = styled.div`
 `;
 
 const BudgetBox = styled.div`
+  background-color: white;
   width: 100%;
   height: 95px;
   display: flex;
@@ -68,7 +69,6 @@ const BudgetBox = styled.div`
   margin-bottom: 5px;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.background};
   border: solid 1px ${colors.separation};
 `;
 
@@ -82,10 +82,10 @@ const IdeaCardButton = styled(Button)`
   margin-right: 12px;
 `;
 
-const AssignedLabel = styled.div`
+const AssignedContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  margin-bottom: 15px;
 `;
 
 const ControlWrapperHorizontalRule: any = styled.hr`
@@ -99,7 +99,8 @@ const ControlWrapperHorizontalRule: any = styled.hr`
 const AssignedIcon = styled(Icon)`
   height: 39px;
   color: ${colors.adminTextColor};
-  margin-bottom: 4px;
+  margin-right: 15px;
+  margin-bottom: 10px;
 `;
 
 const AssignedText = styled.div`
@@ -112,8 +113,6 @@ const AssignedText = styled.div`
 const ActionsWrapper = styled.div`
   margin-top: 5px;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
   color: ${colors.label};
 `;
 
@@ -391,11 +390,13 @@ class AssignBudgetControl extends PureComponent<
         return (
           <IdeaPageContainer className={fullClassName} aria-live="polite">
             {isInBasket && !processing ? (
-              <AssignedLabel>
-                <AssignedIcon name="basket-checkmark" />
-                <AssignedText>
-                  <FormattedMessage {...messages.assigned} />
-                </AssignedText>
+              <>
+                <AssignedContainer>
+                  <AssignedIcon name="basket-checkmark" />
+                  <AssignedText>
+                    <FormattedMessage {...messages.assigned} />
+                  </AssignedText>
+                </AssignedContainer>
                 <ActionsWrapper>
                   <ActionButton onClick={this.assignBudget}>
                     <FormattedMessage {...messages.undo} />
@@ -405,7 +406,7 @@ class AssignBudgetControl extends PureComponent<
                     <FormattedMessage {...messages.backToOverview} />
                   </ActionButton>
                 </ActionsWrapper>
-              </AssignedLabel>
+              </>
             ) : (
               <>
                 <Budget>
