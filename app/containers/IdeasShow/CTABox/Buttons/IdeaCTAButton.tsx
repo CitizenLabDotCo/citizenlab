@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'components/UI/Button';
 import { withTheme } from 'styled-components';
-import { IconNames } from 'cl2-component-library';
+import { IconNames, colors } from 'cl2-component-library';
 import { darken } from 'polished';
 
 interface Props {
@@ -12,10 +12,16 @@ interface Props {
   onClick: () => void;
 }
 
-const IdeaCTAButton = ({ className, copy, theme, iconName, onClick }: Props) => {
-  const buttonColor = "white"
-  const boxShadow = "0px 4px 3px rgba(0, 0, 0, 0.05)"; // TODO: add to styleutils
-  const boxShadowOnHover = "0px 4px 3px rgba(0, 0, 0, 0.1)";
+const IdeaCTAButton = ({
+  className,
+  copy,
+  theme,
+  iconName,
+  onClick,
+}: Props) => {
+  const buttonColor = 'white';
+  const boxShadow = '0px 4px 3px rgba(0, 0, 0, 0.05)'; // TODO: add to styleutils
+  const boxShadowOnHover = '0px 4px 3px rgba(0, 0, 0, 0.1)';
 
   return (
     <Button
@@ -24,6 +30,8 @@ const IdeaCTAButton = ({ className, copy, theme, iconName, onClick }: Props) => 
       boxShadow={boxShadow}
       textColor={theme.colorText}
       icon={iconName}
+      iconColor={colors.clIconSecondary}
+      iconHoverColor={colors.clIconSecondary}
       bgHoverColor={buttonColor}
       textHoverColor={darken(0.1, theme.colorText)}
       boxShadowHover={boxShadowOnHover}
@@ -33,6 +41,6 @@ const IdeaCTAButton = ({ className, copy, theme, iconName, onClick }: Props) => 
       {copy}
     </Button>
   );
-}
+};
 
 export default withTheme(IdeaCTAButton);

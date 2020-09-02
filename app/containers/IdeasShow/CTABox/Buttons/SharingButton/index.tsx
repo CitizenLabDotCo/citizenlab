@@ -44,7 +44,7 @@ const SharingButton = ({
       buttonComponent={
         <div ref={ref}>
           <IdeaCTAButton
-            iconName="arrow-share"
+            iconName="share-arrow"
             onClick={toggleDropdown}
             copy="Share this idea"
           />
