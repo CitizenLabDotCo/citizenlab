@@ -848,6 +848,7 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "Carte (bêta)",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Résumé",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Utilisateurs",
+  "app.containers.AdminPage.DashboardPage.tabReports": "",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Anecdote: cela sera surement plus rapide la prochaine fois que vous reviendrez!",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Tableau de bord",
   "app.containers.AdminPage.DashboardPage.top10activeUsersDescription": "Un utilisateur obtient 5 points par idée, 3 par commentaire et 1 par vote.",
