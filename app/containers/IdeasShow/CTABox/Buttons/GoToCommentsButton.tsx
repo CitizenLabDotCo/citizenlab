@@ -15,12 +15,24 @@ const GoToCommentsButton = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const onClick = () => {
-    const commentInputField = document.getElementById('comments-main-title');
+    const commentInputField = document.getElementById('submit-comment');
 
+    // We wait until the component is scrolled too, then the text area is focused
+    // https://stackoverflow.com/questions/46795955/how-to-know-scroll-to-element-is-done-in-javascript
     if (commentInputField) {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setTimeout(() => commentInputField.focus(), 100);
+        }
+      });
+
+      intersectionObserver.observe(commentInputField);
+
       commentInputField.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
   // TODO: add icon
   return (
     <IdeaCTAButton
