@@ -32,7 +32,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 // a11y
