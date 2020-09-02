@@ -47,12 +47,16 @@ const Header = styled.div`
   margin-bottom: 30px;
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   line-height: 40px;
   color: ${(props: any) => props.theme.colorText};
   margin-bottom: 0;
+
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.xxl}px;
+  `}
 `;
 
 const CommentCount = styled.span``;
