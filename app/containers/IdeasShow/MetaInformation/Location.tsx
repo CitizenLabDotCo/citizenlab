@@ -49,7 +49,7 @@ const Location = memo<Props>(({ address, position, projectId }) => {
   return (
     <>
       <Container>
-        <StyledIcon name="position" />
+        <StyledIcon name="position" ariaHidden />
         <OpenMapModalButton onClick={openModal}>{address}</OpenMapModalButton>
       </Container>
       <ModalWithMap
