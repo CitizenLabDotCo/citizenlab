@@ -34,10 +34,10 @@ const Status = ({ ideaStatus, className }: Props) => {
   const color = ideaStatus ? ideaStatus.attributes.color : '#bbb';
 
   return (
-    <Container className={className} color={color}>
+    <Container id="e2e-idea-status-badge" className={className} color={color}>
       <T value={ideaStatus.attributes.title_multiloc} />
     </Container>
   );
-}
+};
 
 export default Status;

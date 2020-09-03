@@ -74,7 +74,7 @@ describe('Idea form settings', () => {
         });
 
         // check that location is initially on idea show page
-        cy.get('#e2e-map-toggle').contains('Brussel, België');
+        cy.get('#e2e-map-popup').contains('Brussel, België');
 
         // go to idea form settings of this idea's project
         cy.visit(`admin/projects/${projectId}/ideaform`);
@@ -89,7 +89,7 @@ describe('Idea form settings', () => {
         cy.visit(`/ideas/${ideaTitle}`);
         cy.get('#e2e-idea-show-page-content');
         cy.wait(1000);
-        cy.get('#e2e-map-toggle').should('not.exist');
+        cy.get('#e2e-map-popup').should('not.exist');
       });
 
       it("Doesn't show the list/view toggle above the idea cards", () => {
