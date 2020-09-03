@@ -1,9 +1,12 @@
 // Libraries
-import React from 'react';
+import React, { memo } from 'react';
 
 // Components
 import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -29,6 +32,7 @@ const GroupType = styled.div`
   padding-right: 20px;
   padding-top: 50px;
   padding-bottom: 50px;
+  position: relative;
 
   &.manual {
     background: ${colors.lightGreyishBlue};
@@ -105,31 +109,61 @@ const MoreInfoLink = styled.a`
 
 const Step2Button = styled(Button)``;
 
+const BlackedOut = styled.div`
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+`;
+
+const Copy = styled.p`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LockIcon = styled(Icon)`
+  width: 30px;
+  height: 30px;
+  margin-bottom: 30px;
+`;
+
+const LearnMoreLink = styled.a`
+  color: white;
+  text-decoration: underline;
+
+  &:hover {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
+
 // Typings
 import { IGroupData } from 'services/groups';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
 }
-export interface State {}
 
-export class GroupCreationStep1 extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const GroupCreationStep1 = memo(
+  ({ intl, onOpenStep2 }: Props & InjectedIntlProps) => {
+    const formattedLink = intl.formatMessage(messages.readMoreLink);
+    const smartGroupsEnabled = useFeatureFlag('smart_groups');
 
-  createStep2Handler = (
-    groupType: IGroupData['attributes']['membership_type']
-  ) => () => {
-    this.props.onOpenStep2(groupType);
-  };
+    const createStep2Handler = (
+      groupType: IGroupData['attributes']['membership_type']
+    ) => () => {
+      onOpenStep2(groupType);
+    };
 
-  render() {
-    const formattedLink = this.props.intl.formatMessage(messages.readMoreLink);
     return (
       <Container>
         <GroupType className="manual">
@@ -144,13 +178,13 @@ export class GroupCreationStep1 extends React.PureComponent<
               <FormattedMessage {...messages.step1TypeDescriptionNormal} />
             </DescriptionText>
             <MoreInfoLink href={formattedLink} target="_blank">
-              <FormattedMessage {...messages.step1ReadMore} />
+              <FormattedMessage {...messages.step1LearnMoreGroups} />
             </MoreInfoLink>
           </GroupDescription>
           <Step2Button
             className="e2e-create-normal-group-button"
             buttonStyle="cl-blue"
-            onClick={this.createStep2Handler('manual')}
+            onClick={createStep2Handler('manual')}
           >
             <FormattedMessage {...messages.step1CreateButtonNormal} />
           </Step2Button>
@@ -167,20 +201,35 @@ export class GroupCreationStep1 extends React.PureComponent<
               <FormattedMessage {...messages.step1TypeDescriptionSmart} />
             </DescriptionText>
             <MoreInfoLink href={formattedLink} target="_blank">
-              <FormattedMessage {...messages.step1ReadMore} />
+              <FormattedMessage {...messages.step1LearnMoreGroups} />
             </MoreInfoLink>
           </GroupDescription>
           <Step2Button
+            disabled={!smartGroupsEnabled}
             className="e2e-create-rules-group-button"
             buttonStyle="cl-blue"
-            onClick={this.createStep2Handler('rules')}
+            onClick={createStep2Handler('rules')}
           >
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
+          {!smartGroupsEnabled && (
+            <BlackedOut>
+              <LockIcon name="lock" />
+              <Copy>
+                <FormattedMessage {...messages.smartGroupsAvailability} />
+              </Copy>
+              <LearnMoreLink
+                href="https://www.citizenlab.co/plans"
+                target="_blank"
+              >
+                <FormattedMessage {...messages.learnMorePlans} />
+              </LearnMoreLink>
+            </BlackedOut>
+          )}
         </GroupType>
       </Container>
     );
   }
-}
+);
 
 export default injectIntl<Props>(GroupCreationStep1);
