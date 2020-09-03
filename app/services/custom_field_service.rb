@@ -93,7 +93,9 @@ class CustomFieldService
   end
 
   def base_ui_schema_field field, locale
-    field.enabled ? {} : {"ui:widget": 'hidden'}
+    Hash.new.tap do |ui_schema|
+      ui_schema['ui:widget'] = 'hidden' if field.hidden || !field.enabled
+    end
   end
 
 # *** text ***
