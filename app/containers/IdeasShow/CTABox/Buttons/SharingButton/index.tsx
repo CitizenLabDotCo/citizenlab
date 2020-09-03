@@ -15,6 +15,7 @@ interface Props {
   emailBody?: string;
   utmParams?: UtmParams;
   url: string;
+  buttonCopy: string;
 }
 
 const SharingButton = ({
@@ -23,6 +24,7 @@ const SharingButton = ({
   emailSubject,
   emailBody,
   utmParams,
+  buttonCopy,
 }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(0);
@@ -46,7 +48,7 @@ const SharingButton = ({
           <IdeaCTAButton
             iconName="share-arrow"
             onClick={toggleDropdown}
-            copy="Share this idea"
+            copy={buttonCopy}
           />
         </div>
       }
