@@ -848,7 +848,7 @@
   "app.containers.AdminPage.DashboardPage.tabMap": "crwdns20104:0crwdne20104:0",
   "app.containers.AdminPage.DashboardPage.tabSummary": "crwdns19842:0crwdne19842:0",
   "app.containers.AdminPage.DashboardPage.tabUsers": "crwdns19844:0crwdne19844:0",
-  "app.containers.AdminPage.DashboardPage.tabReports": "crwdns19844:0crwdne19844:0",
+  "app.containers.AdminPage.DashboardPage.tabReports": "",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "crwdns26666:0crwdne26666:0",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "crwdns19910:0crwdne19910:0",
   "app.containers.AdminPage.DashboardPage.top10activeUsersDescription": "crwdns19846:0crwdne19846:0",
