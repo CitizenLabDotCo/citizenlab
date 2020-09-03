@@ -78,6 +78,13 @@ class CustomFieldService
     custom_field_values
   end
 
+  # @param [Hash<String, _>] custom_field_values
+  # @return [Hash<String, _>]
+  def self.remove_hidden_custom_fields(custom_field_values)
+    hidden_keys = CustomField.where(key: custom_field_values.keys).hidden.pluck(:key)
+    custom_field_values.except(*hidden_keys)
+  end
+
   private
 
   def handle_description(field, locale)
