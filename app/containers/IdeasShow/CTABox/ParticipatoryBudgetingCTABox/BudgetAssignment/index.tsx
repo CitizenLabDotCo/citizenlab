@@ -38,7 +38,7 @@ const BudgetAsssignment = ({
   projectId,
 }: Props) => {
   return (
-    <ControlWrapper className={`${className} e2e-vote-controls-desktop`}>
+    <ControlWrapper className={`${className}`}>
       {participationContextId &&
         participationContextType &&
         budgetingDescriptor && (

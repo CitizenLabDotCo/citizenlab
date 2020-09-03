@@ -15,11 +15,6 @@ describe('Idea Page', () => {
       // shows the page content container
       cy.get('#e2e-idea-show-page-content');
 
-      // shows the home page link with correct href
-      cy.get('#e2e-home-page-link')
-        .should('have.attr', 'href')
-        .and('include', '/en-GB/');
-
       // shows the link to the project page with correct href
       cy.get('#e2e-idea-other-link')
         .should('have.attr', 'href')
