@@ -27,6 +27,24 @@
       ""
     ]
   },
+  "func-component": {
+    "prefix": "func-component",
+    "description": "Creates a skeleton for a functional component",
+    "body": [
+      "import React from 'react';",
+      "",
+      "interface Props {}",
+      "",
+      "const Component = ({ }: Props) => {",
+      "  return (",
+      "    <div>Hello, world!</div>",
+      "  );",
+      "}",
+      "",
+      "export default Component;",
+      ""
+    ]
+  },
   "1i8n Block": {
     "prefix": "i18n",
     "description": "Inserts the basic building blocks for i18n in components",
