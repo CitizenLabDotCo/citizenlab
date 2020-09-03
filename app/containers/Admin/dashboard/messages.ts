@@ -15,6 +15,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
+  tabReports: {
+    id: 'app.containers.AdminPage.DashboardPage.tabReports',
+    defaultMessage: 'Reports',
+  },
   tabInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tabInsights',
     defaultMessage: 'Insights',

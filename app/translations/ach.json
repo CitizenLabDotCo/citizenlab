@@ -846,6 +846,7 @@
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "",
   "app.containers.AdminPage.DashboardPage.tabInsights": "",
   "app.containers.AdminPage.DashboardPage.tabMap": "",
+  "app.containers.AdminPage.DashboardPage.tabReports": "",
   "app.containers.AdminPage.DashboardPage.tabSummary": "",
   "app.containers.AdminPage.DashboardPage.tabUsers": "",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "",
