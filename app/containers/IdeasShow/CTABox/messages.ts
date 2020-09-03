@@ -14,4 +14,12 @@ export default defineMessages({
     defaultMessage:
       'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
+  postComment: {
+    id: 'app.containers.IdeasShow.postComment',
+    defaultMessage: 'Post comment',
+  },
+  shareIdea: {
+    id: 'app.containers.IdeasShow.shareIdea',
+    defaultMessage: 'Share idea',
+  },
 });
