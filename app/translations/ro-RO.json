@@ -1324,7 +1324,7 @@
   "app.containers.AdminPage.Users.UsersGroup.moveUsersButton": "Add",
   "app.containers.AdminPage.Users.UsersGroup.moveUsersTableAction": "Add selected users to a group",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Some conditions are incomplete",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Smart groups are available on the Standard and Premium plans.",
+  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Grupurile inteligente sunt disponibile în planurile Standard și Premium.",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verification is disabled for your platform, remove the verification rule or contact support.",
   "app.containers.AdminPage.clusterViewer._blank": "Unknown",
   "app.containers.AdminPage.clusterViewer.details": "Details",
