@@ -113,10 +113,9 @@ class PieChartByCategory extends React.PureComponent<
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
                   <Pie
-                    isAnimationActive={true}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
-                    isAnimationActive={false}
+                    isAnimationActive={true}
                     data={serie}
                     dataKey="value"
                     innerRadius={60}
