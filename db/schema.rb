@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(version: 2020_09_02_151045) do
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.uuid "resource_id"
-    t.boolean "hidden"
+    t.boolean "hidden", default: false, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
