@@ -14,6 +14,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
+export type TenantSettingsFeatureNames = keyof ITenantSettings;
 
 export interface ITenantSettings {
   core: {
@@ -43,6 +44,10 @@ export interface ITenantSettings {
     color_menu_bg?: string | null;
     currency: string;
     custom_onboarding_fallback_message?: Multiloc | null;
+    /* following three are used in the back-end */
+    custom_onboarding_message?: Multiloc | null;
+    custom_onboarding_button?: Multiloc | null;
+    custom_onboarding_link?: string | null;
     currently_working_on_text?: Multiloc | null;
     segment_destinations_blacklist: string[] | null;
     areas_term?: Multiloc;
@@ -60,6 +65,7 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
     phone?: boolean;
+    phone_email_pattern?: string;
   };
   facebook_login?: {
     allowed: boolean;
@@ -80,22 +86,16 @@ export interface ITenantSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
-  manual_project_sorting?: {
+  franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
+    environment: string;
+    identifier: string;
+    secret: string;
   };
-  admin_project_templates?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
+  manual_project_sorting?: TenantFeature;
+  admin_project_templates?: TenantFeature;
   pages?: TenantFeature;
-  groups?: TenantFeature;
-  projects?: TenantFeature;
-  projects_phases?: TenantFeature;
-  projects_pages?: TenantFeature;
-  projects_events?: TenantFeature;
-  projects_info?: TenantFeature;
-  excel_export?: TenantFeature;
   private_projects?: TenantFeature;
   maps?: TenantMapSettings;
   participatory_budgeting?: TenantFeature;
@@ -112,12 +112,45 @@ export interface ITenantSettings {
   fragments?: {
     allowed: boolean;
     enabled: boolean;
-    enabled_fragments: String[];
+    enabled_fragments: string[];
   };
-  verification?: TenantFeature;
+  verification?: {
+    allowed: boolean;
+    enabled: boolean;
+    verification_methods: string[];
+  };
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
+  workshops?: TenantFeature;
+  ideas_overview?: TenantFeature;
+  smart_groups?: TenantFeature;
+  manual_emailing?: TenantFeature;
+  automated_emailing_control?: TenantFeature;
+  typeform_surveys?: {
+    allowed: boolean;
+    enabled: boolean;
+    user_token: string;
+  };
+  surveys?: TenantFeature;
+  google_forms_surveys?: TenantFeature;
+  surveymonkey_surveys?: TenantFeature;
+  project_folders?: TenantFeature;
+  clustering?: TenantFeature;
+  geographic_dashboard?: TenantFeature;
+  widgets?: TenantFeature;
+  granular_permissions?: TenantFeature;
+  ideaflow_social_sharing?: TenantFeature;
+  initiativeflow_social_sharing?: TenantFeature;
+  machine_translations?: TenantFeature;
+  custom_topics?: TenantFeature;
+  similar_ideas?: TenantFeature;
+  polls?: TenantFeature;
+  moderation?: TenantFeature;
+  disable_downvoting?: TenantFeature;
+  project_visibility?: TenantFeature;
+  project_management?: TenantFeature;
+  idea_assignment?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
