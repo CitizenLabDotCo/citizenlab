@@ -56,6 +56,8 @@ const IdeaPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  background-color: #edeff0; // TODO: add color to component library
+  padding: 25px 30px;
 `;
 
 const BudgetBox = styled.div`

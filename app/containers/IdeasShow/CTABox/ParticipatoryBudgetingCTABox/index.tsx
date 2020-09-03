@@ -11,21 +11,15 @@ import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   border-radius: 2px;
+  padding-bottom: 30px;
   border-bottom: 1px solid ${colors.separation};
-  margin-bottom: 30px;
 `;
 
-const BudgetAssignmentContainer = styled.div`
-  background-color: #edeff0; // TODO: add color to component library
-  padding: 25px 30px;
-`;
-
-const ButtonsContainer = styled.div`
+const StyledBudgetAssignment = styled(BudgetAssignment)`
   margin-bottom: 30px;
 `;
 
 const StyledGoToCommentsButton = styled(GoToCommentsButton)`
-  margin-bottom: 10px;
   border: 1px solid #dddddd;
 `;
 
@@ -39,7 +33,7 @@ interface Props {
 }
 
 const ParticipatoryBudgetingCTABox = (props: Props) => {
-  const { ideaId, className } = props;
+  const { ideaId } = props;
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
@@ -49,12 +43,8 @@ const ParticipatoryBudgetingCTABox = (props: Props) => {
     // TODO: a11y title
     return (
       <Container>
-        <BudgetAssignmentContainer className={className}>
-          <BudgetAssignment {...props} />
-        </BudgetAssignmentContainer>
-        <ButtonsContainer>
-          {commentingEnabled && <StyledGoToCommentsButton />}
-        </ButtonsContainer>
+        <StyledBudgetAssignment {...props} />
+        {commentingEnabled && <StyledGoToCommentsButton />}
       </Container>
     );
   }
