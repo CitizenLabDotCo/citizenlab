@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
@@ -13,14 +13,11 @@ import { Message } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 
-const StyledContainer = styled.div`
-  --a-font-size: ${fontSizes.base}px;
-  --a-line-height: calc(var(--a-font-size) * 1.5);
-  --a-padding: var(--a-font-size);
-  --wrapper-padding: 42px;
-  --tab-border-size: 1px;
-  --active-border-size: 3px;
-`;
+const aLineHeight = fontSizes.base * 1.5;
+const aPadding = fontSizes.base;
+const wrapperPadding = 42;
+const tabBorderSize = 1;
+const activeBorderSize = 3;
 
 const TabbedNav = styled.nav`
   position: fixed;
@@ -33,8 +30,8 @@ const TabbedNav = styled.nav`
     ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
-  border: var(--tab-border-size) solid ${colors.separation};
-  border-bottom: var(--tab-border-size) solid transparent;
+  border: ${tabBorderSize}px solid ${colors.separation};
+  border-bottom: ${tabBorderSize}px solid transparent;
   @media print {
     border: none;
     padding: 0;
@@ -46,7 +43,7 @@ const Tab = styled.div`
   list-style: none;
   cursor: pointer;
   display: flex;
-  margin-bottom: calc(var(--tab-border-size) * -1);
+  margin-bottom: calc(${tabBorderSize}px * -1);
 
   &:first-letter {
     text-transform: uppercase;
@@ -58,13 +55,13 @@ const Tab = styled.div`
 
   a {
     color: ${colors.label};
-    font-size: var(--a-font-size);
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
-    line-height: var(--a-line-height);
+    line-height: ${aLineHeight}px;
     padding: 0;
-    padding-top: var(--a-padding);
-    padding-bottom: var(--a-padding);
-    border-bottom: var(--active-border-size) solid transparent;
+    padding-top: ${aPadding}px;
+    padding-bottom: ${aPadding}px;
+    border-bottom: ${activeBorderSize}px solid transparent;
     transition: all 100ms ease-out;
   }
 
@@ -82,13 +79,15 @@ const Tab = styled.div`
 
 const ChildWrapper = styled.div`
   margin-bottom: 60px;
-  padding: var(--wrapper-padding);
-  padding-top: calc(
-    var(--wrapper-padding) + var(--a-line-height) + var(--a-padding) +
-      var(--a-padding) + var(--tab-border-size) + var(--active-border-size)
-  );
+  padding: ${wrapperPadding}px;
+  padding-top: ${wrapperPadding +
+  aLineHeight +
+  aPadding +
+  aPadding +
+  tabBorderSize +
+  activeBorderSize}px;
   max-width: 1400px;
-  margin: auto;
+  margin: 0 auto;
   background: ${colors.adminContentBackground};
 
   @media print {
@@ -106,7 +105,7 @@ export type TabProps = {
   name?: string;
 };
 
-type Props = {
+interface Props {
   resource: {
     title: string;
     publicLink?: string;
@@ -116,67 +115,67 @@ type Props = {
     viewPublicResource: Message;
   };
   tabs?: TabProps[];
-};
+}
 
-type State = {};
-
-function urlMatch(tabUrl: string) {
+function getRegularExpression(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
 
-class DashboardTabs extends React.PureComponent<
-  Props & WithRouterProps,
-  State
-> {
-  render() {
-    const { children, tabs, location } = this.props;
-
+const DashboardTabs = memo<Props & WithRouterProps>(
+  ({ children, tabs, location }) => {
     return (
-      <StyledContainer>
-        {tabs && tabs.length > 0 && (
-          <TabbedNav className="e2e-resource-tabs">
-            {tabs.map((tab) => {
-              if (tab.feature) {
-                return (
-                  <FeatureFlag key={tab.url} name={tab.feature}>
-                    <Tab
-                      key={tab.url}
-                      className={`${tab.name} ${
-                        location &&
-                        location.pathname &&
-                        urlMatch(tab.url).test(location.pathname)
-                          ? 'active'
-                          : ''
-                      }`}
-                    >
-                      <Link to={tab.url}>{tab.label}</Link>
-                    </Tab>
-                  </FeatureFlag>
-                );
-              } else {
-                return (
-                  <Tab
-                    key={tab.url}
-                    className={`${tab.name} ${
-                      location &&
-                      location.pathname &&
-                      urlMatch(tab.url).test(location.pathname)
-                        ? 'active'
-                        : ''
-                    }`}
-                  >
-                    <Link to={tab.url}>{tab.label}</Link>
-                  </Tab>
-                );
-              }
-            })}
-          </TabbedNav>
-        )}
+      <>
+        {tabs &&
+          tabs.length > 0 &&
+          useMemo(
+            () => (
+              <TabbedNav className="e2e-resource-tabs">
+                {tabs.map((tab) => {
+                  if (tab.feature) {
+                    return (
+                      <FeatureFlag key={tab.url} name={tab.feature}>
+                        <Tab
+                          key={tab.url}
+                          className={`${tab.name} ${
+                            location &&
+                            location.pathname &&
+                            getRegularExpression(tab.url).test(
+                              location.pathname
+                            )
+                              ? 'active'
+                              : ''
+                          }`}
+                        >
+                          <Link to={tab.url}>{tab.label}</Link>
+                        </Tab>
+                      </FeatureFlag>
+                    );
+                  } else {
+                    return (
+                      <Tab
+                        key={tab.url}
+                        className={`${tab.name} ${
+                          location &&
+                          location.pathname &&
+                          getRegularExpression(tab.url).test(location.pathname)
+                            ? 'active'
+                            : ''
+                        }`}
+                      >
+                        <Link to={tab.url}>{tab.label}</Link>
+                      </Tab>
+                    );
+                  }
+                })}
+              </TabbedNav>
+            ),
+            [tabs]
+          )}
 
         <ChildWrapper>{children}</ChildWrapper>
-      </StyledContainer>
+      </>
     );
   }
-}
+);
 
 export default withRouter(DashboardTabs);

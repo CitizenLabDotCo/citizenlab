@@ -137,7 +137,7 @@ export class BarChartByCategory extends React.PureComponent<
                   label={{ fill: barFill, fontSize: chartLabelSize }}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                  isAnimationActive={false}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"

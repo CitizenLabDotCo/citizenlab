@@ -295,7 +295,7 @@ export class CumulativeAreaChart extends PureComponent<
                   stroke={chartStroke}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                  isAnimationActive={false}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"
@@ -312,7 +312,6 @@ export class CumulativeAreaChart extends PureComponent<
                 />
               </AreaChart>
             </ResponsiveContainer>
-
           )}
         </GraphCardInner>
       </GraphCard>

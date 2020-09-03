@@ -312,7 +312,7 @@ class LineChartVotesByTime extends React.PureComponent<
                   stroke={chartStrokeGreen}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                  isAnimationActive={false}
+                  isAnimationActive={true}
                 />
                 <Line
                   type="monotone"
@@ -321,7 +321,7 @@ class LineChartVotesByTime extends React.PureComponent<
                   dot={false}
                   fill={chartStrokeRed}
                   stroke={chartStrokeRed}
-                  isAnimationActive={false}
+                  isAnimationActive={true}
                 />
                 <Line
                   type="monotone"
@@ -330,7 +330,7 @@ class LineChartVotesByTime extends React.PureComponent<
                   dot={false}
                   fill={chartStroke}
                   stroke={chartStroke}
-                  isAnimationActive={false}
+                  isAnimationActive={true}
                 />
                 <Legend
                   wrapperStyle={{
