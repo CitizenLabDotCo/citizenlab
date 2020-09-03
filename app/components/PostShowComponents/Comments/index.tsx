@@ -137,7 +137,6 @@ const CommentsSection = memo<Props>(
     if (
       !isNilOrError(post) &&
       !isNilOrError(commentsList) &&
-      commentsList.length > 0 &&
       !isUndefined(project)
     ) {
       const commentingEnabled = get(
@@ -169,7 +168,9 @@ const CommentsSection = memo<Props>(
           <Header>
             <Title id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />{' '}
-              <CommentCount>({commentCount})</CommentCount>
+              {commentCount > 0 && (
+                <CommentCount>({commentCount})</CommentCount>
+              )}
             </Title>
             <StyledCommentSorting
               onChange={handleSortOrderChange}
