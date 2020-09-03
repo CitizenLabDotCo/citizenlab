@@ -92,6 +92,9 @@ export class RegistrationFieldsToGraphs extends PureComponent<
             />
           );
         }
+        if (field.attributes.input_type === 'number') {
+          return;
+        }
         if (field.attributes.code === 'gender') {
           return (
             <GenderChart
