@@ -54,58 +54,6 @@ describe('Idea Page', () => {
     });
   });
 
-  describe('Idea Map', () => {
-    let projectId: string = null as any;
-    let ideaId: string = null as any;
-    const projectTitle = randomString();
-    const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
-    const ideaTitle = randomString();
-    const ideaContent = randomString();
-    const locationGeoJSON = {
-      type: 'Point',
-      coordinates: [4.351710300000036, 50.8503396],
-    };
-    const locationDescription = 'Brussel, België';
-
-    before(() => {
-      cy.apiCreateProject({
-        type: 'continuous',
-        title: projectTitle,
-        descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
-        publicationStatus: 'published',
-        participationMethod: 'ideation',
-      })
-        .then((project) => {
-          projectId = project.body.data.id;
-          return cy.apiCreateIdea(
-            projectId,
-            ideaTitle,
-            ideaContent,
-            locationGeoJSON,
-            locationDescription
-          );
-        })
-        .then((idea) => {
-          ideaId = idea.body.data.id;
-          cy.visit(`/ideas/${ideaTitle}`);
-          cy.get('#e2e-idea-show-page-content');
-          cy.wait(1000);
-        });
-    });
-
-    it('shows the idea map component', () => {
-      cy.get('#e2e-map-toggle').click();
-      cy.get('#e2e-map');
-    });
-
-    after(() => {
-      cy.apiRemoveIdea(ideaId);
-      cy.apiRemoveProject(projectId);
-    });
-  });
-
   describe('Idea Status', () => {
     let projectId: string = null as any;
     let ideaId: string = null as any;
@@ -185,10 +133,11 @@ describe('Idea Page', () => {
         });
     });
 
-    it('displays the location dropdown on the idea page', () => {
+    it('displays the location on the idea page and the map pops up', () => {
       cy.visit(`/ideas/${ideaTitle}`);
       cy.get('#e2e-idea-show-page-content');
-      cy.get('#e2e-map-toggle').should('exist');
+      cy.get('#e2e-map-popup').click();
+      cy.get('#e2e-map');
     });
 
     after(() => {

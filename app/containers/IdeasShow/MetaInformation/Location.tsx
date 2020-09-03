@@ -50,7 +50,9 @@ const Location = memo<Props>(({ address, position, projectId }) => {
     <>
       <Container>
         <StyledIcon name="position" />
-        <OpenMapModalButton onClick={openModal}>{address}</OpenMapModalButton>
+        <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
+          {address}
+        </OpenMapModalButton>
       </Container>
       <ModalWithMap
         position={position}
