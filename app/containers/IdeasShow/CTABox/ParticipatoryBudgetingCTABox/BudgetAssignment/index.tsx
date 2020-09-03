@@ -21,6 +21,7 @@ const ControlWrapper = styled.div`
 `;
 
 interface Props {
+  className?: string;
   participationContextId: string;
   participationContextType: IParticipationContextType;
   budgetingDescriptor: any;
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const BudgetAsssignment = ({
+  className,
   participationContextId,
   participationContextType,
   budgetingDescriptor,
@@ -36,7 +38,7 @@ const BudgetAsssignment = ({
   projectId,
 }: Props) => {
   return (
-    <ControlWrapper className="e2e-vote-controls-desktop">
+    <ControlWrapper className={`${className} e2e-vote-controls-desktop`}>
       {participationContextId &&
         participationContextType &&
         budgetingDescriptor && (
