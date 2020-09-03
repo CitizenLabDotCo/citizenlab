@@ -55,9 +55,10 @@ const RightColumn = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
+  max-width: 1400px;
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   padding-top: 45px;
   padding-right: 51px;
@@ -131,11 +132,16 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
       className,
       location: { pathname },
     } = this.props;
-    const { adminNoPadding } = this.state;
+
+    const adminNoPadding =
+      this.state.adminNoPadding || pathname.includes('admin/dashboard');
     const adminFullWidth =
       this.state.adminFullWidth === true ||
-      endsWith(pathname, 'admin/moderation');
-    const adminWhiteBg = endsWith(pathname, 'admin/moderation');
+      endsWith(pathname, 'admin/moderation') ||
+      pathname.includes('admin/dashboard');
+    const adminWhiteBg =
+      endsWith(pathname, 'admin/moderation') ||
+      pathname.includes('admin/dashboard');
 
     return (
       <>

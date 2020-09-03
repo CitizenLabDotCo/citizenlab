@@ -121,7 +121,7 @@ type Props = {
 
 type State = {};
 
-function urlMatch(tabUrl: string) {
+function getRegularExpression(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
 
@@ -164,7 +164,7 @@ class TabbedResource extends React.PureComponent<
                       className={`${tab.name} ${
                         location &&
                         location.pathname &&
-                        urlMatch(tab.url).test(location.pathname)
+                        getRegularExpression(tab.url).test(location.pathname)
                           ? 'active'
                           : ''
                       }`}
@@ -180,7 +180,7 @@ class TabbedResource extends React.PureComponent<
                     className={`${tab.name} ${
                       location &&
                       location.pathname &&
-                      urlMatch(tab.url).test(location.pathname)
+                      getRegularExpression(tab.url).test(location.pathname)
                         ? 'active'
                         : ''
                     }`}
