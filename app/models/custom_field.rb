@@ -26,6 +26,7 @@ class CustomField < ApplicationRecord
 
   scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
+  scope :not_hidden, -> { where(hidden: false) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
 
