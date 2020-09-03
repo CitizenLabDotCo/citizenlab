@@ -81,8 +81,12 @@ class CustomFieldService
   # @param [Hash<String, _>] custom_field_values
   # @return [Hash<String, _>]
   def self.remove_hidden_custom_fields(custom_field_values)
-    hidden_keys = CustomField.where(key: custom_field_values.keys).hidden.pluck(:key)
-    custom_field_values.except(*hidden_keys)
+    # The key to performance here is that the SQL request that gets 'all_hidden_keys' is always the same (it does not
+    # depend on the parameters). As a consequence, if this method is called several times for processing a single
+    # request, the result of the request is cached and the request is not repeated.
+    all_hidden_keys = CustomField.hidden.pluck(:key)
+    keep_keys = all_hidden_keys.select {|key| custom_field_values.include?(key) }
+    custom_field_values.except(*keep_keys)
   end
 
   private
