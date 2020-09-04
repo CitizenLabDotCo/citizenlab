@@ -154,7 +154,7 @@ const CommentsSection = memo<Props>(
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
-      const commentCount = commentsList.length;
+      const commentCount = post.attributes.comments_count;
 
       return (
         <Container className={className || ''}>
