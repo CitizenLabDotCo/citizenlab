@@ -268,4 +268,36 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',
     defaultMessage: 'It should be almost ready, hang on!',
   },
+  downloadSvg: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadSvg',
+    defaultMessage: 'Download Svg',
+  },
+  downloadXlsx: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx',
+    defaultMessage: 'Download Xlsx',
+  },
+  fromFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.fromFilter',
+    defaultMessage: 'from',
+  },
+  untilFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter',
+    defaultMessage: 'until',
+  },
+  projectFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter',
+    defaultMessage: 'project',
+  },
+  groupFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.groupFilter',
+    defaultMessage: 'group',
+  },
+  topicFilter: {
+    id:
+      'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter',
+    defaultMessage: 'topic',
+  },
 });
