@@ -135,6 +135,7 @@ export interface ITenantSettings {
   surveys?: TenantFeature;
   google_forms_surveys?: TenantFeature;
   surveymonkey_surveys?: TenantFeature;
+  enalyzer_surveys?: TenantFeature;
   project_folders?: TenantFeature;
   clustering?: TenantFeature;
   geographic_dashboard?: TenantFeature;
