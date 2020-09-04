@@ -143,6 +143,7 @@ interface DataProps {
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
   google_forms_enabled: boolean | null;
+  enalyzer_enabled: boolean | null;
   survey_monkey_enabled: boolean | null;
 }
 
@@ -585,7 +586,8 @@ class ParticipationContext extends PureComponent<
               {surveys_enabled &&
                 (google_forms_enabled ||
                   survey_monkey_enabled ||
-                  typeform_enabled) && (
+                  typeform_enabled ||
+                  enalyzer_enabled) && (
                   <StyledRadio
                     onChange={this.handleParticipationMethodOnChange}
                     currentValue={participation_method}
