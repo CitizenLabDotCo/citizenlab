@@ -76,7 +76,7 @@ const CloseButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
   background: #fff;
@@ -134,7 +134,6 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   }
 
   ${media.smallerThanMinTablet`
-    max-width: calc(100vw - 30px);
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
 
