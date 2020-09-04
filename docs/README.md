@@ -1,5 +1,33 @@
 # Changelog
 
+## 2020-09-01
+
+### Fixed
+- IE11 no longer gives an error on places that use the intersection observer: project cards, most images, ...
+
+### Added
+
+- New platform setting: 'Abbreviated user names'. When enabled, user names are shown on the platform as first name + initial of last name (Jane D. instead of Jane Doe). This setting is intended for new platforms only. Once this options has been enabled, you MUST NOT change it back.
+- You can now export all charts in the admin dashboard as xlsx or svg.
+- Translation improvements (email nl...)
+
+### Changed
+- The about us (CitizenLab) section has been removed from the cookie policy
+
+## 2020-08-27
+
+### Added
+
+- Support for rich text in field descriptions in the idea form.
+- New "Proposed Budget" field in the idea form.
+
+### Changed
+
+- Passwords are checked against a list of common passwords before validation.
+- Improving the security around xlsx exports (escaping formulas, enforcing access restrictions, etc.)
+- Adding request throttling (rate-limiting) rules.
+- Improving the consistency of the focus style.
+
 ## 2020-07-30
 
 ### Added
@@ -16,7 +44,7 @@
 
 ### Changed
 - Userid instead of email is used for hidden field in surveys (Leiden)
-- New projects have 'draft' status by default 
+- New projects have 'draft' status by default
 
 ### Fixed
 - Topics filter in ideas overview works again
@@ -55,7 +83,10 @@
 - It's no longer needed to manually refresh after deleting your account for a consistent UI
 - It's no longer needed to manually refresh after using the admin toggle in the user overview
 - The sign-in/up flow now correctly asks the user to verify if the smart group has other rules besides verification
-- `demo` is no longer an available option for `organization_type` in admin HQ
+-
+
+
+demo` is no longer an available option for `organization_type` in admin HQ
 - An error is shown when saving a typeform URL with `?email=xxxx` in the URL, which prevented emails to be linked to survey results
 - On mobile, the info container in the proposal info page now has the right width
 - A general issue with storing cookies if fixed, noticable by missing data in GA, Intercom not showing and the cookie consent repeatedly appearing
