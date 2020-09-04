@@ -26,6 +26,7 @@ import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
 import AreaChart from './charts/AreaChart';
 import GenderChart from './charts/GenderChart';
+import AgeChart from './charts/AgeChart';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
@@ -79,31 +80,45 @@ export class RegistrationFieldsToGraphs extends PureComponent<
     }
 
     return customFields.map((field, index) => {
-      if (field.attributes.code === 'gender') {
-        return (
-          <GenderChart
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-          />
-        );
-      }
-
-      if (field.attributes.code === 'domicile') {
-        return (
-          <AreaChart
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-          />
-        );
-      }
-
       if (field.attributes.enabled) {
+        if (field.attributes.code === 'birthyear') {
+          return (
+            <AgeChart
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
+          );
+        }
+        if (field.attributes.input_type === 'number') {
+          return;
+        }
+        if (field.attributes.code === 'gender') {
+          return (
+            <GenderChart
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
+          );
+        }
+
+        if (field.attributes.code === 'domicile') {
+          return (
+            <AreaChart
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
+          );
+        }
+
         if (field.attributes.input_type === 'checkbox') {
           return (
             <PieChartByCategory
@@ -149,7 +164,9 @@ const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
 ) as any;
 
 export default (inputProps: InputProps) => (
-  <GetUserCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>
+  <GetUserCustomFields
+    inputTypes={['select', 'multiselect', 'checkbox', 'number']}
+  >
     {(customFields) => (
       <RegistrationFieldsToGraphsWithHoCs
         {...inputProps}

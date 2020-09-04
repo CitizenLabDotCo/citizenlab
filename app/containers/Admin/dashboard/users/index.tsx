@@ -14,7 +14,6 @@ import TimeControl from '../components/TimeControl';
 import ChartFilters from '../components/ChartFilters';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 import MostActiveUsersList from './charts/MostActiveUsersList';
-import AgeChart from './charts/AgeChart';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -141,12 +140,6 @@ export class UsersDashboard extends PureComponent<
 
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
-            <AgeChart
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
             <RegistrationFieldsToGraphs
               startAt={startAt}
               endAt={endAt}
