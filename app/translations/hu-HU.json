@@ -1017,6 +1017,7 @@
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Draft",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Manage",
   "app.containers.AdminPage.ProjectEdit.enabled": "Enabled",
+  "app.containers.AdminPage.ProjectEdit.enalyzer": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Events",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Attachments (max. 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Attachments are shown on the information page of the project.",

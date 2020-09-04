@@ -1017,6 +1017,7 @@
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Brouillon",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Gérer",
   "app.containers.AdminPage.ProjectEdit.enabled": "Activée",
+  "app.containers.AdminPage.ProjectEdit.enalyzer": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Événements",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Les fichiers ajoutés seront visibles sur la page \"information\" du projet.",
