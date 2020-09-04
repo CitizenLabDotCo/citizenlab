@@ -10,7 +10,7 @@ module Surveys
       columns += questions.map do |q|
         {
           header: q,
-          f: -> (r) { r.answers.find{|a| a['question_text'] == q}&.dig('') }
+          f: -> (r) { r.answers.find{|a| a['question_text'] == q}&.dig('value') }
         }
       end
       ::XlsxService.new.generate_xlsx 'Survey results', columns, responses
