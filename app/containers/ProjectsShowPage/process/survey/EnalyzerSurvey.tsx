@@ -18,7 +18,7 @@ type Props = {
   className?: string;
 };
 
-export default class GoogleFormsSurvey extends PureComponent<Props> {
+export default class EnalyzerSurvey extends PureComponent<Props> {
   render() {
     const { enalyzerUrl, className } = this.props;
 
