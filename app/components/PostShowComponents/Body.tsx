@@ -67,6 +67,10 @@ const Body = memo<Props>(
               .concat('...')
           : originalBodyText;
 
+        // TODO: copy
+        // TODO: a11y
+        // TODO: styling
+
         return (
           <Container id={`e2e-${postType}-description`} className={className}>
             <QuillEditedContent
