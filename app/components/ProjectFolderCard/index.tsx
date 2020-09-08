@@ -299,7 +299,8 @@ const ProjectFolderCard = memo<Props>(
         : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
-    const numberOfProjectsInFolder = publication.attributes.visible_children_count;
+    const numberOfProjectsInFolder =
+      publication.attributes.visible_children_count;
 
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`}>
