@@ -1,26 +1,21 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import useTranslation from 'hooks/useTranslation';
+import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// resources
-import GetMachineTranslation from 'resources/GetMachineTranslation';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 
 // typings
 import { Locale } from 'typings';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-interface InputProps {
+interface Props {
   postId: string;
   body: string;
   locale?: Locale;
@@ -29,76 +24,45 @@ interface InputProps {
   postType: 'idea' | 'initiative';
 }
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-}
-
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
-
 const Body = memo<Props>(
-  ({
-    postId,
-    body,
-    locale,
-    translateButtonClicked,
-    theme,
-    windowSize,
-    className,
-    postType,
-  }) => {
+  ({ postId, body, locale, translateButtonClicked, className, postType }) => {
+    const windowSize = useWindowSize();
+    const theme: any = useTheme();
     const smallerThanSmallTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
+      ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
 
-    return (
-      <Container id={`e2e-${postType}-description`} className={className}>
-        <QuillEditedContent
-          textColor={theme.colorText}
-          fontSize={smallerThanSmallTablet ? 'base' : 'large'}
-          fontWeight={300}
-        >
-          <div aria-live="polite">
-            {translateButtonClicked && locale ? (
-              <GetMachineTranslation
-                attributeName="body_multiloc"
-                localeTo={locale}
-                id={postId}
-                context={postType}
-              >
-                {(translation) => {
-                  if (!isNilOrError(translation)) {
-                    return (
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: translation.attributes.translation,
-                        }}
-                      />
-                    );
-                  }
+    if (locale) {
+      const translation = useTranslation({
+        attributeName: 'body_multiloc',
+        localeTo: locale,
+        id: postId,
+        context: postType,
+      });
 
-                  return <span dangerouslySetInnerHTML={{ __html: body }} />;
-                }}
-              </GetMachineTranslation>
-            ) : (
-              <span dangerouslySetInnerHTML={{ __html: body }} />
-            )}
-          </div>
-        </QuillEditedContent>
-      </Container>
-    );
+      if (!isNilOrError(translation)) {
+        const bodyText = translateButtonClicked
+          ? translation.attributes.translation
+          : body;
+
+        return (
+          <Container id={`e2e-${postType}-description`} className={className}>
+            <QuillEditedContent
+              textColor={theme.colorText}
+              fontSize={smallerThanSmallTablet ? 'base' : 'large'}
+              fontWeight={300}
+            >
+              <div aria-live="polite">
+                <span dangerouslySetInnerHTML={{ __html: bodyText }} />
+              </div>
+            </QuillEditedContent>
+          </Container>
+        );
+      }
+    }
+
+    return null;
   }
 );
 
-const BodyWithHOCs = withTheme(Body);
-
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <BodyWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Body;
