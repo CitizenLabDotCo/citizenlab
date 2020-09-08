@@ -101,7 +101,7 @@
   "app.components.FiltersModal.resetFilters": "Nullstil filtre",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappebeskrivelse:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetittel:",
-  "app.components.FolderFolderCard.numberOfFolders": "{numberOfFolders, plural, no {# folders} one {# folder} other {# folders}}",
+  "app.components.FolderFolderCard.numberOfProjectsInFolder": "",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbake",
   "app.components.IdeaCards.empty": "Det er ingen ideer her.",
   "app.components.IdeaCards.loadMore": "Last inn flere idéer",

@@ -299,7 +299,7 @@ const ProjectFolderCard = memo<Props>(
         : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
-    const numberOfProjects = publication.attributes.visible_children_count;
+    const numberOfProjectsInFolder = publication.attributes.visible_children_count;
 
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`}>
@@ -308,12 +308,12 @@ const ProjectFolderCard = memo<Props>(
           aria-hidden
           className="e2e-folder-card-numberofprojects"
         >
-          {numberOfProjects}
+          {numberOfProjectsInFolder}
         </MapIconDescription>
         <ScreenReaderOnly>
           <FormattedMessage
-            {...messages.numberOfFolders}
-            values={{ numberOfProjects }}
+            {...messages.numberOfProjectsInFolder}
+            values={{ numberOfProjectsInFolder }}
           />
         </ScreenReaderOnly>
       </ContentHeader>
