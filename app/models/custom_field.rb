@@ -16,6 +16,7 @@ class CustomField < ApplicationRecord
   validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
   validates :enabled, inclusion: {in: [true, false]}
+  validates :hidden, inclusion: {in: [true, false]}
   validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
 
 
