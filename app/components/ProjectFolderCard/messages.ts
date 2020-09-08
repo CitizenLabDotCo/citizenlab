@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.components.FolderFolderCard.a11y_folderDescription',
     defaultMessage: 'Folder description: ',
   },
-  numberOfFolders: {
-    id: 'app.components.FolderFolderCard.numberOfFolders',
+  numberOfProjectsInFolder: {
+    id: 'app.components.FolderFolderCard.numberOfProjectsInFolder',
     defaultMessage:
-      '{numberOfFolders, plural, no {# folders} one {# folder} other {# folders}}',
+      '{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}',
   },
 });
