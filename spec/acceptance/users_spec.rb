@@ -587,7 +587,7 @@ resource "Users" do
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
-          expect(@user.custom_field_values["field_3"]).to eq(some_value)
+          expect(@user.custom_field_values[cf.key]).to eq(some_value)
         end
 
         example "Cannot modify values of disabled custom fields" do
