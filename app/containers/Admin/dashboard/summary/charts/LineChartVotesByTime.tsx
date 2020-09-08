@@ -5,6 +5,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // styling
 import { withTheme } from 'styled-components';
+import { rgba } from 'polished';
 
 // services
 import {
@@ -16,8 +17,8 @@ import {
 // components
 import ExportMenu from '../../components/ExportMenu';
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   Tooltip,
   XAxis,
   YAxis,
@@ -241,6 +242,7 @@ class LineChartVotesByTime extends React.PureComponent<
       chartLabelSize,
       chartLabelColor,
       chartStroke,
+      chartFill,
       chartStrokeGreen,
       chartStrokeRed,
       animationBegin,
@@ -284,7 +286,7 @@ class LineChartVotesByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <LineChart
+              <AreaChart
                 data={serie}
                 margin={{ right: 40 }}
                 ref={this.currentChart}
@@ -303,38 +305,42 @@ class LineChartVotesByTime extends React.PureComponent<
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="up"
-                  name={formatMessage(messages.numberOfVotesUp)}
-                  dot={false}
-                  fill={chartStrokeGreen}
-                  stroke={chartStrokeGreen}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                />
-                <Line
+                <Area
                   type="monotone"
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
-                  fill={chartStrokeRed}
-                  stroke={chartStrokeRed}
+                  fill={rgba(chartStroke, 0.1)}
+                  stackId="1"
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                 />
-                <Line
+                <Area
+                  type="monotone"
+                  dataKey="up"
+                  name={formatMessage(messages.numberOfVotesUp)}
+                  dot={false}
+                  fill={rgba(chartStroke, 0.4)}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  stackId="1"
+                />
+                <Area
                   type="monotone"
                   dataKey="total"
                   name={formatMessage(messages.numberOfVotesTotal)}
                   dot={false}
-                  fill={chartStroke}
+                  fill={rgba(chartFill, 0.1)}
                   stroke={chartStroke}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                 />
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
                   }}
                 />
-              </LineChart>
+              </AreaChart>
             </ResponsiveContainer>
           )}
         </GraphCardInner>

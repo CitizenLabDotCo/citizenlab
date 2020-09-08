@@ -10,7 +10,12 @@ import messages from '../../messages';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
-import { IResourceByTime, IUsersByTime } from 'services/stats';
+import {
+  IResourceByTime,
+  IUsersByTime,
+  IIdeasByTime,
+  ICommentsByTime,
+} from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
@@ -19,8 +24,6 @@ import {
   ComposedChart,
   CartesianGrid,
   Tooltip,
-  Legend,
-  Area,
   Line,
   Bar,
   XAxis,
@@ -78,8 +81,12 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
-  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
-  stream2: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
+  stream: (
+    streamParams?: IStreamParams | null
+  ) => IStream<IUsersByTime> | IStream<IIdeasByTime> | IStream<ICommentsByTime>;
+  stream2: (
+    streamParams?: IStreamParams | null
+  ) => IStream<IUsersByTime> | IStream<IIdeasByTime> | IStream<ICommentsByTime>;
   infoMessage?: string;
   currentProjectFilterLabel: string | undefined;
   currentGroupFilterLabel: string | undefined;
@@ -91,8 +98,8 @@ class LineBarChart extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  streamSubscription: Subscription;
-  stream2Subscription: Subscription;
+  barStreamSubscription: Subscription;
+  lineStreamSubscription: Subscription;
   currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
@@ -154,8 +161,8 @@ class LineBarChart extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    this.streamSubscription.unsubscribe();
-    this.stream2Subscription.unsubscribe();
+    this.barStreamSubscription.unsubscribe();
+    this.lineStreamSubscription.unsubscribe();
   }
 
   convertToGraphFormat = (data: IResourceByTime) => {
@@ -163,7 +170,7 @@ class LineBarChart extends React.PureComponent<
 
     if (!isEmpty(data.series[graphUnit])) {
       const convertedSerie = map(data.series[graphUnit], (value, key) => ({
-        lineValue: value,
+        total: value,
         name: key,
         code: key,
       }));
@@ -204,14 +211,14 @@ class LineBarChart extends React.PureComponent<
   ) {
     const { stream, stream2 } = this.props;
 
-    if (this.streamSubscription) {
-      this.streamSubscription.unsubscribe();
+    if (this.barStreamSubscription) {
+      this.barStreamSubscription.unsubscribe();
     }
-    if (this.stream2Subscription) {
-      this.stream2Subscription.unsubscribe();
+    if (this.lineStreamSubscription) {
+      this.lineStreamSubscription.unsubscribe();
     }
 
-    this.streamSubscription = stream({
+    this.barStreamSubscription = stream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -225,7 +232,7 @@ class LineBarChart extends React.PureComponent<
       this.setState({ serie: convertedSerie });
     });
 
-    this.stream2Subscription = stream2({
+    this.lineStreamSubscription = stream2({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -272,8 +279,8 @@ class LineBarChart extends React.PureComponent<
 
   getFormattedNumbers(serie: IGraphFormat | null) {
     if (serie) {
-      const firstSerieValue = serie[0].lineValue;
-      const lastSerieValue = serie[serie.length - 1].lineValue;
+      const firstSerieValue = serie && serie[0].total;
+      const lastSerieValue = serie && serie[serie.length - 1].total;
       const serieChange = lastSerieValue - firstSerieValue;
       let typeOfChange: 'increase' | 'decrease' | '' = '';
 
@@ -386,23 +393,19 @@ class LineBarChart extends React.PureComponent<
                   labelFormatter={this.formatLabel}
                   cursor={{ strokeWidth: 1 }}
                 />
-                <Area
+                <Line
                   type="monotone"
-                  dataKey="amt"
-                  fill="#8884d8"
-                  stroke="#8884d8"
+                  dataKey="total"
+                  stroke={chartFill}
+                  dot={false}
+                  name="Total cumulé"
                 />
                 <Bar
                   dataKey="barValue"
                   barSize={20}
                   fill={chartFill}
                   fillOpacity={0.5}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="lineValue"
-                  stroke={chartFill}
-                  dot={false}
+                  name="Sur la période"
                 />
               </ComposedChart>
             </StyledResponsiveContainer>
