@@ -49,5 +49,12 @@
     "body": [
       "const ${1:StyledComponent} = styled(${2:OriginComponent})`${3}`;"
     ]
+  },
+  "c-log": {
+    "prefix": "c-log",
+    "description": "Console log",
+    "body": [
+      "console.log(`${1}: ${${1}}`);"
+    ]
   }
 }
