@@ -12,7 +12,9 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   attribute :custom_field_values, if: Proc.new { |object, params|
     view_private_attributes? object, params
-  }
+  } do |object|
+    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+  end
 
   attribute :verified, if: Proc.new {|object, params|
     view_private_attributes? object, params
@@ -36,5 +38,4 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   def self.view_private_attributes? object, params={}
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end
-
 end
