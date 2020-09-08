@@ -2,11 +2,17 @@
 
 ## 2020-09-01
 
+### Fixed
+- IE11 no longer gives an error on places that use the intersection observer: project cards, most images, ...
+
 ### Added
 
 - New platform setting: 'Abbreviated user names'. When enabled, user names are shown on the platform as first name + initial of last name (Jane D. instead of Jane Doe). This setting is intended for new platforms only. Once this options has been enabled, you MUST NOT change it back.
 - You can now export all charts in the admin dashboard as xlsx or svg.
 - Translation improvements (email nl...)
+
+### Changed
+- The about us (CitizenLab) section has been removed from the cookie policy
 
 ## 2020-08-27
 

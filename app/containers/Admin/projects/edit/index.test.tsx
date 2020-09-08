@@ -37,6 +37,7 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous information project', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
     const phases = [];
     const project = getMockProject(
       'continuousInformation',
@@ -51,6 +52,7 @@ describe('<AdminProjectEdition />', () => {
       <AdminProjectEdition
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
         children={children}
@@ -66,6 +68,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous typeform survey project', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousTypeform',
@@ -81,6 +85,7 @@ describe('<AdminProjectEdition />', () => {
       <AdminProjectEdition
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
         children={children}
@@ -96,6 +101,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous non-typeform survey project', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousGoogleForm',
@@ -112,6 +119,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -126,6 +134,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous typeform survey project if surveys are disabled', () => {
     const surveys_enabled = false;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousTypeform',
@@ -142,6 +152,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -156,6 +167,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous typeform survey project if typeform is disabled', () => {
     const surveys_enabled = true;
     const typeform_enabled = false;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousTypeform',
@@ -172,6 +185,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -186,6 +200,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with a single information phase', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const project = getMockProject('timelineInformation', 'timeline');
     const phases = [mockPhaseInformationData];
     const routerProps = getRouterProps('timelineInformation');
@@ -198,6 +214,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -212,6 +229,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with an ideation phase', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const project = getMockProject('timelineIdeation', 'timeline');
     const phases = [
       mockPhaseInformationData,
@@ -226,6 +245,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -240,6 +260,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with a typeform survey phase', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const project = getMockProject('timelineIdeation', 'timeline');
     const phases = [mockPhaseInformationData, mockPhaseSurveyTypeformData];
     const routerProps = getRouterProps('timelineIdeation');
@@ -251,6 +273,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -265,6 +288,8 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with a googleform survey phase', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const project = getMockProject('timelineIdeation', 'timeline');
     const phases = [mockPhaseInformationData, mockPhaseSurveyGoogleFormData];
     const routerProps = getRouterProps('timelineIdeation');
@@ -276,6 +301,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -290,6 +316,8 @@ describe('<AdminProjectEdition />', () => {
   it('lets you see the project', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousInformation',
@@ -305,6 +333,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -319,6 +348,8 @@ describe('<AdminProjectEdition />', () => {
   it('lets you add an idea when on the ideas tab', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousIdeation',
@@ -334,6 +365,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
@@ -348,6 +380,8 @@ describe('<AdminProjectEdition />', () => {
   it("doesn't let you add an idea when there's no ideation phase", () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
+    const granularPermissionsEnabled = true;
+
     const phases = [];
     const project = getMockProject(
       'continuousInformation',
@@ -363,6 +397,7 @@ describe('<AdminProjectEdition />', () => {
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
+        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
         children={children}
         {...routerProps}
