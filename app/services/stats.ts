@@ -226,6 +226,15 @@ export function usersByTimeStream(streamParams: IStreamParams | null = null) {
   });
 }
 
+export function commentsByTimeStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<ICommentsByTime>({
+    apiEndpoint: `${apiEndpoint}/comments_by_time`,
+    ...streamParams,
+  });
+}
+
 export const usersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/users_by_time_cumulative_as_xlsx`;
 
 export function usersByTimeCumulativeStream(

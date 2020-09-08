@@ -48,12 +48,14 @@ import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
   usersByTimeStream,
+  commentsByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
   usersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
+  ideasByTimeStream,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -357,16 +359,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
-              <CumulativeAreaChart
-                graphTitleMessageKey="usersByTimeTitle"
-                xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
-                graphUnit="users"
-                startAt={startAt}
-                endAt={endAt}
-                stream={usersByTimeCumulativeStream}
-                className="e2e-users-by-time-cumulative-chart"
-                {...this.state}
-              />
               <LineBarChart
                 graphUnit="users"
                 graphUnitMessageKey="users"
@@ -392,24 +384,32 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 className="e2e-active-users-chart"
                 {...this.state}
               />
-              <CumulativeAreaChart
+              <LineBarChart
                 graphTitleMessageKey="ideasByTimeTitle"
                 graphUnit="ideas"
+                graphUnitMessageKey="ideas"
                 startAt={startAt}
                 endAt={endAt}
                 xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                stream={ideasByTimeCumulativeStream}
                 className="e2e-ideas-chart"
                 {...this.state}
+                stream={ideasByTimeCumulativeStream}
+                stream2={ideasByTimeStream}
+                infoMessage={infoMessage}
+                {...this.state}
               />
-              <CumulativeAreaChart
+              <LineBarChart
                 graphTitleMessageKey="commentsByTimeTitle"
                 graphUnit="comments"
+                graphUnitMessageKey="comments"
                 startAt={startAt}
                 endAt={endAt}
-                stream={commentsByTimeCumulativeStream}
                 xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
                 className="e2e-comments-chart"
+                {...this.state}
+                stream={commentsByTimeCumulativeStream}
+                stream2={commentsByTimeStream}
+                infoMessage={infoMessage}
                 {...this.state}
               />
               <Column>
