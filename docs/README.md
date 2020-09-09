@@ -1,5 +1,15 @@
 # Changelog
 
+## 2020-09-08
+
+### Fixed
+- Custom buttons (e.g. in project descriptions) have correct styling in Safari.
+- Horizontal bar chart overflow in Admin > Dashboard > Users tab
+- User graphs for registration fields that are not used are not shown anymore in Admin > Dashboard > Users tab
+
+### Added
+- Pricing plan feature flags for smart groups and project access rights
+
 ## 2020-09-01
 
 ### Fixed
