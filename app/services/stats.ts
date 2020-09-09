@@ -4,7 +4,11 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
-export type IResourceByTime = IIdeasByTime | IUsersByTime | ICommentsByTime;
+export type IResourceByTime =
+  | IIdeasByTime
+  | IUsersByTime
+  | ICommentsByTime
+  | IVotesByTime;
 
 // Ideas
 export interface IIdeasByTime {
@@ -434,6 +438,14 @@ export function votesByTimeCumulativeStream(
 ) {
   return streams.get<IVotesByTimeCumulative>({
     apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`,
+    ...streamParams,
+  });
+}
+export const votesByTimeXlsxEndpoint = `${apiEndpoint}/votes_by_time_as_xlsx`;
+
+export function votesByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByTime>({
+    apiEndpoint: `${apiEndpoint}/votes_by_time`,
     ...streamParams,
   });
 }
