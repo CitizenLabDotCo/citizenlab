@@ -12,11 +12,11 @@ import messages from '../../messages';
 import { IStreamParams, IStream } from 'utils/streams';
 import {
   IResourceByTime,
+  IVotesByTime,
   IUsersByTime,
   IIdeasByTime,
   ICommentsByTime,
 } from 'services/stats';
-import { IGraphFormat } from 'typings';
 
 // components
 import ExportMenu from '../../components/ExportMenu';
@@ -42,20 +42,20 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from '../..';
-import { Popup } from 'semantic-ui-react';
+// import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
 
 // styling
 import styled, { withTheme } from 'styled-components';
 
-const InfoIcon = styled(Icon)`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  width: 20px;
-  height: 22px;
-  margin-left: 10px;
-`;
+// const InfoIcon = styled(Icon)`
+//   display: flex;
+//   align-items: center;
+//   cursor: pointer;
+//   width: 20px;
+//   height: 22px;
+//   margin-left: 10px;
+// `;
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
   .recharts-wrapper {
@@ -65,10 +65,23 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
   }
 `;
 
+type IComposedGraphFormat = {
+  total: number | string;
+  name: string;
+  code: string;
+  barValue: number | string;
+}[];
+
 type State = {
-  serie: IGraphFormat | null;
-  serie2: IGraphFormat | null;
+  serie: IComposedGraphFormat | null;
+  serie2: IComposedGraphFormat | null;
 };
+
+type IStreams =
+  | IStream<IUsersByTime>
+  | IStream<IIdeasByTime>
+  | IStream<ICommentsByTime>
+  | IStream<IVotesByTime>;
 
 type Props = {
   className?: string;
@@ -81,12 +94,8 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
-  stream: (
-    streamParams?: IStreamParams | null
-  ) => IStream<IUsersByTime> | IStream<IIdeasByTime> | IStream<ICommentsByTime>;
-  stream2: (
-    streamParams?: IStreamParams | null
-  ) => IStream<IUsersByTime> | IStream<IIdeasByTime> | IStream<ICommentsByTime>;
+  stream: (streamParams?: IStreamParams | null) => IStreams;
+  stream2: (streamParams?: IStreamParams | null) => IStreams;
   infoMessage?: string;
   currentProjectFilterLabel: string | undefined;
   currentGroupFilterLabel: string | undefined;
@@ -165,7 +174,7 @@ class LineBarChart extends React.PureComponent<
     this.lineStreamSubscription.unsubscribe();
   }
 
-  convertToGraphFormat = (data: IResourceByTime) => {
+  convertDataForLine = (data: IResourceByTime) => {
     const { graphUnit } = this.props;
 
     if (!isEmpty(data.series[graphUnit])) {
@@ -174,9 +183,6 @@ class LineBarChart extends React.PureComponent<
         name: key,
         code: key,
       }));
-
-      console.log('convertedSerie', convertedSerie);
-
       return convertedSerie;
     }
 
@@ -192,8 +198,6 @@ class LineBarChart extends React.PureComponent<
         name: key,
         code: key,
       }));
-
-      console.log('convertedSerie', convertedSerie);
 
       return convertedSerie;
     }
@@ -228,7 +232,7 @@ class LineBarChart extends React.PureComponent<
         topic: currentTopicFilter,
       },
     }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
+      const convertedSerie = this.convertDataForLine(serie);
       this.setState({ serie: convertedSerie });
     });
 
@@ -277,7 +281,7 @@ class LineBarChart extends React.PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie: IGraphFormat | null) {
+  getFormattedNumbers(serie) {
     if (serie) {
       const firstSerieValue = serie && serie[0].total;
       const lastSerieValue = serie && serie[serie.length - 1].total;
@@ -376,6 +380,7 @@ class LineBarChart extends React.PureComponent<
               <ComposedChart
                 data={serie}
                 margin={{ right: 40 }}
+                reverseStackOrder={true}
                 ref={this.currentChart}
               >
                 <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
@@ -387,7 +392,16 @@ class LineBarChart extends React.PureComponent<
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                 />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                <YAxis
+                  yAxisId="total"
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                />
+                <YAxis
+                  yAxisId="barValue"
+                  orientation="right"
+                  tickCount={serie?.barValue?.find()}
+                />
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
@@ -395,6 +409,7 @@ class LineBarChart extends React.PureComponent<
                 />
                 <Line
                   type="monotone"
+                  yAxisId="total"
                   dataKey="total"
                   stroke={chartFill}
                   dot={false}
@@ -402,6 +417,7 @@ class LineBarChart extends React.PureComponent<
                 />
                 <Bar
                   dataKey="barValue"
+                  yAxisId="barValue"
                   barSize={20}
                   fill={chartFill}
                   fillOpacity={0.5}

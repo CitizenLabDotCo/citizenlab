@@ -9,22 +9,24 @@ import { rgba } from 'polished';
 
 // services
 import {
-  votesByTimeCumulativeStream,
-  votesByTimeCumulativeXlsxEndpoint,
-  IVotesByTimeCumulative,
+  votesByTimeStream,
+  votesByTimeXlsxEndpoint,
+  IVotesByTime,
 } from 'services/stats';
 
 // components
 import ExportMenu from '../../components/ExportMenu';
 import {
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   Tooltip,
   XAxis,
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
   Legend,
+  ReferenceLine,
+  ComposedChart,
 } from 'recharts';
 import {
   IResolution,
@@ -137,17 +139,19 @@ class LineChartVotesByTime extends React.PureComponent<
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat(data: IVotesByTimeCumulative) {
+  convertToGraphFormat(data: IVotesByTime) {
     const { up, down, total } = data.series;
 
     if (!isEmpty(total)) {
-      return map(total, (value, key) => ({
-        total: value,
-        down: down[key],
+      const convertedData = map(total, (value, key) => ({
+        total: up[key] - down[key],
+        down: -down[key],
         up: up[key],
         date: key,
         code: key,
       }));
+      console.log(convertedData);
+      return convertedData;
     }
 
     return null;
@@ -165,7 +169,7 @@ class LineChartVotesByTime extends React.PureComponent<
       this.subscription.unsubscribe();
     }
 
-    this.subscription = votesByTimeCumulativeStream({
+    this.subscription = votesByTimeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -274,7 +278,7 @@ class LineChartVotesByTime extends React.PureComponent<
             {serie && (
               <ExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={votesByTimeCumulativeXlsxEndpoint}
+                xlsxEndpoint={votesByTimeXlsxEndpoint}
                 name={formatMessage(messages.ideaVotesByTimeTitle)}
                 {...this.props}
               />
@@ -286,12 +290,23 @@ class LineChartVotesByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <AreaChart
+              <ComposedChart
                 data={serie}
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                <CartesianGrid strokeDasharray="5 5" />
+                {/* <defs>
+                    <linearGradient id="down" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="red" stopOpacity={0.5} />
+                      <stop offset="95%" stopColor="red" stopOpacity={0.8} />
+                    </linearGradient>
+                    <linearGradient id="up" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#8884d8" stopOpacity={0.5} />
+                    </linearGradient>
+
+                  </defs> */}
+                <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
@@ -305,28 +320,30 @@ class LineChartVotesByTime extends React.PureComponent<
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                <Area
-                  type="monotone"
-                  dataKey="down"
-                  name={formatMessage(messages.numberOfVotesDown)}
-                  dot={false}
-                  fill={rgba(chartStroke, 0.1)}
-                  stackId="1"
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                />
-                <Area
-                  type="monotone"
+                {/* <ReferenceLine y={0} stroke='#000' /> */}
+                <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
-                  fill={rgba(chartStroke, 0.4)}
+                  fill={rgba(chartStrokeGreen, 0.4)}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stackId="1"
                 />
-                <Area
-                  type="monotone"
+                <Bar
+                  dataKey={'down'}
+                  name={formatMessage(messages.numberOfVotesDown)}
+                  dot={false}
+                  fill={rgba(chartStrokeRed, 0.4)}
+                  stackId="1"
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  stroke="none"
+                />
+
+                {/* <CartesianGrid strokeDasharray="5 5" /> */}
+                {/* <Bar
+                  type="step"
                   dataKey="total"
                   name={formatMessage(messages.numberOfVotesTotal)}
                   dot={false}
@@ -334,13 +351,13 @@ class LineChartVotesByTime extends React.PureComponent<
                   stroke={chartStroke}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                /> */}
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
                   }}
                 />
-              </AreaChart>
+              </ComposedChart>
             </ResponsiveContainer>
           )}
         </GraphCardInner>
