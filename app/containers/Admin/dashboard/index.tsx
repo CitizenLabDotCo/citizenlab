@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
+import DashboardTabs from './components/DashboardTabs';
 import Summary from './summary';
 
 // resource
@@ -225,8 +225,8 @@ export const chartTheme = (theme) => {
     chartLabelColor: colors.adminSecondaryTextColor,
     barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
-    animationBegin: 50,
-    animationDuration: 500,
+    animationBegin: 10,
+    animationDuration: 200,
   };
 };
 
@@ -243,6 +243,10 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
+      },
+      {
+        label: formatMessage(messages.tabReports),
+        url: '/admin/dashboard/reports',
       },
     ];
 
@@ -276,13 +280,13 @@ export const DashboardsPage = memo(
     if (authUser) {
       if (isAdmin({ data: authUser })) {
         return (
-          <TabbedResource resource={resource} tabs={tabs}>
+          <DashboardTabs resource={resource} tabs={tabs}>
             <HelmetIntl
               title={messages.helmetTitle}
               description={messages.helmetDescription}
             />
             {children}
-          </TabbedResource>
+          </DashboardTabs>
         );
       } else if (isProjectModerator({ data: authUser })) {
         return <Summary onlyModerator />;
