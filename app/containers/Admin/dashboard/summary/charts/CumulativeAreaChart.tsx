@@ -282,41 +282,36 @@ export class CumulativeAreaChart extends PureComponent<
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
-            <>
-              <ResponsiveContainer>
-                <AreaChart
-                  data={serie}
-                  margin={{ right: 40 }}
-                  ref={this.currentChart}
-                >
-                  <CartesianGrid strokeDasharray="5 5" />
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    name={formatMessage(messages[graphUnit])}
-                    dot={false}
-                    fill={rgba(chartFill, 0.25)}
-                    fillOpacity={1}
-                    stroke={chartStroke}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                  />
-                  <XAxis
-                    dataKey="name"
-                    interval="preserveStartEnd"
-                    stroke={chartLabelColor}
-                    fontSize={chartLabelSize}
-                    tick={{ transform: 'translate(0, 7)' }}
-                    tickFormatter={this.formatTick}
-                  />
-                  <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
-                  <Tooltip
-                    isAnimationActive={false}
-                    labelFormatter={this.formatLabel}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </>
+            <ResponsiveContainer>
+              <AreaChart data={serie} margin={{ right: 40 }}>
+                <CartesianGrid strokeDasharray="5 5" />
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  name={formatMessage(messages[graphUnit])}
+                  dot={false}
+                  fill={rgba(chartFill, 0.25)}
+                  fillOpacity={1}
+                  stroke={chartStroke}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  isAnimationActive={true}
+                />
+                <XAxis
+                  dataKey="name"
+                  interval="preserveStartEnd"
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  tick={{ transform: 'translate(0, 7)' }}
+                  tickFormatter={this.formatTick}
+                />
+                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                <Tooltip
+                  isAnimationActive={false}
+                  labelFormatter={this.formatLabel}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           )}
         </GraphCardInner>
       </GraphCard>

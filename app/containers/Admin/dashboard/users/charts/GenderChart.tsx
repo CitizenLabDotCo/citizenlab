@@ -167,7 +167,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart ref={this.currentChart}>
                   <Pie
-                    isAnimationActive={false}
+                    isAnimationActive={true}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
                     data={serie}
