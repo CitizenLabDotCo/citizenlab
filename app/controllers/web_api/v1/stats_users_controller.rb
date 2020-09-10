@@ -312,7 +312,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     @custom_field = CustomField.find(params[:custom_field_id])
     serie = users_by_custom_field_serie
     if ['select', 'multiselect'].include?(@custom_field.input_type)
-      options = @custom_field.custom_field_options.where(key: serie.keys).select(:key, :title_multiloc)
+      options = @custom_field.custom_field_options.all.select(:key, :title_multiloc)
       render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
     else
       render json: {series: {users: serie}}
