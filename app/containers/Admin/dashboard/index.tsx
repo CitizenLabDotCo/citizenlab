@@ -29,6 +29,7 @@ export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 export const GraphsContainer = styled.div`
