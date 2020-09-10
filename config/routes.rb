@@ -212,6 +212,8 @@ Rails.application.routes.draw do
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
         get 'ideas_by_area', **route_params
+        get 'ideas_by_status', **route_params
+        get 'ideas_by_status_as_xlsx', **route_params
 
         get 'ideas_by_time_as_xlsx', **route_params
         get 'ideas_by_time_cumulative_as_xlsx', **route_params
