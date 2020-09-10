@@ -19,6 +19,7 @@ import {
 import ExportMenu from '../../components/ExportMenu';
 import {
   Line,
+  Label,
   Bar,
   Tooltip,
   XAxis,
@@ -51,11 +52,6 @@ type IBarSerie = {
   down: number;
   total: number;
   code: string;
-  // total: number;
-  // down: number;
-  // up: number;
-  // date: string;
-  // code: string;
 }[];
 
 type ILineSerie = {
@@ -258,10 +254,10 @@ class LineBarChartVotesByTime extends React.PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie: IBarSerie | null) {
+  getFormattedNumbers(serie: ILineSerie | null) {
     if (serie) {
-      const firstSerieValue = serie && serie[0].total;
-      const lastSerieValue = serie && serie[serie.length - 1].total;
+      const firstSerieValue = serie && serie[0].cumulatedTotal;
+      const lastSerieValue = serie && serie[serie.length - 1].cumulatedTotal;
       const serieChange = lastSerieValue - firstSerieValue;
       let typeOfChange: 'increase' | 'decrease' | '' = '';
 
@@ -291,15 +287,13 @@ class LineBarChartVotesByTime extends React.PureComponent<
       chartLabelColor,
       chartStroke,
       chartFill,
-      chartStrokeGreen,
-      chartStrokeRed,
       animationBegin,
       animationDuration,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { barSerie, lineSerie } = this.state;
+    const formattedNumbers = this.getFormattedNumbers(lineSerie);
     merge(barSerie, lineSerie);
-    const formattedNumbers = this.getFormattedNumbers(barSerie);
     const { className } = this.props;
     const {
       totalNumber,
@@ -353,8 +347,24 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
                   yAxisId="cumulatedTotal"
-                />
-                <YAxis yAxisId="barValue" orientation="right" />
+                >
+                  <Label
+                    value={formatMessage(messages.total)}
+                    angle={-90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
+                <YAxis yAxisId="barValue" orientation="right">
+                  <Label
+                    value={formatMessage(messages.perPeriod, {
+                      period: this.props.resolution,
+                    })}
+                    angle={90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
@@ -362,7 +372,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <Line
                   type="monotone"
                   dataKey="cumulatedTotal"
-                  name={formatMessage(messages.numberOfVotesTotal)}
+                  name={formatMessage(messages.total)}
                   dot={false}
                   stroke={chartStroke}
                   yAxisId="cumulatedTotal"
