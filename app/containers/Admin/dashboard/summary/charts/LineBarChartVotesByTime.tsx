@@ -340,16 +340,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                {/* <defs>
-                    <linearGradient id="down" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="red" stopOpacity={0.5} />
-                      <stop offset="95%" stopColor="red" stopOpacity={0.8} />
-                    </linearGradient>
-                    <linearGradient id="up" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#8884d8" stopOpacity={0.5} />
-                    </linearGradient>
-                  </defs> */}
                 <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
                 <XAxis
                   dataKey="date"
@@ -369,11 +359,19 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
+                <Line
+                  type="monotone"
+                  dataKey="cumulatedTotal"
+                  name={formatMessage(messages.numberOfVotesTotal)}
+                  dot={false}
+                  stroke={chartStroke}
+                  yAxisId="cumulatedTotal"
+                />
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
-                  fill={rgba(chartStrokeGreen, 0.4)}
+                  fill={rgba(chartFill, 0.5)}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stackId="1"
@@ -383,22 +381,14 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
-                  fill={rgba(chartStrokeRed, 0.4)}
+                  fill={rgba(chartFill, 0.7)}
                   stackId="1"
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stroke="none"
                   yAxisId="barValue"
                 />
-                <Line
-                  type="monotone"
-                  dataKey="cumulatedTotal"
-                  name={formatMessage(messages.numberOfVotesTotal)}
-                  dot={false}
-                  fill={chartStroke}
-                  stroke={chartStroke}
-                  yAxisId="cumulatedTotal"
-                />
+
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
