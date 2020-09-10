@@ -28,6 +28,7 @@ import {
   Bar,
   XAxis,
   YAxis,
+  Label,
   ResponsiveContainer,
 } from 'recharts';
 import {
@@ -65,13 +66,12 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
   }
 `;
 
-interface IComposedGraphFormat {
+type IComposedGraphFormat = {
   total: number | string;
   name: string;
   code: string;
   barValue: number | string;
-}
-[];
+}[];
 
 interface State {
   serie: IComposedGraphFormat | null;
@@ -311,23 +311,11 @@ class LineBarChart extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      className,
-      graphTitleMessageKey,
-      graphUnitMessageKey,
-      infoMessage,
-    } = this.props;
+    const { className, graphTitleMessageKey, infoMessage } = this.props;
     const { serie, serie2 } = this.state;
     merge(serie, serie2);
 
-    const {
-      chartFill,
-      chartLabelSize,
-      chartLabelColor,
-      barHoverColor,
-      animationBegin,
-      animationDuration,
-    } = this.props['theme'];
+    const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
 
     const formattedNumbers = this.getFormattedNumbers(serie);
     const {
@@ -397,8 +385,28 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="total"
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
-                />
-                <YAxis yAxisId="barValue" orientation="right" />
+                >
+                  <Label
+                    value={formatMessage(messages.total)}
+                    angle={-90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
+                <YAxis
+                  yAxisId="barValue"
+                  orientation="right"
+                  allowDecimals={false}
+                >
+                  <Label
+                    value={formatMessage(messages.perPeriod, {
+                      period: this.props.resolution,
+                    })}
+                    angle={90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
@@ -410,7 +418,7 @@ class LineBarChart extends React.PureComponent<
                   dataKey="total"
                   stroke={chartFill}
                   dot={false}
-                  name="Total cumulé"
+                  name={formatMessage(messages.total)}
                 />
                 <Bar
                   dataKey="barValue"
@@ -418,7 +426,9 @@ class LineBarChart extends React.PureComponent<
                   barSize={20}
                   fill={chartFill}
                   fillOpacity={0.5}
-                  name="Sur la période"
+                  name={formatMessage(messages.totalForPeriod, {
+                    period: this.props.resolution,
+                  })}
                 />
               </ComposedChart>
             </StyledResponsiveContainer>
