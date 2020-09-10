@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle": "Naam van de vraag",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip": "Zo wordt de vraag getoond tijdens de registratie.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab": "Algemeen",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_checkbox": "Checkbox",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "Datum",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "Lange tekst",
