@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
+import { map, merge, isEmpty } from 'lodash-es';
 
 // styling
 import { withTheme } from 'styled-components';
@@ -10,6 +10,7 @@ import { rgba } from 'polished';
 // services
 import {
   votesByTimeStream,
+  votesByTimeCumulativeStream,
   votesByTimeXlsxEndpoint,
   IVotesByTime,
 } from 'services/stats';
@@ -17,7 +18,7 @@ import {
 // components
 import ExportMenu from '../../components/ExportMenu';
 import {
-  BarChart,
+  Line,
   Bar,
   Tooltip,
   XAxis,
@@ -25,7 +26,6 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Legend,
-  ReferenceLine,
   ComposedChart,
 } from 'recharts';
 import {
@@ -45,16 +45,28 @@ import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-type IVotesInGraphFormat = {
+type IBarSerie = {
   date: string | number;
   up: number;
   down: number;
   total: number;
   code: string;
+  // total: number;
+  // down: number;
+  // up: number;
+  // date: string;
+  // code: string;
+}[];
+
+type ILineSerie = {
+  cumulatedTotal: number;
+  date: string | number;
+  code: string;
 }[];
 
 type State = {
-  serie: IVotesInGraphFormat | null;
+  barSerie: IBarSerie | null;
+  lineSerie: ILineSerie | null;
 };
 
 type Props = {
@@ -70,17 +82,19 @@ type Props = {
   currentTopicFilterLabel: string | undefined;
 };
 
-class LineChartVotesByTime extends React.PureComponent<
+class LineBarChartVotesByTime extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  subscription: Subscription;
+  barStreamSubscription: Subscription;
+  lineStreamSubscription: Subscription;
   currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null,
+      barSerie: null,
+      lineSerie: null,
     };
 
     this.currentChart = React.createRef();
@@ -136,24 +150,37 @@ class LineChartVotesByTime extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.barStreamSubscription.unsubscribe();
+    this.lineStreamSubscription.unsubscribe();
   }
 
-  convertToGraphFormat(data: IVotesByTime) {
+  convertToBarSerie(data: IVotesByTime) {
     const { up, down, total } = data.series;
 
     if (!isEmpty(total)) {
       const convertedData = map(total, (value, key) => ({
-        total: up[key] - down[key],
-        down: -down[key],
+        total: value,
+        down: down[key],
         up: up[key],
         date: key,
         code: key,
       }));
-      console.log(convertedData);
       return convertedData;
     }
 
+    return null;
+  }
+  convertToLineSerie(data: IVotesByTime) {
+    const { total } = data.series;
+
+    if (!isEmpty(total)) {
+      const convertedData = map(total, (value, key) => ({
+        cumulatedTotal: value,
+        date: key,
+        code: key,
+      }));
+      return convertedData;
+    }
     return null;
   }
 
@@ -165,11 +192,14 @@ class LineChartVotesByTime extends React.PureComponent<
     currentTopicFilter: string | undefined,
     currentProjectFilter: string | undefined
   ) {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.barStreamSubscription) {
+      this.barStreamSubscription.unsubscribe();
+    }
+    if (this.lineStreamSubscription) {
+      this.lineStreamSubscription.unsubscribe();
     }
 
-    this.subscription = votesByTimeStream({
+    this.barStreamSubscription = votesByTimeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -179,8 +209,22 @@ class LineChartVotesByTime extends React.PureComponent<
         topic: currentTopicFilter,
       },
     }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
-      this.setState({ serie: convertedSerie });
+      const convertedSerie = this.convertToBarSerie(serie);
+      this.setState({ barSerie: convertedSerie });
+    });
+
+    this.lineStreamSubscription = votesByTimeCumulativeStream({
+      queryParameters: {
+        start_at: startAt,
+        end_at: endAt,
+        interval: resolution,
+        project: currentProjectFilter,
+        group: currentGroupFilter,
+        topic: currentTopicFilter,
+      },
+    }).observable.subscribe((serie) => {
+      const convertedSerie = this.convertToLineSerie(serie);
+      this.setState({ lineSerie: convertedSerie });
     });
   }
 
@@ -214,7 +258,7 @@ class LineChartVotesByTime extends React.PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie: IVotesInGraphFormat | null) {
+  getFormattedNumbers(serie: IBarSerie | null) {
     if (serie) {
       const firstSerieValue = serie && serie[0].total;
       const lastSerieValue = serie && serie[serie.length - 1].total;
@@ -253,9 +297,10 @@ class LineChartVotesByTime extends React.PureComponent<
       animationDuration,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
-    const { serie } = this.state;
+    const { barSerie, lineSerie } = this.state;
+    merge(barSerie, lineSerie);
+    const formattedNumbers = this.getFormattedNumbers(barSerie);
     const { className } = this.props;
-    const formattedNumbers = this.getFormattedNumbers(serie);
     const {
       totalNumber,
       formattedSerieChange,
@@ -275,7 +320,7 @@ class LineChartVotesByTime extends React.PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
-            {serie && (
+            {barSerie && (
               <ExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={votesByTimeXlsxEndpoint}
@@ -284,14 +329,14 @@ class LineChartVotesByTime extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {!serie ? (
+          {!barSerie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
               <ComposedChart
-                data={serie}
+                data={barSerie}
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
@@ -304,7 +349,6 @@ class LineChartVotesByTime extends React.PureComponent<
                       <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
                       <stop offset="95%" stopColor="#8884d8" stopOpacity={0.5} />
                     </linearGradient>
-
                   </defs> */}
                 <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
                 <XAxis
@@ -315,12 +359,16 @@ class LineChartVotesByTime extends React.PureComponent<
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                 />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                <YAxis
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  yAxisId="cumulatedTotal"
+                />
+                <YAxis yAxisId="barValue" orientation="right" />
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                {/* <ReferenceLine y={0} stroke='#000' /> */}
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
@@ -329,9 +377,10 @@ class LineChartVotesByTime extends React.PureComponent<
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stackId="1"
+                  yAxisId="barValue"
                 />
                 <Bar
-                  dataKey={'down'}
+                  dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
                   fill={rgba(chartStrokeRed, 0.4)}
@@ -339,19 +388,17 @@ class LineChartVotesByTime extends React.PureComponent<
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stroke="none"
+                  yAxisId="barValue"
                 />
-
-                {/* <CartesianGrid strokeDasharray="5 5" /> */}
-                {/* <Bar
-                  type="step"
-                  dataKey="total"
+                <Line
+                  type="monotone"
+                  dataKey="cumulatedTotal"
                   name={formatMessage(messages.numberOfVotesTotal)}
                   dot={false}
-                  fill={rgba(chartFill, 0.1)}
+                  fill={chartStroke}
                   stroke={chartStroke}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                /> */}
+                  yAxisId="cumulatedTotal"
+                />
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
@@ -366,4 +413,6 @@ class LineChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(withTheme(LineChartVotesByTime as any) as any);
+export default injectIntl<Props>(
+  withTheme(LineBarChartVotesByTime as any) as any
+);

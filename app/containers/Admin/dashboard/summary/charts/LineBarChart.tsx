@@ -42,20 +42,20 @@ import {
   GraphCardFigure,
   GraphCardFigureChange,
 } from '../..';
-// import { Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
 
 // styling
 import styled, { withTheme } from 'styled-components';
 
-// const InfoIcon = styled(Icon)`
-//   display: flex;
-//   align-items: center;
-//   cursor: pointer;
-//   width: 20px;
-//   height: 22px;
-//   margin-left: 10px;
-// `;
+const InfoIcon = styled(Icon)`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 20px;
+  height: 22px;
+  margin-left: 10px;
+`;
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
   .recharts-wrapper {
@@ -65,17 +65,18 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
   }
 `;
 
-type IComposedGraphFormat = {
+interface IComposedGraphFormat {
   total: number | string;
   name: string;
   code: string;
   barValue: number | string;
-}[];
+}
+[];
 
-type State = {
+interface State {
   serie: IComposedGraphFormat | null;
   serie2: IComposedGraphFormat | null;
-};
+}
 
 type IStreams =
   | IStream<IUsersByTime>
@@ -83,7 +84,7 @@ type IStreams =
   | IStream<ICommentsByTime>
   | IStream<IVotesByTime>;
 
-type Props = {
+interface Props {
   className?: string;
   graphUnit: IGraphUnit;
   graphUnitMessageKey: string;
@@ -94,14 +95,14 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
-  stream: (streamParams?: IStreamParams | null) => IStreams;
-  stream2: (streamParams?: IStreamParams | null) => IStreams;
+  stream: (streamParams: IStreamParams | null) => IStreams;
+  stream2: (streamParams: IStreamParams | null) => IStreams;
   infoMessage?: string;
   currentProjectFilterLabel: string | undefined;
   currentGroupFilterLabel: string | undefined;
   currentTopicFilterLabel: string | undefined;
   xlsxEndpoint: string;
-};
+}
 
 class LineBarChart extends React.PureComponent<
   Props & InjectedIntlProps,
@@ -344,7 +345,7 @@ class LineBarChart extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages[graphTitleMessageKey]} />
-              {/* {infoMessage && (
+              {infoMessage && (
                 <Popup
                   basic
                   trigger={
@@ -355,7 +356,7 @@ class LineBarChart extends React.PureComponent<
                   content={infoMessage}
                   position="top left"
                 />
-              )} */}
+              )}
             </GraphCardTitle>
             <GraphCardFigureContainer>
               <GraphCardFigure>{totalNumber}</GraphCardFigure>
@@ -397,11 +398,7 @@ class LineBarChart extends React.PureComponent<
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
                 />
-                <YAxis
-                  yAxisId="barValue"
-                  orientation="right"
-                  tickCount={serie?.barValue?.find()}
-                />
+                <YAxis yAxisId="barValue" orientation="right" />
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}

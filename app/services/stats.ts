@@ -360,9 +360,9 @@ export function commentsCountForUser(userId: string) {
 // Votes
 export interface IVotesByTime {
   series: {
-    votes: {
-      [key: string]: number;
-    };
+    up: { [key: string]: number };
+    down: { [key: string]: number };
+    total: { [key: string]: number };
   };
 }
 
