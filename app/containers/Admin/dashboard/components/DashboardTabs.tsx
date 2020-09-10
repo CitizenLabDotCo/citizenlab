@@ -78,6 +78,7 @@ const Tab = styled.div`
 `;
 
 const ChildWrapper = styled.div`
+  width: 100%;
   margin-bottom: 60px;
   padding: ${wrapperPadding}px;
   padding-top: ${wrapperPadding +
