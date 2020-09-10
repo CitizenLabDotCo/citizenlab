@@ -1061,6 +1061,7 @@ resource "Stats - Users" do
             options: {
               @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
               @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
+              @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys },
             },
             series: {
               users: {
@@ -1107,6 +1108,7 @@ resource "Stats - Users" do
             options: {
               @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
               @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
+              @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys },
             },
             series: {
               users: {
@@ -1200,15 +1202,15 @@ resource "Stats - Users" do
 
           option_titles_col = worksheet.map {|col| col.cells[0].value}
           header, *option_titles = option_titles_col
-          expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), "unknown"]
+          expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), "unknown"]
 
           option_ids_col = worksheet.map {|col| col.cells[1].value}
           header, *option_ids = option_ids_col
-          expect(option_ids).to match_array [@option1.key, @option2.key, "_blank"]
+          expect(option_ids).to match_array [@option1.key, @option2.key, @option3.key, "_blank"]
 
           users_col = worksheet.map {|col| col.cells[2].value}
           header, *users = users_col
-          expect(users).to match_array [1, 1, 1]
+          expect(users).to match_array [0, 1, 1, 1]
         end
 
       end
@@ -1246,11 +1248,11 @@ resource "Stats - Users" do
 
           option_titles_col = worksheet.map {|col| col.cells[0].value}
           header, *option_titles = option_titles_col
-          expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), "unknown"]
+          expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), "unknown"]
 
           users_col = worksheet.map {|col| col.cells[2].value}
           header, *users = users_col
-          expect(users).to match_array [2, 1, 1]
+          expect(users).to match_array [0, 2, 1, 1]
         end
       end
 
