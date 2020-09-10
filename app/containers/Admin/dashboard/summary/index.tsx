@@ -15,11 +15,10 @@ import {
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
-import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
-import LineChartVotesByTime from './charts/LineChartVotesByTime';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 
 // typings
@@ -51,7 +50,6 @@ import {
   commentsByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
-  usersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
@@ -413,12 +411,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
               <Column>
-                <LineChartVotesByTime
+                <LineBarChartVotesByTime
                   className="fullWidth e2e-votes-chart"
                   startAt={startAt}
                   endAt={endAt}
                   {...this.state}
                 />
+
                 <SelectableResourceByProjectChart
                   className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                   onResourceByProjectChange={this.onResourceByProjectChange}
