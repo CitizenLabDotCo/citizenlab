@@ -344,15 +344,20 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if ['select', 'multiselect'].include?(@custom_field.input_type)
       serie = users_by_custom_field_serie
-      options = @custom_field.custom_field_options.where(key: serie.keys).select(:key, :title_multiloc)
-      res = serie.map { |option_id, users|
-        option = option_id != "_blank" ? @@multiloc_service.t(options.find_by(key: option_id).attributes["title_multiloc"]) : "unknown"
+      options = @custom_field.custom_field_options.all.select(:key, :title_multiloc)
+
+      res = options.map { |option|
         {
-          "option_id" => option_id,
-          "option" => option,
-          "users" => users
+          "option_id" => option.key,
+          "option" => @@multiloc_service.t(option.title_multiloc),
+          "users" => serie[option.key] || 0
         }
       }
+      res.push({
+        "option_id" => "_blank",
+        "option" =>"unknown",
+        "users" => serie["_blank"] || 0
+        })
       xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
     else
