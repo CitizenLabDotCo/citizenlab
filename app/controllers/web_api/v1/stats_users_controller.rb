@@ -181,6 +181,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    if params[:project]
+      project = Project.find(params[:project])
+      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+    end
+
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'birthyear'")
@@ -206,6 +211,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     if params[:group]
       group = Group.find(params[:group])
       users = users.merge(group.members)
+    end
+
+    if params[:project]
+      project = Project.find(params[:project])
+      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
     end
 
     serie = users
@@ -251,6 +261,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    if params[:project]
+      project = Project.find(params[:project])
+      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+    end
+
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'education'")
@@ -275,6 +290,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     if params[:group]
       group = Group.find(params[:group])
       users = users.merge(group.members)
+    end
+
+    if params[:project]
+      project = Project.find(params[:project])
+      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
     end
 
     case @custom_field.input_type
