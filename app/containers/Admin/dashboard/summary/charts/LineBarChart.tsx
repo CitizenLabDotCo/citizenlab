@@ -368,7 +368,6 @@ class LineBarChart extends React.PureComponent<
             <StyledResponsiveContainer>
               <ComposedChart
                 data={serie}
-                margin={{ right: 40 }}
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
