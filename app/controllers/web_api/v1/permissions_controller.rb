@@ -3,7 +3,7 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-      .where(permittable_id: params[params[:parent_param]])
+      .where(permission_scope_id: params[params[:parent_param]])
       .order(created_at: :desc)
       
     @permissions = @permissions
@@ -41,7 +41,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def set_permission
     @permission = Permission.find_by!(
       action: params[:permission_action],
-      permittable_id: params[params[:parent_param]]
+      permission_scope_id: params[params[:parent_param]]
       )
     authorize @permission
   end
