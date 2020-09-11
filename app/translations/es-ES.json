@@ -1017,6 +1017,7 @@
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Borrador",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Administrar",
   "app.containers.AdminPage.ProjectEdit.enabled": "Activado",
+  "app.containers.AdminPage.ProjectEdit.enalyzer": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Eventos",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Los archivos agregados aparecerán en la página de información de proyecto.",

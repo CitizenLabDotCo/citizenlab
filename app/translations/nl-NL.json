@@ -1017,6 +1017,7 @@
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Concept",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Beheren",
   "app.containers.AdminPage.ProjectEdit.enabled": "Ingeschakeld",
+  "app.containers.AdminPage.ProjectEdit.enalyzer": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Activiteiten",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Bijlagen worden getoond op de informatiepagina van het project.",
