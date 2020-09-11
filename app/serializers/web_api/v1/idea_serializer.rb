@@ -18,19 +18,19 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       commenting_idea: {
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason,
-        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user(params))&.start_at
+        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_idea_enabled_phase(object.project, current_user(params))&.start_at
       },
       voting_idea: {
         enabled: !voting_disabled_reason,
         downvoting_enabled: @participation_context_service.get_participation_context(object.project)&.downvoting_enabled,
         disabled_reason: voting_disabled_reason,
-        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user(params))&.start_at,
+        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_idea_enabled_phase(object.project, current_user(params))&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
       },   
       comment_voting_idea: {
         enabled: !comment_voting_disabled_reason,
         disabled_reason: comment_voting_disabled_reason,
-        future_enabled: comment_voting_disabled_reason && @participation_context_service.future_comment_voting_enabled_phase(object.project, current_user(params))&.start_at
+        future_enabled: comment_voting_disabled_reason && @participation_context_service.future_comment_voting_idea_enabled_phase(object.project, current_user(params))&.start_at
       },
       budgeting: {
         enabled: !budgeting_disabled_reason,

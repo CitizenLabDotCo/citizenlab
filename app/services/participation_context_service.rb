@@ -322,29 +322,29 @@ class ParticipationContextService
     end
   end
 
-  def future_posting_enabled_phase project, user, time=Time.now
+  def future_posting_idea_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.posting_enabled && context_permission(phase, 'posting')&.granted_to?(user)
+      phase.posting_enabled && context_permission(phase, 'posting_idea')&.granted_to?(user)
     end
   end
 
-  def future_commenting_enabled_phase project, user, time=Time.now
+  def future_commenting_idea_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.can_contain_ideas? && phase.commenting_enabled && context_permission(phase, 'commenting')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.commenting_enabled && context_permission(phase, 'commenting_idea')&.granted_to?(user)
     end
   end
 
-  def future_voting_enabled_phase project, user, time=Time.now
+  def future_voting_idea_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.can_contain_ideas? && phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.voting_enabled && context_permission(phase, 'voting_idea')&.granted_to?(user)
     end
   end
 
-  def future_comment_voting_enabled_phase project, user, time=Time.now
-    future_commenting_enabled_phase project, user, time
+  def future_comment_voting_idea_enabled_phase project, user, time=Time.now
+    future_commenting_idea_enabled_phase project, user, time
   end
 
   def future_budgeting_enabled_phase project, user, time=Time.now
