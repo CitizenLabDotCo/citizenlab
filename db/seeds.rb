@@ -104,7 +104,7 @@ end
 if ['public','example_org'].include? Apartment::Tenant.current
   # rake db:reset clears all instances before repopulating the db.
   CommonPassword.initialize!
-  
+
   t = Tenant.create!({
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
@@ -233,6 +233,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       surveymonkey_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      enalyzer_surveys: {
         enabled: true,
         allowed: true
       },
@@ -436,7 +440,7 @@ if Apartment::Tenant.current == 'localhost'
       description_multiloc: create_for_tenant_locales{"<p>The place to be these days</p>"}
     })
 
-    3.times do 
+    3.times do
       Topic.create!({
         title_multiloc: create_for_tenant_locales{Faker::Lorem.word},
         description_multiloc: create_for_tenant_locales{Faker::Lorem.sentence}
