@@ -27,7 +27,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       posting_idea: {
         enabled: !posting_disabled_reason,
         disabled_reason: posting_disabled_reason,
-        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object, current_user(params))&.start_at
+        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_idea_enabled_phase(object, current_user(params))&.start_at
       },
       commenting_idea: {
         enabled: !commenting_disabled_reason,

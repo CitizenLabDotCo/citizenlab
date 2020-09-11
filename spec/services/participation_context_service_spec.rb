@@ -643,7 +643,7 @@ describe ParticipationContextService do
           c: {posting_enabled: false}
         }
       )
-      expect(service.future_posting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns the first upcoming phase that has posting enabled" do
@@ -655,7 +655,7 @@ describe ParticipationContextService do
           c: {posting_idea_permitted: false}
         }
       )
-      expect(service.future_posting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns nil if no next phase has posting enabled" do
@@ -665,7 +665,7 @@ describe ParticipationContextService do
           y: {posting_idea_permitted: false},
         }
       )
-      expect(service.future_posting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil if no next phase has posting enabled" do
@@ -675,17 +675,17 @@ describe ParticipationContextService do
           y: {posting_enabled: false},
         }
       )
-      expect(service.future_posting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a continuous project" do
       project = create(:continuous_project, with_permissions: true)
-      expect(service.future_posting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a project without future phases" do
       project = create(:project_with_past_phases, with_permissions: true)
-      expect(service.future_posting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
 
@@ -699,7 +699,7 @@ describe ParticipationContextService do
           c: {voting_enabled: false}
         }
       )
-      expect(service.future_voting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_voting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns the first upcoming phase that has voting enabled" do
@@ -711,7 +711,7 @@ describe ParticipationContextService do
           c: {voting_idea_permitted: false}
         }
       )
-      expect(service.future_voting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_voting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns nil if no next phase has voting enabled" do
@@ -721,7 +721,7 @@ describe ParticipationContextService do
           y: {voting_enabled: false},
         }
       )
-      expect(service.future_voting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_voting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil if no next phase has voting enabled" do
@@ -731,17 +731,17 @@ describe ParticipationContextService do
           y: {voting_idea_permitted: false},
         }
       )
-      expect(service.future_voting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_voting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a continuous project" do
       project = create(:continuous_project, with_permissions: true)
-      expect(service.future_voting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_voting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a project without future phases" do
       project = create(:project_with_past_phases, with_permissions: true)
-      expect(service.future_voting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_voting_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
 
@@ -755,7 +755,7 @@ describe ParticipationContextService do
           c: {commenting_enabled: false}
         }
       )
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns the first upcoming phase that has commenting enabled" do
@@ -767,7 +767,7 @@ describe ParticipationContextService do
           c: {commenting_idea_permitted: false}
         }
       )
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns nil if no next phase has commenting enabled" do
@@ -777,7 +777,7 @@ describe ParticipationContextService do
           y: {commenting_enabled: false},
         }
       )
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil if no next phase has commenting enabled" do
@@ -787,17 +787,17 @@ describe ParticipationContextService do
           y: {commenting_idea_permitted: false},
         }
       )
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a continuous project" do
       project = create(:continuous_project, with_permissions: true)
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a project without future phases" do
       project = create(:project_with_past_phases, with_permissions: true)
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
 end
