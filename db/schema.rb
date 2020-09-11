@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_20_141351) do
+ActiveRecord::Schema.define(version: 2020_09_11_150057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -615,12 +615,12 @@ ActiveRecord::Schema.define(version: 2020_08_20_141351) do
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
-    t.uuid "permittable_id", null: false
-    t.string "permittable_type", null: false
+    t.uuid "permission_scope_id", null: false
+    t.string "permission_scope_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_permissions_on_action"
-    t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
+    t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
   end
 
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

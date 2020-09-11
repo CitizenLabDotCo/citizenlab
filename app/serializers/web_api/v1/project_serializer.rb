@@ -24,20 +24,20 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
     taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
     {
-      posting: {
+      posting_idea: {
         enabled: !posting_disabled_reason,
         disabled_reason: posting_disabled_reason,
         future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object, current_user(params))&.start_at
       },
-      commenting: {
+      commenting_idea: {
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason,
       },
-      voting: {
+      voting_idea: {
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason,
       },
-      comment_voting: {
+      comment_voting_idea: {
         # You can vote if you can comment.
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason,
