@@ -21,6 +21,10 @@ class IdeaPolicy < ApplicationPolicy
     end
   end
 
+  def index_xlsx?
+    user&.admin?
+  end
+
   def create?
     pcs = ParticipationContextService.new 
     record.draft? ||
@@ -63,6 +67,7 @@ class IdeaPolicy < ApplicationPolicy
       :project_id,
       :author_id,
       :location_description,
+      :proposed_budget,
       location_point_geojson: [:type, coordinates: []],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       body_multiloc: CL2_SUPPORTED_LOCALES,

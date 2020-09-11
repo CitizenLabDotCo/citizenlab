@@ -15,6 +15,17 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "organization_name": {
+            "title": "Organisation Name",
+            "description": "How the city or organisation is referred to throughout the platform.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "organization_site": {
+            "title": "Organisation Website",
+            "description": "The city or organisation's official website.",
+            "type": "string",
+            "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+          },
           "organization_type": {
             "title": "Organisation Type",
             "description": "Based on city's population: <40k small, 40-120k medium, >120k large. Otherwise, select 'generic'.",
@@ -43,11 +54,6 @@
             "default": "EUR",
             "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
           },
-          "total_population": {
-            "description": "The population number of city/municipality's inhabitants",
-            "type": "integer",
-            "minimum": 0
-          },
           "locales": {
             "title": "Platform Languages",
             "description": "Select all of the languages that will be in use on the platform.",
@@ -60,16 +66,26 @@
             "minItems": 1,
             "default": ["en"]
           },
-          "organization_name": {
-            "title": "Organisation Name",
-            "description": "How the city or organisation is referred to throughout the platform.",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "organization_site": {
-            "title": "Organisation Website",
-            "description": "The city or organisation's official website.",
+          "color_main": {
+            "title": "Main Colour",
+            "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
             "type": "string",
-            "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#163A7D"
+          },
+          "color_secondary": {
+            "title": "Secondary Colour",
+            "description": "Secondary colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #ff672f).",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#CF4040"
+          },
+          "color_text": {
+            "title": "Text Colour",
+            "description": "Colour of platform text. Input as a 6-digit HEX color, including the # sign (e.g. #7fbbca).",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#163A7D"
           },
           "header_title": {
             "title": "Homepage Title",
@@ -93,37 +109,6 @@
           "meta_description": {
             "title": "Social Media Description",
             "description": "The description of the platform shown in search engine results and when shared on some social media platforms.",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "color_main": {
-            "title": "Main Colour",
-            "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#163A7D"
-          },
-          "color_secondary": {
-            "title": "Secondary Colour",
-            "description": "Secondary colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #ff672f).",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#CF4040"
-          },
-          "color_text": {
-            "title": "Text Colour",
-            "description": "Colour of platform text. Input as a 6-digit HEX color, including the # sign (e.g. #7fbbca).",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#163A7D"
-          },
-          "signup_helper_text": {
-            "title": "Sign-up Helper Text (Step 1)",
-            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "custom_fields_signup_helper_text":  {
-            "title": "Sign-up Helper Text (Step 2)",
-            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_onboarding_message": {
@@ -155,14 +140,15 @@
             "description": "Header title shown at the top of all of the projects on the homepage. If left blank, this field defaults to \"{orgName} is currently working on\".",
             "$ref": "#/definitions/multiloc_string"
           },
-          "segment_destinations_blacklist": {
-            "title": "Blacklisting of Segment destinations",
-            "description": "An optional list of segment destinations to disable.",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
-            }
+          "signup_helper_text": {
+            "title": "Sign-up Helper Text (Step 1)",
+            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_fields_signup_helper_text":  {
+            "title": "Sign-up Helper Text (Step 2)",
+            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
           },
           "areas_term": {
             "title": "Geographic Units",
@@ -173,14 +159,23 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "segment_destinations_blacklist": {
+            "title": "Blacklisting of Segment destinations",
+            "description": "An optional list of segment destinations to disable.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
+            }
           }
         }
       },
 
-      "pages": {
+      "user_custom_fields": {
         "type": "object",
-        "title": "Custom Pages",
-        "description":	"Allow custom pages to be made and added to the platform's navigation.",
+        "title": "Custom Registration Fields",
+        "description":  "Allow admin to define custom registration fields.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -192,7 +187,7 @@
       "password_login": {
         "type": "object",
         "title": "Password Login",
-        "description":  "Allow users to register with an email and password.",
+        "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["phone"],
@@ -348,169 +343,40 @@
         }
       },
 
-      "projects": {
+      "verification": {
         "type": "object",
-        "description":	"",
+        "title": "Verification",
+        "description": "Use a pre-defined list to verify user identities during registration.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "workshops": {
-        "title": "Workshops",
-        "type": "object",
-        "description":	"Allow workshops.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "ideas_overview": {
-        "type": "object",
-        "description":  "Show a menu item for the ideas overview page in the navigation bar (mobile & desktop).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "projects_phases": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "projects_pages": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "projects_events": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "projects_info": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "excel_export": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "groups": {
-        "type": "object",
-        "description":  "Assemble users in groups",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "private_projects": {
-        "type": "object",
-        "description":  "Make projects visible to certain groups only",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "surveys": {
-        "type": "object",
-        "title": "Surveys",
-        "description":  "Allow Typeform surveys to be embedded.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "typeform_surveys": {
-        "type": "object",
-        "title": "Typeform Surveys",
-        "description":  "Allow Typeform surveys to be embedded.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "user_token": {
-            "title": "User Token",
-            "description": "The user token is generated from the tenant's typeform profile. Survey results are only downloadable for this token.",
-            "type": "string",
-            "private": true,
-            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>"
-          }
-        }
-      },
-
-      "google_forms_surveys": {
-        "type": "object",
-        "title": "Google Forms Surveys",
-        "description":  "Allow Google Form surveys to be embedded.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "surveymonkey_surveys": {
-        "type": "object",
-        "title": "Surveymonkey Surveys",
-        "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required-settings": ["verification_methods"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "verification_methods": {
+            "title": "Verification Methods",
+            "private": true,
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf":
+                <%= Verification::VerificationService.new.all_methods.map do |method|
+                    {
+                      type: "object",
+                      title: method.name,
+                      required: ["name", *method.config_parameters],
+                      properties: {
+                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
+                        **method.config_parameters.map do |cp|
+                          parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
+                          [cp, parameter_schema || {type: "string", private: "true"}]
+                        end.to_h
+                      }
+                    }
+                  end.to_json
+                %>
+            }
+          }
         }
       },
 
@@ -562,99 +428,15 @@
         }
       },
 
-      "user_custom_fields": {
+      "geographic_dashboard": {
         "type": "object",
-        "title": "Custom Registration Fields",
-        "description":  "Allow admin to define custom registration fields.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "clustering": {
-        "type": "object",
-        "title": "Clustering",
-        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
+        "title": "Geographic Dashboard",
+        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "widgets": {
-        "type": "object",
-        "title": "Widgets",
-        "description":  "Admins can generate platform widgets to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "admin_project_templates": {
-        "type": "object",
-        "title": "Project Templates",
-        "description":  "Enable the template library for admin to create new projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "ideaflow_social_sharing": {
-        "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description":  "After posting a proposal, users receive a pop-up to share their proposal on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "initiativeflow_social_sharing": {
-        "type": "object",
-        "title": "Share Initiative on Social Media",
-        "description": "After posting an initiative, users receive a pop-up to share their proposal on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "granular_permissions": {
-        "type": "object",
-        "title": "Granular Permissions",
-        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -670,63 +452,15 @@
         }
       },
 
-      "manual_emailing": {
+      "polls": {
         "type": "object",
-        "title": "Manual Emails",
-        "description":  "Admin and project managers can email users through the platform.",
+        "title": "Polls",
+        "description": "Allow polls.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "automated_emailing_control": {
-        "type": "object",
-        "title": "Automated Emails",
-        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "machine_translations": {
-        "type": "object",
-        "title": "Machine Translations",
-        "description":  "Allows users to see translated content.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "similar_ideas": {
-        "type": "object",
-        "title": "Similar Ideas",
-        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "geographic_dashboard": {
-        "type": "object",
-        "title": "Geographic Dashboard",
-        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -760,8 +494,8 @@
             "description": "Default text that users receive when their proposal reaches the voting threshold. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
-              'initiatives.default_threshold_reached_message',
-              locales: CL2_SUPPORTED_LOCALES).to_json
+            'initiatives.default_threshold_reached_message',
+            locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },
           "eligibility_criteria": {
@@ -769,8 +503,8 @@
             "description": "Default text specifying criteria that proposals should meet. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
-              'initiatives.default_eligibility_criteria',
-              locales: CL2_SUPPORTED_LOCALES).to_json
+            'initiatives.default_eligibility_criteria',
+            locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },
           "success_stories": {
@@ -792,10 +526,365 @@
         }
       },
 
-      "polls": {
+      "surveys": {
         "type": "object",
-        "title": "Polls",
-        "description": "Allow polls.",
+        "title": "Surveys",
+        "description":  "Allow Typeform surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "typeform_surveys": {
+        "type": "object",
+        "title": "Typeform Surveys",
+        "description":  "Allow Typeform surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "user_token": {
+            "title": "User Token",
+            "description": "The user token is generated from the tenant's typeform profile. Survey results are only downloadable for this token.",
+            "type": "string",
+            "private": true,
+            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>"
+          }
+        }
+      },
+
+      "google_forms_surveys": {
+        "type": "object",
+        "title": "Google Forms Surveys",
+        "description":  "Allow Google Form surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "enalyzer_surveys": {
+        "type": "object",
+        "title": "Enalyzer Forms Surveys",
+        "description":  "Allow Enalyzer surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "surveymonkey_surveys": {
+        "type": "object",
+        "title": "Surveymonkey Surveys",
+        "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "volunteering": {
+        "type": "object",
+        "title": "Volunteering",
+        "description": "Allow volunteering.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "workshops": {
+        "title": "Workshops",
+        "type": "object",
+        "description":	"Allow workshops.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "machine_translations": {
+        "type": "object",
+        "title": "Machine Translations",
+        "description":  "Allows users to see translated content.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "clustering": {
+        "type": "object",
+        "title": "Clustering",
+        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "similar_ideas": {
+        "type": "object",
+        "title": "Similar Ideas",
+        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "admin_project_templates": {
+        "type": "object",
+        "title": "Project Templates",
+        "description":  "Enable the template library for admin to create new projects.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_folders": {
+        "type": "object",
+        "title": "Project Folders",
+        "description": "Allow project folders.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "custom_topics": {
+        "type": "object",
+        "title": "Custom Topics",
+        "description": "Admin and project managers can customize idea topics.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "idea_assignment": {
+        "type": "object",
+        "title": "Assign Ideas",
+        "description": "Ideas can be assigned to specific admin and project managers to respond to.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "idea_custom_fields": {
+        "type": "object",
+        "title": "Custom Idea Fields",
+        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "smart_groups": {
+        "type": "object",
+        "title": "Smart Groups",
+        "description":  "Users can automatically be assigned to a group based on certain criteria.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "ideas_overview": {
+        "type": "object",
+        "title": "Idea Overview",
+        "description":  "Create a page with all the ideas in a single overview page (mobile and desktop).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "disable_downvoting": {
+        "type": "object",
+        "title": "Disable Downvoting",
+        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "ideaflow_social_sharing": {
+        "type": "object",
+        "title": "Share Proposals on Social Media",
+        "description":  "After posting a proposal, users receive a pop-up to share their proposal on social media.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "initiativeflow_social_sharing": {
+        "type": "object",
+        "title": "Share Initiative on Social Media",
+        "description": "After posting an initiative, users receive a pop-up to share their proposal on social media.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "widgets": {
+        "type": "object",
+        "title": "Widgets",
+        "description":  "Admins can generate platform widgets to embed on external websites.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "manual_emailing": {
+        "type": "object",
+        "title": "Manual Emails",
+        "description":  "Admin and project managers can email users through the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "automated_emailing_control": {
+        "type": "object",
+        "title": "Automated Emails",
+        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "pages": {
+        "type": "object",
+        "title": "Custom Pages",
+        "description":	"Allow custom pages to be made and added to the platform's navigation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "abbreviated_user_names": {
+        "type": "object",
+        "title": "Abbreviated User Name",
+        "description": "NOTE: Once you have selected this option, you cannot change it back. User names are shown on the platform as first name + first initial (Jane D. instead of Jane Doe).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "moderation": {
+        "type": "object",
+        "title": "Moderation",
+        "description": "Moderations are pieces of user-generated content that need to be moderated.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_management": {
+        "type": "object",
+        "title": "Project Managers",
+        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "granular_permissions": {
+        "type": "object",
+        "title": "Granular Permissions",
+        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_visibility": {
+        "type": "object",
+        "title": "Project Visibility",
+        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "private_projects": {
+        "type": "object",
+        "title": "Private projects",
+        "description":  "Make projects visible to certain groups only (Access Rights tab in the Admin panel).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -809,7 +898,8 @@
         "title": "Fragments",
         "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "enabled_fragments"],
+        "required": ["allowed", "enabled"],
+        "required-settings": ["enabled_fragments"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -823,107 +913,12 @@
             }
           }
         }
-      },
-
-      "verification": {
-        "type": "object",
-        "title": "Verification",
-        "description": "Use a pre-defined list to verify user identities during registration.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled","verification_methods"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "verification_methods": {
-            "title": "Verification Methods",
-            "private": true,
-            "type": "array",
-            "default": [],
-            "items": {
-              "anyOf":
-                <%= Verification::VerificationService.new.all_methods.map do |method|
-                    {
-                      type: "object",
-                      title: method.name,
-                      required: ["name", *method.config_parameters],
-                      properties: {
-                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
-                        **method.config_parameters.map do |cp|
-                          parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
-                          [cp, parameter_schema || {type: "string", private: "true"}]
-                        end.to_h
-                      }
-                    }
-                  end.to_json
-                %>
-            }
-          }
-        }
-      },
-      "moderation": {
-        "type": "object",
-        "title": "Moderation",
-        "description": "Moderations are pieces of user-generated content that need to be moderated.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-      "project_folders": {
-        "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-      "disable_downvoting": {
-        "type": "object",
-        "title": "Disable Downvoting",
-        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-      "volunteering": {
-        "type": "object",
-        "title": "Volunteering",
-        "description": "Allow volunteering.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-      "custom_topics": {
-        "type": "object",
-        "title": "Custom Topics",
-        "description": "Admin and project managers can customize idea topics.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
       }
     },
   "dependencies": {
-    "projects_info": ["projects"],
-    "projects_pages": ["projects"],
-    "projects_events": ["projects"],
-    "projects_phases": ["projects"],
-    "private_projects": ["groups"],
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
+    "enalyzer_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"]
   },
   "definitions": {

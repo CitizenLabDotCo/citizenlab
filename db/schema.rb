@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_094026) do
+ActiveRecord::Schema.define(version: 2020_08_20_141351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -110,7 +110,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.integer "lft", null: false
     t.integer "rgt", null: false
     t.jsonb "body_multiloc", default: {}
-    t.string "author_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
@@ -126,6 +125,11 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.index ["post_id", "post_type"], name: "index_comments_on_post_id_and_post_type"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["rgt"], name: "index_comments_on_rgt"
+  end
+
+  create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "password"
+    t.index ["password"], name: "index_common_passwords_on_password"
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -325,7 +329,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.datetime "published_at"
     t.uuid "project_id"
     t.uuid "author_id"
-    t.string "author_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
@@ -340,6 +343,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
     t.datetime "assigned_at"
+    t.integer "proposed_budget"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -422,7 +426,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
     t.string "publication_status"
     t.datetime "published_at"
     t.uuid "author_id"
-    t.string "author_name"
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
@@ -1024,41 +1027,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
   SQL
-  create_view "union_posts", sql_definition: <<-SQL
-      SELECT ideas.id,
-      ideas.title_multiloc,
-      ideas.body_multiloc,
-      ideas.publication_status,
-      ideas.published_at,
-      ideas.author_id,
-      ideas.author_name,
-      ideas.created_at,
-      ideas.updated_at,
-      ideas.upvotes_count,
-      ideas.location_point,
-      ideas.location_description,
-      ideas.comments_count,
-      ideas.slug,
-      ideas.official_feedbacks_count
-     FROM ideas
-  UNION ALL
-   SELECT initiatives.id,
-      initiatives.title_multiloc,
-      initiatives.body_multiloc,
-      initiatives.publication_status,
-      initiatives.published_at,
-      initiatives.author_id,
-      initiatives.author_name,
-      initiatives.created_at,
-      initiatives.updated_at,
-      initiatives.upvotes_count,
-      initiatives.location_point,
-      initiatives.location_description,
-      initiatives.comments_count,
-      initiatives.slug,
-      initiatives.official_feedbacks_count
-     FROM initiatives;
-  SQL
   create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
       initiative_status_changes.initiative_status_id
@@ -1144,5 +1112,38 @@ ActiveRecord::Schema.define(version: 2020_05_27_094026) do
        LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
+  SQL
+  create_view "union_posts", sql_definition: <<-SQL
+      SELECT ideas.id,
+      ideas.title_multiloc,
+      ideas.body_multiloc,
+      ideas.publication_status,
+      ideas.published_at,
+      ideas.author_id,
+      ideas.created_at,
+      ideas.updated_at,
+      ideas.upvotes_count,
+      ideas.location_point,
+      ideas.location_description,
+      ideas.comments_count,
+      ideas.slug,
+      ideas.official_feedbacks_count
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      initiatives.title_multiloc,
+      initiatives.body_multiloc,
+      initiatives.publication_status,
+      initiatives.published_at,
+      initiatives.author_id,
+      initiatives.created_at,
+      initiatives.updated_at,
+      initiatives.upvotes_count,
+      initiatives.location_point,
+      initiatives.location_description,
+      initiatives.comments_count,
+      initiatives.slug,
+      initiatives.official_feedbacks_count
+     FROM initiatives;
   SQL
 end

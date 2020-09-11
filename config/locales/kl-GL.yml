@@ -112,6 +112,9 @@ kl:
       location:
         title: Sumi
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:
       images:
         title: Assit
         description:

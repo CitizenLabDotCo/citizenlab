@@ -7,7 +7,8 @@ class WebApi::V1::InitiativesController < ApplicationController
   
   def index
     @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
 
     if params[:sort].present? && !params[:search].present?
       @initiatives = case params[:sort]
@@ -15,10 +16,10 @@ class WebApi::V1::InitiativesController < ApplicationController
           @initiatives.order_new
         when '-new'
           @initiatives.order_new(:asc)
-        when 'author_name'
-          @initiatives.order(author_name: :asc)
-        when '-author_name'
-          @initiatives.order(author_name: :desc)
+        when "author_name"
+         @ideas.order("users.first_name ASC", "users.last_name ASC")
+        when "-author_name"
+         @ideas.order("users.first_name DESC", "users.last_name DESC")
         when 'upvotes_count'
           @initiatives.order(upvotes_count: :asc)
         when '-upvotes_count'
@@ -60,7 +61,8 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def index_initiative_markers
     @initiatives = policy_scope(Initiative)
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
     @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     @initiatives = @initiatives
@@ -71,19 +73,22 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def index_xlsx
     authorize :initiative, :index_xlsx?
+
+    @initiatives = policy_scope(Initiative)
+      .includes(:author, :topics, :areas, :initiative_status)
+      .where(publication_status: 'published')
+    @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
+
     I18n.with_locale(current_user&.locale) do
-      @initiatives = policy_scope(Initiative)
-        .includes(:author, :topics, :areas, :initiative_status)
-        .where(publication_status: 'published')
-      @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
-      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives
+      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'initiatives.xlsx'
     end
   end
 
   def filter_counts
     @initiatives = policy_scope(Initiative)
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
     counts = {
       'initiative_status_id' => {},
       'area_id' => {},

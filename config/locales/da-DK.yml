@@ -112,6 +112,9 @@ da:
       location:
         title: Beliggenhed
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:
       images:
         title: Billeder
         description:

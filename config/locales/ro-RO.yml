@@ -113,6 +113,9 @@ ro:
       location:
         title: Locație
         description:
+      proposed_budget:
+        title: Buget propus
+        description:
       images:
         title: Imagini
         description:

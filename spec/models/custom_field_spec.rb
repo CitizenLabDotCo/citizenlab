@@ -43,6 +43,28 @@ RSpec.describe CustomField, type: :model do
       })
       expect(custom_field.description_multiloc).to eq({"en" => '<p>Test</p>This should be removed!<p>But this should stay</p><a href="http://www.citizenlab.co">Click</a>'})
     end
+
+    it "does not sanitize allowed tags in the description" do
+
+      description_multiloc = {"en" => <<-DESC
+      <h2> This is fine ! </h2>
+      <h3> Everything is fine ! </h3>
+      <ul>
+        <li> <strong> strong </strong> </li>
+        <li> <em> emphasis </em> </li>
+        <li> <i> alternate </i> </li>
+      </ul>
+      <ol>
+        <li> <u> unarticulated </u> </li>
+        <li> <b> bold </b> </li>
+        <li> <a href="https://www.example.com"> link </a> </li>
+      </ol>
+      DESC
+      }
+
+      custom_field = create(:custom_field, description_multiloc: description_multiloc)
+      expect(custom_field.description_multiloc).to eq(description_multiloc)
+    end
   end
 
 

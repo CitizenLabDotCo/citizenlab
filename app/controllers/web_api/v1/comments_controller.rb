@@ -71,25 +71,35 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def index_xlsx
-    I18n.with_locale(current_user&.locale) do
-      post_ids = params[@post_type.underscore.pluralize.to_sym]
-      @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
-        .where(post_type: @post_type)
-        .includes(:author, :"#{@post_type.underscore}")
-        .order(:lft)
-      if (@post_type == 'Idea') && params[:project].present?
-        @comments = @comments.where(ideas: {project_id: params[:project]}) 
-      end
-      @comments = @comments.where(post_id: post_ids) if post_ids.present?
+    if (@post_type == 'Idea') && params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    elsif @post_type == 'Idea'
+      authorize :idea_comment, :index_xlsx?
+    elsif @post_type == 'Initiative'
+      authorize :initiative_comment, :index_xlsx?
+    else
+      raise "#{@post_type} has no comment policy defined"
+    end
 
+    post_ids = params[@post_type.underscore.pluralize.to_sym]
+    @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
+      .where(post_type: @post_type)
+      .includes(:author, :"#{@post_type.underscore}")
+      .order(:lft)
+    if (@post_type == 'Idea') && params[:project].present?
+      @comments = @comments.where(ideas: {project_id: params[:project]}) 
+    end
+    @comments = @comments.where(post_id: post_ids) if post_ids.present?
+
+    I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
       xlsx = case @post_type
-        when 'Idea' then service.generate_idea_comments_xlsx @comments
-        when 'Initiative' then service.generate_initiative_comments_xlsx @comments
+        when 'Idea' 
+          service.generate_idea_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+        when 'Initiative' 
+          service.generate_initiative_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
         else raise "#{@post_type} has no functionality for exporting comments"
       end
-      raise RuntimeError, "must not be blank" if @post_type.blank?
-      
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end

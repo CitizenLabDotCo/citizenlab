@@ -4,11 +4,12 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  
+
   def index
     @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions, custom_form: [:custom_fields]], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
 
     if params[:sort].present? && !params[:search].present?
       @ideas = case params[:sort]
@@ -25,9 +26,9 @@ class WebApi::V1::IdeasController < ApplicationController
         when "-popular"
           @ideas.order_popular(:asc)
         when "author_name"
-          @ideas.order(author_name: :asc)
+          @ideas.order("users.first_name ASC", "users.last_name ASC")
         when "-author_name"
-          @ideas.order(author_name: :desc)
+          @ideas.order("users.first_name DESC", "users.last_name DESC")
         when "upvotes_count"
           @ideas.order(upvotes_count: :asc)
         when "-upvotes_count"
@@ -78,8 +79,9 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_idea_markers
-    @ideas = policy_scope(Idea)
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
+    @ideas = policy_scope(Idea).includes(:author)
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     @ideas = @ideas 
@@ -89,20 +91,28 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_xlsx
+    if params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    else
+      authorize :idea, :index_xlsx?
+    end
+
+    @ideas = policy_scope(Idea)
+      .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
+      .where(publication_status: 'published')
+    @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+    @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
+
     I18n.with_locale(current_user&.locale) do
-      @ideas = policy_scope(Idea)
-        .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
-        .where(publication_status: 'published')
-      @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
-      @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
-      xlsx = XlsxService.new.generate_ideas_xlsx @ideas
+      xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
 
   def filter_counts
     @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
-    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     counts = {
       'idea_status_id' => {},
       'area_id' => {},

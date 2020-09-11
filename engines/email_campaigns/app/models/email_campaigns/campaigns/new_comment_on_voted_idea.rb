@@ -30,10 +30,11 @@ module EmailCampaigns
     def generate_commands recipient:, activity:, time: nil
       comment = activity.item
       return [] if comment.post_type != 'Idea'
+      name_service = UserDisplayNameService.new(Tenant.current, recipient)
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,
-          initiating_user_last_name: comment.author&.last_name,
+          initiating_user_last_name: name_service.last_name!(comment.author),
           post_published_at: comment.post.published_at.iso8601,
           post_title_multiloc: comment.post.title_multiloc,
           post_body_multiloc: comment.post.body_multiloc,

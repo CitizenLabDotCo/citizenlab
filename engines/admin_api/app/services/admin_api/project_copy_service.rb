@@ -293,7 +293,7 @@ module AdminApi
         yml_map_config = {
           'project_ref'            => lookup_ref(map_config.project_id, :project),
           'center_geojson'         => map_config.center_geojson,
-          'zoom_level'             => map_config.zoom_level.to_f,
+          'zoom_level'             => map_config.zoom_level&.to_f,
           'tile_provider'          => map_config.tile_provider,
           'created_at'             => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
           'updated_at'             => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
@@ -444,7 +444,7 @@ module AdminApi
     end
 
     def yml_ideas shift_timestamps: 0
-      @project.ideas.published.map do |i|
+      @project.ideas.published.where.not(author_id: nil).map do |i|
         yml_idea = {
           'title_multiloc'         => i.title_multiloc,
           'body_multiloc'          => i.body_multiloc,
@@ -456,7 +456,8 @@ module AdminApi
           'updated_at'             => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
           'location_point_geojson' => i.location_point_geojson,
           'location_description'   => i.location_description,
-          'budget'                 => i.budget
+          'budget'                 => i.budget,
+          'proposed_budget'       => i.proposed_budget,
         }
         store_ref yml_idea, i.id, :idea
         yml_idea
@@ -464,7 +465,7 @@ module AdminApi
     end
 
     def yml_baskets_ideas shift_timestamps: 0
-      BasketsIdea.where(idea_id: @project.ideas.published.ids).map do |b|
+      BasketsIdea.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |b|
         if lookup_ref(b.idea_id, :idea)
           {
             'basket_ref' => lookup_ref(b.basket_id, :basket),
@@ -475,7 +476,7 @@ module AdminApi
     end
 
     def yml_idea_files shift_timestamps: 0
-      IdeaFile.where(idea_id: @project.ideas.published.ids).map do |i|
+      IdeaFile.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
           'idea_ref'        => lookup_ref(i.idea_id, :idea),
           'name'            => i.name,
@@ -488,7 +489,7 @@ module AdminApi
     end
         
     def yml_idea_images shift_timestamps: 0
-      IdeaImage.where(idea_id: @project.ideas.published.ids).map do |i|
+      IdeaImage.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
           'idea_ref'         => lookup_ref(i.idea_id, :idea),
           'remote_image_url' => i.image_url,
@@ -500,7 +501,7 @@ module AdminApi
     end
 
     def yml_ideas_phases shift_timestamps: 0
-      IdeasPhase.where(idea_id: @project.ideas.published.ids).map do |i|
+      IdeasPhase.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
           'idea_ref'   => lookup_ref(i.idea_id, :idea),
           'phase_ref'  => lookup_ref(i.phase_id, :phase),
@@ -511,7 +512,7 @@ module AdminApi
     end
 
     def yml_comments shift_timestamps: 0
-      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')+Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
+      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea')+Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
           'post_ref'           => lookup_ref(c.post_id, :idea),
@@ -528,7 +529,7 @@ module AdminApi
     end
 
     def yml_official_feedback shift_timestamps: 0
-      OfficialFeedback.where(post_id: @project.ideas.published.ids, post_type: 'Idea').map do |o|
+      OfficialFeedback.where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea').map do |o|
         yml_official_feedback = {
           'post_ref'           => lookup_ref(o.post_id, :idea),
           'user_ref'           => lookup_ref(o.user_id, :user),
@@ -543,7 +544,7 @@ module AdminApi
     end
 
     def yml_votes shift_timestamps: 0
-      idea_ids = @project.ideas.published.ids
+      idea_ids = @project.ideas.published.where.not(author_id: nil).ids
       comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
       Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
         yml_vote = {

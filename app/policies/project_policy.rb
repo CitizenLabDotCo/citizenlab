@@ -65,6 +65,10 @@ class ProjectPolicy < ApplicationPolicy
   end
 
 
+  def index_xlsx?
+    moderate?
+  end
+
   def create?
     user&.active? && user.admin?
   end
