@@ -30,7 +30,7 @@ class Invite < ApplicationRecord
   end
 
   def generate_token
-    self.token ||= ([*('a'..'z'),*('0'..'9')]).sample(8).join
+    self.token ||= ([*('a'..'z'),*('0'..'9')]).sample(9).join
   end
 
   def sanitize_invite_text

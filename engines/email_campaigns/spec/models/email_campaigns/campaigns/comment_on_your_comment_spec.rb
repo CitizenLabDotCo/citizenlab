@@ -24,6 +24,20 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
       expect(
       	command.dig(:event_payload, :comment_body_multiloc)
       	).to eq(notification.comment.body_multiloc)
-  	end
+    end
+
+    it "generates a command with an abbreviated name" do
+      Tenant.current.turn_on_abbreviated_user_names!
+      expect(notification.recipient.admin?).to be false
+      expect(notification.initiating_user.admin?).to be false
+
+      command = campaign.generate_commands(
+          recipient: notification_activity.item.recipient,
+          activity: notification_activity
+      ).first
+
+      initial = "#{notification.initiating_user.last_name[0]}."
+      expect(command.dig(:event_payload, :initiating_user_last_name)).to eq(initial)
+    end
   end
 end

@@ -173,8 +173,8 @@ class InvitesService
       # normal mechanism for generating slugs could result in non-unique
       # slugs. Therefore we generate the slugs manually
       invitees = invites.map(&:invitee)
-      invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.display_name}) do |(invitee, slug)|
-        if invitee.display_name.present?
+      invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.full_name}) do |(invitee, slug)|
+        if invitee.full_name.present?
           invitee.slug = slug
         end
       end

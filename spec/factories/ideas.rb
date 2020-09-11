@@ -11,6 +11,7 @@ FactoryBot.define do
     sequence(:slug) {|n| "plant-more-trees-#{n}"}
     publication_status { "published" }
     budget { 750 }
+    proposed_budget { 500 }
     association :project, factory: :continuous_project
     author
     assignee { nil }

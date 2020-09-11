@@ -102,6 +102,9 @@ end
 
 
 if ['public','example_org'].include? Apartment::Tenant.current
+  # rake db:reset clears all instances before repopulating the db.
+  CommonPassword.initialize!
+
   t = Tenant.create!({
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
@@ -150,10 +153,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true,
         enabled: true
       },
-      groups: {
-        enabled: true,
-        allowed:true
-      },
       ideas_overview: {
         enabled: true,
         allowed: true
@@ -172,10 +171,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         },
         zoom_level: 12,
         osm_relation_id: 2404021
-      },
-      excel_export: {
-       enabled: true,
-       allowed: true,
       },
       user_custom_fields: {
         enabled: true,
@@ -238,6 +233,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       surveymonkey_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      enalyzer_surveys: {
         enabled: true,
         allowed: true
       },
@@ -356,10 +355,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
       },
-      groups: {
-        enabled: true,
-        allowed:true
-      },
       private_projects: {
         enabled: true,
         allowed: true
@@ -371,7 +366,7 @@ end
 admin = {
   id: "386d255e-2ff1-4192-8e50-b3022576be50",
   email: 'admin@citizenlab.co',
-  password: 'testtest',
+  password: 'democracy2.0',
   roles: [
     {type: "admin"},
   ],
@@ -380,13 +375,13 @@ admin = {
 moderator = {
   id: "61caabce-f7e5-4804-b9df-36d7d7d73e4d",
   email: 'moderator@citizenlab.co',
-  password: 'testtest',
+  password: 'democracy2.0',
   roles: []
 }
 user = {
   id: "546335a3-33b9-471c-a18a-d5b58ebf173a",
   email: 'user@citizenlab.co',
-  password: 'testtest',
+  password: 'democracy2.0',
   roles: []
 }
 
@@ -437,7 +432,7 @@ if Apartment::Tenant.current == 'localhost'
 
   if SEED_SIZE != 'empty'
     num_users.times do
-      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'testtest'})
+      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'democracy2.0'})
     end
 
     Area.create!({
@@ -445,7 +440,7 @@ if Apartment::Tenant.current == 'localhost'
       description_multiloc: create_for_tenant_locales{"<p>The place to be these days</p>"}
     })
 
-    3.times do 
+    3.times do
       Topic.create!({
         title_multiloc: create_for_tenant_locales{Faker::Lorem.word},
         description_multiloc: create_for_tenant_locales{Faker::Lorem.sentence}
@@ -628,6 +623,7 @@ if Apartment::Tenant.current == 'localhost'
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
         budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
+        proposed_budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
         assignee: rand(5) == 0 ? rand_instance(User.admin.or(User.project_moderator(project.id))) : nil
       })
 

@@ -35,7 +35,24 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
       expect(
         command.dig(:event_payload, :top_ideas).first[:top_comments].first[:created_at]
         ).to eq(top_comment.created_at.iso8601)
-  	end
+    end
+
+    it "generates a command with abbreviated names" do
+      Tenant.current.turn_on_abbreviated_user_names!
+      expect(user.admin?).to be false
+      command = campaign.generate_commands(recipient: user).first
+
+      expected_author_name = "#{top_idea.author.first_name} #{top_idea.author.last_name[0]}."
+      expect(
+          command.dig(:event_payload, :top_ideas, 0, :author_name),
+      ).to eq(expected_author_name)
+
+      expect(
+          command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
+      ).to eq("#{top_comment.author.last_name[0]}.")
+
+      # @todo No new initiatives and successful initiatives in this digest
+    end
   end
 
   describe 'before_send_hooks' do

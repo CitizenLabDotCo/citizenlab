@@ -125,6 +125,11 @@ resource "Comments" do
 
   get "web_api/v1/initiatives/comments/as_xlsx" do
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
+    before do 
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
 
     describe do
       before do 
@@ -150,6 +155,18 @@ resource "Comments" do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq (initiatives.size + 1)
+      end
+    end
+
+    describe do
+      before do 
+        @user = create(:user)
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
+      
+      example_request '[error] XLSX export by a normal user', document: false do
+        expect(status).to eq 401
       end
     end
   end

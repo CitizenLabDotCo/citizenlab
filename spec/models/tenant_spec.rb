@@ -27,32 +27,6 @@ RSpec.describe Tenant, type: :model do
       create(:tenant)
       expect(build(:tenant)).to be_invalid
     end
-
-    it "is valid when feature dependencies are met" do
-      t = build(:tenant)
-      t.settings['projects'] = {
-        "allowed" => true,
-        "enabled" => true
-      }
-      t.settings['projects_info'] = {
-        "allowed" => true,
-        "enabled" => true
-      }
-      expect(t).to be_valid
-    end
-
-    it "is invalid when feature dependencies are not met" do
-      t = build(:tenant)
-      t.settings['projects'] = {
-        "allowed" => false,
-        "enabled" => false
-      }
-      t.settings['projects_info'] = {
-        "allowed" => true,
-        "enabled" => true
-      }
-      expect{ t.valid? }.to change{ t.errors[:settings] }
-    end
   end
 
   describe "The settings JSON schema" do
