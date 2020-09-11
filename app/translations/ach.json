@@ -1017,6 +1017,7 @@
   "app.containers.AdminPage.ProjectEdit.draftStatus": "",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "",
   "app.containers.AdminPage.ProjectEdit.enabled": "",
+  "app.containers.AdminPage.ProjectEdit.enalyzer": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "",
