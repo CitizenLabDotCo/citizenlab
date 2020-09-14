@@ -227,6 +227,7 @@ export const chartTheme = (theme) => {
     chartLabelSize: 13,
     animationBegin: 10,
     animationDuration: 200,
+    cartesianGridColor: '#f5f5f5',
   };
 };
 
