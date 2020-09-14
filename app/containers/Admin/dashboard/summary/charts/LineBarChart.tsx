@@ -25,6 +25,7 @@ import {
   CartesianGrid,
   Tooltip,
   Line,
+  Legend,
   Bar,
   XAxis,
   YAxis,
@@ -428,6 +429,11 @@ class LineBarChart extends React.PureComponent<
                   name={formatMessage(messages.totalForPeriod, {
                     period: this.props.resolution,
                   })}
+                />
+                <Legend
+                  wrapperStyle={{
+                    paddingTop: '20px',
+                  }}
                 />
               </ComposedChart>
             </StyledResponsiveContainer>
