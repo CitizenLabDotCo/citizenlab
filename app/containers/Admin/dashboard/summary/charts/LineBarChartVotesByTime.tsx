@@ -143,29 +143,22 @@ class LineBarChartVotesByTime extends React.PureComponent<
 
   convertAndMergeSeries(barSerie: IVotesByTime, lineSerie: IVotesByTime) {
     const { up, down, total } = barSerie.series;
-    let convertedLineSerie;
-    let convertedBarSerie;
+    let convertedSerie;
 
     if (!isEmpty(total) && !isEmpty(lineSerie.series.total)) {
-      convertedBarSerie = map(total, (value, key) => ({
+      convertedSerie = map(total, (value, key) => ({
         total: value,
         down: down[key],
         up: up[key],
         date: key,
         code: key,
-      }));
-
-      convertedLineSerie = map(lineSerie.series.total, (value, key) => ({
-        cumulatedTotal: value,
-        date: key,
-        code: key,
+        cumulatedTotal: lineSerie.series.total[key],
       }));
     } else {
       return null;
     }
 
-    merge(convertedBarSerie, convertedLineSerie);
-    return convertedBarSerie;
+    return convertedSerie;
   }
 
   resubscribe(

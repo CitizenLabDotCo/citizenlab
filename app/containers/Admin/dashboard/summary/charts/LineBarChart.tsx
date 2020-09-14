@@ -177,21 +177,15 @@ class LineBarChart extends React.PureComponent<
     lineSerie: IResourceByTime
   ) => {
     const { graphUnit } = this.props;
-    let convertedLineSerie;
-    let convertedBarSerie;
+    let convertedSerie;
 
     if (
       !isEmpty(lineSerie.series[graphUnit]) &&
       !isEmpty(barSerie.series[graphUnit])
     ) {
-      convertedLineSerie = map(lineSerie.series[graphUnit], (value, key) => ({
+      convertedSerie = map(lineSerie.series[graphUnit], (value, key) => ({
         total: value,
-        name: key,
-        code: key,
-      }));
-
-      convertedBarSerie = map(barSerie.series[graphUnit], (value, key) => ({
-        barValue: value,
+        barValue: barSerie.series[graphUnit][key],
         name: key,
         code: key,
       }));
@@ -199,8 +193,7 @@ class LineBarChart extends React.PureComponent<
       return null;
     }
 
-    merge(convertedBarSerie, convertedLineSerie);
-    return convertedBarSerie;
+    return convertedSerie;
   };
 
   resubscribe(
