@@ -11,10 +11,18 @@ const Container = styled.div`
   border-radius: 2px;
   padding-bottom: 30px;
   border-bottom: 1px solid ${colors.separation};
+  background-color: #edeff0; // TODO: add color to component library
+  padding: 25px 30px;
 `;
 
-const StyledBudgetAssignment = styled(BudgetAssignment)`
-  margin-bottom: 30px;
+const StyledBudgetAssignment = styled(BudgetAssignment)``;
+
+export const ControlWrapperHorizontalRule: any = styled.hr`
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: ${colors.separation};
+  margin: 20px 0;
 `;
 
 interface Props {
@@ -33,6 +41,7 @@ const ParticipatoryBudgetingCTABox = (props: Props) => {
   return (
     <Container>
       <StyledBudgetAssignment {...props} />
+      <ControlWrapperHorizontalRule aria-hidden />
       <Buttons ideaId={ideaId} />
     </Container>
   );
