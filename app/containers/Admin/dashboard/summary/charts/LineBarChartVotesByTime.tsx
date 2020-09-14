@@ -271,6 +271,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
       chartFill,
       animationBegin,
       animationDuration,
+      cartesianGridColor,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
@@ -315,7 +316,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"

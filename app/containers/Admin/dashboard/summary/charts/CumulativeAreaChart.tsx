@@ -248,6 +248,7 @@ export class CumulativeAreaChart extends PureComponent<
       chartStroke,
       animationBegin,
       animationDuration,
+      cartesianGridColor,
     } = this.props['theme'];
     const formattedNumbers = this.getFormattedNumbers(serie);
     const {
@@ -284,7 +285,7 @@ export class CumulativeAreaChart extends PureComponent<
           ) : (
             <ResponsiveContainer>
               <AreaChart data={serie} margin={{ right: 40 }}>
-                <CartesianGrid strokeDasharray="5 5" />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <Area
                   type="monotone"
                   dataKey="value"

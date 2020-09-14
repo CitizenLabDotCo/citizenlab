@@ -304,7 +304,12 @@ class LineBarChart extends React.PureComponent<
     const { className, graphTitleMessageKey, infoMessage } = this.props;
     const { serie } = this.state;
 
-    const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
+    const {
+      chartFill,
+      chartLabelSize,
+      chartLabelColor,
+      cartesianGridColor,
+    } = this.props['theme'];
 
     const formattedNumbers = this.getFormattedNumbers(serie);
     const {
@@ -360,7 +365,7 @@ class LineBarChart extends React.PureComponent<
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke="#f5f5f5" strokeWidth={0.5} />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"
