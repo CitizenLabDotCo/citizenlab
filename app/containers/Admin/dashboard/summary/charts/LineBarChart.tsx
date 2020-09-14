@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { map, merge, isEmpty } from 'lodash-es';
 
 // intl
@@ -76,7 +76,6 @@ type IComposedGraphFormat = {
 
 interface State {
   serie: IComposedGraphFormat | null;
-  serie2: IComposedGraphFormat | null;
 }
 
 type IStreams =
@@ -96,8 +95,8 @@ interface Props {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
-  stream: (streamParams: IStreamParams | null) => IStreams;
-  stream2: (streamParams: IStreamParams | null) => IStreams;
+  barStream: (streamParams: IStreamParams | null) => IStreams;
+  lineStream: (streamParams: IStreamParams | null) => IStreams;
   infoMessage?: string;
   currentProjectFilterLabel: string | undefined;
   currentGroupFilterLabel: string | undefined;
@@ -109,15 +108,13 @@ class LineBarChart extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  barStreamSubscription: Subscription;
-  lineStreamSubscription: Subscription;
+  combined$: Subscription;
   currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
-      serie2: null,
     };
 
     this.currentChart = React.createRef();
@@ -172,59 +169,55 @@ class LineBarChart extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    this.barStreamSubscription.unsubscribe();
-    this.lineStreamSubscription.unsubscribe();
+    this.combined$.unsubscribe();
   }
 
-  convertDataForLine = (data: IResourceByTime) => {
+  convertAndMergeSeries = (
+    barSerie: IResourceByTime,
+    lineSerie: IResourceByTime
+  ) => {
     const { graphUnit } = this.props;
+    let convertedLineSerie;
+    let convertedBarSerie;
 
-    if (!isEmpty(data.series[graphUnit])) {
-      const convertedSerie = map(data.series[graphUnit], (value, key) => ({
+    if (
+      !isEmpty(lineSerie.series[graphUnit]) &&
+      !isEmpty(barSerie.series[graphUnit])
+    ) {
+      convertedLineSerie = map(lineSerie.series[graphUnit], (value, key) => ({
         total: value,
         name: key,
         code: key,
       }));
-      return convertedSerie;
-    }
 
-    return null;
-  };
-
-  convertDataForBar = (data: IResourceByTime) => {
-    const { graphUnit } = this.props;
-
-    if (!isEmpty(data.series[graphUnit])) {
-      const convertedSerie = map(data.series[graphUnit], (value, key) => ({
+      convertedBarSerie = map(barSerie.series[graphUnit], (value, key) => ({
         barValue: value,
         name: key,
         code: key,
       }));
-
-      return convertedSerie;
+    } else {
+      return null;
     }
 
-    return null;
+    merge(convertedBarSerie, convertedLineSerie);
+    return convertedBarSerie;
   };
 
   resubscribe(
     startAt: string | null | undefined,
     endAt: string | null,
     resolution: IResolution,
-    currentProjectFilter: string | undefined,
     currentGroupFilter: string | undefined,
-    currentTopicFilter: string | undefined
+    currentTopicFilter: string | undefined,
+    currentProjectFilter: string | undefined
   ) {
-    const { stream, stream2 } = this.props;
+    const { barStream, lineStream } = this.props;
 
-    if (this.barStreamSubscription) {
-      this.barStreamSubscription.unsubscribe();
-    }
-    if (this.lineStreamSubscription) {
-      this.lineStreamSubscription.unsubscribe();
+    if (this.combined$) {
+      this.combined$.unsubscribe();
     }
 
-    this.barStreamSubscription = stream({
+    const queryParameters = {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -233,23 +226,19 @@ class LineBarChart extends React.PureComponent<
         group: currentGroupFilter,
         topic: currentTopicFilter,
       },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertDataForLine(serie);
-      this.setState({ serie: convertedSerie });
-    });
+    };
 
-    this.lineStreamSubscription = stream2({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        interval: resolution,
-        project: currentProjectFilter,
-        group: currentGroupFilter,
-        topic: currentTopicFilter,
-      },
-    }).observable.subscribe((serie2) => {
-      const convertedSerie = this.convertDataForBar(serie2);
-      this.setState({ serie2: convertedSerie });
+    const barStreamObservable = barStream(queryParameters).observable;
+    const lineStreamObservable = lineStream(queryParameters).observable;
+    this.combined$ = combineLatest(
+      barStreamObservable,
+      lineStreamObservable
+    ).subscribe(([barSerie, lineSerie]) => {
+      const convertedAndMergedSeries = this.convertAndMergeSeries(
+        barSerie,
+        lineSerie
+      );
+      this.setState({ serie: convertedAndMergedSeries });
     });
   }
 
@@ -313,8 +302,7 @@ class LineBarChart extends React.PureComponent<
   render() {
     const { formatMessage } = this.props.intl;
     const { className, graphTitleMessageKey, infoMessage } = this.props;
-    const { serie, serie2 } = this.state;
-    merge(serie, serie2);
+    const { serie } = this.state;
 
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
 
