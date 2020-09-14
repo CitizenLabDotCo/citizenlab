@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
-import { map, merge, isEmpty } from 'lodash-es';
+import { map, isEmpty } from 'lodash-es';
 
 // styling
 import { withTheme } from 'styled-components';
