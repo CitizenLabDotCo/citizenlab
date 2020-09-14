@@ -131,7 +131,11 @@ export class HorizontalBarChart extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
-                  label={{ fill: barFill, fontSize: chartLabelSize }}
+                  label={{
+                    fill: barFill,
+                    fontSize: chartLabelSize,
+                    position: 'insideLeft',
+                  }}
                   barSize={20}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
