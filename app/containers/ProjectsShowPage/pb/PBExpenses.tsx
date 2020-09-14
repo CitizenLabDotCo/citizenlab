@@ -3,7 +3,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { get, round } from 'lodash-es';
 import moment from 'moment';
-import bowser from 'bowser';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -20,8 +19,9 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
 import Button from 'components/UI/Button';
-import { Dropdown, Icon } from 'cl2-component-library';
+import { Icon } from 'cl2-component-library';
 import PBBasket from './PBBasket';
+import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -213,22 +213,9 @@ const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-const ManageBudgetWrapper = styled.div`
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-`;
-
 const ManageBudgetButton = styled(Button)``;
 
-const DropdownWrapper = styled.div`
-  width: 100%;
-  flex: 0 0 0px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-`;
+const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)``;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   margin-left: 10px;
@@ -260,13 +247,11 @@ interface Tracks {
   ideaRemovedFromBasket: () => void;
   ideaAddedToBasket: () => void;
   basketSubmitted: () => void;
-  expensesDropdownOpened: () => void;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  dropdownOpened: boolean;
   processing: boolean;
 }
 
@@ -277,20 +262,9 @@ class PBExpenses extends PureComponent<
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpened: false,
       processing: false,
     };
   }
-
-  toggleExpensesDropdown = () => {
-    this.setState(({ dropdownOpened }) => {
-      if (!dropdownOpened) {
-        this.props.expensesDropdownOpened();
-      }
-
-      return { dropdownOpened: !dropdownOpened };
-    });
-  };
 
   handleSubmitExpensesOnClick = async () => {
     const { basket } = this.props;
@@ -317,7 +291,7 @@ class PBExpenses extends PureComponent<
       viewMode,
       intl: { formatMessage },
     } = this.props;
-    const { processing, dropdownOpened } = this.state;
+    const { processing } = this.state;
 
     if (
       !isNilOrError(locale) &&
@@ -474,36 +448,27 @@ class PBExpenses extends PureComponent<
               </Budgets>
               <Spacer />
               <Buttons viewMode={viewMode}>
-                <ManageBudgetWrapper>
-                  <ManageBudgetButton
-                    onClick={this.toggleExpensesDropdown}
-                    icon="basket"
-                    iconAriaHidden
-                    buttonStyle="primary-inverse"
-                    borderColor={colors.separation}
-                    bgColor="transparent"
-                    borderThickness="2px"
-                    ariaExpanded={dropdownOpened}
-                  >
-                    <FormattedMessage {...messages.manageBudget} />
-                  </ManageBudgetButton>
-
-                  <DropdownWrapper>
-                    <Dropdown
-                      top="10px"
-                      left={bowser.msie ? '-5px' : 'auto'}
-                      mobileWidth="calc(100vw - 80px)"
-                      opened={dropdownOpened}
-                      onClickOutside={this.toggleExpensesDropdown}
-                      content={
-                        <PBBasket
-                          participationContextType={participationContextType}
-                          participationContextId={participationContextId}
-                        />
-                      }
+                <ManageBudgetButtonWithDropdown
+                  buttonComponent={
+                    <ManageBudgetButton
+                      icon="basket"
+                      iconAriaHidden
+                      buttonStyle="primary-inverse"
+                      borderColor={colors.separation}
+                      bgColor="transparent"
+                      borderThickness="2px"
+                    >
+                      <FormattedMessage {...messages.manageBudget} />
+                    </ManageBudgetButton>
+                  }
+                  dropdownContent={
+                    <PBBasket
+                      participationContextType={participationContextType}
+                      participationContextId={participationContextId}
                     />
-                  </DropdownWrapper>
-                </ManageBudgetWrapper>
+                  }
+                  trackName={tracks.expensesDropdownOpened.name}
+                />
 
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
@@ -575,7 +540,6 @@ const PBExpensesWithHoCs = injectIntl(
     ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
     ideaAddedToBasket: tracks.ideaAddedToBasket,
     basketSubmitted: tracks.basketSubmitted,
-    expensesDropdownOpened: tracks.expensesDropdownOpened,
   })(PBExpenses)
 );
 
