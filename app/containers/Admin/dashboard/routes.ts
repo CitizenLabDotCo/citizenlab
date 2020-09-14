@@ -25,13 +25,6 @@ export default () => ({
         loading: () => null,
       }),
     },
-    {
-      path: 'reports',
-      component: Loadable({
-        loader: () => import('./reports'),
-        loading: () => null,
-      }),
-    },
     clusteringsRoutes(),
     {
       path: 'map',
