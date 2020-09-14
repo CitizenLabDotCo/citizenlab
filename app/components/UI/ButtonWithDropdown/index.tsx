@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, cloneElement } from 'react';
 import bowser from 'bowser';
+import { trackEventByName } from 'utils/analytics';
 
 // components
 import { Dropdown } from 'cl2-component-library';
@@ -26,19 +27,30 @@ interface Props {
   className?: string;
   buttonComponent: JSX.Element;
   dropdownContent: JSX.Element;
+  trackName?: string;
 }
 
 const ButtonWithDropdown = ({
   className,
   buttonComponent,
   dropdownContent,
+  trackName,
 }: Props) => {
   const [buttonWidth, setButtonWidth] = useState(0);
   const ref = useRef<HTMLDivElement | null>(null);
   const [dropdownOpened, setDropdownOpened] = useState(false);
 
+  const onClick = () => {
+    toggleDropdown();
+    trackName && trackClick(trackName);
+  };
+
   const toggleDropdown = () => {
     setDropdownOpened(!dropdownOpened);
+  };
+
+  const trackClick = (trackName: string) => {
+    trackEventByName(trackName);
   };
 
   useEffect(() => {
@@ -47,7 +59,7 @@ const ButtonWithDropdown = ({
     }
   });
 
-  const button = cloneElement(buttonComponent, { onClick: toggleDropdown });
+  const button = cloneElement(buttonComponent, { onClick });
 
   // TODO: add aria-expanded to buttonComponent
   return (
@@ -61,6 +73,7 @@ const ButtonWithDropdown = ({
           onClickOutside={toggleDropdown}
           content={dropdownContent}
           width={`${buttonWidth}px`}
+          mobileWidth={`${buttonWidth}px`}
         />
       </DropdownWrapper>
     </Container>
