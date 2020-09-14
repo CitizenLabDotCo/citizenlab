@@ -245,10 +245,6 @@ export const DashboardsPage = memo(
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
       },
-      {
-        label: formatMessage(messages.tabReports),
-        url: '/admin/dashboard/reports',
-      },
     ];
 
     const resource = {
