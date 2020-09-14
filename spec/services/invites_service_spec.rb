@@ -33,6 +33,29 @@ describe InvitesService do
       end
     end
 
+    context "with user custom fields configured" do
+      let (:title_multiloc) {{'en' => 'size', 'nl-NL' => 'grootte'}}
+      let (:description_multiloc) {{'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}}
+      let(:fields) {[
+        create(:custom_field,
+          key: 'field1',
+          input_type: 'text',
+          title_multiloc: title_multiloc,
+          description_multiloc: description_multiloc
+        )
+      ]}
+      let(:hash_array) {[
+        {email: "some.user@domain.net", field1: "somevalue"},
+        {email: "someother.user@domain.net", field2: "someothervalue"}
+      ]}
+      it "sets custom_field_values with matching column names" do
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(2)
+        user = User.find_by(email: "some.user@domain.net")
+        expect(user.custom_field_values).to include({"field1" => "somevalue"})
+        expect(user.custom_field_values).not_to include("field2")
+      end
+    end
+
     context "with file that exceeds maximum supported number of invites" do
       let(:hash_array) { (InvitesService::MAX_INVITES+1).times.each.map{ {first_name: 'Jezus'} } }
 
