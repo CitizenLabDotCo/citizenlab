@@ -4,15 +4,15 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import ProjectHelmet from './ProjectHelmet';
-import ProjectNotFound from './ProjectNotFound';
-import ProjectHeader from './ProjectHeader';
-import ProjectIdeas from './ProjectIdeas';
-import ProjectSurvey from './ProjectSurvey';
-import ProjectPoll from './ProjectPoll';
-import ProjectVolunteering from './ProjectVolunteering';
-import ProjectEvents from './ProjectEvents';
-import ProjectTimelineContainer from './timeline';
+import ProjectHelmet from './shared/header/ProjectHelmet';
+import ProjectNotFound from './shared/header/ProjectNotFound';
+import ProjectHeader from './shared/header/ProjectHeader';
+import ProjectEvents from './shared/events';
+import ContinuousIdeas from './continuous/Ideas';
+import ContinuousSurvey from './continuous/Survey';
+import ContinuousPoll from './continuous/Poll';
+import ContinuousVolunteering from './continuous/Volunteering';
+import TimelineContainer from './timeline';
 import { Spinner } from 'cl2-component-library';
 
 // hooks
@@ -95,13 +95,13 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
         <ProjectHeader projectId={projectId} />
         {processType === 'continuous' ? (
           <>
-            <ProjectIdeas projectId={projectId} />
-            <ProjectSurvey projectId={projectId} />
-            <ProjectPoll projectId={projectId} />
-            <ProjectVolunteering projectId={projectId} />
+            <ContinuousIdeas projectId={projectId} />
+            <ContinuousSurvey projectId={projectId} />
+            <ContinuousPoll projectId={projectId} />
+            <ContinuousVolunteering projectId={projectId} />
           </>
         ) : (
-          <ProjectTimelineContainer projectId={projectId} />
+          <TimelineContainer projectId={projectId} />
         )}
         <ProjectEvents projectId={projectId} />
       </ContentWrapper>

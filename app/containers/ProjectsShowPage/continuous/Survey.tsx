@@ -1,0 +1,68 @@
+import React, { memo } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+
+// components
+import ContentContainer from 'components/ContentContainer';
+import Survey from '../shared/survey';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { SectionContainer } from 'containers/ProjectsShowPage/styles';
+
+// hooks
+import useProject from 'hooks/useProject';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from 'containers/ProjectsShowPage/messages';
+
+// styling
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 100%;
+`;
+
+const StyledContentContainer = styled(ContentContainer)``;
+
+interface Props {
+  projectId: string;
+  className?: string;
+}
+
+const SurveyContainer = memo<Props>(({ projectId, className }) => {
+  const project = useProject({ projectId });
+
+  if (
+    !isNilOrError(project) &&
+    project.attributes.process_type === 'continuous' &&
+    project.attributes.participation_method === 'survey' &&
+    project.attributes.survey_embed_url &&
+    project.attributes.survey_service
+  ) {
+    return (
+      <Container
+        id="e2e-continuous-project-survey-container"
+        className={className || ''}
+      >
+        <StyledContentContainer>
+          <SectionContainer>
+            <ScreenReaderOnly>
+              <FormattedMessage
+                tagName="h2"
+                {...messages.invisibleTitleSurvey}
+              />
+            </ScreenReaderOnly>
+            <Survey
+              projectId={project.id}
+              surveyService={project.attributes.survey_service}
+              surveyEmbedUrl={project.attributes.survey_embed_url}
+            />
+          </SectionContainer>
+        </StyledContentContainer>
+      </Container>
+    );
+  }
+
+  return null;
+});
+
+export default SurveyContainer;

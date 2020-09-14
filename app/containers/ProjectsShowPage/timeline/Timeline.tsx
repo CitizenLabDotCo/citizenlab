@@ -30,7 +30,7 @@ import {
 } from 'services/phases';
 
 // i18n
-import messages from '../messages';
+import messages from 'containers/ProjectsShowPage/messages';
 import { getLocalized } from 'utils/i18n';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
