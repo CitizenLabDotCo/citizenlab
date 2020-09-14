@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { map, merge, isEmpty } from 'lodash-es';
 
 // styling
@@ -46,7 +46,8 @@ import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-type IBarSerie = {
+type ISerie = {
+  cumulatedTotal: number;
   date: string | number;
   up: number;
   down: number;
@@ -54,15 +55,8 @@ type IBarSerie = {
   code: string;
 }[];
 
-type ILineSerie = {
-  cumulatedTotal: number;
-  date: string | number;
-  code: string;
-}[];
-
 type State = {
-  barSerie: IBarSerie | null;
-  lineSerie: ILineSerie | null;
+  serie: ISerie | null;
 };
 
 type Props = {
@@ -82,15 +76,13 @@ class LineBarChartVotesByTime extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  barStreamSubscription: Subscription;
-  lineStreamSubscription: Subscription;
+  combined$: Subscription;
   currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      barSerie: null,
-      lineSerie: null,
+      serie: null,
     };
 
     this.currentChart = React.createRef();
@@ -146,38 +138,34 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    this.barStreamSubscription.unsubscribe();
-    this.lineStreamSubscription.unsubscribe();
+    this.combined$.unsubscribe();
   }
 
-  convertToBarSerie(data: IVotesByTime) {
-    const { up, down, total } = data.series;
+  convertAndMergeSeries(barSerie: IVotesByTime, lineSerie: IVotesByTime) {
+    const { up, down, total } = barSerie.series;
+    let convertedLineSerie;
+    let convertedBarSerie;
 
-    if (!isEmpty(total)) {
-      const convertedData = map(total, (value, key) => ({
+    if (!isEmpty(total) && !isEmpty(lineSerie.series.total)) {
+      convertedBarSerie = map(total, (value, key) => ({
         total: value,
         down: down[key],
         up: up[key],
         date: key,
         code: key,
       }));
-      return convertedData;
-    }
 
-    return null;
-  }
-  convertToLineSerie(data: IVotesByTime) {
-    const { total } = data.series;
-
-    if (!isEmpty(total)) {
-      const convertedData = map(total, (value, key) => ({
+      convertedLineSerie = map(lineSerie.series.total, (value, key) => ({
         cumulatedTotal: value,
         date: key,
         code: key,
       }));
-      return convertedData;
+    } else {
+      return null;
     }
-    return null;
+
+    merge(convertedBarSerie, convertedLineSerie);
+    return convertedBarSerie;
   }
 
   resubscribe(
@@ -188,14 +176,11 @@ class LineBarChartVotesByTime extends React.PureComponent<
     currentTopicFilter: string | undefined,
     currentProjectFilter: string | undefined
   ) {
-    if (this.barStreamSubscription) {
-      this.barStreamSubscription.unsubscribe();
-    }
-    if (this.lineStreamSubscription) {
-      this.lineStreamSubscription.unsubscribe();
+    if (this.combined$) {
+      this.combined$.unsubscribe();
     }
 
-    this.barStreamSubscription = votesByTimeStream({
+    const queryParameters = {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -204,23 +189,20 @@ class LineBarChartVotesByTime extends React.PureComponent<
         group: currentGroupFilter,
         topic: currentTopicFilter,
       },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToBarSerie(serie);
-      this.setState({ barSerie: convertedSerie });
-    });
+    };
 
-    this.lineStreamSubscription = votesByTimeCumulativeStream({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        interval: resolution,
-        project: currentProjectFilter,
-        group: currentGroupFilter,
-        topic: currentTopicFilter,
-      },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToLineSerie(serie);
-      this.setState({ lineSerie: convertedSerie });
+    const barStreamObservable = votesByTimeStream(queryParameters).observable;
+    const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
+      .observable;
+    this.combined$ = combineLatest(
+      barStreamObservable,
+      lineStreamObservable
+    ).subscribe(([barSerie, lineSerie]) => {
+      const convertedAndMergedSeries = this.convertAndMergeSeries(
+        barSerie,
+        lineSerie
+      );
+      this.setState({ serie: convertedAndMergedSeries });
     });
   }
 
@@ -254,10 +236,10 @@ class LineBarChartVotesByTime extends React.PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie: ILineSerie | null) {
+  getFormattedNumbers(serie: ISerie | null) {
     if (serie) {
-      const firstSerieValue = serie && serie[0].cumulatedTotal;
-      const lastSerieValue = serie && serie[serie.length - 1].cumulatedTotal;
+      const firstSerieValue = serie[0].cumulatedTotal;
+      const lastSerieValue = serie[serie.length - 1].cumulatedTotal;
       const serieChange = lastSerieValue - firstSerieValue;
       let typeOfChange: 'increase' | 'decrease' | '' = '';
 
@@ -291,9 +273,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
       animationDuration,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
-    const { barSerie, lineSerie } = this.state;
-    const formattedNumbers = this.getFormattedNumbers(lineSerie);
-    merge(barSerie, lineSerie);
+    const { serie } = this.state;
+    const formattedNumbers = this.getFormattedNumbers(serie);
     const { className } = this.props;
     const {
       totalNumber,
@@ -314,7 +295,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
-            {barSerie && (
+            {serie && (
               <ExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={votesByTimeXlsxEndpoint}
@@ -323,14 +304,14 @@ class LineBarChartVotesByTime extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {!barSerie ? (
+          {!serie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
               <ComposedChart
-                data={barSerie}
+                data={serie}
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
