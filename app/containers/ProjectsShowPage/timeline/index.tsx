@@ -5,13 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Timeline, { selectedPhase$ } from './Timeline';
-import PhaseAbout from './PhaseAbout';
-import PBExpenses from '../pb/PBExpenses';
-import PhaseSurvey from './PhaseSurvey';
-import PhasePoll from './PhasePoll';
-import PhaseVolunteering from './PhaseVolunteering';
-import PhaseIdeas from './PhaseIdeas';
-import EventsPreview from '../EventsPreview_old_unused';
+import PhaseAbout from './About';
+import PBExpenses from '../shared/pb/PBExpenses';
+import PhaseSurvey from './Survey';
+import PhasePoll from './Poll';
+import PhaseVolunteering from './Volunteering';
+import PhaseIdeas from './Ideas';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
 
@@ -163,7 +162,6 @@ class ProjectTimelineContainer extends PureComponent<Props, State> {
                     phaseId={selectedPhaseId}
                   />
                 </SecondRowContentContainer>
-                <EventsPreview projectId={project.id} />
               </SecondRow>
             )}
         </Container>

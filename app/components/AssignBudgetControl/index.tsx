@@ -27,7 +27,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from 'containers/ProjectsShowPage/pb/tracks';
+import tracks from 'containers/ProjectsShowPage/shared/pb/tracks';
 
 // utils
 import streams from 'utils/streams';
@@ -44,7 +44,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import PBExpenses from 'containers/ProjectsShowPage/pb/PBExpenses';
+import PBExpenses from 'containers/ProjectsShowPage/shared/pb/PBExpenses';
 import { darken } from 'polished';
 
 const IdeaCardContainer = styled.div`

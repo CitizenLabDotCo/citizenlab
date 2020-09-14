@@ -166,6 +166,8 @@ const StyledIdeaCard = styled(IdeaCard)`
   width: calc(100% * (1 / 3) - 26px);
   margin-left: 13px;
   margin-right: 13px;
+  box-shadow: none;
+  border: solid 1px #ccc;
 
   ${media.smallerThanMaxTablet`
     width: calc(100% * (1/2) - 26px);
