@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect, cloneElement } from 'react';
 import bowser from 'bowser';
 
 // components
@@ -26,28 +26,45 @@ interface Props {
   className?: string;
   buttonComponent: JSX.Element;
   dropdownContent: JSX.Element;
-  dropdownOpened: boolean;
-  onClickOutside: () => void;
-  dropdownWidth?: string;
 }
 
-const ButtonWithDropdown = ({ className, buttonComponent, dropdownContent, dropdownOpened, onClickOutside, dropdownWidth }: Props) => {
+const ButtonWithDropdown = ({
+  className,
+  buttonComponent,
+  dropdownContent,
+}: Props) => {
+  const [buttonWidth, setButtonWidth] = useState(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpened(!dropdownOpened);
+  };
+
+  useEffect(() => {
+    if (ref.current) {
+      setButtonWidth(ref.current.offsetWidth);
+    }
+  });
+
+  const button = cloneElement(buttonComponent, { onClick: toggleDropdown });
+
   // TODO: add aria-expanded to buttonComponent
   return (
     <Container className={className}>
-      {buttonComponent}
+      <div ref={ref}>{button}</div>
       <DropdownWrapper>
         <Dropdown
           top="5px"
           right={bowser.msie ? '-5px' : 'auto'}
           opened={dropdownOpened}
-          onClickOutside={onClickOutside}
+          onClickOutside={toggleDropdown}
           content={dropdownContent}
-          width={dropdownWidth}
+          width={`${buttonWidth}px`}
         />
       </DropdownWrapper>
     </Container>
   );
-}
+};
 
 export default ButtonWithDropdown;

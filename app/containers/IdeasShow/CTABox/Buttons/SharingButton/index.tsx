@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 import IdeaCTAButton from '../IdeaCTAButton';
 import SharingDropdownContent from './SharingDropdownContent';
@@ -26,31 +26,11 @@ const SharingButton = ({
   utmParams,
   buttonCopy,
 }: Props) => {
-  const [dropdownOpened, setDropdownOpened] = useState(false);
-  const [buttonWidth, setButtonWidth] = useState(0);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      setButtonWidth(ref.current.offsetWidth);
-    }
-  });
-
-  const toggleDropdown = () => {
-    setDropdownOpened(!dropdownOpened);
-  };
-
   // TODO: add icon
   return (
     <ButtonWithDropdown
       buttonComponent={
-        <div ref={ref}>
-          <IdeaCTAButton
-            iconName="share-arrow"
-            onClick={toggleDropdown}
-            copy={buttonCopy}
-          />
-        </div>
+        <IdeaCTAButton iconName="share-arrow" copy={buttonCopy} />
       }
       dropdownContent={
         <SharingDropdownContent
@@ -61,9 +41,6 @@ const SharingButton = ({
           utmParams={utmParams}
         />
       }
-      dropdownOpened={dropdownOpened}
-      onClickOutside={toggleDropdown}
-      dropdownWidth={`${buttonWidth}px`}
     />
   );
 };

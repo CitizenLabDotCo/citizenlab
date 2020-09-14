@@ -9,7 +9,7 @@ interface Props {
   copy: string;
   theme: any;
   iconName?: IconNames;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const IdeaCTAButton = ({
