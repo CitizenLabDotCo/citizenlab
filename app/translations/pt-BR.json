@@ -1701,8 +1701,6 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Projeto: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Faça o login para ver esta pasta.} other {Não há nenhuma pasta aqui.}}",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title}: Compartilhe as suas ideias sobre",
-  "app.containers.ProjectInfo.invisibleTitleMainContent": "Informações sobre este projeto",
-  "app.containers.ProjectInfo.twitterMessage": "{title}: Compartilhe as suas ideias sobre",
   "app.containers.Projects.PollForm.formCompleted": "Obrigado por responder esta sondagem!",
   "app.containers.Projects.PollForm.logInLinkText": "conectar",
   "app.containers.Projects.PollForm.maxOptions": "máximo. {maxNumber}",

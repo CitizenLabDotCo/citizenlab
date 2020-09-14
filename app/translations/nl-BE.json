@@ -1701,8 +1701,6 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Project: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Er is hier geen map.",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title}: Deel je ideeën op",
-  "app.containers.ProjectInfo.invisibleTitleMainContent": "Informatie over dit project",
-  "app.containers.ProjectInfo.twitterMessage": "{title} : deel je ideeën op",
   "app.containers.Projects.PollForm.formCompleted": "Bedankt voor het beantwoorden van deze peiling!",
   "app.containers.Projects.PollForm.logInLinkText": "inloggen",
   "app.containers.Projects.PollForm.maxOptions": "max. {maxNumber}",
