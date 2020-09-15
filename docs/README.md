@@ -1,5 +1,12 @@
 # Changelog
 
+## 2020-09-15
+
+### Added
+- Support Enalyzer as a new survey provider
+- Registration fields can now be hidden, meaning the user can't see or change them, typically controlled by an outside integration. They can still be used in smart groups.
+- Registration fields can now be pre-populated using the invites excel
+
 ## 2020-09-08
 
 ### Fixed
