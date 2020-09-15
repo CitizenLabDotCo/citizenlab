@@ -103,7 +103,7 @@ describe InvitesService do
           {email: "user2@domain.net", checkbox_field: "non-truthy"},
       ]}
 
-      it "raises an 'InviteError' errors" do
+      it "raises 'InviteError' errors" do
 
         expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
           expect(e).to be_a(InvitesService::InvitesFailedError)
