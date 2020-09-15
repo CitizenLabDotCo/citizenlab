@@ -1762,6 +1762,7 @@
   "app.containers.Projects.startsOn": "Begint op {date}",
   "app.containers.Projects.submitMyExpenses": "Bevestig mijn uitgaven",
   "app.containers.Projects.survey": "",
+  "app.containers.Projects.timeline": "",
   "app.containers.Projects.totalBudget": "Totaalbedrag",
   "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Aankomende activiteiten",

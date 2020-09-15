@@ -1762,6 +1762,7 @@
   "app.containers.Projects.startsOn": "Comienza el {date}",
   "app.containers.Projects.submitMyExpenses": "Presentar mis gastos",
   "app.containers.Projects.survey": "",
+  "app.containers.Projects.timeline": "",
   "app.containers.Projects.totalBudget": "Presupuesto total",
   "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Próximos eventos",
