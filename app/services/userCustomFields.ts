@@ -23,6 +23,7 @@ export interface IUserCustomFieldData {
     code: string | null;
     enabled: boolean;
     ordering: number;
+    hidden: boolean;
     created_at: string;
     updated_at: string;
   };
@@ -42,6 +43,10 @@ export interface UserCustomFieldsInfos {
 
 export function isBuiltInField(field: IUserCustomFieldData) {
   return !!field.attributes.code;
+}
+
+export function isHiddenField(field: IUserCustomFieldData) {
+  return !!field.attributes.hidden;
 }
 
 export interface IUserCustomField {

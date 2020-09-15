@@ -242,6 +242,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.typeform',
     defaultMessage: 'Typeform',
   },
+  enalyzer: {
+    id: 'app.containers.AdminPage.ProjectEdit.enalyzer',
+    defaultMessage: 'Enalyzer',
+  },
   survey_monkey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey_monkey',
     defaultMessage: 'Survey Monkey',
