@@ -1701,8 +1701,6 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Suliniut: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Uani quppersagaqanngilaq",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title} : Isumassarsiatit uani avitseqatigikkit",
-  "app.containers.ProjectInfo.invisibleTitleMainContent": "Suliniut una pillugu paasissutissat",
-  "app.containers.ProjectInfo.twitterMessage": "{title} : isumassarsiatit uani avitseqatigikkit",
   "app.containers.Projects.PollForm.formCompleted": "Taasineq una akigakku qujanaq!",
   "app.containers.Projects.PollForm.logInLinkText": "Iserneq",
   "app.containers.Projects.PollForm.maxOptions": "annerpaamik {maxNumber}",

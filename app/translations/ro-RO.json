@@ -1701,8 +1701,6 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Proiect: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title}: Împărtășiți-vă ideile dvs. pe",
-  "app.containers.ProjectInfo.invisibleTitleMainContent": "Informații despre acest proiect",
-  "app.containers.ProjectInfo.twitterMessage": "{title}: Împărtășiți-vă ideile dvs. pe",
   "app.containers.Projects.PollForm.formCompleted": "Vă mulțumim că ați răspuns la acest sondaj de tip poll!",
   "app.containers.Projects.PollForm.logInLinkText": "Autentificare",
   "app.containers.Projects.PollForm.maxOptions": "Max. {maxNumber}",
