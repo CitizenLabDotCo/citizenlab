@@ -1177,6 +1177,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle": "Nombre de la pregunta",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip": "Así es como se mostrará la pregunta durante el registro.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab": "General",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_checkbox": "Casilla de verificación",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "Fechas",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "Texto largo",
