@@ -27,6 +27,7 @@ import {
   updateCustomFieldForUsers,
   reorderCustomFieldForUsers,
   isBuiltInField,
+  isHiddenField,
 } from 'services/userCustomFields';
 
 const Buttons = styled.div`
@@ -193,6 +194,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     field.attributes.enabled ? 'enabled' : 'disabled'
                   }`}
                   checked={field.attributes.enabled}
+                  disabled={isHiddenField(field)}
                   onChange={this.handleOnEnabledToggle(field)}
                 />
                 <TextCell className="expand">
@@ -208,8 +210,13 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.systemField} />
                   </div>
                 )}
+                {isHiddenField(field) && (
+                  <div>
+                    <FormattedMessage {...messages.hiddenField} />
+                  </div>
+                )}
                 <Buttons>
-                  {!isBuiltInField(field) && (
+                  {!isBuiltInField(field) && !isHiddenField(field) && (
                     <Button
                       className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                       onClick={this.handleOnDeleteClick(field.id)}
@@ -219,15 +226,16 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                       <FormattedMessage {...messages.deleteButtonLabel} />
                     </Button>
                   )}
-
-                  <Button
-                    className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                    linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
-                    buttonStyle="secondary"
-                    icon="edit"
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
+                  {!isHiddenField(field) && (
+                    <Button
+                      className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                      linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
+                      buttonStyle="secondary"
+                      icon="edit"
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
+                  )}
                 </Buttons>
               </SortableRow>
             );
