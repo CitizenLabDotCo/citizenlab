@@ -60,12 +60,13 @@ describe InvitesService do
         {email: "some.user@domain.net", field_1: "some_value"},
       ]}
 
-      it "raises an error" do
+      it "raises an 'InviteError' error" do
         expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
-          e.should be_a(InvitesService::InvitesFailedError)
+          expect(e).to be_a(InvitesService::InvitesFailedError)
           expect(e.errors.length).to be(1)
-          
+
           error = e.errors.first
+          expect(error).to be_a(InvitesService::InviteError)
           expect(error.error_key).to eq('unknown_custom_field')
           expect(error.row).to be(2)  # invite_nb + offset 
         end
