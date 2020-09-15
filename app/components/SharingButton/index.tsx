@@ -9,6 +9,7 @@ export type UtmParams = {
 };
 
 interface Props {
+  className?: string;
   twitterMessage: string;
   emailSubject?: string;
   emailBody?: string;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const SharingButton = ({
+  className,
   url,
   twitterMessage,
   emailSubject,
@@ -28,6 +30,7 @@ const SharingButton = ({
   // TODO: add icon
   return (
     <ButtonWithDropdown
+      className={className}
       buttonComponent={buttonComponent}
       dropdownContent={
         <SharingDropdownContent

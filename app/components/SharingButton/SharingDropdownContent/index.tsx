@@ -19,13 +19,6 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const StyledIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: #fff;
-`;
-
 const Buttons = styled.div`
   display: flex;
   flex-direction: column;
