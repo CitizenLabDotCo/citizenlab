@@ -114,5 +114,12 @@
       "display: flex;",
       "align-items: center;"
     ]
-  }
+  },
+  "use-theme": {
+    "prefix": "use-theme",
+    "description": "gets the 'theme' const inside your func component",
+    "body": [
+      "const theme: any = useTheme();"
+    ]
+  },
 }
