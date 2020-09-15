@@ -184,6 +184,10 @@ class InvitesService
   end
 
   def build_invite(params, default_params={}, inviter=nil)
+
+    regular_params = %w"invitee_id email first_name last_name locale invite_text group_ids roles group_ids send_invite_email"
+    custom_field_values = params.except(*regular_params)
+
     invitee = User.new({
       email: params["email"],
       first_name: params["first_name"], 
@@ -191,7 +195,7 @@ class InvitesService
       locale: params["locale"] || default_params["locale"] || Tenant.settings('core', 'locales').first, 
       manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],
-      custom_field_values: params.except(*%w"email first_name last_name locale group_ids roles"),
+      custom_field_values: custom_field_values,
       invite_status: 'pending'
     })
 
