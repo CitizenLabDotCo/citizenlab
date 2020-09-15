@@ -12,11 +12,13 @@ import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
 
 interface Props {
+  className?: string;
   ideaId: string;
   buttonComponent: JSX.Element;
 }
 
 const Component = ({
+  className,
   ideaId,
   buttonComponent,
   intl: { formatMessage },
@@ -43,6 +45,7 @@ const Component = ({
 
     return (
       <SharingButton
+        className={className}
         url={ideaUrl}
         twitterMessage={formatMessage(messages.twitterMessage, {
           ideaTitle,
