@@ -60,9 +60,6 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     theme={[Function]}
   >
     <dashboard__GraphsContainer>
-      <AgeChart
-        endAt="2010-01-01T04:06:07.000Z"
-      />
       <Component
         endAt="2010-01-01T04:06:07.000Z"
       />
