@@ -16,12 +16,15 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
 `;
 
-const StyledContentContainer = styled(ContentContainer)``;
+const StyledContentContainer = styled(ContentContainer)`
+  background: ${colors.background};
+`;
 
 interface Props {
   projectId: string;

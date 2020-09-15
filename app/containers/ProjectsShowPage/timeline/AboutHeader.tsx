@@ -26,7 +26,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
   margin-bottom: 20px;
 `;
 
@@ -50,13 +49,13 @@ const Right = styled.div`
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 32px;
-  width: 32px;
-  height: 32px;
+  flex-basis: 30px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-right: 10px;
   border-radius: 50%;
   background: ${colors.label};
 
@@ -73,7 +72,7 @@ const PhaseNumber = styled.div`
 `;
 
 const HeaderTitleWrapper = styled.div`
-  min-height: 55px;
+  min-height: 41px;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
@@ -82,8 +81,8 @@ const HeaderTitleWrapper = styled.div`
   flex-direction: row;
 
   &.ie {
-    height: 55px;
-    min-height: auto;
+    height: 41px;
+    min-height: unset;
   }
 
   ${media.smallerThanMinTablet`
@@ -96,7 +95,7 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.h2`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.large}px;
   line-height: 25px;
   font-weight: 600;
@@ -195,6 +194,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             projectId={projectId}
             phaseId={selectedPhaseId}
             participationContextType="phase"
+            fontWeight="500"
           />
         </Right>
       </Container>

@@ -4,11 +4,10 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import PBExpenses from '../shared/pb/PBExpenses';
 import {
   SectionContainer,
-  SectionTitle,
+  ContinuosProjectSectionTitle,
 } from 'containers/ProjectsShowPage/styles';
 
 // hooks
@@ -21,13 +20,17 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
+import { viewportWidths, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
 `;
 
-const StyledContentContainer = styled(ContentContainer)``;
+const StyledContentContainer = styled(ContentContainer)`
+  background: ${colors.background};
+`;
+
+const StyledSectionContainer = styled(SectionContainer)``;
 
 interface Props {
   projectId: string;
@@ -59,8 +62,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       return (
         <Container className={className || ''}>
           <StyledContentContainer id="project-ideas">
-            <SectionContainer>
-              <ProjectArchivedIndicator projectId={projectId} />
+            <StyledSectionContainer>
               {isPBProject && (
                 <PBExpenses
                   participationContextId={projectId}
@@ -68,9 +70,9 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               )}
-              <SectionTitle>
+              <ContinuosProjectSectionTitle>
                 <FormattedMessage {...messages.ideas} />
-              </SectionTitle>
+              </ContinuosProjectSectionTitle>
               <IdeaCards
                 type="load-more"
                 projectIds={projectIds}
@@ -81,7 +83,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 defaultView={project.attributes.presentation_mode || null}
                 invisibleTitleMessage={messages.invisibleTitleIdeasList}
               />
-            </SectionContainer>
+            </StyledSectionContainer>
           </StyledContentContainer>
         </Container>
       );

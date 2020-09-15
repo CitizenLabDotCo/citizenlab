@@ -60,13 +60,13 @@ const EventDateInfo = styled.div`
 const EventDates = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background: #fff;
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.label};
 
   &.past {
     background: ${colors.grey};
@@ -74,14 +74,22 @@ const EventDates = styled.div`
 `;
 
 const EventDate = styled.div`
-  color: #333;
-  font-size: ${fontSizes.xl}px;
-  line-height: 25px;
+  color: ${colors.label};
+  line-height: normal;
   font-weight: 500;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const EventMonth = styled.div`
+  font-size: ${fontSizes.small}px;
+  text-transform: uppercase;
+`;
+
+const EventDay = styled.div`
+  font-size: ${fontSizes.xl}px;
 `;
 
 const EventDatesSeparator = styled.div`
@@ -96,16 +104,16 @@ const EventDatesSeparator = styled.div`
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 7px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  background: #373737;
+  background: ${colors.label};
 
   &.past {
     background: #555;
@@ -245,8 +253,8 @@ const EventCard = memo<Props & InjectedIntlProps>(
           <EventDateInfo>
             <EventDates className={eventStatus}>
               <EventDate>
-                <span>{startAtDay}</span>
-                <span>{startAtMonth}</span>
+                <EventMonth>{startAtMonth}</EventMonth>
+                <EventDay>{startAtDay}</EventDay>
               </EventDate>
 
               {isMultiDayEvent && (

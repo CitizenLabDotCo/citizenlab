@@ -137,7 +137,7 @@ const DropdownFilters = styled.div`
 `;
 
 const StyledViewButtons = styled(ViewButtons)`
-  margin-left: 25px;
+  margin-left: 40px;
 
   ${media.smallerThanMaxTablet`
     margin-left: 0px;
@@ -154,7 +154,7 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-const IdeasList: any = styled.div`
+const IdeasList = styled.div`
   margin-left: -13px;
   margin-right: -13px;
   display: flex;
@@ -166,8 +166,6 @@ const StyledIdeaCard = styled(IdeaCard)`
   width: calc(100% * (1 / 3) - 26px);
   margin-left: 13px;
   margin-right: 13px;
-  box-shadow: none;
-  border: solid 1px #ccc;
 
   ${media.smallerThanMaxTablet`
     width: calc(100% * (1/2) - 26px);

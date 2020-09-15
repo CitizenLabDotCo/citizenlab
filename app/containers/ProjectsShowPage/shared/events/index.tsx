@@ -10,7 +10,7 @@ import EventCard from './EventCard';
 import ContentContainer from 'components/ContentContainer';
 import {
   SectionContainer,
-  SectionTitle,
+  ContinuosProjectSectionTitle,
 } from 'containers/ProjectsShowPage/styles';
 
 // i18n
@@ -52,9 +52,9 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
         <Container id="project-events" className={className || ''}>
           <ContentContainer>
             <SectionContainer>
-              <SectionTitle>
+              <ContinuosProjectSectionTitle>
                 <FormattedMessage {...messages.upcomingEvents} />
-              </SectionTitle>
+              </ContinuosProjectSectionTitle>
               {upcomingEvents.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}

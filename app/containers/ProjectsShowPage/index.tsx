@@ -24,7 +24,7 @@ import useEvents from 'hooks/useEvents';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'services/projects';
@@ -32,11 +32,13 @@ import { IProjectData } from 'services/projects';
 const Container = styled.main`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
