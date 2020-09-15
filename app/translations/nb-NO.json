@@ -1762,6 +1762,7 @@
   "app.containers.Projects.startsOn": "Starter {date}",
   "app.containers.Projects.submitMyExpenses": "Send inn mine utgifter",
   "app.containers.Projects.survey": "",
+  "app.containers.Projects.timeline": "",
   "app.containers.Projects.totalBudget": "Totalbudsjett",
   "app.containers.Projects.twitterMessage": "",
   "app.containers.Projects.upcomingEvents": "Kommende hendelser",
