@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
 // components
-import AboutHeader from './AboutHeader';
 import FileAttachments from 'components/UI/FileAttachments';
+import AboutHeader from './AboutHeader';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -19,7 +19,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { colors, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
@@ -58,18 +58,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+const About = memo<Props & InjectedLocalized>(
+  ({ projectId, phaseId, phase, phaseFiles, className, localize }) => {
+    const theme: any = useTheme();
 
-class About extends PureComponent<Props & InjectedLocalized, State> {
-  render() {
-    const {
-      projectId,
-      phaseId,
-      phase,
-      phaseFiles,
-      className,
-      localize,
-    } = this.props;
     const content = localize(phase?.attributes?.description_multiloc);
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
@@ -77,15 +69,15 @@ class About extends PureComponent<Props & InjectedLocalized, State> {
     if (!contentIsEmpty || !isEmpty(phaseFiles)) {
       return (
         <Container className={className}>
+          <AboutHeader projectId={projectId} selectedPhaseId={phaseId} />
           <ScreenReaderOnly>
             <FormattedMessage
               tagName="h3"
               {...messages.invisibleTitlePhaseAbout}
             />
           </ScreenReaderOnly>
-          <AboutHeader projectId={projectId} selectedPhaseId={phaseId} />
           <InformationBody>
-            <QuillEditedContent textColor="#5E6B75">
+            <QuillEditedContent textColor={theme.colorText}>
               <T
                 value={phase?.attributes?.description_multiloc}
                 supportHtml={true}
@@ -102,9 +94,9 @@ class About extends PureComponent<Props & InjectedLocalized, State> {
 
     return null;
   }
-}
+);
 
-const AboutWithHOCs = injectLocalize(About);
+const AboutWithHoC = injectLocalize(About);
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
@@ -115,8 +107,10 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-export default (inputProps: InputProps) => (
+const AboutWithHoCAndData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <AboutWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <AboutWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default AboutWithHoCAndData;

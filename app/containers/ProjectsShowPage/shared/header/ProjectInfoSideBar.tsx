@@ -69,10 +69,15 @@ const ListItem = styled.div`
 `;
 
 const ListItemIcon = styled(Icon)`
-  height: 18px;
-  width: 16px;
+  width: 17px;
+  height: 17px;
   fill: ${colors.label};
   margin-right: 14px;
+
+  &.timeline {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const ActionButtons = styled.div`
@@ -107,6 +112,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const scrollToIdeas = useCallback((event: FormEvent) => {
     event.preventDefault();
     document?.getElementById('project-ideas')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'start',
+    });
+  }, []);
+
+  const scrollToTimeline = useCallback((event: FormEvent) => {
+    event.preventDefault();
+    document?.getElementById('project-timeline')?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
       inline: 'start',
@@ -161,8 +175,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           {process_type === 'timeline' &&
             !isNilOrError(phases) &&
             phases.length > 0 && (
-              <ListItem>
-                <ListItemIcon name="timeline" />
+              <ListItem className="link" onClick={scrollToTimeline}>
+                <ListItemIcon name="timeline" className="timeline" />
                 <FormattedMessage
                   {...messages.xPhases}
                   values={{ phasesCount: phases.length }}

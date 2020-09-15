@@ -3,8 +3,8 @@ import { trackEventByName } from 'utils/analytics';
 
 // styling
 import styled from 'styled-components';
-import { rgba } from 'polished';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors, defaultStyles } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,6 +15,9 @@ import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;
+  padding: 4px;
+  background: ${darken(0.06, colors.lightGreyishBlue)};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const ViewButton = styled.button`
@@ -25,31 +28,32 @@ const ViewButton = styled.button`
   background: transparent;
   padding: 0;
   margin: 0;
-  border-radius: 0;
-  border: solid 1px ${({ theme }) => theme.colorText};
+  border-radius: ${(props: any) => props.theme.borderRadius};
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-
-  &:not(.active):hover {
-    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
-  }
+  transition: all 100ms ease-out;
 
   &.active {
-    background: ${({ theme }) => theme.colorText};
+    background: #fff;
+    box-shadow: ${defaultStyles.boxShadow};
 
     > span {
-      color: #fff;
+      opacity: 1;
     }
   }
 
+  &:not(.active):hover {
+    text-decoration: underline;
+  }
+
   > span {
-    color: ${({ theme }) => theme.colorText};
+    color: ${colors.label};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 15px;
+    padding-right: 15px;
     padding-top: 10px;
     padding-bottom: 10px;
 
@@ -57,6 +61,10 @@ const ViewButton = styled.button`
       padding-top: 8px;
       padding-bottom: 8px;
     `}
+  }
+
+  &:hover span {
+    opacity: 1;
   }
 `;
 
@@ -69,6 +77,7 @@ const ListButton = styled(ViewButton)`
 const MapButton = styled(ViewButton)`
   border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
+  margin-left: 4px;
 `;
 
 interface Props {

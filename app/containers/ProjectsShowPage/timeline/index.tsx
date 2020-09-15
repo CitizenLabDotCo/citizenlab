@@ -11,7 +11,6 @@ import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
 import PhaseVolunteering from './Volunteering';
 import PhaseIdeas from './Ideas';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
 
 // services
@@ -32,16 +31,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-top: 70px;
   background: ${colors.background};
 `;
 
 const FirstRow = styled.div``;
 
 const StyledTimeline = styled(Timeline)``;
-
-const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
-  padding-bottom: 30px;
-`;
 
 const SecondRow = styled.div``;
 
@@ -120,7 +116,6 @@ class ProjectTimelineContainer extends PureComponent<Props, State> {
         <Container className={`${className || ''} e2e-project-process-page`}>
           <FirstRow>
             <StyledTimeline projectId={project.id} />
-            <StyledProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
               <StyledPhaseAbout
                 projectId={project.id}

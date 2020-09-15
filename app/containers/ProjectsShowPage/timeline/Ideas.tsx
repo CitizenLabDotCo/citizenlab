@@ -4,11 +4,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import IdeaCards from 'components/IdeaCards';
+import { TimelineProjectSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -17,8 +19,6 @@ import styled from 'styled-components';
 const Container = styled.div`
   padding-bottom: 100px;
 `;
-
-const StyledIdeaCards = styled(IdeaCards)``;
 
 interface InputProps {
   projectId: string;
@@ -48,7 +48,10 @@ class IdeasContainer extends PureComponent<Props, State> {
       ) {
         return (
           <Container className={className || ''}>
-            <StyledIdeaCards
+            <TimelineProjectSectionTitle>
+              <FormattedMessage {...messages.ideas} />
+            </TimelineProjectSectionTitle>
+            <IdeaCards
               className={participationMethod}
               type="load-more"
               projectIds={projectIds}

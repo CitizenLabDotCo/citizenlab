@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -12,24 +13,27 @@ import useProject from 'hooks/useProject';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  margin-bottom: 70px;
+  padding-top: 40px;
+  padding-bottom: 70px;
+  background: #fff;
 `;
 
 const ProjectHeaderImage = styled.div<{ src: string }>`
   width: 100%;
   height: 220px;
+  margin-bottom: 45px;
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  margin-top: 40px;
-  transform: translate3d(0, 0, 0);
 `;
 
-const StyledProjectInfo = styled(ProjectInfo)`
-  margin-top: 50px;
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+  margin-bottom: 25px;
 `;
+
+const StyledProjectInfo = styled(ProjectInfo)``;
 
 interface Props {
   projectId: string;
@@ -45,9 +49,10 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
     return (
       <Container className={className || ''}>
         <ContentContainer>
-          {projectHeaderImageLarge && (
+          {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
             <ProjectHeaderImage src={projectHeaderImageLarge} />
           )}
+          <StyledProjectArchivedIndicator projectId={projectId} />
           <StyledProjectInfo projectId={projectId} />
         </ContentContainer>
       </Container>

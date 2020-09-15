@@ -18,6 +18,7 @@ import { trackEventByName } from 'utils/analytics';
 // components
 import ContentContainer from 'components/ContentContainer';
 import { Icon } from 'cl2-component-library';
+import { ContinuosProjectSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
 import { localeStream } from 'services/locale';
@@ -66,12 +67,11 @@ const ContainerInner = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 `;
 
 const Phases = styled.div`
   width: 100%;
-  padding-top: 60px;
   padding-bottom: 30px;
   margin: 0;
   margin-left: auto;
@@ -90,17 +90,18 @@ const phaseBarHeight = '25px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${greyOpaque};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${darken(0.1, colors.lightGreyishBlue)};
+  background: ${darken(0.08, colors.lightGreyishBlue)};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
   border: none;
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
 `;
@@ -118,7 +119,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${greyOpaque};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
@@ -134,7 +135,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   word-break: break-word;
   hyphens: auto;
   max-height: 60px;
-  margin-top: 12px;
+  margin-top: 8px;
   margin-left: 5px;
   margin-right: 5px;
   transition: color 60ms ease-out;
@@ -442,9 +443,12 @@ class Timeline extends PureComponent<
         });
 
       return (
-        <Container className={className}>
+        <Container id="project-timeline" className={className}>
           <StyledContentContainer>
             <ContainerInner>
+              <ContinuosProjectSectionTitle>
+                <FormattedMessage {...messages.timeline} />
+              </ContinuosProjectSectionTitle>
               <Phases className="e2e-phases">
                 <ScreenReaderOnly>
                   <FormattedMessage {...messages.a11y_phasesOverview} />

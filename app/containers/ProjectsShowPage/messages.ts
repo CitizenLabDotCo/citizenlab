@@ -234,4 +234,8 @@ export default defineMessages({
     id: 'app.containers.Projects.survey',
     defaultMessage: 'Survey',
   },
+  timeline: {
+    id: 'app.containers.Projects.timeline',
+    defaultMessage: 'Timeline',
+  },
 });
