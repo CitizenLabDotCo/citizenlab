@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-import IdeaCTAButton from '../IdeaCTAButton';
 import SharingDropdownContent from './SharingDropdownContent';
 
 export type UtmParams = {
@@ -15,7 +14,7 @@ interface Props {
   emailBody?: string;
   utmParams?: UtmParams;
   url: string;
-  buttonCopy: string;
+  buttonComponent: JSX.Element;
 }
 
 const SharingButton = ({
@@ -24,14 +23,12 @@ const SharingButton = ({
   emailSubject,
   emailBody,
   utmParams,
-  buttonCopy,
+  buttonComponent,
 }: Props) => {
   // TODO: add icon
   return (
     <ButtonWithDropdown
-      buttonComponent={
-        <IdeaCTAButton iconName="share-arrow" copy={buttonCopy} />
-      }
+      buttonComponent={buttonComponent}
       dropdownContent={
         <SharingDropdownContent
           url={url}
