@@ -34,7 +34,6 @@ describe InvitesService do
     end
 
     context "with user custom fields configured" do
-
       before do
         create(:custom_field,
           key: 'field_1',
@@ -45,15 +44,31 @@ describe InvitesService do
       end
 
       let(:hash_array) {[
-        {email: "some.user@domain.net", field_1: "somevalue"},
-        {email: "someother.user@domain.net", field_2: "someothervalue"}
+        {email: "some.user@domain.net", field_1: "some_value"},
       ]}
 
       it "sets custom_field_values with matching column names" do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(2)
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(1)
         user = User.find_by(email: "some.user@domain.net")
-        expect(user.custom_field_values).to include({"field_1" => "somevalue"})
-        expect(user.custom_field_values).not_to include("field_2")
+        expect(user.custom_field_values).to include({"field_1" => "some_value"})
+      end
+    end
+
+    context "with an unknown custom field" do
+
+      let(:hash_array) {[
+        {email: "some.user@domain.net", field_1: "some_value"},
+      ]}
+
+      it "raises an error" do
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
+          e.should be_a(InvitesService::InvitesFailedError)
+          expect(e.errors.length).to be(1)
+          
+          error = e.errors.first
+          expect(error.error_key).to eq('unknown_custom_field')
+          expect(error.row).to be(2)  # invite_nb + offset 
+        end
       end
     end
 
