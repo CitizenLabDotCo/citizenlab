@@ -94,6 +94,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        enalyzer_surveys: {
+          enabled: true,
+          allowed: true
+        },
         initiatives: {
           enabled: true,
           allowed: true,
