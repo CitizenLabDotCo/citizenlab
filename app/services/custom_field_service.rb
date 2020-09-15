@@ -85,8 +85,16 @@ class CustomFieldService
     # depend on the parameters). As a consequence, if this method is called several times for processing a single
     # request, the result of the request is cached and the request is not repeated.
     all_hidden_keys = CustomField.hidden.pluck(:key)
-    keep_keys = all_hidden_keys.select {|key| custom_field_values.include?(key) }
-    custom_field_values.except(*keep_keys)
+    hidden_keys = all_hidden_keys & custom_field_values.keys
+    custom_field_values.except(*hidden_keys)
+  end
+
+  # @param [Hash<String, _>] custom_field_values
+  # @return [Hash<String, _>]
+  def self.remove_disabled_custom_fields(custom_field_values)
+    all_disabled_keys = CustomField.disabled.pluck(:key)
+    disabled_keys = all_disabled_keys & custom_field_values.keys
+    custom_field_values.except(*disabled_keys)
   end
 
   private
