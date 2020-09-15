@@ -5,7 +5,7 @@ import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors, fontSizes } from 'utils/styleUtils';
-// import { Icon } from 'cl2-component-library';
+import { Icon } from 'cl2-component-library';
 
 interface Props {
   projectId: string;
@@ -22,9 +22,9 @@ const StyledLink = styled(Link)`
   }
 `;
 
-// const StyledIcon = styled(Icon)`
-//   fill: '#84939E';
-// `;
+const StyledIcon = styled(Icon)`
+  fill: '#84939E';
+`;
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
   if (!isNilOrError(project)) {
     return (
       <Container className={className}>
-        {/* <StyledIcon name='circle-arrow-left' /> */}
+        <StyledIcon name="circle-arrow-left" />
         <StyledLink to={`/projects/${project.attributes.slug}`}>
           {localize(project.attributes.title_multiloc)}
         </StyledLink>
