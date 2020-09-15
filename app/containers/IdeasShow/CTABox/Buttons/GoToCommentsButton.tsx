@@ -38,7 +38,7 @@ const GoToCommentsButton = ({
     <IdeaCTAButton
       onClick={onClick}
       className={className}
-      copy={formatMessage(messages.postComment)}
+      buttonText={formatMessage(messages.postComment)}
       iconName="comments"
     />
   );

@@ -6,7 +6,7 @@ import { darken } from 'polished';
 
 interface Props {
   className?: string;
-  copy: string;
+  buttonText: string;
   theme: any;
   iconName?: IconNames;
   onClick?: () => void;
@@ -14,7 +14,7 @@ interface Props {
 
 const IdeaCTAButton = ({
   className,
-  copy,
+  buttonText,
   theme,
   iconName,
   onClick,
@@ -39,7 +39,7 @@ const IdeaCTAButton = ({
       fontWeight="bold"
       onClick={onClick}
     >
-      {copy}
+      {buttonText}
     </Button>
   );
 };
