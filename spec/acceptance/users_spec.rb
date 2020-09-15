@@ -598,7 +598,8 @@ resource "Users" do
           do_request(user: {custom_field_values: {cf.key => "another_value"}})
           json_response = json_parse(response_body)
 
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq some_value
+          expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+          expect(@user.custom_field_values[cf.key]).to eq(some_value)
         end
       end
 

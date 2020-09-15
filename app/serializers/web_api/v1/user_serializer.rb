@@ -13,7 +13,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :custom_field_values, if: Proc.new { |object, params|
     view_private_attributes? object, params
   } do |object|
-    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    custom_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    CustomFieldService.remove_disabled_custom_fields(custom_field_values)
   end
 
   attribute :verified, if: Proc.new {|object, params|
