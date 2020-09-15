@@ -232,6 +232,10 @@ export const BodySectionTitle = styled.h2`
   line-height: 28px;
 `;
 
+const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
+  margin-bottom: 20px;
+`;
+
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
 
@@ -243,6 +247,12 @@ const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
 const StyledMobileIdeaStatus = styled(IdeaStatus)`
   margin-bottom: 30px;
 
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const MobileMetaInformation = styled(MetaInformation)`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
@@ -692,14 +702,13 @@ export class IdeasShow extends PureComponent<
                   )}
                 </FeatureFlag>
 
-                {proposedBudget && (
-                  <IdeaProposedBudget proposedBudget={proposedBudget} />
-                )}
-
                 {proposedBudget && proposedBudgetEnabled && (
-                  <BodySectionTitle>
-                    <FormattedMessage {...messages.bodyTitle} />
-                  </BodySectionTitle>
+                  <>
+                    <StyledIdeaProposedBudget proposedBudget={proposedBudget} />
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.bodyTitle} />
+                    </BodySectionTitle>
+                  </>
                 )}
 
                 <Body
@@ -708,6 +717,12 @@ export class IdeasShow extends PureComponent<
                   locale={locale}
                   body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
+                />
+
+                <MobileMetaInformation
+                  ideaId={ideaId}
+                  projectId={projectId}
+                  statusId={statusId}
                 />
 
                 {showBudgetControl &&

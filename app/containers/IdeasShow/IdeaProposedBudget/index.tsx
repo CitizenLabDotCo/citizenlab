@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { BodySectionTitle } from '..';
 import Budget from './Budget';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,16 +9,19 @@ import { isNilOrError } from 'utils/helperUtils';
 import useTenant from 'hooks/useTenant';
 
 interface Props {
+  className?: string;
   proposedBudget: number;
 }
 
-const IdeaProposedBudget = ({ proposedBudget }: Props) => {
+const Container = styled.div``;
+
+const IdeaProposedBudget = ({ proposedBudget, className }: Props) => {
   const locale = useLocale();
   const tenant = useTenant();
 
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
     return (
-      <>
+      <Container className={className}>
         <BodySectionTitle>
           <FormattedMessage {...messages.proposedBudgetTitle} />
         </BodySectionTitle>
@@ -27,7 +31,7 @@ const IdeaProposedBudget = ({ proposedBudget }: Props) => {
           locale={locale}
           tenant={tenant}
         />
-      </>
+      </Container>
     );
   }
 
