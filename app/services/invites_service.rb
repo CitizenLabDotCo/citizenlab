@@ -50,6 +50,7 @@ class InvitesService
     malformed_admin_value: 'malformed_admin_value',
     malformed_groups_value: 'malformed_groups_value',
     unknown_locale: 'unknown_locale',
+    unknown_custom_field: 'unknown_custom_field',
     invalid_email: 'invalid_email',
     invalid_row: 'invalid_row',
     email_already_invited: 'email_already_invited',
@@ -182,7 +183,7 @@ class InvitesService
     end
   end
 
-  def build_invite params, default_params={}, inviter=nil
+  def build_invite(params, default_params={}, inviter=nil)
     invitee = User.new({
       email: params["email"],
       first_name: params["first_name"], 
@@ -190,8 +191,10 @@ class InvitesService
       locale: params["locale"] || default_params["locale"] || Tenant.settings('core', 'locales').first, 
       manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],
+      custom_field_values: params.except(*%w"email first_name last_name locale group_ids roles"),
       invite_status: 'pending'
     })
+
     Invite.new(
       invitee: invitee,
       inviter: inviter,
@@ -201,7 +204,7 @@ class InvitesService
   end
 
   def pre_check_invites invites
-    #check duplicate emails
+    # check duplicate emails
     invites.each_with_object(Hash.new{[]}).with_index do |(invite, object), index|
       object[invite.invitee.email] += [index]
     end
@@ -209,32 +212,45 @@ class InvitesService
     .each do |email, row_indexes|
       add_error(:emails_duplicate, rows: row_indexes, value: email)
     end
-    #run validations
-    invites.each{|invite| validate_invite(invites, invite)}
+    # run validations
+    invites.each_with_index {|invite, row_nb| validate_invite(invite, row_nb)}
   end
 
-
-  def validate_invite invites, invite
+  def validate_invite invite, row_nb
     invite.invitee.validate!
     invite.validate!
+    # Checking custom_field_values manually bc validation is disabled when the user is not active.
+    check_for_unknown_custom_fields(invite.invitee, row_nb)
   rescue ActiveRecord::RecordInvalid => e
-    row = invites.find_index{|i| i.invitee == e.record || i == e.record}
     e.record.errors.details.each do |field, error_descriptors|
       error_descriptors.each do |error_descriptor|
         if field == :locale
-          add_error(:unknown_locale, row: row, value: error_descriptor[:value], raw_error: e)
+          add_error(:unknown_locale, row: row_nb, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:error] == :invalid
-          add_error(:invalid_email, row: row, value: error_descriptor[:value], raw_error: e)
+          add_error(:invalid_email, row: row_nb, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:error] == :taken
-          add_error(:email_already_active, row: row, value: error_descriptor[:value], raw_error: e, ignore: true)
+          add_error(:email_already_active, row: row_nb, value: error_descriptor[:value], raw_error: e, ignore: true)
         elsif field == :email && error_descriptor[:error] == :taken_by_invite
-          add_error(:email_already_invited, row: row, value: error_descriptor[:value], raw_error: e, ignore: true)
+          add_error(:email_already_invited, row: row_nb, value: error_descriptor[:value], raw_error: e, ignore: true)
         else
-          add_error(:invalid_row, row: row, value: field, raw_error: e)
+          add_error(:invalid_row, row: row_nb, value: field, raw_error: e)
         end
       end
     end
   end
+
+  # Checks if custom_field_values contains unknown/additional custom fields.
+  # @param [User] invitee
+  def check_for_unknown_custom_fields(invitee, row_nb)
+    custom_field_schema = CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
+    JSON::Validator.validate!(custom_field_schema, invitee.custom_field_values)
+  rescue JSON::Schema::ValidationError => e
+    if e.failed_attribute == JSON::Schema::AdditionalPropertiesAttribute
+      add_error(:unknown_custom_field, row: row_nb, value: e.message, raw_error: e)
+    end
+  end
+
+
 
   def save_invites invites
     ActiveRecord::Base.transaction do
