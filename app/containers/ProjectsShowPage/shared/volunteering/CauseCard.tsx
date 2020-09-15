@@ -25,7 +25,7 @@ import T from 'components/T';
 import messages from './messages';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   fontSizes,
   colors,
@@ -75,8 +75,9 @@ const Content = styled.div`
 `;
 
 const Title = styled.h3`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl}px;
+  font-weight: 500;
   line-height: normal;
   margin: 0;
   margin-bottom: 20px;
@@ -84,7 +85,7 @@ const Title = styled.h3`
 `;
 
 const Description = styled.div`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
 `;
@@ -153,6 +154,7 @@ interface Props {
 }
 
 const CauseCard = memo<Props>(({ cause, className }) => {
+  const theme: any = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
@@ -231,7 +233,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
 
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
-              <QuillEditedContent>
+              <QuillEditedContent textColor={theme.colorText}>
                 <T value={cause.attributes.description_multiloc} supportHtml />
               </QuillEditedContent>
             </Description>
