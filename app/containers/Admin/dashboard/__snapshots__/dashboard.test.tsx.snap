@@ -7,7 +7,7 @@ exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] 
 `;
 
 exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
-<withRouter(TabbedResource)
+<withRouter(Component)
   resource={
     Object {
       "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
@@ -41,5 +41,5 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
       }
     }
   />
-</withRouter(TabbedResource)>
+</withRouter(Component)>
 `;
