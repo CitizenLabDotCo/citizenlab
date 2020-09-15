@@ -150,8 +150,8 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_status
     serie = ideas_by_status_serie
-    areas = IdeaStatus.all.select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, idea_status: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    idea_statuses = IdeaStatus.all.select(:id, :title_multiloc)
+    render json: {series: {ideas: serie}, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_status_as_xlsx
