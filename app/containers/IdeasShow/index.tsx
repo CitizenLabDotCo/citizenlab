@@ -14,7 +14,7 @@ import tracks from './tracks';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Sharing from 'components/Sharing';
+import IdeaSharingButton from './Buttons/IdeaSharingButton';
 import IdeaMeta from './IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
 import IdeaProposedBudget from './IdeaProposedBudget';
@@ -38,6 +38,7 @@ const ParticipatoryBudgetingCTABox = lazy(() =>
   import('./CTABox/ParticipatoryBudgetingCTABox')
 );
 import MetaInformation from './MetaInformation';
+import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -227,6 +228,10 @@ export const BodySectionTitle = styled.h2`
   line-height: 28px;
 `;
 
+const StyledBody = styled(Body)`
+  margin-bottom: 40px;
+`;
+
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
 
@@ -293,11 +298,7 @@ const AssignBudgetControlMobile = styled.div`
   `}
 `;
 
-const SharingMobile = styled(Sharing)`
-  padding: 0;
-  margin: 0;
-  margin-top: 40px;
-
+const MobileIdeaSharingButton = styled(IdeaSharingButton)`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
@@ -662,7 +663,7 @@ export class IdeasShow extends PureComponent<
                   </>
                 )}
 
-                <Body
+                <StyledBody
                   postType="idea"
                   postId={ideaId}
                   locale={locale}
@@ -686,29 +687,16 @@ export class IdeasShow extends PureComponent<
                     </AssignBudgetControlMobile>
                   )}
 
+                <MobileIdeaSharingButton
+                  ideaId={ideaId}
+                  buttonComponent={<MobileSharingButtonComponent />}
+                />
+
                 <StyledOfficialFeedback
                   postId={ideaId}
                   postType="idea"
                   permissionToPost={postOfficialFeedbackPermission}
                 />
-
-                {smallerThanLargeTablet && (
-                  <SharingMobile
-                    context="idea"
-                    url={ideaUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, {
-                      ideaTitle,
-                    })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, {
-                      ideaTitle,
-                    })}
-                    emailBody={formatMessage(messages.emailSharingBody, {
-                      ideaUrl,
-                      ideaTitle,
-                    })}
-                    utmParams={utmParams}
-                  />
-                )}
               </LeftColumn>
 
               {biggerThanLargeTablet && (
