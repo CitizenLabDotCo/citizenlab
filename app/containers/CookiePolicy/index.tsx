@@ -168,21 +168,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                     ),
                   }}
                 />
-                <FormattedMessage tagName="h2" {...messages.whoAreWeTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.whoAreWeContent}
-                  values={{
-                    citizenLabLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.citizenLabHref)}
-                      >
-                        CitizenLab
-                      </a>
-                    ),
-                  }}
-                />
                 <FormattedMessage
                   tagName="h2"
                   {...messages.whatAreCookiesTitle}
@@ -264,17 +249,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.cookiesListButtonText)}
                       </StyledButton>
-                    ),
-                  }}
-                />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.contact}
-                  values={{
-                    contactLink: (
-                      <a href="mailto:support@citizenlab.co" role="button">
-                        <FormattedMessage {...messages.contactLinkText} />
-                      </a>
                     ),
                   }}
                 />

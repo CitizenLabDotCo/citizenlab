@@ -143,6 +143,7 @@ interface DataProps {
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
   google_forms_enabled: boolean | null;
+  enalyzer_enabled: boolean | null;
   survey_monkey_enabled: boolean | null;
 }
 
@@ -460,6 +461,7 @@ class ParticipationContext extends PureComponent<
       apiErrors,
       surveys_enabled,
       typeform_enabled,
+      enalyzer_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
     } = this.props;
@@ -584,7 +586,8 @@ class ParticipationContext extends PureComponent<
               {surveys_enabled &&
                 (google_forms_enabled ||
                   survey_monkey_enabled ||
-                  typeform_enabled) && (
+                  typeform_enabled ||
+                  enalyzer_enabled) && (
                   <StyledRadio
                     onChange={this.handleParticipationMethodOnChange}
                     currentValue={participation_method}
@@ -892,24 +895,27 @@ class ParticipationContext extends PureComponent<
                       }
                     />
                   </SubSectionTitle>
-                  {['typeform', 'survey_monkey', 'google_forms'].map(
-                    (provider) => {
-                      if (this.props[`${provider}_enabled`]) {
-                        return (
-                          <Radio
-                            onChange={this.handleSurveyProviderChange}
-                            currentValue={survey_service}
-                            value={provider}
-                            name="survey-provider"
-                            id={`survey-provider-${provider}`}
-                            label={<FormattedMessage {...messages[provider]} />}
-                            key={provider}
-                          />
-                        );
-                      }
-                      return null;
+                  {[
+                    'typeform',
+                    'survey_monkey',
+                    'google_forms',
+                    'enalyzer',
+                  ].map((provider) => {
+                    if (this.props[`${provider}_enabled`]) {
+                      return (
+                        <Radio
+                          onChange={this.handleSurveyProviderChange}
+                          currentValue={survey_service}
+                          value={provider}
+                          name="survey-provider"
+                          id={`survey-provider-${provider}`}
+                          label={<FormattedMessage {...messages[provider]} />}
+                          key={provider}
+                        />
+                      );
                     }
-                  )}
+                    return null;
+                  })}
                   <Error apiErrors={apiErrors && apiErrors.survey_service} />
                 </SectionField>
                 <SectionField>
@@ -938,6 +944,7 @@ const Data = adopt<DataProps, {}>({
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
+  enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   tenant: <GetTenant />,
 });
 

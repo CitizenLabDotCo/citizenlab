@@ -69,7 +69,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-export class BarChartByCategory extends React.PureComponent<
+export class HorizontalBarChart extends React.PureComponent<
   Props & InjectedIntlProps
 > {
   currentChart: React.RefObject<any>;
@@ -123,33 +123,36 @@ export class BarChartByCategory extends React.PureComponent<
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
           ) : (
-            <ResponsiveContainer>
-              <BarChart
-                data={serie}
-                margin={{ right: 40 }}
-                ref={this.currentChart}
-                layout="horizontal"
-              >
+            <ResponsiveContainer
+              height={serie.length > 1 ? serie.length * 50 : 100}
+            >
+              <BarChart data={serie} layout="vertical" ref={this.currentChart}>
                 <Bar
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
                   label={{ fill: barFill, fontSize: chartLabelSize }}
+                  barSize={20}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 />
-                <XAxis
+                <YAxis
                   dataKey="name"
+                  type="category"
+                  width={150}
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
+                  tickLine={false}
+                />
+                <XAxis
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  type="number"
                   tick={{ transform: 'translate(0, 7)' }}
                 />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
                 <Tooltip
                   isAnimationActive={false}
-                  cursor={{
-                    fill: barHoverColor,
-                  }}
+                  cursor={{ fill: barHoverColor }}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -160,14 +163,14 @@ export class BarChartByCategory extends React.PureComponent<
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl<Props>(
-  withTheme(BarChartByCategory as any) as any
+const HorizontalBarChartWithHoCs = injectIntl<Props>(
+  withTheme(HorizontalBarChart as any) as any
 );
 
-const WrappedBarChartByCategory = (inputProps: InputProps) => (
+const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
-    {(serie) => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
+    {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
 
-export default WrappedBarChartByCategory;
+export default WrappedHorizontalBarChart;

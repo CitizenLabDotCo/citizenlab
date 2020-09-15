@@ -12,6 +12,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   usersByRegFieldStream,
   IUsersByRegistrationField,
+  usersByRegFieldXlsxEndpoint,
 } from 'services/stats';
 
 // intl
@@ -28,6 +29,7 @@ import GenderChart from './charts/GenderChart';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   startAt: string | null | undefined;
   endAt: string | null;
 }
@@ -69,6 +71,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       startAt,
       endAt,
       currentGroupFilter,
+      currentGroupFilterLabel,
     } = this.props;
 
     if (isNilOrError(customFields)) {
@@ -83,6 +86,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
+            currentGroupFilterLabel={currentGroupFilterLabel}
           />
         );
       }
@@ -94,6 +98,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
+            currentGroupFilterLabel={currentGroupFilterLabel}
           />
         );
       }
@@ -106,11 +111,13 @@ export class RegistrationFieldsToGraphs extends PureComponent<
               startAt={startAt}
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
               convertToGraphFormat={this.convertToGraphFormat}
               graphTitleString={localize(field.attributes.title_multiloc)}
               stream={usersByRegFieldStream}
               graphUnit="users"
               customId={field.id}
+              xlsxEndpoint={usersByRegFieldXlsxEndpoint(field.id)}
             />
           );
         } else {
@@ -120,11 +127,13 @@ export class RegistrationFieldsToGraphs extends PureComponent<
               startAt={startAt}
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
               convertToGraphFormat={this.convertToGraphFormat}
               graphTitleString={localize(field.attributes.title_multiloc)}
               stream={usersByRegFieldStream}
               graphUnit="users"
               customId={field.id}
+              xlsxEndpoint={usersByRegFieldXlsxEndpoint(field.id)}
             />
           );
         }

@@ -2,6 +2,9 @@ import { BehaviorSubject } from 'rxjs';
 import { IUsersByRegistrationField, IUsersByTime, IIdeasCount } from 'services/stats';
 import { IStreamParams } from 'utils/streams';
 
+export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
+  `testendpoint/users_by_custom_field_as_xlsx/${customFieldId}`;
+
 let mockIdeasCount: IIdeasCount | null = null;
 
 export const __setMockIdeasCount = (ideasCount: IIdeasCount) => {
