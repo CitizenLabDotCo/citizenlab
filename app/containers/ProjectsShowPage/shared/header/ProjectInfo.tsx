@@ -6,6 +6,7 @@ import React, {
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
 
 // components
 import Fragment from 'components/Fragment';
@@ -137,42 +138,50 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
             <ProjectTitle>
               <T value={project.attributes.title_multiloc} />
             </ProjectTitle>
-            <ProjectDescription className={expanded ? 'expanded' : ''}>
-              <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-                <div>
-                  <QuillEditedContent
-                    fontSize="medium"
-                    textColor={theme.colorText}
-                  >
-                    <T
-                      value={project.attributes.description_multiloc}
-                      supportHtml={true}
-                    />
-                  </QuillEditedContent>
-                </div>
-              </ReactResizeDetector>
-              {descriptionHeight &&
-                descriptionHeight > collapsedDescriptionMaxHeight &&
-                !expanded && (
-                  <ReadMoreOuterWrapper>
-                    <ReadMoreInnerWrapper>
-                      <ReadMoreButton
-                        buttonStyle="text"
-                        onClick={handleReadMoreClicked}
-                        textDecoration="underline"
-                        textDecorationHover="underline"
-                        textColor={colors.label}
-                        textHoverColor={theme.colorText}
-                        fontWeight="500"
-                        fontSize="17px"
-                        padding="0"
-                      >
-                        Read more
-                      </ReadMoreButton>
-                    </ReadMoreInnerWrapper>
-                  </ReadMoreOuterWrapper>
-                )}
 
+            <ProjectDescription className={expanded ? 'expanded' : ''}>
+              {!isEmpty(project.attributes.description_multiloc) && (
+                <>
+                  <ReactResizeDetector
+                    handleWidth
+                    handleHeight
+                    onResize={onResize}
+                  >
+                    <div>
+                      <QuillEditedContent
+                        fontSize="medium"
+                        textColor={theme.colorText}
+                      >
+                        <T
+                          value={project.attributes.description_multiloc}
+                          supportHtml={true}
+                        />
+                      </QuillEditedContent>
+                    </div>
+                  </ReactResizeDetector>
+                  {descriptionHeight &&
+                    descriptionHeight > collapsedDescriptionMaxHeight &&
+                    !expanded && (
+                      <ReadMoreOuterWrapper>
+                        <ReadMoreInnerWrapper>
+                          <ReadMoreButton
+                            buttonStyle="text"
+                            onClick={handleReadMoreClicked}
+                            textDecoration="underline"
+                            textDecorationHover="underline"
+                            textColor={colors.label}
+                            textHoverColor={theme.colorText}
+                            fontWeight="500"
+                            fontSize="17px"
+                            padding="0"
+                          >
+                            Read more
+                          </ReadMoreButton>
+                        </ReadMoreInnerWrapper>
+                      </ReadMoreOuterWrapper>
+                    )}
+                </>
+              )}
               {!isNilOrError(projectFiles) &&
                 projectFiles &&
                 projectFiles.data.length > 0 && (
