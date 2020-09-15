@@ -38,12 +38,13 @@ const PaperclipIcon = styled(Icon)`
 `;
 
 export interface Props {
+  className?: string;
   file: IPhaseFileData | IIdeaFileData | IEventFileData;
 }
 
-const DropdownMap = memo<Props>(({ file }) => {
+const DropdownMap = memo<Props>(({ className, file }) => {
   return (
-    <Container>
+    <Container className={className}>
       <PaperclipIcon name="paperclip" ariaHidden />
       <FileDownloadLink
         href={file.attributes.file.url}
