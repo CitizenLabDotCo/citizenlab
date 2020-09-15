@@ -4,7 +4,11 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
-export type IResourceByTime = IIdeasByTime | IUsersByTime | ICommentsByTime;
+export type IResourceByTime =
+  | IIdeasByTime
+  | IUsersByTime
+  | ICommentsByTime
+  | IVotesByTime;
 
 // Ideas
 export interface IIdeasByTime {
@@ -226,6 +230,15 @@ export function usersByTimeStream(streamParams: IStreamParams | null = null) {
   });
 }
 
+export function commentsByTimeStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<ICommentsByTime>({
+    apiEndpoint: `${apiEndpoint}/comments_by_time`,
+    ...streamParams,
+  });
+}
+
 export const usersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/users_by_time_cumulative_as_xlsx`;
 
 export function usersByTimeCumulativeStream(
@@ -347,9 +360,9 @@ export function commentsCountForUser(userId: string) {
 // Votes
 export interface IVotesByTime {
   series: {
-    votes: {
-      [key: string]: number;
-    };
+    up: { [key: string]: number };
+    down: { [key: string]: number };
+    total: { [key: string]: number };
   };
 }
 
@@ -425,6 +438,14 @@ export function votesByTimeCumulativeStream(
 ) {
   return streams.get<IVotesByTimeCumulative>({
     apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`,
+    ...streamParams,
+  });
+}
+export const votesByTimeXlsxEndpoint = `${apiEndpoint}/votes_by_time_as_xlsx`;
+
+export function votesByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByTime>({
+    apiEndpoint: `${apiEndpoint}/votes_by_time`,
     ...streamParams,
   });
 }

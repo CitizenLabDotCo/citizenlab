@@ -13,12 +13,12 @@ import {
   IResolution,
 } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
-import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
-import LineChartVotesByTime from './charts/LineChartVotesByTime';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 
 // typings
@@ -46,12 +46,14 @@ import { ITopicData } from 'services/topics';
 import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
+  usersByTimeStream,
+  commentsByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
-  usersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
+  ideasByTimeStream,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -355,14 +357,16 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
-              <CumulativeAreaChart
-                graphTitleMessageKey="usersByTimeTitle"
-                xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
+              <LineBarChart
                 graphUnit="users"
+                graphUnitMessageKey="users"
+                graphTitleMessageKey="usersByTimeTitle"
                 startAt={startAt}
                 endAt={endAt}
-                stream={usersByTimeCumulativeStream}
-                className="e2e-users-by-time-cumulative-chart"
+                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+                lineStream={usersByTimeCumulativeStream}
+                barStream={usersByTimeStream}
+                className="e2e-active-users-chart"
                 {...this.state}
               />
               <BarChartActiveUsersByTime
@@ -377,33 +381,40 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 className="e2e-active-users-chart"
                 {...this.state}
               />
-              <CumulativeAreaChart
+              <LineBarChart
                 graphTitleMessageKey="ideasByTimeTitle"
                 graphUnit="ideas"
+                graphUnitMessageKey="ideas"
                 startAt={startAt}
                 endAt={endAt}
                 xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                stream={ideasByTimeCumulativeStream}
                 className="e2e-ideas-chart"
                 {...this.state}
+                lineStream={ideasByTimeCumulativeStream}
+                barStream={ideasByTimeStream}
+                {...this.state}
               />
-              <CumulativeAreaChart
+              <LineBarChart
                 graphTitleMessageKey="commentsByTimeTitle"
                 graphUnit="comments"
+                graphUnitMessageKey="comments"
                 startAt={startAt}
                 endAt={endAt}
-                stream={commentsByTimeCumulativeStream}
                 xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
                 className="e2e-comments-chart"
                 {...this.state}
+                lineStream={commentsByTimeCumulativeStream}
+                barStream={commentsByTimeStream}
+                {...this.state}
               />
               <Column>
-                <LineChartVotesByTime
+                <LineBarChartVotesByTime
                   className="fullWidth e2e-votes-chart"
                   startAt={startAt}
                   endAt={endAt}
                   {...this.state}
                 />
+
                 <SelectableResourceByProjectChart
                   className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                   onResourceByProjectChange={this.onResourceByProjectChange}

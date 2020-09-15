@@ -164,6 +164,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
     defaultMessage: 'Total votes',
   },
+  cumulatedTotal: {
+    id: 'app.containers.AdminPage.DashboardPage.cumulatedTotal',
+    defaultMessage: 'Cumulated Total',
+  },
+  total: {
+    id: 'app.containers.AdminPage.DashboardPage.total',
+    defaultMessage: 'Total',
+  },
+  totalForPeriod: {
+    id: 'app.containers.AdminPage.DashboardPage.totalForPeriod',
+    defaultMessage: 'This {period}',
+  },
+  perPeriod: {
+    id: 'app.containers.AdminPage.DashboardPage.perPeriod',
+    defaultMessage: 'Per {period}',
+  },
   participationPerProject: {
     id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
     defaultMessage: 'Participation per project',
