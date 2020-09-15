@@ -1177,6 +1177,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle": "Treść pytania",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip": "W ten sposób pytanie zostanie wyświetlone podczas rejestracji.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab": "Ogólne",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_checkbox": "Checkbox",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "Data",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "Długi tekst",

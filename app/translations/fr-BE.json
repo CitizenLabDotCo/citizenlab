@@ -1177,6 +1177,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle": "Nom de la question",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip": "C'est ainsi que la question sera affichée lors de l'inscription.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab": "Général",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_checkbox": "Case à cocher",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "Date",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "Texte long",
