@@ -104,10 +104,10 @@ class ParticipationContextService
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     elsif !(permission = context_permission(context, 'posting_idea'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        POSTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission) && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         POSTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        POSTING_DISABLED_REASONS[:not_signed_in]
       else
         POSTING_DISABLED_REASONS[:not_permitted]
       end
@@ -140,10 +140,10 @@ class ParticipationContextService
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !(permission = context_permission(context, 'commenting_idea'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        COMMENTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission) && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         COMMENTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        COMMENTING_DISABLED_REASONS[:not_signed_in]
       else
         COMMENTING_DISABLED_REASONS[:not_permitted]
       end
@@ -208,10 +208,10 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !(permission = context_permission(context, 'voting_idea'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        VOTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission) && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         VOTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        VOTING_DISABLED_REASONS[:not_signed_in]
       else
         VOTING_DISABLED_REASONS[:not_permitted]
       end
@@ -237,10 +237,10 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !(permission = context_permission(context, 'voting_idea'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        VOTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission) && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         VOTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        VOTING_DISABLED_REASONS[:not_signed_in]
       else
         VOTING_DISABLED_REASONS[:not_permitted]
       end
@@ -260,10 +260,10 @@ class ParticipationContextService
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     elsif !(permission = context_permission(context, 'taking_survey'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        TAKING_SURVEY_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission) && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         TAKING_SURVEY_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        TAKING_SURVEY_DISABLED_REASONS[:not_signed_in]
       else
         TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
       end
@@ -283,10 +283,10 @@ class ParticipationContextService
     elsif !context.poll?
       TAKING_POLL_DISABLED_REASONS[:not_poll]
     elsif !(permission = context_permission(context, 'taking_poll'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        TAKING_POLL_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission) && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         TAKING_POLL_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        TAKING_POLL_DISABLED_REASONS[:not_signed_in]
       else
         TAKING_POLL_DISABLED_REASONS[:not_permitted]
       end
@@ -310,10 +310,10 @@ class ParticipationContextService
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
     elsif !(permission = context_permission(context, 'budgeting'))&.granted_to?(user)
-      if not_signed_in? user, permission
-        BUDGETING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification?(permission)  && !user&.verified
+      if requires_verification?(permission) && !user&.verified
         BUDGETING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        BUDGETING_DISABLED_REASONS[:not_signed_in]
       else
         BUDGETING_DISABLED_REASONS[:not_permitted]
       end
