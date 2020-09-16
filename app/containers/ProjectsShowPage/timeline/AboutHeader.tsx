@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { indexOf } from 'lodash-es';
 import bowser from 'bowser';
+import moment from 'moment';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -26,7 +27,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const Left = styled.div`
@@ -49,15 +50,15 @@ const Right = styled.div`
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 30px;
-  width: 30px;
-  height: 30px;
+  flex-basis: 37x;
+  width: 37px;
+  height: 37px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
   border-radius: 50%;
   background: ${colors.label};
+  margin-right: 11px;
 
   &.present {
     background: ${colors.clGreen};
@@ -67,7 +68,7 @@ const PhaseNumberWrapper = styled.div`
 const PhaseNumber = styled.div`
   color: #fff;
   font-size: ${fontSizes.base}px;
-  line-height: 16px;
+  line-height: normal;
   font-weight: 500;
 `;
 
@@ -77,8 +78,8 @@ const HeaderTitleWrapper = styled.div`
   flex-shrink: 1;
   flex-basis: 0;
   display: flex;
-  align-items: center;
-  flex-direction: row;
+  flex-direction: column;
+  margin-right: 20px;
 
   &.ie {
     height: 41px;
@@ -97,10 +98,10 @@ const HeaderTitleWrapper = styled.div`
 const HeaderTitle = styled.h2`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.large}px;
-  line-height: 25px;
+  line-height: normal;
   font-weight: 600;
   margin: 0;
-  margin-right: 20px;
+  margin-bottom: 4px;
   padding: 0;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -108,8 +109,21 @@ const HeaderTitle = styled.h2`
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
-    line-height: 24px;
   `}
+`;
+
+const HeaderSubtitle = styled.div`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+`;
+
+const DatesSeparator = styled.span`
+  margin-left: 5px;
+  margin-right: 5px;
 `;
 
 interface Props {
@@ -151,6 +165,14 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
         selectedPhase.attributes.start_at,
         selectedPhase.attributes.end_at,
       ]);
+    const startDate = moment(
+      selectedPhase?.attributes.start_at,
+      'YYYY-MM-DD'
+    ).format('ll');
+    const endDate = moment(
+      selectedPhase?.attributes.end_at,
+      'YYYY-MM-DD'
+    ).format('ll');
 
     return (
       <Container className={className || ''}>
@@ -177,6 +199,21 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
                 <FormattedMessage {...messages.noPhaseSelected} />
               )}
             </HeaderTitle>
+            <HeaderSubtitle>
+              <FormattedMessage
+                {...messages.startedOn}
+                values={{
+                  date: startDate,
+                }}
+              />
+              <DatesSeparator>→</DatesSeparator>
+              <FormattedMessage
+                {...messages.endsOn}
+                values={{
+                  date: endDate,
+                }}
+              />
+            </HeaderSubtitle>
             <ScreenReaderOnly>
               <FormattedMessage
                 {...messages.a11y_selectedPhaseX}

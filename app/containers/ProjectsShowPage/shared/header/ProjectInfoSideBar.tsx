@@ -15,7 +15,7 @@ import IdeaButton from 'components/IdeaButton';
 import { Icon } from 'cl2-component-library';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -54,8 +54,8 @@ const ListItem = styled.div`
   font-weight: 400;
   display: flex;
   align-items: flex-start;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 
   &.link {
     cursor: pointer;
@@ -80,8 +80,24 @@ const ListItemIcon = styled(Icon)`
   }
 `;
 
+const ListItemTextContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ListItemTextLine = styled.div`
+  &.hasBottomMargin {
+    margin-bottom: 5px;
+  }
+`;
+
 const ActionButtons = styled.div`
   margin-top: 20px;
+`;
+
+const SeeTimelineButton = styled(Button)`
+  margin-bottom: 10px;
 `;
 
 const SeeIdeasButton = styled(Button)`
@@ -122,7 +138,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     event.preventDefault();
     document?.getElementById('project-timeline')?.scrollIntoView({
       behavior: 'smooth',
-      block: 'start',
+      block: 'center',
       inline: 'start',
     });
   }, []);
@@ -146,6 +162,20 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       avatars_count,
     } = project.attributes;
 
+    let phaseStartDate: string | null = null;
+    let phaseEndDate: string | null = null;
+
+    if (!isNilOrError(phases) && phases.length > 0) {
+      phaseStartDate = moment(
+        getIsoDate(phases[0].attributes.start_at),
+        'YYYY-MM-DD'
+      ).format('ll');
+      phaseEndDate = moment(
+        getIsoDate(phases[phases.length - 1].attributes.end_at),
+        'YYYY-MM-DD'
+      ).format('ll');
+    }
+
     return (
       <Container className={className || ''}>
         <Title>
@@ -163,13 +193,27 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               />
             </ListItem>
           )}
-          {isNumber(avatars_count) && avatars_count > 0 && (
+          {process_type === 'timeline' && phaseStartDate && phaseEndDate && (
             <ListItem>
-              <ListItemIcon name="person" />
-              <FormattedMessage
-                {...messages.xParticipants}
-                values={{ participantsCount: avatars_count }}
-              />
+              <ListItemIcon name="flag" />
+              <ListItemTextContainer>
+                <ListItemTextLine className="hasBottomMargin">
+                  <FormattedMessage
+                    {...messages.startedOn}
+                    values={{
+                      date: phaseStartDate,
+                    }}
+                  />
+                </ListItemTextLine>
+                <ListItemTextLine>
+                  <FormattedMessage
+                    {...messages.endsOn}
+                    values={{
+                      date: phaseEndDate,
+                    }}
+                  />
+                </ListItemTextLine>
+              </ListItemTextContainer>
             </ListItem>
           )}
           {process_type === 'timeline' &&
@@ -183,6 +227,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 />
               </ListItem>
             )}
+          {isNumber(avatars_count) && avatars_count > 0 && (
+            <ListItem>
+              <ListItemIcon name="person" />
+              <FormattedMessage
+                {...messages.xParticipants}
+                values={{ participantsCount: avatars_count }}
+              />
+            </ListItem>
+          )}
           {process_type === 'continuous' &&
             participation_method === 'ideation' &&
             isNumber(ideas_count) && (
@@ -205,6 +258,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           )}
         </List>
         <ActionButtons>
+          {process_type === 'timeline' && (
+            <SeeTimelineButton
+              buttonStyle="secondary"
+              onClick={scrollToTimeline}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.seeTheTimeline} />
+            </SeeTimelineButton>
+          )}
           {process_type === 'continuous' &&
             participation_method === 'ideation' && (
               <SeeIdeasButton
