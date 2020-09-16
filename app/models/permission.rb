@@ -2,11 +2,10 @@ class Permission < ApplicationRecord
 	ACTIONS = %w(posting_idea voting_idea commenting_idea posting_initiative voting_initiative commenting_initiative budgeting taking_survey taking_poll)
 	PERMITTED_BIES = %w(everyone users groups admins_moderators)
 
-  belongs_to :permission_scope, polymorphic: true
+  belongs_to :permission_scope, polymorphic: true, optional: true
 	has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
 
-  validates :permission_scope, presence: true
   validates :action, presence: true, inclusion: {in: ACTIONS}
   validates :permitted_by, presence: true, inclusion: {in: PERMITTED_BIES}
   validates :action, uniqueness: {scope: [:permission_scope_id, :permission_scope_type]}
@@ -32,15 +31,16 @@ class Permission < ApplicationRecord
 
 
   def granted_to? user
+    project_id = permission_scope&.project&.id
   	case permitted_by
   	when 'everyone'
   		true
     when 'users'
       !!user
   	when 'groups'
-  		user && (group_ids & user.group_ids).present?
+  		user && (user.admin_or_moderator?(project_id) || (group_ids & user.group_ids).present?)
   	when 'admins_moderators'
-  		user&.admin? || user&.project_moderator?(permission_scope&.project&.id)
+      user&.admin_or_moderator?(project_id)
   	end
   end
 

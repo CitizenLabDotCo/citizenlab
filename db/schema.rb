@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 2020_09_11_150057) do
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.uuid "resource_id"
+    t.boolean "hidden", default: false, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -615,8 +616,8 @@ ActiveRecord::Schema.define(version: 2020_09_11_150057) do
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
-    t.uuid "permission_scope_id", null: false
-    t.string "permission_scope_type", null: false
+    t.uuid "permission_scope_id"
+    t.string "permission_scope_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_permissions_on_action"
