@@ -57,8 +57,8 @@ const Inner = styled.div`
   justify-content: space-between;
   padding-left: 28px;
   padding-right: 28px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background: #fff;
   border-top: solid 1px #e8e8e8;
 
@@ -78,15 +78,15 @@ const Inner = styled.div`
   `}
 `;
 
-const ShortFeedback: any = styled.div`
+const ShortFeedback = styled.div`
   width: 100%;
   display: flex;
 
   ${media.biggerThanMinTablet`
     position: absolute;
     z-index: 5;
-    top: -41px;
-    left: 0px;
+    top: -37px;
+    left: 20px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -95,19 +95,26 @@ const ShortFeedback: any = styled.div`
   `}
 `;
 
-const ShortFeedbackInner: any = styled.div`
+const ShortFeedbackInner = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: normal;
   display: flex;
   align-items: center;
-  padding: 12px 25px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.08)};
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: ${({ theme }) => rgba(theme.colorText, 0.09)};
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 
   ${media.smallerThanMinTablet`
     width: 100%;
     justify-content: center;
+    padding-left: 14px;
+    padding-right: 14px;
   `}
 `;
 
@@ -117,14 +124,11 @@ const ThankYouNote = styled.span`
 
 const FeedbackQuestion = styled.span`
   margin-right: 15px;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-  `}
 `;
 
 const Buttons = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const FeedbackButton = styled.button`
@@ -137,16 +141,13 @@ const FeedbackButton = styled.button`
   justify-content: center;
   padding: 0;
   margin: 0;
-  margin-left: 12px;
-  margin-right: 12px;
-  margin-bottom: -3px;
   z-index: 1;
   cursor: pointer;
+  appearance: none;
 
-  ${media.smallerThanMinTablet`
-    margin-left: 8px;
-    margin-right: 8px;
-  `}
+  &.hasLeftMargin {
+    margin-left: 14px;
+  }
 
   &:hover {
     text-decoration: underline;
@@ -225,10 +226,6 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  text-decoration: none;
   display: flex;
   align-items: center;
   outline: none;
@@ -246,10 +243,12 @@ const PoweredBy = styled.div`
 `;
 
 const PoweredByText = styled.span`
-  margin-right: 5px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
 
   ${media.smallerThanMinTablet`
-    margin: 0;
     margin-bottom: 10px;
   `}
 `;
@@ -275,6 +274,7 @@ const ShortFeedbackFormModalFooter = styled.div`
 `;
 
 const CitizenLabLogo = styled(Icon)`
+  height: 28px;
   fill: ${colors.secondaryText};
 
   &:hover {
@@ -417,6 +417,7 @@ class PlatformFooter extends PureComponent<Props, State> {
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
                       <FeedbackButton
+                        className="hasLeftMargin"
                         onClick={this.handleFeedbackButtonClick('no')}
                       >
                         <FormattedMessage {...messages.no} />
