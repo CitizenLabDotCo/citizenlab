@@ -613,7 +613,7 @@ resource "Ideas" do
 
     describe do
       before do
-        permission = project.permissions.where(action: 'posting').first
+        permission = project.permissions.where(action: 'posting_idea').first
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
       end
       example_request "[error] Create an idea in a project with groups posting permission" do
@@ -623,7 +623,7 @@ resource "Ideas" do
 
     describe do
       before do
-        permission = project.permissions.where(action: 'posting').first
+        permission = project.permissions.where(action: 'posting_idea').first
         groups = create_list(:group, 2)
         g = groups.first
         g.add_member @user
