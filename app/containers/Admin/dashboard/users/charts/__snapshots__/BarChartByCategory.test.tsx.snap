@@ -5,6 +5,15 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
   <dashboard__GraphCardInner>
     <dashboard__GraphCardHeader>
       <dashboard__GraphCardTitle />
+      <ExportMenu
+        currentGroupFilter={null}
+        name=""
+        svgNode={
+          Object {
+            "current": null,
+          }
+        }
+      />
     </dashboard__GraphCardHeader>
     <ResponsiveContainer
       debounce={0}

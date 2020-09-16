@@ -9,7 +9,11 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // services
-import { IUsersByBirthyear, usersByBirthyearStream } from 'services/stats';
+import {
+  IUsersByBirthyear,
+  usersByBirthyearStream,
+  usersByBirthyearXlsxEndpoint,
+} from 'services/stats';
 
 // components
 import BarChartByCategory from './BarChartByCategory';
@@ -21,6 +25,7 @@ interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;
+  currentGroupFilterLabel: string | undefined;
   className?: string;
 }
 
@@ -65,6 +70,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
       graphTitleString={props.intl.formatMessage(messages.usersByAgeTitle)}
       graphUnit="users"
       stream={usersByBirthyearStream}
+      xlsxEndpoint={usersByBirthyearXlsxEndpoint}
       convertToGraphFormat={convertToGraphFormat}
     />
   );

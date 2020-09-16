@@ -9,10 +9,12 @@ import { withTheme } from 'styled-components';
 // services
 import {
   votesByTimeCumulativeStream,
+  votesByTimeCumulativeXlsxEndpoint,
   IVotesByTimeCumulative,
 } from 'services/stats';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   LineChart,
   Line,
@@ -60,6 +62,9 @@ type Props = {
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
 };
 
 class LineChartVotesByTime extends React.PureComponent<
@@ -67,12 +72,15 @@ class LineChartVotesByTime extends React.PureComponent<
   State
 > {
   subscription: Subscription;
+  currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
     };
+
+    this.currentChart = React.createRef();
   }
 
   componentDidMount() {
@@ -261,6 +269,14 @@ class LineChartVotesByTime extends React.PureComponent<
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
+            {serie && (
+              <ExportMenu
+                svgNode={this.currentChart}
+                xlsxEndpoint={votesByTimeCumulativeXlsxEndpoint}
+                name={formatMessage(messages.ideaVotesByTimeTitle)}
+                {...this.props}
+              />
+            )}
           </GraphCardHeader>
           {!serie ? (
             <NoDataContainer>
@@ -268,7 +284,11 @@ class LineChartVotesByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <LineChart data={serie} margin={{ right: 40 }}>
+              <LineChart
+                data={serie}
+                margin={{ right: 40 }}
+                ref={this.currentChart}
+              >
                 <CartesianGrid strokeDasharray="5 5" />
                 <XAxis
                   dataKey="date"
