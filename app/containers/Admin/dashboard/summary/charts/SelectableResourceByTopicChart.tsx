@@ -21,6 +21,7 @@ import {
   votesByTopicStream,
 } from 'services/stats';
 import { IResource } from '..';
+import { IResolution } from '../../';
 import { IGraphFormat, IOption } from 'typings';
 
 interface QueryProps {
@@ -37,6 +38,13 @@ interface InputProps {
   currentResourceByTopic: IResource;
   resourceOptions: IOption[];
   topicOptions: IOption[];
+  startAt: string | null | undefined;
+  endAt: string | null;
+  resolution: IResolution;
+  currentGroupFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
 }
 
 interface Props extends InputProps, QueryProps {}
