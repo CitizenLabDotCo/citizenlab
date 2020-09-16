@@ -216,7 +216,6 @@ export class IdeaContent extends PureComponent<
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
       const ideaAddress = idea.attributes.location_description || null;
       const proposedBudget = idea.attributes.proposed_budget;
-      const hasMultipleBodyAttributes = proposedBudget !== null;
       const currency = tenant.attributes.settings.core.currency;
 
       return (
