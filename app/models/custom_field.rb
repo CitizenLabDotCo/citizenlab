@@ -16,6 +16,7 @@ class CustomField < ApplicationRecord
   validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
   validates :enabled, inclusion: {in: [true, false]}
+  validates :hidden, inclusion: {in: [true, false]}
   validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
 
 
@@ -26,6 +27,9 @@ class CustomField < ApplicationRecord
 
   scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
+  scope :disabled, -> { where(enabled: false) }
+  scope :not_hidden, -> { where(hidden: false) }
+  scope :hidden, -> { where(hidden: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
 
