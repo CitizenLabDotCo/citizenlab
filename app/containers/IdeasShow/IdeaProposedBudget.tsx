@@ -1,12 +1,5 @@
 import React, { memo } from 'react';
 
-// typings
-import { ITenant } from 'services/tenant';
-import { Locale } from 'typings';
-
-// utils
-import { getFormattedBudget } from 'utils/helperUtils';
-
 // styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -22,16 +15,11 @@ const Container = styled.div`
 
 interface Props {
   className?: string;
-  proposedBudget: number;
-  locale: Locale;
-  tenant: ITenant;
+  formattedBudget: string;
 }
 
-const Budget = memo<Props>(({ proposedBudget, className, locale, tenant }) => {
-  const currency = tenant.data.attributes.settings.core.currency;
-  const formattedBudget = getFormattedBudget(locale, proposedBudget, currency);
-
+const IdeaProposedBudget = memo<Props>(({ className, formattedBudget }) => {
   return <Container className={className}>{formattedBudget}</Container>;
 });
 
-export default Budget;
+export default IdeaProposedBudget;
