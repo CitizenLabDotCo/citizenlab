@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { sortBy, last, isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // typings
@@ -63,6 +63,7 @@ import GetPermission, {
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -368,6 +369,7 @@ interface DataProps {
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface InputProps {
@@ -571,6 +573,7 @@ export class IdeasShow extends PureComponent<
       postOfficialFeedbackPermission,
       projectId,
       ideaCustomFieldsSchemas,
+      tenant,
     } = this.props;
     const {
       loaded,
@@ -584,6 +587,7 @@ export class IdeasShow extends PureComponent<
     if (
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
       !isNilOrError(ideaCustomFieldsSchemas) &&
       loaded
     ) {
@@ -704,7 +708,16 @@ export class IdeasShow extends PureComponent<
 
                 {proposedBudget && proposedBudgetEnabled && (
                   <>
-                    <StyledIdeaProposedBudget proposedBudget={proposedBudget} />
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+                    <StyledIdeaProposedBudget
+                      formattedBudget={getFormattedBudget(
+                        locale,
+                        proposedBudget,
+                        tenant.attributes.settings.core.currency
+                      )}
+                    />
                     <BodySectionTitle>
                       <FormattedMessage {...messages.bodyTitle} />
                     </BodySectionTitle>
@@ -924,6 +937,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => (
