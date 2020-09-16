@@ -93,6 +93,7 @@ class UserPolicy < ApplicationPolicy
       .with_resource_type('User')
       .where.not(key: locked_keys)
       .enabled
+      .not_hidden
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
     array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
 
