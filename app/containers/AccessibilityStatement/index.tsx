@@ -7,9 +7,6 @@ import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
-
 // services
 import { LEGAL_PAGES } from 'services/pages';
 
@@ -22,7 +19,6 @@ import Fragment from 'components/Fragment';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
-import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // these styled components should be imported from PagesShowPage for consistency.
@@ -74,20 +70,6 @@ const PageTitle = styled.h1`
 
 const PageDescription = styled.div``;
 
-const StyledButton = styled.button`
-  color: ${colors.clBlueDark};
-  font-weight: inherit;
-  text-decoration: underline;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-
-  &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
-    text-decoration: underline;
-  }
-`;
-
 const PagesNavWrapper = styled.div`
   width: 100%;
 `;
@@ -129,12 +111,8 @@ const LinkIcon = styled(Icon)`
 const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
-  const openConsentManager = () => {
-    eventEmitter.emit('openConsentManager');
-  };
-
   return (
-    <Container className="e2e-page-cookie-policy">
+    <Container className="e2e-page-accessibility-statement">
       <Helmet>
         <title>{formatMessage(messages.cookiePolicyTitle)}</title>
         <meta
@@ -152,22 +130,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
             <PageDescription>
               <QuillEditedContent>
                 <FormattedMessage tagName="p" {...messages.intro} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.changePreferencesText}
-                  values={{
-                    changePreferencesButton: (
-                      <StyledButton
-                        onClick={openConsentManager}
-                        className="changePreferencesButton"
-                      >
-                        <FormattedMessage
-                          {...messages.changePreferencesButtonText}
-                        />
-                      </StyledButton>
-                    ),
-                  }}
-                />
                 <FormattedMessage
                   tagName="h2"
                   {...messages.whatAreCookiesTitle}
@@ -235,20 +197,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       >
                         {formatMessage(messages.functionalLinkText)}
                       </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.cookiesListText}
-                  values={{
-                    cookiesListButton: (
-                      <StyledButton
-                        onClick={openConsentManager}
-                        className="cookieList"
-                      >
-                        {formatMessage(messages.cookiesListButtonText)}
-                      </StyledButton>
                     ),
                   }}
                 />
