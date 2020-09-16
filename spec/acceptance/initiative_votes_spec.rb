@@ -58,7 +58,7 @@ resource "Votes" do
       expect(@initiative.reload.upvotes_count).to eq 3
     end
 
-    example "Reaching the voting threshold immediately trigers status change", document: false do
+    example "Reaching the voting threshold immediately triggers status change", document: false do
       tn = Tenant.current
       settings = tn.settings
       settings['initiatives']['voting_threshold'] = 3
