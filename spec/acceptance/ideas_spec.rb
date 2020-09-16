@@ -473,9 +473,9 @@ resource "Ideas" do
         slug: idea.slug,
         budget: idea.budget,
         action_descriptor: {
-          commenting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
-          voting: {enabled: false, downvoting_enabled: true, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
-          comment_voting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
+          commenting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
+          voting_idea: {enabled: false, downvoting_enabled: true, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
+          comment_voting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
           budgeting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil}}
         )
       expect(json_response.dig(:data, :relationships)).to include(
