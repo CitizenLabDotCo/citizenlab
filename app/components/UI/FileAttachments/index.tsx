@@ -23,10 +23,6 @@ interface Props {
   className?: string;
 }
 
-// Note on 18/8/2020: we should make this component more reusable by making the component that is now FileDisplay a prop.
-// I'm making a new Attachments component in the IdeasShow/MetaInformation folder that is more reusable and could later
-// serve as the replacement for this component
-
 const FileAttachments = ({ files, className }: Props) => {
   return (
     <Container className={className}>
