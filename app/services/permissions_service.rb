@@ -10,6 +10,12 @@ class PermissionsService
     nil => %w(posting_initiative voting_initiative commenting_initiative)
   }
 
+  POSTING_DISABLED_REASONS = {
+    not_permitted: 'not_permitted',
+    not_signed_in: 'not_signed_in',
+    not_verified: 'not_verified'
+  }
+
   def update_global_permissions
     actions = ACTIONS[nil]
     Permission.where(permission_scope: nil).where.not(action: actions).each(&:destroy!)
@@ -42,6 +48,20 @@ class PermissionsService
     end
     Permission.all.each do |permission|
       permission.destroy! if !permission.valid?
+    end
+  end
+
+  def posting_initiative_disabled_reason user
+    if !(permission = context_permission(context, 'posting_initiative'))&.granted_to?(user)
+      if requires_verification?(permission) && !user&.verified
+        POSTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        POSTING_DISABLED_REASONS[:not_signed_in]
+      else
+        POSTING_DISABLED_REASONS[:not_permitted]
+      end
+    else
+      nil
     end
   end
 
