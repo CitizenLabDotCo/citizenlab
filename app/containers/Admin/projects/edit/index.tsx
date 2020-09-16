@@ -65,6 +65,10 @@ interface DataProps {
   customTopicsEnabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
+  projectVisibilityEnabled: GetFeatureFlagChildProps;
+  granularPermissionsEnabled: GetFeatureFlagChildProps;
+  projectManagementEnabled: GetFeatureFlagChildProps;
+  ideaAssignmentEnabled: GetFeatureFlagChildProps;
 }
 
 interface State {
@@ -109,6 +113,10 @@ export class AdminProjectEdition extends PureComponent<
       surveys_enabled,
       phases,
       customTopicsEnabled,
+      projectVisibilityEnabled,
+      granularPermissionsEnabled,
+      projectManagementEnabled,
+      ideaAssignmentEnabled,
     } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
@@ -294,6 +302,15 @@ export class AdminProjectEdition extends PureComponent<
         return false;
       },
       permissions: function isPermissionsTabHidden() {
+        if (
+          !projectVisibilityEnabled &&
+          !granularPermissionsEnabled &&
+          !projectManagementEnabled &&
+          !ideaAssignmentEnabled
+        ) {
+          return true;
+        }
+
         return false;
       },
     };
@@ -409,6 +426,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
+  projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
+  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
+  projectManagementEnabled: <GetFeatureFlag name="project_management" />,
+  ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),
