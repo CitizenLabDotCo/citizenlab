@@ -108,6 +108,7 @@ class Survey extends PureComponent<Props, State> {
   } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
+    maybeNotVerified: messages.surveyDisabledMaybeNotVerified,
     notPermitted: messages.surveyDisabledNotPermitted,
     notActivePhase: messages.surveyDisabledNotActivePhase,
     notVerified: messages.surveyDisabledNotVerified,

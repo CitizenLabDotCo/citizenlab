@@ -1,10 +1,11 @@
-import { IProjectData, SurveyDisabledReasons } from './projects';
+import { IProjectData, SurveyDisabledReason } from './projects';
 import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export type DisabledReasons =
   | 'notPermitted'
   | 'maybeNotPermitted'
+  | 'maybeNotVerified'
   | 'projectInactive'
   | 'notActivePhase'
   | 'notVerified';
@@ -21,14 +22,16 @@ interface SurveyTakingStateArgs {
 }
 
 const disabledReason = (
-  backendReason: SurveyDisabledReasons | null,
+  backendReason: SurveyDisabledReason | null,
   signedIn: boolean
 ): DisabledReasons | null => {
   switch (backendReason) {
     case 'project_inactive':
       return 'projectInactive';
+    case 'not_signed_in':
+      return 'maybeNotPermitted';
     case 'not_verified':
-      return signedIn ? 'notVerified' : 'maybeNotPermitted';
+      return signedIn ? 'notVerified' : 'maybeNotVerified';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
