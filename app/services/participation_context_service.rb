@@ -152,32 +152,16 @@ class ParticipationContextService
     end
   end
 
-  def voting_disabled_reason_for_vote vote, user
-    case vote.votable_type
-    when Idea.name
-      idea = vote.votable
-      if vote.down? && !get_participation_context(idea.project)&.downvoting_enabled
-        return VOTING_DISABLED_REASONS[:downvoting_disabled]
-      end
-      voting_disabled_reason_for_idea idea, user
-    when Initiative.name
-      voting_disabled_reason_for_initiative vote.votable, user
-    when Comment.name
-      voting_disabled_reason_for_comment vote.votable, user
-    else
-      raise "No support for votable type #{vote.votable_type}"
+  def voting_disabled_reason_for_idea_vote vote, user
+    idea = vote.votable
+    if vote.down? && !get_participation_context(idea.project)&.downvoting_enabled
+      return VOTING_DISABLED_REASONS[:downvoting_disabled]
     end
+    voting_disabled_reason_for_idea idea, user
   end
 
-  def voting_disabled_reason_for_comment comment, user
-    case comment.post_type
-    when Idea.name
-      commenting_disabled_reason_for_idea comment.post, user
-    when Initiative.name
-      voting_disabled_reason_for_initiative comment.post, user
-    else
-      raise "No support for post type #{comment.post_type}"
-    end
+  def voting_disabled_reason_for_idea_comment comment, user
+    commenting_disabled_reason_for_idea comment.post, user
   end
 
   def voting_disabled_reason_for_idea idea, user
@@ -189,10 +173,6 @@ class ParticipationContextService
     else
       voting_idea_disabled_reason_for_project(idea.project, user)
     end
-  end
-
-  def voting_disabled_reason_for_initiative initiative, user
-    nil
   end
 
   def voting_idea_disabled_reason_for_project project, user
