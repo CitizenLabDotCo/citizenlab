@@ -36,39 +36,89 @@ describe InvitesService do
     context "with user custom fields configured" do
       before do
         create(:custom_field,
-          key: 'field_1',
+          key: 'text_field',
           input_type: 'text',
           title_multiloc: {'en' => 'size', 'nl-NL' => 'grootte'},
           description_multiloc: {'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}
         )
+        create(:custom_field,
+          key: 'checkbox_field',
+          input_type: 'checkbox'
+        )
+        create(:custom_field,
+          key: 'number_field',
+          input_type: 'number'
+        )
       end
 
       let(:hash_array) {[
-        {email: "some.user@domain.net", field_1: "some_value"},
+        {email: "user1@domain.net", text_field: "some_value"},
+
+        {email: "user2@domain.net", checkbox_field: "1"},
+        {email: "user3@domain.net", checkbox_field: "true"},
+        {email: "user4@domain.net", checkbox_field: 0},
+        {email: "user5@domain.net", checkbox_field: "FALSE"},
+
+        {email: "user6@domain.net", number_field: "666"}
       ]}
 
-      it "sets custom_field_values with matching column names" do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(1)
-        user = User.find_by(email: "some.user@domain.net")
-        expect(user.custom_field_values).to include({"field_1" => "some_value"})
+      it "initializes custom_field_values with matching column names and appropriate types" do
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(6)
+
+        user = User.find_by(email: "user1@domain.net")
+        expect(user.custom_field_values).to eq({"text_field" => "some_value"})
+
+        user = User.find_by(email: "user2@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => true})
+
+        user = User.find_by(email: "user3@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => true})
+
+        user = User.find_by(email: "user4@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => false})
+
+        user = User.find_by(email: "user5@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => false})
+
+        user = User.find_by(email: "user6@domain.net")
+        expect(user.custom_field_values).to eq({"number_field" => 666})
       end
     end
 
-    context "with an unknown custom field" do
+    context "with custom field that has the wrong type" do
+
+      before do
+        create(:custom_field,
+               key: 'checkbox_field',
+               input_type: 'checkbox'
+        )
+        create(:custom_field,
+               key: 'number_field',
+               input_type: 'number'
+        )
+      end
 
       let(:hash_array) {[
-        {email: "some.user@domain.net", field_1: "some_value"},
+          {email: "user1@domain.net", number_field: "nan"},
+          {email: "user2@domain.net", checkbox_field: "non-truthy"},
       ]}
 
-      it "raises an 'InviteError' error" do
+      it "raises 'InviteError' errors" do
+
         expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
           expect(e).to be_a(InvitesService::InvitesFailedError)
-          expect(e.errors.length).to be(1)
+          expect(e.errors.length).to be(2)
 
-          error = e.errors.first
+          error = e.errors[0]
           expect(error).to be_a(InvitesService::InviteError)
-          expect(error.error_key).to eq('unknown_custom_field')
-          expect(error.row).to be(2)  # invite_nb + offset 
+          expect(error.error_key).to eq('malformed_custom_field_value')
+          expect(error.value).to eq('nan')
+
+          error = e.errors[1]
+          expect(error).to be_a(InvitesService::InviteError)
+          expect(error.error_key).to eq('malformed_custom_field_value')
+          expect(error.value).to eq('non-truthy')
+
         end
       end
     end
