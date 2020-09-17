@@ -20,13 +20,7 @@ export interface IHttpMethod {
 
 export type IParticipationContextType = 'project' | 'phase';
 
-export type ICitizenAction =
-  | 'commenting'
-  | 'voting'
-  | 'posting'
-  | 'taking_poll'
-  | 'taking_survey'
-  | 'budgeting';
+export type ICitizenAction = IProjectAction | IIdeaAction;
 
 export interface ITheme {
   theme: {
@@ -67,6 +61,8 @@ export interface Message {
 }
 
 import { Messages } from 'react-intl';
+import { IProjectAction } from 'services/projects';
+import { IIdeaAction } from 'services/getActionPermission';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;

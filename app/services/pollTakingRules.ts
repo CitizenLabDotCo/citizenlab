@@ -1,7 +1,6 @@
 import { IProjectData, PollDisabledReasons } from './projects';
 import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { get } from 'lodash-es';
 
 export type DisabledReasons =
   | 'notPermitted'
@@ -9,7 +8,8 @@ export type DisabledReasons =
   | 'projectInactive'
   | 'notActivePhase'
   | 'alreadyResponded'
-  | 'notVerified';
+  | 'notVerified'
+  | 'maybeNotVerified';
 
 type PollTakeResponse = {
   enabled: boolean;
@@ -32,7 +32,7 @@ const disabledReason = (
     case 'already_responded':
       return 'alreadyResponded';
     case 'not_verified':
-      return signedIn ? 'notVerified' : 'maybeNotPermitted';
+      return signedIn ? 'notVerified' : 'maybeNotVerified';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
@@ -57,18 +57,14 @@ export const getPollTakingRules = ({
         phaseContext.attributes.start_at,
         phaseContext.attributes.end_at,
       ]) === 'present';
-    const { disabled_reason } = get(
-      project.attributes.action_descriptor,
-      'taking_poll',
-      { disabled_reason: null }
-    );
+    const {
+      disabled_reason,
+      enabled,
+    } = project.attributes.action_descriptor.taking_poll;
 
     if (inCurrentPhase) {
       return {
-        enabled: get(
-          project.attributes.action_descriptor,
-          'taking_poll.enabled'
-        ),
+        enabled,
         disabledReason: disabledReason(disabled_reason, !!signedIn),
       };
     } else {
@@ -80,11 +76,10 @@ export const getPollTakingRules = ({
     }
   } else {
     // if not in phase context
-    const { enabled, disabled_reason } = get(
-      project.attributes.action_descriptor,
-      'taking_poll',
-      { disabled_reason: null, enabled: false }
-    );
+    const {
+      enabled,
+      disabled_reason,
+    } = project.attributes.action_descriptor.taking_poll;
     return {
       enabled,
       disabledReason: enabled

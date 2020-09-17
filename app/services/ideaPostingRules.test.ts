@@ -126,7 +126,7 @@ describe('getIdeaPostingRules', () => {
         });
       });
       it('disabled with maybeNotPermitted for signed out users', () => {
-        const accessDeniedProject = getDisabledIdeationProject('not_permitted');
+        const accessDeniedProject = getDisabledIdeationProject('not_signed_in');
         expect(getIdeaPostingRules({ project: accessDeniedProject })).toEqual({
           show: true,
           enabled: false,

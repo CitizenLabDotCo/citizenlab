@@ -288,7 +288,7 @@ class IdeaCard extends PureComponent<
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       ariaHidden={true}
-                      showDownvote={votingDescriptor.downvoting_enabled}
+                      showDownvote={votingDescriptor?.downvoting_enabled}
                     />
                   )}
 

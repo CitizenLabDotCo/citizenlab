@@ -14,3 +14,13 @@ export function getParticipationConditions(
     apiEndpoint: `${API_PATH}/${type}s/${id}/permissions/${action}/participation_conditions`,
   });
 }
+
+// export function getParticipationConditionsForInitiatves(
+//   id: string,
+//   type: IParticipationContextType,
+//   action: ICitizenAction
+// ) {
+//   return streams.get<IParticipationConditions>({
+//     apiEndpoint: `${API_PATH}/${type}s/${id}/permissions/${action}/participation_conditions`,
+//   });
+// }

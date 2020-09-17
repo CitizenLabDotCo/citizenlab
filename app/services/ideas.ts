@@ -3,25 +3,25 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
+import { CommentingDisabledReasons } from './projects';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
+
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
+  | 'not_ideation'
   | 'voting_disabled'
+  | 'downvoting_disabled'
+  | 'not_signed_in'
   | 'voting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
-  | 'not_verified'
-  | null
-  | undefined;
+  | 'not_verified';
+
 export type IdeaCommentingDisabledReason =
-  | 'project_inactive'
-  | 'commenting_disabled'
-  | 'not_permitted'
   | 'idea_not_in_current_phase'
-  | 'not_verified'
-  | null
-  | undefined;
+  | CommentingDisabledReasons;
+
 export type IdeaBudgetingDisabledReason =
   | 'project_inactive'
   | 'idea_not_in_current_phase'
@@ -61,7 +61,7 @@ export interface IIdeaData {
       commenting: {
         enabled: boolean;
         future_enabled: string | null;
-        disabled_reason: IdeaCommentingDisabledReason;
+        disabled_reason: IdeaCommentingDisabledReason | null;
       };
       comment_voting: {
         enabled: boolean;
