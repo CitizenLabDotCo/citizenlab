@@ -16,6 +16,18 @@ class PermissionsService
     not_verified: 'not_verified'
   }
 
+  COMMENTING_DISABLED_REASONS = {
+    not_permitted: 'not_permitted',
+    not_signed_in: 'not_signed_in',
+    not_verified: 'not_verified'
+  }
+
+  VOTING_DISABLED_REASONS = {
+    not_permitted: 'not_permitted',
+    not_signed_in: 'not_signed_in',
+    not_verified: 'not_verified'
+  }
+
 
   def initialize
     @verification_service = Verification::VerificationService.new
@@ -68,6 +80,35 @@ class PermissionsService
     else
       nil
     end
+  end
+
+  def commenting_initiative_disabled_reason user
+    if !(permission = global_permission('commenting_initiative'))&.granted_to?(user)
+      if requires_verification?(permission) && !user&.verified
+        COMMENTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        COMMENTING_DISABLED_REASONS[:not_signed_in]
+      else
+        COMMENTING_DISABLED_REASONS[:not_permitted]
+      end
+    else
+      nil
+    end
+  end
+
+  def voting_initiative_disabled_reason user
+    # TODO
+    nil
+  end
+
+  def cancelling_votes_disabled_reason_for_idea user
+    # TODO
+    nil
+  end
+
+  def voting_disabled_reason_for_initiative_comment user
+    # TODO
+    nil
   end
 
 
