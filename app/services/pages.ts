@@ -12,13 +12,6 @@ export const LEGAL_PAGES = [
   'accessibility-statement',
 ];
 
-export type LegalPages =
-  | 'information'
-  | 'terms-and-conditions'
-  | 'privacy-policy'
-  | 'cookie-policy'
-  | 'accessibility-statement';
-
 export interface IPageData {
   id: string;
   type: string;
