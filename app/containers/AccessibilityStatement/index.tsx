@@ -8,7 +8,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
-import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
 import { Spinner } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
@@ -18,7 +17,7 @@ const PagesFooterNavigation = lazy(() =>
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // these styled components should be imported from PagesShowPage for consistency.
@@ -69,10 +68,6 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.div``;
-
-const PagesNavWrapper = styled.div`
-  width: 100%;
-`;
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
@@ -172,11 +167,9 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
         </StyledContentContainer>
       </PageContent>
 
-      <PagesNavWrapper>
-        <Suspense fallback={<Spinner />}>
-          <PagesFooterNavigation currentPageSlug="accessibility-statement" />
-        </Suspense>
-      </PagesNavWrapper>
+      <Suspense fallback={<Spinner />}>
+        <PagesFooterNavigation currentPageSlug="accessibility-statement" />
+      </Suspense>
     </Container>
   );
 });
