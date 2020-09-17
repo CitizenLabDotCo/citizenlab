@@ -20,8 +20,6 @@ import tracks from '../tracks';
 // services
 import { IMinimalIdeaData } from 'services/ideas';
 
-const Container = styled.div``;
-
 const IdeaList = styled.ul`
   background-color: ${colors.background};
   padding: 25px;
@@ -65,20 +63,18 @@ const SimilarIdeas = ({ similarIdeas, className }: Props) => {
 
   if (!isNilOrError(similarIdeas) && !isEmpty(similarIdeas)) {
     return (
-      <Container className={className}>
-        <IdeaList>
-          {similarIdeas.map((similarIdea, index) => (
-            <IdeaListItem key={similarIdea.id}>
-              <IdeaLink
-                to={`/ideas/${similarIdea.attributes.slug}`}
-                onClick={onClickIdeaLink(index)}
-              >
-                <T value={similarIdea.attributes.title_multiloc} />
-              </IdeaLink>
-            </IdeaListItem>
-          ))}
-        </IdeaList>
-      </Container>
+      <IdeaList className={className}>
+        {similarIdeas.map((similarIdea, index) => (
+          <IdeaListItem key={similarIdea.id}>
+            <IdeaLink
+              to={`/ideas/${similarIdea.attributes.slug}`}
+              onClick={onClickIdeaLink(index)}
+            >
+              <T value={similarIdea.attributes.title_multiloc} />
+            </IdeaLink>
+          </IdeaListItem>
+        ))}
+      </IdeaList>
     );
   }
 

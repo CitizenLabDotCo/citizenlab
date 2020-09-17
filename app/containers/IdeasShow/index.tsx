@@ -1,6 +1,6 @@
 import React, { PureComponent, lazy, Suspense } from 'react';
 import { sortBy, last, isUndefined, isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // typings
@@ -28,7 +28,6 @@ import FeatureFlag from 'components/FeatureFlag';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaMoreActions from './IdeaMoreActions';
-import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
@@ -37,6 +36,10 @@ const VotingCTABox = lazy(() => import('./CTABox/VotingCTABox'));
 const ParticipatoryBudgetingCTABox = lazy(() =>
   import('./CTABox/ParticipatoryBudgetingCTABox')
 );
+const LazyComments = lazy(() =>
+  import('components/PostShowComponents/Comments')
+);
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './MetaInformation';
 import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
 
@@ -52,7 +55,6 @@ import GetIdeaImages, {
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -65,6 +67,7 @@ import GetPermission, {
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -232,9 +235,19 @@ const StyledBody = styled(Body)`
   margin-bottom: 40px;
 `;
 
+const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
+  margin-bottom: 20px;
+`;
+
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
 
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const MobileMetaInformation = styled(MetaInformation)`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
@@ -306,6 +319,11 @@ const MobileIdeaSharingButton = styled(IdeaSharingButton)`
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
+  margin-bottom: 80px;
+`;
+
+const Comments = styled.div`
+  margin-bottom: 120px;
 `;
 
 interface DataProps {
@@ -314,11 +332,11 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface InputProps {
@@ -516,12 +534,12 @@ export class IdeasShow extends PureComponent<
       idea,
       localize,
       ideaImages,
-      authUser,
       windowSize,
       className,
       postOfficialFeedbackPermission,
       projectId,
       ideaCustomFieldsSchemas,
+      tenant,
     } = this.props;
     const {
       loaded,
@@ -535,6 +553,7 @@ export class IdeasShow extends PureComponent<
     if (
       !isNilOrError(idea) &&
       !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
       !isNilOrError(ideaCustomFieldsSchemas) &&
       loaded
     ) {
@@ -546,7 +565,6 @@ export class IdeasShow extends PureComponent<
       const statusId = idea.relationships.idea_status.data.id;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
-      const ideaUrl = location.href;
       const ideaId = idea.id;
       const proposedBudget = idea.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
@@ -572,16 +590,6 @@ export class IdeasShow extends PureComponent<
         locale
       );
 
-      const utmParams = !isNilOrError(authUser)
-        ? {
-            source: 'share_idea',
-            campaign: 'share_content',
-            content: authUser.id,
-          }
-        : {
-            source: 'share_idea',
-            campaign: 'share_content',
-          };
       const showTranslateButton =
         !isNilOrError(idea) &&
         !isNilOrError(locale) &&
@@ -654,9 +662,13 @@ export class IdeasShow extends PureComponent<
                     <BodySectionTitle>
                       <FormattedMessage {...messages.proposedBudgetTitle} />
                     </BodySectionTitle>
-
-                    <IdeaProposedBudget proposedBudget={proposedBudget} />
-
+                    <StyledIdeaProposedBudget
+                      formattedBudget={getFormattedBudget(
+                        locale,
+                        proposedBudget,
+                        tenant.attributes.settings.core.currency
+                      )}
+                    />
                     <BodySectionTitle>
                       <FormattedMessage {...messages.bodyTitle} />
                     </BodySectionTitle>
@@ -669,6 +681,12 @@ export class IdeasShow extends PureComponent<
                   locale={locale}
                   body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
+                />
+
+                <MobileMetaInformation
+                  ideaId={ideaId}
+                  projectId={projectId}
+                  statusId={statusId}
                 />
 
                 {showBudgetControl &&
@@ -697,6 +715,12 @@ export class IdeasShow extends PureComponent<
                   postType="idea"
                   permissionToPost={postOfficialFeedbackPermission}
                 />
+
+                <Comments>
+                  <Suspense fallback={<LoadingComments />}>
+                    <LazyComments postId={ideaId} postType="idea" />
+                  </Suspense>
+                </Comments>
               </LeftColumn>
 
               {biggerThanLargeTablet && (
@@ -734,8 +758,6 @@ export class IdeasShow extends PureComponent<
               )}
             </Content>
           </IdeaContainer>
-
-          <Footer postId={ideaId} postType="idea" />
 
           {this.props.insideModal && <PlatformFooter />}
         </>
@@ -797,7 +819,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => (

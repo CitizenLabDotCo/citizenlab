@@ -47,12 +47,16 @@ const Header = styled.div`
   margin-bottom: 30px;
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   line-height: 40px;
   color: ${(props: any) => props.theme.colorText};
   margin-bottom: 0;
+
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.xxl}px;
+  `}
 `;
 
 const CommentCount = styled.span``;
@@ -60,11 +64,9 @@ const CommentCount = styled.span``;
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 15px;
 
   ${media.smallerThanMinTablet`
     justify-content: flex-start;
-    margin-bottom: 15px;
   `}
 `;
 
@@ -152,7 +154,7 @@ const CommentsSection = memo<Props>(
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
-      const commentCount = commentsList.length;
+      const commentCount = post.attributes.comments_count;
 
       return (
         <Container className={className || ''}>

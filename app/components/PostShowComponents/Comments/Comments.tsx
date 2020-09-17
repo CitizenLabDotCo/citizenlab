@@ -80,13 +80,11 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
     }, []);
 
-    const getParentComments = () => {
+    const parentComments = useMemo(() => {
       return allComments.filter(
         (comment) => comment.relationships.parent.data === null
       );
-    };
-
-    const parentComments = useMemo(() => getParentComments(), [allComments]);
+    }, [allComments]);
 
     return (
       <Container className={`e2e-comments-container ${className}`}>

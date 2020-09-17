@@ -83,9 +83,6 @@ class Edit extends React.Component<
               title: localize(customField.attributes.title_multiloc),
               publicLink: '',
             }}
-            messages={{
-              viewPublicResource: messages.addOptionButton,
-            }}
           >
             {childrenWithExtraProps}
           </TabbedResource>

@@ -38,7 +38,7 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
   if (!isNilOrError(project)) {
     return (
       <Container className={className}>
-        {/* <StyledIcon name='circle-arrow-left' /> */}
+        <StyledIcon ariaHidden name="circle-arrow-left" />
         <StyledLink
           id="e2e-idea-other-link"
           to={`/projects/${project.attributes.slug}`}
