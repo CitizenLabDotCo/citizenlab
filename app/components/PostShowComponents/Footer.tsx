@@ -5,7 +5,7 @@ import LoadingComments from './Comments/LoadingComments';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
@@ -18,8 +18,6 @@ const Container = styled.div`
   flex: 1 1 auto;
   width: 100%;
   margin-top: 50px;
-  background: ${colors.background};
-  border-top: 1px solid ${colors.adminSeparation};
 `;
 
 const Content = styled.div`

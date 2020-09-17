@@ -60,10 +60,6 @@ const Separator = styled.div`
   ${media.smallerThanMinTablet`
     margin-left: 8px;
     margin-right: 8px;
-
-    &.vote {
-      display: none;
-    }
   `}
 `;
 

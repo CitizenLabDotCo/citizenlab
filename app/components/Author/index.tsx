@@ -43,20 +43,27 @@ const StyledAvatar = styled(Avatar)`
   margin-bottom: 1px;
 `;
 
-const AuthorMeta = styled.div``;
+const AuthorMeta = styled.div`
+  &.horizontalLayout {
+    display: flex;
+    align-items: center;
+  }
+`;
 
 const AuthorNameContainer = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 16px;
-  font-weight: 400;
   text-decoration: none;
   hyphens: manual;
+
+  &.horizontalLayout {
+    margin-right: 10px;
+  }
 `;
 
 const TimeAgo = styled.div`
   color: ${colors.label};
-  font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 17px;
   margin-top: 3px;
@@ -73,6 +80,7 @@ export interface InputProps {
   showModeration?: boolean; // will show red styling on admins and moderators of projectId
   emphasize?: boolean;
   className?: string;
+  horizontalLayout?: boolean;
 }
 
 interface DataProps {
@@ -101,6 +109,7 @@ class Author extends PureComponent<Props, State> {
       author,
       avatarBadgeBgColor,
       emphasize,
+      horizontalLayout,
     } = this.props;
     const authorCanModerate =
       !isNilOrError(author) &&
@@ -128,8 +137,10 @@ class Author extends PureComponent<Props, State> {
             />
           )}
 
-          <AuthorMeta>
-            <AuthorNameContainer>
+          <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
+            <AuthorNameContainer
+              className={horizontalLayout ? 'horizontalLayout' : ''}
+            >
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.a11y_postedBy} />:
               </ScreenReaderOnly>
