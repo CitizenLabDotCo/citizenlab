@@ -59,9 +59,11 @@ const ButtonWithDropdown = ({
     }
   });
 
-  const button = cloneElement(buttonComponent, { onClick });
+  const button = cloneElement(buttonComponent, {
+    onClick,
+    ariaExpanded: dropdownOpened,
+  });
 
-  // TODO: add aria-expanded to buttonComponent
   return (
     <Container className={className}>
       <div ref={ref}>{button}</div>
