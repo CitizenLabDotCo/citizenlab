@@ -61,7 +61,7 @@ export interface IIdeaData {
       voting_idea: {
         enabled: boolean;
         future_enabled: string | null;
-        disabled_reason: IdeaVotingDisabledReason;
+        disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
         downvoting_enabled: boolean;
       };
