@@ -122,9 +122,6 @@ export const getIdeaPostingRules = ({
   authUser: GetAuthUserChildProps;
 }): ActionPermission => {
   const signedIn = !isNilOrError(authUser);
-  // TODO check for admin
-  const loggedInAsAdmin =
-    !isNilOrError(authUser) && isAdmin({ data: authUser });
 
   if (!isNilOrError(project)) {
     const {

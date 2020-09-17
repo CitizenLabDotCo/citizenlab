@@ -1,4 +1,4 @@
-import React, { PureComponent, memo } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
@@ -129,8 +129,6 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     intl: { formatMessage },
     ...buttonContainerProps
   }) => {
-    const locationRef = window.location.href;
-
     const disabledMessages: {
       [key in IdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
     } = {
@@ -257,7 +255,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
 
     if (show) {
       const tippyContent =
-        enabled === false && !!disabledReason ? (
+        !enabled && !!disabledReason ? (
           <TooltipContent
             id="tooltip-content"
             className="e2e-disabled-tooltip"
