@@ -97,18 +97,35 @@ class PermissionsService
   end
 
   def voting_initiative_disabled_reason user
-    # TODO
-    nil
+    if !(permission = global_permission('voting_initiative'))&.granted_to?(user)
+      if requires_verification?(permission) && !user&.verified
+        VOTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        VOTING_DISABLED_REASONS[:not_signed_in]
+      else
+        VOTING_DISABLED_REASONS[:not_permitted]
+      end
+    else
+      nil
+    end
   end
 
-  def cancelling_votes_disabled_reason_for_idea user
-    # TODO
-    nil
+  def cancelling_votes_disabled_reason_for_initiative user
+    if !(permission = global_permission('voting_initiative'))&.granted_to?(user)
+      if requires_verification?(permission) && !user&.verified
+        VOTING_DISABLED_REASONS[:not_verified]
+      elsif not_signed_in? user, permission
+        VOTING_DISABLED_REASONS[:not_signed_in]
+      else
+        VOTING_DISABLED_REASONS[:not_permitted]
+      end
+    else
+      nil
+    end
   end
 
   def voting_disabled_reason_for_initiative_comment user
-    # TODO
-    nil
+    commenting_initiative_disabled_reason user
   end
 
 
