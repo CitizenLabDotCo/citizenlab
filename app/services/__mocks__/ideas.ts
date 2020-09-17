@@ -38,19 +38,19 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
     proposed_budget: 45,
     baskets_count: 0,
     action_descriptor: {
-      voting: {
+      voting_idea: {
         enabled: true,
         disabled_reason: null,
         future_enabled: null,
         cancelling_enabled: true,
         downvoting_enabled: true
       },
-      commenting: {
+      commenting_idea: {
         enabled: false,
         disabled_reason: 'not_permitted',
         future_enabled: null
       },
-      comment_voting: {
+      comment_voting_idea: {
         enabled: true
       },
       budgeting: {
