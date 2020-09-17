@@ -169,7 +169,8 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       const profileLink = `/profile/${user.attributes.slug}`;
-      // In dev mode, user.attributes.slug is sometimes undefined, to be sovled properly
+      // In dev mode, user.attributes.slug is sometimes undefined,
+      // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
       const size = parseInt(this.props.size, 10);
       const padding = parseInt(this.props.padding as string, 10);
@@ -178,7 +179,8 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
         10
       );
       const hasHoverEffect = !!(
-        (isLinkToProfile && hasValidProfileLink) || this.props.hasHoverEffect
+        (isLinkToProfile && hasValidProfileLink) ||
+        this.props.hasHoverEffect
       );
       const imageSize = size > 160 ? 'large' : 'medium';
       const avatarSrc =
@@ -188,12 +190,8 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
         ? parseInt(this.props.badgeSize, 10)
         : size / (size < 40 ? 1.8 : 2.3);
 
-      const Component = (
-        <Container
-          aria-hidden
-          className={className}
-          size={containerSize}
-        >
+      const AvatarComponent = (
+        <Container aria-hidden className={className} size={containerSize}>
           {avatarSrc ? (
             <AvatarImage
               className={`avatarImage ${
@@ -248,16 +246,10 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       );
 
       if (isLinkToProfile && hasValidProfileLink) {
-        return (
-          <Link
-            to={profileLink}
-          >
-            {Component}
-          </Link>
-        )
+        return <Link to={profileLink}>{Component}</Link>;
       }
 
-      return Component;
+      return AvatarComponent;
     }
 
     return null;
