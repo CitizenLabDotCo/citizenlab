@@ -70,16 +70,33 @@ export default defineMessages({
   },
   permissionAction_commenting_idea: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
+      'app.containers.AdminPage.groups.permissions.permissionAction_commenting_idea',
     defaultMessage: 'Commenting',
   },
   permissionAction_voting_idea: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_voting',
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_voting_idea',
     defaultMessage: 'Voting',
   },
   permissionAction_posting_idea: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_posting',
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_posting_idea',
     defaultMessage: 'Posting ideas',
+  },
+  permissionAction_commenting_initiative: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_commenting_initiative',
+    defaultMessage: 'Commenting',
+  },
+  permissionAction_voting_initiative: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_voting_initiative',
+    defaultMessage: 'Voting',
+  },
+  permissionAction_posting_initiative: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_posting_initiative',
+    defaultMessage: 'Posting initiatives',
   },
   permissionAction_taking_survey: {
     id:
