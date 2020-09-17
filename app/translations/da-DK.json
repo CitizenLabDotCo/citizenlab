@@ -251,7 +251,7 @@
   "app.components.PostComponents.lastChangesTitleInitiative": "Seneste ændringer af dette borgerforslag",
   "app.components.PostComponents.lastUpdated": "Redigeret {modificationTime}",
   "app.components.PostComponents.linkToHomePage": "Link til hjemmeside",
-  "app.components.PostComponents.loadMore": "",
+  "app.components.PostComponents.readMore": "",
   "app.components.Project.projectModeratorIndicator": "{tenantName, select, DeloitteDK {Du er en moderator på dette verdensmål.} other {Du er en moderator på dette projekt.}}",
   "app.components.ProjectArchivedIndicator.archivedProject": "{tenantName, select, DeloitteDK {Desværre kan du ikke længere deltage i dette verdensmål, da det er blevet arkiveret} other {Desværre kan du ikke længere deltage i dette projekt, da det er blevet arkiveret}}",
   "app.components.ProjectCard.a11y_projectDescription": "Projektbeskrivelse:",
