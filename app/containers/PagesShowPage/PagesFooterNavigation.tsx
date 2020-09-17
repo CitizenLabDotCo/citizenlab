@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LEGAL_PAGES, LegalPages } from 'services/pages';
+import { LEGAL_PAGES } from 'services/pages';
 import {
   StyledContentContainer,
   StyledLink,
@@ -24,7 +24,7 @@ const PagesNav = styled.nav`
 `;
 
 interface Props {
-  currentPageSlug: LegalPages;
+  currentPageSlug: string;
 }
 
 const PagesFooterNavigation = ({ currentPageSlug }: Props) => {
