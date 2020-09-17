@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe InitiativeCommentPolicy do
   subject { InitiativeCommentPolicy.new(user, comment) }
+  before do
+    PermissionsService.new.update_global_permissions
+  end
   let(:scope) { InitiativeCommentPolicy::Scope.new(user, initiave.comments) }
 
   context "on comment on initiave" do 
