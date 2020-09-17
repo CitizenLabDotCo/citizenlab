@@ -27,18 +27,6 @@ class InitiativePolicy < ApplicationPolicy
     )
   end
 
-  def create?
-    pcs = ParticipationContextService.new 
-    record.draft? ||
-    user&.active_admin_or_moderator?(record.project_id) ||
-    (
-      user&.active? &&
-      record.author_id == user.id &&
-      !pcs.posting_idea_disabled_reason_for_project(record.project, user) &&
-      ProjectPolicy.new(user, record.project).show?
-    )
-  end
-
   def show?
     (
       user&.active? &&
