@@ -30,7 +30,6 @@
   "app.components.Comments.commentingNotPermitted": "{tenantName, select, DeloitteDK {Ilanngussaq una massakkut oqaaseqarfigineqarsinnaanngilaq} other {Isumassarsiaq una massakkut oqaaseqaateqarfigineqarsinnaanngilaq}}",
   "app.components.Comments.invisibleTitleComments": "Oqaaseqaatit",
   "app.components.Comments.mostUpvoted": "Amerlanernik taaneqartut",
-  "app.components.Comments.noComments": "Suli oqaaseqaateqartoqanngilaq",
   "app.components.Comments.official": "Pisortatigoortoq",
   "app.components.Comments.oldestToNewest": "Nutaajunerit",
   "app.components.Comments.replyToComment": "Oqaaseqaat akiuk",

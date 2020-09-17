@@ -1,10 +1,10 @@
 import {
   IIdeaCustomFieldsSchemas,
-  CustomFieldCodes
+  CustomFieldCodes,
 } from 'services/ideaCustomFields';
 import { Locale } from 'typings';
 
-export default function isFieldEnabled (
+export default function isFieldEnabled(
   fieldCode: CustomFieldCodes,
   ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
   locale: Locale
@@ -14,4 +14,4 @@ export default function isFieldEnabled (
       'ui:widget'
     ] !== 'hidden'
   );
-};
+}

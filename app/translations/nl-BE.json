@@ -30,7 +30,6 @@
   "app.components.Comments.commentingNotPermitted": "Reageren op dit idee is momenteel niet toegestaan",
   "app.components.Comments.invisibleTitleComments": "Reacties",
   "app.components.Comments.mostUpvoted": "Meeste stemmen",
-  "app.components.Comments.noComments": "Er zijn nog geen reacties.",
   "app.components.Comments.official": "Officieel",
   "app.components.Comments.oldestToNewest": "Meest recent",
   "app.components.Comments.replyToComment": "Antwoord op de reactie",

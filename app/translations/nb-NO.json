@@ -30,7 +30,6 @@
   "app.components.Comments.commentingNotPermitted": "Det er for øyeblikket ikke tillatt å kommentere på dette innlegg. ",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
   "app.components.Comments.mostUpvoted": "Populært",
-  "app.components.Comments.noComments": "Ingen har kommentert her.",
   "app.components.Comments.official": "Offisiell",
   "app.components.Comments.oldestToNewest": "Nyeste",
   "app.components.Comments.replyToComment": "Svar på kommentar",
