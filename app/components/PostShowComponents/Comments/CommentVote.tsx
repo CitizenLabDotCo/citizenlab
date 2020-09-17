@@ -32,7 +32,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 // a11y
@@ -101,10 +101,6 @@ const UpvoteLabel = styled.button`
   margin: 0;
   margin-left: 12px;
   border: none;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
 const UpvoteButtonWrapper = styled.div`
@@ -135,10 +131,6 @@ const Container = styled.div`
       text-decoration: underline;
     }
   }
-
-  ${media.smallerThanMinTablet`
-    margin-right: 5px;
-  `}
 `;
 
 interface InputProps {

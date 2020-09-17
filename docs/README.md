@@ -1,5 +1,22 @@
 # Changelog
 
+## 2020-09-15
+
+### Added
+- Support Enalyzer as a new survey provider
+- Registration fields can now be hidden, meaning the user can't see or change them, typically controlled by an outside integration. They can still be used in smart groups.
+- Registration fields can now be pre-populated using the invites excel
+
+## 2020-09-08
+
+### Fixed
+- Custom buttons (e.g. in project descriptions) have correct styling in Safari.
+- Horizontal bar chart overflow in Admin > Dashboard > Users tab
+- User graphs for registration fields that are not used are not shown anymore in Admin > Dashboard > Users tab
+
+### Added
+- Pricing plan feature flags for smart groups and project access rights
+
 ## 2020-09-01
 
 ### Fixed
