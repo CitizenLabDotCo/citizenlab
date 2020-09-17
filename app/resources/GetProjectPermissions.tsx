@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   IPermissionData,
   projectPermissions,
-} from 'services/participationContextPermissions';
+} from 'services/actionPermissions';
 
 interface InputProps {
   projectId?: string | null;

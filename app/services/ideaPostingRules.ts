@@ -8,12 +8,15 @@ import { isAdmin } from 'services/permissions/roles';
 
 export type DisabledReasons =
   | 'notPermitted'
-  | 'maybeNotPermitted'
   | 'postingDisabled'
   | 'projectInactive'
   | 'notActivePhase'
-  | 'futureEnabled'
-  | 'notVerified';
+  | 'futureEnabled';
+
+export type ActionReasons =
+  | 'maybeNotPermitted'
+  | 'notVerified'
+  | 'maybeNotVerified';
 
 interface PostingButtonStateArg {
   project: GetProjectChildProps;
@@ -25,16 +28,18 @@ const disabledReason = (
   backendReason: PostingDisabledReasons | null,
   signedIn: boolean,
   futureEnabled: string | null
-): DisabledReasons | null => {
+): DisabledReasons | ActionReasons | null => {
   switch (backendReason) {
     case 'project_inactive':
       return 'projectInactive';
     case 'posting_disabled':
       return 'postingDisabled';
     case 'not_verified':
-      return 'notVerified';
+      return signedIn ? 'maybeNotVerified' : 'notVerified';
+    case 'not_signed_in':
+      return 'maybeNotPermitted';
     case 'not_permitted':
-      return signedIn ? 'notPermitted' : 'maybeNotPermitted';
+      return 'notPermitted';
     default:
       return futureEnabled ? 'futureEnabled' : null;
   }
@@ -52,11 +57,12 @@ export const getIdeaPostingRules = ({
   authUser,
 }: PostingButtonStateArg) => {
   const signedIn = !isNilOrError(authUser);
-  const loggedInAsAdmin = !isNilOrError(authUser)
-    ? isAdmin({ data: authUser })
-    : false;
+  const loggedInAsAdmin =
+    !isNilOrError(authUser) && isAdmin({ data: authUser });
 
+  // Timeline project
   if (!isNilOrError(project) && !isNilOrError(phase)) {
+    // is the selected phase currently active ?
     const inCurrentPhase =
       pastPresentOrFuture([
         phase.attributes.start_at,
@@ -65,20 +71,19 @@ export const getIdeaPostingRules = ({
     const {
       disabled_reason,
       future_enabled,
-    } = project.attributes.action_descriptor.posting;
+      enabled,
+    } = project.attributes.action_descriptor.posting_idea;
 
     if (inCurrentPhase) {
       return {
+        enabled,
         show:
           phase.attributes.participation_method === 'ideation' &&
           phase.attributes.posting_enabled &&
           disabled_reason !== 'not_ideation',
-        enabled:
-          loggedInAsAdmin ||
-          project.attributes.action_descriptor.posting.enabled,
         disabledReason: disabledReason(
           disabled_reason,
-          !!signedIn,
+          signedIn,
           future_enabled
         ),
       };
@@ -96,11 +101,13 @@ export const getIdeaPostingRules = ({
   } else if (!isNilOrError(project) && isNilOrError(phase)) {
     // if not in phase context
     const enabled =
-      loggedInAsAdmin || project.attributes.action_descriptor.posting.enabled;
-    const {
-      disabled_reason,
-      future_enabled,
-    } = project.attributes.action_descriptor.posting;
+      loggedInAsAdmin ||
+      project.attributes.action_descriptor.posting_idea?.enabled;
+    const { disabled_reason, future_enabled } = project.attributes
+      .action_descriptor?.posting_idea || {
+      disabled_reason: null,
+      future_enabled: null,
+    };
 
     return {
       enabled,
@@ -110,7 +117,7 @@ export const getIdeaPostingRules = ({
         disabled_reason !== 'not_ideation',
       disabledReason: enabled
         ? undefined
-        : disabledReason(disabled_reason, !!signedIn, future_enabled),
+        : disabledReason(disabled_reason, signedIn, future_enabled),
     };
   } else {
     // if !project
