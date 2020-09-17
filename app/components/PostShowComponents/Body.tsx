@@ -84,7 +84,6 @@ const Body = memo<Props>(
           .concat('...')
       : bodyText;
 
-    // TODO: copy
     // TODO: a11y
     // TODO: styling
 
@@ -101,7 +100,7 @@ const Body = memo<Props>(
         </QuillEditedContent>
         {showLoadMoreButton && (
           <LoadMoreTextButton buttonStyle="text" onClick={loadMore}>
-            <FormattedMessage {...messages.loadMore} />
+            <FormattedMessage {...messages.readMore} />
           </LoadMoreTextButton>
         )}
       </Container>
