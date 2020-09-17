@@ -101,7 +101,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show #e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
-    cy.get('#e2e-idea-show #e2e-map-toggle').contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show #e2e-map-popup').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
     );

@@ -43,7 +43,6 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
           {localize(project.attributes.title_multiloc)}
         </StyledLink>
       </Container>
-
     );
   }
 
