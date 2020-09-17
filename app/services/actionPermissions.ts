@@ -97,13 +97,23 @@ export function projectPermissions(
   });
 }
 
-export function initiativesPermissions(
-  streamParams: IStreamParams | null = null
-) {
+export function globalPermissions(streamParams: IStreamParams | null = null) {
   return streams.get<IGlobalPermissions>({
-    apiEndpoint: `${API_PATH}/initiatives/permissions`, // or `${API_PATH}/action_descriptors/initiatives`
+    apiEndpoint: `${API_PATH}/permissions`, // or `${API_PATH}/action_descriptors/initiatives`
     ...streamParams,
   });
+}
+
+export function updateGlobalPermission(
+  permissionId: string,
+  action: string,
+  permission: Partial<IPermissionUpdate>
+) {
+  return streams.update<IPCPermission>(
+    `${API_PATH}/permissions/${action}`,
+    permissionId,
+    { permission }
+  );
 }
 
 export function updatePhasePermission(

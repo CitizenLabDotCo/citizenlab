@@ -5,7 +5,7 @@ import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import {
-  IPermissionData,
+  IPCPermissionData,
   projectPermissions,
 } from 'services/actionPermissions';
 
@@ -22,11 +22,11 @@ interface Props extends InputProps {
 }
 
 interface State {
-  permissions: IPermissionData[] | undefined | null | Error;
+  permissions: IPCPermissionData[] | undefined | null | Error;
 }
 
 export type GetProjectPermissionsChildProps =
-  | IPermissionData[]
+  | IPCPermissionData[]
   | undefined
   | null
   | Error;
