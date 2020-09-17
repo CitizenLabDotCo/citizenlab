@@ -49,4 +49,8 @@ export default defineMessages({
     defaultMessage:
       '{commentsCount, plural, no {# comments} one {# comment} other {# comments}}',
   },
+  loadMore: {
+    id: 'app.components.PostComponents.loadMore',
+    defaultMessage: 'Created {timeAgo}',
+  },
 });
