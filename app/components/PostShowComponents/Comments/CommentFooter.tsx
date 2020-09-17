@@ -178,7 +178,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       } = tracks;
       const commentingDisabledReason = get(
         post,
-        'attributes.action_descriptor.commenting.disabled_reason'
+        'attributes.action_descriptor.commenting_idea.disabled_reason'
       );
       const authUserIsVerified =
         !isNilOrError(authUser) && authUser.attributes.verified;
@@ -253,7 +253,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const commentingDisabledReason = get(
         post,
-        'attributes.action_descriptor.commenting.disabled_reason'
+        'attributes.action_descriptor.commenting_idea.disabled_reason'
       );
       const commentingDisabled =
         commentingDisabledReason &&
@@ -261,12 +261,12 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
           (!authUser && commentingDisabledReason !== 'not_permitted'));
       const commentingVotingDisabledReason = get(
         post,
-        'attributes.action_descriptor.comment_voting.disabled_reason'
+        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
       );
       const commentVotingDisabled =
         commentingVotingDisabledReason &&
-        (commentingVotingDisabledReason !== 'not_verified' ||
-          (!authUser && commentingVotingDisabledReason !== 'not_permitted'));
+        commentingVotingDisabledReason !== 'not_verified' &&
+        commentingVotingDisabledReason !== 'not_permitted';
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent =
         commentingDisabledReason !== 'commenting_disabled' || upvoteCount > 0;

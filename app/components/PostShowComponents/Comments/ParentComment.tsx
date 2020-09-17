@@ -201,7 +201,7 @@ class ParentComment extends PureComponent<Props, State> {
         comment.attributes.publication_status === 'deleted';
       const commentingEnabled = get(
         post,
-        'attributes.action_descriptor.commenting.enabled',
+        'attributes.action_descriptor.commenting_idea.enabled',
         true
       );
       const showCommentForm = authUser && commentingEnabled && !commentDeleted;

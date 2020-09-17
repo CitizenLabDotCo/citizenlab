@@ -225,7 +225,7 @@ class ParentCommentForm extends PureComponent<
     const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled = get(
       post,
-      'attributes.action_descriptor.commenting.enabled',
+      'attributes.action_descriptor.commenting_idea.enabled',
       true
     );
     const projectId: string | null = get(

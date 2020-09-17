@@ -109,12 +109,12 @@ const CommentsSection = memo<Props>(
     if (!isNilOrError(post)) {
       const commentingEnabled = get(
         post,
-        'attributes.action_descriptor.commenting.enabled',
+        'attributes.action_descriptor.commenting_idea.enabled',
         true
       ) as boolean;
       const commentingDisabledReason = get(
         post,
-        'attributes.action_descriptor.commenting.disabled_reason',
+        'attributes.action_descriptor.commenting_idea.disabled_reason',
         null
       ) as IdeaCommentingDisabledReason | null;
       const userIsAdmin = !isNilOrError(authUser)
