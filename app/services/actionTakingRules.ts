@@ -2,6 +2,7 @@ import {
   PostingDisabledReason,
   PollDisabledReason,
   IProjectData,
+  SurveyDisabledReason,
 } from './projects';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { GetProjectChildProps } from 'resources/GetProject';
@@ -25,7 +26,10 @@ interface ActionPermissionEnabled {
 interface ActionPermissionDisabled {
   show: true;
   enabled: false;
-  disabledReason: IdeaPostingDisabledReason | PollTakingDisabledReason;
+  disabledReason:
+    | IIdeaPostingDisabledReason
+    | IPollTakingDisabledReason
+    | ISurveyTakingDisabledReason;
   action: null;
 }
 interface ActionPermissionMaybe {
@@ -44,7 +48,7 @@ type ActionPermission =
 /*----------- Idea Posting ------------*/
 
 // When disabled, these are the reasons to explain to the user
-export type IdeaPostingDisabledReason =
+export type IIdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
   | 'projectInactive'
@@ -57,12 +61,12 @@ export type IPreliminaryAction =
   | 'verify'
   | 'sign_in_up_and_verify';
 
-const ideaPostingDisabledReason = (
+const IIdeaPostingDisabledReason = (
   backendReason: PostingDisabledReason | null,
   signedIn: boolean,
   futureEnabled: string | null
 ): {
-  disabledReason: IdeaPostingDisabledReason | null;
+  disabledReason: IIdeaPostingDisabledReason | null;
   action: IPreliminaryAction | null;
 } => {
   switch (backendReason) {
@@ -157,7 +161,7 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: 'notActivePhase' as IdeaPostingDisabledReason,
+          disabledReason: 'notActivePhase' as IIdeaPostingDisabledReason,
           action: null,
         };
       }
@@ -189,7 +193,7 @@ export const getIdeaPostingRules = ({
       };
     }
 
-    const { disabledReason, action } = ideaPostingDisabledReason(
+    const { disabledReason, action } = IIdeaPostingDisabledReason(
       disabled_reason,
       signedIn,
       future_enabled
@@ -223,7 +227,7 @@ export const getIdeaPostingRules = ({
 
 /*----------- Poll Taking ------------*/
 
-export type PollTakingDisabledReason =
+export type IPollTakingDisabledReason =
   | 'notPermitted'
   | 'maybeNotPermitted'
   | 'projectInactive'
@@ -235,7 +239,7 @@ export type PollTakingDisabledReason =
 const pollTakingDisabledReason = (
   backendReason: PollDisabledReason | null,
   signedIn: boolean
-): PollTakingDisabledReason => {
+): IPollTakingDisabledReason => {
   switch (backendReason) {
     case 'project_inactive':
       return 'projectInactive';
@@ -304,4 +308,91 @@ export const getPollTakingRules = ({
     show: true,
     action: null,
   };
+};
+
+export type ISurveyTakingDisabledReason =
+  | 'notPermitted'
+  | 'maybeNotPermitted'
+  | 'maybeNotVerified'
+  | 'projectInactive'
+  | 'notActivePhase'
+  | 'notVerified';
+
+const surveyTakingDisabledReason = (
+  backendReason: SurveyDisabledReason | null,
+  signedIn: boolean
+): ISurveyTakingDisabledReason => {
+  switch (backendReason) {
+    case 'project_inactive':
+      return 'projectInactive';
+    case 'not_signed_in':
+      return 'maybeNotPermitted';
+    case 'not_verified':
+      return signedIn ? 'notVerified' : 'maybeNotVerified';
+    case 'not_permitted':
+      return signedIn ? 'notPermitted' : 'maybeNotPermitted';
+    default:
+      return 'notPermitted';
+  }
+};
+
+/** Should we show the survey in the given context? And if not, with what message?
+ * @param context
+ *  project: The project context we are posting to.
+ *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
+ *  signedIn: Whether the user is currently authenticated
+ */
+export const getSurveyTakingRules = ({
+  project,
+  phaseContext,
+  signedIn,
+}: {
+  project: IProjectData;
+  phaseContext?: IPhaseData | null;
+  signedIn: boolean;
+}): ActionPermission => {
+  if (phaseContext) {
+    const inCurrentPhase =
+      pastPresentOrFuture([
+        phaseContext.attributes.start_at,
+        phaseContext.attributes.end_at,
+      ]) === 'present';
+    const {
+      disabled_reason,
+      enabled,
+    } = project.attributes.action_descriptor.taking_survey;
+
+    if (inCurrentPhase) {
+      return {
+        enabled,
+        disabledReason: enabled
+          ? null
+          : surveyTakingDisabledReason(disabled_reason, !!signedIn),
+        action: null,
+        show: true,
+      } as ActionPermissionDisabled | ActionPermissionEnabled;
+    } else {
+      // if not in current phase
+      return {
+        enabled: false,
+        disabledReason: 'notActivePhase',
+        action: null,
+        show: true,
+      };
+    }
+  } else {
+    // if not in phase context
+    const {
+      enabled,
+      disabled_reason,
+    } = project.attributes.action_descriptor.taking_survey;
+    return {
+      enabled,
+      disabledReason: enabled
+        ? null
+        : surveyTakingDisabledReason(disabled_reason, !!signedIn),
+      action: null,
+      show: true,
+    } as ActionPermissionDisabled | ActionPermissionEnabled;
+  }
 };

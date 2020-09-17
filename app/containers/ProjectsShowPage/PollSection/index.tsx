@@ -6,8 +6,8 @@ import { IParticipationContextType } from 'typings';
 // services
 import {
   getPollTakingRules,
-  PollTakingDisabledReason,
-} from 'services/getActionPermission';
+  IPollTakingDisabledReason,
+} from 'services/actionTakingRules';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -68,7 +68,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const disabledMessages: {
-  [key in PollTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IPollTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
 } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,

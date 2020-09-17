@@ -10,8 +10,8 @@ import { IParticipationContextType } from 'typings';
 // services
 import {
   getIdeaPostingRules,
-  IdeaPostingDisabledReason,
-} from 'services/getActionPermission';
+  IIdeaPostingDisabledReason,
+} from 'services/actionTakingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -130,7 +130,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     ...buttonContainerProps
   }) => {
     const disabledMessages: {
-      [key in IdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
     } = {
       notPermitted: messages.postingNotPermitted,
       postingDisabled: messages.postingHereImpossible,
