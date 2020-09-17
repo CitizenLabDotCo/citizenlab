@@ -30,7 +30,6 @@
   "app.components.Comments.commentingNotPermitted": "În prezent nu sunt permise comentariile la această idee.",
   "app.components.Comments.invisibleTitleComments": "Comentarii",
   "app.components.Comments.mostUpvoted": "Cele mai votate",
-  "app.components.Comments.noComments": "Nu există comentarii încă.",
   "app.components.Comments.official": "Oficial",
   "app.components.Comments.oldestToNewest": "Cele mai recente",
   "app.components.Comments.replyToComment": "Răspunde la comentariu",

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { sortBy, last, isUndefined, isString } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -19,7 +19,6 @@ import IdeaMeta from './IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
 import IdeaProposedBudget from './IdeaProposedBudget';
 import Body from 'components/PostShowComponents/Body';
-import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
@@ -31,11 +30,14 @@ import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaMoreActions from './IdeaMoreActions';
-import Footer from 'components/PostShowComponents/Footer';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
+const LazyComments = lazy(() =>
+  import('components/PostShowComponents/Comments')
+);
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './MetaInformation';
 
 // utils
@@ -356,6 +358,11 @@ const SharingMobile = styled(Sharing)`
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
+  margin-bottom: 80px;
+`;
+
+const Comments = styled.div`
+  margin-bottom: 120px;
 `;
 
 interface DataProps {
@@ -760,13 +767,6 @@ export class IdeasShow extends PureComponent<
                   permissionToPost={postOfficialFeedbackPermission}
                 />
 
-                <ContentFooter
-                  postType="idea"
-                  postId={ideaId}
-                  publishedAt={ideaPublishedAt}
-                  commentsCount={idea.attributes.comments_count}
-                />
-
                 {smallerThanLargeTablet && (
                   <SharingMobile
                     context="idea"
@@ -784,6 +784,12 @@ export class IdeasShow extends PureComponent<
                     utmParams={utmParams}
                   />
                 )}
+
+                <Comments>
+                  <Suspense fallback={<LoadingComments />}>
+                    <LazyComments postId={ideaId} postType="idea" />
+                  </Suspense>
+                </Comments>
               </LeftColumn>
 
               {biggerThanLargeTablet && (
@@ -873,8 +879,6 @@ export class IdeasShow extends PureComponent<
               )}
             </Content>
           </IdeaContainer>
-
-          <Footer postId={ideaId} postType="idea" />
 
           {this.props.insideModal && <PlatformFooter />}
         </>

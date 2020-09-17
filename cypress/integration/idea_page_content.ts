@@ -45,9 +45,6 @@ describe('Idea Page', () => {
       );
       cy.get('.e2e-comments-container').contains('No no no no no');
 
-      // shows the idea content footer'
-      cy.get('#e2e-idea-content-footer');
-
       // has the More Options menu and opens it
       cy.get('#e2e-idea-more-actions').click();
       cy.get('.e2e-more-actions-list');

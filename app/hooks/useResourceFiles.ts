@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
-import { ResourceType, IResourceFileData, IResourceFiles } from 'resources/GetResourceFiles';
+import {
+  ResourceType,
+  IResourceFileData,
+  IResourceFiles,
+} from 'resources/GetResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
-import {
-  projectFilesStream,
-} from 'services/projectFiles';
-import {
-  phaseFilesStream,
-} from 'services/phaseFiles';
-import {
-  eventFilesStream,
-} from 'services/eventFiles';
+import { projectFilesStream } from 'services/projectFiles';
+import { phaseFilesStream } from 'services/phaseFiles';
+import { eventFilesStream } from 'services/eventFiles';
 import { pageFilesStream } from 'services/pageFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
-import {
-  initiativeFilesStream,
-} from 'services/initiativeFiles';
+import { initiativeFilesStream } from 'services/initiativeFiles';
 
 interface Props {
   resourceId: string | null;
@@ -41,26 +37,25 @@ function getResourceStream(resourceType: ResourceType) {
 }
 
 export default function useResourceFiles({ resourceId, resourceType }: Props) {
-  const [files, setFiles] = useState<IResourceFileData[] | undefined | null | Error>(undefined);
+  const [files, setFiles] = useState<
+    IResourceFileData[] | undefined | null | Error
+  >(undefined);
   const stream = getResourceStream(resourceType);
 
   useEffect(() => {
-    let observable: Observable<
-    | IResourceFiles
-    | null
-    > = of(null);
+    let observable: Observable<IResourceFiles | null> = of(null);
 
     if (resourceId) {
       observable = stream(resourceId).observable;
     }
 
     const subscription = observable.subscribe((response) => {
-      const files = !isNilOrError(response) ? response.data : response
+      const files = !isNilOrError(response) ? response.data : response;
       setFiles(files);
     });
 
     return () => subscription.unsubscribe();
-  }, [resourceId, resourceType])
+  }, [resourceId, resourceType]);
 
   return files;
 }
