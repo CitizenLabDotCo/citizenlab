@@ -569,6 +569,18 @@
         }
       },
 
+      "enalyzer_surveys": {
+        "type": "object",
+        "title": "Enalyzer Forms Surveys",
+        "description":  "Allow Enalyzer surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "surveymonkey_surveys": {
         "type": "object",
         "title": "Surveymonkey Surveys",
@@ -711,7 +723,7 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
-      },      
+      },
 
       "ideas_overview": {
         "type": "object",
@@ -906,6 +918,7 @@
   "dependencies": {
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
+    "enalyzer_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"]
   },
   "definitions": {
