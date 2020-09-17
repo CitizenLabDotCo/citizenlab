@@ -251,7 +251,7 @@
   "app.components.PostComponents.lastChangesTitleInitiative": "Últimos cambios a esta propuesta",
   "app.components.PostComponents.lastUpdated": "Editada {modificationTime}",
   "app.components.PostComponents.linkToHomePage": "Enlace a la página de inicio",
-  "app.components.PostComponents.loadMore": "",
+  "app.components.PostComponents.readMore": "",
   "app.components.Project.projectModeratorIndicator": "Tu eres el administrador de proyecto",
   "app.components.ProjectArchivedIndicator.archivedProject": "Desafortunadamente, ya no puedes participar en este proyecto porque ha sido archivado",
   "app.components.ProjectCard.a11y_projectDescription": "Descripción del proyecto:",
