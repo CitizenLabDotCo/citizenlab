@@ -1,5 +1,5 @@
 // libraries
-import React, { memo } from 'react';
+import React, { memo, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
@@ -7,14 +7,14 @@ import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// services
-import { LEGAL_PAGES } from 'services/pages';
-
 // components
 import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
+import { Spinner } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
+const PagesFooterNavigation = lazy(() =>
+  import('containers/PagesShowPage/PagesFooterNavigation')
+);
 
 // styles
 import styled from 'styled-components';
@@ -72,40 +72,6 @@ const PageDescription = styled.div``;
 
 const PagesNavWrapper = styled.div`
   width: 100%;
-`;
-
-const PagesNav = styled.nav`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
-  list-style: none;
-  margin: 0 auto;
-  padding-top: 90px;
-  padding-bottom: 80px;
-`;
-
-const StyledLink = styled(Link)`
-  color: #666;
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  padding: 20px 23px;
-  transition: all 80ms ease-out;
-  ${defaultCardStyle};
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
-`;
-
-const LinkIcon = styled(Icon)`
-  width: 10px;
 `;
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {
@@ -207,16 +173,9 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
       </PageContent>
 
       <PagesNavWrapper>
-        <PagesNav>
-          <StyledContentContainer>
-            {LEGAL_PAGES.map((pageSlug) => (
-              <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
-                <FormattedMessage {...messages[`${pageSlug}PageName`]} />
-                <LinkIcon name="chevron-right" />
-              </StyledLink>
-            ))}
-          </StyledContentContainer>
-        </PagesNav>
+        <Suspense fallback={<Spinner />}>
+          <PagesFooterNavigation currentPageSlug="accessibility-statement" />
+        </Suspense>
       </PagesNavWrapper>
     </Container>
   );
