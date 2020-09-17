@@ -68,16 +68,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'What can different users do?',
   },
-  permissionAction_commenting: {
+  permissionAction_commenting_idea: {
     id:
       'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
     defaultMessage: 'Commenting',
   },
-  permissionAction_voting: {
+  permissionAction_voting_idea: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_voting',
     defaultMessage: 'Voting',
   },
-  permissionAction_posting: {
+  permissionAction_posting_idea: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_posting',
     defaultMessage: 'Posting ideas',
   },

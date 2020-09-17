@@ -16,7 +16,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { getIdeaPostingRules } from 'services/getActionPermission';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';

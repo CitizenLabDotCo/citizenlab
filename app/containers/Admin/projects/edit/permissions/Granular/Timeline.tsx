@@ -75,7 +75,7 @@ class Timeline extends PureComponent<Props, State> {
   ) => {
     updatePhasePermission(
       permission.id,
-      permission.relationships.permittable.data.id,
+      permission.relationships.permission_scope.data.id,
       permission.attributes.action,
       { permitted_by: permittedBy, group_ids: groupIds }
     );

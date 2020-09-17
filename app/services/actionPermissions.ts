@@ -15,7 +15,7 @@ export interface IGlobalPermissionData {
     updated_at: string;
   };
   relationships: {
-    permittable: {
+    permission_scope: {
       data: null;
     };
     groups: {
@@ -39,7 +39,7 @@ export interface IPCPermissionData {
     updated_at: string;
   };
   relationships: {
-    permittable: {
+    permission_scope: {
       data: IRelationship;
     };
     groups: {
