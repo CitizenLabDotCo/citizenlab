@@ -294,6 +294,8 @@ interface State {
   project: IProject | null;
   phases: IPhase[] | null | undefined;
   loaded: boolean;
+  shouldSignIn: boolean;
+  shouldVerify: boolean;
 }
 
 class VoteControl extends PureComponent<
@@ -424,22 +426,29 @@ class VoteControl extends PureComponent<
               );
             }
 
-            return combineLatest(project$, phases$).pipe(
-              map(([project, phases]) => ({ idea, project, phases }))
+            return combineLatest(project$, phases$, authUser$).pipe(
+              map(([project, phases, authUser]) => ({
+                idea,
+                project,
+                phases,
+                authUser,
+              }))
             );
           })
         )
-        .subscribe(({ idea, project, phases }) => {
+        .subscribe(({ idea, project, phases, authUser }) => {
+          const isSignedIn = !isNilOrError(authUser);
           const upvotesCount = idea.data.attributes.upvotes_count;
           const downvotesCount = idea.data.attributes.downvotes_count;
           const votingEnabled =
-            idea.data.attributes.action_descriptor.voting.enabled;
+            idea.data.attributes.action_descriptor.voting_idea.enabled;
           const cancellingEnabled =
-            idea.data.attributes.action_descriptor.voting.cancelling_enabled;
+            idea.data.attributes.action_descriptor.voting_idea
+              .cancelling_enabled;
           const votingDisabledReason =
-            idea.data.attributes.action_descriptor.voting.disabled_reason;
+            idea.data.attributes.action_descriptor.voting_idea.disabled_reason;
           const votingFutureEnabled =
-            idea.data.attributes.action_descriptor.voting.future_enabled;
+            idea.data.attributes.action_descriptor.voting_idea.future_enabled;
           const projectProcessType = get(
             project,
             'data.attributes.process_type'
@@ -483,13 +492,20 @@ class VoteControl extends PureComponent<
             (pbPhase &&
               (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
           );
+          const shouldSignIn =
+            !votingEnabled &&
+            (votingDisabledReason === 'not_signed_in' ||
+              (votingDisabledReason === 'not_verified' && !isSignedIn));
           const shouldVerify =
-            !votingEnabled && votingDisabledReason === 'not_verified';
+            !votingEnabled &&
+            votingDisabledReason === 'not_verified' &&
+            isSignedIn;
           const verifiedButNotPermitted =
             !shouldVerify && votingDisabledReason === 'not_permitted';
           const showVoteControl = !!(
             !showBudgetControl &&
             (votingEnabled ||
+              shouldSignIn ||
               cancellingEnabled ||
               votingFutureEnabled ||
               upvotesCount > 0 ||
@@ -505,13 +521,12 @@ class VoteControl extends PureComponent<
             showVoteControl,
             upvotesCount,
             downvotesCount,
+            shouldSignIn,
+            shouldVerify,
+            authUser,
             loaded: true,
           });
         }),
-
-      authUser$.subscribe((authUser) => {
-        this.setState({ authUser });
-      }),
 
       myVote$.subscribe((myVote) => {
         this.setState({
@@ -566,11 +581,11 @@ class VoteControl extends PureComponent<
     } = this.state;
     const { ideaId, disabledVoteClick } = this.props;
     const votingEnabled =
-      idea?.data.attributes.action_descriptor.voting.enabled;
+      idea?.data.attributes.action_descriptor.voting_idea.enabled;
     const cancellingEnabled =
-      idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
+      idea?.data.attributes.action_descriptor.voting_idea.cancelling_enabled;
     const votingDisabledReason =
-      idea?.data.attributes.action_descriptor.voting.disabled_reason;
+      idea?.data.attributes.action_descriptor.voting_idea.disabled_reason;
     const isSignedIn = !isNilOrError(authUser);
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
     const isVerified =
@@ -663,6 +678,7 @@ class VoteControl extends PureComponent<
         !isSignedIn &&
         (votingEnabled ||
           votingDisabledReason === 'not_verified' ||
+          votingDisabledReason === 'not_signed_in' ||
           votingDisabledReason === 'not_permitted')
       ) {
         const currentPhase = getCurrentPhase(
@@ -679,7 +695,7 @@ class VoteControl extends PureComponent<
             pcType
           )
             ? {
-                action: 'voting',
+                action: 'voting_idea',
                 id: pcId,
                 type: pcType,
               }
@@ -724,11 +740,11 @@ class VoteControl extends PureComponent<
       downvotesCount,
     } = this.state;
     const votingEnabled =
-      idea?.data.attributes.action_descriptor.voting.enabled;
+      idea?.data.attributes.action_descriptor.voting_idea.enabled;
     const cancellingEnabled =
-      idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
+      idea?.data.attributes.action_descriptor.voting_idea.cancelling_enabled;
     const votingDisabledReason =
-      idea?.data.attributes.action_descriptor.voting.disabled_reason;
+      idea?.data.attributes.action_descriptor.voting_idea.disabled_reason;
     const isSignedIn = !isNilOrError(authUser);
     const isVerified =
       !isNilOrError(authUser) && authUser.data.attributes.verified;
@@ -736,12 +752,12 @@ class VoteControl extends PureComponent<
       (myVoteMode !== 'up' && votingEnabled) ||
       (myVoteMode === 'up' && cancellingEnabled) ||
       (!isVerified && votingDisabledReason === 'not_verified') ||
-      (!isSignedIn && votingDisabledReason === 'not_permitted');
+      (!isSignedIn && votingDisabledReason === 'not_signed_in');
     const downvotingEnabled =
       (myVoteMode !== 'down' && votingEnabled) ||
       (myVoteMode === 'down' && cancellingEnabled) ||
       (!isVerified && votingDisabledReason === 'not_verified') ||
-      (!isSignedIn && votingDisabledReason === 'not_permitted');
+      (!isSignedIn && votingDisabledReason === 'not_signed_in');
 
     if (!showVoteControl) return null;
 

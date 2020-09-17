@@ -11,13 +11,6 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin } from 'services/permissions/roles';
 import { IPhaseData } from './phases';
 
-// keys in ideas.attributes.action_descriptor
-export type IIdeaAction =
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'comment_voting_idea'
-  | 'budgeting';
-
 interface ActionPermissionHide {
   show: false;
   enabled: null;

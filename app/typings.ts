@@ -62,7 +62,7 @@ export interface Message {
 
 import { Messages } from 'react-intl';
 import { IProjectAction } from 'services/projects';
-import { IIdeaAction } from 'services/getActionPermission';
+import { IIdeaAction } from 'services/ideas';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;

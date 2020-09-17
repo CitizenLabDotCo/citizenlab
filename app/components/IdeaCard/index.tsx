@@ -138,13 +138,14 @@ class IdeaCard extends PureComponent<
     const prevIdea = prevProps.idea;
 
     if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
-      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingEnabled =
+        idea.attributes.action_descriptor.voting_idea.enabled;
       const prevVotingEnabled =
-        prevIdea.attributes.action_descriptor.voting.enabled;
+        prevIdea.attributes.action_descriptor.voting_idea.enabled;
       const votingDisabledReason =
-        idea.attributes.action_descriptor.voting.disabled_reason;
+        idea.attributes.action_descriptor.voting_idea.disabled_reason;
       const prevVotingDisabledReason =
-        prevIdea.attributes.action_descriptor.voting.disabled_reason;
+        prevIdea.attributes.action_descriptor.voting_idea.disabled_reason;
       const ideaBudgetingEnabled =
         idea.attributes?.action_descriptor?.budgeting?.enabled;
       const prevIdeaBudgetingEnabled =
@@ -212,9 +213,9 @@ class IdeaCard extends PureComponent<
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
-      const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
+      const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
       const commentingDescriptor =
-        idea?.attributes?.action_descriptor?.commenting;
+        idea?.attributes?.action_descriptor?.commenting_idea;
       const budgetingDescriptor =
         idea?.attributes?.action_descriptor?.budgeting;
       const projectId = idea?.relationships?.project.data?.id;
