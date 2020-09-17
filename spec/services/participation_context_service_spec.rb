@@ -34,7 +34,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe "posting_disabled_reason" do
+  describe "posting_idea_disabled_reason_for_project" do
     it "returns nil when posting is allowed" do
       project = create(:project_with_current_phase, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'posting_idea')
@@ -95,7 +95,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe "commenting_disabled_reason" do
+  describe "commenting_idea_disabled_reason_for_project" do
     let (:user) { create(:user) }
 
     context "for timeline projects" do

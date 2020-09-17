@@ -16,6 +16,11 @@ class PermissionsService
     not_verified: 'not_verified'
   }
 
+
+  def initialize
+    @verification_service = Verification::VerificationService.new
+  end
+
   def update_global_permissions
     actions = ACTIONS[nil]
     Permission.where(permission_scope: nil).where.not(action: actions).each(&:destroy!)
@@ -52,7 +57,7 @@ class PermissionsService
   end
 
   def posting_initiative_disabled_reason user
-    if !(permission = context_permission(context, 'posting_initiative'))&.granted_to?(user)
+    if !(permission = global_permission('posting_initiative'))&.granted_to?(user)
       if requires_verification?(permission) && !user&.verified
         POSTING_DISABLED_REASONS[:not_verified]
       elsif not_signed_in? user, permission
@@ -63,6 +68,29 @@ class PermissionsService
     else
       nil
     end
+  end
+
+
+  private 
+
+  def global_permission action
+    Permission.includes(:groups).find_by(permission_scope: nil, action: action)
+  end
+
+  def requires_verification? permission
+    permission &&
+      permission.permitted_by == 'groups' &&
+      @verification_service.find_verification_group(groups_by_permission_id(permission.id))
+  end
+
+  def groups_by_permission_id id
+    Permission.includes(:groups).find{|permission| permission.id == id}.groups
+  end
+
+  def not_signed_in? user, permission
+    permission &&
+      permission.permitted_by == 'users' &&
+      !user
   end
 
 end
