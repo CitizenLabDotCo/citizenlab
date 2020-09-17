@@ -21,11 +21,11 @@ class CommentVotePolicy < ApplicationPolicy
 
   def create?
     if user&.active? && (record.user_id == user.id) 
-      case record.votable_type
+      case record.votable&.post_type
       when Idea.name
         !ParticipationContextService.new.voting_disabled_reason_for_idea_comment record.votable, user
       when Initiative.name
-        !PermissionsService.new.voting_disabled_reason_for_initiative_comment record.votable
+        !PermissionsService.new.voting_disabled_reason_for_initiative_comment user
       else
         false
       end
