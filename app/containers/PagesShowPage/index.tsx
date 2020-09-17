@@ -39,7 +39,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
-const Container = styled.div`
+export const Container = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@ const Container = styled.div`
   `}
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
+export const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
@@ -67,7 +67,7 @@ const AttachmentsContainer = styled.div`
   padding-right: 20px;
 `;
 
-const PageContent = styled.main`
+export const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
@@ -75,7 +75,7 @@ const PageContent = styled.main`
   padding-bottom: 60px;
 `;
 
-const PageTitle = styled.h1`
+export const PageTitle = styled.h1`
   color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
@@ -91,7 +91,7 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const PageDescription = styled.div``;
+export const PageDescription = styled.div``;
 
 const PagesNavWrapper = styled.div`
   width: 100%;
@@ -109,7 +109,7 @@ const PagesNav = styled.nav`
   padding-bottom: 80px;
 `;
 
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
   color: #666;
   font-size: ${fontSizes.large}px;
   font-weight: 400;
@@ -127,7 +127,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const LinkIcon = styled(Icon)`
+export const LinkIcon = styled(Icon)`
   width: 13px;
   height: 13px;
 `;
