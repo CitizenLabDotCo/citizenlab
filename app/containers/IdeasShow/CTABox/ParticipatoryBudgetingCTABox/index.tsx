@@ -11,7 +11,7 @@ const Container = styled.div`
   border-radius: 2px;
   padding-bottom: 30px;
   border-bottom: 1px solid ${colors.separation};
-  background-color: #edeff0; // TODO: add color to component library
+  background-color: #edeff0;
   padding: 25px 30px;
 `;
 
@@ -37,7 +37,6 @@ interface Props {
 const ParticipatoryBudgetingCTABox = (props: Props) => {
   const { ideaId } = props;
 
-  // TODO: a11y title
   return (
     <Container>
       <StyledBudgetAssignment {...props} />
