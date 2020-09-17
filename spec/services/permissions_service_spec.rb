@@ -33,4 +33,46 @@ describe PermissionsService do
       expect(service.posting_initiative_disabled_reason(create(:user))).to eq 'not_permitted'
     end
   end
+
+  describe "commenting_initiative_disabled_reason" do
+    before do
+      service.update_global_permissions
+    end
+
+    it "returns nil when the commenting is allowed" do
+      expect(service.commenting_initiative_disabled_reason(create(:user))).to be_nil
+    end
+
+    it "returns `not_signed_in` when user needs to be signed in" do
+      permission = Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
+      permission.update!(permitted_by: 'users')
+      expect(service.commenting_initiative_disabled_reason(nil)).to eq 'not_signed_in'
+    end
+
+    it "returns `not_permitted` commenting is not permitted for the user" do
+      permission = Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
+      permission.update!(permitted_by: 'groups', 
+        group_ids: create_list(:group, 2).map(&:id)
+        )
+      expect(service.commenting_initiative_disabled_reason(create(:user))).to eq 'not_permitted'
+    end
+  end
+
+  describe "voting_initiative_disabled_reason" do
+    before do
+      service.update_global_permissions
+    end
+  end
+
+  describe "cancelling_votes_disabled_reason_for_initiative" do
+    before do
+      service.update_global_permissions
+    end
+  end
+
+  describe "voting_disabled_reason_for_initiative_comment" do
+    before do
+      service.update_global_permissions
+    end
+  end
 end
