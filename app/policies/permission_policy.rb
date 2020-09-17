@@ -13,11 +13,11 @@ class PermissionPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.active? && (user.admin? || (record.permission_scope && user.project_moderator?(record.permission_scope.project.id)))
+    user&.active_admin_or_moderator? record.permission_scope&.project&.id
   end
 
   def update?
-    user&.active? && (user.admin? || (record.permission_scope && user.project_moderator?(record.permission_scope.project.id)))
+    user&.active_admin_or_moderator? record.permission_scope&.project&.id
   end
 
   def participation_conditions?
