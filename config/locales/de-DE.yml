@@ -222,8 +222,8 @@ de:
       not_voted_comment_in: "Keine Bewertung eines Kommentars an einer Idee in dem Projekt %{value}"
       budgeted_in: "Zuweisung eines Budgets in dem Projekt %{value}"
       not_budgeted_in: "Keine Zuweisung eines Budgets in dem Projekt %{value}"
-      volunteered_in: "Volunteered in the project %{value}"
-      not_volunteered_in: "Didn't volunteer in the project %{value}"
+      volunteered_in: "Hat sich freiwillig am Projekt beteiligt %{value}"
+      not_volunteered_in: "Hat sich nicht freiwillig am Projekt beteiligt %{value}"
     participated_in_topic:
       in: "Beteiligung an einer Idee mit dem Thema %{value}"
       not_in: "Keine Beteiligung an einer Idee mit dem Thema %{value}"
@@ -240,7 +240,7 @@ de:
     role:
       is_admin: "Die Rolle ist Admin"
       not_is_admin: "Die Rolle ist nicht Admin"
-      is_project_moderator: "Role is project manager"
+      is_project_moderator: "Rolle ist Projektleiter"
       not_is_project_moderator: "Role is not project manager"
       is_normal_user: "Die Rolle ist normaler Benutzer"
       not_is_normal_user: "Die Rolle ist nicht normaler Benutzer"
