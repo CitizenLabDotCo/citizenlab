@@ -20,7 +20,6 @@ interface Props {
 }
 
 const CTABox = ({ className, ideaId, projectId }: Props) => {
-  // TODO: a11y title
   return (
     <Container className={className}>
       <StyledVoting ideaId={ideaId} projectId={projectId} />

@@ -33,7 +33,6 @@ const GoToCommentsButton = ({
     }
   };
 
-  // TODO: add icon
   return (
     <IdeaCTAButton
       onClick={onClick}

@@ -39,22 +39,16 @@ const BudgetAsssignment = ({
 }: Props) => {
   return (
     <ControlWrapper className={`${className}`}>
-      {participationContextId &&
-        participationContextType &&
-        budgetingDescriptor && (
-          <>
-            <ScreenReaderOnly>
-              <FormattedMessage tagName="h2" {...messages.a11y_budgetControl} />
-            </ScreenReaderOnly>
-            <AssignBudgetWrapper
-              ideaId={ideaId}
-              projectId={projectId}
-              participationContextId={participationContextId}
-              participationContextType={participationContextType}
-              budgetingDescriptor={budgetingDescriptor}
-            />
-          </>
-        )}
+      <ScreenReaderOnly>
+        <FormattedMessage tagName="h2" {...messages.a11y_budgetControl} />
+      </ScreenReaderOnly>
+      <AssignBudgetWrapper
+        ideaId={ideaId}
+        projectId={projectId}
+        participationContextId={participationContextId}
+        participationContextType={participationContextType}
+        budgetingDescriptor={budgetingDescriptor}
+      />
     </ControlWrapper>
   );
 };
