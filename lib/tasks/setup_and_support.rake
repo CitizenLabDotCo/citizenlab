@@ -264,4 +264,39 @@ namespace :setup_and_support do
       group.save!
     end
   end
+
+  desc "Add anonymous up/downvotes to ideas"
+  task :add_idea_votes, [:host,:url] => [:environment] do |t, args|
+    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      errors = []
+      data.each do |d|
+        idea = Idea.find_by slug: d['slug'].strip
+        if idea
+          d['add_upvotes'].to_i.times do 
+            add_anonymous_vote idea, 'up'
+          end
+          d['add_downvotes'].to_i.times do 
+            add_anonymous_vote idea, 'down'
+          end
+        else
+          errors += ["Couldn't find idea #{d['slug']}"]
+        end
+      end
+      if errors.present?
+        puts "Some errors occured!"
+        errors.each{|l| puts l}
+      else
+        puts "Success!"
+      end
+    end
+  end
+
+  def add_anonymous_vote votable, mode
+    attrs = AnonymizeUserService.new.anonymized_attributes Tenant.current.settings.dig('core','locales')
+    attrs.delete 'custom_field_values'
+    user = User.create! attrs
+    Vote.create!(votable: votable, mode: mode, user: user)
+    user.destroy!
+  end
 end
