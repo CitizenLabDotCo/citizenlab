@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-09-17
+
+### Added
+- Support checkbox, number and (free) text values when initializing custom fields through excel invites.
+
+### Changed
+- Copy update for German, Romanian, Spanish (CL), and French (BE).
+
 ## 2020-09-15
 
 ### Added
