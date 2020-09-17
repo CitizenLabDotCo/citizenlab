@@ -181,7 +181,7 @@ class WebApi::V1::VotesController < ApplicationController
         raise "No voting disabled reasons can be determined for #{vote.votable.post_type} model" 
       end
     else
-      raise "No voting disabled reasons can be determined for #{vote.votable.class} model"
+      raise "No voting disabled reasons can be determined for #{vote.votable_type} model"
     end
     if reason
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
