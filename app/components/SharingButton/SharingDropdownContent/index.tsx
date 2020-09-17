@@ -1,8 +1,5 @@
 import React from 'react';
 
-// components
-import { Icon } from 'cl2-component-library';
-
 // style
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -85,14 +82,12 @@ const SharingDropdownContent = ({
     <Container id={id || ''} className={className || ''}>
       <Buttons>
         <Facebook url={buildUrl('facebook')} />
-        {<Messenger url={buildUrl('messenger')} />}
-        {
-          <Twitter
-            url={buildUrl('twitter')}
-            twitterMessage={twitterMessage}
-            isLastItem={!hasEmailSharing}
-          />
-        }
+        <Messenger url={buildUrl('messenger')} />
+        <Twitter
+          url={buildUrl('twitter')}
+          twitterMessage={twitterMessage}
+          isLastItem={!hasEmailSharing}
+        />
         {emailBody && emailSubject && (
           <Email emailBody={emailBody} emailSubject={emailSubject} />
         )}
