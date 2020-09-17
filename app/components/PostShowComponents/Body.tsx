@@ -1,11 +1,11 @@
-import React, { memo, useState } from 'react';
+import React, { memo /*, useState */ } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useTranslation from 'hooks/useTranslation';
 import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Button from 'components/UI/Button';
+// import Button from 'components/UI/Button';
 
 // typings
 import { Locale } from 'typings';
@@ -14,16 +14,16 @@ import { Locale } from 'typings';
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+// // i18n
+// import { FormattedMessage } from 'utils/cl-intl';
+// import messages from './messages';
 
 const Container = styled.div``;
 
-const LoadMoreTextButton = styled(Button)`
-  text-decoration: underline;
-  display: inline-block;
-`;
+// const ReadMoreTextButton = styled(Button)`
+//   text-decoration: underline;
+//   display: inline-block;
+// `;
 
 interface Props {
   postId: string;
@@ -36,17 +36,17 @@ interface Props {
 
 const Body = memo<Props>(
   ({ postId, body, locale, translateButtonClicked, className, postType }) => {
-    const [loadMoreButtonClicked, setLoadMoreButtonClicked] = useState(false);
+    // const [readMoreButtonClicked, setReadMoreButtonClicked] = useState(false);
     const windowSize = useWindowSize();
     const theme: any = useTheme();
     const smallerThanSmallTablet = windowSize
       ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
-    const initialWordsLimitToDisplay = 50;
+    // const initialWordsLimitToDisplay = 50;
 
-    const loadMore = () => {
-      setLoadMoreButtonClicked(true);
-    };
+    // const readMore = () => {
+    //   setReadMoreButtonClicked(true);
+    // };
 
     const getBodyText = (bodyText: string) => {
       if (translateButtonClicked && locale) {
@@ -65,27 +65,24 @@ const Body = memo<Props>(
       return bodyText;
     };
 
-    const hasLoadMore = (bodyText: string) => {
-      const wordsArray = bodyText.split(' ');
-      const numberOfWords = wordsArray.length;
-      const hasTooLongBody = numberOfWords > initialWordsLimitToDisplay;
-      return hasTooLongBody && !loadMoreButtonClicked;
-    };
+    // const hasReadMore = (bodyText: string) => {
+    //   const wordsArray = bodyText.split(' ');
+    //   const numberOfWords = wordsArray.length;
+    //   const hasTooLongBody = numberOfWords > initialWordsLimitToDisplay;
+    //   return hasTooLongBody && !readMoreButtonClicked;
+    // };
 
     const bodyText = getBodyText(body);
-    const bodyTextHasLoadMore = hasLoadMore(bodyText);
-    const showLoadMoreButton = bodyTextHasLoadMore && !loadMoreButtonClicked;
+    // const bodyTextHasLoadMore = hasReadMore(bodyText);
+    // const showReadMoreButton = bodyTextHasReadMore && !readMoreButtonClicked;
 
-    const bodyTextToDisplay = bodyTextHasLoadMore
-      ? bodyText
-          .split(' ')
-          .slice(0, initialWordsLimitToDisplay)
-          .join(' ')
-          .concat('...')
-      : bodyText;
-
-    // TODO: a11y
-    // TODO: styling
+    // const bodyTextToDisplay = bodyTextHasLoadMore
+    //   ? bodyText
+    //       .split(' ')
+    //       .slice(0, initialWordsLimitToDisplay)
+    //       .join(' ')
+    //       .concat('...')
+    //   : bodyText;
 
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
@@ -95,14 +92,14 @@ const Body = memo<Props>(
           fontWeight={300}
         >
           <div aria-live="polite">
-            <span dangerouslySetInnerHTML={{ __html: bodyTextToDisplay }} />
+            <span dangerouslySetInnerHTML={{ __html: bodyText }} />
           </div>
         </QuillEditedContent>
-        {showLoadMoreButton && (
+        {/* {showLoadMoreButton && (
           <LoadMoreTextButton buttonStyle="text" onClick={loadMore}>
             <FormattedMessage {...messages.readMore} />
           </LoadMoreTextButton>
-        )}
+        )} */}
       </Container>
     );
   }
