@@ -42,61 +42,70 @@ const Body = memo<Props>(
     const smallerThanSmallTablet = windowSize
       ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
+    const initialWordsLimitToDisplay = 50;
 
     const loadMore = () => {
       setLoadMoreButtonClicked(true);
     };
 
-    if (locale) {
-      const translation = useTranslation({
-        attributeName: 'body_multiloc',
-        localeTo: locale,
-        id: postId,
-        context: postType,
-      });
+    const getBodyText = (bodyText: string) => {
+      if (translateButtonClicked && locale) {
+        const translation = useTranslation({
+          attributeName: 'body_multiloc',
+          localeTo: locale,
+          id: postId,
+          context: postType,
+        });
 
-      if (!isNilOrError(translation)) {
-        const originalBodyText = translateButtonClicked
-          ? translation.attributes.translation
-          : body;
-        const wordsArray = originalBodyText.split(' ');
-        const numberOfWords = wordsArray.length;
-        const initialWordsLimitToDisplay = 50;
-        const hasTooLongBody = numberOfWords > initialWordsLimitToDisplay;
-        const showLoadMoreButton = hasTooLongBody && !loadMoreButtonClicked;
-        const bodyTextToDisplay = showLoadMoreButton
-          ? wordsArray
-              .slice(0, initialWordsLimitToDisplay)
-              .join(' ')
-              .concat('...')
-          : originalBodyText;
-
-        // TODO: copy
-        // TODO: a11y
-        // TODO: styling
-
-        return (
-          <Container id={`e2e-${postType}-description`} className={className}>
-            <QuillEditedContent
-              textColor={theme.colorText}
-              fontSize={smallerThanSmallTablet ? 'base' : 'large'}
-              fontWeight={300}
-            >
-              <div aria-live="polite">
-                <span dangerouslySetInnerHTML={{ __html: bodyTextToDisplay }} />
-              </div>
-            </QuillEditedContent>
-            {showLoadMoreButton && (
-              <LoadMoreTextButton buttonStyle="text" onClick={loadMore}>
-                <FormattedMessage {...messages.loadMore} />
-              </LoadMoreTextButton>
-            )}
-          </Container>
-        );
+        if (!isNilOrError(translation)) {
+          return translation.attributes.translation;
+        }
       }
-    }
 
-    return null;
+      return bodyText;
+    };
+
+    const hasLoadMore = (bodyText: string) => {
+      const wordsArray = bodyText.split(' ');
+      const numberOfWords = wordsArray.length;
+      const hasTooLongBody = numberOfWords > initialWordsLimitToDisplay;
+      return hasTooLongBody && !loadMoreButtonClicked;
+    };
+
+    const bodyText = getBodyText(body);
+    const bodyTextHasLoadMore = hasLoadMore(bodyText);
+    const showLoadMoreButton = bodyTextHasLoadMore && !loadMoreButtonClicked;
+
+    const bodyTextToDisplay = bodyTextHasLoadMore
+      ? bodyText
+          .split(' ')
+          .slice(0, initialWordsLimitToDisplay)
+          .join(' ')
+          .concat('...')
+      : bodyText;
+
+    // TODO: copy
+    // TODO: a11y
+    // TODO: styling
+
+    return (
+      <Container id={`e2e-${postType}-description`} className={className}>
+        <QuillEditedContent
+          textColor={theme.colorText}
+          fontSize={smallerThanSmallTablet ? 'base' : 'large'}
+          fontWeight={300}
+        >
+          <div aria-live="polite">
+            <span dangerouslySetInnerHTML={{ __html: bodyTextToDisplay }} />
+          </div>
+        </QuillEditedContent>
+        {showLoadMoreButton && (
+          <LoadMoreTextButton buttonStyle="text" onClick={loadMore}>
+            <FormattedMessage {...messages.loadMore} />
+          </LoadMoreTextButton>
+        )}
+      </Container>
+    );
   }
 );
 
