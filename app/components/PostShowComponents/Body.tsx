@@ -14,6 +14,10 @@ import { Locale } from 'typings';
 import styled, { useTheme } from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 const Container = styled.div``;
 
 const LoadMoreTextButton = styled(Button)`
@@ -84,7 +88,7 @@ const Body = memo<Props>(
             </QuillEditedContent>
             {showLoadMoreButton && (
               <LoadMoreTextButton buttonStyle="text" onClick={loadMore}>
-                Load more...
+                <FormattedMessage {...messages.loadMore} />
               </LoadMoreTextButton>
             )}
           </Container>

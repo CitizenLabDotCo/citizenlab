@@ -34,9 +34,7 @@ import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { media } from 'utils/styleUtils';
 
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
+const Container = styled.div``;
 
 const CommentContainer = styled.div`
   padding-top: 20px;

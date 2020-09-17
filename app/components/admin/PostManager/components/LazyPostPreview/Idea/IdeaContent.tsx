@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
@@ -32,6 +32,7 @@ import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
@@ -168,6 +169,7 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
 }
@@ -200,10 +202,11 @@ export class IdeaContent extends PureComponent<
       ideaImages,
       ideaFiles,
       tenant,
+      locale,
       handleClickEdit,
     } = this.props;
 
-    if (!isNilOrError(idea)) {
+    if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(tenant)) {
       const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge =
@@ -214,8 +217,8 @@ export class IdeaContent extends PureComponent<
       const ideaAddress = idea.attributes.location_description || null;
       // AuthorId can be null if user has been deleted
       const authorId = idea.relationships.author.data?.id || null;
-      const ideaProposedBudget = idea.attributes.proposed_budget;
-      const hasMultipleBodyAttributes = ideaProposedBudget !== null;
+      const proposedBudget = idea.attributes.proposed_budget;
+      const currency = tenant.attributes.settings.core.currency;
 
       return (
         <Container>
@@ -262,22 +265,24 @@ export class IdeaContent extends PureComponent<
                   />
                 )}
 
-                {hasMultipleBodyAttributes && (
-                  <BodySectionTitle>
-                    <FormattedMessage {...messages.proposedBudgetTitle} />
-                  </BodySectionTitle>
-                )}
-                {idea.attributes.proposed_budget !== null && (
-                  <IdeaProposedBudget
-                    proposedBudget={idea.attributes.proposed_budget}
-                  />
+                {proposedBudget && (
+                  <>
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.proposedBudgetTitle} />
+                    </BodySectionTitle>
+                    <IdeaProposedBudget
+                      formattedBudget={getFormattedBudget(
+                        locale,
+                        proposedBudget,
+                        currency
+                      )}
+                    />
+                    <BodySectionTitle>
+                      <FormattedMessage {...messages.bodyTitle} />
+                    </BodySectionTitle>
+                  </>
                 )}
 
-                {hasMultipleBodyAttributes && (
-                  <BodySectionTitle>
-                    <FormattedMessage {...messages.bodyTitle} />
-                  </BodySectionTitle>
-                )}
                 <StyledBody
                   postId={ideaId}
                   postType="idea"
@@ -307,13 +312,13 @@ export class IdeaContent extends PureComponent<
               <Right>
                 <VotePreview ideaId={ideaId} />
 
-                {idea.attributes.budget && !isNilOrError(tenant) && (
+                {idea.attributes.budget && (
                   <>
                     <BudgetBox>
                       <FormattedNumber
                         value={idea.attributes.budget}
                         style="currency"
-                        currency={tenant.attributes.settings.core.currency}
+                        currency={currency}
                         minimumFractionDigits={0}
                         maximumFractionDigits={0}
                       />
@@ -350,6 +355,7 @@ export class IdeaContent extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
+  locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => (
     <GetProject projectId={get(idea, 'relationships.project.data.id')}>

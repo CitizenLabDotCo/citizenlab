@@ -252,8 +252,6 @@ class CustomButton extends Inline {
   static create(value) {
     const node = super.create();
     node.setAttribute('href', value);
-    node.setAttribute('type', 'button');
-    node.setAttribute('target', '_blank');
     node.setAttribute('rel', 'noorefferer');
     return node;
   }
