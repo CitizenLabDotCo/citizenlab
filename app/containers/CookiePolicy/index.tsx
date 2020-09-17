@@ -11,67 +11,24 @@ import { InjectedIntlProps } from 'react-intl';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
-import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import { Spinner } from 'cl2-component-library';
 const PagesFooterNavigation = lazy(() =>
   import('containers/PagesShowPage/PagesFooterNavigation')
 );
+import {
+  Container,
+  StyledContentContainer,
+  PageContent,
+  PageTitle,
+  PageDescription,
+} from 'containers/PagesShowPage';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// these styled components should be imported from PagesShowPage for consistency.
-// but : https://github.com/styled-components/styled-components/issues/1063
-
-const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
-  display: flex;
-  flex-direction: column;
-  background: ${colors.background};
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
-  `}
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
-`;
-
-const PageContent = styled.main`
-  flex-shrink: 0;
-  flex-grow: 1;
-  background: #fff;
-  padding-top: 60px;
-  padding-bottom: 60px;
-`;
-
-const PageTitle = styled.h1`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  padding-top: 0px;
-  padding-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl};
-  `}
-`;
-
-const PageDescription = styled.div``;
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
