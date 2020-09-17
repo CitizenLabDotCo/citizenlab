@@ -1,10 +1,15 @@
-import { PostingDisabledReason } from './projects';
+import {
+  PostingDisabledReason,
+  PollDisabledReason,
+  IProjectData,
+} from './projects';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { GetProjectChildProps } from 'resources/GetProject';
 import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin } from 'services/permissions/roles';
+import { IPhaseData } from './phases';
 
 // keys in ideas.attributes.action_descriptor
 export type IIdeaAction =
@@ -28,7 +33,7 @@ interface ActionPermissionEnabled {
 interface ActionPermissionDisabled {
   show: true;
   enabled: false;
-  disabledReason: IdeaPostingDisabledReason;
+  disabledReason: IdeaPostingDisabledReason | PollTakingDisabledReason;
   action: null;
 }
 interface ActionPermissionMaybe {
@@ -38,6 +43,15 @@ interface ActionPermissionMaybe {
   action: IPreliminaryAction;
 }
 
+type ActionPermission =
+  | ActionPermissionHide
+  | ActionPermissionMaybe
+  | ActionPermissionEnabled
+  | ActionPermissionDisabled;
+
+/*----------- Idea Posting ------------*/
+
+// When disabled, these are the reasons to explain to the user
 export type IdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
@@ -45,16 +59,11 @@ export type IdeaPostingDisabledReason =
   | 'notActivePhase'
   | 'futureEnabled';
 
+// When disabled but user might get access, here are the next steps for this user
 export type IPreliminaryAction =
   | 'sign_in_up'
   | 'verify'
   | 'sign_in_up_and_verify';
-
-type ActionPermission =
-  | ActionPermissionHide
-  | ActionPermissionMaybe
-  | ActionPermissionEnabled
-  | ActionPermissionDisabled;
 
 const ideaPostingDisabledReason = (
   backendReason: PostingDisabledReason | null,
@@ -65,21 +74,6 @@ const ideaPostingDisabledReason = (
   action: IPreliminaryAction | null;
 } => {
   switch (backendReason) {
-    case 'project_inactive':
-      return {
-        disabledReason: futureEnabled ? 'futureEnabled' : 'projectInactive',
-        action: null,
-      };
-    case 'posting_disabled':
-      return {
-        disabledReason: 'postingDisabled',
-        action: null,
-      };
-    case 'not_permitted':
-      return {
-        disabledReason: 'notPermitted',
-        action: null,
-      };
     case 'not_verified':
       return signedIn
         ? {
@@ -94,6 +88,21 @@ const ideaPostingDisabledReason = (
       return {
         disabledReason: null,
         action: 'sign_in_up',
+      };
+    case 'project_inactive':
+      return {
+        disabledReason: futureEnabled ? 'futureEnabled' : 'projectInactive',
+        action: null,
+      };
+    case 'posting_disabled':
+      return {
+        disabledReason: 'postingDisabled',
+        action: null,
+      };
+    case 'not_permitted':
+      return {
+        disabledReason: 'notPermitted',
+        action: null,
       };
 
     default:
@@ -165,7 +174,9 @@ export const getIdeaPostingRules = ({
       }
     }
 
+    // continuous, not an enabled ideation project
     if (
+      isNilOrError(phase) &&
       !(
         project.attributes.participation_method === 'ideation' &&
         project.attributes.posting_enabled &&
@@ -217,6 +228,91 @@ export const getIdeaPostingRules = ({
     show: true,
     enabled: true,
     disabledReason: null,
+    action: null,
+  };
+};
+
+/*----------- Poll Taking ------------*/
+
+export type PollTakingDisabledReason =
+  | 'notPermitted'
+  | 'maybeNotPermitted'
+  | 'projectInactive'
+  | 'notActivePhase'
+  | 'alreadyResponded'
+  | 'notVerified'
+  | 'maybeNotVerified';
+
+const pollTakingDisabledReason = (
+  backendReason: PollDisabledReason | null,
+  signedIn: boolean
+): PollTakingDisabledReason => {
+  switch (backendReason) {
+    case 'project_inactive':
+      return 'projectInactive';
+    case 'already_responded':
+      return 'alreadyResponded';
+    case 'not_verified':
+      return signedIn ? 'notVerified' : 'maybeNotVerified';
+    case 'not_permitted':
+      return signedIn ? 'notPermitted' : 'maybeNotPermitted';
+    case 'not_signed_in':
+      return 'maybeNotPermitted';
+    default:
+      return 'notPermitted';
+  }
+};
+
+/** Should we enable taking the poll in the curret context? And if not, with what message?
+ * @param context
+ *  project: The project context we are posting to.
+ *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
+ *  signedIn: Whether the user is currently authenticated
+ */
+export const getPollTakingRules = ({
+  project,
+  phaseContext,
+  signedIn,
+}: {
+  project: IProjectData;
+  phaseContext?: IPhaseData | null;
+  signedIn: boolean;
+}): ActionPermission => {
+  const {
+    enabled,
+    disabled_reason,
+  } = project.attributes.action_descriptor.taking_poll;
+
+  if (phaseContext) {
+    if (
+      phaseContext &&
+      pastPresentOrFuture([
+        phaseContext.attributes.start_at,
+        phaseContext.attributes.end_at,
+      ]) !== 'present'
+    ) {
+      return {
+        enabled: false,
+        disabledReason: 'notActivePhase',
+        show: true,
+        action: null,
+      };
+    }
+  }
+
+  if (enabled) {
+    return {
+      enabled,
+      disabledReason: null,
+      show: true,
+      action: null,
+    };
+  }
+  // if not in phase context
+  return {
+    enabled: false,
+    disabledReason: pollTakingDisabledReason(disabled_reason, !!signedIn),
+    show: true,
     action: null,
   };
 };
