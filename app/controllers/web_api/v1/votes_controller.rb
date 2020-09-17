@@ -179,6 +179,7 @@ class WebApi::V1::VotesController < ApplicationController
         ps.voting_disabled_reason_for_initiative_comment vote.user
       else
         raise "No voting disabled reasons can be determined for #{vote.votable.post_type} model" 
+      end
     else
       raise "No voting disabled reasons can be determined for #{vote.votable.class} model"
     end
