@@ -44,10 +44,6 @@ const StyledButton = styled.button`
   }
 `;
 
-const PagesNavWrapper = styled.div`
-  width: 100%;
-`;
-
 const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
@@ -180,11 +176,9 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
         </StyledContentContainer>
       </PageContent>
 
-      <PagesNavWrapper>
-        <Suspense fallback={<Spinner />}>
-          <PagesFooterNavigation currentPageSlug="cookie-policy" />
-        </Suspense>
-      </PagesNavWrapper>
+      <Suspense fallback={<Spinner />}>
+        <PagesFooterNavigation currentPageSlug="cookie-policy" />
+      </Suspense>
     </Container>
   );
 });
