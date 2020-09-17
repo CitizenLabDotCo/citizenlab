@@ -511,7 +511,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         (!isNilOrError(phase)
           ? phase.attributes.commenting_enabled
           : project.attributes.commenting_enabled) &&
-        get(project, 'attributes.action_descriptor.commenting.enabled')
+        get(project, 'attributes.action_descriptor.commenting_idea.enabled')
       );
       const imageUrl =
         !isNilOrError(projectImages) && projectImages.length > 0

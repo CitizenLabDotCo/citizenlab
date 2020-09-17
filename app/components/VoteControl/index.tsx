@@ -294,8 +294,6 @@ interface State {
   project: IProject | null;
   phases: IPhase[] | null | undefined;
   loaded: boolean;
-  shouldSignIn: boolean;
-  shouldVerify: boolean;
 }
 
 class VoteControl extends PureComponent<
@@ -521,8 +519,6 @@ class VoteControl extends PureComponent<
             showVoteControl,
             upvotesCount,
             downvotesCount,
-            shouldSignIn,
-            shouldVerify,
             authUser,
             loaded: true,
           });

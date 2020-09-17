@@ -8,7 +8,6 @@ import { GetProjectChildProps } from 'resources/GetProject';
 import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { isAdmin } from 'services/permissions/roles';
 import { IPhaseData } from './phases';
 
 interface ActionPermissionHide {
