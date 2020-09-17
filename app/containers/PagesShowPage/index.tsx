@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense, lazy } from 'react';
 import { adopt } from 'react-adopt';
 import { isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -8,13 +8,13 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
+import { Icon, Spinner } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// services
-import { PageLink } from 'services/pageLink';
+const PagesFooterNavigation = lazy(() =>
+  import('containers/PagesShowPage/PagesFooterNavigation')
+);
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -92,22 +92,6 @@ export const PageTitle = styled.h1`
 `;
 
 export const PageDescription = styled.div``;
-
-const PagesNavWrapper = styled.div`
-  width: 100%;
-`;
-
-const PagesNav = styled.nav`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
-  list-style: none;
-  margin: 0 auto;
-  padding-top: 90px;
-  padding-bottom: 80px;
-`;
 
 export const StyledLink = styled(Link)`
   color: #666;
@@ -221,28 +205,9 @@ class PagesShowPage extends PureComponent<
             )}
           </PageContent>
 
-          {!isNilOrError(pageLinks) && pageLinks.length > 0 && (
-            <PagesNavWrapper>
-              <PagesNav>
-                <StyledContentContainer>
-                  {pageLinks
-                    .filter((pageLink) => !isNilOrError(pageLink))
-                    .map((pageLink: PageLink) => (
-                      <StyledLink
-                        className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
-                        to={`/pages/${pageLink.attributes.linked_page_slug}`}
-                        key={pageLink.id}
-                      >
-                        <T
-                          value={pageLink.attributes.linked_page_title_multiloc}
-                        />
-                        <LinkIcon name="chevron-right" />
-                      </StyledLink>
-                    ))}
-                </StyledContentContainer>
-              </PagesNav>
-            </PagesNavWrapper>
-          )}
+          <Suspense fallback={<Spinner />}>
+            <PagesFooterNavigation currentPageSlug="cookie-policy" />
+          </Suspense>
         </Container>
       );
     }
