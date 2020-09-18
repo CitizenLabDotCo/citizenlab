@@ -31,19 +31,21 @@ const Facebook = ({
     const facebookAppId =
       tenant.data.attributes.settings.facebook_login?.app_id;
 
-    return (
-      <FacebookButton
-        appId={facebookAppId}
-        url={url}
-        className="sharingButton facebook first"
-        sharer={true}
-        onClick={trackClickByEventName(tracks.clickFbShare.name)}
-        aria-label={formatMessage(messages.shareOnFacebook)}
-      >
-        <StyledIcon name="facebook" />
-        {'Facebook'}
-      </FacebookButton>
-    );
+    if (facebookAppId) {
+      return (
+        <FacebookButton
+          appId={facebookAppId}
+          url={url}
+          className="sharingButton facebook first"
+          sharer={true}
+          onClick={trackClickByEventName(tracks.clickFbShare.name)}
+          aria-label={formatMessage(messages.shareOnFacebook)}
+        >
+          <StyledIcon name="facebook" />
+          {'Facebook'}
+        </FacebookButton>
+      );
+    }
   }
 
   return null;

@@ -34,20 +34,22 @@ const Messenger = ({
     const facebookAppId =
       tenant.data.attributes.settings.facebook_login?.app_id;
 
-    return (
-      <a
-        className="sharingButton messenger"
-        href={`fb-messenger://share/?link=${encodeURIComponent(
-          url
-        )}&app_id=${facebookAppId}`}
-        onClick={handleClick}
-        role="button"
-        aria-label={formatMessage(messages.shareViaMessenger)}
-      >
-        <StyledIcon name="messenger" />
-        {'Messenger'}
-      </a>
-    );
+    if (facebookAppId) {
+      return (
+        <a
+          className="sharingButton messenger"
+          href={`fb-messenger://share/?link=${encodeURIComponent(
+            url
+          )}&app_id=${facebookAppId}`}
+          onClick={handleClick}
+          role="button"
+          aria-label={formatMessage(messages.shareViaMessenger)}
+        >
+          <StyledIcon name="messenger" />
+          {'Messenger'}
+        </a>
+      );
+    }
   }
 
   return null;
