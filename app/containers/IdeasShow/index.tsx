@@ -684,8 +684,8 @@ export class IdeasShow extends PureComponent<
                 </Comments>
               </LeftColumn>
 
-              <Suspense fallback={<Spinner />}>
-                {biggerThanLargeTablet && (
+              {biggerThanLargeTablet && (
+                <Suspense fallback={<Spinner />}>
                   <RightColumnDesktop
                     ideaId={ideaId}
                     projectId={projectId}
@@ -696,8 +696,8 @@ export class IdeasShow extends PureComponent<
                     participationContextType={participationContextType}
                     budgetingDescriptor={budgetingDescriptor}
                   />
-                )}
-              </Suspense>
+                </Suspense>
+              )}
             </Content>
           </IdeaContainer>
 
