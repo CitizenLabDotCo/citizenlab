@@ -21,6 +21,7 @@ import {
   PageDescription,
 } from 'containers/PagesShowPage';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { values } from 'react-intl/locale-data/af';
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
@@ -66,11 +67,19 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 </ul>
                 <h2>{formatMessage(messages.assesmentMethodsTitle)}</h2>
                 <p>
-                  {formatMessage(messages.assesmentText)}{' '}
-                  <a href="http://label.anysurfer.be/index.php?id=689&l=en">
-                    http://label.anysurfer.be/index.php?id=689&l=en
-                  </a>
-                  .
+                  <FormattedMessage
+                    {...messages.assesmentText}
+                    values={{
+                      statusPageLink: (
+                        <a
+                          href="http://label.anysurfer.be/index.php?id=689&l=en"
+                          target="_blank"
+                        >
+                          {formatMessage(messages.statusPageText)}
+                        </a>
+                      ),
+                    }}
+                  />
                 </p>
                 <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                 <p>{formatMessage(messages.feedbackProcessIntro)}</p>
