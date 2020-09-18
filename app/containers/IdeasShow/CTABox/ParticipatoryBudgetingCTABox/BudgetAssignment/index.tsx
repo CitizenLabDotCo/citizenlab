@@ -12,7 +12,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 const ControlWrapper = styled.div`
   width: 100%;
