@@ -21,7 +21,6 @@ import {
   PageDescription,
 } from 'containers/PagesShowPage';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { values } from 'react-intl/locale-data/af';
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
