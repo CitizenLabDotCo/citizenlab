@@ -1,15 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import GoToCommentsButton from './GoToCommentsButton';
+import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../../Buttons/IdeaSharingButton';
-import IdeaCTAButton from './IdeaCTAButton';
+import SharingButtonComponent from '../../Buttons/SharingButtonComponent';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdea from 'hooks/useIdea';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
 
 const StyledGoToCommentsButton = styled(GoToCommentsButton)`
   margin-bottom: 10px;
@@ -20,10 +15,7 @@ interface Props {
   border?: string;
 }
 
-const IdeaCTAButtons = ({
-  ideaId,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const IdeaCTAButtons = ({ ideaId }: Props) => {
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
@@ -35,12 +27,7 @@ const IdeaCTAButtons = ({
         {commentingEnabled && <StyledGoToCommentsButton />}
         <IdeaSharingButton
           ideaId={ideaId}
-          buttonComponent={
-            <IdeaCTAButton
-              iconName="share-arrow"
-              buttonText={formatMessage(messages.shareIdea)}
-            />
-          }
+          buttonComponent={<SharingButtonComponent />}
         />
       </>
     );
@@ -49,4 +36,4 @@ const IdeaCTAButtons = ({
   return null;
 };
 
-export default injectIntl(IdeaCTAButtons);
+export default IdeaCTAButtons;
