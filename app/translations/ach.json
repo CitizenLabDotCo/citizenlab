@@ -1632,6 +1632,7 @@
   "app.containers.InitiativesShow.VoteControl.vote": "",
   "app.containers.InitiativesShow.VoteControl.votedText": "",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "",
+  "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "",
   "app.containers.InitiativesShow.VoteControl.xDays": "",
   "app.containers.InitiativesShow.VoteControl.xPeople": "",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "",
