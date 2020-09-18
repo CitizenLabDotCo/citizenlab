@@ -23,28 +23,6 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.changePreferencesButtonText',
     defaultMessage: 'you can change your preferences',
   },
-  effortsTitle: {
-    id: 'app.containers.AccessibilityStatement.effortsTitle',
-    defaultMessage: 'Efforts to support accessibility',
-  },
-  measures: {
-    id: 'app.containers.AccessibilityStatement.measures',
-    defaultMessage:
-      'CitizenLab takes the following measures to ensure accessibility:',
-  },
-  measure1: {
-    id: 'app.containers.AccessibilityStatement.measure1',
-    defaultMessage: 'Accessibility is part of our mission statement.',
-  },
-  measure2: {
-    id: 'app.containers.AccessibilityStatement.measure2',
-    defaultMessage: 'An accessibility officer or official has been appointed.',
-  },
-  measure3: {
-    id: 'app.containers.AccessibilityStatement.measure3',
-    defaultMessage:
-      'Clear accessibility targets and responsibilities exist within the organization.',
-  },
   conformanceStatus: {
     id: 'app.containers.AccessibilityStatement.conformanceStatus',
     defaultMessage: 'Conformance status',
@@ -102,25 +80,12 @@ export default defineMessages({
   },
   assesmentMethodsTitle: {
     id: 'app.containers.AccessibilityStatement.assesmentMethodsTitle',
-    defaultMessage: 'Assessment methods',
+    defaultMessage: 'Assessment method',
   },
-  assesmentMethodsIntro: {
-    id: 'app.containers.AccessibilityStatement.assesmentMethodsIntro',
+  assesmentText: {
+    id: 'app.containers.AccessibilityStatement.assesmentText',
     defaultMessage:
-      'CitizenLab assessed the accessibility of this site using the following method(s):',
-  },
-  externalEvaluation: {
-    id: 'app.containers.AccessibilityStatement.externalEvaluation',
-    defaultMessage:
-      'External evaluation: the site was evaluated by an external entity not involved in the design and development process.',
-  },
-  evaluationReportTitle: {
-    id: 'app.containers.AccessibilityStatement.evaluationReportTitle',
-    defaultMessage: 'Evaluation report',
-  },
-  evaluationReportIntro: {
-    id: 'app.containers.AccessibilityStatement.evaluationReportIntro',
-    defaultMessage: 'A recent evaluation report for the site can be found at:',
+      'The accessibility of this site was evaluated by an external entity not involved in the design and development process as can be identified in this status page:',
   },
   feedbackProcessTitle: {
     id: 'app.containers.AccessibilityStatement.feedbackProcessTitle',
