@@ -2,129 +2,164 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Cookie policy
-  cookiePolicyTitle: {
-    id: 'app.containers.CookiePolicy.cookiePolicyTitle',
-    defaultMessage: 'Cookie Policy',
+  title: {
+    id: 'app.containers.AccessibilityStatement.title',
+    defaultMessage: 'Accessibility Statement',
   },
-  cookiePolicyDescription: {
-    id: 'app.containers.CookiePolicy.cookiePolicyDescription',
-    defaultMessage:
-      'A detailed explanation of how we use cookies on this platform',
+  pageDescription: {
+    id: 'app.containers.AccessibilityStatement.pageDescription',
+    defaultMessage: 'A statement on the accessibility of this website',
   },
   intro: {
-    id: 'app.containers.CookiePolicy.intro',
+    id: 'app.containers.AccessibilityStatement.intro',
     defaultMessage:
-      'As most websites, we use cookies to optimise the experience you and other visitors have on this platform. Because we want to be fully transparent on the why & how of this cookie use, you’ll find all details below, in as clearly written wording as possible. Cookies used on our platform are never used to identify and track specific users, they don’t "know who you are". Important to stress though, is that they do track technical data, such as a browser info, approximate location and an IP address. Although they are not used in such a way, in combination with other data sources, this could lead to an identification.',
+      'CitizenLab is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone, and applying the relevant accessibility standards.',
   },
   changePreferencesText: {
-    id: 'app.containers.CookiePolicy.changePreferencesText',
+    id: 'app.containers.AccessibilityStatement.changePreferencesText',
     defaultMessage: 'At any time, {changePreferencesButton}.',
   },
   changePreferencesButtonText: {
-    id: 'app.containers.CookiePolicy.changePreferencesButtonText',
+    id: 'app.containers.AccessibilityStatement.changePreferencesButtonText',
     defaultMessage: 'you can change your preferences',
   },
-  whatAreCookiesTitle: {
-    id: 'app.containers.CookiePolicy.whatAreCookiesTitle',
-    defaultMessage: 'What are cookies?',
+  effortsTitle: {
+    id: 'app.containers.AccessibilityStatement.effortsTitle',
+    defaultMessage: 'Efforts to support accessibility',
   },
-  whatAreCookiesContent: {
-    id: 'app.containers.CookiePolicy.whatAreCookiesContent',
+  measures: {
+    id: 'app.containers.AccessibilityStatement.measures',
     defaultMessage:
-      'Cookies are little text files which are stored on the browser or on the hard drive of your computer or mobile device when you visit a webpage or application. Cookies remember your actions and preferences. Logged in last time? A cookie will make sure you’re automatically logged in the next time you visit us. Visited the platform two weeks ago? A cookie will prove helpful to highlight what has been added to the platform in the last two weeks. More info on cookies in general, can be found in {wikipediaCookieLink}.',
+      'CitizenLab takes the following measures to ensure accessibility:',
   },
-  wikipediaCookieLinkText: {
-    id: 'app.containers.CookiePolicy.wikipediaCookieLinkText',
-    defaultMessage: 'this wikepedia artice',
+  measure1: {
+    id: 'app.containers.AccessibilityStatement.measure1',
+    defaultMessage: 'Accessibility is part of our mission statement.',
   },
-  wikipediaCookieLinkHref: {
-    id: 'app.containers.CookiePolicy.wikipediaCookieLinkHref',
-    defaultMessage: 'https://en.wikipedia.org/wiki/HTTP_cookie',
+  measure2: {
+    id: 'app.containers.AccessibilityStatement.measure2',
+    defaultMessage: 'An accessibility oicer or oicial has been appointed.',
   },
-  whatCookiesTitle: {
-    id: 'app.containers.CookiePolicy.whatCookiesTitle',
-    defaultMessage: 'What cookies do we use?',
-  },
-  whatCookiesContent: {
-    id: 'app.containers.CookiePolicy.whatCookiesContent',
+  measure3: {
+    id: 'app.containers.AccessibilityStatement.measure3',
     defaultMessage:
-      'Several third party tools are used on each of our participation platforms. These tools in turn use cookies to be able to function.',
+      'Clear accessibility targets and responsibilities exist within the organization.',
   },
-  analyticsTitle: {
-    id: 'app.containers.CookiePolicy.analyticsTitle',
-    defaultMessage: 'Analytics',
+  conformanceStatus: {
+    id: 'app.containers.AccessibilityStatement.conformanceStatus',
+    defaultMessage: 'Conformance status',
   },
-  analyticsContent: {
-    id: 'app.containers.CookiePolicy.analyticsContent',
+  currentStandard: {
+    id: 'app.containers.AccessibilityStatement.currentStandard',
+    defaultMessage: 'Current accessibility standard of the site:',
+  },
+  contentConformanceTitle: {
+    id: 'app.containers.AccessibilityStatement.contentConformanceTitle',
+    defaultMessage: 'Current content conformance status:',
+  },
+  contentConformanceInfo: {
+    id: 'app.containers.AccessibilityStatement.contentConformanceInfo',
     defaultMessage:
-      'We only use mass analytics. Meaning that no individual data are used, and that you’re browsing our platform anonymously. These aggregated data, or mass analytics, show us which pages are the most and least popular and see how visitors move around the platform. This is necessary information for continuous improvement of the user experience. {analyticsLink} is our primary tool for analytics.',
+      'Fully conformant: the standard content fully conforms to the accessibility standard without any exceptions.',
   },
-  analyticsHref: {
-    id: 'app.containers.CookiePolicy.analyticsHref',
-    defaultMessage: 'https://en.wikipedia.org/wiki/Google_Analytics',
-  },
-  analyticsLinkText: {
-    id: 'app.containers.CookiePolicy.analyticsLinkText',
-    defaultMessage: 'Google Analytics',
-  },
-  advertisingTitle: {
-    id: 'app.containers.CookiePolicy.advertisingTitle',
-    defaultMessage: 'Advertising',
-  },
-  advertisingContent: {
-    id: 'app.containers.CookiePolicy.advertisingContent',
+  contentConformanceExceptions: {
+    id: 'app.containers.AccessibilityStatement.contentConformanceExceptions',
     defaultMessage:
-      'As CitizenLab, we don’t use advertising tools on the participation platforms, but some (local) governments and organisations do. {advertisingLink} is the most used tool for this. This allows them to learn what type of users took certain actions, and to build Facebook advertising campaigns based on that knowledge.',
+      'Users may add inaccessible content. It is possible that PDF or other file types including multimedia (user-generated content) are uploaded to the platform as attachments which are not accessible. Online workshops (live video) do not have subtitles.',
   },
-  advertisingHref: {
-    id: 'app.containers.CookiePolicy.advertisingHref',
+  compatibilityTitle: {
+    id: 'app.containers.AccessibilityStatement.compatibilityTitle',
+    defaultMessage: 'Compatibility with browsers and assistive technology',
+  },
+  compatibilityBrowsers: {
+    id: 'app.containers.AccessibilityStatement.compatibilityBrowsers',
     defaultMessage:
-      'https://www.facebook.com/business/help/742478679120153?helpref=faq_content',
+      'This site is designed to be fully compatible with the following browsers:',
   },
-  advertisingLinkText: {
-    id: 'app.containers.CookiePolicy.advertisingLinkText',
-    defaultMessage: 'Facebook Pixel',
+  browsers: {
+    id: 'app.containers.AccessibilityStatement.browsers',
+    defaultMessage: 'Google Chrome, version 80 and later',
   },
-  functionalTitle: {
-    id: 'app.containers.CookiePolicy.functionalTitle',
-    defaultMessage: 'Functional',
-  },
-  functionalContent: {
-    id: 'app.containers.CookiePolicy.functionalContent',
+  compatibilityAssistiveTech: {
+    id: 'app.containers.AccessibilityStatement.compatibilityAssistiveTech',
     defaultMessage:
-      'The main functional tool we use in this regard is {functionalLink}. This tool allows us to talk to you in a direct manner when visiting the platform. This way, we could show you around, ask for feedback on the platform… The cookie allows us to continue this conversation when you come back. Off course, still without knowing who you are. When logged in, we use them to be able to send you in-app and email notifications on certain events relevant to you. These notification settings can be changed at any time on your user profile page.',
+      'This site is designed to be fully compatible with the following assistive technologies:',
   },
-  functionalHref: {
-    id: 'app.containers.CookiePolicy.functionalHref',
-    defaultMessage: 'https://www.intercom.com/',
-  },
-  functionalLinkText: {
-    id: 'app.containers.CookiePolicy.functionalLinkText',
-    defaultMessage: 'Intercom',
-  },
-  cookiesListText: {
-    id: 'app.containers.CookiePolicy.cookiesListText',
+  screenReaderBugWarning: {
+    id: 'app.containers.AccessibilityStatement.screenReaderBugWarning',
     defaultMessage:
-      'You can find a full, up-to date list of 3rd parties and {cookiesListButton}.',
+      'Screen reader bugs may occur with different browser/screen reader combinations.',
   },
-  cookiesListButtonText: {
-    id: 'app.containers.CookiePolicy.cookiesListButtonText',
-    defaultMessage: 'manage your preferences',
+  technologiesTitle: {
+    id: 'app.containers.AccessibilityStatement.technologiesTitle',
+    defaultMessage: 'Technologies',
+  },
+  technologiesIntro: {
+    id: 'app.containers.AccessibilityStatement.technologiesIntro',
+    defaultMessage:
+      'Accessibility of this site relies on the following technologies to work:',
+  },
+  assesmentMethodsTitle: {
+    id: 'app.containers.AccessibilityStatement.assesmentMethodsTitle',
+    defaultMessage: 'Assessment methods',
+  },
+  assesmentMethodsIntro: {
+    id: 'app.containers.AccessibilityStatement.assesmentMethodsIntro',
+    defaultMessage:
+      'CitizenLab assessed the accessibility of this site using the following method(s):',
+  },
+  externalEvaluation: {
+    id: 'app.containers.AccessibilityStatement.externalEvaluation',
+    defaultMessage:
+      'External evaluation: the site was evaluated by an external entity not involved in the design and development process.',
+  },
+  evaluationReportTitle: {
+    id: 'app.containers.AccessibilityStatement.evaluationReportTitle',
+    defaultMessage: 'Evaluation report',
+  },
+  evaluationReportIntro: {
+    id: 'app.containers.AccessibilityStatement.evaluationReportIntro',
+    defaultMessage: 'A recent evaluation report for the site can be found at:',
+  },
+  feedbackProcessTitle: {
+    id: 'app.containers.AccessibilityStatement.feedbackProcessTitle',
+    defaultMessage: 'Feedback process',
+  },
+  feedbackProcessIntro: {
+    id: 'app.containers.AccessibilityStatement.feedbackProcessIntro',
+    defaultMessage:
+      'We welcome your feedback on the accessibility of this site. Please contact us via one of the following methods:',
+  },
+  email: {
+    id: 'app.containers.AccessibilityStatement.email',
+    defaultMessage: 'Email:',
+  },
+  postalAddress: {
+    id: 'app.containers.AccessibilityStatement.postalAddress',
+    defaultMessage: 'Postal address:',
+  },
+  citizenLabAddress: {
+    id: 'app.containers.AccessibilityStatement.citizenLabAddress',
+    defaultMessage: 'Boulevard Anspach 65, 1000 Brussels, Belgium',
+  },
+  responsiveness: {
+    id: 'app.containers.AccessibilityStatement.responsiveness',
+    defaultMessage: 'We aim to respond to feedback within 1-2 business days.',
   },
   informationPageName: {
-    id: 'app.containers.CookiePolicy.informationPageName',
+    id: 'app.containers.AccessibilityStatement.informationPageName',
     defaultMessage: 'Information Page',
   },
   'terms-and-conditionsPageName': {
-    id: 'app.containers.CookiePolicy.terms-and-conditionsPageName',
+    id: 'app.containers.AccessibilityStatement.terms-and-conditionsPageName',
     defaultMessage: 'Terms & conditions',
   },
   'privacy-policyPageName': {
-    id: 'app.containers.CookiePolicy.privacy-policyPageName',
+    id: 'app.containers.AccessibilityStatement.privacy-policyPageName',
     defaultMessage: 'Privacy Policy',
   },
   'accessibility-statementPageName': {
-    id: 'app.containers.CookiePolicy.accessibility-statementPageName',
+    id: 'app.containers.AccessibilityStatement.accessibility-statementPageName',
     defaultMessage: 'Accessibility statement',
   },
 });

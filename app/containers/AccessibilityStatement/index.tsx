@@ -28,10 +28,10 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
   return (
     <Container className="e2e-page-accessibility-statement">
       <Helmet>
-        <title>{formatMessage(messages.cookiePolicyTitle)}</title>
+        <title>{formatMessage(messages.title)}</title>
         <meta
           name="description"
-          content={formatMessage(messages.cookiePolicyDescription)}
+          content={formatMessage(messages.pageDescription)}
         />
       </Helmet>
 
@@ -39,81 +39,71 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
         <StyledContentContainer>
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>
-              <FormattedMessage {...messages.cookiePolicyTitle} />
+              <FormattedMessage {...messages.title} />
             </PageTitle>
             <PageDescription>
               <QuillEditedContent>
-                <FormattedMessage tagName="p" {...messages.intro} />
-                <FormattedMessage
-                  tagName="h2"
-                  {...messages.whatAreCookiesTitle}
-                />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.whatAreCookiesContent}
-                  values={{
-                    wikipediaCookieLink: (
-                      <a
-                        target="_blank"
-                        href={props.intl.formatMessage(
-                          messages.wikipediaCookieLinkHref
-                        )}
-                      >
-                        {formatMessage(messages.wikipediaCookieLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.whatCookiesContent}
-                />
-                <FormattedMessage tagName="h3" {...messages.analyticsTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.analyticsContent}
-                  values={{
-                    analyticsLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.analyticsHref)}
-                      >
-                        {formatMessage(messages.analyticsLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h3" {...messages.advertisingTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.advertisingContent}
-                  values={{
-                    advertisingLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.advertisingHref)}
-                      >
-                        {formatMessage(messages.advertisingLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h3" {...messages.functionalTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.functionalContent}
-                  values={{
-                    functionalLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.functionalHref)}
-                      >
-                        {formatMessage(messages.functionalLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
+                <p>{formatMessage(messages.intro)}</p>
+                <h2>{formatMessage(messages.effortsTitle)}</h2>
+                <p>{formatMessage(messages.measures)}</p>
+                <ul>
+                  <li>{formatMessage(messages.measure1)}</li>
+                  <li>{formatMessage(messages.measure2)}</li>
+                  <li>{formatMessage(messages.measure3)}</li>
+                </ul>
+                <h2>{formatMessage(messages.conformanceStatus)}</h2>
+                <h3>{formatMessage(messages.currentStandard)}</h3>
+                <p>WCAG 2.1 AA</p>
+                <h3>{formatMessage(messages.contentConformanceTitle)}</h3>
+                <p>{formatMessage(messages.contentConformanceInfo)}</p>
+                <p>{formatMessage(messages.contentConformanceExceptions)}</p>
+                <h2>{formatMessage(messages.compatibilityTitle)}</h2>
+                <p>{formatMessage(messages.compatibilityBrowsers)}</p>
+                <ul>
+                  <li>{formatMessage(messages.browsers)}</li>
+                </ul>
+                <p>{formatMessage(messages.compatibilityAssistiveTech)}</p>
+                <ul>
+                  <li>NVDA</li>
+                </ul>
+                <p>{formatMessage(messages.screenReaderBugWarning)}</p>
+                <h2>{formatMessage(messages.technologiesTitle)}</h2>
+                <p>{formatMessage(messages.technologiesIntro)}</p>
+                <ul>
+                  <li>HTML</li>
+                  <li>CSS</li>
+                  <li>JavaScript</li>
+                </ul>
+                <h2>{formatMessage(messages.assesmentMethodsTitle)}</h2>
+                <p>{formatMessage(messages.assesmentMethodsIntro)}</p>
+                <ul>
+                  <li>{formatMessage(messages.externalEvaluation)}</li>
+                </ul>
+                <h2>{formatMessage(messages.evaluationReportTitle)}</h2>
+                <p>
+                  {formatMessage(messages.evaluationReportIntro)}{' '}
+                  <a href="http://label.anysurfer.be/index.php?id=689&l=en">
+                    http://label.anysurfer.be/index.php?id=689&l=en
+                  </a>
+                  .
+                </p>
+                <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
+                <p>{formatMessage(messages.feedbackProcessIntro)}</p>
+                <ul>
+                  <li>
+                    {formatMessage(messages.email)}{' '}
+                    <a href="mailto:developers@citizenlab.co">
+                      developers@citizenlab.co
+                    </a>
+                  </li>
+                  <li>
+                    {formatMessage(messages.postalAddress)}{' '}
+                    <address>
+                      {formatMessage(messages.citizenLabAddress)}
+                    </address>
+                  </li>
+                </ul>
+                <p>{formatMessage(messages.responsiveness)}</p>
               </QuillEditedContent>
             </PageDescription>
           </Fragment>
