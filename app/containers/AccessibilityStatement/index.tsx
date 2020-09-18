@@ -44,13 +44,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
             <PageDescription>
               <QuillEditedContent>
                 <p>{formatMessage(messages.intro)}</p>
-                <h2>{formatMessage(messages.effortsTitle)}</h2>
-                <p>{formatMessage(messages.measures)}</p>
-                <ul>
-                  <li>{formatMessage(messages.measure1)}</li>
-                  <li>{formatMessage(messages.measure2)}</li>
-                  <li>{formatMessage(messages.measure3)}</li>
-                </ul>
                 <h2>{formatMessage(messages.conformanceStatus)}</h2>
                 <h3>{formatMessage(messages.currentStandard)}</h3>
                 <p>WCAG 2.1 AA</p>
@@ -72,13 +65,8 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   <li>JavaScript</li>
                 </ul>
                 <h2>{formatMessage(messages.assesmentMethodsTitle)}</h2>
-                <p>{formatMessage(messages.assesmentMethodsIntro)}</p>
-                <ul>
-                  <li>{formatMessage(messages.externalEvaluation)}</li>
-                </ul>
-                <h2>{formatMessage(messages.evaluationReportTitle)}</h2>
                 <p>
-                  {formatMessage(messages.evaluationReportIntro)}{' '}
+                  {formatMessage(messages.assesmentText)}{' '}
                   <a href="http://label.anysurfer.be/index.php?id=689&l=en">
                     http://label.anysurfer.be/index.php?id=689&l=en
                   </a>
