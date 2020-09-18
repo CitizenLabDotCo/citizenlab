@@ -2,7 +2,7 @@ import React from 'react';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
@@ -10,6 +10,9 @@ import Facebook from './Facebook';
 import Messenger from './Messenger';
 import Twitter from './Twitter';
 import Email from './Email';
+
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
 
 const Container = styled.div`
   display: flex;
@@ -62,7 +65,11 @@ const SharingDropdownContent = ({
   emailSubject,
   twitterMessage,
 }: Props) => {
+  const { windowWidth } = useWindowSize();
   const hasEmailSharing = !!(emailBody && emailSubject);
+  const smallerThanBigTablet = windowWidth
+    ? windowWidth <= viewportWidths.smallTablet
+    : false;
 
   const buildUrl = (medium: string) => {
     let resUrl = url;
@@ -82,7 +89,7 @@ const SharingDropdownContent = ({
     <Container id={id || ''} className={className || ''}>
       <Buttons>
         <Facebook url={buildUrl('facebook')} />
-        <Messenger url={buildUrl('messenger')} />
+        {smallerThanBigTablet && <Messenger url={buildUrl('messenger')} />}
         <Twitter
           url={buildUrl('twitter')}
           twitterMessage={twitterMessage}
