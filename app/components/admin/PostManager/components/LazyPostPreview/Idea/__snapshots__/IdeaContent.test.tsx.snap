@@ -30,13 +30,12 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
       postType="idea"
       title="Doloribus quam molestiae ut."
     />
+    <IdeaContent__StyledPostedBy
+      authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
+      ideaId="myIdeasiD"
+    />
     <IdeaContent__Row>
       <IdeaContent__Left>
-        <IdeaAuthor
-          authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
-          ideaId="myIdeasiD"
-          ideaPublishedAt="2019-03-19T00: 00: 00.000Z"
-        />
         <IdeaContent__BodySectionTitle>
           <FormattedMessage
             defaultMessage="Proposed budget"
