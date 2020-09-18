@@ -20,7 +20,7 @@ export interface IHttpMethod {
 
 export type IParticipationContextType = 'project' | 'phase';
 
-export type ICitizenAction = IProjectAction | IIdeaAction;
+export type IPCAction = IProjectAction | IIdeaAction;
 
 export interface ITheme {
   theme: {

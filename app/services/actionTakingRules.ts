@@ -23,13 +23,10 @@ interface ActionPermissionEnabled {
   disabledReason: null;
   action: null;
 }
-interface ActionPermissionDisabled {
+interface ActionPermissionDisabled<DisabledReasons> {
   show: true;
   enabled: false;
-  disabledReason:
-    | IIdeaPostingDisabledReason
-    | IPollTakingDisabledReason
-    | ISurveyTakingDisabledReason;
+  disabledReason: DisabledReasons;
   action: null;
 }
 interface ActionPermissionMaybe {
@@ -39,11 +36,11 @@ interface ActionPermissionMaybe {
   action: IPreliminaryAction;
 }
 
-export type ActionPermission =
+export type ActionPermission<DisabledReasons> =
   | ActionPermissionHide
   | ActionPermissionMaybe
   | ActionPermissionEnabled
-  | ActionPermissionDisabled;
+  | ActionPermissionDisabled<DisabledReasons>;
 
 /*----------- Idea Posting ------------*/
 
@@ -61,7 +58,7 @@ export type IPreliminaryAction =
   | 'verify'
   | 'sign_in_up_and_verify';
 
-const IIdeaPostingDisabledReason = (
+const ideaPostingDisabledReason = (
   backendReason: PostingDisabledReason | null,
   signedIn: boolean,
   futureEnabled: string | null
@@ -123,7 +120,7 @@ export const getIdeaPostingRules = ({
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
   authUser: GetAuthUserChildProps;
-}): ActionPermission => {
+}): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
 
   if (!isNilOrError(project)) {
@@ -193,7 +190,7 @@ export const getIdeaPostingRules = ({
       };
     }
 
-    const { disabledReason, action } = IIdeaPostingDisabledReason(
+    const { disabledReason, action } = ideaPostingDisabledReason(
       disabled_reason,
       signedIn,
       future_enabled
@@ -213,7 +210,7 @@ export const getIdeaPostingRules = ({
       action: null,
       show: true,
       enabled: false,
-    } as ActionPermissionDisabled;
+    } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
     // TODO enforce the validity of this by adding a test to ensure either action or disabledReason is not null
   }
   // if !project
@@ -270,7 +267,7 @@ export const getPollTakingRules = ({
   project: IProjectData;
   phaseContext?: IPhaseData | null;
   signedIn: boolean;
-}): ActionPermission => {
+}): ActionPermission<IPollTakingDisabledReason> => {
   const {
     enabled,
     disabled_reason,
@@ -350,7 +347,7 @@ export const getSurveyTakingRules = ({
   project: IProjectData;
   phaseContext?: IPhaseData | null;
   signedIn: boolean;
-}): ActionPermission => {
+}): ActionPermission<ISurveyTakingDisabledReason> => {
   if (phaseContext) {
     const inCurrentPhase =
       pastPresentOrFuture([
@@ -370,7 +367,9 @@ export const getSurveyTakingRules = ({
           : surveyTakingDisabledReason(disabled_reason, !!signedIn),
         action: null,
         show: true,
-      } as ActionPermissionDisabled | ActionPermissionEnabled;
+      } as
+        | ActionPermissionDisabled<ISurveyTakingDisabledReason>
+        | ActionPermissionEnabled;
     } else {
       // if not in current phase
       return {
@@ -393,6 +392,8 @@ export const getSurveyTakingRules = ({
         : surveyTakingDisabledReason(disabled_reason, !!signedIn),
       action: null,
       show: true,
-    } as ActionPermissionDisabled | ActionPermissionEnabled;
+    } as
+      | ActionPermissionDisabled<ISurveyTakingDisabledReason>
+      | ActionPermissionEnabled;
   }
 };

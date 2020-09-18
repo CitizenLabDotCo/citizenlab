@@ -133,27 +133,6 @@ export type InitiativeDisabledReason =
   | 'not_verified'
   | 'not_signed_in';
 
-export interface IInitiativeActionDescriptors {
-  action_descriptor: {
-    posting_initiative: {
-      enabled: boolean;
-      disabled_reason: InitiativeDisabledReason | null;
-    };
-    commenting_initiative: {
-      enabled: boolean;
-      disabled_reason: InitiativeDisabledReason | null;
-    };
-    voting_initiative: {
-      enabled: boolean;
-      disabled_reason: InitiativeDisabledReason | null;
-    };
-    comment_voting_initiative: {
-      enabled: boolean;
-      disabled_reason: InitiativeDisabledReason | null;
-    };
-  };
-}
-
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({
     apiEndpoint: `${API_PATH}/initiatives/${initiativeId}`,
@@ -270,8 +249,15 @@ export function initiativeActivities(initiativeId: string) {
   });
 }
 
+export type IInitiativeActionDescriptors = {
+  [key in IInitiativeAction]: {
+    enabled: boolean;
+    disabled_reason: InitiativeDisabledReason | null;
+  };
+};
+
 export function getInitiativeActionDescriptors() {
-  return streams.get<IInitiativeActionDescriptor>({
+  return streams.get<IInitiativeActionDescriptors>({
     apiEndpoint: `${API_PATH}/action_descriptors/initiatives`,
   });
 }
