@@ -15,6 +15,12 @@ resource "ActionDescriptors" do
   end
 
   get "web_api/v1/action_descriptors/initiatives" do
+    before do
+      permission = Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
+      permission.update!(permitted_by: 'groups', 
+        group_ids: create_list(:group, 2).map(&:id)
+        )
+    end
 
     example_request "Find user by (partial) mention" do
       expect(response_status).to eq 200
@@ -25,8 +31,8 @@ resource "ActionDescriptors" do
           disabled_reason: nil
         },
         commenting_initiative: {
-          enabled: true,
-          disabled_reason: nil
+          enabled: false,
+          disabled_reason: 'not_permitted'
         },
         voting_initiative: {
           enabled: true,
@@ -37,8 +43,8 @@ resource "ActionDescriptors" do
           disabled_reason: nil
         },
         comment_voting_initiative: {
-          enabled: true,
-          disabled_reason: nil
+          enabled: false,
+          disabled_reason: 'not_permitted'
         }
       })
     end
