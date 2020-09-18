@@ -246,7 +246,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       );
 
       if (isLinkToProfile && hasValidProfileLink) {
-        return <Link to={profileLink}>{Component}</Link>;
+        return <Link to={profileLink}>{AvatarComponent}</Link>;
       }
 
       return AvatarComponent;
