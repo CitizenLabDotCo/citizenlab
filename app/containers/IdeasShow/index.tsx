@@ -25,12 +25,12 @@ import Modal from 'components/UI/Modal';
 import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import IdeaPostedBy from './IdeaPostedBy';
-import IdeaAuthor from './IdeaAuthor';
+import IdeaStatus from './IdeaStatus';
+import PostedBy from './PostedBy';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
-import TranslateButton from 'components/PostShowComponents/TranslateButton';
+import TranslateButton from 'components/UI/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
@@ -189,20 +189,6 @@ const LeftColumn = styled.div`
 
 const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 20px;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const StyledTranslateButtonMobile = styled(TranslateButton)`
-  display: none;
-  width: fit-content;
-  margin-bottom: 40px;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
 `;
 
 const IdeaHeader = styled.div`
@@ -234,8 +220,8 @@ const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
   margin-bottom: 20px;
 `;
 
-const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-  margin-top: 4px;
+const StyledMobileIdeaStatus = styled(IdeaStatus)`
+  margin-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -250,17 +236,12 @@ const MobileMetaInformation = styled(MetaInformation)`
 
 const AuthorActionsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
 `;
 
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-left: -4px;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
+const StyledIdeaMoreActions = styled(IdeaMoreActions)`
+  margin-left: auto;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -520,7 +501,6 @@ export class IdeasShow extends PureComponent<
     ) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea.relationships?.author?.data?.id || null;
-      const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       const statusId = idea.relationships.idea_status.data.id;
@@ -542,9 +522,6 @@ export class IdeasShow extends PureComponent<
       const smallerThanLargeTablet = windowSize
         ? windowSize <= viewportWidths.largeTablet
         : false;
-      const smallerThanSmallTablet = windowSize
-        ? windowSize <= viewportWidths.smallTablet
-        : false;
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
@@ -563,15 +540,6 @@ export class IdeasShow extends PureComponent<
           <IdeaContainer>
             <StyledProjectLink projectId={projectId} />
 
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && smallerThanSmallTablet && (
-                <StyledTranslateButtonMobile
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateIdea}
-                />
-              )}
-            </FeatureFlag>
-
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
                 <IdeaHeader>
@@ -582,22 +550,16 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
-
-                  {smallerThanLargeTablet && (
-                    <StyledMobileIdeaPostedBy authorId={authorId} />
-                  )}
                 </IdeaHeader>
 
-                {biggerThanLargeTablet && (
-                  <AuthorActionsContainer>
-                    <StyledIdeaAuthor
-                      ideaId={ideaId}
-                      authorId={authorId}
-                      ideaPublishedAt={ideaPublishedAt}
-                    />
-                    <IdeaMoreActions idea={idea} hasLeftMargin={true} />
-                  </AuthorActionsContainer>
+                {statusId && smallerThanLargeTablet && (
+                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
                 )}
+
+                <AuthorActionsContainer>
+                  <PostedBy authorId={authorId} ideaId={ideaId} />
+                  <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
+                </AuthorActionsContainer>
 
                 {ideaImageLarge && (
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />

@@ -4,7 +4,7 @@ import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 
-jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
+jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
 jest.mock('components/PostShowComponents/DropdownMap', () => 'DropdownMap');

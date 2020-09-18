@@ -19,7 +19,9 @@ export interface IUserData {
   id: string;
   type: string;
   attributes: {
-    first_name: string | null;
+    first_name: string;
+    // CL1 legacy: last names used to not be required
+    // or when signing up with Google, it can be null too
     last_name: string | null;
     slug: string;
     locale: Locale;
