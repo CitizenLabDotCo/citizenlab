@@ -23,7 +23,10 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: '#84939E';
+  fill: #84939e;
+  margin-right: 10px;
+  width: 26px;
+  height: 26px;
 `;
 
 const Container = styled.div`
@@ -38,7 +41,7 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
   if (!isNilOrError(project)) {
     return (
       <Container className={className}>
-        <StyledIcon name="circle-arrow-left" />
+        <StyledIcon ariaHidden name="circle-arrow-left" />
         <StyledLink to={`/projects/${project.attributes.slug}`}>
           {localize(project.attributes.title_multiloc)}
         </StyledLink>

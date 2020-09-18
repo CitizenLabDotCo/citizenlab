@@ -4,8 +4,8 @@ import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // components
-import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import Title from 'components/PostShowComponents/Title';
+import PostedBy from 'containers/IdeasShow/PostedBy';
 import Body from 'components/PostShowComponents/Body';
 import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -50,7 +50,11 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const StyledTitle = styled(Title)`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+`;
+
+const StyledPostedBy = styled(PostedBy)`
+  margin-bottom: 20px;
 `;
 
 const Row = styled.div`
@@ -152,10 +156,6 @@ const Picks = styled.div`
   align-items: center;
 `;
 
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-bottom: 25px;
-`;
-
 interface State {}
 
 export interface InputProps {
@@ -215,6 +215,8 @@ export class IdeaContent extends PureComponent<
           : null;
       const ideaGeoPosition = idea.attributes.location_point_geojson || null;
       const ideaAddress = idea.attributes.location_description || null;
+      // AuthorId can be null if user has been deleted
+      const authorId = idea.relationships.author.data?.id || null;
       const proposedBudget = idea.attributes.proposed_budget;
       const currency = tenant.attributes.settings.core.currency;
 
@@ -252,6 +254,7 @@ export class IdeaContent extends PureComponent<
             )}
 
             <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+            <StyledPostedBy ideaId={ideaId} authorId={authorId} />
             <Row>
               <Left>
                 {ideaImageLarge && (
@@ -261,11 +264,6 @@ export class IdeaContent extends PureComponent<
                     className="e2e-ideaImage"
                   />
                 )}
-                <StyledIdeaAuthor
-                  authorId={get(idea, 'relationships.author.data.id', null)}
-                  ideaPublishedAt={idea.attributes.published_at}
-                  ideaId={ideaId}
-                />
 
                 {proposedBudget && (
                   <>
