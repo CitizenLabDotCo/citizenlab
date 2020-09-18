@@ -572,7 +572,6 @@ export class IdeasShow extends PureComponent<
     ) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea.relationships?.author?.data?.id || null;
-      const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       const statusId = idea.relationships.idea_status.data.id;
@@ -594,9 +593,6 @@ export class IdeasShow extends PureComponent<
         : false;
       const smallerThanLargeTablet = windowSize
         ? windowSize <= viewportWidths.largeTablet
-        : false;
-      const smallerThanSmallTablet = windowSize
-        ? windowSize <= viewportWidths.smallTablet
         : false;
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
