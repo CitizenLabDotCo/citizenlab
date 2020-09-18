@@ -392,7 +392,7 @@ class AssignBudgetControl extends PureComponent<
             {isInBasket && !processing ? (
               <>
                 <AssignedContainer>
-                  <AssignedIcon name="basket-checkmark" />
+                  <AssignedIcon ariaHidden name="basket-checkmark" />
                   <AssignedText>
                     <FormattedMessage {...messages.assigned} />
                   </AssignedText>
