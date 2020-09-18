@@ -27,7 +27,6 @@ const SharingButton = ({
   utmParams,
   buttonComponent,
 }: Props) => {
-  // TODO: add icon
   return (
     <ButtonWithDropdown
       className={className}
