@@ -39,7 +39,7 @@ interface ActionPermissionMaybe {
   action: IPreliminaryAction;
 }
 
-type ActionPermission =
+export type ActionPermission =
   | ActionPermissionHide
   | ActionPermissionMaybe
   | ActionPermissionEnabled
