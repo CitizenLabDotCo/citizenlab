@@ -62,6 +62,11 @@ const Inner = styled.div`
   background: #fff;
   border-top: solid 1px #e8e8e8;
 
+  ${media.smallerThan1280px`
+    padding-left: 18px;
+    padding-right: 18px;
+  `}
+
   ${media.smallerThanMaxTablet`
     display: flex;
     flex-direction: column;
@@ -235,6 +240,11 @@ const PoweredBy = styled.div`
   padding-right: 20px;
   margin-right: 24px;
   border-right: 2px solid ${colors.adminBackground};
+
+  ${media.smallerThan1280px`
+    padding-right: 8px;
+    margin-right: 13px;
+  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
