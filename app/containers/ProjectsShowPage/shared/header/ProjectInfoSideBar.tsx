@@ -92,6 +92,18 @@ const ListItemIcon = styled(Icon)`
   }
 `;
 
+// const ListItemTextContainer = styled.div`
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+// `;
+
+// const ListItemTextLine = styled.div`
+//   &.hasBottomMargin {
+//     margin-bottom: 5px;
+//   }
+// `;
+
 const ActionButtons = styled.div`
   margin-top: 20px;
 `;
