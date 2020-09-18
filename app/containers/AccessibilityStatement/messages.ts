@@ -13,7 +13,7 @@ export default defineMessages({
   intro: {
     id: 'app.containers.AccessibilityStatement.intro',
     defaultMessage:
-      'CitizenLab is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone, and applying the relevant accessibility standards.',
+      'CitizenLab is committed to ensuring digital accessibility for people with disabilities. Current and relevant accessibility standards are applied in our on-going efforts to improve the user experience for all who visit and use our platforms.',
   },
   changePreferencesText: {
     id: 'app.containers.AccessibilityStatement.changePreferencesText',
@@ -38,7 +38,7 @@ export default defineMessages({
   },
   measure2: {
     id: 'app.containers.AccessibilityStatement.measure2',
-    defaultMessage: 'An accessibility oicer or oicial has been appointed.',
+    defaultMessage: 'An accessibility officer or official has been appointed.',
   },
   measure3: {
     id: 'app.containers.AccessibilityStatement.measure3',
@@ -65,30 +65,31 @@ export default defineMessages({
   contentConformanceExceptions: {
     id: 'app.containers.AccessibilityStatement.contentConformanceExceptions',
     defaultMessage:
-      'Users may add inaccessible content. It is possible that PDF or other file types including multimedia (user-generated content) are uploaded to the platform as attachments or that are inserted into text fields which are not accessible. Online workshops (live video) do not have subtitles.',
+      'We strive to make our content inclusive for all. However, in some instances there may be inaccessible content on the platform as outlined below:',
+  },
+  exception1: {
+    id: 'app.containers.AccessibilityStatement.exception1',
+    defaultMessage:
+      'Our digital engagement platforms facilitate user-generated content, including ideas, comments and other content posted by individuals and organisations. It is possible that PDFs, images or other file types including multi-media are uploaded to the platform as attachments or added into text fields by platform users. These documents may not be fully accessible.',
+  },
+  exception2: {
+    id: 'app.containers.AccessibilityStatement.exception2',
+    defaultMessage:
+      'Our online workshops have a live video streaming component, which do not currently support subtitles.',
   },
   compatibilityTitle: {
     id: 'app.containers.AccessibilityStatement.compatibilityTitle',
     defaultMessage: 'Compatibility with browsers and assistive technology',
   },
-  compatibilityBrowsers: {
-    id: 'app.containers.AccessibilityStatement.compatibilityBrowsers',
+  compatibilityInfo: {
+    id: 'app.containers.AccessibilityStatement.compatibilityInfo',
     defaultMessage:
-      'This site is designed to be fully compatible with the following browsers:',
-  },
-  browsers: {
-    id: 'app.containers.AccessibilityStatement.browsers',
-    defaultMessage: 'Google Chrome, version 80 and later',
-  },
-  compatibilityAssistiveTech: {
-    id: 'app.containers.AccessibilityStatement.compatibilityAssistiveTech',
-    defaultMessage:
-      'This site is designed to be fully compatible with the following assistive technologies:',
+      'This site is optimised for Google Chrome, version 80 and later. It is also designed to be fully compatible with NVDA software.',
   },
   screenReaderBugWarning: {
     id: 'app.containers.AccessibilityStatement.screenReaderBugWarning',
     defaultMessage:
-      'Screen reader bugs may occur with different browser/screen reader combinations.',
+      'Screen reader bugs may occur with different browser/screen reader combinations. Bugs can be reported through the feedback process outlined below.',
   },
   technologiesTitle: {
     id: 'app.containers.AccessibilityStatement.technologiesTitle',
@@ -97,7 +98,7 @@ export default defineMessages({
   technologiesIntro: {
     id: 'app.containers.AccessibilityStatement.technologiesIntro',
     defaultMessage:
-      'Accessibility of this site relies on the following technologies to work:',
+      'The accessibility of this site relies on the following technologies to work:',
   },
   assesmentMethodsTitle: {
     id: 'app.containers.AccessibilityStatement.assesmentMethodsTitle',
