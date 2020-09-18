@@ -61,7 +61,7 @@ const Header = styled.div`
 
 const Title = styled.h2`
   min-height: 20px;
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.large}px;
   line-height: 21px;
   font-weight: 500;
@@ -99,7 +99,7 @@ const Spacer = styled.div`
 `;
 
 const Budget = styled.div`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   display: flex;
@@ -113,7 +113,7 @@ const BudgetLabel = styled.span`
 `;
 
 const BudgetAmount = styled.span`
-  font-weight: 500;
+  font-weight: 600;
 
   &.red {
     color: ${colors.clRedError};
@@ -380,7 +380,7 @@ class PBExpenses extends PureComponent<
             <Header>
               <Title className={validationStatus}>
                 {validationStatus === 'notValidated' && (
-                  <FormattedMessage {...messages.yourExpenses} />
+                  <FormattedMessage {...messages.myExpenses} />
                 )}
                 {validationStatus === 'validationError' && (
                   <>

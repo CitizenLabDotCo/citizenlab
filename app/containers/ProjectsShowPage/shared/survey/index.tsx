@@ -149,7 +149,10 @@ class Survey extends PureComponent<Props, State> {
         const user_id = authUser ? authUser.id : null;
 
         return (
-          <Container className={`${className} e2e-${surveyService}-survey`}>
+          <Container
+            id="survey"
+            className={`${className} e2e-${surveyService}-survey`}
+          >
             <Title>
               <FormattedMessage {...messages.survey} />
             </Title>

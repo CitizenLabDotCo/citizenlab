@@ -1,4 +1,10 @@
-import React, { memo, useCallback, FormEvent } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+  FormEvent,
+} from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 import moment from 'moment';
@@ -9,13 +15,18 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 
+// services
+import { IPhaseData, getCurrentPhase } from 'services/phases';
+
 // components
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
 import { Icon } from 'cl2-component-library';
+import { selectCurrentPhase } from 'containers/ProjectsShowPage/timeline/Timeline';
+import ProjectSharingModal from './ProjectSharingModal';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -54,8 +65,8 @@ const ListItem = styled.div`
   font-weight: 400;
   display: flex;
   align-items: flex-start;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 
   &.link {
     cursor: pointer;
@@ -77,6 +88,7 @@ const ListItemIcon = styled(Icon)`
   &.timeline {
     width: 20px;
     height: 20px;
+    margin-right: 11px;
   }
 `;
 
@@ -84,9 +96,15 @@ const ActionButtons = styled.div`
   margin-top: 20px;
 `;
 
+// const SeeTimelineButton = styled(Button)`
+//   margin-bottom: 10px;
+// `;
+
 const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
 `;
+
+const FillOutSurveyButton = styled(Button)``;
 
 interface Props {
   projectId: string;
@@ -99,6 +117,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
 
+  const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const [shareModalOpened, setShareModalOpened] = useState(false);
+
+  useEffect(() => {
+    setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
+  }, [phases]);
+
   const upcomingEvents = !isNilOrError(events)
     ? events.filter((event) => {
         const eventTime = pastPresentOrFuture([
@@ -109,21 +134,30 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       })
     : [];
 
-  const scrollToIdeas = useCallback((event: FormEvent) => {
-    event.preventDefault();
-    document?.getElementById('project-ideas')?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
-    });
-  }, []);
+  const scrollToIdeas = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+
+      if (!currentPhase) {
+        document?.getElementById('project-ideas')?.scrollIntoView({
+          behavior: 'smooth',
+        });
+      } else {
+        selectCurrentPhase();
+        setTimeout(() => {
+          document?.getElementById('phase-ideas')?.scrollIntoView({
+            behavior: 'smooth',
+          });
+        }, 100);
+      }
+    },
+    [currentPhase]
+  );
 
   const scrollToTimeline = useCallback((event: FormEvent) => {
     event.preventDefault();
     document?.getElementById('project-timeline')?.scrollIntoView({
       behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
     });
   }, []);
 
@@ -131,9 +165,23 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     event.preventDefault();
     document?.getElementById('project-events')?.scrollIntoView({
       behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
     });
+  }, []);
+
+  const scrollToSurvey = useCallback((event: FormEvent) => {
+    event.preventDefault();
+    document?.getElementById('survey')?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }, []);
+
+  const openShareModal = useCallback((event: FormEvent) => {
+    event.preventDefault();
+    setShareModalOpened(true);
+  }, []);
+
+  const closeShareModal = useCallback(() => {
+    setShareModalOpened(false);
   }, []);
 
   if (!isNilOrError(locale) && !isNilOrError(project)) {
@@ -145,6 +193,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       ideas_count,
       avatars_count,
     } = project.attributes;
+
+    const showSeeIdeasButton =
+      (process_type === 'continuous' && participation_method === 'ideation') ||
+      currentPhase?.attributes.participation_method === 'ideation';
 
     return (
       <Container className={className || ''}>
@@ -163,6 +215,31 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               />
             </ListItem>
           )}
+          {process_type === 'timeline' && !isNilOrError(phases) && (
+            <ListItem>
+              <ListItemIcon name="flag" />
+              <FormattedMessage
+                {...messages.startedOn}
+                values={{
+                  date: moment(
+                    getIsoDate(phases[0].attributes.start_at),
+                    'YYYY-MM-DD'
+                  ).format('ll'),
+                }}
+              />
+            </ListItem>
+          )}
+          {process_type === 'timeline' &&
+            !isNilOrError(phases) &&
+            phases.length > 1 && (
+              <ListItem className="link" onClick={scrollToTimeline}>
+                <ListItemIcon name="timeline" className="timeline" />
+                <FormattedMessage
+                  {...messages.xPhases}
+                  values={{ phasesCount: phases.length }}
+                />
+              </ListItem>
+            )}
           {isNumber(avatars_count) && avatars_count > 0 && (
             <ListItem>
               <ListItemIcon name="person" />
@@ -172,17 +249,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               />
             </ListItem>
           )}
-          {process_type === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.length > 0 && (
-              <ListItem className="link" onClick={scrollToTimeline}>
-                <ListItemIcon name="timeline" className="timeline" />
-                <FormattedMessage
-                  {...messages.xPhases}
-                  values={{ phasesCount: phases.length }}
-                />
-              </ListItem>
-            )}
           {process_type === 'continuous' &&
             participation_method === 'ideation' &&
             isNumber(ideas_count) && (
@@ -203,19 +269,30 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               />
             </ListItem>
           )}
+          <ListItem className="link" onClick={openShareModal}>
+            <ListItemIcon name="share" />
+            <FormattedMessage {...messages.share} />
+          </ListItem>
         </List>
         <ActionButtons>
-          {process_type === 'continuous' &&
-            participation_method === 'ideation' && (
-              <SeeIdeasButton
-                buttonStyle="secondary"
-                onClick={scrollToIdeas}
-                fontWeight="500"
-              >
-                <FormattedMessage {...messages.seeTheIdeas} />
-              </SeeIdeasButton>
-            )}
-
+          {/* {process_type === 'timeline' && (
+            <SeeTimelineButton
+              buttonStyle="secondary"
+              onClick={scrollToTimeline}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.seeTheTimeline} />
+            </SeeTimelineButton>
+          )} */}
+          {showSeeIdeasButton && (
+            <SeeIdeasButton
+              buttonStyle="secondary"
+              onClick={scrollToIdeas}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.seeTheIdeas} />
+            </SeeIdeasButton>
+          )}
           {process_type === 'continuous' &&
             participation_method === 'ideation' &&
             publication_status !== 'archived' && (
@@ -225,7 +302,32 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 fontWeight="500"
               />
             )}
+          {currentPhase?.attributes.participation_method === 'ideation' && (
+            <IdeaButton
+              projectId={project.id}
+              phaseId={currentPhase.id}
+              participationContextType="phase"
+              fontWeight="500"
+            />
+          )}
+          {!!document?.getElementById('survey') &&
+            ((process_type === 'continuous' &&
+              participation_method === 'survey') ||
+              currentPhase?.attributes.participation_method === 'survey') && (
+              <FillOutSurveyButton
+                buttonStyle="primary"
+                onClick={scrollToSurvey}
+                fontWeight="500"
+              >
+                <FormattedMessage {...messages.fillOutTheSurvey} />
+              </FillOutSurveyButton>
+            )}
         </ActionButtons>
+        <ProjectSharingModal
+          projectId={project.id}
+          opened={shareModalOpened}
+          close={closeShareModal}
+        />
       </Container>
     );
   }

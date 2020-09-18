@@ -46,7 +46,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes, defaultStyles } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.header`
   width: 100vw;
