@@ -24,31 +24,31 @@ export default function useTranslation({
     IMachineTranslationData | undefined | null | Error
   >(undefined);
 
-  const getObservable = () => {
-    const queryParameters = {
-      machine_translation: {
-        locale_to: localeTo,
-        attribute_name: attributeName,
-      },
+  useEffect(() => {
+    const getObservable = () => {
+      const queryParameters = {
+        machine_translation: {
+          locale_to: localeTo,
+          attribute_name: attributeName,
+        },
+      };
+
+      switch (context) {
+        case 'idea':
+          return machineTranslationByIdeaIdStream(id, {
+            queryParameters,
+          }).observable;
+        case 'initiative':
+          return machineTranslationByInitiativeIdStream(id, {
+            queryParameters,
+          }).observable;
+        case 'comment':
+          return machineTranslationByCommentIdStream(id, {
+            queryParameters,
+          }).observable;
+      }
     };
 
-    switch (context) {
-      case 'idea':
-        return machineTranslationByIdeaIdStream(id, {
-          queryParameters,
-        }).observable;
-      case 'initiative':
-        return machineTranslationByInitiativeIdStream(id, {
-          queryParameters,
-        }).observable;
-      case 'comment':
-        return machineTranslationByCommentIdStream(id, {
-          queryParameters,
-        }).observable;
-    }
-  };
-
-  useEffect(() => {
     const observable = getObservable();
 
     const subscription = observable.subscribe((machineTranslation) => {
