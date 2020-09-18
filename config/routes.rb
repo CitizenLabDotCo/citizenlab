@@ -269,6 +269,10 @@ Rails.application.routes.draw do
         get 'users'
       end
 
+      scope 'action_descriptors', controller: 'action_descriptors' do
+        get 'initiatives'
+      end
+
       resources :baskets, except: [:index]
       resources :clusterings
 
