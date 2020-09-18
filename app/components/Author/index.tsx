@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
@@ -76,7 +73,7 @@ export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
   size: string;
-  notALink?: boolean;
+  isLinkToProfile?: boolean;
   projectId?: string | null;
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
@@ -99,20 +96,12 @@ class Author extends PureComponent<Props, State> {
     showAvatar: true,
   };
 
-  goToUserProfile = () => {
-    const { author } = this.props;
-
-    if (!isNilOrError(author)) {
-      clHistory.push(`/profile/${author.attributes.slug}`);
-    }
-  };
-
   render() {
     const {
       authorId,
       createdAt,
       size,
-      notALink,
+      isLinkToProfile,
       projectId,
       showAvatar,
       showModeration,
@@ -129,7 +118,7 @@ class Author extends PureComponent<Props, State> {
     const authorName = (
       <UserName
         userId={authorId}
-        linkToProfile={!notALink}
+        isLinkToProfile={isLinkToProfile}
         canModerate={authorCanModerate}
         emphasize={emphasize}
       />
@@ -142,7 +131,7 @@ class Author extends PureComponent<Props, State> {
             <StyledAvatar
               userId={authorId}
               size={size}
-              onClick={notALink ? undefined : this.goToUserProfile}
+              isLinkToProfile={isLinkToProfile}
               moderator={authorCanModerate}
               bgColor={avatarBadgeBgColor}
             />

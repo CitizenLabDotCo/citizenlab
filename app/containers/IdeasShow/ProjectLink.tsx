@@ -23,7 +23,10 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: '#84939E';
+  fill: #84939e;
+  margin-right: 10px;
+  width: 26px;
+  height: 26px;
 `;
 
 const Container = styled.div`

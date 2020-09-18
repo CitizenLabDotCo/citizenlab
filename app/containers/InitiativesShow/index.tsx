@@ -26,7 +26,7 @@ import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import TranslateButton from 'components/PostShowComponents/TranslateButton';
+import TranslateButton from 'components/UI/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';

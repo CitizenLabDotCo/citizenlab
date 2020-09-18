@@ -238,6 +238,7 @@ class ParentCommentForm extends PureComponent<
     const placeholder = formatMessage(
       messages[`${postType}CommentBodyPlaceholder`]
     );
+    const hasAuthUserId = !!authUser?.id;
 
     return (
       <Container className={className}>
@@ -248,7 +249,7 @@ class ParentCommentForm extends PureComponent<
             <AuthorWrapper>
               <StyledAuthor
                 authorId={authUser.id}
-                notALink={authUser.id ? false : true}
+                isLinkToProfile={hasAuthUserId}
                 size="32px"
                 showModeration={isModerator}
               />
