@@ -160,16 +160,10 @@ class VoteControl extends PureComponent<Props, State> {
   };
 
   vote = () => {
-    const { initiative, authUser } = this.props;
+    const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
-      if (!isNilOrError(authUser)) {
-        addVote(initiative.id, { mode: 'up' });
-      } else {
-        openSignUpInModal({
-          action: () => this.handleOnvote(),
-        });
-      }
+      addVote(initiative.id, { mode: 'up' });
     }
   };
 
