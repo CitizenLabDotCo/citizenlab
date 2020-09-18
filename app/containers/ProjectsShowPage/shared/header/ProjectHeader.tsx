@@ -29,7 +29,10 @@ const ProjectHeaderImage = styled.div<{ src: string }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
+  hasHeaderImage: boolean;
+}>`
+  margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
 `;
 
@@ -52,7 +55,10 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
             <ProjectHeaderImage src={projectHeaderImageLarge} />
           )}
-          <StyledProjectArchivedIndicator projectId={projectId} />
+          <StyledProjectArchivedIndicator
+            projectId={projectId}
+            hasHeaderImage={!!projectHeaderImageLarge}
+          />
           <StyledProjectInfo projectId={projectId} />
         </ContentContainer>
       </Container>

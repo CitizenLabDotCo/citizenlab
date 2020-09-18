@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import qs from 'qs';
+import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import styled from 'styled-components';
 import Iframe from 'react-iframe';
@@ -21,13 +21,28 @@ type Props = {
   user_id: string | null;
 };
 
-type State = {};
+type State = {
+  loaded: boolean;
+};
 
 export default class TypeformSurvey extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    };
+  }
+
+  handleIframeOnLoad = () => {
+    setTimeout(() => {
+      this.setState({ loaded: true });
+    }, 100);
+  };
+
   render() {
     const { email, user_id, typeformUrl, className } = this.props;
 
-    const queryString = qs.stringify(omitBy({ email, user_id }, isNil));
+    const queryString = stringify(omitBy({ email, user_id }, isNil));
     const surveyUrl = `${typeformUrl}?${queryString}`;
 
     return (
@@ -36,9 +51,10 @@ export default class TypeformSurvey extends PureComponent<Props, State> {
           url={surveyUrl}
           width="100%"
           height="500px"
-          display="block"
+          display={this.state.loaded ? 'block' : 'none'}
           position="relative"
           allowFullScreen
+          onLoad={this.handleIframeOnLoad}
         />
       </Container>
     );

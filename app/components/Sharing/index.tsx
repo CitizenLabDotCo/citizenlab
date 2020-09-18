@@ -292,9 +292,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
         <Container id={id || ''} className={className || ''}>
           <Title location={location}>
             {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
-            {context === 'project' && (
-              <FormattedMessage {...messages.shareThisProject} />
-            )}
+            {context === 'project' && <FormattedMessage {...messages.share} />}
             {context === 'initiative' && (
               <FormattedMessage {...messages.shareThisInitiative} />
             )}

@@ -93,13 +93,17 @@ export default defineMessages({
     id: 'app.containers.Projects.noPhaseSelected',
     defaultMessage: 'No phase selected',
   },
-  endsOn: {
-    id: 'app.containers.Projects.endsOn',
-    defaultMessage: 'Ends on {date}',
-  },
   startsOn: {
     id: 'app.containers.Projects.startsOn',
     defaultMessage: 'Starts on {date}',
+  },
+  startedOn: {
+    id: 'app.containers.Projects.startedOn',
+    defaultMessage: 'Started on {date}',
+  },
+  endsOn: {
+    id: 'app.containers.Projects.endsOn',
+    defaultMessage: 'Ends on {date}',
   },
   endedOn: {
     id: 'app.containers.Projects.endedOn',
@@ -129,9 +133,9 @@ export default defineMessages({
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
-  yourExpenses: {
-    id: 'app.containers.Projects.yourExpenses',
-    defaultMessage: 'Your expenses',
+  myExpenses: {
+    id: 'app.containers.Projects.myExpenses',
+    defaultMessage: 'My expenses',
   },
   budgetValidated: {
     id: 'app.containers.Projects.budgetValidated',
@@ -190,10 +194,6 @@ export default defineMessages({
     id: 'app.containers.Projects.about',
     defaultMessage: 'About',
   },
-  startedOn: {
-    id: 'app.containers.Projects.startedOn',
-    defaultMessage: 'Started on {date}',
-  },
   xIdeas: {
     id: 'app.containers.Projects.xIdeas',
     defaultMessage:
@@ -226,6 +226,10 @@ export default defineMessages({
     id: 'app.containers.Projects.postYourIdea',
     defaultMessage: 'Post your idea',
   },
+  fillOutTheSurvey: {
+    id: 'app.containers.Projects.fillOutTheSurvey',
+    defaultMessage: 'Fill out the survey',
+  },
   ideas: {
     id: 'app.containers.Projects.ideas',
     defaultMessage: 'Ideas',
@@ -237,5 +241,9 @@ export default defineMessages({
   timeline: {
     id: 'app.containers.Projects.timeline',
     defaultMessage: 'Timeline',
+  },
+  share: {
+    id: 'app.containers.Projects.share',
+    defaultMessage: 'Share',
   },
 });

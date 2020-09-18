@@ -55,9 +55,9 @@ const greyOpaque = `${colors.label}`;
 const greenTransparent = `${rgba(colors.clGreen, 0.15)}`;
 const greenOpaque = `${colors.clGreen}`;
 
-const Container = styled.div`
+const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
-  display: flex;
+  display: ${(props) => (props.isHidden ? 'none' : 'flex')};
   justify-content: center;
 `;
 
@@ -221,6 +221,10 @@ export const selectedPhase$ = eventEmitter
     distinctUntilChanged((x, y) => x?.id === y?.id)
   );
 
+const SelectCurrentPhaseEventName = 'SelectCurrentPhaseEvent';
+export const selectCurrentPhase = () =>
+  eventEmitter.emit(SelectCurrentPhaseEventName);
+
 interface Props {
   projectId: string;
   className?: string;
@@ -295,6 +299,12 @@ class Timeline extends PureComponent<
             loaded: true,
           });
         }),
+      eventEmitter.observeEvent(SelectCurrentPhaseEventName).subscribe(() => {
+        if (this.state.phases) {
+          const currentPhase = getCurrentPhase(this.state.phases.data);
+          this.setState({ selectedPhase: currentPhase });
+        }
+      }),
     ];
   }
 
@@ -443,7 +453,11 @@ class Timeline extends PureComponent<
         });
 
       return (
-        <Container id="project-timeline" className={className}>
+        <Container
+          id="project-timeline"
+          className={className}
+          isHidden={phases.data.length === 1}
+        >
           <StyledContentContainer>
             <ContainerInner>
               <ContinuosProjectSectionTitle>
