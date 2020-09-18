@@ -734,11 +734,11 @@ export class IdeasShow extends PureComponent<
                         />
                       )}
                     </Suspense>
-                    <Suspense fallback={<Spinner />}>
-                      {showBudgetControl &&
-                        participationContextId &&
-                        participationContextType &&
-                        budgetingDescriptor && (
+                    {showBudgetControl &&
+                      participationContextId &&
+                      participationContextType &&
+                      budgetingDescriptor && (
+                        <Suspense fallback={<Spinner />}>
                           <StyledPBCTABox
                             ideaId={ideaId}
                             projectId={projectId}
@@ -746,8 +746,8 @@ export class IdeasShow extends PureComponent<
                             participationContextType={participationContextType}
                             budgetingDescriptor={budgetingDescriptor}
                           />
-                        )}
-                    </Suspense>
+                        </Suspense>
+                      )}
                     <MetaInformation
                       ideaId={ideaId}
                       projectId={projectId}
