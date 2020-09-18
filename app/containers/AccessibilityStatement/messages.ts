@@ -85,7 +85,7 @@ export default defineMessages({
   assesmentText: {
     id: 'app.containers.AccessibilityStatement.assesmentText',
     defaultMessage:
-      'The accessibility of this site was evaluated by an external entity not involved in the design and development process as can be identified in this status page:',
+      'The accessibility of this site was evaluated by an external entity not involved in the design and development process as can be identified on this status page:',
   },
   feedbackProcessTitle: {
     id: 'app.containers.AccessibilityStatement.feedbackProcessTitle',
