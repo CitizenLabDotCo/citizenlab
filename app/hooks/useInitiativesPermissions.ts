@@ -45,6 +45,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
             action: null,
           });
         } else {
+          console.log(actionDescriptor.disabled_reason);
           switch (actionDescriptor.disabled_reason) {
             case 'not_verified':
               if (isNilOrError(authUser)) {
@@ -62,6 +63,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
                   action: 'verify',
                 });
               }
+              break;
             case 'not_signed_in':
               setActionPermission({
                 show: true,
@@ -69,6 +71,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
                 disabledReason: null,
                 action: 'sign_in_up',
               });
+              break;
             default:
               setActionPermission({
                 show: true,
