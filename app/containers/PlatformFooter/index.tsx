@@ -475,17 +475,20 @@ class PlatformFooter extends PureComponent<Props, State> {
 
         <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
           <PagesNav>
-            {LEGAL_PAGES.map((slug, index) => (
-              <React.Fragment key={slug}>
-                <StyledLink
-                  to={`/pages/${slug}`}
-                  className={index === 0 ? 'first' : ''}
-                >
-                  <FormattedMessage {...messages[slug]} />
-                </StyledLink>
-                <Bullet aria-hidden>•</Bullet>
-              </React.Fragment>
-            ))}
+            {LEGAL_PAGES
+              // to be added back when we do the footer redesign
+              .filter((slug) => slug !== 'accessibility-statement')
+              .map((slug, index) => (
+                <React.Fragment key={slug}>
+                  <StyledLink
+                    to={`/pages/${slug}`}
+                    className={index === 0 ? 'first' : ''}
+                  >
+                    <FormattedMessage {...messages[slug]} />
+                  </StyledLink>
+                  <Bullet aria-hidden>•</Bullet>
+                </React.Fragment>
+              ))}
             <StyledButton onClick={this.openConsentManager}>
               <FormattedMessage {...messages.cookieSettings} />
             </StyledButton>
