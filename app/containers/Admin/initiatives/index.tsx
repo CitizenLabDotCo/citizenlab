@@ -10,8 +10,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
-  // TODO feature flag permissions
-
   private tabs = [
     {
       label: this.props.intl.formatMessage(messages.settingsTab),
@@ -24,8 +22,10 @@ export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
     {
       label: this.props.intl.formatMessage(messages.permissionTab),
       url: '/admin/initiatives/permissions',
+      feature: 'granular_permissions',
     },
   ];
+
   private resource = {
     title: this.props.intl.formatMessage(messages.titleInitiatives),
   };

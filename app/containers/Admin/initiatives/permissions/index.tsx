@@ -8,6 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { updateGlobalPermission } from 'services/actionPermissions';
+import FeatureFlag from 'components/FeatureFlag';
 
 interface DataProps {
   permissions: GetGlobalPermissionsChildProps;
@@ -20,19 +21,19 @@ const PermissionsInitiatives = memo<DataProps>(({ permissions }) => {
       group_ids: groupIds,
     });
   };
-  // TODO make sure we get no everyones
-  // TODO feature flag
   return (
     <Section>
-      <SectionTitle>
-        <FormattedMessage {...messages.granularPermissionsTitle} />
-      </SectionTitle>
-      {!isNilOrError(permissions) && (
-        <ActionsForm
-          permissions={permissions}
-          onChange={handlePermissionChange}
-        />
-      )}
+      <FeatureFlag name="granular_permissions">
+        <SectionTitle>
+          <FormattedMessage {...messages.granularPermissionsTitle} />
+        </SectionTitle>
+        {!isNilOrError(permissions) && (
+          <ActionsForm
+            permissions={permissions}
+            onChange={handlePermissionChange}
+          />
+        )}
+      </FeatureFlag>
     </Section>
   );
 });
