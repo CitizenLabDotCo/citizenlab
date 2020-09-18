@@ -32,16 +32,13 @@ import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';
-const VotingCTABox = lazy(() => import('./CTABox/VotingCTABox'));
-const ParticipatoryBudgetingCTABox = lazy(() =>
-  import('./CTABox/ParticipatoryBudgetingCTABox')
-);
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './MetaInformation';
 import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
+import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -85,9 +82,7 @@ import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
-  rightColumnWidthDesktop,
   columnsGapTablet,
-  rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
 
@@ -266,40 +261,6 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-`;
-
-const RightColumn = styled.div`
-  flex: 1;
-  margin: 0;
-  padding: 0;
-`;
-
-const RightColumnDesktop = styled(RightColumn)`
-  flex: 0 0 ${rightColumnWidthDesktop}px;
-  width: ${rightColumnWidthDesktop}px;
-
-  ${media.tablet`
-    flex: 0 0 ${rightColumnWidthTablet}px;
-    width: ${rightColumnWidthTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const MetaContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledVotingCTABox = styled(VotingCTABox)`
-  margin-bottom: 20px;
-`;
-
-const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
-  margin-bottom: 20px;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -723,39 +684,20 @@ export class IdeasShow extends PureComponent<
                 </Comments>
               </LeftColumn>
 
-              {biggerThanLargeTablet && (
-                <RightColumnDesktop>
-                  <MetaContent>
-                    <Suspense fallback={<Spinner />}>
-                      {showVoteControl && (
-                        <StyledVotingCTABox
-                          ideaId={ideaId}
-                          projectId={projectId}
-                        />
-                      )}
-                    </Suspense>
-                    {showBudgetControl &&
-                      participationContextId &&
-                      participationContextType &&
-                      budgetingDescriptor && (
-                        <Suspense fallback={<Spinner />}>
-                          <StyledPBCTABox
-                            ideaId={ideaId}
-                            projectId={projectId}
-                            participationContextId={participationContextId}
-                            participationContextType={participationContextType}
-                            budgetingDescriptor={budgetingDescriptor}
-                          />
-                        </Suspense>
-                      )}
-                    <MetaInformation
-                      ideaId={ideaId}
-                      projectId={projectId}
-                      statusId={statusId}
-                    />
-                  </MetaContent>
-                </RightColumnDesktop>
-              )}
+              <Suspense fallback={<Spinner />}>
+                {biggerThanLargeTablet && (
+                  <RightColumnDesktop
+                    ideaId={ideaId}
+                    projectId={projectId}
+                    statusId={statusId}
+                    showVoteControl={showVoteControl}
+                    showBudgetControl={showBudgetControl}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    budgetingDescriptor={budgetingDescriptor}
+                  />
+                )}
+              </Suspense>
             </Content>
           </IdeaContainer>
 
