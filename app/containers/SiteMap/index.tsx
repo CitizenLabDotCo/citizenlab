@@ -277,6 +277,13 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     <FormattedMessage {...messages.privacyPolicyLink} />
                   </Link>
                 </li>
+                <li>
+                  <Link to="/pages/accessibility-statement">
+                    <FormattedMessage
+                      {...messages.accessibilityStatementLink}
+                    />
+                  </Link>
+                </li>
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>

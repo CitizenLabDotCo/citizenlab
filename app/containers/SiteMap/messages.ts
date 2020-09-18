@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'containers.SiteMap.privacyPolicyLink',
     defaultMessage: 'Privacy Policy',
   },
+  accessibilityStatementLink: {
+    id: 'containers.SiteMap.accessibilityStatementLink',
+    defaultMessage: 'Accessibility statement',
+  },
   projectsSection: {
     id: 'containers.SiteMap.projectsSection',
     defaultMessage: 'Projects of {orgName}',
