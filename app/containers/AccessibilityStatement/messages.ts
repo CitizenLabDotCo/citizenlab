@@ -65,7 +65,7 @@ export default defineMessages({
   contentConformanceExceptions: {
     id: 'app.containers.AccessibilityStatement.contentConformanceExceptions',
     defaultMessage:
-      'Users may add inaccessible content. It is possible that PDF or other file types including multimedia (user-generated content) are uploaded to the platform as attachments which are not accessible. Online workshops (live video) do not have subtitles.',
+      'Users may add inaccessible content. It is possible that PDF or other file types including multimedia (user-generated content) are uploaded to the platform as attachments or that are inserted into text fields which are not accessible. Online workshops (live video) do not have subtitles.',
   },
   compatibilityTitle: {
     id: 'app.containers.AccessibilityStatement.compatibilityTitle',
