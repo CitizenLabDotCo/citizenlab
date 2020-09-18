@@ -18,7 +18,7 @@ export type IPreliminaryAction =
 
 export default function useInitiativesPermissions(action: IInitiativeAction) {
   const [actionPermission, setActionPermission] = useState<
-    ActionPermission | null | undefined
+    ActionPermission<IInitiativeDisabledReason> | null | undefined
   >(undefined);
 
   useEffect(() => {
@@ -84,5 +84,5 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     return () => subscription.unsubscribe();
   }, []);
 
-  return actionPermission as ActionPermission;
+  return actionPermission as ActionPermission<IInitiativeDisabledReason>;
 }

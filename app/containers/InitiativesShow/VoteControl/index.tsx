@@ -30,6 +30,12 @@ import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
+import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
+import { trackEventByName } from 'utils/analytics';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
   ${media.biggerThanMaxTablet`
@@ -52,6 +58,7 @@ interface VoteControlComponentProps {
   onVote?: () => void;
   onCancelVote?: () => void;
   onScrollToOfficialFeedback?: () => void;
+  disabledReason?: IInitiativeDisabledReason | null | undefined;
 }
 
 type TComponentMap = {
@@ -102,6 +109,7 @@ interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
   authUser: GetAuthUserChildProps;
+  votingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface State {}
@@ -110,6 +118,48 @@ interface Props extends InputProps, DataProps {}
 
 class VoteControl extends PureComponent<Props, State> {
   handleOnvote = () => {
+    const { votingPermission } = this.props;
+    const requiredAction = votingPermission?.action;
+    switch (requiredAction) {
+      case 'sign_in_up':
+        trackEventByName(
+          'Sign up/in modal opened in response to clicking vote initiative'
+        );
+        openSignUpInModal({
+          flow: 'signup',
+          verification: false,
+          verificationContext: undefined,
+          action: () => this.vote(),
+        });
+      case 'sign_in_up_and_verify':
+        trackEventByName(
+          'Sign up/in modal opened in response to clicking vote initiative'
+        );
+        openSignUpInModal({
+          flow: 'signup',
+          verification: true,
+          verificationContext: {
+            type: 'initiative',
+            action: 'voting_initiative',
+          },
+          action: () => this.vote(),
+        });
+      case 'verify':
+        trackEventByName(
+          'Sign up/in modal opened in response to clicking vote initiative'
+        );
+        openVerificationModal({
+          context: {
+            action: 'voting_initiative',
+            type: 'initiative',
+          },
+        });
+      default:
+        this.vote();
+    }
+  };
+
+  vote = () => {
     const { initiative, authUser } = this.props;
 
     if (!isNilOrError(initiative)) {
@@ -142,8 +192,9 @@ class VoteControl extends PureComponent<Props, State> {
       className,
       onScrollToOfficialFeedback,
       id,
+      votingPermission,
     } = this.props;
-
+    console.log(votingPermission);
     if (
       isNilOrError(initiative) ||
       isNilOrError(initiativeStatus) ||
@@ -186,6 +237,7 @@ class VoteControl extends PureComponent<Props, State> {
           onVote={this.handleOnvote}
           onCancelVote={this.handleOnCancelVote}
           onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+          disabledReason={votingPermission?.disabledReason}
         />
       </Container>
     );
@@ -215,6 +267,7 @@ const Data = adopt<DataProps, InputProps>({
 
     return null;
   },
+  votingPermission: <GetInitiativesPermissions action="voting_initiative" />,
 });
 
 export default (inputProps: InputProps) => (

@@ -216,6 +216,7 @@ export class InitiativesMap extends PureComponent<
           className="create-initiative-wrapper"
           ref={this.bindInitiativeCreationButton}
         >
+          // TODO add check
           <Button
             onClick={this.redirectToInitiativeCreation}
             icon="plus-circle"
