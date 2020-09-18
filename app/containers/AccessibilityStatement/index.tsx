@@ -57,15 +57,12 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 <h3>{formatMessage(messages.contentConformanceTitle)}</h3>
                 <p>{formatMessage(messages.contentConformanceInfo)}</p>
                 <p>{formatMessage(messages.contentConformanceExceptions)}</p>
+                <ul>
+                  <li>{formatMessage(messages.exception1)}</li>
+                  <li>{formatMessage(messages.exception2)}</li>
+                </ul>
                 <h2>{formatMessage(messages.compatibilityTitle)}</h2>
-                <p>{formatMessage(messages.compatibilityBrowsers)}</p>
-                <ul>
-                  <li>{formatMessage(messages.browsers)}</li>
-                </ul>
-                <p>{formatMessage(messages.compatibilityAssistiveTech)}</p>
-                <ul>
-                  <li>NVDA</li>
-                </ul>
+                <p>{formatMessage(messages.compatibilityInfo)}</p>
                 <p>{formatMessage(messages.screenReaderBugWarning)}</p>
                 <h2>{formatMessage(messages.technologiesTitle)}</h2>
                 <p>{formatMessage(messages.technologiesIntro)}</p>
@@ -92,8 +89,8 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 <ul>
                   <li>
                     {formatMessage(messages.email)}{' '}
-                    <a href="mailto:developers@citizenlab.co">
-                      developers@citizenlab.co
+                    <a href="mailto:support@citizenlab.co">
+                      support@citizenlab.co
                     </a>
                   </li>
                   <li>
