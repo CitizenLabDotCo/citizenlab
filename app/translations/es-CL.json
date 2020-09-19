@@ -1761,6 +1761,7 @@
   "app.containers.Projects.seeTheIdeas": "",
   "app.containers.Projects.seeTheTimeline": "",
   "app.containers.Projects.share": "",
+  "app.containers.Projects.shareThisProject": "",
   "app.containers.Projects.spentBudget": "Presupuesto asignado",
   "app.containers.Projects.startedOn": "",
   "app.containers.Projects.startsOn": "Comienza el {date}",
