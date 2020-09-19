@@ -18,7 +18,7 @@ import { trackEventByName } from 'utils/analytics';
 // components
 import ContentContainer from 'components/ContentContainer';
 import { Icon } from 'cl2-component-library';
-import { ContinuosProjectSectionTitle } from 'containers/ProjectsShowPage/styles';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
 import { localeStream } from 'services/locale';
@@ -460,9 +460,9 @@ class Timeline extends PureComponent<
         >
           <StyledContentContainer>
             <ContainerInner>
-              <ContinuosProjectSectionTitle>
+              <ProjectPageSectionTitle>
                 <FormattedMessage {...messages.timeline} />
-              </ContinuosProjectSectionTitle>
+              </ProjectPageSectionTitle>
               <Phases className="e2e-phases">
                 <ScreenReaderOnly>
                   <FormattedMessage {...messages.a11y_phasesOverview} />

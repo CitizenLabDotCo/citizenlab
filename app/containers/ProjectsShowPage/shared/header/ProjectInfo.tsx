@@ -49,7 +49,7 @@ const Right = styled.div`
 
 const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxxl}px;
+  font-size: ${fontSizes.xxxl + 1}px;
   line-height: normal;
   font-weight: 600;
   text-align: left;

@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import IdeaCards from 'components/IdeaCards';
-import { TimelineProjectSectionTitle } from 'containers/ProjectsShowPage/styles';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -48,9 +48,9 @@ class IdeasContainer extends PureComponent<Props, State> {
       ) {
         return (
           <Container id="phase-ideas" className={className || ''}>
-            <TimelineProjectSectionTitle>
+            <ProjectPageSectionTitle>
               <FormattedMessage {...messages.ideas} />
-            </TimelineProjectSectionTitle>
+            </ProjectPageSectionTitle>
             <IdeaCards
               className={participationMethod}
               type="load-more"

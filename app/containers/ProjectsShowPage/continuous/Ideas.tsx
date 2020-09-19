@@ -7,7 +7,7 @@ import IdeaCards from 'components/IdeaCards';
 import PBExpenses from '../shared/pb/PBExpenses';
 import {
   SectionContainer,
-  ContinuosProjectSectionTitle,
+  ProjectPageSectionTitle,
 } from 'containers/ProjectsShowPage/styles';
 
 // hooks
@@ -70,9 +70,9 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               )}
-              <ContinuosProjectSectionTitle>
+              <ProjectPageSectionTitle>
                 <FormattedMessage {...messages.ideas} />
-              </ContinuosProjectSectionTitle>
+              </ProjectPageSectionTitle>
               <IdeaCards
                 type="load-more"
                 projectIds={projectIds}

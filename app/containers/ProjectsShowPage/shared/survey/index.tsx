@@ -7,6 +7,7 @@ import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import Warning from 'components/UI/Warning';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
 import {
@@ -29,23 +30,8 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
-
-const Title = styled.h2`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxxl}px;
-  line-height: normal;
-  font-weight: 500;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  margin: 0;
-  margin-bottom: 25px;
-  padding: 0;
-`;
 
 interface InputProps {
   projectId: string | null;
@@ -153,9 +139,9 @@ class Survey extends PureComponent<Props, State> {
             id="survey"
             className={`${className} e2e-${surveyService}-survey`}
           >
-            <Title>
+            <ProjectPageSectionTitle>
               <FormattedMessage {...messages.survey} />
-            </Title>
+            </ProjectPageSectionTitle>
 
             {surveyService === 'typeform' && (
               <TypeformSurvey

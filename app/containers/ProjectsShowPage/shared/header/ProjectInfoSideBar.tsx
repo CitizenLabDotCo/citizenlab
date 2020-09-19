@@ -14,6 +14,7 @@ import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
+import useIsMounted from 'hooks/useIsMounted';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
@@ -116,7 +117,7 @@ const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
 `;
 
-const FillOutSurveyButton = styled(Button)``;
+const GoToTheSurvey = styled(Button)``;
 
 interface Props {
   projectId: string;
@@ -128,13 +129,37 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
+  const isMounted = useIsMounted();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
+  const [showGoToSurveyButton, setShowGoToSurveyButton] = useState(false);
 
   useEffect(() => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
   }, [phases]);
+
+  useEffect(() => {
+    if (isMounted()) {
+      setTimeout(() => {
+        const viewportHeight = Math.max(
+          document.documentElement.clientHeight || 0,
+          window.innerHeight || 0
+        );
+
+        const surveyElement = document?.getElementById('survey');
+
+        if (surveyElement) {
+          const isSurveyCompletelyInViewport =
+            surveyElement.getBoundingClientRect()?.top + 400 <= viewportHeight;
+
+          if (!isSurveyCompletelyInViewport) {
+            setShowGoToSurveyButton(true);
+          }
+        }
+      }, 100);
+    }
+  }, []);
 
   const upcomingEvents = !isNilOrError(events)
     ? events.filter((event) => {
@@ -168,9 +193,22 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
   const scrollToTimeline = useCallback((event: FormEvent) => {
     event.preventDefault();
-    document?.getElementById('project-timeline')?.scrollIntoView({
-      behavior: 'smooth',
-    });
+
+    const timelineElement = document?.getElementById('project-timeline');
+
+    if (timelineElement) {
+      window.scrollTo({
+        top:
+          timelineElement.getBoundingClientRect().top +
+          window.pageYOffset -
+          100,
+        behavior: 'smooth',
+      });
+
+      // timelineElement.scrollIntoView({
+      //   behavior: 'smooth',
+      // });
+    }
   }, []);
 
   const scrollToEvents = useCallback((event: FormEvent) => {
@@ -322,17 +360,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               fontWeight="500"
             />
           )}
-          {!!document?.getElementById('survey') &&
+          {showGoToSurveyButton &&
             ((process_type === 'continuous' &&
               participation_method === 'survey') ||
               currentPhase?.attributes.participation_method === 'survey') && (
-              <FillOutSurveyButton
-                buttonStyle="primary"
+              <GoToTheSurvey
+                buttonStyle="secondary"
                 onClick={scrollToSurvey}
                 fontWeight="500"
               >
-                <FormattedMessage {...messages.fillOutTheSurvey} />
-              </FillOutSurveyButton>
+                <FormattedMessage {...messages.goToTheSurvey} />
+              </GoToTheSurvey>
             )}
         </ActionButtons>
         <ProjectSharingModal
