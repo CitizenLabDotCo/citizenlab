@@ -56,6 +56,12 @@ const Buttons = styled.div`
   display: flex;
   flex-wrap: wrap;
 
+  &.layout2 {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
   .sharingButton {
     display: flex;
     align-items: center;
@@ -65,31 +71,42 @@ const Buttons = styled.div`
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
-    margin-right: 5px;
 
-    &.last {
-      margin-right: 0px;
+    &.layout1 {
+      margin-right: 5px;
+
+      &.last {
+        margin-right: 0px;
+      }
+
+      ${media.largePhone`
+        flex-basis: calc(50% - 2.5px);
+
+        &:nth-child(odd) {
+          margin-right: 5px;
+
+          &.last {
+            margin-right: 0px;
+          }
+        }
+
+        &:nth-child(-n+2) {
+          margin-bottom: 5px;
+        }
+
+        &:nth-child(even) {
+          margin-right: 0;
+        }
+      `}
     }
 
-    ${media.largePhone`
-      flex-basis: calc(50% - 2.5px);
+    &.layout2 {
+      margin-bottom: 10px;
 
-      &:nth-child(odd) {
-        margin-right: 5px;
-
-        &.last {
-          margin-right: 0px;
-        }
+      &.last {
+        margin-bottom: 0px;
       }
-
-      &:nth-child(-n+2) {
-        margin-bottom: 5px;
-      }
-
-      &:nth-child(even) {
-        margin-right: 0;
-      }
-    `}
+    }
 
     &.twitter {
       background: ${colors.twitter};
@@ -137,6 +154,12 @@ const Buttons = styled.div`
   }
 `;
 
+const ButtonText = styled.span`
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  margin-left: 10px;
+`;
+
 interface ITracks {
   clickFbShare: () => void;
   clickFbShareInModal: () => void;
@@ -164,6 +187,7 @@ interface InputProps {
   emailBody?: string;
   utmParams?: UtmParams;
   id?: string;
+  layout?: 1 | 2;
 }
 
 interface DataProps {
@@ -204,9 +228,11 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       intl: { formatMessage },
       location,
       id,
+      layout,
     } = this.props;
 
     if (!isNilOrError(tenant)) {
+      const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
       const facebookSettings =
         tenant && tenant.attributes.settings.facebook_login
           ? tenant.attributes.settings.facebook_login
@@ -237,18 +263,19 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
         <FacebookButton
           appId={facebookAppId}
           url={this.buildUrl('facebook')}
-          className="sharingButton facebook first"
+          className={`sharingButton facebook first ${layoutClassName}`}
           sharer={true}
           onClick={trackFbShare}
           aria-label={facebookButtonText}
         >
           <StyledIcon name="facebook" />
+          {layout === 2 && <ButtonText>{facebookButtonText}</ButtonText>}
         </FacebookButton>
       ) : null;
 
       const messenger = facebookAppId ? (
         <a
-          className="sharingButton messenger"
+          className={`sharingButton messenger ${layoutClassName}`}
           href={`fb-messenger://share/?link=${encodeURIComponent(
             this.buildUrl('messenger')
           )}&app_id=${facebookAppId}`}
@@ -257,6 +284,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
           aria-label={messengerButtonText}
         >
           <StyledIcon name="messenger" />
+          {layout === 2 && <ButtonText>{messengerButtonText}</ButtonText>}
         </a>
       ) : null;
 
@@ -266,41 +294,49 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
           url={this.buildUrl('twitter')}
           className={`sharingButton twitter ${
             !emailSubject || !emailBody ? 'last' : ''
-          }`}
+          } ${layoutClassName}`}
           sharer={true}
           onClick={trackTwitterShare}
           aria-label={twitterButtonText}
         >
           <StyledIcon name="twitter" />
+          {layout === 2 && <ButtonText>{twitterButtonText}</ButtonText>}
         </TwitterButton>
       );
 
       const email =
         emailSubject && emailBody ? (
           <a
-            className="sharingButton last email"
+            className={`sharingButton last email ${layoutClassName}`}
             href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
             onClick={trackEmailShare}
             role="button"
             aria-label={emailButtonText}
           >
             <StyledIcon name="email" />
+            {layout === 2 && <ButtonText>{emailButtonText}</ButtonText>}
           </a>
         ) : null;
 
       return (
         <Container id={id || ''} className={className || ''}>
-          <Title location={location}>
-            {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
-            {context === 'project' && <FormattedMessage {...messages.share} />}
-            {context === 'initiative' && (
-              <FormattedMessage {...messages.shareThisInitiative} />
-            )}
-            {context === 'folder' && (
-              <FormattedMessage {...messages.shareThisFolder} />
-            )}
-          </Title>
-          <Buttons>
+          {layout !== 2 && (
+            <Title location={location}>
+              {context === 'idea' && (
+                <FormattedMessage {...messages.shareIdea} />
+              )}
+              {context === 'project' && (
+                <FormattedMessage {...messages.share} />
+              )}
+              {context === 'initiative' && (
+                <FormattedMessage {...messages.shareThisInitiative} />
+              )}
+              {context === 'folder' && (
+                <FormattedMessage {...messages.shareThisFolder} />
+              )}
+            </Title>
+          )}
+          <Buttons className={layoutClassName}>
             {facebook}
             {messenger}
             {twitter}
