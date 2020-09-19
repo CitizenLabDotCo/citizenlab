@@ -11,6 +11,7 @@ const Container = styled.div`
 
   iframe {
     border: solid 1px ${colors.separation};
+    border-radius: ${(props: any) => props.theme.borderRadius};
   }
 `;
 
@@ -22,24 +23,25 @@ type Props = {
 };
 
 type State = {
-  loaded: boolean;
+  isIframeLoaded: boolean;
 };
 
 export default class TypeformSurvey extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
+      isIframeLoaded: false,
     };
   }
 
   handleIframeOnLoad = () => {
     setTimeout(() => {
-      this.setState({ loaded: true });
-    }, 100);
+      this.setState({ isIframeLoaded: true });
+    }, 200);
   };
 
   render() {
+    const { isIframeLoaded } = this.state;
     const { email, user_id, typeformUrl, className } = this.props;
 
     const queryString = stringify(omitBy({ email, user_id }, isNil));
@@ -51,7 +53,7 @@ export default class TypeformSurvey extends PureComponent<Props, State> {
           url={surveyUrl}
           width="100%"
           height="500px"
-          display={this.state.loaded ? 'block' : 'none'}
+          display={isIframeLoaded ? 'block' : 'none'}
           position="relative"
           allowFullScreen
           onLoad={this.handleIframeOnLoad}

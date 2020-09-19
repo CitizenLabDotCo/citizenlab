@@ -6,7 +6,7 @@ export const SectionContainer = styled.div`
   margin-bottom: 70px;
 `;
 
-export const ContinuosProjectSectionTitle = styled.h2`
+export const ProjectPageSectionTitle = styled.h2`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
@@ -19,7 +19,3 @@ export const ContinuosProjectSectionTitle = styled.h2`
   margin-bottom: 30px;
   padding: 0;
 `;
-
-export const TimelineProjectSectionTitle = styled(
-  ContinuosProjectSectionTitle
-)``;

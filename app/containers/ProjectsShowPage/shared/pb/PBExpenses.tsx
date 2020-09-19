@@ -56,6 +56,7 @@ const InnerContainer = styled.div`
 
 const Header = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 
@@ -63,7 +64,7 @@ const Title = styled.h2`
   min-height: 20px;
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.large}px;
-  line-height: 21px;
+  line-height: normal;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -104,7 +105,6 @@ const Budget = styled.div`
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 `;
 
 const BudgetLabel = styled.span`
@@ -196,7 +196,7 @@ const Budgets = styled.div`
   flex-direction: column;
 `;
 
-const TotalBudgetRow = styled(Budget)`
+const TotalBudget = styled(Budget)`
   white-space: nowrap;
 `;
 
@@ -405,7 +405,7 @@ class PBExpenses extends PureComponent<
               </Title>
               <Spacer />
               {viewMode === 'row' && (
-                <TotalBudgetRow aria-hidden>
+                <TotalBudget aria-hidden>
                   <BudgetLabel>
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
@@ -418,7 +418,7 @@ class PBExpenses extends PureComponent<
                       maximumFractionDigits={0}
                     />
                   </BudgetAmount>
-                </TotalBudgetRow>
+                </TotalBudget>
               )}
             </Header>
 

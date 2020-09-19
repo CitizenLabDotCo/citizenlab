@@ -189,23 +189,23 @@ const EmptyContainer = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
   fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
   padding-left: 20px;
   padding-right: 20px;
-  margin-top: 15px;
+  margin-top: 12px;
   margin-bottom: 30px;
 `;
 
 const EmptyMessageLine = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   text-align: center;
 `;

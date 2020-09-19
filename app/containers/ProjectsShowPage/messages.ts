@@ -226,9 +226,9 @@ export default defineMessages({
     id: 'app.containers.Projects.postYourIdea',
     defaultMessage: 'Post your idea',
   },
-  fillOutTheSurvey: {
-    id: 'app.containers.Projects.fillOutTheSurvey',
-    defaultMessage: 'Fill out the survey',
+  goToTheSurvey: {
+    id: 'app.containers.Projects.goToTheSurvey',
+    defaultMessage: 'Go to the survey',
   },
   ideas: {
     id: 'app.containers.Projects.ideas',
