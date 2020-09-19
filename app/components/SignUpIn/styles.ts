@@ -4,7 +4,7 @@ import {
   HeaderTitle,
   ModalContentContainer,
 } from 'components/UI/Modal';
-import { colors, fontSizes, defaultOutline, media } from 'utils/styleUtils';
+import { fontSizes, defaultOutline, media } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;
