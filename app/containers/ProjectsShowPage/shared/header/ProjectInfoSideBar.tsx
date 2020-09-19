@@ -48,7 +48,7 @@ const Title = styled.h2`
   margin: 0;
   padding: 0;
   padding-bottom: 8px;
-  padding-top: 8px;
+  padding-top: 11px;
 `;
 
 const List = styled.div`

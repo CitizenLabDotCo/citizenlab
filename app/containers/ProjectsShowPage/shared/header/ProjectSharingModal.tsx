@@ -12,23 +12,14 @@ import useProject from 'hooks/useProject';
 // i18n
 import T from 'components/T';
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div``;
-
-const ProjectTitle = styled.h3`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  line-height: normal;
-  font-weight: 600;
-  margin: 0;
-  margin-bottom: 30px;
-  padding: 0;
+const Container = styled.div`
+  padding: 25px;
 `;
 
 interface Props {
@@ -67,13 +58,11 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
           close={onClose}
           closeOnClickOutside={false}
           noClose={false}
+          header={<FormattedMessage {...messages.shareThisProject} />}
         >
           <Container className={className}>
             {opened && (
               <>
-                <ProjectTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </ProjectTitle>
                 <T value={project.attributes.title_multiloc} maxLength={50}>
                   {(title) => {
                     return (
@@ -87,6 +76,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                           }
                         )}
                         utmParams={utmParams}
+                        layout={2}
                       />
                     );
                   }}

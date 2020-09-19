@@ -246,4 +246,8 @@ export default defineMessages({
     id: 'app.containers.Projects.share',
     defaultMessage: 'Share',
   },
+  shareThisProject: {
+    id: 'app.containers.Projects.shareThisProject',
+    defaultMessage: 'Share this project',
+  },
 });
