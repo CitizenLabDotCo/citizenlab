@@ -19,7 +19,7 @@ import messages from './SignUp/messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
