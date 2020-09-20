@@ -47,7 +47,7 @@ class IdeasContainer extends PureComponent<Props, State> {
         participationMethod === 'budgeting'
       ) {
         return (
-          <Container id="phase-ideas" className={className || ''}>
+          <Container id="project-ideas" className={className || ''}>
             <ProjectPageSectionTitle>
               <FormattedMessage {...messages.ideas} />
             </ProjectPageSectionTitle>

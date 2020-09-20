@@ -8,13 +8,13 @@ import React, {
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 import moment from 'moment';
+import bowser from 'bowser';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
-import useIsMounted from 'hooks/useIsMounted';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
@@ -129,7 +129,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
-  const isMounted = useIsMounted();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
@@ -140,25 +139,23 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, [phases]);
 
   useEffect(() => {
-    if (isMounted()) {
-      setTimeout(() => {
-        const viewportHeight = Math.max(
-          document.documentElement.clientHeight || 0,
-          window.innerHeight || 0
-        );
+    setTimeout(() => {
+      const viewportHeight = Math.max(
+        document.documentElement.clientHeight || 0,
+        window.innerHeight || 0
+      );
 
-        const surveyElement = document?.getElementById('survey');
+      const surveyElement = document.getElementById('project-survey');
 
-        if (surveyElement) {
-          const isSurveyCompletelyInViewport =
-            surveyElement.getBoundingClientRect()?.top + 400 <= viewportHeight;
+      if (surveyElement) {
+        const isSurveyInViewport =
+          surveyElement.getBoundingClientRect()?.top + 400 <= viewportHeight;
 
-          if (!isSurveyCompletelyInViewport) {
-            setShowGoToSurveyButton(true);
-          }
+        if (!isSurveyInViewport) {
+          setShowGoToSurveyButton(true);
         }
-      }, 100);
-    }
+      }
+    }, 100);
   }, []);
 
   const upcomingEvents = !isNilOrError(events)
@@ -171,59 +168,29 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       })
     : [];
 
-  const scrollToIdeas = useCallback(
-    (event: FormEvent) => {
+  const scrollTo = useCallback(
+    (id: string, shouldSelectCurrentPhase: boolean = true) => (
+      event: FormEvent
+    ) => {
       event.preventDefault();
 
-      if (!currentPhase) {
-        document?.getElementById('project-ideas')?.scrollIntoView({
-          behavior: 'smooth',
-        });
-      } else {
-        selectCurrentPhase();
+      const element = document?.getElementById(id);
+
+      if (element) {
+        currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
         setTimeout(() => {
-          document?.getElementById('phase-ideas')?.scrollIntoView({
-            behavior: 'smooth',
-          });
+          element.scrollIntoView(
+            !bowser.msie
+              ? {
+                  behavior: 'smooth',
+                }
+              : undefined
+          );
         }, 100);
       }
     },
     [currentPhase]
   );
-
-  const scrollToTimeline = useCallback((event: FormEvent) => {
-    event.preventDefault();
-
-    const timelineElement = document?.getElementById('project-timeline');
-
-    if (timelineElement) {
-      window.scrollTo({
-        top:
-          timelineElement.getBoundingClientRect().top +
-          window.pageYOffset -
-          100,
-        behavior: 'smooth',
-      });
-
-      // timelineElement.scrollIntoView({
-      //   behavior: 'smooth',
-      // });
-    }
-  }, []);
-
-  const scrollToEvents = useCallback((event: FormEvent) => {
-    event.preventDefault();
-    document?.getElementById('project-events')?.scrollIntoView({
-      behavior: 'smooth',
-    });
-  }, []);
-
-  const scrollToSurvey = useCallback((event: FormEvent) => {
-    event.preventDefault();
-    document?.getElementById('survey')?.scrollIntoView({
-      behavior: 'smooth',
-    });
-  }, []);
 
   const openShareModal = useCallback((event: FormEvent) => {
     event.preventDefault();
@@ -282,7 +249,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           {process_type === 'timeline' &&
             !isNilOrError(phases) &&
             phases.length > 1 && (
-              <ListItem className="link" onClick={scrollToTimeline}>
+              <ListItem
+                className="link"
+                onClick={scrollTo('project-timeline', false)}
+              >
                 <ListItemIcon name="timeline" className="timeline" />
                 <FormattedMessage
                   {...messages.xPhases}
@@ -302,7 +272,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           {process_type === 'continuous' &&
             participation_method === 'ideation' &&
             isNumber(ideas_count) && (
-              <ListItem className="link" onClick={scrollToIdeas}>
+              <ListItem className="link" onClick={scrollTo('project-ideas')}>
                 <ListItemIcon name="idea-filled" />
                 <FormattedMessage
                   {...messages.xIdeas}
@@ -311,7 +281,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               </ListItem>
             )}
           {upcomingEvents.length > 0 && (
-            <ListItem className="link" onClick={scrollToEvents}>
+            <ListItem
+              className="link"
+              onClick={scrollTo('project-events', false)}
+            >
               <ListItemIcon name="event" />
               <FormattedMessage
                 {...messages.xUpcomingEvents}
@@ -337,7 +310,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           {showSeeIdeasButton && (
             <SeeIdeasButton
               buttonStyle="secondary"
-              onClick={scrollToIdeas}
+              onClick={scrollTo('project-ideas')}
               fontWeight="500"
             >
               <FormattedMessage {...messages.seeTheIdeas} />
@@ -366,7 +339,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               currentPhase?.attributes.participation_method === 'survey') && (
               <GoToTheSurvey
                 buttonStyle="secondary"
-                onClick={scrollToSurvey}
+                onClick={scrollTo('project-survey')}
                 fontWeight="500"
               >
                 <FormattedMessage {...messages.goToTheSurvey} />

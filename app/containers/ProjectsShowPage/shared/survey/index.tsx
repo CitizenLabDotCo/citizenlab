@@ -136,7 +136,7 @@ class Survey extends PureComponent<Props, State> {
 
         return (
           <Container
-            id="survey"
+            id="project-survey"
             className={`${className} e2e-${surveyService}-survey`}
           >
             <ProjectPageSectionTitle>
