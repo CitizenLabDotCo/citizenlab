@@ -30,14 +30,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
       if (!isNilOrError(tenant) && !isNilOrError(actionDescriptors)) {
         const actionDescriptor = actionDescriptors[action];
 
-        if (!tenant.data.attributes.settings.initiatives?.posting_enabled) {
-          setActionPermission({
-            show: false,
-            enabled: null,
-            disabledReason: null,
-            action: null,
-          });
-        } else if (actionDescriptor.enabled) {
+        if (actionDescriptor.enabled) {
           setActionPermission({
             show: true,
             enabled: true,
@@ -45,7 +38,6 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
             action: null,
           });
         } else {
-          console.log(actionDescriptor.disabled_reason);
           switch (actionDescriptor.disabled_reason) {
             case 'not_verified':
               if (isNilOrError(authUser)) {

@@ -30,6 +30,9 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 const Container = styled.div`
   margin-bottom: 30px;
@@ -93,6 +96,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
   post: GetPostChildProps;
+  commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -183,6 +187,7 @@ class ParentComment extends PureComponent<Props, State> {
       comment,
       post,
       className,
+      commentingPermissionInitiative,
     } = this.props;
     const {
       canLoadMore,
@@ -199,11 +204,14 @@ class ParentComment extends PureComponent<Props, State> {
       );
       const commentDeleted =
         comment.attributes.publication_status === 'deleted';
-      const commentingEnabled = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.enabled',
-        true
-      );
+      const commentingEnabled =
+        postType === 'initiative'
+          ? commentingPermissionInitiative?.enabled === true
+          : get(
+              post,
+              'attributes.action_descriptor.commenting_idea.enabled',
+              true
+            );
       const showCommentForm = authUser && commentingEnabled && !commentDeleted;
       const hasChildComments =
         this.props.childCommentIds && this.props.childCommentIds.length > 0;
@@ -299,6 +307,9 @@ const Data = adopt<DataProps, InputProps>({
     <GetPost id={get(comment, 'relationships.post.data.id')} type={postType}>
       {render}
     </GetPost>
+  ),
+  commentingPermissionInitiative: (
+    <GetInitiativesPermissions action="commenting_initiative" />
   ),
 });
 

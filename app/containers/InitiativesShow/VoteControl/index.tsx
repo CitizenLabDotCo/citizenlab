@@ -191,7 +191,6 @@ class VoteControl extends PureComponent<Props, State> {
       id,
       votingPermission,
     } = this.props;
-    console.log(votingPermission);
     if (
       isNilOrError(initiative) ||
       isNilOrError(initiativeStatus) ||

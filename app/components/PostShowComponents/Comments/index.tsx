@@ -33,6 +33,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // typings
 import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
+import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 
 const Container = styled.div``;
 
@@ -149,14 +150,18 @@ const CommentsSection = memo<Props>(
                 </StyledWarning>
               )}
 
-              <CommentingDisabled
-                commentingEnabled={commentingEnabled}
-                commentingDisabledReason={commentingDisabledReason}
-                projectId={get(post, 'relationships.project.data.id')}
-                phaseId={phaseId}
-                postId={postId}
-                postType={postType}
-              />
+              {postType === 'idea' ? (
+                <CommentingDisabled
+                  commentingEnabled={commentingEnabled}
+                  commentingDisabledReason={commentingDisabledReason}
+                  projectId={get(post, 'relationships.project.data.id')}
+                  phaseId={phaseId}
+                  postId={postId}
+                  postType={postType}
+                />
+              ) : (
+                <CommentingInitiativeDisabled />
+              )}
 
               <Comments
                 postId={postId}
