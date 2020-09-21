@@ -127,6 +127,7 @@ interface DataProps {
   comment: GetCommentChildProps;
   author: GetUserChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
+  commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -282,6 +283,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       canReply,
       intl: { formatMessage },
       commentingPermissionInitiative,
+      commentVotingPermissionInitiative,
     } = this.props;
     const { translateButtonClicked } = this.state;
 
@@ -313,7 +315,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
         commentingVotingDisabledReason !== 'not_permitted';
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent =
-        commentingDisabledReason !== 'commenting_disabled' || upvoteCount > 0;
+        postType === 'initiative'
+          ? commentVotingPermissionInitiative?.enabled
+          : commentingDisabledReason !== 'commenting_disabled' ||
+            upvoteCount > 0;
       const showReplyButton = canReply && !commentingDisabled;
       const showTranslateButton = !!(
         commentBodyMultiloc &&
@@ -334,24 +339,36 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   disabled={commentVotingDisabled}
                   commentingDisabledReason={commentingDisabledReason}
                 />
+                {/* // Make sure there's a next item before adding a separator */}
+                {showReplyButton ? (
+                  <Separator className="vote">•</Separator>
+                ) : showTranslateButton ? (
+                  <FeatureFlag name="machine_translations">
+                    <Separator>•</Separator>
+                  </FeatureFlag>
+                ) : null}
               </>
             )}
 
             {showReplyButton && (
               <>
-                <Separator>•</Separator>
                 <ReplyButton
                   onClick={this.onReply}
                   className="e2e-comment-reply-button"
                 >
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
+                {/* // Make sure there's a next item before adding a separator */}
+                {showTranslateButton && (
+                  <FeatureFlag name="machine_translations">
+                    <Separator>•</Separator>
+                  </FeatureFlag>
+                )}
               </>
             )}
 
             {showTranslateButton && (
               <FeatureFlag name="machine_translations">
-                <Separator>•</Separator>
                 <TranslateButton onClick={this.translateComment}>
                   {!translateButtonClicked ? (
                     <FormattedMessage {...messages.seeTranslation} />
@@ -398,6 +415,9 @@ const Data = adopt<DataProps, InputProps>({
   ),
   commentingPermissionInitiative: (
     <GetInitiativesPermissions action="commenting_initiative" />
+  ),
+  commentVotingPermissionInitiative: (
+    <GetInitiativesPermissions action="comment_voting_initiative" />
   ),
 });
 

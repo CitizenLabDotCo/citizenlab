@@ -81,7 +81,7 @@ export class InitiativesNewPage extends React.PureComponent<
           });
         })
         // todo handle this error better in the form /display
-        .catch((err) => {
+        .catch(() => {
           this.setState({
             locationInfo: {
               location_description: undefined,
