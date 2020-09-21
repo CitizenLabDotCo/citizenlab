@@ -25,7 +25,6 @@ import Modal from 'components/UI/Modal';
 import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import IdeaStatus from './IdeaStatus';
 import PostedBy from './PostedBy';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
@@ -218,14 +217,6 @@ const StyledBody = styled(Body)`
 
 const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
   margin-bottom: 20px;
-`;
-
-const StyledMobileIdeaStatus = styled(IdeaStatus)`
-  margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const MobileMetaInformation = styled(MetaInformation)`
@@ -551,10 +542,6 @@ export class IdeasShow extends PureComponent<
                     translateButtonClicked={translateButtonClicked}
                   />
                 </IdeaHeader>
-
-                {statusId && smallerThanLargeTablet && (
-                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
-                )}
 
                 <AuthorActionsContainer>
                   <PostedBy authorId={authorId} ideaId={ideaId} />
