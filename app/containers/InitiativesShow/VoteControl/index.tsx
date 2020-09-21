@@ -131,6 +131,7 @@ class VoteControl extends PureComponent<Props, State> {
           verificationContext: undefined,
           action: () => this.vote(),
         });
+        break;
       case 'sign_in_up_and_verify':
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'
@@ -144,6 +145,7 @@ class VoteControl extends PureComponent<Props, State> {
           },
           action: () => this.vote(),
         });
+        break;
       case 'verify':
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'
@@ -154,6 +156,7 @@ class VoteControl extends PureComponent<Props, State> {
             type: 'initiative',
           },
         });
+        break;
       default:
         this.vote();
     }
