@@ -11,6 +11,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     :users_by_time,
     :users_by_time_cumulative,
     :active_users_by_time,
+    :active_users_by_time_cumulative,
   ]
   before_action :render_no_data_as_xlsx, only: [
     :users_by_time_as_xlsx,
@@ -100,6 +101,43 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
      filename: 'users_by_time_cumulative.xlsx'
  end
+
+  def active_users_by_time_cumulative_serie
+    activities_scope = Activity
+      .select(:user_id).distinct
+      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
+
+    ps = ParticipantsService.new
+    activities_scope = ps.filter_engaging_activities(activities_scope)
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.projects_participants([project])
+      activities_scope = activities_scope.where(user_id: participants)
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      activities_scope = activities_scope.where(user_id: group.members)
+    end
+
+    if params[:topic]
+      users_scope = @@stats_service.filter_users_by_topic(User, params[:topic])
+      activities_scope = activities_scope.where(user_id: users_scope)
+    end
+
+    @@stats_service.group_by_time_cumulative(
+      activities_scope,
+      'acted_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+  end
+
+  def active_users_by_time_cumulative
+    render json: {series: {users: active_users_by_time_cumulative_serie}}
+  end
 
   def active_users_by_time_serie
     activities_scope = Activity

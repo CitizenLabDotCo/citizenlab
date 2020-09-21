@@ -188,6 +188,7 @@ Rails.application.routes.draw do
         get 'users_by_time', **route_params
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
+        get 'active_users_by_time_cumulative', **route_params
         get 'users_by_gender', **route_params
         get 'users_by_birthyear', **route_params
         get 'users_by_domicile', **route_params
