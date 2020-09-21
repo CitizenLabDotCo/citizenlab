@@ -14,7 +14,7 @@ import tracks from './tracks';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Sharing from 'components/Sharing';
+import IdeaSharingButton from './Buttons/IdeaSharingButton';
 import IdeaMeta from './IdeaMeta';
 import Title from 'components/PostShowComponents/Title';
 import IdeaProposedBudget from './IdeaProposedBudget';
@@ -22,8 +22,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
-import VoteWrapper from './VoteWrapper';
-import AssignBudgetWrapper from './AssignBudgetWrapper';
+import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaStatus from './IdeaStatus';
@@ -38,6 +37,8 @@ const LazyComments = lazy(() =>
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './MetaInformation';
+import MobileSharingButtonComponent from './Buttons/MobileSharingButtonComponent';
+import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -51,7 +52,6 @@ import GetIdeaImages, {
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -78,19 +78,11 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  viewportWidths,
-  defaultCardStyle,
-} from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
-  rightColumnWidthDesktop,
   columnsGapTablet,
-  rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
 
@@ -220,6 +212,10 @@ export const BodySectionTitle = styled.h2`
   line-height: 28px;
 `;
 
+const StyledBody = styled(Body)`
+  margin-bottom: 40px;
+`;
+
 const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
   margin-bottom: 20px;
 `;
@@ -248,62 +244,6 @@ const StyledIdeaMoreActions = styled(IdeaMoreActions)`
   margin-left: auto;
 `;
 
-const RightColumn = styled.div`
-  flex: 1;
-  margin: 0;
-  padding: 0;
-`;
-
-const RightColumnDesktop = styled(RightColumn)`
-  flex: 0 0 ${rightColumnWidthDesktop}px;
-  width: ${rightColumnWidthDesktop}px;
-
-  ${media.tablet`
-    flex: 0 0 ${rightColumnWidthTablet}px;
-    width: ${rightColumnWidthTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const MetaContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ControlWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 45px;
-  padding: 35px;
-  border: 1px solid #e0e0e0;
-  ${defaultCardStyle};
-`;
-
-const ControlWrapperHorizontalRule = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: ${colors.separation};
-  margin: 35px 0;
-`;
-
-const VoteLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-bottom: 12px;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
-`;
-
 const AssignBudgetControlMobile = styled.div`
   margin-top: 40px;
   margin-bottom: 40px;
@@ -313,16 +253,7 @@ const AssignBudgetControlMobile = styled.div`
   `}
 `;
 
-const SharingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const SharingMobile = styled(Sharing)`
-  padding: 0;
-  margin: 0;
-  margin-top: 40px;
-
+const MobileIdeaSharingButton = styled(IdeaSharingButton)`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
@@ -343,7 +274,6 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -546,7 +476,6 @@ export class IdeasShow extends PureComponent<
       idea,
       localize,
       ideaImages,
-      authUser,
       windowSize,
       className,
       postOfficialFeedbackPermission,
@@ -577,7 +506,6 @@ export class IdeasShow extends PureComponent<
       const statusId = idea.relationships.idea_status.data.id;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
-      const ideaUrl = location.href;
       const ideaId = idea.id;
       const proposedBudget = idea.attributes?.proposed_budget;
       const ideaBody = localize(idea?.attributes?.body_multiloc);
@@ -600,16 +528,6 @@ export class IdeasShow extends PureComponent<
         locale
       );
 
-      const utmParams = !isNilOrError(authUser)
-        ? {
-            source: 'share_idea',
-            campaign: 'share_content',
-            content: authUser.id,
-          }
-        : {
-            source: 'share_idea',
-            campaign: 'share_content',
-          };
       const showTranslateButton =
         !isNilOrError(idea) &&
         !isNilOrError(locale) &&
@@ -680,7 +598,7 @@ export class IdeasShow extends PureComponent<
                   </>
                 )}
 
-                <Body
+                <StyledBody
                   postType="idea"
                   postId={ideaId}
                   locale={locale}
@@ -710,29 +628,16 @@ export class IdeasShow extends PureComponent<
                     </AssignBudgetControlMobile>
                   )}
 
+                <MobileIdeaSharingButton
+                  ideaId={ideaId}
+                  buttonComponent={<MobileSharingButtonComponent />}
+                />
+
                 <StyledOfficialFeedback
                   postId={ideaId}
                   postType="idea"
                   permissionToPost={postOfficialFeedbackPermission}
                 />
-
-                {smallerThanLargeTablet && (
-                  <SharingMobile
-                    context="idea"
-                    url={ideaUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, {
-                      ideaTitle,
-                    })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, {
-                      ideaTitle,
-                    })}
-                    emailBody={formatMessage(messages.emailSharingBody, {
-                      ideaUrl,
-                      ideaTitle,
-                    })}
-                    utmParams={utmParams}
-                  />
-                )}
 
                 <Comments>
                   <Suspense fallback={<LoadingComments />}>
@@ -742,89 +647,18 @@ export class IdeasShow extends PureComponent<
               </LeftColumn>
 
               {biggerThanLargeTablet && (
-                <RightColumnDesktop>
-                  <MetaContent>
-                    {(showVoteControl || showBudgetControl || statusId) && (
-                      <ControlWrapper className="e2e-vote-controls-desktop">
-                        {(showVoteControl || showBudgetControl) && (
-                          <ScreenReaderOnly>
-                            {showVoteControl && (
-                              <FormattedMessage
-                                tagName="h2"
-                                {...messages.a11y_voteControl}
-                              />
-                            )}
-                            {showBudgetControl && (
-                              <FormattedMessage
-                                tagName="h2"
-                                {...messages.a11y_budgetControl}
-                              />
-                            )}
-                          </ScreenReaderOnly>
-                        )}
-                        {showVoteControl && (
-                          <>
-                            <VoteLabel>
-                              <FormattedMessage {...messages.voteOnThisIdea} />
-                            </VoteLabel>
-
-                            <VoteWrapper
-                              ideaId={ideaId}
-                              projectId={projectId}
-                            />
-                          </>
-                        )}
-
-                        {showBudgetControl &&
-                          participationContextId &&
-                          participationContextType &&
-                          budgetingDescriptor && (
-                            <AssignBudgetWrapper
-                              ideaId={ideaId}
-                              projectId={projectId}
-                              participationContextId={participationContextId}
-                              participationContextType={
-                                participationContextType
-                              }
-                              budgetingDescriptor={budgetingDescriptor}
-                            />
-                          )}
-
-                        {(showVoteControl || showBudgetControl) && (
-                          <ControlWrapperHorizontalRule aria-hidden />
-                        )}
-
-                        {statusId && (
-                          <IdeaStatus tagName="h3" statusId={statusId} />
-                        )}
-                      </ControlWrapper>
-                    )}
-
-                    <SharingWrapper>
-                      <Sharing
-                        context="idea"
-                        url={ideaUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, {
-                          ideaTitle,
-                        })}
-                        emailSubject={formatMessage(
-                          messages.emailSharingSubject,
-                          { ideaTitle }
-                        )}
-                        emailBody={formatMessage(messages.emailSharingBody, {
-                          ideaUrl,
-                          ideaTitle,
-                        })}
-                        utmParams={utmParams}
-                      />
-                    </SharingWrapper>
-                    <MetaInformation
-                      ideaId={ideaId}
-                      projectId={projectId}
-                      statusId={statusId}
-                    />
-                  </MetaContent>
-                </RightColumnDesktop>
+                <Suspense fallback={<Spinner />}>
+                  <RightColumnDesktop
+                    ideaId={ideaId}
+                    projectId={projectId}
+                    statusId={statusId}
+                    showVoteControl={showVoteControl}
+                    showBudgetControl={showBudgetControl}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    budgetingDescriptor={budgetingDescriptor}
+                  />
+                </Suspense>
               )}
             </Content>
           </IdeaContainer>
@@ -889,7 +723,6 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,

@@ -23,13 +23,10 @@ interface Props {
 
 const ProfileLink = ({ className, profileLink, children }: Props) => {
   return (
-    <StyledLink
-      to={profileLink}
-      className={className}
-    >
+    <StyledLink to={profileLink} className={className}>
       {children}
     </StyledLink>
   );
-}
+};
 
 export default ProfileLink;
