@@ -50,6 +50,7 @@ export type IIdeaPostingDisabledReason =
   | 'postingDisabled'
   | 'projectInactive'
   | 'notActivePhase'
+  | 'maybeNotPermitted'
   | 'futureEnabled';
 
 // When disabled but user might get access, here are the next steps for this user
@@ -94,7 +95,7 @@ const ideaPostingDisabledReason = (
       };
     case 'not_permitted':
       return {
-        disabledReason: 'notPermitted',
+        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
         action: null,
       };
 
