@@ -26,6 +26,7 @@ import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import { ITopicData } from 'services/topics';
+import { ILocationInfo } from 'typings';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -38,16 +39,7 @@ interface DataProps {
 interface Props extends DataProps {}
 
 interface State {
-  locationInfo:
-    | undefined
-    | null
-    | {
-        location_description: string;
-        location_point_geojson: {
-          type: 'Point';
-          coordinates: number[];
-        };
-      };
+  locationInfo: undefined | null | ILocationInfo;
 }
 
 export class InitiativesNewPage extends React.PureComponent<
@@ -63,6 +55,7 @@ export class InitiativesNewPage extends React.PureComponent<
 
   componentDidMount() {
     const { location } = this.props;
+    console.log(location);
     const { lat, lng } = parse(location.search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -73,20 +66,34 @@ export class InitiativesNewPage extends React.PureComponent<
     this.redirectIfNotPermittedOnPage();
 
     if (isNumber(lat) && isNumber(lng)) {
-      reverseGeocode([lat, lng]).then((location_description) => {
-        this.setState({
-          locationInfo: {
-            // When an idea is posted through the map, we Google Maps gets an approximate address,
-            // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
-            // and doesn't readjust together with the address correction/approximation
-            location_description,
-            location_point_geojson: {
-              type: 'Point',
-              coordinates: [lng, lat],
+      // When an idea is posted through the map, we Google Maps gets an approximate address,
+      // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
+      // and doesn't readjust together with the address correction/approximation
+      reverseGeocode([lat, lng])
+        .then((location_description) => {
+          this.setState({
+            locationInfo: {
+              location_description,
+              location_point_geojson: {
+                type: 'Point',
+                coordinates: [lng, lat],
+              },
             },
-          },
+          });
+        })
+        // todo handle this error better in the form /display
+        .catch((err) => {
+          this.setState({
+            locationInfo: {
+              location_description: undefined,
+              error: 'not_found',
+              location_point_geojson: {
+                type: 'Point',
+                coordinates: [lng, lat],
+              },
+            },
+          });
         });
-      });
     } else {
       this.setState({ locationInfo: null });
     }

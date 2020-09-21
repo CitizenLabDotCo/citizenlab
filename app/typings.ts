@@ -18,6 +18,23 @@ export interface IHttpMethod {
   method: 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
 }
 
+export type ILocationInfo =
+  | {
+      location_description: string;
+      location_point_geojson: {
+        type: 'Point';
+        coordinates: number[];
+      };
+    }
+  | {
+      location_description: undefined;
+      error: 'not_found';
+      location_point_geojson: {
+        type: 'Point';
+        coordinates: number[];
+      };
+    };
+
 export type IParticipationContextType = 'project' | 'phase';
 
 export type IPCAction = IProjectAction | IIdeaAction;
