@@ -1848,7 +1848,7 @@
   "app.containers.SignUp.continue": "Fortsæt",
   "app.containers.SignUp.continueWithAzure": "Fortsæt med {azureProviderName}",
   "app.containers.SignUp.continueWithFacebook": "Fortsæt med Facebook",
-  "app.containers.SignUp.continueWithGoogle": "Fortæt med Google",
+  "app.containers.SignUp.continueWithGoogle": "Fortsæt med Google",
   "app.containers.SignUp.createYourAccount": "Opret din konto",
   "app.containers.SignUp.emailConsent": "Ved at registrere dig, accepterer du at modtage e-mails fra denne platform. Du kan vælge, hvilke e-mails du ønsker at modtage i dine brugerindstillinger.",
   "app.containers.SignUp.emailLabel": "E-mail",
