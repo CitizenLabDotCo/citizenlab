@@ -1574,6 +1574,7 @@
   "app.containers.IdeasShow.invisibleTitleContent": "Hovedside innhold",
   "app.containers.IdeasShow.metaOgTitle": "Støtt min idé: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idé  • {ideaTitle}",
+  "app.containers.IdeasShow.postComment": "",
   "app.containers.IdeasShow.postedIn": "Publisert i {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Foreslått budsjett",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Hvorfor ønsker du å rapportere dette som spam?",
