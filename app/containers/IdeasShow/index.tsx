@@ -192,6 +192,7 @@ const StyledTranslateButton = styled(TranslateButton)`
 
 const IdeaHeader = styled.div`
   margin-top: -5px;
+  margin-bottom: 5px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
