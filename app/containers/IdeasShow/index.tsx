@@ -192,17 +192,19 @@ const StyledTranslateButton = styled(TranslateButton)`
 
 const IdeaHeader = styled.div`
   margin-top: -5px;
-  margin-bottom: 28px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
-    margin-bottom: 45px;
   `}
 `;
 
 const StyledProjectLink = styled(ProjectLink)`
-  margin-bottom: 70px;
+  margin-bottom: 40px;
   display: block;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 export const BodySectionTitle = styled.h2`
