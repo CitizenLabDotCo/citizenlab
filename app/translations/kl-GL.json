@@ -1574,6 +1574,7 @@
   "app.containers.IdeasShow.invisibleTitleContent": "Pingaarnerusutut isumassarsiap imaa",
   "app.containers.IdeasShow.metaOgTitle": "Isumassarsiara tapersersoruk: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Isumassarsiaq • {ideaTitle}",
+  "app.containers.IdeasShow.postComment": "",
   "app.containers.IdeasShow.postedIn": "Uunga ilanngunneqarsimavoq {projectLink}}}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Missingersuusiaq",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Sooq una spamisut nalunaarutiginiarpiuk",

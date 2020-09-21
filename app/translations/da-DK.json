@@ -1574,6 +1574,7 @@
   "app.containers.IdeasShow.invisibleTitleContent": "{tenantName, select, DeloitteDK {Ideindhold} other {Hovedideeindhold}}",
   "app.containers.IdeasShow.metaOgTitle": "{tenantName, select, DeloitteDK {Giv dit input: {ideaTitle}} other {Støt min idé: {ideaTitle}}}",
   "app.containers.IdeasShow.metaTitle": "{tenantName, select, DeloitteDK {Giv dit input • {ideaTitle}} other {Idé• {ideaTitle}}}",
+  "app.containers.IdeasShow.postComment": "",
   "app.containers.IdeasShow.postedIn": "{tenantName, select, DeloitteDK {Opslået i {projectLink}} other {Opslog i {projectLink}}}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Foreslået budget",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Hvorfor ønsker du at rapportere dette som spam?",
