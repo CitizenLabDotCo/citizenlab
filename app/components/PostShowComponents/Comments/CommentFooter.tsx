@@ -17,6 +17,9 @@ import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 // events
 import {
@@ -123,6 +126,7 @@ interface DataProps {
   post: GetPostChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
+  commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -168,20 +172,11 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   onReply = () => {
-    const { post, comment } = this.props;
+    const { post, comment, commentingPermissionInitiative } = this.props;
 
     if (!isNilOrError(post) && !isNilOrError(comment)) {
       const { authUser, author, commentType } = this.props;
-      const {
-        clickChildCommentReplyButton,
-        clickParentCommentReplyButton,
-      } = tracks;
-      const commentingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.disabled_reason'
-      );
-      const authUserIsVerified =
-        !isNilOrError(authUser) && authUser.attributes.verified;
+
       const commentId = !isNilOrError(comment) ? comment.id : null;
       const parentCommentId = !isNilOrError(comment)
         ? comment.relationships.parent.data?.id || null
@@ -194,34 +189,79 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
         : null;
       const authorSlug = !isNilOrError(author) ? author.attributes.slug : null;
 
-      trackEventByName(
-        commentType === 'child'
-          ? clickChildCommentReplyButton
-          : clickParentCommentReplyButton,
-        {
-          loggedIn: !!authUser,
-        }
-      );
+      if (post.type === 'idea') {
+        const {
+          clickChildCommentReplyButton,
+          clickParentCommentReplyButton,
+        } = tracks;
+        const commentingDisabledReason = get(
+          post,
+          'attributes.action_descriptor.commenting_idea.disabled_reason'
+        );
+        const authUserIsVerified =
+          !isNilOrError(authUser) && authUser.attributes.verified;
 
-      if (!isNilOrError(authUser) && !commentingDisabledReason) {
-        commentReplyButtonClicked({
-          commentId,
-          parentCommentId,
-          authorFirstName,
-          authorLastName,
-          authorSlug,
-        });
-      } else if (
-        !isNilOrError(authUser) &&
-        !authUserIsVerified &&
-        commentingDisabledReason === 'not_verified'
-      ) {
-        openVerificationModal();
-      } else if (!authUser) {
-        openSignUpInModal({
-          verification: commentingDisabledReason === 'not_verified',
-          action: () => this.onReply(),
-        });
+        trackEventByName(
+          commentType === 'child'
+            ? clickChildCommentReplyButton
+            : clickParentCommentReplyButton,
+          {
+            loggedIn: !!authUser,
+          }
+        );
+
+        if (!isNilOrError(authUser) && !commentingDisabledReason) {
+          commentReplyButtonClicked({
+            commentId,
+            parentCommentId,
+            authorFirstName,
+            authorLastName,
+            authorSlug,
+          });
+        } else if (
+          !isNilOrError(authUser) &&
+          !authUserIsVerified &&
+          commentingDisabledReason === 'not_verified'
+        ) {
+          openVerificationModal();
+        } else if (!authUser) {
+          openSignUpInModal({
+            verification: commentingDisabledReason === 'not_verified',
+            action: () => this.onReply(),
+          });
+        }
+      } else {
+        if (commentingPermissionInitiative?.action === 'sign_in_up') {
+          openSignUpInModal({
+            action: () => this.onReply(),
+          });
+        } else if (
+          commentingPermissionInitiative?.action === 'sign_in_up_and_verify'
+        ) {
+          openSignUpInModal({
+            action: () => this.onReply(),
+            verification: true,
+            verificationContext: {
+              action: 'commenting_initiative',
+              type: 'initiative',
+            },
+          });
+        } else if (commentingPermissionInitiative?.action === 'verify') {
+          openVerificationModal({
+            context: {
+              action: 'commenting_initiative',
+              type: 'initiative',
+            },
+          });
+        } else if (commentingPermissionInitiative?.enabled === true) {
+          commentReplyButtonClicked({
+            commentId,
+            parentCommentId,
+            authorFirstName,
+            authorLastName,
+            authorSlug,
+          });
+        }
       }
     }
   };
@@ -241,6 +281,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       post,
       canReply,
       intl: { formatMessage },
+      commentingPermissionInitiative,
     } = this.props;
     const { translateButtonClicked } = this.state;
 
@@ -256,9 +297,12 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
         'attributes.action_descriptor.commenting_idea.disabled_reason'
       );
       const commentingDisabled =
-        commentingDisabledReason &&
-        (commentingDisabledReason !== 'not_verified' ||
-          (!authUser && commentingDisabledReason !== 'not_permitted'));
+        postType === 'initiative'
+          ? !commentingPermissionInitiative?.enabled
+          : commentingDisabledReason &&
+            (commentingDisabledReason !== 'not_verified' ||
+              (!authUser && commentingDisabledReason !== 'not_permitted'));
+
       const commentingVotingDisabledReason = get(
         post,
         'attributes.action_descriptor.comment_voting_idea.disabled_reason'
@@ -290,36 +334,24 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   disabled={commentVotingDisabled}
                   commentingDisabledReason={commentingDisabledReason}
                 />
-                {/* // Make sure there's a next item before adding a separator */}
-                {showReplyButton ? (
-                  <Separator className="vote">•</Separator>
-                ) : showTranslateButton ? (
-                  <FeatureFlag name="machine_translations">
-                    <Separator>•</Separator>
-                  </FeatureFlag>
-                ) : null}
               </>
             )}
 
             {showReplyButton && (
               <>
+                <Separator>•</Separator>
                 <ReplyButton
                   onClick={this.onReply}
                   className="e2e-comment-reply-button"
                 >
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
-                {/* // Make sure there's a next item before adding a separator */}
-                {showTranslateButton && (
-                  <FeatureFlag name="machine_translations">
-                    <Separator>•</Separator>
-                  </FeatureFlag>
-                )}
               </>
             )}
 
             {showTranslateButton && (
               <FeatureFlag name="machine_translations">
+                <Separator>•</Separator>
                 <TranslateButton onClick={this.translateComment}>
                   {!translateButtonClicked ? (
                     <FormattedMessage {...messages.seeTranslation} />
@@ -363,6 +395,9 @@ const Data = adopt<DataProps, InputProps>({
     <GetUser id={get(comment, 'relationships.author.data.id')}>
       {render}
     </GetUser>
+  ),
+  commentingPermissionInitiative: (
+    <GetInitiativesPermissions action="commenting_initiative" />
   ),
 });
 

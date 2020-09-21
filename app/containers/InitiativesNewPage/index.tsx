@@ -55,7 +55,6 @@ export class InitiativesNewPage extends React.PureComponent<
 
   componentDidMount() {
     const { location } = this.props;
-    console.log(location);
     const { lat, lng } = parse(location.search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {

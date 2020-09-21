@@ -52,7 +52,6 @@ class CommentingDisabled extends PureComponent<Props> {
       commentingDisabledReason,
     } = this.props;
     const isLoggedIn = !isNilOrError(authUser);
-    console.log(commentingDisabledReason);
     if (commentingEnabled) {
       return null;
     } else if (commentingDisabledReason === 'project_inactive') {
