@@ -52,6 +52,7 @@ const Header = styled.h3`
 `;
 
 interface InputProps {
+  className?: string;
   ideaId: string;
   projectId: string;
   statusId: string;
@@ -64,6 +65,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const MetaInformation = ({
+  className,
   ideaId,
   projectId,
   statusId,
@@ -123,7 +125,7 @@ const MetaInformation = ({
     const lastItem = calculateLastItem();
 
     return (
-      <Container>
+      <Container className={className}>
         {!isNilOrError(ideaStatus) && (
           <Item isLastItem={lastItem === 'ideaStatus'}>
             <Header>
