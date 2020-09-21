@@ -27,6 +27,9 @@ import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import { ITopicData } from 'services/topics';
 import { ILocationInfo } from 'typings';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -34,6 +37,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
   previousPathName: string | null;
   topics: GetTopicsChildProps;
+  postingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends DataProps {}
@@ -122,22 +126,9 @@ export class InitiativesNewPage extends React.PureComponent<
   };
 
   redirectIfPostingNotEnabled() {
-    if (!this.isPostingProposalEnabled()) {
+    if (this.props.postingPermission?.enabled !== true) {
       clHistory.replace('/initiatives');
     }
-  }
-
-  isPostingProposalEnabled() {
-    const { tenant } = this.props;
-
-    if (
-      !isNilOrError(tenant) &&
-      !isNilOrError(tenant.attributes.settings.initiatives)
-    ) {
-      return tenant.attributes.settings.initiatives.posting_enabled;
-    }
-
-    return false;
   }
 
   render() {
@@ -180,6 +171,7 @@ const Data = adopt<DataProps>({
       {render as any}
     </PreviousPathnameContext.Consumer>
   ),
+  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
 export default withRouter((inputProps: WithRouterProps) => (
