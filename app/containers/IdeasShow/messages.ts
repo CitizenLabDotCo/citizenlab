@@ -13,14 +13,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.a11y_voteControl',
     defaultMessage: 'Voting and status',
   },
-  a11y_budgetControl: {
-    id: 'app.containers.IdeasShow.a11y_budgetControl',
-    defaultMessage: 'Idea assignment ans status',
-  },
-  voteOnThisIdea: {
-    id: 'app.containers.IdeasShow.voteOnThisIdea',
-    defaultMessage: 'Vote on this idea',
-  },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea: {ideaTitle}',
@@ -42,19 +34,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.shareSubtitle',
     defaultMessage:
       'Share your idea to reach more people, receive more votes and have more impact.',
-  },
-  twitterMessage: {
-    id: 'app.containers.IdeasShow.twitterMessage',
-    defaultMessage: 'Vote for {ideaTitle} on',
-  },
-  emailSharingSubject: {
-    id: 'app.containers.IdeasShow.emailSharingSubject',
-    defaultMessage: 'Support my idea: {ideaTitle}.',
-  },
-  emailSharingBody: {
-    id: 'app.containers.IdeasShow.emailSharingBody',
-    defaultMessage:
-      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
@@ -119,5 +98,26 @@ export default defineMessages({
   bodyTitle: {
     id: 'app.components.IdeasShow.bodyTitle',
     defaultMessage: 'Description',
+  },
+  twitterMessage: {
+    id: 'app.containers.IdeasShow.twitterMessage',
+    defaultMessage: 'Vote for {ideaTitle} on',
+  },
+  emailSharingSubject: {
+    id: 'app.containers.IdeasShow.emailSharingSubject',
+    defaultMessage: 'Support my idea: {ideaTitle}.',
+  },
+  emailSharingBody: {
+    id: 'app.containers.IdeasShow.emailSharingBody',
+    defaultMessage:
+      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
+  },
+  shareIdea: {
+    id: 'app.containers.IdeasShow.shareIdea',
+    defaultMessage: 'Share idea',
+  },
+  postComment: {
+    id: 'app.containers.IdeasShow.shareIdea',
+    defaultMessage: 'Post comment',
   },
 });

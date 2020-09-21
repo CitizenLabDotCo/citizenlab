@@ -42,7 +42,10 @@ const ProjectLink = memo(({ projectId, className }: Props) => {
     return (
       <Container className={className}>
         <StyledIcon ariaHidden name="circle-arrow-left" />
-        <StyledLink to={`/projects/${project.attributes.slug}`}>
+        <StyledLink
+          id="e2e-idea-other-link"
+          to={`/projects/${project.attributes.slug}`}
+        >
           {localize(project.attributes.title_multiloc)}
         </StyledLink>
       </Container>
