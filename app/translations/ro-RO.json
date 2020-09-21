@@ -1574,6 +1574,7 @@
   "app.containers.IdeasShow.invisibleTitleContent": "Conținutul ideii principale",
   "app.containers.IdeasShow.metaOgTitle": "Susțineți ideea mea: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Ideea • {ideaTitle}",
+  "app.containers.IdeasShow.postComment": "",
   "app.containers.IdeasShow.postedIn": "Postat în {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Buget propus",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "De ce dorești să raportezi acest lucru ca spam?",

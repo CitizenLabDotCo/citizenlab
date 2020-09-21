@@ -1574,6 +1574,7 @@
   "app.containers.IdeasShow.invisibleTitleContent": "Main idea content",
   "app.containers.IdeasShow.metaOgTitle": "Support my idea: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idea  • {ideaTitle}",
+  "app.containers.IdeasShow.postComment": "Post comment",
   "app.containers.IdeasShow.postedIn": "Posted in {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Why do you want to report this as spam?",

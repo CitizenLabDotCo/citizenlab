@@ -9,7 +9,6 @@ import { Dropdown } from 'cl2-component-library';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
