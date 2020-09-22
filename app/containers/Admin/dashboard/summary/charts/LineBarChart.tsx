@@ -121,22 +121,7 @@ class LineBarChart extends React.PureComponent<
   }
 
   componentDidMount() {
-    const {
-      startAt,
-      endAt,
-      resolution,
-      currentGroupFilter,
-      currentTopicFilter,
-      currentProjectFilter,
-    } = this.props;
-    this.resubscribe(
-      startAt,
-      endAt,
-      resolution,
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter
-    );
+    this.resubscribe();
   }
 
   componentDidUpdate(prevProps: Props) {

@@ -211,13 +211,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
-    const {
-      className,
-      graphTitle,
-      graphUnitMessageKey,
-      infoMessage,
-    } = this.props;
+    const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
     const {
       chartFill,
