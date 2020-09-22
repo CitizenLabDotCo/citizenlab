@@ -16,6 +16,7 @@ const Container = styled.div`
   padding-top: 40px;
   padding-bottom: 75px;
   background: #fff;
+  position: relative;
 `;
 
 const ProjectHeaderImage = styled.div<{ src: string }>`

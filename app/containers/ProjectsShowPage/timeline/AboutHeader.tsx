@@ -10,7 +10,7 @@ import useTenant from 'hooks/useTenant';
 import usePhases from 'hooks/usePhases';
 
 // components
-import IdeaButton from 'components/IdeaButton';
+// import IdeaButton from 'components/IdeaButton';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -38,14 +38,14 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const Right = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: auto;
-  display: flex;
-  align-items: center;
-  margin-left: 15px;
-`;
+// const Right = styled.div`
+//   flex-grow: 0;
+//   flex-shrink: 0;
+//   flex-basis: auto;
+//   display: flex;
+//   align-items: center;
+//   margin-left: 15px;
+// `;
 
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
@@ -123,10 +123,6 @@ const HeaderSubtitle = styled.div`
   font-weight: 300;
   display: flex;
   align-items: center;
-
-  /* &.present {
-    color: ${colors.clGreen};
-  } */
 `;
 
 const DatesSeparator = styled.span`
@@ -215,39 +211,6 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
                 {startDate}
                 <DatesSeparator>→</DatesSeparator>
                 {endDate}
-                {/* {pastPresentOrFuture(selectedPhase.attributes.start_at) ===
-                'past' ? (
-                  <FormattedMessage
-                    {...messages.startedOn}
-                    values={{
-                      date: startDate,
-                    }}
-                  />
-                ) : (
-                  <FormattedMessage
-                    {...messages.startsOn}
-                    values={{
-                      date: startDate,
-                    }}
-                  />
-                )}
-                
-                {pastPresentOrFuture(selectedPhase.attributes.end_at) ===
-                'past' ? (
-                  <FormattedMessage
-                    {...messages.endedOn}
-                    values={{
-                      date: endDate,
-                    }}
-                  />
-                ) : (
-                  <FormattedMessage
-                    {...messages.endsOn}
-                    values={{
-                      date: endDate,
-                    }}
-                  />
-                )} */}
               </HeaderSubtitle>
             )}
             <ScreenReaderOnly>
@@ -262,14 +225,14 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
           </HeaderTitleWrapper>
         </Left>
 
-        <Right>
+        {/* <Right>
           <IdeaButton
             projectId={projectId}
             phaseId={selectedPhaseId}
             participationContextType="phase"
             fontWeight="500"
           />
-        </Right>
+        </Right> */}
       </Container>
     );
   }
