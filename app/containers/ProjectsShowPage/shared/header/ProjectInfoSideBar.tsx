@@ -25,6 +25,7 @@ import IdeaButton from 'components/IdeaButton';
 import { Icon } from 'cl2-component-library';
 import { selectCurrentPhase } from 'containers/ProjectsShowPage/timeline/Timeline';
 import ProjectSharingModal from './ProjectSharingModal';
+import ProjectActionBar from './ProjectActionBar';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -212,6 +213,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
     return (
       <Container className={className || ''}>
+        <ProjectActionBar projectId={projectId} />
         <Title>
           <FormattedMessage {...messages.about} />
         </Title>
@@ -306,6 +308,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             participation_method === 'ideation' &&
             publication_status !== 'archived' && (
               <IdeaButton
+                id="bleh"
                 projectId={project.id}
                 participationContextType="project"
                 fontWeight="500"
@@ -313,6 +316,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             )}
           {currentPhase?.attributes.participation_method === 'ideation' && (
             <IdeaButton
+              id="bleh"
               projectId={project.id}
               phaseId={currentPhase.id}
               participationContextType="phase"

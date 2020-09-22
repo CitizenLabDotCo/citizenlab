@@ -105,6 +105,7 @@ interface DataProps {
 }
 
 interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
+  id?: string;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
   latLng?: LatLng | null;
@@ -259,6 +260,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const {
+      id,
       project,
       phase,
       authUser,
@@ -332,7 +334,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
       }
 
       return (
-        <Container className={className || ''}>
+        <Container id={id || undefined} className={className || ''}>
           <Tippy
             disabled={!isButtonDisabled}
             interactive={true}

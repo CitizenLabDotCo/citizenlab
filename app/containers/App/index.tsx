@@ -449,6 +449,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 <Container>
                   <Meta />
 
+                  <div id="topbar-portal" />
+
                   <ErrorBoundary>
                     <Suspense fallback={null}>
                       <PostPageFullscreenModal
