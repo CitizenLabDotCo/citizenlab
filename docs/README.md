@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-09-22
+
+### Added
+- Accessibility statement
+
 ## 2020-09-17
 
 ### Added
