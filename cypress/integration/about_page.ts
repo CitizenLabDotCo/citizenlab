@@ -24,4 +24,13 @@ describe('About page', () => {
     cy.location('pathname').should('eq', '/en-GB/pages/terms-and-conditions');
     cy.get('.e2e-page-terms-and-conditions');
   });
+
+  it('has a working link to the accessibility statement page', () => {
+    cy.get('.e2e-page-link-to-accessibility-statement').click();
+    cy.location('pathname').should(
+      'eq',
+      '/en-GB/pages/accessibility-statement'
+    );
+    cy.get('.e2e-page-accessibility-statement');
+  });
 });
