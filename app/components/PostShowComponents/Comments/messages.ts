@@ -77,7 +77,7 @@ export default defineMessages({
   },
   commentingInitiativeNotPermitted: {
     id: 'app.components.Comments.commentingInitiativeNotPermitted',
-    defaultMessage: 'Commenting on this idea is currently not allowed',
+    defaultMessage: "You don't have the rights to comment.",
   },
   commentingInitiativeMaybeNotPermitted: {
     id: 'app.components.Comments.commentingInitiativeMaybeNotPermitted',
