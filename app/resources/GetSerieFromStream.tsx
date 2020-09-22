@@ -13,6 +13,7 @@ import {
   IIdeasByTopic,
   ICommentsByTopic,
   IVotesByTopic,
+  IIdeasByStatus,
   IIdeasByProject,
   ICommentsByProject,
   IVotesByProject,
@@ -33,6 +34,7 @@ export type ISupportedDataType =
   | ICommentsByTopic
   | IVotesByTopic
   | IIdeasByProject
+  | IIdeasByStatus
   | IVotesByProject
   | ICommentsByProject;
 
