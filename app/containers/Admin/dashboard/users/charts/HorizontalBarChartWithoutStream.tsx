@@ -34,7 +34,7 @@ import {
 // types
 import { IGraphFormat } from 'typings';
 
-interface InputProps {
+interface Props {
   serie: IGraphFormat | null;
   startAt?: string | null | undefined;
   endAt?: string | null;
@@ -47,8 +47,6 @@ interface InputProps {
   customId?: string;
   xlsxEndpoint: string;
 }
-
-interface Props extends InputProps {}
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
   .recharts-wrapper {
@@ -72,6 +70,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
     const {
       chartFill,
       chartLabelSize,
+      chartCategorySize,
       chartLabelColor,
       barHoverColor,
       animationBegin,
@@ -83,7 +82,8 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
       serie,
       intl: { formatMessage },
       graphUnit,
-      ...rest
+      children,
+      ...queryProps
     } = this.props;
 
     const noData =
@@ -92,7 +92,6 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
     const unitName = formatMessage(messages[graphUnit]);
 
     const NameLabel = (props) => {
-      console.log(props);
       const { x, y, value } = props;
       return (
         <text
@@ -100,9 +99,8 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
           y={y}
           dx={30}
           dy={-6}
-          fontFamily="sans-serif"
           fill={chartLabelColor}
-          fontSize={chartLabelSize}
+          fontSize={chartCategorySize}
           textAnchor="left"
         >
           {value}
@@ -111,7 +109,6 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
     };
 
     const ValueLabel = (props) => {
-      console.log(props);
       const { x, y, value } = props;
       return (
         <text
@@ -119,9 +116,8 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
           y={y}
           dx={5}
           dy={-6}
-          fontFamily="sans-serif"
           fill={chartLabelColor}
-          fontSize={chartLabelSize}
+          fontSize={chartCategorySize}
           textAnchor="right"
           fontWeight={'800'}
         >
@@ -139,7 +135,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
               <ExportMenu
                 name={graphTitleString}
                 svgNode={this.currentChart}
-                {...rest}
+                {...queryProps}
               />
             )}
           </GraphCardHeader>
@@ -149,7 +145,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <StyledResponsiveContainer
-              height={serie.length > 1 ? serie.length * 50 : 100}
+              height={serie && serie?.length > 1 ? serie.length * 50 : 100}
             >
               <BarChart
                 data={serie}
@@ -166,6 +162,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                   animationBegin={animationBegin}
                 >
                   {graphUnit === 'ideas' &&
+                    serie &&
                     serie
                       .sort((a, b) =>
                         a.ordering && b.ordering ? a.ordering - b.ordering : -1
@@ -191,7 +188,6 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                     content={<ValueLabel />}
                   />
                 </Bar>
-                {/* <Label label="{timeTaken}" labelFormatter={(name) => 'Time Taken: ' + name}/> */}
                 <YAxis
                   dataKey="name"
                   type="category"
