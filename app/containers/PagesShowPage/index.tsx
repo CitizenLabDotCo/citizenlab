@@ -206,7 +206,7 @@ class PagesShowPage extends PureComponent<
           </PageContent>
 
           <Suspense fallback={<Spinner />}>
-            <PagesFooterNavigation currentPageSlug="cookie-policy" />
+            <PagesFooterNavigation currentPageSlug={pageSlug} />
           </Suspense>
         </Container>
       );
