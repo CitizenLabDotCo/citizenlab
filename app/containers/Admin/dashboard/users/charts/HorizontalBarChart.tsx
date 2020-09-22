@@ -19,6 +19,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  Cell,
 } from 'recharts';
 import {
   IGraphUnit,
@@ -38,6 +39,7 @@ import {
   IUsersByBirthyear,
   IUsersByRegistrationField,
   IUsersByDomicile,
+  IIdeasByStatus,
 } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
@@ -48,7 +50,8 @@ interface DataProps {
 type ISupportedDataType =
   | IUsersByBirthyear
   | IUsersByRegistrationField
-  | IUsersByDomicile;
+  | IUsersByDomicile
+  | IIdeasByStatus;
 
 interface InputProps {
   stream: (
@@ -58,8 +61,8 @@ interface InputProps {
   convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
-  currentGroupFilter: string | undefined;
-  currentGroupFilterLabel: string | undefined;
+  currentGroupFilter?: string | undefined;
+  currentGroupFilterLabel?: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
@@ -103,6 +106,25 @@ export class HorizontalBarChart extends React.PureComponent<
 
     const unitName = formatMessage(messages[graphUnit]);
 
+    const CustomizedLabel = (props) => {
+      const { x, y, value } = props;
+      return (
+        <text
+          x={x}
+          y={y}
+          dx={20}
+          dy={-6}
+          fontFamily="sans-serif"
+          fill={chartLabelColor}
+          fontSize={chartLabelSize}
+          textAnchor="middle"
+        >
+          {' '}
+          {value}{' '}
+        </text>
+      );
+    };
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -131,15 +153,36 @@ export class HorizontalBarChart extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
-                  barSize={20}
+                  label={
+                    graphUnit === 'ideas' ? (
+                      <CustomizedLabel />
+                    ) : (
+                      {
+                        fill: barFill,
+                        fontSize: chartLabelSize,
+                        position: 'insideLeft',
+                      }
+                    )
+                  }
+                  barSize={graphUnit === 'ideas' ? 5 : 20}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  {graphUnit === 'ideas' &&
+                    serie
+                      .sort((a, b) =>
+                        a.ordering && b.ordering ? a.ordering - b.ordering : -1
+                      )
+                      .map((entry, index) => {
+                        return (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={(entry.color && entry.color) || chartFill}
+                            opacity={0.8}
+                          />
+                        );
+                      })}
+                </Bar>
                 <YAxis
                   dataKey="name"
                   type="category"

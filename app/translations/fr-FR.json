@@ -821,6 +821,7 @@
   "app.containers.AdminPage.DashboardPage.ideaVotes": "Votes sur les idées",
   "app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle": "Votes sur les idées",
   "app.containers.AdminPage.DashboardPage.ideas": "Idées",
+  "app.containers.AdminPage.DashboardPage.ideasByStatusTitle": "",
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Idées",
   "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Ca devrait être bientôt prêt, patience!",
   "app.containers.AdminPage.DashboardPage.male": "masculin",
