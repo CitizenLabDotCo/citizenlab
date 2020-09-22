@@ -27,7 +27,7 @@ import { selectCurrentPhase } from 'containers/ProjectsShowPage/timeline/Timelin
 import ProjectSharingModal from './ProjectSharingModal';
 
 // utils
-import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,18 +45,14 @@ const Title = styled.h2`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
+  font-weight: 500;
+  padding-top: 3px;
   padding-bottom: 8px;
-  padding-top: 11px;
 `;
 
 const List = styled.div`
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border-top: solid 1px ${colors.separation};
-  border-bottom: solid 1px ${colors.separation};
+  border-top: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
 `;
 
 const ListItem = styled.div`
@@ -93,25 +89,9 @@ const ListItemIcon = styled(Icon)`
   }
 `;
 
-// const ListItemTextContainer = styled.div`
-//   flex: 1;
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const ListItemTextLine = styled.div`
-//   &.hasBottomMargin {
-//     margin-bottom: 5px;
-//   }
-// `;
-
 const ActionButtons = styled.div`
   margin-top: 20px;
 `;
-
-// const SeeTimelineButton = styled(Button)`
-//   margin-bottom: 10px;
-// `;
 
 const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
@@ -132,7 +112,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const [showGoToSurveyButton, setShowGoToSurveyButton] = useState(false);
+  const [
+    surveyPresentOutsideViewport,
+    setSurveyPresentOutsideViewport,
+  ] = useState(false);
+  const [pollPresentOutsideViewport, setPollPresentOutsideViewport] = useState(
+    false
+  );
 
   useEffect(() => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
@@ -146,17 +132,27 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       );
 
       const surveyElement = document.getElementById('project-survey');
+      const pollElement = document.getElementById('project-poll');
 
       if (surveyElement) {
         const isSurveyInViewport =
           surveyElement.getBoundingClientRect()?.top + 400 <= viewportHeight;
 
         if (!isSurveyInViewport) {
-          setShowGoToSurveyButton(true);
+          setSurveyPresentOutsideViewport(true);
+        }
+      }
+
+      if (pollElement) {
+        const isPollInViewport =
+          pollElement.getBoundingClientRect()?.top + 200 <= viewportHeight;
+
+        if (!isPollInViewport) {
+          setPollPresentOutsideViewport(true);
         }
       }
     }, 100);
-  }, []);
+  }, [projectId]);
 
   const upcomingEvents = !isNilOrError(events)
     ? events.filter((event) => {
@@ -174,20 +170,19 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     ) => {
       event.preventDefault();
 
-      const element = document?.getElementById(id);
+      currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
 
-      if (element) {
-        currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
-        setTimeout(() => {
-          element.scrollIntoView(
-            !bowser.msie
-              ? {
-                  behavior: 'smooth',
-                }
-              : undefined
-          );
-        }, 100);
-      }
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView(
+          !bowser.msie
+            ? {
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest',
+              }
+            : undefined
+        );
+      }, 100);
     },
     [currentPhase]
   );
@@ -232,7 +227,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               />
             </ListItem>
           )}
-          {process_type === 'timeline' && !isNilOrError(phases) && (
+          {/* {process_type === 'timeline' && !isNilOrError(phases) && (
             <ListItem>
               <ListItemIcon name="flag" />
               <FormattedMessage
@@ -245,7 +240,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 }}
               />
             </ListItem>
-          )}
+          )} */}
           {process_type === 'timeline' &&
             !isNilOrError(phases) &&
             phases.length > 1 && (
@@ -298,15 +293,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           </ListItem>
         </List>
         <ActionButtons>
-          {/* {process_type === 'timeline' && (
-            <SeeTimelineButton
-              buttonStyle="secondary"
-              onClick={scrollToTimeline}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.seeTheTimeline} />
-            </SeeTimelineButton>
-          )} */}
           {showSeeIdeasButton && (
             <SeeIdeasButton
               buttonStyle="secondary"
@@ -333,7 +319,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               fontWeight="500"
             />
           )}
-          {showGoToSurveyButton &&
+          {surveyPresentOutsideViewport &&
             ((process_type === 'continuous' &&
               participation_method === 'survey') ||
               currentPhase?.attributes.participation_method === 'survey') && (
@@ -343,6 +329,18 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 fontWeight="500"
               >
                 <FormattedMessage {...messages.goToTheSurvey} />
+              </GoToTheSurvey>
+            )}
+          {pollPresentOutsideViewport &&
+            ((process_type === 'continuous' &&
+              participation_method === 'poll') ||
+              currentPhase?.attributes.participation_method === 'poll') && (
+              <GoToTheSurvey
+                buttonStyle="secondary"
+                onClick={scrollTo('project-survey')}
+                fontWeight="500"
+              >
+                <FormattedMessage {...messages.goToPoll} />
               </GoToTheSurvey>
             )}
         </ActionButtons>

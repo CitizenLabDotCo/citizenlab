@@ -31,7 +31,10 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 // styling
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: relative;
+  min-height: 500px;
+`;
 
 interface InputProps {
   projectId: string | null;
@@ -137,7 +140,7 @@ class Survey extends PureComponent<Props, State> {
         return (
           <Container
             id="project-survey"
-            className={`${className} e2e-${surveyService}-survey`}
+            className={`${className} e2e-${surveyService}-survey enabled`}
           >
             <ProjectPageSectionTitle>
               <FormattedMessage {...messages.survey} />

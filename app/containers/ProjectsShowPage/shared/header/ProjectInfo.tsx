@@ -21,6 +21,8 @@ import useProjectFiles from 'hooks/useProjectFiles';
 
 // i18n
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -49,7 +51,7 @@ const Right = styled.div`
 
 const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxxl + 1}px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 600;
   text-align: left;
@@ -57,13 +59,12 @@ const ProjectTitle = styled.h1`
   word-wrap: break-word;
   word-break: break-word;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 27px;
   padding: 0;
 `;
 
 const ProjectDescription = styled.div`
   position: relative;
-  height: 100%;
   max-height: ${collapsedDescriptionMaxHeight}px;
   overflow: hidden;
 
@@ -99,6 +100,14 @@ const ReadMoreButton = styled(Button)`
   left: 0;
 `;
 
+const CollapseButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+`;
+
+const CollapseButton = styled(Button)``;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -118,10 +127,10 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
     setExpanded(false);
   }, [projectId]);
 
-  const handleReadMoreClicked = useCallback(
+  const toggleExpandCollapse = useCallback(
     (event: FormEvent<HTMLButtonElement>) => {
       event.preventDefault();
-      setExpanded(true);
+      setExpanded((expanded) => !expanded);
     },
     []
   );
@@ -157,6 +166,11 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                           supportHtml={true}
                         />
                       </QuillEditedContent>
+                      {!isNilOrError(projectFiles) &&
+                        projectFiles &&
+                        projectFiles.data.length > 0 && (
+                          <FileAttachments files={projectFiles.data} />
+                        )}
                     </div>
                   </ReactResizeDetector>
                   {descriptionHeight &&
@@ -166,27 +180,41 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                         <ReadMoreInnerWrapper>
                           <ReadMoreButton
                             buttonStyle="text"
-                            onClick={handleReadMoreClicked}
+                            onClick={toggleExpandCollapse}
                             textDecoration="underline"
                             textDecorationHover="underline"
                             textColor={colors.label}
                             textHoverColor={theme.colorText}
                             fontWeight="500"
-                            fontSize="17px"
+                            fontSize={`${fontSizes.medium}px`}
                             padding="0"
                           >
-                            Read more
+                            <FormattedMessage {...messages.readMore} />
                           </ReadMoreButton>
                         </ReadMoreInnerWrapper>
                       </ReadMoreOuterWrapper>
                     )}
+                  {descriptionHeight &&
+                    descriptionHeight > collapsedDescriptionMaxHeight &&
+                    expanded && (
+                      <CollapseButtonWrapper>
+                        <CollapseButton
+                          buttonStyle="text"
+                          onClick={toggleExpandCollapse}
+                          textDecoration="underline"
+                          textDecorationHover="underline"
+                          textColor={colors.label}
+                          textHoverColor={theme.colorText}
+                          fontWeight="500"
+                          fontSize={`${fontSizes.medium}px`}
+                          padding="0"
+                        >
+                          <FormattedMessage {...messages.collapse} />
+                        </CollapseButton>
+                      </CollapseButtonWrapper>
+                    )}
                 </>
               )}
-              {!isNilOrError(projectFiles) &&
-                projectFiles &&
-                projectFiles.data.length > 0 && (
-                  <FileAttachments files={projectFiles.data} />
-                )}
             </ProjectDescription>
           </Left>
 
