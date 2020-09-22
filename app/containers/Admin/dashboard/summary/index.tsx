@@ -341,6 +341,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           code: idea.id,
           value:
             idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+          up: idea.attributes.upvotes_count,
+          down: idea.attributes.downvotes_count,
           name: localize(idea.attributes.title_multiloc),
           slug: idea.attributes.slug,
         };

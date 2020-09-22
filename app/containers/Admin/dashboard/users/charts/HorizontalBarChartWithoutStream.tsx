@@ -32,10 +32,16 @@ import {
 } from '../..';
 
 // types
-import { IGraphFormat } from 'typings';
+import { IGraphPoint } from 'typings';
+
+interface VoteGraphPoint extends IGraphPoint {
+  up: number;
+  down: number;
+  slug: string;
+}
 
 interface Props {
-  serie: IGraphFormat | null;
+  serie: VoteGraphPoint[] | null;
   startAt?: string | null | undefined;
   endAt?: string | null;
   currentGroupFilter?: string | undefined;
@@ -66,6 +72,11 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
     super(props as any);
     this.currentChart = React.createRef();
   }
+
+  handleClick(data) {
+    window.open(`${window.location.origin}/ideas/${data.slug}`);
+  }
+
   render() {
     const {
       chartFill,
@@ -94,35 +105,39 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
     const NameLabel = (props) => {
       const { x, y, value } = props;
       return (
-        <text
-          x={x}
-          y={y}
-          dx={30}
-          dy={-6}
-          fill={chartLabelColor}
-          fontSize={chartCategorySize}
-          textAnchor="left"
-        >
-          {value}
-        </text>
+        <g style={{ pointerEvents: 'none' }}>
+          <text
+            x={x}
+            y={y}
+            dx={30}
+            dy={-6}
+            fill={chartLabelColor}
+            fontSize={chartCategorySize}
+            textAnchor="left"
+          >
+            {value}
+          </text>
+        </g>
       );
     };
 
     const ValueLabel = (props) => {
       const { x, y, value } = props;
       return (
-        <text
-          x={x}
-          y={y}
-          dx={5}
-          dy={-6}
-          fill={chartLabelColor}
-          fontSize={chartCategorySize}
-          textAnchor="right"
-          fontWeight={'800'}
-        >
-          {value}
-        </text>
+        <g style={{ pointerEvents: 'none' }}>
+          <text
+            x={x}
+            y={y}
+            dx={5}
+            dy={-6}
+            fill={chartLabelColor}
+            fontSize={chartCategorySize}
+            textAnchor="right"
+            fontWeight={'800'}
+          >
+            {value}
+          </text>
+        </g>
       );
     };
 
@@ -155,7 +170,18 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
               >
                 <Bar
                   dataKey="value"
-                  name={unitName}
+                  name="Total"
+                  opacity={0}
+                  barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : 20}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  onClick={this.handleClick}
+                  cursor="pointer"
+                />
+                <Bar
+                  name="Downvotes"
+                  stackId={'votes'}
+                  dataKey="down"
                   fill={chartFill}
                   barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
                   animationDuration={animationDuration}
@@ -188,6 +214,30 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                     content={<ValueLabel />}
                   />
                 </Bar>
+
+                <Bar
+                  name="Upvotes"
+                  stackId={'votes'}
+                  dataKey="up"
+                  fill={chartFill}
+                  opacity={0.7}
+                  barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                >
+                  {graphUnit === 'ideas' &&
+                    serie &&
+                    serie.map((entry, index) => {
+                      return (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={(entry.color && entry.color) || chartFill}
+                          opacity={0.4}
+                        />
+                      );
+                    })}
+                </Bar>
+
                 <YAxis
                   dataKey="name"
                   type="category"
@@ -207,6 +257,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                 <Tooltip
                   isAnimationActive={false}
                   cursor={{ fill: barHoverColor }}
+                  active={false}
                 />
               </BarChart>
             </StyledResponsiveContainer>
