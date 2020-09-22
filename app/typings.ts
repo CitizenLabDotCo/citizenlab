@@ -133,6 +133,7 @@ export type IGraphPoint = {
   code: string;
   color?: string;
   ordering?: number;
+  slug?: string;
 };
 
 export type IGraphFormat = IGraphPoint[];
