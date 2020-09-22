@@ -53,7 +53,7 @@ export class InitiativesNewPage extends React.PureComponent<
   }
 
   componentDidMount() {
-    const { location, postingPermission } = this.props;
+    const { location } = this.props;
     const { lat, lng } = parse(location.search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
