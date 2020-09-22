@@ -821,6 +821,7 @@
   "app.containers.AdminPage.DashboardPage.ideaVotes": "Głosów na pomysły",
   "app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle": "Głosów na pomysły",
   "app.containers.AdminPage.DashboardPage.ideas": "Pomysły",
+  "app.containers.AdminPage.DashboardPage.ideasByStatusTitle": "",
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Pomysły",
   "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "Jeszcze chwilkę, już prawie gotowe!",
   "app.containers.AdminPage.DashboardPage.male": "mężczyzna",
