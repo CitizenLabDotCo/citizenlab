@@ -337,11 +337,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           </ControlBar>
 
           <ChartFilters
-            configuration={{
-              showProjectFilter: true,
-              showGroupFilter: true,
-              showTopicFilter: true,
-            }}
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
