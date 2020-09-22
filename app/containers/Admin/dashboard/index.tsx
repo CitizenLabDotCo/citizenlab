@@ -228,6 +228,7 @@ export const chartTheme = (theme) => {
     chartLabelSize: 13,
     animationBegin: 10,
     animationDuration: 200,
+    cartesianGridColor: '#f5f5f5',
   };
 };
 
@@ -244,10 +245,6 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
-      },
-      {
-        label: formatMessage(messages.tabReports),
-        url: '/admin/dashboard/reports',
       },
     ];
 
