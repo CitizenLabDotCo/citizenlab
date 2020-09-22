@@ -308,7 +308,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             participation_method === 'ideation' &&
             publication_status !== 'archived' && (
               <IdeaButton
-                id="bleh"
+                id="project-ideabutton"
                 projectId={project.id}
                 participationContextType="project"
                 fontWeight="500"
@@ -316,7 +316,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             )}
           {currentPhase?.attributes.participation_method === 'ideation' && (
             <IdeaButton
-              id="bleh"
+              id="project-ideabutton"
               projectId={project.id}
               phaseId={currentPhase.id}
               participationContextType="phase"
