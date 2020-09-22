@@ -16,6 +16,7 @@ import {
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
 import HorizontalBarChart from '../users/charts/HorizontalBarChart';
+import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import ChartFilters from '../components/ChartFilters';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
@@ -43,6 +44,7 @@ import GetProjects, {
 } from 'resources/GetProjects';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 import {
@@ -69,6 +71,7 @@ export interface InputProps {
 
 interface DataProps {
   projects: GetProjectsChildProps;
+  ideas: GetIdeasChildProps;
   groups: GetGroupsChildProps;
   topics: GetTopicsChildProps;
 }
@@ -195,6 +198,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
+    this.props.ideas.onChangeProjects(filter.value);
     this.setState({
       currentProjectFilter: filter.value,
       currentProjectFilterLabel: filter.label,
@@ -313,7 +317,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
         idea_status,
       } = data;
 
-      console.log(data);
       const res = map(ideas, (value: number, key: string) => ({
         value: value as number,
         name: localize(idea_status[key].title_multiloc) as string,
@@ -325,6 +328,25 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       return res.length > 0 ? res : null;
     }
 
+    return null;
+  };
+
+  fiveMostVotedIdeasSerie = () => {
+    const { localize, ideas } = this.props;
+
+    if (!isNilOrError(ideas.list)) {
+      const { list } = ideas;
+      const serie = list.map((idea) => {
+        return {
+          code: idea.id,
+          value:
+            idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+          name: localize(idea.attributes.title_multiloc),
+          slug: idea.attributes.slug,
+        };
+      });
+      return serie.length > 0 ? serie : null;
+    }
     return null;
   };
 
@@ -447,6 +469,18 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   endAt={endAt}
                   {...this.state}
                 />
+                <HorizontalBarChartWithoutStream
+                  serie={this.fiveMostVotedIdeasSerie()}
+                  graphTitleString={this.props.intl.formatMessage(
+                    messages.fiveIdeasWithMostVotes
+                  )}
+                  graphUnit="votes"
+                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                  className="fullWidth dynamicHeight"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
                 <SelectableResourceByProjectChart
                   className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                   onResourceByProjectChange={this.onResourceByProjectChange}
@@ -496,6 +530,15 @@ const Data = adopt<DataProps, InputProps>({
     <GetProjects
       publicationStatuses={publicationStatuses}
       filterCanModerate={true}
+    />
+  ),
+  ideas: (
+    <GetIdeas
+      pageNumber={1}
+      pageSize={5}
+      sort="popular"
+      type="paginated"
+      projectIds={'all'}
     />
   ),
 });

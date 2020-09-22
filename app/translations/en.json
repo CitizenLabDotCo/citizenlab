@@ -819,6 +819,7 @@
   "app.containers.AdminPage.DashboardPage.hiddenLabelProjectFilter": "Pick project filter",
   "app.containers.AdminPage.DashboardPage.hiddenLabelTopicFilter": "Pick topic filter",
   "app.containers.AdminPage.DashboardPage.ideaVotes": "Votes on ideas",
+  "app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes": "5 Ideas With Most Votes",
   "app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle": "Votes on ideas",
   "app.containers.AdminPage.DashboardPage.ideas": "Ideas",
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Ideas",
