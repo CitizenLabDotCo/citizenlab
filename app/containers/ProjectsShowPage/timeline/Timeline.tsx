@@ -17,7 +17,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
+import { Icon, Button } from 'cl2-component-library';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -66,6 +66,32 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+`;
+
+const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
+  margin: 0px;
+  padding: 0px;
+`;
+
+const PhaseNavigation = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+`;
+
+const PhaseButton = styled(Button)``;
+
+const PreviousPhaseButton = styled(PhaseButton)``;
+
+const NextPhaseButton = styled(PhaseButton)`
+  margin-left: 10px;
 `;
 
 const Phases = styled.div`
@@ -459,9 +485,42 @@ class Timeline extends PureComponent<
         >
           <ContentContainer>
             <ContainerInner>
-              <ProjectPageSectionTitle>
-                <FormattedMessage {...messages.timeline} />
-              </ProjectPageSectionTitle>
+              <Header>
+                <StyledProjectPageSectionTitle>
+                  <FormattedMessage {...messages.timeline} />
+                </StyledProjectPageSectionTitle>
+
+                <PhaseNavigation>
+                  <PreviousPhaseButton
+                    locale={locale}
+                    onClick={this.goToPreviousPhase}
+                    icon="chevron-left"
+                    iconSize="18px"
+                    buttonStyle="text"
+                    padding="0px"
+                    disabled={selectedPhaseId === phases.data[0].id}
+                    ariaLabel={this.props.intl.formatMessage(
+                      messages.goToPreviousPhase
+                    )}
+                    className="e2e-previous-phase"
+                  />
+                  <NextPhaseButton
+                    locale={locale}
+                    onClick={this.goToNextPhase}
+                    icon="chevron-right"
+                    iconSize="18px"
+                    buttonStyle="text"
+                    padding="0px"
+                    disabled={
+                      selectedPhaseId === phases.data[phases.data.length - 1].id
+                    }
+                    ariaLabel={this.props.intl.formatMessage(
+                      messages.goToNextPhase
+                    )}
+                  />
+                </PhaseNavigation>
+              </Header>
+
               <Phases className="e2e-phases">
                 <ScreenReaderOnly>
                   <FormattedMessage {...messages.a11y_phasesOverview} />
