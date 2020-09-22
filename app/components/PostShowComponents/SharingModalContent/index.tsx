@@ -55,7 +55,7 @@ const Rocket = styled.img`
 const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -76,7 +76,7 @@ const Description = styled.p`
   flex-shrink: 0;
   width: 100%;
   max-width: 500px;
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.large}px;
   line-height: 25px;
   font-weight: 300;

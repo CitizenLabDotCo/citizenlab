@@ -76,7 +76,7 @@ const PageContent = styled.main`
 `;
 
 const PageTitle = styled.h1`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 600;

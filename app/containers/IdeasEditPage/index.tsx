@@ -68,7 +68,7 @@ const FormContainer = styled.main`
 
 const Title = styled.h1`
   width: 100%;
-  color: #333;
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;

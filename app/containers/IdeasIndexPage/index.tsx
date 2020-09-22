@@ -40,7 +40,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const PageTitle = styled.h1`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
   font-weight: 500;
