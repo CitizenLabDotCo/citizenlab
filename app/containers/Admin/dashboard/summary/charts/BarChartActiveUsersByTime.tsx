@@ -63,7 +63,7 @@ type Props = {
   className?: string;
   graphUnit: IGraphUnit;
   graphUnitMessageKey: string;
-  graphTitleMessageKey: string;
+  graphTitle: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
@@ -214,7 +214,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
     const { formatMessage } = this.props.intl;
     const {
       className,
-      graphTitleMessageKey,
+      graphTitle,
       graphUnitMessageKey,
       infoMessage,
     } = this.props;
@@ -236,7 +236,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {graphTitle}
               {infoMessage && (
                 <Popup
                   basic
@@ -253,7 +253,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             {!noData && (
               <ExportMenu
                 svgNode={this.currentChart}
-                name={formatMessage(messages[graphTitleMessageKey])}
+                name={graphTitle}
                 {...this.props}
               />
             )}
@@ -267,7 +267,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               <BarChart data={serie} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
-                  name={formatMessage(messages[graphUnitMessageKey])}
+                  name={graphTitle}
                   fill={chartFill}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
