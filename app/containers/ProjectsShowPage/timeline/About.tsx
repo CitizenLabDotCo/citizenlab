@@ -20,24 +20,16 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { colors, defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   padding: 30px;
+  padding-bottom: 35px;
   margin-bottom: 70px;
   ${defaultCardStyle}
-`;
-
-const InformationBody = styled.div`
-  h1,
-  h2,
-  h3,
-  h4 {
-    color: ${colors.text} !important;
-  }
 `;
 
 const StyledFileAttachments = styled(FileAttachments)`
@@ -76,14 +68,12 @@ const About = memo<Props & InjectedLocalized>(
               {...messages.invisibleTitlePhaseAbout}
             />
           </ScreenReaderOnly>
-          <InformationBody>
-            <QuillEditedContent textColor={theme.colorText}>
-              <T
-                value={phase?.attributes?.description_multiloc}
-                supportHtml={true}
-              />
-            </QuillEditedContent>
-          </InformationBody>
+          <QuillEditedContent fontSize="base" textColor={theme.colorText}>
+            <T
+              value={phase?.attributes?.description_multiloc}
+              supportHtml={true}
+            />
+          </QuillEditedContent>
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
             <StyledFileAttachments files={phaseFiles} />

@@ -10,7 +10,7 @@ import useTenant from 'hooks/useTenant';
 import usePhases from 'hooks/usePhases';
 
 // components
-// import IdeaButton from 'components/IdeaButton';
+import IdeaButton from 'components/IdeaButton';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -38,21 +38,21 @@ const Left = styled.div`
   align-items: center;
 `;
 
-// const Right = styled.div`
-//   flex-grow: 0;
-//   flex-shrink: 0;
-//   flex-basis: auto;
-//   display: flex;
-//   align-items: center;
-//   margin-left: 15px;
-// `;
+const Right = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+`;
 
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 37x;
-  width: 37px;
-  height: 37px;
+  flex-basis: 39x;
+  width: 39px;
+  height: 39px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,16 +96,20 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.h2`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.large}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.large + 2}px;
   line-height: normal;
   font-weight: 600;
   margin: 0;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   padding: 0;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+
+  &.present {
+    color: ${colors.clGreen};
+  }
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
@@ -113,12 +117,16 @@ const HeaderTitle = styled.h2`
 `;
 
 const HeaderSubtitle = styled.div`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base - 1}px;
   line-height: normal;
   font-weight: 300;
   display: flex;
   align-items: center;
+
+  /* &.present {
+    color: ${colors.clGreen};
+  } */
 `;
 
 const DatesSeparator = styled.span`
@@ -177,7 +185,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
     return (
       <Container
         className={className || ''}
-        bottomMargin={phases.length > 1 ? '28px' : '10px'}
+        bottomMargin={phases.length > 1 ? '30px' : '15px'}
       >
         <Left>
           {isSelected && phases.length > 1 && (
@@ -203,8 +211,11 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
               )}
             </HeaderTitle>
             {selectedPhase && phases.length > 1 && (
-              <HeaderSubtitle>
-                {pastPresentOrFuture(selectedPhase.attributes.start_at) ===
+              <HeaderSubtitle className={phaseStatus || ''}>
+                {startDate}
+                <DatesSeparator>→</DatesSeparator>
+                {endDate}
+                {/* {pastPresentOrFuture(selectedPhase.attributes.start_at) ===
                 'past' ? (
                   <FormattedMessage
                     {...messages.startedOn}
@@ -220,7 +231,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
                     }}
                   />
                 )}
-                <DatesSeparator>-</DatesSeparator>
+                
                 {pastPresentOrFuture(selectedPhase.attributes.end_at) ===
                 'past' ? (
                   <FormattedMessage
@@ -236,7 +247,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
                       date: endDate,
                     }}
                   />
-                )}
+                )} */}
               </HeaderSubtitle>
             )}
             <ScreenReaderOnly>
@@ -251,14 +262,14 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
           </HeaderTitleWrapper>
         </Left>
 
-        {/* <Right>
+        <Right>
           <IdeaButton
             projectId={projectId}
             phaseId={selectedPhaseId}
             participationContextType="phase"
             fontWeight="500"
           />
-        </Right> */}
+        </Right>
       </Container>
     );
   }

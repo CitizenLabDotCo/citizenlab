@@ -61,8 +61,6 @@ const Container = styled.div<{ isHidden: boolean }>`
   justify-content: center;
 `;
 
-const StyledContentContainer = styled(ContentContainer)``;
-
 const ContainerInner = styled.div`
   width: 100%;
   display: flex;
@@ -72,6 +70,7 @@ const ContainerInner = styled.div`
 
 const Phases = styled.div`
   width: 100%;
+  padding-top: 5px;
   padding-bottom: 30px;
   margin: 0;
   margin-left: auto;
@@ -92,7 +91,7 @@ const PhaseBar = styled.button`
   height: calc(${phaseBarHeight} - 1px);
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
-  font-weight: 400;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,7 +120,7 @@ const PhaseArrow = styled(Icon)`
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
-  font-weight: 400;
+  font-weight: 500;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -458,7 +457,7 @@ class Timeline extends PureComponent<
           className={className}
           isHidden={phases.data.length === 1}
         >
-          <StyledContentContainer>
+          <ContentContainer>
             <ContainerInner>
               <ProjectPageSectionTitle>
                 <FormattedMessage {...messages.timeline} />
@@ -532,7 +531,7 @@ class Timeline extends PureComponent<
                 })}
               </Phases>
             </ContainerInner>
-          </StyledContentContainer>
+          </ContentContainer>
         </Container>
       );
     }

@@ -209,6 +209,10 @@ export default defineMessages({
     defaultMessage:
       '{participantsCount, plural, no {# participants} one {# participant} other {# participants}}',
   },
+  xParticipants2: {
+    id: 'app.containers.Projects.xParticipants2',
+    defaultMessage: '{participantsCount} people already participated',
+  },
   xUpcomingEvents: {
     id: 'app.containers.Projects.xUpcomingEvents',
     defaultMessage:
@@ -230,6 +234,10 @@ export default defineMessages({
     id: 'app.containers.Projects.goToTheSurvey',
     defaultMessage: 'Go to the survey',
   },
+  goToPoll: {
+    id: 'app.containers.Projects.goToPoll',
+    defaultMessage: 'Go to the poll',
+  },
   ideas: {
     id: 'app.containers.Projects.ideas',
     defaultMessage: 'Ideas',
@@ -249,5 +257,13 @@ export default defineMessages({
   shareThisProject: {
     id: 'app.containers.Projects.shareThisProject',
     defaultMessage: 'Share this project',
+  },
+  readMore: {
+    id: 'app.containers.Projects.readMore',
+    defaultMessage: 'Read more',
+  },
+  collapse: {
+    id: 'app.containers.Projects.collapse',
+    defaultMessage: 'Collapse',
   },
 });

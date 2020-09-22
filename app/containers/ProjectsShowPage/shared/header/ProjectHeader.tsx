@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   padding-top: 40px;
-  padding-bottom: 70px;
+  padding-bottom: 75px;
   background: #fff;
 `;
 

@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Survey from '../shared/survey';
 
-// resources
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+// hooks
+import usePhase from 'hooks/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,58 +17,41 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   padding-bottom: 100px;
+  position: relative;
 `;
 
-interface InputProps {
+interface Props {
   projectId: string;
   phaseId: string | null;
   className?: string;
 }
 
-interface DataProps {
-  phase: GetPhaseChildProps;
-}
+const SurveyContainer = memo<Props>(({ projectId, phaseId, className }) => {
+  const phase = usePhase(phaseId);
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class SurveyContainer extends PureComponent<Props, State> {
-  render() {
-    const { projectId, phase, className } = this.props;
-
-    if (
-      !isNilOrError(phase) &&
-      phase.attributes.participation_method === 'survey' &&
-      phase.attributes.survey_embed_url &&
-      phase.attributes.survey_service
-    ) {
-      return (
-        <Container className={className || ''}>
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
-          </ScreenReaderOnly>
-          <Survey
-            className={className}
-            projectId={projectId}
-            phaseId={phase.id}
-            surveyEmbedUrl={phase.attributes.survey_embed_url}
-            surveyService={phase.attributes.survey_service}
-          />
-        </Container>
-      );
-    }
-
-    return null;
+  if (
+    !isNilOrError(phase) &&
+    phase.attributes.participation_method === 'survey' &&
+    phase.attributes.survey_embed_url &&
+    phase.attributes.survey_service
+  ) {
+    return (
+      <Container className={className || ''}>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
+        </ScreenReaderOnly>
+        <Survey
+          className={className}
+          projectId={projectId}
+          phaseId={phase.id}
+          surveyEmbedUrl={phase.attributes.survey_embed_url}
+          surveyService={phase.attributes.survey_service}
+        />
+      </Container>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SurveyContainer {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default SurveyContainer;

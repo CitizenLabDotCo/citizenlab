@@ -41,8 +41,7 @@ const PollContainer = memo<Props>(({ projectId, className }) => {
   ) {
     return (
       <Container
-        id="e2e-continuous-project-poll-container"
-        className={className || ''}
+        className={`e2e-continuous-project-poll-containe ${className || ''}`}
       >
         <StyledContentContainer>
           <SectionContainer>
