@@ -568,7 +568,7 @@
   "app.container.InitiativeForm.imageDropzonePlaceholder": "Legg til bildet her",
   "app.containers.AccessibilityStatement.accessibility-statementPageName": "Accessibility statement",
   "app.containers.AccessibilityStatement.assesmentMethodsTitle": "Assessment method",
-  "app.containers.AccessibilityStatement.assesmentText": "The accessibility of this site was evaluated by an external entity not involved in the design and development process as can be identified on this {statusPageLink}.",
+  "app.containers.AccessibilityStatement.assesmentText": "The accessibility of this site was evaluated by an external entity not involved in the design and development process as can be verified on this {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "you can change your preferences",
   "app.containers.AccessibilityStatement.changePreferencesText": "At any time, {changePreferencesButton}.",
   "app.containers.AccessibilityStatement.citizenLabAddress": "Boulevard Anspach 65, 1000 Brussels, Belgium",
