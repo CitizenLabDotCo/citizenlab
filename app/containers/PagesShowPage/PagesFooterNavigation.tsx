@@ -33,7 +33,11 @@ const PagesFooterNavigation = ({ currentPageSlug }: Props) => {
       <StyledContentContainer>
         {LEGAL_PAGES.filter((pageSlug) => pageSlug !== currentPageSlug).map(
           (pageSlug) => (
-            <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
+            <StyledLink
+              className={`e2e-page-link-to-${pageSlug}`}
+              to={`/pages/${pageSlug}`}
+              key={pageSlug}
+            >
               <FormattedMessage {...messages[`${pageSlug}PageName`]} />
               <LinkIcon name="chevron-right" />
             </StyledLink>
