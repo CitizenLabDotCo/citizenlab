@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react';
-import ChartFilters from '../components/ChartFilters';
 import { adopt } from 'react-adopt';
 import GetProjects, {
   PublicationStatus,
@@ -10,11 +9,12 @@ import useLocalize from 'hooks/useLocalize';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
 import { IProjectData } from 'services/projects';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Label, Select } from 'cl2-component-library';
+import { Select } from 'cl2-component-library';
 import messages from './messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
 import styled from 'styled-components';
+import ProjectReport from './ProjectReport';
 
 const StyledSelect = styled(Select)`
   max-width: 300px;
@@ -60,7 +60,10 @@ const ReportTab = memo(({ projects }: DataProps) => {
           />
         </>
       ) : (
-        <GoBackButton onClick={onResetProject} />
+        <>
+          <GoBackButton onClick={onResetProject} />
+          <ProjectReport project={selectedProject} />
+        </>
       )}
     </>
   );

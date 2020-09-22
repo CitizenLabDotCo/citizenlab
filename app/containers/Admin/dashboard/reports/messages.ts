@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.containers.Dashboards.ReportsTab.selectAProject',
     defaultMessage: 'What project are you interrested in ?',
   },
+  sectionWho: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWho',
+    defaultMessage: 'Who participated ?',
+  },
 });
