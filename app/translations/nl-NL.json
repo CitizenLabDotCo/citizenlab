@@ -589,7 +589,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Verklaring over de toegankelijkheid van deze website",
   "app.containers.AccessibilityStatement.postalAddress": "Adres:",
   "app.containers.AccessibilityStatement.privacy-policyPageName": "Gebruiksvoorwaarden",
-  "app.containers.AccessibilityStatement.responsiveness": "We mikken erop je een antwoord te bezorgen binnen 1 tot 2 werkdagen.",
+  "app.containers.AccessibilityStatement.responsiveness": "We proberen je een antwoord te bezorgen binnen 1 tot 2 werkdagen.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Bugs met schermlezers zijn mogelijk bij verschillende combinaties van browsers en schermlezers. Bugs kun je melden via het feedbackproces dat we hieronder uitleggen.",
   "app.containers.AccessibilityStatement.statusPageText": "statuspagina",
   "app.containers.AccessibilityStatement.technologiesIntro": "De toegankelijkheid van de site is afhankelijk van de volgende technologie:",
