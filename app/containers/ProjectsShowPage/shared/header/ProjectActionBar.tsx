@@ -18,7 +18,7 @@ import T from 'components/T';
 
 // style
 import styled from 'styled-components';
-import { defaultCardStyle, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100vw;
@@ -26,15 +26,14 @@ const Container = styled.div`
   top: ${({ theme }) => theme.menuHeight}px;
   z-index: 1002;
   background: #fff;
-  ${defaultCardStyle};
-  border-radius: 0;
+  border-bottom: solid 1px #e0e0e0;
 `;
 
 const InnerContainer = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 14px;
+  padding-bottom: 14px;
 `;
 
 const Left = styled.div`
@@ -51,7 +50,7 @@ const Right = styled.div`
 
 const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxl}px;
+  font-size: ${fontSizes.xxl - 2}px;
   line-height: normal;
   font-weight: 600;
   text-align: left;
@@ -84,15 +83,16 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     let buttonDistance: undefined | number = undefined;
 
     setTimeout(() => {
-      buttonDistance = document?.getElementById('bleh')?.getBoundingClientRect()
-        ?.top;
-    }, 1000);
+      buttonDistance = document
+        ?.getElementById('project-ideabutton')
+        ?.getBoundingClientRect()?.top;
+    }, 100);
 
     window.addEventListener(
       'scroll',
       () => {
         setIsVisible(
-          !!(buttonDistance && window.pageYOffset > buttonDistance - 95)
+          !!(buttonDistance && window.pageYOffset > buttonDistance - 92)
         );
       },
       { passive: true }
@@ -123,7 +123,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                     projectId={project.id}
                     participationContextType="project"
                     fontWeight="500"
-                    // width="300px"
+                    width="300px"
                   />
                 )}
               {currentPhase?.attributes.participation_method === 'ideation' && (
@@ -132,7 +132,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                   phaseId={currentPhase.id}
                   participationContextType="phase"
                   fontWeight="500"
-                  // width="300px"
+                  width="300px"
                 />
               )}
             </Right>
