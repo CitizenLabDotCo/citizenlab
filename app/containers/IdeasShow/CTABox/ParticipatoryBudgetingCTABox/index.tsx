@@ -3,6 +3,12 @@ import styled from 'styled-components';
 import BudgetAssignment from './BudgetAssignment';
 import Buttons from '../Buttons';
 import { colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -34,11 +40,17 @@ interface Props {
   projectId: string;
 }
 
-const ParticipatoryBudgetingCTABox = (props: Props) => {
-  const { ideaId } = props;
+const ParticipatoryBudgetingCTABox = (props: Props & InjectedIntlProps) => {
+  const {
+    ideaId,
+    intl: { formatMessage },
+  } = props;
 
   return (
     <Container>
+      <ScreenReaderOnly>
+        <h2>{formatMessage(messages.a11y_PBCTABox)}</h2>
+      </ScreenReaderOnly>
       <StyledBudgetAssignment {...props} />
       <ControlWrapperHorizontalRule aria-hidden />
       <Buttons ideaId={ideaId} />
@@ -46,4 +58,4 @@ const ParticipatoryBudgetingCTABox = (props: Props) => {
   );
 };
 
-export default ParticipatoryBudgetingCTABox;
+export default injectIntl(ParticipatoryBudgetingCTABox);
