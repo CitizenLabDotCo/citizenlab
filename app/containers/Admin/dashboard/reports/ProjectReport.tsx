@@ -7,10 +7,16 @@ import { SectionTitle, PageTitle } from 'components/admin/Section';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import ResolutionControl from '../components/ResolutionControl';
-import { IResolution } from '..';
+import { IResolution, GraphsContainer, chartTheme } from '..';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import { ParticipationMethod } from 'services/participationContexts';
+import CumulativeAreaChart from '../summary/charts/CumulativeAreaChart';
+import {
+  usersByTimeCumulativeXlsxEndpoint,
+  usersByTimeCumulativeStream,
+} from 'services/stats';
 
 interface InputProps {
   project: IProjectData;
@@ -32,8 +38,8 @@ const ProjectReport = memo(({ project, phases }: Props) => {
 
   // set time boundaries
   const [resolution, setResolution] = useState<IResolution>('month');
-  const [startAt, setStartAt] = useState<string>();
-  const [endAt, setEndAt] = useState<string>();
+  const [startAt, setStartAt] = useState<string | null>(null);
+  const [endAt, setEndAt] = useState<string | null>(null);
 
   useEffect(() => {
     if (timelineProject) {
@@ -72,9 +78,25 @@ const ProjectReport = memo(({ project, phases }: Props) => {
     }
   }, [project, phases]);
 
+  // deduplicated non-null participations methods in this project
+  const participationMethods = (timelineProject
+    ? isNilOrError(phases)
+      ? []
+      : phases.map((phase) => phase.attributes.participation_method)
+    : [project.attributes.participation_method]
+  ).filter(
+    (el, i, arr) => el && arr.indexOf(el) === i
+  ) as ParticipationMethod[];
+
+  if (!startAt || !endAt) {
+    return null;
+  }
+
+  const projectTitle = localize(project.attributes.title_multiloc);
+
   return (
-    <>
-      <PageTitle>{localize(project.attributes.title_multiloc)}</PageTitle>
+    <ThemeProvider theme={chartTheme}>
+      <PageTitle>{projectTitle}</PageTitle>
       <Section>
         <ResolutionControl value={resolution} onChange={setResolution} />
 
@@ -85,8 +107,28 @@ const ProjectReport = memo(({ project, phases }: Props) => {
         <SectionTitle>
           <FormattedMessage {...messages.sectionWho} />
         </SectionTitle>
+        <GraphsContainer>
+          {participationMethods !== ['information'] && (
+            <CumulativeAreaChart
+              graphTitleMessageKey="usersByTimeTitle"
+              xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
+              graphUnit="users"
+              startAt={startAt}
+              endAt={endAt}
+              stream={usersByTimeCumulativeStream}
+              className="e2e-users-by-time-cumulative-chart"
+              resolution={resolution}
+              currentGroupFilter={undefined}
+              currentTopicFilter={undefined}
+              currentGroupFilterLabel={undefined}
+              currentTopicFilterLabel={undefined}
+              currentProjectFilter={project.id}
+              currentProjectFilterLabel={projectTitle}
+            />
+          )}
+        </GraphsContainer>
       </Section>
-    </>
+    </ThemeProvider>
   );
 });
 
