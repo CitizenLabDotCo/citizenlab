@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
+import { map } from 'lodash-es';
 
 // components
 import {
@@ -14,6 +15,7 @@ import {
 } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
+import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import ChartFilters from '../components/ChartFilters';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
@@ -54,6 +56,9 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  ideasByStatusStream,
+  ideasByStatusXlsxEndpoint,
+  IIdeasByStatus,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -300,6 +305,29 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     ];
   };
 
+  convertToGraphFormat = (data: IIdeasByStatus) => {
+    const { localize } = this.props;
+    if (!isNilOrError(data)) {
+      const {
+        series: { ideas },
+        idea_status,
+      } = data;
+
+      console.log(data);
+      const res = map(ideas, (value: number, key: string) => ({
+        value: value as number,
+        name: localize(idea_status[key].title_multiloc) as string,
+        code: key,
+        color: idea_status[key].color as string,
+        ordering: idea_status[key].ordering as number,
+      }));
+
+      return res.length > 0 ? res : null;
+    }
+
+    return null;
+  };
+
   render() {
     const {
       resolution,
@@ -389,7 +417,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
                 className="e2e-ideas-chart"
-                {...this.state}
                 lineStream={ideasByTimeCumulativeStream}
                 barStream={ideasByTimeStream}
                 {...this.state}
@@ -402,19 +429,24 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
                 className="e2e-comments-chart"
-                {...this.state}
                 lineStream={commentsByTimeCumulativeStream}
                 barStream={commentsByTimeStream}
                 {...this.state}
               />
               <Column>
-                <LineBarChartVotesByTime
-                  className="fullWidth e2e-votes-chart"
+                <HorizontalBarChart
+                  graphTitleString={this.props.intl.formatMessage(
+                    messages.ideasByStatusTitle
+                  )}
+                  graphUnit="ideas"
+                  stream={ideasByStatusStream}
+                  convertToGraphFormat={this.convertToGraphFormat}
+                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                  className="fullWidth dynamicHeight"
                   startAt={startAt}
                   endAt={endAt}
                   {...this.state}
                 />
-
                 <SelectableResourceByProjectChart
                   className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                   onResourceByProjectChange={this.onResourceByProjectChange}
@@ -426,6 +458,12 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Column>
               <Column>
+                <LineBarChartVotesByTime
+                  className="fullWidth e2e-votes-chart"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
                 <SelectableResourceByTopicChart
                   className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
                   topicOptions={topicFilterOptions}

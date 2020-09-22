@@ -144,6 +144,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
     defaultMessage: 'Ideas',
   },
+  ideasByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideasByStatusTitle',
+    defaultMessage: 'Ideas By Status',
+  },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
