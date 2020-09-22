@@ -18,6 +18,20 @@ export interface IIdeasByTime {
     };
   };
 }
+export interface IIdeasByStatus {
+  series: {
+    ideas: {
+      [key: string]: number;
+    };
+  };
+  idea_status: {
+    [key: string]: {
+      title_multiloc: Multiloc;
+      color: string;
+      ordering: number;
+    };
+  };
+}
 
 export interface IIdeasByTopic {
   series: {
@@ -52,6 +66,14 @@ export interface IIdeasCount {
 export interface ICount {
   count: number;
 }
+
+export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByStatus>({
+    apiEndpoint: `${apiEndpoint}/ideas_by_status`,
+    ...streamParams,
+  });
+}
+export const ideasByStatusXlsxEndpoint = `${apiEndpoint}/ideas_by_status_as_xlsx`;
 
 export const ideasByTimeXlsxEndpoint = `${apiEndpoint}/ideas_by_time_as_xlsx`;
 
