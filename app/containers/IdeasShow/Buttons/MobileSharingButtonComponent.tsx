@@ -11,10 +11,12 @@ import messages from '../messages';
 
 interface Props {
   onClick?: () => void;
+  ariaExpanded?: boolean;
 }
 
 const MobileSharingButtonComponent = ({
   onClick,
+  ariaExpanded,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -32,6 +34,7 @@ const MobileSharingButtonComponent = ({
       fontWeight="bold"
       borderColor="#E0E0E0"
       onClick={onClick}
+      ariaExpanded={ariaExpanded}
     >
       {formatMessage(messages.shareIdea)}
     </Button>
