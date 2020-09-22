@@ -74,12 +74,9 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
   };
 
   signUpIn = (flow: 'signin' | 'signup') => {
-    const { commetingPermissions } = this.props;
+    const { authUser, commetingPermissions } = this.props;
 
-    if (
-      commetingPermissions?.action === 'sign_in_up' ||
-      commetingPermissions?.action === 'sign_in_up_and_verify'
-    ) {
+    if (isNilOrError(authUser)) {
       openSignUpInModal({
         flow,
         verification: commetingPermissions?.action === 'sign_in_up_and_verify',

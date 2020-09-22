@@ -58,7 +58,7 @@ export class InitiativesNewPage extends React.PureComponent<
   }
 
   componentDidMount() {
-    const { location } = this.props;
+    const { location, postingPermission } = this.props;
     const { lat, lng } = parse(location.search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -66,7 +66,9 @@ export class InitiativesNewPage extends React.PureComponent<
       },
     }) as { [key: string]: string | number };
 
-    this.redirectIfNotPermittedOnPage();
+    if (!isNilOrError(postingPermission)) {
+      this.redirectIfNotPermittedOnPage();
+    }
 
     if (isNumber(lat) && isNumber(lng)) {
       // When an idea is posted through the map, we Google Maps gets an approximate address,
@@ -107,7 +109,7 @@ export class InitiativesNewPage extends React.PureComponent<
       this.redirectIfNotPermittedOnPage();
     }
 
-    if (prevProps.tenant !== this.props.tenant) {
+    if (prevProps.postingPermission !== this.props.postingPermission) {
       this.redirectIfPostingNotEnabled();
     }
   }

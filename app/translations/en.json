@@ -27,7 +27,7 @@
   "app.components.Comments.commentingDisabledNotVerified": "Commenting on this idea requires verification of your profile. {verificationLink}",
   "app.components.Comments.commentingDisabledProjectInactive": "Commenting on this idea is not possible because '{projectName}' is currently not active.",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.",
-  "app.components.Comments.commentingInitiativeNotPermitted": "Commenting on this idea is currently not allowed",
+  "app.components.Comments.commentingInitiativeNotPermitted": "You don't have the rights to comment.",
   "app.components.Comments.commentingInititativeDisabledNotVerified": "Commenting on this proposal requires verification of your account. {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "Not everyone is allowed to comment. Please {signInLink} to see whether you comply.",
   "app.components.Comments.commentingNotPermitted": "Commenting on this idea is currently not allowed",
