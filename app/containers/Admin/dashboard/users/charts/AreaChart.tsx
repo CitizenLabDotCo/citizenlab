@@ -20,7 +20,6 @@ import HorizontalBarChart from './HorizontalBarChart';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { Multiloc } from 'typings';
 
 interface Props {
   startAt: string | null | undefined;
@@ -35,21 +34,6 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
     intl: { formatMessage },
     localize,
   } = props;
-
-  const areaKeyToAreaName = (
-    multiloc: Multiloc | null,
-    key: string
-  ): string => {
-    if (key === '_blank') {
-      return formatMessage(messages._blank);
-    } else if (key === 'outside') {
-      return formatMessage(messages.outsideArea);
-    } else if (multiloc) {
-      return localize(multiloc);
-    } else {
-      return key;
-    }
-  };
 
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (!isNilOrError(data)) {

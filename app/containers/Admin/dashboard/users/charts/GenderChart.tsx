@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { map } from 'lodash-es';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
