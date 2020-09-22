@@ -1,30 +1,35 @@
 // libraries
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import React from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
-
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
+// services
+import {
+  votesByTimeStream,
+  votesByTimeCumulativeStream,
+  votesByTimeXlsxEndpoint,
+  IVotesByTime,
+} from 'services/stats';
+
 // components
 import ExportMenu from '../../components/ExportMenu';
 import {
-  AreaChart,
-  CartesianGrid,
-  Area,
+  Line,
+  Label,
+  Bar,
   Tooltip,
   XAxis,
   YAxis,
   ResponsiveContainer,
+  CartesianGrid,
+  Legend,
+  ComposedChart,
 } from 'recharts';
 import {
-  IGraphUnit,
   IResolution,
   GraphCard,
   NoDataContainer,
@@ -36,21 +41,26 @@ import {
   GraphCardFigureChange,
 } from '../..';
 
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
-import { IGraphFormat } from 'typings';
+// i18n
+import messages from '../../messages';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
+type ISerie = {
+  cumulatedTotal: number;
+  date: string | number;
+  up: number;
+  down: number;
+  total: number;
+  code: string;
+}[];
 
 type State = {
-  serie: IGraphFormat | null;
+  serie: ISerie | null;
 };
-
-type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
 
 type Props = {
   className?: string;
-  graphUnit: IGraphUnit;
-  graphTitle: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
@@ -60,18 +70,16 @@ type Props = {
   currentProjectFilterLabel: string | undefined;
   currentGroupFilterLabel: string | undefined;
   currentTopicFilterLabel: string | undefined;
-  stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
-  xlsxEndpoint: string;
 };
 
-export class CumulativeAreaChart extends PureComponent<
+class LineBarChartVotesByTime extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  subscription: Subscription;
+  combined$: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props) {
     super(props as any);
     this.state = {
       serie: null,
@@ -130,22 +138,28 @@ export class CumulativeAreaChart extends PureComponent<
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.combined$.unsubscribe();
   }
 
-  convertToGraphFormat = (data: IResourceByTime) => {
-    const { graphUnit } = this.props;
+  convertAndMergeSeries(barSerie: IVotesByTime, lineSerie: IVotesByTime) {
+    const { up, down, total } = barSerie.series;
+    let convertedSerie;
 
-    if (!isEmpty(data.series[graphUnit])) {
-      return map(data.series[graphUnit], (value, key) => ({
-        value,
-        name: key,
+    if (!isEmpty(total) && !isEmpty(lineSerie.series.total)) {
+      convertedSerie = map(total, (value, key) => ({
+        total: value,
+        down: down[key],
+        up: up[key],
+        date: key,
         code: key,
+        cumulatedTotal: lineSerie.series.total[key],
       }));
+    } else {
+      return null;
     }
 
-    return null;
-  };
+    return convertedSerie;
+  }
 
   resubscribe(
     startAt: string | null | undefined,
@@ -155,13 +169,11 @@ export class CumulativeAreaChart extends PureComponent<
     currentTopicFilter: string | undefined,
     currentProjectFilter: string | undefined
   ) {
-    const { stream } = this.props;
-
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.combined$) {
+      this.combined$.unsubscribe();
     }
 
-    this.subscription = stream({
+    const queryParameters = {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -170,9 +182,20 @@ export class CumulativeAreaChart extends PureComponent<
         group: currentGroupFilter,
         topic: currentTopicFilter,
       },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
-      this.setState({ serie: convertedSerie });
+    };
+
+    const barStreamObservable = votesByTimeStream(queryParameters).observable;
+    const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
+      .observable;
+    this.combined$ = combineLatest(
+      barStreamObservable,
+      lineStreamObservable
+    ).subscribe(([barSerie, lineSerie]) => {
+      const convertedAndMergedSeries = this.convertAndMergeSeries(
+        barSerie,
+        lineSerie
+      );
+      this.setState({ serie: convertedAndMergedSeries });
     });
   }
 
@@ -206,10 +229,10 @@ export class CumulativeAreaChart extends PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie: IGraphFormat | null) {
+  getFormattedNumbers(serie: ISerie | null) {
     if (serie) {
-      const firstSerieValue = serie[0].value;
-      const lastSerieValue = serie[serie.length - 1].value;
+      const firstSerieValue = serie[0].cumulatedTotal;
+      const lastSerieValue = serie[serie.length - 1].cumulatedTotal;
       const serieChange = lastSerieValue - firstSerieValue;
       let typeOfChange: 'increase' | 'decrease' | '' = '';
 
@@ -235,22 +258,18 @@ export class CumulativeAreaChart extends PureComponent<
 
   render() {
     const {
-      graphTitle,
-      graphUnit,
-      className,
-      intl: { formatMessage },
-    } = this.props;
-    const { serie } = this.state;
-    const {
-      chartFill,
       chartLabelSize,
       chartLabelColor,
       chartStroke,
+      chartFill,
       animationBegin,
       animationDuration,
       cartesianGridColor,
     } = this.props['theme'];
+    const { formatMessage } = this.props.intl;
+    const { serie } = this.state;
     const formattedNumbers = this.getFormattedNumbers(serie);
+    const { className } = this.props;
     const {
       totalNumber,
       formattedSerieChange,
@@ -261,7 +280,9 @@ export class CumulativeAreaChart extends PureComponent<
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <GraphCardTitle>{graphTitle}</GraphCardTitle>
+            <GraphCardTitle>
+              <FormattedMessage {...messages.ideaVotesByTimeTitle} />
+            </GraphCardTitle>
             <GraphCardFigureContainer>
               <GraphCardFigure>{totalNumber}</GraphCardFigure>
               <GraphCardFigureChange className={typeOfChange}>
@@ -270,9 +291,10 @@ export class CumulativeAreaChart extends PureComponent<
             </GraphCardFigureContainer>
             {serie && (
               <ExportMenu
-                {...this.props}
                 svgNode={this.currentChart}
-                name={graphTitle}
+                xlsxEndpoint={votesByTimeXlsxEndpoint}
+                name={formatMessage(messages.ideaVotesByTimeTitle)}
+                {...this.props}
               />
             )}
           </GraphCardHeader>
@@ -282,34 +304,82 @@ export class CumulativeAreaChart extends PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <AreaChart data={serie} margin={{ right: 40 }}>
+              <ComposedChart
+                data={serie}
+                margin={{ right: 40 }}
+                ref={this.currentChart}
+              >
                 <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  name={formatMessage(messages[graphUnit])}
-                  dot={false}
-                  fill={rgba(chartFill, 0.25)}
-                  fillOpacity={1}
-                  stroke={chartStroke}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                  isAnimationActive={true}
-                />
                 <XAxis
-                  dataKey="name"
+                  dataKey="date"
                   interval="preserveStartEnd"
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                 />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                <YAxis
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  yAxisId="cumulatedTotal"
+                >
+                  <Label
+                    value={formatMessage(messages.total)}
+                    angle={-90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
+                <YAxis yAxisId="barValue" orientation="right">
+                  <Label
+                    value={formatMessage(messages.perPeriod, {
+                      period: this.props.resolution,
+                    })}
+                    angle={90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-              </AreaChart>
+                <Line
+                  type="monotone"
+                  dataKey="cumulatedTotal"
+                  name={formatMessage(messages.total)}
+                  dot={false}
+                  stroke={chartStroke}
+                  yAxisId="cumulatedTotal"
+                />
+                <Bar
+                  dataKey="up"
+                  name={formatMessage(messages.numberOfVotesUp)}
+                  dot={false}
+                  fill={rgba(chartFill, 0.5)}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  stackId="1"
+                  yAxisId="barValue"
+                />
+                <Bar
+                  dataKey="down"
+                  name={formatMessage(messages.numberOfVotesDown)}
+                  dot={false}
+                  fill={rgba(chartFill, 0.7)}
+                  stackId="1"
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  stroke="none"
+                  yAxisId="barValue"
+                />
+
+                <Legend
+                  wrapperStyle={{
+                    paddingTop: '20px',
+                  }}
+                />
+              </ComposedChart>
             </ResponsiveContainer>
           )}
         </GraphCardInner>
@@ -318,4 +388,6 @@ export class CumulativeAreaChart extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(withTheme(CumulativeAreaChart as any) as any);
+export default injectIntl<Props>(
+  withTheme(LineBarChartVotesByTime as any) as any
+);
