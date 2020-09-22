@@ -123,4 +123,8 @@ export default defineMessages({
     id: 'app.containers.CookiePolicy.privacy-policyPageName',
     defaultMessage: 'Privacy Policy',
   },
+  'accessibility-statementPageName': {
+    id: 'app.containers.CookiePolicy.accessibility-statementPageName',
+    defaultMessage: 'Accessibility statement',
+  },
 });
