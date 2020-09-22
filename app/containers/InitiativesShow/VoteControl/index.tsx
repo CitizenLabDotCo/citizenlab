@@ -148,7 +148,7 @@ class VoteControl extends PureComponent<Props, State> {
         break;
       case 'verify':
         trackEventByName(
-          'Sign up/in modal opened in response to clicking vote initiative'
+          'Verification modal opened in response to clicking vote initiative'
         );
         openVerificationModal({
           context: {

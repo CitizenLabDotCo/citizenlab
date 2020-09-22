@@ -37,7 +37,7 @@ export default defineMessages({
   postingMaybeNotPermitted: {
     id: 'app.containers.IdeaButton.postingMaybeNotPermitted',
     defaultMessage:
-      'Only certain users can post an idea {signInLink} or {signUpLink} to see if you comply.',
+      'Only certain users can post an idea. {signInLink} or {signUpLink} to see if you comply.',
   },
 
   verificationLinkText: {

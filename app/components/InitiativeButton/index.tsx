@@ -134,7 +134,7 @@ export default memo<Props>(({ lat, lng, inMap, location, className }) => {
           break;
         case 'verify':
           trackEventByName(
-            'Sign up/in modal opened in response to clicking new initiative'
+            'Verification modal opened in response to clicking new initiative'
           );
           openVerificationModal({
             context: {
