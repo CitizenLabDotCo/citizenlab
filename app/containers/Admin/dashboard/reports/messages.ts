@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.Dashboards.ReportsTab.sectionWho',
     defaultMessage: 'Who participated ?',
   },
+  participantsOverTimeTitle: {
+    id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
+    defaultMessage: 'Participants',
+  },
 });

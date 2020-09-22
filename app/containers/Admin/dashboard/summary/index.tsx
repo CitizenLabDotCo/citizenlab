@@ -351,7 +351,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
               <CumulativeAreaChart
-                graphTitleMessageKey="usersByTimeTitle"
+                graphTitle={formatMessage(messages.usersByTimeTitle)}
                 xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
                 graphUnit="users"
                 startAt={startAt}
@@ -373,7 +373,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
               <CumulativeAreaChart
-                graphTitleMessageKey="ideasByTimeTitle"
+                graphTitle={formatMessage(messages.ideasByTimeTitle)}
                 graphUnit="ideas"
                 startAt={startAt}
                 endAt={endAt}
@@ -383,7 +383,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
               <CumulativeAreaChart
-                graphTitleMessageKey="commentsByTimeTitle"
+                graphTitle={formatMessage(messages.commentsByTimeTitle)}
                 graphUnit="comments"
                 startAt={startAt}
                 endAt={endAt}
