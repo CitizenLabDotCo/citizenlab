@@ -9,6 +9,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
 import { IProjectData } from 'services/projects';
+import { FormattedMessage } from 'utils/cl-intl';
+import { Label, Select } from 'cl2-component-library';
+import messages from './messages';
+import GoBackButton from 'components/UI/GoBackButton';
+import { SectionTitle } from 'components/admin/Section';
+import styled from 'styled-components';
+
+const StyledSelect = styled(Select)`
+  max-width: 300px;
+`;
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -31,15 +41,27 @@ const ReportTab = memo(({ projects }: DataProps) => {
       projects?.projectsList?.find((project) => project.id === option.value)
     );
 
+  const onResetProject = () => {
+    setSelectedProject(undefined);
+  };
+
   return (
     <>
-      <ChartFilters
-        currentProjectFilter={selectedProject?.id}
-        projectFilterOptions={projectOptions}
-        onProjectFilter={onProjectFilter}
-      />
-      {selectedProject?.attributes.title_multiloc &&
-        localize(selectedProject?.attributes.title_multiloc)}
+      {!selectedProject ? (
+        <>
+          <SectionTitle>
+            <FormattedMessage {...messages.selectAProject} />
+          </SectionTitle>
+          <StyledSelect
+            id="projectFilter"
+            onChange={onProjectFilter}
+            value={undefined}
+            options={projectOptions}
+          />
+        </>
+      ) : (
+        <GoBackButton onClick={onResetProject} />
+      )}
     </>
   );
 });
