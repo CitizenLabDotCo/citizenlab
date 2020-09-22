@@ -12,12 +12,14 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import styled, { ThemeProvider } from 'styled-components';
 import { ParticipationMethod } from 'services/participationContexts';
-import CumulativeAreaChart from '../summary/charts/CumulativeAreaChart';
+
 import {
   usersByTimeCumulativeXlsxEndpoint,
   usersByTimeCumulativeStream,
+  usersByTimeStream,
 } from 'services/stats';
 import { InjectedIntlProps } from 'react-intl';
+import LineBarChart from '../summary/charts/LineBarChart';
 
 interface InputProps {
   project: IProjectData;
@@ -111,19 +113,16 @@ const ProjectReport = memo(
           </SectionTitle>
           <GraphsContainer>
             {participationMethods !== ['information'] && (
-              <CumulativeAreaChart
+              <LineBarChart
                 graphTitle={formatMessage(messages.participantsOverTimeTitle)}
                 xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
                 graphUnit="users"
+                graphUnitMessageKey="users"
                 startAt={startAt}
                 endAt={endAt}
-                stream={usersByTimeCumulativeStream}
-                className="e2e-users-by-time-cumulative-chart"
+                barStream={usersByTimeStream}
+                lineStream={usersByTimeCumulativeStream}
                 resolution={resolution}
-                currentGroupFilter={undefined}
-                currentTopicFilter={undefined}
-                currentGroupFilterLabel={undefined}
-                currentTopicFilterLabel={undefined}
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />

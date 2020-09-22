@@ -54,6 +54,7 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  usersByTimeXlsxEndpoint,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -355,10 +356,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               <LineBarChart
                 graphUnit="users"
                 graphUnitMessageKey="users"
-                graphTitleMessageKey="usersByTimeTitle"
+                graphTitle={formatMessage(messages.usersByTimeTitle)}
                 startAt={startAt}
                 endAt={endAt}
-                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+                xlsxEndpoint={usersByTimeXlsxEndpoint}
                 lineStream={usersByTimeCumulativeStream}
                 barStream={usersByTimeStream}
                 className="e2e-active-users-chart"
@@ -367,7 +368,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               <BarChartActiveUsersByTime
                 graphUnit="users"
                 graphUnitMessageKey="activeUsers"
-                graphTitleMessageKey="activeUsersByTimeTitle"
+                graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
                 startAt={startAt}
                 endAt={endAt}
                 xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
@@ -377,7 +378,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
               <LineBarChart
-                graphTitleMessageKey="ideasByTimeTitle"
+                graphTitle={formatMessage(messages.ideasByTimeTitle)}
                 graphUnit="ideas"
                 graphUnitMessageKey="ideas"
                 startAt={startAt}
@@ -390,7 +391,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
               <LineBarChart
-                graphTitleMessageKey="commentsByTimeTitle"
+                graphTitle={formatMessage(messages.commentsByTimeTitle)}
                 graphUnit="comments"
                 graphUnitMessageKey="comments"
                 startAt={startAt}
