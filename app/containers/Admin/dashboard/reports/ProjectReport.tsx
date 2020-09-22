@@ -17,9 +17,16 @@ import {
   usersByTimeCumulativeXlsxEndpoint,
   usersByTimeCumulativeStream,
   usersByTimeStream,
+  ideasByTimeCumulativeXlsxEndpoint,
+  ideasByTimeCumulativeStream,
+  ideasByTimeStream,
+  commentsByTimeCumulativeXlsxEndpoint,
+  commentsByTimeCumulativeStream,
+  commentsByTimeStream,
 } from 'services/stats';
 import { InjectedIntlProps } from 'react-intl';
 import LineBarChart from '../summary/charts/LineBarChart';
+import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
 
 interface InputProps {
   project: IProjectData;
@@ -126,6 +133,53 @@ const ProjectReport = memo(
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
+            )}
+          </GraphsContainer>
+        </Section>
+        <Section>
+          <SectionTitle>
+            <FormattedMessage {...messages.sectionWhat} />
+          </SectionTitle>
+          <GraphsContainer>
+            {participationMethods.includes('ideation') && (
+              <>
+                <LineBarChart
+                  graphTitle={formatMessage(messages.ideasByTimeTitle)}
+                  graphUnit="ideas"
+                  graphUnitMessageKey="ideas"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  currentProjectFilter={project.id}
+                  currentProjectFilterLabel={projectTitle}
+                  xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+                  className="e2e-ideas-chart"
+                  lineStream={ideasByTimeCumulativeStream}
+                  barStream={ideasByTimeStream}
+                />
+                <LineBarChart
+                  graphTitle={formatMessage(messages.commentsByTimeTitle)}
+                  graphUnit="comments"
+                  graphUnitMessageKey="comments"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  currentProjectFilter={project.id}
+                  currentProjectFilterLabel={projectTitle}
+                  xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+                  className="e2e-comments-chart"
+                  lineStream={commentsByTimeCumulativeStream}
+                  barStream={commentsByTimeStream}
+                />
+                <LineBarChartVotesByTime
+                  className="e2e-votes-chart"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  currentProjectFilter={project.id}
+                  currentProjectFilterLabel={projectTitle}
+                />
+              </>
             )}
           </GraphsContainer>
         </Section>
