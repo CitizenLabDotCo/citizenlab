@@ -1986,20 +1986,20 @@ models:
     created_at: 2019-01-29 12:37:44 UTC
     updated_at: 2019-01-29 12:37:44 UTC
   permission:
-  - action: commenting
+  - action: commenting_idea
     permitted_by: admins_moderators
-    permittable_ref: *4
+    permission_scope: *4
     created_at: 2019-01-29 12:36:29 UTC
     updated_at: 2019-01-29 12:37:45 UTC
-  - action: posting
+  - action: posting_idea
     permitted_by: admins_moderators
-    permittable_ref: *4
+    permission_scope: *4
     created_at: 2019-01-29 12:36:29 UTC
     updated_at: 2019-01-29 12:37:45 UTC
   - &13
-    action: voting
+    action: voting_idea
     permitted_by: groups
-    permittable_ref: *4
+    permission_scope: *4
     created_at: 2019-01-29 12:36:29 UTC
     updated_at: 2019-01-29 12:37:45 UTC
   groups_permission:

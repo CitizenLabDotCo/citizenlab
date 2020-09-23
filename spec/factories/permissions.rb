@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :permission do
-    action { 'posting' }
+    action { 'posting_idea' }
     permitted_by { 'groups' }
-    permittable { create(:continuous_project, participation_method: 'ideation') } # association :permittable, factory: :continuous_project #  participation_method: 'ideation'
+    permission_scope { create(:continuous_project, participation_method: 'ideation') }
     groups { [] }
   end
 end
