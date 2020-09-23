@@ -24,7 +24,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import rocket from './rocket.png';
 
 const Loading = styled.div`
