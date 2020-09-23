@@ -186,7 +186,14 @@ class ParentCommentForm extends PureComponent<
             projectId,
             authUser.id,
             commentBodyMultiloc
-          );
+          ).then((comment) => {
+            const parentComment = document.getElementById(comment.data.id);
+            if (parentComment) {
+              setTimeout(() => {
+                parentComment.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }
+          });
         }
 
         if (postType === 'initiative') {
@@ -194,7 +201,14 @@ class ParentCommentForm extends PureComponent<
             postId,
             authUser.id,
             commentBodyMultiloc
-          );
+          ).then((comment) => {
+            const parentComment = document.getElementById(comment.data.id);
+            if (parentComment) {
+              setTimeout(() => {
+                parentComment.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }
+          });
         }
 
         commentAdded();
