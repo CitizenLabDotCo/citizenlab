@@ -238,7 +238,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    event.stopPropagation();
 
     const {
       postId,
