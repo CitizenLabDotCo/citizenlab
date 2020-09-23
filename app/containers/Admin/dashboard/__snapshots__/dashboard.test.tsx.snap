@@ -27,19 +27,23 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
     ]
   }
 >
-  <HelmetIntl
-    description={
-      Object {
-        "defaultMessage": "Dashboard for activities on the platform",
-        "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
+  <ThemeProvider
+    theme={[Function]}
+  >
+    <HelmetIntl
+      description={
+        Object {
+          "defaultMessage": "Dashboard for activities on the platform",
+          "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
+        }
       }
-    }
-    title={
-      Object {
-        "defaultMessage": "Admin dashboard page",
-        "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
+      title={
+        Object {
+          "defaultMessage": "Admin dashboard page",
+          "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
+        }
       }
-    }
-  />
+    />
+  </ThemeProvider>
 </withRouter(Component)>
 `;
