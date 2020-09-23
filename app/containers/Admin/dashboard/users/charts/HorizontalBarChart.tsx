@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
@@ -11,10 +11,9 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
 import {
-  BarChart,
   Bar,
+  BarChart,
   Tooltip,
   XAxis,
   YAxis,
@@ -64,7 +63,7 @@ interface InputProps {
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
-  xlsxEndpoint: string;
+  exportMenu?: ReactElement;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -80,22 +79,20 @@ export class HorizontalBarChart extends React.PureComponent<
   render() {
     const {
       chartFill,
-      barFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
+      barFill,
       animationBegin,
       animationDuration,
     } = this.props['theme'];
     const {
-      currentGroupFilterLabel,
-      currentGroupFilter,
-      xlsxEndpoint,
       className,
       graphTitleString,
       serie,
       intl: { formatMessage },
       graphUnit,
+      exportMenu,
     } = this.props;
 
     const noData =
@@ -108,15 +105,9 @@ export class HorizontalBarChart extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            {!noData && (
-              <ExportMenu
-                name={graphTitleString}
-                svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-                currentGroupFilter={currentGroupFilter}
-              />
-            )}
+            {!noData &&
+              exportMenu &&
+              React.cloneElement(exportMenu, { svgNode: this.currentChart })}
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>
@@ -176,5 +167,24 @@ const WrappedHorizontalBarChart = (inputProps: InputProps) => (
     {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
+
+export const CustomizedLabel = (props) => {
+  const { x, y, value } = props;
+  return (
+    <text
+      x={x}
+      y={y}
+      dx={20}
+      dy={-6}
+      fontFamily="sans-serif"
+      fill={props.fill}
+      fontSize={props.fontSize}
+      textAnchor="middle"
+    >
+      {' '}
+      {value}{' '}
+    </text>
+  );
+};
 
 export default WrappedHorizontalBarChart;
