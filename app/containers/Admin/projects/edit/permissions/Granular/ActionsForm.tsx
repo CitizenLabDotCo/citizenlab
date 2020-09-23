@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 
-import { IPermissionData } from 'services/participationContextPermissions';
+import { IPermissionData } from 'services/actionPermissions';
 
 import ActionForm from './ActionForm';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -56,8 +56,7 @@ export default class ActionsForm extends PureComponent<Props> {
             />
           </h4>
           <ActionForm
-            permissionId={permission.id}
-            permittedBy={permission.attributes.permitted_by}
+            permissionData={permission}
             groupIds={permission.relationships.groups.data.map((p) => p.id)}
             onChange={this.handlePermissionChange(permission)}
           />
