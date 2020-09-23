@@ -17,6 +17,7 @@ import {
 
 // components
 import HorizontalBarChart from './HorizontalBarChart';
+import ExportMenu from '../../components/ExportMenu';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -30,15 +31,15 @@ interface Props {
 }
 
 const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
+  const {
+    intl: { formatMessage },
+    localize,
+  } = props;
+
   const areaKeyToAreaName = (
     areas: IUsersByDomicile['areas'],
     key: string
   ): string => {
-    const {
-      intl: { formatMessage },
-      localize,
-    } = props;
-
     if (key === '_blank') {
       return formatMessage(messages._blank);
     } else if (key === 'outside') {
@@ -72,12 +73,18 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   return (
     <HorizontalBarChart
       {...props}
-      graphTitleString={props.intl.formatMessage(messages.usersByDomicileTitle)}
+      graphTitleString={formatMessage(messages.usersByDomicileTitle)}
       graphUnit="users"
       stream={usersByDomicileStream}
       convertToGraphFormat={convertToGraphFormat}
-      xlsxEndpoint={usersByDomicileXlsxEndpoint}
       className="dynamicHeight"
+      exportMenu={
+        <ExportMenu
+          name={props.intl.formatMessage(messages.usersByDomicileTitle)}
+          xlsxEndpoint={usersByDomicileXlsxEndpoint}
+          {...props}
+        />
+      }
     />
   );
 };

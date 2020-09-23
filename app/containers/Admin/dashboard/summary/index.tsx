@@ -2,17 +2,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
-import { ThemeProvider } from 'styled-components';
 import { map } from 'lodash-es';
 
 // components
-import {
-  chartTheme,
-  GraphsContainer,
-  ControlBar,
-  Column,
-  IResolution,
-} from '../';
+import { GraphsContainer, ControlBar, Column, IResolution } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
 import HorizontalBarChart from '../users/charts/HorizontalBarChart';
@@ -23,6 +16,7 @@ import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicCh
 import ResolutionControl from '../components/ResolutionControl';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
+import ExportMenu from '../components/ExportMenu';
 
 // typings
 import { IOption } from 'typings';
@@ -71,7 +65,8 @@ export interface InputProps {
 
 interface DataProps {
   projects: GetProjectsChildProps;
-  ideas: GetIdeasChildProps;
+  mostVotedIdeas: GetIdeasChildProps;
+  mostControversialIdeas: GetIdeasChildProps;
   groups: GetGroupsChildProps;
   topics: GetTopicsChildProps;
 }
@@ -198,7 +193,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
-    this.props.ideas.onChangeProjects(filter.value);
+    this.props.mostVotedIdeas.onChangeProjects(filter.value);
+    this.props.mostControversialIdeas.onChangeProjects(filter.value);
     this.setState({
       currentProjectFilter: filter.value,
       currentProjectFilterLabel: filter.label,
@@ -335,7 +331,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   };
 
   fiveMostVotedIdeasSerie = () => {
-    const { localize, ideas } = this.props;
+    const { localize, mostVotedIdeas: ideas } = this.props;
 
     if (!isNilOrError(ideas.list)) {
       const { list } = ideas;
@@ -350,7 +346,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           slug: idea.attributes.slug,
         };
       });
-      return serie.length > 0 ? serie : null;
+      return serie;
     }
     return null;
   };
@@ -367,6 +363,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groupFilterOptions,
       topicFilterOptions,
     } = this.state;
+
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
 
@@ -409,112 +406,121 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             onGroupFilter={this.handleOnGroupFilter}
             onTopicFilter={this.handleOnTopicFilter}
           />
-
-          <ThemeProvider theme={chartTheme}>
-            <GraphsContainer>
-              <LineBarChart
-                graphUnit="users"
-                graphUnitMessageKey="users"
-                graphTitleMessageKey="usersByTimeTitle"
-                startAt={startAt}
-                endAt={endAt}
-                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-                lineStream={usersByTimeCumulativeStream}
-                barStream={usersByTimeStream}
-                className="e2e-active-users-chart"
-                {...this.state}
-              />
-              <BarChartActiveUsersByTime
-                graphUnit="users"
-                graphUnitMessageKey="activeUsers"
-                graphTitleMessageKey="activeUsersByTimeTitle"
-                startAt={startAt}
-                endAt={endAt}
-                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-                stream={activeUsersByTimeStream}
-                infoMessage={infoMessage}
-                className="e2e-active-users-chart"
-                {...this.state}
-              />
-              <LineBarChart
-                graphTitleMessageKey="ideasByTimeTitle"
+          <GraphsContainer>
+            <LineBarChart
+              graphUnit="users"
+              graphUnitMessageKey="users"
+              graphTitleMessageKey="usersByTimeTitle"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+              lineStream={usersByTimeCumulativeStream}
+              barStream={usersByTimeStream}
+              className="e2e-active-users-chart"
+              {...this.state}
+            />
+            <BarChartActiveUsersByTime
+              graphUnit="users"
+              graphUnitMessageKey="activeUsers"
+              graphTitleMessageKey="activeUsersByTimeTitle"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+              stream={activeUsersByTimeStream}
+              infoMessage={infoMessage}
+              className="e2e-active-users-chart"
+              {...this.state}
+            />
+            <LineBarChart
+              graphTitleMessageKey="ideasByTimeTitle"
+              graphUnit="ideas"
+              graphUnitMessageKey="ideas"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+              className="e2e-ideas-chart"
+              lineStream={ideasByTimeCumulativeStream}
+              barStream={ideasByTimeStream}
+              {...this.state}
+            />
+            <LineBarChart
+              graphTitleMessageKey="commentsByTimeTitle"
+              graphUnit="comments"
+              graphUnitMessageKey="comments"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+              className="e2e-comments-chart"
+              lineStream={commentsByTimeCumulativeStream}
+              barStream={commentsByTimeStream}
+              {...this.state}
+            />
+            <Column>
+              <HorizontalBarChart
+                graphTitleString={formatMessage(messages.ideasByStatusTitle)}
                 graphUnit="ideas"
-                graphUnitMessageKey="ideas"
+                stream={ideasByStatusStream}
+                convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
+                className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
-                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                className="e2e-ideas-chart"
-                lineStream={ideasByTimeCumulativeStream}
-                barStream={ideasByTimeStream}
-                {...this.state}
+                exportMenu={
+                  <ExportMenu
+                    name={formatMessage(messages.ideasByStatusTitle)}
+                    startAt={startAt}
+                    endAt={endAt}
+                    xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                    {...this.state}
+                  />
+                }
               />
-              <LineBarChart
-                graphTitleMessageKey="commentsByTimeTitle"
-                graphUnit="comments"
-                graphUnitMessageKey="comments"
+
+              <HorizontalBarChartWithoutStream
+                serie={this.fiveMostVotedIdeasSerie()}
+                graphTitleString={formatMessage(
+                  messages.fiveIdeasWithMostVotes
+                )}
+                graphUnit="votes"
+                className="fullWidth dynamicHeight"
+                exportMenu={
+                  <ExportMenu
+                    name={formatMessage(messages.fiveIdeasWithMostVotes)}
+                    startAt={startAt}
+                    endAt={endAt}
+                    xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                    {...this.state}
+                  />
+                }
+              />
+
+              <SelectableResourceByProjectChart
+                className="dynamicHeight fullWidth e2e-resource-by-project-chart"
+                onResourceByProjectChange={this.onResourceByProjectChange}
+                resourceOptions={this.resourceOptions}
+                projectOptions={projectFilterOptions}
                 startAt={startAt}
                 endAt={endAt}
-                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-                className="e2e-comments-chart"
-                lineStream={commentsByTimeCumulativeStream}
-                barStream={commentsByTimeStream}
                 {...this.state}
               />
-              <Column>
-                <HorizontalBarChart
-                  graphTitleString={this.props.intl.formatMessage(
-                    messages.ideasByStatusTitle
-                  )}
-                  graphUnit="ideas"
-                  stream={ideasByStatusStream}
-                  convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
-                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                  className="fullWidth dynamicHeight"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <HorizontalBarChartWithoutStream
-                  serie={this.fiveMostVotedIdeasSerie()}
-                  graphTitleString={this.props.intl.formatMessage(
-                    messages.fiveIdeasWithMostVotes
-                  )}
-                  graphUnit="votes"
-                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                  className="fullWidth dynamicHeight"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <SelectableResourceByProjectChart
-                  className="dynamicHeight fullWidth e2e-resource-by-project-chart"
-                  onResourceByProjectChange={this.onResourceByProjectChange}
-                  resourceOptions={this.resourceOptions}
-                  projectOptions={projectFilterOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-              <Column>
-                <LineBarChartVotesByTime
-                  className="fullWidth e2e-votes-chart"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <SelectableResourceByTopicChart
-                  className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
-                  topicOptions={topicFilterOptions}
-                  onResourceByTopicChange={this.onResourceByTopicChange}
-                  resourceOptions={this.resourceOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-            </GraphsContainer>
-          </ThemeProvider>
+            </Column>
+            <Column>
+              <LineBarChartVotesByTime
+                className="fullWidth e2e-votes-chart"
+                startAt={startAt}
+                endAt={endAt}
+                {...this.state}
+              />
+              <SelectableResourceByTopicChart
+                className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
+                topicOptions={topicFilterOptions}
+                onResourceByTopicChange={this.onResourceByTopicChange}
+                resourceOptions={this.resourceOptions}
+                startAt={startAt}
+                endAt={endAt}
+                {...this.state}
+              />
+            </Column>
+          </GraphsContainer>
         </>
       );
     }
@@ -537,11 +543,20 @@ const Data = adopt<DataProps, InputProps>({
       filterCanModerate={true}
     />
   ),
-  ideas: (
+  mostVotedIdeas: (
     <GetIdeas
       pageNumber={1}
       pageSize={5}
       sort="popular"
+      type="paginated"
+      projectIds={'all'}
+    />
+  ),
+  mostControversialIdeas: (
+    <GetIdeas
+      pageNumber={1}
+      pageSize={5}
+      sort="random"
       type="paginated"
       projectIds={'all'}
     />

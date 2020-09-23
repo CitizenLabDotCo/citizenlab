@@ -1,10 +1,10 @@
 // libraries
-import React, { memo } from 'react';
+import React, { memo, ReactElement } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import messages from '../../messages';
 
 // styling
@@ -14,7 +14,6 @@ import styled, { useTheme } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -45,16 +44,11 @@ interface VoteGraphPoint extends IGraphPoint {
 
 interface Props {
   serie: VoteGraphPoint[] | null;
-  startAt?: string | null | undefined;
-  endAt?: string | null;
-  currentGroupFilter?: string | undefined;
-  currentGroupFilterLabel?: string | undefined;
-  currentProjectFilter?: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
-  xlsxEndpoint: string;
+  exportMenu?: ReactElement;
 }
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
@@ -69,198 +63,183 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 
 export const HorizontalBarChartWithoutStream: React.SFC<
   Props & InjectedIntlProps
-> = memo(
-  ({
-    className,
-    graphTitleString,
-    serie,
-    graphUnit,
-    children,
-    ...queryProps
-  }) => {
-    const theme: any = useTheme();
+> = memo(({ className, graphTitleString, serie, graphUnit, exportMenu }) => {
+  const theme: any = useTheme();
 
-    const currentChart: React.RefObject<any> = React.createRef();
+  const currentChart: React.RefObject<any> = React.createRef();
 
-    const {
-      chartFill,
-      chartLabelSize,
-      chartCategorySize,
-      chartLabelColor,
-      barHoverColor,
-      animationBegin,
-      animationDuration,
-    } = theme;
+  const {
+    chartFill,
+    chartLabelSize,
+    chartCategorySize,
+    chartLabelColor,
+    barHoverColor,
+    animationBegin,
+    animationDuration,
+  } = theme;
 
-    const openIdeaInANewTab = ({ slug }: { slug: string }) => {
-      window.open(`${window.location.origin}/ideas/${slug}`);
-    };
-    const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+  const openIdeaInANewTab = ({ slug }: { slug: string }) => {
+    window.open(`${window.location.origin}/ideas/${slug}`);
+  };
 
-    const NameLabel = (props) => {
-      const { x, y, value } = props;
-      return (
-        <g style={{ pointerEvents: 'none' }}>
-          <text
-            x={x}
-            y={y}
-            dx={30}
-            dy={-6}
-            fill={chartLabelColor}
-            fontSize={chartCategorySize}
-            textAnchor="left"
-          >
-            {value}
-          </text>
-        </g>
-      );
-    };
-
-    const ValueLabel = (props) => {
-      const { x, y, value } = props;
-      return (
-        <g style={{ pointerEvents: 'none' }}>
-          <text
-            x={x}
-            y={y}
-            dx={5}
-            dy={-6}
-            fill={chartLabelColor}
-            fontSize={chartCategorySize}
-            textAnchor="right"
-            fontWeight={'800'}
-          >
-            {value}
-          </text>
-        </g>
-      );
-    };
-
+  const NameLabel = (props) => {
+    const { x, y, value } = props;
     return (
-      <GraphCard className={className}>
-        <GraphCardInner>
-          <GraphCardHeader>
-            <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            {!noData && (
-              <ExportMenu
-                name={graphTitleString}
-                svgNode={currentChart}
-                {...queryProps}
-              />
-            )}
-          </GraphCardHeader>
-          {isNilOrError(serie) ? (
-            <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
-            </NoDataContainer>
-          ) : (
-            <StyledResponsiveContainer
-              height={serie && serie?.length > 1 ? serie.length * 50 : 100}
-            >
-              <BarChart
-                data={serie}
-                layout="vertical"
-                ref={currentChart}
-                margin={{ right: 20, top: 10 }}
-              >
-                <Bar
-                  dataKey="value"
-                  name="Total"
-                  opacity={0}
-                  barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : 20}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                  onClick={openIdeaInANewTab}
-                  cursor="pointer"
-                />
-                <Bar
-                  name="Downvotes"
-                  stackId={'votes'}
-                  dataKey="down"
-                  fill={chartFill}
-                  barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                >
-                  {graphUnit === 'ideas' &&
-                    serie
-                      .sort((a, b) =>
-                        a.ordering && b.ordering ? a.ordering - b.ordering : -1
-                      )
-                      .map((entry, index) => {
-                        return (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={(entry.color && entry.color) || chartFill}
-                            opacity={0.8}
-                          />
-                        );
-                      })}
-                  <LabelList
-                    dataKey="name"
-                    position="top"
-                    content={<NameLabel />}
-                  />
-                  <LabelList
-                    dataKey="value"
-                    position="insideTopRight"
-                    offset={-20}
-                    content={<ValueLabel />}
-                  />
-                </Bar>
+      <g style={{ pointerEvents: 'none' }}>
+        <text
+          x={x}
+          y={y}
+          dx={30}
+          dy={-6}
+          fill={chartLabelColor}
+          fontSize={chartCategorySize}
+          textAnchor="left"
+        >
+          {value}
+        </text>
+      </g>
+    );
+  };
 
-                <Bar
-                  name="Upvotes"
-                  stackId={'votes'}
-                  dataKey="up"
-                  fill={chartFill}
-                  opacity={0.7}
-                  barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                >
-                  {graphUnit === 'ideas' &&
-                    serie.map((entry, index) => {
+  const ValueLabel = (props) => {
+    const { x, y, value } = props;
+    return (
+      <g style={{ pointerEvents: 'none' }}>
+        <text
+          x={x}
+          y={y}
+          dx={5}
+          dy={-6}
+          fill={chartLabelColor}
+          fontSize={chartCategorySize}
+          textAnchor="right"
+          fontWeight={'800'}
+        >
+          {value}
+        </text>
+      </g>
+    );
+  };
+
+  return (
+    <GraphCard className={className}>
+      <GraphCardInner>
+        <GraphCardHeader>
+          <GraphCardTitle>{graphTitleString}</GraphCardTitle>
+          {!isNilOrError(serie) &&
+            exportMenu &&
+            React.cloneElement(exportMenu, { svgNode: currentChart })}
+        </GraphCardHeader>
+        {isNilOrError(serie) ? (
+          <NoDataContainer>
+            <FormattedMessage {...messages.noData} />
+          </NoDataContainer>
+        ) : (
+          <StyledResponsiveContainer
+            height={serie?.length > 1 ? serie.length * 50 : 100}
+          >
+            <BarChart
+              data={serie}
+              layout="vertical"
+              ref={currentChart}
+              margin={{ right: 20, top: 10 }}
+            >
+              <Bar
+                dataKey="value"
+                name="Total"
+                opacity={0}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : 20}
+                animationDuration={animationDuration}
+                animationBegin={animationBegin}
+                onClick={openIdeaInANewTab}
+                cursor="pointer"
+              />
+              <Bar
+                name="Downvotes"
+                stackId={'votes'}
+                dataKey="down"
+                fill={chartFill}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
+                animationDuration={animationDuration}
+                animationBegin={animationBegin}
+              >
+                {graphUnit === 'ideas' &&
+                  serie
+                    .sort((a, b) =>
+                      a.ordering && b.ordering ? a.ordering - b.ordering : -1
+                    )
+                    .map((entry, index) => {
                       return (
                         <Cell
                           key={`cell-${index}`}
                           fill={(entry.color && entry.color) || chartFill}
-                          opacity={0.4}
+                          opacity={0.8}
                         />
                       );
                     })}
-                </Bar>
-
-                <YAxis
+                <LabelList
                   dataKey="name"
-                  type="category"
-                  width={150}
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tickLine={false}
-                  hide={true}
+                  position="top"
+                  content={<NameLabel />}
                 />
-                <XAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  type="number"
-                  tick={{ transform: 'translate(0, 7)' }}
-                  hide={true}
+                <LabelList
+                  dataKey="value"
+                  position="insideTopRight"
+                  offset={-20}
+                  content={<ValueLabel />}
                 />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{ fill: barHoverColor }}
-                  active={false}
-                />
-              </BarChart>
-            </StyledResponsiveContainer>
-          )}
-        </GraphCardInner>
-      </GraphCard>
-    );
-  }
-);
+              </Bar>
+
+              <Bar
+                name="Upvotes"
+                stackId={'votes'}
+                dataKey="up"
+                fill={chartFill}
+                opacity={0.7}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
+                animationDuration={animationDuration}
+                animationBegin={animationBegin}
+              >
+                {graphUnit === 'ideas' &&
+                  serie.map((entry, index) => {
+                    return (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={(entry.color && entry.color) || chartFill}
+                        opacity={0.4}
+                      />
+                    );
+                  })}
+              </Bar>
+
+              <YAxis
+                dataKey="name"
+                type="category"
+                width={150}
+                stroke={chartLabelColor}
+                fontSize={chartLabelSize}
+                tickLine={false}
+                hide={true}
+              />
+              <XAxis
+                stroke={chartLabelColor}
+                fontSize={chartLabelSize}
+                type="number"
+                tick={{ transform: 'translate(0, 7)' }}
+                hide={true}
+              />
+              <Tooltip
+                isAnimationActive={false}
+                cursor={{ fill: barHoverColor }}
+                active={false}
+              />
+            </BarChart>
+          </StyledResponsiveContainer>
+        )}
+      </GraphCardInner>
+    </GraphCard>
+  );
+});
 
 const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<Props>(
   HorizontalBarChartWithoutStream as any
