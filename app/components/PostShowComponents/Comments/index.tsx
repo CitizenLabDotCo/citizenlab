@@ -158,15 +158,6 @@ const CommentsSection = memo<Props>(
 
       return (
         <Container className={className || ''}>
-          <CommentingDisabled
-            commentingEnabled={commentingEnabled}
-            commentingDisabledReason={commentingDisabledReason}
-            projectId={get(post, 'relationships.project.data.id')}
-            phaseId={phaseId}
-            postId={postId}
-            postType={postType}
-          />
-
           <Header>
             <Title id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />{' '}
@@ -179,6 +170,15 @@ const CommentsSection = memo<Props>(
               selectedValue={[sortOrder]}
             />
           </Header>
+
+          <CommentingDisabled
+            commentingEnabled={commentingEnabled}
+            commentingDisabledReason={commentingDisabledReason}
+            projectId={get(post, 'relationships.project.data.id')}
+            phaseId={phaseId}
+            postId={postId}
+            postType={postType}
+          />
 
           <StyledParentCommentForm
             postId={postId}
