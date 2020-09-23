@@ -8127,65 +8127,65 @@ models:
       membership_type: rules
   permissions:
     - &111
-      action: posting
+      action: posting_idea
       permitted_by: groups
-      permittable_ref: *verifiedIdeation
+      permission_scope_ref: *verifiedIdeation
     - &112
-      action: voting
+      action: voting_idea
       permitted_by: groups
-      permittable_ref: *verifiedIdeation
+      permission_scope_ref: *verifiedIdeation
     - &113
-      action: commenting
+      action: commenting_idea
       permitted_by: groups
-      permittable_ref: *verifiedIdeation
+      permission_scope_ref: *verifiedIdeation
     - &1132
       action: taking_poll
       permitted_by: groups
-      permittable_ref: *verifiedPoll
+      permission_scope_ref: *verifiedPoll
     - &114
       action: budgeting
       permitted_by: groups
-      permittable_ref: *verifiedPb
+      permission_scope_ref: *verifiedPb
     - &115
       action: taking_survey
       permitted_by: groups
-      permittable_ref: *verifiedSurvey
+      permission_scope_ref: *verifiedSurvey
     - &1111
-      action: posting
+      action: posting_idea
       permitted_by: groups
-      permittable_ref: *charliesIdeation
+      permission_scope_ref: *charliesIdeation
     - &1112
-      action: voting
+      action: voting_idea
       permitted_by: groups
-      permittable_ref: *charliesIdeation
+      permission_scope_ref: *charliesIdeation
     - &1113
-      action: commenting
+      action: commenting_idea
       permitted_by: groups
-      permittable_ref: *charliesIdeation
+      permission_scope_ref: *charliesIdeation
     - &1114
       action: budgeting
       permitted_by: groups
-      permittable_ref: *charliesPb
+      permission_scope_ref: *charliesPb
     - &1115
       action: taking_survey
       permitted_by: groups
-      permittable_ref: *charliesSurvey
+      permission_scope_ref: *charliesSurvey
     - &1116
       action: taking_poll
       permitted_by: groups
-      permittable_ref: *charliesPoll
+      permission_scope_ref: *charliesPoll
     - &1117
-      action: posting
+      action: posting_idea
       permitted_by: groups
-      permittable_ref: *charliesVerifiedPPlproject
+      permission_scope_ref: *charliesVerifiedPPlproject
     - &1118
-      action: voting
+      action: voting_idea
       permitted_by: groups
-      permittable_ref: *charliesVerifiedPPlproject
+      permission_scope_ref: *charliesVerifiedPPlproject
     - &1119
-      action: commenting
+      action: commenting_idea
       permitted_by: groups
-      permittable_ref: *charliesVerifiedPPlproject
+      permission_scope_ref: *charliesVerifiedPPlproject
   groups_permissions:
   - permission_ref: *111
     group_ref: *verified

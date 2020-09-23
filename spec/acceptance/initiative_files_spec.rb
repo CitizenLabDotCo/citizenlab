@@ -43,6 +43,10 @@ resource "InitiativeFile" do
       parameter :ordering, "An integer that is used to order the files within an initiative", required: false
     end
     ValidationErrorHelper.new.error_fields(self, InitiativeFile)
+
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
     let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 1 }
@@ -58,6 +62,9 @@ resource "InitiativeFile" do
   end
 
   delete "web_api/v1/initiatives/:initiative_id/files/:file_id" do
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
     let(:file_id) { InitiativeFile.first.id }
 
