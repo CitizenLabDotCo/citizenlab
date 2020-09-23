@@ -39,7 +39,8 @@ interface VoteGraphPoint extends IGraphPoint {
   up: number;
   down: number;
   slug: string;
-  color: string;
+  ordering?: number;
+  color?: string;
 }
 
 interface Props {

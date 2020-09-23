@@ -64,12 +64,12 @@ type Props = {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
-  currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
+  currentProjectFilterLabel?: string;
+  currentGroupFilterLabel?: string;
+  currentTopicFilterLabel?: string;
 };
 
 class LineBarChartVotesByTime extends React.PureComponent<
