@@ -40,6 +40,7 @@ import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
 import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import ExportMenu from '../components/ExportMenu';
+import { IPhase, IPhaseData, IPhases } from 'services/phases';
 
 interface InputProps {
   project: IProjectData;
@@ -64,7 +65,7 @@ const ProjectReport = memo(
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
 
-    const timelineProject = project.attributes.process_type === 'timeline';
+    const isTimelineProject = project.attributes.process_type === 'timeline';
 
     // set time boundaries
     const [resolution, setResolution] = useState<IResolution>('month');
@@ -72,7 +73,7 @@ const ProjectReport = memo(
     const [endAt, setEndAt] = useState<string | null>(null);
 
     useEffect(() => {
-      if (timelineProject) {
+      if (isTimelineProject) {
         if (!isNilOrError(phases)) {
           const startAt = phases[0].attributes.start_at;
           const endAt = phases[phases.length - 1].attributes.end_at;
@@ -109,14 +110,27 @@ const ProjectReport = memo(
     }, [project, phases]);
 
     // deduplicated non-null participations methods in this project
-    const participationMethods = (timelineProject
-      ? isNilOrError(phases)
+    const deduplicate = (participationMethods: ParticipationMethod[]) => {
+      return (participationMethods = participationMethods.filter(
+        (el, i, arr) => el && arr.indexOf(el) === i
+      ) as ParticipationMethod[]);
+    };
+
+    const getParticipationMethods = (
+      phases: IPhaseData[],
+      project: IProjectData
+    ) =>
+      isTimelineProject
+        ? phases.map((phase) => phase.attributes.participation_method)
+        : [project.attributes.participation_method];
+
+    const participationMethods =
+      (isTimelineProject && isNilOrError(phases)) ||
+      phases === undefined ||
+      phases === null ||
+      phases.length <= 0
         ? []
-        : phases.map((phase) => phase.attributes.participation_method)
-      : [project.attributes.participation_method]
-    ).filter(
-      (el, i, arr) => el && arr.indexOf(el) === i
-    ) as ParticipationMethod[];
+        : deduplicate(getParticipationMethods(phases, project));
 
     if (!startAt || !endAt) {
       return null;
@@ -175,7 +189,7 @@ const ProjectReport = memo(
         <Section>
           <ResolutionControl value={resolution} onChange={setResolution} />
 
-          {timelineProject && 'Project Timeline'}
+          {isTimelineProject && 'Project Timeline'}
         </Section>
 
         <Section>
