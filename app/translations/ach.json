@@ -821,6 +821,7 @@
   "app.containers.AdminPage.DashboardPage.ideaVotes": "",
   "app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle": "",
   "app.containers.AdminPage.DashboardPage.ideas": "",
+  "app.containers.AdminPage.DashboardPage.ideasByStatusTitle": "",
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "",
   "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "",
   "app.containers.AdminPage.DashboardPage.male": "",
