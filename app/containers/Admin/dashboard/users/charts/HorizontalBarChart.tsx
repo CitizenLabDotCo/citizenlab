@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
@@ -11,15 +11,14 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
 import {
-  BarChart,
   Bar,
+  BarChart,
   Tooltip,
   XAxis,
   YAxis,
-  ResponsiveContainer,
   Cell,
+  ResponsiveContainer,
 } from 'recharts';
 import {
   IGraphUnit,
@@ -67,7 +66,7 @@ interface InputProps {
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
-  xlsxEndpoint: string;
+  exportMenu?: ReactElement;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -83,22 +82,20 @@ export class HorizontalBarChart extends React.PureComponent<
   render() {
     const {
       chartFill,
-      barFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
+      barFill,
       animationBegin,
       animationDuration,
     } = this.props['theme'];
     const {
-      currentGroupFilterLabel,
-      currentGroupFilter,
-      xlsxEndpoint,
       className,
       graphTitleString,
       serie,
       intl: { formatMessage },
       graphUnit,
+      exportMenu,
     } = this.props;
 
     const noData =
@@ -106,39 +103,14 @@ export class HorizontalBarChart extends React.PureComponent<
 
     const unitName = formatMessage(messages[graphUnit]);
 
-    const CustomizedLabel = (props) => {
-      const { x, y, value } = props;
-      return (
-        <text
-          x={x}
-          y={y}
-          dx={20}
-          dy={-6}
-          fontFamily="sans-serif"
-          fill={chartLabelColor}
-          fontSize={chartLabelSize}
-          textAnchor="middle"
-        >
-          {' '}
-          {value}{' '}
-        </text>
-      );
-    };
-
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            {!noData && (
-              <ExportMenu
-                name={graphTitleString}
-                svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
-                currentGroupFilterLabel={currentGroupFilterLabel}
-                currentGroupFilter={currentGroupFilter}
-              />
-            )}
+            {!noData &&
+              exportMenu &&
+              React.cloneElement(exportMenu, { svgNode: this.currentChart })}
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>
@@ -149,27 +121,23 @@ export class HorizontalBarChart extends React.PureComponent<
               height={serie.length > 1 ? serie.length * 50 : 100}
             >
               <BarChart data={serie} layout="vertical" ref={this.currentChart}>
-                <Bar
-                  dataKey="value"
-                  name={unitName}
-                  fill={chartFill}
-                  label={
-                    graphUnit === 'ideas' ? (
-                      <CustomizedLabel />
-                    ) : (
-                      {
-                        fill: barFill,
-                        fontSize: chartLabelSize,
-                        position: 'insideLeft',
-                      }
-                    )
-                  }
-                  barSize={graphUnit === 'ideas' ? 5 : 20}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                >
-                  {graphUnit === 'ideas' &&
-                    serie
+                {graphTitleString ===
+                formatMessage(messages.ideasByStatusTitle) ? (
+                  <Bar
+                    dataKey="value"
+                    name={formatMessage(messages['ideas'])}
+                    fill={chartFill}
+                    label={
+                      <CustomizedLabel
+                        fill={chartLabelColor}
+                        fontSize={chartLabelSize}
+                      />
+                    }
+                    barSize={5}
+                    animationDuration={animationDuration}
+                    animationBegin={animationBegin}
+                  >
+                    {serie
                       .sort((a, b) =>
                         a.ordering && b.ordering ? a.ordering - b.ordering : -1
                       )
@@ -177,12 +145,28 @@ export class HorizontalBarChart extends React.PureComponent<
                         return (
                           <Cell
                             key={`cell-${index}`}
-                            fill={(entry.color && entry.color) || chartFill}
+                            fill={entry.color && entry.color}
                             opacity={0.8}
                           />
                         );
                       })}
-                </Bar>
+                  </Bar>
+                ) : (
+                  <Bar
+                    dataKey="value"
+                    name={unitName}
+                    fill={chartFill}
+                    label={{
+                      fill: barFill,
+                      fontSize: chartLabelSize,
+                      position: 'insideLeft',
+                    }}
+                    barSize={20}
+                    animationDuration={animationDuration}
+                    animationBegin={animationBegin}
+                  />
+                )}
+
                 <YAxis
                   dataKey="name"
                   type="category"
@@ -219,5 +203,24 @@ const WrappedHorizontalBarChart = (inputProps: InputProps) => (
     {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
+
+export const CustomizedLabel = (props) => {
+  const { x, y, value } = props;
+  return (
+    <text
+      x={x}
+      y={y}
+      dx={20}
+      dy={-6}
+      fontFamily="sans-serif"
+      fill={props.fill}
+      fontSize={props.fontSize}
+      textAnchor="middle"
+    >
+      {' '}
+      {value}{' '}
+    </text>
+  );
+};
 
 export default WrappedHorizontalBarChart;

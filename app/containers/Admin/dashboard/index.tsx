@@ -21,7 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // styling
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
@@ -279,11 +279,13 @@ export const DashboardsPage = memo(
       if (isAdmin({ data: authUser })) {
         return (
           <DashboardTabs resource={resource} tabs={tabs}>
-            <HelmetIntl
-              title={messages.helmetTitle}
-              description={messages.helmetDescription}
-            />
-            {children}
+            <ThemeProvider theme={chartTheme}>
+              <HelmetIntl
+                title={messages.helmetTitle}
+                description={messages.helmetDescription}
+              />
+              {children}
+            </ThemeProvider>
           </DashboardTabs>
         );
       } else if (isProjectModerator({ data: authUser })) {
