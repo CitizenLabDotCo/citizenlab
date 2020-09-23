@@ -811,6 +811,7 @@
   "app.containers.AdminPage.DashboardPage.customDateRange": "Custom",
   "app.containers.AdminPage.DashboardPage.deletedUser": "Utilisateur supprimé",
   "app.containers.AdminPage.DashboardPage.female": "Féminin",
+  "app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes": "",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Tableau de bord des activités de la plateforme",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Tableau de bord administrateur",
   "app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter": "Choisissez filtre groupe",
