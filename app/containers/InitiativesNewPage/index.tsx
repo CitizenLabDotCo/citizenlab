@@ -113,7 +113,7 @@ export class InitiativesNewPage extends React.PureComponent<
   redirectIfNotPermittedOnPage = () => {
     const { authUser } = this.props;
 
-    if (isNilOrError(authUser)) {
+    if (authUser === null) {
       clHistory.replace('/sign-up');
     }
   };

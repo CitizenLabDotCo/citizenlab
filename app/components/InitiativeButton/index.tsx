@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import useInitiativesPermissions, {
   IInitiativeDisabledReason,
 } from 'hooks/useInitiativesPermissions';
@@ -84,7 +84,7 @@ export default memo<Props>(({ lat, lng, inMap, location, className }) => {
     'posting_initiative'
   ) || { disabledReason: null, action: null, enabled: null };
 
-  const redirectToIdeaForm = () => {
+  const redirectToInitiativeForm = () => {
     trackEventByName('redirected to initiatives form');
     clHistory.push({
       pathname: `/initiatives/new`,
@@ -95,59 +95,62 @@ export default memo<Props>(({ lat, lng, inMap, location, className }) => {
     });
   };
 
-  const onNewInitiativeButtonClick = (event?: React.FormEvent) => {
-    event?.preventDefault();
+  const onNewInitiativeButtonClick = useCallback(
+    (event?: React.FormEvent) => {
+      event?.preventDefault();
 
-    trackEventByName('New initiative button clicked', {
-      extra: {
-        disabledReason,
-        location,
-      },
-    });
+      trackEventByName('New initiative button clicked', {
+        extra: {
+          disabledReason,
+          location,
+        },
+      });
 
-    if (enabled) {
-      switch (action) {
-        case 'sign_in_up':
-          trackEventByName(
-            'Sign up/in modal opened in response to clicking new initiative'
-          );
-          openSignUpInModal({
-            flow: 'signup',
-            verification: false,
-            verificationContext: undefined,
-            action: redirectToIdeaForm,
-          });
-          break;
-        case 'sign_in_up_and_verify':
-          trackEventByName(
-            'Sign up/in modal opened in response to clicking new initiative'
-          );
-          openSignUpInModal({
-            flow: 'signup',
-            verification: true,
-            verificationContext: {
-              type: 'initiative',
-              action: 'posting_initiative',
-            },
-            action: redirectToIdeaForm,
-          });
-          break;
-        case 'verify':
-          trackEventByName(
-            'Verification modal opened in response to clicking new initiative'
-          );
-          openVerificationModal({
-            context: {
-              action: 'posting_initiative',
-              type: 'initiative',
-            },
-          });
-          break;
-        default:
-          redirectToIdeaForm();
+      if (enabled) {
+        switch (action) {
+          case 'sign_in_up':
+            trackEventByName(
+              'Sign up/in modal opened in response to clicking new initiative'
+            );
+            openSignUpInModal({
+              flow: 'signup',
+              verification: false,
+              verificationContext: undefined,
+              action: redirectToInitiativeForm,
+            });
+            break;
+          case 'sign_in_up_and_verify':
+            trackEventByName(
+              'Sign up/in modal opened in response to clicking new initiative'
+            );
+            openSignUpInModal({
+              flow: 'signup',
+              verification: true,
+              verificationContext: {
+                type: 'initiative',
+                action: 'posting_initiative',
+              },
+              action: redirectToInitiativeForm,
+            });
+            break;
+          case 'verify':
+            trackEventByName(
+              'Verification modal opened in response to clicking new initiative'
+            );
+            openVerificationModal({
+              context: {
+                action: 'posting_initiative',
+                type: 'initiative',
+              },
+            });
+            break;
+          default:
+            redirectToInitiativeForm();
+        }
       }
-    }
-  };
+    },
+    [enabled, action, disabledReason, location]
+  );
 
   const tippyContent = disabledReason ? (
     <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
@@ -185,6 +188,7 @@ export default memo<Props>(({ lat, lng, inMap, location, className }) => {
             onClick={onNewInitiativeButtonClick}
             icon="arrowLeft"
             iconPos="right"
+            disabled={!!disabledReason}
             text={<FormattedMessage {...messages.startInitiative} />}
           />
         </div>
