@@ -30,7 +30,7 @@ const Container = styled.div`
 interface ExportMenuProps {
   className?: string;
   name: string;
-  svgNode: React.RefObject<any>;
+  svgNode?: React.RefObject<any>;
   xlsxEndpoint: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
@@ -93,7 +93,9 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   }`;
 
   const handleDownloadSvg = () => {
-    const node = ReactDOM.findDOMNode(svgNode.current.container.children[0]);
+    const node = ReactDOM.findDOMNode(
+      svgNode && svgNode.current.container.children[0]
+    );
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
