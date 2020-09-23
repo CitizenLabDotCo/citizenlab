@@ -288,6 +288,15 @@ export default function createRoutes() {
           }),
         },
         {
+          path: 'pages/accessibility-statement',
+          name: 'accessibilityStatement',
+          component: Loadable({
+            loader: () => import('containers/AccessibilityStatement'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
+        },
+        {
           path: 'pages/:slug',
           name: 'pagesShowPage',
           component: Loadable({
