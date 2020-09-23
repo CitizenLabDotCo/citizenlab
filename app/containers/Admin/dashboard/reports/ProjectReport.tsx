@@ -40,6 +40,7 @@ import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
 import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import ExportMenu from '../components/ExportMenu';
+import { IPhase, IPhaseData, IPhases } from 'services/phases';
 
 interface InputProps {
   project: IProjectData;
