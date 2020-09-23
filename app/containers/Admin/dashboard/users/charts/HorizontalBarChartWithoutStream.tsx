@@ -1,10 +1,9 @@
 // libraries
 import React, { memo, ReactElement } from 'react';
-import { isEmpty } from 'lodash-es';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
