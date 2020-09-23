@@ -22,7 +22,7 @@ resource "ActionDescriptors" do
         )
     end
 
-    example_request "Find user by (partial) mention" do
+    example_request "Get the global action descriptors for initiatives" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response).to eq ({
