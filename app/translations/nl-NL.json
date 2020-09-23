@@ -568,7 +568,7 @@
   "app.container.InitiativeForm.imageDropzonePlaceholder": "Sleep je afbeelding hierheen",
   "app.containers.AccessibilityStatement.accessibility-statementPageName": "Toegankelijkheidsverklaring",
   "app.containers.AccessibilityStatement.assesmentMethodsTitle": "Evaluatiemethode",
-  "app.containers.AccessibilityStatement.assesmentText": "Een externe partij die niet betrokken was bij het design en de ontwikkeling heeft de toegankelijheid van deze website geëvalueerd. Je kunt de bevindingen lezen op {statusPageLink}.",
+  "app.containers.AccessibilityStatement.assesmentText": "Een externe partij die niet betrokken was bij het design en de ontwikkeling heeft de toegankelijkheid van deze website geëvalueerd. Je kunt de bevindingen lezen op deze {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "je voorkeuren aanpassen",
   "app.containers.AccessibilityStatement.changePreferencesText": "Je kunt op elk moment {changePreferencesButton}.",
   "app.containers.AccessibilityStatement.citizenLabAddress": "Anspachlaan 65, 1000 Brussel, België",
