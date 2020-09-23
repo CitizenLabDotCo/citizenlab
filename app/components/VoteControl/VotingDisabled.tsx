@@ -69,7 +69,7 @@ const StyledButton = styled.button`
 
 interface InputProps {
   projectId: string;
-  votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'];
+  votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting_idea'];
 }
 
 interface DataProps {
@@ -99,7 +99,7 @@ class VotingDisabled extends PureComponent<Props, State> {
       if (pcId && pcType) {
         openVerificationModal({
           context: {
-            action: 'voting',
+            action: 'voting_idea',
             id: pcId,
             type: pcType,
           },

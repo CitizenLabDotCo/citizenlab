@@ -4,7 +4,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
 
 // services
-import { getPollTakingRules, DisabledReasons } from 'services/pollTakingRules';
+import {
+  getPollTakingRules,
+  IPollTakingDisabledReason,
+} from 'services/actionTakingRules';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -65,12 +68,11 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const disabledMessages: {
-  [key in Partial<
-    DisabledReasons
-  >]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IPollTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
 } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
+  maybeNotVerified: messages.pollDisabledMaybeNotVerified,
   notPermitted: messages.pollDisabledNotPermitted,
   notActivePhase: messages.pollDisabledNotActivePhase,
   notVerified: messages.pollDisabledNotVerified,
