@@ -531,7 +531,7 @@ resource "Users" do
             }
           ])
           project = create(:continuous_project, with_permissions: true)
-          granted_permission = project.permissions.find_by(action: 'posting')
+          granted_permission = project.permissions.find_by(action: 'posting_idea')
           granted_permission.update!(permitted_by: 'groups', groups: [oldtimers])
           do_request
           expect(response_status).to eq 200
