@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { memo } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
@@ -8,7 +8,10 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+
+// resources
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ExportMenu from '../../components/ExportMenu';
@@ -64,20 +67,21 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
   }
 `;
 
-export class HorizontalBarChartWithoutStream extends React.PureComponent<
+export const HorizontalBarChartWithoutStream: React.SFC<
   Props & InjectedIntlProps
-> {
-  currentChart: React.RefObject<any>;
-  constructor(props: Props & InjectedIntlProps) {
-    super(props as any);
-    this.currentChart = React.createRef();
-  }
+> = memo(
+  ({
+    className,
+    graphTitleString,
+    serie,
+    graphUnit,
+    children,
+    ...queryProps
+  }) => {
+    const theme: any = useTheme();
 
-  handleClick(data) {
-    window.open(`${window.location.origin}/ideas/${data.slug}`);
-  }
+    const currentChart: React.RefObject<any> = React.createRef();
 
-  render() {
     const {
       chartFill,
       chartLabelSize,
@@ -86,21 +90,13 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
       barHoverColor,
       animationBegin,
       animationDuration,
-    } = this.props['theme'];
-    const {
-      className,
-      graphTitleString,
-      serie,
-      intl: { formatMessage },
-      graphUnit,
-      children,
-      ...queryProps
-    } = this.props;
+    } = theme;
 
+    const openIdeaInANewTab = ({ slug }: { slug: string }) => {
+      window.open(`${window.location.origin}/ideas/${slug}`);
+    };
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
-
-    const unitName = formatMessage(messages[graphUnit]);
 
     const NameLabel = (props) => {
       const { x, y, value } = props;
@@ -149,12 +145,12 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
             {!noData && (
               <ExportMenu
                 name={graphTitleString}
-                svgNode={this.currentChart}
+                svgNode={currentChart}
                 {...queryProps}
               />
             )}
           </GraphCardHeader>
-          {noData ? (
+          {isNilOrError(serie) ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
@@ -165,7 +161,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
               <BarChart
                 data={serie}
                 layout="vertical"
-                ref={this.currentChart}
+                ref={currentChart}
                 margin={{ right: 20, top: 10 }}
               >
                 <Bar
@@ -175,7 +171,7 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                   barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : 20}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                  onClick={this.handleClick}
+                  onClick={openIdeaInANewTab}
                   cursor="pointer"
                 />
                 <Bar
@@ -188,7 +184,6 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                   animationBegin={animationBegin}
                 >
                   {graphUnit === 'ideas' &&
-                    serie &&
                     serie
                       .sort((a, b) =>
                         a.ordering && b.ordering ? a.ordering - b.ordering : -1
@@ -226,7 +221,6 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
                   animationBegin={animationBegin}
                 >
                   {graphUnit === 'ideas' &&
-                    serie &&
                     serie.map((entry, index) => {
                       return (
                         <Cell
@@ -266,10 +260,10 @@ export class HorizontalBarChartWithoutStream extends React.PureComponent<
       </GraphCard>
     );
   }
-}
+);
 
 const HorizontalBarChartWithoutStreamWithHoCs = injectIntl<Props>(
-  withTheme(HorizontalBarChartWithoutStream as any) as any
+  HorizontalBarChartWithoutStream as any
 );
 
 export default HorizontalBarChartWithoutStreamWithHoCs;
