@@ -336,11 +336,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           </ControlBar>
 
           <ChartFilters
-            configuration={{
-              showProjectFilter: true,
-              showGroupFilter: true,
-              showTopicFilter: true,
-            }}
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
@@ -355,7 +350,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             <LineBarChart
               graphUnit="users"
               graphUnitMessageKey="users"
-              graphTitleMessageKey="usersByTimeTitle"
+              graphTitle={formatMessage(messages.usersByTimeTitle)}
               startAt={startAt}
               endAt={endAt}
               xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
@@ -367,7 +362,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             <BarChartActiveUsersByTime
               graphUnit="users"
               graphUnitMessageKey="activeUsers"
-              graphTitleMessageKey="activeUsersByTimeTitle"
+              graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
               startAt={startAt}
               endAt={endAt}
               xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
@@ -377,7 +372,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               {...this.state}
             />
             <LineBarChart
-              graphTitleMessageKey="ideasByTimeTitle"
+              graphTitle={formatMessage(messages.ideasByTimeTitle)}
               graphUnit="ideas"
               graphUnitMessageKey="ideas"
               startAt={startAt}
@@ -389,7 +384,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               {...this.state}
             />
             <LineBarChart
-              graphTitleMessageKey="commentsByTimeTitle"
+              graphTitle={formatMessage(messages.commentsByTimeTitle)}
               graphUnit="comments"
               graphUnitMessageKey="comments"
               startAt={startAt}
@@ -405,7 +400,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphTitleString={formatMessage(messages.ideasByStatusTitle)}
                 graphUnit="ideas"
                 stream={ideasByStatusStream}
-                convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
+                convertToGraphFormat={convertIdeasByStatusToGraphFormat}
                 className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
@@ -419,7 +414,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   />
                 }
               />
-
               <HorizontalBarChartWithoutStream
                 serie={this.fiveMostVotedIdeasSerie()}
                 graphTitleString={formatMessage(
@@ -506,6 +500,33 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     return null;
   }
 }
+
+export const convertIdeasByStatusToGraphFormat = (
+  ideasByStatus: IIdeasByStatus
+) => {
+  const {
+    series: { ideas },
+    idea_status,
+  } = ideasByStatus;
+
+  if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
+    return null;
+  }
+  const { localize } = this.props;
+
+  const ideasByStatusConvertedToGraphFormat = map(
+    ideas,
+    (value: number, key: string) => ({
+      value: value as number,
+      name: localize(idea_status[key].title_multiloc) as string,
+      code: key,
+      color: idea_status[key].color as string,
+      ordering: idea_status[key].ordering as number,
+    })
+  );
+
+  return ideasByStatusConvertedToGraphFormat;
+};
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
