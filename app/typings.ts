@@ -131,8 +131,8 @@ export type IGraphPoint = {
   name: string;
   value: number;
   code: string;
-  color?: string;
   ordering?: number;
+  color?: string;
 };
 
 export type IGraphFormat = IGraphPoint[];
