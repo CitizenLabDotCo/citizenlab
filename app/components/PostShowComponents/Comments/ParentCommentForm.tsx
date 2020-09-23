@@ -146,9 +146,7 @@ class ParentCommentForm extends PureComponent<
     this.setState({ focused: false });
   };
 
-  onSubmit = async (event: MouseEvent<any>) => {
-    event.preventDefault();
-
+  onSubmit = async () => {
     const { locale, authUser, postId, postType, post } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
@@ -269,7 +267,7 @@ class ParentCommentForm extends PureComponent<
               />
             </AuthorWrapper>
 
-            <Form onSubmit={this.onSubmit}>
+            <Form>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
                   <FormattedMessage {...messages.yourComment} />
