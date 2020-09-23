@@ -236,9 +236,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ focused: false });
   };
 
-  handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  handleSubmit = async () => {
     const {
       postId,
       postType,
@@ -348,7 +346,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             className={`${visible ? 'visible' : 'hidden'} ${
               focused ? 'focused' : 'blurred'
             }`}
-            onSubmit={this.handleSubmit}
           >
             <label>
               <HiddenLabel>
