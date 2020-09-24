@@ -83,10 +83,14 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     let buttonDistance: undefined | number = undefined;
 
     setTimeout(() => {
-      buttonDistance = document
-        ?.getElementById('project-ideabutton')
-        ?.getBoundingClientRect()?.top;
-    }, 100);
+      const ideaButtonElement = document.getElementById('project-ideabutton');
+
+      if (ideaButtonElement) {
+        buttonDistance =
+          ideaButtonElement.getBoundingClientRect().top + window.pageYOffset;
+        console.log(buttonDistance);
+      }
+    }, 500);
 
     window.addEventListener(
       'scroll',
@@ -97,7 +101,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
       },
       { passive: true }
     );
-  }, []);
+  }, [projectId]);
 
   if (!isNilOrError(project) && portalElement && isVisible) {
     const {

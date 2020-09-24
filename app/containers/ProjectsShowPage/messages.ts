@@ -109,13 +109,17 @@ export default defineMessages({
     id: 'app.containers.Projects.endedOn',
     defaultMessage: 'Ended on {date}',
   },
-  goToPreviousPhase: {
-    id: 'app.containers.Projects.goToPreviousPhase',
-    defaultMessage: 'Go to previous phase',
+  previousPhase: {
+    id: 'app.containers.Projects.previousPhase',
+    defaultMessage: 'Previous phase',
   },
-  goToNextPhase: {
-    id: 'app.containers.Projects.goToNextPhase',
-    defaultMessage: 'Go to next phase',
+  nextPhase: {
+    id: 'app.containers.Projects.nextPhase',
+    defaultMessage: 'Next phase',
+  },
+  currentPhase: {
+    id: 'app.containers.Projects.currentPhase',
+    defaultMessage: 'Currently active phase',
   },
   navSurvey: {
     id: 'app.containers.Projects.navSurvey',
