@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
     defaultMessage: 'Everyone',
   },
+  permissionsUsersLabel: {
+    id: 'app.containers.admin.project.permissions.permissionsUsersLabel',
+    defaultMessage: 'All users',
+  },
   permissionsAdministrators: {
     id: 'app.containers.admin.project.permissions.permissionsAdministrators',
     defaultMessage: 'Administrators',
@@ -64,18 +68,35 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'What can different users do?',
   },
-  permissionAction_commenting: {
+  permissionAction_commenting_idea: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
+      'app.containers.AdminPage.groups.permissions.permissionAction_commenting_idea',
     defaultMessage: 'Commenting',
   },
-  permissionAction_voting: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_voting',
+  permissionAction_voting_idea: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_voting_idea',
     defaultMessage: 'Voting',
   },
-  permissionAction_posting: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_posting',
+  permissionAction_posting_idea: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_posting_idea',
     defaultMessage: 'Posting ideas',
+  },
+  permissionAction_commenting_initiative: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_commenting_initiative',
+    defaultMessage: 'Commenting',
+  },
+  permissionAction_voting_initiative: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_voting_initiative',
+    defaultMessage: 'Voting',
+  },
+  permissionAction_posting_initiative: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_posting_initiative',
+    defaultMessage: 'Posting initiatives',
   },
   permissionAction_taking_survey: {
     id:

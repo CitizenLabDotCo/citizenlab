@@ -237,7 +237,8 @@ class AssignBudgetControl extends PureComponent<
 
       if (
         isNilOrError(authUser) &&
-        (budgetingEnabled || budgetingDisabledReason === 'not_verified')
+        (budgetingDisabledReason === 'not_signed_in' ||
+          budgetingDisabledReason === 'not_verified')
       ) {
         openSignUpInModal({
           verification: budgetingDisabledReason === 'not_verified',

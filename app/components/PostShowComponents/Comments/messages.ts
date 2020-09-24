@@ -70,6 +70,29 @@ export default defineMessages({
     id: 'app.containers.Comments.signInToComment',
     defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
   },
+  commentingInititativeDisabledNotVerified: {
+    id: 'app.components.Comments.commentingInititativeDisabledNotVerified',
+    defaultMessage:
+      'Commenting on this proposal requires verification of your account. {verificationLink}',
+  },
+  commentingInitiativeNotPermitted: {
+    id: 'app.components.Comments.commentingInitiativeNotPermitted',
+    defaultMessage: "You don't have the rights to comment.",
+  },
+  commentingInitiativeMaybeNotPermitted: {
+    id: 'app.components.Comments.commentingInitiativeMaybeNotPermitted',
+    defaultMessage:
+      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
+  },
+  signInToCommentInitiative: {
+    id: 'app.containers.Comments.signInToCommentInitiative',
+    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
+  },
+  signInAndVerifyToCommentInitiative: {
+    id: 'app.containers.Comments.signInAndVerifyToCommentInitiative',
+    defaultMessage:
+      'You need a verified account to comment, please {signUpLink} or {signInLink}.',
+  },
   signInLinkText: {
     id: 'app.containers.Comments.signInLinkText',
     defaultMessage: 'log in',
