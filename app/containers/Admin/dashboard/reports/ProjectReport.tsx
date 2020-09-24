@@ -7,7 +7,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import styled, { ThemeProvider } from 'styled-components';
 
-
 // libs
 import { map } from 'lodash-es';
 
@@ -32,10 +31,8 @@ import {
 } from 'services/stats';
 
 // services
-import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
-
 
 // components
 import ResolutionControl from '../components/ResolutionControl';
@@ -46,14 +43,12 @@ import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartW
 import ExportMenu from '../components/ExportMenu';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 
-
 interface InputProps {
   project: IProjectData;
 }
 interface DataProps {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
-
 }
 
 const Section = styled.div`
@@ -69,7 +64,6 @@ const ProjectReport = memo(
     mostVotedIdeas,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-
     const localize = useLocalize();
 
     const timelineProject = project.attributes.process_type === 'timeline';
@@ -96,7 +90,6 @@ const ProjectReport = memo(
               : 'day'
             : 'month'
         );
-
       } else {
         const startAt = project.attributes.created_at;
         setStartAt(startAt);
@@ -130,7 +123,6 @@ const ProjectReport = memo(
     }
 
     const projectTitle = localize(project.attributes.title_multiloc);
-
 
     const fiveMostVotedIdeasSerie = () => {
       if (!isNilOrError(mostVotedIdeas.list)) {
@@ -285,7 +277,6 @@ const ProjectReport = memo(
                     />
                   }
                 />
-
               </>
             )}
           </GraphsContainer>
@@ -312,7 +303,6 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetIdeas>
   ),
-
 });
 
 export default (inputProps: InputProps) => (

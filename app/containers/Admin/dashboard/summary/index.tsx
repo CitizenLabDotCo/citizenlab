@@ -52,11 +52,10 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
-  usersByTimeXlsxEndpoint,
+  // usersByTimeXlsxEndpoint,
   ideasByStatusStream,
   ideasByStatusXlsxEndpoint,
   IIdeasByStatus,
-  // usersByTimeXlsxEndpoint,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
