@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
+import { map } from 'lodash-es';
 
 // components
 import {
@@ -14,6 +15,8 @@ import {
 } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
+import HorizontalBarChart from '../users/charts/HorizontalBarChart';
+import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import ChartFilters from '../components/ChartFilters';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
@@ -41,6 +44,7 @@ import GetProjects, {
 } from 'resources/GetProjects';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 import {
@@ -55,6 +59,9 @@ import {
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
+  ideasByStatusStream,
+  ideasByStatusXlsxEndpoint,
+  IIdeasByStatus,
 } from 'services/stats';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
@@ -65,6 +72,7 @@ export interface InputProps {
 
 interface DataProps {
   projects: GetProjectsChildProps;
+  ideas: GetIdeasChildProps;
   groups: GetGroupsChildProps;
   topics: GetTopicsChildProps;
 }
@@ -191,6 +199,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
+    this.props.ideas.onChangeProjects(filter.value);
     this.setState({
       currentProjectFilter: filter.value,
       currentProjectFilterLabel: filter.label,
@@ -301,6 +310,52 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     ];
   };
 
+  convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
+    const {
+      series: { ideas },
+      idea_status,
+    } = ideasByStatus;
+
+    if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
+      return null;
+    }
+    const { localize } = this.props;
+
+    const ideasByStatusConvertedToGraphFormat = map(
+      ideas,
+      (value: number, key: string) => ({
+        value: value as number,
+        name: localize(idea_status[key].title_multiloc) as string,
+        code: key,
+        color: idea_status[key].color as string,
+        ordering: idea_status[key].ordering as number,
+      })
+    );
+
+    return ideasByStatusConvertedToGraphFormat;
+  };
+
+  fiveMostVotedIdeasSerie = () => {
+    const { localize, ideas } = this.props;
+
+    if (!isNilOrError(ideas.list)) {
+      const { list } = ideas;
+      const serie = list.map((idea) => {
+        return {
+          code: idea.id,
+          value:
+            idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+          up: idea.attributes.upvotes_count,
+          down: idea.attributes.downvotes_count,
+          name: localize(idea.attributes.title_multiloc),
+          slug: idea.attributes.slug,
+        };
+      });
+      return serie.length > 0 ? serie : null;
+    }
+    return null;
+  };
+
   render() {
     const {
       resolution,
@@ -385,7 +440,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
                 className="e2e-ideas-chart"
-                {...this.state}
                 lineStream={ideasByTimeCumulativeStream}
                 barStream={ideasByTimeStream}
                 {...this.state}
@@ -398,19 +452,36 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
                 className="e2e-comments-chart"
-                {...this.state}
                 lineStream={commentsByTimeCumulativeStream}
                 barStream={commentsByTimeStream}
                 {...this.state}
               />
               <Column>
-                <LineBarChartVotesByTime
-                  className="fullWidth e2e-votes-chart"
+                <HorizontalBarChart
+                  graphTitleString={this.props.intl.formatMessage(
+                    messages.ideasByStatusTitle
+                  )}
+                  graphUnit="ideas"
+                  stream={ideasByStatusStream}
+                  convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
+                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                  className="fullWidth dynamicHeight"
                   startAt={startAt}
                   endAt={endAt}
                   {...this.state}
                 />
-
+                <HorizontalBarChartWithoutStream
+                  serie={this.fiveMostVotedIdeasSerie()}
+                  graphTitleString={this.props.intl.formatMessage(
+                    messages.fiveIdeasWithMostVotes
+                  )}
+                  graphUnit="votes"
+                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                  className="fullWidth dynamicHeight"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
                 <SelectableResourceByProjectChart
                   className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                   onResourceByProjectChange={this.onResourceByProjectChange}
@@ -422,6 +493,12 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Column>
               <Column>
+                <LineBarChartVotesByTime
+                  className="fullWidth e2e-votes-chart"
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
                 <SelectableResourceByTopicChart
                   className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
                   topicOptions={topicFilterOptions}
@@ -454,6 +531,15 @@ const Data = adopt<DataProps, InputProps>({
     <GetProjects
       publicationStatuses={publicationStatuses}
       filterCanModerate={true}
+    />
+  ),
+  ideas: (
+    <GetIdeas
+      pageNumber={1}
+      pageSize={5}
+      sort="popular"
+      type="paginated"
+      projectIds={'all'}
     />
   ),
 });
