@@ -52,6 +52,7 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  usersByTimeXlsxEndpoint,
   ideasByStatusStream,
   ideasByStatusXlsxEndpoint,
   IIdeasByStatus,
@@ -390,7 +391,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               onChange={this.handleChangeResolution}
             />
           </ControlBar>
-
           <ChartFilters
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
