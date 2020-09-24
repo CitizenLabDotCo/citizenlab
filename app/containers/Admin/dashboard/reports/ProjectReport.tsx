@@ -1,9 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
-import { IProjectData } from 'services/projects';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import { SectionTitle, PageTitle } from 'components/admin/Section';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import ResolutionControl from '../components/ResolutionControl';
@@ -11,7 +9,7 @@ import { IResolution, GraphsContainer, chartTheme } from '..';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import styled, { ThemeProvider } from 'styled-components';
-import { ParticipationMethod } from 'services/participationContexts';
+
 
 // libs
 import { map } from 'lodash-es';
@@ -34,6 +32,10 @@ import {
 } from 'services/stats';
 import { InjectedIntlProps } from 'react-intl';
 
+// services
+import { ParticipationMethod } from 'services/participationContexts';
+import { IProjectData } from 'services/projects';
+
 // components
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
@@ -41,6 +43,7 @@ import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import ExportMenu from '../components/ExportMenu';
 import { IPhase, IPhaseData, IPhases } from 'services/phases';
+import { SectionTitle, PageTitle } from 'components/admin/Section';
 
 interface InputProps {
   project: IProjectData;
@@ -65,7 +68,7 @@ const ProjectReport = memo(
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
 
-    const isTimelineProject = project.attributes.process_type === 'timeline';
+    const timelineProject = project.attributes.process_type === 'timeline';
 
     // set time boundaries
     const [resolution, setResolution] = useState<IResolution>('month');
@@ -118,12 +121,12 @@ const ProjectReport = memo(
       phases: IPhaseData[],
       project: IProjectData
     ) =>
-      isTimelineProject
+      timelineProject
         ? phases.map((phase) => phase.attributes.participation_method)
         : [project.attributes.participation_method];
 
     const participationMethods =
-      (isTimelineProject && isNilOrError(phases)) ||
+      (timelineProject && isNilOrError(phases)) ||
       phases === undefined ||
       phases === null ||
       phases.length <= 0
@@ -187,7 +190,7 @@ const ProjectReport = memo(
         <Section>
           <ResolutionControl value={resolution} onChange={setResolution} />
 
-          {isTimelineProject && 'Project Timeline'}
+          {timelineProject && 'Project Timeline'}
         </Section>
 
         <Section>
