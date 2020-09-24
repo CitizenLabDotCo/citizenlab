@@ -242,10 +242,7 @@ class ParentComment extends PureComponent<Props, State> {
           id="e2e-parent-and-childcomments"
           className={className || ''}
         >
-          <ParentCommentContainer
-            id={commentId}
-            className={commentDeleted ? 'deleted' : ''}
-          >
+          <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
             <Comment
               postId={postId}
               postType={postType}
