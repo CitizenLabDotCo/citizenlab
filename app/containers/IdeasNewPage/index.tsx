@@ -157,7 +157,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       !isPrivilegedUser &&
       (authUser === null ||
         (!isNilOrError(project) &&
-          !project.attributes.action_descriptor.posting.enabled))
+          !project.attributes.action_descriptor.posting_idea.enabled))
     ) {
       clHistory.replace(
         this.props.previousPathName || (!authUser ? '/sign-up' : '/')

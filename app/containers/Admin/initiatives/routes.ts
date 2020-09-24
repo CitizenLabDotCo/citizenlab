@@ -23,5 +23,12 @@ export default () => ({
         loading: () => null,
       }),
     },
+    {
+      path: 'permissions',
+      component: Loadable({
+        loader: () => import('./permissions'),
+        loading: () => null,
+      }),
+    },
   ],
 });

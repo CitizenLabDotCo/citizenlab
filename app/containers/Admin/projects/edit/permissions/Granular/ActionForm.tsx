@@ -10,6 +10,7 @@ import { Radio } from 'cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { IPermissionData } from 'services/actionPermissions';
 
 const StyledFieldset = styled.fieldset`
   border: none;
@@ -21,11 +22,10 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 `;
 
 interface InputProps {
-  permissionId: string;
-  permittedBy: 'everyone' | 'groups' | 'admins_moderators';
+  permissionData: IPermissionData;
   groupIds?: string[];
   onChange: (
-    permittedBy: Props['permittedBy'],
+    permittedBy: IPermissionData['attributes']['permitted_by'],
     groupIds: Props['groupIds']
   ) => void;
 }
@@ -51,32 +51,51 @@ class ActionForm extends PureComponent<Props> {
     }
   };
 
-  handlePermittedByUpdate = (value: InputProps['permittedBy']) => () => {
+  handlePermittedByUpdate = (
+    value: IPermissionData['attributes']['permitted_by']
+  ) => () => {
     const { groupIds, onChange } = this.props;
     onChange(value, groupIds);
   };
 
   handleGroupIdsUpdate = (options: { value: string }[]) => {
-    const { permittedBy, onChange } = this.props;
+    const { permissionData, onChange } = this.props;
     onChange(
-      permittedBy,
+      permissionData.attributes.permitted_by,
       options.map((o) => o.value)
     );
   };
 
   render() {
-    const { permissionId, permittedBy, groupIds } = this.props;
+    const { permissionData, groupIds } = this.props;
     const groupsOptions = this.groupsOptions();
+
+    const {
+      id: permissionId,
+      attributes: { permitted_by: permittedBy, action },
+    } = permissionData;
     return (
       <form>
         <StyledFieldset>
+          {action === 'taking_survey' && (
+            <Radio
+              name={`permittedBy-${permissionId}`}
+              value="everyone"
+              currentValue={permittedBy}
+              label={
+                <FormattedMessage {...messages.permissionsEveryoneLabel} />
+              }
+              onChange={this.handlePermittedByUpdate('everyone')}
+              id={`participation-permission-everyone-${permissionId}`}
+            />
+          )}
           <Radio
             name={`permittedBy-${permissionId}`}
-            value="everyone"
+            value="users"
             currentValue={permittedBy}
-            label={<FormattedMessage {...messages.permissionsEveryoneLabel} />}
-            onChange={this.handlePermittedByUpdate('everyone')}
-            id={`participation-permission-everyone-${permissionId}`}
+            label={<FormattedMessage {...messages.permissionsUsersLabel} />}
+            onChange={this.handlePermittedByUpdate('users')}
+            id={`participation-permission-users-${permissionId}`}
           />
           <Radio
             name={`permittedBy-${permissionId}`}
