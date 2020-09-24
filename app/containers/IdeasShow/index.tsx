@@ -579,7 +579,7 @@ export class IdeasShow extends PureComponent<
                   )}
                 </FeatureFlag>
 
-                {true && (
+                {proposedBudgetEnabled && proposedBudget && (
                   <>
                     <BodySectionTitle>
                       <FormattedMessage {...messages.proposedBudgetTitle} />
@@ -587,7 +587,7 @@ export class IdeasShow extends PureComponent<
                     <StyledIdeaProposedBudget
                       formattedBudget={getFormattedBudget(
                         locale,
-                        80,
+                        proposedBudget,
                         tenant.attributes.settings.core.currency
                       )}
                     />
