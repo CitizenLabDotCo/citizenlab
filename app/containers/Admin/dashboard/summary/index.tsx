@@ -327,6 +327,31 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     return null;
   };
 
+  convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
+    const {
+      series: { ideas },
+      idea_status,
+    } = ideasByStatus;
+
+    if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
+      return null;
+    }
+    const { localize } = this.props;
+
+    const ideasByStatusConvertedToGraphFormat = map(
+      ideas,
+      (value: number, key: string) => ({
+        value: value as number,
+        name: localize(idea_status[key].title_multiloc) as string,
+        code: key,
+        color: idea_status[key].color as string,
+        ordering: idea_status[key].ordering as number,
+      })
+    );
+
+    return ideasByStatusConvertedToGraphFormat;
+  };
+
   render() {
     const {
       resolution,
@@ -431,7 +456,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphTitleString={formatMessage(messages.ideasByStatusTitle)}
                 graphUnit="ideas"
                 stream={ideasByStatusStream}
-                convertToGraphFormat={convertIdeasByStatusToGraphFormat}
+                convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
                 className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
@@ -497,33 +522,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     return null;
   }
 }
-
-export const convertIdeasByStatusToGraphFormat = (
-  ideasByStatus: IIdeasByStatus
-) => {
-  const {
-    series: { ideas },
-    idea_status,
-  } = ideasByStatus;
-
-  if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
-    return null;
-  }
-  const { localize } = this.props;
-
-  const ideasByStatusConvertedToGraphFormat = map(
-    ideas,
-    (value: number, key: string) => ({
-      value: value as number,
-      name: localize(idea_status[key].title_multiloc) as string,
-      code: key,
-      color: idea_status[key].color as string,
-      ordering: idea_status[key].ordering as number,
-    })
-  );
-
-  return ideasByStatusConvertedToGraphFormat;
-};
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
