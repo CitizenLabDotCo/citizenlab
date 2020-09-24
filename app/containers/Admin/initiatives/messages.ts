@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.manageTab',
     defaultMessage: 'Manage',
   },
+  permissionTab: {
+    id: 'app.containers.Admin.initiatives.permissionTab',
+    defaultMessage: 'Participation Rights',
+  },
   settingsTabTitle: {
     id: 'app.containers.Admin.initiatives.settingsTabTitle',
     defaultMessage: 'Configure your proposals',
@@ -110,5 +114,9 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.proposalSuccessMessageInfo',
     defaultMessage:
       'Give a clear description of what proposal initiators can expect when their proposal reaches the voting threshold in time.',
+  },
+  granularPermissionsTitle: {
+    id: 'app.containers.Admin.initiatives.granularPermissionsTitle',
+    defaultMessage: 'Who can contribute ?',
   },
 });

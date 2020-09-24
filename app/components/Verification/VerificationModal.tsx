@@ -25,7 +25,8 @@ import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { IParticipationContextType, ICitizenAction } from 'typings';
+import { IParticipationContextType, IPCAction } from 'typings';
+import { IInitiativeAction } from 'services/initiatives';
 
 const Container = styled.div`
   display: flex;
@@ -39,30 +40,37 @@ const Container = styled.div`
 export type ProjectContext = {
   id: string;
   type: IParticipationContextType;
-  action: ICitizenAction;
+  action: IPCAction;
 };
 
-export type ErrorContext = { error: 'taken' | 'not_entitled' | null };
+export type InitiativeContext = {
+  type: 'initiative';
+  action: IInitiativeAction;
+};
 
-export type ContextShape = ProjectContext | ErrorContext | null;
+export type IVerificationError = 'taken' | 'not_entitled' | null;
+
+export type ContextShape =
+  | ProjectContext
+  | InitiativeContext
+  | null
+  | undefined;
 
 export function isProjectContext(obj: ContextShape): obj is ProjectContext {
   return (obj as ProjectContext)?.id !== undefined;
 }
-
-export function isErrorContext(obj: ContextShape): obj is ErrorContext {
-  return (obj as ErrorContext)?.error !== undefined;
+export function isInitiativeContext(
+  obj: ContextShape
+): obj is InitiativeContext {
+  return (obj as InitiativeContext)?.type === 'initiative';
 }
 
-export function isProjectOrErrorContext(obj: ContextShape) {
-  if (obj === null) {
-    return 'null';
-  } else if ((obj as any).error !== undefined) {
-    return 'ProjectContext';
-  } else {
-    return 'ErrorContext';
-  }
-}
+export type TVerificationSteps =
+  | 'method-selection'
+  | 'success'
+  | 'error'
+  | null
+  | IVerificationMethod['attributes']['name'];
 
 export type VerificationModalSteps =
   | 'method-selection'
@@ -83,6 +91,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   const isMounted = useIsMounted();
   const [activeStep, setActiveStep] = useState<VerificationModalSteps>(null);
   const [context, setContext] = useState<ContextShape>(null);
+  const [error, setError] = useState<IVerificationError>(null);
   const opened = !!activeStep;
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
@@ -95,12 +104,15 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
   useEffect(() => {
     const subscriptions = [
-      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
-        if (!isNilOrError(authUser)) {
-          setActiveStep(step);
-          setContext(context);
+      openVerificationModal$.subscribe(
+        ({ eventValue: { step, context, error } }) => {
+          if (!isNilOrError(authUser)) {
+            setActiveStep(step);
+            setContext(context);
+            error && setError(error);
+          }
         }
-      }),
+      ),
       closeVerificationModal$.subscribe(() => {
         setActiveStep(null);
         setContext(null);
@@ -147,10 +159,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
         {activeStep === 'success' && <VerificationSuccess onClose={onClose} />}
 
-        {activeStep === 'error' &&
-          (context === null || isErrorContext(context)) && (
-            <VerificationError context={context} />
-          )}
+        {activeStep === 'error' && <VerificationError error={error} />}
       </Container>
     </Modal>
   );

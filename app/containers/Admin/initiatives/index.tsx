@@ -19,7 +19,13 @@ export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
       label: this.props.intl.formatMessage(messages.manageTab),
       url: '/admin/initiatives/manage',
     },
+    {
+      label: this.props.intl.formatMessage(messages.permissionTab),
+      url: '/admin/initiatives/permissions',
+      feature: 'granular_permissions',
+    },
   ];
+
   private resource = {
     title: this.props.intl.formatMessage(messages.titleInitiatives),
   };

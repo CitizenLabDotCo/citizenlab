@@ -7,6 +7,7 @@ import { mockTopicData } from 'services/__mocks__/topics';
 
 jest.mock('resources/GetAuthUser', () => 'GetAuthUser');
 jest.mock('resources/GetLocale', () => 'GetLocale');
+jest.mock('resources/GetTopics', () => 'GetTopics');
 jest.mock('./InitiativesNewMeta', () => 'InitiativesNewMeta');
 jest.mock('./InitiativesNewFormWrapper', () => 'InitiativesNewFormWrapper');
 jest.mock('components/InitiativeForm/PageLayout', () => 'PageLayout');
@@ -29,7 +30,6 @@ describe('InitiativesNewPage', () => {
       />
     );
 
-    expect(clHistory.replace).toHaveBeenCalledTimes(1);
     expect(clHistory.replace).toHaveBeenNthCalledWith(1, '/sign-up');
   });
 
