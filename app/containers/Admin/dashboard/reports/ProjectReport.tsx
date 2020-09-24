@@ -9,6 +9,8 @@ import { IResolution, GraphsContainer, chartTheme } from '..';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import styled, { ThemeProvider } from 'styled-components';
+import { InjectedIntlProps } from 'react-intl';
+import styled, { useTheme } from 'styled-components';
 
 
 // libs
@@ -57,6 +59,13 @@ const Section = styled.div`
   margin-bottom: 20px;
 `;
 
+const RowSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 20px;
+`;
+
 interface Props extends InputProps, DataProps {}
 
 const ProjectReport = memo(
@@ -67,8 +76,9 @@ const ProjectReport = memo(
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
+    const theme: any = useTheme();
 
-    const timelineProject = project.attributes.process_type === 'timeline';
+    const isTimelineProject = project.attributes.process_type === 'timeline';
 
     // set time boundaries
     const [resolution, setResolution] = useState<IResolution>('month');
@@ -76,7 +86,7 @@ const ProjectReport = memo(
     const [endAt, setEndAt] = useState<string | null>(null);
 
     useEffect(() => {
-      if (timelineProject && !isNilOrError(phases) && phases.length > 0) {
+      if (isTimelineProject && !isNilOrError(phases) && phases.length > 0) {
         const startAt = phases[0].attributes.start_at;
         const endAt = phases[phases.length - 1].attributes.end_at;
         setStartAt(startAt);
@@ -110,26 +120,10 @@ const ProjectReport = memo(
       }
     }, [project, phases]);
 
+    const { fontSizes } = theme;
     // deduplicated non-null participations methods in this project
-    const deduplicate = (participationMethods: ParticipationMethod[]) => {
-      return (participationMethods = participationMethods.filter(
-        (el, i, arr) => el && arr.indexOf(el) === i
-      ) as ParticipationMethod[]);
-    };
-
-    const getParticipationMethods = (
-      phases: IPhaseData[],
-      project: IProjectData
-    ) =>
-      timelineProject
-        ? phases.map((phase) => phase.attributes.participation_method)
-        : [project.attributes.participation_method];
-
-    const participationMethods =
-      (timelineProject && isNilOrError(phases)) ||
-      phases === undefined ||
-      phases === null ||
-      phases.length <= 0
+    const participationMethods = (isTimelineProject
+      ? isNilOrError(phases)
         ? []
         : deduplicate(getParticipationMethods(phases, project));
 
@@ -185,13 +179,35 @@ const ProjectReport = memo(
     };
 
     return (
-      <ThemeProvider theme={chartTheme}>
-        <PageTitle>{projectTitle}</PageTitle>
-        <Section>
+      <>
+        <RowSection>
+          <PageTitle>{projectTitle}</PageTitle>
           <ResolutionControl value={resolution} onChange={setResolution} />
-
-          {timelineProject && 'Project Timeline'}
+        </RowSection>
+        <Section>
+          <SectionTitle>
+            Project Type :{' '}
+            {isTimelineProject ? 'Timeline Project' : 'Continous'}
+          </SectionTitle>
         </Section>
+        {isTimelineProject && !isNilOrError(phases) && phases.length > 0 ? (
+          <RowSection>
+            {phases.map((phase, index) => {
+              return (
+                <Section key={index}>
+                  <p>
+                    from {phase.attributes.start_at} to{' '}
+                    {phase.attributes.end_at}
+                  </p>
+                  <div>{phase.attributes.participation_method}</div>
+                  <div>{localize(phase.attributes.title_multiloc)}</div>
+                </Section>
+              );
+            })}
+          </RowSection>
+        ) : (
+          <Section>"No configured phase"</Section>
+        )}
 
         <Section>
           <SectionTitle>
@@ -295,7 +311,7 @@ const ProjectReport = memo(
             )}
           </GraphsContainer>
         </Section>
-      </ThemeProvider>
+      </>
     );
   }
 );
