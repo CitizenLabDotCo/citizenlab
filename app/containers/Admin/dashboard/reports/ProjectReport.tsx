@@ -73,24 +73,22 @@ const ProjectReport = memo(
     const [endAt, setEndAt] = useState<string | null>(null);
 
     useEffect(() => {
-      if (timelineProject) {
-        if (!isNilOrError(phases)) {
-          const startAt = phases[0].attributes.start_at;
-          const endAt = phases[phases.length - 1].attributes.end_at;
-          setStartAt(startAt);
-          setEndAt(endAt);
+      if (timelineProject && !isNilOrError(phases) && phases.length > 0) {
+        const startAt = phases[0].attributes.start_at;
+        const endAt = phases[phases.length - 1].attributes.end_at;
+        setStartAt(startAt);
+        setEndAt(endAt);
 
-          const timeDiff = moment.duration(moment(endAt).diff(moment(startAt)));
-          setResolution(
-            timeDiff
-              ? timeDiff.asMonths() > 6
-                ? 'month'
-                : timeDiff.asWeeks() > 4
-                ? 'week'
-                : 'day'
-              : 'month'
-          );
-        }
+        const timeDiff = moment.duration(moment(endAt).diff(moment(startAt)));
+        setResolution(
+          timeDiff
+            ? timeDiff.asMonths() > 6
+              ? 'month'
+              : timeDiff.asWeeks() > 4
+              ? 'week'
+              : 'day'
+            : 'month'
+        );
       } else {
         const startAt = project.attributes.created_at;
         setStartAt(startAt);
