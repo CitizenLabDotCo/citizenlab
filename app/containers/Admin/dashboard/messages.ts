@@ -251,6 +251,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
   },
+  true: {
+    id: 'app.containers.AdminPage.DashboardPage.true',
+    defaultMessage: 'true',
+  },
+  false: {
+    id: 'app.containers.AdminPage.DashboardPage.false',
+    defaultMessage: 'false',
+  },
   outsideArea: {
     id: 'app.containers.AdminPage.DashboardPage.outsideArea',
     defaultMessage: 'Somewhere else',

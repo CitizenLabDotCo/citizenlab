@@ -122,11 +122,6 @@ export class UsersDashboard extends PureComponent<
         </ControlBar>
 
         <ChartFilters
-          configuration={{
-            showProjectFilter: false,
-            showGroupFilter: true,
-            showTopicFilter: false,
-          }}
           currentProjectFilter={undefined}
           currentGroupFilter={currentGroupFilter}
           currentTopicFilter={undefined}
