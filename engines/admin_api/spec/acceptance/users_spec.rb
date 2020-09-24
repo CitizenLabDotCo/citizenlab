@@ -68,6 +68,7 @@ resource "User", admin_api: true do
       parameter :password, "The password"
       parameter :roles, "The roles of the user"
       parameter :remote_avatar_url, "The user avatar"
+      parameter :custom_field_values, "All custom field values, if given overwrites the existing values"
     end
     ValidationErrorHelper.new.error_fields(self, User)
 
@@ -75,12 +76,15 @@ resource "User", admin_api: true do
     let(:first_name) { 'Jacqueline' }
     let(:roles) { [{type: 'admin'}] }
     let(:remote_avatar_url) { 'https://res.cloudinary.com/citizenlabco/image/upload/v1528120749/shield_logo_pzbx2x.png' }
+    let!(:cf) { create(:custom_field, key: 'favourite_drink') }
+    let (:custom_field_values) { { favourite_drink: "wine" } }
 
     describe do
       example_request "Update a user" do
         expect(status).to be 200
         json_response = json_parse(response_body)
         expect(json_response[:first_name]).to eq 'Jacqueline'
+        expect(json_response[:custom_field_values]).to eq({ favourite_drink: "wine" })
       end
     end
   end
