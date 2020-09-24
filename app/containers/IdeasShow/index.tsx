@@ -209,9 +209,9 @@ const StyledProjectLink = styled(ProjectLink)`
   `}
 `;
 
-export const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.medium}px;
-  font-weight: 400;
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.large}px;
+  font-weight: 500;
   line-height: 28px;
 `;
 
@@ -579,7 +579,7 @@ export class IdeasShow extends PureComponent<
                   )}
                 </FeatureFlag>
 
-                {proposedBudget && proposedBudgetEnabled && (
+                {true && (
                   <>
                     <BodySectionTitle>
                       <FormattedMessage {...messages.proposedBudgetTitle} />
@@ -587,7 +587,7 @@ export class IdeasShow extends PureComponent<
                     <StyledIdeaProposedBudget
                       formattedBudget={getFormattedBudget(
                         locale,
-                        proposedBudget,
+                        80,
                         tenant.attributes.settings.core.currency
                       )}
                     />
