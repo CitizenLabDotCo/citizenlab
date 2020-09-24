@@ -100,7 +100,7 @@ describe IdeaVotePolicy do
     let!(:user) { create(:user) }
     let!(:project) { 
       p = create(:continuous_project, with_permissions: true) 
-      p.permissions.find_by(action: 'voting').update!(permitted_by: 'admins_moderators')
+      p.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
       p
     }
     let!(:idea) { create(:idea, project: project) }

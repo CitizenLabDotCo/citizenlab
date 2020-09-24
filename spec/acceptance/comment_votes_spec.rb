@@ -74,6 +74,7 @@ resource "Comment Votes" do
     describe do
       before do
         @comment.update! post: create(:initiative)
+        PermissionsService.new.update_global_permissions
       end
 
       example_request "Create a vote on a comment of an initiative", document: false do
