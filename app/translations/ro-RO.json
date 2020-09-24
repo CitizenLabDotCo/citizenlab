@@ -1628,7 +1628,6 @@
   "app.containers.IdeasShow.shareSubtitle": "Adună cât mai multă susținere și fă-ți vocea auzită.",
   "app.containers.IdeasShow.shareTitle": "Felicitări, ideea ta a fost postată cu succes!",
   "app.containers.IdeasShow.twitterMessage": "Votează pentru {ideaTitle} pe",
-  "app.containers.IdeasShow.voteOnThisIdea": "Votează această idee",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Mai puțin de o zi} one {O zi} other {# zile}} rămasă/e",
   "app.containers.InitiativesButton.postingNotPermitted": "",
   "app.containers.InitiativesButton.startInitiative": "",
