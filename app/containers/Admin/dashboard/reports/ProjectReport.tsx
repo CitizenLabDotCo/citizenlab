@@ -1,23 +1,21 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
-import { IProjectData } from 'services/projects';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import { SectionTitle, PageTitle } from 'components/admin/Section';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import ResolutionControl from '../components/ResolutionControl';
-import { IResolution, GraphsContainer, chartTheme } from '..';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 import styled, { ThemeProvider } from 'styled-components';
-import { ParticipationMethod } from 'services/participationContexts';
+
 
 // libs
 import { map } from 'lodash-es';
 
 // resources
+import messages from './messages';
+import { IResolution, GraphsContainer, chartTheme } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
   usersByTimeCumulativeXlsxEndpoint,
   usersByTimeCumulativeStream,
@@ -32,15 +30,22 @@ import {
   ideasByStatusStream,
   IIdeasByStatus,
 } from 'services/stats';
-import { InjectedIntlProps } from 'react-intl';
+
+// services
+import { IPhase, IPhaseData, IPhases } from 'services/phases';
+import { ParticipationMethod } from 'services/participationContexts';
+import { IProjectData } from 'services/projects';
+
 
 // components
+import ResolutionControl from '../components/ResolutionControl';
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
 import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import ExportMenu from '../components/ExportMenu';
-import { IPhase, IPhaseData, IPhases } from 'services/phases';
+import { SectionTitle, PageTitle } from 'components/admin/Section';
+
 
 interface InputProps {
   project: IProjectData;
@@ -48,6 +53,7 @@ interface InputProps {
 interface DataProps {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
+
 }
 
 const Section = styled.div`
@@ -63,6 +69,7 @@ const ProjectReport = memo(
     mostVotedIdeas,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
+
     const localize = useLocalize();
 
     const timelineProject = project.attributes.process_type === 'timeline';
@@ -89,6 +96,7 @@ const ProjectReport = memo(
               : 'day'
             : 'month'
         );
+
       } else {
         const startAt = project.attributes.created_at;
         setStartAt(startAt);
@@ -122,6 +130,7 @@ const ProjectReport = memo(
     }
 
     const projectTitle = localize(project.attributes.title_multiloc);
+
 
     const fiveMostVotedIdeasSerie = () => {
       if (!isNilOrError(mostVotedIdeas.list)) {
@@ -242,6 +251,7 @@ const ProjectReport = memo(
                   currentProjectFilter={project.id}
                   currentProjectFilterLabel={projectTitle}
                 />
+
                 <HorizontalBarChart
                   graphTitleString={formatMessage(messages.ideasByStatusTitle)}
                   graphUnit="ideas"
@@ -275,6 +285,7 @@ const ProjectReport = memo(
                     />
                   }
                 />
+
               </>
             )}
           </GraphsContainer>
@@ -301,6 +312,7 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetIdeas>
   ),
+
 });
 
 export default (inputProps: InputProps) => (
