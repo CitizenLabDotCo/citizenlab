@@ -305,27 +305,29 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     ];
   };
 
-  convertToGraphFormat = (data: IIdeasByStatus) => {
-    const { localize } = this.props;
-    if (!isNilOrError(data)) {
-      const {
-        series: { ideas },
-        idea_status,
-      } = data;
+  convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
+    const {
+      series: { ideas },
+      idea_status,
+    } = ideasByStatus;
 
-      console.log(data);
-      const res = map(ideas, (value: number, key: string) => ({
+    if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
+      return null;
+    }
+    const { localize } = this.props;
+
+    const ideasByStatusConvertedToGraphFormat = map(
+      ideas,
+      (value: number, key: string) => ({
         value: value as number,
         name: localize(idea_status[key].title_multiloc) as string,
         code: key,
         color: idea_status[key].color as string,
         ordering: idea_status[key].ordering as number,
-      }));
+      })
+    );
 
-      return res.length > 0 ? res : null;
-    }
-
-    return null;
+    return ideasByStatusConvertedToGraphFormat;
   };
 
   render() {
@@ -440,7 +442,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   )}
                   graphUnit="ideas"
                   stream={ideasByStatusStream}
-                  convertToGraphFormat={this.convertToGraphFormat}
+                  convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
                   xlsxEndpoint={ideasByStatusXlsxEndpoint}
                   className="fullWidth dynamicHeight"
                   startAt={startAt}
