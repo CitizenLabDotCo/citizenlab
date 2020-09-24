@@ -286,7 +286,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={5}
+                  rows={1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
