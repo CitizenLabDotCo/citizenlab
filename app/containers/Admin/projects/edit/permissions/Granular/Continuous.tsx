@@ -10,7 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   IPermissionData,
   updateProjectPermission,
-} from 'services/participationContextPermissions';
+} from 'services/actionPermissions';
 import { IProjectData } from 'services/projects';
 
 import { fontSizes } from 'utils/styleUtils';

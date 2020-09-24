@@ -153,7 +153,7 @@ const IdeaShowPageTopBar = memo<Props>(
           if (pcId && pcType) {
             openVerificationModal({
               context: {
-                action: 'voting',
+                action: 'voting_idea',
                 id: pcId,
                 type: pcType,
               },
@@ -190,7 +190,8 @@ const IdeaShowPageTopBar = memo<Props>(
                 ideaId={ideaId}
                 disabledVoteClick={onDisabledVoteClick}
                 showDownvote={
-                  idea.attributes.action_descriptor.voting.downvoting_enabled
+                  idea.attributes.action_descriptor.voting_idea
+                    .downvoting_enabled
                 }
               />
             </Right>
