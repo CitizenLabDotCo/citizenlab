@@ -44,7 +44,7 @@ FactoryBot.define do
 
     after(:create) do |project, evaluator|
       if evaluator.with_permissions && project.is_participation_context?
-        PermissionsService.new.update_permissions_for project
+        PermissionsService.new.update_permissions_for_context project
       end
     end
 
