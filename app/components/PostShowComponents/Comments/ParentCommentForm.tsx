@@ -192,7 +192,7 @@ class ParentCommentForm extends PureComponent<
             const parentComment = document.getElementById(comment.data.id);
             if (parentComment) {
               setTimeout(() => {
-                parentComment.scrollIntoView({ behavior: 'smooth' });
+                parentComment.scrollIntoView();
               }, 100);
             }
           });
@@ -207,7 +207,7 @@ class ParentCommentForm extends PureComponent<
             const parentComment = document.getElementById(comment.data.id);
             if (parentComment) {
               setTimeout(() => {
-                parentComment.scrollIntoView({ behavior: 'smooth' });
+                parentComment.scrollIntoView();
               }, 100);
             }
           });
