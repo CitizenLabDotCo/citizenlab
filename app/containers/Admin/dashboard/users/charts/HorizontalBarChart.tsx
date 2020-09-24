@@ -14,7 +14,6 @@ import { withTheme } from 'styled-components';
 import {
   Bar,
   BarChart,
-  Tooltip,
   XAxis,
   YAxis,
   Cell,
@@ -84,7 +83,6 @@ export class HorizontalBarChart extends React.PureComponent<
       chartFill,
       chartLabelSize,
       chartLabelColor,
-      barHoverColor,
       barFill,
       animationBegin,
       animationDuration,
@@ -180,10 +178,6 @@ export class HorizontalBarChart extends React.PureComponent<
                   fontSize={chartLabelSize}
                   type="number"
                   tick={{ transform: 'translate(0, 7)' }}
-                />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{ fill: barHoverColor }}
                 />
               </BarChart>
             </ResponsiveContainer>

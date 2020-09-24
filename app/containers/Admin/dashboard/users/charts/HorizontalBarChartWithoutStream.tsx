@@ -16,7 +16,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   BarChart,
   Bar,
-  Tooltip,
   XAxis,
   YAxis,
   ResponsiveContainer,
@@ -74,7 +73,6 @@ export const HorizontalBarChartWithoutStream: React.SFC<
     chartLabelSize,
     chartCategorySize,
     chartLabelColor,
-    barHoverColor,
     animationBegin,
     animationDuration,
   } = theme;
@@ -228,11 +226,6 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 type="number"
                 tick={{ transform: 'translate(0, 7)' }}
                 hide={true}
-              />
-              <Tooltip
-                isAnimationActive={false}
-                cursor={{ fill: barHoverColor }}
-                active={false}
               />
             </BarChart>
           </StyledResponsiveContainer>
