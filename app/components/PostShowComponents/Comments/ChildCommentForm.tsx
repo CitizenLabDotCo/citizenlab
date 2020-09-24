@@ -277,7 +277,12 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             parentId,
             commentBodyMultiloc,
             waitForChildCommentsRefetch
-          );
+          ).then((comment) => {
+            const childComment = document.getElementById(comment.data.id);
+            if (childComment) {
+              childComment.focus();
+            }
+          });
         }
 
         if (postType === 'initiative') {
