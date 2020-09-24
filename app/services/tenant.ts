@@ -102,7 +102,6 @@ export interface ITenantSettings {
   initiatives?: {
     allowed: boolean;
     enabled: boolean;
-    posting_enabled: boolean;
     days_limit: number;
     eligibility_criteria: Multiloc;
     success_stories?: ISuccessStory[];

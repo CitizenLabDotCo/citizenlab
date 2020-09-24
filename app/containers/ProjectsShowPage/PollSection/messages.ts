@@ -24,6 +24,11 @@ export default defineMessages({
     defaultMessage:
       'Only certain users can take this poll. Please {signUpLink} or {logInLink} first.',
   },
+  pollDisabledMaybeNotVerified: {
+    id: 'app.containers.Projects.PollForm.pollDisabledMaybeNotVerified',
+    defaultMessage:
+      'Only verified users can take this poll. Please {signUpLink} or {logInLink} first.',
+  },
   pollDisabledNotPossible: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotPossible',
     defaultMessage: 'It is currently impossible to take this poll.',
