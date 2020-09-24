@@ -29,6 +29,7 @@ export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 export const GraphsContainer = styled.div`
@@ -245,6 +246,10 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
+      },
+      {
+        label: formatMessage(messages.tabReports),
+        url: '/admin/dashboard/reports',
       },
     ];
 
