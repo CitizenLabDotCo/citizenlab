@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { trim, isEmpty } from 'lodash-es';
