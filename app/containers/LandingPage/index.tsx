@@ -39,6 +39,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
   height: 100%;
@@ -215,7 +216,9 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                {postingProposalsEnabled && <StyledInitiativesCTABox />}
+                <FeatureFlag name="initiatives">
+                  {postingProposalsEnabled && <StyledInitiativesCTABox />}
+                </FeatureFlag>
               </StyledContentContainer>
 
               {showCustomSection && (
