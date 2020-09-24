@@ -20,6 +20,12 @@ const StyledSelect = styled(Select)`
   max-width: 300px;
 `;
 
+const StyledGoBack = styled(GoBackButton)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+`;
 interface DataProps {
   projects: GetProjectsChildProps;
 }
@@ -61,7 +67,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
         </>
       ) : (
         <>
-          <GoBackButton onClick={onResetProject} />
+          <StyledGoBack onClick={onResetProject} />
           <ProjectReport project={selectedProject} />
         </>
       )}
