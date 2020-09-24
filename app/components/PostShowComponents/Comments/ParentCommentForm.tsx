@@ -33,6 +33,9 @@ import { commentAdded } from './events';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { media } from 'utils/styleUtils';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 const Container = styled.div``;
 
@@ -87,6 +90,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
@@ -219,13 +223,17 @@ class ParentCommentForm extends PureComponent<
       postType,
       className,
       intl: { formatMessage },
+      commentingPermissionInitiative,
     } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
-    const commentingEnabled = get(
-      post,
-      'attributes.action_descriptor.commenting.enabled',
-      true
-    );
+    const commentingEnabled =
+      postType === 'initiative'
+        ? commentingPermissionInitiative?.enabled === true
+        : get(
+            post,
+            'attributes.action_descriptor.commenting_idea.enabled',
+            true
+          );
     const projectId: string | null = get(
       post,
       'relationships.project.data.id',
@@ -307,6 +315,9 @@ const Data = adopt<DataProps, InputProps>({
     <GetPost id={postId} type={postType}>
       {render}
     </GetPost>
+  ),
+  commentingPermissionInitiative: (
+    <GetInitiativesPermissions action="commenting_initiative" />
   ),
 });
 

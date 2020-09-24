@@ -29,6 +29,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // typings
 import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
+import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -143,12 +144,12 @@ const CommentsSection = memo<Props>(
     ) {
       const commentingEnabled = get(
         post,
-        'attributes.action_descriptor.commenting.enabled',
+        'attributes.action_descriptor.commenting_idea.enabled',
         true
       ) as boolean;
       const commentingDisabledReason = get(
         post,
-        'attributes.action_descriptor.commenting.disabled_reason',
+        'attributes.action_descriptor.commenting_idea.disabled_reason',
         null
       ) as IdeaCommentingDisabledReason | null;
       const phaseId = isNilOrError(project)
@@ -158,15 +159,6 @@ const CommentsSection = memo<Props>(
 
       return (
         <Container className={className || ''}>
-          <CommentingDisabled
-            commentingEnabled={commentingEnabled}
-            commentingDisabledReason={commentingDisabledReason}
-            projectId={get(post, 'relationships.project.data.id')}
-            phaseId={phaseId}
-            postId={postId}
-            postType={postType}
-          />
-
           <Header>
             <Title id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />{' '}
@@ -179,6 +171,19 @@ const CommentsSection = memo<Props>(
               selectedValue={[sortOrder]}
             />
           </Header>
+
+          {postType === 'idea' ? (
+            <CommentingDisabled
+              commentingEnabled={commentingEnabled}
+              commentingDisabledReason={commentingDisabledReason}
+              projectId={get(post, 'relationships.project.data.id')}
+              phaseId={phaseId}
+              postId={postId}
+              postType={postType}
+            />
+          ) : (
+            <CommentingInitiativeDisabled />
+          )}
 
           <StyledParentCommentForm
             postId={postId}

@@ -11,9 +11,9 @@ import SignIn from 'components/SignUpIn/SignIn';
 
 // styling
 import styled from 'styled-components';
+import { ContextShape } from 'components/Verification/VerificationModal';
 
 // typings
-import { ProjectContext } from 'components/Verification/VerificationSteps';
 
 const Container = styled.div``;
 
@@ -31,7 +31,7 @@ export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
-  verificationContext?: ProjectContext;
+  verificationContext?: ContextShape;
   error?: boolean;
   isInvitation?: boolean;
   token?: string;

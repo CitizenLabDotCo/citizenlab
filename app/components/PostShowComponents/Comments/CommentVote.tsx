@@ -16,6 +16,9 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, {
   GetCommentVoteChildProps,
 } from 'resources/GetCommentVote';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -144,6 +147,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
   commentVote: GetCommentVoteChildProps;
@@ -209,25 +213,19 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  onVote = async (event?: MouseEvent) => {
-    event?.preventDefault();
-
+  vote = async () => {
     const {
       postId,
       postType,
       commentId,
       commentType,
-      commentingDisabledReason,
       authUser,
       comment,
       commentVote,
     } = this.props;
     const oldVotedValue = cloneDeep(this.state.voted);
     const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-    const authUserIsVerified =
-      !isNilOrError(authUser) && authUser.attributes.verified;
-
-    if (!isNilOrError(authUser) && !commentingDisabledReason) {
+    if (!isNilOrError(authUser)) {
       if (!oldVotedValue) {
         try {
           this.setState((state) => ({
@@ -275,17 +273,62 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
       }
-    } else if (
-      !isNilOrError(authUser) &&
-      !authUserIsVerified &&
-      commentingDisabledReason === 'not_verified'
-    ) {
-      openVerificationModal();
-    } else if (!authUser) {
-      openSignUpInModal({
-        verification: commentingDisabledReason === 'not_verified',
-        action: () => this.onVote(),
-      });
+    }
+  };
+
+  onVote = async (event?: MouseEvent) => {
+    event?.preventDefault();
+
+    const {
+      postType,
+      commentingDisabledReason,
+      authUser,
+      commentVotingPermissionInitiative,
+    } = this.props;
+
+    const authUserIsVerified =
+      !isNilOrError(authUser) && authUser.attributes.verified;
+    if (postType === 'idea') {
+      if (!isNilOrError(authUser) && !commentingDisabledReason) {
+        this.vote();
+      } else if (
+        !isNilOrError(authUser) &&
+        !authUserIsVerified &&
+        commentingDisabledReason === 'not_verified'
+      ) {
+        openVerificationModal();
+      } else if (!authUser) {
+        openSignUpInModal({
+          verification: commentingDisabledReason === 'not_verified',
+          action: () => this.onVote(),
+        });
+      }
+    } else {
+      if (commentVotingPermissionInitiative?.action === 'sign_in_up') {
+        openSignUpInModal({
+          action: () => this.onVote(),
+        });
+      } else if (
+        commentVotingPermissionInitiative?.action === 'sign_in_up_and_verify'
+      ) {
+        openSignUpInModal({
+          action: () => this.onVote(),
+          verification: true,
+          verificationContext: {
+            action: 'commenting_initiative',
+            type: 'initiative',
+          },
+        });
+      } else if (commentVotingPermissionInitiative?.action === 'verify') {
+        openVerificationModal({
+          context: {
+            action: 'commenting_initiative',
+            type: 'initiative',
+          },
+        });
+      } else if (commentVotingPermissionInitiative?.enabled === true) {
+        this.vote();
+      }
     }
   };
 
@@ -380,6 +423,9 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetCommentVote>
+  ),
+  commentVotingPermissionInitiative: (
+    <GetInitiativesPermissions action="comment_voting_initiative" />
   ),
 });
 

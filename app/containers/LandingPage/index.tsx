@@ -36,6 +36,9 @@ import messages from './messages';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 const Container = styled.main`
   height: 100%;
@@ -140,6 +143,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
+  postingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -158,7 +162,13 @@ class LandingPage extends PureComponent<Props, State> {
   };
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage } = this.props;
+    const {
+      locale,
+      tenant,
+      authUser,
+      homepageInfoPage,
+      postingPermission,
+    } = this.props;
 
     if (
       !isNilOrError(locale) &&
@@ -171,8 +181,7 @@ class LandingPage extends PureComponent<Props, State> {
       );
       const customSectionBodyMultiloc =
         homepageInfoPage.attributes.body_multiloc;
-      const postingProposalsEnabled =
-        tenant.attributes.settings.initiatives?.posting_enabled;
+      const postingProposalsEnabled = !!postingPermission?.enabled;
 
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc =
@@ -268,6 +277,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   homepageInfoPage: <GetPage slug="homepage-info" />,
+  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);
