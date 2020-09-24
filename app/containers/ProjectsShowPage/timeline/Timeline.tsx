@@ -10,6 +10,7 @@ import {
 } from 'rxjs/operators';
 import moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
+import Tippy from '@tippyjs/react';
 
 // tracking
 import tracks from './tracks';
@@ -86,12 +87,18 @@ const PhaseNavigation = styled.div`
   margin-left: 15px;
 `;
 
+const PhaseNavigationButtonWrapper = styled.div``;
+
 const PhaseButton = styled(Button)``;
 
-const PreviousPhaseButton = styled(PhaseButton)``;
+const PreviousPhaseButton = styled(PhaseButton)`
+  margin-right: 3px;
+`;
+
+const CurrentPhaseButton = styled(PhaseButton)``;
 
 const NextPhaseButton = styled(PhaseButton)`
-  margin-left: 10px;
+  margin-left: 3px;
 `;
 
 const Phases = styled.div`
@@ -445,12 +452,25 @@ class Timeline extends PureComponent<
     this.setState({ selectedPhase: prevPhase });
   };
 
+  goToCurrentPhase = () => {
+    const { phases } = this.state;
+
+    if (phases) {
+      trackEventByName(tracks.clickCurrentPhaseButton);
+      const currentPhase = getCurrentPhase(phases.data);
+      this.setState({ selectedPhase: currentPhase });
+    }
+  };
+
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   };
 
   render() {
-    const { className } = this.props;
+    const {
+      className,
+      intl: { formatMessage },
+    } = this.props;
     const {
       locale,
       currentTenant,
@@ -491,33 +511,100 @@ class Timeline extends PureComponent<
                 </StyledProjectPageSectionTitle>
 
                 <PhaseNavigation>
-                  <PreviousPhaseButton
-                    locale={locale}
-                    onClick={this.goToPreviousPhase}
-                    icon="chevron-left"
-                    iconSize="18px"
-                    buttonStyle="text"
-                    padding="0px"
+                  <Tippy
                     disabled={selectedPhaseId === phases.data[0].id}
-                    ariaLabel={this.props.intl.formatMessage(
-                      messages.goToPreviousPhase
-                    )}
-                    className="e2e-previous-phase"
-                  />
-                  <NextPhaseButton
-                    locale={locale}
-                    onClick={this.goToNextPhase}
-                    icon="chevron-right"
-                    iconSize="18px"
-                    buttonStyle="text"
-                    padding="0px"
+                    interactive={false}
+                    placement="bottom"
+                    content={formatMessage(messages.previousPhase)}
+                    theme="translucent"
+                    arrow={false}
+                    hideOnClick={false}
+                  >
+                    <PhaseNavigationButtonWrapper>
+                      <PreviousPhaseButton
+                        locale={locale}
+                        onClick={this.goToPreviousPhase}
+                        icon="chevron-left"
+                        iconSize="12px"
+                        buttonStyle="white"
+                        width="30px"
+                        height="30px"
+                        padding="0px"
+                        borderColor="#eee"
+                        borderHoverColor="#ccc"
+                        boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+                        boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                        disabled={selectedPhaseId === phases.data[0].id}
+                        ariaLabel={formatMessage(messages.previousPhase)}
+                        className="e2e-previous-phase"
+                      />
+                    </PhaseNavigationButtonWrapper>
+                  </Tippy>
+                  {currentPhaseId && (
+                    <Tippy
+                      disabled={selectedPhaseId === currentPhaseId}
+                      interactive={false}
+                      placement="bottom"
+                      content={formatMessage(messages.currentPhase)}
+                      theme="translucent"
+                      arrow={false}
+                      hideOnClick={false}
+                    >
+                      <PhaseNavigationButtonWrapper>
+                        <CurrentPhaseButton
+                          locale={locale}
+                          onClick={this.goToCurrentPhase}
+                          icon="dot"
+                          iconSize="8px"
+                          iconColor={colors.clGreen}
+                          buttonStyle="white"
+                          width="30px"
+                          height="30px"
+                          padding="0px"
+                          borderColor="#eee"
+                          borderHoverColor="#ccc"
+                          boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+                          boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                          disabled={selectedPhaseId === currentPhaseId}
+                          ariaLabel={formatMessage(messages.currentPhase)}
+                          className="e2e-current-phase"
+                        />
+                      </PhaseNavigationButtonWrapper>
+                    </Tippy>
+                  )}
+                  <Tippy
                     disabled={
                       selectedPhaseId === phases.data[phases.data.length - 1].id
                     }
-                    ariaLabel={this.props.intl.formatMessage(
-                      messages.goToNextPhase
-                    )}
-                  />
+                    interactive={false}
+                    placement="bottom"
+                    content={formatMessage(messages.nextPhase)}
+                    theme="translucent"
+                    arrow={false}
+                    hideOnClick={false}
+                  >
+                    <PhaseNavigationButtonWrapper>
+                      <NextPhaseButton
+                        locale={locale}
+                        onClick={this.goToNextPhase}
+                        icon="chevron-right"
+                        iconSize="12px"
+                        buttonStyle="white"
+                        width="30px"
+                        height="30px"
+                        padding="0px"
+                        borderColor="#eee"
+                        borderHoverColor="#ccc"
+                        boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+                        boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                        disabled={
+                          selectedPhaseId ===
+                          phases.data[phases.data.length - 1].id
+                        }
+                        ariaLabel={formatMessage(messages.nextPhase)}
+                      />
+                    </PhaseNavigationButtonWrapper>
+                  </Tippy>
                 </PhaseNavigation>
               </Header>
 
