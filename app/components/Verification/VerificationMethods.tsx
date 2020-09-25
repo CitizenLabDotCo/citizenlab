@@ -342,9 +342,10 @@ const VerificationMethods = memo<Props>(
                   fullWidth={true}
                   justify="left"
                   whiteSpace="wrap"
-                  borderColor="#ccc"
-                  boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-                  boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                  borderColor="#eee"
+                  borderHoverColor="#ccc"
+                  boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
+                  boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                 >
                   {method.attributes.name === 'cow' && (
                     <FormattedMessage {...messages.verifyCow} />

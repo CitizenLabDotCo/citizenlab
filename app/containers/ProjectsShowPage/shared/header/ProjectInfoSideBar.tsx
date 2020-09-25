@@ -15,6 +15,7 @@ import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
+import useWindowSize from 'hooks/useWindowSize';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
@@ -36,19 +37,21 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
 `;
+
+const MobileActionButtons = styled.div``;
 
 const Title = styled.h2`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;
-  padding-top: 3px;
-  padding-bottom: 8px;
+  margin: 0;
+  padding: 0;
 `;
 
 const List = styled.div`
@@ -110,6 +113,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
+  const { windowWidth } = useWindowSize();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
@@ -120,6 +124,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const [pollPresentOutsideViewport, setPollPresentOutsideViewport] = useState(
     false
   );
+
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
   useEffect(() => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
@@ -214,140 +220,161 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     return (
       <Container className={className || ''}>
         <ProjectActionBar projectId={projectId} />
-        <Title>
-          <FormattedMessage {...messages.about} />
-        </Title>
-        <List>
-          {process_type === 'continuous' && (
-            <ListItem>
-              <ListItemIcon name="flag" />
-              <FormattedMessage
-                {...messages.startedOn}
-                values={{
-                  date: moment(created_at).format('LL'),
-                }}
-              />
-            </ListItem>
-          )}
-          {/* {process_type === 'timeline' && !isNilOrError(phases) && (
-            <ListItem>
-              <ListItemIcon name="flag" />
-              <FormattedMessage
-                {...messages.startedOn}
-                values={{
-                  date: moment(
-                    getIsoDate(phases[0].attributes.start_at),
-                    'YYYY-MM-DD'
-                  ).format('ll'),
-                }}
-              />
-            </ListItem>
-          )} */}
-          {process_type === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.length > 1 && (
-              <ListItem
-                className="link"
-                onClick={scrollTo('project-timeline', false)}
-              >
-                <ListItemIcon name="timeline" className="timeline" />
-                <FormattedMessage
-                  {...messages.xPhases}
-                  values={{ phasesCount: phases.length }}
-                />
-              </ListItem>
-            )}
-          {isNumber(avatars_count) && avatars_count > 0 && (
-            <ListItem>
-              <ListItemIcon name="person" />
-              <FormattedMessage
-                {...messages.xParticipants}
-                values={{ participantsCount: avatars_count }}
-              />
-            </ListItem>
-          )}
-          {process_type === 'continuous' &&
-            participation_method === 'ideation' &&
-            isNumber(ideas_count) && (
-              <ListItem className="link" onClick={scrollTo('project-ideas')}>
-                <ListItemIcon name="idea-filled" />
-                <FormattedMessage
-                  {...messages.xIdeas}
-                  values={{ ideasCount: ideas_count }}
-                />
-              </ListItem>
-            )}
-          {upcomingEvents.length > 0 && (
-            <ListItem
-              className="link"
-              onClick={scrollTo('project-events', false)}
-            >
-              <ListItemIcon name="event" />
-              <FormattedMessage
-                {...messages.xUpcomingEvents}
-                values={{ upcomingEventsCount: upcomingEvents.length }}
-              />
-            </ListItem>
-          )}
-          <ListItem className="link" onClick={openShareModal}>
-            <ListItemIcon name="share" />
-            <FormattedMessage {...messages.share} />
-          </ListItem>
-        </List>
-        <ActionButtons>
-          {showSeeIdeasButton && (
-            <SeeIdeasButton
-              buttonStyle="secondary"
-              onClick={scrollTo('project-ideas')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.seeTheIdeas} />
-            </SeeIdeasButton>
-          )}
-          {process_type === 'continuous' &&
-            participation_method === 'ideation' &&
-            publication_status !== 'archived' && (
+
+        {smallerThanSmallTablet &&
+          process_type === 'continuous' &&
+          participation_method === 'ideation' &&
+          publication_status !== 'archived' && (
+            <MobileActionButtons>
               <IdeaButton
                 id="project-ideabutton"
                 projectId={project.id}
                 participationContextType="project"
                 fontWeight="500"
               />
-            )}
-          {currentPhase?.attributes.participation_method === 'ideation' && (
-            <IdeaButton
-              id="project-ideabutton"
-              projectId={project.id}
-              phaseId={currentPhase.id}
-              participationContextType="phase"
-              fontWeight="500"
-            />
+            </MobileActionButtons>
           )}
-          {surveyPresentOutsideViewport &&
-            ((process_type === 'continuous' &&
-              participation_method === 'survey') ||
-              currentPhase?.attributes.participation_method === 'survey') && (
-              <GoToTheSurvey
-                buttonStyle="secondary"
-                onClick={scrollTo('project-survey')}
+        {smallerThanSmallTablet &&
+          currentPhase?.attributes.participation_method === 'ideation' && (
+            <MobileActionButtons>
+              <IdeaButton
+                id="project-ideabutton"
+                projectId={project.id}
+                phaseId={currentPhase.id}
+                participationContextType="phase"
                 fontWeight="500"
-              >
-                <FormattedMessage {...messages.goToTheSurvey} />
-              </GoToTheSurvey>
-            )}
-          {pollPresentOutsideViewport &&
-            ((process_type === 'continuous' &&
-              participation_method === 'poll') ||
-              currentPhase?.attributes.participation_method === 'poll') && (
-              <GoToTheSurvey
-                buttonStyle="secondary"
-                onClick={scrollTo('project-survey')}
-                fontWeight="500"
-              >
-                <FormattedMessage {...messages.goToPoll} />
-              </GoToTheSurvey>
-            )}
-        </ActionButtons>
+              />
+            </MobileActionButtons>
+          )}
+
+        {!smallerThanSmallTablet && (
+          <>
+            <Title>
+              <FormattedMessage {...messages.about} />
+            </Title>
+            <List>
+              {process_type === 'continuous' && (
+                <ListItem>
+                  <ListItemIcon name="flag" />
+                  <FormattedMessage
+                    {...messages.startedOn}
+                    values={{
+                      date: moment(created_at).format('LL'),
+                    }}
+                  />
+                </ListItem>
+              )}
+              {process_type === 'timeline' &&
+                !isNilOrError(phases) &&
+                phases.length > 1 && (
+                  <ListItem
+                    className="link"
+                    onClick={scrollTo('project-timeline', false)}
+                  >
+                    <ListItemIcon name="timeline" className="timeline" />
+                    <FormattedMessage
+                      {...messages.xPhases}
+                      values={{ phasesCount: phases.length }}
+                    />
+                  </ListItem>
+                )}
+              {isNumber(avatars_count) && avatars_count > 0 && (
+                <ListItem>
+                  <ListItemIcon name="person" />
+                  <FormattedMessage
+                    {...messages.xParticipants}
+                    values={{ participantsCount: avatars_count }}
+                  />
+                </ListItem>
+              )}
+              {process_type === 'continuous' &&
+                participation_method === 'ideation' &&
+                isNumber(ideas_count) && (
+                  <ListItem
+                    className="link"
+                    onClick={scrollTo('project-ideas')}
+                  >
+                    <ListItemIcon name="idea-filled" />
+                    <FormattedMessage
+                      {...messages.xIdeas}
+                      values={{ ideasCount: ideas_count }}
+                    />
+                  </ListItem>
+                )}
+              {upcomingEvents.length > 0 && (
+                <ListItem
+                  className="link"
+                  onClick={scrollTo('project-events', false)}
+                >
+                  <ListItemIcon name="event" />
+                  <FormattedMessage
+                    {...messages.xUpcomingEvents}
+                    values={{ upcomingEventsCount: upcomingEvents.length }}
+                  />
+                </ListItem>
+              )}
+              <ListItem className="link" onClick={openShareModal}>
+                <ListItemIcon name="share" />
+                <FormattedMessage {...messages.share} />
+              </ListItem>
+            </List>
+            <ActionButtons>
+              {showSeeIdeasButton && (
+                <SeeIdeasButton
+                  buttonStyle="secondary"
+                  onClick={scrollTo('project-ideas')}
+                  fontWeight="500"
+                >
+                  <FormattedMessage {...messages.seeTheIdeas} />
+                </SeeIdeasButton>
+              )}
+              {process_type === 'continuous' &&
+                participation_method === 'ideation' &&
+                publication_status !== 'archived' && (
+                  <IdeaButton
+                    id="project-ideabutton"
+                    projectId={project.id}
+                    participationContextType="project"
+                    fontWeight="500"
+                  />
+                )}
+              {currentPhase?.attributes.participation_method === 'ideation' && (
+                <IdeaButton
+                  id="project-ideabutton"
+                  projectId={project.id}
+                  phaseId={currentPhase.id}
+                  participationContextType="phase"
+                  fontWeight="500"
+                />
+              )}
+              {surveyPresentOutsideViewport &&
+                ((process_type === 'continuous' &&
+                  participation_method === 'survey') ||
+                  currentPhase?.attributes.participation_method ===
+                    'survey') && (
+                  <GoToTheSurvey
+                    buttonStyle="secondary"
+                    onClick={scrollTo('project-survey')}
+                    fontWeight="500"
+                  >
+                    <FormattedMessage {...messages.goToTheSurvey} />
+                  </GoToTheSurvey>
+                )}
+              {pollPresentOutsideViewport &&
+                ((process_type === 'continuous' &&
+                  participation_method === 'poll') ||
+                  currentPhase?.attributes.participation_method === 'poll') && (
+                  <GoToTheSurvey
+                    buttonStyle="secondary"
+                    onClick={scrollTo('project-survey')}
+                    fontWeight="500"
+                  >
+                    <FormattedMessage {...messages.goToPoll} />
+                  </GoToTheSurvey>
+                )}
+            </ActionButtons>
+          </>
+        )}
         <ProjectSharingModal
           projectId={project.id}
           opened={shareModalOpened}

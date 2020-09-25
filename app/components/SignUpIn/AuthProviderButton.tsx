@@ -30,13 +30,13 @@ const Container = styled.div`
   align-items: stretch;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ccc;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
   background: #fff;
   transition: all 100ms ease-out;
 
   &:hover {
     border-color: ${darken(0.3, '#ccc')};
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
   }
 `;
 
