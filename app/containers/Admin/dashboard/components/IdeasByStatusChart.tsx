@@ -1,17 +1,17 @@
 // libraries
 import React from 'react';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, map } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from '../messages';
 
 // styling
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../components/ExportMenu';
+import ExportMenu from './ExportMenu';
 import {
   BarChart,
   Bar,
@@ -19,57 +19,39 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  Cell,
 } from 'recharts';
 import {
-  IGraphUnit,
   NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from '../..';
+} from '..';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
-import { IStreamParams, IStream } from 'utils/streams';
-import {
-  IUsersByBirthyear,
-  IUsersByRegistrationField,
-  IUsersByDomicile,
-} from 'services/stats';
+import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 import { IGraphFormat } from 'typings';
+import useLocalize from 'hooks/useLocalize';
 
 interface DataProps {
   serie: IGraphFormat;
 }
 
-type ISupportedDataType =
-  | IUsersByBirthyear
-  | IUsersByRegistrationField
-  | IUsersByDomicile;
-
 interface InputProps {
-  stream: (
-    streamParams?: IStreamParams | null,
-    customId?: string
-  ) => IStream<ISupportedDataType>;
-  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
-  graphTitleString: string;
-  graphUnit: IGraphUnit;
   className?: string;
-  customId?: string;
-  xlsxEndpoint: string;
 }
 
 interface Props extends InputProps, DataProps {}
 
-export class HorizontalBarChart extends React.PureComponent<
+export class IdeasByStatusChart extends React.PureComponent<
   Props & InjectedIntlProps
 > {
   currentChart: React.RefObject<any>;
@@ -80,7 +62,6 @@ export class HorizontalBarChart extends React.PureComponent<
   render() {
     const {
       chartFill,
-      barFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
@@ -90,29 +71,47 @@ export class HorizontalBarChart extends React.PureComponent<
     const {
       currentGroupFilterLabel,
       currentGroupFilter,
-      xlsxEndpoint,
       className,
-      graphTitleString,
       serie,
       intl: { formatMessage },
-      graphUnit,
     } = this.props;
 
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
-    const unitName = formatMessage(messages[graphUnit]);
+    const unitName = formatMessage(messages.ideas);
+
+    const CustomizedLabel = (props) => {
+      const { x, y, value } = props;
+      return (
+        <text
+          x={x}
+          y={y}
+          dx={20}
+          dy={-6}
+          fontFamily="sans-serif"
+          fill={chartLabelColor}
+          fontSize={chartLabelSize}
+          textAnchor="middle"
+        >
+          {' '}
+          {value}{' '}
+        </text>
+      );
+    };
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <GraphCardTitle>{graphTitleString}</GraphCardTitle>
+            <GraphCardTitle>
+              <FormattedMessage {...messages.ideasByStatusTitle} />
+            </GraphCardTitle>
             {!noData && (
               <ExportMenu
-                name={graphTitleString}
+                name={formatMessage(messages.ideasByStatusTitle)}
                 svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
+                xlsxEndpoint={ideasByStatusXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
               />
@@ -131,15 +130,21 @@ export class HorizontalBarChart extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
-                  label={{
-                    fill: barFill,
-                    fontSize: chartLabelSize,
-                    position: 'insideLeft',
-                  }}
-                  barSize={graphUnit === 'ideas' ? 5 : 20}
+                  label={<CustomizedLabel />}
+                  barSize={5}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
-                />
+                >
+                  {serie.map((entry, index) => {
+                    return (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={(entry.color && entry.color) || chartFill}
+                        opacity={0.8}
+                      />
+                    );
+                  })}
+                </Bar>
                 <YAxis
                   dataKey="name"
                   type="category"
@@ -167,14 +172,34 @@ export class HorizontalBarChart extends React.PureComponent<
   }
 }
 
-const HorizontalBarChartWithHoCs = injectIntl<Props>(
-  withTheme(HorizontalBarChart as any) as any
+const IdeasByStatusChartWithHoCs = injectIntl<Props>(
+  withTheme(IdeasByStatusChart as any) as any
 );
 
-const WrappedHorizontalBarChart = (inputProps: InputProps) => (
-  <GetSerieFromStream {...inputProps}>
-    {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
-  </GetSerieFromStream>
-);
+const WrappedIdeasByStatusChart = (inputProps: InputProps) => {
+  const localize = useLocalize();
+  const convertToGraphFormat = ({ series: { ideas }, idea_status }) => {
+    if (Object.keys(ideas).length <= 0) {
+      return null;
+    }
 
-export default WrappedHorizontalBarChart;
+    return map(idea_status, (status, id) => ({
+      value: ideas[id] || 0,
+      name: localize(status.title_multiloc),
+      code: id,
+      color: status.color,
+      ordering: status.ordering,
+    }));
+  };
+  return (
+    <GetSerieFromStream
+      {...inputProps}
+      stream={ideasByStatusStream}
+      convertToGraphFormat={convertToGraphFormat}
+    >
+      {(serie) => <IdeasByStatusChartWithHoCs {...serie} {...inputProps} />}
+    </GetSerieFromStream>
+  );
+};
+
+export default WrappedIdeasByStatusChart;

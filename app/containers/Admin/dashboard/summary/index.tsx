@@ -15,7 +15,6 @@ import {
 } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import LineBarChart from './charts/LineBarChart';
-import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import ChartFilters from '../components/ChartFilters';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
@@ -56,10 +55,8 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
-  ideasByStatusStream,
-  ideasByStatusXlsxEndpoint,
-  IIdeasByStatus,
 } from 'services/stats';
+import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 
@@ -305,31 +302,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     ];
   };
 
-  convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
-    const {
-      series: { ideas },
-      idea_status,
-    } = ideasByStatus;
-
-    if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
-      return null;
-    }
-    const { localize } = this.props;
-
-    const ideasByStatusConvertedToGraphFormat = map(
-      ideas,
-      (value: number, key: string) => ({
-        value: value as number,
-        name: localize(idea_status[key].title_multiloc) as string,
-        code: key,
-        color: idea_status[key].color as string,
-        ordering: idea_status[key].ordering as number,
-      })
-    );
-
-    return ideasByStatusConvertedToGraphFormat;
-  };
-
   render() {
     const {
       resolution,
@@ -436,14 +408,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 {...this.state}
               />
               <Column>
-                <HorizontalBarChart
-                  graphTitleString={this.props.intl.formatMessage(
-                    messages.ideasByStatusTitle
-                  )}
-                  graphUnit="ideas"
-                  stream={ideasByStatusStream}
-                  convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
-                  xlsxEndpoint={ideasByStatusXlsxEndpoint}
+                <IdeasByStatusChart
                   className="fullWidth dynamicHeight"
                   startAt={startAt}
                   endAt={endAt}

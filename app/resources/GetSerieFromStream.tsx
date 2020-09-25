@@ -19,6 +19,7 @@ import {
   IVotesByProject,
 } from 'services/stats';
 import { IGraphFormat } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
   serie: IGraphFormat | null | undefined;
@@ -115,7 +116,9 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
           )
         )
         .subscribe((serie) => {
-          const convertedSerie = serie && convertToGraphFormat(serie);
+          const convertedSerie = !isNilOrError(serie)
+            ? convertToGraphFormat(serie)
+            : null;
           this.setState({ serie: convertedSerie });
         }),
     ];
