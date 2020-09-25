@@ -5,11 +5,8 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import ResolutionControl from '../components/ResolutionControl';
-import { IResolution, GraphsContainer, chartTheme } from '..';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import styled, { ThemeProvider } from 'styled-components';
-import { InjectedIntlProps } from 'react-intl';
 import styled, { useTheme } from 'styled-components';
 
 
@@ -17,6 +14,7 @@ import styled, { useTheme } from 'styled-components';
 import { map } from 'lodash-es';
 
 // resources
+import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import {
   usersByTimeCumulativeXlsxEndpoint,
@@ -76,7 +74,6 @@ const ProjectReport = memo(
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
-    const theme: any = useTheme();
 
     const isTimelineProject = project.attributes.process_type === 'timeline';
 
@@ -84,6 +81,12 @@ const ProjectReport = memo(
     const [resolution, setResolution] = useState<IResolution>('month');
     const [startAt, setStartAt] = useState<string | null>(null);
     const [endAt, setEndAt] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (!isTimelineProject) {
+        setTimeRange(project, setStartAt, setEndAt, setResolution);
+      }
+    }, [project]);
 
     useEffect(() => {
       if (isTimelineProject && !isNilOrError(phases) && phases.length > 0) {
@@ -103,24 +106,41 @@ const ProjectReport = memo(
             : 'month'
         );
       } else {
-        const startAt = project.attributes.created_at;
-        setStartAt(startAt);
-        setEndAt(moment().toISOString());
-
-        const timeDiff = moment.duration(moment().diff(moment(startAt)));
-        setResolution(
-          timeDiff
-            ? timeDiff.asMonths() > 6
-              ? 'month'
-              : timeDiff.asWeeks() > 4
-              ? 'week'
-              : 'day'
-            : 'month'
-        );
+        setTimeRange(project, setStartAt, setEndAt, setResolution);
       }
-    }, [project, phases]);
+    }, [phases]);
 
-    const { fontSizes } = theme;
+    const setTimeRange = (
+      project: IProjectData,
+      setStartAt: React.Dispatch<React.SetStateAction<string | null>>,
+      setEndAt: React.Dispatch<React.SetStateAction<string | null>>,
+      setResolution: React.Dispatch<React.SetStateAction<IResolution>>
+    ) => {
+      const startAt = project.attributes.created_at;
+      setStartAt(startAt);
+      setEndAt(moment().toISOString());
+
+      const timeDiff = moment.duration(moment().diff(moment(startAt)));
+      setResolution(
+        timeDiff
+          ? timeDiff.asMonths() > 6
+            ? 'month'
+            : timeDiff.asWeeks() > 4
+            ? 'week'
+            : 'day'
+          : 'month'
+      );
+    };
+
+    const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
+      code: idea.id,
+      value: idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+      up: idea.attributes.upvotes_count,
+      down: idea.attributes.downvotes_count,
+      name: localize(idea.attributes.title_multiloc),
+      slug: idea.attributes.slug,
+    }));
+
     // deduplicated non-null participations methods in this project
     const participationMethods = (isTimelineProject
       ? isNilOrError(phases)
@@ -132,25 +152,6 @@ const ProjectReport = memo(
     }
 
     const projectTitle = localize(project.attributes.title_multiloc);
-
-    const fiveMostVotedIdeasSerie = () => {
-      if (!isNilOrError(mostVotedIdeas.list)) {
-        const { list } = mostVotedIdeas;
-        const serie = list.map((idea) => {
-          return {
-            code: idea.id,
-            value:
-              idea.attributes.upvotes_count + idea.attributes.downvotes_count,
-            up: idea.attributes.upvotes_count,
-            down: idea.attributes.downvotes_count,
-            name: localize(idea.attributes.title_multiloc),
-            slug: idea.attributes.slug,
-          };
-        });
-        return serie;
-      }
-      return null;
-    };
 
     const convertIdeasByStatusToGraphFormat = (
       ideasByStatus: IIdeasByStatus
@@ -167,11 +168,11 @@ const ProjectReport = memo(
       const ideasByStatusConvertedToGraphFormat = map(
         ideas,
         (value: number, key: string) => ({
-          value: value as number,
-          name: localize(idea_status[key].title_multiloc) as string,
+          value: value,
+          name: localize(idea_status[key].title_multiloc),
           code: key,
-          color: idea_status[key].color as string,
-          ordering: idea_status[key].ordering as number,
+          color: idea_status[key].color,
+          ordering: idea_status[key].ordering,
         })
       );
 
@@ -292,7 +293,7 @@ const ProjectReport = memo(
                   }
                 />
                 <HorizontalBarChartWithoutStream
-                  serie={fiveMostVotedIdeasSerie()}
+                  serie={mostVotedIdeasSerie}
                   graphTitleString={formatMessage(
                     messages.fiveIdeasWithMostVotes
                   )}
