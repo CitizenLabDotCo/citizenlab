@@ -151,7 +151,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_status
     serie = ideas_by_status_serie
-    idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering)
+    idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
     render json: {series: {ideas: serie}, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
 
