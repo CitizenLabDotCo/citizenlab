@@ -2,6 +2,9 @@
 
 ## 2020-09-25
 
+### Fixed
+- The "Go to platform" button in custom email campaigns now works in Norwegian
+
 ### Added
 - Granular permissions for proposals
 - Possibility to restrict survey access to registered users only
