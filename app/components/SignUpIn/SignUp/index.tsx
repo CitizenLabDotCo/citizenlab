@@ -45,8 +45,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
 
 // style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import styled, { withTheme } from 'styled-components';
 import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
@@ -84,7 +83,9 @@ interface DataProps {
   customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   steps: (
@@ -416,7 +417,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 ].includes(activeStep) &&
                   !isEmpty(helperText) && (
                     <SignUpHelperText
-                      textColor={colors.text}
+                      textColor={this.props.theme.colorText}
                       fontSize="base"
                       fontWeight={300}
                     >
@@ -481,7 +482,7 @@ const Data = adopt<DataProps, InputProps>({
   customFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
-const SignUpWithHoC = injectIntl(SignUp);
+const SignUpWithHoC = injectIntl(withTheme(SignUp));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

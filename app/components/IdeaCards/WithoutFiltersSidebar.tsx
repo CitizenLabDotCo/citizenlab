@@ -120,6 +120,7 @@ const RightFilterArea = styled(FilterArea)`
   ${media.smallerThanMinTablet`
     width: 100%;
     display: flex;
+    align-items: flex-start;
     flex-direction: column-reverse;
   `}
 `;

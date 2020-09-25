@@ -18,6 +18,7 @@ import ReactResizeDetector from 'react-resize-detector';
 // hooks
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import T from 'components/T';
@@ -26,27 +27,38 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media, viewportWidths } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const collapsedDescriptionMaxHeight = 400;
+const desktopCollapsedDescriptionMaxHeight = 400;
+const mobileCollapsedDescriptionMaxHeight = 180;
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  `}
 `;
 
 const Left = styled.div`
   flex: 1;
-  padding: 0;
-  margin: 0;
 `;
 
 const Right = styled.div`
   flex: 0 0 300px;
   width: 300px;
   margin-left: 110px;
+
+  ${media.smallerThanMinTablet`
+    flex: 1 1 auto;
+    width: 100%;
+    margin-left: 0px;
+  `}
 `;
 
 const ProjectTitle = styled.h1`
@@ -61,16 +73,25 @@ const ProjectTitle = styled.h1`
   margin: 0;
   margin-bottom: 27px;
   padding: 0;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.xxxl}px;
+    margin-bottom: 20px;
+  `}
 `;
 
-const ProjectDescription = styled.div`
+const ProjectDescription = styled.div<{ maxHeight: number }>`
   position: relative;
-  max-height: ${collapsedDescriptionMaxHeight}px;
+  max-height: ${(props) => props.maxHeight}px;
   overflow: hidden;
 
   &.expanded {
     max-height: unset;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 30px;
+  `}
 `;
 
 const ReadMoreOuterWrapper = styled.div`
@@ -84,7 +105,7 @@ const ReadMoreOuterWrapper = styled.div`
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,
-    rgba(255, 255, 255, 1) 30%,
+    rgba(255, 255, 255, 1) 25%,
     rgba(255, 255, 255, 0) 100%
   );
 `;
@@ -117,11 +138,18 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
   const theme: any = useTheme();
   const project = useProject({ projectId });
   const projectFiles = useProjectFiles(projectId);
+  const { windowWidth } = useWindowSize();
 
   const [expanded, setExpanded] = useState(false);
   const [descriptionHeight, setDescriptionHeight] = useState<number | null>(
     null
   );
+
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+
+  const collapsedDescriptionMaxHeight = smallerThanSmallTablet
+    ? mobileCollapsedDescriptionMaxHeight
+    : desktopCollapsedDescriptionMaxHeight;
 
   useEffect(() => {
     setExpanded(false);
@@ -148,7 +176,10 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
               <T value={project.attributes.title_multiloc} />
             </ProjectTitle>
 
-            <ProjectDescription className={expanded ? 'expanded' : ''}>
+            <ProjectDescription
+              className={expanded ? 'expanded' : ''}
+              maxHeight={collapsedDescriptionMaxHeight}
+            >
               {!isEmpty(project.attributes.description_multiloc) && (
                 <>
                   <ReactResizeDetector

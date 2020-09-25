@@ -527,13 +527,13 @@ class Timeline extends PureComponent<
                         icon="chevron-left"
                         iconSize="12px"
                         buttonStyle="white"
-                        width="30px"
+                        width="35px"
                         height="30px"
                         padding="0px"
                         borderColor="#eee"
                         borderHoverColor="#ccc"
-                        boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-                        boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                        boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
+                        boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                         disabled={selectedPhaseId === phases.data[0].id}
                         ariaLabel={formatMessage(messages.previousPhase)}
                         className="e2e-previous-phase"
@@ -558,13 +558,13 @@ class Timeline extends PureComponent<
                           iconSize="8px"
                           iconColor={colors.clGreen}
                           buttonStyle="white"
-                          width="30px"
+                          width="35px"
                           height="30px"
                           padding="0px"
                           borderColor="#eee"
                           borderHoverColor="#ccc"
-                          boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-                          boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                          boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
+                          boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                           disabled={selectedPhaseId === currentPhaseId}
                           ariaLabel={formatMessage(messages.currentPhase)}
                           className="e2e-current-phase"
@@ -590,13 +590,13 @@ class Timeline extends PureComponent<
                         icon="chevron-right"
                         iconSize="12px"
                         buttonStyle="white"
-                        width="30px"
+                        width="35px"
                         height="30px"
                         padding="0px"
                         borderColor="#eee"
                         borderHoverColor="#ccc"
-                        boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-                        boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                        boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
+                        boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                         disabled={
                           selectedPhaseId ===
                           phases.data[phases.data.length - 1].id
