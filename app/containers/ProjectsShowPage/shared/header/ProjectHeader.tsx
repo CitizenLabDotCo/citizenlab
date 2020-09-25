@@ -9,9 +9,6 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // hooks
 import useProject from 'hooks/useProject';
 
-// i18n
-// import T from 'components/T';
-
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -24,7 +21,7 @@ const Container = styled.div`
 
   ${media.smallerThanMinTablet`
     padding-top: 20px;
-    padding-bottom: 45px;
+    padding-bottom: 30px;
   `}
 `;
 
@@ -69,7 +66,7 @@ const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   margin-bottom: 25px;
 
   ${media.smallerThanMinTablet`
-    margin-bottom: 20px;
+    display: none;
   `}
 `;
 

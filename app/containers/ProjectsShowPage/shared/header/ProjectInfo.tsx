@@ -14,6 +14,7 @@ import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ReactResizeDetector from 'react-resize-detector';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -80,6 +81,10 @@ const ProjectTitle = styled.h1`
   `}
 `;
 
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+  margin-bottom: 20px;
+`;
+
 const ProjectDescription = styled.div<{ maxHeight: number }>`
   position: relative;
   max-height: ${(props) => props.maxHeight}px;
@@ -88,10 +93,6 @@ const ProjectDescription = styled.div<{ maxHeight: number }>`
   &.expanded {
     max-height: unset;
   }
-
-  ${media.smallerThanMinTablet`
-    margin-bottom: 30px;
-  `}
 `;
 
 const ReadMoreOuterWrapper = styled.div`
@@ -175,6 +176,10 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
             <ProjectTitle>
               <T value={project.attributes.title_multiloc} />
             </ProjectTitle>
+
+            {smallerThanSmallTablet && (
+              <StyledProjectArchivedIndicator projectId={projectId} />
+            )}
 
             <ProjectDescription
               className={expanded ? 'expanded' : ''}

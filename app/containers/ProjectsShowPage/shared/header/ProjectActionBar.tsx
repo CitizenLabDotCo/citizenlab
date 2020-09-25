@@ -105,17 +105,6 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   }, [phases]);
 
   useEffect(() => {
-    // let buttonDistance: undefined | number = undefined;
-
-    // setTimeout(() => {
-    //   const ideaButtonElement = document.getElementById('project-ideabutton');
-
-    //   if (ideaButtonElement) {
-    //     buttonDistance =
-    //       ideaButtonElement.getBoundingClientRect().top + window.pageYOffset;
-    //   }
-    // }, 500);
-
     window.addEventListener(
       'scroll',
       () => {
@@ -173,6 +162,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                   projectId={project.id}
                   phaseId={currentPhase.id}
                   participationContextType="phase"
+                  fontWeight="500"
                   fullWidth={smallerThanSmallTablet}
                   width={!smallerThanSmallTablet ? '300px' : undefined}
                 />

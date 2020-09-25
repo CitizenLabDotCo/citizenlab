@@ -111,13 +111,9 @@ const Phases = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
-const phaseBarHeight = '25px';
+const phaseBarHeight = '24px';
 
 const PhaseBar = styled.button`
   width: 100%;
@@ -171,6 +167,10 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   margin-left: 5px;
   margin-right: 5px;
   transition: color 60ms ease-out;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const selectedPhaseBar = css`
@@ -211,6 +211,11 @@ const PhaseContainer = styled.div<{ width: number }>`
   position: relative;
   cursor: pointer;
   margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    min-width: unset;
+  `}
 
   &.first ${PhaseBar} {
     border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px

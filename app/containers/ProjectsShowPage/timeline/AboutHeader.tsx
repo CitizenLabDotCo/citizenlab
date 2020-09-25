@@ -8,9 +8,7 @@ import moment from 'moment';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import usePhases from 'hooks/usePhases';
-
-// components
-// import IdeaButton from 'components/IdeaButton';
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -22,7 +20,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div<{ bottomMargin: string }>`
@@ -38,19 +36,10 @@ const Left = styled.div`
   align-items: center;
 `;
 
-// const Right = styled.div`
-//   flex-grow: 0;
-//   flex-shrink: 0;
-//   flex-basis: auto;
-//   display: flex;
-//   align-items: center;
-//   margin-left: 15px;
-// `;
-
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 39x;
+  flex-basis: 39px;
   width: 39px;
   height: 39px;
   display: flex;
@@ -63,6 +52,10 @@ const PhaseNumberWrapper = styled.div`
   &.present {
     background: ${colors.clGreen};
   }
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const PhaseNumber = styled.div`
@@ -113,6 +106,8 @@ const HeaderTitle = styled.h2`
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
+    display: flex;
+    align-items: center;
   `}
 `;
 
@@ -140,6 +135,9 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
   const locale = useLocale();
   const tenant = useTenant();
   const phases = usePhases(projectId);
+  const { windowWidth } = useWindowSize();
+
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
   if (
     !isNilOrError(locale) &&
@@ -152,13 +150,14 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
     const selectedPhase = selectedPhaseId
       ? phases.find((phase) => phase.id === selectedPhaseId)
       : null;
-    const selectedPhaseTitle = selectedPhase
+    let selectedPhaseTitle = selectedPhase
       ? getLocalized(
           selectedPhase.attributes.title_multiloc,
           locale,
           tenantLocales
         )
       : null;
+
     const selectedPhaseNumber = selectedPhase
       ? indexOf(phaseIds, selectedPhaseId) + 1
       : null;
@@ -177,6 +176,10 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
       selectedPhase?.attributes.end_at,
       'YYYY-MM-DD'
     ).format('ll');
+
+    if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
+      selectedPhaseTitle = `${selectedPhaseNumber}. ${selectedPhaseTitle}`;
+    }
 
     return (
       <Container
@@ -224,15 +227,6 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             </ScreenReaderOnly>
           </HeaderTitleWrapper>
         </Left>
-
-        {/* <Right>
-          <IdeaButton
-            projectId={projectId}
-            phaseId={selectedPhaseId}
-            participationContextType="phase"
-            fontWeight="500"
-          />
-        </Right> */}
       </Container>
     );
   }

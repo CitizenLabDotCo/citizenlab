@@ -20,7 +20,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -30,6 +30,10 @@ const Container = styled.div`
   padding-bottom: 35px;
   margin-bottom: 70px;
   ${defaultCardStyle}
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+  `}
 `;
 
 const StyledFileAttachments = styled(FileAttachments)`

@@ -95,7 +95,7 @@ const ActionButtons = styled.div`
   margin-top: 20px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 0px;
+    margin-top: 30px;
   `}
 `;
 
