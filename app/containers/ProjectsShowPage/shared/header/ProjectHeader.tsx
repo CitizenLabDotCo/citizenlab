@@ -18,10 +18,11 @@ const Container = styled.div`
   padding-bottom: 65px;
   background: #fff;
   position: relative;
+  z-index: 2;
 
   ${media.smallerThanMinTablet`
     padding-top: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 35px;
   `}
 `;
 

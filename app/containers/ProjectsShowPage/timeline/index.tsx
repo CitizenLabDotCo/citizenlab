@@ -39,26 +39,6 @@ const Container = styled.div`
   `}
 `;
 
-const FirstRow = styled.div``;
-
-const StyledTimeline = styled(Timeline)``;
-
-const SecondRow = styled.div``;
-
-const StyledPhaseAbout = styled(PhaseAbout)``;
-
-const SecondRowContentContainer = styled(ContentContainer)``;
-
-const StyledPBExpenses = styled(PBExpenses)``;
-
-const StyledPhaseSurvey = styled(PhaseSurvey)``;
-
-const StyledPhasePoll = styled(PhasePoll)``;
-
-const StyledPhaseVolunteering = styled(PhaseVolunteering)``;
-
-const StyledPhaseIdeas = styled(PhaseIdeas)``;
-
 interface InputProps {
   projectId: string;
   className?: string;
@@ -118,50 +98,41 @@ class ProjectTimelineContainer extends PureComponent<Props, State> {
     if (!isNilOrError(project) && selectedPhase !== undefined) {
       return (
         <Container className={`${className || ''} e2e-project-process-page`}>
-          <FirstRow>
-            <StyledTimeline projectId={project.id} />
+          <div>
+            <Timeline projectId={project.id} />
             <ContentContainer>
-              <StyledPhaseAbout
-                projectId={project.id}
-                phaseId={selectedPhaseId}
-              />
+              <PhaseAbout projectId={project.id} phaseId={selectedPhaseId} />
               {isPBPhase && (
-                <StyledPBExpenses
+                <PBExpenses
                   participationContextId={selectedPhaseId}
                   participationContextType="phase"
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               )}
-              <StyledPhaseSurvey
+              <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
+            </ContentContainer>
+          </div>
+          <div>
+            <ContentContainer>
+              <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
+              <PhaseVolunteering
                 projectId={project.id}
                 phaseId={selectedPhaseId}
               />
             </ContentContainer>
-          </FirstRow>
-          <SecondRow>
-            <SecondRowContentContainer>
-              <StyledPhasePoll
-                projectId={project.id}
-                phaseId={selectedPhaseId}
-              />
-              <StyledPhaseVolunteering
-                projectId={project.id}
-                phaseId={selectedPhaseId}
-              />
-            </SecondRowContentContainer>
-          </SecondRow>
+          </div>
 
           {(participationMethod === 'ideation' ||
             participationMethod === 'budgeting') &&
             selectedPhaseId && (
-              <SecondRow>
-                <SecondRowContentContainer>
-                  <StyledPhaseIdeas
+              <div>
+                <ContentContainer>
+                  <PhaseIdeas
                     projectId={project.id}
                     phaseId={selectedPhaseId}
                   />
-                </SecondRowContentContainer>
-              </SecondRow>
+                </ContentContainer>
+              </div>
             )}
         </Container>
       );

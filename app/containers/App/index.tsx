@@ -10,6 +10,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
 import 'focus-visible';
+import smoothscroll from 'smoothscroll-polyfill';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
@@ -174,6 +175,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }));
       trackPage(newLocation.pathname);
     });
+
+    smoothscroll.polyfill();
 
     this.subscriptions = [
       combineLatest(
