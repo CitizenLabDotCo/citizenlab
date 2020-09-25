@@ -50,6 +50,7 @@ import { ITopicData } from 'services/topics';
 import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
+  activeUsersByTimeCumulativeStream,
   usersByTimeStream,
   commentsByTimeStream,
   ideasByTimeCumulativeStream,
@@ -420,17 +421,18 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 className="e2e-active-users-chart"
                 {...this.state}
               />
-              <BarChartActiveUsersByTime
+              <LineBarChart
                 graphUnit="users"
                 graphUnitMessageKey="activeUsers"
                 graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
                 startAt={startAt}
                 endAt={endAt}
                 xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-                stream={activeUsersByTimeStream}
                 infoMessage={infoMessage}
                 className="e2e-active-users-chart"
                 {...this.state}
+                lineStream={activeUsersByTimeCumulativeStream}
+                barStream={activeUsersByTimeStream}
               />
               <LineBarChart
                 graphTitle={formatMessage(messages.ideasByTimeTitle)}
@@ -442,7 +444,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 className="e2e-ideas-chart"
                 lineStream={ideasByTimeCumulativeStream}
                 barStream={ideasByTimeStream}
-                {...this.state}
               />
               <LineBarChart
                 graphTitle={formatMessage(messages.commentsByTimeTitle)}
