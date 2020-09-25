@@ -15,7 +15,7 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-top: 40px;
-  padding-bottom: 75px;
+  padding-bottom: 65px;
   background: #fff;
   position: relative;
 
