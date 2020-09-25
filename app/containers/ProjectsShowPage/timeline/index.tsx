@@ -21,7 +21,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths } from 'utils/styleUtils';
+import { colors, viewportWidths, media } from 'utils/styleUtils';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -33,6 +33,10 @@ const Container = styled.div`
   align-items: stretch;
   padding-top: 70px;
   background: ${colors.background};
+
+  ${media.smallerThanMinTablet`
+    padding-top: 40px;
+  `}
 `;
 
 const FirstRow = styled.div``;

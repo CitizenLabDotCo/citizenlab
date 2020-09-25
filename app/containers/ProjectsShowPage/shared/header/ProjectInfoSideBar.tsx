@@ -37,13 +37,11 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { fontSizes, colors, viewportWidths, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
 `;
-
-const MobileActionButtons = styled.div``;
 
 const Title = styled.h2`
   color: ${(props: any) => props.theme.colorText};
@@ -95,6 +93,10 @@ const ListItemIcon = styled(Icon)`
 
 const ActionButtons = styled.div`
   margin-top: 20px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 0px;
+  `}
 `;
 
 const SeeIdeasButton = styled(Button)`
@@ -213,41 +215,69 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       avatars_count,
     } = project.attributes;
 
-    const showSeeIdeasButton =
-      (process_type === 'continuous' && participation_method === 'ideation') ||
-      currentPhase?.attributes.participation_method === 'ideation';
+    const actionButtons = (
+      <ActionButtons>
+        {currentPhase?.attributes.participation_method === 'ideation' && (
+          <SeeIdeasButton
+            buttonStyle="secondary"
+            onClick={scrollTo('project-ideas')}
+            fontWeight="500"
+          >
+            <FormattedMessage {...messages.seeTheIdeas} />
+          </SeeIdeasButton>
+        )}
+        {process_type === 'continuous' &&
+          participation_method === 'ideation' &&
+          publication_status !== 'archived' && (
+            <IdeaButton
+              id="project-ideabutton"
+              projectId={project.id}
+              participationContextType="project"
+              fontWeight="500"
+            />
+          )}
+        {currentPhase?.attributes.participation_method === 'ideation' && (
+          <IdeaButton
+            id="project-ideabutton"
+            projectId={project.id}
+            phaseId={currentPhase.id}
+            participationContextType="phase"
+            fontWeight="500"
+          />
+        )}
+        {surveyPresentOutsideViewport &&
+          ((process_type === 'continuous' &&
+            participation_method === 'survey') ||
+            currentPhase?.attributes.participation_method === 'survey') && (
+            <GoToTheSurvey
+              buttonStyle="secondary"
+              onClick={scrollTo('project-survey')}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.goToTheSurvey} />
+            </GoToTheSurvey>
+          )}
+        {pollPresentOutsideViewport &&
+          ((process_type === 'continuous' && participation_method === 'poll') ||
+            currentPhase?.attributes.participation_method === 'poll') && (
+            <GoToTheSurvey
+              buttonStyle="secondary"
+              onClick={scrollTo('project-survey')}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.goToPoll} />
+            </GoToTheSurvey>
+          )}
+      </ActionButtons>
+    );
 
     return (
       <Container className={className || ''}>
         <ProjectActionBar projectId={projectId} />
 
-        {smallerThanSmallTablet &&
-          process_type === 'continuous' &&
-          participation_method === 'ideation' &&
-          publication_status !== 'archived' && (
-            <MobileActionButtons>
-              <IdeaButton
-                id="project-ideabutton"
-                projectId={project.id}
-                participationContextType="project"
-                fontWeight="500"
-              />
-            </MobileActionButtons>
-          )}
-        {smallerThanSmallTablet &&
-          currentPhase?.attributes.participation_method === 'ideation' && (
-            <MobileActionButtons>
-              <IdeaButton
-                id="project-ideabutton"
-                projectId={project.id}
-                phaseId={currentPhase.id}
-                participationContextType="phase"
-                fontWeight="500"
-              />
-            </MobileActionButtons>
-          )}
-
-        {!smallerThanSmallTablet && (
+        {smallerThanSmallTablet ? (
+          actionButtons
+        ) : (
           <>
             <Title>
               <FormattedMessage {...messages.about} />
@@ -318,61 +348,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 <FormattedMessage {...messages.share} />
               </ListItem>
             </List>
-            <ActionButtons>
-              {showSeeIdeasButton && (
-                <SeeIdeasButton
-                  buttonStyle="secondary"
-                  onClick={scrollTo('project-ideas')}
-                  fontWeight="500"
-                >
-                  <FormattedMessage {...messages.seeTheIdeas} />
-                </SeeIdeasButton>
-              )}
-              {process_type === 'continuous' &&
-                participation_method === 'ideation' &&
-                publication_status !== 'archived' && (
-                  <IdeaButton
-                    id="project-ideabutton"
-                    projectId={project.id}
-                    participationContextType="project"
-                    fontWeight="500"
-                  />
-                )}
-              {currentPhase?.attributes.participation_method === 'ideation' && (
-                <IdeaButton
-                  id="project-ideabutton"
-                  projectId={project.id}
-                  phaseId={currentPhase.id}
-                  participationContextType="phase"
-                  fontWeight="500"
-                />
-              )}
-              {surveyPresentOutsideViewport &&
-                ((process_type === 'continuous' &&
-                  participation_method === 'survey') ||
-                  currentPhase?.attributes.participation_method ===
-                    'survey') && (
-                  <GoToTheSurvey
-                    buttonStyle="secondary"
-                    onClick={scrollTo('project-survey')}
-                    fontWeight="500"
-                  >
-                    <FormattedMessage {...messages.goToTheSurvey} />
-                  </GoToTheSurvey>
-                )}
-              {pollPresentOutsideViewport &&
-                ((process_type === 'continuous' &&
-                  participation_method === 'poll') ||
-                  currentPhase?.attributes.participation_method === 'poll') && (
-                  <GoToTheSurvey
-                    buttonStyle="secondary"
-                    onClick={scrollTo('project-survey')}
-                    fontWeight="500"
-                  >
-                    <FormattedMessage {...messages.goToPoll} />
-                  </GoToTheSurvey>
-                )}
-            </ActionButtons>
+            {actionButtons}
           </>
         )}
         <ProjectSharingModal
