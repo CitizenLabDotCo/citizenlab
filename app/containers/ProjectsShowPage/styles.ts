@@ -1,9 +1,14 @@
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 
 export const SectionContainer = styled.div`
   padding-top: 70px;
   margin-bottom: 70px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 45px;
+    margin-bottom: 45px;
+  `}
 `;
 
 export const ProjectPageSectionTitle = styled.h2`

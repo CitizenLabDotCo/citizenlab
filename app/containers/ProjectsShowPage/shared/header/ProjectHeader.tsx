@@ -44,7 +44,7 @@ const ProjectHeaderImageContainer = styled.div`
   overflow: hidden;
 
   ${media.smallerThanMinTablet`
-    height: 180px;
+    height: 160px;
     margin-bottom: 20px;
   `}
 `;
@@ -62,36 +62,15 @@ const ProjectHeaderImage = styled.div<{ src: string }>`
   overflow: hidden;
 `;
 
-// const ProjectHeaderOverlay = styled.div`
-//   background: #000;
-//   opacity: 0.1;
-//   position: absolute;
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   display: none;
-// `;
-
-// const ProjectTitle = styled.h1`
-//   color: #fff;
-//   font-size: ${fontSizes.xxxl}px;
-//   line-height: normal;
-//   font-weight: 500;
-//   text-align: center;
-//   overflow-wrap: break-word;
-//   word-wrap: break-word;
-//   word-break: break-word;
-//   margin: 0;
-//   padding: 0;
-//   z-index: 2;
-// `;
-
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   hasHeaderImage: boolean;
 }>`
   margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 const StyledProjectInfo = styled(ProjectInfo)``;
@@ -113,10 +92,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
             <ProjectHeaderImageContainer>
               <ProjectHeaderImage src={projectHeaderImageLarge} />
-              {/* <ProjectHeaderOverlay />
-              <ProjectTitle>
-                <T value={project.attributes.title_multiloc} />
-              </ProjectTitle> */}
             </ProjectHeaderImageContainer>
           )}
           <StyledProjectArchivedIndicator
