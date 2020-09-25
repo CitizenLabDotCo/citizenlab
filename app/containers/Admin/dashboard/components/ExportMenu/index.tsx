@@ -31,7 +31,7 @@ interface ExportMenuProps {
   className?: string;
   name: string;
   svgNode?: React.RefObject<any>;
-  xlsxEndpoint: string;
+  xlsxEndpoint?: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
   resolution?: IResolution;
@@ -160,23 +160,27 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
         onClickOutside={toggleDropdown(false)}
         content={
           <>
-            <Button
-              onClick={handleDownloadSvg}
-              buttonStyle="text"
-              padding="0"
-              fontSize={`${fontSizes.small}px`}
-            >
-              <FormattedMessage {...messages.downloadSvg} />
-            </Button>
-            <Button
-              onClick={downloadXlsx}
-              buttonStyle="text"
-              processing={exportingXls}
-              padding="0"
-              fontSize={`${fontSizes.small}px`}
-            >
-              <FormattedMessage {...messages.downloadXlsx} />
-            </Button>
+            {svgNode && (
+              <Button
+                onClick={handleDownloadSvg}
+                buttonStyle="text"
+                padding="0"
+                fontSize={`${fontSizes.small}px`}
+              >
+                <FormattedMessage {...messages.downloadSvg} />
+              </Button>
+            )}
+            {downloadXlsx && (
+              <Button
+                onClick={downloadXlsx}
+                buttonStyle="text"
+                processing={exportingXls}
+                padding="0"
+                fontSize={`${fontSizes.small}px`}
+              >
+                <FormattedMessage {...messages.downloadXlsx} />
+              </Button>
+            )}
           </>
         }
       />
