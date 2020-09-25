@@ -36,6 +36,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 import { IGraphFormat } from 'typings';
 import useLocalize from 'hooks/useLocalize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -176,8 +177,9 @@ const IdeasByStatusChartWithHoCs = injectIntl<Props>(
   withTheme(IdeasByStatusChart as any) as any
 );
 
-const WrappedIdeasByStatusChart = (inputProps: InputProps) => {
-  const localize = useLocalize();
+const WrappedIdeasByStatusChart = (
+  inputProps: InputProps & InjectedLocalized
+) => {
   const convertToGraphFormat = ({ series: { ideas }, idea_status }) => {
     if (Object.keys(ideas).length <= 0) {
       return null;
@@ -185,7 +187,7 @@ const WrappedIdeasByStatusChart = (inputProps: InputProps) => {
 
     return map(idea_status, (status, id) => ({
       value: ideas[id] || 0,
-      name: localize(status.title_multiloc),
+      name: inputProps.localize(status.title_multiloc),
       code: id,
       color: status.color,
       ordering: status.ordering,
@@ -202,4 +204,4 @@ const WrappedIdeasByStatusChart = (inputProps: InputProps) => {
   );
 };
 
-export default WrappedIdeasByStatusChart;
+export default injectLocalize(WrappedIdeasByStatusChart);
