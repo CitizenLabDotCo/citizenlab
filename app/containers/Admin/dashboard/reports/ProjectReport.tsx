@@ -7,7 +7,7 @@ import moment from 'moment';
 import ResolutionControl from '../components/ResolutionControl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 
 // libs
