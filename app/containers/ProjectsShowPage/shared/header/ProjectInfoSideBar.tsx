@@ -49,7 +49,9 @@ const Title = styled.h2`
   line-height: normal;
   font-weight: 500;
   margin: 0;
+  margin-bottom: 14px;
   padding: 0;
+  padding-top: 12px;
 `;
 
 const List = styled.div`
