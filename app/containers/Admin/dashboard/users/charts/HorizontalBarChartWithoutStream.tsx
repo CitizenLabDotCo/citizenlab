@@ -11,6 +11,7 @@ import styled, { useTheme } from 'styled-components';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import {
@@ -43,7 +44,7 @@ interface VoteGraphPoint extends IGraphPoint {
 }
 
 interface Props {
-  serie: VoteGraphPoint[] | null;
+  serie: VoteGraphPoint[] | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
@@ -78,7 +79,9 @@ export const HorizontalBarChartWithoutStream: React.SFC<
   } = theme;
 
   const openIdeaInANewTab = ({ slug }: { slug: string }) => {
-    window.open(`${window.location.origin}/ideas/${slug}`);
+    if (!isNilOrError(slug)) {
+      clHistory.push(`/ideas/${slug}/`);
+    }
   };
 
   const NameLabel = (props) => {
