@@ -8,7 +8,6 @@ import React, {
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
 import moment from 'moment';
-import bowser from 'bowser';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -184,15 +183,11 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
 
       setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView(
-          !bowser.msie
-            ? {
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest',
-              }
-            : undefined
-        );
+        document.getElementById(id)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
       }, 100);
     },
     [currentPhase]

@@ -29,6 +29,14 @@ const Container = styled.div`
   z-index: 1002;
   background: #fff;
   border-bottom: solid 1px #e0e0e0;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+
+  &.visible {
+    opacity: 100;
+    pointer-events: auto;
+  }
 
   ${media.smallerThanMinTablet`
     top: 0px;
@@ -129,7 +137,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     );
   }, [projectId]);
 
-  if (!isNilOrError(project) && portalElement && isVisible) {
+  if (!isNilOrError(project) && portalElement) {
     const {
       process_type,
       participation_method,
@@ -137,7 +145,9 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     } = project.attributes;
 
     return ReactDOM.createPortal(
-      <Container className={className || ''}>
+      <Container
+        className={`${className || ''} ${isVisible ? 'visible' : 'hidden'}`}
+      >
         <ContentContainer>
           <InnerContainer>
             <Left>

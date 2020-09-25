@@ -147,7 +147,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   text-align: center;
@@ -523,7 +523,7 @@ class Timeline extends PureComponent<
                     content={formatMessage(messages.previousPhase)}
                     theme="translucent"
                     arrow={false}
-                    hideOnClick={false}
+                    hideOnClick={true}
                   >
                     <PhaseNavigationButtonWrapper>
                       <PreviousPhaseButton
@@ -553,7 +553,7 @@ class Timeline extends PureComponent<
                       content={formatMessage(messages.currentPhase)}
                       theme="translucent"
                       arrow={false}
-                      hideOnClick={false}
+                      hideOnClick={true}
                     >
                       <PhaseNavigationButtonWrapper>
                         <CurrentPhaseButton
@@ -586,7 +586,7 @@ class Timeline extends PureComponent<
                     content={formatMessage(messages.nextPhase)}
                     theme="translucent"
                     arrow={false}
-                    hideOnClick={false}
+                    hideOnClick={true}
                   >
                     <PhaseNavigationButtonWrapper>
                       <NextPhaseButton

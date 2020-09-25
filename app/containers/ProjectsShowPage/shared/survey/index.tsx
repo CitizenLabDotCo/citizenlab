@@ -33,7 +33,10 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   position: relative;
-  min-height: 500px;
+
+  &.enabled {
+    min-height: 500px;
+  }
 `;
 
 interface InputProps {
