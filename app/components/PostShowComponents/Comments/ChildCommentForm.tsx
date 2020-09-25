@@ -277,7 +277,14 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             parentId,
             commentBodyMultiloc,
             waitForChildCommentsRefetch
-          );
+          ).then((comment) => {
+            const childComment = document.getElementById(comment.data.id);
+            if (childComment) {
+              setTimeout(() => {
+                childComment.scrollIntoView();
+              }, 100);
+            }
+          });
         }
 
         if (postType === 'initiative') {
@@ -287,7 +294,14 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             parentId,
             commentBodyMultiloc,
             waitForChildCommentsRefetch
-          );
+          ).then((comment) => {
+            const childComment = document.getElementById(comment.data.id);
+            if (childComment) {
+              setTimeout(() => {
+                childComment.scrollIntoView();
+              }, 100);
+            }
+          });
         }
 
         commentAdded();
