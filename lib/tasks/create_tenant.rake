@@ -101,7 +101,6 @@ namespace :cl2_back do
         initiatives: {
           enabled: true,
           allowed: true,
-          posting_enabled: true,
           voting_threshold: 300,
           days_limit: 90,
           threshold_reached_message: MultilocService.new.i18n_to_multiloc(
