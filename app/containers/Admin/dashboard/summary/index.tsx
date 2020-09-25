@@ -324,7 +324,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       });
       return serie;
     }
-    return null;
+    return undefined;
   };
 
   convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {

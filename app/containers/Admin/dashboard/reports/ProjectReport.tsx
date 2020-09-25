@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 // libs
 import { map } from 'lodash-es';
