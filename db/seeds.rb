@@ -243,7 +243,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
       initiatives: {
         enabled: true,
         allowed: true,
-        posting_enabled: true,
         voting_threshold: 20,
         days_limit: 5,
         threshold_reached_message: MultilocService.new.i18n_to_multiloc(
