@@ -15,7 +15,7 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-top: 40px;
-  padding-bottom: 65px;
+  padding-bottom: 70px;
   background: #fff;
   position: relative;
   z-index: 2;
@@ -29,14 +29,7 @@ const Container = styled.div`
 const ProjectHeaderImageContainer = styled.div`
   width: 100%;
   height: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  margin-bottom: 45px;
+  margin-bottom: 40px;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;

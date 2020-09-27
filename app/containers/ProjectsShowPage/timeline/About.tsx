@@ -29,7 +29,7 @@ const Container = styled.div`
   padding: 30px;
   padding-bottom: 35px;
   margin-bottom: 70px;
-  ${defaultCardStyle}
+  ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
     padding: 20px;

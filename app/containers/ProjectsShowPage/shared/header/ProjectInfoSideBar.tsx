@@ -80,15 +80,15 @@ const ListItem = styled.div`
 `;
 
 const ListItemIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   fill: ${colors.label};
   margin-right: 14px;
 
   &.timeline {
-    width: 20px;
-    height: 20px;
-    margin-right: 11px;
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
   }
 `;
 
@@ -183,11 +183,19 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
 
       setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-          inline: 'nearest',
-        });
+        // document.getElementById(id)?.scrollIntoView({
+        //   behavior: 'smooth',
+        //   block: 'start',
+        //   inline: 'nearest',
+        // });
+
+        const element = document.getElementById(id);
+
+        if (element) {
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
       }, 100);
     },
     [currentPhase]
@@ -277,7 +285,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         ) : (
           <>
             <Title>
-              <FormattedMessage {...messages.about} />
+              <FormattedMessage {...messages.aboutThisProject} />
             </Title>
             <List>
               {process_type === 'continuous' && (
@@ -286,7 +294,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage
                     {...messages.startedOn}
                     values={{
-                      date: moment(created_at).format('LL'),
+                      date: moment(created_at).format('ll'),
                     }}
                   />
                 </ListItem>

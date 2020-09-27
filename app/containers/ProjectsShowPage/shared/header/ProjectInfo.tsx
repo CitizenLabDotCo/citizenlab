@@ -96,7 +96,7 @@ const ProjectDescription = styled.div<{ maxHeight: number }>`
 `;
 
 const ReadMoreOuterWrapper = styled.div`
-  height: 120px;
+  height: 90px;
   content: '';
   display: flex;
   position: absolute;
@@ -106,7 +106,7 @@ const ReadMoreOuterWrapper = styled.div`
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,
-    rgba(255, 255, 255, 1) 25%,
+    rgba(255, 255, 255, 1) 40%,
     rgba(255, 255, 255, 0) 100%
   );
 `;
@@ -245,7 +245,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                           fontSize={`${fontSizes.medium}px`}
                           padding="0"
                         >
-                          <FormattedMessage {...messages.collapse} />
+                          <FormattedMessage {...messages.seeLess} />
                         </CollapseButton>
                       </CollapseButtonWrapper>
                     )}

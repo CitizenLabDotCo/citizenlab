@@ -26,9 +26,10 @@ const Container = styled.div`
   width: 100vw;
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
-  z-index: 1002;
+  top: 0px;
+  z-index: 1004;
   background: #fff;
-  border-bottom: solid 1px #e0e0e0;
+  border-bottom: solid 1px #ddd;
   opacity: 0;
   pointer-events: none;
   will-change: opacity;
@@ -45,10 +46,9 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
+  min-height: 69px;
   display: flex;
   align-items: center;
-  padding-top: 14px;
-  padding-bottom: 14px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -66,15 +66,19 @@ const Left = styled.div`
 `;
 
 const Right = styled.div`
+  flex: 0 0 300px;
+  width: 300px;
   display: flex;
   align-items: center;
   margin-left: 15px;
 
   ${media.smallerThanMinTablet`
+    flex: 1 1 auto;
     width: 100%;
-    margin-left: 0px;
     flex-direction: column;
     align-items: stretch;
+    justify-content: center;
+    margin-left: 0px;
   `}
 `;
 
@@ -102,7 +106,8 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   const { windowWidth } = useWindowSize();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isActionBarVisible, setIsActionBarVisible] = useState(false);
+  const [isActionButtonVisible, setIsActionButtonVisible] = useState(false);
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
@@ -116,26 +121,27 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     window.addEventListener(
       'scroll',
       () => {
-        let buttonDistance: undefined | number = undefined;
-
-        const ideaButtonElement = document.getElementById('project-ideabutton');
-
-        if (ideaButtonElement) {
-          buttonDistance =
-            ideaButtonElement.getBoundingClientRect().top + window.pageYOffset;
-        }
-
-        setIsVisible(
-          !!(
-            buttonDistance &&
-            window.pageYOffset >
-              buttonDistance - (smallerThanSmallTablet ? 14 : 92)
-          )
+        const actionButtonElement = document.getElementById(
+          'project-ideabutton'
         );
+        const actionButtonYOffset = actionButtonElement
+          ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
+          : undefined;
+        const actionButtonVisible = !!(
+          actionButtonElement &&
+          actionButtonYOffset &&
+          window.pageYOffset >
+            actionButtonYOffset - (smallerThanSmallTablet ? 14 : 34)
+        );
+        const actionBarVisible = !smallerThanSmallTablet
+          ? window.pageYOffset > 78
+          : actionButtonVisible;
+        setIsActionBarVisible(actionBarVisible);
+        setIsActionButtonVisible(actionButtonVisible);
       },
       { passive: true }
     );
-  }, [projectId]);
+  }, [projectId, smallerThanSmallTablet]);
 
   if (!isNilOrError(project) && portalElement) {
     const {
@@ -146,7 +152,9 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
 
     return ReactDOM.createPortal(
       <Container
-        className={`${className || ''} ${isVisible ? 'visible' : 'hidden'}`}
+        className={`${className || ''} ${
+          isActionBarVisible ? 'visible' : 'hidden'
+        }`}
       >
         <ContentContainer>
           <InnerContainer>
@@ -156,27 +164,28 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
               </ProjectTitle>
             </Left>
             <Right>
-              {process_type === 'continuous' &&
+              {isActionButtonVisible &&
+                process_type === 'continuous' &&
                 participation_method === 'ideation' &&
                 publication_status !== 'archived' && (
                   <IdeaButton
                     projectId={project.id}
                     participationContextType="project"
                     fontWeight="500"
-                    fullWidth={smallerThanSmallTablet}
                     width={!smallerThanSmallTablet ? '300px' : undefined}
                   />
                 )}
-              {currentPhase?.attributes.participation_method === 'ideation' && (
-                <IdeaButton
-                  projectId={project.id}
-                  phaseId={currentPhase.id}
-                  participationContextType="phase"
-                  fontWeight="500"
-                  fullWidth={smallerThanSmallTablet}
-                  width={!smallerThanSmallTablet ? '300px' : undefined}
-                />
-              )}
+              {isActionButtonVisible &&
+                currentPhase?.attributes.participation_method ===
+                  'ideation' && (
+                  <IdeaButton
+                    projectId={project.id}
+                    phaseId={currentPhase.id}
+                    participationContextType="phase"
+                    fontWeight="500"
+                    width={!smallerThanSmallTablet ? '300px' : undefined}
+                  />
+                )}
             </Right>
           </InnerContainer>
         </ContentContainer>
