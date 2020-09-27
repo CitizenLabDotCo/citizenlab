@@ -1,13 +1,20 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import ProjectSharingModal from './ProjectSharingModal';
+import { Button } from 'cl2-component-library';
 
 // hooks
+import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
@@ -38,6 +45,13 @@ const ProjectHeaderImageContainer = styled.div`
     height: 160px;
     margin-bottom: 20px;
   `}
+`;
+
+const ShareButton = styled(Button)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
 `;
 
 const ProjectHeaderImage = styled.div<{ src: string }>`
@@ -72,9 +86,21 @@ interface Props {
 }
 
 const ProjectHeader = memo<Props>(({ projectId, className }) => {
+  const locale = useLocale();
   const project = useProject({ projectId });
 
-  if (!isNilOrError(project)) {
+  const [shareModalOpened, setShareModalOpened] = useState(false);
+
+  const openShareModal = useCallback((event: FormEvent) => {
+    event.preventDefault();
+    setShareModalOpened(true);
+  }, []);
+
+  const closeShareModal = useCallback(() => {
+    setShareModalOpened(false);
+  }, []);
+
+  if (!isNilOrError(locale) && !isNilOrError(project)) {
     const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
 
     return (
@@ -82,6 +108,18 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
         <ContentContainer>
           {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
             <ProjectHeaderImageContainer>
+              <ShareButton
+                locale={locale}
+                icon="share"
+                onClick={openShareModal}
+                buttonStyle="white"
+                iconColor="#000"
+                textColor="#000"
+                bgColor="rgba(255, 255, 255, 0.9)"
+                padding="6px 10px"
+              >
+                <FormattedMessage {...messages.share} />
+              </ShareButton>
               <ProjectHeaderImage src={projectHeaderImageLarge} />
             </ProjectHeaderImageContainer>
           )}
@@ -91,6 +129,11 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           />
           <StyledProjectInfo projectId={projectId} />
         </ContentContainer>
+        <ProjectSharingModal
+          projectId={project.id}
+          opened={shareModalOpened}
+          close={closeShareModal}
+        />
       </Container>
     );
   }

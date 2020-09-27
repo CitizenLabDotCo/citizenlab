@@ -183,18 +183,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
 
       setTimeout(() => {
-        // document.getElementById(id)?.scrollIntoView({
-        //   behavior: 'smooth',
-        //   block: 'start',
-        //   inline: 'nearest',
-        // });
-
         const element = document.getElementById(id);
 
         if (element) {
-          const y =
+          const top =
             element.getBoundingClientRect().top + window.pageYOffset - 100;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          const behavior = 'smooth';
+          window.scrollTo({ top, behavior });
         }
       }, 100);
     },

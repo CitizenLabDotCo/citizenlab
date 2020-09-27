@@ -93,6 +93,8 @@ const ProjectTitle = styled.h1`
   word-break: break-word;
   margin: 0;
   padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
 interface Props {
