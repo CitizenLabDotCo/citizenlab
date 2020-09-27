@@ -22,11 +22,11 @@ const Text = styled.span`
 `;
 
 const DropdownIcon = styled(Icon)`
-  width: 11px;
+  width: 10px;
   height: 7px;
   fill: ${colors.label};
   margin-left: 4px;
-  margin-top: 2px;
+  margin-top: 4px;
   transition: all 100ms ease-out;
 `;
 

@@ -74,84 +74,81 @@ const FiltersArea = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 
   &.mapView {
     justify-content: flex-end;
+    margin-bottom: 15px;
+
+    ${media.smallerThanMinTablet`
+      margin-bottom: 0px;
+    `}
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 30px;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  ${media.smallerThanMaxTablet`
+const LeftFilterArea = styled(FilterArea)`
+  flex: 1 1 auto;
+
+  &.hidden {
+    display: none;
+  }
+
+  ${media.smallerThanMinTablet`
+    display: flex;
+    flex-direction: column;
     align-items: stretch;
   `}
 `;
 
-const LeftFilterArea = styled(FilterArea)`
-  &.hidden {
-    display: none;
-  }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin-bottom: 22px;
-  `}
-`;
-
 const RightFilterArea = styled(FilterArea)`
+  display: flex;
+  align-items: center;
+
   &.hidden {
     display: none;
   }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  `}
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column-reverse;
-  `}
 `;
 
 const DropdownFilters = styled.div`
-  ${media.smallerThanMinTablet`
-    &.hasViewButtons {
-      margin-top: 20px;
-    }
-  `}
+  display: flex;
+  align-items: center;
 
   &.hidden {
     display: none;
   }
 `;
 
-const StyledViewButtons = styled(ViewButtons)`
+const DesktopViewButtons = styled(ViewButtons)`
   margin-left: 40px;
 
-  ${media.smallerThanMaxTablet`
-    margin-left: 0px;
+  ${media.smallerThanMinTablet`
+    display: none;
   `}
+`;
+
+const MobileViewButtons = styled(ViewButtons)`
+  margin-bottom: 15px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     width: 100%;
     margin-right: 0px;
+    margin-bottom: 20px;
   `}
 `;
 
@@ -351,6 +348,8 @@ class WithoutFiltersSidebar extends PureComponent<
     const showListView =
       !locationEnabled || (locationEnabled && selectedView === 'card');
     const showMapView = locationEnabled && selectedView === 'map';
+    const smallerThanSmallTablet =
+      windowSize && windowSize <= viewportWidths.smallTablet;
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.largeTablet;
 
@@ -358,13 +357,22 @@ class WithoutFiltersSidebar extends PureComponent<
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`${showMapView && 'mapView'}`}
+          className={`${showMapView ? 'mapView' : 'listView'}`}
         >
-          <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput
-              className="e2e-search-ideas-input"
-              onChange={this.handleSearchOnChange}
-            />
+          <LeftFilterArea>
+            {showViewButtons && smallerThanSmallTablet && (
+              <MobileViewButtons
+                selectedView={selectedView}
+                onClick={this.selectView}
+              />
+            )}
+
+            {!showMapView && (
+              <StyledSearchInput
+                className="e2e-search-ideas-input"
+                onChange={this.handleSearchOnChange}
+              />
+            )}
           </LeftFilterArea>
 
           <RightFilterArea>
@@ -389,8 +397,8 @@ class WithoutFiltersSidebar extends PureComponent<
               )}
             </DropdownFilters>
 
-            {showViewButtons && (
-              <StyledViewButtons
+            {showViewButtons && !smallerThanSmallTablet && (
+              <DesktopViewButtons
                 selectedView={selectedView}
                 onClick={this.selectView}
               />

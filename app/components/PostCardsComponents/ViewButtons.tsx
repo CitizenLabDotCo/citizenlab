@@ -37,10 +37,6 @@ const ViewButton = styled.button`
   &.active {
     background: #fff;
     box-shadow: ${defaultStyles.boxShadow};
-
-    > span {
-      opacity: 1;
-    }
   }
 
   &:not(.active):hover {
@@ -54,18 +50,17 @@ const ViewButton = styled.button`
     line-height: normal;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 9px;
+    padding-bottom: 9px;
 
     ${media.smallerThanMinTablet`
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding: 10px;
     `}
   }
 
-  &:hover span {
-    opacity: 1;
-  }
+  ${media.smallerThanMinTablet`
+    flex: 1;
+  `}
 `;
 
 const ListButton = styled(ViewButton)`
