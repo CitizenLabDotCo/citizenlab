@@ -531,7 +531,9 @@ class Timeline extends PureComponent<
                         onClick={this.goToPreviousPhase}
                         icon="chevron-left"
                         iconSize="12px"
+                        iconColor={colors.label}
                         buttonStyle="white"
+                        textColor={colors.label}
                         width="35px"
                         height="30px"
                         padding="0px"
@@ -594,6 +596,7 @@ class Timeline extends PureComponent<
                         onClick={this.goToNextPhase}
                         icon="chevron-right"
                         iconSize="12px"
+                        iconColor={colors.label}
                         buttonStyle="white"
                         width="35px"
                         height="30px"

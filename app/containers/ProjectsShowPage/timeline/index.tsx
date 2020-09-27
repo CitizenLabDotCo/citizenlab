@@ -31,7 +31,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 70px;
+  padding-top: 60px;
   background: ${colors.background};
 
   ${media.smallerThanMinTablet`

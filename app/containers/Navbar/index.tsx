@@ -48,12 +48,12 @@ import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.header`
+const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
   align-items: stretch;
-  position: fixed;
+  position: ${(props) => props.position};
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
@@ -514,6 +514,11 @@ class Navbar extends PureComponent<
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
     const emailSettingsPage = isPage('email-settings', location.pathname);
+    const projectPage = !!(
+      urlSegments.length === 3 &&
+      urlSegments[0] === locale &&
+      urlSegments[1] === 'projects'
+    );
     const totalProjectsListLength =
       !isNilOrError(adminPublications) && adminPublications.list
         ? adminPublications.list.length
@@ -539,6 +544,7 @@ class Navbar extends PureComponent<
             onIdeaPage || onInitiativePage ? 'hideNavbar' : ''
           }`}
           ref={this.handleRef}
+          position={projectPage ? 'absolute' : 'fixed'}
         >
           <ContainerInner>
             <Left>

@@ -194,9 +194,9 @@ export default defineMessages({
     id: 'app.containers.Projects.twitterMessage',
     defaultMessage: '{title}: Share your ideas on',
   },
-  about: {
-    id: 'app.containers.Projects.about',
-    defaultMessage: 'About',
+  aboutThisProject: {
+    id: 'app.containers.Projects.aboutThisProject',
+    defaultMessage: 'About this project',
   },
   xIdeas: {
     id: 'app.containers.Projects.xIdeas',
@@ -266,8 +266,8 @@ export default defineMessages({
     id: 'app.containers.Projects.readMore',
     defaultMessage: 'Read more',
   },
-  collapse: {
-    id: 'app.containers.Projects.collapse',
-    defaultMessage: 'Collapse',
+  seeLess: {
+    id: 'app.containers.Projects.seeLess',
+    defaultMessage: 'See less',
   },
 });
