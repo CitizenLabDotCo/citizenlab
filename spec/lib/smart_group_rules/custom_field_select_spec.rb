@@ -61,6 +61,16 @@ describe SmartGroupRules::CustomFieldSelect do
         expect(rule.filter(User).count).to eq User.count - 1
       end
 
+      it "correctly filters on 'is_one_of' predicate" do
+        rule = SmartGroupRules::CustomFieldSelect.new(custom_field.id, 'is_one_of', [options[0].id, options[2].id])
+        expect(rule.filter(User).count).to eq 3
+      end
+
+      it "correctly filters on 'not_is_one_of' predicate" do
+        rule = SmartGroupRules::CustomFieldSelect.new(custom_field.id, 'not_is_one_of', [options[0].id])
+        expect(rule.filter(User).count).to eq User.count - 2
+      end
+
       it "correctly filters on 'is_empty' predicate" do
         rule = SmartGroupRules::CustomFieldSelect.new(custom_field.id, 'is_empty')
         expect(rule.filter(User).count).to eq 1 
