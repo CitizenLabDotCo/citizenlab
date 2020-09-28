@@ -91,7 +91,8 @@ const ProjectDescription = styled.div<{ maxHeight: number }>`
   overflow: hidden;
 
   &.expanded {
-    max-height: unset;
+    max-height: none;
+    overflow: visible;
   }
 `;
 

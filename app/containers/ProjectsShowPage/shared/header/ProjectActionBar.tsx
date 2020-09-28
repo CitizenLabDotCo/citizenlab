@@ -50,6 +50,16 @@ const InnerContainer = styled.div`
   display: flex;
   align-items: center;
 
+  /* IE11 hack */
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    &:after {
+      display: block;
+      content: '';
+      min-height: inherit;
+      font-size: 0;
+    }
+  }
+
   ${media.smallerThanMinTablet`
     flex-direction: column;
   `}

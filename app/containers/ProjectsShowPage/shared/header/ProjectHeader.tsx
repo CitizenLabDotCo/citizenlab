@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  padding-top: 40px;
+  padding-top: 30px;
   padding-bottom: 70px;
   background: #fff;
   position: relative;
@@ -35,7 +35,7 @@ const Container = styled.div`
 
 const ProjectHeaderImageContainer = styled.div`
   width: 100%;
-  height: 220px;
+  height: 240px;
   margin-bottom: 40px;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -52,6 +52,11 @@ const ShareButton = styled(Button)`
   top: 10px;
   right: 10px;
   z-index: 2;
+  display: none;
+
+  ${media.smallerThanMinTablet`
+    display: block;
+  `}
 `;
 
 const ProjectHeaderImage = styled.div<{ src: string }>`
@@ -115,8 +120,9 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 buttonStyle="white"
                 iconColor="#000"
                 textColor="#000"
-                bgColor="rgba(255, 255, 255, 0.9)"
-                padding="6px 10px"
+                bgColor="rgba(255, 255, 255, 0.92)"
+                borderColor="#ccc"
+                padding="5px 8px"
               >
                 <FormattedMessage {...messages.share} />
               </ShareButton>
