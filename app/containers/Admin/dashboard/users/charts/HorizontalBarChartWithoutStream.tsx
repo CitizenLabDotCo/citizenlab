@@ -45,7 +45,7 @@ interface VoteGraphPoint extends IGraphPoint {
 }
 
 interface Props {
-  serie: VoteGraphPoint[] | null;
+  serie: VoteGraphPoint[] | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;

@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
+import { map } from 'lodash-es';
 
 // components
 import { GraphsContainer, ControlBar, Column, IResolution } from '../';
@@ -49,6 +50,7 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  IIdeasByStatus,
 } from 'services/stats';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
@@ -187,6 +189,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
+    this.props.mostVotedIdeas.onChangeProjects(filter.value);
     this.setState({
       currentProjectFilter: filter.value,
       currentProjectFilterLabel: filter.label,
@@ -313,9 +316,34 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
           slug: idea.attributes.slug,
         };
       });
-      return serie.length > 0 ? serie : null;
+      return serie;
     }
-    return null;
+    return undefined;
+  };
+
+  convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
+    const {
+      series: { ideas },
+      idea_status,
+    } = ideasByStatus;
+
+    if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
+      return null;
+    }
+    const { localize } = this.props;
+
+    const ideasByStatusConvertedToGraphFormat = map(
+      ideas,
+      (value: number, key: string) => ({
+        value: value as number,
+        name: localize(idea_status[key].title_multiloc) as string,
+        code: key,
+        color: idea_status[key].color as string,
+        ordering: idea_status[key].ordering as number,
+      })
+    );
+
+    return ideasByStatusConvertedToGraphFormat;
   };
 
   render() {
@@ -356,7 +384,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               onChange={this.handleChangeResolution}
             />
           </ControlBar>
-
           <ChartFilters
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
@@ -489,6 +516,15 @@ const Data = adopt<DataProps, InputProps>({
       pageNumber={1}
       pageSize={5}
       sort="popular"
+      type="paginated"
+      projectIds={'all'}
+    />
+  ),
+  mostControversialIdeas: (
+    <GetIdeas
+      pageNumber={1}
+      pageSize={5}
+      sort="random"
       type="paginated"
       projectIds={'all'}
     />
