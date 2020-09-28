@@ -283,15 +283,6 @@ export function activeUsersByTimeStream(
   });
 }
 
-export function activeUsersByTimeCumulativeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUsersByTime>({
-    apiEndpoint: `${apiEndpoint}/active_users_by_time_cumulative`,
-    ...streamParams,
-  });
-}
-
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
 

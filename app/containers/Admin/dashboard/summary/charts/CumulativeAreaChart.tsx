@@ -50,7 +50,7 @@ type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
 type Props = {
   className?: string;
   graphUnit: IGraphUnit;
-  graphTitle: string;
+  graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
@@ -235,7 +235,7 @@ export class CumulativeAreaChart extends PureComponent<
 
   render() {
     const {
-      graphTitle,
+      graphTitleMessageKey,
       graphUnit,
       className,
       intl: { formatMessage },
@@ -261,7 +261,9 @@ export class CumulativeAreaChart extends PureComponent<
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <GraphCardTitle>{graphTitle}</GraphCardTitle>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
+            </GraphCardTitle>
             <GraphCardFigureContainer>
               <GraphCardFigure>{totalNumber}</GraphCardFigure>
               <GraphCardFigureChange className={typeOfChange}>
@@ -272,7 +274,7 @@ export class CumulativeAreaChart extends PureComponent<
               <ExportMenu
                 {...this.props}
                 svgNode={this.currentChart}
-                name={graphTitle}
+                name={messages[graphTitleMessageKey].defaultMessage}
               />
             )}
           </GraphCardHeader>

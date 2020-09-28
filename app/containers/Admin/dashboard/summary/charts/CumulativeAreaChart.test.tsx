@@ -29,7 +29,7 @@ describe('<CumulativeAreaChart />', () => {
       <CumulativeAreaChart
         intl={intl}
         theme={chartTheme({})}
-        graphTitle="commentsByTimeTitle"
+        graphTitleMessageKey="commentsByTimeTitle"
         graphUnit="comments"
         startAt={'05-12-2018'}
         endAt={'06-12-2018'}
@@ -47,7 +47,7 @@ describe('<CumulativeAreaChart />', () => {
       <CumulativeAreaChart
         intl={intl}
         theme={chartTheme({})}
-        graphTitle="commentsByTimeTitle"
+        graphTitleMessageKey="commentsByTimeTitle"
         graphUnit="comments"
         startAt={'05-12-2018'}
         endAt={'06-12-2018'}

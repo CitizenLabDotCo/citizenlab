@@ -23,22 +23,29 @@ const FilterContainer = styled.div`
 `;
 
 interface Props {
-  currentProjectFilter?: string | null;
-  currentGroupFilter?: string | null;
-  currentTopicFilter?: string | null;
+  configuration: {
+    showProjectFilter: boolean;
+    showGroupFilter: boolean;
+    showTopicFilter: boolean;
+  };
 
-  projectFilterOptions?: IOption[] | null;
-  groupFilterOptions?: IOption[] | null;
-  topicFilterOptions?: IOption[] | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
 
-  onProjectFilter?: ((filter: IOption) => void) | null;
-  onGroupFilter?: ((filter: IOption) => void) | null;
-  onTopicFilter?: ((filter: IOption) => void) | null;
+  projectFilterOptions: IOption[] | null;
+  groupFilterOptions: IOption[] | null;
+  topicFilterOptions: IOption[] | null;
+
+  onProjectFilter: ((filter: IOption) => void) | null;
+  onGroupFilter: ((filter: IOption) => void) | null;
+  onTopicFilter: ((filter: IOption) => void) | null;
 }
 
 export default class ChartFilters extends PureComponent<Props> {
   render() {
     const {
+      configuration: { showProjectFilter, showGroupFilter, showTopicFilter },
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
@@ -52,7 +59,7 @@ export default class ChartFilters extends PureComponent<Props> {
 
     return (
       <Container>
-        {projectFilterOptions && onProjectFilter && (
+        {showProjectFilter && onProjectFilter && (
           <FilterContainer>
             <HiddenLabel>
               <FormattedMessage {...messages.hiddenLabelProjectFilter} />
@@ -66,7 +73,7 @@ export default class ChartFilters extends PureComponent<Props> {
           </FilterContainer>
         )}
 
-        {groupFilterOptions && onGroupFilter && (
+        {showGroupFilter && onGroupFilter && (
           <FilterContainer>
             <HiddenLabel>
               <FormattedMessage {...messages.hiddenLabelGroupFilter} />
@@ -80,7 +87,7 @@ export default class ChartFilters extends PureComponent<Props> {
           </FilterContainer>
         )}
 
-        {topicFilterOptions && onTopicFilter && (
+        {showTopicFilter && onTopicFilter && (
           <FilterContainer>
             <HiddenLabel>
               <FormattedMessage {...messages.hiddenLabelTopicFilter} />

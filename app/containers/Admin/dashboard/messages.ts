@@ -52,10 +52,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
     defaultMessage: 'Votes on ideas',
   },
-  fiveIdeasWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes',
-    defaultMessage: '5 Ideas With Most Votes',
-  },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',
@@ -250,14 +246,6 @@ export default defineMessages({
   _blank: {
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
-  },
-  true: {
-    id: 'app.containers.AdminPage.DashboardPage.true',
-    defaultMessage: 'true',
-  },
-  false: {
-    id: 'app.containers.AdminPage.DashboardPage.false',
-    defaultMessage: 'false',
   },
   outsideArea: {
     id: 'app.containers.AdminPage.DashboardPage.outsideArea',
