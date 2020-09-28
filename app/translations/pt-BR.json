@@ -1814,6 +1814,8 @@
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Entre para ver este projeto.} other {Não há nenhum projeto aqui.}}",
   "app.containers.Projects.noUpcomingEvents": "Não há eventos futuros neste momento.",
   "app.containers.Projects.pastEvents": "Eventos passados",
+  "app.containers.Projects.phaseEnded": "",
+  "app.containers.Projects.phaseNotStartedYet": "",
   "app.containers.Projects.postYourIdea": "",
   "app.containers.Projects.previousPhase": "",
   "app.containers.Projects.project": "Projeto",
