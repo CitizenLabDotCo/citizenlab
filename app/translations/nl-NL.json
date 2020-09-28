@@ -1814,6 +1814,8 @@
   "app.containers.Projects.noProjectFoundHere": "Dit project werd niet gevonden.",
   "app.containers.Projects.noUpcomingEvents": "Er zijn momenteel geen aankomende activiteiten",
   "app.containers.Projects.pastEvents": "Voorbije activiteiten",
+  "app.containers.Projects.phaseEnded": "",
+  "app.containers.Projects.phaseNotStartedYet": "",
   "app.containers.Projects.postYourIdea": "",
   "app.containers.Projects.previousPhase": "",
   "app.containers.Projects.project": "Project",
