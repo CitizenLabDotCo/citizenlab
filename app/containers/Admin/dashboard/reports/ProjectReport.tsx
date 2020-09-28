@@ -45,14 +45,6 @@ import ExportMenu from '../components/ExportMenu';
 import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 
-interface InputProps {
-  project: IProjectData;
-}
-interface DataProps {
-  phases: GetPhasesChildProps;
-  mostVotedIdeas: GetIdeasChildProps;
-}
-
 const Section = styled.div`
   margin-bottom: 20px;
 `;
@@ -63,6 +55,25 @@ const RowSection = styled.div`
   flex-direction: row;
   margin-bottom: 20px;
 `;
+
+const TimelineSection = styled.div`
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: -24px 0 20px -24px;
+  width: calc(100% + 24px);
+
+  > * {
+    margin: 24px 0 0 24px;
+  }
+`;
+
+interface InputProps {
+  project: IProjectData;
+}
+interface DataProps {
+  phases: GetPhasesChildProps;
+  mostVotedIdeas: GetIdeasChildProps;
+}
 
 interface Props extends InputProps, DataProps {}
 
@@ -83,53 +94,35 @@ const ProjectReport = memo(
     const [endAt, setEndAt] = useState<string | null>(null);
 
     useEffect(() => {
-      if (!isTimelineProject) {
-        setTimeRange(project, setStartAt, setEndAt, setResolution);
-      }
-    }, [project]);
+      if (isTimelineProject) {
+        if (!isNilOrError(phases) && phases.length > 0) {
+          const startAt = phases[0].attributes.start_at;
+          const endAt = phases[phases.length - 1].attributes.end_at;
+          setStartAt(startAt);
+          setEndAt(endAt);
 
-    useEffect(() => {
-      if (isTimelineProject && !isNilOrError(phases) && phases.length > 0) {
-        const startAt = phases[0].attributes.start_at;
-        const endAt = phases[phases.length - 1].attributes.end_at;
-        setStartAt(startAt);
-        setEndAt(endAt);
-
-        const timeDiff = moment.duration(moment(endAt).diff(moment(startAt)));
-        setResolution(
-          timeDiff
-            ? timeDiff.asMonths() > 6
-              ? 'month'
-              : timeDiff.asWeeks() > 4
-              ? 'week'
-              : 'day'
-            : 'month'
-        );
+          const resolution = getResolution(moment(startAt), moment(endAt));
+          setResolution(resolution);
+        }
       } else {
-        setTimeRange(project, setStartAt, setEndAt, setResolution);
+        const startAt = project.attributes.created_at;
+        setStartAt(startAt);
+        setEndAt(moment().toISOString());
+
+        const resolution = getResolution(moment(startAt), moment());
+        setResolution(resolution);
       }
-    }, [phases]);
+    }, [project, phases]);
 
-    const setTimeRange = (
-      project: IProjectData,
-      setStartAt: React.Dispatch<React.SetStateAction<string | null>>,
-      setEndAt: React.Dispatch<React.SetStateAction<string | null>>,
-      setResolution: React.Dispatch<React.SetStateAction<IResolution>>
-    ) => {
-      const startAt = project.attributes.created_at;
-      setStartAt(startAt);
-      setEndAt(moment().toISOString());
-
-      const timeDiff = moment.duration(moment().diff(moment(startAt)));
-      setResolution(
-        timeDiff
-          ? timeDiff.asMonths() > 6
-            ? 'month'
-            : timeDiff.asWeeks() > 4
-            ? 'week'
-            : 'day'
-          : 'month'
-      );
+    const getResolution = (start, end) => {
+      const timeDiff = moment.duration(start.diff(end));
+      return timeDiff
+        ? timeDiff.asMonths() > 6
+          ? 'month'
+          : timeDiff.asWeeks() > 4
+          ? 'week'
+          : 'day'
+        : 'month';
     };
 
     const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
@@ -147,9 +140,9 @@ const ProjectReport = memo(
         ? []
         : deduplicate(getParticipationMethods(phases, project));
 
-    if (!startAt || !endAt) {
-      return null;
-    }
+    // if ((!startAt || !endAt)) {
+    //   return null;
+    // }
 
     const projectTitle = localize(project.attributes.title_multiloc);
 
@@ -188,26 +181,32 @@ const ProjectReport = memo(
         <Section>
           <SectionTitle>
             Project Type :{' '}
-            {isTimelineProject ? 'Timeline Project' : 'Continous'}
+            {isTimelineProject ? 'Timeline Project' : 'Continuous'}
           </SectionTitle>
         </Section>
-        {isTimelineProject && !isNilOrError(phases) && phases.length > 0 ? (
-          <RowSection>
-            {phases.map((phase, index) => {
-              return (
-                <Section key={index}>
-                  <p>
-                    from {phase.attributes.start_at} to{' '}
-                    {phase.attributes.end_at}
-                  </p>
-                  <div>{phase.attributes.participation_method}</div>
-                  <div>{localize(phase.attributes.title_multiloc)}</div>
-                </Section>
-              );
-            })}
-          </RowSection>
+
+        {isTimelineProject ? (
+          <TimelineSection>
+            {!isNilOrError(phases) && phases.length > 0
+              ? phases.map((phase, index) => {
+                  return (
+                    <Section key={index}>
+                      <p>
+                        from {phase.attributes.start_at} to{' '}
+                        {phase.attributes.end_at}
+                      </p>
+                      <div>{phase.attributes.participation_method}</div>
+                      <div>{localize(phase.attributes.title_multiloc)}</div>
+                    </Section>
+                  );
+                })
+              : 'No configured phase'}
+          </TimelineSection>
         ) : (
-          <Section>"No configured phase"</Section>
+          <Section>
+            <p>Created on {startAt}</p>
+            <div>{project.attributes.participation_method}</div>
+          </Section>
         )}
 
         <Section>
@@ -215,7 +214,7 @@ const ProjectReport = memo(
             <FormattedMessage {...messages.sectionWho} />
           </SectionTitle>
           <GraphsContainer>
-            {participationMethods !== ['information'] && (
+            {participationMethods !== ['information'] && startAt && endAt && (
               <LineBarChart
                 graphTitle={formatMessage(messages.participantsOverTimeTitle)}
                 xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
@@ -237,7 +236,7 @@ const ProjectReport = memo(
             <FormattedMessage {...messages.sectionWhat} />
           </SectionTitle>
           <GraphsContainer>
-            {participationMethods.includes('ideation') && (
+            {participationMethods.includes('ideation') && startAt && endAt && (
               <>
                 <LineBarChart
                   graphTitle={formatMessage(messages.ideasByTimeTitle)}
