@@ -1814,6 +1814,8 @@
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Conectați-vă pentru a vizualiza acest proiect.} other {Nu există niciun proiect aici.}}",
   "app.containers.Projects.noUpcomingEvents": "Nu există evenimente în viitorul apropiat",
   "app.containers.Projects.pastEvents": "Evenimente trecute",
+  "app.containers.Projects.phaseEnded": "",
+  "app.containers.Projects.phaseNotStartedYet": "",
   "app.containers.Projects.postYourIdea": "",
   "app.containers.Projects.previousPhase": "",
   "app.containers.Projects.project": "Proiect",

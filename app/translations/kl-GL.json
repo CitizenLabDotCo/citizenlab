@@ -1814,6 +1814,8 @@
   "app.containers.Projects.noProjectFoundHere": "Uani suliniuteqartoqanngilaq",
   "app.containers.Projects.noUpcomingEvents": "Maanna pisussaqanngilaq",
   "app.containers.Projects.pastEvents": "Siusinnerusukkut pisimasut",
+  "app.containers.Projects.phaseEnded": "",
+  "app.containers.Projects.phaseNotStartedYet": "",
   "app.containers.Projects.postYourIdea": "",
   "app.containers.Projects.previousPhase": "",
   "app.containers.Projects.project": "Suliniut",
