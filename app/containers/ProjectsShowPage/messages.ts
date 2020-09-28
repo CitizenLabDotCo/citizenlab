@@ -93,6 +93,14 @@ export default defineMessages({
     id: 'app.containers.Projects.noPhaseSelected',
     defaultMessage: 'No phase selected',
   },
+  endedOn: {
+    id: 'app.containers.Projects.endedOn',
+    defaultMessage: 'Ended on {date}',
+  },
+  endsOn: {
+    id: 'app.containers.Projects.endsOn',
+    defaultMessage: 'Ends on {date}',
+  },
   startsOn: {
     id: 'app.containers.Projects.startsOn',
     defaultMessage: 'Starts on {date}',
@@ -100,14 +108,6 @@ export default defineMessages({
   startedOn: {
     id: 'app.containers.Projects.startedOn',
     defaultMessage: 'Started on {date}',
-  },
-  endsOn: {
-    id: 'app.containers.Projects.endsOn',
-    defaultMessage: 'Ends on {date}',
-  },
-  endedOn: {
-    id: 'app.containers.Projects.endedOn',
-    defaultMessage: 'Ended on {date}',
   },
   previousPhase: {
     id: 'app.containers.Projects.previousPhase',
@@ -119,7 +119,7 @@ export default defineMessages({
   },
   currentPhase: {
     id: 'app.containers.Projects.currentPhase',
-    defaultMessage: 'Currently active phase',
+    defaultMessage: 'Current phase',
   },
   navSurvey: {
     id: 'app.containers.Projects.navSurvey',
@@ -269,5 +269,13 @@ export default defineMessages({
   seeLess: {
     id: 'app.containers.Projects.seeLess',
     defaultMessage: 'See less',
+  },
+  phaseEnded: {
+    id: 'app.containers.Projects.phaseEnded',
+    defaultMessage: 'This phase has ended',
+  },
+  phaseNotStartedYet: {
+    id: 'app.containers.Projects.phaseNotStartedYet',
+    defaultMessage: `This phase hasn't started yet`,
   },
 });

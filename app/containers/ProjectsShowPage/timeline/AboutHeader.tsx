@@ -25,15 +25,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div<{ bottomMargin: string }>`
   display: flex;
-  margin-bottom: ${(props) => props.bottomMargin};
-`;
-
-const Left = styled.div`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
-  display: flex;
   align-items: center;
+  margin-bottom: ${(props) => props.bottomMargin};
 `;
 
 const PhaseNumberWrapper = styled.div`
@@ -115,14 +108,13 @@ const HeaderSubtitle = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base - 1}px;
   line-height: normal;
-  font-weight: 300;
+  font-weight: 400;
   display: flex;
   align-items: center;
-`;
 
-const DatesSeparator = styled.span`
-  margin-left: 5px;
-  margin-right: 5px;
+  &.present {
+    color: ${colors.clGreen};
+  }
 `;
 
 interface Props {
@@ -162,7 +154,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
       ? indexOf(phaseIds, selectedPhaseId) + 1
       : null;
     const isSelected = selectedPhaseId !== null;
-    const phaseStatus =
+    const selectedPhaseStatus =
       selectedPhase &&
       pastPresentOrFuture([
         selectedPhase.attributes.start_at,
@@ -186,47 +178,60 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
         className={className || ''}
         bottomMargin={phases.length > 1 ? '30px' : '15px'}
       >
-        <Left>
-          {isSelected && phases.length > 1 && (
-            <PhaseNumberWrapper
-              aria-hidden
-              className={`${isSelected && 'selected'} ${phaseStatus}`}
+        {isSelected && phases.length > 1 && (
+          <PhaseNumberWrapper
+            aria-hidden
+            className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
+          >
+            <PhaseNumber
+              className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
             >
-              <PhaseNumber
-                className={`${isSelected && 'selected'} ${phaseStatus}`}
-              >
-                {selectedPhaseNumber}
-              </PhaseNumber>
-            </PhaseNumberWrapper>
-          )}
+              {selectedPhaseNumber}
+            </PhaseNumber>
+          </PhaseNumberWrapper>
+        )}
 
-          <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
-            <HeaderTitle
-              aria-hidden
-              className={`${isSelected && 'selected'} ${phaseStatus}`}
-            >
-              {selectedPhaseTitle || (
-                <FormattedMessage {...messages.noPhaseSelected} />
-              )}
-            </HeaderTitle>
-            {selectedPhase && phases.length > 1 && (
-              <HeaderSubtitle className={phaseStatus || ''}>
-                {startDate}
-                <DatesSeparator>→</DatesSeparator>
-                {endDate}
-              </HeaderSubtitle>
+        <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
+          <HeaderTitle
+            aria-hidden
+            className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
+          >
+            {selectedPhaseTitle || (
+              <FormattedMessage {...messages.noPhaseSelected} />
             )}
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...messages.a11y_selectedPhaseX}
-                values={{
-                  selectedPhaseNumber,
-                  selectedPhaseTitle,
-                }}
-              />
-            </ScreenReaderOnly>
-          </HeaderTitleWrapper>
-        </Left>
+          </HeaderTitle>
+          {selectedPhase && phases.length > 1 && (
+            <HeaderSubtitle className={selectedPhaseStatus || ''}>
+              {selectedPhaseStatus === 'past' && (
+                <FormattedMessage
+                  {...messages.endedOn}
+                  values={{ date: endDate }}
+                />
+              )}
+              {selectedPhaseStatus === 'present' && (
+                <FormattedMessage
+                  {...messages.endsOn}
+                  values={{ date: endDate }}
+                />
+              )}
+              {selectedPhaseStatus === 'future' && (
+                <FormattedMessage
+                  {...messages.startsOn}
+                  values={{ date: startDate }}
+                />
+              )}
+            </HeaderSubtitle>
+          )}
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.a11y_selectedPhaseX}
+              values={{
+                selectedPhaseNumber,
+                selectedPhaseTitle,
+              }}
+            />
+          </ScreenReaderOnly>
+        </HeaderTitleWrapper>
       </Container>
     );
   }

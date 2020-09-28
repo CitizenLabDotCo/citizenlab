@@ -6,7 +6,7 @@ import React, {
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
+import { sortBy, last, isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
@@ -210,10 +210,23 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       process_type,
       participation_method,
       publication_status,
-      created_at,
+      // created_at,
       ideas_count,
       avatars_count,
     } = project.attributes;
+
+    // const firstPhase = !isNilOrError(phases)
+    //   ? first(sortBy(phases, [(phase) => phase.attributes.start_at]))
+    //   : null;
+    const lastPhase = !isNilOrError(phases)
+      ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
+      : null;
+    const hasLastPhaseEnded = lastPhase
+      ? pastPresentOrFuture([
+          lastPhase.attributes.start_at,
+          lastPhase.attributes.end_at,
+        ]) === 'past'
+      : false;
 
     const actionButtons = (
       <ActionButtons>
@@ -283,13 +296,35 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.aboutThisProject} />
             </Title>
             <List>
-              {process_type === 'continuous' && (
+              {/* {process_type === 'continuous' && (
                 <ListItem>
                   <ListItemIcon name="flag" />
                   <FormattedMessage
                     {...messages.startedOn}
                     values={{
                       date: moment(created_at).format('ll'),
+                    }}
+                  />
+                </ListItem>
+              )}
+              {process_type === 'timeline' && !hasLastPhaseEnded && firstPhase && (
+                <ListItem>
+                  <ListItemIcon name="flag" />
+                  <FormattedMessage
+                    {...messages.startedOn}
+                    values={{
+                      date: moment(firstPhase.attributes.start_at).format('ll'),
+                    }}
+                  />
+                </ListItem>
+              )} */}
+              {hasLastPhaseEnded && lastPhase && (
+                <ListItem>
+                  <ListItemIcon name="flag" />
+                  <FormattedMessage
+                    {...messages.endedOn}
+                    values={{
+                      date: moment(lastPhase.attributes.end_at).format('ll'),
                     }}
                   />
                 </ListItem>

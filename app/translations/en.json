@@ -1781,7 +1781,7 @@
   "app.containers.Projects.archived": "Archived",
   "app.containers.Projects.budgetExceeded": "Your expenses exceed the total assignable budget",
   "app.containers.Projects.budgetValidated": "Expenses confirmed, congratulations!",
-  "app.containers.Projects.currentPhase": "Currently active phase",
+  "app.containers.Projects.currentPhase": "Current phase",
   "app.containers.Projects.endedOn": "Ended on {date}",
   "app.containers.Projects.endsOn": "Ends on {date}",
   "app.containers.Projects.events": "Events",

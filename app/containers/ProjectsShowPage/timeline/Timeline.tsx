@@ -92,13 +92,13 @@ const PhaseNavigationButtonWrapper = styled.div``;
 const PhaseButton = styled(Button)``;
 
 const PreviousPhaseButton = styled(PhaseButton)`
-  margin-right: 3px;
+  margin-right: 5px;
 `;
 
 const CurrentPhaseButton = styled(PhaseButton)``;
 
 const NextPhaseButton = styled(PhaseButton)`
-  margin-left: 3px;
+  margin-left: 5px;
 `;
 
 const Phases = styled.div`
@@ -502,6 +502,8 @@ class Timeline extends PureComponent<
           return accumulator + numberOfDays;
         });
 
+      const navButtonSize = '33px';
+
       return (
         <Container
           id="project-timeline"
@@ -534,11 +536,11 @@ class Timeline extends PureComponent<
                         iconColor={colors.label}
                         buttonStyle="white"
                         textColor={colors.label}
-                        width="35px"
-                        height="30px"
+                        width={navButtonSize}
+                        height={navButtonSize}
                         padding="0px"
-                        borderColor="#eee"
-                        borderHoverColor="#ccc"
+                        borderColor="transparent"
+                        borderHoverColor="transparent"
                         boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
                         boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                         disabled={selectedPhaseId === phases.data[0].id}
@@ -565,11 +567,11 @@ class Timeline extends PureComponent<
                           iconSize="8px"
                           iconColor={colors.clGreen}
                           buttonStyle="white"
-                          width="35px"
-                          height="30px"
+                          width={navButtonSize}
+                          height={navButtonSize}
                           padding="0px"
-                          borderColor="#eee"
-                          borderHoverColor="#ccc"
+                          borderColor="transparent"
+                          borderHoverColor="transparent"
                           boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
                           boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                           disabled={selectedPhaseId === currentPhaseId}
@@ -598,13 +600,13 @@ class Timeline extends PureComponent<
                         iconSize="12px"
                         iconColor={colors.label}
                         buttonStyle="white"
-                        width="35px"
-                        height="30px"
+                        width={navButtonSize}
+                        height={navButtonSize}
                         padding="0px"
-                        borderColor="#eee"
-                        borderHoverColor="#ccc"
+                        borderColor="transparent"
+                        borderHoverColor="transparent"
                         boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
-                        boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
+                        boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.15)"
                         disabled={
                           selectedPhaseId ===
                           phases.data[phases.data.length - 1].id

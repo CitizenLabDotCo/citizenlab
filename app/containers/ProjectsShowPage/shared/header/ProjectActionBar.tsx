@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { isNilOrError } from 'utils/helperUtils';
+import { CSSTransition } from 'react-transition-group';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -22,6 +23,10 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 import { fontSizes, media, colors, viewportWidths } from 'utils/styleUtils';
 
+const slideInOutTimeout = 250;
+const slideInOutDistance = 14;
+const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+
 const Container = styled.div`
   width: 100vw;
   position: fixed;
@@ -33,6 +38,7 @@ const Container = styled.div`
   opacity: 0;
   pointer-events: none;
   will-change: opacity;
+  overflow: hidden;
 
   &.visible {
     opacity: 100;
@@ -92,6 +98,38 @@ const Right = styled.div`
   `}
 `;
 
+const StyledIdeaButton = styled(IdeaButton)`
+  opacity: 1;
+
+  &.ideabutton-enter {
+    transform: translateY(${slideInOutDistance}px);
+    opacity: 1;
+
+    &.ideabutton-enter-active {
+      transform: translateY(0px);
+      transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
+      opacity: 1;
+    }
+  }
+
+  &.ideabutton-enter-done {
+    opacity: 1;
+  }
+
+  &.ideabutton-exit {
+    opacity: 1;
+
+    &.ideabutton-exit-active {
+      opacity: 0;
+      transition: all ${slideInOutTimeout - 100}ms ${slideInOutEasing};
+    }
+  }
+
+  &.ideabutton-exit-done {
+    display: none;
+  }
+`;
+
 const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl - 2}px;
@@ -143,7 +181,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
           actionButtonElement &&
           actionButtonYOffset &&
           window.pageYOffset >
-            actionButtonYOffset - (smallerThanSmallTablet ? 14 : 34)
+            actionButtonYOffset - (smallerThanSmallTablet ? 14 : 40)
         );
         const actionBarVisible = !smallerThanSmallTablet
           ? window.pageYOffset > 78
@@ -176,28 +214,38 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
               </ProjectTitle>
             </Left>
             <Right>
-              {isActionButtonVisible &&
-                process_type === 'continuous' &&
+              {process_type === 'continuous' &&
                 participation_method === 'ideation' &&
                 publication_status !== 'archived' && (
-                  <IdeaButton
-                    projectId={project.id}
-                    participationContextType="project"
-                    fontWeight="500"
-                    width={!smallerThanSmallTablet ? '300px' : undefined}
-                  />
+                  <CSSTransition
+                    in={isActionButtonVisible}
+                    timeout={slideInOutTimeout}
+                    classNames="ideabutton"
+                  >
+                    <StyledIdeaButton
+                      projectId={project.id}
+                      participationContextType="project"
+                      fontWeight="500"
+                      width={!smallerThanSmallTablet ? '300px' : undefined}
+                    />
+                  </CSSTransition>
                 )}
-              {isActionButtonVisible &&
-                currentPhase?.attributes.participation_method ===
-                  'ideation' && (
-                  <IdeaButton
+
+              {currentPhase?.attributes.participation_method === 'ideation' && (
+                <CSSTransition
+                  in={isActionButtonVisible}
+                  timeout={slideInOutTimeout}
+                  classNames="ideabutton"
+                >
+                  <StyledIdeaButton
                     projectId={project.id}
-                    phaseId={currentPhase.id}
+                    phaseId={currentPhase?.id}
                     participationContextType="phase"
                     fontWeight="500"
                     width={!smallerThanSmallTablet ? '300px' : undefined}
                   />
-                )}
+                </CSSTransition>
+              )}
             </Right>
           </InnerContainer>
         </ContentContainer>
