@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map } from 'lodash-es';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
@@ -116,10 +117,10 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   convertToGraphFormat = (data: IUsersByGender) => {
-    const res = Object.keys(labelColors).map((gender) => ({
-      value: data.series.users[gender] || 0,
-      name: this.props.intl.formatMessage(messages[gender]),
-      code: gender,
+    const res = map(data.series.users, (value, key) => ({
+      value,
+      name: this.props.intl.formatMessage(messages[key]),
+      code: key,
     }));
     return res.length > 0 ? res : null;
   };

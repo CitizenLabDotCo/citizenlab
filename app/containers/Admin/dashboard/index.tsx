@@ -29,7 +29,6 @@ export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
-  width: 100%;
 `;
 
 export const GraphsContainer = styled.div`
@@ -204,7 +203,7 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
-export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes';
+export type IGraphUnit = 'users' | 'ideas' | 'comments';
 
 export type IResolution = 'day' | 'week' | 'month';
 
@@ -226,7 +225,6 @@ export const chartTheme = (theme) => {
     chartLabelColor: colors.adminSecondaryTextColor,
     barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
-    chartCategorySize: fontSizes.base,
     animationBegin: 10,
     animationDuration: 200,
     cartesianGridColor: '#f5f5f5',
@@ -246,10 +244,6 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
-      },
-      {
-        label: formatMessage(messages.tabReports),
-        url: '/admin/dashboard/reports',
       },
     ];
 

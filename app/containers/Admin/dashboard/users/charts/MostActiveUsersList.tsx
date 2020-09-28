@@ -224,7 +224,7 @@ class MostActiveUsersList extends PureComponent<
               )}
             </GraphCardTitle>
           </GraphCardHeader>
-          {!engagementScoreList || engagementScoreList.length === 0 ? (
+          {!engagementScoreList ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>

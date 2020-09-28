@@ -88,19 +88,19 @@ interface Props {
   className?: string;
   graphUnit: IGraphUnit;
   graphUnitMessageKey: string;
-  graphTitle: string;
+  graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
   barStream: (streamParams: IStreamParams | null) => IStreams;
   lineStream: (streamParams: IStreamParams | null) => IStreams;
   infoMessage?: string;
-  currentProjectFilterLabel?: string;
-  currentGroupFilterLabel?: string;
-  currentTopicFilterLabel?: string;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
   xlsxEndpoint: string;
 }
 
@@ -121,7 +121,22 @@ class LineBarChart extends React.PureComponent<
   }
 
   componentDidMount() {
-    this.resubscribe();
+    const {
+      startAt,
+      endAt,
+      resolution,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter,
+    } = this.props;
+    this.resubscribe(
+      startAt,
+      endAt,
+      resolution,
+      currentProjectFilter,
+      currentGroupFilter,
+      currentTopicFilter
+    );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -142,7 +157,14 @@ class LineBarChart extends React.PureComponent<
       currentTopicFilter !== prevProps.currentTopicFilter ||
       currentProjectFilter !== prevProps.currentProjectFilter
     ) {
-      this.resubscribe();
+      this.resubscribe(
+        startAt,
+        endAt,
+        resolution,
+        currentProjectFilter,
+        currentGroupFilter,
+        currentTopicFilter
+      );
     }
   }
 
@@ -174,17 +196,15 @@ class LineBarChart extends React.PureComponent<
     return convertedSerie;
   };
 
-  resubscribe() {
-    const {
-      barStream,
-      lineStream,
-      startAt,
-      endAt,
-      resolution,
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter,
-    } = this.props;
+  resubscribe(
+    startAt: string | null | undefined,
+    endAt: string | null,
+    resolution: IResolution,
+    currentGroupFilter: string | undefined,
+    currentTopicFilter: string | undefined,
+    currentProjectFilter: string | undefined
+  ) {
+    const { barStream, lineStream } = this.props;
 
     if (this.combined$) {
       this.combined$.unsubscribe();
@@ -274,7 +294,7 @@ class LineBarChart extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitle, infoMessage } = this.props;
+    const { className, graphTitleMessageKey, infoMessage } = this.props;
     const { serie } = this.state;
 
     const {
@@ -299,7 +319,7 @@ class LineBarChart extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              {graphTitle}
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
               {infoMessage && (
                 <Popup
                   basic
@@ -322,7 +342,7 @@ class LineBarChart extends React.PureComponent<
             {!noData && (
               <ExportMenu
                 svgNode={this.currentChart}
-                name={graphTitle}
+                name={formatMessage(messages[graphTitleMessageKey])}
                 {...this.props}
               />
             )}
