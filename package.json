@@ -125,7 +125,7 @@
     "smoothscroll-polyfill": "0.4.4",
     "webfontloader": "1.6.28",
     "whatwg-fetch": "3.3.1",
-    "cl2-component-library": "0.5.29"
+    "cl2-component-library": "0.5.30"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
