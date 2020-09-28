@@ -1814,6 +1814,8 @@
   "app.containers.Projects.noProjectFoundHere": "Aucun projet n'est disponible ici",
   "app.containers.Projects.noUpcomingEvents": "Il n'y a pas d'événements à venir",
   "app.containers.Projects.pastEvents": "Evénements passés",
+  "app.containers.Projects.phaseEnded": "",
+  "app.containers.Projects.phaseNotStartedYet": "",
   "app.containers.Projects.postYourIdea": "",
   "app.containers.Projects.previousPhase": "",
   "app.containers.Projects.project": "Projet",
