@@ -6,14 +6,15 @@ import { isNilOrError } from 'utils/helperUtils';
 import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
+import EnalyzerSurvey from './EnalyzerSurvey';
 import Warning from 'components/UI/Warning';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
 import {
   getSurveyTakingRules,
-  DisabledReasons,
-} from 'services/surveyTakingRules';
+  ISurveyTakingDisabledReason,
+} from 'services/actionTakingRules';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -110,10 +111,11 @@ class Survey extends PureComponent<Props, State> {
   };
 
   disabledMessage: {
-    [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor;
+    [key in ISurveyTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
   } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
+    maybeNotVerified: messages.surveyDisabledMaybeNotVerified,
     notPermitted: messages.surveyDisabledNotPermitted,
     notActivePhase: messages.surveyDisabledNotActivePhase,
     notVerified: messages.surveyDisabledNotVerified,
@@ -163,6 +165,9 @@ class Survey extends PureComponent<Props, State> {
 
             {surveyService === 'google_forms' && (
               <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
+            )}
+            {surveyService === 'enalyzer' && (
+              <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
             )}
           </Container>
         );

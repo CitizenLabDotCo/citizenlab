@@ -9,34 +9,55 @@ type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
-export type PostingDisabledReasons =
+
+// keys in project.attributes.action_descriptor
+export type IProjectAction =
+  | 'commenting_idea'
+  | 'voting_idea'
+  | 'comment_voting_idea'
+  | 'posting_idea'
+  | 'taking_survey'
+  | 'taking_poll';
+
+export type PostingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'posting_disabled'
   | 'not_permitted'
-  | 'not_verified';
-export type CommentingDisabledReasons =
+  | 'not_verified'
+  | 'not_signed_in';
+
+export type CommentingDisabledReason =
+  | 'not_verified'
   | 'project_inactive'
   | 'not_supported'
   | 'commenting_disabled'
-  | 'not_permitted';
-export type VotingDisabledReasons =
+  | 'not_permitted'
+  | 'not_signed_in';
+
+export type VotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
   | 'not_permitted'
-  | 'voting_limited_max_reached';
-export type SurveyDisabledReasons =
+  | 'voting_limited_max_reached'
+  | 'not_signed_in';
+
+export type SurveyDisabledReason =
   | 'project_inactive'
   | 'not_survey'
   | 'not_permitted'
-  | 'not_verified';
-export type PollDisabledReasons =
+  | 'not_verified'
+  | 'not_signed_in';
+
+export type PollDisabledReason =
   | 'project_inactive'
   | 'not_poll'
   | 'not_permitted'
   | 'already_responded'
-  | 'not_verified';
+  | 'not_verified'
+  | 'not_signed_in';
+
 export interface IProjectData {
   id: string;
   type: 'project';
@@ -70,26 +91,26 @@ export interface IProjectData {
     ordering: number;
     poll_anonymous?: boolean;
     action_descriptor: {
-      posting: {
+      posting_idea: {
         enabled: boolean;
         future_enabled: string | null;
-        disabled_reason: PostingDisabledReasons | null;
+        disabled_reason: PostingDisabledReason | null;
       };
-      commenting: {
+      commenting_idea: {
         enabled: boolean;
-        disabled_reason: CommentingDisabledReasons | null;
+        disabled_reason: CommentingDisabledReason | null;
       };
-      voting: {
+      voting_idea: {
         enabled: boolean;
-        disabled_reason: VotingDisabledReasons | null;
+        disabled_reason: VotingDisabledReason | null;
       };
       taking_survey: {
         enabled: boolean;
-        disabled_reason: SurveyDisabledReasons | null;
+        disabled_reason: SurveyDisabledReason | null;
       };
       taking_poll: {
         enabled: boolean;
-        disabled_reason: PollDisabledReasons | null;
+        disabled_reason: PollDisabledReason | null;
       };
     };
   };
@@ -205,7 +226,7 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
 }
 
 export async function updateProject(
-  projectId,
+  projectId: string,
   projectData: IUpdatedProjectProperties
 ) {
   const response = await streams.update<IProject>(

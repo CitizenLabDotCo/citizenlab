@@ -14,6 +14,7 @@ import { media } from 'utils/styleUtils';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
+import ExportMenu from '../../components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -27,12 +28,14 @@ import {
   NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
+  IResolution,
 } from '../..';
 import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
 const SHiddenLabel = styled(HiddenLabel)`
   flex: 1;
+  margin-right: 15px;
   @media (max-width: 1300px) {
     width: 100%;
   }
@@ -55,6 +58,12 @@ import {
   IIdeasByProject,
   ICommentsByProject,
   IVotesByProject,
+  ideasByTopicXlsxEndpoint,
+  ideasByProjectXlsxEndpoint,
+  commentsByTopicXlsxEndpoint,
+  commentsByProjectXlsxEndpoint,
+  votesByTopicXlsxEndpoint,
+  votesByProjectXlsxEndpoint,
 } from 'services/stats';
 import { IStreamParams, IStream } from 'utils/streams';
 import { IResource } from '..';
@@ -75,13 +84,17 @@ type ISupportedData =
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
   stream: (streamParams?: IStreamParams | null) => IStream<ISupportedData>;
   convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | undefined;
   byWhat: 'Topic' | 'Project';
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
+  currentProjectFilterLabel: string | undefined;
+  currentGroupFilterLabel: string | undefined;
+  currentTopicFilterLabel: string | undefined;
+  resolution: IResolution;
 }
 
 interface InputProps extends QueryProps {
@@ -101,6 +114,11 @@ interface InputProps extends QueryProps {
 interface Props extends InputProps, DataProps {}
 
 class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
+  currentChart: React.RefObject<any>;
+  constructor(props: Props & InjectedIntlProps) {
+    super(props as any);
+    this.currentChart = React.createRef();
+  }
   render() {
     const {
       chartFill,
@@ -133,6 +151,16 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
             selectedName,
           })
         : selectedResourceName;
+
+    const xlsxEndpointTable = {
+      ideasTopic: ideasByTopicXlsxEndpoint,
+      commentsTopic: commentsByTopicXlsxEndpoint,
+      votesTopic: votesByTopicXlsxEndpoint,
+      ideasProject: ideasByProjectXlsxEndpoint,
+      commentsProject: commentsByProjectXlsxEndpoint,
+      votesProject: votesByProjectXlsxEndpoint,
+    };
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -151,6 +179,17 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 options={resourceOptions}
               />
             </SHiddenLabel>
+            {serie && (
+              <ExportMenu
+                className=""
+                svgNode={this.currentChart}
+                name={formatMessage(messages[`participationPer${byWhat}`])}
+                {...this.props}
+                xlsxEndpoint={
+                  xlsxEndpointTable[currentSelectedResource + byWhat]
+                }
+              />
+            )}
           </GraphCardHeaderWithFilter>
           {!serie ? (
             <NoDataContainer>
@@ -172,8 +211,14 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                   values={{ selectedCount, selectedName, selectedResourceName }}
                 />
               )}
-              <ResponsiveContainer height={serie.length * 50}>
-                <BarChart data={convertedSerie} layout="vertical">
+              <ResponsiveContainer
+                height={serie.length > 1 ? serie.length * 50 : 100}
+              >
+                <BarChart
+                  data={convertedSerie}
+                  layout="vertical"
+                  ref={this.currentChart}
+                >
                   <Bar
                     dataKey="value"
                     name={unitName}

@@ -25,7 +25,7 @@ export default function updateLocationDescriptor(
     }
   }
 
-  descriptor.state = { ...descriptor.state, locale };
+  descriptor.state = { ...(descriptor.state as object), locale };
 
   return descriptor;
 }

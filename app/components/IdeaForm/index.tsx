@@ -636,6 +636,9 @@ class IdeaForm extends PureComponent<
       imageError,
       attachmentsError,
     } = this.state;
+
+    const mapsLoaded = window.googleMaps;
+
     const tenantCurrency = tenant
       ? tenant.data.attributes.settings.core.currency
       : '';
@@ -829,7 +832,7 @@ class IdeaForm extends PureComponent<
                 </FormElement>
               )}
 
-              {showLocation && (
+              {showLocation && mapsLoaded && (
                 <FormElement>
                   <FormLabel
                     labelMessage={messages.locationTitle}

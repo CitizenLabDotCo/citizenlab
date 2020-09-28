@@ -422,7 +422,7 @@ export class IdeasShow extends PureComponent<
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { actionInfos } = prevState;
-    const { idea, project, phases } = nextProps;
+    const { idea, project, phases, authUser } = nextProps;
     let stateToUpdate: Partial<State> | null = null;
 
     if (
@@ -433,13 +433,14 @@ export class IdeasShow extends PureComponent<
     ) {
       const upvotesCount = idea.attributes.upvotes_count;
       const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingEnabled =
+        idea.attributes.action_descriptor.voting_idea.enabled;
       const votingDisabledReason =
-        idea.attributes.action_descriptor.voting.disabled_reason;
+        idea.attributes.action_descriptor.voting_idea.disabled_reason;
       const cancellingEnabled =
-        idea.attributes.action_descriptor.voting.cancelling_enabled;
+        idea.attributes.action_descriptor.voting_idea.cancelling_enabled;
       const votingFutureEnabled =
-        idea.attributes.action_descriptor.voting.future_enabled;
+        idea.attributes.action_descriptor.voting_idea.future_enabled;
       const pbProject =
         project.attributes.process_type === 'continuous' &&
         project.attributes.participation_method === 'budgeting'
@@ -471,10 +472,15 @@ export class IdeasShow extends PureComponent<
         pbProject ||
         (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
       );
+      const isSignedIn = !isNilOrError(authUser);
       const shouldVerify =
-        !votingEnabled && votingDisabledReason === 'not_verified';
+        !votingEnabled && votingDisabledReason === 'not_verified' && isSignedIn;
       const verifiedButNotPermitted =
         !shouldVerify && votingDisabledReason === 'not_permitted';
+      const shouldSignIn =
+        !votingEnabled &&
+        (votingDisabledReason === 'not_signed_in' ||
+          (votingDisabledReason === 'not_verified' && !isSignedIn));
       const showVoteControl = !!(
         !showBudgetControl &&
         (votingEnabled ||
@@ -483,6 +489,7 @@ export class IdeasShow extends PureComponent<
           upvotesCount > 0 ||
           downvotesCount > 0 ||
           shouldVerify ||
+          shouldSignIn ||
           verifiedButNotPermitted)
       );
       const budgetingDescriptor =

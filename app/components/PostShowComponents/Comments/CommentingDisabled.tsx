@@ -52,8 +52,7 @@ class CommentingDisabled extends PureComponent<Props> {
       commentingDisabledReason,
     } = this.props;
     const isLoggedIn = !isNilOrError(authUser);
-
-    if (commentingEnabled && isLoggedIn) {
+    if (commentingEnabled) {
       return null;
     } else if (commentingDisabledReason === 'project_inactive') {
       return messages.commentingDisabledProjectInactive;
@@ -65,7 +64,7 @@ class CommentingDisabled extends PureComponent<Props> {
       return messages.commentingDisabledNotVerified;
     } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
       return messages.commentingNotPermitted;
-    } else if (!isLoggedIn && commentingDisabledReason === 'not_permitted') {
+    } else if (!isLoggedIn) {
       return messages.commentingMaybeNotPermitted;
     }
 
@@ -81,7 +80,7 @@ class CommentingDisabled extends PureComponent<Props> {
     if (pcId && pcType && commentingDisabledReason === 'not_verified') {
       openVerificationModal({
         context: {
-          action: 'commenting',
+          action: 'commenting_idea',
           id: pcId,
           type: pcType,
         },
@@ -104,7 +103,7 @@ class CommentingDisabled extends PureComponent<Props> {
         pcType
       )
         ? {
-            action: 'commenting',
+            action: 'commenting_idea',
             id: pcId,
             type: pcType,
           }

@@ -23,10 +23,10 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { ContextShape, isProjectContext } from './VerificationSteps';
 import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'services/locale';
+import { ContextShape } from './VerificationModal';
 
 const Container = styled.div`
   display: flex;
@@ -204,9 +204,7 @@ const VerificationMethods = memo<Props>(
     onSkipped,
     className,
   }) => {
-    const participationConditions = useParticipationConditions(
-      isProjectContext(context) ? context : null
-    );
+    const participationConditions = useParticipationConditions(context);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();

@@ -136,6 +136,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField',
     defaultMessage: 'System field',
   },
+  hiddenField: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField',
+    defaultMessage: 'Hidden field',
+  },
   required: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',
     defaultMessage: 'Required',

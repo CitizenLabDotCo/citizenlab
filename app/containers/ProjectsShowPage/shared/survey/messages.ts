@@ -19,6 +19,12 @@ export default defineMessages({
     defaultMessage:
       'Only certain users can take this survey. Please {signUpLink} or {logInLink} first.',
   },
+  surveyDisabledMaybeNotVerified: {
+    id:
+      'app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified',
+    defaultMessage:
+      'Only verified users can take this survey. Please {signUpLink} or {logInLink} first.',
+  },
   surveyDisabledNotPossible: {
     id:
       'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible',

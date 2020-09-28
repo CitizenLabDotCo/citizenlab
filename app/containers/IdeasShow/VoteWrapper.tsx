@@ -34,13 +34,14 @@ class VoteWrapper extends PureComponent<Props, State> {
     const prevIdea = prevProps.idea;
 
     if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
-      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingEnabled =
+        idea.attributes.action_descriptor.voting_idea.enabled;
       const prevVotingEnabled =
-        prevIdea.attributes.action_descriptor.voting.enabled;
+        prevIdea.attributes.action_descriptor.voting_idea.enabled;
       const votingDisabledReason =
-        idea.attributes.action_descriptor.voting.disabled_reason;
+        idea.attributes.action_descriptor.voting_idea.disabled_reason;
       const prevVotingDisabledReason =
-        prevIdea.attributes.action_descriptor.voting.disabled_reason;
+        prevIdea.attributes.action_descriptor.voting_idea.disabled_reason;
 
       if (
         votingEnabled !== prevVotingEnabled ||
@@ -61,7 +62,7 @@ class VoteWrapper extends PureComponent<Props, State> {
 
     const votingDescriptor = isNilOrError(idea)
       ? null
-      : idea.attributes.action_descriptor.voting;
+      : idea.attributes.action_descriptor.voting_idea;
 
     if (!ideaId || !votingDescriptor) return null;
 
