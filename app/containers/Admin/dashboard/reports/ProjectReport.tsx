@@ -1,20 +1,19 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import { isNilOrError } from 'utils/helperUtils';
-import moment, { Moment } from 'moment';
-import ResolutionControl from '../components/ResolutionControl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import styled, { ThemeProvider } from 'styled-components';
 
 // libs
 // import { map } from 'lodash-es';
 
 // resources
-import { IResolution, GraphsContainer, chartTheme } from '..';
+import { isNilOrError } from 'utils/helperUtils';
+import moment, { Moment } from 'moment';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import styled from 'styled-components';
+import messages from './messages';
+import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
   usersByTimeCumulativeXlsxEndpoint,
   usersByTimeCumulativeStream,
@@ -44,6 +43,7 @@ import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartW
 // import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import { IdeasByStatusChart } from '../components/IdeasByStatusChart';
+import ResolutionControl from '../components/ResolutionControl';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -125,6 +125,15 @@ const ProjectReport = memo(
         : 'month';
     };
 
+    const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
+      code: idea.id,
+      value: idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+      up: idea.attributes.upvotes_count,
+      down: idea.attributes.downvotes_count,
+      name: localize(idea.attributes.title_multiloc),
+      slug: idea.attributes.slug,
+    }));
+
     // deduplicated non-null participations methods in this project
     const participationMethods = (isTimelineProject
       ? isNilOrError(phases)
@@ -135,30 +144,57 @@ const ProjectReport = memo(
       (el, i, arr) => el && arr.indexOf(el) === i
     ) as ParticipationMethod[];
 
-    // if (!startAt || !endAt) {
+    // if ((!startAt || !endAt)) {
     //   return null;
     // }
 
     const projectTitle = localize(project.attributes.title_multiloc);
 
-    const mostVotedIdeasSerie = () => {
-      if (!isNilOrError(mostVotedIdeas.list)) {
-        const { list } = mostVotedIdeas;
-        const serie = list.map((idea) => {
-          return {
-            code: idea.id,
-            value:
-              idea.attributes.upvotes_count + idea.attributes.downvotes_count,
-            up: idea.attributes.upvotes_count,
-            down: idea.attributes.downvotes_count,
-            name: localize(idea.attributes.title_multiloc),
-            slug: idea.attributes.slug,
-          };
-        });
-        return serie.length > 0 ? serie : null;
-      }
-      return null;
-    };
+    // const mostVotedIdeasSerie = () => {
+    //   if (!isNilOrError(mostVotedIdeas.list)) {
+    //     const { list } = mostVotedIdeas;
+    //     const serie = list.map((idea) => {
+    //       return {
+    //         code: idea.id,
+    //         value:
+    //           idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+    //         up: idea.attributes.upvotes_count,
+    //         down: idea.attributes.downvotes_count,
+    //         name: localize(idea.attributes.title_multiloc),
+    //         slug: idea.attributes.slug,
+    //       };
+    //     });
+    //     return serie.length > 0 ? serie : null;
+    //   }
+    //   return null;
+
+    // }
+
+    // const convertIdeasByStatusToGraphFormat = (
+    //   ideasByStatus: IIdeasByStatus
+    // ) => {
+    //   const {
+    //     series: { ideas },
+    //     idea_status,
+    //   } = ideasByStatus;
+
+    //   if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
+    //     return null;
+    //   }
+
+    //   const ideasByStatusConvertedToGraphFormat = map(
+    //     ideas,
+    //     (value: number, key: string) => ({
+    //       value: value,
+    //       name: localize(idea_status[key].title_multiloc),
+    //       code: key,
+    //       color: idea_status[key].color,
+    //       ordering: idea_status[key].ordering,
+    //     })
+    //   );
+
+    //   return ideasByStatusConvertedToGraphFormat;
+    // };
 
     return (
       <>
@@ -271,7 +307,7 @@ const ProjectReport = memo(
                 />
 
                 <HorizontalBarChartWithoutStream
-                  serie={mostVotedIdeasSerie()}
+                  serie={mostVotedIdeasSerie}
                   graphTitleString={formatMessage(
                     messages.fiveIdeasWithMostVotes
                   )}

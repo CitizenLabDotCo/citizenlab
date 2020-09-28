@@ -35,7 +35,6 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 // types
 import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 import { IGraphFormat } from 'typings';
-import useLocalize from 'hooks/useLocalize';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 interface DataProps {
