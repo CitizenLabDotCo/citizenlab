@@ -1,8 +1,9 @@
 module SmartGroupRules
   class CustomFieldSelect
 
-    PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
+    PREDICATE_VALUES = %w(has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    MULTIVALUE_PREDICATES = %w(is_one_of not_is_one_of)
 
     include CustomFieldRule
 
@@ -25,11 +26,38 @@ module SmartGroupRules
             },
             "predicate" => {
               "type": "string",
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
             },
             "value" => {
               "description" => "The id of one of the options of the custom field",
               "$ref": "#/definitions/customFieldOptionId"
+            }
+          },
+        },
+        {
+          "type": "object",
+          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [rule_type],
+            },
+            "customFieldId" => {
+              "$ref": "#/definitions/customFieldId"
+            },
+            "predicate" => {
+              "type": "string",
+              "enum": MULTIVALUE_PREDICATES,
+            },
+            "value" => {
+              "description" => "The ids of some of the options of the custom field",
+              "type" => "array",
+              "items" => {
+                "$ref": "#/definitions/customFieldOptionId"
+              },
+              "uniqueItems" => true,
+              "minItems" => 1
             }
           },
         },
@@ -75,6 +103,12 @@ module SmartGroupRules
         when 'not_has_value'
           option_key = CustomFieldOption.find(value).key
           users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' != ?", option_key)
+        when 'is_one_of'
+          option_keys = CustomFieldOption.where(id: value).pluck :key
+          users_scope.where("custom_field_values->>'#{key}' IN ?", option_keys)
+        when 'not_is_one_of'
+          option_keys = CustomFieldOption.where(id: value).pluck :key
+          users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' NOT IN ?", option_keys)
         when 'is_empty'
           users_scope.where("custom_field_values->>'#{key}' IS NULL")
         when 'not_is_empty'
