@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
-import { map } from 'lodash-es';
 
 // components
 import { GraphsContainer, ControlBar, Column, IResolution } from '../';
@@ -13,8 +12,8 @@ import SelectableResourceByProjectChart from './charts/SelectableResourceByProje
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import TimeControl from '../components/TimeControl';
-import ExportMenu from '../components/ExportMenu';
 
 // typings
 import { IOption } from 'typings';
@@ -34,6 +33,7 @@ import GetProjects, {
   GetProjectsChildProps,
   PublicationStatus,
 } from 'resources/GetProjects';
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -49,10 +49,6 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
-  // usersByTimeXlsxEndpoint,
-  ideasByStatusStream,
-  ideasByStatusXlsxEndpoint,
-  IIdeasByStatus,
 } from 'services/stats';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
@@ -66,6 +62,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
   groups: GetGroupsChildProps;
   topics: GetTopicsChildProps;
+  mostVotedIdeas: GetIdeasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -300,6 +297,27 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     ];
   };
 
+  mostVotedIdeasSerie = () => {
+    const { localize, mostVotedIdeas } = this.props;
+
+    if (!isNilOrError(mostVotedIdeas.list)) {
+      const { list } = mostVotedIdeas;
+      const serie = list.map((idea) => {
+        return {
+          code: idea.id,
+          value:
+            idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+          up: idea.attributes.upvotes_count,
+          down: idea.attributes.downvotes_count,
+          name: localize(idea.attributes.title_multiloc),
+          slug: idea.attributes.slug,
+        };
+      });
+      return serie.length > 0 ? serie : null;
+    }
+    return null;
+  };
+
   render() {
     const {
       resolution,
@@ -399,43 +417,23 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               barStream={commentsByTimeStream}
               {...this.state}
             />
+
+            <HorizontalBarChartWithoutStream
+              serie={this.mostVotedIdeasSerie()}
+              graphTitleString={this.props.intl.formatMessage(
+                messages.fiveIdeasWithMostVotes
+              )}
+              graphUnit="votes"
+              className="fullWidth dynamicHeight"
+              {...this.state}
+            />
             <Column>
-              <HorizontalBarChart
-                graphTitleString={formatMessage(messages.ideasByStatusTitle)}
-                graphUnit="ideas"
-                stream={ideasByStatusStream}
-                convertToGraphFormat={this.convertIdeasByStatusToGraphFormat}
+              <IdeasByStatusChart
                 className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
-                exportMenu={
-                  <ExportMenu
-                    name={formatMessage(messages.ideasByStatusTitle)}
-                    startAt={startAt}
-                    endAt={endAt}
-                    xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                    {...this.state}
-                  />
-                }
+                {...this.state}
               />
-              <HorizontalBarChartWithoutStream
-                serie={this.fiveMostVotedIdeasSerie()}
-                graphTitleString={formatMessage(
-                  messages.fiveIdeasWithMostVotes
-                )}
-                graphUnit="votes"
-                className="fullWidth dynamicHeight"
-                exportMenu={
-                  <ExportMenu
-                    name={formatMessage(messages.fiveIdeasWithMostVotes)}
-                    startAt={startAt}
-                    endAt={endAt}
-                    xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                    {...this.state}
-                  />
-                }
-              />
-
               <SelectableResourceByProjectChart
                 className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                 onResourceByProjectChange={this.onResourceByProjectChange}
@@ -462,42 +460,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 {...this.state}
               />
-              <Column>
-                <IdeasByStatusChart
-                  className="fullWidth dynamicHeight"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <SelectableResourceByProjectChart
-                  className="dynamicHeight fullWidth e2e-resource-by-project-chart"
-                  onResourceByProjectChange={this.onResourceByProjectChange}
-                  resourceOptions={this.resourceOptions}
-                  projectOptions={projectFilterOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-              <Column>
-                <LineBarChartVotesByTime
-                  className="fullWidth e2e-votes-chart"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <SelectableResourceByTopicChart
-                  className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
-                  topicOptions={topicFilterOptions}
-                  onResourceByTopicChange={this.onResourceByTopicChange}
-                  resourceOptions={this.resourceOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-            </GraphsContainer>
-          </ThemeProvider>
+            </Column>
+          </GraphsContainer>
         </>
       );
     }
@@ -518,6 +482,15 @@ const Data = adopt<DataProps, InputProps>({
     <GetProjects
       publicationStatuses={publicationStatuses}
       filterCanModerate={true}
+    />
+  ),
+  mostVotedIdeas: (
+    <GetIdeas
+      pageNumber={1}
+      pageSize={5}
+      sort="popular"
+      type="paginated"
+      projectIds={'all'}
     />
   ),
 });
