@@ -84,7 +84,6 @@ const Inner = styled.div`
 `;
 
 const ShortFeedback = styled.div`
-  width: 100%;
   display: flex;
 
   ${media.biggerThanMinTablet`

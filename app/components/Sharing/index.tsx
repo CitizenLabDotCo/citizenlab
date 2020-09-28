@@ -63,10 +63,10 @@ const Buttons = styled.div`
   }
 
   .sharingButton {
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
     padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
@@ -101,7 +101,7 @@ const Buttons = styled.div`
     }
 
     &.layout2 {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
 
       &.last {
         margin-bottom: 0px;
@@ -156,7 +156,8 @@ const Buttons = styled.div`
 
 const ButtonText = styled.span`
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
+  line-height: normal;
   margin-left: 10px;
 `;
 
