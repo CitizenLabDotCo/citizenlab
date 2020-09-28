@@ -13,8 +13,9 @@ import { Select } from 'cl2-component-library';
 import messages from './messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import ProjectReport from './ProjectReport';
+import { chartTheme } from '../index';
 
 const StyledSelect = styled(Select)`
   max-width: 300px;
@@ -54,7 +55,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
   return (
     <>
       {!selectedProject ? (
-        <>
+        <ThemeProvider theme={chartTheme}>
           <SectionTitle>
             <FormattedMessage {...messages.selectAProject} />
           </SectionTitle>
@@ -64,7 +65,7 @@ const ReportTab = memo(({ projects }: DataProps) => {
             value={undefined}
             options={projectOptions}
           />
-        </>
+        </ThemeProvider>
       ) : (
         <>
           <StyledGoBack onClick={onResetProject} />

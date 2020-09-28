@@ -3,18 +3,17 @@ import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import ResolutionControl from '../components/ResolutionControl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import styled from 'styled-components';
-
+import styled, { ThemeProvider } from 'styled-components';
 
 // libs
-import { map } from 'lodash-es';
+// import { map } from 'lodash-es';
 
 // resources
-import { IResolution, GraphsContainer } from '..';
+import { IResolution, GraphsContainer, chartTheme } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import {
   usersByTimeCumulativeXlsxEndpoint,
@@ -26,9 +25,9 @@ import {
   commentsByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
-  ideasByStatusXlsxEndpoint,
-  ideasByStatusStream,
-  IIdeasByStatus,
+  // ideasByStatusXlsxEndpoint,
+  // ideasByStatusStream,
+  // IIdeasByStatus,
 } from 'services/stats';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -39,11 +38,12 @@ import { IProjectData } from 'services/projects';
 // components
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
-import HorizontalBarChart from '../users/charts/HorizontalBarChart';
+// import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
-import ExportMenu from '../components/ExportMenu';
-import { IPhase, IPhaseData, IPhases } from 'services/phases';
+// import ExportMenu from '../components/ExportMenu';
+// import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
+import { IdeasByStatusChart } from '../components/IdeasByStatusChart';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -90,24 +90,24 @@ const ProjectReport = memo(
 
     // set time boundaries
     const [resolution, setResolution] = useState<IResolution>('month');
-    const [startAt, setStartAt] = useState<string | null>(null);
-    const [endAt, setEndAt] = useState<string | null>(null);
+    const [startAt, setStartAt] = useState<Moment | null | undefined>(null);
+    const [endAt, setEndAt] = useState<Moment | null>(null);
 
     useEffect(() => {
       if (isTimelineProject) {
         if (!isNilOrError(phases) && phases.length > 0) {
           const startAt = phases[0].attributes.start_at;
           const endAt = phases[phases.length - 1].attributes.end_at;
-          setStartAt(startAt);
-          setEndAt(endAt);
+          setStartAt(moment(startAt));
+          setEndAt(moment(endAt));
 
           const resolution = getResolution(moment(startAt), moment(endAt));
           setResolution(resolution);
         }
       } else {
         const startAt = project.attributes.created_at;
-        setStartAt(startAt);
-        setEndAt(moment().toISOString());
+        setStartAt(moment(startAt));
+        setEndAt(moment());
 
         const resolution = getResolution(moment(startAt), moment());
         setResolution(resolution);
@@ -125,51 +125,39 @@ const ProjectReport = memo(
         : 'month';
     };
 
-    const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
-      code: idea.id,
-      value: idea.attributes.upvotes_count + idea.attributes.downvotes_count,
-      up: idea.attributes.upvotes_count,
-      down: idea.attributes.downvotes_count,
-      name: localize(idea.attributes.title_multiloc),
-      slug: idea.attributes.slug,
-    }));
-
     // deduplicated non-null participations methods in this project
     const participationMethods = (isTimelineProject
       ? isNilOrError(phases)
         ? []
-        : deduplicate(getParticipationMethods(phases, project));
+        : phases.map((phase) => phase.attributes.participation_method)
+      : [project.attributes.participation_method]
+    ).filter(
+      (el, i, arr) => el && arr.indexOf(el) === i
+    ) as ParticipationMethod[];
 
-    // if ((!startAt || !endAt)) {
+    // if (!startAt || !endAt) {
     //   return null;
     // }
 
     const projectTitle = localize(project.attributes.title_multiloc);
 
-    const convertIdeasByStatusToGraphFormat = (
-      ideasByStatus: IIdeasByStatus
-    ) => {
-      const {
-        series: { ideas },
-        idea_status,
-      } = ideasByStatus;
-
-      if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
-        return null;
+    const mostVotedIdeasSerie = () => {
+      if (!isNilOrError(mostVotedIdeas.list)) {
+        const { list } = mostVotedIdeas;
+        const serie = list.map((idea) => {
+          return {
+            code: idea.id,
+            value:
+              idea.attributes.upvotes_count + idea.attributes.downvotes_count,
+            up: idea.attributes.upvotes_count,
+            down: idea.attributes.downvotes_count,
+            name: localize(idea.attributes.title_multiloc),
+            slug: idea.attributes.slug,
+          };
+        });
+        return serie.length > 0 ? serie : null;
       }
-
-      const ideasByStatusConvertedToGraphFormat = map(
-        ideas,
-        (value: number, key: string) => ({
-          value: value,
-          name: localize(idea_status[key].title_multiloc),
-          code: key,
-          color: idea_status[key].color,
-          ordering: idea_status[key].ordering,
-        })
-      );
-
-      return ideasByStatusConvertedToGraphFormat;
+      return null;
     };
 
     return (
@@ -220,8 +208,8 @@ const ProjectReport = memo(
                 xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
                 graphUnit="users"
                 graphUnitMessageKey="users"
-                startAt={startAt}
-                endAt={endAt}
+                startAt={startAt.toISOString()}
+                endAt={endAt.toISOString()}
                 barStream={usersByTimeStream}
                 lineStream={usersByTimeCumulativeStream}
                 resolution={resolution}
@@ -242,8 +230,8 @@ const ProjectReport = memo(
                   graphTitle={formatMessage(messages.ideasByTimeTitle)}
                   graphUnit="ideas"
                   graphUnitMessageKey="ideas"
-                  startAt={startAt}
-                  endAt={endAt}
+                  startAt={startAt.toISOString()}
+                  endAt={endAt.toISOString()}
                   resolution={resolution}
                   currentProjectFilter={project.id}
                   currentProjectFilterLabel={projectTitle}
@@ -256,8 +244,8 @@ const ProjectReport = memo(
                   graphTitle={formatMessage(messages.commentsByTimeTitle)}
                   graphUnit="comments"
                   graphUnitMessageKey="comments"
-                  startAt={startAt}
-                  endAt={endAt}
+                  startAt={startAt.toISOString()}
+                  endAt={endAt.toISOString()}
                   resolution={resolution}
                   currentProjectFilter={project.id}
                   currentProjectFilterLabel={projectTitle}
@@ -268,44 +256,27 @@ const ProjectReport = memo(
                 />
                 <LineBarChartVotesByTime
                   className="e2e-votes-chart"
-                  startAt={startAt}
-                  endAt={endAt}
+                  startAt={startAt.toISOString()}
+                  endAt={endAt.toISOString()}
                   resolution={resolution}
                   currentProjectFilter={project.id}
                   currentProjectFilterLabel={projectTitle}
                 />
-                <HorizontalBarChart
-                  graphTitleString={formatMessage(messages.ideasByStatusTitle)}
-                  graphUnit="ideas"
-                  stream={ideasByStatusStream}
-                  convertToGraphFormat={convertIdeasByStatusToGraphFormat}
-                  className="dynamicHeight"
-                  startAt={startAt}
-                  endAt={endAt}
-                  exportMenu={
-                    <ExportMenu
-                      name={formatMessage(messages.ideasByStatusTitle)}
-                      startAt={startAt}
-                      endAt={endAt}
-                      xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                    />
-                  }
+
+                <IdeasByStatusChart
+                  className="fullWidth dynamicHeight"
+                  startAt={startAt.toISOString()}
+                  endAt={endAt.toISOString()}
+                  currentProjectFilter={project.id}
                 />
+
                 <HorizontalBarChartWithoutStream
-                  serie={mostVotedIdeasSerie}
+                  serie={mostVotedIdeasSerie()}
                   graphTitleString={formatMessage(
                     messages.fiveIdeasWithMostVotes
                   )}
                   graphUnit="votes"
                   className="dynamicHeight"
-                  exportMenu={
-                    <ExportMenu
-                      name={formatMessage(messages.fiveIdeasWithMostVotes)}
-                      startAt={startAt}
-                      endAt={endAt}
-                      xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                    />
-                  }
                 />
               </>
             )}

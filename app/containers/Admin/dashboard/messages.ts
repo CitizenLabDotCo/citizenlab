@@ -52,6 +52,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
     defaultMessage: 'Votes on ideas',
   },
+  fiveIdeasWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes',
+    defaultMessage: '5 Ideas With Most Votes',
+  },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',

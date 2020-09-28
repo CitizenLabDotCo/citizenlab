@@ -1,5 +1,5 @@
 // libraries
-import React, { memo, ReactElement } from 'react';
+import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -34,6 +34,7 @@ import {
 
 // types
 import { IGraphPoint } from 'typings';
+import ExportMenu from '../../components/ExportMenu';
 
 interface VoteGraphPoint extends IGraphPoint {
   up: number;
@@ -44,12 +45,11 @@ interface VoteGraphPoint extends IGraphPoint {
 }
 
 interface Props {
-  serie: VoteGraphPoint[] | undefined;
+  serie: VoteGraphPoint[] | null;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
-  exportMenu?: ReactElement;
 }
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
@@ -64,7 +64,7 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 
 export const HorizontalBarChartWithoutStream: React.SFC<
   Props & InjectedIntlProps
-> = memo(({ className, graphTitleString, serie, graphUnit, exportMenu }) => {
+> = memo(({ className, graphTitleString, serie, graphUnit }) => {
   const theme: any = useTheme();
 
   const currentChart: React.RefObject<any> = React.createRef();
@@ -128,9 +128,9 @@ export const HorizontalBarChartWithoutStream: React.SFC<
       <GraphCardInner>
         <GraphCardHeader>
           <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-          {!isNilOrError(serie) &&
-            exportMenu &&
-            React.cloneElement(exportMenu, { svgNode: currentChart })}
+          {!isNilOrError(serie) && (
+            <ExportMenu svgNode={currentChart} name={graphTitleString} />
+          )}
         </GraphCardHeader>
         {isNilOrError(serie) ? (
           <NoDataContainer>
