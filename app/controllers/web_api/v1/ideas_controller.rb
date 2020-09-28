@@ -2,7 +2,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers, :filter_counts]
-  
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
@@ -25,6 +25,10 @@ class WebApi::V1::IdeasController < ApplicationController
           @ideas.order_popular
         when "-popular"
           @ideas.order_popular(:asc)
+        when "controversial"
+          @ideas.order_controversial
+        when "-controversial"
+          @ideas.order_controversial(:asc)
         when "author_name"
           @ideas.order("users.first_name ASC", "users.last_name ASC")
         when "-author_name"
@@ -54,7 +58,7 @@ class WebApi::V1::IdeasController < ApplicationController
         end
     end
 
-    @ideas = @ideas 
+    @ideas = @ideas
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -84,7 +88,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    @ideas = @ideas 
+    @ideas = @ideas
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: linked_json(@ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
@@ -117,7 +121,7 @@ class WebApi::V1::IdeasController < ApplicationController
       'idea_status_id' => {},
       'area_id' => {},
       'topic_id' => {}
-    } 
+    }
     @ideas
       .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
       .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
@@ -136,8 +140,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def show
     render json: WebApi::V1::IdeaSerializer.new(
-      @idea, 
-      params: fastjson_params, 
+      @idea,
+      params: fastjson_params,
       include: [:author, :topics, :areas, :user_vote, :idea_images]
       ).serialized_json
   end
@@ -162,8 +166,8 @@ class WebApi::V1::IdeasController < ApplicationController
       if @idea.save
         service.after_create(@idea, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
-          @idea.reload, 
-          params: fastjson_params, 
+          @idea.reload,
+          params: fastjson_params,
           include: [:author, :topics, :areas, :phases, :user_vote, :idea_images]
           ).serialized_json, status: :created
       else
@@ -190,20 +194,20 @@ class WebApi::V1::IdeasController < ApplicationController
         authorize @idea
         service.after_update(@idea, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
-          @idea.reload, 
-          params: fastjson_params, 
+          @idea.reload,
+          params: fastjson_params,
           include: [:author, :topics, :areas, :user_vote, :idea_images]
           ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
-    end 
+    end
   end
 
   # delete
   def destroy
     service = SideFxIdeaService.new
-    
+
     service.before_destroy(@idea, current_user)
     idea = @idea.destroy
     if idea.destroyed?
