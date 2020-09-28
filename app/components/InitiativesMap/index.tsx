@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import Leaflet from 'leaflet';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -13,7 +11,6 @@ import tracks from './tracks';
 // Components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
 import InitiativePreview from './InitiativePreview';
 
 // Resources
@@ -34,6 +31,7 @@ import { viewportWidths } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedInitiativeData } from 'services/initiatives';
+import InitiativeButton from 'components/InitiativeButton';
 
 const Container = styled.div`
   > .create-initiative-wrapper {
@@ -59,6 +57,8 @@ interface Props extends InputProps, DataProps {}
 interface State {
   selectedInitiativeId: string | null;
   points: Point[];
+  lat?: number | null;
+  lng?: number | null;
 }
 
 export class InitiativesMap extends PureComponent<
@@ -66,7 +66,6 @@ export class InitiativesMap extends PureComponent<
   State
 > {
   private addInitiativeButtonElement: HTMLElement;
-  private savedPosition: Leaflet.LatLng | null = null;
 
   constructor(props) {
     super(props);
@@ -134,7 +133,8 @@ export class InitiativesMap extends PureComponent<
   };
 
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
-    this.savedPosition = position;
+    const { lat, lng } = position;
+    this.setState({ lat, lng });
 
     if (this.addInitiativeButtonElement) {
       Leaflet.popup()
@@ -144,21 +144,6 @@ export class InitiativesMap extends PureComponent<
     }
 
     return;
-  };
-
-  redirectToInitiativeCreation = () => {
-    if (this.savedPosition) {
-      const { lat, lng } = this.savedPosition;
-
-      trackEventByName(tracks.createInitiativeFromMap, {
-        position: this.savedPosition,
-      });
-
-      clHistory.push({
-        pathname: '/initiatives/new',
-        search: stringify({ lat, lng }, { addQueryPrefix: true }),
-      });
-    }
   };
 
   getMapHeight = () => {
@@ -188,7 +173,7 @@ export class InitiativesMap extends PureComponent<
 
   render() {
     const { initiativeMarkers, className } = this.props;
-    const { selectedInitiativeId, points } = this.state;
+    const { selectedInitiativeId, points, lat, lng } = this.state;
     const mapHeight = this.getMapHeight();
 
     return (
@@ -216,12 +201,7 @@ export class InitiativesMap extends PureComponent<
           className="create-initiative-wrapper"
           ref={this.bindInitiativeCreationButton}
         >
-          <Button
-            onClick={this.redirectToInitiativeCreation}
-            icon="plus-circle"
-            size="2"
-            text={<FormattedMessage {...messages.postInitiativeHere} />}
-          />
+          <InitiativeButton location="in_map" inMap lat={lat} lng={lng} />
         </div>
       </Container>
     );

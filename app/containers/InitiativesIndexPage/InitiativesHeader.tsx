@@ -1,23 +1,14 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import Tippy from '@tippyjs/react';
 
 // components
-import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeInfoContent from './InitiativeInfoContent';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,6 +22,10 @@ import T from 'components/T';
 
 // images
 import illustrationSrc from './initiativesHeaderImage.jpg';
+import InitiativeButton from 'components/InitiativeButton';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 const Container = styled.div`
   width: 100%;
@@ -98,8 +93,6 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 18px;
 `;
 
-const StartInitiativeButton = styled(Button)``;
-
 const InitiativeInfo = styled.div`
   width: 100%;
   min-height: 145px;
@@ -148,30 +141,6 @@ const Illustration = styled.img`
   `}
 `;
 
-const TooltipContent = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px;
-`;
-
-const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 25px;
-  width: 20px;
-  height: 25px;
-  margin-right: 1rem;
-`;
-
-const TooltipContentText = styled.div`
-  flex: 1 1 auto;
-  color: white;
-  font-size: ${fontSizes.small}px;
-  line-height: ${fontSizes.large}px;
-  font-weight: 400;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
 export interface InputProps {
   className?: string;
 }
@@ -179,6 +148,7 @@ export interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
+  postingPermission: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -186,29 +156,10 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class InitiativesHeader extends PureComponent<Props, State> {
-  startInitiative = () => {
-    const { authUser } = this.props;
-
-    trackEventByName(tracks.clickStartInitiativesCTA, {
-      extra: { location: 'initiatives header' },
-    });
-
-    if (!isNilOrError(authUser)) {
-      clHistory.push('/initiatives/new');
-    } else {
-      openSignUpInModal({
-        action: () => this.startInitiative(),
-      });
-    }
-  };
-
   render() {
-    const { className, tenant } = this.props;
+    const { className, tenant, postingPermission } = this.props;
 
     if (isNilOrError(tenant)) return null;
-
-    const postingProposalEnabled =
-      tenant.attributes.settings.initiatives?.posting_enabled;
 
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
@@ -221,7 +172,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
           </ScreenReaderOnly>
           <HeaderContent>
             <HeaderTitle>
-              {postingProposalEnabled ? (
+              {postingPermission?.enabled ? (
                 <FormattedMessage
                   {...messages.header}
                   values={{
@@ -250,39 +201,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
               )}
             </HeaderTitle>
             <StyledAvatarBubbles />
-            <div aria-live="polite">
-              <Tippy
-                disabled={postingProposalEnabled}
-                interactive={true}
-                placement="bottom"
-                content={
-                  <TooltipContent id="tooltip-content">
-                    <TooltipContentIcon name="lock-outlined" ariaHidden />
-                    <TooltipContentText>
-                      <FormattedMessage
-                        {...messages.postingDisabledExplanation}
-                      />
-                    </TooltipContentText>
-                  </TooltipContent>
-                }
-                theme="dark"
-                hideOnClick={false}
-              >
-                <div tabIndex={postingProposalEnabled ? -1 : 0}>
-                  <StartInitiativeButton
-                    fontWeight="500"
-                    padding="13px 22px"
-                    textColor="#FFF"
-                    icon="arrowLeft"
-                    iconPos="right"
-                    iconAriaHidden
-                    onClick={this.startInitiative}
-                    text={<FormattedMessage {...messages.startInitiative} />}
-                    disabled={!postingProposalEnabled}
-                  />
-                </div>
-              </Tippy>
-            </div>
+            <InitiativeButton location="initiatives_header" />
           </HeaderContent>
         </Header>
         <InitiativeInfo>
@@ -299,6 +218,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
+  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 
 export default (inputProps: InputProps) => (

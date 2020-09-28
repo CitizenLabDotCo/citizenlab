@@ -8,9 +8,9 @@ import ActionsForm from './ActionsForm';
 
 // services
 import {
-  IPermissionData,
   updatePhasePermission,
-} from 'services/participationContextPermissions';
+  IPCPermissionData,
+} from 'services/actionPermissions';
 
 // resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -69,13 +69,13 @@ class Timeline extends PureComponent<Props, State> {
   };
 
   handlePermissionChange = (
-    permission: IPermissionData,
-    permittedBy: IPermissionData['attributes']['permitted_by'],
+    permission: IPCPermissionData,
+    permittedBy: IPCPermissionData['attributes']['permitted_by'],
     groupIds: string[]
   ) => {
     updatePhasePermission(
       permission.id,
-      permission.relationships.permittable.data.id,
+      permission.relationships.permission_scope.data.id,
       permission.attributes.action,
       { permitted_by: permittedBy, group_ids: groupIds }
     );
