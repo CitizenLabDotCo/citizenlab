@@ -49,9 +49,11 @@ const Phase = styled.div`
   margin-bottom: 20px;
   flex-direction: column;
   padding: 10px;
-  border: solid 1px ${colors.adminBorder};
+  border: ${(props: any) =>
+    props.isCurrentPhase
+      ? `solid 3px ${colors.border}`
+      : `solid 1px ${colors.adminBorder}`};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.adminContentBackground};
 `;
 
 const RowSection = styled.div`
@@ -188,7 +190,13 @@ const ProjectReport = memo(
             {!isNilOrError(phases) && phases.length > 0 ? (
               phases.map((phase, index) => {
                 return (
-                  <Phase key={index}>
+                  <Phase
+                    key={index}
+                    isCurrentPhase={
+                      phase.id ===
+                      project?.relationships?.current_phase?.data?.id
+                    }
+                  >
                     <p>
                       <FormattedMessage
                         {...messages.fromTo}
@@ -236,12 +244,13 @@ const ProjectReport = memo(
             )}
           </GraphsContainer>
         </Section>
-        <Section>
-          <SectionTitle>
-            <FormattedMessage {...messages.sectionWhat} />
-          </SectionTitle>
-          <GraphsContainer>
-            {participationMethods.includes('ideation') && startAt && endAt && (
+
+        {participationMethods.includes('ideation') && startAt && endAt && (
+          <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.sectionWhat} />
+            </SectionTitle>
+            <GraphsContainer>
               <>
                 <LineBarChart
                   graphTitle={formatMessage(messages.ideasByTimeTitle)}
@@ -271,6 +280,7 @@ const ProjectReport = memo(
                   lineStream={commentsByTimeCumulativeStream}
                   barStream={commentsByTimeStream}
                 />
+
                 <LineBarChartVotesByTime
                   className="e2e-votes-chart"
                   startAt={startAt}
@@ -281,7 +291,7 @@ const ProjectReport = memo(
                 />
 
                 <IdeasByStatusChart
-                  className="fullWidth dynamicHeight"
+                  className="dynamicHeight"
                   startAt={startAt}
                   endAt={endAt}
                   currentProjectFilter={project.id}
@@ -299,11 +309,12 @@ const ProjectReport = memo(
                   startAt={startAt}
                   endAt={endAt}
                   projectId={project.id}
+                  className="dynamicHeight"
                 />
               </>
-            )}
-          </GraphsContainer>
-        </Section>
+            </GraphsContainer>
+          </Section>
+        )}
       </>
     );
   }
