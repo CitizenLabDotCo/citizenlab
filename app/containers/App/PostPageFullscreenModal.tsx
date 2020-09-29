@@ -64,8 +64,8 @@ const PostPageFullscreenModal = memo<Props>(
         if (type === 'initiative') {
           return (
             <>
-              <InitiativesShow initiativeId={postId} insideModal={true} />
-              <PlatformFooter />s
+              <InitiativesShow initiativeId={postId} />
+              <PlatformFooter />
             </>
           );
         }
