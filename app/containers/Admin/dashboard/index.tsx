@@ -21,7 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // styling
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
@@ -29,6 +29,7 @@ export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 export const GraphsContainer = styled.div`
@@ -203,7 +204,7 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
-export type IGraphUnit = 'users' | 'ideas' | 'comments';
+export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes';
 
 export type IResolution = 'day' | 'week' | 'month';
 
@@ -245,6 +246,10 @@ export const DashboardsPage = memo(
         label: formatMessage(messages.tabUsers),
         url: '/admin/dashboard/users',
       },
+      {
+        label: formatMessage(messages.tabReports),
+        url: '/admin/dashboard/reports',
+      },
     ];
 
     const resource = {
@@ -278,11 +283,13 @@ export const DashboardsPage = memo(
       if (isAdmin({ data: authUser })) {
         return (
           <DashboardTabs resource={resource} tabs={tabs}>
-            <HelmetIntl
-              title={messages.helmetTitle}
-              description={messages.helmetDescription}
-            />
-            {children}
+            <ThemeProvider theme={chartTheme}>
+              <HelmetIntl
+                title={messages.helmetTitle}
+                description={messages.helmetDescription}
+              />
+              {children}
+            </ThemeProvider>
           </DashboardTabs>
         );
       } else if (isProjectModerator({ data: authUser })) {

@@ -35,7 +35,6 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 // types
 import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 import { IGraphFormat } from 'typings';
-import useLocalize from 'hooks/useLocalize';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 interface DataProps {
@@ -45,6 +44,7 @@ interface DataProps {
 interface InputProps {
   startAt: string | null | undefined;
   endAt: string | null;
+  currentProjectFilter?: string | undefined;
   currentGroupFilter?: string | undefined;
   currentGroupFilterLabel?: string | undefined;
   className?: string;
@@ -60,7 +60,9 @@ export class IdeasByStatusChart extends React.PureComponent<
     super(props as any);
     this.currentChart = React.createRef();
   }
+
   render() {
+    console.log(this.props);
     const {
       chartFill,
       chartLabelSize,
