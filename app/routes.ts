@@ -194,6 +194,25 @@ export default function createRoutes() {
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),
+          indexRoute: {
+            name: 'Project page',
+            component: Loadable({
+              loader: () => import('containers/ProjectsShowPage'),
+              loading: LoadableLoadingCitizen,
+              delay: 500,
+            }),
+          },
+          childRoutes: [
+            {
+              path: '*',
+              name: 'Project page',
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage'),
+                loading: LoadableLoadingCitizen,
+                delay: 500,
+              }),
+            },
+          ],
         },
         {
           path: 'pages/cookie-policy',
