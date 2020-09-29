@@ -8,17 +8,20 @@ import messages from '../messages';
 
 interface Props {
   onClick?: () => void;
+  ariaExpanded?: boolean;
 }
 
 const SharingButtonComponent = ({
   intl: { formatMessage },
   onClick,
+  ariaExpanded,
 }: Props & InjectedIntlProps) => {
   return (
     <IdeaCTAButton
       iconName="share-arrow"
       buttonText={formatMessage(messages.shareIdea)}
       onClick={onClick}
+      ariaExpanded={ariaExpanded}
     />
   );
 };
