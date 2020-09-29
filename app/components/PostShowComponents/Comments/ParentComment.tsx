@@ -247,7 +247,7 @@ class ParentComment extends PureComponent<Props, State> {
               postId={postId}
               postType={postType}
               projectId={projectId}
-              commentId={comment.id}
+              commentId={commentId}
               commentType="parent"
               hasChildComments={hasChildComments}
               canReply={canReply}
