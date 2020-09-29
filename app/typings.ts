@@ -135,4 +135,12 @@ export type IGraphPoint = {
   ordering?: number;
 };
 
+export type ITopicSingleValue = {
+  name: Multiloc;
+  value: number;
+  code: string;
+};
+
+export type IParticipationByTopic = ITopicSingleValue[];
+
 export type IGraphFormat = IGraphPoint[];
