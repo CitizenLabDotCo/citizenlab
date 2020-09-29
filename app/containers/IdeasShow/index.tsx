@@ -30,7 +30,6 @@ import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
 import TranslateButton from 'components/UI/TranslateButton';
-import PlatformFooter from 'containers/PlatformFooter';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
 );
@@ -102,25 +101,21 @@ const Loading = styled.div`
   `}
 `;
 
-const Container = styled.main<{ insideModal: boolean }>`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   min-height: calc(
     100vh -
-      ${(props) =>
-        props.insideModal
-          ? props.theme.menuHeight
-          : props.theme.menuHeight + props.theme.footerHeight}px
+      ${({ theme: { menuHeight, footerHeight } }) =>
+        menuHeight + footerHeight}px
   );
   background: #fff;
   opacity: 0;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) =>
-      props.insideModal
-        ? props.theme.mobileMenuHeight
-        : props.theme.mobileMenuHeight}px - ${(props) =>
-    props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${({
+      theme: { mobileMenuHeight, mobileTopBarHeight },
+    }) => mobileMenuHeight + mobileTopBarHeight}px);
   `}
 
   &.content-enter {
@@ -141,8 +136,6 @@ const Container = styled.main<{ insideModal: boolean }>`
 const IdeaContainer = styled.div`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
-  display: flex;
-  flex-direction: column;
   margin: 0;
   margin-left: auto;
   margin-right: auto;
@@ -284,7 +277,6 @@ interface DataProps {
 interface InputProps {
   ideaId: string | null;
   projectId: string;
-  insideModal?: boolean;
   className?: string;
 }
 
@@ -665,8 +657,6 @@ export class IdeasShow extends PureComponent<
               )}
             </Content>
           </IdeaContainer>
-
-          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }
@@ -689,11 +679,7 @@ export class IdeasShow extends PureComponent<
           enter={true}
           exit={false}
         >
-          <Container
-            id="e2e-idea-show"
-            className={className}
-            insideModal={!!this.props.insideModal}
-          >
+          <Container id="e2e-idea-show" className={className}>
             {content}
           </Container>
         </CSSTransition>
