@@ -55,7 +55,7 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
       <Container className={`e2e-idea-author ${className || ''}`}>
         <StyledAvatar
           userId={authorId}
-          size="36px"
+          size="32px"
           isLinkToProfile={!!authorId}
         />
         <FormattedMessage
