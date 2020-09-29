@@ -193,7 +193,7 @@ const StyledTranslateButton = styled(TranslateButton)`
 
 const IdeaHeader = styled.div`
   margin-top: -5px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
@@ -233,6 +233,10 @@ const AuthorActionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 25px;
+`;
+
+const StyledPostedBy = styled(PostedBy)`
+  margin-right: 20px;
 `;
 
 const StyledIdeaMoreActions = styled(IdeaMoreActions)`
@@ -556,7 +560,7 @@ export class IdeasShow extends PureComponent<
                 </IdeaHeader>
 
                 <AuthorActionsContainer>
-                  <PostedBy authorId={authorId} ideaId={ideaId} />
+                  <StyledPostedBy authorId={authorId} ideaId={ideaId} />
                   <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
                 </AuthorActionsContainer>
 
