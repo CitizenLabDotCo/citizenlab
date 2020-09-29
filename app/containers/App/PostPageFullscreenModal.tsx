@@ -56,7 +56,7 @@ const PostPageFullscreenModal = memo<Props>(
           return (
             <>
               <IdeasShow ideaId={postId} projectId={projectId} />
-              <PlatformFooter />
+              <PlatformFooter insideModal />
             </>
           );
         }
@@ -65,7 +65,7 @@ const PostPageFullscreenModal = memo<Props>(
           return (
             <>
               <InitiativesShow initiativeId={postId} />
-              <PlatformFooter />
+              <PlatformFooter insideModal />
             </>
           );
         }
