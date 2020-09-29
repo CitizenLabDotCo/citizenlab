@@ -24,7 +24,7 @@ RSpec.describe Idea, type: :model do
     end
   end
 
-  context "feedback_needed" do 
+  context "feedback_needed" do
     it "should select ideas with no official feedback or no idea status change" do
       TenantTemplateService.new.resolve_and_apply_template('base')
       i1 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
@@ -85,7 +85,7 @@ RSpec.describe Idea, type: :model do
   describe "order_new" do
     before do
       5.times do |i|
-        travel_to Time.now+i.week do 
+        travel_to Time.now+i.week do
           create(:idea)
         end
       end
@@ -103,7 +103,7 @@ RSpec.describe Idea, type: :model do
 
     it "sorts from old to new when asking asc" do
       time_serie = Idea.order_new(:asc).pluck(:published_at)
-      expect(time_serie).to eq time_serie.sort      
+      expect(time_serie).to eq time_serie.sort
     end
   end
 
@@ -127,7 +127,33 @@ RSpec.describe Idea, type: :model do
 
     it "sorts from unpopular to popular when asking asc" do
       score_serie = Idea.order_popular(:asc).map(&:score)
-      expect(score_serie).to eq score_serie.sort      
+      expect(score_serie).to eq score_serie.sort
+    end
+  end
+
+  describe "order_controversial" do
+    before do
+      5.times do |i|
+        idea = create(:idea)
+        rand(10).times{create(:vote, votable: idea, mode: 'up')}
+        rand(10).times{create(:vote, votable: idea, mode: 'down')}
+      end
+    end
+
+    it "sorts from controversial to uncontroversial by default" do
+      score_serie = Idea.order_controversial.map{|idea| idea.upvotes_count * idea.downvotes_count}
+      expect(score_serie).to eq score_serie.sort.reverse
+      expect(score_serie.select { |n| n != 0 }).to eq score_serie
+    end
+
+    it "sorts from controversial to uncontroversial when asking desc" do
+      score_serie = Idea.order_controversial(:desc).map{|idea| idea.upvotes_count * idea.downvotes_count}
+      expect(score_serie).to eq score_serie.sort.reverse
+    end
+
+    it "sorts from uncontroversial to controversial when asking asc" do
+      score_serie = Idea.order_controversial(:asc).map{|idea| idea.upvotes_count * idea.downvotes_count}
+      expect(score_serie).to eq score_serie.sort
     end
   end
 
@@ -179,7 +205,7 @@ RSpec.describe Idea, type: :model do
 
   describe "body" do
     let(:idea) { build(:idea) }
-    
+
     it "is invalid if it has no true content" do
       idea.body_multiloc = {'en' => '<p> </p>'}
       expect(idea).to be_invalid

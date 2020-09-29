@@ -103,6 +103,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
  end
 
   def active_users_by_time_cumulative_serie
+
     activities_scope = Activity
       .select(:user_id).distinct
       .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
@@ -191,6 +192,14 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    ps = ParticipantsService.new
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.projects_participants([project])
+      users = users.where(id: participants)
+    end
+
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'gender'")
@@ -219,9 +228,12 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    ps = ParticipantsService.new
+
     if params[:project]
       project = Project.find(params[:project])
-      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+      participants = ps.projects_participants([project])
+      users = users.where(id: participants)
     end
 
     serie = users
@@ -251,9 +263,12 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    ps = ParticipantsService.new
+
     if params[:project]
       project = Project.find(params[:project])
-      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+      participants = ps.projects_participants([project])
+      users = users.where(id: participants)
     end
 
     serie = users
@@ -299,10 +314,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+
+    ps = ParticipantsService.new
+
     if params[:project]
       project = Project.find(params[:project])
-      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+      participants = ps.projects_participants([project])
+      users = users.where(id: participants)
     end
+
 
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
@@ -330,10 +350,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+
+    ps = ParticipantsService.new
+
     if params[:project]
       project = Project.find(params[:project])
-      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+      participants = ps.projects_participants([project])
+      users = users.where(id: participants)
     end
+
 
     case @custom_field.input_type
     when 'select'
