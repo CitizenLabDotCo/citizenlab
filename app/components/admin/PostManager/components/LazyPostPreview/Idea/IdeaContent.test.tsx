@@ -5,6 +5,10 @@ import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 
 jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
+jest.mock(
+  'containers/IdeasShow/IdeaProposedBudget',
+  () => 'IdeaProposedBudget'
+);
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
 jest.mock('components/PostShowComponents/DropdownMap', () => 'DropdownMap');
@@ -32,6 +36,7 @@ jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
 jest.mock('resources/GetTenant', () => 'GetTenant');
 jest.mock('resources/GetProject', () => 'GetProject');
 jest.mock('resources/GetPermission', () => 'GetPermission');
+jest.mock('resources/GetLocale', () => 'GetLocale');
 jest.mock('utils/cl-intl');
 jest.mock('utils/styleUtils', () => ({
   colors: {
@@ -70,6 +75,7 @@ describe('<IdeaContent />', () => {
         ideaFiles={null}
         tenant={null}
         project={null}
+        locale={null}
         postOfficialFeedbackPermission={undefined}
         intl={intl}
         {...localizeProps}
@@ -93,6 +99,7 @@ describe('<IdeaContent />', () => {
         ideaFiles={null}
         tenant={null}
         project={null}
+        locale={null}
         postOfficialFeedbackPermission={undefined}
         intl={intl}
         {...localizeProps}
