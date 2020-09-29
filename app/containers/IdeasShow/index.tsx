@@ -64,6 +64,7 @@ import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
 } from 'resources/GetIdeaCustomFieldsSchemas';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -208,9 +209,9 @@ const StyledProjectLink = styled(ProjectLink)`
   `}
 `;
 
-export const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.medium}px;
-  font-weight: 400;
+const BodySectionTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSizes.large}px;
+  font-weight: 500;
   line-height: 28px;
 `;
 
@@ -265,6 +266,7 @@ const Comments = styled.div`
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
@@ -577,7 +579,7 @@ export class IdeasShow extends PureComponent<
                   )}
                 </FeatureFlag>
 
-                {proposedBudget && proposedBudgetEnabled && (
+                {proposedBudgetEnabled && proposedBudget && (
                   <>
                     <BodySectionTitle>
                       <FormattedMessage {...messages.proposedBudgetTitle} />
@@ -721,6 +723,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => (
