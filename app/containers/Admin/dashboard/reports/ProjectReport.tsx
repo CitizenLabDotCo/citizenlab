@@ -42,6 +42,7 @@ import { SectionTitle, PageTitle } from 'components/admin/Section';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 import T from 'components/T';
 import CustomFieldComparison from './CustomFieldComparison';
+import ResolutionControl from '../components/ResolutionControl';
 
 const Section = styled.div`
   margin-bottom: 20px;
