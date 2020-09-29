@@ -28,7 +28,7 @@ const Container = styled.div``;
 interface Props {
   postId: string;
   body: string;
-  locale?: Locale;
+  locale: Locale;
   translateButtonClicked?: boolean;
   className?: string;
   postType: 'idea' | 'initiative';
@@ -42,6 +42,12 @@ const Body = memo<Props>(
     const smallerThanSmallTablet = windowSize
       ? windowSize.windowWidth <= viewportWidths.smallTablet
       : false;
+    const translation = useTranslation({
+      attributeName: 'body_multiloc',
+      localeTo: locale,
+      id: postId,
+      context: postType,
+    });
     // const initialWordsLimitToDisplay = 50;
 
     // const readMore = () => {
@@ -49,17 +55,8 @@ const Body = memo<Props>(
     // };
 
     const getBodyText = (bodyText: string) => {
-      if (translateButtonClicked && locale) {
-        const translation = useTranslation({
-          attributeName: 'body_multiloc',
-          localeTo: locale,
-          id: postId,
-          context: postType,
-        });
-
-        if (!isNilOrError(translation)) {
-          return translation.attributes.translation;
-        }
+      if (translateButtonClicked && !isNilOrError(translation)) {
+        return translation.attributes.translation;
       }
 
       return bodyText;
