@@ -18,11 +18,11 @@ import {
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
-import { IGraphFormat } from 'typings';
+import { IGraphFormat, IParticipationByTopic } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
-  serie: IGraphFormat | null | undefined;
+  serie: IGraphFormat | IParticipationByTopic | null | undefined;
 }
 
 type children = (renderProps: {
@@ -40,7 +40,7 @@ export type ISupportedDataType =
   | ICommentsByProject;
 
 interface QueryProps {
-  startAt: string | undefined | null;
+  startAt?: string | undefined | null;
   endAt: string | null;
   currentGroupFilter?: string | null;
   currentProjectFilter?: string | null;
@@ -53,7 +53,9 @@ interface QueryProps {
 }
 
 interface Props extends QueryProps {
-  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
+  convertToGraphFormat: (
+    data: ISupportedDataType
+  ) => IGraphFormat | IParticipationByTopic | null;
 }
 
 export default class GetSerieFromStream extends PureComponent<Props, State> {
