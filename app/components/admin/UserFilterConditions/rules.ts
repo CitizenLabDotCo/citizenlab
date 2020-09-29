@@ -4,6 +4,7 @@ import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
+import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
 import TopicValueSelector from './ValueSelector/TopicValueSelector';
 import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 
@@ -68,6 +69,15 @@ export type TRule =
       customFieldId?: string;
       predicate?: 'is_empty' | 'not_is_empty';
       value?: undefined;
+    }
+  | {
+      ruleType?: 'custom_field_select';
+      /**
+       * The ID of a custom field
+       */
+      customFieldId?: string;
+      predicate?: 'is_one_of' | 'not_is_one_of';
+      value?: string[];
     }
   | {
       ruleType?: 'custom_field_checkbox';
@@ -253,6 +263,8 @@ export const ruleTypeConstraints = {
   custom_field_select: {
     has_value: CustomFieldOptionValueSelector,
     not_has_value: CustomFieldOptionValueSelector,
+    is_one_of: CustomFieldOptionValuesSelector,
+    not_is_one_of: CustomFieldOptionValuesSelector,
     is_empty: null,
     not_is_empty: null,
   },
