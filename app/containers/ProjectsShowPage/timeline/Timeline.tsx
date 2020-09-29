@@ -642,7 +642,6 @@ class Timeline extends PureComponent<
                   const width = Math.round(
                     (numberOfDays / totalNumberOfDays) * 100
                   );
-                  // const width = Math.round(100 / phases.data.length);
                   const classNames = [
                     isFirst ? 'first' : null,
                     isLast ? 'last' : null,
