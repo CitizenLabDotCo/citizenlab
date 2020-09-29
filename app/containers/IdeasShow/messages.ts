@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.invisibleTitleContent',
     defaultMessage: 'Main idea content',
   },
-  a11y_voteControl: {
-    id: 'app.containers.IdeasShow.a11y_voteControl',
-    defaultMessage: 'Voting and status',
-  },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea: {ideaTitle}',
