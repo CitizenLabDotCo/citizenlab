@@ -40,7 +40,7 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 
 // style
 import styled, { css, keyframes } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 interface IVoteComponent {
@@ -91,7 +91,12 @@ const VoteIconContainer = styled.div<{
   &.shadow {
     ${({ votingEnabled }) =>
       votingEnabled &&
-      `box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05); // TODO: add to styleutils
+      `
+      box-shadow: ${defaultStyles.boxShadow};
+
+      &:hover {
+        box-shadow: ${defaultStyles.boxShadowHover};
+      }
     `}
   }
 
