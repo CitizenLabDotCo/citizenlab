@@ -172,6 +172,7 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
+          id={commentId}
           className={`${className || ''} ${commentType} ${
             commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
           } e2e-comment`}
