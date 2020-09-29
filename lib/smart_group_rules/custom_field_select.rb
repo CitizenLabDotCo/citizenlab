@@ -8,7 +8,7 @@ module SmartGroupRules
     include CustomFieldRule
 
     validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: ['select', 'multiselect']).map(&:id) } }
-    validates :value, inclusion: { in: -> (record) { CustomFieldOption.where(custom_field_id: record.custom_field_id).map(&:id) } }, if: :needs_value?
+    validate :validate_value_inclusion
 
     def self.to_json_schema
       [   
@@ -142,6 +142,22 @@ module SmartGroupRules
 
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
+    end
+
+    def validate_value_inclusion
+      custom_field_ids = CustomFieldOption.where(custom_field_id: self.custom_field_id).map(&:id)
+      is_included = if self.value.is_a? Array 
+        (self.value - custom_field_ids).blank?
+      else
+        custom_field_ids.include? self.value
+      end
+      if !is_included
+        self.errors.add(
+          :value,
+          :inclusion,
+          message: 'All values must be existing custom field option IDs'
+        )
+      end
     end
 
   end

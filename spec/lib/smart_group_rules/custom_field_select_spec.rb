@@ -32,6 +32,14 @@ describe SmartGroupRules::CustomFieldSelect do
       other_custom_field_option = create(:custom_field_option, custom_field: create(:custom_field_select))
       expect(valid_rule.tap{|r| r.value=other_custom_field_option.id}).to be_invalid
     end
+
+    it "successfully validate the valid multi-value rule" do
+      expect(valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[options.first.id, options.last.id]}).to be_valid
+    end
+
+    it "fails on a non-existing custom field option" do
+      expect(valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[options.first.id, 'garbage']}).to be_invalid
+    end
   end
 
   describe "filter" do
