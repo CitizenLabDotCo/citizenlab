@@ -82,7 +82,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_topic
     serie = comments_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = Topic.all.select(:id, :title_multiloc)
     render json: {series: {comments: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
