@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
@@ -119,10 +120,19 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ params: { slug } }) => {
+  ({ location: { pathname }, params: { slug } }) => {
     const project = useProject({ projectSlug: slug });
 
-    if (slug) {
+    const urlSegments = pathname
+      .replace(/^\/|\/$/g, '')
+      .split('/')
+      .filter((segment) => segment !== '');
+
+    if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
+      // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
+      const redirectoTo = `/${urlSegments.slice(1, 3).join('/')}`;
+      clHistory.replace(redirectoTo);
+    } else if (slug) {
       return (
         <ProjectsShowPage
           project={!isNilOrError(project) ? project : undefined}
