@@ -1,5 +1,5 @@
 // libraries
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
@@ -11,14 +11,7 @@ import messages from '../../messages';
 import { withTheme } from 'styled-components';
 
 // components
-import {
-  Bar,
-  BarChart,
-  XAxis,
-  YAxis,
-  Cell,
-  ResponsiveContainer,
-} from 'recharts';
+import { Bar, BarChart, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -37,9 +30,9 @@ import {
   IUsersByBirthyear,
   IUsersByRegistrationField,
   IUsersByDomicile,
-  IIdeasByStatus,
 } from 'services/stats';
 import { IGraphFormat } from 'typings';
+import ExportMenu from '../../components/ExportMenu';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -48,8 +41,7 @@ interface DataProps {
 type ISupportedDataType =
   | IUsersByBirthyear
   | IUsersByRegistrationField
-  | IUsersByDomicile
-  | IIdeasByStatus;
+  | IUsersByDomicile;
 
 interface InputProps {
   stream: (
@@ -65,7 +57,7 @@ interface InputProps {
   graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
-  exportMenu?: ReactElement;
+  xlsxEndpoint?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -93,7 +85,7 @@ export class HorizontalBarChart extends React.PureComponent<
       serie,
       intl: { formatMessage },
       graphUnit,
-      exportMenu,
+      xlsxEndpoint,
     } = this.props;
 
     const noData =
@@ -106,9 +98,13 @@ export class HorizontalBarChart extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>{graphTitleString}</GraphCardTitle>
-            {!noData &&
-              exportMenu &&
-              React.cloneElement(exportMenu, { svgNode: this.currentChart })}
+            {!noData && (
+              <ExportMenu
+                svgNode={this.currentChart}
+                xlsxEndpoint={xlsxEndpoint}
+                name={graphTitleString}
+              />
+            )}
           </GraphCardHeader>
           {noData ? (
             <NoDataContainer>
@@ -119,52 +115,19 @@ export class HorizontalBarChart extends React.PureComponent<
               height={serie.length > 1 ? serie.length * 50 : 100}
             >
               <BarChart data={serie} layout="vertical" ref={this.currentChart}>
-                {graphTitleString ===
-                formatMessage(messages.ideasByStatusTitle) ? (
-                  <Bar
-                    dataKey="value"
-                    name={formatMessage(messages['ideas'])}
-                    fill={chartFill}
-                    label={
-                      <CustomizedLabel
-                        fill={chartLabelColor}
-                        fontSize={chartLabelSize}
-                      />
-                    }
-                    barSize={5}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                  >
-                    {serie
-                      .sort((a, b) =>
-                        a.ordering && b.ordering ? a.ordering - b.ordering : -1
-                      )
-                      .map((entry, index) => {
-                        return (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={entry.color && entry.color}
-                            opacity={0.8}
-                          />
-                        );
-                      })}
-                  </Bar>
-                ) : (
-                  <Bar
-                    dataKey="value"
-                    name={unitName}
-                    fill={chartFill}
-                    label={{
-                      fill: barFill,
-                      fontSize: chartLabelSize,
-                      position: 'insideLeft',
-                    }}
-                    barSize={20}
-                    animationDuration={animationDuration}
-                    animationBegin={animationBegin}
-                  />
-                )}
-
+                <Bar
+                  dataKey="value"
+                  name={unitName}
+                  fill={chartFill}
+                  label={{
+                    fill: barFill,
+                    fontSize: chartLabelSize,
+                    position: 'insideLeft',
+                  }}
+                  barSize={graphUnit === 'ideas' ? 5 : 20}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                />
                 <YAxis
                   dataKey="name"
                   type="category"

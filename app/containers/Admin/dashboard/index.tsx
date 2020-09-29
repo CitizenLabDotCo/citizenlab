@@ -226,7 +226,6 @@ export const chartTheme = (theme) => {
     chartLabelColor: colors.adminSecondaryTextColor,
     barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
-    chartCategorySize: fontSizes.base,
     animationBegin: 10,
     animationDuration: 200,
     cartesianGridColor: '#f5f5f5',

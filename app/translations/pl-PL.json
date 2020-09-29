@@ -812,7 +812,6 @@
   "app.containers.AdminPage.DashboardPage.deletedUser": "Usunięty użytkownik",
   "app.containers.AdminPage.DashboardPage.false": "",
   "app.containers.AdminPage.DashboardPage.female": "kobieta",
-  "app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes": "",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Panel administracyjny do zarządzania aktywnością na platformie",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Strona panelu administracyjnego",
   "app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter": "Pick group filter",

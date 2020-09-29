@@ -17,7 +17,6 @@ import {
 
 // components
 import HorizontalBarChart from './HorizontalBarChart';
-import ExportMenu from '../../components/ExportMenu';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -75,13 +74,7 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
       stream={usersByDomicileStream}
       convertToGraphFormat={convertToGraphFormat}
       className="dynamicHeight"
-      exportMenu={
-        <ExportMenu
-          name={props.intl.formatMessage(messages.usersByDomicileTitle)}
-          xlsxEndpoint={usersByDomicileXlsxEndpoint}
-          {...props}
-        />
-      }
+      xlsxEndpoint={usersByDomicileXlsxEndpoint}
     />
   );
 };
