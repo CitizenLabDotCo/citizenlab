@@ -6,6 +6,7 @@ import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeShowPageTopBar';
+import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -53,16 +54,20 @@ const PostPageFullscreenModal = memo<Props>(
           const projectId = idea.relationships.project.data.id;
 
           return (
-            <IdeasShow
-              ideaId={postId}
-              projectId={projectId}
-              insideModal={true}
-            />
+            <>
+              <IdeasShow ideaId={postId} projectId={projectId} />
+              <PlatformFooter />
+            </>
           );
         }
 
         if (type === 'initiative') {
-          return <InitiativesShow initiativeId={postId} insideModal={true} />;
+          return (
+            <>
+              <InitiativesShow initiativeId={postId} insideModal={true} />
+              <PlatformFooter />s
+            </>
+          );
         }
       }
 
