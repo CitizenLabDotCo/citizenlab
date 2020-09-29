@@ -19,6 +19,10 @@ AdminApi::Engine.routes.draw do
 
   resources :invites, only: [:create]
 
+  resources :map_configs, only: [:create, :destroy, :index, :show, :update] do
+    resources :layers, only: [:create, :destroy, :index, :show]
+  end
+
   post "/graphql", to: "graphql#execute"
 
 end
