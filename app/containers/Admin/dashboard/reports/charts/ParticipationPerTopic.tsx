@@ -254,7 +254,6 @@ const ParticipationPerTopicWithHOCs = injectIntl(
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(serie) => {
-      console.log(serie);
       return <ParticipationPerTopicWithHOCs {...serie} {...inputProps} />;
     }}
   </Data>
