@@ -7,13 +7,6 @@ import AssignBudgetWrapper from './AssignBudgetWrapper';
 // typings
 import { IParticipationContextType } from 'typings';
 
-// styling
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 const ControlWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -39,9 +32,6 @@ const BudgetAsssignment = ({
 }: Props) => {
   return (
     <ControlWrapper className={`${className}`}>
-      <ScreenReaderOnly>
-        <FormattedMessage tagName="h2" {...messages.a11y_budgetControl} />
-      </ScreenReaderOnly>
       <AssignBudgetWrapper
         ideaId={ideaId}
         projectId={projectId}
