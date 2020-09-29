@@ -34,6 +34,7 @@ interface InputProps {
   projectId: string | null;
   startAt: string | null;
   endAt: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -82,12 +83,12 @@ const ParticipationType = styled.div`
 interface Props extends InputProps, DataProps, InjectedLocalized {}
 
 const ParticipationPerTopic = (props: Props) => {
-  const { votesByTopic, commentsByTopic, ideasByTopic } = props;
+  const { votesByTopic, commentsByTopic, ideasByTopic, className } = props;
   const localize = useLocalize();
 
   return (
     <>
-      <GraphCard className={'dynamicHeight'}>
+      <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
