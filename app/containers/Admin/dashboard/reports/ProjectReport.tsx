@@ -23,6 +23,7 @@ import {
   commentsByTimeStream,
 } from 'services/stats';
 import { InjectedIntlProps } from 'react-intl';
+import { colors } from 'utils/styleUtils';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
@@ -31,17 +32,26 @@ import { IProjectData } from 'services/projects';
 // components
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
-// import HorizontalBarChart from '../users/charts/HorizontalBarChart';
+
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
-// import ExportMenu from '../components/ExportMenu';
-// import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
+import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 
 const Section = styled.div`
   margin-bottom: 20px;
+`;
+
+const Phase = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  flex-direction: column;
+  padding: 10px;
+  border: solid 1px ${colors.adminBorder};
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: ${colors.adminContentBackground};
 `;
 
 const RowSection = styled.div`
@@ -56,7 +66,6 @@ const TimelineSection = styled.div`
   flex-wrap: wrap;
   margin: -24px 0 20px -24px;
   width: calc(100% + 24px);
-
   > * {
     margin: 24px 0 0 24px;
   }
@@ -179,7 +188,7 @@ const ProjectReport = memo(
             {!isNilOrError(phases) && phases.length > 0 ? (
               phases.map((phase, index) => {
                 return (
-                  <Section key={index}>
+                  <Phase key={index}>
                     <p>
                       <FormattedMessage
                         {...messages.fromTo}
@@ -191,7 +200,7 @@ const ProjectReport = memo(
                     </p>
                     <div>{phase.attributes.participation_method}</div>
                     <div>{localize(phase.attributes.title_multiloc)}</div>
-                  </Section>
+                  </Phase>
                 );
               })
             ) : (
@@ -285,6 +294,11 @@ const ProjectReport = memo(
                   )}
                   graphUnit="votes"
                   className="dynamicHeight"
+                />
+                <ParticipationPerTopic
+                  startAt={startAt}
+                  endAt={endAt}
+                  projectId={project.id}
                 />
               </>
             )}
