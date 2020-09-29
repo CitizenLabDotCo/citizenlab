@@ -77,7 +77,7 @@ class WebApi::V1::GroupsController < ApplicationController
     params.require(:group).permit(
       :membership_type, 
       title_multiloc: CL2_SUPPORTED_LOCALES,
-      rules: [:ruleType, :customFieldId, :predicate, :value]
+      rules: [:ruleType, :customFieldId, :predicate, :value, value: []]
     )
   end
 
