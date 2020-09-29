@@ -28,7 +28,7 @@ export default defineMessages({
   },
   commentsByTimeTitle: {
     id: 'app.containers.Dashboards.ReportsTab.commentsByTimeTitle',
-    defaultMessage: 'Ideas',
+    defaultMessage: 'Comments',
   },
   users: {
     id: 'app.containers.AdminPage.DashboardPage.users',
