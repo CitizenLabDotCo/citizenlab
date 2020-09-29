@@ -53,30 +53,26 @@ const Title = styled.h2`
   padding-top: 12px;
 `;
 
-const List = styled.div`
+const List = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
 `;
 
-const ListItem = styled.div`
+const ListItem = styled.li`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
   display: flex;
   align-items: flex-start;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   margin-top: 18px;
   margin-bottom: 18px;
-
-  &.link {
-    cursor: pointer;
-    text-decoration: underline;
-
-    &:hover {
-      color: #000;
-      text-decoration: underline;
-    }
-  }
 `;
 
 const ListItemIcon = styled(Icon)`
@@ -89,6 +85,25 @@ const ListItemIcon = styled(Icon)`
     width: 22px;
     height: 22px;
     margin-right: 10px;
+  }
+`;
+
+const ListItemButton = styled.button`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+  text-decoration: underline;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
   }
 `;
 
@@ -294,7 +309,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             <List>
               {hasLastPhaseEnded && lastPhase && (
                 <ListItem>
-                  <ListItemIcon name="finish_flag" />
+                  <ListItemIcon ariaHidden name="finish_flag" />
                   <FormattedMessage
                     {...messages.endedOn}
                     values={{
@@ -306,20 +321,25 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               {process_type === 'timeline' &&
                 !isNilOrError(phases) &&
                 phases.length > 1 && (
-                  <ListItem
-                    className="link"
-                    onClick={scrollTo('project-timeline', false)}
-                  >
-                    <ListItemIcon name="timeline" className="timeline" />
-                    <FormattedMessage
-                      {...messages.xPhases}
-                      values={{ phasesCount: phases.length }}
+                  <ListItem>
+                    <ListItemIcon
+                      ariaHidden
+                      name="timeline"
+                      className="timeline"
                     />
+                    <ListItemButton
+                      onClick={scrollTo('project-timeline', false)}
+                    >
+                      <FormattedMessage
+                        {...messages.xPhases}
+                        values={{ phasesCount: phases.length }}
+                      />
+                    </ListItemButton>
                   </ListItem>
                 )}
               {isNumber(avatars_count) && avatars_count > 0 && (
                 <ListItem>
-                  <ListItemIcon name="person" />
+                  <ListItemIcon ariaHidden name="person" />
                   <FormattedMessage
                     {...messages.xParticipants}
                     values={{ participantsCount: avatars_count }}
@@ -329,32 +349,32 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               {process_type === 'continuous' &&
                 participation_method === 'ideation' &&
                 isNumber(ideas_count) && (
-                  <ListItem
-                    className="link"
-                    onClick={scrollTo('project-ideas')}
-                  >
-                    <ListItemIcon name="idea-filled" />
-                    <FormattedMessage
-                      {...messages.xIdeas}
-                      values={{ ideasCount: ideas_count }}
-                    />
+                  <ListItem>
+                    <ListItemIcon ariaHidden name="idea-filled" />
+                    <ListItemButton onClick={scrollTo('project-ideas')}>
+                      <FormattedMessage
+                        {...messages.xIdeas}
+                        values={{ ideasCount: ideas_count }}
+                      />
+                    </ListItemButton>
                   </ListItem>
                 )}
               {upcomingEvents.length > 0 && (
-                <ListItem
-                  className="link"
-                  onClick={scrollTo('project-events', false)}
-                >
-                  <ListItemIcon name="event" />
-                  <FormattedMessage
-                    {...messages.xUpcomingEvents}
-                    values={{ upcomingEventsCount: upcomingEvents.length }}
-                  />
+                <ListItem>
+                  <ListItemIcon ariaHidden name="event" />
+                  <ListItemButton onClick={scrollTo('project-events', false)}>
+                    <FormattedMessage
+                      {...messages.xUpcomingEvents}
+                      values={{ upcomingEventsCount: upcomingEvents.length }}
+                    />
+                  </ListItemButton>
                 </ListItem>
               )}
-              <ListItem className="link" onClick={openShareModal}>
-                <ListItemIcon name="share" />
-                <FormattedMessage {...messages.share} />
+              <ListItem>
+                <ListItemIcon ariaHidden name="share" />
+                <ListItemButton onClick={openShareModal}>
+                  <FormattedMessage {...messages.share} />
+                </ListItemButton>
               </ListItem>
             </List>
             {actionButtons}

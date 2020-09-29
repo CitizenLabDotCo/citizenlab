@@ -498,23 +498,23 @@ class Navbar extends PureComponent<
     const firstUrlSegment = urlSegments[0];
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
-    const onIdeaPage =
+    const isIdeaPage =
       urlSegments.length === 3 &&
       includes(locales, firstUrlSegment) &&
       secondUrlSegment === 'ideas' &&
       lastUrlSegment !== 'new';
-    const onInitiativePage =
+    const isInitiativePage =
       urlSegments.length === 3 &&
       includes(locales, firstUrlSegment) &&
       secondUrlSegment === 'initiatives' &&
       lastUrlSegment !== 'new';
-    const adminPage = isPage('admin', location.pathname);
-    const initiativeFormPage = isPage('initiative_form', location.pathname);
-    const ideaFormPage = isPage('idea_form', location.pathname);
-    const ideaEditPage = isPage('idea_edit', location.pathname);
-    const initiativeEditPage = isPage('initiative_edit', location.pathname);
-    const emailSettingsPage = isPage('email-settings', location.pathname);
-    const projectPage = !!(
+    const isAdminPage = isPage('admin', location.pathname);
+    const isInitiativeFormPage = isPage('initiative_form', location.pathname);
+    const isIdeaFormPage = isPage('idea_form', location.pathname);
+    const isIdeaEditPage = isPage('idea_edit', location.pathname);
+    const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
+    const isEmailSettingsPage = isPage('email-settings', location.pathname);
+    const isProjectPage = !!(
       urlSegments.length === 3 &&
       urlSegments[0] === locale &&
       urlSegments[1] === 'projects'
@@ -524,11 +524,11 @@ class Navbar extends PureComponent<
         ? adminPublications.list.length
         : 0;
     const showMobileNav =
-      !adminPage &&
-      !ideaFormPage &&
-      !initiativeFormPage &&
-      !ideaEditPage &&
-      !initiativeEditPage;
+      !isAdminPage &&
+      !isIdeaFormPage &&
+      !isInitiativeFormPage &&
+      !isIdeaEditPage &&
+      !isInitiativeEditPage;
 
     return (
       <>
@@ -539,12 +539,12 @@ class Navbar extends PureComponent<
         <Container
           id="e2e-navbar"
           className={`${
-            adminPage ? 'admin' : 'citizenPage'
+            isAdminPage ? 'admin' : 'citizenPage'
           } ${'alwaysShowBorder'} ${
-            onIdeaPage || onInitiativePage ? 'hideNavbar' : ''
+            isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
           }`}
           ref={this.handleRef}
-          position={projectPage ? 'absolute' : 'fixed'}
+          position={isProjectPage ? 'absolute' : 'fixed'}
         >
           <ContainerInner>
             <Left>
@@ -672,7 +672,7 @@ class Navbar extends PureComponent<
             </Left>
             <StyledRightFragment name="navbar-right">
               <Right className={bowser.msie ? 'ie' : ''}>
-                {!emailSettingsPage && (
+                {!isEmailSettingsPage && (
                   <>
                     {isNilOrError(authUser) && (
                       <RightItem className="login noLeftMargin">
