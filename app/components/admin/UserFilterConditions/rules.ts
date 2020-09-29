@@ -1,6 +1,7 @@
 import TextValueSelector from './ValueSelector/TextValueSelector';
 import DateValueSelector from './ValueSelector/DateValueSelector';
 import AreaValueSelector from './ValueSelector/AreaValueSelector';
+import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
@@ -73,7 +74,7 @@ export type TRule =
   | {
       ruleType?: 'custom_field_select';
       /**
-       * The ID of a custom field
+       * The IDs of a custom fields
        */
       customFieldId?: string;
       predicate?: 'is_one_of' | 'not_is_one_of';
@@ -169,6 +170,14 @@ export type TRule =
       ruleType?: 'lives_in';
       predicate?: 'is_empty' | 'not_is_empty';
       value?: undefined;
+    }
+  | {
+      ruleType?: 'lives_in';
+      /**
+       * The IDs of areas
+       */
+      predicate?: 'is_one_of' | 'not_is_one_of';
+      value?: string[];
     }
   | {
       ruleType?: 'registration_completed_at';
@@ -302,6 +311,8 @@ export const ruleTypeConstraints = {
   lives_in: {
     has_value: AreaValueSelector,
     not_has_value: AreaValueSelector,
+    is_one_of: AreaValuesSelector,
+    not_is_one_of: AreaValuesSelector,
     is_empty: null,
     not_is_empty: null,
   },
