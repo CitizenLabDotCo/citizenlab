@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -150,9 +150,7 @@ class ParentCommentForm extends PureComponent<
     this.setState({ focused: false });
   };
 
-  onSubmit = async (event: MouseEvent<any>) => {
-    event.preventDefault();
-
+  onSubmit = async () => {
     const { locale, authUser, postId, postType, post } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
@@ -190,7 +188,14 @@ class ParentCommentForm extends PureComponent<
             projectId,
             authUser.id,
             commentBodyMultiloc
-          );
+          ).then((comment) => {
+            const parentComment = document.getElementById(comment.data.id);
+            if (parentComment) {
+              setTimeout(() => {
+                parentComment.scrollIntoView();
+              }, 100);
+            }
+          });
         }
 
         if (postType === 'initiative') {
@@ -198,7 +203,14 @@ class ParentCommentForm extends PureComponent<
             postId,
             authUser.id,
             commentBodyMultiloc
-          );
+          ).then((comment) => {
+            const parentComment = document.getElementById(comment.data.id);
+            if (parentComment) {
+              setTimeout(() => {
+                parentComment.scrollIntoView();
+              }, 100);
+            }
+          });
         }
 
         commentAdded();
@@ -263,7 +275,7 @@ class ParentCommentForm extends PureComponent<
               />
             </AuthorWrapper>
 
-            <Form onSubmit={this.onSubmit}>
+            <Form>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
                   <FormattedMessage {...messages.yourComment} />
@@ -274,7 +286,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={5}
+                  rows={1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
