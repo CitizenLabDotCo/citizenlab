@@ -11,7 +11,8 @@ import { SectionContainer } from 'containers/ProjectsShowPage/styles';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
@@ -31,31 +32,33 @@ interface Props {
   className?: string;
 }
 
-const PollContainer = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+const PollContainer = memo<Props & InjectedIntlProps>(
+  ({ projectId, className, intl: { formatMessage } }) => {
+    const project = useProject({ projectId });
 
-  if (
-    !isNilOrError(project) &&
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method === 'poll'
-  ) {
-    return (
-      <Container
-        className={`e2e-continuous-project-poll-containe ${className || ''}`}
-      >
-        <StyledContentContainer>
-          <SectionContainer>
-            <ScreenReaderOnly>
-              <FormattedMessage tagName="h2" {...messages.invisibleTitlePoll} />
-            </ScreenReaderOnly>
-            <Poll type="project" projectId={project.id} phaseId={null} />
-          </SectionContainer>
-        </StyledContentContainer>
-      </Container>
-    );
+    if (
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'poll'
+    ) {
+      return (
+        <Container
+          className={`e2e-continuous-project-poll-containe ${className || ''}`}
+        >
+          <StyledContentContainer>
+            <SectionContainer>
+              <ScreenReaderOnly>
+                <h2>{formatMessage(messages.invisibleTitlePoll)}</h2>
+              </ScreenReaderOnly>
+              <Poll type="project" projectId={project.id} phaseId={null} />
+            </SectionContainer>
+          </StyledContentContainer>
+        </Container>
+      );
+    }
+
+    return null;
   }
+);
 
-  return null;
-});
-
-export default PollContainer;
+export default injectIntl(PollContainer);

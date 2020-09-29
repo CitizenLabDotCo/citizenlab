@@ -41,7 +41,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const windowSize = useWindowSize();
 
-  if (!isNilOrError(project) && !isNilOrError(windowSize)) {
+  if (!isNilOrError(project)) {
     const projectType = project?.attributes.process_type;
     const participationMethod = project?.attributes.participation_method;
     const showIdeas = !!(

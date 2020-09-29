@@ -38,15 +38,13 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
   const events = useEvents(projectId);
 
   if (!isNilOrError(project) && !isNilOrError(events)) {
-    const upcomingEvents = events
-      ? events.filter((event) => {
-          const eventTime = pastPresentOrFuture([
-            event.attributes.start_at,
-            event.attributes.end_at,
-          ]);
-          return eventTime === 'present' || eventTime === 'future';
-        })
-      : null;
+    const upcomingEvents = events.filter((event) => {
+      const eventTime = pastPresentOrFuture([
+        event.attributes.start_at,
+        event.attributes.end_at,
+      ]);
+      return eventTime === 'present' || eventTime === 'future';
+    });
 
     if (upcomingEvents && upcomingEvents.length > 0) {
       return (

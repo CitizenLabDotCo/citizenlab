@@ -11,7 +11,8 @@ import { SectionContainer } from 'containers/ProjectsShowPage/styles';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
@@ -31,41 +32,40 @@ interface Props {
   className?: string;
 }
 
-const SurveyContainer = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+const SurveyContainer = memo<Props & InjectedIntlProps>(
+  ({ projectId, className, intl: { formatMessage } }) => {
+    const project = useProject({ projectId });
 
-  if (
-    !isNilOrError(project) &&
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method === 'survey' &&
-    project.attributes.survey_embed_url &&
-    project.attributes.survey_service
-  ) {
-    return (
-      <Container
-        id="e2e-continuous-project-survey-container"
-        className={className || ''}
-      >
-        <StyledContentContainer>
-          <SectionContainer>
-            <ScreenReaderOnly>
-              <FormattedMessage
-                tagName="h2"
-                {...messages.invisibleTitleSurvey}
+    if (
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'survey' &&
+      project.attributes.survey_embed_url &&
+      project.attributes.survey_service
+    ) {
+      return (
+        <Container
+          id="e2e-continuous-project-survey-container"
+          className={className || ''}
+        >
+          <StyledContentContainer>
+            <SectionContainer>
+              <ScreenReaderOnly>
+                <h2>{formatMessage(messages.invisibleTitleSurvey)}</h2>
+              </ScreenReaderOnly>
+              <Survey
+                projectId={project.id}
+                surveyService={project.attributes.survey_service}
+                surveyEmbedUrl={project.attributes.survey_embed_url}
               />
-            </ScreenReaderOnly>
-            <Survey
-              projectId={project.id}
-              surveyService={project.attributes.survey_service}
-              surveyEmbedUrl={project.attributes.survey_embed_url}
-            />
-          </SectionContainer>
-        </StyledContentContainer>
-      </Container>
-    );
+            </SectionContainer>
+          </StyledContentContainer>
+        </Container>
+      );
+    }
+
+    return null;
   }
+);
 
-  return null;
-});
-
-export default SurveyContainer;
+export default injectIntl(SurveyContainer);
