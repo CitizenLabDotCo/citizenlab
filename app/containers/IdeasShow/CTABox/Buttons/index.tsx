@@ -20,7 +20,7 @@ const IdeaCTAButtons = ({ ideaId }: Props) => {
 
   if (!isNilOrError(idea)) {
     const commentingEnabled =
-      idea.attributes.action_descriptor.commenting.enabled;
+      idea.attributes.action_descriptor.commenting_idea.enabled;
 
     return (
       <>
