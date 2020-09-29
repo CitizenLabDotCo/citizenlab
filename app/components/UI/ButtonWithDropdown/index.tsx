@@ -69,6 +69,8 @@ const ButtonWithDropdown = ({
       <DropdownWrapper>
         <Dropdown
           top="5px"
+          left="0px"
+          mobileLeft="0px"
           right={bowser.msie ? '-5px' : 'auto'}
           opened={dropdownOpened}
           onClickOutside={toggleDropdown}
