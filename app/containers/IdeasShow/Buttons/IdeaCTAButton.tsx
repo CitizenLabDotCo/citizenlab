@@ -10,6 +10,7 @@ interface Props {
   theme: any;
   iconName?: IconNames;
   onClick?: () => void;
+  ariaExpanded?: boolean;
 }
 
 const IdeaCTAButton = ({
@@ -18,6 +19,7 @@ const IdeaCTAButton = ({
   theme,
   iconName,
   onClick,
+  ariaExpanded,
 }: Props) => {
   const buttonColor = 'white';
   const boxShadow = '0px 4px 3px rgba(0, 0, 0, 0.05)';
@@ -38,6 +40,7 @@ const IdeaCTAButton = ({
       boxShadowHover={boxShadowOnHover}
       fontWeight="bold"
       onClick={onClick}
+      ariaExpanded={ariaExpanded}
     >
       {buttonText}
     </Button>
