@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   selectAProject: {
     id: 'app.containers.Dashboards.ReportsTab.selectAProject',
-    defaultMessage: 'What project are you interrested in ?',
+    defaultMessage: 'What project are you interested in ?',
   },
   sectionWho: {
     id: 'app.containers.Dashboards.ReportsTab.sectionWho',
@@ -160,7 +160,7 @@ export default defineMessages({
   },
   fromTo: {
     id: 'app.containers.AdminPage.DashboardPage.fromTo',
-    defaultMessage: 'from : {from} to {to}',
+    defaultMessage: 'from {from} to {to}',
   },
   noPhase: {
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
