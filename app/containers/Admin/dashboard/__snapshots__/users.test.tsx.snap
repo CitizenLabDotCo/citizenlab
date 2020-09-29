@@ -56,19 +56,15 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     projectFilterOptions={null}
     topicFilterOptions={null}
   />
-  <ThemeProvider
-    theme={[Function]}
-  >
-    <dashboard__GraphsContainer>
-      <Component
-        endAt="2010-01-01T04:06:07.000Z"
-      />
-      <WithTheme(MostActiveUsersList)
-        className="dynamicHeight"
-        endAt="2010-01-01T04:06:07.000Z"
-        infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
-      />
-    </dashboard__GraphsContainer>
-  </ThemeProvider>
+  <dashboard__GraphsContainer>
+    <Component
+      endAt="2010-01-01T04:06:07.000Z"
+    />
+    <WithTheme(MostActiveUsersList)
+      className="dynamicHeight"
+      endAt="2010-01-01T04:06:07.000Z"
+      infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
+    />
+  </dashboard__GraphsContainer>
 </Fragment>
 `;
