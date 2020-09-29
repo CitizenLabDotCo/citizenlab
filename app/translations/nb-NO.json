@@ -812,7 +812,6 @@
   "app.containers.AdminPage.DashboardPage.deletedUser": "Deleted user",
   "app.containers.AdminPage.DashboardPage.false": "",
   "app.containers.AdminPage.DashboardPage.female": "kvinne",
-  "app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes": "",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Kontrollpanel for aktiviteter på plattformen",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Kontrollpanel for administrator",
   "app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter": "Pick group filter",

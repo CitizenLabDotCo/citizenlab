@@ -1,16 +1,12 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
+
+// resources
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
-
-// libs
-import { map } from 'lodash-es';
-
-// resources
 import messages from './messages';
 import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
@@ -28,22 +24,20 @@ import {
   commentsByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
-  ideasByStatusXlsxEndpoint,
-  ideasByStatusStream,
-  IIdeasByStatus,
 } from 'services/stats';
+import { InjectedIntlProps } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 // components
-import ResolutionControl from '../components/ResolutionControl';
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
-import HorizontalBarChart from '../users/charts/HorizontalBarChart';
+// import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
-import ExportMenu from '../components/ExportMenu';
+// import ExportMenu from '../components/ExportMenu';
+// import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 import T from 'components/T';
@@ -96,7 +90,7 @@ const ProjectReport = memo(
 
     // set time boundaries
     const [resolution, setResolution] = useState<IResolution>('month');
-    const [startAt, setStartAt] = useState<string | null>(null);
+    const [startAt, setStartAt] = useState<string | null | undefined>(null);
     const [endAt, setEndAt] = useState<string | null>(null);
 
     useEffect(() => {
@@ -131,6 +125,12 @@ const ProjectReport = memo(
         : 'month';
     };
 
+    const formatDateLabel = (date) =>
+      formatDate(date, {
+        day: resolution === 'month' ? undefined : '2-digit',
+        month: 'short',
+      });
+
     const mostVotedIdeasSerie = mostVotedIdeas?.list?.map((idea) => ({
       code: idea.id,
       value: idea.attributes.upvotes_count + idea.attributes.downvotes_count,
@@ -151,70 +151,57 @@ const ProjectReport = memo(
     ) as ParticipationMethod[];
 
     // if ((!startAt || !endAt)) {
-    //   return null;
+    //   return null; // TODO add better test? and good empty state. If there's no phase or no participants, let's not show empty sections.
     // }
 
     const projectTitle = localize(project.attributes.title_multiloc);
 
-    const convertIdeasByStatusToGraphFormat = (
-      ideasByStatus: IIdeasByStatus
-    ) => {
-      const {
-        series: { ideas },
-        idea_status,
-      } = ideasByStatus;
-
-      if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
-        return null;
-      }
-
-      const ideasByStatusConvertedToGraphFormat = map(
-        ideas,
-        (value: number, key: string) => ({
-          value,
-          name: localize(idea_status[key].title_multiloc),
-          code: key,
-          color: idea_status[key].color,
-          ordering: idea_status[key].ordering,
-        })
-      );
-
-      return ideasByStatusConvertedToGraphFormat;
-    };
-
-    if (!startAt || !endAt) {
-      return null;
-    }
-
     return (
       <>
         <RowSection>
-          <PageTitle>{projectTitle}</PageTitle>
+          <PageTitle>
+            <T value={project.attributes.title_multiloc} />
+          </PageTitle>
           <ResolutionControl value={resolution} onChange={setResolution} />
         </RowSection>
         <Section>
           <SectionTitle>
-            Project Type :{' '}
-            {isTimelineProject ? 'Timeline Project' : 'Continuous'}
+            <FormattedMessage
+              {...messages.projectType}
+              values={{
+                projectType: isTimelineProject ? (
+                  <FormattedMessage {...messages.timelineType} />
+                ) : (
+                  <FormattedMessage {...messages.continuousType} />
+                ),
+              }}
+            />
           </SectionTitle>
         </Section>
 
         {isTimelineProject ? (
           <TimelineSection>
-            {!isNilOrError(phases) && phases.length > 0
-              ? phases.map((phase, index) => {
-                  return (
-                    <Section key={index}>
-                      <p>
-                        from {phase.attributes.start_at} to{' '}
-                        {phase.attributes.end_at}
-                      </p>
-                      <div>{phase.attributes.participation_method}</div>
-                      <div>{localize(phase.attributes.title_multiloc)}</div>
-                    </Section>
-                  );
-                })
-              : 'No configured phase'}
+            {!isNilOrError(phases) && phases.length > 0 ? (
+              phases.map((phase, index) => {
+                return (
+                  <Section key={index}>
+                    <p>
+                      <FormattedMessage
+                        {...messages.fromTo}
+                        values={{
+                          from: formatDateLabel(phase.attributes.start_at),
+                          to: formatDateLabel(phase.attributes.end_at),
+                        }}
+                      />
+                    </p>
+                    <div>{phase.attributes.participation_method}</div>
+                    <div>{localize(phase.attributes.title_multiloc)}</div>
+                  </Section>
+                );
+              })
+            ) : (
+              <FormattedMessage {...messages.noPhase} />
+            )}
           </TimelineSection>
         ) : (
           <Section>
@@ -303,23 +290,13 @@ const ProjectReport = memo(
                   currentProjectFilterLabel={projectTitle}
                 />
 
-                <HorizontalBarChart
-                  graphTitleString={formatMessage(messages.ideasByStatusTitle)}
-                  graphUnit="ideas"
-                  stream={ideasByStatusStream}
-                  convertToGraphFormat={convertIdeasByStatusToGraphFormat}
-                  className="dynamicHeight"
+                <IdeasByStatusChart
+                  className="fullWidth dynamicHeight"
                   startAt={startAt}
                   endAt={endAt}
-                  exportMenu={
-                    <ExportMenu
-                      name={formatMessage(messages.ideasByStatusTitle)}
-                      startAt={startAt}
-                      endAt={endAt}
-                      xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                    />
-                  }
+                  currentProjectFilter={project.id}
                 />
+
                 <HorizontalBarChartWithoutStream
                   serie={mostVotedIdeasSerie}
                   graphTitleString={formatMessage(
@@ -327,14 +304,6 @@ const ProjectReport = memo(
                   )}
                   graphUnit="votes"
                   className="dynamicHeight"
-                  exportMenu={
-                    <ExportMenu
-                      name={formatMessage(messages.fiveIdeasWithMostVotes)}
-                      startAt={startAt}
-                      endAt={endAt}
-                      xlsxEndpoint={ideasByStatusXlsxEndpoint}
-                    />
-                  }
                 />
               </>
             )}

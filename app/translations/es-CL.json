@@ -812,7 +812,6 @@
   "app.containers.AdminPage.DashboardPage.deletedUser": "Usuario eliminado",
   "app.containers.AdminPage.DashboardPage.false": "",
   "app.containers.AdminPage.DashboardPage.female": "mujer",
-  "app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes": "",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Tablero de comandos para las actividades en la plataforma",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Página del tablero de administración",
   "app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter": "Elege un filtro de grupo",

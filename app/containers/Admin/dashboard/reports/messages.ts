@@ -146,4 +146,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
     defaultMessage: '{selectedResourceName} difference with {selectedName}',
   },
+  timelineType: {
+    id: 'app.containers.AdminPage.DashboardPage.timelineType',
+    defaultMessage: 'Timeline',
+  },
+  continuousType: {
+    id: 'app.containers.AdminPage.DashboardPage.continuousType',
+    defaultMessage: 'Continuous',
+  },
+  projectType: {
+    id: 'app.containers.AdminPage.DashboardPage.projectType',
+    defaultMessage: 'Project type : {projectType}',
+  },
+  fromTo: {
+    id: 'app.containers.AdminPage.DashboardPage.fromTo',
+    defaultMessage: 'from : {from} to {to}',
+  },
+  noPhase: {
+    id: 'app.containers.AdminPage.DashboardPage.noPhase',
+    defaultMessage: 'N phase onfigures in this project',
+  },
 });
