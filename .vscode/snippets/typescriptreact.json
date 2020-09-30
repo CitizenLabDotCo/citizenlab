@@ -90,6 +90,13 @@
       "import styled from 'styled-components';"
     ]
   },
+  "style-utils": {
+    "prefix": "style-utils",
+    "description": "Imports styleutils'",
+    "body": [
+      "import { colors, media, fontSizes } from 'utils/styleUtils';"
+    ]
+  },
   "flex-full-center": {
     "prefix": "flex-full-center",
     "description": "CSS for centering with flexbox",
