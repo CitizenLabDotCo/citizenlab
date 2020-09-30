@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
-import { getTenant } from 'services/__mocks__/tenant';
+import { getTenantData } from 'services/__mocks__/tenant';
 import { getLocale } from 'services/__mocks__/locale';
 
 jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
@@ -91,7 +91,7 @@ describe('<IdeaContent />', () => {
     const ideaId = 'myIdeasiD';
     const idea = getIdea(ideaId);
     const locale = getLocale();
-    const tenant = getTenant();
+    const tenant = getTenantData();
     const intl = getDummyIntlObject();
     const wrapper = shallow(
       <IdeaContent
