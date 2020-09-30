@@ -276,7 +276,6 @@ class IdeaCard extends PureComponent<
               authorId={ideaAuthorId}
               createdAt={idea.attributes.published_at}
               size="34px"
-              notALink
             />
           }
           footer={
@@ -285,6 +284,7 @@ class IdeaCard extends PureComponent<
                 <FooterInner>
                   {participationMethod !== 'budgeting' && (
                     <VoteControl
+                      style="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"

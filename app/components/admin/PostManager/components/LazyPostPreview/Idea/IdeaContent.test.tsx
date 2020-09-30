@@ -3,8 +3,14 @@ import { shallow } from 'enzyme';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
+import { getTenantData } from 'services/__mocks__/tenant';
+import { getLocale } from 'services/__mocks__/locale';
 
-jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
+jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
+jest.mock(
+  'containers/IdeasShow/IdeaProposedBudget',
+  () => 'IdeaProposedBudget'
+);
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
 jest.mock('components/PostShowComponents/DropdownMap', () => 'DropdownMap');
@@ -32,6 +38,7 @@ jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
 jest.mock('resources/GetTenant', () => 'GetTenant');
 jest.mock('resources/GetProject', () => 'GetProject');
 jest.mock('resources/GetPermission', () => 'GetPermission');
+jest.mock('resources/GetLocale', () => 'GetLocale');
 jest.mock('utils/cl-intl');
 jest.mock('utils/styleUtils', () => ({
   colors: {
@@ -70,6 +77,7 @@ describe('<IdeaContent />', () => {
         ideaFiles={null}
         tenant={null}
         project={null}
+        locale={null}
         postOfficialFeedbackPermission={undefined}
         intl={intl}
         {...localizeProps}
@@ -82,6 +90,8 @@ describe('<IdeaContent />', () => {
   it('renders correctly when an idea is provided', () => {
     const ideaId = 'myIdeasiD';
     const idea = getIdea(ideaId);
+    const locale = getLocale();
+    const tenant = getTenantData();
     const intl = getDummyIntlObject();
     const wrapper = shallow(
       <IdeaContent
@@ -89,9 +99,10 @@ describe('<IdeaContent />', () => {
         closePreview={closePreview}
         handleClickEdit={handleClickEdit}
         idea={idea}
+        tenant={tenant}
+        locale={locale}
         ideaImages={null}
         ideaFiles={null}
-        tenant={null}
         project={null}
         postOfficialFeedbackPermission={undefined}
         intl={intl}
