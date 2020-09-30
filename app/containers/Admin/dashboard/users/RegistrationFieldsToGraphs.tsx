@@ -77,7 +77,6 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       code: 'key',
     }));
 
-    console.log(res);
     return res.length > 0 ? res : null;
   };
 
