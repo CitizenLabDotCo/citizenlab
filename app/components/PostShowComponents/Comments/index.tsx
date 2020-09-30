@@ -49,7 +49,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
+  font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: 40px;
   color: ${(props: any) => props.theme.colorText};

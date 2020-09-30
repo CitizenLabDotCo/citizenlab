@@ -112,8 +112,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.shareIdea',
     defaultMessage: 'Share idea',
   },
-  postComment: {
-    id: 'app.containers.IdeasShow.postComment',
-    defaultMessage: 'Post comment',
+  commentCTA: {
+    id: 'app.containers.IdeasShow.commentCTA',
+    defaultMessage: 'Add a comment',
   },
 });

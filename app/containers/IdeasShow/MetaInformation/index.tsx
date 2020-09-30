@@ -17,6 +17,7 @@ import Location from './Location';
 import Attachments from './Attachments';
 import Topics from 'components/PostShowComponents/Topics';
 import SimilarIdeas from './SimilarIdeas';
+import PostedBy from './PostedBy';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -37,11 +38,16 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Item = styled.div<{ isLastItem: boolean }>`
-  border-bottom: ${({ isLastItem }) =>
-    !isLastItem ? `1px solid ${colors.separation}` : 'none'};
-  padding-top: 25px;
-  padding-bottom: 30px;
+const Item = styled.div<{ isFirstItem?: boolean }>`
+  border-top: ${({ isFirstItem }) =>
+    isFirstItem ? `1px solid ${colors.separation}` : 'none'};
+  border-bottom: 1px solid ${colors.separation};
+  padding-top: 20px;
+  padding-bottom: 23px;
+`;
+
+const StyledPostedBy = styled(PostedBy)`
+  margin-top: -2px;
 `;
 
 const Header = styled.h3`
@@ -54,6 +60,7 @@ const Header = styled.h3`
 interface InputProps {
   className?: string;
   ideaId: string;
+  authorId: string | null;
   projectId: string;
   statusId: string;
 }
@@ -69,6 +76,7 @@ const MetaInformation = ({
   ideaId,
   projectId,
   statusId,
+  authorId,
   similarIdeasEnabled,
 }: Props) => {
   const idea = useIdea({ ideaId });
@@ -104,30 +112,16 @@ const MetaInformation = ({
       locale
     );
 
-    const calculateLastItem = () => {
-      if (similarIdeasEnabled && !isNilOrError(similarIdeas)) {
-        return 'similarIdeas';
-      } else if (
-        attachmentsEnabled &&
-        !isNilOrError(files) &&
-        files.length > 0
-      ) {
-        return 'attachments';
-      } else if (locationEnabled && address && geoPosition) {
-        return 'location';
-      } else if (topicsEnabled && topicIds.length > 0) {
-        return 'topics';
-      } else {
-        return 'ideaStatus';
-      }
-    };
-
-    const lastItem = calculateLastItem();
-
     return (
       <Container className={className}>
+        <Item isFirstItem>
+          <Header>
+            <FormattedMessage {...messages.postedBy} />
+          </Header>
+          <StyledPostedBy authorId={authorId} ideaId={ideaId} />
+        </Item>
         {!isNilOrError(ideaStatus) && (
-          <Item isLastItem={lastItem === 'ideaStatus'}>
+          <Item>
             <Header>
               <FormattedMessage {...messages.currentStatus} />
             </Header>
@@ -135,7 +129,7 @@ const MetaInformation = ({
           </Item>
         )}
         {topicsEnabled && topicIds.length > 0 && (
-          <Item isLastItem={lastItem === 'topics'}>
+          <Item>
             <Header>
               <FormattedMessage {...messages.topics} />
             </Header>
@@ -143,7 +137,7 @@ const MetaInformation = ({
           </Item>
         )}
         {locationEnabled && address && geoPosition && (
-          <Item isLastItem={lastItem === 'location'}>
+          <Item>
             <Header>
               <FormattedMessage {...messages.location} />
             </Header>
@@ -155,7 +149,7 @@ const MetaInformation = ({
           </Item>
         )}
         {attachmentsEnabled && !isNilOrError(files) && files.length > 0 && (
-          <Item isLastItem={lastItem === 'attachments'}>
+          <Item>
             <Header>
               <FormattedMessage {...messages.attachments} />
             </Header>
@@ -163,7 +157,7 @@ const MetaInformation = ({
           </Item>
         )}
         {similarIdeasEnabled && !isNilOrError(similarIdeas) && (
-          <Item isLastItem={lastItem === 'similarIdeas'}>
+          <Item>
             <Header>
               <FormattedMessage {...messages.similarIdeas} />
             </Header>
