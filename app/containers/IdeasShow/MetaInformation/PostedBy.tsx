@@ -54,7 +54,7 @@ const PostedBy = memo<Props>(({ className, authorId, ideaId }) => {
     );
 
     return (
-      <Container className={className}>
+      <Container className={`e2e-idea-author ${className || ''}`}>
         <StyledAvatar
           userId={authorId}
           size="32px"
