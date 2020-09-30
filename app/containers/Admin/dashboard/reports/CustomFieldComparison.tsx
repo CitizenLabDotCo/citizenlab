@@ -228,14 +228,10 @@ export class CustomFieldsComparison extends React.PureComponent<
       { queryParameters: { project: currentProject } },
       customField.id
     );
-    console.log(stream, totalUsersStream, participantsStream);
     this.combined$ = combineLatest(
       totalUsersStream.observable,
       participantsStream.observable
     ).subscribe(([totalSerie, participantSerie]) => {
-      console.log(participantSerie, 'participantSerie');
-      console.log(totalSerie, 'totalSerie');
-
       if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
         const convertedAndMergedSeries = this.convertAndMergeSeries(
           totalSerie as ISupportedDataType,
@@ -264,8 +260,6 @@ export class CustomFieldsComparison extends React.PureComponent<
       animationBegin,
       animationDuration,
     } = this.props['theme'];
-
-    console.log(serie);
 
     return (
       <GraphCard className={`dynamicHeight ${className}`}>

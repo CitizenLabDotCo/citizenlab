@@ -13,7 +13,6 @@ import SelectableResourceByProjectChart from './charts/SelectableResourceByProje
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import TimeControl from '../components/TimeControl';
 
 // typings
@@ -34,7 +33,7 @@ import GetProjects, {
   GetProjectsChildProps,
   PublicationStatus,
 } from 'resources/GetProjects';
-import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetIdeas from 'resources/GetIdeas';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -64,7 +63,6 @@ interface DataProps {
   projects: GetProjectsChildProps;
   groups: GetGroupsChildProps;
   topics: GetTopicsChildProps;
-  mostVotedIdeas: GetIdeasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -189,7 +187,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
-    this.props.mostVotedIdeas.onChangeProjects(filter.value);
     this.setState({
       currentProjectFilter: filter.value,
       currentProjectFilterLabel: filter.label,
@@ -298,27 +295,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       { value: '', label: formatMessage(messages.allTopics) },
       ...filterOptions,
     ];
-  };
-
-  mostVotedIdeasSerie = () => {
-    const { localize, mostVotedIdeas } = this.props;
-
-    if (!isNilOrError(mostVotedIdeas.list)) {
-      const { list } = mostVotedIdeas;
-      const serie = list.map((idea) => {
-        return {
-          code: idea.id,
-          value:
-            idea.attributes.upvotes_count + idea.attributes.downvotes_count,
-          up: idea.attributes.upvotes_count,
-          down: idea.attributes.downvotes_count,
-          name: localize(idea.attributes.title_multiloc),
-          slug: idea.attributes.slug,
-        };
-      });
-      return serie;
-    }
-    return undefined;
   };
 
   convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
@@ -444,19 +420,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               barStream={commentsByTimeStream}
               {...this.state}
             />
-
-            <HorizontalBarChartWithoutStream
-              serie={this.mostVotedIdeasSerie()}
-              graphTitleString={this.props.intl.formatMessage(
-                messages.fiveIdeasWithMostVotes
-              )}
-              graphUnit="votes"
-              className="fullWidth dynamicHeight"
-              {...this.state}
-            />
             <Column>
-              <IdeasByStatusChart
-                className="fullWidth dynamicHeight"
+              <LineBarChartVotesByTime
+                className="fullWidth e2e-votes-chart"
                 startAt={startAt}
                 endAt={endAt}
                 {...this.state}
@@ -472,8 +438,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
             <Column>
-              <LineBarChartVotesByTime
-                className="fullWidth e2e-votes-chart"
+              <IdeasByStatusChart
+                className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
                 {...this.state}
@@ -509,15 +475,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetProjects
       publicationStatuses={publicationStatuses}
       filterCanModerate={true}
-    />
-  ),
-  mostVotedIdeas: (
-    <GetIdeas
-      pageNumber={1}
-      pageSize={5}
-      sort="popular"
-      type="paginated"
-      projectIds={'all'}
     />
   ),
   mostControversialIdeas: (
