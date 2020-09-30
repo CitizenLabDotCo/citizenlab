@@ -42,12 +42,13 @@ interface Props {
 
 const ParticipatoryBudgetingCTABox = (props: Props & InjectedIntlProps) => {
   const {
+    className,
     ideaId,
     intl: { formatMessage },
   } = props;
 
   return (
-    <Container>
+    <Container className={className}>
       <ScreenReaderOnly>
         <h2>{formatMessage(messages.a11y_PBCTABox)}</h2>
       </ScreenReaderOnly>
