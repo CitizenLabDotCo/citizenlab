@@ -17,6 +17,7 @@ import Location from './Location';
 import Attachments from './Attachments';
 import Topics from 'components/PostShowComponents/Topics';
 import SimilarIdeas from './SimilarIdeas';
+import PostedBy from './PostedBy';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -54,6 +55,7 @@ const Header = styled.h3`
 interface InputProps {
   className?: string;
   ideaId: string;
+  authorId: string | null;
   projectId: string;
   statusId: string;
 }
@@ -69,6 +71,7 @@ const MetaInformation = ({
   ideaId,
   projectId,
   statusId,
+  authorId,
   similarIdeasEnabled,
 }: Props) => {
   const idea = useIdea({ ideaId });
@@ -117,8 +120,10 @@ const MetaInformation = ({
         return 'location';
       } else if (topicsEnabled && topicIds.length > 0) {
         return 'topics';
-      } else {
+      } else if (!isNilOrError(ideaStatus)) {
         return 'ideaStatus';
+      } else {
+        return 'ideaAuthor';
       }
     };
 
@@ -126,6 +131,12 @@ const MetaInformation = ({
 
     return (
       <Container className={className}>
+        <Item isLastItem={lastItem === 'ideaAuthor'}>
+          <Header>
+            <FormattedMessage {...messages.postedBy} />
+          </Header>
+          <PostedBy authorId={authorId} ideaId={ideaId} />
+        </Item>
         {!isNilOrError(ideaStatus) && (
           <Item isLastItem={lastItem === 'ideaStatus'}>
             <Header>

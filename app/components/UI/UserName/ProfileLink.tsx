@@ -11,6 +11,7 @@ const StyledLink = styled(Link)`
   &:hover {
     cursor: pointer;
     color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
+    color: blue;
     text-decoration: underline;
   }
 `;

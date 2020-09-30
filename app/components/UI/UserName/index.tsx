@@ -20,6 +20,7 @@ interface DataProps {
 
 interface StyleProps {
   emphasize?: boolean;
+  underline?: boolean;
   color?: string;
   canModerate?: boolean;
 }
@@ -83,6 +84,7 @@ const UserName = (props: Props & InjectedIntlProps) => {
       name={name}
       className={className}
       isUnknownUser={isUnknownUser || isNilOrError(user)}
+      isLinkToProfile={isLinkToProfile}
       {...styleProps}
     />
   );
