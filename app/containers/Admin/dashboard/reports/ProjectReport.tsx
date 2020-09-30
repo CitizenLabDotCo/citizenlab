@@ -11,10 +11,13 @@ import messages from './messages';
 import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetUserCustomFields, {
+  GetUserCustomFieldsChildProps,
+} from 'resources/GetUserCustomFields';
 import {
-  usersByTimeCumulativeXlsxEndpoint,
-  usersByTimeCumulativeStream,
-  usersByTimeStream,
+  activeUsersByTimeCumulativeXlsxEndpoint,
+  activeUsersByTimeCumulativeStream,
+  activeUsersByTimeStream,
   ideasByTimeCumulativeXlsxEndpoint,
   ideasByTimeCumulativeStream,
   ideasByTimeStream,
@@ -32,13 +35,14 @@ import { IProjectData } from 'services/projects';
 // components
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
-
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
+import CustomFieldComparison from './CustomFieldComparison';
+
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -79,6 +83,7 @@ interface InputProps {
 interface DataProps {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
+  customFields: GetUserCustomFieldsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -88,6 +93,7 @@ const ProjectReport = memo(
     project,
     phases,
     mostVotedIdeas,
+    customFields,
     intl: { formatMessage, formatDate },
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
@@ -230,18 +236,32 @@ const ProjectReport = memo(
             {participationMethods !== ['information'] && startAt && endAt && (
               <LineBarChart
                 graphTitle={formatMessage(messages.participantsOverTimeTitle)}
-                xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
+                xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
                 graphUnit="users"
                 graphUnitMessageKey="users"
                 startAt={startAt}
                 endAt={endAt}
-                barStream={usersByTimeStream}
-                lineStream={usersByTimeCumulativeStream}
+                barStream={activeUsersByTimeStream}
+                lineStream={activeUsersByTimeCumulativeStream}
                 resolution={resolution}
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
             )}
+            {participationMethods !== ['information'] &&
+              startAt &&
+              endAt &&
+              !isNilOrError(customFields) &&
+              customFields.map(
+                (customField) =>
+                  customField.attributes.enabled && (
+                    <CustomFieldComparison
+                      customField={customField}
+                      currentProject={project.id}
+                      key={customField.id}
+                    />
+                  )
+              )}
           </GraphsContainer>
         </Section>
 
@@ -336,6 +356,11 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetIdeas>
+  ),
+  customFields: (
+    <GetUserCustomFields
+      inputTypes={['select', 'multiselect', 'checkbox', 'number']}
+    />
   ),
 });
 
