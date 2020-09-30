@@ -11,7 +11,6 @@ import styled, { useTheme } from 'styled-components';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import {
@@ -80,7 +79,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
 
   const openIdeaInANewTab = ({ slug }: { slug: string }) => {
     if (!isNilOrError(slug)) {
-      clHistory.push(`/ideas/${slug}/`);
+      window.open(`${window.location.origin}/ideas/${slug}`);
     }
   };
 
