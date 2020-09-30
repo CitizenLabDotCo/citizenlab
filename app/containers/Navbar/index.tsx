@@ -2,6 +2,7 @@
 import React, { PureComponent, MouseEvent, FormEvent } from 'react';
 import { get, includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
 import { withRouter, WithRouterProps } from 'react-router';
 import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
@@ -35,6 +36,7 @@ import { isAdmin } from 'services/permissions/roles';
 // utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -416,23 +418,42 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   projectsDropdownOpened: boolean;
+  fullscreenModalOpened: boolean;
 }
 
 class Navbar extends PureComponent<
   Props & WithRouterProps & InjectedIntlProps & InjectedLocalized,
   State
 > {
+  subscriptions: Subscription[];
+
   constructor(props) {
     super(props);
     this.state = {
       projectsDropdownOpened: false,
+      fullscreenModalOpened: false,
     };
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent('cardClick').subscribe(() => {
+        this.setState({ fullscreenModalOpened: true });
+      }),
+      eventEmitter.observeEvent('fullscreenModalClosed').subscribe(() => {
+        this.setState({ fullscreenModalOpened: false });
+      }),
+    ];
   }
 
   componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
     if (prevProps.location !== this.props.location) {
       this.setState({ projectsDropdownOpened: false });
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   toggleProjectsDropdown = (event: FormEvent) => {
@@ -481,7 +502,7 @@ class Navbar extends PureComponent<
       intl: { formatMessage },
       adminPublications,
     } = this.props;
-    const { projectsDropdownOpened } = this.state;
+    const { projectsDropdownOpened, fullscreenModalOpened } = this.state;
     const tenantLocales = !isNilOrError(tenant)
       ? tenant.attributes.settings.core.locales
       : [];
@@ -515,6 +536,7 @@ class Navbar extends PureComponent<
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isEmailSettingsPage = isPage('email-settings', location.pathname);
     const isProjectPage = !!(
+      !fullscreenModalOpened &&
       urlSegments.length === 3 &&
       urlSegments[0] === locale &&
       urlSegments[1] === 'projects'

@@ -30,7 +30,6 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div`
   width: 100vw;
   position: fixed;
-  top: ${({ theme }) => theme.menuHeight}px;
   top: 0px;
   z-index: 1004;
   background: #fff;
@@ -99,11 +98,12 @@ const Right = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  opacity: 1;
+  opacity: 0;
+  pointer-events: none;
 
   &.ideabutton-enter {
     transform: translateY(${slideInOutDistance}px);
-    opacity: 1;
+    opacity: 0;
 
     &.ideabutton-enter-active {
       transform: translateY(0px);
@@ -114,6 +114,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 
   &.ideabutton-enter-done {
     opacity: 1;
+    pointer-events: auto;
   }
 
   &.ideabutton-exit {
@@ -126,7 +127,8 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   &.ideabutton-exit-done {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
   }
 `;
 
@@ -220,6 +222,10 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                   <CSSTransition
                     in={isActionButtonVisible}
                     timeout={slideInOutTimeout}
+                    mountOnEnter={false}
+                    unmountOnExit={false}
+                    enter={true}
+                    exit={true}
                     classNames="ideabutton"
                   >
                     <StyledIdeaButton
@@ -235,6 +241,10 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                 <CSSTransition
                   in={isActionButtonVisible}
                   timeout={slideInOutTimeout}
+                  mountOnEnter={false}
+                  unmountOnExit={false}
+                  enter={true}
+                  exit={true}
                   classNames="ideabutton"
                 >
                   <StyledIdeaButton
