@@ -11,7 +11,6 @@ type Props = {
   value: string;
   onChange: (string) => void;
   areas: GetAreasChildProps;
-  tFunc: any;
 };
 
 type State = {};
@@ -52,7 +51,7 @@ class AreaValueSelector extends React.PureComponent<
 
 const AreaValueSelectorWithHOC = localize(AreaValueSelector);
 
-export default (inputProps) => (
+export default (inputProps: Props) => (
   <GetAreas>
     {(areas) => <AreaValueSelectorWithHOC {...inputProps} areas={areas} />}
   </GetAreas>
