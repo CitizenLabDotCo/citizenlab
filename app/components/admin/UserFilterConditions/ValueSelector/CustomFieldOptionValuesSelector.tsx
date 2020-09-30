@@ -13,7 +13,6 @@ type Props = {
   value: string[];
   onChange: (values: string[]) => void;
   options: GetUserCustomFieldOptionsChildProps;
-  tFunc: any;
 };
 
 type State = {};

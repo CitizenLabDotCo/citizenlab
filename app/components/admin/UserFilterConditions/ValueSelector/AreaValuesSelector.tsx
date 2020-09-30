@@ -11,7 +11,6 @@ type Props = {
   value: string;
   onChange: (string) => void;
   areas: GetAreasChildProps;
-  tFunc: any;
 };
 
 type State = {};
