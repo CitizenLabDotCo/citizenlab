@@ -27,44 +27,30 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
+  margin-bottom: 50px;
+
   &.child {
-    background: #fbfbfb;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 35px;
+  `}
 `;
 
 const ContainerInner = styled.div`
-  padding-top: 25px;
-  padding-bottom: 35px;
   position: relative;
 
   &.parent {
-    padding-top: 28px;
-  }
-
-  &.hasBottomBorder {
-    border-bottom: solid 1px #e8e8e8;
-  }
-
-  &.lastComment {
-    border-bottom: none;
-  }
-
-  &.parent {
-    padding-left: 35px;
-    padding-right: 35px;
+    margin-bottom: 20px;
   }
 
   &.child {
-    margin-left: 75px;
-    margin-right: 35px;
+    margin-left: 30px;
   }
 
   ${media.smallerThanMinTablet`
-    padding-top: 20px;
-    padding-bottom: 25px;
-
     &.parent {
       padding-left: 20px;
       padding-right: 20px;
@@ -85,6 +71,10 @@ const ContainerInner = styled.div`
 
 const Content = styled.div`
   display: flex;
+
+  &.indent {
+    margin-left: 40px;
+  }
 `;
 
 const BodyAndFooter = styled.div`
@@ -113,7 +103,6 @@ interface InputProps {
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
-  hasBottomBorder?: boolean;
   hasChildComments?: boolean;
   canReply?: boolean;
   last?: boolean;
@@ -133,7 +122,6 @@ interface State {
 
 class Comment extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
-    hasBottomBorder: true,
     hasChildComment: false,
     canReply: true,
     last: false,
@@ -166,7 +154,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
       commentType,
       comment,
       author,
-      hasBottomBorder,
       hasChildComments,
       last,
       className,
@@ -185,14 +172,13 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
+          id={commentId}
           className={`${className || ''} ${commentType} ${
             commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'
           } e2e-comment`}
         >
           <ContainerInner
-            className={`${commentType} ${lastComment ? 'lastComment' : ''} ${
-              hasBottomBorder ? 'hasBottomBorder' : ''
-            }`}
+            className={`${commentType} ${lastComment ? 'lastComment' : ''}`}
           >
             {comment.attributes.publication_status === 'published' && (
               <>
@@ -203,9 +189,10 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                   commentType={commentType}
                   commentCreatedAt={comment.attributes.created_at}
                   moderator={moderator}
+                  className={commentType === 'parent' ? 'marginBottom' : ''}
                 />
 
-                <Content>
+                <Content className={commentType === 'child' ? 'indent' : ''}>
                   <BodyAndFooter>
                     <CommentBody
                       commentId={commentId}

@@ -5,9 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
 import { Dropdown } from 'cl2-component-library';
 import HasPermission from 'components/HasPermission';
+import User from './User';
 
 // services
 import { signOut } from 'services/auth';
@@ -16,8 +16,8 @@ import { signOut } from 'services/auth';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // i18n
@@ -28,21 +28,6 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   position: relative;
-`;
-
-const StyledUserName = styled(UserName)`
-  margin-right: 4px;
-  white-space: nowrap;
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  transition: all 100ms ease-out;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
 const StyledAvatar = styled(Avatar)``;
@@ -112,12 +97,13 @@ class UserMenu extends PureComponent<Props, State> {
   };
 
   render() {
-    const { theme, authUser } = this.props;
+    const { authUser } = this.props;
 
     if (!isNilOrError(authUser)) {
       const { opened } = this.state;
       const userId = authUser.id;
       const userSlug = authUser.attributes.slug;
+      const isVerified = !!authUser.attributes.verified;
 
       return (
         <Container
@@ -131,23 +117,7 @@ class UserMenu extends PureComponent<Props, State> {
             onClick={this.toggleDropdown}
             aria-expanded={opened}
           >
-            <StyledUserName
-              color={theme.navbarTextColor || theme.colorText}
-              userId={userId}
-              hideLastName
-              verificationBadge
-            />
-            <StyledAvatar
-              userId={userId}
-              size="30px"
-              hasHoverEffect={false}
-              fillColor={
-                theme && theme.navbarTextColor
-                  ? theme.navbarTextColor
-                  : colors.label
-              }
-              verified
-            />
+            <User userId={userId} isVerified={isVerified} />
           </DropdownButton>
 
           <Dropdown
@@ -243,10 +213,6 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const UserMenuWithHOCs = withTheme(UserMenu);
-
 export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps) => <UserMenuWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
+  <Data>{(dataProps) => <UserMenu {...inputProps} {...dataProps} />}</Data>
 );

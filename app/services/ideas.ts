@@ -103,8 +103,8 @@ export interface IIdeaData {
     project: {
       data: IRelationship;
     };
-    idea_status?: {
-      data: IRelationship | null;
+    idea_status: {
+      data: IRelationship;
     };
     user_vote?: {
       data: IRelationship;
@@ -292,7 +292,7 @@ export function ideaActivities(ideaId: string) {
   });
 }
 
-export function similarIdeas(
+export function similarIdeasStream(
   ideaId: string,
   streamParams: IStreamParams | null = null
 ) {

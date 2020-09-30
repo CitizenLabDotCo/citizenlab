@@ -15,11 +15,6 @@ describe('Idea Page', () => {
       // shows the page content container
       cy.get('#e2e-idea-show-page-content');
 
-      // shows the home page link with correct href
-      cy.get('#e2e-home-page-link')
-        .should('have.attr', 'href')
-        .and('include', '/en-GB/');
-
       // shows the link to the project page with correct href
       cy.get('#e2e-idea-other-link')
         .should('have.attr', 'href')
@@ -45,64 +40,9 @@ describe('Idea Page', () => {
       );
       cy.get('.e2e-comments-container').contains('No no no no no');
 
-      // shows the idea content footer'
-      cy.get('#e2e-idea-content-footer');
-
       // has the More Options menu and opens it
       cy.get('#e2e-idea-more-actions').click();
       cy.get('.e2e-more-actions-list');
-    });
-  });
-
-  describe('Idea Map', () => {
-    let projectId: string = null as any;
-    let ideaId: string = null as any;
-    const projectTitle = randomString();
-    const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
-    const ideaTitle = randomString();
-    const ideaContent = randomString();
-    const locationGeoJSON = {
-      type: 'Point',
-      coordinates: [4.351710300000036, 50.8503396],
-    };
-    const locationDescription = 'Brussel, België';
-
-    before(() => {
-      cy.apiCreateProject({
-        type: 'continuous',
-        title: projectTitle,
-        descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
-        publicationStatus: 'published',
-        participationMethod: 'ideation',
-      })
-        .then((project) => {
-          projectId = project.body.data.id;
-          return cy.apiCreateIdea(
-            projectId,
-            ideaTitle,
-            ideaContent,
-            locationGeoJSON,
-            locationDescription
-          );
-        })
-        .then((idea) => {
-          ideaId = idea.body.data.id;
-          cy.visit(`/ideas/${ideaTitle}`);
-          cy.get('#e2e-idea-show-page-content');
-          cy.wait(1000);
-        });
-    });
-
-    it('shows the idea map component', () => {
-      cy.get('#e2e-map-toggle').click();
-      cy.get('#e2e-map');
-    });
-
-    after(() => {
-      cy.apiRemoveIdea(ideaId);
-      cy.apiRemoveProject(projectId);
     });
   });
 
@@ -185,10 +125,11 @@ describe('Idea Page', () => {
         });
     });
 
-    it('displays the location dropdown on the idea page', () => {
+    it('displays the location on the idea page and the map pops up', () => {
       cy.visit(`/ideas/${ideaTitle}`);
       cy.get('#e2e-idea-show-page-content');
-      cy.get('#e2e-map-toggle').should('exist');
+      cy.get('#e2e-map-popup').click();
+      cy.get('#e2e-map');
     });
 
     after(() => {
