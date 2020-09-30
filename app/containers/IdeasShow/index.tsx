@@ -184,12 +184,34 @@ const StyledTranslateButton = styled(TranslateButton)`
 `;
 
 const IdeaHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: -5px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
   `}
+`;
+
+const StyledIdeaMoreActions = styled(IdeaMoreActions)`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const MobileIdeaMoreActions = styled(IdeaMoreActions)`
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
+`;
+
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StyledProjectLink = styled(ProjectLink)`
@@ -219,16 +241,6 @@ const MobileMetaInformation = styled(MetaInformation)`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
-`;
-
-const AuthorActionsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-`;
-
-const StyledIdeaMoreActions = styled(IdeaMoreActions)`
-  margin-left: auto;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -532,7 +544,10 @@ export class IdeasShow extends PureComponent<
           <IdeaMeta ideaId={ideaId} />
 
           <IdeaContainer>
-            <StyledProjectLink projectId={projectId} />
+            <TopBar>
+              <StyledProjectLink projectId={projectId} />
+              <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
+            </TopBar>
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
@@ -544,11 +559,8 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
+                  <MobileIdeaMoreActions idea={idea} hasLeftMargin={true} />
                 </IdeaHeader>
-
-                <AuthorActionsContainer>
-                  <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
-                </AuthorActionsContainer>
 
                 {ideaImageLarge && (
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
