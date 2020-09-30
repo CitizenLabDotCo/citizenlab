@@ -26,7 +26,7 @@ interface State {
 }
 
 type children = (renderProps: {
-  serie: IGraphFormat | null | undefined;
+  serie: IGraphFormat | IParticipationByTopic | null | undefined;
 }) => JSX.Element | null;
 
 export type ISupportedDataType =
