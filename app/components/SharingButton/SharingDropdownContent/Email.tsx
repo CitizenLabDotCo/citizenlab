@@ -33,6 +33,7 @@ const Email = ({
     <a
       className="sharingButton last email"
       href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
+      target="_blank"
       onClick={handleClick}
       role="button"
       aria-label={formatMessage(messages.shareByEmail)}
