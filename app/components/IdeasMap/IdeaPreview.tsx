@@ -233,6 +233,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
               {!showFooter && (
                 <>
                   <VoteControl
+                    style="border"
                     ideaId={idea.id}
                     size={smallerThanSmallTablet ? '1' : '2'}
                     disabledVoteClick={this.handleDisabledVoteClick}

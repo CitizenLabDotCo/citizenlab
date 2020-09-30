@@ -20,7 +20,7 @@ export default defineMessages({
   a11y_numberOfIdeas: {
     id: 'app.components.FilterBoxes.a11y_numberOfIdeas',
     defaultMessage:
-      '{ideaCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   a11y_numberOfInitiatives: {
     id: 'app.components.FilterBoxes.a11y_numberOfInitiatives',
