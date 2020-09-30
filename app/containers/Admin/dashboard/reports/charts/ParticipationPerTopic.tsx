@@ -95,8 +95,8 @@ const ParticipationPerTopic = (props: Props) => {
               <FormattedMessage {...messages.participationPerTopic} />
             </GraphCardTitle>
           </GraphCardHeader>
-          {isNilOrError(votesByTopic) &&
-          isNilOrError(commentsByTopic) &&
+          {isNilOrError(votesByTopic) ||
+          isNilOrError(commentsByTopic) ||
           isNilOrError(ideasByTopic) ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
