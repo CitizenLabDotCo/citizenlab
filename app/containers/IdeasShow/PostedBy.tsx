@@ -12,7 +12,7 @@ import { FormattedDate } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -24,10 +24,6 @@ const Container = styled.div`
   line-height: normal;
   display: flex;
   align-items: center;
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.small}px;
-  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
@@ -59,7 +55,7 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
       <Container className={`e2e-idea-author ${className || ''}`}>
         <StyledAvatar
           userId={authorId}
-          size="36px"
+          size="32px"
           isLinkToProfile={!!authorId}
         />
         <FormattedMessage
