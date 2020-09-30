@@ -6,7 +6,7 @@ import React, {
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { sortBy, last, isNumber } from 'lodash-es';
+import { sortBy, first, last, isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
@@ -88,6 +88,16 @@ const ListItemIcon = styled(Icon)`
   }
 `;
 
+const ListItemInnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: -3px;
+
+  & > span:not(:last-child) {
+    margin-bottom: 6px;
+  }
+`;
+
 const ListItemButton = styled.button`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -136,6 +146,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
   const [
+    ideasPresentOutsideViewport,
+    setIdeasPresentOutsideViewport,
+  ] = useState(false);
+  const [
     surveyPresentOutsideViewport,
     setSurveyPresentOutsideViewport,
   ] = useState(false);
@@ -156,8 +170,18 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         window.innerHeight || 0
       );
 
+      const ideasElement = document.getElementById('project-ideas');
       const surveyElement = document.getElementById('project-survey');
       const pollElement = document.getElementById('project-poll');
+
+      if (ideasElement) {
+        const isIdeasInViewport =
+          ideasElement.getBoundingClientRect()?.top + 800 <= viewportHeight;
+
+        if (!isIdeasInViewport) {
+          setIdeasPresentOutsideViewport(true);
+        }
+      }
 
       if (surveyElement) {
         const isSurveyInViewport =
@@ -229,18 +253,39 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       avatars_count,
     } = project.attributes;
 
+    const firstPhase = !isNilOrError(phases)
+      ? first(sortBy(phases, [(phase) => phase.attributes.start_at]))
+      : null;
     const lastPhase = !isNilOrError(phases)
       ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
       : null;
-    const hasLastPhaseEnded = lastPhase
+    const firstPhaseStart = firstPhase
+      ? pastPresentOrFuture([
+          firstPhase.attributes.start_at,
+          firstPhase.attributes.end_at,
+        ])
+      : null;
+    const lastPhaseStart = lastPhase
       ? pastPresentOrFuture([
           lastPhase.attributes.start_at,
           lastPhase.attributes.end_at,
-        ]) === 'past'
-      : false;
+        ])
+      : null;
 
     const actionButtons = (
       <ActionButtons>
+        {ideasPresentOutsideViewport &&
+          process_type === 'continuous' &&
+          participation_method === 'ideation' &&
+          project.attributes.ideas_count > 0 && (
+            <SeeIdeasButton
+              buttonStyle="secondary"
+              onClick={scrollTo('project-ideas')}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.seeTheIdeas} />
+            </SeeIdeasButton>
+          )}
         {currentPhase?.attributes.participation_method === 'ideation' && (
           <SeeIdeasButton
             buttonStyle="secondary"
@@ -307,15 +352,40 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.aboutThisProject} />
             </Title>
             <List>
-              {hasLastPhaseEnded && lastPhase && (
+              {process_type === 'continuous' && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="finish_flag" />
                   <FormattedMessage
-                    {...messages.endedOn}
+                    {...messages.startedOn}
                     values={{
-                      date: moment(lastPhase.attributes.end_at).format('ll'),
+                      date: moment(project.attributes.created_at).format('ll'),
                     }}
                   />
+                </ListItem>
+              )}
+              {process_type === 'timeline' && firstPhase && lastPhase && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="finish_flag" />
+                  <ListItemInnerWrapper>
+                    <FormattedMessage
+                      {...messages[
+                        firstPhaseStart === 'future' ? 'startsOn' : 'startedOn'
+                      ]}
+                      values={{
+                        date: moment(firstPhase.attributes.start_at).format(
+                          'll'
+                        ),
+                      }}
+                    />
+                    <FormattedMessage
+                      {...messages[
+                        lastPhaseStart === 'past' ? 'endedOn' : 'endsOn'
+                      ]}
+                      values={{
+                        date: moment(lastPhase.attributes.end_at).format('ll'),
+                      }}
+                    />
+                  </ListItemInnerWrapper>
                 </ListItem>
               )}
               {process_type === 'timeline' &&
@@ -351,12 +421,16 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 isNumber(ideas_count) && (
                   <ListItem>
                     <ListItemIcon ariaHidden name="idea-filled" />
-                    <ListItemButton onClick={scrollTo('project-ideas')}>
-                      <FormattedMessage
-                        {...messages.xIdeas}
-                        values={{ ideasCount: ideas_count }}
-                      />
-                    </ListItemButton>
+                    {project.attributes.ideas_count > 0 ? (
+                      <ListItemButton onClick={scrollTo('project-ideas')}>
+                        <FormattedMessage
+                          {...messages.xIdeas}
+                          values={{ ideasCount: ideas_count }}
+                        />
+                      </ListItemButton>
+                    ) : (
+                      <FormattedMessage {...messages.noIdeasYet} />
+                    )}
                   </ListItem>
                 )}
               {upcomingEvents.length > 0 && (
