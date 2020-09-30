@@ -26,6 +26,7 @@ import {
   commentsByTimeStream,
 } from 'services/stats';
 import { InjectedIntlProps } from 'react-intl';
+import { colors } from 'utils/styleUtils';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
@@ -34,18 +35,29 @@ import { IProjectData } from 'services/projects';
 // components
 import LineBarChart from '../summary/charts/LineBarChart';
 import LineBarChartVotesByTime from '../summary/charts/LineBarChartVotesByTime';
-// import HorizontalBarChart from '../users/charts/HorizontalBarChart';
 import HorizontalBarChartWithoutStream from '../users/charts/HorizontalBarChartWithoutStream';
-// import ExportMenu from '../components/ExportMenu';
-// import { IPhase, IPhaseData, IPhases } from 'services/phases';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
+import ParticipationPerTopic from './charts/ParticipationPerTopic';
+import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 import CustomFieldComparison from './CustomFieldComparison';
-import ResolutionControl from '../components/ResolutionControl';
+
 
 const Section = styled.div`
   margin-bottom: 20px;
+`;
+
+const Phase = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  flex-direction: column;
+  padding: 10px;
+  border: ${(props: any) =>
+    props.isCurrentPhase
+      ? `solid 3px ${colors.border}`
+      : `solid 1px ${colors.adminBorder}`};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const RowSection = styled.div`
@@ -60,7 +72,6 @@ const TimelineSection = styled.div`
   flex-wrap: wrap;
   margin: -24px 0 20px -24px;
   width: calc(100% + 24px);
-
   > * {
     margin: 24px 0 0 24px;
   }
@@ -185,7 +196,13 @@ const ProjectReport = memo(
             {!isNilOrError(phases) && phases.length > 0 ? (
               phases.map((phase, index) => {
                 return (
-                  <Section key={index}>
+                  <Phase
+                    key={index}
+                    isCurrentPhase={
+                      phase.id ===
+                      project?.relationships?.current_phase?.data?.id
+                    }
+                  >
                     <p>
                       <FormattedMessage
                         {...messages.fromTo}
@@ -197,7 +214,7 @@ const ProjectReport = memo(
                     </p>
                     <div>{phase.attributes.participation_method}</div>
                     <div>{localize(phase.attributes.title_multiloc)}</div>
-                  </Section>
+                  </Phase>
                 );
               })
             ) : (
@@ -247,12 +264,13 @@ const ProjectReport = memo(
               )}
           </GraphsContainer>
         </Section>
-        <Section>
-          <SectionTitle>
-            <FormattedMessage {...messages.sectionWhat} />
-          </SectionTitle>
-          <GraphsContainer>
-            {participationMethods.includes('ideation') && startAt && endAt && (
+
+        {participationMethods.includes('ideation') && startAt && endAt && (
+          <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.sectionWhat} />
+            </SectionTitle>
+            <GraphsContainer>
               <>
                 <LineBarChart
                   graphTitle={formatMessage(messages.ideasByTimeTitle)}
@@ -282,6 +300,7 @@ const ProjectReport = memo(
                   lineStream={commentsByTimeCumulativeStream}
                   barStream={commentsByTimeStream}
                 />
+
                 <LineBarChartVotesByTime
                   className="e2e-votes-chart"
                   startAt={startAt}
@@ -292,7 +311,7 @@ const ProjectReport = memo(
                 />
 
                 <IdeasByStatusChart
-                  className="fullWidth dynamicHeight"
+                  className="dynamicHeight"
                   startAt={startAt}
                   endAt={endAt}
                   currentProjectFilter={project.id}
@@ -306,10 +325,16 @@ const ProjectReport = memo(
                   graphUnit="votes"
                   className="dynamicHeight"
                 />
+                <ParticipationPerTopic
+                  startAt={startAt}
+                  endAt={endAt}
+                  projectId={project.id}
+                  className="dynamicHeight"
+                />
               </>
-            )}
-          </GraphsContainer>
-        </Section>
+            </GraphsContainer>
+          </Section>
+        )}
       </>
     );
   }
