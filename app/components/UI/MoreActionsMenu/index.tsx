@@ -109,7 +109,7 @@ export interface IAction {
 export interface Props {
   actions: IAction[];
   label?: string | JSX.Element;
-  ariaLabel?: string;
+  ariaLabel?: string | JSX.Element;
   className?: string;
   color?: string;
   id?: string;

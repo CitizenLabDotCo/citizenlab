@@ -1,0 +1,17 @@
+{
+  "msgs-skeleton": {
+    "prefix": "msgs-skeleton",
+    "description": "Skeleton for messages.ts file",
+    "body": [
+      "import { defineMessages } from 'react-intl';",
+      "",
+
+      "export default defineMessages({",
+      "  example: {",
+      "    id: 'app.components.Example.example',",
+      "    defaultMessage: 'This is an example',",
+      "  },",
+      "});"
+    ]
+  }
+}

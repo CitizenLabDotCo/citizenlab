@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
@@ -46,20 +43,27 @@ const StyledAvatar = styled(Avatar)`
   margin-bottom: 1px;
 `;
 
-const AuthorMeta = styled.div``;
+const AuthorMeta = styled.div`
+  &.horizontalLayout {
+    display: flex;
+    align-items: center;
+  }
+`;
 
 const AuthorNameContainer = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 16px;
-  font-weight: 400;
   text-decoration: none;
   hyphens: manual;
+
+  &.horizontalLayout {
+    margin-right: 10px;
+  }
 `;
 
 const TimeAgo = styled.div`
   color: ${colors.label};
-  font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 17px;
   margin-top: 3px;
@@ -69,13 +73,14 @@ export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
   size: string;
-  notALink?: boolean;
+  isLinkToProfile?: boolean;
   projectId?: string | null;
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
   showModeration?: boolean; // will show red styling on admins and moderators of projectId
   emphasize?: boolean;
   className?: string;
+  horizontalLayout?: boolean;
 }
 
 interface DataProps {
@@ -91,20 +96,12 @@ class Author extends PureComponent<Props, State> {
     showAvatar: true,
   };
 
-  goToUserProfile = () => {
-    const { author } = this.props;
-
-    if (!isNilOrError(author)) {
-      clHistory.push(`/profile/${author.attributes.slug}`);
-    }
-  };
-
   render() {
     const {
       authorId,
       createdAt,
       size,
-      notALink,
+      isLinkToProfile,
       projectId,
       showAvatar,
       showModeration,
@@ -112,6 +109,7 @@ class Author extends PureComponent<Props, State> {
       author,
       avatarBadgeBgColor,
       emphasize,
+      horizontalLayout,
     } = this.props;
     const authorCanModerate =
       !isNilOrError(author) &&
@@ -120,7 +118,7 @@ class Author extends PureComponent<Props, State> {
     const authorName = (
       <UserName
         userId={authorId}
-        linkToProfile={!notALink}
+        isLinkToProfile={isLinkToProfile}
         canModerate={authorCanModerate}
         emphasize={emphasize}
       />
@@ -133,14 +131,16 @@ class Author extends PureComponent<Props, State> {
             <StyledAvatar
               userId={authorId}
               size={size}
-              onClick={notALink ? undefined : this.goToUserProfile}
+              isLinkToProfile={isLinkToProfile}
               moderator={authorCanModerate}
               bgColor={avatarBadgeBgColor}
             />
           )}
 
-          <AuthorMeta>
-            <AuthorNameContainer>
+          <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
+            <AuthorNameContainer
+              className={horizontalLayout ? 'horizontalLayout' : ''}
+            >
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.a11y_postedBy} />:
               </ScreenReaderOnly>

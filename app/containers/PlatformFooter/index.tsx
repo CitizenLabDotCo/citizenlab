@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
-const Container = styled.footer`
+const Container = styled.footer<{ insideModal?: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,8 @@ const Container = styled.footer`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
+      insideModal ? 0 : mobileMenuHeight}px;
   `}
 `;
 
@@ -294,6 +295,7 @@ const CitizenLabLogo = styled(Icon)`
 interface InputProps {
   showShortFeedback?: boolean;
   className?: string;
+  insideModal?: boolean;
 }
 
 interface DataProps {
@@ -393,13 +395,22 @@ class PlatformFooter extends PureComponent<Props, State> {
       feedbackSubmitting,
       feedbackSubmitted,
     } = this.state;
-    const { showShortFeedback, className, windowSize } = this.props;
+    const {
+      showShortFeedback,
+      className,
+      windowSize,
+      insideModal,
+    } = this.props;
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
 
     return (
-      <Container id="hook-footer" className={className}>
+      <Container
+        insideModal={insideModal}
+        id="hook-footer"
+        className={className}
+      >
         {showShortFeedback && (
           <>
             <ShortFeedback>
