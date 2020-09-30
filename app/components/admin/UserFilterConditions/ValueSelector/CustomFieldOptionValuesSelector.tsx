@@ -55,8 +55,8 @@ const CustomFieldOptionValuesSelectorWithHOC = localize(
   CustomFieldOptionValuesSelector
 );
 
-export default (inputProps) => (
-  <GetUserCustomFieldOptions customFieldId={inputProps.rule.customFieldId}>
+export default (inputProps: Props) => (
+  <GetUserCustomFieldOptions customFieldId={inputProps.rule?.['customFieldId']}>
     {(options) => (
       <CustomFieldOptionValuesSelectorWithHOC
         {...inputProps}
