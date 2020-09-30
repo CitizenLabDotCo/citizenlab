@@ -450,8 +450,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 <Container>
                   <Meta />
 
-                  <div id="topbar-portal" />
-
                   <ErrorBoundary>
                     <Suspense fallback={null}>
                       <PostPageFullscreenModal
@@ -492,6 +490,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <div id="modal-portal" />
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
+                    <div id="topbar-portal" />
                   </ErrorBoundary>
 
                   <ErrorBoundary>
