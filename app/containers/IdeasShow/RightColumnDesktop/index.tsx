@@ -31,17 +31,18 @@ const Container = styled.div`
 `;
 
 const StyledVotingCTABox = styled(VotingCTABox)`
-  margin-bottom: 20px;
+  margin-bottom: 23px;
 `;
 
 const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
-  margin-bottom: 20px;
+  margin-bottom: 23px;
 `;
 
 interface Props {
   ideaId: string;
   projectId: string;
   statusId: string;
+  authorId: string | null;
   showVoteControl: boolean | null;
   showBudgetControl: boolean | null;
   participationContextId: string | null;
@@ -53,6 +54,7 @@ const RightColumnDesktop = ({
   ideaId,
   projectId,
   statusId,
+  authorId,
   showVoteControl,
   showBudgetControl,
   participationContextId,
@@ -80,6 +82,7 @@ const RightColumnDesktop = ({
         ideaId={ideaId}
         projectId={projectId}
         statusId={statusId}
+        authorId={authorId}
       />
     </Container>
   );

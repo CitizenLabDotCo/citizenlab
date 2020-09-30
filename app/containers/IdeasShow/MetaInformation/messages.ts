@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  postedBy: {
+    id: 'app.containers.IdeasShow.MetaInformation.postedBy',
+    defaultMessage: 'Posted by',
+  },
   currentStatus: {
     id: 'app.containers.IdeasShow.MetaInformation.currentStatus',
     defaultMessage: 'Current status',
@@ -20,5 +24,9 @@ export default defineMessages({
   similarIdeas: {
     id: 'app.containers.IdeasShow.MetaInformation.similarIdeas',
     defaultMessage: 'Similar ideas',
+  },
+  byUserOnDate: {
+    id: 'app.containers.IdeasShow.MetaInformation.byUserOnDate',
+    defaultMessage: '{userName} on {date}',
   },
 });

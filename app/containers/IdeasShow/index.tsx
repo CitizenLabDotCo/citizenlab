@@ -25,7 +25,6 @@ import Modal from 'components/UI/Modal';
 import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import PostedBy from './PostedBy';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
@@ -185,12 +184,35 @@ const StyledTranslateButton = styled(TranslateButton)`
 `;
 
 const IdeaHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: -5px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
+    margin-bottom: 25px;
   `}
+`;
+
+const StyledIdeaMoreActions = styled(IdeaMoreActions)`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const MobileIdeaMoreActions = styled(IdeaMoreActions)`
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
+`;
+
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StyledProjectLink = styled(ProjectLink)`
@@ -210,6 +232,10 @@ const BodySectionTitle = styled.h2`
 
 const StyledBody = styled(Body)`
   margin-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+  margin-bottom: 25px;
+  `}
 `;
 
 const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
@@ -217,23 +243,11 @@ const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
 `;
 
 const MobileMetaInformation = styled(MetaInformation)`
+  margin-bottom: 30px;
+
   ${media.biggerThanMaxTablet`
     display: none;
   `}
-`;
-
-const AuthorActionsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-`;
-
-const StyledPostedBy = styled(PostedBy)`
-  margin-right: 20px;
-`;
-
-const StyledIdeaMoreActions = styled(IdeaMoreActions)`
-  margin-left: auto;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -537,7 +551,10 @@ export class IdeasShow extends PureComponent<
           <IdeaMeta ideaId={ideaId} />
 
           <IdeaContainer>
-            <StyledProjectLink projectId={projectId} />
+            <TopBar>
+              <StyledProjectLink projectId={projectId} />
+              <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
+            </TopBar>
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
@@ -549,12 +566,8 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
+                  <MobileIdeaMoreActions idea={idea} hasLeftMargin={true} />
                 </IdeaHeader>
-
-                <AuthorActionsContainer>
-                  <StyledPostedBy authorId={authorId} ideaId={ideaId} />
-                  <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
-                </AuthorActionsContainer>
 
                 {ideaImageLarge && (
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
@@ -605,6 +618,7 @@ export class IdeasShow extends PureComponent<
                   ideaId={ideaId}
                   projectId={projectId}
                   statusId={statusId}
+                  authorId={authorId}
                 />
 
                 {showBudgetControl &&
@@ -647,6 +661,7 @@ export class IdeasShow extends PureComponent<
                     ideaId={ideaId}
                     projectId={projectId}
                     statusId={statusId}
+                    authorId={authorId}
                     showVoteControl={showVoteControl}
                     showBudgetControl={showBudgetControl}
                     participationContextId={participationContextId}
