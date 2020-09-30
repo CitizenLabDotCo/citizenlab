@@ -336,4 +336,12 @@ export default defineMessages({
       'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter',
     defaultMessage: 'topic',
   },
+  participants: {
+    id: 'app.containers.AdminPage.DashboardPage.Report.participants',
+    defaultMessage: 'participants',
+  },
+  totalUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
+    defaultMessage: 'total users on the platform',
+  },
 });
