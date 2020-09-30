@@ -31,11 +31,11 @@ const Container = styled.div`
 `;
 
 const StyledVotingCTABox = styled(VotingCTABox)`
-  margin-bottom: 20px;
+  margin-bottom: 23px;
 `;
 
 const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
-  margin-bottom: 20px;
+  margin-bottom: 23px;
 `;
 
 interface Props {

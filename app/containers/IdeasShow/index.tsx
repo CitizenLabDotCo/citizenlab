@@ -192,6 +192,7 @@ const IdeaHeader = styled.div`
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
+    margin-bottom: 25px;
   `}
 `;
 
@@ -231,6 +232,10 @@ const BodySectionTitle = styled.h2`
 
 const StyledBody = styled(Body)`
   margin-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+  margin-bottom: 25px;
+  `}
 `;
 
 const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
@@ -238,6 +243,8 @@ const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
 `;
 
 const MobileMetaInformation = styled(MetaInformation)`
+  margin-bottom: 30px;
+
   ${media.biggerThanMaxTablet`
     display: none;
   `}
