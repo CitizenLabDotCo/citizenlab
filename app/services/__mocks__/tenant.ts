@@ -1,7 +1,7 @@
 import { ITenant } from 'services/tenant';
 import { BehaviorSubject } from 'rxjs';
 
-export const makeTenant = (attributes = {}) : ITenant => ({
+export const getTenant = (attributes = {}) : ITenant => ({
   data: {
     id: 'c4b400e1-1786-5be2-af55-40730c6a843d',
     type: 'tenant',
@@ -46,7 +46,7 @@ export const makeTenant = (attributes = {}) : ITenant => ({
   }
 });
 
-let mockTenant: ITenant = makeTenant();
+let mockTenant: ITenant = getTenant();
 
 export const __setMockTenant = (tenant: ITenant) => {
   mockTenant = tenant;
