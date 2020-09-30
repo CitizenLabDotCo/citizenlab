@@ -38,6 +38,10 @@ const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
   margin-bottom: 23px;
 `;
 
+const StyledMetaInformation = styled(MetaInformation)`
+  margin-bottom: 40px;
+`;
+
 interface Props {
   ideaId: string;
   projectId: string;
@@ -78,7 +82,7 @@ const RightColumnDesktop = ({
             budgetingDescriptor={budgetingDescriptor}
           />
         )}
-      <MetaInformation
+      <StyledMetaInformation
         ideaId={ideaId}
         projectId={projectId}
         statusId={statusId}
