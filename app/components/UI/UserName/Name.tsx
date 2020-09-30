@@ -5,11 +5,22 @@ import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
-const Container = styled.span<{ color?: string; emphasize?: boolean }>`
+const Container = styled.span<{
+  color?: string;
+  emphasize?: boolean;
+  underline?: boolean;
+}>`
   color: ${({ color, theme }) => color || theme.colorText};
   font-weight: ${({ emphasize }) => (emphasize ? 500 : 'normal')};
-  text-decoration: none;
+  text-decoration: ${({ underline }) => (underline ? 'underline' : 'none')};
   hyphens: auto;
+
+  &.isLinkToProfile {
+    &:hover {
+      text-decoration: underline;
+      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
+    }
+  }
 
   &.canModerate {
     color: ${colors.clRedError};
@@ -28,6 +39,8 @@ interface Props {
   name: string;
   className?: string;
   emphasize?: boolean;
+  underline?: boolean;
+  isLinkToProfile?: boolean;
   color?: string;
   canModerate?: boolean;
   isUnknownUser?: boolean;
@@ -37,6 +50,8 @@ const Name = ({
   className,
   name,
   emphasize,
+  underline,
+  isLinkToProfile,
   color,
   canModerate,
   isUnknownUser,
@@ -44,10 +59,12 @@ const Name = ({
   return (
     <Container
       emphasize={emphasize}
+      underline={underline}
       className={`
         ${className || ''}
         ${canModerate ? 'canModerate' : ''}
         ${isUnknownUser ? 'isUnknownUser' : ''}
+        ${isLinkToProfile ? 'isLinkToProfile' : ''}
         e2e-username
       `}
       color={color}

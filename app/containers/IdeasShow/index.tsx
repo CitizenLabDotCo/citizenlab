@@ -25,7 +25,6 @@ import Modal from 'components/UI/Modal';
 import AssignBudgetWrapper from './CTABox/ParticipatoryBudgetingCTABox/BudgetAssignment/AssignBudgetWrapper';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import PostedBy from './PostedBy';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
 import ProjectLink from './ProjectLink';
@@ -226,10 +225,6 @@ const AuthorActionsContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 25px;
-`;
-
-const StyledPostedBy = styled(PostedBy)`
-  margin-right: 20px;
 `;
 
 const StyledIdeaMoreActions = styled(IdeaMoreActions)`
@@ -552,7 +547,6 @@ export class IdeasShow extends PureComponent<
                 </IdeaHeader>
 
                 <AuthorActionsContainer>
-                  <StyledPostedBy authorId={authorId} ideaId={ideaId} />
                   <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
                 </AuthorActionsContainer>
 
@@ -605,6 +599,7 @@ export class IdeasShow extends PureComponent<
                   ideaId={ideaId}
                   projectId={projectId}
                   statusId={statusId}
+                  authorId={authorId}
                 />
 
                 {showBudgetControl &&
@@ -647,6 +642,7 @@ export class IdeasShow extends PureComponent<
                     ideaId={ideaId}
                     projectId={projectId}
                     statusId={statusId}
+                    authorId={authorId}
                     showVoteControl={showVoteControl}
                     showBudgetControl={showBudgetControl}
                     participationContextId={participationContextId}

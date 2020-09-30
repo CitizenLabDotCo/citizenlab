@@ -42,6 +42,7 @@ interface Props {
   ideaId: string;
   projectId: string;
   statusId: string;
+  authorId: string | null;
   showVoteControl: boolean | null;
   showBudgetControl: boolean | null;
   participationContextId: string | null;
@@ -53,6 +54,7 @@ const RightColumnDesktop = ({
   ideaId,
   projectId,
   statusId,
+  authorId,
   showVoteControl,
   showBudgetControl,
   participationContextId,
@@ -80,6 +82,7 @@ const RightColumnDesktop = ({
         ideaId={ideaId}
         projectId={projectId}
         statusId={statusId}
+        authorId={authorId}
       />
     </Container>
   );
