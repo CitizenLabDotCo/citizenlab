@@ -30,8 +30,16 @@ const Container = styled.span<{
     }
   }
 
+  // this one has to stay at the bottom to
+  // overwrite the styles when there's no user
   &.isUnknownUser {
     font-style: italic;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+      color: ${({ color, theme }) => color || theme.colorText};
+    }
   }
 `;
 
