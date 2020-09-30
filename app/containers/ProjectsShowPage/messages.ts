@@ -109,6 +109,18 @@ export default defineMessages({
     id: 'app.containers.Projects.startedOn',
     defaultMessage: 'Started on {date}',
   },
+  startedOnEndedOn: {
+    id: 'app.containers.Projects.startedOnEndedOn',
+    defaultMessage: 'Started on {startDate} - Ended on {endDate}',
+  },
+  startedOnEndsOn: {
+    id: 'app.containers.Projects.startedOnEndsOn',
+    defaultMessage: 'Started on {startDate} - Ends on {endDate}',
+  },
+  startsOnEndsOn: {
+    id: 'app.containers.Projects.startsOnEndsOn',
+    defaultMessage: 'Starts on {startDate} - Ends on {endDate}',
+  },
   previousPhase: {
     id: 'app.containers.Projects.previousPhase',
     defaultMessage: 'Previous phase',
@@ -202,6 +214,10 @@ export default defineMessages({
     id: 'app.containers.Projects.xIdeas',
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
+  noIdeasYet: {
+    id: 'app.containers.Projects.noIdeasYet',
+    defaultMessage: 'No ideas yet',
   },
   xPhases: {
     id: 'app.containers.Projects.xPhases',

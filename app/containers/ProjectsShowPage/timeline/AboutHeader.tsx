@@ -32,15 +32,15 @@ const Container = styled.div<{ bottomMargin: string }>`
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 39px;
-  width: 39px;
-  height: 39px;
+  flex-basis: 42px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: ${colors.label};
-  margin-right: 11px;
+  margin-right: 12px;
 
   &.present {
     background: ${colors.clGreen};
@@ -87,7 +87,7 @@ const HeaderTitle = styled.h2`
   line-height: normal;
   font-weight: 600;
   margin: 0;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
   padding: 0;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -98,23 +98,28 @@ const HeaderTitle = styled.h2`
   }
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large}px;
+    font-size: ${fontSizes.large + 2}px;
     display: flex;
     align-items: center;
+    margin-bottom: 6px;
   `}
 `;
 
 const HeaderSubtitle = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base - 1}px;
+  font-size: ${fontSizes.base}px;
   line-height: normal;
-  font-weight: 400;
+  font-weight: 300;
   display: flex;
   align-items: center;
 
   &.present {
     color: ${colors.clGreen};
   }
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.small}px;
+  `}
 `;
 
 interface Props {
@@ -204,6 +209,25 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             <HeaderSubtitle className={selectedPhaseStatus || ''}>
               {selectedPhaseStatus === 'past' && (
                 <FormattedMessage
+                  {...messages.startedOnEndedOn}
+                  values={{ startDate, endDate }}
+                />
+              )}
+              {selectedPhaseStatus === 'present' && (
+                <FormattedMessage
+                  {...messages.startedOnEndsOn}
+                  values={{ startDate, endDate }}
+                />
+              )}
+              {selectedPhaseStatus === 'future' && (
+                <FormattedMessage
+                  {...messages.startsOnEndsOn}
+                  values={{ startDate, endDate }}
+                />
+              )}
+
+              {/* {selectedPhaseStatus === 'past' && (
+                <FormattedMessage
                   {...messages.endedOn}
                   values={{ date: endDate }}
                 />
@@ -219,7 +243,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
                   {...messages.startsOn}
                   values={{ date: startDate }}
                 />
-              )}
+              )} */}
             </HeaderSubtitle>
           )}
           <ScreenReaderOnly>
