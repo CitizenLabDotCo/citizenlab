@@ -27,7 +27,7 @@ const IdeaList = styled.ul`
 `;
 
 const IdeaListItem = styled.li`
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   line-height: normal;
   overflow-wrap: break-word;
@@ -41,7 +41,7 @@ const IdeaListItem = styled.li`
 `;
 
 const IdeaLink = styled(Link)`
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colorText};
   text-decoration: underline;
 
   &:hover {
