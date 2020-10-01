@@ -2,7 +2,7 @@ import React from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
@@ -21,19 +21,18 @@ import tracks from '../tracks';
 import { IMinimalIdeaData } from 'services/ideas';
 
 const IdeaList = styled.ul`
-  background-color: ${colors.background};
-  padding: 25px;
   margin: 0;
+  padding: 0;
+  padding-left: 17px;
 `;
 
 const IdeaListItem = styled.li`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  color: ${(props) => props.theme.colorText};
+  font-size: ${fontSizes.small}px;
   line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  margin-left: 25px;
   margin-bottom: 15px;
 
   &:last-child {
@@ -42,11 +41,11 @@ const IdeaListItem = styled.li`
 `;
 
 const IdeaLink = styled(Link)`
-  color: ${colors.label};
-  text-decoration: none;
+  color: ${(props) => props.theme.colorText};
+  text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${(props) => darken(0.2, props.theme.colorMain)};
     text-decoration: underline;
   }
 `;
