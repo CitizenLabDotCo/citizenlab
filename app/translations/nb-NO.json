@@ -137,7 +137,7 @@
   "app.components.IdeasMap.signInLinkText": "Logg inn",
   "app.components.IdeasMap.signUpLinkText": "Registrer deg",
   "app.components.IdeasShow.bodyTitle": "Beskrivelse",
-  "app.components.IdeasShow.byUserOnDate": "By {userName} on {date}",
+  "app.components.IdeasShow.byUserOnDate": "Av {userName} den {date}",
   "app.components.IdeasShow.createdTimeAgo": "Opprettet {timeAgo}",
   "app.components.IdeasShow.deleteIdea": "Slett idé",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Er du sikker på at du vil slette ideen?",
