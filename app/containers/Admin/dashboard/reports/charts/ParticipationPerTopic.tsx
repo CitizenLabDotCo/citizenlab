@@ -19,7 +19,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
+import messages from '../../messages';
 import useLocalize from 'hooks/useLocalize';
 import {
   GraphCard,

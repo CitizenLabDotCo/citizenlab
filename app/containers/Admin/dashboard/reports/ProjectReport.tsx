@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
-import messages from './messages';
+import messages from '../messages';
 import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
