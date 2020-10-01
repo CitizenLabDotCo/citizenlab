@@ -9,10 +9,6 @@ import { darken } from 'polished';
 import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 
-// utils
-import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
