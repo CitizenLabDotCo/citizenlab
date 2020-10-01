@@ -344,4 +344,41 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
     defaultMessage: 'total users on the platform',
   },
+  //Report
+  selectAProject: {
+    id: 'app.containers.Dashboards.ReportsTab.selectAProject',
+    defaultMessage: 'What project are you interested in ?',
+  },
+  sectionWho: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWho',
+    defaultMessage: 'Who participated ?',
+  },
+  sectionWhat: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWhat',
+    defaultMessage: 'What ?',
+  },
+  participantsOverTimeTitle: {
+    id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
+    defaultMessage: 'Participants',
+  },
+  timelineType: {
+    id: 'app.containers.AdminPage.DashboardPage.timelineType',
+    defaultMessage: 'Timeline',
+  },
+  continuousType: {
+    id: 'app.containers.AdminPage.DashboardPage.continuousType',
+    defaultMessage: 'Continuous',
+  },
+  projectType: {
+    id: 'app.containers.AdminPage.DashboardPage.projectType',
+    defaultMessage: 'Project type : {projectType}',
+  },
+  fromTo: {
+    id: 'app.containers.AdminPage.DashboardPage.fromTo',
+    defaultMessage: 'from {from} to {to}',
+  },
+  noPhase: {
+    id: 'app.containers.AdminPage.DashboardPage.noPhase',
+    defaultMessage: 'N phase onfigures in this project',
+  },
 });
