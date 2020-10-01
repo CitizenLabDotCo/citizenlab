@@ -57,6 +57,7 @@ const Loading = styled.div`
 
 const ContentWrapper = styled.div`
   width: 100%;
+  padding-bottom: 20px;
 `;
 
 interface Props {
@@ -94,7 +95,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
     content = <ProjectNotFound />;
   } else if (projectId && processType) {
     content = (
-      <ContentWrapper>
+      <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
         {processType === 'continuous' ? (
           <>

@@ -210,6 +210,10 @@ export default defineMessages({
     id: 'app.containers.Projects.aboutThisProject',
     defaultMessage: 'About this project',
   },
+  about: {
+    id: 'app.containers.Projects.about',
+    defaultMessage: 'About',
+  },
   xIdeas: {
     id: 'app.containers.Projects.xIdeas',
     defaultMessage:

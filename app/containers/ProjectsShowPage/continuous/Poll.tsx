@@ -43,7 +43,8 @@ const PollContainer = memo<Props & InjectedIntlProps>(
     ) {
       return (
         <Container
-          className={`e2e-continuous-project-poll-containe ${className || ''}`}
+          id="e2e-continuous-project-poll-container"
+          className={className || ''}
         >
           <StyledContentContainer>
             <SectionContainer>

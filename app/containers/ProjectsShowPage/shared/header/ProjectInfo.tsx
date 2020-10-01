@@ -193,7 +193,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                     handleHeight
                     onResize={onResize}
                   >
-                    <div>
+                    <div id="e2e-project-description">
                       <QuillEditedContent
                         fontSize="medium"
                         textColor={theme.colorText}
@@ -216,6 +216,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                       <ReadMoreOuterWrapper>
                         <ReadMoreInnerWrapper>
                           <ReadMoreButton
+                            id="e2e-project-description-read-more-button"
                             buttonStyle="text"
                             onClick={toggleExpandCollapse}
                             textDecoration="underline"
@@ -236,6 +237,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                     expanded && (
                       <CollapseButtonWrapper>
                         <CollapseButton
+                          id="e2e-project-description-see-less-button"
                           buttonStyle="text"
                           onClick={toggleExpandCollapse}
                           textDecoration="underline"
