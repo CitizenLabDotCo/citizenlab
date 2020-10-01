@@ -24,6 +24,10 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
         "label": "Users",
         "url": "/admin/dashboard/users",
       },
+      Object {
+        "label": "Reports",
+        "url": "/admin/dashboard/reports",
+      },
     ]
   }
 >

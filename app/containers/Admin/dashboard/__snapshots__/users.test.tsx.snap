@@ -31,13 +31,6 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     />
   </dashboard__ControlBar>
   <ChartFilters
-    configuration={
-      Object {
-        "showGroupFilter": true,
-        "showProjectFilter": false,
-        "showTopicFilter": false,
-      }
-    }
     groupFilterOptions={
       Array [
         Object {

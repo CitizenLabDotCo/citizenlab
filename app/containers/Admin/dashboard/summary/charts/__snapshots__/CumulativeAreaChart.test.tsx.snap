@@ -5,10 +5,7 @@ exports[`<CumulativeAreaChart /> renders correctly with data 1`] = `
   <dashboard__GraphCardInner>
     <dashboard__GraphCardHeader>
       <dashboard__GraphCardTitle>
-        <FormattedMessage
-          defaultMessage="Comments"
-          id="app.containers.AdminPage.DashboardPage.commentsByTimeTitle"
-        />
+        commentsByTimeTitle
       </dashboard__GraphCardTitle>
       <dashboard__GraphCardFigureContainer>
         <dashboard__GraphCardFigure />
@@ -32,10 +29,7 @@ exports[`<CumulativeAreaChart /> renders correctly without data 1`] = `
   <dashboard__GraphCardInner>
     <dashboard__GraphCardHeader>
       <dashboard__GraphCardTitle>
-        <FormattedMessage
-          defaultMessage="Comments"
-          id="app.containers.AdminPage.DashboardPage.commentsByTimeTitle"
-        />
+        commentsByTimeTitle
       </dashboard__GraphCardTitle>
       <dashboard__GraphCardFigureContainer>
         <dashboard__GraphCardFigure />

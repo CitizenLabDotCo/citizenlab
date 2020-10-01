@@ -344,7 +344,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
     defaultMessage: 'total users on the platform',
   },
-  //Report
+  // Report
   selectAProject: {
     id: 'app.containers.Dashboards.ReportsTab.selectAProject',
     defaultMessage: 'What project are you interested in ?',
