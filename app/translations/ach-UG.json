@@ -1533,7 +1533,7 @@
   "app.containers.CookiePolicy.wikipediaCookieLinkText": "crwdns19686:0crwdne19686:0",
   "app.containers.IdeaButton.postingHereImpossible": "crwdns19582:0crwdne19582:0",
   "app.containers.IdeaButton.postingHereNotYetPossible": "crwdns54288:0crwdne54288:0",
-  "app.containers.IdeaButton.postingMaybeNotPermitted": "crwdns19584:0{signInLink}crwdnd19584:0{signUpLink}crwdne19584:0",
+  "app.containers.IdeaButton.postingMaybeNotPermitted": "crwdns19584:0{signInLink}crwdne19584:0",
   "app.containers.IdeaButton.postingNotActivePhase": "crwdns19586:0crwdne19586:0",
   "app.containers.IdeaButton.postingNotPermitted": "crwdns19588:0crwdne19588:0",
   "app.containers.IdeaButton.postingProjectInactive": "crwdns19590:0crwdne19590:0",
