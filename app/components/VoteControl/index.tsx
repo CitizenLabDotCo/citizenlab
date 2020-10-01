@@ -40,8 +40,8 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 
 // style
 import styled, { css, keyframes } from 'styled-components';
+import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { lighten } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 interface IVoteComponent {
   active: boolean;
@@ -81,8 +81,24 @@ const VoteIconContainer = styled.div<{
   justify-content: center;
   margin-right: 1px;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 60ms ease-out;
+  background-color: white;
+
+  &.border {
+    border: solid 1px ${lighten(0.2, colors.label)};
+  }
+
+  &.shadow {
+    ${({ votingEnabled }) =>
+      votingEnabled &&
+      `
+      box-shadow: ${defaultStyles.boxShadow};
+
+      &:hover {
+        box-shadow: ${defaultStyles.boxShadowHover};
+      }
+    `}
+  }
 
   ${(props) =>
     !props.votingEnabled
@@ -279,6 +295,7 @@ interface Props {
   ariaHidden?: boolean;
   className?: string;
   showDownvote: boolean;
+  style: 'border' | 'shadow';
 }
 
 interface State {
@@ -725,6 +742,7 @@ class VoteControl extends PureComponent<
       intl: { formatMessage },
       ariaHidden,
       showDownvote,
+      style,
     } = this.props;
     const {
       idea,
@@ -802,7 +820,11 @@ class VoteControl extends PureComponent<
             enabled={upvotingEnabled}
             tabIndex={ariaHidden ? -1 : 0}
           >
-            <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
+            <VoteIconContainer
+              className={style}
+              size={size}
+              votingEnabled={upvotingEnabled}
+            >
               <VoteIcon
                 name="upvote"
                 size={size}
@@ -832,7 +854,11 @@ class VoteControl extends PureComponent<
               enabled={downvotingEnabled}
               tabIndex={ariaHidden ? -1 : 0}
             >
-              <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
+              <VoteIconContainer
+                className={style}
+                size={size}
+                votingEnabled={downvotingEnabled}
+              >
                 <VoteIcon
                   name="downvote"
                   size={size}

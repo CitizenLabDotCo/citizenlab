@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { trim, isEmpty } from 'lodash-es';
@@ -236,9 +236,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ focused: false });
   };
 
-  handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  handleSubmit = async () => {
     const {
       postId,
       postType,
@@ -348,7 +346,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             className={`${visible ? 'visible' : 'hidden'} ${
               focused ? 'focused' : 'blurred'
             }`}
-            onSubmit={this.handleSubmit}
           >
             <label>
               <HiddenLabel>

@@ -32,6 +32,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
@@ -247,7 +248,7 @@ class CommentBody extends PureComponent<Props, State> {
 
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-            <QuillEditedContent fontWeight={300}>
+            <QuillEditedContent>
               <div aria-live="polite">
                 {translateButtonClicked ? (
                   <GetMachineTranslation
@@ -279,7 +280,7 @@ class CommentBody extends PureComponent<Props, State> {
       } else {
         content = (
           <StyledForm onSubmit={this.onSubmit}>
-            <QuillEditedContent fontWeight={300}>
+            <QuillEditedContent textColor={colors.clBlueDarkest}>
               <MentionsTextArea
                 name="body"
                 value={editableCommentContent}

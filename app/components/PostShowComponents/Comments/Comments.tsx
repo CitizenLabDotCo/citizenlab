@@ -1,26 +1,17 @@
-import React, { memo, useMemo, useCallback, useEffect, useState } from 'react';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
 import ParentComment from './ParentComment';
-import CommentSorting from './CommentSorting';
 import { Spinner } from 'cl2-component-library';
 
 // services
-import { ICommentData, CommentsSort } from 'services/comments';
+import { ICommentData } from 'services/comments';
 
 // events
 import { commentAdded$, commentDeleted$ } from './events';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -47,17 +38,6 @@ const SpinnerWrapper = styled.div`
   z-index: 2;
 `;
 
-const StyledCommentSorting = styled(CommentSorting)`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 15px;
-
-  ${media.smallerThanMinTablet`
-    justify-content: flex-start;
-    margin-bottom: 15px;
-  `}
-`;
-
 const StyledParentComment = styled(ParentComment)`
   &.loading {
     opacity: 0;
@@ -67,10 +47,8 @@ const StyledParentComment = styled(ParentComment)`
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
-  comments: ICommentData[];
-  sortOrder: CommentsSort;
+  allComments: ICommentData[];
   loading: boolean;
-  onSortOrderChange: (sortOrder: CommentsSort) => void;
   className?: string;
 }
 
@@ -78,29 +56,13 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
   ({
     postId,
     postType,
-    comments,
-    sortOrder,
+    allComments,
     loading,
-    onSortOrderChange,
     className,
     intl: { formatMessage },
   }) => {
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
-
-    const sortedParentComments = useMemo(() => {
-      if (!isNilOrError(comments) && comments.length > 0) {
-        return comments.filter(
-          (comment) => comment.relationships.parent.data === null
-        );
-      }
-      return null;
-    }, [sortOrder, comments]);
-
-    const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
-      trackEventByName(tracks.clickCommentsSortOrder);
-      onSortOrderChange(sortOrder);
-    }, []);
 
     useEffect(() => {
       const subscriptions = [
@@ -118,6 +80,12 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
     }, []);
 
+    const parentComments = useMemo(() => {
+      return allComments.filter(
+        (comment) => comment.relationships.parent.data === null
+      );
+    }, [allComments]);
+
     return (
       <Container className={`e2e-comments-container ${className}`}>
         <LiveMessage
@@ -131,42 +99,32 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
           </SpinnerWrapper>
         )}
 
-        {sortedParentComments && sortedParentComments.length > 0 && (
-          <StyledCommentSorting
-            onChange={handleSortOrderChange}
-            selectedValue={[sortOrder]}
-          />
-        )}
+        {parentComments.map((parentComment, _index) => {
+          const childCommentIds = allComments
+            .filter((comment) => {
+              if (
+                comment.relationships.parent.data &&
+                comment.relationships.parent.data.id === parentComment.id &&
+                comment.attributes.publication_status !== 'deleted'
+              ) {
+                return true;
+              }
 
-        {sortedParentComments &&
-          sortedParentComments.map((parentComment, _index) => {
-            const childCommentIds =
-              !isNilOrError(comments) &&
-              comments
-                .filter((comment) => {
-                  if (
-                    comment.relationships.parent.data &&
-                    comment.relationships.parent.data.id === parentComment.id &&
-                    comment.attributes.publication_status !== 'deleted'
-                  ) {
-                    return true;
-                  }
+              return false;
+            })
+            .map((comment) => comment.id);
 
-                  return false;
-                })
-                .map((comment) => comment.id);
-
-            return (
-              <StyledParentComment
-                key={parentComment.id}
-                postId={postId}
-                postType={postType}
-                commentId={parentComment.id}
-                childCommentIds={childCommentIds}
-                className={loading ? 'loading' : ''}
-              />
-            );
-          })}
+          return (
+            <StyledParentComment
+              key={parentComment.id}
+              postId={postId}
+              postType={postType}
+              commentId={parentComment.id}
+              childCommentIds={childCommentIds}
+              className={loading ? 'loading' : ''}
+            />
+          );
+        })}
       </Container>
     );
   }
