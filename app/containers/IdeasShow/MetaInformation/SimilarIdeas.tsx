@@ -2,7 +2,7 @@ import React from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
