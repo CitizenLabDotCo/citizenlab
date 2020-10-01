@@ -337,7 +337,7 @@
   "app.components.Sharing.shareViaMessenger": "Share via Messenger",
   "app.components.SharingButton.shareByEmail": "Share by email",
   "app.components.SharingButton.shareOnFacebook": "Share on Facebook",
-  "app.components.SharingButton.shareOnTwitter": "Share on Twitter",
+  "app.components.SharingButton.shareOnTwitter": "Share on Facebook",
   "app.components.SharingButton.shareViaMessenger": "Share via Messenger",
   "app.components.SideModal.closeButtonAria": "Close",
   "app.components.SignUpIn.continue": "Continue",
