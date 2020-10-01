@@ -174,7 +174,9 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 
 4. Add your rule to `spec/models/group_spec.rb`.
 
-5. Create a frontend task to support the new smart groups rule.
+5. Add rule description and spec.
+
+6. Create a frontend task to support the new smart groups rule.
 
 
 ## Running the profiler

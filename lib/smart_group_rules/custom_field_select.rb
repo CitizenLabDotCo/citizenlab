@@ -135,7 +135,13 @@ module SmartGroupRules
     end
 
     def description_value locale
-      CustomFieldOption.find(value).title_multiloc[locale]
+      if self.value.is_a? Array
+        value.map do |v|
+          CustomFieldOption.find(v).title_multiloc[locale]
+        end.join ', '
+      else
+        CustomFieldOption.find(value).title_multiloc[locale]
+      end
     end
 
     private
@@ -145,18 +151,20 @@ module SmartGroupRules
     end
 
     def validate_value_inclusion
-      custom_field_ids = CustomFieldOption.where(custom_field_id: self.custom_field_id).map(&:id)
-      is_included = if self.value.is_a? Array 
-        (self.value - custom_field_ids).blank?
-      else
-        custom_field_ids.include? self.value
-      end
-      if !is_included
-        self.errors.add(
-          :value,
-          :inclusion,
-          message: 'All values must be existing custom field option IDs'
-        )
+      if needs_value?
+        custom_field_ids = CustomFieldOption.where(custom_field_id: self.custom_field_id).map(&:id)
+        is_included = if self.value.is_a? Array 
+          (self.value - custom_field_ids).blank?
+        else
+          custom_field_ids.include? self.value
+        end
+        if !is_included
+          self.errors.add(
+            :value,
+            :inclusion,
+            message: 'All values must be existing custom field option IDs'
+          )
+        end
       end
     end
 

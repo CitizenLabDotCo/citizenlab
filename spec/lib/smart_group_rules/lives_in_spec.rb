@@ -112,6 +112,16 @@ describe SmartGroupRules::LivesIn do
       'predicate' => 'not_has_value',
       'value'     => 'outside'
     })}
+    let(:lives_in_is_one_of_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'      => 'lives_in',
+      'predicate'     => 'is_one_of',
+      'value'         => [area.id, 'outside']
+    })}
+    let(:lives_in_not_is_one_of_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'      => 'lives_in',
+      'predicate'     => 'not_is_one_of',
+      'value'         => [area.id]
+    })}
     let(:lives_in_is_empty_rule) {SmartGroupRules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'is_empty'
@@ -144,6 +154,16 @@ describe SmartGroupRules::LivesIn do
         'en'    => 'Place of residence is not somewhere else',
         'fr-FR' => 'Domicile n\'est pas ailleurs',
         'nl-NL' => 'Woonplaats is niet ergens anders'
+      })
+      expect(lives_in_is_one_of_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence has one of the following values: Brussels, somewhere else',
+        'fr-FR' => 'Domicile est un de: Bruxelles, quelque part d\'autre',
+        'nl-NL' => 'Woonplaats heeft een van de volgende waarden: Brussel, ergens anders'
+      })
+      expect(lives_in_not_is_one_of_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence does not have any of the follow values: Brussels',
+        'fr-FR' => 'Domicile n\'est pas un de: Bruxelles',
+        'nl-NL' => 'Woonplaats heeft geen van de volgende waarden: Brussel'
       })
       expect(lives_in_is_empty_rule.description_multiloc).to eq ({
         'en'    => 'Place of residence has no value',
