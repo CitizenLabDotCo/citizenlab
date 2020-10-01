@@ -43,17 +43,16 @@ import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 import CustomFieldComparison from './CustomFieldComparison';
 
-
 const Section = styled.div`
   margin-bottom: 20px;
 `;
 
-const Phase = styled.div`
+const Phase = styled.div<{ isCurrentPhase: boolean }>`
   display: flex;
   margin-bottom: 20px;
   flex-direction: column;
   padding: 10px;
-  border: ${(props: any) =>
+  border: ${(props) =>
     props.isCurrentPhase
       ? `solid 3px ${colors.border}`
       : `solid 1px ${colors.adminBorder}`};

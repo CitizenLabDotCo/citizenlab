@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { map, sortBy } from 'lodash-es';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ import {
   IVotesByTopic,
   votesByTopicStream,
 } from 'services/stats';
-import { IParticipationByTopic, ITopicSingleValue } from 'typings';
+import { IParticipationByTopic } from 'typings';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
@@ -78,7 +78,46 @@ const ParticipationType = styled.div`
   width: ${cellWidth};
   height: 20px;
   text-align: center;
+  margin-bottom: ${rowGap};
 `;
+
+const Cell = styled.div<{ cellColor: string }>`
+  background-color: ${(props) => {
+    console.log(props);
+    return props.cellColor;
+  }};
+  height: 20px;
+  width: cellWidth;
+  border: 1px solid #f1f1f1;
+  border-radius: 2px;
+  margin-bottom: ${rowGap};
+  transition: 0.3s;
+  :hover {
+    background-color: ${colors.background};
+  }
+`;
+
+const Value = styled.p`
+  margin: auto;
+  font-size: ${fontSizes.xs};
+  text-align: center;
+  opacity: 0;
+  :hover {
+    opacity: 1;
+  }
+`;
+
+const getCellColor = (value, participationType) => {
+  console.log(value, participationType);
+  const saturation =
+    (value / maxParticipationValue[participationType]) * 50 + 49;
+  const luminosity =
+    100 - ((value / maxParticipationValue[participationType]) * 60 + 5);
+
+  console.log(saturation, luminosity);
+
+  return `hsl(185, ${saturation}%, ${luminosity}%)`;
+};
 
 interface Props extends InputProps, DataProps, InjectedLocalized {}
 
@@ -116,7 +155,12 @@ const ParticipationPerTopic = (props: Props) => {
                 </ParticipationType>
                 {ideasByTopic.serie &&
                   ideasByTopic.serie.map((topic, index) => (
-                    <Cell key={index} topic={topic} action={'ideas'} />
+                    <Cell
+                      key={index}
+                      cellColor={getCellColor(topic.value, 'ideas')}
+                    >
+                      <Value>{topic.value}</Value>
+                    </Cell>
                   ))}
               </Column>
               <Column>
@@ -125,7 +169,12 @@ const ParticipationPerTopic = (props: Props) => {
                 </ParticipationType>
                 {commentsByTopic.serie &&
                   commentsByTopic.serie.map((topic, index) => (
-                    <Cell key={index} topic={topic} action={'comments'} />
+                    <Cell
+                      key={index}
+                      cellColor={getCellColor(topic.value, 'comments')}
+                    >
+                      <Value>{topic.value}</Value>
+                    </Cell>
                   ))}
               </Column>
               <Column>
@@ -134,7 +183,12 @@ const ParticipationPerTopic = (props: Props) => {
                 </ParticipationType>
                 {votesByTopic.serie &&
                   votesByTopic.serie.map((topic, index) => (
-                    <Cell key={index} topic={topic} action={'total'} />
+                    <Cell
+                      key={index}
+                      cellColor={getCellColor(topic.value, 'total')}
+                    >
+                      <Value>{topic.value}</Value>
+                    </Cell>
                   ))}
               </Column>
             </Row>
@@ -145,54 +199,7 @@ const ParticipationPerTopic = (props: Props) => {
   );
 };
 
-interface CellProps {
-  topic: ITopicSingleValue;
-  action: string;
-}
-
-const Cell = (props: CellProps) => {
-  const [isValueDisplayed, setIsValueDisplayed] = useState(false);
-
-  const cellStyle = {
-    backgroundColor: `${
-      isValueDisplayed
-        ? colors.background
-        : getCellColor(props.topic.value, props.action)
-    } `,
-    height: '20px',
-    width: cellWidth,
-    border: '1px solid #F1F1F1',
-    borderRadius: '2px',
-    marginBottom: rowGap,
-    transition: '0.3s',
-  };
-
-  return (
-    <div
-      onMouseEnter={() => setIsValueDisplayed(true)}
-      onMouseLeave={() => setIsValueDisplayed(false)}
-      style={cellStyle}
-    >
-      {isValueDisplayed && <Value>{props.topic.value}</Value>}
-    </div>
-  );
-};
-
-const Value = styled.p`
-  margin: auto;
-  font-size: ${fontSizes.xs} !important;
-  text-align: center;
-`;
-
-const getCellColor = (value, participationType) => {
-  let saturation = (value / maxParticipationValue[participationType]) * 50 + 49;
-  let luminosity =
-    100 - ((value / maxParticipationValue[participationType]) * 60 + 5);
-
-  return `hsl(185, ${saturation}%, ${luminosity}%)`;
-};
-
-let maxParticipationValue = {};
+const maxParticipationValue = {};
 
 const convertToGraphFormat = (dataKey: string) => (
   data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic
