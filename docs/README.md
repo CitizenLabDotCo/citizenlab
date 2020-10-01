@@ -1,5 +1,24 @@
 # Changelog
 
+## 2020-10-01
+
+### Changed
+- Idea page redesign
+
+## 2020-09-25
+
+### Fixed
+- The "Go to platform" button in custom email campaigns now works in Norwegian
+
+### Added
+- Granular permissions for proposals
+- Possibility to restrict survey access to registered users only
+- Logging project published events
+
+### Changed
+- Replaced `posting_enabled` in the proposal settings by the posting proposal granular permission
+- Granular permissions are always granted to admins
+
 ## 2020-09-22
 
 ### Added
