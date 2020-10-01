@@ -74,8 +74,6 @@ const SimilarIdeas = ({ similarIdeas, className }: Props) => {
       ))}
     </IdeaList>
   );
-
-  return null;
 };
 
 export default SimilarIdeas;
