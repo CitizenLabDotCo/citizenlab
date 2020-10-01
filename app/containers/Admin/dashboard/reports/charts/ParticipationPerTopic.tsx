@@ -83,7 +83,6 @@ const ParticipationType = styled.div`
 
 const Cell = styled.div<{ cellColor: string }>`
   background-color: ${(props) => {
-    console.log(props);
     return props.cellColor;
   }};
   height: 20px;
@@ -108,13 +107,10 @@ const Value = styled.p`
 `;
 
 const getCellColor = (value, participationType) => {
-  console.log(value, participationType);
   const saturation =
     (value / maxParticipationValue[participationType]) * 50 + 49;
   const luminosity =
     100 - ((value / maxParticipationValue[participationType]) * 60 + 5);
-
-  console.log(saturation, luminosity);
 
   return `hsl(185, ${saturation}%, ${luminosity}%)`;
 };
@@ -124,7 +120,6 @@ interface Props extends InputProps, DataProps, InjectedLocalized {}
 const ParticipationPerTopic = (props: Props) => {
   const { votesByTopic, commentsByTopic, ideasByTopic, className } = props;
   const localize = useLocalize();
-
   return (
     <>
       <GraphCard className={className}>
