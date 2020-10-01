@@ -28,7 +28,7 @@ const IdeaList = styled.ul`
 
 const IdeaListItem = styled.li`
   color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
