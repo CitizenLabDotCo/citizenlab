@@ -126,7 +126,10 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               >
                 <FormattedMessage {...messages.share} />
               </ShareButton>
-              <ProjectHeaderImage src={projectHeaderImageLarge} />
+              <ProjectHeaderImage
+                src={projectHeaderImageLarge}
+                id="e2e-project-header-image"
+              />
             </ProjectHeaderImageContainer>
           )}
           <StyledProjectArchivedIndicator

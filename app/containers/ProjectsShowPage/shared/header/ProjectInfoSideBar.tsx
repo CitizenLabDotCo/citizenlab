@@ -279,6 +279,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           participation_method === 'ideation' &&
           project.attributes.ideas_count > 0 && (
             <SeeIdeasButton
+              id="e2e-project-see-ideas-button"
               buttonStyle="secondary"
               onClick={scrollTo('project-ideas')}
               fontWeight="500"
@@ -288,6 +289,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           )}
         {currentPhase?.attributes.participation_method === 'ideation' && (
           <SeeIdeasButton
+            id="e2e-project-see-ideas-button"
             buttonStyle="secondary"
             onClick={scrollTo('project-ideas')}
             fontWeight="500"
@@ -341,7 +343,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     );
 
     return (
-      <Container className={className || ''}>
+      <Container id="e2e-project-sidebar" className={className || ''}>
         <ProjectActionBar projectId={projectId} />
 
         {smallerThanSmallTablet ? (
@@ -349,11 +351,11 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         ) : (
           <>
             <Title>
-              <FormattedMessage {...messages.aboutThisProject} />
+              <FormattedMessage {...messages.about} />
             </Title>
             <List>
               {process_type === 'continuous' && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-startdate">
                   <ListItemIcon ariaHidden name="finish_flag" />
                   <FormattedMessage
                     {...messages.startedOn}
@@ -408,7 +410,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItem>
                 )}
               {isNumber(avatars_count) && avatars_count > 0 && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-participantcount">
                   <ListItemIcon ariaHidden name="person" />
                   <FormattedMessage
                     {...messages.xParticipants}
@@ -422,7 +424,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <ListItem>
                     <ListItemIcon ariaHidden name="idea-filled" />
                     {project.attributes.ideas_count > 0 ? (
-                      <ListItemButton onClick={scrollTo('project-ideas')}>
+                      <ListItemButton
+                        id="e2e-project-sidebar-ideacount"
+                        onClick={scrollTo('project-ideas')}
+                      >
                         <FormattedMessage
                           {...messages.xIdeas}
                           values={{ ideasCount: ideas_count }}
@@ -436,7 +441,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               {upcomingEvents.length > 0 && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="event" />
-                  <ListItemButton onClick={scrollTo('project-events', false)}>
+                  <ListItemButton
+                    id="e2e-project-sidebar-eventcount"
+                    onClick={scrollTo('project-events', false)}
+                  >
                     <FormattedMessage
                       {...messages.xUpcomingEvents}
                       values={{ upcomingEventsCount: upcomingEvents.length }}
@@ -444,7 +452,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItemButton>
                 </ListItem>
               )}
-              <ListItem>
+              <ListItem id="e2e-project-sidebar-share-button">
                 <ListItemIcon ariaHidden name="share" />
                 <ListItemButton onClick={openShareModal}>
                   <FormattedMessage {...messages.share} />

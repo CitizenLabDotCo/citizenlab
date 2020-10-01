@@ -90,7 +90,7 @@ const ShortFeedback = styled.div`
   ${media.biggerThanMinTablet`
     position: absolute;
     z-index: 5;
-    top: -37px;
+    top: -36px;
     left: 20px;
   `}
 

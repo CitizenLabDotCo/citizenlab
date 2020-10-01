@@ -349,7 +349,7 @@ class PBExpenses extends PureComponent<
       }
 
       return (
-        <Container className={className}>
+        <Container className={`e2e-pb-expenses-box ${className || ''}`}>
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>

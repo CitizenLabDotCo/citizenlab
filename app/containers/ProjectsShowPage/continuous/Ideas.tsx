@@ -60,7 +60,10 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       const projectIds = [projectId];
 
       return (
-        <Container className={className || ''}>
+        <Container
+          id="e2e-continuos-project-idea-cards"
+          className={className || ''}
+        >
           <StyledContentContainer id="project-ideas">
             <StyledSectionContainer>
               {isPBProject && (
