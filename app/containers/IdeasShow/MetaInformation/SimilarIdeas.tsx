@@ -60,24 +60,20 @@ const SimilarIdeas = ({ similarIdeas, className }: Props) => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   };
 
-  if (!isNilOrError(similarIdeas) && !isEmpty(similarIdeas)) {
-    return (
-      <IdeaList className={className}>
-        {similarIdeas.map((similarIdea, index) => (
-          <IdeaListItem key={similarIdea.id}>
-            <IdeaLink
-              to={`/ideas/${similarIdea.attributes.slug}`}
-              onClick={onClickIdeaLink(index)}
-            >
-              <T value={similarIdea.attributes.title_multiloc} />
-            </IdeaLink>
-          </IdeaListItem>
-        ))}
-      </IdeaList>
-    );
-  }
-
-  return null;
+  return (
+    <IdeaList className={className}>
+      {similarIdeas.map((similarIdea, index) => (
+        <IdeaListItem key={similarIdea.id}>
+          <IdeaLink
+            to={`/ideas/${similarIdea.attributes.slug}`}
+            onClick={onClickIdeaLink(index)}
+          >
+            <T value={similarIdea.attributes.title_multiloc} />
+          </IdeaLink>
+        </IdeaListItem>
+      ))}
+    </IdeaList>
+  );
 };
 
 export default SimilarIdeas;
