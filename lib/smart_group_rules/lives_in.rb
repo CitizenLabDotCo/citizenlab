@@ -3,8 +3,9 @@ module SmartGroupRules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
+    PREDICATE_VALUES = %w(has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    MULTIVALUE_PREDICATES = %w(is_one_of not_is_one_of)
 
     attr_accessor :predicate, :value
 
@@ -12,6 +13,7 @@ module SmartGroupRules
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
     validates :value, absence: true, unless: :needs_value?
     validates :value, presence: true, inclusion: { in: -> (record) { ['outside'] + Area.ids } }, if: :needs_value?
+    validate :validate_value_inclusion
 
     def self.to_json_schema
       [   
@@ -94,11 +96,10 @@ module SmartGroupRules
     end
 
     def description_value locale
-      case value
-      when 'outside'
-        value
+      if value.is_a? Array
+        value.map{|v| description_single_value v, locale}
       else
-        Area.find(value).title_multiloc[locale]
+        description_single_value value, locale
       end
     end
 
@@ -107,6 +108,35 @@ module SmartGroupRules
 
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
+    end
+
+    def description_single_value value, locale
+      case value
+      when 'outside'
+        I18n.with_locale(locale) do
+          I18n.t!("symbols.outside")
+        end
+      else
+        Area.find(value).title_multiloc[locale]
+      end
+    end
+
+    def validate_value_inclusion
+      if needs_value?
+        allowed_values = ['outside'] + Area.ids
+        is_included = if self.value.is_a? Array 
+          (self.value - allowed_values).blank?
+        else
+          allowed_values.include? self.value
+        end
+        if !is_included
+          self.errors.add(
+            :value,
+            :inclusion,
+            message: 'All values must be existing area IDs or the value "outside"'
+          )
+        end
+      end
     end
 
   end
