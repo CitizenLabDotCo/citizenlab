@@ -5,14 +5,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}',
   },
-  seeTranslation: {
-    id: 'app.components.PostComponents.seeTranslation',
-    defaultMessage: 'See translation',
-  },
-  seeOriginal: {
-    id: 'app.components.PostComponents.seeOriginal',
-    defaultMessage: 'See original',
-  },
   linkToHomePage: {
     id: 'app.components.PostComponents.linkToHomePage',
     defaultMessage: 'Home page',
@@ -56,5 +48,9 @@ export default defineMessages({
     id: 'app.components.PostComponents.a11y_commentsCount',
     defaultMessage:
       '{commentsCount, plural, no {# comments} one {# comment} other {# comments}}',
+  },
+  readMore: {
+    id: 'app.components.PostComponents.readMore',
+    defaultMessage: 'Read more...',
   },
 });

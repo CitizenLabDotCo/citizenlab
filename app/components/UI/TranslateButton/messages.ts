@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  seeTranslation: {
-    id: 'app.components.UI.TranslateButton.seeTranslation',
-    defaultMessage: 'See translation',
+  translate: {
+    id: 'app.components.UI.TranslateButton.translate',
+    defaultMessage: 'Translate',
   },
-  seeOriginal: {
-    id: 'app.components.UI.TranslateButton.seeOriginal',
-    defaultMessage: 'See original',
+  original: {
+    id: 'app.components.UI.TranslateButton.original',
+    defaultMessage: 'Original',
   },
 });
