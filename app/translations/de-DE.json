@@ -804,7 +804,7 @@
   "app.containers.Admin.initiatives.fieldPostingEnabled": "Proposal submission",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Days to reach voting threshold",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Voting threshold",
-  "app.containers.Admin.initiatives.granularPermissionsTitle": "Who can contribute ?",
+  "app.containers.Admin.initiatives.granularPermissionsTitle": "Who can contribute?",
   "app.containers.Admin.initiatives.initiativeSettingsFormError": "Something went wrong. Please try again.",
   "app.containers.Admin.initiatives.initiativeSettingsFormSave": "Save",
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Saved!",
