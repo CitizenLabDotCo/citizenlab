@@ -131,32 +131,6 @@ RSpec.describe Idea, type: :model do
     end
   end
 
-  describe "order_controversial" do
-    before do
-      5.times do |i|
-        idea = create(:idea)
-        rand(10).times{create(:vote, votable: idea, mode: 'up')}
-        rand(10).times{create(:vote, votable: idea, mode: 'down')}
-      end
-    end
-
-    it "sorts from controversial to uncontroversial by default" do
-      score_serie = Idea.order_controversial.map{|idea| idea.upvotes_count * idea.downvotes_count}
-      expect(score_serie).to eq score_serie.sort.reverse
-      expect(score_serie.select { |n| n != 0 }).to eq score_serie
-    end
-
-    it "sorts from controversial to uncontroversial when asking desc" do
-      score_serie = Idea.order_controversial(:desc).map{|idea| idea.upvotes_count * idea.downvotes_count}
-      expect(score_serie).to eq score_serie.sort.reverse
-    end
-
-    it "sorts from uncontroversial to controversial when asking asc" do
-      score_serie = Idea.order_controversial(:asc).map{|idea| idea.upvotes_count * idea.downvotes_count}
-      expect(score_serie).to eq score_serie.sort
-    end
-  end
-
   describe "order_status" do
     it "sorts from high status to low status when asked desc" do
       status_sorted = Idea.order_status(:desc).map(&:id)

@@ -25,10 +25,6 @@ class WebApi::V1::IdeasController < ApplicationController
           @ideas.order_popular
         when "-popular"
           @ideas.order_popular(:asc)
-        when "controversial"
-          @ideas.order_controversial
-        when "-controversial"
-          @ideas.order_controversial(:asc)
         when "author_name"
           @ideas.order("users.first_name ASC", "users.last_name ASC")
         when "-author_name"
