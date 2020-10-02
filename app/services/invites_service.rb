@@ -175,19 +175,20 @@ class InvitesService
   # @return [String, Float, Integer, Boolean]
   def coerce_value(value, type)
     case type
-    when 'number' then
-      if value.is_a? Numeric
-        value
-      else
-        begin
-          Integer(value)
-        rescue ArgumentError
-          Float(value)
-        end
-      end
+    when 'number' then to_number(value)
     when 'boolean' then to_boolean(value)
     when 'string' then String(value)
     end
+  end
+
+  def to_number(value)
+    if value.is_a? Numeric
+      value
+    else
+      Integer(value)
+    end
+  rescue ArgumentError
+    Float(value)
   end
 
   # @return [Boolean]
