@@ -752,7 +752,7 @@ class TenantTemplateService
       yml_permission = {
         'action'          => p.action,
         'permitted_by'    => p.permitted_by,
-        'permittable_ref' => lookup_ref(p.permittable_id, [:project, :phase]),
+        'permission_scope_ref' => lookup_ref(p.permission_scope_id, [:project, :phase]),
         'created_at'      => p.created_at.to_s,
         'updated_at'      => p.updated_at.to_s
       }

@@ -473,9 +473,9 @@ resource "Ideas" do
         slug: idea.slug,
         budget: idea.budget,
         action_descriptor: {
-          commenting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
-          voting: {enabled: false, downvoting_enabled: true, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
-          comment_voting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
+          commenting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
+          voting_idea: {enabled: false, downvoting_enabled: true, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
+          comment_voting_idea: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
           budgeting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil}}
         )
       expect(json_response.dig(:data, :relationships)).to include(
@@ -613,7 +613,7 @@ resource "Ideas" do
 
     describe do
       before do
-        permission = project.permissions.where(action: 'posting').first
+        permission = project.permissions.where(action: 'posting_idea').first
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
       end
       example_request "[error] Create an idea in a project with groups posting permission" do
@@ -623,7 +623,7 @@ resource "Ideas" do
 
     describe do
       before do
-        permission = project.permissions.where(action: 'posting').first
+        permission = project.permissions.where(action: 'posting_idea').first
         groups = create_list(:group, 2)
         g = groups.first
         g.add_member @user
