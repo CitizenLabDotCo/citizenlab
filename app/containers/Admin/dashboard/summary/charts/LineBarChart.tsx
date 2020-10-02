@@ -313,13 +313,15 @@ class LineBarChart extends React.PureComponent<
                   position="top left"
                 />
               )}
+
+              <GraphCardFigureContainer>
+                <GraphCardFigure>{totalNumber}</GraphCardFigure>
+                <GraphCardFigureChange className={typeOfChange}>
+                  {formattedSerieChange}
+                </GraphCardFigureChange>
+              </GraphCardFigureContainer>
             </GraphCardTitle>
-            <GraphCardFigureContainer>
-              <GraphCardFigure>{totalNumber}</GraphCardFigure>
-              <GraphCardFigureChange className={typeOfChange}>
-                {formattedSerieChange}
-              </GraphCardFigureChange>
-            </GraphCardFigureContainer>
+
             {!noData && (
               <ExportMenu
                 svgNode={this.currentChart}

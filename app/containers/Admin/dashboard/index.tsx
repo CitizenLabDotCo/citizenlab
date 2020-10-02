@@ -183,6 +183,7 @@ export const GraphCardTitle = styled.h3`
 `;
 
 export const GraphCardFigureContainer = styled.div`
+  margin-left: 10px;
   display: flex;
   align-items: center;
 `;

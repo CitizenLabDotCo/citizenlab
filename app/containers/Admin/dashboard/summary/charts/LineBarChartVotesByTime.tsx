@@ -282,13 +282,14 @@ class LineBarChartVotesByTime extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages.ideaVotesByTimeTitle} />
+              <GraphCardFigureContainer>
+                <GraphCardFigure>{totalNumber}</GraphCardFigure>
+                <GraphCardFigureChange className={typeOfChange}>
+                  {formattedSerieChange}
+                </GraphCardFigureChange>
+              </GraphCardFigureContainer>
             </GraphCardTitle>
-            <GraphCardFigureContainer>
-              <GraphCardFigure>{totalNumber}</GraphCardFigure>
-              <GraphCardFigureChange className={typeOfChange}>
-                {formattedSerieChange}
-              </GraphCardFigureChange>
-            </GraphCardFigureContainer>
+
             {serie && (
               <ExportMenu
                 svgNode={this.currentChart}

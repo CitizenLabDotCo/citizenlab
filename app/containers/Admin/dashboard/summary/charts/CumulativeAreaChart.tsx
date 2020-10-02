@@ -261,13 +261,16 @@ export class CumulativeAreaChart extends PureComponent<
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <GraphCardTitle>{graphTitle}</GraphCardTitle>
-            <GraphCardFigureContainer>
-              <GraphCardFigure>{totalNumber}</GraphCardFigure>
-              <GraphCardFigureChange className={typeOfChange}>
-                {formattedSerieChange}
-              </GraphCardFigureChange>
-            </GraphCardFigureContainer>
+            <GraphCardTitle>
+              {graphTitle}
+              <GraphCardFigureContainer>
+                <GraphCardFigure>{totalNumber}</GraphCardFigure>
+                <GraphCardFigureChange className={typeOfChange}>
+                  {formattedSerieChange}
+                </GraphCardFigureChange>
+              </GraphCardFigureContainer>
+            </GraphCardTitle>
+
             {serie && (
               <ExportMenu
                 {...this.props}
