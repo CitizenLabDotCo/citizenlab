@@ -37,10 +37,16 @@ const ReportTab = memo(({ projects }: DataProps) => {
 
   const projectOptions =
     !isNilOrError(projects) && !isNilOrError(projects.projectsList)
-      ? projects.projectsList.map((project) => ({
-          value: project.id,
-          label: localize(project.attributes.title_multiloc),
-        }))
+      ? projects.projectsList
+          .filter(
+            (project) =>
+              project.attributes.process_type === 'timeline' ||
+              project.attributes?.participation_method === 'ideation'
+          )
+          .map((project) => ({
+            value: project.id,
+            label: localize(project.attributes.title_multiloc),
+          }))
       : null;
 
   const onProjectFilter = (option: IOption) =>
