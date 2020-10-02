@@ -188,7 +188,7 @@ const IdeaHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: -5px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
