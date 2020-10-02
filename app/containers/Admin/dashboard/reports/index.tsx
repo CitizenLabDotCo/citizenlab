@@ -41,7 +41,9 @@ const ReportTab = memo(({ projects }: DataProps) => {
           .filter(
             (project) =>
               project.attributes.process_type === 'timeline' ||
-              project.attributes?.participation_method === 'ideation'
+              !['information', 'survey', 'volunteering', null].includes(
+                project.attributes.participation_method
+              )
           )
           .map((project) => ({
             value: project.id,
