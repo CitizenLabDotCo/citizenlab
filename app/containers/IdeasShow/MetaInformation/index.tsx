@@ -52,9 +52,9 @@ const StyledPostedBy = styled(PostedBy)`
 
 const Header = styled.h3`
   font-size: ${fontSizes.base}px;
-  font-weight: bold;
+  font-weight: 500;
   color: ${(props) => props.theme.colorText};
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 `;
 
 interface InputProps {
