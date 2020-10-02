@@ -175,64 +175,46 @@ const ProjectReport = memo(
           </PageTitle>
           <ResolutionControl value={resolution} onChange={setResolution} />
         </RowSection>
-        <Section>
-          <SectionTitle>
-            <FormattedMessage
-              {...messages.projectType}
-              values={{
-                projectType: isTimelineProject ? (
-                  <FormattedMessage {...messages.timelineType} />
-                ) : (
-                  <FormattedMessage {...messages.continuousType} />
-                ),
-              }}
-            />
-          </SectionTitle>
-        </Section>
-
-        {isTimelineProject ? (
-          <TimelineSection>
-            {!isNilOrError(phases) && phases.length > 0 ? (
-              phases.map((phase, index) => {
-                return (
-                  <Phase
-                    key={index}
-                    isCurrentPhase={
-                      phase.id ===
-                      project?.relationships?.current_phase?.data?.id
-                    }
-                  >
-                    <p>
-                      <FormattedMessage
-                        {...messages.fromTo}
-                        values={{
-                          from: formatDateLabel(phase.attributes.start_at),
-                          to: formatDateLabel(phase.attributes.end_at),
-                        }}
-                      />
-                    </p>
-                    <div>{phase.attributes.participation_method}</div>
-                    <div>{localize(phase.attributes.title_multiloc)}</div>
-                  </Phase>
-                );
-              })
-            ) : (
-              <FormattedMessage {...messages.noPhase} />
-            )}
-          </TimelineSection>
-        ) : (
+        {isTimelineProject && (
           <Section>
-            <p>Created on {startAt}</p>
-            <div>{project.attributes.participation_method}</div>
+            <TimelineSection>
+              {!isNilOrError(phases) && phases.length > 0 ? (
+                phases.map((phase, index) => {
+                  return (
+                    <Phase
+                      key={index}
+                      isCurrentPhase={
+                        phase.id ===
+                        project?.relationships?.current_phase?.data?.id
+                      }
+                    >
+                      <p>
+                        <FormattedMessage
+                          {...messages.fromTo}
+                          values={{
+                            from: formatDateLabel(phase.attributes.start_at),
+                            to: formatDateLabel(phase.attributes.end_at),
+                          }}
+                        />
+                      </p>
+                      <div>{phase.attributes.participation_method}</div>
+                      <div>{localize(phase.attributes.title_multiloc)}</div>
+                    </Phase>
+                  );
+                })
+              ) : (
+                <FormattedMessage {...messages.noPhase} />
+              )}
+            </TimelineSection>
           </Section>
         )}
 
-        <Section>
-          <SectionTitle>
-            <FormattedMessage {...messages.sectionWho} />
-          </SectionTitle>
-          <GraphsContainer>
-            {participationMethods !== ['information'] && startAt && endAt && (
+        {participationMethods !== ['information'] && startAt && endAt && (
+          <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.sectionWho} />
+            </SectionTitle>
+            <GraphsContainer>
               <LineBarChart
                 graphTitle={formatMessage(messages.participantsOverTimeTitle)}
                 xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
@@ -246,23 +228,23 @@ const ProjectReport = memo(
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
-            )}
-            {participationMethods !== ['information'] &&
-              startAt &&
-              endAt &&
-              !isNilOrError(customFields) &&
-              customFields.map(
-                (customField) =>
-                  customField.attributes.enabled && (
-                    <CustomFieldComparison
-                      customField={customField}
-                      currentProject={project.id}
-                      key={customField.id}
-                    />
-                  )
-              )}
-          </GraphsContainer>
-        </Section>
+              {participationMethods !== ['information'] &&
+                startAt &&
+                endAt &&
+                !isNilOrError(customFields) &&
+                customFields.map(
+                  (customField) =>
+                    customField.attributes.enabled && (
+                      <CustomFieldComparison
+                        customField={customField}
+                        currentProject={project.id}
+                        key={customField.id}
+                      />
+                    )
+                )}
+            </GraphsContainer>
+          </Section>
+        )}
 
         {participationMethods.includes('ideation') && startAt && endAt && (
           <Section>
