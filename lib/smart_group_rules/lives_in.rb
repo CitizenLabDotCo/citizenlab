@@ -12,7 +12,6 @@ module SmartGroupRules
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
     validates :value, absence: true, unless: :needs_value?
-    validates :value, presence: true, inclusion: { in: -> (record) { ['outside'] + Area.ids } }, if: :needs_value?
     validate :validate_value_inclusion
 
     def self.to_json_schema
@@ -68,12 +67,15 @@ module SmartGroupRules
     end
 
     def filter users_scope
-      byebug
       case predicate
       when 'has_value'
         users_scope.where("custom_field_values->>'domicile' = ?", value)
       when 'not_has_value'
         users_scope.where("custom_field_values->>'domicile' IS NULL or custom_field_values->>'domicile' != ?", value)
+      when 'is_one_of'
+        users_scope.where("custom_field_values->>'domicile' IN (?)", value)
+      when 'not_is_one_of'
+        users_scope.where("custom_field_values->>'domicile' IS NULL OR custom_field_values->>'domicile' NOT IN (?)", value)
       when 'is_empty'
         users_scope.where("custom_field_values->>'domicile' IS NULL")
       when 'not_is_empty'

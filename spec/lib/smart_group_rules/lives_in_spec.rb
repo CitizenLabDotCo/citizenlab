@@ -16,6 +16,13 @@ describe SmartGroupRules::LivesIn do
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
 
+    it "successfully validate the valid multi-value rule" do
+      expect(valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[r.value]}).to be_valid
+    end
+
+    it "fails on a non-existing custom field option" do
+      expect(valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[r.value, 'garbage']}).to be_invalid
+    end
   end
 
   describe "validations" do
@@ -59,6 +66,16 @@ describe SmartGroupRules::LivesIn do
     it "correctly filters on 'not_has_value' predicate" do
       rule = SmartGroupRules::LivesIn.new('not_has_value', 'outside')
       expect(rule.filter(User).count).to eq 4
+    end
+
+    it "correctly filters on 'is_one_of' predicate" do
+      rule = SmartGroupRules::LivesIn.new('is_one_of', [area1.id, 'outside'])
+      expect(rule.filter(User).count).to eq 3
+    end
+
+    it "correctly filters on 'not_is_one_of' predicate" do
+      rule = SmartGroupRules::LivesIn.new('not_is_one_of', [area2.id])
+      expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'is_empty' predicate" do
