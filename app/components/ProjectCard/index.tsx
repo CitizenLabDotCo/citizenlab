@@ -16,7 +16,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { getIdeaPostingRules } from 'services/ideaPostingRules';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -500,11 +500,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const participationMethod = !isNilOrError(phase)
         ? phase.attributes.participation_method
         : project.attributes.participation_method;
-      const canPost = !!(
-        (!isNilOrError(phase)
-          ? phase.attributes.posting_enabled
-          : project.attributes.posting_enabled) && postingPermission.enabled
-      );
+      const canPost = !!postingPermission.enabled;
       const canVote = !!(
         (!isNilOrError(phase)
           ? phase.attributes.voting_enabled
@@ -515,7 +511,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         (!isNilOrError(phase)
           ? phase.attributes.commenting_enabled
           : project.attributes.commenting_enabled) &&
-        get(project, 'attributes.action_descriptor.commenting.enabled')
+        get(project, 'attributes.action_descriptor.commenting_idea.enabled')
       );
       const imageUrl =
         !isNilOrError(projectImages) && projectImages.length > 0

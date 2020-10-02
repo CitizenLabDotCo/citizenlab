@@ -92,7 +92,6 @@ interface FormValues {
   threshold_reached_message: Multiloc;
   voting_threshold: number;
   enabled: boolean;
-  posting_enabled: boolean;
 }
 
 interface State {
@@ -136,7 +135,6 @@ class InitiativesSettingsPage extends PureComponent<
             initiativesSettings.threshold_reached_message,
           voting_threshold: initiativesSettings.voting_threshold,
           enabled: initiativesSettings.enabled,
-          posting_enabled: initiativesSettings.posting_enabled,
         },
       });
     }
@@ -229,25 +227,6 @@ class InitiativesSettingsPage extends PureComponent<
         formValues: {
           ...formValues,
           enabled: !enabled,
-          posting_enabled: !enabled,
-        },
-      };
-    });
-  };
-
-  handlePostingEnabledOnChange = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    this.setState(({ formValues }) => {
-      const { posting_enabled, enabled } = formValues;
-
-      return {
-        formValues: {
-          ...formValues,
-          // if proposal submission is turned on,
-          // posting of new proposals is automatically as well
-          enabled: posting_enabled === false ? true : enabled,
-          posting_enabled: !posting_enabled,
         },
       };
     });
@@ -324,21 +303,6 @@ class InitiativesSettingsPage extends PureComponent<
               <StyledToggle
                 checked={formValues.enabled}
                 onChange={this.handleEnabledOnChange}
-                label={<FormattedMessage {...messages.enabledToggle} />}
-              />
-            </SectionField>
-            <SectionField>
-              <SubSectionTitleWithDescription>
-                <FormattedMessage {...messages.fieldPostingEnabled} />
-              </SubSectionTitleWithDescription>
-              <StyledSectionDescription>
-                <FormattedMessage
-                  {...messages.showProposalPostingEnabledInfo}
-                />
-              </StyledSectionDescription>
-              <StyledToggle
-                checked={formValues.posting_enabled}
-                onChange={this.handlePostingEnabledOnChange}
                 label={<FormattedMessage {...messages.enabledToggle} />}
               />
             </SectionField>
