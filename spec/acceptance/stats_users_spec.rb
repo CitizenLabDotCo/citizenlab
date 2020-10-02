@@ -923,6 +923,7 @@ resource "Stats - Users" do
     get "web_api/v1/stats/users_by_gender" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 16.days do
@@ -954,6 +955,7 @@ resource "Stats - Users" do
     get "web_api/v1/stats/users_by_gender_as_xlsx" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 16.days do
@@ -986,7 +988,7 @@ resource "Stats - Users" do
     get "web_api/v1/stats/users_by_birthyear" do
       time_boundary_parameters self
       group_filter_parameter self
-      parameter :project, "Project ID. Only return users that can participated in the given project.", required: false
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       describe "filtered by group" do
       before do
@@ -1044,6 +1046,7 @@ end
     get "web_api/v1/stats/users_by_birthyear_as_xlsx" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 16.days do
@@ -1075,6 +1078,7 @@ end
     get "web_api/v1/stats/users_by_domicile" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 16.days do
@@ -1112,6 +1116,7 @@ end
     get "web_api/v1/stats/users_by_domicile_as_xlsx" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 16.days do
@@ -1144,6 +1149,7 @@ end
     get "web_api/v1/stats/users_by_education" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 24.days do
@@ -1174,6 +1180,7 @@ end
     get "web_api/v1/stats/users_by_education_as_xlsx" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       before do
         travel_to start_at + 24.days do
@@ -1205,6 +1212,7 @@ end
     get "web_api/v1/stats/users_by_custom_field/:custom_field_id" do
       time_boundary_parameters self
       group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       describe "with select field" do
         before do
