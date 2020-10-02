@@ -9,7 +9,7 @@ describe('Idea show page actions', () => {
     });
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('.e2e-vote-controls-desktop .e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-vote-controls .e2e-ideacard-upvote-button').click();
       cy.get('#e2e-sign-up-in-modal');
       cy.get('#e2e-sign-up-container');
     });
@@ -67,10 +67,10 @@ describe('Idea show page actions', () => {
       });
 
       it('has working up and downvote buttons', () => {
-        cy.get('.e2e-vote-controls-desktop')
+        cy.get('.e2e-vote-controls')
           .find('.e2e-ideacard-upvote-button')
           .as('upvoteBtn');
-        cy.get('.e2e-vote-controls-desktop')
+        cy.get('.e2e-vote-controls')
           .find('.e2e-ideacard-downvote-button')
           .as('downvoteBtn');
 
