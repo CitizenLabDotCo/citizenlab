@@ -68,6 +68,7 @@ module SmartGroupRules
     end
 
     def filter users_scope
+      byebug
       case predicate
       when 'has_value'
         users_scope.where("custom_field_values->>'domicile' = ?", value)

@@ -102,13 +102,13 @@ module SmartGroupRules
           users_scope.where("custom_field_values->>'#{key}' = ?", option_key)
         when 'not_has_value'
           option_key = CustomFieldOption.find(value).key
-          users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' != ?", option_key)
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR custom_field_values->>'#{key}' != ?", option_key)
         when 'is_one_of'
           option_keys = CustomFieldOption.where(id: value).pluck :key
           users_scope.where("custom_field_values->>'#{key}' IN (?)", option_keys)
         when 'not_is_one_of'
           option_keys = CustomFieldOption.where(id: value).pluck :key
-          users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' NOT IN (?)", option_keys)
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR custom_field_values->>'#{key}' NOT IN (?)", option_keys)
         when 'is_empty'
           users_scope.where("custom_field_values->>'#{key}' IS NULL")
         when 'not_is_empty'
@@ -124,6 +124,12 @@ module SmartGroupRules
         when 'not_has_value'
           option_key = CustomFieldOption.find(value).key
           users_scope.where("custom_field_values->>'#{key}' IS NULL OR NOT (custom_field_values->>'#{key}')::jsonb ? :value", value: option_key)
+        when 'is_one_of'
+          option_keys = CustomFieldOption.where(id: value).pluck :key
+          users_scope.where("(custom_field_values->>'#{key}')::jsonb ?| array[:value]", value: option_keys)
+        when 'not_is_one_of'
+          option_keys = CustomFieldOption.where(id: value).pluck :key
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR NOT ((custom_field_values->>'#{key}')::jsonb ?| array[:value])", value: option_keys)
         when 'is_empty'
           users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::jsonb = '[]'::jsonb")
         when 'not_is_empty'
