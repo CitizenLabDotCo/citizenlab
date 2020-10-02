@@ -46,6 +46,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_reports: {
+          enabled: true,
+          allowed: true
+        },
         widgets: {
           enabled: true,
           allowed: true

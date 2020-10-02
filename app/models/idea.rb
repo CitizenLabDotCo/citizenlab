@@ -4,14 +4,14 @@ class Idea < ApplicationRecord
   include Moderatable
 
   belongs_to :project, touch: true
-  counter_culture :project, 
+  counter_culture :project,
     column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
     column_names: {
       ["ideas.publication_status = ?", 'published'] => 'ideas_count'
     },
     touch: true
-  counter_culture :project, 
-    column_name: 'comments_count', 
+  counter_culture :project,
+    column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
 
   belongs_to :assignee, class_name: 'User', optional: true
@@ -51,7 +51,7 @@ class Idea < ApplicationRecord
 
   scope :with_some_topics, (Proc.new do |topic_ids|
     with_dups = joins(:ideas_topics).where(ideas_topics: {topic_id: topic_ids})
-    # Removing duplicate results in this manner, 
+    # Removing duplicate results in this manner,
     # because .distinct gives SQL errors when
     # combined with other queries.
     where(id: with_dups)
@@ -81,6 +81,7 @@ class Idea < ApplicationRecord
 
   scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
+
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
     .order("idea_statuses.ordering #{direction}, ideas.id")
@@ -91,7 +92,7 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  
+
   private
 
   def sanitize_body_multiloc
@@ -107,7 +108,7 @@ class Idea < ApplicationRecord
   def set_idea_status
     self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
-  
+
   def assignee_can_moderate_project
     if self.assignee && self.project &&
       !ProjectPolicy.new(self.assignee, self.project).moderate?
