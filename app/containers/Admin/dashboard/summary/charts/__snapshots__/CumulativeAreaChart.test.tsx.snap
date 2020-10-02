@@ -6,13 +6,13 @@ exports[`<CumulativeAreaChart /> renders correctly with data 1`] = `
     <dashboard__GraphCardHeader>
       <dashboard__GraphCardTitle>
         commentsByTimeTitle
+        <dashboard__GraphCardFigureContainer>
+          <dashboard__GraphCardFigure />
+          <dashboard__GraphCardFigureChange
+            className=""
+          />
+        </dashboard__GraphCardFigureContainer>
       </dashboard__GraphCardTitle>
-      <dashboard__GraphCardFigureContainer>
-        <dashboard__GraphCardFigure />
-        <dashboard__GraphCardFigureChange
-          className=""
-        />
-      </dashboard__GraphCardFigureContainer>
     </dashboard__GraphCardHeader>
     <dashboard__NoDataContainer>
       <FormattedMessage
@@ -30,13 +30,13 @@ exports[`<CumulativeAreaChart /> renders correctly without data 1`] = `
     <dashboard__GraphCardHeader>
       <dashboard__GraphCardTitle>
         commentsByTimeTitle
+        <dashboard__GraphCardFigureContainer>
+          <dashboard__GraphCardFigure />
+          <dashboard__GraphCardFigureChange
+            className=""
+          />
+        </dashboard__GraphCardFigureContainer>
       </dashboard__GraphCardTitle>
-      <dashboard__GraphCardFigureContainer>
-        <dashboard__GraphCardFigure />
-        <dashboard__GraphCardFigureChange
-          className=""
-        />
-      </dashboard__GraphCardFigureContainer>
     </dashboard__GraphCardHeader>
     <dashboard__NoDataContainer>
       <FormattedMessage
