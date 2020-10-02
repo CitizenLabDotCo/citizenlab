@@ -248,7 +248,7 @@ class CommentBody extends PureComponent<Props, State> {
 
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-            <QuillEditedContent>
+            <QuillEditedContent fontWeight={300}>
               <div aria-live="polite">
                 {translateButtonClicked ? (
                   <GetMachineTranslation
