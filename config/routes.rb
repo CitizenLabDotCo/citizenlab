@@ -114,6 +114,10 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
+      # :action is already used as param, so we chose :permission_action instead
+      resources :permissions, param: :permission_action do
+        get 'participation_conditions', on: :member
+      end
       concern :participation_context do
         # :action is already used as param, so we chose :permission_action instead
         resources :permissions, param: :permission_action do
@@ -266,6 +270,10 @@ Rails.application.routes.draw do
 
       scope 'mentions', controller: 'mentions' do
         get 'users'
+      end
+
+      scope 'action_descriptors', controller: 'action_descriptors' do
+        get 'initiatives'
       end
 
       resources :baskets, except: [:index]

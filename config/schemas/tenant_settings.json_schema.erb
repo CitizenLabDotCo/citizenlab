@@ -474,7 +474,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true },
-          "posting_enabled": { "type": "boolean", "default": true },
           "voting_threshold": {
             "title": "Voting Threshold",
             "description": "Default value for how many votes a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
@@ -566,6 +565,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "enalyzer_surveys": {
+        "type": "object",
+        "title": "Enalyzer Forms Surveys",
+        "description":  "Allow Enalyzer surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -711,7 +722,7 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
-      },      
+      },
 
       "ideas_overview": {
         "type": "object",
@@ -906,6 +917,7 @@
   "dependencies": {
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
+    "enalyzer_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"]
   },
   "definitions": {

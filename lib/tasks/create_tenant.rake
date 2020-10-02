@@ -94,10 +94,13 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        enalyzer_surveys: {
+          enabled: true,
+          allowed: true
+        },
         initiatives: {
           enabled: true,
           allowed: true,
-          posting_enabled: true,
           voting_threshold: 300,
           days_limit: 90,
           threshold_reached_message: MultilocService.new.i18n_to_multiloc(
@@ -177,6 +180,18 @@ namespace :cl2_back do
           allowed: true
         },
         custom_topics: {
+          enabled: true,
+          allowed: true
+        },
+        smart_groups: {
+          enabled: true,
+          allowed: true
+        },
+        project_management: {
+          enabled: true,
+          allowed: true
+        },
+        project_visibility: {
           enabled: true,
           allowed: true
         },

@@ -104,7 +104,7 @@ end
 if ['public','example_org'].include? Apartment::Tenant.current
   # rake db:reset clears all instances before repopulating the db.
   CommonPassword.initialize!
-  
+
   t = Tenant.create!({
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
@@ -236,10 +236,13 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      enalyzer_surveys: {
+        enabled: true,
+        allowed: true
+      },
       initiatives: {
         enabled: true,
         allowed: true,
-        posting_enabled: true,
         voting_threshold: 20,
         days_limit: 5,
         threshold_reached_message: MultilocService.new.i18n_to_multiloc(
@@ -436,7 +439,7 @@ if Apartment::Tenant.current == 'localhost'
       description_multiloc: create_for_tenant_locales{"<p>The place to be these days</p>"}
     })
 
-    3.times do 
+    3.times do
       Topic.create!({
         title_multiloc: create_for_tenant_locales{Faker::Lorem.word},
         description_multiloc: create_for_tenant_locales{Faker::Lorem.sentence}
@@ -810,7 +813,11 @@ if Apartment::Tenant.current == 'localhost'
     ])
 
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
-      permitted_by = ['groups', 'admins_moderators'].shuffle.first
+      permitted_by = if permission.action == 'taking_survey'
+        ['everyone', 'users', 'groups', 'admins_moderators']
+      else
+        ['users', 'groups', 'admins_moderators']
+      end.shuffle.first
       permission.permitted_by = permitted_by
       if permitted_by == 'groups'
         permission.groups = Group.all.shuffle.take(rand(5))
