@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
@@ -8,9 +8,6 @@ import Summary from './summary';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
@@ -211,8 +208,6 @@ export type IResolution = 'day' | 'week' | 'month';
 
 interface Props {
   authUser: GetAuthUserChildProps;
-  insightsEnabled: GetFeatureFlagChildProps;
-  geographicDashboardEnabled: GetFeatureFlagChildProps;
   children: JSX.Element;
 }
 
@@ -237,13 +232,11 @@ export const chartTheme = (theme) => {
 
 export const DashboardsPage = memo(
   ({
-    insightsEnabled,
-    geographicDashboardEnabled,
     authUser,
     children,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const staticTabs = [
+    const tabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
       {
         label: formatMessage(messages.tabUsers),
@@ -252,6 +245,17 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
+        feature: 'project_reports',
+      },
+      {
+        label: formatMessage(messages.tabInsights),
+        url: '/admin/dashboard/insights',
+        feature: 'clustering',
+      },
+      {
+        label: formatMessage(messages.tabMap),
+        url: '/admin/dashboard/map',
+        feature: 'geographic_dashboard',
       },
     ];
 
@@ -259,28 +263,6 @@ export const DashboardsPage = memo(
       title: formatMessage(messages.titleDashboard),
       subtitle: formatMessage(messages.subtitleDashboard),
     };
-
-    const tabs = useCallback(() => {
-      return [
-        ...staticTabs,
-        ...(insightsEnabled
-          ? [
-              {
-                label: formatMessage(messages.tabInsights),
-                url: '/admin/dashboard/insights',
-              },
-            ]
-          : []),
-        ...(geographicDashboardEnabled
-          ? [
-              {
-                label: formatMessage(messages.tabMap),
-                url: '/admin/dashboard/map',
-              },
-            ]
-          : []),
-      ];
-    }, [insightsEnabled, geographicDashboardEnabled])();
 
     if (authUser) {
       if (isAdmin({ data: authUser })) {
@@ -308,8 +290,6 @@ const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
 const Data = adopt({
   authUser: <GetAuthUser />,
-  insightsEnabled: <GetFeatureFlag name="clustering" />,
-  geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />,
 });
 
 export default (props) => (
