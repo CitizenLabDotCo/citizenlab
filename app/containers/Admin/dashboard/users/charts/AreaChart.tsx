@@ -30,38 +30,35 @@ interface Props {
 }
 
 const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
-  const areaKeyToAreaName = (
-    areas: IUsersByDomicile['areas'],
-    key: string
-  ): string => {
-    const {
-      intl: { formatMessage },
-      localize,
-    } = props;
-
-    if (key === '_blank') {
-      return formatMessage(messages._blank);
-    } else if (key === 'outside') {
-      return formatMessage(messages.outsideArea);
-    } else if (areas[key]) {
-      return localize(areas[key].title_multiloc);
-    } else {
-      return key;
-    }
-  };
+  const {
+    intl: { formatMessage },
+    localize,
+  } = props;
 
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (!isNilOrError(data)) {
-      const {
-        series: { users },
-        areas,
-      } = data;
+      const { series, areas } = data;
 
-      const res = map(users, (value, key) => ({
-        value,
-        name: areaKeyToAreaName(areas, key),
+      const res = map(areas, (value, key) => ({
+        value: series.users[key],
+        name: localize(value.title_multiloc),
         code: key,
       }));
+
+      if (series.users['_blank']) {
+        res.push({
+          value: series.users['_blank'],
+          name: formatMessage(messages._blank),
+          code: '_blank',
+        });
+      }
+      if (series.users['outside']) {
+        res.push({
+          value: series.users['outside'],
+          name: formatMessage(messages.outsideArea),
+          code: 'outside',
+        });
+      }
 
       return res.length > 0 ? res : null;
     }
@@ -72,12 +69,12 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   return (
     <HorizontalBarChart
       {...props}
-      graphTitleString={props.intl.formatMessage(messages.usersByDomicileTitle)}
+      graphTitleString={formatMessage(messages.usersByDomicileTitle)}
       graphUnit="users"
       stream={usersByDomicileStream}
       convertToGraphFormat={convertToGraphFormat}
-      xlsxEndpoint={usersByDomicileXlsxEndpoint}
       className="dynamicHeight"
+      xlsxEndpoint={usersByDomicileXlsxEndpoint}
     />
   );
 };

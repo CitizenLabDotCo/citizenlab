@@ -12,7 +12,7 @@ type children = (
   renderProps: GetUserCustomFieldsChildProps
 ) => JSX.Element | null;
 
-type IInputType = 'select' | 'multiselect' | 'checkbox';
+type IInputType = 'select' | 'multiselect' | 'checkbox' | 'number';
 
 interface Props extends InputProps {
   children?: children;
