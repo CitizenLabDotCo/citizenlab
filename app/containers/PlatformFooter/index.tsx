@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
-const Container = styled.footer`
+const Container = styled.footer<{ insideModal?: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,8 @@ const Container = styled.footer`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
+      insideModal ? 0 : mobileMenuHeight}px;
   `}
 `;
 
@@ -61,6 +62,11 @@ const Inner = styled.div`
   padding-bottom: 12px;
   background: #fff;
   border-top: solid 1px #e8e8e8;
+
+  ${media.smallerThan1280px`
+    padding-left: 18px;
+    padding-right: 18px;
+  `}
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -236,6 +242,11 @@ const PoweredBy = styled.div`
   margin-right: 24px;
   border-right: 2px solid ${colors.adminBackground};
 
+  ${media.smallerThan1280px`
+    padding-right: 8px;
+    margin-right: 13px;
+  `}
+
   ${media.smallerThanMinTablet`
     flex-direction: column;
     padding: 0px;
@@ -285,6 +296,7 @@ const CitizenLabLogo = styled(Icon)`
 interface InputProps {
   showShortFeedback?: boolean;
   className?: string;
+  insideModal?: boolean;
 }
 
 interface DataProps {
@@ -384,13 +396,22 @@ class PlatformFooter extends PureComponent<Props, State> {
       feedbackSubmitting,
       feedbackSubmitted,
     } = this.state;
-    const { showShortFeedback, className, windowSize } = this.props;
+    const {
+      showShortFeedback,
+      className,
+      windowSize,
+      insideModal,
+    } = this.props;
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
 
     return (
-      <Container id="hook-footer" className={className}>
+      <Container
+        insideModal={insideModal}
+        id="hook-footer"
+        className={className}
+      >
         {showShortFeedback && (
           <>
             <ShortFeedback>
@@ -465,17 +486,20 @@ class PlatformFooter extends PureComponent<Props, State> {
 
         <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
           <PagesNav>
-            {LEGAL_PAGES.map((slug, index) => (
-              <React.Fragment key={slug}>
-                <StyledLink
-                  to={`/pages/${slug}`}
-                  className={index === 0 ? 'first' : ''}
-                >
-                  <FormattedMessage {...messages[slug]} />
-                </StyledLink>
-                <Bullet aria-hidden>•</Bullet>
-              </React.Fragment>
-            ))}
+            {LEGAL_PAGES
+              // to be added back when we do the footer redesign
+              .filter((slug) => slug !== 'accessibility-statement')
+              .map((slug, index) => (
+                <React.Fragment key={slug}>
+                  <StyledLink
+                    to={`/pages/${slug}`}
+                    className={index === 0 ? 'first' : ''}
+                  >
+                    <FormattedMessage {...messages[slug]} />
+                  </StyledLink>
+                  <Bullet aria-hidden>•</Bullet>
+                </React.Fragment>
+              ))}
             <StyledButton onClick={this.openConsentManager}>
               <FormattedMessage {...messages.cookieSettings} />
             </StyledButton>

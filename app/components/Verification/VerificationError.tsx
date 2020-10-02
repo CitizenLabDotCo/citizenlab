@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // Types
-import { ErrorContext } from './VerificationSteps';
+import { IVerificationError } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -44,16 +44,16 @@ const Subtitle = styled.h2`
 
 interface Props {
   className?: string;
-  context: ErrorContext | null;
+  error: IVerificationError;
 }
 
-export default memo<Props>(({ className, context }) => {
+export default memo<Props>(({ className, error }) => {
   let message = messages.errorGenericSubtitle;
 
-  if (context) {
-    if (context.error === 'taken') {
+  if (error) {
+    if (error === 'taken') {
       message = messages.errorTakenSubtitle;
-    } else if (context.error === 'not_entitled') {
+    } else if (error === 'not_entitled') {
       message = messages.errorNotEntitledSubtitle;
     }
   }

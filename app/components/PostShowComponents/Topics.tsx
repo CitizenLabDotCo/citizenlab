@@ -10,7 +10,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
@@ -19,11 +19,6 @@ import { ITopicData } from 'services/topics';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 10px;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 5px;
-  `}
 `;
 
 const Topic = styled.div`
