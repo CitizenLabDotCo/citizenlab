@@ -97,7 +97,9 @@ module SmartGroupRules
 
     def description_value locale
       if value.is_a? Array
-        value.map{|v| description_single_value v, locale}
+        value.map do |v| 
+          description_single_value v, locale
+        end.join ', '
       else
         description_single_value value, locale
       end
