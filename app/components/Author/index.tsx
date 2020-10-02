@@ -51,6 +51,8 @@ const AuthorMeta = styled.div`
 `;
 
 const AuthorNameContainer = styled.div`
+  display: flex;
+  align-items: center;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 16px;
@@ -65,8 +67,12 @@ const AuthorNameContainer = styled.div`
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
-  line-height: 17px;
+  line-height: 16px;
   margin-top: 3px;
+
+  &.horizontalLayout {
+    margin-top: 2px;
+  }
 `;
 
 export interface InputProps {
@@ -148,7 +154,7 @@ class Author extends PureComponent<Props, State> {
             </AuthorNameContainer>
 
             {createdAt && (
-              <TimeAgo>
+              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
                 <FormattedRelative value={createdAt} />
               </TimeAgo>
             )}
