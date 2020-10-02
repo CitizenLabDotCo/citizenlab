@@ -156,14 +156,16 @@ const MetaInformation = ({
             <Attachments files={files} />
           </Item>
         )}
-        {similarIdeasEnabled && !isNilOrError(similarIdeas) && (
-          <Item>
-            <Header>
-              <FormattedMessage {...messages.similarIdeas} />
-            </Header>
-            <SimilarIdeas similarIdeas={similarIdeas} />
-          </Item>
-        )}
+        {similarIdeasEnabled &&
+          !isNilOrError(similarIdeas) &&
+          similarIdeas.length > 0 && (
+            <Item>
+              <Header>
+                <FormattedMessage {...messages.similarIdeas} />
+              </Header>
+              <SimilarIdeas similarIdeas={similarIdeas} />
+            </Item>
+          )}
       </Container>
     );
   }
