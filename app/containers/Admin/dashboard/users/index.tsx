@@ -1,7 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
-import { ThemeProvider } from 'styled-components';
 import { adopt } from 'react-adopt';
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -9,12 +8,11 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
-import { chartTheme, GraphsContainer, ControlBar } from '../';
+import { GraphsContainer, ControlBar } from '../';
 import TimeControl from '../components/TimeControl';
 import ChartFilters from '../components/ChartFilters';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 import MostActiveUsersList from './charts/MostActiveUsersList';
-import AgeChart from './charts/AgeChart';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -123,11 +121,6 @@ export class UsersDashboard extends PureComponent<
         </ControlBar>
 
         <ChartFilters
-          configuration={{
-            showProjectFilter: false,
-            showGroupFilter: true,
-            showTopicFilter: false,
-          }}
           currentProjectFilter={undefined}
           currentGroupFilter={currentGroupFilter}
           currentTopicFilter={undefined}
@@ -139,29 +132,21 @@ export class UsersDashboard extends PureComponent<
           onTopicFilter={null}
         />
 
-        <ThemeProvider theme={chartTheme}>
-          <GraphsContainer>
-            <AgeChart
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
-            <RegistrationFieldsToGraphs
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-              currentGroupFilterLabel={currentGroupFilterLabel}
-            />
-            <MostActiveUsersList
-              currentGroupFilter={currentGroupFilter}
-              startAt={startAt}
-              endAt={endAt}
-              infoMessage={infoMessage}
-              className="dynamicHeight"
-            />
-          </GraphsContainer>
-        </ThemeProvider>
+        <GraphsContainer>
+          <RegistrationFieldsToGraphs
+            startAt={startAt}
+            endAt={endAt}
+            currentGroupFilter={currentGroupFilter}
+            currentGroupFilterLabel={currentGroupFilterLabel}
+          />
+          <MostActiveUsersList
+            currentGroupFilter={currentGroupFilter}
+            startAt={startAt}
+            endAt={endAt}
+            infoMessage={infoMessage}
+            className="dynamicHeight"
+          />
+        </GraphsContainer>
       </>
     );
   }

@@ -147,6 +147,16 @@ export type IGraphPoint = {
   name: string;
   value: number;
   code: string;
+  color?: string;
+  ordering?: number;
 };
+
+export type ITopicSingleValue = {
+  nameMultiloc: Multiloc;
+  value: number;
+  code: string;
+};
+
+export type IParticipationByTopic = ITopicSingleValue[];
 
 export type IGraphFormat = IGraphPoint[];
