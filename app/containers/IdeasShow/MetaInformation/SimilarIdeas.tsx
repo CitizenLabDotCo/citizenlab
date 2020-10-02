@@ -2,7 +2,7 @@ import React from 'react';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
@@ -37,11 +37,11 @@ const IdeaListItem = styled.li`
 `;
 
 const IdeaLink = styled(Link)`
-  color: ${(props) => props.theme.colorText};
+  color: ${colors.label};
   text-decoration: underline;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 `;
