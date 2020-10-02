@@ -253,12 +253,12 @@ export class CustomFieldsComparison extends React.PureComponent<
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
     const {
-      chartFill,
       chartLabelSize,
       chartLabelColor,
       barFill,
       animationBegin,
       animationDuration,
+      newBarFill,
     } = this.props['theme'];
 
     return (
@@ -298,7 +298,7 @@ export class CustomFieldsComparison extends React.PureComponent<
                 <Bar
                   dataKey="total"
                   name={formatMessage(messages.totalUsers)}
-                  fill={chartFill}
+                  fill={newBarFill}
                   label={{
                     fill: barFill,
                     fontSize: chartLabelSize,

@@ -214,12 +214,12 @@ class BarChartActiveUsersByTime extends React.PureComponent<
     const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
     const {
-      chartFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
       animationBegin,
       animationDuration,
+      newBarFill,
     } = this.props['theme'];
 
     const noData =
@@ -262,7 +262,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
                 <Bar
                   dataKey="value"
                   name={graphTitle}
-                  fill={chartFill}
+                  fill={newBarFill}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   isAnimationActive={true}

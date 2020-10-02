@@ -92,7 +92,7 @@ interface IUserScoreComponent {
 }
 
 const UserScore = styled.div<IUserScoreComponent>`
-  background-color: ${(props) => props.theme.chartFill};
+  background-color: ${(props) => props.theme.newBarFill};
   width: ${(props) => props.value * 50}%;
   color: #fff;
   padding: 10px;
@@ -102,7 +102,7 @@ const UserScore = styled.div<IUserScoreComponent>`
 
   &:hover {
     background-color: ${(props: any) => props.hoverColor};
-    color: ${(props) => props.theme.chartFill};
+    color: ${(props) => props.theme.newBarFill};
   }
 
   ${media.smallerThan1280px`
@@ -200,8 +200,8 @@ class MostActiveUsersList extends PureComponent<
     const { className, infoMessage } = this.props;
     const { engagementScoreList } = this.state;
     const theme = this.props['theme'];
-    const { chartFill } = theme;
-    const barHoverColor = rgba(chartFill, 0.25);
+    const { newBarFill } = theme;
+    const barHoverColor = rgba(newBarFill, 0.25);
     const maxScore = this.maxScore() || 0;
 
     return (

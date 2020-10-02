@@ -260,11 +260,11 @@ class LineBarChartVotesByTime extends React.PureComponent<
     const {
       chartLabelSize,
       chartLabelColor,
-      chartStroke,
-      chartFill,
+      newLineColor,
       animationBegin,
       animationDuration,
       cartesianGridColor,
+      newBarFill,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
@@ -309,7 +309,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={1} />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
@@ -317,11 +317,13 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   fontSize={chartLabelSize}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
+                  tickLine={false}
                 />
                 <YAxis
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
                   yAxisId="cumulatedTotal"
+                  tickLine={false}
                 >
                   <Label
                     value={formatMessage(messages.total)}
@@ -330,7 +332,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                     offset={-20}
                   />
                 </YAxis>
-                <YAxis yAxisId="barValue" orientation="right">
+                <YAxis yAxisId="barValue" orientation="right" tickLine={false}>
                   <Label
                     value={formatMessage(messages.perPeriod, {
                       period: this.props.resolution,
@@ -344,34 +346,39 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="cumulatedTotal"
-                  name={formatMessage(messages.total)}
-                  dot={false}
-                  stroke={chartStroke}
-                  yAxisId="cumulatedTotal"
-                />
+
                 <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
-                  fill={rgba(chartFill, 0.5)}
+                  fill={rgba(newBarFill, 1)}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stackId="1"
                   yAxisId="barValue"
+                  barSize={20}
                 />
                 <Bar
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
-                  fill={rgba(chartFill, 0.7)}
+                  fill={rgba(newBarFill, 0.8)}
                   stackId="1"
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                   stroke="none"
                   yAxisId="barValue"
+                  barSize={20}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="cumulatedTotal"
+                  name={formatMessage(messages.total)}
+                  dot={true}
+                  stroke={newLineColor}
+                  fill={newLineColor}
+                  strokeWidth={2}
+                  yAxisId="cumulatedTotal"
                 />
 
                 <Legend
