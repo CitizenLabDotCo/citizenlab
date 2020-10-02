@@ -8,7 +8,6 @@ module AdminApi
         project_hash
       end
 
-      # require 'pry' ; binding.pry
       render json: projects
     end
 
