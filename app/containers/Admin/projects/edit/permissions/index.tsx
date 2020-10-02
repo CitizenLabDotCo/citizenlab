@@ -297,7 +297,6 @@ class ProjectPermissions extends PureComponent<
       ideaAssignmentEnabled,
     } = this.props;
     const { project, unsavedVisibleTo, loading, saving, status } = this.state;
-    console.log(projectManagementEnabled);
 
     if (!loading && unsavedVisibleTo && project) {
       const projectId = project.data.id;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-10-01
+
+### Changed
+- Idea page redesign
+
 ## 2020-09-25
 
 ### Fixed
