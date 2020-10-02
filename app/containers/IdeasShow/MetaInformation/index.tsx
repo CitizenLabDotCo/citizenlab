@@ -47,7 +47,7 @@ const Item = styled.div<{ isFirstItem?: boolean }>`
 `;
 
 const StyledPostedBy = styled(PostedBy)`
-  margin-top: -2px;
+  margin-top: -4px;
 `;
 
 const Header = styled.h3`
