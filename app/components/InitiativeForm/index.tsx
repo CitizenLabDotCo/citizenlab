@@ -343,6 +343,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     const { touched, errors } = this.state;
 
+    const mapsLoaded = window.googleMaps;
+
     if (!isNilOrError(topics)) {
       const availableTopics = topics.filter(
         (topic) => !isNilOrError(topic)
@@ -430,21 +432,23 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
               )}
             </SectionField>
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.locationLabel}
-                subtextMessage={messages.locationLabelSubtext}
-                optional
-              >
-                <LocationInput
-                  className="e2e-initiative-location-input"
-                  value={position || ''}
-                  onChange={onChangePosition}
-                  onBlur={this.onBlur('position')}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                />
-              </FormLabel>
-            </SectionField>
+            {mapsLoaded && (
+              <SectionField>
+                <FormLabel
+                  labelMessage={messages.locationLabel}
+                  subtextMessage={messages.locationLabelSubtext}
+                  optional
+                >
+                  <LocationInput
+                    className="e2e-initiative-location-input"
+                    value={position || ''}
+                    onChange={onChangePosition}
+                    onBlur={this.onBlur('position')}
+                    placeholder={formatMessage(messages.locationPlaceholder)}
+                  />
+                </FormLabel>
+              </SectionField>
+            )}
           </StyledFormSection>
           <StyledFormSection>
             <FormSectionTitle message={messages.formAttachmentsSectionTitle} />

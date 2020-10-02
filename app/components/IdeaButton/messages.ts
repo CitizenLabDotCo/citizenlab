@@ -14,11 +14,6 @@ export default defineMessages({
     defaultMessage:
       "Unfortunately, You don't have the rights to post ideas here.",
   },
-  postingMaybeNotPermitted: {
-    id: 'app.containers.IdeaButton.postingMaybeNotPermitted',
-    defaultMessage:
-      'Only certain users can post ideas here. Please sign in first.',
-  },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',
     defaultMessage: 'sign in',
@@ -35,11 +30,16 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingNotActivePhase',
     defaultMessage: "You can't post ideas in a past or future phase.",
   },
-  postingNotVerified: {
-    id: 'app.containers.IdeaButton.postingNotVerified',
-    defaultMessage:
-      'You need to verify your account to post an idea here. {verificationLink}',
+  postingHereNotYetPossible: {
+    id: 'app.containers.IdeaButton.postingHereNotYetPossible',
+    defaultMessage: "You can't yet post ideas here.",
   },
+  postingMaybeNotPermitted: {
+    id: 'app.containers.IdeaButton.postingMaybeNotPermitted',
+    defaultMessage:
+      'Only certain users can post an idea. {signInLink} or {signUpLink} to see if you comply.',
+  },
+
   verificationLinkText: {
     id: 'app.containers.IdeaButton.verificationLinkText',
     defaultMessage: 'Verify your account now.',

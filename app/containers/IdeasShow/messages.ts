@@ -9,18 +9,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.invisibleTitleContent',
     defaultMessage: 'Main idea content',
   },
-  a11y_voteControl: {
-    id: 'app.containers.IdeasShow.a11y_voteControl',
-    defaultMessage: 'Voting and status',
-  },
-  a11y_budgetControl: {
-    id: 'app.containers.IdeasShow.a11y_budgetControl',
-    defaultMessage: 'Idea assignment ans status',
-  },
-  voteOnThisIdea: {
-    id: 'app.containers.IdeasShow.voteOnThisIdea',
-    defaultMessage: 'Vote on this idea',
-  },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea: {ideaTitle}',
@@ -42,19 +30,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.shareSubtitle',
     defaultMessage:
       'Share your idea to reach more people, receive more votes and have more impact.',
-  },
-  twitterMessage: {
-    id: 'app.containers.IdeasShow.twitterMessage',
-    defaultMessage: 'Vote for {ideaTitle} on',
-  },
-  emailSharingSubject: {
-    id: 'app.containers.IdeasShow.emailSharingSubject',
-    defaultMessage: 'Support my idea: {ideaTitle}.',
-  },
-  emailSharingBody: {
-    id: 'app.containers.IdeasShow.emailSharingBody',
-    defaultMessage:
-      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
@@ -96,17 +71,13 @@ export default defineMessages({
     id: 'app.components.IdeasShow.skipSharing',
     defaultMessage: "Skip it, I'll do it later",
   },
-  similarIdeas: {
-    id: 'app.components.IdeasShow.similarIdeas',
-    defaultMessage: 'Similar ideas',
-  },
   reportAsSpamModalTitle: {
     id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
   },
-  ideaPostedBy: {
-    id: 'app.components.IdeasShow.ideaPostedBy',
-    defaultMessage: 'Idea posted by {userName}',
+  byUserOnDate: {
+    id: 'app.components.IdeasShow.byUserOnDate',
+    defaultMessage: 'By {userName} on {date}',
   },
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
@@ -123,5 +94,26 @@ export default defineMessages({
   bodyTitle: {
     id: 'app.components.IdeasShow.bodyTitle',
     defaultMessage: 'Description',
+  },
+  twitterMessage: {
+    id: 'app.containers.IdeasShow.twitterMessage',
+    defaultMessage: 'Vote for {ideaTitle} on',
+  },
+  emailSharingSubject: {
+    id: 'app.containers.IdeasShow.emailSharingSubject',
+    defaultMessage: 'Support my idea: {ideaTitle}.',
+  },
+  emailSharingBody: {
+    id: 'app.containers.IdeasShow.emailSharingBody',
+    defaultMessage:
+      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
+  },
+  shareIdea: {
+    id: 'app.containers.IdeasShow.shareIdea',
+    defaultMessage: 'Share idea',
+  },
+  commentCTA: {
+    id: 'app.containers.IdeasShow.commentCTA',
+    defaultMessage: 'Add a comment',
   },
 });
