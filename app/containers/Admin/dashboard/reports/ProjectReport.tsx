@@ -161,10 +161,6 @@ const ProjectReport = memo(
       (el, i, arr) => el && arr.indexOf(el) === i
     ) as ParticipationMethod[];
 
-    // if ((!startAt || !endAt)) {
-    //   return null; // TODO add better test? and good empty state. If there's no phase or no participants, let's not show empty sections.
-    // }
-
     const projectTitle = localize(project.attributes.title_multiloc);
 
     return (

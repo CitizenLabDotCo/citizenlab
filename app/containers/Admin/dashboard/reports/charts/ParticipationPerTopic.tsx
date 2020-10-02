@@ -140,7 +140,9 @@ const ParticipationPerTopic = (props: Props) => {
                 <ParticipationType />
                 {ideasByTopic.serie &&
                   ideasByTopic.serie.map((topic, index) => (
-                    <TopicName key={index}>{localize(topic.name)}</TopicName>
+                    <TopicName key={index}>
+                      {localize(topic.nameMultiloc)}
+                    </TopicName>
                   ))}
               </Column>
               <Column>
@@ -205,7 +207,7 @@ const convertToGraphFormat = (dataKey: string) => (
       maxParticipationValue[dataKey] = series[dataKey][topicId];
     }
     return {
-      name: title_multiloc,
+      nameMultiloc: title_multiloc,
       value: series[dataKey][topicId] || (0 as number),
       code: topicId,
     };
