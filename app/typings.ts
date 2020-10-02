@@ -152,7 +152,7 @@ export type IGraphPoint = {
 };
 
 export type ITopicSingleValue = {
-  name: Multiloc;
+  nameMultiloc: Multiloc;
   value: number;
   code: string;
 };

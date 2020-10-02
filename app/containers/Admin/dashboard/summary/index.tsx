@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
-import { map } from 'lodash-es';
 
 // components
 import { GraphsContainer, ControlBar, Column, IResolution } from '../';
@@ -33,7 +32,6 @@ import GetProjects, {
   GetProjectsChildProps,
   PublicationStatus,
 } from 'resources/GetProjects';
-import GetIdeas from 'resources/GetIdeas';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -49,7 +47,6 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
-  IIdeasByStatus,
 } from 'services/stats';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
@@ -297,31 +294,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     ];
   };
 
-  convertIdeasByStatusToGraphFormat = (ideasByStatus: IIdeasByStatus) => {
-    const {
-      series: { ideas },
-      idea_status,
-    } = ideasByStatus;
-
-    if (isNilOrError(ideasByStatus) || Object.keys(ideas).length <= 0) {
-      return null;
-    }
-    const { localize } = this.props;
-
-    const ideasByStatusConvertedToGraphFormat = map(
-      ideas,
-      (value: number, key: string) => ({
-        value: value as number,
-        name: localize(idea_status[key].title_multiloc) as string,
-        code: key,
-        color: idea_status[key].color as string,
-        ordering: idea_status[key].ordering as number,
-      })
-    );
-
-    return ideasByStatusConvertedToGraphFormat;
-  };
-
   render() {
     const {
       resolution,
@@ -475,15 +447,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetProjects
       publicationStatuses={publicationStatuses}
       filterCanModerate={true}
-    />
-  ),
-  mostControversialIdeas: (
-    <GetIdeas
-      pageNumber={1}
-      pageSize={5}
-      sort="random"
-      type="paginated"
-      projectIds={'all'}
     />
   ),
 });

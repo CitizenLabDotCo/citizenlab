@@ -230,7 +230,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
   };
 
   getFormattedNumbers(serie: ISerie | null) {
-    if (serie) {
+    if (serie && serie.length > 0) {
       const firstSerieValue = serie[0].cumulatedTotal;
       const lastSerieValue = serie[serie.length - 1].cumulatedTotal;
       const serieChange = lastSerieValue - firstSerieValue;
