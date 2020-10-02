@@ -278,10 +278,11 @@ class LineBarChart extends React.PureComponent<
     const { serie } = this.state;
 
     const {
-      chartFill,
       chartLabelSize,
       chartLabelColor,
       cartesianGridColor,
+      newBarFill,
+      newLineColor,
     } = this.props['theme'];
 
     const formattedNumbers = this.getFormattedNumbers(serie);
@@ -338,7 +339,7 @@ class LineBarChart extends React.PureComponent<
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={1} />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"
@@ -346,11 +347,13 @@ class LineBarChart extends React.PureComponent<
                   fontSize={chartLabelSize}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
+                  tickLine={false}
                 />
                 <YAxis
                   yAxisId="total"
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
+                  tickLine={false}
                 >
                   <Label
                     value={formatMessage(messages.total)}
@@ -363,6 +366,7 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="barValue"
                   orientation="right"
                   allowDecimals={false}
+                  tickLine={false}
                 >
                   <Label
                     value={formatMessage(messages.perPeriod, {
@@ -378,23 +382,26 @@ class LineBarChart extends React.PureComponent<
                   labelFormatter={this.formatLabel}
                   cursor={{ strokeWidth: 1 }}
                 />
-                <Line
-                  type="monotone"
-                  yAxisId="total"
-                  dataKey="total"
-                  stroke={chartFill}
-                  dot={false}
-                  name={formatMessage(messages.total)}
-                />
+
                 <Bar
                   dataKey="barValue"
                   yAxisId="barValue"
                   barSize={20}
-                  fill={chartFill}
+                  fill={newBarFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: this.props.resolution,
                   })}
+                />
+                <Line
+                  type="monotone"
+                  yAxisId="total"
+                  dataKey="total"
+                  dot={true}
+                  stroke={newLineColor}
+                  fill={newLineColor}
+                  strokeWidth={2}
+                  name={formatMessage(messages.total)}
                 />
                 <Legend
                   wrapperStyle={{

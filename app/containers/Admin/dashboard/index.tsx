@@ -229,6 +229,8 @@ export const chartTheme = (theme) => {
     animationBegin: 10,
     animationDuration: 200,
     cartesianGridColor: '#f5f5f5',
+    newBarFill: '#073F80',
+    newLineColor: '#7FBBCA',
   };
 };
 

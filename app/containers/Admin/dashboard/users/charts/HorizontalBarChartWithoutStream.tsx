@@ -69,12 +69,12 @@ export const HorizontalBarChartWithoutStream: React.SFC<
   const currentChart: React.RefObject<any> = React.createRef();
 
   const {
-    chartFill,
     chartLabelSize,
     chartCategorySize,
     chartLabelColor,
     animationBegin,
     animationDuration,
+    newBarFill,
   } = theme;
 
   const openIdeaInANewTab = ({ slug }: { slug: string }) => {
@@ -159,7 +159,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Downvotes"
                 stackId={'votes'}
                 dataKey="down"
-                fill={chartFill}
+                fill={newBarFill}
                 barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
                 animationDuration={animationDuration}
                 animationBegin={animationBegin}
@@ -173,7 +173,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                       return (
                         <Cell
                           key={`cell-${index}`}
-                          fill={(entry.color && entry.color) || chartFill}
+                          fill={(entry.color && entry.color) || newBarFill}
                           opacity={0.8}
                         />
                       );
@@ -195,7 +195,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 name="Upvotes"
                 stackId={'votes'}
                 dataKey="up"
-                fill={chartFill}
+                fill={newBarFill}
                 opacity={0.7}
                 barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
                 animationDuration={animationDuration}
@@ -206,7 +206,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                     return (
                       <Cell
                         key={`cell-${index}`}
-                        fill={(entry.color && entry.color) || chartFill}
+                        fill={(entry.color && entry.color) || newBarFill}
                         opacity={0.4}
                       />
                     );
