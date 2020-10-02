@@ -304,6 +304,7 @@ export function usersByRegFieldStream(
   return streams.get<IUsersByRegistrationField>({
     apiEndpoint: `${apiEndpoint}/users_by_custom_field/${customFieldId}`,
     ...streamParams,
+    cacheStream: false,
   });
 }
 

@@ -1,5 +1,54 @@
 # Changelog
 
+## 2020-10-01
+
+### Changed
+- Idea page redesign
+
+## 2020-09-25
+
+### Fixed
+- The "Go to platform" button in custom email campaigns now works in Norwegian
+
+### Added
+- Granular permissions for proposals
+- Possibility to restrict survey access to registered users only
+- Logging project published events
+
+### Changed
+- Replaced `posting_enabled` in the proposal settings by the posting proposal granular permission
+- Granular permissions are always granted to admins
+
+## 2020-09-22
+
+### Added
+- Accessibility statement
+
+## 2020-09-17
+
+### Added
+- Support for checkbox, number and (free) text values when initializing custom fields through excel invites.
+
+### Changed
+- Copy update for German, Romanian, Spanish (CL), and French (BE).
+
+## 2020-09-15
+
+### Added
+- Support Enalyzer as a new survey provider
+- Registration fields can now be hidden, meaning the user can't see or change them, typically controlled by an outside integration. They can still be used in smart groups.
+- Registration fields can now be pre-populated using the invites excel
+
+## 2020-09-08
+
+### Fixed
+- Custom buttons (e.g. in project descriptions) have correct styling in Safari.
+- Horizontal bar chart overflow in Admin > Dashboard > Users tab
+- User graphs for registration fields that are not used are not shown anymore in Admin > Dashboard > Users tab
+
+### Added
+- Pricing plan feature flags for smart groups and project access rights
+
 ## 2020-09-01
 
 ### Fixed

@@ -78,7 +78,6 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { ContextShape } from 'components/Verification/VerificationSteps';
 import { SSOParams } from 'services/singleSignOn';
 
 const Container = styled.div`
@@ -355,9 +354,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         window.history.replaceState(null, '', window.location.pathname);
         openVerificationModal({
           step: 'error',
-          context: {
-            error: this.props.location.query?.error || null,
-          } as ContextShape,
+          error: this.props.location.query?.error || null,
+          context: null,
         });
       }
     }

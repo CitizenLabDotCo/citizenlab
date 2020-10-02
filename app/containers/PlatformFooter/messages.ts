@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'app.containers.footer.privacy-policy',
     defaultMessage: 'Privacy policy',
   },
+  'accessibility-statement': {
+    id: 'app.containers.footer.accessibility-statement',
+    defaultMessage: 'Accessibility statement',
+  },
+  'cookie-policy': {
+    id: 'app.containers.footer.cookie-policy',
+    defaultMessage: 'Cookie policy',
+  },
   cookieSettings: {
     id: 'app.containers.footer.cookieSettings',
     defaultMessage: 'Cookie settings',

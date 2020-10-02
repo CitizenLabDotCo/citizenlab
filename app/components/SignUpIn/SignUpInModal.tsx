@@ -17,7 +17,6 @@ import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isProjectContext } from 'components/Verification/VerificationSteps';
 
 // events
 import {
@@ -47,10 +46,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   const authUser = useAuthUser();
   const participationConditions = useParticipationConditions(
-    metaData?.verificationContext &&
-      isProjectContext(metaData?.verificationContext)
-      ? metaData?.verificationContext
-      : null
+    metaData?.verificationContext
   );
   const customFieldsSchema = useUserCustomFieldsSchema();
 

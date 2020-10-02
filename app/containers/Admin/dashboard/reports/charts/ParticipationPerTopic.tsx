@@ -119,7 +119,6 @@ interface Props extends InputProps, DataProps, InjectedLocalized {}
 const ParticipationPerTopic = (props: Props) => {
   const { votesByTopic, commentsByTopic, ideasByTopic, className } = props;
   const localize = useLocalize();
-
   return (
     <>
       <GraphCard className={className}>

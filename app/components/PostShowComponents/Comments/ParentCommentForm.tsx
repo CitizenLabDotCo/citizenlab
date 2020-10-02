@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,10 +33,11 @@ import { commentAdded } from './events';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { media } from 'utils/styleUtils';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
+const Container = styled.div``;
 
 const CommentContainer = styled.div`
   padding-top: 20px;
@@ -89,6 +90,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
@@ -148,9 +150,7 @@ class ParentCommentForm extends PureComponent<
     this.setState({ focused: false });
   };
 
-  onSubmit = async (event: MouseEvent<any>) => {
-    event.preventDefault();
-
+  onSubmit = async () => {
     const { locale, authUser, postId, postType, post } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
@@ -188,7 +188,14 @@ class ParentCommentForm extends PureComponent<
             projectId,
             authUser.id,
             commentBodyMultiloc
-          );
+          ).then((comment) => {
+            const parentComment = document.getElementById(comment.data.id);
+            if (parentComment) {
+              setTimeout(() => {
+                parentComment.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }
+          });
         }
 
         if (postType === 'initiative') {
@@ -196,7 +203,14 @@ class ParentCommentForm extends PureComponent<
             postId,
             authUser.id,
             commentBodyMultiloc
-          );
+          ).then((comment) => {
+            const parentComment = document.getElementById(comment.data.id);
+            if (parentComment) {
+              setTimeout(() => {
+                parentComment.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }
+          });
         }
 
         commentAdded();
@@ -221,13 +235,17 @@ class ParentCommentForm extends PureComponent<
       postType,
       className,
       intl: { formatMessage },
+      commentingPermissionInitiative,
     } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
-    const commentingEnabled = get(
-      post,
-      'attributes.action_descriptor.commenting.enabled',
-      true
-    );
+    const commentingEnabled =
+      postType === 'initiative'
+        ? commentingPermissionInitiative?.enabled === true
+        : get(
+            post,
+            'attributes.action_descriptor.commenting_idea.enabled',
+            true
+          );
     const projectId: string | null = get(
       post,
       'relationships.project.data.id',
@@ -240,6 +258,7 @@ class ParentCommentForm extends PureComponent<
     const placeholder = formatMessage(
       messages[`${postType}CommentBodyPlaceholder`]
     );
+    const hasAuthUserId = !!authUser?.id;
 
     return (
       <Container className={className}>
@@ -250,13 +269,13 @@ class ParentCommentForm extends PureComponent<
             <AuthorWrapper>
               <StyledAuthor
                 authorId={authUser.id}
-                notALink={authUser.id ? false : true}
+                isLinkToProfile={hasAuthUserId}
                 size="32px"
                 showModeration={isModerator}
               />
             </AuthorWrapper>
 
-            <Form onSubmit={this.onSubmit}>
+            <Form>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
                   <FormattedMessage {...messages.yourComment} />
@@ -267,7 +286,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={5}
+                  rows={1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
@@ -308,6 +327,9 @@ const Data = adopt<DataProps, InputProps>({
     <GetPost id={postId} type={postType}>
       {render}
     </GetPost>
+  ),
+  commentingPermissionInitiative: (
+    <GetInitiativesPermissions action="commenting_initiative" />
   ),
 });
 
