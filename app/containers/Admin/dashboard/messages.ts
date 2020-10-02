@@ -379,6 +379,6 @@ export default defineMessages({
   },
   noPhase: {
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
-    defaultMessage: 'N phase onfigures in this project',
+    defaultMessage: 'No phase created for this project',
   },
 });
