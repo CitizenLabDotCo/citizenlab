@@ -391,7 +391,7 @@ class LineBarChart extends React.PureComponent<
                   yAxisId="barValue"
                   barSize={20}
                   fill={chartFill}
-                  fillOpacity={0.5}
+                  fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
                     period: this.props.resolution,
                   })}
