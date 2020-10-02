@@ -11,6 +11,8 @@ import { media } from 'utils/styleUtils';
 import MetaInformation from '../MetaInformation';
 import VotingCTABox from '../CTABox/VotingCTABox';
 import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import MobileSharingButtonComponent from '../Buttons/MobileSharingButtonComponent';
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +30,10 @@ const Container = styled.div`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
+`;
+
+const StyledIdeaSharingButton = styled(IdeaSharingButton)`
+  margin-bottom: 23px;
 `;
 
 const StyledVotingCTABox = styled(VotingCTABox)`
@@ -88,6 +94,12 @@ const RightColumnDesktop = ({
         statusId={statusId}
         authorId={authorId}
       />
+      {!showVoteControl && !showBudgetControl && (
+        <StyledIdeaSharingButton
+          ideaId={ideaId}
+          buttonComponent={<MobileSharingButtonComponent />}
+        />
+      )}
     </Container>
   );
 };
