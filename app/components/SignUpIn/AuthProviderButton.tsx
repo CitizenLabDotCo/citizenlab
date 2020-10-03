@@ -175,9 +175,6 @@ const AuthProviderButton = memo<Props>(
           fullWidth={true}
           justify="left"
           whiteSpace="wrap"
-          textColor={colors.text}
-          borderColor="transparent"
-          borderHoverColor="transparent"
           onClick={handleExpandButtonClicked}
         >
           {children}

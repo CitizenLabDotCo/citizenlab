@@ -63,6 +63,7 @@ import GetIdeaCustomFieldsSchemas, {
 } from 'resources/GetIdeaCustomFieldsSchemas';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -286,10 +287,11 @@ interface DataProps {
   postOfficialFeedbackPermission: GetPermissionChildProps;
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
   tenant: GetTenantChildProps;
+  comments: GetCommentsChildProps;
 }
 
 interface InputProps {
-  ideaId: string | null;
+  ideaId: string;
   projectId: string;
   className?: string;
 }
@@ -451,14 +453,22 @@ export class IdeasShow extends PureComponent<
 
   setLoaded = () => {
     const { loaded } = this.state;
-    const { idea, ideaImages, project, officialFeedbacks } = this.props;
+    const {
+      idea,
+      ideaImages,
+      project,
+      officialFeedbacks,
+      comments,
+    } = this.props;
 
     if (
       !loaded &&
       !isNilOrError(idea) &&
       !isUndefined(ideaImages) &&
       !isNilOrError(project) &&
-      !isUndefined(officialFeedbacks.officialFeedbacksList)
+      !isUndefined(officialFeedbacks.officialFeedbacksList) &&
+      !isNilOrError(comments) &&
+      !isUndefined(comments.commentsList)
     ) {
       this.setState({ loaded: true });
     }
@@ -760,6 +770,11 @@ const Data = adopt<DataProps, InputProps>({
       </GetIdeaCustomFieldsSchemas>
     );
   },
+  comments: ({ ideaId, render }) => (
+    <GetComments postId={ideaId} postType="idea">
+      {render}
+    </GetComments>
+  ),
 });
 
 export default (inputProps: InputProps) => (
