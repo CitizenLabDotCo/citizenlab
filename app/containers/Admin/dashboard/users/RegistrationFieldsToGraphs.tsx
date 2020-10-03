@@ -26,6 +26,7 @@ import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
 import AreaChart from './charts/AreaChart';
 import GenderChart from './charts/GenderChart';
+import AgeChart from './charts/AgeChart';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
@@ -48,18 +49,33 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       series: { users },
       options,
     } = data;
-    const res = map(users, (value, key) => {
+    const res = map(options, (value, key) => {
       return {
-        value,
-        name:
-          options && options[key]
-            ? this.props.localize(options[key].title_multiloc)
-            : key === '_blank'
-            ? this.props.intl.formatMessage(messages[key])
-            : key,
+        value: users[key] || 0,
+        name: this.props.localize(value.title_multiloc),
         code: key,
       };
     });
+
+    if (users['_blank']) {
+      res.push({
+        value: users['_blank'],
+        name: this.props.intl.formatMessage(messages._blank),
+        code: '_blank',
+      });
+    }
+
+    return res.length > 0 ? res : null;
+  };
+  convertCheckboxToGraphFormat = (data: IUsersByRegistrationField) => {
+    const {
+      series: { users },
+    } = data;
+    const res = ['_blank', 'true', 'false'].map((key) => ({
+      value: users[key] || 0,
+      name: this.props.intl.formatMessage(messages[key]),
+      code: 'key',
+    }));
 
     return res.length > 0 ? res : null;
   };
@@ -79,31 +95,45 @@ export class RegistrationFieldsToGraphs extends PureComponent<
     }
 
     return customFields.map((field, index) => {
-      if (field.attributes.code === 'gender') {
-        return (
-          <GenderChart
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-          />
-        );
-      }
-
-      if (field.attributes.code === 'domicile') {
-        return (
-          <AreaChart
-            key={index}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            currentGroupFilterLabel={currentGroupFilterLabel}
-          />
-        );
-      }
-
       if (field.attributes.enabled) {
+        if (field.attributes.code === 'birthyear') {
+          return (
+            <AgeChart
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
+          );
+        }
+        if (field.attributes.input_type === 'number') {
+          return;
+        }
+        if (field.attributes.code === 'gender') {
+          return (
+            <GenderChart
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
+          );
+        }
+
+        if (field.attributes.code === 'domicile') {
+          return (
+            <AreaChart
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              currentGroupFilterLabel={currentGroupFilterLabel}
+            />
+          );
+        }
+
         if (field.attributes.input_type === 'checkbox') {
           return (
             <PieChartByCategory
@@ -112,7 +142,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
               currentGroupFilterLabel={currentGroupFilterLabel}
-              convertToGraphFormat={this.convertToGraphFormat}
+              convertToGraphFormat={this.convertCheckboxToGraphFormat}
               graphTitleString={localize(field.attributes.title_multiloc)}
               stream={usersByRegFieldStream}
               graphUnit="users"
@@ -149,7 +179,9 @@ const RegistrationFieldsToGraphsWithHoCs = localize<Props>(
 ) as any;
 
 export default (inputProps: InputProps) => (
-  <GetUserCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>
+  <GetUserCustomFields
+    inputTypes={['select', 'multiselect', 'checkbox', 'number']}
+  >
     {(customFields) => (
       <RegistrationFieldsToGraphsWithHoCs
         {...inputProps}

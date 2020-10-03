@@ -2,23 +2,16 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
-import { ThemeProvider } from 'styled-components';
 
 // components
-import {
-  chartTheme,
-  GraphsContainer,
-  ControlBar,
-  Column,
-  IResolution,
-} from '../';
+import { GraphsContainer, ControlBar, Column, IResolution } from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
-import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
-import LineChartVotesByTime from './charts/LineChartVotesByTime';
+import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 
 // typings
@@ -46,13 +39,16 @@ import { ITopicData } from 'services/topics';
 import {
   usersByTimeCumulativeStream,
   activeUsersByTimeStream,
+  usersByTimeStream,
+  commentsByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
-  usersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeXlsxEndpoint,
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
+  ideasByTimeStream,
 } from 'services/stats';
+import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 
@@ -310,6 +306,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groupFilterOptions,
       topicFilterOptions,
     } = this.state;
+
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
 
@@ -335,13 +332,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               onChange={this.handleChangeResolution}
             />
           </ControlBar>
-
           <ChartFilters
-            configuration={{
-              showProjectFilter: true,
-              showGroupFilter: true,
-              showTopicFilter: true,
-            }}
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
@@ -352,81 +343,90 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             onGroupFilter={this.handleOnGroupFilter}
             onTopicFilter={this.handleOnTopicFilter}
           />
-
-          <ThemeProvider theme={chartTheme}>
-            <GraphsContainer>
-              <CumulativeAreaChart
-                graphTitleMessageKey="usersByTimeTitle"
-                xlsxEndpoint={usersByTimeCumulativeXlsxEndpoint}
-                graphUnit="users"
+          <GraphsContainer>
+            <LineBarChart
+              graphUnit="users"
+              graphUnitMessageKey="users"
+              graphTitle={formatMessage(messages.usersByTimeTitle)}
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+              lineStream={usersByTimeCumulativeStream}
+              barStream={usersByTimeStream}
+              className="e2e-active-users-chart"
+              {...this.state}
+            />
+            <BarChartActiveUsersByTime
+              graphUnit="users"
+              graphUnitMessageKey="activeUsers"
+              graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+              stream={activeUsersByTimeStream}
+              infoMessage={infoMessage}
+              className="e2e-active-users-chart"
+              {...this.state}
+            />
+            <LineBarChart
+              graphTitle={formatMessage(messages.ideasByTimeTitle)}
+              graphUnit="ideas"
+              graphUnitMessageKey="ideas"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
+              className="e2e-ideas-chart"
+              lineStream={ideasByTimeCumulativeStream}
+              barStream={ideasByTimeStream}
+              {...this.state}
+            />
+            <LineBarChart
+              graphTitle={formatMessage(messages.commentsByTimeTitle)}
+              graphUnit="comments"
+              graphUnitMessageKey="comments"
+              startAt={startAt}
+              endAt={endAt}
+              xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
+              className="e2e-comments-chart"
+              lineStream={commentsByTimeCumulativeStream}
+              barStream={commentsByTimeStream}
+              {...this.state}
+            />
+            <Column>
+              <LineBarChartVotesByTime
+                className="fullWidth e2e-votes-chart"
                 startAt={startAt}
                 endAt={endAt}
-                stream={usersByTimeCumulativeStream}
-                className="e2e-users-by-time-cumulative-chart"
                 {...this.state}
               />
-              <BarChartActiveUsersByTime
-                graphUnit="users"
-                graphUnitMessageKey="activeUsers"
-                graphTitleMessageKey="activeUsersByTimeTitle"
+              <SelectableResourceByProjectChart
+                className="dynamicHeight fullWidth e2e-resource-by-project-chart"
+                onResourceByProjectChange={this.onResourceByProjectChange}
+                resourceOptions={this.resourceOptions}
+                projectOptions={projectFilterOptions}
                 startAt={startAt}
                 endAt={endAt}
-                xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-                stream={activeUsersByTimeStream}
-                infoMessage={infoMessage}
-                className="e2e-active-users-chart"
                 {...this.state}
               />
-              <CumulativeAreaChart
-                graphTitleMessageKey="ideasByTimeTitle"
-                graphUnit="ideas"
+            </Column>
+            <Column>
+              <IdeasByStatusChart
+                className="fullWidth dynamicHeight"
                 startAt={startAt}
                 endAt={endAt}
-                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                stream={ideasByTimeCumulativeStream}
-                className="e2e-ideas-chart"
                 {...this.state}
               />
-              <CumulativeAreaChart
-                graphTitleMessageKey="commentsByTimeTitle"
-                graphUnit="comments"
+              <SelectableResourceByTopicChart
+                className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
+                topicOptions={topicFilterOptions}
+                onResourceByTopicChange={this.onResourceByTopicChange}
+                resourceOptions={this.resourceOptions}
                 startAt={startAt}
                 endAt={endAt}
-                stream={commentsByTimeCumulativeStream}
-                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-                className="e2e-comments-chart"
                 {...this.state}
               />
-              <Column>
-                <LineChartVotesByTime
-                  className="fullWidth e2e-votes-chart"
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-                <SelectableResourceByProjectChart
-                  className="dynamicHeight fullWidth e2e-resource-by-project-chart"
-                  onResourceByProjectChange={this.onResourceByProjectChange}
-                  resourceOptions={this.resourceOptions}
-                  projectOptions={projectFilterOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-              <Column>
-                <SelectableResourceByTopicChart
-                  className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
-                  topicOptions={topicFilterOptions}
-                  onResourceByTopicChange={this.onResourceByTopicChange}
-                  resourceOptions={this.resourceOptions}
-                  startAt={startAt}
-                  endAt={endAt}
-                  {...this.state}
-                />
-              </Column>
-            </GraphsContainer>
-          </ThemeProvider>
+            </Column>
+          </GraphsContainer>
         </>
       );
     }

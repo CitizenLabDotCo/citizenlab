@@ -8,14 +8,14 @@ Array [
     "value": 1,
   },
   Object {
-    "code": "no",
-    "name": "No",
-    "value": 7,
-  },
-  Object {
     "code": "retired_politician",
     "name": "Retired politician",
     "value": 2,
+  },
+  Object {
+    "code": "no",
+    "name": "No",
+    "value": 7,
   },
   Object {
     "code": "_blank",
