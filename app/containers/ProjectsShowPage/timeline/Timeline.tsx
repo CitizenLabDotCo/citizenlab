@@ -535,14 +535,9 @@ class Timeline extends PureComponent<
                         iconSize="12px"
                         iconColor={colors.label}
                         buttonStyle="white"
-                        textColor={colors.label}
                         width={navButtonSize}
                         height={navButtonSize}
                         padding="0px"
-                        borderColor="transparent"
-                        borderHoverColor="transparent"
-                        boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
-                        boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                         disabled={selectedPhaseId === phases.data[0].id}
                         ariaLabel={formatMessage(messages.previousPhase)}
                         className="e2e-previous-phase"
@@ -570,10 +565,6 @@ class Timeline extends PureComponent<
                           width={navButtonSize}
                           height={navButtonSize}
                           padding="0px"
-                          borderColor="transparent"
-                          borderHoverColor="transparent"
-                          boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
-                          boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.1)"
                           disabled={selectedPhaseId === currentPhaseId}
                           ariaLabel={formatMessage(messages.currentPhase)}
                           className="e2e-current-phase"
@@ -603,10 +594,6 @@ class Timeline extends PureComponent<
                         width={navButtonSize}
                         height={navButtonSize}
                         padding="0px"
-                        borderColor="transparent"
-                        borderHoverColor="transparent"
-                        boxShadow="0px 2px 2px 0px rgba(0, 0, 0, 0.06)"
-                        boxShadowHover="0px 2px 2px 0px rgba(0, 0, 0, 0.15)"
                         disabled={
                           selectedPhaseId ===
                           phases.data[phases.data.length - 1].id
