@@ -98,7 +98,7 @@ const InnerContainer = styled.div`
   align-items: stretch;
 
   ${media.smallerThanMaxTablet`
-    padding-top: 0px;
+    padding-top: ${(props) => props.theme.menuHeight}px;
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);

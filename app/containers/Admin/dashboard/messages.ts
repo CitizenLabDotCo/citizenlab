@@ -15,6 +15,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
+  tabReports: {
+    id: 'app.containers.AdminPage.DashboardPage.tabReports',
+    defaultMessage: 'Reports',
+  },
   tabInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tabInsights',
     defaultMessage: 'Insights',
@@ -47,6 +51,10 @@ export default defineMessages({
   ideaVotes: {
     id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
     defaultMessage: 'Votes on ideas',
+  },
+  fiveIdeasWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes',
+    defaultMessage: '5 Ideas With Most Votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -140,6 +148,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
     defaultMessage: 'Ideas',
   },
+  ideasByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideasByStatusTitle',
+    defaultMessage: 'Ideas By Status',
+  },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
@@ -159,6 +171,22 @@ export default defineMessages({
   numberOfVotesTotal: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
     defaultMessage: 'Total votes',
+  },
+  cumulatedTotal: {
+    id: 'app.containers.AdminPage.DashboardPage.cumulatedTotal',
+    defaultMessage: 'Cumulated Total',
+  },
+  total: {
+    id: 'app.containers.AdminPage.DashboardPage.total',
+    defaultMessage: 'Total',
+  },
+  totalForPeriod: {
+    id: 'app.containers.AdminPage.DashboardPage.totalForPeriod',
+    defaultMessage: 'This {period}',
+  },
+  perPeriod: {
+    id: 'app.containers.AdminPage.DashboardPage.perPeriod',
+    defaultMessage: 'Per {period}',
   },
   participationPerProject: {
     id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
@@ -222,6 +250,14 @@ export default defineMessages({
   _blank: {
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
+  },
+  true: {
+    id: 'app.containers.AdminPage.DashboardPage.true',
+    defaultMessage: 'true',
+  },
+  false: {
+    id: 'app.containers.AdminPage.DashboardPage.false',
+    defaultMessage: 'false',
   },
   outsideArea: {
     id: 'app.containers.AdminPage.DashboardPage.outsideArea',
@@ -299,5 +335,50 @@ export default defineMessages({
     id:
       'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter',
     defaultMessage: 'topic',
+  },
+  participants: {
+    id: 'app.containers.AdminPage.DashboardPage.Report.participants',
+    defaultMessage: 'participants',
+  },
+  totalUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
+    defaultMessage: 'total users on the platform',
+  },
+  // Report
+  selectAProject: {
+    id: 'app.containers.Dashboards.ReportsTab.selectAProject',
+    defaultMessage: 'What project are you interested in ?',
+  },
+  sectionWho: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWho',
+    defaultMessage: 'Who participated ?',
+  },
+  sectionWhat: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWhat',
+    defaultMessage: 'What ?',
+  },
+  participantsOverTimeTitle: {
+    id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
+    defaultMessage: 'Participants',
+  },
+  timelineType: {
+    id: 'app.containers.AdminPage.DashboardPage.timelineType',
+    defaultMessage: 'Timeline',
+  },
+  continuousType: {
+    id: 'app.containers.AdminPage.DashboardPage.continuousType',
+    defaultMessage: 'Continuous',
+  },
+  projectType: {
+    id: 'app.containers.AdminPage.DashboardPage.projectType',
+    defaultMessage: 'Project type : {projectType}',
+  },
+  fromTo: {
+    id: 'app.containers.AdminPage.DashboardPage.fromTo',
+    defaultMessage: 'from {from} to {to}',
+  },
+  noPhase: {
+    id: 'app.containers.AdminPage.DashboardPage.noPhase',
+    defaultMessage: 'No phase created for this project',
   },
 });
