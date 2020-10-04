@@ -29,7 +29,8 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
   ) {
     return (
       <Container
-        className={`e2e-timeline-project-poll-container ${className || ''}`}
+        id="e2e-timeline-project-poll-container"
+        className={className || ''}
       >
         <Poll phaseId={phaseId} projectId={projectId} type="phase" />
       </Container>

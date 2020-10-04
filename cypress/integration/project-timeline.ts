@@ -74,8 +74,6 @@ describe('Project timeline page', () => {
   });
 
   it('shows the current phase', () => {
-    // shows the timeline tab with active state
-    cy.get('.e2e-project-process-link').should('have.class', 'active');
     // shows the current phase's title
     cy.get('.selected.present').contains(phaseCurrentTitle);
     // shows the current phase in the timeline as active, with its title

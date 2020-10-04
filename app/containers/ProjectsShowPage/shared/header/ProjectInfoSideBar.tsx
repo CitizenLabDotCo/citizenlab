@@ -366,7 +366,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 </ListItem>
               )}
               {process_type === 'timeline' && firstPhase && lastPhase && (
-                <ListItem>
+                <ListItem id="e2e-project-sidebar-startdate-enddate">
                   <ListItemIcon ariaHidden name="finish_flag" />
                   <ListItemInnerWrapper>
                     <FormattedMessage
@@ -393,7 +393,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               {process_type === 'timeline' &&
                 !isNilOrError(phases) &&
                 phases.length > 1 && (
-                  <ListItem>
+                  <ListItem id="e2e-project-sidebar-phases-count">
                     <ListItemIcon
                       ariaHidden
                       name="timeline"
@@ -410,7 +410,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItem>
                 )}
               {isNumber(avatars_count) && avatars_count > 0 && (
-                <ListItem id="e2e-project-sidebar-participantcount">
+                <ListItem id="e2e-project-sidebar-participants-count">
                   <ListItemIcon ariaHidden name="person" />
                   <FormattedMessage
                     {...messages.xParticipants}
@@ -425,7 +425,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <ListItemIcon ariaHidden name="idea-filled" />
                     {project.attributes.ideas_count > 0 ? (
                       <ListItemButton
-                        id="e2e-project-sidebar-ideacount"
+                        id="e2e-project-sidebar-ideas-count"
                         onClick={scrollTo('project-ideas')}
                       >
                         <FormattedMessage

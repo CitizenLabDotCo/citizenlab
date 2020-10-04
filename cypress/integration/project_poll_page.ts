@@ -41,18 +41,18 @@ describe('Continuous project with poll', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}/poll`);
+    cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.wait(2000);
   });
 
   it('shows the poll', () => {
-    cy.get('.e2e-continuous-project-poll-container');
+    cy.get('#e2e-continuous-project-poll-container');
     cy.get('.e2e-poll-form');
   });
 
   it('lets user answer it', () => {
-    cy.get('.e2e-continuous-project-poll-container')
+    cy.get('#e2e-continuous-project-poll-container')
       .get('.e2e-poll-question')
       .each((question) => question.find('.e2e-poll-option').first().click());
     cy.get('.e2e-send-poll').click();
@@ -122,19 +122,19 @@ describe('Timeline project with poll phase', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}/process`);
+    cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.wait(2000);
   });
 
   it('shows the poll', () => {
-    cy.get('.e2e-timeline-project-poll-container');
+    cy.get('#e2e-timeline-project-poll-container');
     cy.get('.e2e-poll-form');
   });
 
   it('lets user answer it', () => {
     cy.wait(100);
-    cy.get('.e2e-timeline-project-poll-container')
+    cy.get('#e2e-timeline-project-poll-container')
       .get('.e2e-poll-question')
       .each((question) => question.find('.e2e-poll-option').first().click());
     cy.wait(500);

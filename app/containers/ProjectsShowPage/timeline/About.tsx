@@ -64,7 +64,7 @@ const About = memo<Props & InjectedLocalized>(
 
     if (!contentIsEmpty || !isEmpty(phaseFiles)) {
       return (
-        <Container className={className}>
+        <Container className={`e2e-phase-description ${className || ''}`}>
           <AboutHeader projectId={projectId} selectedPhaseId={phaseId} />
           <ScreenReaderOnly>
             <FormattedMessage

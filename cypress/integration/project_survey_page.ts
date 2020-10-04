@@ -24,7 +24,8 @@ describe('Continuous project with survey', () => {
   });
 
   beforeEach(() => {
-    cy.visit(`/projects/${projectSlug}/survey`);
+    cy.setAdminLoginCookie();
+    cy.visit(`/projects/${projectSlug}`);
     cy.wait(1000);
   });
 
@@ -80,7 +81,8 @@ describe('Timeline project with survey phase', () => {
   });
 
   beforeEach(() => {
-    cy.visit(`/projects/${projectSlug}/process`);
+    cy.setAdminLoginCookie();
+    cy.visit(`/projects/${projectSlug}`);
     cy.wait(1000);
   });
 

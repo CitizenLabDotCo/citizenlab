@@ -47,7 +47,10 @@ class IdeasContainer extends PureComponent<Props, State> {
         participationMethod === 'budgeting'
       ) {
         return (
-          <Container id="project-ideas" className={className || ''}>
+          <Container
+            id="project-ideas"
+            className={`e2e-timeline-project-idea-cards ${className || ''}`}
+          >
             <ProjectPageSectionTitle>
               <FormattedMessage {...messages.ideas} />
             </ProjectPageSectionTitle>
