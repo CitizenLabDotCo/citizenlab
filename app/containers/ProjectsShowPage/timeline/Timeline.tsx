@@ -507,7 +507,7 @@ class Timeline extends PureComponent<
       return (
         <Container
           id="project-timeline"
-          className={className}
+          className={className || ''}
           isHidden={phases.data.length === 1}
         >
           <ContentContainer>
@@ -517,7 +517,7 @@ class Timeline extends PureComponent<
                   <FormattedMessage {...messages.timeline} />
                 </StyledProjectPageSectionTitle>
 
-                <PhaseNavigation>
+                <PhaseNavigation className="e2e-timeline-phase-navigation">
                   <Tippy
                     disabled={selectedPhaseId === phases.data[0].id}
                     interactive={false}

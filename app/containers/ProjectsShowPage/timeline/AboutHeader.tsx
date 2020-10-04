@@ -199,7 +199,9 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
         <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
           <HeaderTitle
             aria-hidden
-            className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
+            className={`e2e-phase-title ${
+              isSelected && 'selected'
+            } ${selectedPhaseStatus}`}
           >
             {selectedPhaseTitle || (
               <FormattedMessage {...messages.noPhaseSelected} />
