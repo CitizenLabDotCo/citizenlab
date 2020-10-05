@@ -170,7 +170,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
                 <FormattedMessage {...messages.downloadSvg} />
               </Button>
             )}
-            {downloadXlsx && (
+            {xlsxEndpoint && (
               <Button
                 onClick={downloadXlsx}
                 buttonStyle="text"
