@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
-  background-color: #edeff0; // TODO: add color to component library
+  background-color: #edeff0;
   border-radius: 2px;
   padding: 25px 15px;
 `;
