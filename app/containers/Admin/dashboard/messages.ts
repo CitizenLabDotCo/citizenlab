@@ -405,4 +405,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ReportsTab.volunteering',
     defaultMessage: 'volunteering',
   },
+  customFieldTitleExport: {
+    id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
+    defaultMessage: '{fieldName}_repartition',
+  },
 });
