@@ -70,8 +70,7 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
 
   &.citizenPage {
     ${media.smallerThanMaxTablet`
-      position: relative;
-      top: auto;
+      position: absolute;
     `}
   }
 

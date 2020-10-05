@@ -1,7 +1,14 @@
-import { randomString } from '../support/commands';
+import { randomString, randomEmail } from '../support/commands';
 
 describe('Existing continuous ideation project', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
   before(() => {
+    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiLogin(email, password);
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.get('#e2e-project-page');
     cy.wait(1000);
@@ -51,6 +58,13 @@ describe('Existing continuous ideation project', () => {
       cy.url().should('eq', href);
     });
   });
+
+  it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
+    cy.setLoginCookie(email, password);
+    cy.visit('/projects/an-idea-bring-it-to-your-council');
+    cy.get('#project-ideabutton').click();
+    cy.get('#idea-form');
+  });
 });
 
 describe('Existing timeline project with ended ideation phase', () => {
@@ -77,6 +91,10 @@ describe('Existing timeline project with ended ideation phase', () => {
 });
 
 describe('New timeline project with active ideation phase', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString(30);
   const ideaTitle = randomString();
@@ -85,13 +103,19 @@ describe('New timeline project with active ideation phase', () => {
   let ideaId: string;
 
   before(() => {
-    cy.apiCreateProject({
-      type: 'timeline',
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: randomString(),
-      publicationStatus: 'published',
-    })
+    cy.apiSignup(firstName, lastName, email, password)
+      .then(() => {
+        cy.apiLogin(email, password);
+      })
+      .then(() => {
+        return cy.apiCreateProject({
+          type: 'timeline',
+          title: projectTitle,
+          descriptionPreview: projectDescriptionPreview,
+          description: randomString(),
+          publicationStatus: 'published',
+        });
+      })
       .then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreatePhase(
@@ -134,19 +158,28 @@ describe('New timeline project with active ideation phase', () => {
     cy.get('#e2e-project-sidebar-share-button');
   });
 
+  it('shows the see-the-ideas button', () => {
+    cy.get('#e2e-project-see-ideas-button');
+  });
+
+  it('shows the post-your-idea button and authentication modal when you click on it', () => {
+    cy.get('#project-ideabutton').click();
+    cy.get('#e2e-sign-up-in-modal');
+    cy.get('#e2e-sign-up-container');
+    cy.get('.e2e-modal-close-button').click();
+  });
+
   it('shows the idea cards', () => {
     cy.get('.e2e-timeline-project-idea-cards');
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card');
   });
 
-  it('shows the see-the-ideas button', () => {
-    cy.get('#e2e-project-see-ideas-button');
-  });
-
-  it('shows the post-your-idea button', () => {
-    cy.get('#project-ideabutton');
-    cy.get('.e2e-idea-button');
+  it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
+    cy.setLoginCookie(email, password);
+    cy.visit(`/projects/${projectTitle}`);
+    cy.get('#project-ideabutton').click();
+    cy.get('#idea-form');
   });
 
   after(() => {
