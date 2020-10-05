@@ -19,10 +19,13 @@ describe SmartGroupRules::Role do
   describe "validations" do
     it "successfully validate the valid rule" do
       expect(valid_rule).to be_valid
+      expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
 
     it "fails on a non-existing predicate" do
-      expect(valid_rule.tap{|r| r.predicate='has_long_toes'}).to be_invalid
+      json_rule = valid_json_rule.tap{|r| r['predicate']='has_long_toes'}
+      expect(SmartGroupRules::Role.from_json(json_rule)).to be_invalid
+      expect(build(:smart_group, rules: [json_rule])).to be_invalid
     end
   end
 
