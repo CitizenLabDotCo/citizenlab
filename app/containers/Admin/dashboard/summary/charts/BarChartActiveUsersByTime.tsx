@@ -63,7 +63,7 @@ type Props = {
   className?: string;
   graphUnit: IGraphUnit;
   graphUnitMessageKey: string;
-  graphTitleMessageKey: string;
+  graphTitle: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
@@ -211,21 +211,15 @@ class BarChartActiveUsersByTime extends React.PureComponent<
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
-    const {
-      className,
-      graphTitleMessageKey,
-      graphUnitMessageKey,
-      infoMessage,
-    } = this.props;
+    const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
     const {
-      chartFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
       animationBegin,
       animationDuration,
+      newBarFill,
     } = this.props['theme'];
 
     const noData =
@@ -236,7 +230,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {graphTitle}
               {infoMessage && (
                 <Popup
                   basic
@@ -253,7 +247,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             {!noData && (
               <ExportMenu
                 svgNode={this.currentChart}
-                name={formatMessage(messages[graphTitleMessageKey])}
+                name={graphTitle}
                 {...this.props}
               />
             )}
@@ -267,10 +261,11 @@ class BarChartActiveUsersByTime extends React.PureComponent<
               <BarChart data={serie} ref={this.currentChart}>
                 <Bar
                   dataKey="value"
-                  name={formatMessage(messages[graphUnitMessageKey])}
-                  fill={chartFill}
+                  name={graphTitle}
+                  fill={newBarFill}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"

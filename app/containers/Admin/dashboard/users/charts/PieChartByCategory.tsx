@@ -61,7 +61,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const labelColors = ['#5D99C6 ', '#C37281 ', '#B0CDC4 ', '#C0C2CE'];
+const labelColors = ['#C37281 ', '#5D99C6', '#B0CDC4 ', '#C0C2CE'];
 
 class PieChartByCategory extends React.PureComponent<
   Props & InjectedIntlProps
@@ -72,14 +72,14 @@ class PieChartByCategory extends React.PureComponent<
     super(props as any);
     this.currentChart = React.createRef();
   }
+
+  formatEntry = (entry) => {
+    return `${entry.name} : ${entry.value}`;
+  };
   render() {
-    const {
-      colorMain,
-      animationBegin,
-      animationDuration,
-      chartLabelSize,
-      chartLabelColor,
-    } = this.props['theme'];
+    const { colorMain, animationBegin, animationDuration } = this.props[
+      'theme'
+    ];
     const {
       className,
       graphTitleString,
@@ -113,14 +113,14 @@ class PieChartByCategory extends React.PureComponent<
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
                   <Pie
-                    isAnimationActive={true}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
+                    isAnimationActive={true}
                     data={serie}
                     dataKey="value"
                     innerRadius={60}
                     fill={colorMain}
-                    label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
+                    label={this.formatEntry}
                     ref={this.currentChart}
                   >
                     {serie.map((_, index) => (
