@@ -15,13 +15,14 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  text-decoration: underline;
   transition: all 100ms ease-out;
 `;
 
 const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.secondaryText};
+  fill: ${colors.label};
   width: 22px;
   height: 22px;
   transition: all 100ms ease-out;
