@@ -44,7 +44,6 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 
 const StyledIdeasShow = styled(IdeasShow)`
   background: #fff;
-  margin-top: ${(props) => props.theme.mobileTopBarHeight}px;
 
   ${media.biggerThanMaxTablet`
     margin-top: 0px;
