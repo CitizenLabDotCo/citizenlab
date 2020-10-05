@@ -49,6 +49,7 @@ const UpvoteButton = styled.button`
   justify-content: center;
   background: transparent;
   margin: 0;
+  margin-top: -2px;
   padding: 0;
   border: none;
   cursor: pointer;
@@ -104,10 +105,6 @@ const UpvoteLabel = styled.button`
   margin: 0;
   margin-left: 12px;
   border: none;
-`;
-
-const UpvoteButtonWrapper = styled.div`
-  margin-top: -2px;
 `;
 
 const Container = styled.div`
@@ -344,7 +341,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     if (!isNilOrError(comment)) {
       return (
         <Container className={className}>
-          <UpvoteButtonWrapper>
+          {!(disabled && upvoteCount === 0) && (
             <UpvoteButton
               onClick={this.onVote}
               disabled={disabled}
@@ -367,13 +364,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 }
               />
             </UpvoteButton>
-          </UpvoteButtonWrapper>
-
-          <LiveMessage
-            message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })}
-            aria-live="polite"
-          />
-
+          )}
           {upvoteCount > 0 && (
             <UpvoteCount className={disabled ? 'disabled' : 'enabled'}>
               {upvoteCount}
@@ -398,6 +389,11 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
               </ScreenReaderOnly>
             </UpvoteLabel>
           )}
+
+          <LiveMessage
+            message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })}
+            aria-live="polite"
+          />
         </Container>
       );
     }
