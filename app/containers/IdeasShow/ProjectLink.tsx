@@ -1,59 +1,51 @@
-import React, { memo } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
+import React, { memo, useCallback, FormEvent } from 'react';
+import clHistory from 'utils/cl-router/history';
+import { Button } from 'cl2-component-library';
 import useProject from 'hooks/useProject';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
-import { darken } from 'polished';
+import eventEmitter from 'utils/eventEmitter';
 
 interface Props {
   projectId: string;
   className?: string;
+  insideModal: boolean;
 }
 
-const StyledIcon = styled(Icon)`
-  fill: ${colors.label};
-  margin-right: 10px;
-  width: 26px;
-  height: 26px;
-`;
-
-const StyledLink = styled(Link)`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-
-  &:hover {
-    color: ${darken(0.1, colors.label)};
-    text-decoration: underline;
-
-    ${StyledIcon} {
-      fill: ${darken(0.1, colors.label)};
-    }
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ProjectLink = memo(({ projectId, className }: Props) => {
+const ProjectLink = memo(({ projectId, className, insideModal }: Props) => {
   const project = useProject({ projectId });
+  const locale = useLocale();
   const localize = useLocalize();
 
-  if (!isNilOrError(project)) {
+  const onGoBack = useCallback(
+    (event: FormEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+
+      if (insideModal) {
+        eventEmitter.emit('closeIdeaModal');
+      } else {
+        clHistory.push('/');
+      }
+    },
+    [insideModal]
+  );
+
+  if (!isNilOrError(project) && !isNilOrError(locale)) {
     return (
-      <Container className={className}>
-        <StyledLink
-          id="e2e-idea-other-link"
-          to={`/projects/${project.attributes.slug}`}
-        >
-          <StyledIcon ariaHidden name="circle-arrow-left" />
-          {localize(project.attributes.title_multiloc)}
-        </StyledLink>
-      </Container>
+      <Button
+        className={className}
+        id="e2e-idea-other-link"
+        locale={locale}
+        icon="circle-arrow-left"
+        onClick={onGoBack}
+        buttonStyle="text"
+        iconSize="26px"
+        padding="0"
+        textDecorationHover="underline"
+      >
+        {localize(project.attributes.title_multiloc)}
+      </Button>
     );
   }
 

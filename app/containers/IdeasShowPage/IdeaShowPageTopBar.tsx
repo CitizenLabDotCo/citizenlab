@@ -178,7 +178,7 @@ const IdeaShowPageTopBar = memo<Props>(
           <TopBarInner>
             <Left>
               <GoBackButton onClick={onGoBack}>
-                <GoBackIcon name="arrow-back" />
+                <GoBackIcon ariaHidden name="arrow-back" />
               </GoBackButton>
               <GoBackLabel>
                 <FormattedMessage {...messages.goBack} />

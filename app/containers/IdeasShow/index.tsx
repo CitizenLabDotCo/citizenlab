@@ -293,6 +293,7 @@ interface DataProps {
 interface InputProps {
   ideaId: string | null;
   projectId: string;
+  insideModal: boolean;
   className?: string;
 }
 
@@ -497,6 +498,7 @@ export class IdeasShow extends PureComponent<
       projectId,
       ideaCustomFieldsSchemas,
       tenant,
+      insideModal,
     } = this.props;
     const {
       loaded,
@@ -554,7 +556,10 @@ export class IdeasShow extends PureComponent<
 
           <IdeaContainer>
             <TopBar>
-              <StyledProjectLink projectId={projectId} />
+              <StyledProjectLink
+                projectId={projectId}
+                insideModal={insideModal}
+              />
               <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
             </TopBar>
 
