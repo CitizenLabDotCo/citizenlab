@@ -1,6 +1,6 @@
 import { randomString } from '../support/commands';
 
-describe('Continuous ideation project', () => {
+describe('Existing continuous ideation project', () => {
   before(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.get('#e2e-project-page');
@@ -53,7 +53,7 @@ describe('Continuous ideation project', () => {
   });
 });
 
-describe('Timeline ideation project', () => {
+describe('Existing timeline project with ended ideation phase', () => {
   before(() => {
     cy.visit('/projects/timeline-ideation-card');
     cy.get('#e2e-project-page');
@@ -73,5 +73,84 @@ describe('Timeline ideation project', () => {
     cy.get('.e2e-timeline-project-idea-cards');
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card');
+  });
+});
+
+describe('New timeline project with active ideation phase', () => {
+  const projectTitle = randomString();
+  const projectDescriptionPreview = randomString(30);
+  const ideaTitle = randomString();
+  const ideaContent = Math.random().toString(36);
+  let projectId: string;
+  let ideaId: string;
+
+  before(() => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: randomString(),
+      publicationStatus: 'published',
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreatePhase(
+          projectId,
+          'phaseTitle',
+          '2018-03-01',
+          '2025-01-01',
+          'ideation',
+          true,
+          true,
+          true
+        );
+      })
+      .then(() => {
+        return cy.apiCreatePhase(
+          projectId,
+          'phaseTitle',
+          '2025-01-02',
+          '2025-01-25',
+          'ideation',
+          true,
+          true,
+          true
+        );
+      })
+      .then(() => {
+        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+      })
+      .then((idea) => {
+        ideaId = idea.body.data.id;
+        cy.visit(`/projects/${projectTitle}`);
+      });
+  });
+
+  it('shows the correct project header', () => {
+    cy.get('#e2e-project-description');
+    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-sidebar-startdate-enddate');
+    cy.get('#e2e-project-sidebar-phases-count');
+    cy.get('#e2e-project-sidebar-share-button');
+  });
+
+  it('shows the idea cards', () => {
+    cy.get('.e2e-timeline-project-idea-cards');
+    cy.get('#e2e-ideas-list');
+    cy.get('.e2e-idea-card');
+  });
+
+  it('shows the see-the-ideas button', () => {
+    cy.get('#e2e-project-see-ideas-button');
+  });
+
+  it('shows the post-your-idea button', () => {
+    cy.get('#project-ideabutton');
+    cy.get('.e2e-idea-button');
+  });
+
+  after(() => {
+    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveProject(projectId);
   });
 });
