@@ -139,7 +139,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
     }
 
     // track this click for user analytics
-    trackEventByName('Clicked export xlsx', { graph: name });
+    trackEventByName('Clicked export xlsx', { extra: { graph: name } });
   };
 
   return (
@@ -170,7 +170,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
                 <FormattedMessage {...messages.downloadSvg} />
               </Button>
             )}
-            {downloadXlsx && (
+            {xlsxEndpoint && (
               <Button
                 onClick={downloadXlsx}
                 buttonStyle="text"
