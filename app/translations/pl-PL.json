@@ -1222,6 +1222,7 @@
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Nazwa etapu",
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Etapy projektu",
   "app.containers.AdminPage.ReportsTab.budgeting": "",
+  "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "",
   "app.containers.AdminPage.ReportsTab.ideation": "",
   "app.containers.AdminPage.ReportsTab.information": "",
   "app.containers.AdminPage.ReportsTab.poll": "",
