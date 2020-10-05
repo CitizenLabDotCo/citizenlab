@@ -47,7 +47,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { darken, rgba } from 'polished';
+import { darken, rgba, transparentize } from 'polished';
 
 // typings
 import { Locale } from 'typings';
@@ -118,7 +118,7 @@ const phaseBarHeight = '24px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${(props: any) => props.theme.colorText};
+  color: ${transparentize(0.25, colors.label)};
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   display: flex;
@@ -134,8 +134,6 @@ const PhaseBar = styled.button`
   -moz-appearance: none;
 `;
 
-const PhaseBarText = styled.span``;
-
 const PhaseArrow = styled(Icon)`
   width: 20px;
   height: ${phaseBarHeight};
@@ -147,9 +145,9 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${colors.label};
+  color: ${transparentize(0.25, colors.label)};
   font-size: ${fontSizes.small}px;
-  font-weight: 500;
+  font-weight: 400;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -186,10 +184,10 @@ const selectedPhaseBar = css`
 const currentPhaseBar = css`
   ${PhaseBar} {
     background: ${greenTransparent};
-    color: ${darken(0.04, greenOpaque)};
+    color: ${transparentize(0.25, greenOpaque)};
   }
   ${PhaseText} {
-    color: ${darken(0.04, greenOpaque)};
+    color: ${transparentize(0.25, greenOpaque)};
   }
 `;
 
@@ -647,7 +645,7 @@ class Timeline extends PureComponent<
                       onClick={this.handleOnPhaseSelection(phase)}
                     >
                       <PhaseBar>
-                        <PhaseBarText aria-hidden>{phaseNumber}</PhaseBarText>
+                        <span aria-hidden>{phaseNumber}</span>
                         <ScreenReaderOnly>
                           <FormattedMessage
                             {...messages.a11y_phaseX}

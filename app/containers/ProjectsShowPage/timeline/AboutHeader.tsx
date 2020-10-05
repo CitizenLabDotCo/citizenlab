@@ -87,7 +87,7 @@ const HeaderTitle = styled.h2`
   line-height: normal;
   font-weight: 600;
   margin: 0;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   padding: 0;
   overflow-wrap: break-word;
   word-wrap: break-word;
