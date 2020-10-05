@@ -127,7 +127,6 @@ const ProjectReport = memo(
 
     const getResolution = (start, end) => {
       const timeDiff = moment.duration(end.diff(start));
-      console.log(timeDiff.asMonths());
       return timeDiff
         ? timeDiff.asMonths() > 6
           ? 'month'

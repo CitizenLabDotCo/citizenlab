@@ -105,7 +105,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
       saveAs(svgBlob, `${fileName}.svg`);
     }
 
-    trackEventByName('Clicked export svg', { graph: name });
+    trackEventByName('Clicked export svg', { extra: { graph: name } });
   };
 
   const toggleDropdown = (value?: boolean) => () => {
