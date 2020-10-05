@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import { colors, fontSizes } from 'cl2-component-library';
+import { fontSizes } from 'cl2-component-library';
 
 // components
 import Status from './Status';
