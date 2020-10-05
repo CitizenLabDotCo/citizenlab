@@ -37,8 +37,8 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_topic
     serie = ideas_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    topics = Topic.pluck :id, :title_multiloc
+    render json: {series: {ideas: serie}, topics: topics.map{|id, title_multiloc| [id, {title_multiloc: title_multiloc}]}.to_h}
   end
 
   def ideas_by_topic_as_xlsx
@@ -131,7 +131,43 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "area"
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_project.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_area.xlsx"
+  end
+
+  def ideas_by_status_serie
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+
+    ideas = apply_project_filter(ideas)
+    ideas = apply_group_filter(ideas)
+    ideas = apply_topic_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
+
+    ideas
+      .where(published_at: @start_at..@end_at)
+      .group(:idea_status_id)
+      .order(:idea_status_id)
+      .count
+  end
+
+  def ideas_by_status
+    serie = ideas_by_status_serie
+    idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
+    render json: {series: {ideas: serie}, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+  end
+
+  def ideas_by_status_as_xlsx
+    res = []
+    ideas_by_status_serie.each {|status_id, count|
+      res.push({
+        "status" => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
+        "status_id" => status_id,
+        "ideas" => count
+      })
+    }
+
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "status"
+
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_status.xlsx"
   end
 
   def ideas_by_time_serie
