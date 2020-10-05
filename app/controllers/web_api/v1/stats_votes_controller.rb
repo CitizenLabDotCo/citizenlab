@@ -120,7 +120,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def votes_by_topic
     serie = votes_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = Topic.all.select(:id, :title_multiloc)
     render json: {series: {total: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 

@@ -298,8 +298,8 @@ resource "Stats - Comments" do
         travel_to start_at + 1.day do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          topic3 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2, topic3])
+          @topic3 = create(:topic)
+          project = create(:project, topics: [@topic1, @topic2, @topic3])
           idea1 = create(:idea, topics: [@topic1], project: project)
           idea2 = create(:idea, topics: [@topic2], project: project)
           idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
@@ -319,7 +319,7 @@ resource "Stats - Comments" do
           @topic1.id => 3,
           @topic2.id => 2
         })
-        expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id]
+        expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
       end
 
     end
