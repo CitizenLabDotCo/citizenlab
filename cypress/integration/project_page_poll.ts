@@ -1,6 +1,26 @@
 import { randomString } from '../support/commands';
 
-describe('Continuous project with poll', () => {
+describe('Existing continuous project with poll', () => {
+  before(() => {
+    cy.visit('/projects/the-big-poll');
+    cy.get('#e2e-project-page');
+    cy.wait(1000);
+  });
+
+  it('shows the correct project header', () => {
+    cy.get('#e2e-project-description');
+    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-sidebar-startdate');
+    cy.get('#e2e-project-sidebar-share-button');
+  });
+
+  it('shows the poll', () => {
+    cy.get('#e2e-continuous-project-poll-container');
+    cy.get('.e2e-poll-form');
+  });
+});
+
+describe('New continuous project with poll', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -44,6 +64,13 @@ describe('Continuous project with poll', () => {
     cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.wait(2000);
+  });
+
+  it('shows the correct project header', () => {
+    cy.get('#e2e-project-description');
+    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-sidebar-startdate');
+    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the poll', () => {

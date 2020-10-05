@@ -1,6 +1,33 @@
 import { randomString } from '../support/commands';
 
-describe('Continuous project with survey', () => {
+describe('Existing continuous project with survey', () => {
+  before(() => {
+    cy.setAdminLoginCookie();
+    cy.visit('/projects/charlie-crew-survey');
+    cy.get('#e2e-project-page');
+    cy.wait(1000);
+  });
+
+  it('shows the correct project header', () => {
+    cy.get('#e2e-project-description');
+    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-sidebar-startdate');
+    cy.get('#e2e-project-sidebar-share-button');
+  });
+
+  it('shows the survey', () => {
+    cy.get('#e2e-continuous-project-survey-container');
+    cy.get('.e2e-typeform-survey');
+    cy.wait(3000);
+    cy.get('.e2e-typeform-survey iframe');
+    cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
+      const $body = $iframe.contents().find('body');
+      cy.wrap($body).find('#root').contains('Enter');
+    });
+  });
+});
+
+describe('New continuous project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -27,6 +54,13 @@ describe('Continuous project with survey', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}`);
     cy.wait(1000);
+  });
+
+  it('shows the correct project header', () => {
+    cy.get('#e2e-project-description');
+    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-sidebar-startdate');
+    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey', () => {
