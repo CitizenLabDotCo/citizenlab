@@ -16,12 +16,13 @@ describe SmartGroupRules::LivesIn do
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
 
-    it "successfully validate the valid multi-value rule" do
-      expect(valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[r.value]}).to be_valid
+    it "successfully saves the valid multi-value rule" do
+      group = build(:smart_group, rules: [valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[r.value]}.as_json])
+      expect(group.save).to be_truthy
     end
 
-    it "fails on a non-existing custom field option" do
-      expect(valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[r.value, 'garbage']}).to be_invalid
+    it "fails on saving a non-existing custom field option" do
+      expect(build(:smart_group, rules: [valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[r.value, 'garbage']}.as_json]).save).to be_falsey
     end
   end
 

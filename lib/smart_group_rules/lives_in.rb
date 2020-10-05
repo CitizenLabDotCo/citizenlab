@@ -27,11 +27,35 @@ module SmartGroupRules
             },
             "predicate" => {
               "type": "string",
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
             },
             "value" => {
               "description" => "The id of an area",
               "type" => "string"
+            }
+          },
+        },
+        {
+          "type": "object",
+          "required" => ["ruleType", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [rule_type],
+            },
+            "predicate" => {
+              "type": "string",
+              "enum": MULTIVALUE_PREDICATES,
+            },
+            "value" => {
+              "description" => "The id of an area",
+              "type" => "array",
+              "items" => {
+                "type" => "string"
+              },
+              "uniqueItems" => true,
+              "minItems" => 1
             }
           },
         },
