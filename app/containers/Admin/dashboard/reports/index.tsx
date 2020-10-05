@@ -67,12 +67,14 @@ const ReportTab = memo(({ projects }: DataProps) => {
           <SectionTitle>
             <FormattedMessage {...messages.selectAProject} />
           </SectionTitle>
-          <StyledSelect
-            id="projectFilter"
-            onChange={onProjectFilter}
-            value={undefined}
-            options={projectOptions}
-          />
+          {projectOptions && (
+            <StyledSelect
+              id="projectFilter"
+              onChange={onProjectFilter}
+              value={undefined}
+              options={projectOptions}
+            />
+          )}
         </ThemeProvider>
       ) : (
         <>
