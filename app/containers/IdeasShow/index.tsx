@@ -27,7 +27,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
-import ProjectLink from './ProjectLink';
+import GoBackButton from './GoBackButton';
 import TranslateButton from 'components/UI/TranslateButton';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
@@ -215,7 +215,7 @@ const TopBar = styled.div`
   justify-content: space-between;
 `;
 
-const StyledProjectLink = styled(ProjectLink)`
+const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 40px;
   display: block;
 
@@ -556,7 +556,7 @@ export class IdeasShow extends PureComponent<
 
           <IdeaContainer>
             <TopBar>
-              <StyledProjectLink
+              <StyledGoBackButton
                 projectId={projectId}
                 insideModal={insideModal}
               />

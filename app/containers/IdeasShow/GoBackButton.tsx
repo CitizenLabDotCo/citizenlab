@@ -13,7 +13,7 @@ interface Props {
   insideModal: boolean;
 }
 
-const ProjectLink = memo(({ projectId, className, insideModal }: Props) => {
+const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
   const project = useProject({ projectId });
   const locale = useLocale();
   const localize = useLocalize();
@@ -52,4 +52,4 @@ const ProjectLink = memo(({ projectId, className, insideModal }: Props) => {
   return null;
 });
 
-export default ProjectLink;
+export default GoBackButton;
