@@ -375,7 +375,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   type="monotone"
                   dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
-                  dot={true}
+                  dot={serie && serie?.length < 31}
                   stroke={newLineColor}
                   fill={newLineColor}
                   strokeWidth={2}

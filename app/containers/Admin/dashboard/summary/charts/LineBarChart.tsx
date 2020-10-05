@@ -399,10 +399,10 @@ class LineBarChart extends React.PureComponent<
                   type="monotone"
                   yAxisId="total"
                   dataKey="total"
-                  dot={true}
+                  dot={serie && serie?.length < 31}
                   stroke={newLineColor}
                   fill={newLineColor}
-                  strokeWidth={2}
+                  strokeWidth={1}
                   name={formatMessage(messages.total)}
                 />
                 <Legend

@@ -126,7 +126,8 @@ const ProjectReport = memo(
     }, [project, phases]);
 
     const getResolution = (start, end) => {
-      const timeDiff = moment.duration(start.diff(end));
+      const timeDiff = moment.duration(end.diff(start));
+      console.log(timeDiff.asMonths());
       return timeDiff
         ? timeDiff.asMonths() > 6
           ? 'month'
@@ -193,7 +194,9 @@ const ProjectReport = memo(
                           }}
                         />
                       </p>
-                      <div>{phase.attributes.participation_method}</div>
+                      <FormattedMessage
+                        {...messages[phase.attributes.participation_method]}
+                      />
                       <div>{localize(phase.attributes.title_multiloc)}</div>
                     </Phase>
                   );
@@ -228,15 +231,18 @@ const ProjectReport = memo(
                 startAt &&
                 endAt &&
                 !isNilOrError(customFields) &&
-                customFields.map(
-                  (customField) =>
-                    customField.attributes.enabled && (
-                      <CustomFieldComparison
-                        customField={customField}
-                        currentProject={project.id}
-                        key={customField.id}
-                      />
-                    )
+                customFields.map((customField) =>
+                  // only show enabled fields, only supported number field is birthyear.
+                  customField.attributes.enabled &&
+                  customField.attributes.input_type === 'number'
+                    ? customField.attributes.code === 'birthyear'
+                    : true && (
+                        <CustomFieldComparison
+                          customField={customField}
+                          currentProject={project.id}
+                          key={customField.id}
+                        />
+                      )
                 )}
             </GraphsContainer>
           </Section>
