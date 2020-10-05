@@ -33,7 +33,7 @@ const IdeaCTAButton = ({
       iconAriaHidden
       bgHoverColor={'#fff'}
       textHoverColor={darken(0.1, theme.colorText)}
-      boxShadowHover={defaultStyles.boxShadowHover}
+      boxShadowHover={defaultStyles.boxShadowHoverSmall}
       fontWeight="bold"
       onClick={onClick}
       ariaExpanded={ariaExpanded}
