@@ -6,6 +6,11 @@ AdminApi::Engine.routes.draw do
   end
 
   resources :projects, only: [:index] do
+
+    resource :map_config, only: [:show, :update, :destroy] do
+      resources :layers, only: [:create, :destroy, :index, :show]
+    end
+
     get :template_export, on: :member
     post :template_import, on: :collection
     resources :phases, only: [:index]
@@ -18,10 +23,6 @@ AdminApi::Engine.routes.draw do
   resources :areas, only: [:index]
 
   resources :invites, only: [:create]
-
-  resources :map_configs, only: [:create, :destroy, :index, :show, :update] do
-    resources :layers, only: [:create, :destroy, :index, :show]
-  end
 
   post "/graphql", to: "graphql#execute"
 
