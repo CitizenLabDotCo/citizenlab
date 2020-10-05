@@ -11,8 +11,7 @@ import { media } from 'utils/styleUtils';
 import MetaInformation from '../MetaInformation';
 import VotingCTABox from '../CTABox/VotingCTABox';
 import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox';
-import IdeaSharingButton from '../Buttons/IdeaSharingButton';
-import MobileSharingButtonComponent from '../Buttons/MobileSharingButtonComponent';
+import Buttons from '../CTABox/Buttons';
 
 const Container = styled.div`
   display: flex;
@@ -32,15 +31,18 @@ const Container = styled.div`
   `}
 `;
 
-const StyledIdeaSharingButton = styled(IdeaSharingButton)`
-  margin-bottom: 23px;
-`;
-
 const StyledVotingCTABox = styled(VotingCTABox)`
   margin-bottom: 23px;
 `;
 
 const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
+  margin-bottom: 23px;
+`;
+
+const ButtonsFallback = styled.div`
+  background-color: #edeff0;
+  border-radius: 2px;
+  padding: 25px 15px;
   margin-bottom: 23px;
 `;
 
@@ -88,18 +90,17 @@ const RightColumnDesktop = ({
             budgetingDescriptor={budgetingDescriptor}
           />
         )}
+      {!showVoteControl && !showBudgetControl && (
+        <ButtonsFallback>
+          <Buttons ideaId={ideaId} />
+        </ButtonsFallback>
+      )}
       <StyledMetaInformation
         ideaId={ideaId}
         projectId={projectId}
         statusId={statusId}
         authorId={authorId}
       />
-      {!showVoteControl && !showBudgetControl && (
-        <StyledIdeaSharingButton
-          ideaId={ideaId}
-          buttonComponent={<MobileSharingButtonComponent />}
-        />
-      )}
     </Container>
   );
 };
