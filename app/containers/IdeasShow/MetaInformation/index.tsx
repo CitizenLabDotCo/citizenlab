@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import { colors, fontSizes } from 'cl2-component-library';
+import { fontSizes } from 'cl2-component-library';
 
 // components
 import Status from './Status';
@@ -40,8 +40,8 @@ const Container = styled.div`
 
 const Item = styled.div<{ isFirstItem?: boolean }>`
   border-top: ${({ isFirstItem }) =>
-    isFirstItem ? `1px solid ${colors.separation}` : 'none'};
-  border-bottom: 1px solid ${colors.separation};
+    isFirstItem ? `1px solid #e0e0e0` : 'none'};
+  border-bottom: 1px solid #e0e0e0;
   padding-top: 20px;
   padding-bottom: 23px;
 `;
@@ -54,6 +54,8 @@ const Header = styled.h3`
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   color: ${(props) => props.theme.colorText};
+  padding: 0;
+  margin: 0;
   margin-bottom: 12px;
 `;
 

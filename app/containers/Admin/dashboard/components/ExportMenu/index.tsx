@@ -30,8 +30,8 @@ const Container = styled.div`
 interface ExportMenuProps {
   className?: string;
   name: string;
-  svgNode: React.RefObject<any>;
-  xlsxEndpoint: string;
+  svgNode?: React.RefObject<any>;
+  xlsxEndpoint?: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
   resolution?: IResolution;
@@ -93,7 +93,9 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   }`;
 
   const handleDownloadSvg = () => {
-    const node = ReactDOM.findDOMNode(svgNode.current.container.children[0]);
+    const node = ReactDOM.findDOMNode(
+      svgNode && svgNode.current.container.children[0]
+    );
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
@@ -158,23 +160,27 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
         onClickOutside={toggleDropdown(false)}
         content={
           <>
-            <Button
-              onClick={handleDownloadSvg}
-              buttonStyle="text"
-              padding="0"
-              fontSize={`${fontSizes.small}px`}
-            >
-              <FormattedMessage {...messages.downloadSvg} />
-            </Button>
-            <Button
-              onClick={downloadXlsx}
-              buttonStyle="text"
-              processing={exportingXls}
-              padding="0"
-              fontSize={`${fontSizes.small}px`}
-            >
-              <FormattedMessage {...messages.downloadXlsx} />
-            </Button>
+            {svgNode && (
+              <Button
+                onClick={handleDownloadSvg}
+                buttonStyle="text"
+                padding="0"
+                fontSize={`${fontSizes.small}px`}
+              >
+                <FormattedMessage {...messages.downloadSvg} />
+              </Button>
+            )}
+            {downloadXlsx && (
+              <Button
+                onClick={downloadXlsx}
+                buttonStyle="text"
+                processing={exportingXls}
+                padding="0"
+                fontSize={`${fontSizes.small}px`}
+              >
+                <FormattedMessage {...messages.downloadXlsx} />
+              </Button>
+            )}
           </>
         }
       />
