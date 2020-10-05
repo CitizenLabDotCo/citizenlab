@@ -1222,6 +1222,7 @@
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Phase name",
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Project phases",
   "app.containers.AdminPage.ReportsTab.budgeting": "budgeting",
+  "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
   "app.containers.AdminPage.ReportsTab.ideation": "ideation",
   "app.containers.AdminPage.ReportsTab.information": "information",
   "app.containers.AdminPage.ReportsTab.poll": "poll",
