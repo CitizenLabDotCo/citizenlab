@@ -139,7 +139,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
     }
 
     // track this click for user analytics
-    trackEventByName('Clicked export xlsx', { graph: name });
+    trackEventByName('Clicked export xlsx', { extra: { graph: name } });
   };
 
   return (
