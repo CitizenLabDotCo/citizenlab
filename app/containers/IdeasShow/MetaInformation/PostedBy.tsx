@@ -23,6 +23,7 @@ const Container = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 5px;
+  margin-left: -4px;
 `;
 
 export interface Props {
