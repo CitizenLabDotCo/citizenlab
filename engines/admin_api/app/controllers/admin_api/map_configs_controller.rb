@@ -18,13 +18,8 @@ module AdminApi
     end
 
     def destroy
-      config = Maps::MapConfig.find_by(project_id: params["project_id"])
-      config.destroyed? ? head(:ok) : head(500)
-    end
-
-    def index
-      options = {include: [:layers]}
-      render json: MapConfigSerializer.new(Maps::MapConfig.all, options)
+      config = Maps::MapConfig.destroy_by(project_id: params["project_id"])
+      config.first.destroyed? ? head(:ok) : head(500)
     end
 
     def show
@@ -38,11 +33,18 @@ module AdminApi
     end
 
     def update
-      config = Maps::MapConfig.find(params["id"])
+      config = Maps::MapConfig.find_by(project_id: params["project_id"])
 
       all_attributes = params.require(:data).require(:attributes)
-      attributes = all_attributes.permit(:zoom_level, :tile_provider)
-      config.update(attributes)
+      attributes = all_attributes.permit(:zoom_level, :tile_provider, :project_id)
+
+      if request.put?
+        config.destroy if config
+        config = Maps::MapConfig.create(attributes)
+      else # request.patch?
+        send_not_found and return if config.blank?
+        config.update(attributes)
+      end
 
       if (center = all_attributes[:center])  # dealt separately bc GeoJSON needs to be parsed
         center = center.permit(:type, coordinates: []).to_h
