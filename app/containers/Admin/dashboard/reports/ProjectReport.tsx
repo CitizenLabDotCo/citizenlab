@@ -193,7 +193,9 @@ const ProjectReport = memo(
                           }}
                         />
                       </p>
-                      <div>{phase.attributes.participation_method}</div>
+                      <FormattedMessage
+                        {...messages[phase.attributes.participation_method]}
+                      />
                       <div>{localize(phase.attributes.title_multiloc)}</div>
                     </Phase>
                   );
