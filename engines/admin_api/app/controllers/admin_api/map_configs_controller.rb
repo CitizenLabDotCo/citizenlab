@@ -28,9 +28,13 @@ module AdminApi
     end
 
     def show
-      map_config = Maps::MapConfig.find(params["id"])
-      options = {include: [:layers]}
-      render json: MapConfigSerializer.new(map_config, options)
+      map_config = Maps::MapConfig.find_by(project_id: params["project_id"])
+      if map_config.present?
+        options = {include: [:layers]}
+        render json: MapConfigSerializer.new(map_config, options)
+      else
+        send_not_found
+      end
     end
 
     def update
@@ -40,8 +44,12 @@ module AdminApi
       attributes = all_attributes.permit(:zoom_level, :tile_provider)
       config.update(attributes)
 
-      center = all_attributes.require(:center).permit(:type, coordinates: []).to_h  # dealt separately bc GeoJSON needs to be parsed
-      config.center_geojson = center
+      if (center = all_attributes[:center])  # dealt separately bc GeoJSON needs to be parsed
+        center = center.permit(:type, coordinates: []).to_h
+        config.center_geojson = center
+      else
+        config.center = nil
+      end
 
       if config.save
         options = {include: [:layers]}
