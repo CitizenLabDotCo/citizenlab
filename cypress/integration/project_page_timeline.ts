@@ -1,7 +1,55 @@
 import moment = require('moment');
 import { randomString, apiRemoveProject } from '../support/commands';
 
-describe('Project timeline page', () => {
+describe('Existing Timeline project', () => {
+  before(() => {
+    cy.visit('/projects/test-project-1-timeline-with-file');
+    cy.get('#e2e-project-page');
+    cy.acceptCookies();
+    cy.wait(1000);
+  });
+
+  it('shows the correct project header', () => {
+    cy.get('#e2e-project-header-image');
+    cy.get('#e2e-project-description');
+    cy.get('#e2e-project-sidebar');
+    cy.get('#e2e-project-sidebar-startdate-enddate');
+    cy.get('#e2e-project-sidebar-phases-count');
+    cy.get('#e2e-project-sidebar-participants-count');
+    cy.get('#e2e-project-sidebar-share-button');
+    cy.get('#e2e-project-see-ideas-button');
+    cy.get('#project-ideabutton');
+    cy.get('#e2e-project-description')
+      .contains('20190110_rueil_intermediaire.pdf')
+      .should('have.attr', 'href');
+  });
+
+  it('shows the timeline', () => {
+    cy.get('#project-timeline');
+  });
+
+  it('shows the timeline phases', () => {
+    cy.get('.e2e-phases');
+  });
+
+  it('shows the phase navigation buttons', () => {
+    cy.get('.e2e-timeline-phase-navigation');
+  });
+
+  it('has a selected phase', () => {
+    cy.get('.e2e-phases .selectedPhase');
+  });
+
+  it('shows the phase title', () => {
+    cy.get('.e2e-phase-title');
+  });
+
+  it('shows the phase description', () => {
+    cy.get('.e2e-phase-description');
+  });
+});
+
+describe('New timeline project', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
