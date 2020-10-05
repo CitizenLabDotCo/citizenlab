@@ -383,11 +383,11 @@ export default defineMessages({
   },
   ideation: {
     id: 'app.containers.AdminPage.ReportsTab.ideation',
-    defaultMessage: 'ideatie',
+    defaultMessage: 'ideation',
   },
   information: {
     id: 'app.containers.AdminPage.ReportsTab.information',
-    defaultMessage: 'informatie',
+    defaultMessage: 'information',
   },
   survey: {
     id: 'app.containers.AdminPage.ReportsTab.survey',
