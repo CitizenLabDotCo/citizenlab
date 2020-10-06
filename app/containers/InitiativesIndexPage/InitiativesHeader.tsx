@@ -26,9 +26,7 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-const Container = styled.div``;
-
-const Header = styled.div`
+const Container = styled.div`
   width: 100%;
   min-height: 350px;
   padding: 20px 15px;
@@ -43,7 +41,7 @@ const Header = styled.div`
   `}
 `;
 
-const HeaderContent = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
@@ -61,7 +59,7 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.h2`
+const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
@@ -111,48 +109,42 @@ class InitiativesHeader extends PureComponent<Props, State> {
 
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
-        <Header>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h1"
-              {...messages.invisibleInitiativesPageTitle}
-            />
-          </ScreenReaderOnly>
-          <HeaderContent>
-            <HeaderTitle>
-              {postingPermission?.enabled ? (
-                <FormattedMessage
-                  {...messages.header}
-                  values={{
-                    styledOrgName: (
-                      <T
-                        value={
-                          tenant.attributes.settings.core.organization_name
-                        }
-                      />
-                    ),
-                  }}
-                />
-              ) : (
-                <FormattedMessage
-                  {...messages.headerPostingProposalDisabled}
-                  values={{
-                    styledOrgName: (
-                      <T
-                        value={
-                          tenant.attributes.settings.core.organization_name
-                        }
-                      />
-                    ),
-                  }}
-                />
-              )}
-            </HeaderTitle>
-            <StyledAvatarBubbles />
-            <StyledInitiativeInfoContent />
-            <InitiativeButton location="initiatives_header" />
-          </HeaderContent>
-        </Header>
+        <ScreenReaderOnly>
+          <FormattedMessage
+            tagName="h1"
+            {...messages.invisibleInitiativesPageTitle}
+          />
+        </ScreenReaderOnly>
+        <Content>
+          <Title>
+            {postingPermission?.enabled ? (
+              <FormattedMessage
+                {...messages.header}
+                values={{
+                  styledOrgName: (
+                    <T
+                      value={tenant.attributes.settings.core.organization_name}
+                    />
+                  ),
+                }}
+              />
+            ) : (
+              <FormattedMessage
+                {...messages.headerPostingProposalDisabled}
+                values={{
+                  styledOrgName: (
+                    <T
+                      value={tenant.attributes.settings.core.organization_name}
+                    />
+                  ),
+                }}
+              />
+            )}
+          </Title>
+          <StyledAvatarBubbles />
+          <StyledInitiativeInfoContent />
+          <InitiativeButton location="initiatives_header" />
+        </Content>
       </Container>
     );
   }
