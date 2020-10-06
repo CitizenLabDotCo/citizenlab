@@ -116,7 +116,7 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
               {...messages.privacyReasons}
               values={{
                 conditionsLink: (
-                  <Link to="/pages/cookie-policy" target="_blank">
+                  <Link to="/pages/cookie-policy">
                     <FormattedMessage {...messages.conditionsLinkText} />
                   </Link>
                 ),

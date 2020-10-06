@@ -506,11 +506,7 @@ const ProjectTemplatePreview = memo<Props>(
                   </SuccessCasesTitle>
                   <SuccessCases>
                     {data.projectTemplate.successCases.map((successCase) => (
-                      <SuccessCase
-                        key={successCase.id}
-                        href={successCase.href}
-                        target="_blank"
-                      >
+                      <SuccessCase key={successCase.id} href={successCase.href}>
                         <SuccessCaseImage src={successCase.image} />
                       </SuccessCase>
                     ))}

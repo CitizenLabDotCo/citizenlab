@@ -92,7 +92,7 @@ const Consent = memo<Props & InjectedIntlProps>(
                   {...messages.iHaveReadAndAgreeTo}
                   values={{
                     link: (
-                      <Link target="_blank" to="/pages/terms-and-conditions">
+                      <Link to="/pages/terms-and-conditions">
                         <FormattedMessage {...messages.theTermsAndConditions} />
                       </Link>
                     ),
@@ -116,7 +116,7 @@ const Consent = memo<Props & InjectedIntlProps>(
                   {...messages.iHaveReadAndAgreeTo}
                   values={{
                     link: (
-                      <Link target="_blank" to="/pages/privacy-policy">
+                      <Link to="/pages/privacy-policy">
                         <FormattedMessage {...messages.thePrivacyPolicy} />
                       </Link>
                     ),
