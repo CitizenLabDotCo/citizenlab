@@ -33,16 +33,17 @@ module AdminApi
     end
 
     def update
-      config = Maps::MapConfig.find_by(project_id: params["project_id"])
-
+      config = Maps::MapConfig.find_by(project_id: params[:project_id])
       all_attributes = params.require(:data).require(:attributes)
+
       attributes = all_attributes.permit(:zoom_level, :tile_provider, :project_id)
+      attributes[:project_id] = params[:project_id]
 
       if request.put?
         config.destroy if config
         config = Maps::MapConfig.create(attributes)
       else # request.patch?
-        send_not_found and return if config.blank?
+        return send_not_found if config.blank?
         config.update(attributes)
       end
 
