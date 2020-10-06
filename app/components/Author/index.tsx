@@ -84,7 +84,8 @@ export interface InputProps {
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
   showModeration?: boolean; // will show red styling on admins and moderators of projectId
-  emphasize?: boolean;
+  fontWeight?: number;
+  fontSize?: number;
   className?: string;
   horizontalLayout?: boolean;
   underline?: boolean;
@@ -116,7 +117,8 @@ class Author extends PureComponent<Props, State> {
       className,
       author,
       avatarBadgeBgColor,
-      emphasize,
+      fontWeight,
+      fontSize,
       horizontalLayout,
       color,
       underline,
@@ -130,7 +132,8 @@ class Author extends PureComponent<Props, State> {
         userId={authorId}
         isLinkToProfile={isLinkToProfile}
         canModerate={authorCanModerate}
-        emphasize={emphasize}
+        fontWeight={fontWeight}
+        fontSize={fontSize}
         color={color}
         underline={underline}
       />

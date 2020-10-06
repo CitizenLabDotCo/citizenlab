@@ -32,8 +32,8 @@ const ContainerInner = styled.div`
   position: relative;
 
   &.child {
-    margin-top: 25px;
-    margin-left: 40px;
+    margin-top: 30px;
+    margin-left: 45px;
   }
 `;
 
