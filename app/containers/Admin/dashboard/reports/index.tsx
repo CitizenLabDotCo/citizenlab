@@ -14,8 +14,8 @@ import messages from '../messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
 import styled, { ThemeProvider } from 'styled-components';
-import ProjectReport from './ProjectReport';
 import { chartTheme } from '../index';
+import ProjectReport from './ProjectReport';
 
 const StyledSelect = styled(Select)`
   max-width: 300px;
