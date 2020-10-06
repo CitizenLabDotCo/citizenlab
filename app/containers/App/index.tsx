@@ -420,21 +420,21 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       navbarRef,
       mobileNavbarRef,
     } = this.state;
-    const adminPage = isPage('admin', location.pathname);
-    const initiativeFormPage = isPage('initiative_form', location.pathname);
-    const ideaFormPage = isPage('idea_form', location.pathname);
-    const ideaEditPage = isPage('idea_edit', location.pathname);
-    const initiativeEditPage = isPage('initiative_edit', location.pathname);
-    const signInPage = isPage('sign_in', location.pathname);
-    const signUpPage = isPage('sign_up', location.pathname);
+    const isAdminPage = isPage('admin', location.pathname);
+    const isInitiativeFormPage = isPage('initiative_form', location.pathname);
+    const isIdeaFormPage = isPage('idea_form', location.pathname);
+    const isIdeaEditPage = isPage('idea_edit', location.pathname);
+    const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
+    const isSignInPage = isPage('sign_in', location.pathname);
+    const isSignUpPage = isPage('sign_up', location.pathname);
     const theme = getTheme(tenant);
     const showFooter =
-      !adminPage &&
-      !ideaFormPage &&
-      !initiativeFormPage &&
-      !ideaEditPage &&
-      !initiativeEditPage;
-    const showShortFeedback = !signInPage && !signUpPage;
+      !isAdminPage &&
+      !isIdeaFormPage &&
+      !isInitiativeFormPage &&
+      !isIdeaEditPage &&
+      !isInitiativeEditPage;
+    const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
       <>
