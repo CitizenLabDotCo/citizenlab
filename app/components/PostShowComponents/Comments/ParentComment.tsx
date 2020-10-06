@@ -36,7 +36,7 @@ import GetInitiativesPermissions, {
 
 const Container = styled.div`
   position: relative;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 const ParentCommentContainer = styled.div`
@@ -45,6 +45,7 @@ const ParentCommentContainer = styled.div`
 
 const StyledChildCommentForm = styled(ChildCommentForm)`
   margin-top: 30px;
+  margin-left: 38px;
 `;
 
 const LoadMoreButton = styled(Button)`
