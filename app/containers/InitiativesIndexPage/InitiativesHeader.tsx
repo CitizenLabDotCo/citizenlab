@@ -21,17 +21,12 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 
 // images
-import illustrationSrc from './initiativesHeaderImage.jpg';
 import InitiativeButton from 'components/InitiativeButton';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-const Container = styled.div`
-  ${media.smallerThanMinTablet`
-    background-color: ${colors.background};
-  `}
-`;
+const Container = styled.div``;
 
 const Header = styled.div`
   width: 100%;
@@ -89,46 +84,9 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 18px;
 `;
 
-const InitiativeInfo = styled.div`
-  width: 100%;
-  min-height: 145px;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid ${colors.separation};
-  border-left: none;
-  border-right: none;
-  background: white;
-  line-height: ${fontSizes.xl}px;
-
-  ${media.smallerThanMaxTablet`
-    padding: 40px 0;
-  `}
-`;
-
-const Wrapper = styled.div`
-  width: auto;
-  max-width: 1150px;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  margin: 0;
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-`;
-
-const Illustration = styled.img`
-  height: 145px;
-  margin-right: 70px;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
+const StyledInitiativeInfoContent = styled(InitiativeInfoContent)`
+  max-width: 550px;
+  margin-bottom: 30px;
 `;
 
 export interface InputProps {
@@ -191,15 +149,10 @@ class InitiativesHeader extends PureComponent<Props, State> {
               )}
             </HeaderTitle>
             <StyledAvatarBubbles />
+            <StyledInitiativeInfoContent />
             <InitiativeButton location="initiatives_header" />
           </HeaderContent>
         </Header>
-        <InitiativeInfo>
-          <Wrapper>
-            <Illustration src={illustrationSrc} alt="" />
-            <InitiativeInfoContent />
-          </Wrapper>
-        </InitiativeInfo>
       </Container>
     );
   }
