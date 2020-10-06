@@ -29,18 +29,14 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-const childCommentDesktopMarginLeft = '45px';
-const childCommentMobileMarginLeft = '30px';
-
 const Container = styled.div`
   position: relative;
-  margin-bottom: 55px;
+  margin-bottom: 60px;
 `;
 
 const ParentCommentContainer = styled.div`
@@ -48,16 +44,12 @@ const ParentCommentContainer = styled.div`
 `;
 
 const StyledChildCommentForm = styled(ChildCommentForm)`
-  margin-left: ${childCommentDesktopMarginLeft};
   margin-top: 30px;
-
-  ${media.smallerThanMinTablet`
-    margin-left: ${childCommentMobileMarginLeft};
-  `}
 `;
 
 const LoadMoreButton = styled(Button)`
   margin-top: 20px;
+  margin-left: 38px;
 `;
 
 interface InputProps {

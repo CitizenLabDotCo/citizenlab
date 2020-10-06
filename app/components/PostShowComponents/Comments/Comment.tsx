@@ -32,13 +32,14 @@ const ContainerInner = styled.div`
   position: relative;
 
   &.child {
-    margin-top: 30px;
-    margin-left: 45px;
+    margin-top: 25px;
+    margin-left: 38px;
   }
 `;
 
 const Content = styled.div`
   display: flex;
+  margin-left: 39px;
 `;
 
 const BodyAndFooter = styled.div`

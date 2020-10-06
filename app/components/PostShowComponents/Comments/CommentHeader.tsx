@@ -12,10 +12,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  &.marginBottom {
-    margin-bottom: 6px;
-  }
+  margin-bottom: 2px;
 `;
 
 const Left = styled.div`
@@ -63,7 +60,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
     const hasAuthorId = !!authorId;
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <Left>
           <StyledAuthor
             authorId={authorId}
@@ -80,7 +77,6 @@ export default class CommentHeader extends PureComponent<Props, State> {
             underline={true}
           />
         </Left>
-
         <Right>{moderator && <AdminBadge />}</Right>
       </Container>
     );

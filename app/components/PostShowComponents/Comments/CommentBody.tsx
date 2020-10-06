@@ -41,10 +41,6 @@ const Container = styled.div``;
 
 const CommentWrapper = styled.div`
   white-space: pre-line;
-
-  &.child {
-    margin-top: 7px;
-  }
 `;
 
 const CommentText = styled.div`
