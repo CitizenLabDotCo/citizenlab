@@ -36,12 +36,9 @@ module AdminApi
     end
 
     def index
-      map_configs = Maps::MapConfig.includes(:layers).find_by(project_id: params["project_id"])
-      # map_configs.length = 0 or 1
+      map_config = Maps::MapConfig.includes(:layers).find_by(project_id: params["project_id"])
       return send_not_found unless map_config.present?
-
-      layers = map_configs.first.layers
-      render json: LayerSerializer.new(layers)
+      render json: LayerSerializer.new(map_config.layers)
     end
 
     def show
