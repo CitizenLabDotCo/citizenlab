@@ -4,7 +4,6 @@ import { adopt } from 'react-adopt';
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import DashboardTabs from './components/DashboardTabs';
-import Summary from './summary';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -18,7 +17,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // styling
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
@@ -258,6 +257,14 @@ export const DashboardsPage = memo(
         feature: 'geographic_dashboard',
       },
     ];
+    const moderatorTabs = [
+      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+      {
+        label: formatMessage(messages.tabReports),
+        url: '/admin/dashboard/reports',
+        feature: 'project_reports',
+      },
+    ];
 
     const resource = {
       title: formatMessage(messages.titleDashboard),
@@ -268,17 +275,23 @@ export const DashboardsPage = memo(
       if (isAdmin({ data: authUser })) {
         return (
           <DashboardTabs resource={resource} tabs={tabs}>
-            <ThemeProvider theme={chartTheme}>
-              <HelmetIntl
-                title={messages.helmetTitle}
-                description={messages.helmetDescription}
-              />
-              {children}
-            </ThemeProvider>
+            <HelmetIntl
+              title={messages.helmetTitle}
+              description={messages.helmetDescription}
+            />
+            {children}
           </DashboardTabs>
         );
       } else if (isProjectModerator({ data: authUser })) {
-        return <Summary onlyModerator />;
+        return (
+          <DashboardTabs resource={resource} tabs={moderatorTabs}>
+            <HelmetIntl
+              title={messages.helmetTitle}
+              description={messages.helmetDescription}
+            />
+            {children}
+          </DashboardTabs>
+        );
       }
     }
 
