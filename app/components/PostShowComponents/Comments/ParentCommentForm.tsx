@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Author from 'components/Author';
+import Avatar from 'components/Avatar';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -37,12 +37,25 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+`;
 
-const CommentContainer = styled.div`
-  padding: 10px;
-  padding-top: 5px;
-  background: #fff;
+const StyledAvatar = styled(Avatar)`
+  margin-left: -4px;
+  margin-right: 5px;
+  margin-top: 2px;
+`;
+
+const FormContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const Form = styled.form`
+  flex: 1;
   border: 1px solid ${colors.border};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
@@ -50,19 +63,6 @@ const CommentContainer = styled.div`
     border-color: ${colors.focussedBorder};
     box-shadow: ${defaultStyles.boxShadowFocused};
   }
-`;
-
-const AuthorWrapper = styled.div`
-  width: 100%;
-  margin-bottom: 10px;
-`;
-
-const StyledAuthor = styled(Author)`
-  margin-left: -4px;
-`;
-
-const Form = styled.form`
-  width: 100%;
 `;
 
 const HiddenLabel = styled.span`
@@ -73,6 +73,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+`;
+
+const CancelButton = styled(Button)`
+  margin-right: 8px;
 `;
 
 interface InputProps {
@@ -102,6 +108,8 @@ class ParentCommentForm extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
+  textareaElement: HTMLTextAreaElement | null = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -141,6 +149,11 @@ class ParentCommentForm extends PureComponent<
 
   onBlur = () => {
     this.setState({ focused: false });
+  };
+
+  onCancel = () => {
+    this.setState({ focused: false, inputValue: '' });
+    this.textareaElement?.blur();
   };
 
   onSubmit = async () => {
@@ -220,6 +233,10 @@ class ParentCommentForm extends PureComponent<
     }
   };
 
+  setRef = (element: HTMLTextAreaElement) => {
+    this.textareaElement = element;
+  };
+
   render() {
     const {
       authUser,
@@ -251,34 +268,28 @@ class ParentCommentForm extends PureComponent<
     const placeholder = formatMessage(
       messages[`${postType}CommentBodyPlaceholder`]
     );
-    const hasAuthUserId = !!authUser?.id;
 
     if (!isNilOrError(authUser) && canComment) {
       return (
         <Container className={className || ''}>
-          <AuthorWrapper>
-            <StyledAuthor
-              authorId={authUser.id}
-              isLinkToProfile={hasAuthUserId}
-              size="32px"
-              showModeration={isModerator}
-            />
-          </AuthorWrapper>
-          <CommentContainer
-            className={`ideaCommentForm ${focused ? 'focused' : ''}`}
-          >
-            <Form>
+          <StyledAvatar
+            userId={authUser?.id}
+            size="30px"
+            isLinkToProfile={!!authUser?.id}
+            moderator={isModerator}
+          />
+          <FormContainer className="ideaCommentForm">
+            <Form className={focused ? 'focused' : ''}>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
                   <FormattedMessage {...messages.yourComment} />
                 </HiddenLabel>
-
                 <MentionsTextArea
                   id="submit-comment"
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={2}
+                  rows={focused ? 3 : 1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
@@ -287,25 +298,35 @@ class ParentCommentForm extends PureComponent<
                   onFocus={this.onFocus}
                   onBlur={this.onBlur}
                   fontWeight="300"
-                  padding="10px 0px"
+                  padding="10px"
                   borderRadius="none"
                   border="none"
                   boxShadow="none"
+                  getTextareaRef={this.setRef}
                 />
-                <ButtonWrapper>
-                  <Button
-                    className="e2e-submit-parentcomment"
-                    processing={processing}
-                    icon="send"
-                    onClick={this.onSubmit}
-                    disabled={commentButtonDisabled}
-                  >
-                    <FormattedMessage {...messages.publishComment} />
-                  </Button>
-                </ButtonWrapper>
+                {(focused || processing) && (
+                  <ButtonWrapper>
+                    <CancelButton
+                      disabled={processing}
+                      onClick={this.onCancel}
+                      buttonStyle="secondary"
+                    >
+                      <FormattedMessage {...messages.cancel} />
+                    </CancelButton>
+                    <Button
+                      className="e2e-submit-parentcomment"
+                      processing={processing}
+                      icon="send"
+                      onClick={this.onSubmit}
+                      disabled={commentButtonDisabled}
+                    >
+                      <FormattedMessage {...messages.publishComment} />
+                    </Button>
+                  </ButtonWrapper>
+                )}
               </label>
             </Form>
-          </CommentContainer>
+          </FormContainer>
         </Container>
       );
     }
