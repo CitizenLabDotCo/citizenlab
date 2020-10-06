@@ -3,14 +3,15 @@ import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
 import { adopt } from 'react-adopt';
 import localize, { InjectedLocalized } from 'utils/localize';
+import { ThemeProvider } from 'styled-components';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
-import { GraphsContainer, ControlBar } from '../';
-import TimeControl from '../components/TimeControl';
 import ChartFilters from '../components/ChartFilters';
+import { GraphsContainer, ControlBar, chartTheme } from '../';
+import TimeControl from '../components/TimeControl';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 import MostActiveUsersList from './charts/MostActiveUsersList';
 
@@ -111,7 +112,7 @@ export class UsersDashboard extends PureComponent<
     );
 
     return (
-      <>
+      <ThemeProvider theme={chartTheme}>
         <ControlBar>
           <TimeControl
             startAtMoment={startAtMoment}
@@ -147,7 +148,7 @@ export class UsersDashboard extends PureComponent<
             className="dynamicHeight"
           />
         </GraphsContainer>
-      </>
+      </ThemeProvider>
     );
   }
 }

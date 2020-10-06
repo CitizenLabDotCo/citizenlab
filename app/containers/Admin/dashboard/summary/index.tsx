@@ -2,6 +2,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
+import { ThemeProvider } from 'styled-components';
+import { chartTheme } from '../index';
 
 // components
 import { GraphsContainer, ControlBar, Column, IResolution } from '../';
@@ -320,7 +322,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
     if (projects && !isNilOrError(projectsList)) {
       return (
-        <>
+        <ThemeProvider theme={chartTheme}>
           <ControlBar>
             <TimeControl
               startAtMoment={startAtMoment}
@@ -427,7 +429,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
             </Column>
           </GraphsContainer>
-        </>
+        </ThemeProvider>
       );
     }
     return null;
