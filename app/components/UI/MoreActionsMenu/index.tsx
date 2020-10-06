@@ -158,7 +158,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     }
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <Tippy
           placement="bottom"
           interactive={true}

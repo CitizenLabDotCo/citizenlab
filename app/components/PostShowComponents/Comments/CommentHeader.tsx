@@ -6,7 +6,7 @@ import AdminBadge from './AdminBadge';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ const Container = styled.div`
   justify-content: space-between;
 
   &.marginBottom {
-    margin-bottom: 13px;
+    margin-bottom: 6px;
   }
 `;
 
@@ -73,8 +73,10 @@ export default class CommentHeader extends PureComponent<Props, State> {
             showModeration={moderator}
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
-            horizontalLayout
-            emphasize
+            horizontalLayout={true}
+            emphasize={false}
+            color={colors.label}
+            underline={true}
           />
         </Left>
 
