@@ -28,10 +28,6 @@ import GetInitiativesPermissions, {
 } from 'resources/GetInitiativesPermissions';
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
   ${media.smallerThanMinTablet`
     background-color: ${colors.background};
   `}
@@ -113,22 +109,16 @@ const InitiativeInfo = styled.div`
   ${media.smallerThanMaxTablet`
     padding: 40px 0;
   `}
-
-  ${media.smallerThanMinTablet`
-    margin-bottom: 40px;
-  `}
 `;
 
 const Wrapper = styled.div`
   width: auto;
   max-width: 1150px;
-  height: 100%;
   font-size: ${fontSizes.base}px;
   line-height: normal;
   margin: 0;
   padding: 0 40px;
   display: flex;
-  flex-direction: row;
   align-items: center;
 `;
 
