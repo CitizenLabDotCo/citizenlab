@@ -29,7 +29,7 @@ module AdminApi
       if layers.blank?
         send_not_found
       elsif layers.first.destroyed?
-        head(:ok)
+        head(204)
       else
         head(500)
       end
