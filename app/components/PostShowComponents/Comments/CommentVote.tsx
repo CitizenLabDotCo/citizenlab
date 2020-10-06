@@ -47,14 +47,15 @@ const Container = styled.li`
   align-items: center;
   list-style: none;
   margin: 0;
+  margin-left: 1px;
   padding: 0;
 `;
 
 const UpvoteIcon = styled(Icon)`
   fill: ${colors.label};
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
   margin-top: -2px;
 `;
 

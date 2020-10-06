@@ -32,7 +32,7 @@ import { commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { media } from 'utils/styleUtils';
+import { colors, defaultStyles } from 'utils/styleUtils';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
@@ -40,28 +40,21 @@ import GetInitiativesPermissions, {
 const Container = styled.div``;
 
 const CommentContainer = styled.div`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 35px;
-  padding-right: 35px;
+  padding: 10px;
+  padding-top: 5px;
   background: #fff;
-  border: 1px solid #e3e3e3;
-  box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.08);
+  border: 1px solid ${colors.border};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  transition: all 100ms ease-out;
 
   &.focused {
-    border-color: #000;
+    border-color: ${colors.focussedBorder};
+    box-shadow: ${defaultStyles.boxShadowFocused};
   }
-
-  ${media.smallerThanMinTablet`
-    padding: 15px;
-  `}
 `;
 
 const AuthorWrapper = styled.div`
   width: 100%;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 `;
 
 const StyledAuthor = styled(Author)`
@@ -260,21 +253,20 @@ class ParentCommentForm extends PureComponent<
     );
     const hasAuthUserId = !!authUser?.id;
 
-    return (
-      <Container className={className}>
-        {authUser && canComment && (
+    if (!isNilOrError(authUser) && canComment) {
+      return (
+        <Container className={className || ''}>
+          <AuthorWrapper>
+            <StyledAuthor
+              authorId={authUser.id}
+              isLinkToProfile={hasAuthUserId}
+              size="32px"
+              showModeration={isModerator}
+            />
+          </AuthorWrapper>
           <CommentContainer
             className={`ideaCommentForm ${focused ? 'focused' : ''}`}
           >
-            <AuthorWrapper>
-              <StyledAuthor
-                authorId={authUser.id}
-                isLinkToProfile={hasAuthUserId}
-                size="32px"
-                showModeration={isModerator}
-              />
-            </AuthorWrapper>
-
             <Form>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
@@ -286,7 +278,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={1}
+                  rows={2}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
@@ -314,9 +306,11 @@ class ParentCommentForm extends PureComponent<
               </label>
             </Form>
           </CommentContainer>
-        )}
-      </Container>
-    );
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 

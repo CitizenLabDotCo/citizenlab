@@ -6,7 +6,7 @@ import AdminBadge from './AdminBadge';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -68,14 +68,15 @@ export default class CommentHeader extends PureComponent<Props, State> {
           <StyledAuthor
             authorId={authorId}
             isLinkToProfile={hasAuthorId}
-            size="32px"
+            size="30px"
             projectId={projectId}
             showModeration={moderator}
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
             horizontalLayout={true}
-            emphasize={false}
             color={colors.label}
+            fontSize={fontSizes.base}
+            fontWeight={400}
             underline={true}
           />
         </Left>

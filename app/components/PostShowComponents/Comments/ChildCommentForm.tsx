@@ -38,24 +38,22 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { viewportWidths, colors, defaultStyles } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
 const Form = styled.form`
   background: #fff;
-  border-top: solid 1px #ebebeb;
-  border-bottom: solid 3px #fff;
-  transition: all 100ms ease;
+  border: 1px solid ${colors.border};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.hidden {
     display: none;
   }
 
   &.focused {
-    background: #fff;
-    border-radius: 0px;
-    border-bottom-color: ${({ theme }) => theme.colorSecondary};
+    border-color: ${colors.focussedBorder};
+    box-shadow: ${defaultStyles.boxShadowFocused};
   }
 `;
 
@@ -67,20 +65,11 @@ const FormInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  padding-left: 35px;
-  padding-right: 35px;
-
-  ${media.smallerThanMinTablet`
-    padding-left: 20px;
-    padding-right: 20px;
-  `}
+  padding: 10px;
+  padding-top: 5px;
 `;
 
-const TextareaWrapper = styled.div`
-  margin-bottom: 10px;
-`;
+const TextareaWrapper = styled.div``;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -326,13 +315,12 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       className,
     } = this.props;
 
-    if (!isNilOrError(authUser)) {
+    if (!isNilOrError(authUser) && this.state.visible) {
       const {
         inputValue,
         canSubmit,
         processing,
         errorMessage,
-        visible,
         focused,
       } = this.state;
       const isButtonVisible = (inputValue && inputValue.length > 0) || focused;
@@ -342,11 +330,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={`${className} e2e-childcomment-form`}>
-          <Form
-            className={`${visible ? 'visible' : 'hidden'} ${
-              focused ? 'focused' : 'blurred'
-            }`}
-          >
+          <Form className={focused ? 'focused' : 'blurred'}>
             <label>
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />
