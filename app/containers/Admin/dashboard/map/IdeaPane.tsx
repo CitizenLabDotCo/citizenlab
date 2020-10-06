@@ -108,7 +108,6 @@ class IdeaPane extends PureComponent<Props, State> {
 
         <Link
           to={`/ideas/${idea.attributes.slug}`}
-          target="_blank"
           onClick={this.trackLinkClick}
         >
           <T as="h4" value={idea.attributes.title_multiloc} />
