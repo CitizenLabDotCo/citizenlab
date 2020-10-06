@@ -21,7 +21,11 @@ module AdminApi
     end
 
     def destroy
-      layers = Maps::Layer.destroy_by(id: params[:id], map_config_id: params[:map_config_id])
+      layers = Maps::Layer
+                   .includes(:map_config)
+                   .where(id: params[:id], maps_map_configs: {project_id: params[:project_id]})
+                   .destroy_all
+
       if layers.blank?
         send_not_found
       elsif layers.first.destroyed?
