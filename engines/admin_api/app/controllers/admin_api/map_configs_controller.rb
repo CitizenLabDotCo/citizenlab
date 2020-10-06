@@ -19,7 +19,7 @@ module AdminApi
 
     def destroy
       config = Maps::MapConfig.destroy_by(project_id: params["project_id"])
-      config.first.destroyed? ? head(:ok) : head(500)
+      config.first.destroyed? ? head(204) : head(500)
     end
 
     def show
