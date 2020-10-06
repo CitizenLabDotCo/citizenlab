@@ -23,7 +23,9 @@ Array [
 `;
 
 exports[`<UsersDashboard /> renders correctly 1`] = `
-<Fragment>
+<ThemeProvider
+  theme={[Function]}
+>
   <dashboard__ControlBar>
     <TimeControl
       endAtMoment={"2010-01-01T04:06:07.000Z"}
@@ -59,5 +61,5 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
       infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
     />
   </dashboard__GraphsContainer>
-</Fragment>
+</ThemeProvider>
 `;
