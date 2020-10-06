@@ -36,6 +36,7 @@ import GetInitiativesPermissions, {
 
 const Container = styled.div`
   position: relative;
+  margin-bottom: 25px;
 `;
 
 const ParentCommentContainer = styled.div`
@@ -226,7 +227,6 @@ class ParentComment extends PureComponent<Props, State> {
             )
             .map((comment) => comment.id)
         : this.props.childCommentIds;
-      const canReply = comment.attributes.publication_status !== 'deleted';
       const showLoadMore = canLoadMore && !hasLoadedMore;
 
       // hide parent comments that are deleted when they have no children
@@ -250,7 +250,6 @@ class ParentComment extends PureComponent<Props, State> {
               commentId={commentId}
               commentType="parent"
               hasChildComments={hasChildComments}
-              canReply={canReply}
             />
           </ParentCommentContainer>
 
@@ -281,7 +280,6 @@ class ParentComment extends PureComponent<Props, State> {
                 commentId={childCommentId}
                 commentType="child"
                 last={index === childCommentIds.length - 1}
-                canReply={canReply}
               />
             ))}
 

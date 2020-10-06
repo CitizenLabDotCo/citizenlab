@@ -87,6 +87,8 @@ export interface InputProps {
   emphasize?: boolean;
   className?: string;
   horizontalLayout?: boolean;
+  underline?: boolean;
+  color?: string;
 }
 
 interface DataProps {
@@ -116,6 +118,8 @@ class Author extends PureComponent<Props, State> {
       avatarBadgeBgColor,
       emphasize,
       horizontalLayout,
+      color,
+      underline,
     } = this.props;
     const authorCanModerate =
       !isNilOrError(author) &&
@@ -127,6 +131,8 @@ class Author extends PureComponent<Props, State> {
         isLinkToProfile={isLinkToProfile}
         canModerate={authorCanModerate}
         emphasize={emphasize}
+        color={color}
+        underline={underline}
       />
     );
 
