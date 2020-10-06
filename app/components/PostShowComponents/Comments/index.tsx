@@ -38,14 +38,14 @@ import tracks from './tracks';
 const Container = styled.div``;
 
 const StyledParentCommentForm = styled(ParentCommentForm)`
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const Title = styled.h1`

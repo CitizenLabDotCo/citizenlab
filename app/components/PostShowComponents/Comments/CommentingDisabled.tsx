@@ -25,7 +25,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 30px;
 `;
 

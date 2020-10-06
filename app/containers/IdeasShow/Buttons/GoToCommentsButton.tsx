@@ -29,7 +29,12 @@ const GoToCommentsButton = ({
 
       intersectionObserver.observe(commentInputField);
 
-      commentInputField.scrollIntoView({ behavior: 'smooth' });
+      const top =
+        commentInputField.getBoundingClientRect().top +
+        window.pageYOffset -
+        180;
+      const behavior = 'smooth';
+      window.scrollTo({ top, behavior });
     }
   };
 
