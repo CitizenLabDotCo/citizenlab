@@ -113,7 +113,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       activities_scope = activities_scope.where(user_id: participants)
     end
 
@@ -150,7 +150,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       activities_scope = activities_scope.where(user_id: participants)
     end
 
@@ -196,7 +196,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       users = users.where(id: participants)
     end
 
@@ -232,7 +232,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       users = users.where(id: participants)
     end
 
@@ -267,7 +267,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       users = users.where(id: participants)
     end
 
@@ -319,7 +319,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       users = users.where(id: participants)
     end
 
@@ -355,7 +355,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       users = users.where(id: participants)
     end
 

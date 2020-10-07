@@ -57,6 +57,11 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:total_count]
   end
 
+  attribute :participants_count do |object, params|
+    @participants_service ||= ParticipantsService.new
+    @participants_service.project_participants(object).size
+  end
+
   attribute :allocated_budget do |object, params|
     if params[:allocated_budgets]
       params.dig(:allocated_budgets, object.id)
@@ -104,7 +109,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   
   def self.avatars_for_project object, params
     # TODO call only once (not a second time for counts)
-    AvatarsService.new.avatars_for_project(object, limit: 3)
+    @participants_service ||= ParticipantsService.new
+    AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
   end  
 
   def self.user_basket object, params
