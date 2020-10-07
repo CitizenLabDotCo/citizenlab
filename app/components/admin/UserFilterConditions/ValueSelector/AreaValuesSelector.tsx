@@ -2,7 +2,7 @@ import React from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import { Select } from 'cl2-component-library';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -15,7 +15,7 @@ type Props = {
 
 type State = {};
 
-class AreaValueSelector extends React.PureComponent<
+class AreaValuesSelector extends React.PureComponent<
   Props & InjectedLocalized,
   State
 > {
@@ -32,15 +32,16 @@ class AreaValueSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
+  handleOnChange = (options: IOption[]) => {
+    const optionIds = options.map((o) => o.value);
+    this.props.onChange(optionIds);
   };
 
   render() {
     const { value } = this.props;
 
     return (
-      <Select
+      <MultipleSelect
         value={value}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
@@ -49,10 +50,10 @@ class AreaValueSelector extends React.PureComponent<
   }
 }
 
-const AreaValueSelectorWithHOC = localize(AreaValueSelector);
+const AreaValuesSelectorWithHOC = localize(AreaValuesSelector);
 
-export default (inputProps: Props) => (
+export default (inputProps) => (
   <GetAreas>
-    {(areas) => <AreaValueSelectorWithHOC {...inputProps} areas={areas} />}
+    {(areas) => <AreaValuesSelectorWithHOC {...inputProps} areas={areas} />}
   </GetAreas>
 );
