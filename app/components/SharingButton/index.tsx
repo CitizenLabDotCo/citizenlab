@@ -11,6 +11,7 @@ export type UtmParams = {
 interface Props {
   className?: string;
   twitterMessage: string;
+  whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
   utmParams?: UtmParams;
@@ -22,6 +23,7 @@ const SharingButton = ({
   className,
   url,
   twitterMessage,
+  whatsAppMessage,
   emailSubject,
   emailBody,
   utmParams,
@@ -35,6 +37,7 @@ const SharingButton = ({
         <SharingDropdownContent
           url={url}
           twitterMessage={twitterMessage}
+          whatsAppMessage={whatsAppMessage}
           emailSubject={emailSubject}
           emailBody={emailBody}
           utmParams={utmParams}

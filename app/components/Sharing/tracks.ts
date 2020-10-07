@@ -47,4 +47,16 @@ export default {
       network: 'email',
     },
   },
+  clickWhatsAppShare: {
+    name: 'Share button clicked',
+    properties: {
+      network: 'whatsapp',
+    },
+  },
+  clickWhatsAppShareInModal: {
+    name: 'Share button clicked in social sharing modal',
+    properties: {
+      network: 'whatsapp',
+    },
+  },
 };

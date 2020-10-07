@@ -101,11 +101,11 @@ const Buttons = styled.div`
     }
 
     &.facebook {
-      background: ${colors.facebook};
+      background: #455a64;
       color: #fff;
 
       &:hover {
-        background: ${darken(0.15, colors.facebook)};
+        background: ${darken(0.15, '#455A64')};
       }
     }
 
@@ -120,6 +120,15 @@ const Buttons = styled.div`
       ${media.biggerThanMaxTablet`
         display: none;
       `}
+    }
+
+    &.whatsapp {
+      background: ${colors.facebook};
+      color: #fff;
+
+      &:hover {
+        background: ${darken(0.15, colors.facebook)};
+      }
     }
 
     &.email {
@@ -146,6 +155,8 @@ interface ITracks {
   clickMessengerShareInModal: () => void;
   clickEmailShare: () => void;
   clickEmailShareInModal: () => void;
+  clickWhatsAppShare: () => void;
+  clickWhatsAppShareInModal: () => void;
 }
 
 export type UtmParams = {
@@ -160,6 +171,7 @@ interface InputProps {
   className?: string;
   url: string;
   twitterMessage: string;
+  whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
   utmParams?: UtmParams;
@@ -195,9 +207,12 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       clickMessengerShareInModal,
       clickEmailShare,
       clickEmailShareInModal,
+      clickWhatsAppShare,
+      clickWhatsAppShareInModal,
       tenant,
       context,
       twitterMessage,
+      whatsAppMessage,
       emailSubject,
       emailBody,
       className,
@@ -214,23 +229,29 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       const facebookAppId = facebookSettings ? facebookSettings.app_id : null;
       const facebookButtonText = formatMessage(messages.shareOnFacebook);
       const messengerButtonText = formatMessage(messages.shareViaMessenger);
+      const whatsAppButtonText = formatMessage(messages.shareViaWhatsApp);
       const twitterButtonText = formatMessage(messages.shareOnTwitter);
       const emailButtonText = formatMessage(messages.shareByEmail);
+      const whatsAppHrefText = encodeURIComponent(whatsAppMessage);
+
       let trackFbShare;
       let trackTwitterShare;
       let trackEmailShare;
       let trackMessengerShare;
+      let trackWhatsAppShare;
 
       if (location === 'modal') {
         trackFbShare = clickFbShareInModal;
         trackTwitterShare = clickTwitterShareInModal;
         trackEmailShare = clickEmailShareInModal;
         trackMessengerShare = clickMessengerShareInModal;
+        trackWhatsAppShare = clickWhatsAppShareInModal;
       } else {
         trackFbShare = clickFbShare;
         trackTwitterShare = clickTwitterShare;
         trackEmailShare = clickEmailShare;
         trackMessengerShare = clickMessengerShare;
+        trackWhatsAppShare = clickWhatsAppShare;
       }
 
       const facebook = facebookAppId ? (
@@ -259,6 +280,19 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
           <StyledIcon name="messenger" />
         </a>
       ) : null;
+
+      const whatsapp = (
+        <a
+          className="sharingButton whatsapp"
+          href={`https://api.whatsapp.com/send?phone=&text=${whatsAppHrefText}`}
+          onClick={trackWhatsAppShare}
+          role="button"
+          aria-label={whatsAppButtonText}
+        >
+          {/* <StyledIcon name="whatsapp" /> */}
+          {'WhatsApp'}
+        </a>
+      );
 
       const twitter = (
         <TwitterButton
@@ -305,6 +339,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
           <Buttons>
             {facebook}
             {messenger}
+            {whatsapp}
             {twitter}
             {email}
           </Buttons>
@@ -326,6 +361,8 @@ const SharingWithHocs = injectIntl<Props>(
     clickMessengerShareInModal: tracks.clickMessengerShareInModal,
     clickEmailShare: tracks.clickEmailShare,
     clickEmailShareInModal: tracks.clickEmailShareInModal,
+    clickWhatsAppShare: tracks.clickWhatsAppShare,
+    clickWhatsAppShareInModal: tracks.clickWhatsAppShareInModal,
   })(Sharing)
 );
 

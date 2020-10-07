@@ -47,6 +47,10 @@ const Component = ({
       <SharingButton
         className={className}
         url={ideaUrl}
+        whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+          ideaTitle,
+          ideaUrl,
+        })}
         twitterMessage={formatMessage(messages.twitterMessage, {
           ideaTitle,
         })}
