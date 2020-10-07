@@ -24,12 +24,12 @@ import {
   ComposedChart,
   CartesianGrid,
   Tooltip,
-  Line,
-  Legend,
+  // Line,
+  // Legend,
   Bar,
   XAxis,
   YAxis,
-  Label,
+  // Label,
   ResponsiveContainer,
 } from 'recharts';
 import {
@@ -40,9 +40,9 @@ import {
   GraphCardInner,
   GraphCardHeader,
   GraphCardTitle,
-  GraphCardFigureContainer,
-  GraphCardFigure,
-  GraphCardFigureChange,
+  // GraphCardFigureContainer,
+  // GraphCardFigure,
+  // GraphCardFigureChange,
 } from '../..';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from 'cl2-component-library';
@@ -282,15 +282,15 @@ class LineBarChart extends React.PureComponent<
       chartLabelColor,
       cartesianGridColor,
       newBarFill,
-      newLineColor,
+      // newLineColor,
     } = this.props['theme'];
 
-    const formattedNumbers = this.getFormattedNumbers(serie);
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
+    // const formattedNumbers = this.getFormattedNumbers(serie);
+    // const {
+    //   totalNumber,
+    //   formattedSerieChange,
+    //   typeOfChange,
+    // } = formattedNumbers;
 
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
@@ -314,12 +314,12 @@ class LineBarChart extends React.PureComponent<
                 />
               )}
 
-              <GraphCardFigureContainer>
+              {/* <GraphCardFigureContainer>
                 <GraphCardFigure>{totalNumber}</GraphCardFigure>
                 <GraphCardFigureChange className={typeOfChange}>
                   {formattedSerieChange}
                 </GraphCardFigureChange>
-              </GraphCardFigureContainer>
+              </GraphCardFigureContainer> */}
             </GraphCardTitle>
 
             {!noData && (
@@ -351,7 +351,7 @@ class LineBarChart extends React.PureComponent<
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
-                <YAxis
+                {/* <YAxis
                   yAxisId="total"
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
@@ -363,21 +363,21 @@ class LineBarChart extends React.PureComponent<
                     position={'center'}
                     offset={-20}
                   />
-                </YAxis>
+                </YAxis> */}
                 <YAxis
                   yAxisId="barValue"
-                  orientation="right"
+                  orientation="left"
                   allowDecimals={false}
                   tickLine={false}
                 >
-                  <Label
+                  {/* <Label
                     value={formatMessage(messages.perPeriod, {
                       period: this.props.resolution,
                     })}
                     angle={90}
                     position={'center'}
                     offset={-20}
-                  />
+                  /> */}
                 </YAxis>
                 <Tooltip
                   isAnimationActive={false}
@@ -395,7 +395,7 @@ class LineBarChart extends React.PureComponent<
                     period: this.props.resolution,
                   })}
                 />
-                <Line
+                {/* <Line
                   type="monotone"
                   yAxisId="total"
                   dataKey="total"
@@ -404,12 +404,12 @@ class LineBarChart extends React.PureComponent<
                   fill={newLineColor}
                   strokeWidth={1}
                   name={formatMessage(messages.total)}
-                />
-                <Legend
+                /> */}
+                {/* <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
                   }}
-                />
+                /> */}
               </ComposedChart>
             </StyledResponsiveContainer>
           )}

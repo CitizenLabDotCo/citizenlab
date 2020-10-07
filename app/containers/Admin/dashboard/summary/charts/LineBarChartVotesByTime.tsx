@@ -18,15 +18,15 @@ import {
 // components
 import ExportMenu from '../../components/ExportMenu';
 import {
-  Line,
-  Label,
   Bar,
   Tooltip,
   XAxis,
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
-  Legend,
+  // Line,
+  // Label,
+  // Legend,
   ComposedChart,
 } from 'recharts';
 import {
@@ -36,9 +36,9 @@ import {
   GraphCardInner,
   GraphCardHeader,
   GraphCardTitle,
-  GraphCardFigureContainer,
-  GraphCardFigure,
-  GraphCardFigureChange,
+  // GraphCardFigureContainer,
+  // GraphCardFigure,
+  // GraphCardFigureChange,
 } from '../..';
 
 // i18n
@@ -260,7 +260,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
     const {
       chartLabelSize,
       chartLabelColor,
-      newLineColor,
+      // newLineColor,
       animationBegin,
       animationDuration,
       cartesianGridColor,
@@ -268,13 +268,13 @@ class LineBarChartVotesByTime extends React.PureComponent<
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
-    const formattedNumbers = this.getFormattedNumbers(serie);
+    // const formattedNumbers = this.getFormattedNumbers(serie);
+    // const {
+    //   totalNumber,
+    //   formattedSerieChange,
+    //   typeOfChange,
+    // } = formattedNumbers;
     const { className } = this.props;
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
 
     return (
       <GraphCard className={className}>
@@ -282,12 +282,12 @@ class LineBarChartVotesByTime extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages.ideaVotesByTimeTitle} />
-              <GraphCardFigureContainer>
+              {/* <GraphCardFigureContainer>
                 <GraphCardFigure>{totalNumber}</GraphCardFigure>
                 <GraphCardFigureChange className={typeOfChange}>
                   {formattedSerieChange}
                 </GraphCardFigureChange>
-              </GraphCardFigureContainer>
+              </GraphCardFigureContainer> */}
             </GraphCardTitle>
 
             {serie && (
@@ -320,7 +320,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   tickFormatter={this.formatTick}
                   tickLine={false}
                 />
-                <YAxis
+                {/* <YAxis
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
                   yAxisId="cumulatedTotal"
@@ -332,16 +332,16 @@ class LineBarChartVotesByTime extends React.PureComponent<
                     position={'center'}
                     offset={-20}
                   />
-                </YAxis>
-                <YAxis yAxisId="barValue" orientation="right" tickLine={false}>
-                  <Label
+                </YAxis> */}
+                <YAxis yAxisId="barValue" orientation="left" tickLine={false}>
+                  {/* <Label
                     value={formatMessage(messages.perPeriod, {
                       period: this.props.resolution,
                     })}
                     angle={90}
                     position={'center'}
                     offset={-20}
-                  />
+                  /> */}
                 </YAxis>
                 <Tooltip
                   isAnimationActive={false}
@@ -371,7 +371,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   yAxisId="barValue"
                   barSize={20}
                 />
-                <Line
+                {/* <Line
                   type="monotone"
                   dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
@@ -380,13 +380,13 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   fill={newLineColor}
                   strokeWidth={1}
                   yAxisId="cumulatedTotal"
-                />
+                /> */}
 
-                <Legend
+                {/* <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
                   }}
-                />
+                /> */}
               </ComposedChart>
             </ResponsiveContainer>
           )}
