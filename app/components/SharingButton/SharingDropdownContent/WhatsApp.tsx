@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FacebookButton } from 'react-social';
 import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../tracks';
 import trackClickByEventName from './trackClickByEventName';
@@ -14,14 +13,18 @@ const StyledIcon = styled(Icon)`
   width: 22px;
   height: 18px;
   margin-right: 10px;
-  fill: #3c5a99;
+  fill: rgba(0, 120, 255, 1);
 `;
 
 interface Props {
   url: string;
 }
 
-const Facebook = ({
+const handleClick = (_event) => {
+  trackClickByEventName(tracks.clickMessengerShare.name);
+};
+
+const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -33,17 +36,18 @@ const Facebook = ({
 
     if (facebookAppId) {
       return (
-        <FacebookButton
-          appId={facebookAppId}
-          url={url}
-          className="sharingButton facebook first"
-          sharer={true}
-          onClick={trackClickByEventName(tracks.clickFbShare.name)}
-          aria-label={formatMessage(messages.shareOnFacebook)}
+        <a
+          className="sharingButton messenger"
+          href={`fb-messenger://share/?link=${encodeURIComponent(
+            url
+          )}&app_id=${facebookAppId}`}
+          onClick={handleClick}
+          role="button"
+          aria-label={formatMessage(messages.shareViaMessenger)}
         >
-          <StyledIcon name="facebook" />
-          {'Facebook'}
-        </FacebookButton>
+          <StyledIcon name="messenger" />
+          {'Messenger'}
+        </a>
       );
     }
   }
@@ -51,4 +55,4 @@ const Facebook = ({
   return null;
 };
 
-export default injectIntl(Facebook);
+export default injectIntl(Messenger);
