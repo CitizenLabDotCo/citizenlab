@@ -18,6 +18,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -121,6 +122,10 @@ const LabelText = styled.div`
   .description {
     color: ${colors.adminSecondaryTextColor};
   }
+`;
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 20px;
 `;
 
 export interface IParticipationContextConfig {
@@ -464,6 +469,7 @@ class ParticipationContext extends PureComponent<
       enalyzer_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
+      intl: { formatMessage },
     } = this.props;
     const className = this.props['className'];
     const {
@@ -880,7 +886,7 @@ class ParticipationContext extends PureComponent<
                           values={{
                             surveyServiceTooltipLink: (
                               <StyledA
-                                href={this.props.intl.formatMessage(
+                                href={formatMessage(
                                   messages.surveyServiceTooltipLink
                                 )}
                                 target="_blank"
@@ -895,6 +901,21 @@ class ParticipationContext extends PureComponent<
                       }
                     />
                   </SubSectionTitle>
+                  <StyledWarning>
+                    <FormattedMessage
+                      {...messages.hiddenFieldsTip}
+                      values={{
+                        hiddenFieldsLink: (
+                          <a
+                            href="http://support.citizenlab.co/articles/1641202-how-to-embed-a-survey-in-a-project-or-in-a-timeline-phase"
+                            target="_blank"
+                          >
+                            {formatMessage(messages.hiddenFieldsLinkText)}
+                          </a>
+                        ),
+                      }}
+                    />
+                  </StyledWarning>
                   {[
                     'typeform',
                     'survey_monkey',
