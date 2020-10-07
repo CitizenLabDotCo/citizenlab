@@ -341,7 +341,7 @@ class LineBarChart extends React.PureComponent<
                 reverseStackOrder={true}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={1} />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <XAxis
                   dataKey="name"
                   interval="preserveStartEnd"

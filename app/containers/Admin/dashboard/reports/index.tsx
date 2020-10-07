@@ -60,29 +60,26 @@ const ReportTab = memo(({ projects }: DataProps) => {
     setSelectedProject(undefined);
   };
 
-  return (
+  return !selectedProject ? (
     <>
-      {!selectedProject ? (
-        <ThemeProvider theme={chartTheme}>
-          <SectionTitle>
-            <FormattedMessage {...messages.selectAProject} />
-          </SectionTitle>
-          {projectOptions && (
-            <StyledSelect
-              id="projectFilter"
-              onChange={onProjectFilter}
-              value={undefined}
-              options={projectOptions}
-            />
-          )}
-        </ThemeProvider>
-      ) : (
-        <>
-          <StyledGoBack onClick={onResetProject} />
-          <ProjectReport project={selectedProject} />
-        </>
+      ‚
+      <SectionTitle>
+        <FormattedMessage {...messages.selectAProject} />
+      </SectionTitle>
+      {projectOptions && (
+        <StyledSelect
+          id="projectFilter"
+          onChange={onProjectFilter}
+          value={undefined}
+          options={projectOptions}
+        />
       )}
     </>
+  ) : (
+    <ThemeProvider theme={chartTheme}>
+      <StyledGoBack onClick={onResetProject} />
+      <ProjectReport project={selectedProject} />
+    </ThemeProvider>
   );
 });
 
