@@ -31,6 +31,8 @@ import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -43,9 +45,8 @@ import FeatureFlag from 'components/FeatureFlag';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // Typings
-import { CLError } from 'typings';
+import { CLError, Locale } from 'typings';
 import { adopt } from 'react-adopt';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const Container = styled.div``;
 
@@ -145,6 +146,7 @@ export interface IParticipationContextConfig {
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
   google_forms_enabled: boolean | null;
@@ -460,9 +462,25 @@ class ParticipationContext extends PureComponent<
     return isValidated;
   }
 
+  hiddenFieldsSupportArticleUrl = (locale: Locale) => {
+    switch (locale) {
+      case 'nl-BE':
+      case 'nl-NL':
+        return 'https://support.citizenlab.co/nl/articles/1641202-voeg-een-enquete-toe-in-een-project-of-aan-een-fase-in-een-tijdslijn';
+      case 'fr-BE':
+      case 'fr-FR':
+        return 'https://support.citizenlab.co/fr/articles/1641202-comment-ajouter-integrer-une-enquete-a-un-projet-de-participation-sur-votre-plateforme';
+      case 'de-DE':
+        return 'https://support.citizenlab.co/de/articles/1641202';
+      default:
+        return 'https://support.citizenlab.co/en/articles/1641202';
+    }
+  };
+
   render() {
     const {
       tenant,
+      locale,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -489,11 +507,10 @@ class ParticipationContext extends PureComponent<
       poll_anonymous,
       presentation_mode,
     } = this.state;
-    const tenantCurrency = !isNilOrError(tenant)
-      ? tenant.attributes.settings.core.currency
-      : '';
 
-    if (loaded) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
+      const tenantCurrency = tenant.attributes.settings.core.currency;
+
       return (
         <Container className={className}>
           <StyledSection>
@@ -907,7 +924,7 @@ class ParticipationContext extends PureComponent<
                       values={{
                         hiddenFieldsLink: (
                           <a
-                            href="http://support.citizenlab.co/articles/1641202-how-to-embed-a-survey-in-a-project-or-in-a-timeline-phase"
+                            href={this.hiddenFieldsSupportArticleUrl(locale)}
                             target="_blank"
                           >
                             {formatMessage(messages.hiddenFieldsLinkText)}
@@ -967,6 +984,7 @@ const Data = adopt<DataProps, {}>({
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   tenant: <GetTenant />,
+  locale: <GetLocale />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
