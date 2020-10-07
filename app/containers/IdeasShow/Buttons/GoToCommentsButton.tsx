@@ -23,7 +23,10 @@ const GoToCommentsButton = ({
       const intersectionObserver = new IntersectionObserver((entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
-          setTimeout(() => commentInputField.focus(), 100);
+          setTimeout(() => {
+            commentInputField.focus();
+            intersectionObserver.unobserve(commentInputField);
+          }, 100);
         }
       });
 
@@ -33,8 +36,7 @@ const GoToCommentsButton = ({
         commentInputField.getBoundingClientRect().top +
         window.pageYOffset -
         180;
-      const behavior = 'smooth';
-      window.scrollTo({ top, behavior });
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
