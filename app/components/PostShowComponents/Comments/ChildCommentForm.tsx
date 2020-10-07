@@ -65,7 +65,6 @@ const Form = styled.form`
   background: #fff;
   border: 1px solid ${colors.border};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  /* overflow: hidden; */
 
   &:not(.focused):hover {
     border-color: ${colors.hoveredBorder};
