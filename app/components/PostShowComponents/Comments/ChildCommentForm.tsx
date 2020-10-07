@@ -10,6 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
+import clickOutside from 'utils/containers/clickOutside';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -49,10 +50,10 @@ const Container = styled.div`
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
   margin-right: 5px;
-  margin-top: 2px;
+  margin-top: 3px;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled(clickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -64,6 +65,11 @@ const Form = styled.form`
   background: #fff;
   border: 1px solid ${colors.border};
   border-radius: ${(props: any) => props.theme.borderRadius};
+  /* overflow: hidden; */
+
+  &:not(.focused):hover {
+    border-color: ${colors.hoveredBorder};
+  }
 
   &.focused {
     border-color: ${colors.focussedBorder};
@@ -144,26 +150,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           const { authorFirstName, authorLastName, authorSlug } = eventValue;
           const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
           this.setState({ inputValue, focused: true });
-
-          // if (this.textareaElement) {
-          //   setTimeout(() => {
-          //     this.textareaElement.scrollIntoView({
-          //       behavior: 'smooth',
-          //       block: 'center',
-          //       inline: 'center',
-          //     });
-          //     this.textareaElement.focus();
-          //   }, 100);
-
-          //   setTimeout(() => {
-          //     this.textareaElement.focus();
-          //     this.setCaretAtEnd(this.textareaElement);
-          //   }, 200);
-
-          //   setTimeout(() => {
-          //     this.setCaretAtEnd(this.textareaElement);
-          //   }, 1000);
-          // }
         }),
     ];
   }
@@ -203,13 +189,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ focused: true });
   };
 
-  onBlur = () => {
-    this.setState({ focused: false });
-  };
-
   onCancel = () => {
     this.setState({ focused: false, inputValue: '' });
-    this.textareaElement?.blur();
   };
 
   onSubmit = async () => {
@@ -284,8 +265,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   setRef = (element: HTMLTextAreaElement) => {
-    console.log('zolg');
-
     this.textareaElement = element;
 
     if (this.textareaElement) {
@@ -332,7 +311,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />
-          <FormContainer>
+          <FormContainer onClickOutside={this.onCancel}>
             <Form className={focused ? 'focused' : ''}>
               <label>
                 <HiddenLabel>
@@ -349,7 +328,6 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                   error={errorMessage}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
-                  onBlur={this.onBlur}
                   fontWeight="300"
                   padding="10px"
                   borderRadius="none"

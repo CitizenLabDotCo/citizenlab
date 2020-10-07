@@ -21,14 +21,25 @@ import { Locale } from 'typings';
 
 const Container = styled.div`
   position: relative;
+  cursor: text;
+  background: #fff;
 
   & .hasBorder textarea:focus {
     border-color: ${colors.focussedBorder} !important;
     box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
-  .textareaWrapper__suggestions__list li:last-child {
+  & .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
+  }
+
+  & .textareaWrapper__highlighter,
+  & textarea {
+    background: transparent !important;
+  }
+
+  & .textareaWrapper__highlighter > strong {
+    z-index: 2;
   }
 `;
 
@@ -99,7 +110,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
       paddingLeft: '0px',
       paddingRight: '1px',
       borderRadius: '3px',
-      backgroundColor: transparentize(0.9, this.props.theme.colorText),
+      backgroundColor: transparentize(0.85, this.props.theme.colorText),
     };
     this.setState({ style, mentionStyle });
   }
