@@ -461,6 +461,8 @@
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "Choose how people will see your name",
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Explain this status change",
   "app.components.admin.PostManager.header": "Ideas",
+  "app.components.admin.PostManager.hiddenFieldsLink": "hidden fields",
+  "app.components.admin.PostManager.hiddenFieldsTip": "Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.",
   "app.components.admin.PostManager.ideas": "ideas",
   "app.components.admin.PostManager.initiatives": "proposals",
   "app.components.admin.PostManager.latestFeedbackMode": "Use the most recent official update",
