@@ -7,6 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
+import clickOutside from 'utils/containers/clickOutside';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -44,10 +45,10 @@ const Container = styled.div`
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
   margin-right: 5px;
-  margin-top: 2px;
+  margin-top: 3px;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled(clickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -58,6 +59,11 @@ const Form = styled.form`
   flex: 1;
   border: 1px solid ${colors.border};
   border-radius: ${(props: any) => props.theme.borderRadius};
+  overflow: hidden;
+
+  &:not(.focused):hover {
+    border-color: ${colors.hoveredBorder};
+  }
 
   &.focused {
     border-color: ${colors.focussedBorder};
@@ -147,10 +153,6 @@ class ParentCommentForm extends PureComponent<
     this.setState({ focused: true });
   };
 
-  onBlur = () => {
-    this.setState({ focused: false });
-  };
-
   onCancel = () => {
     this.setState({ focused: false, inputValue: '' });
     this.textareaElement?.blur();
@@ -220,8 +222,8 @@ class ParentCommentForm extends PureComponent<
         }
 
         commentAdded();
-
         this.setState({ inputValue: '', processing: false });
+        this.textareaElement?.blur();
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
         this.setState({ errorMessage, processing: false });
@@ -278,7 +280,10 @@ class ParentCommentForm extends PureComponent<
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />
-          <FormContainer className="ideaCommentForm">
+          <FormContainer
+            className="ideaCommentForm"
+            onClickOutside={this.onCancel}
+          >
             <Form className={focused ? 'focused' : ''}>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
@@ -289,14 +294,13 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={focused ? 3 : 1}
+                  rows={!!(focused || processing) ? 3 : 1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
                   error={errorMessage}
                   onChange={this.onChange}
                   onFocus={this.onFocus}
-                  onBlur={this.onBlur}
                   fontWeight="300"
                   padding="10px"
                   borderRadius="none"
@@ -316,7 +320,6 @@ class ParentCommentForm extends PureComponent<
                     <Button
                       className="e2e-submit-parentcomment"
                       processing={processing}
-                      icon="send"
                       onClick={this.onSubmit}
                       disabled={commentButtonDisabled}
                     >
