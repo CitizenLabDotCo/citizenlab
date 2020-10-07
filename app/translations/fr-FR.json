@@ -461,6 +461,8 @@
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "Choisissez comment les autres voient votre nom",
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Expliquez ce changement de statut",
   "app.components.admin.PostManager.header": "Idées",
+  "app.components.admin.PostManager.hiddenFieldsLink": "",
+  "app.components.admin.PostManager.hiddenFieldsTip": "",
   "app.components.admin.PostManager.ideas": "idées",
   "app.components.admin.PostManager.initiatives": "propositions",
   "app.components.admin.PostManager.latestFeedbackMode": "Utiliser la dernière mise à jour comme explication",
