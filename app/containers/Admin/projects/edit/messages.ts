@@ -286,4 +286,13 @@ export default defineMessages({
     defaultMessage:
       'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
   },
+  hiddenFieldsTip: {
+    id: 'app.components.admin.PostManager.hiddenFieldsTip',
+    defaultMessage:
+      'Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.',
+  },
+  hiddenFieldsLinkText: {
+    id: 'app.components.admin.PostManager.hiddenFieldsLink',
+    defaultMessage: 'hidden fields',
+  },
 });
