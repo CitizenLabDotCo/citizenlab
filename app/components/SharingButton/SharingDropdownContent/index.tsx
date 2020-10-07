@@ -10,6 +10,7 @@ import Facebook from './Facebook';
 import Messenger from './Messenger';
 import Twitter from './Twitter';
 import Email from './Email';
+import WhatsApp from './WhatsApp';
 
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
@@ -50,6 +51,7 @@ interface Props {
   className?: string;
   url: string;
   twitterMessage: string;
+  whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
   utmParams?: UtmParams;
@@ -64,6 +66,7 @@ const SharingDropdownContent = ({
   emailBody,
   emailSubject,
   twitterMessage,
+  whatsAppMessage,
 }: Props) => {
   const { windowWidth } = useWindowSize();
   const hasEmailSharing = !!(emailBody && emailSubject);
@@ -98,6 +101,7 @@ const SharingDropdownContent = ({
         {emailBody && emailSubject && (
           <Email emailBody={emailBody} emailSubject={emailSubject} />
         )}
+        <WhatsApp whatsAppMessage={whatsAppMessage} utmParams={utmParams} />
       </Buttons>
     </Container>
   );

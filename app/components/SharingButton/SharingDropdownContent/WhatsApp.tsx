@@ -8,51 +8,55 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { Icon } from 'cl2-component-library';
+import { UtmParams } from '../.';
 
 const StyledIcon = styled(Icon)`
   width: 22px;
   height: 18px;
   margin-right: 10px;
-  fill: rgba(0, 120, 255, 1);
 `;
 
 interface Props {
-  url: string;
+  whatsAppMessage: string;
+  utmParams?: UtmParams;
 }
 
 const handleClick = (_event) => {
   trackClickByEventName(tracks.clickMessengerShare.name);
 };
 
-const Messenger = ({
-  url,
+const WhatsApp = ({
+  whatsAppMessage,
+  utmParams,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const tenant = useTenant();
+  const buildUrl = (url: string) => {
+    let resUrl = url;
 
-  if (!isNilOrError(tenant)) {
-    const facebookAppId =
-      tenant.data.attributes.settings.facebook_login?.app_id;
+    if (utmParams) {
+      resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=whatsapp`;
 
-    if (facebookAppId) {
-      return (
-        <a
-          className="sharingButton messenger"
-          href={`fb-messenger://share/?link=${encodeURIComponent(
-            url
-          )}&app_id=${facebookAppId}`}
-          onClick={handleClick}
-          role="button"
-          aria-label={formatMessage(messages.shareViaMessenger)}
-        >
-          <StyledIcon name="messenger" />
-          {'Messenger'}
-        </a>
-      );
+      if (utmParams.content) {
+        resUrl += `&utm_content=${utmParams.content}`;
+      }
     }
-  }
+    console.log(`resUrl: ${resUrl}`);
+    return resUrl;
+  };
+  const hrefText = encodeURIComponent(whatsAppMessage);
 
-  return null;
+  return (
+    <a
+      className="sharingButton"
+      href={buildUrl(`https://api.whatsapp.com/send?phone=&text=${hrefText}`)}
+      onClick={handleClick}
+      role="button"
+      aria-label={formatMessage(messages.shareViaWhatsApp)}
+    >
+      {/* <StyledIcon name="whatsapp" /> */}
+      {'WhatsApp'}
+    </a>
+  );
 };
 
-export default injectIntl(Messenger);
+export default injectIntl(WhatsApp);
