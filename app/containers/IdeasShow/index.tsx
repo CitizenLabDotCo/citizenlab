@@ -273,7 +273,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 const Comments = styled.div`
-  margin-bottom: 120px;
+  margin-bottom: 150px;
 `;
 
 interface DataProps {
