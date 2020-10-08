@@ -182,6 +182,9 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
                   twitterMessage={formatMessage(messages.twitterMessage, {
                     title,
                   })}
+                  whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+                    title,
+                  })}
                   utmParams={utmParams}
                 />
               );
