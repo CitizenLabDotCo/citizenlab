@@ -289,8 +289,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
           role="button"
           aria-label={whatsAppButtonText}
         >
-          {/* <StyledIcon name="whatsapp" /> */}
-          {'WhatsApp'}
+          <StyledIcon name="whatsapp" />
         </a>
       );
 
