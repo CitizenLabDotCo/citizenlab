@@ -429,12 +429,12 @@ module AdminApi
     end
 
     def yml_permissions shift_timestamps: 0
-      permittable_ids = [@project.id] + @project.phases.ids
-      Permission.where(permittable_id: permittable_ids).map do |p|
+      permission_scope_ids = [@project.id] + @project.phases.ids
+      Permission.where(permission_scope_id: permission_scope_ids).map do |p|
         yml_permission = {
           'action'          => p.action,
           'permitted_by'    => p.permitted_by,
-          'permittable_ref' => lookup_ref(p.permittable_id, [:project, :phase]),
+          'permission_scope_ref' => lookup_ref(p.permission_scope_id, [:project, :phase]),
           'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
           'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }

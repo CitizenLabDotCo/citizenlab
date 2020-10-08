@@ -169,10 +169,10 @@ resource "Projects" do
           slug: @projects.first.slug,
           timeline_active: nil,
           action_descriptor: {
-            posting: {enabled: false, disabled_reason: 'project_inactive', future_enabled: nil},
-            commenting: {enabled: false, disabled_reason: 'project_inactive'},
-            voting: {enabled: false, disabled_reason: 'project_inactive'},
-            comment_voting: {enabled: false, disabled_reason: 'project_inactive'},
+            posting_idea: {enabled: false, disabled_reason: 'project_inactive', future_enabled: nil},
+            commenting_idea: {enabled: false, disabled_reason: 'project_inactive'},
+            voting_idea: {enabled: false, disabled_reason: 'project_inactive'},
+            comment_voting_idea: {enabled: false, disabled_reason: 'project_inactive'},
             taking_survey: {enabled: false, disabled_reason: 'project_inactive'},
             taking_poll: {enabled: false, disabled_reason: 'project_inactive'}
           },

@@ -210,6 +210,9 @@ resource "Comments" do
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+      before do
+        PermissionsService.new.update_global_permissions
+      end
       let(:initiative_id) { @initiative.id }
       let(:comment) { build(:comment) }
       let(:body_multiloc) { comment.body_multiloc }
@@ -231,6 +234,9 @@ resource "Comments" do
         parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
       end
 
+      before do
+        PermissionsService.new.update_global_permissions
+      end
       let(:comment) { create(:comment, author: @user, post: @initiative) }
       let(:id) { comment.id }
 
@@ -249,6 +255,9 @@ resource "Comments" do
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+      before do
+        PermissionsService.new.update_global_permissions
+      end
       let(:comment) { create(:comment, author: @user, post: @initiative) }
       let(:id) { comment.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }

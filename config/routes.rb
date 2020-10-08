@@ -114,6 +114,10 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
+      # :action is already used as param, so we chose :permission_action instead
+      resources :permissions, param: :permission_action do
+        get 'participation_conditions', on: :member
+      end
       concern :participation_context do
         # :action is already used as param, so we chose :permission_action instead
         resources :permissions, param: :permission_action do
@@ -188,6 +192,7 @@ Rails.application.routes.draw do
         get 'users_by_time', **route_params
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
+        get 'active_users_by_time_cumulative', **route_params
         get 'users_by_gender', **route_params
         get 'users_by_birthyear', **route_params
         get 'users_by_domicile', **route_params
@@ -212,6 +217,8 @@ Rails.application.routes.draw do
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
         get 'ideas_by_area', **route_params
+        get 'ideas_by_status', **route_params
+        get 'ideas_by_status_as_xlsx', **route_params
 
         get 'ideas_by_time_as_xlsx', **route_params
         get 'ideas_by_time_cumulative_as_xlsx', **route_params
@@ -263,6 +270,10 @@ Rails.application.routes.draw do
 
       scope 'mentions', controller: 'mentions' do
         get 'users'
+      end
+
+      scope 'action_descriptors', controller: 'action_descriptors' do
+        get 'initiatives'
       end
 
       resources :baskets, except: [:index]

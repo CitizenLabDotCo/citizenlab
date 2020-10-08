@@ -474,7 +474,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true },
-          "posting_enabled": { "type": "boolean", "default": true },
           "voting_threshold": {
             "title": "Voting Threshold",
             "description": "Default value for how many votes a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
@@ -626,6 +625,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_reports": {
+        "type": "object",
+        "title": "Project Reports",
+        "description": "Browse and download the results of a project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 

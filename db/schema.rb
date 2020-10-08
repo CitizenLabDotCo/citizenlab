@@ -616,12 +616,12 @@ ActiveRecord::Schema.define(version: 2020_10_01_174500) do
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
-    t.uuid "permittable_id", null: false
-    t.string "permittable_type", null: false
+    t.uuid "permission_scope_id"
+    t.string "permission_scope_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_permissions_on_action"
-    t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
+    t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
   end
 
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

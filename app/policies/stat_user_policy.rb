@@ -37,6 +37,10 @@ class StatUserPolicy < ApplicationPolicy
   def active_users_by_time?
     user&.active? && (user.admin? || user.project_moderator?)
   end
+  
+  def active_users_by_time_cumulative?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
 
   def users_by_gender?
     user&.active? && (user.admin? || user.project_moderator?)

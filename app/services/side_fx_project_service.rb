@@ -15,6 +15,9 @@ class SideFxProjectService
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc))
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
+    if project.admin_publication.published?
+      after_publish project, user
+    end
     @sfx_pc.after_create project, user if project.is_participation_context?
   end
 
@@ -24,6 +27,9 @@ class SideFxProjectService
   end
 
   def after_update project, user
+    if project.admin_publication.publication_status_previous_change == ['draft','published']
+      after_publish project, user
+    end
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
     @sfx_pc.after_update project, user if project.is_participation_context?
   end
@@ -46,6 +52,10 @@ class SideFxProjectService
 
 
   private
+
+  def after_publish project, user
+    LogActivityJob.set(wait: 20.seconds).perform_later(project, 'published', user, Time.now.to_i)
+  end
 
   def remove_moderators project_id
     User.project_moderator(project_id).all.each do |moderator|

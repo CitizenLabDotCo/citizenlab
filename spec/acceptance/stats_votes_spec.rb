@@ -409,7 +409,7 @@ resource "Stats - Votes" do
           topic1.id => 3,
           topic2.id => 2
         })
-        expect(json_response[:topics].keys.map(&:to_s)).to eq [topic1.id, topic2.id]
+        expect(json_response[:topics].keys.map(&:to_s)).to eq [topic1.id, topic2.id, topic3.id]
       end
     end
 

@@ -46,7 +46,11 @@ describe InvitesService do
           input_type: 'checkbox'
         )
         create(:custom_field,
-          key: 'number_field',
+          key: 'float_field',
+          input_type: 'number'
+        )
+        create(:custom_field,
+          key: 'integer_field',
           input_type: 'number'
         )
       end
@@ -59,11 +63,12 @@ describe InvitesService do
         {email: "user4@domain.net", checkbox_field: 0},
         {email: "user5@domain.net", checkbox_field: "FALSE"},
 
-        {email: "user6@domain.net", number_field: "666"}
+        {email: "user6@domain.net", float_field: "666.34"},
+        {email: "user7@domain.net", integer_field: "1873050293742134"}
       ]}
 
       it "initializes custom_field_values with matching column names and appropriate types" do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(6)
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(7)
 
         user = User.find_by(email: "user1@domain.net")
         expect(user.custom_field_values).to eq({"text_field" => "some_value"})
@@ -81,7 +86,10 @@ describe InvitesService do
         expect(user.custom_field_values).to eq({"checkbox_field" => false})
 
         user = User.find_by(email: "user6@domain.net")
-        expect(user.custom_field_values).to eq({"number_field" => 666})
+        expect(user.custom_field_values).to eq({"float_field" => 666.34})
+
+        user = User.find_by(email: "user7@domain.net")
+        expect(user.custom_field_values).to eq({"integer_field" => 1873050293742134})
       end
     end
 
