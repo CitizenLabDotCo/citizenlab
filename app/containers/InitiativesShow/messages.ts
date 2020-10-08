@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.twitterMessage',
     defaultMessage: 'Vote for {initiativeTitle} on',
   },
+  whatsAppMessage: {
+    id: 'app.containers.InitiativesShow.whatsAppMessage',
+    defaultMessage: 'Vote for {initiativeTitle} on',
+  },
   emailSharingSubject: {
     id: 'app.containers.InitiativesShow.emailSharingSubject',
     defaultMessage: 'Support my initiative: {initiativeTitle}.',

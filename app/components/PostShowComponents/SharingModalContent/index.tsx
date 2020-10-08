@@ -172,6 +172,9 @@ class SharingModalContent extends PureComponent<
               twitterMessage={formatMessage(messages.twitterMessage, {
                 postTitle,
               })}
+              whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+                postTitle,
+              })}
               emailSubject={formatMessage(emailSharingSubject, { postTitle })}
               emailBody={formatMessage(emailSharingBody, { postUrl })}
               utmParams={{
