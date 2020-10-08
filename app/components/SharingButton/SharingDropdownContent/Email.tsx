@@ -20,7 +20,7 @@ interface Props {
   emailBody: string;
 }
 
-const handleClick = (_event) => {
+const onClick = (_event) => {
   trackClickByEventName(tracks.clickEmailShare.name);
 };
 
@@ -34,7 +34,7 @@ const Email = ({
       className="sharingButton last email"
       href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
       target="_blank"
-      onClick={handleClick}
+      onClick={onClick}
     >
       <StyledIcon ariaHidden name="email" />
       <span aria-hidden>{'Email'}</span>
