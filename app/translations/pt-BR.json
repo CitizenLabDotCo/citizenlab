@@ -22,7 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuários",
   "app.components.CityLogoSection.iframeTitle": "Mais informações sobre {orgName}",
   "app.components.CityLogoSection.slogan": "O site é uma iniciativa de {orgName}",
-  "app.components.Comments.cancel": "Cancel",
+  "app.components.Comments.cancel": "Cancelar",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Não é possível fazer ou comentario sobre essa ideia porque ainda não está em consideração ou nao se encontra mais disponível",
   "app.components.Comments.commentingDisabledInContext": "Comentar ideias em '{projectName}' está actualmente desactivado.",
   "app.components.Comments.commentingDisabledNotVerified": "Comentar esta ideia requer a verificação do seu perfil. {verificationLink}",
