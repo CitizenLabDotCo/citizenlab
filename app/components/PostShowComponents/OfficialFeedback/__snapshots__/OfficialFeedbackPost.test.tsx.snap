@@ -32,7 +32,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     aria-live="polite"
   />
   <QuillEditedContent
-    fontWeight={300}
+    fontWeight={400}
   >
     <OfficialFeedbackPost__Body
       className="e2e-official-feedback-post-body"
@@ -108,7 +108,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
     aria-live="polite"
   />
   <QuillEditedContent
-    fontWeight={300}
+    fontWeight={400}
   >
     <OfficialFeedbackPost__Body
       className="e2e-official-feedback-post-body"

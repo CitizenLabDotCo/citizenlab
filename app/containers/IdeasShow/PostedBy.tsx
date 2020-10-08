@@ -37,7 +37,9 @@ interface Props {
 }
 
 const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
-  const userName = <UserName userId={authorId} isLinkToProfile emphasize />;
+  const userName = (
+    <UserName userId={authorId} isLinkToProfile fontWeight={500} />
+  );
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
@@ -55,7 +57,7 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
       <Container className={`e2e-idea-author ${className || ''}`}>
         <StyledAvatar
           userId={authorId}
-          size="32px"
+          size="30px"
           isLinkToProfile={!!authorId}
         />
         <FormattedMessage

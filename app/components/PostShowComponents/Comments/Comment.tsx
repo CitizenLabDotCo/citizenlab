@@ -24,57 +24,22 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  margin-bottom: 50px;
-
-  &.child {
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-  }
-
-  ${media.smallerThanMinTablet`
-    margin-bottom: 35px;
-  `}
-`;
+const Container = styled.div``;
 
 const ContainerInner = styled.div`
   position: relative;
 
-  &.parent {
-    margin-bottom: 20px;
-  }
-
   &.child {
-    margin-left: 30px;
+    margin-top: 40px;
+    margin-left: 38px;
   }
-
-  ${media.smallerThanMinTablet`
-    &.parent {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    &.child {
-      margin-left: 40px;
-      margin-right: 20px;
-    }
-  `}
-
-  ${media.phone`
-    &.child {
-      margin-left: 20px;
-    }
-  `}
 `;
 
 const Content = styled.div`
   display: flex;
-
-  &.indent {
-    margin-left: 40px;
-  }
+  margin-left: 39px;
 `;
 
 const BodyAndFooter = styled.div`
@@ -104,7 +69,6 @@ interface InputProps {
   commentId: string;
   commentType: 'parent' | 'child';
   hasChildComments?: boolean;
-  canReply?: boolean;
   last?: boolean;
   className?: string;
 }
@@ -123,7 +87,6 @@ interface State {
 class Comment extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     hasChildComment: false,
-    canReply: true,
     last: false,
   };
 
@@ -157,7 +120,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
       hasChildComments,
       last,
       className,
-      canReply,
     } = this.props;
     const { editing } = this.state;
 
@@ -192,7 +154,7 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                   className={commentType === 'parent' ? 'marginBottom' : ''}
                 />
 
-                <Content className={commentType === 'child' ? 'indent' : ''}>
+                <Content>
                   <BodyAndFooter>
                     <CommentBody
                       commentId={commentId}
@@ -209,7 +171,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                       commentId={commentId}
                       commentType={commentType}
                       onEditing={this.onEditing}
-                      canReply={canReply}
                     />
                   </BodyAndFooter>
                 </Content>

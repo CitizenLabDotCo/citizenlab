@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Voting from './Voting';
 import Buttons from '../Buttons';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -10,7 +11,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
-  background-color: #edeff0; // TODO: add color to component library
+  background-color: ${colors.background};
   border-radius: 2px;
   padding: 25px 15px;
 `;
