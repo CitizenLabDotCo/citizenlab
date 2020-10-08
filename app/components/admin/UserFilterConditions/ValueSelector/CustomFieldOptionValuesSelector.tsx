@@ -4,20 +4,20 @@ import GetUserCustomFieldOptions, {
 } from 'resources/GetUserCustomFieldOptions';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
-import { Select } from 'cl2-component-library';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
   rule: TRule;
-  value: string;
-  onChange: (string) => void;
+  value: string[];
+  onChange: (values: string[]) => void;
   options: GetUserCustomFieldOptionsChildProps;
 };
 
 type State = {};
 
-class CustomFieldOptionValueSelector extends React.PureComponent<
+class CustomFieldOptionValuesSelector extends React.PureComponent<
   Props & InjectedLocalized,
   State
 > {
@@ -34,14 +34,15 @@ class CustomFieldOptionValueSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
+  handleOnChange = (options: IOption[]) => {
+    const optionIds = options.map((o) => o.value);
+    this.props.onChange(optionIds);
   };
 
   render() {
     const { value } = this.props;
     return (
-      <Select
+      <MultipleSelect
         value={value}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
@@ -50,14 +51,14 @@ class CustomFieldOptionValueSelector extends React.PureComponent<
   }
 }
 
-const CustomFieldOptionValueSelectorWithHOC = localize(
-  CustomFieldOptionValueSelector
+const CustomFieldOptionValuesSelectorWithHOC = localize(
+  CustomFieldOptionValuesSelector
 );
 
-export default (inputProps) => (
+export default (inputProps: Props) => (
   <GetUserCustomFieldOptions customFieldId={inputProps.rule?.['customFieldId']}>
     {(options) => (
-      <CustomFieldOptionValueSelectorWithHOC
+      <CustomFieldOptionValuesSelectorWithHOC
         {...inputProps}
         options={options}
       />
