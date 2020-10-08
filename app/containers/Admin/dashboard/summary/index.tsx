@@ -49,6 +49,7 @@ import {
   ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
   ideasByTimeStream,
+  usersByTimeXlsxEndpoint,
 } from 'services/stats';
 import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
@@ -352,7 +353,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               graphTitle={formatMessage(messages.usersByTimeTitle)}
               startAt={startAt}
               endAt={endAt}
-              xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
+              xlsxEndpoint={usersByTimeXlsxEndpoint}
               lineStream={usersByTimeCumulativeStream}
               barStream={usersByTimeStream}
               className="e2e-active-users-chart"

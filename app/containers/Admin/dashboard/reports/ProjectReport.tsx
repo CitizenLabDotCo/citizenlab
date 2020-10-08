@@ -16,7 +16,6 @@ import GetUserCustomFields, {
 } from 'resources/GetUserCustomFields';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
-  activeUsersByTimeCumulativeStream,
   activeUsersByTimeStream,
   ideasByTimeCumulativeXlsxEndpoint,
   ideasByTimeCumulativeStream,
@@ -42,6 +41,7 @@ import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 import CustomFieldComparison from './CustomFieldComparison';
+import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -213,16 +213,15 @@ const ProjectReport = memo(
               <FormattedMessage {...messages.sectionWho} />
             </SectionTitle>
             <GraphsContainer>
-              <LineBarChart
-                graphTitle={formatMessage(messages.participantsOverTimeTitle)}
-                xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
-                graphUnit="users"
-                graphUnitMessageKey="users"
+              <BarChartActiveUsersByTime
                 startAt={startAt}
                 endAt={endAt}
-                barStream={activeUsersByTimeStream}
-                lineStream={activeUsersByTimeCumulativeStream}
+                stream={activeUsersByTimeStream}
                 resolution={resolution}
+                graphUnit="users"
+                graphUnitMessageKey="users"
+                graphTitle={formatMessage(messages.participantsOverTimeTitle)}
+                xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
