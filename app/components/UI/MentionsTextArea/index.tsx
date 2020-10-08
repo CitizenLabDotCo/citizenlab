@@ -36,6 +36,12 @@ const Container = styled.div`
   & .textareaWrapper__highlighter,
   & textarea {
     background: transparent !important;
+    transition: all 150ms cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  }
+
+  & textarea::placeholder {
+    opacity: 1 !important;
+    color: #767676 !important;
   }
 
   & .textareaWrapper__highlighter > strong {
