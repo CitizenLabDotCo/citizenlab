@@ -11,6 +11,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     :users_by_time,
     :users_by_time_cumulative,
     :active_users_by_time,
+    :active_users_by_time_cumulative,
   ]
   before_action :render_no_data_as_xlsx, only: [
     :users_by_time_as_xlsx,
@@ -101,6 +102,44 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
      filename: 'users_by_time_cumulative.xlsx'
  end
 
+  def active_users_by_time_cumulative_serie
+
+    activities_scope = Activity
+      .select(:user_id).distinct
+      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
+
+    ps = ParticipantsService.new
+    activities_scope = ps.filter_engaging_activities(activities_scope)
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.project_participants(project)
+      activities_scope = activities_scope.where(user_id: participants)
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      activities_scope = activities_scope.where(user_id: group.members)
+    end
+
+    if params[:topic]
+      users_scope = @@stats_service.filter_users_by_topic(User, params[:topic])
+      activities_scope = activities_scope.where(user_id: users_scope)
+    end
+
+    @@stats_service.group_by_time_cumulative(
+      activities_scope,
+      'acted_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+  end
+
+  def active_users_by_time_cumulative
+    render json: {series: {users: active_users_by_time_cumulative_serie}}
+  end
+
   def active_users_by_time_serie
     activities_scope = Activity
       .select(:user_id).distinct
@@ -111,7 +150,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if params[:project]
       project = Project.find(params[:project])
-      participants = ps.projects_participants([project])
+      participants = ps.project_participants(project)
       activities_scope = activities_scope.where(user_id: participants)
     end
 
@@ -153,6 +192,14 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    ps = ParticipantsService.new
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.project_participants(project)
+      users = users.where(id: participants)
+    end
+
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'gender'")
@@ -181,6 +228,14 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+    ps = ParticipantsService.new
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.project_participants(project)
+      users = users.where(id: participants)
+    end
+
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'birthyear'")
@@ -206,6 +261,14 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     if params[:group]
       group = Group.find(params[:group])
       users = users.merge(group.members)
+    end
+
+    ps = ParticipantsService.new
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.project_participants(project)
+      users = users.where(id: participants)
     end
 
     serie = users
@@ -251,6 +314,16 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       users = users.merge(group.members)
     end
 
+
+    ps = ParticipantsService.new
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.project_participants(project)
+      users = users.where(id: participants)
+    end
+
+
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'education'")
@@ -276,6 +349,16 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       group = Group.find(params[:group])
       users = users.merge(group.members)
     end
+
+
+    ps = ParticipantsService.new
+
+    if params[:project]
+      project = Project.find(params[:project])
+      participants = ps.project_participants(project)
+      users = users.where(id: participants)
+    end
+
 
     case @custom_field.input_type
     when 'select'
@@ -312,7 +395,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     @custom_field = CustomField.find(params[:custom_field_id])
     serie = users_by_custom_field_serie
     if ['select', 'multiselect'].include?(@custom_field.input_type)
-      options = @custom_field.custom_field_options.where(key: serie.keys).select(:key, :title_multiloc)
+      options = @custom_field.custom_field_options.select(:key, :title_multiloc)
       render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
     else
       render json: {series: {users: serie}}
@@ -324,15 +407,20 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
     if ['select', 'multiselect'].include?(@custom_field.input_type)
       serie = users_by_custom_field_serie
-      options = @custom_field.custom_field_options.where(key: serie.keys).select(:key, :title_multiloc)
-      res = serie.map { |option_id, users|
-        option = option_id != "_blank" ? @@multiloc_service.t(options.find_by(key: option_id).attributes["title_multiloc"]) : "unknown"
+      options = @custom_field.custom_field_options.select(:key, :title_multiloc)
+
+      res = options.map { |option|
         {
-          "option_id" => option_id,
-          "option" => option,
-          "users" => users
+          "option_id" => option.key,
+          "option" => @@multiloc_service.t(option.title_multiloc),
+          "users" => serie[option.key] || 0
         }
       }
+      res.push({
+        "option_id" => "_blank",
+        "option" =>"unknown",
+        "users" => serie["_blank"] || 0
+        })
       xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
     else

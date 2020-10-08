@@ -29,14 +29,17 @@ resource "Phases" do
   get "web_api/v1/phases/:id" do
     let(:id) { @phases.first.id }
 
-    example_request "Get one phase by id" do
+    example "Get one phase by id" do
+      create_list(:idea, 2, project: @project, phases: @phases)
+      do_request
       expect(status).to eq 200
       json_response = json_parse(response_body)
 
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
-        voting_method: 'unlimited'
+        voting_method: 'unlimited',
+        ideas_count: 2
         )
       expect(json_response.dig(:data, :relationships)).to include(
         project: {
