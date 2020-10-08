@@ -310,7 +310,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />
-          <FormContainer onClickOutside={this.onCancel}>
+          <FormContainer
+            onClickOutside={this.onCancel}
+            closeOnClickOutsideEnabled={false}
+          >
             <Form className={focused ? 'focused' : ''}>
               <label>
                 <HiddenLabel>

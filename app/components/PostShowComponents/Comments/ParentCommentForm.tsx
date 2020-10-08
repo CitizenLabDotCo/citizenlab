@@ -76,11 +76,15 @@ const HiddenLabel = styled.span`
 `;
 
 const ButtonWrapper = styled.div`
-  display: flex;
   justify-content: flex-end;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
+  display: none;
+
+  &.visible {
+    display: flex;
+  }
 `;
 
 const CancelButton = styled(Button)`
@@ -285,6 +289,7 @@ class ParentCommentForm extends PureComponent<
           <FormContainer
             className="ideaCommentForm"
             onClickOutside={this.close}
+            closeOnClickOutsideEnabled={false}
           >
             <Form className={focused ? 'focused' : ''}>
               <label htmlFor="submit-comment">
@@ -296,7 +301,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={!!(focused || processing) ? 3 : 1}
+                  rows={!!(focused || processing) ? 4 : 1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
@@ -310,25 +315,25 @@ class ParentCommentForm extends PureComponent<
                   boxShadow="none"
                   getTextareaRef={this.setRef}
                 />
-                {(focused || processing) && (
-                  <ButtonWrapper>
-                    <CancelButton
-                      disabled={processing}
-                      onClick={this.close}
-                      buttonStyle="secondary"
-                    >
-                      <FormattedMessage {...messages.cancel} />
-                    </CancelButton>
-                    <Button
-                      className="e2e-submit-parentcomment"
-                      processing={processing}
-                      onClick={this.onSubmit}
-                      disabled={commentButtonDisabled}
-                    >
-                      <FormattedMessage {...messages.publishComment} />
-                    </Button>
-                  </ButtonWrapper>
-                )}
+                <ButtonWrapper
+                  className={!!(focused || processing) ? 'visible' : ''}
+                >
+                  <CancelButton
+                    disabled={processing}
+                    onClick={this.close}
+                    buttonStyle="secondary"
+                  >
+                    <FormattedMessage {...messages.cancel} />
+                  </CancelButton>
+                  <Button
+                    className="e2e-submit-parentcomment"
+                    processing={processing}
+                    onClick={this.onSubmit}
+                    disabled={commentButtonDisabled}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
               </label>
             </Form>
           </FormContainer>
