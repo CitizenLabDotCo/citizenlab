@@ -16,7 +16,6 @@ import GetUserCustomFields, {
 } from 'resources/GetUserCustomFields';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
-  activeUsersByTimeCumulativeStream,
   activeUsersByTimeStream,
   ideasByTimeCumulativeXlsxEndpoint,
   ideasByTimeCumulativeStream,
