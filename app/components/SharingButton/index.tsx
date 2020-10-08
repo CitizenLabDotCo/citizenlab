@@ -1,6 +1,6 @@
 import React from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-import SharingDropdownContent from './SharingDropdownContent';
+import SharingButtonDropdownContent from './SharingButtonDropdownContent';
 
 export type UtmParams = {
   source: string;
@@ -34,7 +34,7 @@ const SharingButton = ({
       className={className}
       buttonComponent={buttonComponent}
       dropdownContent={
-        <SharingDropdownContent
+        <SharingButtonDropdownContent
           url={url}
           twitterMessage={twitterMessage}
           whatsAppMessage={whatsAppMessage}
