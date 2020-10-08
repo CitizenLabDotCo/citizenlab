@@ -9,6 +9,7 @@ import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
 import { Spinner } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
 // services
 import { childCommentsStream, IComments } from 'services/comments';
@@ -27,15 +28,15 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken, lighten } from 'polished';
+import styled, { withTheme } from 'styled-components';
+import { darken } from 'polished';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
 const Container = styled.div`
   position: relative;
+  margin-bottom: 40px;
 `;
 
 const ParentCommentContainer = styled.div`
@@ -43,49 +44,13 @@ const ParentCommentContainer = styled.div`
 `;
 
 const StyledChildCommentForm = styled(ChildCommentForm)`
-  margin-left: 30px;
-  margin-bottom: 50px;
+  margin-top: 30px;
+  margin-left: 38px;
 `;
 
-const LoadMoreText = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  line-height: normal;
-  text-decoration: underline;
-  border: none;
-  padding: 0;
-  padding: 12px;
-  margin: 0;
-  transition: all 150ms ease-out;
-`;
-
-const LoadMore = styled.button`
-  width: 100%;
-  min-height: 45px;
-  padding: 0;
-  border: none;
-  border-top: solid 1px #e8e8e8;
-  border-bottom: solid 1px #e8e8e8;
-  background: ${lighten(0.02, '#f0f0f1')};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 150ms ease-out;
-  margin-bottom: 20px;
-  margin-left: 30px;
-
-  &.clickable {
-    cursor: pointer;
-
-    &:hover {
-      background: ${darken(0.01, '#f0f0f1')};
-
-      ${LoadMoreText} {
-        color: ${darken(0.25, colors.label)};
-      }
-    }
-  }
+const LoadMoreButton = styled(Button)`
+  margin-top: 20px;
+  margin-left: 38px;
 `;
 
 interface InputProps {
@@ -103,7 +68,9 @@ interface DataProps {
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   canLoadMore: boolean;
@@ -192,6 +159,7 @@ class ParentComment extends PureComponent<Props, State> {
       post,
       className,
       commentingPermissionInitiative,
+      theme,
     } = this.props;
     const {
       canLoadMore,
@@ -226,7 +194,6 @@ class ParentComment extends PureComponent<Props, State> {
             )
             .map((comment) => comment.id)
         : this.props.childCommentIds;
-      const canReply = comment.attributes.publication_status !== 'deleted';
       const showLoadMore = canLoadMore && !hasLoadedMore;
 
       // hide parent comments that are deleted when they have no children
@@ -250,24 +217,28 @@ class ParentComment extends PureComponent<Props, State> {
               commentId={commentId}
               commentType="parent"
               hasChildComments={hasChildComments}
-              canReply={canReply}
             />
           </ParentCommentContainer>
 
           {showLoadMore && (
-            <LoadMore
-              onMouseDown={this.removeFocus}
+            <LoadMoreButton
               onClick={this.loadMore}
               className={!isLoadingMore ? 'clickable' : ''}
+              disabled={isLoadingMore}
+              bgColor="white"
+              textColor={theme.colorText}
+              bgHoverColor="white"
+              textHoverColor={darken(0.1, theme.colorText)}
+              fontWeight="bold"
+              borderColor="#E0E0E0"
+              borderThickness="2px"
             >
               {!isLoadingMore ? (
-                <LoadMoreText>
-                  <FormattedMessage {...messages.loadMoreComments} />
-                </LoadMoreText>
+                <FormattedMessage {...messages.loadMoreComments} />
               ) : (
                 <Spinner size="25px" />
               )}
-            </LoadMore>
+            </LoadMoreButton>
           )}
 
           {childCommentIds &&
@@ -281,7 +252,6 @@ class ParentComment extends PureComponent<Props, State> {
                 commentId={childCommentId}
                 commentType="child"
                 last={index === childCommentIds.length - 1}
-                canReply={canReply}
               />
             ))}
 
@@ -302,6 +272,8 @@ class ParentComment extends PureComponent<Props, State> {
   }
 }
 
+const ParentCommentWithHoC = withTheme(ParentComment);
+
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   comment: ({ commentId, render }) => (
@@ -319,6 +291,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <ParentComment {...inputProps} {...dataProps} />}
+    {(dataProps) => <ParentCommentWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

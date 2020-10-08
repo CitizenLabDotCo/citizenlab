@@ -22,6 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} users",
   "app.components.CityLogoSection.iframeTitle": "More information about {orgName}",
   "app.components.CityLogoSection.slogan": "This website is an initiative from {orgName}",
+  "app.components.Comments.cancel": "Cancel",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
   "app.components.Comments.commentingDisabledInContext": "Commenting on ideas in '{projectName}' is currently disabled.",
   "app.components.Comments.commentingDisabledNotVerified": "Commenting on this idea requires verification of your profile. {verificationLink}",

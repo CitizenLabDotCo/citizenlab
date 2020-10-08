@@ -28,6 +28,12 @@ import { deleteCommentModalClosed, commentDeleted } from './events';
 // Styling
 import styled from 'styled-components';
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const ButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -196,11 +202,9 @@ class CommentsMoreActions extends PureComponent<
 
     return (
       <>
-        <MoreActionsMenu
-          ariaLabel={ariaLabel}
-          className={className}
-          actions={actions}
-        />
+        <Container className={className || ''}>
+          <MoreActionsMenu ariaLabel={ariaLabel} actions={actions} />
+        </Container>
 
         <Modal
           opened={modalVisible_delete}

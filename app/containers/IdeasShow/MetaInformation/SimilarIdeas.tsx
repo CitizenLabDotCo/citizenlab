@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
@@ -23,7 +23,7 @@ const IdeaList = styled.ul`
 `;
 
 const IdeaListItem = styled.li`
-  color: ${(props) => props.theme.colorText};
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
   line-height: normal;
   overflow-wrap: break-word;
@@ -37,11 +37,13 @@ const IdeaListItem = styled.li`
 `;
 
 const IdeaLink = styled(Link)`
-  color: ${(props) => props.theme.colorText};
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
   text-decoration: underline;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 `;
@@ -51,7 +53,7 @@ interface Props {
   className?: string;
 }
 
-const SimilarIdeas = ({ similarIdeas, className }: Props) => {
+const SimilarIdeas = memo<Props>(({ similarIdeas, className }) => {
   const onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   };
@@ -70,6 +72,6 @@ const SimilarIdeas = ({ similarIdeas, className }: Props) => {
       ))}
     </IdeaList>
   );
-};
+});
 
 export default SimilarIdeas;

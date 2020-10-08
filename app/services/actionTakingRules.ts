@@ -98,7 +98,6 @@ const ideaPostingDisabledReason = (
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
         action: null,
       };
-
     default:
       return {
         disabledReason: 'notPermitted',
