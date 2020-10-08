@@ -1803,6 +1803,7 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Proiect: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Conectați-vă pentru a vizualiza acest folder.} other {Nu există niciun folder aici.}}",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title}: Împărtășiți-vă ideile pe",
+  "app.containers.ProjectFolderShowPage.whatsAppMessage": "",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Informații despre acest proiect",
   "app.containers.ProjectInfo.twitterMessage": "{title}: Împărtășiți-vă ideile pe",
   "app.containers.ProjectInfo.whatsAppMessage": "",

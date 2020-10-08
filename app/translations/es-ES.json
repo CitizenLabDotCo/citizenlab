@@ -1803,6 +1803,7 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Proyecto: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "No hay carpetas aquí.",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title} : Comparte tus ideas en",
+  "app.containers.ProjectFolderShowPage.whatsAppMessage": "",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Información sobre este proyecto",
   "app.containers.ProjectInfo.twitterMessage": "{title} : comparte tus ideas en",
   "app.containers.ProjectInfo.whatsAppMessage": "",
