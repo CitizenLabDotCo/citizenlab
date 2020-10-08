@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../tracks';
 import trackClickByEventName from './trackClickByEventName';
-import useTenant from 'hooks/useTenant';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -12,7 +10,7 @@ import { UtmParams } from '../.';
 
 const StyledIcon = styled(Icon)`
   width: 22px;
-  height: 18px;
+  height: 22px;
   margin-right: 10px;
 `;
 
@@ -53,7 +51,7 @@ const WhatsApp = ({
       role="button"
       aria-label={formatMessage(messages.shareViaWhatsApp)}
     >
-      {/* <StyledIcon name="whatsapp" /> */}
+      <StyledIcon name="whatsapp" />
       {'WhatsApp'}
     </a>
   );
