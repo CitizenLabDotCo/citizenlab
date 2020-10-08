@@ -22,6 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Benutzer",
   "app.components.CityLogoSection.iframeTitle": "Weitere Informationen zu {orgName}",
   "app.components.CityLogoSection.slogan": "{tenantName, select, Wunsiedel {Diese Webseite ist eine Initiative des Landkreises Wunsiedel i. Fichtelgebirge} other {Diese Webseite ist eine Initiative der {orgName}}}",
+  "app.components.Comments.cancel": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Diese Idee kann nicht kommentiert werden, da sie nicht mehr oder noch nicht in Erwägung gezogen wird.",
   "app.components.Comments.commentingDisabledInContext": "{orgName, select, München {Kommentare zu Mängeln in \"{projectName} sind derzeit deaktiviert} other {Kommentare für Ideen zu \"{projectName}\" sind derzeit deaktiviert.}}",
   "app.components.Comments.commentingDisabledNotVerified": "Das Kommentieren dieser Idee, erfordert die Verifizierung deines Kontos. {Verifizierungslink}",

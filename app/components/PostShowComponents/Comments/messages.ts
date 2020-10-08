@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.Comments.invisibleTitleComments',
     defaultMessage: 'Comments',
   },
+  cancel: {
+    id: 'app.components.Comments.cancel',
+    defaultMessage: 'Cancel',
+  },
   official: {
     id: 'app.components.Comments.official',
     defaultMessage: 'Official',

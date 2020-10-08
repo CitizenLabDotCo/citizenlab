@@ -22,6 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
   "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
   "app.components.CityLogoSection.slogan": "Deze website is een initiatief van {orgName}",
+  "app.components.Comments.cancel": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Reageren op dit idee is niet mogelijk omdat het nog niet of niet langer in overweging wordt genomen.",
   "app.components.Comments.commentingDisabledInContext": "Reageren op ideeën in '{projectName}' is momenteel uitgeschakeld.",
   "app.components.Comments.commentingDisabledNotVerified": "Om te kunnen reageren op dit idee moet je je identiteit verifiëren. {verificationLink}",

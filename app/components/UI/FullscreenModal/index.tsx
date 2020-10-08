@@ -217,7 +217,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           className={bottomBar ? 'hasBottomBar' : ''}
           windowHeight={windowHeight}
         >
-          <StyledFocusOn shards={shards}>
+          <StyledFocusOn autoFocus={false} shards={shards}>
             {topBar}
             <Content>{children}</Content>
             {bottomBar}

@@ -36,13 +36,11 @@ const PostPageFullscreenModal = memo<Props>(
 
     const topBar = useMemo(() => {
       if (postId && type === 'idea') {
-        return <IdeaShowPageTopBar ideaId={postId} insideModal={true} />;
+        return <IdeaShowPageTopBar ideaId={postId} insideModal />;
       }
 
       if (postId && type === 'initiative') {
-        return (
-          <InitiativeShowPageTopBar initiativeId={postId} insideModal={true} />
-        );
+        return <InitiativeShowPageTopBar initiativeId={postId} insideModal />;
       }
 
       return null;
@@ -55,7 +53,7 @@ const PostPageFullscreenModal = memo<Props>(
 
           return (
             <>
-              <IdeasShow ideaId={postId} projectId={projectId} />
+              <IdeasShow ideaId={postId} projectId={projectId} insideModal />
               <PlatformFooter insideModal />
             </>
           );

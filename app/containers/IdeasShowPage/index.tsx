@@ -79,6 +79,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
         <StyledIdeasShow
           ideaId={idea.id}
           projectId={idea.relationships.project.data.id}
+          insideModal={false}
         />
       </Container>
     );
