@@ -24,11 +24,13 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
 
       if (insideModal) {
         eventEmitter.emit('closeIdeaModal');
+      } else if (!isNilOrError(project)) {
+        clHistory.push(`/projects/${project.attributes.slug}`);
       } else {
         clHistory.push('/');
       }
     },
-    [insideModal]
+    [insideModal, project]
   );
 
   if (!isNilOrError(project) && !isNilOrError(locale)) {
