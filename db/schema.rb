@@ -654,6 +654,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_174500) do
     t.integer "max_budget"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
+    t.integer "ideas_count", default: 0, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
