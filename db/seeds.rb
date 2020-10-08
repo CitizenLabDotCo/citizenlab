@@ -220,6 +220,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      smart_groups: {
+        enabled: true,
+        allowed: true
+      },
       surveys: {
         enabled: true,
         allowed: true
@@ -243,7 +247,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
       initiatives: {
         enabled: true,
         allowed: true,
-        posting_enabled: true,
         voting_threshold: 20,
         days_limit: 5,
         threshold_reached_message: MultilocService.new.i18n_to_multiloc(
@@ -814,7 +817,11 @@ if Apartment::Tenant.current == 'localhost'
     ])
 
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
-      permitted_by = ['groups', 'admins_moderators'].shuffle.first
+      permitted_by = if permission.action == 'taking_survey'
+        ['everyone', 'users', 'groups', 'admins_moderators']
+      else
+        ['users', 'groups', 'admins_moderators']
+      end.shuffle.first
       permission.permitted_by = permitted_by
       if permitted_by == 'groups'
         permission.groups = Group.all.shuffle.take(rand(5))

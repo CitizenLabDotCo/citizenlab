@@ -224,8 +224,12 @@ class User < ApplicationRecord
     !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
   end
 
+  def admin_or_moderator? project_id
+    admin? || (project_id && project_moderator?(project_id))
+  end
+
   def active_admin_or_moderator? project_id
-    active? && (admin? || project_moderator?(project_id))
+    active? && admin_or_moderator?(project_id)
   end
 
   def highest_role

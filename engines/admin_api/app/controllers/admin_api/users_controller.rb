@@ -48,11 +48,21 @@ module AdminApi
       @user = User.find(params[:id])
     end
 
-    def user_params
-      params
-        .require(:user)
-        .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: [:type, :project_id])
-    end
+  def allowed_custom_field_keys
+    enabled_fields = CustomField
+      .with_resource_type('User')
+      .enabled
+    simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
+    array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
+
+    [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+  end
+
+  def user_params
+    params
+      .require(:user)
+      .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: [:type, :project_id], custom_field_values: allowed_custom_field_keys)
+  end
 
   end
 end

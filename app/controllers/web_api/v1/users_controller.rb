@@ -132,7 +132,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user, 
         params: fastjson_params(granted_permissions: permissions),
-        include: [:granted_permissions, :'granted_permissions.permittable']
+        include: [:granted_permissions, :'granted_permissions.permission_scope']
         ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
