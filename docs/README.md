@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-10-08
+
+### Added
+- Project reports
+
+### Changed
+- Small styling fixes
+
 ## 2020-10-01
 
 ### Changed
