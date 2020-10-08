@@ -7,10 +7,14 @@ namespace :fix_existing_tenants do
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         puts "Processing tenant #{tenant.host}..."
 
-        fixes += Idea.counter_culture_fix_counts.map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Comment.counter_culture_fix_counts.map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Membership.counter_culture_fix_counts.map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Vote.counter_culture_fix_counts.map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += Idea.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += IdeasPhase.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += Comment.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += OfficialFeedback.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += Membership.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += Vote.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += EmailCampaigns::Delivery.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += Volunteering::Volunteer.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
       end
     end
 
