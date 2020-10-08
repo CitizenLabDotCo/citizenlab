@@ -22,6 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "crwdns27796:0{numberOfUsers}crwdne27796:0",
   "app.components.CityLogoSection.iframeTitle": "crwdns27862:0{orgName}crwdne27862:0",
   "app.components.CityLogoSection.slogan": "crwdns27864:0{orgName}crwdne27864:0",
+  "app.components.Comments.cancel": "crwdns58902:0crwdne58902:0",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "crwdns27008:0crwdne27008:0",
   "app.components.Comments.commentingDisabledInContext": "crwdns27010:0{projectName}crwdne27010:0",
   "app.components.Comments.commentingDisabledNotVerified": "crwdns28720:0{verificationLink}crwdne28720:0",
