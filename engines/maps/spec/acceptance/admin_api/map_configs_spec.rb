@@ -24,7 +24,7 @@ resource "MapConfigs", admin_api: true do
 
   get "admin_api/projects/:project_id/map_config" do
 
-    let(:tile_provider) { map_config.tile_provider}
+    let(:t1le_provider) { map_config.tile_provider}
     let(:zoom_level) { map_config.zoom_level}
     let(:map_config_id) { map_config.id }
 
