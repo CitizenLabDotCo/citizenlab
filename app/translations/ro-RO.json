@@ -22,6 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} utilizatori",
   "app.components.CityLogoSection.iframeTitle": "Mai multe informații despre Primăria {orgName}",
   "app.components.CityLogoSection.slogan": "Acest site este o inițiativă a Primăriei {orgName}",
+  "app.components.Comments.cancel": "Cancel",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Comentariile de la această postare sunt dezactivate fiindcă propunerea nu mai este valabilă sau nu a fost încă verificată.",
   "app.components.Comments.commentingDisabledInContext": "Comentariile sunt dezactivate la ideile aferente proiectului '{projectName}'.",
   "app.components.Comments.commentingDisabledNotVerified": "Pentru a putea comenta la această idee, verificarea în prealabil a profilului tău este obligatorie. {verificationLink}",
