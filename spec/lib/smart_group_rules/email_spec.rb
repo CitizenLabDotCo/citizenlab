@@ -21,6 +21,7 @@ describe SmartGroupRules::Email do
   describe "validations" do
     it "successfully validate the valid rule" do
       expect(valid_rule).to be_valid
+      expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 

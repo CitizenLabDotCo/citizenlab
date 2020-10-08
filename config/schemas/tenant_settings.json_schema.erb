@@ -628,6 +628,18 @@
         }
       },
 
+      "project_reports": {
+        "type": "object",
+        "title": "Project Reports",
+        "description": "Browse and download the results of a project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "clustering": {
         "type": "object",
         "title": "Clustering",
