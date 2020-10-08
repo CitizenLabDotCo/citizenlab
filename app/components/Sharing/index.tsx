@@ -224,7 +224,7 @@ const Sharing = memo(
           onClick={trackClick('facebook')}
           aria-label={formatMessage(messages.shareOnFacebook)}
         >
-          <StyledIcon name="facebook" />
+          <StyledIcon ariaHidden name="facebook" />
         </FacebookButton>
       ) : null;
 
@@ -239,7 +239,7 @@ const Sharing = memo(
           )}
           aria-label={formatMessage(messages.shareViaMessenger)}
         >
-          <StyledIcon name="messenger" />
+          <StyledIcon ariaHidden name="messenger" />
         </button>
       ) : null;
 
@@ -256,7 +256,7 @@ const Sharing = memo(
           )}
           aria-label={formatMessage(messages.shareViaWhatsApp)}
         >
-          <StyledIcon name="whatsapp" />
+          <StyledIcon ariaHidden name="whatsapp" />
         </button>
       );
 
@@ -271,7 +271,7 @@ const Sharing = memo(
           onClick={trackClick('twitter')}
           aria-label={formatMessage(messages.shareOnTwitter)}
         >
-          <StyledIcon name="twitter" />
+          <StyledIcon ariaHidden name="twitter" />
         </TwitterButton>
       );
 
@@ -285,7 +285,7 @@ const Sharing = memo(
             )}
             aria-label={formatMessage(messages.shareByEmail)}
           >
-            <StyledIcon name="email" />
+            <StyledIcon ariaHidden name="email" />
           </button>
         ) : null;
 
