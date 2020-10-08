@@ -167,7 +167,7 @@ class SharingModalContent extends PureComponent<
           <SharingWrapper>
             <Sharing
               context={postType}
-              location="modal"
+              isInModal
               url={postUrl}
               twitterMessage={formatMessage(messages.twitterMessage, {
                 postTitle,

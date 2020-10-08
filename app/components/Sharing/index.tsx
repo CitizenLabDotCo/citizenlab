@@ -31,7 +31,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h3<{ location: 'modal' | undefined }>`
+const Title = styled.h3<{ isInModal?: boolean }>`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.large}px;
   font-weight: 600;
@@ -40,8 +40,7 @@ const Title = styled.h3<{ location: 'modal' | undefined }>`
   margin: 0;
   margin-bottom: 12px;
   padding: 0;
-  justify-content: ${({ location }) =>
-    location === 'modal' ? 'center' : 'start'};
+  justify-content: ${({ isInModal }) => (isInModal ? 'center' : 'start')};
 `;
 
 const StyledIcon = styled(Icon)`
@@ -155,7 +154,7 @@ type Medium = 'facebook' | 'twitter' | 'messenger' | 'whatsapp' | 'email';
 
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder';
-  location?: 'modal';
+  isInModal?: boolean;
   className?: string;
   url: string;
   twitterMessage: string;
@@ -174,7 +173,7 @@ const Sharing = ({
   emailBody,
   className,
   intl: { formatMessage },
-  location,
+  isInModal,
   id,
   url,
   utmParams,
@@ -204,7 +203,7 @@ const Sharing = ({
   const trackClick = (medium: Medium) => {
     trackEventByName(
       tracks[medium]['name'],
-      location === 'modal'
+      isInModal
         ? Object.assign({ modal: 'true' }, tracks[medium]['properties'])
         : tracks[medium]['properties']
     );
@@ -290,7 +289,7 @@ const Sharing = ({
 
     return (
       <Container id={id || ''} className={className || ''}>
-        <Title location={location}>
+        <Title isInModal={isInModal}>
           {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
           {context === 'project' && (
             <FormattedMessage {...messages.shareThisProject} />
