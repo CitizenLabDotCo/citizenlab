@@ -22,7 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} użytkowników",
   "app.components.CityLogoSection.iframeTitle": "Więcej informacji o {orgName}",
   "app.components.CityLogoSection.slogan": "{orgName} - oficjalna platforma miasta.",
-  "app.components.Comments.cancel": "Cancel",
+  "app.components.Comments.cancel": "Anuluj",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Komentowanie tego pomysłu nie jest możliwe, ponieważ nie jest on już rozpatrywany lub nie jest jeszcze rozpatrywany.",
   "app.components.Comments.commentingDisabledInContext": "Komentowanie pomysłów w projekcie \"{projectName}\" jest obecnie wyłączone.",
   "app.components.Comments.commentingDisabledNotVerified": "Komentowanie tego pomysłu wymaga weryfikacji Twojego profilu. {verificationLink}",
