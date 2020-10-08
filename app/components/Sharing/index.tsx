@@ -100,7 +100,7 @@ const Buttons = styled.div`
       }
     }
 
-    &.facebook {
+    &.whatsapp {
       background: #455a64;
       color: #fff;
 
@@ -122,7 +122,7 @@ const Buttons = styled.div`
       `}
     }
 
-    &.whatsapp {
+    &.facebook {
       background: ${colors.facebook};
       color: #fff;
 
