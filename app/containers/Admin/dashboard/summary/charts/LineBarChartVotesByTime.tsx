@@ -310,7 +310,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                <CartesianGrid stroke={cartesianGridColor} strokeWidth={1} />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
@@ -363,7 +363,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
-                  fill={rgba(newBarFill, 0.8)}
+                  fill={rgba(newBarFill, 0.7)}
                   stackId="1"
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
@@ -375,10 +375,10 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   type="monotone"
                   dataKey="cumulatedTotal"
                   name={formatMessage(messages.total)}
-                  dot={true}
+                  dot={serie && serie?.length < 31}
                   stroke={newLineColor}
                   fill={newLineColor}
-                  strokeWidth={2}
+                  strokeWidth={1}
                   yAxisId="cumulatedTotal"
                 />
 

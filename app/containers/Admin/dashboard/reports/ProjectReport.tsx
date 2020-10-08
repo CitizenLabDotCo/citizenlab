@@ -16,7 +16,6 @@ import GetUserCustomFields, {
 } from 'resources/GetUserCustomFields';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
-  activeUsersByTimeCumulativeStream,
   activeUsersByTimeStream,
   ideasByTimeCumulativeXlsxEndpoint,
   ideasByTimeCumulativeStream,
@@ -42,6 +41,7 @@ import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 import CustomFieldComparison from './CustomFieldComparison';
+import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -126,7 +126,7 @@ const ProjectReport = memo(
     }, [project, phases]);
 
     const getResolution = (start, end) => {
-      const timeDiff = moment.duration(start.diff(end));
+      const timeDiff = moment.duration(end.diff(start));
       return timeDiff
         ? timeDiff.asMonths() > 6
           ? 'month'
@@ -193,7 +193,9 @@ const ProjectReport = memo(
                           }}
                         />
                       </p>
-                      <div>{phase.attributes.participation_method}</div>
+                      <FormattedMessage
+                        {...messages[phase.attributes.participation_method]}
+                      />
                       <div>{localize(phase.attributes.title_multiloc)}</div>
                     </Phase>
                   );
@@ -211,16 +213,15 @@ const ProjectReport = memo(
               <FormattedMessage {...messages.sectionWho} />
             </SectionTitle>
             <GraphsContainer>
-              <LineBarChart
-                graphTitle={formatMessage(messages.participantsOverTimeTitle)}
-                xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
-                graphUnit="users"
-                graphUnitMessageKey="users"
+              <BarChartActiveUsersByTime
                 startAt={startAt}
                 endAt={endAt}
-                barStream={activeUsersByTimeStream}
-                lineStream={activeUsersByTimeCumulativeStream}
+                stream={activeUsersByTimeStream}
                 resolution={resolution}
+                graphUnit="users"
+                graphUnitMessageKey="users"
+                graphTitle={formatMessage(messages.participantsOverTimeTitle)}
+                xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
@@ -230,7 +231,11 @@ const ProjectReport = memo(
                 !isNilOrError(customFields) &&
                 customFields.map(
                   (customField) =>
-                    customField.attributes.enabled && (
+                    // only show enabled fields, only supported number field is birthyear.
+                    customField.attributes.enabled &&
+                    (customField.attributes.input_type === 'number'
+                      ? customField.attributes.code === 'birthyear'
+                      : true) && (
                       <CustomFieldComparison
                         customField={customField}
                         currentProject={project.id}

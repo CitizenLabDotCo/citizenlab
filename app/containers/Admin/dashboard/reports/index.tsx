@@ -14,8 +14,8 @@ import messages from '../messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionTitle } from 'components/admin/Section';
 import styled, { ThemeProvider } from 'styled-components';
-import ProjectReport from './ProjectReport';
 import { chartTheme } from '../index';
+import ProjectReport from './ProjectReport';
 
 const StyledSelect = styled(Select)`
   max-width: 300px;
@@ -60,27 +60,26 @@ const ReportTab = memo(({ projects }: DataProps) => {
     setSelectedProject(undefined);
   };
 
-  return (
+  return !selectedProject ? (
     <>
-      {!selectedProject ? (
-        <ThemeProvider theme={chartTheme}>
-          <SectionTitle>
-            <FormattedMessage {...messages.selectAProject} />
-          </SectionTitle>
-          <StyledSelect
-            id="projectFilter"
-            onChange={onProjectFilter}
-            value={undefined}
-            options={projectOptions}
-          />
-        </ThemeProvider>
-      ) : (
-        <>
-          <StyledGoBack onClick={onResetProject} />
-          <ProjectReport project={selectedProject} />
-        </>
+      ‚
+      <SectionTitle>
+        <FormattedMessage {...messages.selectAProject} />
+      </SectionTitle>
+      {projectOptions && (
+        <StyledSelect
+          id="projectFilter"
+          onChange={onProjectFilter}
+          value={undefined}
+          options={projectOptions}
+        />
       )}
     </>
+  ) : (
+    <ThemeProvider theme={chartTheme}>
+      <StyledGoBack onClick={onResetProject} />
+      <ProjectReport project={selectedProject} />
+    </ThemeProvider>
   );
 });
 

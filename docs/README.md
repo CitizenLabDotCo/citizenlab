@@ -1,5 +1,14 @@
 # Changelog
 
+## 2020-10-08
+
+### Added
+- Project reports
+
+### Changed
+- Small styling fixes
+- Smart group support multiple area codes
+
 ## 2020-10-01
 
 ### Changed

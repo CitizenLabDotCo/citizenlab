@@ -11,7 +11,6 @@ type Props = {
   value: string;
   onChange: (string) => void;
   projects: GetProjectsChildProps;
-  tFunc: any;
 };
 
 type State = {};
@@ -52,7 +51,7 @@ class ProjectValueSelector extends React.PureComponent<
 
 const ProjectValueSelectorWithHOC = localize(ProjectValueSelector);
 
-export default (inputProps) => (
+export default (inputProps: Props) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
     {(projects) => (
       <ProjectValueSelectorWithHOC {...inputProps} projects={projects} />

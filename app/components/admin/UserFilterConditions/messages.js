@@ -87,6 +87,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_has_value',
     defaultMessage: 'does not have value',
   },
+  predicate_is_one_of: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of',
+    defaultMessage: 'is one of',
+  },
+  predicate_not_is_one_of: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_one_of',
+    defaultMessage: 'is not one of',
+  },
   predicate_is_checked: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_checked',
     defaultMessage: 'is checked',

@@ -7,6 +7,8 @@ import { media } from 'utils/styleUtils';
 const Container = styled.div`
   color: ${(props) => props.theme.colorText};
   font-size: ${(props) => props.theme.fontSizes.large}px;
+  // same line-height as Body's content
+  line-height: 29px;
   ${media.smallerThanMinTablet`
     font-size: ${(props) => props.theme.fontSizes.base}px;
   `}

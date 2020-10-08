@@ -2,16 +2,18 @@ import React from 'react';
 
 // styles
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.span<{
   color?: string;
-  emphasize?: boolean;
+  fontWeight?: number;
+  fontSize?: number;
   underline?: boolean;
 }>`
   color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }) => (emphasize ? 500 : 'normal')};
+  font-weight: ${({ fontWeight }) => fontWeight || 400};
+  font-size: ${({ fontSize }) => fontSize || fontSizes.base}px;
   text-decoration: ${({ underline }) => (underline ? 'underline' : 'none')};
   hyphens: auto;
 
@@ -46,7 +48,8 @@ const Container = styled.span<{
 interface Props {
   name: string;
   className?: string;
-  emphasize?: boolean;
+  fontWeight?: number;
+  fontSize?: number;
   underline?: boolean;
   isLinkToProfile?: boolean;
   color?: string;
@@ -57,7 +60,8 @@ interface Props {
 const Name = ({
   className,
   name,
-  emphasize,
+  fontWeight,
+  fontSize,
   underline,
   isLinkToProfile,
   color,
@@ -66,7 +70,8 @@ const Name = ({
 }: Props) => {
   return (
     <Container
-      emphasize={emphasize}
+      fontWeight={fontWeight}
+      fontSize={fontSize}
       underline={underline}
       className={`
         ${className || ''}

@@ -34,11 +34,10 @@ import GetWindowSize, {
 
 // style
 import styled from 'styled-components';
-import { rgba } from 'polished';
+import { rgba, transparentize } from 'polished';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -51,17 +50,16 @@ const Container = styled.footer<{ insideModal?: boolean }>`
 `;
 
 const Inner = styled.div`
-  width: 100%;
   min-height: ${(props) => props.theme.footerHeight}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-left: 28px;
   padding-right: 28px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background: #fff;
-  border-top: solid 1px #e8e8e8;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: ${transparentize(0.1, colors.background)};
+  border-top: solid 1px #ccc;
 
   ${media.smallerThan1280px`
     padding-left: 18px;
@@ -75,8 +73,8 @@ const Inner = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    padding: 15px;
-    border-top: solid 1px #e8e8e8;
+    padding: 15px 10px;
+    border-top: solid 1px ${colors.separation};
 
     &.showShortFeedback {
       border-top: none;
@@ -103,7 +101,7 @@ const ShortFeedback = styled.div`
 const ShortFeedbackInner = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   display: flex;
   align-items: center;
@@ -124,7 +122,7 @@ const ShortFeedbackInner = styled.div`
 `;
 
 const ThankYouNote = styled.span`
-  font-weight: 300;
+  font-weight: 400;
 `;
 
 const FeedbackQuestion = styled.span`
@@ -161,7 +159,7 @@ const FeedbackButton = styled.button`
 
 const PagesNav = styled.nav`
   color: ${colors.label};
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
   overflow: hidden;
 
@@ -173,9 +171,9 @@ const PagesNav = styled.nav`
 
 const StyledButton = styled.button`
   color: ${colors.label};
-  font-weight: 300;
+  font-weight: 400;
   font-size: ${fontSizes.small}px;
-  line-height: 21px;
+  line-height: normal;
   text-decoration: none;
   hyphens: auto;
   padding: 0;
@@ -191,7 +189,7 @@ const StyledButton = styled.button`
 
 const StyledLink = styled(Link)`
   color: ${colors.label};
-  font-weight: 300;
+  font-weight: 400;
   font-size: ${fontSizes.small}px;
   line-height: 21px;
   text-decoration: none;
@@ -209,7 +207,7 @@ const StyledLink = styled(Link)`
 
 const Bullet = styled.span`
   color: ${colors.label};
-  font-weight: 300;
+  font-weight: 400;
   font-size: ${fontSizes.small}px;
   line-height: 21px;
   margin-left: 10px;
@@ -231,12 +229,16 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  text-decoration: none;
   display: flex;
   align-items: center;
   outline: none;
   padding-right: 20px;
   margin-right: 24px;
-  border-right: 2px solid ${colors.adminBackground};
+  border-right: 2px solid ${colors.separation};
 
   ${media.smallerThan1280px`
     padding-right: 8px;
@@ -257,6 +259,7 @@ const PoweredByText = styled.span`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
+  margin-right: 8px;
 
   ${media.smallerThanMinTablet`
     margin-bottom: 10px;
@@ -264,28 +267,27 @@ const PoweredByText = styled.span`
 `;
 
 const CitizenlabLink = styled.a`
-  width: 151px;
-  height: 27px;
+  width: 135px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 4px;
   cursor: pointer;
 `;
 
 const StyledSendFeedback = styled(SendFeedback)`
   ${media.smallerThanMinTablet`
-    margin-top: 25px;
+    margin-top: 20px;
   `}
 `;
 
 const ShortFeedbackFormModalFooter = styled.div`
-  width: 100%;
   display: flex;
 `;
 
 const CitizenLabLogo = styled(Icon)`
   height: 28px;
-  fill: ${colors.secondaryText};
+  fill: ${colors.label};
 
   &:hover {
     fill: #000;

@@ -247,6 +247,8 @@ export class CustomFieldsComparison extends React.PureComponent<
       className,
       customField,
       intl: { formatMessage },
+      localize,
+      currentProject,
     } = this.props;
 
     const noData =
@@ -261,6 +263,10 @@ export class CustomFieldsComparison extends React.PureComponent<
       newBarFill,
     } = this.props['theme'];
 
+    const xlsxEndpoint =
+      customFieldEndpoints[customField.attributes.code || 'no_code']
+        ?.xlsxEndpoint || usersByRegFieldXlsxEndpoint(customField.id);
+
     return (
       <GraphCard className={`dynamicHeight ${className}`}>
         <GraphCardInner>
@@ -270,9 +276,12 @@ export class CustomFieldsComparison extends React.PureComponent<
             </GraphCardTitle>
             {!noData && (
               <ExportMenu
-                name={'title'}
+                name={formatMessage(messages.customFieldTitleExport, {
+                  fieldName: localize(customField.attributes.title_multiloc),
+                })}
                 svgNode={this.currentChart}
-                xlsxEndpoint={usersByRegFieldXlsxEndpoint(customField.id)}
+                xlsxEndpoint={xlsxEndpoint}
+                currentProjectFilter={currentProject}
               />
             )}
           </GraphCardHeader>

@@ -38,7 +38,7 @@ import tracks from './tracks';
 const Container = styled.div``;
 
 const StyledParentCommentForm = styled(ParentCommentForm)`
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 `;
 
 const Header = styled.div`
@@ -49,11 +49,12 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
-  line-height: 40px;
-  color: ${(props: any) => props.theme.colorText};
-  margin-bottom: 0;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxl}px;
