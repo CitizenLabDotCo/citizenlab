@@ -33,6 +33,7 @@ const MobileSharingButtonComponent = ({
       textHoverColor={darken(0.1, theme.colorText)}
       fontWeight="bold"
       borderColor="#E0E0E0"
+      borderThickness="2px"
       onClick={onClick}
       ariaExpanded={ariaExpanded}
     >

@@ -121,13 +121,13 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
   }
   render() {
     const {
-      chartFill,
       barHoverColor,
       chartLabelSize,
       chartLabelColor,
       barFill,
       animationBegin,
       animationDuration,
+      newBarFill,
     } = this.props['theme'];
     const {
       className,
@@ -222,11 +222,12 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                   <Bar
                     dataKey="value"
                     name={unitName}
-                    fill={chartFill}
+                    fill={newBarFill}
                     label={{ fill: barFill, fontSize: chartLabelSize }}
                     barSize={20}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
+                    isAnimationActive={true}
                   />
                   <YAxis
                     dataKey="name"

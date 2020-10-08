@@ -30,8 +30,8 @@ const Container = styled.div`
 interface ExportMenuProps {
   className?: string;
   name: string;
-  svgNode: React.RefObject<any>;
-  xlsxEndpoint: string;
+  svgNode?: React.RefObject<any>;
+  xlsxEndpoint?: string;
   startAt?: string | null | undefined;
   endAt?: string | null;
   resolution?: IResolution;
@@ -93,7 +93,9 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
   }`;
 
   const handleDownloadSvg = () => {
-    const node = ReactDOM.findDOMNode(svgNode.current.container.children[0]);
+    const node = ReactDOM.findDOMNode(
+      svgNode && svgNode.current.container.children[0]
+    );
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const svgBlob = new Blob([svgContent], {
@@ -103,7 +105,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
       saveAs(svgBlob, `${fileName}.svg`);
     }
 
-    trackEventByName('Clicked export svg', { graph: name });
+    trackEventByName('Clicked export svg', { extra: { graph: name } });
   };
 
   const toggleDropdown = (value?: boolean) => () => {
@@ -137,7 +139,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
     }
 
     // track this click for user analytics
-    trackEventByName('Clicked export xlsx', { graph: name });
+    trackEventByName('Clicked export xlsx', { extra: { graph: name } });
   };
 
   return (
@@ -158,23 +160,27 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
         onClickOutside={toggleDropdown(false)}
         content={
           <>
-            <Button
-              onClick={handleDownloadSvg}
-              buttonStyle="text"
-              padding="0"
-              fontSize={`${fontSizes.small}px`}
-            >
-              <FormattedMessage {...messages.downloadSvg} />
-            </Button>
-            <Button
-              onClick={downloadXlsx}
-              buttonStyle="text"
-              processing={exportingXls}
-              padding="0"
-              fontSize={`${fontSizes.small}px`}
-            >
-              <FormattedMessage {...messages.downloadXlsx} />
-            </Button>
+            {svgNode && (
+              <Button
+                onClick={handleDownloadSvg}
+                buttonStyle="text"
+                padding="0"
+                fontSize={`${fontSizes.small}px`}
+              >
+                <FormattedMessage {...messages.downloadSvg} />
+              </Button>
+            )}
+            {xlsxEndpoint && (
+              <Button
+                onClick={downloadXlsx}
+                buttonStyle="text"
+                processing={exportingXls}
+                padding="0"
+                fontSize={`${fontSizes.small}px`}
+              >
+                <FormattedMessage {...messages.downloadXlsx} />
+              </Button>
+            )}
           </>
         }
       />

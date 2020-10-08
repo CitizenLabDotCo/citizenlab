@@ -1,29 +1,33 @@
 // libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // styling
 import { withTheme } from 'styled-components';
+import { rgba } from 'polished';
 
 // services
 import {
+  votesByTimeStream,
   votesByTimeCumulativeStream,
-  votesByTimeCumulativeXlsxEndpoint,
-  IVotesByTimeCumulative,
+  votesByTimeXlsxEndpoint,
+  IVotesByTime,
 } from 'services/stats';
 
 // components
 import ExportMenu from '../../components/ExportMenu';
 import {
-  LineChart,
   Line,
+  Label,
+  Bar,
   Tooltip,
   XAxis,
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
   Legend,
+  ComposedChart,
 } from 'recharts';
 import {
   IResolution,
@@ -42,7 +46,8 @@ import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-type IVotesInGraphFormat = {
+type ISerie = {
+  cumulatedTotal: number;
   date: string | number;
   up: number;
   down: number;
@@ -51,7 +56,7 @@ type IVotesInGraphFormat = {
 }[];
 
 type State = {
-  serie: IVotesInGraphFormat | null;
+  serie: ISerie | null;
 };
 
 type Props = {
@@ -59,19 +64,19 @@ type Props = {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
-  currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
+  currentProjectFilterLabel?: string;
+  currentGroupFilterLabel?: string;
+  currentTopicFilterLabel?: string;
 };
 
-class LineChartVotesByTime extends React.PureComponent<
+class LineBarChartVotesByTime extends React.PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  subscription: Subscription;
+  combined$: Subscription;
   currentChart: React.RefObject<any>;
 
   constructor(props: Props) {
@@ -133,23 +138,27 @@ class LineChartVotesByTime extends React.PureComponent<
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.combined$.unsubscribe();
   }
 
-  convertToGraphFormat(data: IVotesByTimeCumulative) {
-    const { up, down, total } = data.series;
+  convertAndMergeSeries(barSerie: IVotesByTime, lineSerie: IVotesByTime) {
+    const { up, down, total } = barSerie.series;
+    let convertedSerie;
 
-    if (!isEmpty(total)) {
-      return map(total, (value, key) => ({
+    if (!isEmpty(total) && !isEmpty(lineSerie.series.total)) {
+      convertedSerie = map(total, (value, key) => ({
         total: value,
         down: down[key],
         up: up[key],
         date: key,
         code: key,
+        cumulatedTotal: lineSerie.series.total[key],
       }));
+    } else {
+      return null;
     }
 
-    return null;
+    return convertedSerie;
   }
 
   resubscribe(
@@ -160,11 +169,11 @@ class LineChartVotesByTime extends React.PureComponent<
     currentTopicFilter: string | undefined,
     currentProjectFilter: string | undefined
   ) {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.combined$) {
+      this.combined$.unsubscribe();
     }
 
-    this.subscription = votesByTimeCumulativeStream({
+    const queryParameters = {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -173,9 +182,20 @@ class LineChartVotesByTime extends React.PureComponent<
         group: currentGroupFilter,
         topic: currentTopicFilter,
       },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
-      this.setState({ serie: convertedSerie });
+    };
+
+    const barStreamObservable = votesByTimeStream(queryParameters).observable;
+    const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
+      .observable;
+    this.combined$ = combineLatest(
+      barStreamObservable,
+      lineStreamObservable
+    ).subscribe(([barSerie, lineSerie]) => {
+      const convertedAndMergedSeries = this.convertAndMergeSeries(
+        barSerie,
+        lineSerie
+      );
+      this.setState({ serie: convertedAndMergedSeries });
     });
   }
 
@@ -209,10 +229,10 @@ class LineChartVotesByTime extends React.PureComponent<
     return null;
   };
 
-  getFormattedNumbers(serie: IVotesInGraphFormat | null) {
-    if (serie) {
-      const firstSerieValue = serie && serie[0].total;
-      const lastSerieValue = serie && serie[serie.length - 1].total;
+  getFormattedNumbers(serie: ISerie | null) {
+    if (serie && serie.length > 0) {
+      const firstSerieValue = serie[0].cumulatedTotal;
+      const lastSerieValue = serie[serie.length - 1].cumulatedTotal;
       const serieChange = lastSerieValue - firstSerieValue;
       let typeOfChange: 'increase' | 'decrease' | '' = '';
 
@@ -240,16 +260,16 @@ class LineChartVotesByTime extends React.PureComponent<
     const {
       chartLabelSize,
       chartLabelColor,
-      chartStroke,
-      chartStrokeGreen,
-      chartStrokeRed,
+      newLineColor,
       animationBegin,
       animationDuration,
+      cartesianGridColor,
+      newBarFill,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
-    const { className } = this.props;
     const formattedNumbers = this.getFormattedNumbers(serie);
+    const { className } = this.props;
     const {
       totalNumber,
       formattedSerieChange,
@@ -262,17 +282,18 @@ class LineChartVotesByTime extends React.PureComponent<
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages.ideaVotesByTimeTitle} />
+              <GraphCardFigureContainer>
+                <GraphCardFigure>{totalNumber}</GraphCardFigure>
+                <GraphCardFigureChange className={typeOfChange}>
+                  {formattedSerieChange}
+                </GraphCardFigureChange>
+              </GraphCardFigureContainer>
             </GraphCardTitle>
-            <GraphCardFigureContainer>
-              <GraphCardFigure>{totalNumber}</GraphCardFigure>
-              <GraphCardFigureChange className={typeOfChange}>
-                {formattedSerieChange}
-              </GraphCardFigureChange>
-            </GraphCardFigureContainer>
+
             {serie && (
               <ExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={votesByTimeCumulativeXlsxEndpoint}
+                xlsxEndpoint={votesByTimeXlsxEndpoint}
                 name={formatMessage(messages.ideaVotesByTimeTitle)}
                 {...this.props}
               />
@@ -284,12 +305,12 @@ class LineChartVotesByTime extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer>
-              <LineChart
+              <ComposedChart
                 data={serie}
                 margin={{ right: 40 }}
                 ref={this.currentChart}
               >
-                <CartesianGrid strokeDasharray="5 5" />
+                <CartesianGrid stroke={cartesianGridColor} strokeWidth={0.5} />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
@@ -297,44 +318,76 @@ class LineChartVotesByTime extends React.PureComponent<
                   fontSize={chartLabelSize}
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
+                  tickLine={false}
                 />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
+                <YAxis
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  yAxisId="cumulatedTotal"
+                  tickLine={false}
+                >
+                  <Label
+                    value={formatMessage(messages.total)}
+                    angle={-90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
+                <YAxis yAxisId="barValue" orientation="right" tickLine={false}>
+                  <Label
+                    value={formatMessage(messages.perPeriod, {
+                      period: this.props.resolution,
+                    })}
+                    angle={90}
+                    position={'center'}
+                    offset={-20}
+                  />
+                </YAxis>
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                <Line
-                  type="monotone"
+
+                <Bar
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
-                  fill={chartStrokeGreen}
-                  stroke={chartStrokeGreen}
+                  fill={rgba(newBarFill, 1)}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  stackId="1"
+                  yAxisId="barValue"
+                  barSize={20}
                 />
-                <Line
-                  type="monotone"
+                <Bar
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
-                  fill={chartStrokeRed}
-                  stroke={chartStrokeRed}
+                  fill={rgba(newBarFill, 0.7)}
+                  stackId="1"
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
+                  stroke="none"
+                  yAxisId="barValue"
+                  barSize={20}
                 />
                 <Line
                   type="monotone"
-                  dataKey="total"
-                  name={formatMessage(messages.numberOfVotesTotal)}
-                  dot={false}
-                  fill={chartStroke}
-                  stroke={chartStroke}
+                  dataKey="cumulatedTotal"
+                  name={formatMessage(messages.total)}
+                  dot={serie && serie?.length < 31}
+                  stroke={newLineColor}
+                  fill={newLineColor}
+                  strokeWidth={1}
+                  yAxisId="cumulatedTotal"
                 />
+
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px',
                   }}
                 />
-              </LineChart>
+              </ComposedChart>
             </ResponsiveContainer>
           )}
         </GraphCardInner>
@@ -343,4 +396,6 @@ class LineChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(withTheme(LineChartVotesByTime as any) as any);
+export default injectIntl<Props>(
+  withTheme(LineBarChartVotesByTime as any) as any
+);

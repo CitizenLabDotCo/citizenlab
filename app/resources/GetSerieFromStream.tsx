@@ -13,18 +13,20 @@ import {
   IIdeasByTopic,
   ICommentsByTopic,
   IVotesByTopic,
+  IIdeasByStatus,
   IIdeasByProject,
   ICommentsByProject,
   IVotesByProject,
 } from 'services/stats';
-import { IGraphFormat } from 'typings';
+import { IGraphFormat, IParticipationByTopic } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
-  serie: IGraphFormat | null | undefined;
+  serie: IGraphFormat | IParticipationByTopic | null | undefined;
 }
 
 type children = (renderProps: {
-  serie: IGraphFormat | null | undefined;
+  serie: IGraphFormat | IParticipationByTopic | null | undefined;
 }) => JSX.Element | null;
 
 export type ISupportedDataType =
@@ -33,11 +35,12 @@ export type ISupportedDataType =
   | ICommentsByTopic
   | IVotesByTopic
   | IIdeasByProject
+  | IIdeasByStatus
   | IVotesByProject
   | ICommentsByProject;
 
 interface QueryProps {
-  startAt: string | undefined | null;
+  startAt?: string | undefined | null;
   endAt: string | null;
   currentGroupFilter?: string | null;
   currentProjectFilter?: string | null;
@@ -50,7 +53,9 @@ interface QueryProps {
 }
 
 interface Props extends QueryProps {
-  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
+  convertToGraphFormat: (
+    data: ISupportedDataType
+  ) => IGraphFormat | IParticipationByTopic | null;
 }
 
 export default class GetSerieFromStream extends PureComponent<Props, State> {
@@ -113,7 +118,9 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
           )
         )
         .subscribe((serie) => {
-          const convertedSerie = serie && convertToGraphFormat(serie);
+          const convertedSerie = !isNilOrError(serie)
+            ? convertToGraphFormat(serie)
+            : null;
           this.setState({ serie: convertedSerie });
         }),
     ];

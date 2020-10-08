@@ -79,7 +79,7 @@ export class BarChartByCategory extends React.PureComponent<
   }
   render() {
     const {
-      chartFill,
+      newBarFill,
       barFill,
       chartLabelSize,
       chartLabelColor,
@@ -133,10 +133,11 @@ export class BarChartByCategory extends React.PureComponent<
                 <Bar
                   dataKey="value"
                   name={unitName}
-                  fill={chartFill}
+                  fill={newBarFill}
                   label={{ fill: barFill, fontSize: chartLabelSize }}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  isAnimationActive={true}
                 />
                 <XAxis
                   dataKey="name"

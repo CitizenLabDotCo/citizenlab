@@ -1,13 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] = `
-<Component
-  onlyModerator={true}
-/>
-`;
-
-exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
-<withRouter(TabbedResource)
+<withRouter(Component)
   resource={
     Object {
       "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
@@ -21,8 +15,9 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
         "url": "/admin/dashboard",
       },
       Object {
-        "label": "Users",
-        "url": "/admin/dashboard/users",
+        "feature": "project_reports",
+        "label": "Reports",
+        "url": "/admin/dashboard/reports",
       },
     ]
   }
@@ -41,5 +36,58 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
       }
     }
   />
-</withRouter(TabbedResource)>
+</withRouter(Component)>
+`;
+
+exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
+<withRouter(Component)
+  resource={
+    Object {
+      "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
+      "title": "Dashboard",
+    }
+  }
+  tabs={
+    Array [
+      Object {
+        "label": "Summary",
+        "url": "/admin/dashboard",
+      },
+      Object {
+        "label": "Users",
+        "url": "/admin/dashboard/users",
+      },
+      Object {
+        "feature": "project_reports",
+        "label": "Reports",
+        "url": "/admin/dashboard/reports",
+      },
+      Object {
+        "feature": "clustering",
+        "label": "Insights",
+        "url": "/admin/dashboard/insights",
+      },
+      Object {
+        "feature": "geographic_dashboard",
+        "label": "Map",
+        "url": "/admin/dashboard/map",
+      },
+    ]
+  }
+>
+  <HelmetIntl
+    description={
+      Object {
+        "defaultMessage": "Dashboard for activities on the platform",
+        "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
+      }
+    }
+    title={
+      Object {
+        "defaultMessage": "Admin dashboard page",
+        "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
+      }
+    }
+  />
+</withRouter(Component)>
 `;
