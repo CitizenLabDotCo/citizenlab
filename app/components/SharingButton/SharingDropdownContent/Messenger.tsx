@@ -45,8 +45,8 @@ const Messenger = ({
           role="button"
           aria-label={formatMessage(messages.shareViaMessenger)}
         >
-          <StyledIcon name="messenger" />
-          {'Messenger'}
+          <StyledIcon ariaHidden name="messenger" />
+          <span aria-hidden>{'Messenger'}</span>
         </a>
       );
     }

@@ -35,11 +35,9 @@ const Email = ({
       href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
       target="_blank"
       onClick={handleClick}
-      role="button"
-      aria-label={formatMessage(messages.shareByEmail)}
     >
-      <StyledIcon name="email" />
-      {'Email'}
+      <StyledIcon ariaHidden name="email" />
+      <span aria-hidden>{'Email'}</span>
     </a>
   );
 };
