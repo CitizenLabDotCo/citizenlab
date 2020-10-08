@@ -7,6 +7,7 @@
 
 ### Changed
 - Small styling fixes
+- Smart group support multiple area codes
 
 ## 2020-10-01
 
