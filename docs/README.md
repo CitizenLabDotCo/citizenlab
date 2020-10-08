@@ -8,6 +8,9 @@
 ### Changed
 - Small styling fixes
 - Smart group support multiple area codes
+- Layout refinements for the new idea page
+- More compact idea/proposal comment input
+- Proposal 'how does it work' redesign
 
 ## 2020-10-01
 
