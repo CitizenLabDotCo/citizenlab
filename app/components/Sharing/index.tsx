@@ -247,9 +247,11 @@ const Sharing = ({
         className="sharingButton whatsapp"
         onClick={handleClick(
           'whatsapp',
-          `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-            whatsAppMessage
-          )}`
+          buildUrl(
+            `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
+              whatsAppMessage
+            )}`
+          )
         )}
         aria-label={formatMessage(messages.shareViaWhatsApp)}
       >
@@ -278,7 +280,7 @@ const Sharing = ({
           className="sharingButton last email"
           onClick={handleClick(
             'email',
-            `mailto:?subject=${emailSubject}&body=${emailBody}`
+            buildUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
           )}
           aria-label={formatMessage(messages.shareByEmail)}
         >
