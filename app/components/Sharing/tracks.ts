@@ -1,60 +1,31 @@
 export default {
-  clickFbShare: {
+  facebook: {
     name: 'Share button clicked',
     properties: {
       network: 'facebook',
     },
   },
-  clickFbShareInModal: {
-    name: 'Share button clicked in social sharing modal',
-    properties: {
-      network: 'facebook',
-    },
-  },
-  clickTwitterShare: {
+
+  twitter: {
     name: 'Share button clicked',
     properties: {
       network: 'twitter',
     },
   },
-  clickTwitterShareInModal: {
-    name: 'Share button clicked in social sharing modal',
-    properties: {
-      network: 'twitter',
-    },
-  },
-  clickMessengerShare: {
+  messenger: {
     name: 'Share button clicked',
     properties: {
       network: 'messenger',
     },
   },
-  clickMessengerShareInModal: {
-    name: 'Share button clicked in social sharing modal',
-    properties: {
-      network: 'messenger',
-    },
-  },
-  clickEmailShare: {
+  email: {
     name: 'Share button clicked',
     properties: {
       network: 'email',
     },
   },
-  clickEmailShareInModal: {
-    name: 'Share button clicked in social sharing modal',
-    properties: {
-      network: 'email',
-    },
-  },
-  clickWhatsAppShare: {
+  whatsapp: {
     name: 'Share button clicked',
-    properties: {
-      network: 'whatsapp',
-    },
-  },
-  clickWhatsAppShareInModal: {
-    name: 'Share button clicked in social sharing modal',
     properties: {
       network: 'whatsapp',
     },
