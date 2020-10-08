@@ -181,7 +181,7 @@ const Sharing = memo(
   }: Props & InjectedIntlProps) => {
     const tenant = useTenant();
 
-    const buildUrl = (medium: string) => {
+    const addUtmToUrl = (medium: string) => {
       let resUrl = url;
       if (utmParams) {
         resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
@@ -218,7 +218,7 @@ const Sharing = memo(
       const facebook = facebookAppId ? (
         <FacebookButton
           appId={facebookAppId}
-          url={buildUrl('facebook')}
+          url={addUtmToUrl('facebook')}
           className="sharingButton facebook first"
           sharer={true}
           onClick={trackClick('facebook')}
@@ -234,7 +234,7 @@ const Sharing = memo(
           onClick={handleClick(
             'messenger',
             `fb-messenger://share/?link=${encodeURIComponent(
-              buildUrl('messenger')
+              addUtmToUrl('messenger')
             )}&app_id=${facebookAppId}`
           )}
           aria-label={formatMessage(messages.shareViaMessenger)}
@@ -248,7 +248,7 @@ const Sharing = memo(
           className="sharingButton whatsapp"
           onClick={handleClick(
             'whatsapp',
-            buildUrl(
+            addUtmToUrl(
               `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
                 whatsAppMessage
               )}`
@@ -263,7 +263,7 @@ const Sharing = memo(
       const twitter = (
         <TwitterButton
           message={twitterMessage}
-          url={buildUrl('twitter')}
+          url={addUtmToUrl('twitter')}
           className={`sharingButton twitter ${
             !emailSubject || !emailBody ? 'last' : ''
           }`}
@@ -281,7 +281,7 @@ const Sharing = memo(
             className="sharingButton last email"
             onClick={handleClick(
               'email',
-              buildUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
+              addUtmToUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
             )}
             aria-label={formatMessage(messages.shareByEmail)}
           >
