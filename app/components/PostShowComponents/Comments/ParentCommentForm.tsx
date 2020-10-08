@@ -153,9 +153,11 @@ class ParentCommentForm extends PureComponent<
     this.setState({ focused: true });
   };
 
-  onCancel = () => {
-    this.setState({ focused: false, inputValue: '' });
-    this.textareaElement?.blur();
+  close = () => {
+    if (!this.state.processing) {
+      this.setState({ focused: false, inputValue: '' });
+      this.textareaElement?.blur();
+    }
   };
 
   onSubmit = async () => {
@@ -222,8 +224,8 @@ class ParentCommentForm extends PureComponent<
         }
 
         commentAdded();
-        this.setState({ inputValue: '', processing: false });
-        this.textareaElement?.blur();
+        this.setState({ processing: false });
+        this.close();
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
         this.setState({ errorMessage, processing: false });
@@ -282,7 +284,7 @@ class ParentCommentForm extends PureComponent<
           />
           <FormContainer
             className="ideaCommentForm"
-            onClickOutside={this.onCancel}
+            onClickOutside={this.close}
           >
             <Form className={focused ? 'focused' : ''}>
               <label htmlFor="submit-comment">
@@ -312,7 +314,7 @@ class ParentCommentForm extends PureComponent<
                   <ButtonWrapper>
                     <CancelButton
                       disabled={processing}
-                      onClick={this.onCancel}
+                      onClick={this.close}
                       buttonStyle="secondary"
                     >
                       <FormattedMessage {...messages.cancel} />

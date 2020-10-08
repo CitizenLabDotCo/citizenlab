@@ -20,21 +20,21 @@ const GoToCommentsButton = ({
     // We wait until the component is scrolled too, then the text area is focused
     // https://stackoverflow.com/questions/46795955/how-to-know-scroll-to-element-is-done-in-javascript
     if (commentInputField) {
-      const intersectionObserver = new IntersectionObserver((entries) => {
+      let observer: IntersectionObserver;
+
+      const callback = (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
-          setTimeout(() => commentInputField.focus(), 100);
+          setTimeout(() => {
+            commentInputField.focus();
+            observer.unobserve(commentInputField);
+          }, 100);
         }
-      });
+      };
 
-      intersectionObserver.observe(commentInputField);
-
-      const top =
-        commentInputField.getBoundingClientRect().top +
-        window.pageYOffset -
-        180;
-      const behavior = 'smooth';
-      window.scrollTo({ top, behavior });
+      observer = new IntersectionObserver(callback);
+      observer.observe(commentInputField);
+      commentInputField.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
