@@ -1,11 +1,11 @@
 import React from 'react';
 import { UtmParams, Medium, addUtmToUrl } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
-import tracks from '../tracks';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, viewportWidths, media } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
@@ -13,14 +13,13 @@ import { FacebookButton, TwitterButton } from 'react-social';
 import { Icon } from 'cl2-component-library';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
 import useTenant from 'hooks/useTenant';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -98,8 +97,8 @@ interface Props {
 
 const SharingDropdownContent = ({
   id,
-  className,
   url,
+  className,
   utmParams,
   emailBody,
   emailSubject,
@@ -108,7 +107,6 @@ const SharingDropdownContent = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const tenant = useTenant();
-  const hasEmailSharing = !!(emailBody && emailSubject);
 
   const onClick = (medium: Medium, href?: string) => (
     _event: React.FormEvent
@@ -120,15 +118,8 @@ const SharingDropdownContent = ({
     trackEventByName(tracks.clickShare.name, { network: medium });
   };
 
-  const addUtmToUrl = (medium: string) => {
-    let resUrl = url;
-    if (utmParams) {
-      resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
-      if (utmParams.content) {
-        resUrl += `&utm_content=${utmParams.content}`;
-      }
-    }
-    return resUrl;
+  const getUrl = (medium: Medium) => () => {
+    return utmParams ? addUtmToUrl(medium, url, utmParams) : url;
   };
 
   if (!isNilOrError(tenant)) {
@@ -138,7 +129,7 @@ const SharingDropdownContent = ({
     const facebook = facebookAppId ? (
       <FacebookButton
         appId={facebookAppId}
-        url={addUtmToUrl('facebook')}
+        url={getUrl('facebook')}
         className="sharingButton facebook first"
         sharer={true}
         onClick={trackEventByName(tracks.clickShare.name, {
@@ -147,6 +138,7 @@ const SharingDropdownContent = ({
         aria-label={formatMessage(messages.shareOnFacebook)}
       >
         <FacebookIcon ariaHidden name="facebook" />
+        <span aria-hidden>{'Facebook'}</span>
       </FacebookButton>
     ) : null;
 
@@ -156,7 +148,7 @@ const SharingDropdownContent = ({
         onClick={onClick(
           'messenger',
           `fb-messenger://share/?link=${encodeURIComponent(
-            addUtmToUrl('messenger')
+            getUrl('messenger')()
           )}&app_id=${facebookAppId}`
         )}
         aria-label={formatMessage(messages.shareViaMessenger)}
@@ -171,22 +163,21 @@ const SharingDropdownContent = ({
         className="sharingButton whatsapp"
         onClick={onClick(
           'whatsapp',
-          addUtmToUrl(
-            `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-              whatsAppMessage
-            )}`
-          )
+          `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
+            whatsAppMessage
+          )}`
         )}
         aria-label={formatMessage(messages.shareViaWhatsApp)}
       >
         <WhatsAppIcon ariaHidden name="whatsapp" />
+        <span aria-hidden>{'WhatsApp'}</span>
       </button>
     );
 
     const twitter = (
       <TwitterButton
         message={twitterMessage}
-        url={addUtmToUrl('twitter')}
+        url={getUrl('twitter')}
         className={`sharingButton twitter ${
           !emailSubject || !emailBody ? 'last' : ''
         }`}
@@ -197,6 +188,7 @@ const SharingDropdownContent = ({
         aria-label={formatMessage(messages.shareOnTwitter)}
       >
         <TwitterIcon ariaHidden name="twitter" />
+        <span aria-hidden>{'Twitter'}</span>
       </TwitterButton>
     );
 
@@ -206,11 +198,12 @@ const SharingDropdownContent = ({
           className="sharingButton last email"
           onClick={onClick(
             'email',
-            addUtmToUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
+            `mailto:?subject=${emailSubject}&body=${emailBody}`
           )}
           aria-label={formatMessage(messages.shareByEmail)}
         >
           <EmailIcon ariaHidden name="email" />
+          <span aria-hidden>{'Email'}</span>
         </button>
       ) : null;
 
