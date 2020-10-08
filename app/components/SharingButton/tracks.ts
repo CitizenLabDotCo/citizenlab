@@ -23,4 +23,10 @@ export default {
       network: 'email',
     },
   },
+  clickWhatsAppShare: {
+    name: 'Share button clicked',
+    properties: {
+      network: 'whatsapp',
+    },
+  },
 };
