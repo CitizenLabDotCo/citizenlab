@@ -23,20 +23,15 @@ resource "MapConfigs", admin_api: true do
   let(:center) { {type: "Point", coordinates: [longitude, latitude]} }
 
   get "admin_api/projects/:project_id/map_config" do
-
-    let(:t1le_provider) { map_config.tile_provider}
-    let(:zoom_level) { map_config.zoom_level}
-    let(:map_config_id) { map_config.id }
-
     example_request "Get project map configuration" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
 
-      expect(json_response[:data][:id]).to eq(map_config_id)
+      expect(json_response[:data][:id]).to eq(map_config.id)
 
       attributes = json_response[:data][:attributes]
-      expect(attributes[:tile_provider]).to eq(tile_provider)
-      expect(attributes[:zoom_level].to_f).to eq(zoom_level)
+      expect(attributes[:tile_provider]).to eq( map_config.tile_provider)
+      expect(attributes[:zoom_level].to_f).to eq(map_config.zoom_level)
     end
 
   end
