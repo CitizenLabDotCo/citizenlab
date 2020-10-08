@@ -22,6 +22,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brugere\n",
   "app.components.CityLogoSection.iframeTitle": "Flere oplysninger om {orgName}",
   "app.components.CityLogoSection.slogan": "{tenantName, select, DeloitteDK {Vores Mål} other {Dette er et initiativ fra {orgName}}}",
+  "app.components.Comments.cancel": "Cancel",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "{tenantName, select, DeloitteDK {Det er ikke muligt at kommentere på dette indlæg, da det ikke er aktivt lige nu.} other {Det er ikke muligt at kommentere på denne idé, da den ikke længere eller endnu ikke er i betragtning.}}",
   "app.components.Comments.commentingDisabledInContext": "{tenantName, select, DeloitteDK {Kommentering på indlæg i '{projectName}' er deaktiveret i øjeblikket.} other {Kommentering på ideer i '{projectName}' er deaktiveret i øjeblikket.}}",
   "app.components.Comments.commentingDisabledNotVerified": "{tenantName, select, DeloitteDK {At kommentere på dette indlæg kræver bekræftelse af din konto. {verificationLink}} other {At kommentere på denne idé kræver bekræftelse af din konto. {verificationLink}}}",
