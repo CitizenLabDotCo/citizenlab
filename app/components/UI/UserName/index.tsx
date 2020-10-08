@@ -19,7 +19,8 @@ interface DataProps {
 }
 
 interface StyleProps {
-  emphasize?: boolean;
+  fontWeight?: number;
+  fontSize?: number;
   underline?: boolean;
   color?: string;
   canModerate?: boolean;

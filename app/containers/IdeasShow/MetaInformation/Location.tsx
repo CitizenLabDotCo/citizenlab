@@ -21,10 +21,15 @@ const StyledIcon = styled(Icon)`
 const OpenMapModalButton = styled.button`
   color: ${colors.label};
   text-decoration: underline;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  border: none;
+  appearance: none;
+  cursor: pointer;
 
   &:hover {
     color: ${darken(0.2, colors.label)};
-    cursor: pointer;
   }
 `;
 
