@@ -67,14 +67,14 @@ type Props = {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
+  currentProjectFilter?: string | undefined;
+  currentGroupFilter?: string | undefined;
+  currentTopicFilter?: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage?: string;
-  currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
+  currentProjectFilterLabel?: string | undefined;
+  currentGroupFilterLabel?: string | undefined;
+  currentTopicFilterLabel?: string | undefined;
   xlsxEndpoint: string;
 };
 
