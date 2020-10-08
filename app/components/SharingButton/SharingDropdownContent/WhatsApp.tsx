@@ -20,7 +20,7 @@ interface Props {
 }
 
 const handleClick = (_event) => {
-  trackClickByEventName(tracks.clickMessengerShare.name);
+  trackClickByEventName(tracks.clickWhatsAppShare.name);
 };
 
 const WhatsApp = ({
@@ -38,7 +38,6 @@ const WhatsApp = ({
         resUrl += `&utm_content=${utmParams.content}`;
       }
     }
-    console.log(`resUrl: ${resUrl}`);
     return resUrl;
   };
   const hrefText = encodeURIComponent(whatsAppMessage);
