@@ -34,7 +34,7 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
-  background-color: #edeff0;
+  background-color: ${colors.background};
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 

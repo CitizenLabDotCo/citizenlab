@@ -5,7 +5,7 @@ import {
   rightColumnWidthDesktop,
   rightColumnWidthTablet,
 } from '../styleConstants';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // components
 import MetaInformation from '../MetaInformation';
@@ -40,7 +40,7 @@ const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
 `;
 
 const ButtonsFallback = styled.div`
-  background-color: #edeff0;
+  background-color: ${colors.background};
   border-radius: 2px;
   padding: 25px 15px;
   margin-bottom: 23px;
