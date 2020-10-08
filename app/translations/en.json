@@ -1803,6 +1803,7 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Project: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title}: Share your ideas on",
+  "app.containers.ProjectFolderShowPage.whatsAppMessage": "{title}",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Information about this project",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
   "app.containers.ProjectInfo.whatsAppMessage": "{title}: Share your ideas on",

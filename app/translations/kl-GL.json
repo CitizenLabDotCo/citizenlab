@@ -1803,6 +1803,7 @@
   "app.containers.ProjectFolderShowPage.metaTitle": "Suliniut: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Uani quppersagaqanngilaq",
   "app.containers.ProjectFolderShowPage.twitterMessage": "{title} : Isumassarsiatit uani avitseqatigikkit",
+  "app.containers.ProjectFolderShowPage.whatsAppMessage": "",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Suliniut una pillugu paasissutissat",
   "app.containers.ProjectInfo.twitterMessage": "{title} : isumassarsiatit uani avitseqatigikkit",
   "app.containers.ProjectInfo.whatsAppMessage": "",
