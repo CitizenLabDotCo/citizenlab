@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
 
 // components
 import Avatar from 'components/Avatar';
@@ -15,14 +13,20 @@ import { FormattedDate } from 'react-intl';
 // hooks
 import useIdea from 'hooks/useIdea';
 
+// style
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
 `;
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 5px;
+  margin-left: -4px;
 `;
 
 export interface Props {
@@ -32,18 +36,19 @@ export interface Props {
 }
 
 const PostedBy = memo<Props>(({ className, authorId, ideaId }) => {
-  const userName = (
-    <UserName
-      userId={authorId}
-      isLinkToProfile
-      underline
-      color={colors.label}
-    />
-  );
   const idea = useIdea({ ideaId });
 
   if (!isNilOrError(idea)) {
     const ideaPublishedAtDate = idea.attributes.published_at;
+    const userName = (
+      <UserName
+        userId={authorId}
+        isLinkToProfile={true}
+        underline={true}
+        color={colors.label}
+        fontSize={fontSizes.small}
+      />
+    );
     const date = (
       <FormattedDate
         value={ideaPublishedAtDate}
@@ -57,7 +62,7 @@ const PostedBy = memo<Props>(({ className, authorId, ideaId }) => {
       <Container className={`e2e-idea-author ${className || ''}`}>
         <StyledAvatar
           userId={authorId}
-          size="32px"
+          size="30px"
           isLinkToProfile={!!authorId}
         />
         <FormattedMessage

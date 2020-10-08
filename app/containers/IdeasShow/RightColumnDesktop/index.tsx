@@ -5,12 +5,13 @@ import {
   rightColumnWidthDesktop,
   rightColumnWidthTablet,
 } from '../styleConstants';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // components
 import MetaInformation from '../MetaInformation';
 import VotingCTABox from '../CTABox/VotingCTABox';
 import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox';
+import Buttons from '../CTABox/Buttons';
 
 const Container = styled.div`
   display: flex;
@@ -35,6 +36,13 @@ const StyledVotingCTABox = styled(VotingCTABox)`
 `;
 
 const StyledPBCTABox = styled(ParticipatoryBudgetingCTABox)`
+  margin-bottom: 23px;
+`;
+
+const ButtonsFallback = styled.div`
+  background-color: ${colors.background};
+  border-radius: 2px;
+  padding: 25px 15px;
   margin-bottom: 23px;
 `;
 
@@ -82,6 +90,11 @@ const RightColumnDesktop = ({
             budgetingDescriptor={budgetingDescriptor}
           />
         )}
+      {!showVoteControl && !showBudgetControl && (
+        <ButtonsFallback>
+          <Buttons ideaId={ideaId} />
+        </ButtonsFallback>
+      )}
       <StyledMetaInformation
         ideaId={ideaId}
         projectId={projectId}

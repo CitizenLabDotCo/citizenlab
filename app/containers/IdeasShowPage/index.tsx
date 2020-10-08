@@ -44,7 +44,6 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 
 const StyledIdeasShow = styled(IdeasShow)`
   background: #fff;
-  margin-top: ${(props) => props.theme.mobileTopBarHeight}px;
 
   ${media.biggerThanMaxTablet`
     margin-top: 0px;
@@ -80,6 +79,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
         <StyledIdeasShow
           ideaId={idea.id}
           projectId={idea.relationships.project.data.id}
+          insideModal={false}
         />
       </Container>
     );

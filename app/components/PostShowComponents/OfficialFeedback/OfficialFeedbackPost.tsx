@@ -278,7 +278,7 @@ export class OfficialFeedbackPost extends PureComponent<
               this.getPostBodyText(body_multiloc, locale, tenantLocales)}
           </ScreenReaderOnly>
 
-          <QuillEditedContent fontWeight={300}>
+          <QuillEditedContent fontWeight={400}>
             <Body className="e2e-official-feedback-post-body">
               <div
                 dangerouslySetInnerHTML={{

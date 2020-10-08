@@ -134,6 +134,7 @@ const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   }
 
   ${media.smallerThanMinTablet`
+    max-width: calc(100vw - 30px);
     max-height: ${(props) => `calc(${props.windowHeight} - 30px)`};
     margin-top: 15px;
 

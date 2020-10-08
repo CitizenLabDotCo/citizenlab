@@ -21,14 +21,25 @@ import { Locale } from 'typings';
 
 const Container = styled.div`
   position: relative;
+  cursor: text;
+  background: #fff;
 
   & .hasBorder textarea:focus {
     border-color: ${colors.focussedBorder} !important;
     box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
-  .textareaWrapper__suggestions__list li:last-child {
+  & .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
+  }
+
+  & .textareaWrapper__highlighter,
+  & textarea {
+    background: transparent !important;
+  }
+
+  & .textareaWrapper__highlighter > strong {
+    z-index: 2;
   }
 `;
 
@@ -92,6 +103,25 @@ class MentionsTextArea extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    const style = this.getStyle();
+    const mentionStyle = {
+      paddingTop: '3px',
+      paddingBottom: '3px',
+      paddingLeft: '0px',
+      paddingRight: '1px',
+      borderRadius: '3px',
+      backgroundColor: transparentize(0.85, this.props.theme.colorText),
+    };
+    this.setState({ style, mentionStyle });
+  }
+
+  componentDidUpdate(prevProps: Props, _prevState: State) {
+    if (this.props.rows !== prevProps.rows) {
+      this.setState({ style: this.getStyle() });
+    }
+  }
+
+  getStyle = () => {
     const { rows } = this.props;
 
     const style = {
@@ -143,38 +173,23 @@ class MentionsTextArea extends PureComponent<Props, State> {
       },
     };
 
-    const mentionStyle = {
-      paddingTop: '3px',
-      paddingBottom: '3px',
-      paddingLeft: '0px',
-      paddingRight: '1px',
-      borderRadius: '3px',
-      backgroundColor: transparentize(0.9, this.props.theme.colorText),
-    };
-
-    this.setState({ style, mentionStyle });
-  }
+    return style;
+  };
 
   mentionDisplayTransform = (_id, display) => {
     return `@${display}`;
   };
 
   handleOnChange = (event) => {
-    if (this.props.onChange) {
-      this.props.onChange(event.target.value, this.props.locale);
-    }
+    this.props?.onChange?.(event.target.value, this.props.locale);
   };
 
   handleOnFocus = () => {
-    if (this.props.onFocus) {
-      this.props.onFocus();
-    }
+    this.props?.onFocus?.();
   };
 
   handleOnBlur = () => {
-    if (this.props.onBlur) {
-      this.props.onBlur();
-    }
+    this.props?.onBlur?.();
   };
 
   setRef = () => {

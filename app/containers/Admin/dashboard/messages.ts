@@ -381,4 +381,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
     defaultMessage: 'No phase created for this project',
   },
+  ideation: {
+    id: 'app.containers.AdminPage.ReportsTab.ideation',
+    defaultMessage: 'ideation',
+  },
+  information: {
+    id: 'app.containers.AdminPage.ReportsTab.information',
+    defaultMessage: 'information',
+  },
+  survey: {
+    id: 'app.containers.AdminPage.ReportsTab.survey',
+    defaultMessage: 'survey',
+  },
+  budgeting: {
+    id: 'app.containers.AdminPage.ReportsTab.budgeting',
+    defaultMessage: 'budgeting',
+  },
+  poll: {
+    id: 'app.containers.AdminPage.ReportsTab.poll',
+    defaultMessage: 'poll',
+  },
+  volunteering: {
+    id: 'app.containers.AdminPage.ReportsTab.volunteering',
+    defaultMessage: 'volunteering',
+  },
+  customFieldTitleExport: {
+    id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
+    defaultMessage: '{fieldName}_repartition',
+  },
 });

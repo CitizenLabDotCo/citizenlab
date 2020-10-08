@@ -95,7 +95,7 @@ const VoteIconContainer = styled.div<{
       box-shadow: ${defaultStyles.boxShadow};
 
       &:hover {
-        box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2)
+        box-shadow: ${defaultStyles.boxShadowHoverSmall};
       }
     `}
   }
