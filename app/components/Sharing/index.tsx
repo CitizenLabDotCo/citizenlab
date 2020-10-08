@@ -201,12 +201,11 @@ const Sharing = ({
   };
 
   const trackClick = (medium: Medium) => {
-    trackEventByName(
-      tracks[medium]['name'],
-      isInModal
-        ? Object.assign({ modal: 'true' }, tracks[medium]['properties'])
-        : tracks[medium]['properties']
-    );
+    const properties = isInModal
+      ? { modal: 'true', network: medium }
+      : { network: medium };
+
+    trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 
   if (!isNilOrError(tenant)) {
