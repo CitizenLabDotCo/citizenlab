@@ -50,8 +50,8 @@ const WhatsApp = ({
       role="button"
       aria-label={formatMessage(messages.shareViaWhatsApp)}
     >
-      <StyledIcon name="whatsapp" />
-      {'WhatsApp'}
+      <StyledIcon ariaHidden name="whatsapp" />
+      <span aria-hidden>{'WhatsApp'}</span>
     </a>
   );
 };
