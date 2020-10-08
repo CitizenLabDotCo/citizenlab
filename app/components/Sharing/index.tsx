@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // libraries
 import { FacebookButton, TwitterButton } from 'react-social';
@@ -165,155 +165,157 @@ interface Props {
   id?: string;
 }
 
-const Sharing = ({
-  context,
-  twitterMessage,
-  whatsAppMessage,
-  emailSubject,
-  emailBody,
-  className,
-  intl: { formatMessage },
-  isInModal,
-  id,
-  url,
-  utmParams,
-}: Props & InjectedIntlProps) => {
-  const tenant = useTenant();
+const Sharing = memo(
+  ({
+    context,
+    twitterMessage,
+    whatsAppMessage,
+    emailSubject,
+    emailBody,
+    className,
+    intl: { formatMessage },
+    isInModal,
+    id,
+    url,
+    utmParams,
+  }: Props & InjectedIntlProps) => {
+    const tenant = useTenant();
 
-  const buildUrl = (medium: string) => {
-    let resUrl = url;
-    if (utmParams) {
-      resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
-      if (utmParams.content) {
-        resUrl += `&utm_content=${utmParams.content}`;
+    const buildUrl = (medium: string) => {
+      let resUrl = url;
+      if (utmParams) {
+        resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
+        if (utmParams.content) {
+          resUrl += `&utm_content=${utmParams.content}`;
+        }
       }
-    }
-    return resUrl;
-  };
+      return resUrl;
+    };
 
-  const handleClick = (medium: Medium, href?: string) => (
-    _event: React.FormEvent
-  ) => {
-    if (href) {
-      window.location.href = href;
-    }
-    trackClick(medium);
-  };
+    const handleClick = (medium: Medium, href?: string) => (
+      _event: React.FormEvent
+    ) => {
+      if (href) {
+        window.location.href = href;
+      }
+      trackClick(medium);
+    };
 
-  const trackClick = (medium: Medium) => {
-    const properties = isInModal
-      ? { modal: 'true', network: medium }
-      : { network: medium };
+    const trackClick = (medium: Medium) => {
+      const properties = isInModal
+        ? { modal: 'true', network: medium }
+        : { network: medium };
 
-    trackEventByName(tracks.shareButtonClicked.name, properties);
-  };
+      trackEventByName(tracks.shareButtonClicked.name, properties);
+    };
 
-  if (!isNilOrError(tenant)) {
-    const facebookSettings = tenant.data.attributes.settings.facebook_login
-      ? tenant.data.attributes.settings.facebook_login
-      : null;
-    const facebookAppId = facebookSettings ? facebookSettings.app_id : null;
+    if (!isNilOrError(tenant)) {
+      const facebookSettings = tenant.data.attributes.settings.facebook_login
+        ? tenant.data.attributes.settings.facebook_login
+        : null;
+      const facebookAppId = facebookSettings ? facebookSettings.app_id : null;
 
-    const facebook = facebookAppId ? (
-      <FacebookButton
-        appId={facebookAppId}
-        url={buildUrl('facebook')}
-        className="sharingButton facebook first"
-        sharer={true}
-        onClick={trackClick('facebook')}
-        aria-label={formatMessage(messages.shareOnFacebook)}
-      >
-        <StyledIcon name="facebook" />
-      </FacebookButton>
-    ) : null;
-
-    const messenger = facebookAppId ? (
-      <button
-        className="sharingButton messenger"
-        onClick={handleClick(
-          'messenger',
-          `fb-messenger://share/?link=${encodeURIComponent(
-            buildUrl('messenger')
-          )}&app_id=${facebookAppId}`
-        )}
-        aria-label={formatMessage(messages.shareViaMessenger)}
-      >
-        <StyledIcon name="messenger" />
-      </button>
-    ) : null;
-
-    const whatsapp = (
-      <button
-        className="sharingButton whatsapp"
-        onClick={handleClick(
-          'whatsapp',
-          buildUrl(
-            `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-              whatsAppMessage
-            )}`
-          )
-        )}
-        aria-label={formatMessage(messages.shareViaWhatsApp)}
-      >
-        <StyledIcon name="whatsapp" />
-      </button>
-    );
-
-    const twitter = (
-      <TwitterButton
-        message={twitterMessage}
-        url={buildUrl('twitter')}
-        className={`sharingButton twitter ${
-          !emailSubject || !emailBody ? 'last' : ''
-        }`}
-        sharer={true}
-        onClick={trackClick('twitter')}
-        aria-label={formatMessage(messages.shareOnTwitter)}
-      >
-        <StyledIcon name="twitter" />
-      </TwitterButton>
-    );
-
-    const email =
-      emailSubject && emailBody ? (
-        <button
-          className="sharingButton last email"
-          onClick={handleClick(
-            'email',
-            buildUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
-          )}
-          aria-label={formatMessage(messages.shareByEmail)}
+      const facebook = facebookAppId ? (
+        <FacebookButton
+          appId={facebookAppId}
+          url={buildUrl('facebook')}
+          className="sharingButton facebook first"
+          sharer={true}
+          onClick={trackClick('facebook')}
+          aria-label={formatMessage(messages.shareOnFacebook)}
         >
-          <StyledIcon name="email" />
+          <StyledIcon name="facebook" />
+        </FacebookButton>
+      ) : null;
+
+      const messenger = facebookAppId ? (
+        <button
+          className="sharingButton messenger"
+          onClick={handleClick(
+            'messenger',
+            `fb-messenger://share/?link=${encodeURIComponent(
+              buildUrl('messenger')
+            )}&app_id=${facebookAppId}`
+          )}
+          aria-label={formatMessage(messages.shareViaMessenger)}
+        >
+          <StyledIcon name="messenger" />
         </button>
       ) : null;
 
-    return (
-      <Container id={id || ''} className={className || ''}>
-        <Title isInModal={isInModal}>
-          {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
-          {context === 'project' && (
-            <FormattedMessage {...messages.shareThisProject} />
+      const whatsapp = (
+        <button
+          className="sharingButton whatsapp"
+          onClick={handleClick(
+            'whatsapp',
+            buildUrl(
+              `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
+                whatsAppMessage
+              )}`
+            )
           )}
-          {context === 'initiative' && (
-            <FormattedMessage {...messages.shareThisInitiative} />
-          )}
-          {context === 'folder' && (
-            <FormattedMessage {...messages.shareThisFolder} />
-          )}
-        </Title>
-        <Buttons>
-          {facebook}
-          {messenger}
-          {whatsapp}
-          {twitter}
-          {email}
-        </Buttons>
-      </Container>
-    );
-  }
+          aria-label={formatMessage(messages.shareViaWhatsApp)}
+        >
+          <StyledIcon name="whatsapp" />
+        </button>
+      );
 
-  return null;
-};
+      const twitter = (
+        <TwitterButton
+          message={twitterMessage}
+          url={buildUrl('twitter')}
+          className={`sharingButton twitter ${
+            !emailSubject || !emailBody ? 'last' : ''
+          }`}
+          sharer={true}
+          onClick={trackClick('twitter')}
+          aria-label={formatMessage(messages.shareOnTwitter)}
+        >
+          <StyledIcon name="twitter" />
+        </TwitterButton>
+      );
+
+      const email =
+        emailSubject && emailBody ? (
+          <button
+            className="sharingButton last email"
+            onClick={handleClick(
+              'email',
+              buildUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
+            )}
+            aria-label={formatMessage(messages.shareByEmail)}
+          >
+            <StyledIcon name="email" />
+          </button>
+        ) : null;
+
+      return (
+        <Container id={id || ''} className={className || ''}>
+          <Title isInModal={isInModal}>
+            {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
+            {context === 'project' && (
+              <FormattedMessage {...messages.shareThisProject} />
+            )}
+            {context === 'initiative' && (
+              <FormattedMessage {...messages.shareThisInitiative} />
+            )}
+            {context === 'folder' && (
+              <FormattedMessage {...messages.shareThisFolder} />
+            )}
+          </Title>
+          <Buttons>
+            {facebook}
+            {messenger}
+            {whatsapp}
+            {twitter}
+            {email}
+          </Buttons>
+        </Container>
+      );
+    }
+
+    return null;
+  }
+);
 
 export default injectIntl(Sharing);
