@@ -50,6 +50,7 @@ const Container = styled.footer<{ insideModal?: boolean }>`
 `;
 
 const Inner = styled.div`
+  width: 100vw;
   min-height: ${(props) => props.theme.footerHeight}px;
   display: flex;
   align-items: center;
@@ -60,6 +61,7 @@ const Inner = styled.div`
   padding-bottom: 11px;
   background: ${transparentize(0.1, colors.background)};
   border-top: solid 1px #ccc;
+  overflow: hidden;
 
   ${media.smallerThan1280px`
     padding-left: 18px;
@@ -158,15 +160,54 @@ const FeedbackButton = styled.button`
 `;
 
 const PagesNav = styled.nav`
-  color: ${colors.label};
-  font-weight: 400;
-  text-align: center;
-  overflow: hidden;
-
   ${media.smallerThanMaxTablet`
+    width: 90vw;
     margin-top: 15px;
     margin-bottom: 15px;
   `}
+`;
+
+const PagesNavList = styled.ul`
+  display: flex;
+
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    flex-wrap: wrap;
+    justify-content: center;
+  `}
+
+  & li {
+    margin-right: 12px;
+
+    &:after {
+      color: ${colors.label};
+      font-size: ${fontSizes.small}px;
+      font-weight: 400;
+      content: '•';
+      margin-left: 12px;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+
+      &:after {
+        margin-left: 0px;
+        content: '';
+      }
+    }
+  }
+`;
+
+const PagesNavListItem = styled.li`
+  color: ${colors.label};
+  font-weight: 400;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 `;
 
 const StyledButton = styled.button`
@@ -488,27 +529,33 @@ class PlatformFooter extends PureComponent<Props, State> {
 
         <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
           <PagesNav>
-            {LEGAL_PAGES
-              // to be added back when we do the footer redesign
-              .filter((slug) => slug !== 'accessibility-statement')
-              .map((slug, index) => (
-                <React.Fragment key={slug}>
-                  <StyledLink
-                    to={`/pages/${slug}`}
-                    className={index === 0 ? 'first' : ''}
-                  >
-                    <FormattedMessage {...messages[slug]} />
-                  </StyledLink>
-                  <Bullet aria-hidden>•</Bullet>
-                </React.Fragment>
-              ))}
-            <StyledButton onClick={this.openConsentManager}>
-              <FormattedMessage {...messages.cookieSettings} />
-            </StyledButton>
-            <Bullet aria-hidden>•</Bullet>
-            <StyledLink to="/site-map">
-              <FormattedMessage {...messages.siteMap} />
-            </StyledLink>
+            <PagesNavList>
+              {LEGAL_PAGES
+                // to be added back when we do the footer redesign
+                .filter((slug) => slug !== 'accessibility-statement')
+                .map((slug, index) => (
+                  <React.Fragment key={slug}>
+                    <PagesNavListItem>
+                      <StyledLink
+                        to={`/pages/${slug}`}
+                        className={index === 0 ? 'first' : ''}
+                      >
+                        <FormattedMessage {...messages[slug]} />
+                      </StyledLink>
+                    </PagesNavListItem>
+                  </React.Fragment>
+                ))}
+              <PagesNavListItem>
+                <StyledButton onClick={this.openConsentManager}>
+                  <FormattedMessage {...messages.cookieSettings} />
+                </StyledButton>
+              </PagesNavListItem>
+              <PagesNavListItem>
+                <StyledLink to="/site-map">
+                  <FormattedMessage {...messages.siteMap} />
+                </StyledLink>
+              </PagesNavListItem>
+            </PagesNavList>
           </PagesNav>
 
           <Right>

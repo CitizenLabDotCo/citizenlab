@@ -27,6 +27,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 // style
 import styled, { useTheme } from 'styled-components';
 import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { transparentize } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
@@ -66,7 +67,9 @@ const EventDates = styled.div`
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background: #fff;
-  border: solid 1px ${colors.label};
+  background: ${transparentize(0.92, colors.label)};
+  border: solid 1px ${transparentize(0.6, colors.label)};
+  border-bottom: none;
 
   &.past {
     background: ${colors.grey};
@@ -74,9 +77,6 @@ const EventDates = styled.div`
 `;
 
 const EventDate = styled.div`
-  color: ${colors.label};
-  line-height: normal;
-  font-weight: 500;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,27 +84,34 @@ const EventDate = styled.div`
 `;
 
 const EventMonth = styled.div`
-  font-size: ${fontSizes.small}px;
+  color: ${colors.label};
+  font-size: 14px;
+  line-height: normal;
+  font-weight: 500;
   text-transform: uppercase;
 `;
 
 const EventDay = styled.div`
-  font-size: ${fontSizes.xl}px;
+  color: ${colors.label};
+  font-size: 18px;
+  line-height: normal;
+  font-weight: 400;
 `;
 
 const EventDatesSeparator = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.xl}px;
+  color: ${colors.label};
+  font-size: 16px;
   line-height: normal;
   font-weight: 500;
   text-align: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 0px;
+  padding-bottom: 1px;
 `;
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: 16px;
+  line-height: normal;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -134,7 +141,7 @@ const EventInformation = styled.div`
   `}
 `;
 
-const EventTime = styled.div`
+const EventHeaderTime = styled.div`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.medium}px;
   font-weight: 300;
@@ -236,12 +243,6 @@ const EventCard = memo<Props & InjectedIntlProps>(
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
       const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
-      const startAtTime = isMultiDayEvent
-        ? startAtMoment.format('D MMM LT')
-        : startAtMoment.format('LT');
-      const endAtTime = isMultiDayEvent
-        ? endAtMoment.format('D MMM LT')
-        : endAtMoment.format('LT');
       const eventStatus = pastPresentOrFuture([
         event.attributes.start_at,
         event.attributes.end_at,
@@ -261,8 +262,8 @@ const EventCard = memo<Props & InjectedIntlProps>(
                 <>
                   <EventDatesSeparator>-</EventDatesSeparator>
                   <EventDate>
-                    <span>{endAtDay}</span>
-                    <span>{endAtMonth}</span>
+                    <EventMonth>{endAtMonth}</EventMonth>
+                    <EventDay>{endAtDay}</EventDay>
                   </EventDate>
                 </>
               )}
@@ -274,9 +275,18 @@ const EventCard = memo<Props & InjectedIntlProps>(
           </EventDateInfo>
 
           <EventInformation className={eventStatus}>
-            <EventTime>
-              {startAtTime} - {endAtTime}
-            </EventTime>
+            <EventHeaderTime>
+              {isMultiDayEvent ? (
+                <>
+                  {startAtMoment.format('LLL')} → {endAtMoment.format('LLL')}
+                </>
+              ) : (
+                <>
+                  {startAtMoment.format('LL')} {startAtMoment.format('LT')} →{' '}
+                  {endAtMoment.format('LT')}
+                </>
+              )}
+            </EventHeaderTime>
 
             <EventTitle>
               <T value={event.attributes.title_multiloc} />
