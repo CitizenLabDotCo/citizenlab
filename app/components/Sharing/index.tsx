@@ -226,7 +226,7 @@ const Sharing = memo(
           url={getUrlWithUtm('facebook')}
           className="sharingButton facebook first"
           sharer={true}
-          onClick={trackClick('facebook')}
+          onClick={handleClick('facebook')}
           aria-label={formatMessage(messages.shareOnFacebook)}
         >
           <StyledIcon ariaHidden name="facebook" />
@@ -271,7 +271,7 @@ const Sharing = memo(
             !emailSubject || !emailBody ? 'last' : ''
           }`}
           sharer={true}
-          onClick={trackClick('twitter')}
+          onClick={handleClick('twitter')}
           aria-label={formatMessage(messages.shareOnTwitter)}
         >
           <StyledIcon ariaHidden name="twitter" />
