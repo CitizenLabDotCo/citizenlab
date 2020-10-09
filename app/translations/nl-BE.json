@@ -462,6 +462,7 @@
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Verklaar deze statuswijziging",
   "app.components.admin.PostManager.header": "Ideeën",
   "app.components.admin.PostManager.hiddenFieldsLink": "",
+  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "",
   "app.components.admin.PostManager.hiddenFieldsTip": "",
   "app.components.admin.PostManager.ideas": "ideeën",
   "app.components.admin.PostManager.initiatives": "voorstellen",
