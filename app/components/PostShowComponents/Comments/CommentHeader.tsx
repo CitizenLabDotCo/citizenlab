@@ -6,16 +6,13 @@ import AdminBadge from './AdminBadge';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  &.marginBottom {
-    margin-bottom: 13px;
-  }
+  margin-bottom: 2px;
 `;
 
 const Left = styled.div`
@@ -63,21 +60,23 @@ export default class CommentHeader extends PureComponent<Props, State> {
     const hasAuthorId = !!authorId;
 
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
         <Left>
           <StyledAuthor
             authorId={authorId}
             isLinkToProfile={hasAuthorId}
-            size="32px"
+            size="30px"
             projectId={projectId}
             showModeration={moderator}
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
-            horizontalLayout
-            emphasize
+            horizontalLayout={true}
+            color={colors.label}
+            fontSize={fontSizes.base}
+            fontWeight={400}
+            underline={true}
           />
         </Left>
-
         <Right>{moderator && <AdminBadge />}</Right>
       </Container>
     );

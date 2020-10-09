@@ -27,7 +27,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
 import { Spinner } from 'cl2-component-library';
-import ProjectLink from './ProjectLink';
+import GoBackButton from './GoBackButton';
 import TranslateButton from 'components/UI/TranslateButton';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')
@@ -188,7 +188,7 @@ const IdeaHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: -5px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
@@ -215,7 +215,7 @@ const TopBar = styled.div`
   justify-content: space-between;
 `;
 
-const StyledProjectLink = styled(ProjectLink)`
+const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 40px;
   display: block;
 
@@ -228,6 +228,8 @@ const BodySectionTitle = styled.h2`
   font-size: ${(props) => props.theme.fontSizes.large}px;
   font-weight: 500;
   line-height: 28px;
+  margin: 0;
+  margin-bottom: 15px;
 `;
 
 const StyledBody = styled(Body)`
@@ -271,7 +273,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 const Comments = styled.div`
-  margin-bottom: 120px;
+  margin-bottom: 150px;
 `;
 
 interface DataProps {
@@ -291,6 +293,7 @@ interface DataProps {
 interface InputProps {
   ideaId: string | null;
   projectId: string;
+  insideModal: boolean;
   className?: string;
 }
 
@@ -495,6 +498,7 @@ export class IdeasShow extends PureComponent<
       projectId,
       ideaCustomFieldsSchemas,
       tenant,
+      insideModal,
     } = this.props;
     const {
       loaded,
@@ -552,7 +556,10 @@ export class IdeasShow extends PureComponent<
 
           <IdeaContainer>
             <TopBar>
-              <StyledProjectLink projectId={projectId} />
+              <StyledGoBackButton
+                projectId={projectId}
+                insideModal={insideModal}
+              />
               <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
             </TopBar>
 
