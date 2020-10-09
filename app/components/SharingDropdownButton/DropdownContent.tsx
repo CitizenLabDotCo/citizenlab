@@ -1,5 +1,5 @@
 import React from 'react';
-import { UtmParams, Medium, addUtmToUrl } from './utils';
+import { UtmParams, Medium } from './';
 import { isNilOrError } from 'utils/helperUtils';
 import tracks from './tracks';
 
@@ -91,7 +91,7 @@ interface Props {
   whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
-  utmParams?: UtmParams;
+  utmParams: UtmParams;
   id?: string;
 }
 
@@ -123,8 +123,16 @@ const DropdownContent = ({
     trackEventByName(tracks.clickShare.name, { network: medium });
   };
 
-  const getUrl = (medium: Medium) => () => {
-    return utmParams ? addUtmToUrl(medium, url, utmParams) : url;
+  const getUrlWithUtm = (medium: Medium) => {
+    let resUrl = url;
+
+    resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
+
+    if (utmParams.content) {
+      resUrl += `&utm_content=${utmParams.content}`;
+    }
+
+    return resUrl;
   };
 
   if (!isNilOrError(tenant)) {
@@ -134,7 +142,7 @@ const DropdownContent = ({
     const facebook = facebookAppId ? (
       <FacebookButton
         appId={facebookAppId}
-        url={getUrl('facebook')()}
+        url={getUrlWithUtm('facebook')}
         className="sharingButton facebook first"
         sharer={true}
         onClick={trackEventByName(tracks.clickShare.name, {
@@ -153,7 +161,7 @@ const DropdownContent = ({
         onClick={onClick(
           'messenger',
           `fb-messenger://share/?link=${encodeURIComponent(
-            getUrl('messenger')()
+            getUrlWithUtm('messenger')
           )}&app_id=${facebookAppId}`
         )}
         aria-label={formatMessage(messages.shareViaMessenger)}
@@ -182,7 +190,7 @@ const DropdownContent = ({
     const twitter = (
       <TwitterButton
         message={twitterMessage}
-        url={getUrl('twitter')()}
+        url={getUrlWithUtm('twitter')}
         className={`sharingButton twitter ${
           !emailSubject || !emailBody ? 'last' : ''
         }`}

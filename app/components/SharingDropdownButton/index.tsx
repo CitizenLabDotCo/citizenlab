@@ -8,13 +8,20 @@ export type UtmParams = {
   content?: string;
 };
 
+export type Medium =
+  | 'facebook'
+  | 'twitter'
+  | 'messenger'
+  | 'whatsapp'
+  | 'email';
+
 interface Props {
   className?: string;
   twitterMessage: string;
   whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
-  utmParams?: UtmParams;
+  utmParams: UtmParams;
   url: string;
   buttonComponent: JSX.Element;
 }
