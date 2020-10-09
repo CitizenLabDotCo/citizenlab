@@ -45,7 +45,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // Typings
-import { CLError, Locale } from 'typings';
+import { CLError } from 'typings';
 import { adopt } from 'react-adopt';
 
 const Container = styled.div``;
