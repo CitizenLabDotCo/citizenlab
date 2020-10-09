@@ -246,15 +246,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Bullet = styled.span`
-  color: ${colors.label};
-  font-weight: 400;
-  font-size: ${fontSizes.small}px;
-  line-height: 21px;
-  margin-left: 10px;
-  margin-right: 10px;
-`;
-
 const Right = styled.div`
   display: flex;
   align-items: center;
