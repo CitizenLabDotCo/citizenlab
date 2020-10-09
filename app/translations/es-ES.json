@@ -462,6 +462,7 @@
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Explica este cambio de estado",
   "app.components.admin.PostManager.header": "Ideas",
   "app.components.admin.PostManager.hiddenFieldsLink": "",
+  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "",
   "app.components.admin.PostManager.hiddenFieldsTip": "",
   "app.components.admin.PostManager.ideas": "ideas",
   "app.components.admin.PostManager.initiatives": "propuestas",
