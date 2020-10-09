@@ -25,6 +25,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
+  padding-bottom: 20px;
   background: #fff;
 `;
 

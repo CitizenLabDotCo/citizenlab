@@ -24,7 +24,7 @@ const Title = styled.h1<{
   width: 100%;
   color: ${({ color, theme }) => color || theme.colorText};
   font-size: ${fontSizes.xxxl}px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;

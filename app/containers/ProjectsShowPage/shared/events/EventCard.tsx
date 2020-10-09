@@ -7,10 +7,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Icon } from 'cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
-// resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
+// hooks
+import useResourceFiles from 'hooks/useResourceFiles';
 
 // services
 import { IEventData } from 'services/events';
@@ -131,7 +129,7 @@ const EventInformation = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 40px;
+  margin-left: 30px;
 
   ${media.smallerThanMaxTablet`
     order: 3;
@@ -143,8 +141,8 @@ const EventInformation = styled.div`
 
 const EventHeaderTime = styled.div`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.medium}px;
-  font-weight: 300;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   line-height: normal;
   margin-bottom: 4px;
 `;
@@ -224,12 +222,14 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps {
-  eventFiles: GetResourceFilesChildProps;
-}
+interface Props extends InputProps {}
 
 const EventCard = memo<Props & InjectedIntlProps>(
-  ({ event, eventFiles, className, intl: { formatMessage } }) => {
+  ({ event, className, intl: { formatMessage } }) => {
+    const eventFiles = useResourceFiles({
+      resourceType: 'event',
+      resourceId: event.id,
+    });
     const theme: any = useTheme();
 
     if (!isNilOrError(event)) {
@@ -329,10 +329,4 @@ const EventCard = memo<Props & InjectedIntlProps>(
 
 const EventWithHoC = injectIntl(EventCard);
 
-const EventWithHoCAndData = (inputProps: InputProps) => (
-  <GetResourceFiles resourceType="event" resourceId={inputProps.event.id}>
-    {(eventFiles) => <EventWithHoC eventFiles={eventFiles} {...inputProps} />}
-  </GetResourceFiles>
-);
-
-export default EventWithHoCAndData;
+export default EventWithHoC;
