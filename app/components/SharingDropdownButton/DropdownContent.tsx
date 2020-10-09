@@ -95,7 +95,7 @@ interface Props {
   id?: string;
 }
 
-const SharingDropdownContent = ({
+const DropdownContent = ({
   id,
   url,
   className,
@@ -226,4 +226,4 @@ const SharingDropdownContent = ({
   return null;
 };
 
-export default injectIntl(SharingDropdownContent);
+export default injectIntl(DropdownContent);

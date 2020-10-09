@@ -1,5 +1,5 @@
 import React from 'react';
-import SharingButton from 'components/SharingButton';
+import SharingDropdownButton from 'components/SharingDropdownButton';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -44,7 +44,7 @@ const Component = ({
         };
 
     return (
-      <SharingButton
+      <SharingDropdownButton
         className={className}
         url={ideaUrl}
         whatsAppMessage={formatMessage(messages.whatsAppMessage, {
