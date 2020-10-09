@@ -112,7 +112,12 @@ const SharingDropdownContent = ({
     _event: React.FormEvent
   ) => {
     if (href) {
-      window.location.href = href;
+      // https://stackoverflow.com/a/8944769
+      const a = document.createElement('a');
+      a.href = href;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
     }
 
     trackEventByName(tracks.clickShare.name, { network: medium });
