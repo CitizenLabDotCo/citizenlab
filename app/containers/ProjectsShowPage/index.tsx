@@ -57,7 +57,6 @@ const Loading = styled.div`
 
 const ContentWrapper = styled.div`
   width: 100%;
-  padding-bottom: 20px;
 `;
 
 interface Props {
