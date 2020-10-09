@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-10-09
+
+### Added
+- Map configuration tool in AdminHQ (to configure maps and layers at the project level).
+
 ## 2020-10-08
 
 ### Added
