@@ -161,7 +161,7 @@ interface Props {
   whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
-  utmParams?: UtmParams;
+  utmParams: UtmParams;
   id?: string;
 }
 
@@ -181,14 +181,15 @@ const Sharing = memo(
   }: Props & InjectedIntlProps) => {
     const tenant = useTenant();
 
-    const addUtmToUrl = (medium: string) => {
+    const getUrlWithUtm = (medium: string) => {
       let resUrl = url;
-      if (utmParams) {
-        resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
-        if (utmParams.content) {
-          resUrl += `&utm_content=${utmParams.content}`;
-        }
+
+      resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
+
+      if (utmParams.content) {
+        resUrl += `&utm_content=${utmParams.content}`;
       }
+
       return resUrl;
     };
 
@@ -222,7 +223,7 @@ const Sharing = memo(
       const facebook = facebookAppId ? (
         <FacebookButton
           appId={facebookAppId}
-          url={addUtmToUrl('facebook')}
+          url={getUrlWithUtm('facebook')}
           className="sharingButton facebook first"
           sharer={true}
           onClick={trackClick('facebook')}
@@ -238,7 +239,7 @@ const Sharing = memo(
           onClick={handleClick(
             'messenger',
             `fb-messenger://share/?link=${encodeURIComponent(
-              addUtmToUrl('messenger')
+              getUrlWithUtm('messenger')
             )}&app_id=${facebookAppId}`
           )}
           aria-label={formatMessage(messages.shareViaMessenger)}
@@ -265,7 +266,7 @@ const Sharing = memo(
       const twitter = (
         <TwitterButton
           message={twitterMessage}
-          url={addUtmToUrl('twitter')}
+          url={getUrlWithUtm('twitter')}
           className={`sharingButton twitter ${
             !emailSubject || !emailBody ? 'last' : ''
           }`}
@@ -283,7 +284,7 @@ const Sharing = memo(
             className="sharingButton last email"
             onClick={handleClick(
               'email',
-              addUtmToUrl(`mailto:?subject=${emailSubject}&body=${emailBody}`)
+              `mailto:?subject=${emailSubject}&body=${emailBody}`
             )}
             aria-label={formatMessage(messages.shareByEmail)}
           >
