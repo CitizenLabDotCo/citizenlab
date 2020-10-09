@@ -295,4 +295,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.hiddenFieldsLink',
     defaultMessage: 'hidden fields',
   },
+  hiddenFieldsSupportArticleUrl: {
+    id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
+    defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
+  },
 });
