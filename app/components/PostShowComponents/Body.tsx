@@ -86,7 +86,7 @@ const Body = memo<Props>(
         <QuillEditedContent
           textColor={theme.colorText}
           fontSize={smallerThanSmallTablet ? 'base' : 'large'}
-          fontWeight={400}
+          fontWeight={300}
         >
           <div aria-live="polite">
             <span dangerouslySetInnerHTML={{ __html: bodyText }} />

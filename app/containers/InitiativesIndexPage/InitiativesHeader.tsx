@@ -16,28 +16,17 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 
 // images
-import illustrationSrc from './initiativesHeaderImage.jpg';
 import InitiativeButton from 'components/InitiativeButton';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-  ${media.smallerThanMinTablet`
-    background-color: ${colors.background};
-  `}
-`;
-
-const Header = styled.div`
   width: 100%;
   min-height: 350px;
   padding: 20px 15px;
@@ -52,7 +41,7 @@ const Header = styled.div`
   `}
 `;
 
-const HeaderContent = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
@@ -70,7 +59,7 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.h2`
+const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
@@ -93,52 +82,9 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 18px;
 `;
 
-const InitiativeInfo = styled.div`
-  width: 100%;
-  min-height: 145px;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid ${colors.separation};
-  border-left: none;
-  border-right: none;
-  background: white;
-  line-height: ${fontSizes.xl}px;
-
-  ${media.smallerThanMaxTablet`
-    padding: 40px 0;
-  `}
-
-  ${media.smallerThanMinTablet`
-    margin-bottom: 40px;
-  `}
-`;
-
-const Wrapper = styled.div`
-  width: auto;
-  max-width: 1150px;
-  height: 100%;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  margin: 0;
-  padding: 0 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const Illustration = styled.img`
-  height: 145px;
-  margin-right: 70px;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
+const StyledInitiativeInfoContent = styled(InitiativeInfoContent)`
+  max-width: 550px;
+  margin-bottom: 30px;
 `;
 
 export interface InputProps {
@@ -163,53 +109,42 @@ class InitiativesHeader extends PureComponent<Props, State> {
 
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
-        <Header>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h1"
-              {...messages.invisibleInitiativesPageTitle}
-            />
-          </ScreenReaderOnly>
-          <HeaderContent>
-            <HeaderTitle>
-              {postingPermission?.enabled ? (
-                <FormattedMessage
-                  {...messages.header}
-                  values={{
-                    styledOrgName: (
-                      <T
-                        value={
-                          tenant.attributes.settings.core.organization_name
-                        }
-                      />
-                    ),
-                  }}
-                />
-              ) : (
-                <FormattedMessage
-                  {...messages.headerPostingProposalDisabled}
-                  values={{
-                    styledOrgName: (
-                      <T
-                        value={
-                          tenant.attributes.settings.core.organization_name
-                        }
-                      />
-                    ),
-                  }}
-                />
-              )}
-            </HeaderTitle>
-            <StyledAvatarBubbles />
-            <InitiativeButton location="initiatives_header" />
-          </HeaderContent>
-        </Header>
-        <InitiativeInfo>
-          <Wrapper>
-            <Illustration src={illustrationSrc} alt="" />
-            <InitiativeInfoContent />
-          </Wrapper>
-        </InitiativeInfo>
+        <ScreenReaderOnly>
+          <FormattedMessage
+            tagName="h1"
+            {...messages.invisibleInitiativesPageTitle}
+          />
+        </ScreenReaderOnly>
+        <Content>
+          <Title>
+            {postingPermission?.enabled ? (
+              <FormattedMessage
+                {...messages.header}
+                values={{
+                  styledOrgName: (
+                    <T
+                      value={tenant.attributes.settings.core.organization_name}
+                    />
+                  ),
+                }}
+              />
+            ) : (
+              <FormattedMessage
+                {...messages.headerPostingProposalDisabled}
+                values={{
+                  styledOrgName: (
+                    <T
+                      value={tenant.attributes.settings.core.organization_name}
+                    />
+                  ),
+                }}
+              />
+            )}
+          </Title>
+          <StyledAvatarBubbles />
+          <StyledInitiativeInfoContent />
+          <InitiativeButton location="initiatives_header" />
+        </Content>
       </Container>
     );
   }
