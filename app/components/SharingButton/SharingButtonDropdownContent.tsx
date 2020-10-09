@@ -134,7 +134,7 @@ const SharingDropdownContent = ({
     const facebook = facebookAppId ? (
       <FacebookButton
         appId={facebookAppId}
-        url={getUrl('facebook')}
+        url={getUrl('facebook')()}
         className="sharingButton facebook first"
         sharer={true}
         onClick={trackEventByName(tracks.clickShare.name, {
@@ -182,7 +182,7 @@ const SharingDropdownContent = ({
     const twitter = (
       <TwitterButton
         message={twitterMessage}
-        url={getUrl('twitter')}
+        url={getUrl('twitter')()}
         className={`sharingButton twitter ${
           !emailSubject || !emailBody ? 'last' : ''
         }`}
