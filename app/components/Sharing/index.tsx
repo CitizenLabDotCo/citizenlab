@@ -216,10 +216,8 @@ const Sharing = memo(
     };
 
     if (!isNilOrError(tenant)) {
-      const facebookSettings = tenant.data.attributes.settings.facebook_login
-        ? tenant.data.attributes.settings.facebook_login
-        : null;
-      const facebookAppId = facebookSettings ? facebookSettings.app_id : null;
+      const facebookAppId =
+        tenant.data.attributes.settings.facebook_login?.app_id || null;
 
       const facebook = facebookAppId ? (
         <FacebookButton
@@ -254,11 +252,9 @@ const Sharing = memo(
           className="sharingButton whatsapp"
           onClick={handleClick(
             'whatsapp',
-            addUtmToUrl(
-              `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-                whatsAppMessage
-              )}`
-            )
+            `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
+              whatsAppMessage
+            )}`
           )}
           aria-label={formatMessage(messages.shareViaWhatsApp)}
         >
