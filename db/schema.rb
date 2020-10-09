@@ -507,7 +507,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.string "tile_provider"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_id"], name: "index_maps_map_configs_on_project_id"
+    t.index ["project_id"], name: "index_maps_map_configs_on_project_id", unique: true
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
