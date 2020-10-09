@@ -462,21 +462,6 @@ class ParticipationContext extends PureComponent<
     return isValidated;
   }
 
-  hiddenFieldsSupportArticleUrl = (locale: Locale) => {
-    switch (locale) {
-      case 'nl-BE':
-      case 'nl-NL':
-        return 'https://support.citizenlab.co/nl/articles/1641202-voeg-een-enquete-toe-in-een-project-of-aan-een-fase-in-een-tijdslijn';
-      case 'fr-BE':
-      case 'fr-FR':
-        return 'https://support.citizenlab.co/fr/articles/1641202-comment-ajouter-integrer-une-enquete-a-un-projet-de-participation-sur-votre-plateforme';
-      case 'de-DE':
-        return 'https://support.citizenlab.co/de/articles/1641202';
-      default:
-        return 'https://support.citizenlab.co/en/articles/1641202';
-    }
-  };
-
   render() {
     const {
       tenant,
@@ -924,7 +909,9 @@ class ParticipationContext extends PureComponent<
                       values={{
                         hiddenFieldsLink: (
                           <a
-                            href={this.hiddenFieldsSupportArticleUrl(locale)}
+                            href={formatMessage(
+                              messages.hiddenFieldsSupportArticleUrl
+                            )}
                             target="_blank"
                           >
                             {formatMessage(messages.hiddenFieldsLinkText)}
