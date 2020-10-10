@@ -15,7 +15,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'containers/App/constants';
@@ -38,6 +38,10 @@ const DropdownButtonIcon = styled(Icon)`
   margin-top: 1px;
   margin-left: 4px;
   transition: all 100ms ease-out;
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 4px;
+  `}
 `;
 
 const DropdownButton = styled.button`
@@ -46,6 +50,10 @@ const DropdownButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Container = styled.div`
