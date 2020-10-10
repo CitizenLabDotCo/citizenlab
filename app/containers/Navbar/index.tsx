@@ -48,7 +48,6 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-
 import {
   colors,
   media,
