@@ -443,7 +443,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       <>
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={{ ...theme, isRtl: true }}>
               <LiveAnnouncer>
                 <GlobalStyle />
 
