@@ -42,7 +42,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #333;
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;

@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import Voting from './Voting';
 import Buttons from '../Buttons';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   background-color: ${colors.background};

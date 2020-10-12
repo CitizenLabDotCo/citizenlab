@@ -38,7 +38,6 @@ import { rgba, transparentize } from 'polished';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -51,7 +50,6 @@ const Container = styled.footer<{ insideModal?: boolean }>`
 `;
 
 const Inner = styled.div`
-  width: 100%;
   min-height: ${(props) => props.theme.footerHeight}px;
   display: flex;
   align-items: center;
@@ -62,6 +60,7 @@ const Inner = styled.div`
   padding-bottom: 11px;
   background: ${transparentize(0.1, colors.background)};
   border-top: solid 1px #ccc;
+  overflow: hidden;
 
   ${media.smallerThan1280px`
     padding-left: 18px;
@@ -85,14 +84,13 @@ const Inner = styled.div`
 `;
 
 const ShortFeedback = styled.div`
-  width: 100%;
   display: flex;
 
   ${media.biggerThanMinTablet`
     position: absolute;
     z-index: 5;
-    top: -41px;
-    left: 0px;
+    top: -36px;
+    left: 20px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -108,12 +106,19 @@ const ShortFeedbackInner = styled.div`
   line-height: normal;
   display: flex;
   align-items: center;
-  padding: 12px 25px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.08)};
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: ${({ theme }) => rgba(theme.colorText, 0.09)};
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 
   ${media.smallerThanMinTablet`
     width: 100%;
     justify-content: center;
+    padding-left: 14px;
+    padding-right: 14px;
   `}
 `;
 
@@ -123,14 +128,11 @@ const ThankYouNote = styled.span`
 
 const FeedbackQuestion = styled.span`
   margin-right: 15px;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-  `}
 `;
 
 const Buttons = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const FeedbackButton = styled.button`
@@ -143,16 +145,13 @@ const FeedbackButton = styled.button`
   justify-content: center;
   padding: 0;
   margin: 0;
-  margin-left: 12px;
-  margin-right: 12px;
-  margin-bottom: -3px;
   z-index: 1;
   cursor: pointer;
+  appearance: none;
 
-  ${media.smallerThanMinTablet`
-    margin-left: 8px;
-    margin-right: 8px;
-  `}
+  &.hasLeftMargin {
+    margin-left: 14px;
+  }
 
   &:hover {
     text-decoration: underline;
@@ -160,15 +159,54 @@ const FeedbackButton = styled.button`
 `;
 
 const PagesNav = styled.nav`
-  color: ${colors.label};
-  font-weight: 400;
-  text-align: center;
-  overflow: hidden;
-
   ${media.smallerThanMaxTablet`
+    width: 90vw;
     margin-top: 15px;
     margin-bottom: 15px;
   `}
+`;
+
+const PagesNavList = styled.ul`
+  display: flex;
+
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    flex-wrap: wrap;
+    justify-content: center;
+  `}
+
+  & li {
+    margin-right: 12px;
+
+    &:after {
+      color: ${colors.label};
+      font-size: ${fontSizes.small}px;
+      font-weight: 400;
+      content: '•';
+      margin-left: 12px;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+
+      &:after {
+        margin-left: 0px;
+        content: '';
+      }
+    }
+  }
+`;
+
+const PagesNavListItem = styled.li`
+  color: ${colors.label};
+  font-weight: 400;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 `;
 
 const StyledButton = styled.button`
@@ -205,15 +243,6 @@ const StyledLink = styled(Link)`
     color: #000;
     text-decoration: underline;
   }
-`;
-
-const Bullet = styled.span`
-  color: ${colors.label};
-  font-weight: 400;
-  font-size: ${fontSizes.small}px;
-  line-height: 21px;
-  margin-left: 10px;
-  margin-right: 10px;
 `;
 
 const Right = styled.div`
@@ -257,10 +286,13 @@ const PoweredBy = styled.div`
 `;
 
 const PoweredByText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
   margin-right: 8px;
 
   ${media.smallerThanMinTablet`
-    margin: 0;
     margin-bottom: 10px;
   `}
 `;
@@ -281,11 +313,11 @@ const StyledSendFeedback = styled(SendFeedback)`
 `;
 
 const ShortFeedbackFormModalFooter = styled.div`
-  width: 100%;
   display: flex;
 `;
 
 const CitizenLabLogo = styled(Icon)`
+  height: 28px;
   fill: ${colors.label};
 
   &:hover {
@@ -438,6 +470,7 @@ class PlatformFooter extends PureComponent<Props, State> {
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
                       <FeedbackButton
+                        className="hasLeftMargin"
                         onClick={this.handleFeedbackButtonClick('no')}
                       >
                         <FormattedMessage {...messages.no} />
@@ -486,27 +519,33 @@ class PlatformFooter extends PureComponent<Props, State> {
 
         <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
           <PagesNav>
-            {LEGAL_PAGES
-              // to be added back when we do the footer redesign
-              .filter((slug) => slug !== 'accessibility-statement')
-              .map((slug, index) => (
-                <React.Fragment key={slug}>
-                  <StyledLink
-                    to={`/pages/${slug}`}
-                    className={index === 0 ? 'first' : ''}
-                  >
-                    <FormattedMessage {...messages[slug]} />
-                  </StyledLink>
-                  <Bullet aria-hidden>•</Bullet>
-                </React.Fragment>
-              ))}
-            <StyledButton onClick={this.openConsentManager}>
-              <FormattedMessage {...messages.cookieSettings} />
-            </StyledButton>
-            <Bullet aria-hidden>•</Bullet>
-            <StyledLink to="/site-map">
-              <FormattedMessage {...messages.siteMap} />
-            </StyledLink>
+            <PagesNavList>
+              {LEGAL_PAGES
+                // to be added back when we do the footer redesign
+                .filter((slug) => slug !== 'accessibility-statement')
+                .map((slug, index) => (
+                  <React.Fragment key={slug}>
+                    <PagesNavListItem>
+                      <StyledLink
+                        to={`/pages/${slug}`}
+                        className={index === 0 ? 'first' : ''}
+                      >
+                        <FormattedMessage {...messages[slug]} />
+                      </StyledLink>
+                    </PagesNavListItem>
+                  </React.Fragment>
+                ))}
+              <PagesNavListItem>
+                <StyledButton onClick={this.openConsentManager}>
+                  <FormattedMessage {...messages.cookieSettings} />
+                </StyledButton>
+              </PagesNavListItem>
+              <PagesNavListItem>
+                <StyledLink to="/site-map">
+                  <FormattedMessage {...messages.siteMap} />
+                </StyledLink>
+              </PagesNavListItem>
+            </PagesNavList>
           </PagesNav>
 
           <Right>

@@ -601,10 +601,10 @@ class IdeaForm extends PureComponent<
     locale: Locale
   ) => {
     return (
-      ideaCustomFieldsSchemas.json_schema_multiloc[locale].properties[
+      ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]?.properties?.[
         fieldCode
       ] &&
-      ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
+      ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
         'ui:widget'
       ] !== 'hidden'
     );
