@@ -205,13 +205,14 @@ resource "Projects" do
         expect(json_response.dig(:included).map{|i| i[:id]}).to include(current_phase.id)
       end
 
-      example "Get a project includes the avatars and avatars_count", document: false do
+      example "Get a project includes the participants_count, avatars and avatars_count", document: false do
         idea = create(:idea)
         author = idea.author
         project = idea.project
         do_request id: project.id
         expect(status).to eq 200
         json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
         expect(json_response.dig(:included).map{|i| i[:id]}).to include author.id
       end

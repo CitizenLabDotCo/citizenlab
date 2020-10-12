@@ -2,9 +2,13 @@ module AdminApi
   class ProjectsController < AdminApiController
 
     def index
-      @projects = Project.all
-      # This uses default model serialization
-      render json: @projects
+      projects = Project.all.map do |project|
+        project_hash = project.as_json
+        project_hash["map_config_id"] = project.map_config_id
+        project_hash
+      end
+
+      render json: projects
     end
 
     def template_export
