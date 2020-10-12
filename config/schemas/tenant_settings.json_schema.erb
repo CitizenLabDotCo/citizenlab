@@ -159,15 +159,6 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
-          },
-          "segment_destinations_blacklist": {
-            "title": "Blacklisting of Segment destinations",
-            "description": "An optional list of segment destinations to disable.",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
-            }
           }
         }
       },
