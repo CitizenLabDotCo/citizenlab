@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { indexOf } from 'lodash-es';
-import bowser from 'bowser';
 import moment from 'moment';
 
 // hooks
@@ -23,10 +22,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-const Container = styled.div<{ bottomMargin: string }>`
+const Container = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: ${(props) => props.bottomMargin};
 `;
 
 const PhaseNumberWrapper = styled.div`
@@ -40,7 +38,7 @@ const PhaseNumberWrapper = styled.div`
   justify-content: center;
   border-radius: 50%;
   background: ${colors.label};
-  margin-right: 12px;
+  margin-right: 10px;
 
   &.present {
     background: ${colors.clGreen};
@@ -59,26 +57,10 @@ const PhaseNumber = styled.div`
 `;
 
 const HeaderTitleWrapper = styled.div`
-  min-height: 41px;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
   display: flex;
   flex-direction: column;
-  margin-right: 20px;
-
-  &.ie {
-    height: 41px;
-    min-height: unset;
-  }
-
-  ${media.smallerThanMinTablet`
-    min-height: unset;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    margin-right: 0px;
-  `}
+  align-items: stretch;
+  justify-content: flex-start;
 `;
 
 const HeaderTitle = styled.h2`
@@ -87,7 +69,6 @@ const HeaderTitle = styled.h2`
   line-height: normal;
   font-weight: 600;
   margin: 0;
-  margin-bottom: 4px;
   padding: 0;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -96,30 +77,16 @@ const HeaderTitle = styled.h2`
   &.present {
     color: ${colors.clGreen};
   }
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large + 2}px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 6px;
-  `}
 `;
 
 const HeaderSubtitle = styled.div`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
   display: flex;
   align-items: center;
-
-  &.present {
-    color: ${colors.clGreen};
-  }
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.small}px;
-  `}
+  margin-top: 4px;
 `;
 
 interface Props {
@@ -128,7 +95,7 @@ interface Props {
   className?: string;
 }
 
-const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
+const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
   const locale = useLocale();
   const tenant = useTenant();
   const phases = usePhases(projectId);
@@ -179,10 +146,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
     }
 
     return (
-      <Container
-        className={className || ''}
-        bottomMargin={phases.length > 1 ? '30px' : '15px'}
-      >
+      <Container className={className || ''}>
         {isSelected && phases.length > 1 && (
           <PhaseNumberWrapper
             aria-hidden
@@ -195,8 +159,7 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             </PhaseNumber>
           </PhaseNumberWrapper>
         )}
-
-        <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
+        <HeaderTitleWrapper>
           <HeaderTitle
             aria-hidden
             className={`e2e-phase-title ${
@@ -207,57 +170,19 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
               <FormattedMessage {...messages.noPhaseSelected} />
             )}
           </HeaderTitle>
-          {selectedPhase && phases.length > 1 && (
-            <HeaderSubtitle className={selectedPhaseStatus || ''}>
-              {selectedPhaseStatus === 'past' && (
-                <FormattedMessage
-                  {...messages.startedOnEndedOn}
-                  values={{ startDate, endDate }}
-                />
-              )}
-              {selectedPhaseStatus === 'present' && (
-                <FormattedMessage
-                  {...messages.startedOnEndsOn}
-                  values={{ startDate, endDate }}
-                />
-              )}
-              {selectedPhaseStatus === 'future' && (
-                <FormattedMessage
-                  {...messages.startsOnEndsOn}
-                  values={{ startDate, endDate }}
-                />
-              )}
-
-              {/* {selectedPhaseStatus === 'past' && (
-                <FormattedMessage
-                  {...messages.endedOn}
-                  values={{ date: endDate }}
-                />
-              )}
-              {selectedPhaseStatus === 'present' && (
-                <FormattedMessage
-                  {...messages.endsOn}
-                  values={{ date: endDate }}
-                />
-              )}
-              {selectedPhaseStatus === 'future' && (
-                <FormattedMessage
-                  {...messages.startsOn}
-                  values={{ date: startDate }}
-                />
-              )} */}
-            </HeaderSubtitle>
-          )}
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.a11y_selectedPhaseX}
-              values={{
-                selectedPhaseNumber,
-                selectedPhaseTitle,
-              }}
-            />
-          </ScreenReaderOnly>
+          <HeaderSubtitle className={selectedPhaseStatus || ''}>
+            {startDate} → {endDate}
+          </HeaderSubtitle>
         </HeaderTitleWrapper>
+        <ScreenReaderOnly>
+          <FormattedMessage
+            {...messages.a11y_selectedPhaseX}
+            values={{
+              selectedPhaseNumber,
+              selectedPhaseTitle,
+            }}
+          />
+        </ScreenReaderOnly>
       </Container>
     );
   }
@@ -265,4 +190,4 @@ const AboutHeader = memo<Props>(({ projectId, selectedPhaseId, className }) => {
   return null;
 });
 
-export default AboutHeader;
+export default PhaseTitle;

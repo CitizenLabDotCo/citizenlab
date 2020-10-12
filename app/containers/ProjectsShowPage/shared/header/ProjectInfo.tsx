@@ -39,7 +39,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -55,7 +55,7 @@ const Right = styled.div`
   width: 300px;
   margin-left: 110px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     flex: 1 1 auto;
     width: 100%;
     margin-left: 0px;
@@ -75,7 +75,7 @@ const ProjectTitle = styled.h1`
   margin-bottom: 27px;
   padding: 0;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl}px;
     margin-bottom: 20px;
   `}
@@ -147,9 +147,9 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
     null
   );
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
-  const collapsedDescriptionMaxHeight = smallerThanSmallTablet
+  const collapsedDescriptionMaxHeight = smallerThanLargeTablet
     ? mobileCollapsedDescriptionMaxHeight
     : desktopCollapsedDescriptionMaxHeight;
 
@@ -178,7 +178,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
               <T value={project.attributes.title_multiloc} />
             </ProjectTitle>
 
-            {smallerThanSmallTablet && (
+            {smallerThanLargeTablet && (
               <StyledProjectArchivedIndicator projectId={projectId} />
             )}
 

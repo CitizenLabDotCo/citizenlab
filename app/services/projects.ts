@@ -75,6 +75,7 @@ export interface IProjectData {
     visible_to: Visibility;
     process_type: ProcessType;
     timeline_active?: 'past' | 'present' | 'future' | null;
+    participants_count: number;
     participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;

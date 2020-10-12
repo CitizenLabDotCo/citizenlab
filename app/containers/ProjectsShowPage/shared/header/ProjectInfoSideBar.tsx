@@ -6,8 +6,9 @@ import React, {
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { sortBy, first, last, isNumber } from 'lodash-es';
-import moment from 'moment';
+import { isNumber } from 'lodash-es';
+// import { sortBy, first, last, isNumber } from 'lodash-es';
+// import moment from 'moment';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -23,7 +24,6 @@ import { IPhaseData, getCurrentPhase } from 'services/phases';
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
 import { Icon } from 'cl2-component-library';
-import { selectCurrentPhase } from 'containers/ProjectsShowPage/timeline/Timeline';
 import ProjectSharingModal from './ProjectSharingModal';
 import ProjectActionBar from './ProjectActionBar';
 
@@ -37,6 +37,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, viewportWidths, media } from 'utils/styleUtils';
+import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div`
   width: 100%;
@@ -88,15 +89,15 @@ const ListItemIcon = styled(Icon)`
   }
 `;
 
-const ListItemInnerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: -3px;
+// const ListItemInnerWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   margin-top: -3px;
 
-  & > span:not(:last-child) {
-    margin-bottom: 6px;
-  }
-`;
+//   & > span:not(:last-child) {
+//     margin-bottom: 6px;
+//   }
+// `;
 
 const ListItemButton = styled.button`
   color: ${colors.label};
@@ -120,7 +121,7 @@ const ListItemButton = styled.button`
 const ActionButtons = styled.div`
   margin-top: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     margin-top: 30px;
   `}
 `;
@@ -157,7 +158,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     false
   );
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
   useEffect(() => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
@@ -219,7 +220,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     ) => {
       event.preventDefault();
 
-      currentPhase && shouldSelectCurrentPhase && selectCurrentPhase();
+      currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
       setTimeout(() => {
         const element = document.getElementById(id);
@@ -249,35 +250,41 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       process_type,
       participation_method,
       publication_status,
-      ideas_count,
-      avatars_count,
+      participants_count,
     } = project.attributes;
 
-    const firstPhase = !isNilOrError(phases)
-      ? first(sortBy(phases, [(phase) => phase.attributes.start_at]))
-      : null;
-    const lastPhase = !isNilOrError(phases)
-      ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
-      : null;
-    const firstPhaseStart = firstPhase
-      ? pastPresentOrFuture([
-          firstPhase.attributes.start_at,
-          firstPhase.attributes.end_at,
-        ])
-      : null;
-    const lastPhaseStart = lastPhase
-      ? pastPresentOrFuture([
-          lastPhase.attributes.start_at,
-          lastPhase.attributes.end_at,
-        ])
-      : null;
+    const ideas_count =
+      process_type === 'continuous'
+        ? project.attributes.ideas_count
+        : currentPhase?.attributes.ideas_count;
+
+    // const firstPhase = !isNilOrError(phases)
+    //   ? first(sortBy(phases, [(phase) => phase.attributes.start_at]))
+    //   : null;
+    // const lastPhase = !isNilOrError(phases)
+    //   ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
+    //   : null;
+    // const firstPhaseStart = firstPhase
+    //   ? pastPresentOrFuture([
+    //       firstPhase.attributes.start_at,
+    //       firstPhase.attributes.end_at,
+    //     ])
+    //   : null;
+    // const lastPhaseStart = lastPhase
+    //   ? pastPresentOrFuture([
+    //       lastPhase.attributes.start_at,
+    //       lastPhase.attributes.end_at,
+    //     ])
+    //   : null;
 
     const actionButtons = (
       <ActionButtons>
         {ideasPresentOutsideViewport &&
-          process_type === 'continuous' &&
-          participation_method === 'ideation' &&
-          project.attributes.ideas_count > 0 && (
+          ((process_type === 'continuous' &&
+            participation_method === 'ideation') ||
+            currentPhase?.attributes.participation_method === 'ideation') &&
+          ideas_count &&
+          ideas_count > 0 && (
             <SeeIdeasButton
               id="e2e-project-see-ideas-button"
               buttonStyle="secondary"
@@ -287,16 +294,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.seeTheIdeas} />
             </SeeIdeasButton>
           )}
-        {currentPhase?.attributes.participation_method === 'ideation' && (
-          <SeeIdeasButton
-            id="e2e-project-see-ideas-button"
-            buttonStyle="secondary"
-            onClick={scrollTo('project-ideas')}
-            fontWeight="500"
-          >
-            <FormattedMessage {...messages.seeTheIdeas} />
-          </SeeIdeasButton>
-        )}
         {process_type === 'continuous' &&
           participation_method === 'ideation' &&
           publication_status !== 'archived' && (
@@ -346,7 +343,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       <Container id="e2e-project-sidebar" className={className || ''}>
         <ProjectActionBar projectId={projectId} />
 
-        {smallerThanSmallTablet ? (
+        {smallerThanLargeTablet ? (
           actionButtons
         ) : (
           <>
@@ -354,7 +351,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.about} />
             </Title>
             <List>
-              {process_type === 'continuous' && (
+              {/* {process_type === 'continuous' && (
                 <ListItem id="e2e-project-sidebar-startdate">
                   <ListItemIcon ariaHidden name="finish_flag" />
                   <FormattedMessage
@@ -389,6 +386,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     />
                   </ListItemInnerWrapper>
                 </ListItem>
+              )} */}
+              {isNumber(participants_count) && participants_count > 0 && (
+                <ListItem id="e2e-project-sidebar-participants-count">
+                  <ListItemIcon ariaHidden name="person" />
+                  <FormattedMessage
+                    {...messages.xParticipants}
+                    values={{ participantsCount: participants_count }}
+                  />
+                </ListItem>
               )}
               {process_type === 'timeline' &&
                 !isNilOrError(phases) &&
@@ -409,17 +415,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     </ListItemButton>
                   </ListItem>
                 )}
-              {isNumber(avatars_count) && avatars_count > 0 && (
-                <ListItem id="e2e-project-sidebar-participants-count">
-                  <ListItemIcon ariaHidden name="person" />
-                  <FormattedMessage
-                    {...messages.xParticipants}
-                    values={{ participantsCount: avatars_count }}
-                  />
-                </ListItem>
-              )}
-              {process_type === 'continuous' &&
-                participation_method === 'ideation' &&
+              {((process_type === 'continuous' &&
+                participation_method === 'ideation') ||
+                currentPhase?.attributes.participation_method === 'ideation') &&
                 isNumber(ideas_count) && (
                   <ListItem>
                     <ListItemIcon ariaHidden name="idea-filled" />
