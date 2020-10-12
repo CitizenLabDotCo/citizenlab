@@ -11,6 +11,7 @@ import { isNumber } from 'lodash-es';
 // import moment from 'moment';
 
 // hooks
+import useTenant from 'hooks/useTenant';
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
@@ -32,6 +33,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedNumber } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -77,12 +79,14 @@ const ListItem = styled.li`
 `;
 
 const ListItemIcon = styled(Icon)`
+  flex: 0 0 18px;
   width: 18px;
   height: 18px;
   fill: ${colors.label};
   margin-right: 14px;
 
   &.timeline {
+    flex: 0 0 22px;
     width: 22px;
     height: 22px;
     margin-right: 10px;
@@ -134,14 +138,13 @@ const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
 `;
 
-const GoToTheSurvey = styled(Button)``;
-
 interface Props {
   projectId: string;
   className?: string;
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
+  const tenant = useTenant();
   const locale = useLocale();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
@@ -169,43 +172,52 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, [phases]);
 
   useEffect(() => {
-    setTimeout(() => {
-      const viewportHeight = Math.max(
-        document.documentElement.clientHeight || 0,
-        window.innerHeight || 0
-      );
+    const loop = (counter: number) => {
+      if (counter < 20) {
+        setTimeout(() => {
+          const viewportHeight = Math.max(
+            document.documentElement.clientHeight || 0,
+            window.innerHeight || 0
+          );
 
-      const ideasElement = document.getElementById('project-ideas');
-      const surveyElement = document.getElementById('project-survey');
-      const pollElement = document.getElementById('project-poll');
+          const ideasElement = document.getElementById('project-ideas');
+          const surveyElement = document.getElementById('project-survey');
+          const pollElement = document.getElementById('project-poll');
 
-      if (ideasElement) {
-        const isIdeasInViewport =
-          ideasElement.getBoundingClientRect()?.top + 800 <= viewportHeight;
+          if (ideasElement) {
+            const isIdeasInViewport =
+              ideasElement.getBoundingClientRect()?.top + 800 <= viewportHeight;
 
-        if (!isIdeasInViewport) {
-          setIdeasPresentOutsideViewport(true);
-        }
+            if (!isIdeasInViewport) {
+              setIdeasPresentOutsideViewport(true);
+            }
+          }
+
+          if (surveyElement) {
+            const isSurveyInViewport =
+              surveyElement.getBoundingClientRect()?.top + 400 <=
+              viewportHeight;
+
+            if (!isSurveyInViewport) {
+              setSurveyPresentOutsideViewport(true);
+            }
+          }
+
+          if (pollElement) {
+            const isPollInViewport =
+              pollElement.getBoundingClientRect()?.top + 200 <= viewportHeight;
+
+            if (!isPollInViewport) {
+              setPollPresentOutsideViewport(true);
+            }
+          }
+
+          loop(counter + 1);
+        }, 100);
       }
+    };
 
-      if (surveyElement) {
-        const isSurveyInViewport =
-          surveyElement.getBoundingClientRect()?.top + 400 <= viewportHeight;
-
-        if (!isSurveyInViewport) {
-          setSurveyPresentOutsideViewport(true);
-        }
-      }
-
-      if (pollElement) {
-        const isPollInViewport =
-          pollElement.getBoundingClientRect()?.top + 200 <= viewportHeight;
-
-        if (!isPollInViewport) {
-          setPollPresentOutsideViewport(true);
-        }
-      }
-    }, 100);
+    loop(0);
   }, [projectId]);
 
   const upcomingEvents = !isNilOrError(events)
@@ -249,14 +261,22 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setShareModalOpened(false);
   }, []);
 
-  if (!isNilOrError(locale) && !isNilOrError(project)) {
+  if (
+    !isNilOrError(tenant) &&
+    !isNilOrError(locale) &&
+    !isNilOrError(project)
+  ) {
     const {
       process_type,
       participation_method,
       publication_status,
       participants_count,
     } = project.attributes;
-
+    const currency = tenant.data.attributes.settings.core.currency;
+    const totalBudget =
+      currentPhase?.attributes?.max_budget ||
+      project?.attributes?.max_budget ||
+      0;
     const ideas_count =
       process_type === 'continuous'
         ? project.attributes.ideas_count
@@ -336,24 +356,24 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           ((process_type === 'continuous' &&
             participation_method === 'survey') ||
             currentPhase?.attributes.participation_method === 'survey') && (
-            <GoToTheSurvey
+            <Button
               buttonStyle="secondary"
               onClick={scrollTo('project-survey')}
               fontWeight="500"
             >
-              <FormattedMessage {...messages.goToTheSurvey} />
-            </GoToTheSurvey>
+              <FormattedMessage {...messages.takeTheSurvey} />
+            </Button>
           )}
         {pollPresentOutsideViewport &&
           ((process_type === 'continuous' && participation_method === 'poll') ||
             currentPhase?.attributes.participation_method === 'poll') && (
-            <GoToTheSurvey
+            <Button
               buttonStyle="secondary"
-              onClick={scrollTo('project-survey')}
+              onClick={scrollTo('project-poll')}
               fontWeight="500"
             >
-              <FormattedMessage {...messages.goToPoll} />
-            </GoToTheSurvey>
+              <FormattedMessage {...messages.takeThePoll} />
+            </Button>
           )}
       </ActionButtons>
     );
@@ -424,14 +444,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       name="timeline"
                       className="timeline"
                     />
-                    <ListItemButton
-                      onClick={scrollTo('project-timeline', false)}
-                    >
-                      <FormattedMessage
-                        {...messages.xPhases}
-                        values={{ phasesCount: phases.length }}
-                      />
-                    </ListItemButton>
+                    <FormattedMessage
+                      {...messages.xPhases}
+                      values={{ phasesCount: phases.length }}
+                    />
                   </ListItem>
                 )}
               {((process_type === 'continuous' &&
@@ -446,7 +462,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         onClick={scrollTo('project-ideas')}
                       >
                         <FormattedMessage
-                          {...messages.xIdeas}
+                          {...(process_type === 'continuous'
+                            ? messages.xIdeas
+                            : messages.xIdeasInCurrentPhase)}
                           values={{ ideasCount: ideas_count }}
                         />
                       </ListItemButton>
@@ -455,6 +473,65 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     )}
                   </ListItem>
                 )}
+              {((process_type === 'continuous' &&
+                participation_method === 'budgeting') ||
+                currentPhase?.attributes.participation_method ===
+                  'budgeting') &&
+                totalBudget > 0 && (
+                  <ListItem>
+                    <ListItemIcon ariaHidden name="moneybag" />
+                    <FormattedMessage
+                      {...messages.budget}
+                      values={{
+                        amount: (
+                          <FormattedNumber
+                            value={totalBudget}
+                            style="currency"
+                            currency={currency}
+                            minimumFractionDigits={0}
+                            maximumFractionDigits={0}
+                          />
+                        ),
+                      }}
+                    />
+                  </ListItem>
+                )}
+              {((process_type === 'continuous' &&
+                participation_method === 'survey') ||
+                currentPhase?.attributes.participation_method === 'survey') && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="survey" />
+                  <ListItemButton
+                    id="e2e-project-sidebar-surveys-count"
+                    onClick={scrollTo('project-survey')}
+                  >
+                    <FormattedMessage
+                      {...(process_type === 'continuous'
+                        ? messages.xSurveys
+                        : messages.xSurveysInCurrentPhase)}
+                      values={{ surveysCount: 1 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )}
+              {((process_type === 'continuous' &&
+                participation_method === 'poll') ||
+                currentPhase?.attributes.participation_method === 'poll') && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="survey" />
+                  <ListItemButton
+                    id="e2e-project-sidebar-polls-count"
+                    onClick={scrollTo('project-poll')}
+                  >
+                    <FormattedMessage
+                      {...(process_type === 'continuous'
+                        ? messages.xPolls
+                        : messages.xPollsInCurrentPhase)}
+                      values={{ pollsCount: 1 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )}
               {upcomingEvents.length > 0 && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="event" />
