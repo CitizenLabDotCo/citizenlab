@@ -13,7 +13,7 @@ import LoadableModal from 'components/Loadable/Modal';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import { CustomPreferences, CategorizedDestinations } from './';
+import { CategorizedDestinations, IPreferences } from './';
 
 import styled from 'styled-components';
 
@@ -29,7 +29,7 @@ interface Props {
   resetPreferences: () => void;
   saveConsent: () => void;
   isConsentRequired: boolean;
-  preferences: CustomPreferences;
+  preferences: IPreferences;
   categorizedDestinations: CategorizedDestinations;
 }
 
