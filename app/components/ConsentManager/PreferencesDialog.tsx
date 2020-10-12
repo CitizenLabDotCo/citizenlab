@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import CategoryCard from './CategoryCard';
 
 // Typing
-import { IDestination } from './';
+import { IDestination } from './destinations';
 
 // Styling
 import styled from 'styled-components';
@@ -35,9 +35,9 @@ interface Props {
     advertising: IDestination[];
     functional: IDestination[];
   };
-  analytics: boolean | null;
-  advertising: boolean | null;
-  functional: boolean | null;
+  analytics: boolean | undefined;
+  advertising: boolean | undefined;
+  functional: boolean | undefined;
 }
 
 export default class PreferencesDialog extends PureComponent<Props> {
@@ -48,13 +48,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
   };
 
   render() {
-    const {
-      categoryDestinations,
-      functional,
-      advertising,
-      analytics,
-    } = this.props;
-    const checkCategories = { analytics, advertising, functional };
+    const { categoryDestinations } = this.props;
     return (
       <ContentContainer id="e2e-preference-dialog">
         {Object.keys(categoryDestinations).map((category) => {
@@ -64,7 +58,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
                 key={category}
                 category={category}
                 destinations={categoryDestinations[category]}
-                checked={checkCategories[category]}
+                checked={this.props[category]}
                 handleChange={this.handleChange}
               />
             );

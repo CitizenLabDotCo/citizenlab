@@ -5,7 +5,7 @@ import { transparentize } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from 'cl2-component-library';
-import { IDestination } from './';
+import { IDestination } from './destinations';
 
 const Container = styled.div`
   display: flex;
@@ -121,9 +121,11 @@ const CategoryCard = ({
           <FormattedMessage {...messages.tools} />:
         </Tools>
         {destinations.map((d, index) => (
-          <Fragment key={d.id}>
+          <Fragment key={d}>
             {index !== 0 && <Separator>•</Separator>}
-            <SSpan>{d.name}</SSpan>
+            <SSpan>
+              <FormattedMessage {...messages[d]} />
+            </SSpan>
           </Fragment>
         ))}
       </p>

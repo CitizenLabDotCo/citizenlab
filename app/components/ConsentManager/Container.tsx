@@ -26,7 +26,6 @@ export const ButtonContainer = styled.div`
 
 interface Props {
   setPreferences: Function;
-  resetPreferences: () => void;
   saveConsent: () => void;
   isConsentRequired: boolean;
   preferences: IPreferences;
@@ -114,7 +113,7 @@ export class Container extends PureComponent<Props, State> {
   };
 
   handleCancel = () => {
-    const { resetPreferences, isConsentRequired, preferences } = this.props;
+    const { isConsentRequired, preferences } = this.props;
 
     const isEmpty = Object.keys(preferences).every(
       (e) => preferences[e] === null
@@ -126,7 +125,6 @@ export class Container extends PureComponent<Props, State> {
       this.setState({ isCancelling: true });
     } else {
       this.setState({ isDialogOpen: false });
-      resetPreferences();
     }
   };
 
@@ -135,13 +133,10 @@ export class Container extends PureComponent<Props, State> {
   };
 
   handleCancelConfirm = () => {
-    const { resetPreferences } = this.props;
-
     this.setState({
       isCancelling: false,
       isDialogOpen: false,
     });
-    resetPreferences();
   };
 
   render() {

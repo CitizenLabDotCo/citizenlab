@@ -72,6 +72,19 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.tools',
     defaultMessage: 'Tools',
   },
+  intercom: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.intercom',
+    defaultMessage: 'Intercom',
+  },
+  google_analytics: {
+    id:
+      'app.components.ConsentManager.Modal.PreferencesDialog.google_analytics',
+    defaultMessage: 'Google analytics',
+  },
+  satismeter: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.satismeter',
+    defaultMessage: 'Google analytics',
+  },
   allow: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.allow',
     defaultMessage: 'Allow',
@@ -95,9 +108,5 @@ export default defineMessages({
   confirm: {
     id: 'app.components.ConsentManager.Modal.CancelDialog.confirm',
     defaultMessage: 'Confirm',
-  },
-  back: {
-    id: 'app.components.ConsentManager.Modal.CancelDialog.back',
-    defaultMessage: 'Go Back',
   },
 });
