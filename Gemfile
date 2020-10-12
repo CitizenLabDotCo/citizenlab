@@ -67,7 +67,7 @@ gem "active_model_serializers", "~> 0.10.8"
 # 2) To not auto load Generators::Base which would result
 #    in an error.
 gem "knock", github: 'CitizenLabDotCo/knock'
-gem "sidekiq" # , "~> 5.0.5"
+gem "sidekiq", "~> 6.1"
 
 gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem "activerecord-import", '~> 1.0'
