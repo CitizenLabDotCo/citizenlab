@@ -66,7 +66,7 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 `;
 
 const StyledTimeline = styled(Timeline)`
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 `;
 
 interface Props {

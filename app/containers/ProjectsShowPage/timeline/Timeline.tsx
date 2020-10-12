@@ -115,7 +115,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   word-break: break-word;
   hyphens: auto;
   max-height: 60px;
-  margin-top: 6px;
+  margin-top: 5px;
   margin-left: 5px;
   margin-right: 5px;
   transition: color 80ms ease-out;

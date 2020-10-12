@@ -144,7 +144,7 @@ export class PollForm extends PureComponent<Props, State> {
 
       return (
         <>
-          <PollContainer className="e2e-poll-form">
+          <PollContainer id="project-poll" className="e2e-poll-form">
             {questions.map((question, questionIndex) =>
               question.attributes.question_type === 'single_option' ? (
                 <PollSingleChoice

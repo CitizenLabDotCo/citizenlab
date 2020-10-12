@@ -45,8 +45,9 @@ const SurveyContainer = memo<Props & InjectedIntlProps>(
     ) {
       return (
         <Container
-          id="e2e-continuous-project-survey-container"
-          className={className || ''}
+          className={`e2e-continuous-project-survey-container ${
+            className || ''
+          }`}
         >
           <StyledContentContainer>
             <SectionContainer>
