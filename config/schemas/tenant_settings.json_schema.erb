@@ -440,6 +440,42 @@
         }
       },
 
+      "intercom": {
+        "type": "object",
+        "title": "Intercom Integration",
+        "description":  "Integrates Intercom messenger and data collection",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "satismeter": {
+        "type": "object",
+        "title": "Intercom Integration",
+        "description":  "Integrates Satismeter polls and data collection to the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "google_analytics": {
+        "type": "object",
+        "title": "Intercom Integration",
+        "description":  "Integrates Goole analytics data collection to the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "participatory_budgeting": {
         "type": "object",
         "title": "Participatory Budgeting",
