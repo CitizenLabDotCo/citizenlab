@@ -464,7 +464,7 @@
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Verklaar deze statuswijziging",
   "app.components.admin.PostManager.header": "Ideeën",
   "app.components.admin.PostManager.hiddenFieldsLink": "verborgen veld",
-  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
+  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/nl/articles/1641202-voeg-een-enquete-toe-in-een-project-of-aan-een-fase-in-een-tijdslijn",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tip: voeg {hiddenFieldsLink} toe bij het instellen van je TypeForm-enquête om bij te houden wie er deelnam.",
   "app.components.admin.PostManager.ideas": "ideeën",
   "app.components.admin.PostManager.initiatives": "initiatieven",
