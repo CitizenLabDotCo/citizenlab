@@ -269,7 +269,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const formattedNumbers = this.getFormattedNumbers(serie);
-    const { className } = this.props;
+    const { className, resolution } = this.props;
     const {
       totalNumber,
       formattedSerieChange,
@@ -336,7 +336,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                 <YAxis yAxisId="barValue" orientation="right" tickLine={false}>
                   <Label
                     value={formatMessage(messages.perPeriod, {
-                      period: this.props.resolution,
+                      period: formatMessage(messages[resolution]),
                     })}
                     angle={90}
                     position={'center'}
