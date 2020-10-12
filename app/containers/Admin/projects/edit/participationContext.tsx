@@ -18,6 +18,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -30,6 +31,8 @@ import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -44,7 +47,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // Typings
 import { CLError } from 'typings';
 import { adopt } from 'react-adopt';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const Container = styled.div``;
 
@@ -123,6 +125,10 @@ const LabelText = styled.div`
   }
 `;
 
+const StyledWarning = styled(Warning)`
+  margin-bottom: 20px;
+`;
+
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
@@ -140,6 +146,7 @@ export interface IParticipationContextConfig {
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
   google_forms_enabled: boolean | null;
@@ -458,12 +465,14 @@ class ParticipationContext extends PureComponent<
   render() {
     const {
       tenant,
+      locale,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
       enalyzer_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
+      intl: { formatMessage },
     } = this.props;
     const className = this.props['className'];
     const {
@@ -483,11 +492,10 @@ class ParticipationContext extends PureComponent<
       poll_anonymous,
       presentation_mode,
     } = this.state;
-    const tenantCurrency = !isNilOrError(tenant)
-      ? tenant.attributes.settings.core.currency
-      : '';
 
-    if (loaded) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
+      const tenantCurrency = tenant.attributes.settings.core.currency;
+
       return (
         <Container className={className}>
           <StyledSection>
@@ -880,7 +888,7 @@ class ParticipationContext extends PureComponent<
                           values={{
                             surveyServiceTooltipLink: (
                               <StyledA
-                                href={this.props.intl.formatMessage(
+                                href={formatMessage(
                                   messages.surveyServiceTooltipLink
                                 )}
                                 target="_blank"
@@ -895,6 +903,23 @@ class ParticipationContext extends PureComponent<
                       }
                     />
                   </SubSectionTitle>
+                  <StyledWarning>
+                    <FormattedMessage
+                      {...messages.hiddenFieldsTip}
+                      values={{
+                        hiddenFieldsLink: (
+                          <a
+                            href={formatMessage(
+                              messages.hiddenFieldsSupportArticleUrl
+                            )}
+                            target="_blank"
+                          >
+                            {formatMessage(messages.hiddenFieldsLinkText)}
+                          </a>
+                        ),
+                      }}
+                    />
+                  </StyledWarning>
                   {[
                     'typeform',
                     'survey_monkey',
@@ -946,6 +971,7 @@ const Data = adopt<DataProps, {}>({
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   tenant: <GetTenant />,
+  locale: <GetLocale />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
