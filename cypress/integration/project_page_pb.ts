@@ -11,7 +11,6 @@ describe('Continuous PB project', () => {
     cy.get('#e2e-project-header-image');
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 
