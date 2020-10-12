@@ -81,9 +81,10 @@ const HeaderTitle = styled.h2`
 
 const HeaderSubtitle = styled.div`
   color: ${(props: any) => props.theme.colorText};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
-  font-weight: 300;
+  font-weight: 400;
   display: flex;
   align-items: center;
   margin-top: 4px;
