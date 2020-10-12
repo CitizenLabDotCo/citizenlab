@@ -3,6 +3,8 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ParticipationMethod, SurveyServices } from './participationContexts';
+import { isNilOrError } from 'utils/helperUtils';
+import { first, last, sortBy } from 'lodash-es';
 
 const apiEndpoint = `${API_PATH}/phases`;
 
@@ -28,6 +30,7 @@ export interface IPhaseData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     poll_anonymous?: boolean;
+    ideas_count: number;
   };
   relationships: {
     permissions: {
@@ -128,8 +131,10 @@ export function canContainIdeas(phase: IPhaseData) {
   return pm === 'ideation' || pm === 'budgeting';
 }
 
-export function getCurrentPhase(phases: IPhaseData[] | null) {
-  if (phases) {
+export function getCurrentPhase(
+  phases: IPhaseData[] | null | undefined | Error
+) {
+  if (!isNilOrError(phases)) {
     const currentPhase = phases.find(
       (phase) =>
         pastPresentOrFuture([
@@ -137,7 +142,32 @@ export function getCurrentPhase(phases: IPhaseData[] | null) {
           phase.attributes.end_at,
         ]) === 'present'
     );
+
     return currentPhase || null;
+  }
+
+  return null;
+}
+
+export function getFirstPhase(phases: IPhaseData[] | null | undefined | Error) {
+  if (!isNilOrError(phases)) {
+    const firstPhase = first(
+      sortBy(phases, [(phase) => phase.attributes.start_at])
+    );
+
+    return firstPhase || null;
+  }
+
+  return null;
+}
+
+export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
+  if (!isNilOrError(phases)) {
+    const lastPhase = last(
+      sortBy(phases, [(phase) => phase.attributes.end_at])
+    );
+
+    return lastPhase || null;
   }
 
   return null;

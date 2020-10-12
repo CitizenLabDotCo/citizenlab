@@ -100,7 +100,7 @@ const CloseButton = styled.button`
 const CloseIcon = styled(Icon)`
   width: 12px;
   height: 12px;
-  fill: #000;
+  fill: ${(props: any) => props.theme.colorText};
 `;
 
 const StyledFocusOn = styled(FocusOn)<{ width: number }>`
@@ -231,7 +231,7 @@ export const HeaderContainer = styled.div`
 
 export const HeaderTitle = styled.h1`
   width: 100%;
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
@@ -241,7 +241,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   width: 100%;
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;

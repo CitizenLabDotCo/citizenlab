@@ -47,7 +47,7 @@ class QuillEditedContent extends PureComponent<Props, State> {
         mentionColor={mentionColor || theme.colorText}
         fontSize={fontSize}
         fontWeight={fontWeight}
-        className={className}
+        className={className || ''}
       >
         {children}
       </Container>

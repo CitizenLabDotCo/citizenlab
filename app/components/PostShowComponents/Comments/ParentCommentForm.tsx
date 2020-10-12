@@ -26,6 +26,9 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // events
 import { commentAdded } from './events';
@@ -33,7 +36,7 @@ import { commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles } from 'utils/styleUtils';
+import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
@@ -76,11 +79,15 @@ const HiddenLabel = styled.span`
 `;
 
 const ButtonWrapper = styled.div`
-  display: flex;
   justify-content: flex-end;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
+  display: none;
+
+  &.visible {
+    display: flex;
+  }
 `;
 
 const CancelButton = styled(Button)`
@@ -99,6 +106,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -250,6 +258,7 @@ class ParentCommentForm extends PureComponent<
       className,
       intl: { formatMessage },
       commentingPermissionInitiative,
+      windowSize,
     } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled =
@@ -272,6 +281,8 @@ class ParentCommentForm extends PureComponent<
     const placeholder = formatMessage(
       messages[`${postType}CommentBodyPlaceholder`]
     );
+    const smallerThanSmallTablet =
+      !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
 
     if (!isNilOrError(authUser) && canComment) {
       return (
@@ -285,6 +296,7 @@ class ParentCommentForm extends PureComponent<
           <FormContainer
             className="ideaCommentForm"
             onClickOutside={this.close}
+            closeOnClickOutsideEnabled={false}
           >
             <Form className={focused ? 'focused' : ''}>
               <label htmlFor="submit-comment">
@@ -296,7 +308,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={!!(focused || processing) ? 3 : 1}
+                  rows={!!(focused || processing) ? 4 : 1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
@@ -310,25 +322,27 @@ class ParentCommentForm extends PureComponent<
                   boxShadow="none"
                   getTextareaRef={this.setRef}
                 />
-                {(focused || processing) && (
-                  <ButtonWrapper>
-                    <CancelButton
-                      disabled={processing}
-                      onClick={this.close}
-                      buttonStyle="secondary"
-                    >
-                      <FormattedMessage {...messages.cancel} />
-                    </CancelButton>
-                    <Button
-                      className="e2e-submit-parentcomment"
-                      processing={processing}
-                      onClick={this.onSubmit}
-                      disabled={commentButtonDisabled}
-                    >
-                      <FormattedMessage {...messages.publishComment} />
-                    </Button>
-                  </ButtonWrapper>
-                )}
+                <ButtonWrapper
+                  className={!!(focused || processing) ? 'visible' : ''}
+                >
+                  <CancelButton
+                    disabled={processing}
+                    onClick={this.close}
+                    buttonStyle="secondary"
+                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
+                  >
+                    <FormattedMessage {...messages.cancel} />
+                  </CancelButton>
+                  <Button
+                    className="e2e-submit-parentcomment"
+                    processing={processing}
+                    onClick={this.onSubmit}
+                    disabled={commentButtonDisabled}
+                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
               </label>
             </Form>
           </FormContainer>
@@ -343,6 +357,7 @@ class ParentCommentForm extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  windowSize: <GetWindowSize />,
   post: ({ postId, postType, render }) => (
     <GetPost id={postId} type={postType}>
       {render}

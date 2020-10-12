@@ -74,87 +74,85 @@ const FiltersArea = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 
   &.mapView {
     justify-content: flex-end;
+    margin-bottom: 15px;
+
+    ${media.smallerThanMinTablet`
+      margin-bottom: 0px;
+    `}
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 30px;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  ${media.smallerThanMaxTablet`
+const LeftFilterArea = styled(FilterArea)`
+  flex: 1 1 auto;
+
+  &.hidden {
+    display: none;
+  }
+
+  ${media.smallerThanMinTablet`
+    display: flex;
+    flex-direction: column;
     align-items: stretch;
   `}
 `;
 
-const LeftFilterArea = styled(FilterArea)`
-  &.hidden {
-    display: none;
-  }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin-bottom: 22px;
-  `}
-`;
-
 const RightFilterArea = styled(FilterArea)`
+  display: flex;
+  align-items: center;
+
   &.hidden {
     display: none;
   }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  `}
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-  `}
 `;
 
 const DropdownFilters = styled.div`
-  ${media.smallerThanMinTablet`
-    &.hasViewButtons {
-      margin-top: 20px;
-    }
-  `}
+  display: flex;
+  align-items: center;
 
   &.hidden {
     display: none;
   }
 `;
 
-const StyledViewButtons = styled(ViewButtons)`
-  margin-left: 25px;
+const DesktopViewButtons = styled(ViewButtons)`
+  margin-left: 40px;
 
-  ${media.smallerThanMaxTablet`
-    margin-left: 0px;
+  ${media.smallerThanMinTablet`
+    display: none;
   `}
+`;
+
+const MobileViewButtons = styled(ViewButtons)`
+  margin-bottom: 15px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     width: 100%;
     margin-right: 0px;
+    margin-bottom: 20px;
   `}
 `;
 
-const IdeasList: any = styled.div`
+const IdeasList = styled.div`
   margin-left: -13px;
   margin-right: -13px;
   display: flex;
@@ -189,22 +187,23 @@ const EmptyContainer = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  width: 43px;
-  height: 43px;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
   fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
   padding-left: 20px;
   padding-right: 20px;
-  margin-top: 20px;
+  margin-top: 12px;
   margin-bottom: 30px;
 `;
 
 const EmptyMessageLine = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
-  font-weight: 500;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   line-height: normal;
   text-align: center;
 `;
@@ -315,7 +314,7 @@ class WithoutFiltersSidebar extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
+        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
           'ui:widget'
         ] !== 'hidden'
       );
@@ -349,6 +348,8 @@ class WithoutFiltersSidebar extends PureComponent<
     const showListView =
       !locationEnabled || (locationEnabled && selectedView === 'card');
     const showMapView = locationEnabled && selectedView === 'map';
+    const smallerThanSmallTablet =
+      windowSize && windowSize <= viewportWidths.smallTablet;
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.largeTablet;
 
@@ -356,13 +357,22 @@ class WithoutFiltersSidebar extends PureComponent<
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea
           id="e2e-ideas-filters"
-          className={`${showMapView && 'mapView'}`}
+          className={`${showMapView ? 'mapView' : 'listView'}`}
         >
-          <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput
-              className="e2e-search-ideas-input"
-              onChange={this.handleSearchOnChange}
-            />
+          <LeftFilterArea>
+            {showViewButtons && smallerThanSmallTablet && (
+              <MobileViewButtons
+                selectedView={selectedView}
+                onClick={this.selectView}
+              />
+            )}
+
+            {!showMapView && (
+              <StyledSearchInput
+                className="e2e-search-ideas-input"
+                onChange={this.handleSearchOnChange}
+              />
+            )}
           </LeftFilterArea>
 
           <RightFilterArea>
@@ -387,8 +397,8 @@ class WithoutFiltersSidebar extends PureComponent<
               )}
             </DropdownFilters>
 
-            {showViewButtons && (
-              <StyledViewButtons
+            {showViewButtons && !smallerThanSmallTablet && (
+              <DesktopViewButtons
                 selectedView={selectedView}
                 onClick={this.selectView}
               />
