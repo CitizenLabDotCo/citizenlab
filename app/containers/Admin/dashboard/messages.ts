@@ -36,6 +36,18 @@ export default defineMessages({
     defaultMessage: 'Dashboard for activities on the platform',
   },
   // All tabs
+  day: {
+    id: 'app.containers.AdminPage.DashboardPage.day',
+    defaultMessage: 'day',
+  },
+  week: {
+    id: 'app.containers.AdminPage.DashboardPage.week',
+    defaultMessage: 'week',
+  },
+  month: {
+    id: 'app.containers.AdminPage.DashboardPage.month',
+    defaultMessage: 'month',
+  },
   users: {
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
