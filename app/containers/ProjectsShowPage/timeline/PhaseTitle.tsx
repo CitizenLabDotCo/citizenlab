@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { indexOf } from 'lodash-es';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 // hooks
 import useLocale from 'hooks/useLocale';
