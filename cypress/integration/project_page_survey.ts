@@ -11,7 +11,6 @@ describe('Existing continuous project with survey', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 
@@ -59,7 +58,6 @@ describe('New continuous project with survey', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 

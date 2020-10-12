@@ -20,6 +20,10 @@ const Container = styled.div`
   padding-bottom: 100px;
 `;
 
+const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
+  margin-bottom: 20px;
+`;
+
 interface InputProps {
   projectId: string;
   phaseId: string;
@@ -51,9 +55,9 @@ class IdeasContainer extends PureComponent<Props, State> {
             id="project-ideas"
             className={`e2e-timeline-project-idea-cards ${className || ''}`}
           >
-            <ProjectPageSectionTitle>
+            <StyledProjectPageSectionTitle>
               <FormattedMessage {...messages.ideas} />
-            </ProjectPageSectionTitle>
+            </StyledProjectPageSectionTitle>
             <IdeaCards
               className={participationMethod}
               type="load-more"

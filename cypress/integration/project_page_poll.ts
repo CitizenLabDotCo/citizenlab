@@ -10,7 +10,6 @@ describe('Existing continuous project with poll', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 
@@ -69,7 +68,6 @@ describe('New continuous project with poll', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 

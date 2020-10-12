@@ -126,6 +126,10 @@ const ActionButtons = styled.div`
   `}
 `;
 
+const AllocateBudgetButton = styled(Button)`
+  margin-bottom: 10px;
+`;
+
 const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
 `;
@@ -279,6 +283,21 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
     const actionButtons = (
       <ActionButtons>
+        {ideasPresentOutsideViewport &&
+          ((process_type === 'continuous' &&
+            participation_method === 'budgeting') ||
+            currentPhase?.attributes.participation_method === 'budgeting') &&
+          ideas_count &&
+          ideas_count > 0 && (
+            <AllocateBudgetButton
+              id="e2e-project-allocate-budget-button"
+              buttonStyle="secondary"
+              onClick={scrollTo('project-ideas')}
+              fontWeight="500"
+            >
+              <FormattedMessage {...messages.allocateBudget} />
+            </AllocateBudgetButton>
+          )}
         {ideasPresentOutsideViewport &&
           ((process_type === 'continuous' &&
             participation_method === 'ideation') ||

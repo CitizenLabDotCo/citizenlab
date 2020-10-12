@@ -240,6 +240,10 @@ export default defineMessages({
     defaultMessage:
       '{eventsCount, plural, no {# events} one {# event} other {# events}}',
   },
+  allocateBudget: {
+    id: 'app.containers.Projects.allocateBudget',
+    defaultMessage: 'Allocate your budget',
+  },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',

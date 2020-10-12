@@ -32,6 +32,10 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const StyledSectionContainer = styled(SectionContainer)``;
 
+const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -73,9 +77,9 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               )}
-              <ProjectPageSectionTitle>
+              <StyledProjectPageSectionTitle>
                 <FormattedMessage {...messages.ideas} />
-              </ProjectPageSectionTitle>
+              </StyledProjectPageSectionTitle>
               <IdeaCards
                 type="load-more"
                 projectIds={projectIds}
