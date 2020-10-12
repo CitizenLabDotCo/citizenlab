@@ -142,7 +142,7 @@ const EventInformation = styled.div`
 const EventHeaderTime = styled.div`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: normal;
   margin-bottom: 4px;
 `;
@@ -278,7 +278,7 @@ const EventCard = memo<Props & InjectedIntlProps>(
             <EventHeaderTime>
               {isMultiDayEvent ? (
                 <>
-                  {startAtMoment.format('LLL')} → {endAtMoment.format('LLL')}
+                  {startAtMoment.format('LLL')} - {endAtMoment.format('LLL')}
                 </>
               ) : (
                 <>

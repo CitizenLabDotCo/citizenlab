@@ -44,7 +44,7 @@ const Container = styled.div`
     pointer-events: auto;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     top: 0px;
     border-bottom: solid 1px ${lighten(0.4, colors.label)};
   `}
@@ -65,7 +65,7 @@ const InnerContainer = styled.div`
     }
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     flex-direction: column;
   `}
 `;
@@ -75,7 +75,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
@@ -87,7 +87,7 @@ const Right = styled.div`
   align-items: center;
   margin-left: 15px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     flex: 1 1 auto;
     width: 100%;
     flex-direction: column;
@@ -161,7 +161,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   const [isActionBarVisible, setIsActionBarVisible] = useState(false);
   const [isActionButtonVisible, setIsActionButtonVisible] = useState(false);
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
   const portalElement = document?.getElementById('topbar-portal');
 
@@ -183,9 +183,9 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
           actionButtonElement &&
           actionButtonYOffset &&
           window.pageYOffset >
-            actionButtonYOffset - (smallerThanSmallTablet ? 14 : 40)
+            actionButtonYOffset - (smallerThanLargeTablet ? 14 : 40)
         );
-        const actionBarVisible = !smallerThanSmallTablet
+        const actionBarVisible = !smallerThanLargeTablet
           ? window.pageYOffset > 78
           : actionButtonVisible;
         setIsActionBarVisible(actionBarVisible);
@@ -193,7 +193,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
       },
       { passive: true }
     );
-  }, [projectId, smallerThanSmallTablet]);
+  }, [projectId, smallerThanLargeTablet]);
 
   if (!isNilOrError(project) && portalElement) {
     const {
@@ -232,7 +232,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                       projectId={project.id}
                       participationContextType="project"
                       fontWeight="500"
-                      width={!smallerThanSmallTablet ? '300px' : undefined}
+                      width={!smallerThanLargeTablet ? '300px' : undefined}
                     />
                   </CSSTransition>
                 )}
@@ -252,7 +252,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                     phaseId={currentPhase?.id}
                     participationContextType="phase"
                     fontWeight="500"
-                    width={!smallerThanSmallTablet ? '300px' : undefined}
+                    width={!smallerThanLargeTablet ? '300px' : undefined}
                   />
                 </CSSTransition>
               )}

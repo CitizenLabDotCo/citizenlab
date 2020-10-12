@@ -5,13 +5,17 @@ import { isEmpty } from 'lodash-es';
 
 // components
 import FileAttachments from 'components/UI/FileAttachments';
-import AboutHeader from './AboutHeader';
+import PhaseTitle from './PhaseTitle';
+import PhaseNavigation from './PhaseNavigation';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
+
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,7 +24,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { defaultCardStyle, media } from 'utils/styleUtils';
+import { defaultCardStyle, media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -28,12 +32,19 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 const Container = styled.div`
   padding: 30px;
   padding-bottom: 35px;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
   ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
     padding: 20px;
   `}
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
 `;
 
 const StyledFileAttachments = styled(FileAttachments)`
@@ -54,10 +65,12 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const About = memo<Props & InjectedLocalized>(
+const PhaseDescription = memo<Props & InjectedLocalized>(
   ({ projectId, phaseId, phase, phaseFiles, className, localize }) => {
     const theme: any = useTheme();
+    const { windowWidth } = useWindowSize();
 
+    const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
     const content = localize(phase?.attributes?.description_multiloc);
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
@@ -65,7 +78,12 @@ const About = memo<Props & InjectedLocalized>(
     if (!contentIsEmpty || !isEmpty(phaseFiles)) {
       return (
         <Container className={`e2e-phase-description ${className || ''}`}>
-          <AboutHeader projectId={projectId} selectedPhaseId={phaseId} />
+          <Header>
+            <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
+            {!smallerThanSmallTablet && (
+              <PhaseNavigation projectId={projectId} />
+            )}
+          </Header>
           <ScreenReaderOnly>
             <FormattedMessage
               tagName="h3"
@@ -90,7 +108,7 @@ const About = memo<Props & InjectedLocalized>(
   }
 );
 
-const AboutWithHoC = injectLocalize(About);
+const PhaseDescriptionWithHoC = injectLocalize(PhaseDescription);
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
@@ -101,10 +119,10 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const AboutWithHoCAndData = (inputProps: InputProps) => (
+const PhaseDescriptionWithHoCAndData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <AboutWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseDescriptionWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );
 
-export default AboutWithHoCAndData;
+export default PhaseDescriptionWithHoCAndData;

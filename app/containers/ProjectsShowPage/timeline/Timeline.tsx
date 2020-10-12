@@ -1,56 +1,44 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { isString, forEach, findIndex } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import {
-  tap,
-  filter,
-  switchMap,
-  distinctUntilChanged,
-  map,
-} from 'rxjs/operators';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+  FormEvent,
+} from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { withRouter, WithRouterProps } from 'react-router';
-import Tippy from '@tippyjs/react';
 
 // tracking
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import ContentContainer from 'components/ContentContainer';
-import { Icon, Button } from 'cl2-component-library';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import { Icon } from 'cl2-component-library';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import useTenant from 'hooks/useTenant';
+import usePhases from 'hooks/usePhases';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import {
-  phasesStream,
-  IPhases,
-  IPhaseData,
-  getCurrentPhase,
-} from 'services/phases';
+import { IPhaseData, getCurrentPhase } from 'services/phases';
+
+// events
+import { selectedPhase$, selectPhase } from './events';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
+import { getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba, transparentize } from 'polished';
-
-// typings
-import { Locale } from 'typings';
 
 const greyOpaque = `${colors.label}`;
 const greenTransparent = `${rgba(colors.clGreen, 0.15)}`;
@@ -67,38 +55,6 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 25px;
-`;
-
-const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
-  margin: 0px;
-  padding: 0px;
-`;
-
-const PhaseNavigation = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 15px;
-`;
-
-const PhaseNavigationButtonWrapper = styled.div``;
-
-const PhaseButton = styled(Button)``;
-
-const PreviousPhaseButton = styled(PhaseButton)`
-  margin-right: 5px;
-`;
-
-const CurrentPhaseButton = styled(PhaseButton)``;
-
-const NextPhaseButton = styled(PhaseButton)`
-  margin-left: 5px;
 `;
 
 const Phases = styled.div`
@@ -161,7 +117,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   word-break: break-word;
   hyphens: auto;
   max-height: 60px;
-  margin-top: 8px;
+  margin-top: 6px;
   margin-left: 5px;
   margin-right: 5px;
   transition: color 60ms ease-out;
@@ -247,437 +203,141 @@ const PhaseContainer = styled.div<{ width: number }>`
   }
 `;
 
-const SelectedPhaseEventName = 'SelectedPhaseChangeEvent';
-type ISelectedPhase = IPhaseData | null;
-export const selectedPhase$ = eventEmitter
-  .observeEvent<ISelectedPhase>(SelectedPhaseEventName)
-  .pipe(
-    map((event) => event.eventValue),
-    distinctUntilChanged((x, y) => x?.id === y?.id)
-  );
-
-const SelectCurrentPhaseEventName = 'SelectCurrentPhaseEvent';
-export const selectCurrentPhase = () =>
-  eventEmitter.emit(SelectCurrentPhaseEventName);
-
 interface Props {
   projectId: string;
   className?: string;
 }
 
-interface State {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  phases: IPhases | null;
-  currentPhaseId: string | null;
-  selectedPhase: ISelectedPhase;
-  loaded: boolean;
-}
+const Timeline = memo<Props>(({ projectId, className }) => {
+  const locale = useLocale();
+  const currentTenant = useTenant();
+  const phases = usePhases(projectId);
 
-class Timeline extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
-  initialState: State;
-  projectId$: BehaviorSubject<string | null>;
-  subscriptions: Subscription[];
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
 
-  constructor(props) {
-    super(props);
-    const initialState = {
-      locale: null,
-      currentTenant: null,
-      phases: null,
-      currentPhaseId: null,
-      selectedPhase: null,
-      loaded: false,
-    };
-    this.initialState = initialState;
-    this.state = initialState;
-    this.subscriptions = [];
-    this.projectId$ = new BehaviorSubject(null);
-  }
+  useEffect(() => {
+    const subscription = selectedPhase$.subscribe((selectedPhase) => {
+      setSelectedPhase(selectedPhase);
+    });
 
-  componentDidMount() {
-    this.projectId$.next(this.props.projectId);
+    return () => subscription.unsubscribe();
+  }, []);
 
-    const projectId$ = this.projectId$.pipe(distinctUntilChanged());
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+  const handleOnPhaseSelection = useCallback(
+    (phase: IPhaseData | null) => (event: FormEvent) => {
+      trackEventByName(tracks.clickOnPhase);
+      event.preventDefault();
+      selectPhase(phase);
+    },
+    []
+  );
 
-    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName);
+  const removeFocus = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+  }, []);
 
-    this.subscriptions = [
-      projectId$
-        .pipe(
-          tap(() => this.setState(this.initialState)),
-          filter((projectId) => isString(projectId)),
-          switchMap((projectId: string) => {
-            const phases$ = phasesStream(projectId).observable;
-
-            return combineLatest(locale$, currentTenant$, phases$);
-          })
-        )
-        .subscribe(([locale, currentTenant, phases]) => {
-          const currentPhase = getCurrentPhase(phases.data);
-          const currentPhaseId = currentPhase ? currentPhase.id : null;
-          const selectedPhase = this.getDefaultSelectedPhase(
-            currentPhase,
-            phases
-          );
-          this.setState({
-            locale,
-            currentTenant,
-            phases,
-            currentPhaseId,
-            selectedPhase,
-            loaded: true,
-          });
-        }),
-      eventEmitter.observeEvent(SelectCurrentPhaseEventName).subscribe(() => {
-        if (this.state.phases) {
-          const currentPhase = getCurrentPhase(this.state.phases.data);
-          this.setState({ selectedPhase: currentPhase });
-        }
-      }),
-    ];
-  }
-
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    this.projectId$.next(this.props.projectId);
-
-    const oldSelectedPhaseId = prevState.selectedPhase
-      ? prevState.selectedPhase.id
-      : null;
-    const newSelectedPhaseId = this.state.selectedPhase
-      ? this.state.selectedPhase.id
-      : null;
-
-    if (newSelectedPhaseId !== oldSelectedPhaseId) {
-      eventEmitter.emit<ISelectedPhase>(
-        SelectedPhaseEventName,
-        this.state.selectedPhase
-      );
-    }
-  }
-
-  componentWillUnmount() {
-    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName);
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  getDefaultSelectedPhase(
-    currentPhase: ISelectedPhase,
-    phases: IPhases | null
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(currentTenant) &&
+    !isNilOrError(phases) &&
+    phases.length > 0
   ) {
-    let selectedPhase: ISelectedPhase = null;
-    const { location } = this.props;
-
-    // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
-    // then remove the param so that when the user navigates to other phases there is no mismatch
-    if (location.query.phase && typeof location.query.phase === 'string') {
-      const phase = phases
-        ? phases.data.find((phase) => phase.id === location.query.phase)
-        : null;
-      if (phase) {
-        window.history.replaceState(null, '', location.pathname);
-        return phase;
-      }
-    }
-
-    if (isString(currentPhase)) {
-      selectedPhase = currentPhase;
-    } else if (phases && phases.data.length > 0) {
-      forEach(phases.data, (phase) => {
-        const phaseTime = pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
-        ]);
-
-        if (phaseTime === 'present' || phaseTime === 'future') {
-          selectedPhase = phase;
-          return false;
-        }
-
-        return true;
+    const currentPhase = getCurrentPhase(phases);
+    const currentPhaseId = currentPhase ? currentPhase.id : null;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+    const currentTenantLocales =
+      currentTenant.data.attributes.settings.core.locales;
+    const totalNumberOfDays = phases
+      .map((phaseData) => {
+        const startIsoDate = getIsoDate(phaseData.attributes.start_at);
+        const endIsoDate = getIsoDate(phaseData.attributes.end_at);
+        const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+        const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+        const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+        return numberOfDays;
+      })
+      .reduce((accumulator, numberOfDays) => {
+        return accumulator + numberOfDays;
       });
 
-      if (!selectedPhase) {
-        selectedPhase = phases.data[phases.data.length - 1];
-      }
-    }
+    return (
+      <Container
+        id="project-timeline"
+        className={className || ''}
+        isHidden={phases.length === 1}
+      >
+        <ContainerInner>
+          <Phases className="e2e-phases">
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.a11y_phasesOverview} />
+            </ScreenReaderOnly>
+            {phases.map((phase, index) => {
+              const phaseNumber = index + 1;
+              const phaseTitle = getLocalized(
+                phase.attributes.title_multiloc,
+                locale,
+                currentTenantLocales
+              );
+              const isFirst = index === 0;
+              const isLast = index === phases.length - 1;
+              const isCurrentPhase = phase.id === currentPhaseId;
+              const isSelectedPhase = phase.id === selectedPhaseId;
+              const startIsoDate = getIsoDate(phase.attributes.start_at);
+              const endIsoDate = getIsoDate(phase.attributes.end_at);
+              const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+              const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+              const numberOfDays =
+                Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+              const width = Math.round(
+                (numberOfDays / totalNumberOfDays) * 100
+              );
+              const classNames = [
+                isFirst ? 'first' : null,
+                isLast ? 'last' : null,
+                isCurrentPhase ? 'currentPhase' : null,
+                isSelectedPhase ? 'selectedPhase' : null,
+              ]
+                .filter((className) => className)
+                .join(' ');
 
-    return selectedPhase;
+              return (
+                <PhaseContainer
+                  className={classNames}
+                  key={index}
+                  width={width}
+                  onMouseDown={removeFocus}
+                  onClick={handleOnPhaseSelection(phase)}
+                >
+                  <PhaseBar>
+                    <span aria-hidden>{phaseNumber}</span>
+                    <ScreenReaderOnly>
+                      <FormattedMessage
+                        {...messages.a11y_phaseX}
+                        values={{
+                          phaseNumber,
+                          phaseTitle,
+                        }}
+                      />
+                    </ScreenReaderOnly>
+                    {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                  </PhaseBar>
+                  <PhaseText
+                    current={isCurrentPhase}
+                    selected={isSelectedPhase}
+                    aria-hidden
+                  >
+                    {phaseTitle}
+                  </PhaseText>
+                </PhaseContainer>
+              );
+            })}
+          </Phases>
+        </ContainerInner>
+      </Container>
+    );
   }
 
-  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (
-    event: FormEvent
-  ) => {
-    trackEventByName(tracks.clickOnPhase);
+  return null;
+});
 
-    event.preventDefault();
-    this.setState({ selectedPhase });
-  };
-
-  handleOnPhaseSelectionFromDropdown = (selectedPhase: ISelectedPhase) => {
-    this.setState({ selectedPhase });
-  };
-
-  goToNextPhase = () => {
-    trackEventByName(tracks.clickNextPhaseButton);
-
-    const { selectedPhase } = this.state;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-    const phases = this.state.phases as IPhases;
-    const selectedPhaseIndex = findIndex(
-      phases.data,
-      (phase) => phase.id === selectedPhaseId
-    );
-    const nextPhaseIndex =
-      phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
-    const nextPhase = phases.data[nextPhaseIndex];
-    this.setState({ selectedPhase: nextPhase });
-  };
-
-  goToPreviousPhase = () => {
-    trackEventByName(tracks.clickPreviousPhaseButton);
-
-    const { selectedPhase } = this.state;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-    const phases = this.state.phases as IPhases;
-    const selectedPhaseIndex = findIndex(
-      phases.data,
-      (phase) => phase.id === selectedPhaseId
-    );
-    const prevPhaseIndex =
-      selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
-    const prevPhase = phases.data[prevPhaseIndex];
-    this.setState({ selectedPhase: prevPhase });
-  };
-
-  goToCurrentPhase = () => {
-    const { phases } = this.state;
-
-    if (phases) {
-      trackEventByName(tracks.clickCurrentPhaseButton);
-      const currentPhase = getCurrentPhase(phases.data);
-      this.setState({ selectedPhase: currentPhase });
-    }
-  };
-
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
-  render() {
-    const {
-      className,
-      intl: { formatMessage },
-    } = this.props;
-    const {
-      locale,
-      currentTenant,
-      phases,
-      currentPhaseId,
-      selectedPhase,
-    } = this.state;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-
-    if (locale && currentTenant && phases && phases.data.length > 0) {
-      const currentTenantLocales =
-        currentTenant.data.attributes.settings.core.locales;
-      const totalNumberOfDays = phases.data
-        .map((phaseData) => {
-          const startIsoDate = getIsoDate(phaseData.attributes.start_at);
-          const endIsoDate = getIsoDate(phaseData.attributes.end_at);
-          const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-          const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-          const numberOfDays =
-            Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-          return numberOfDays;
-        })
-        .reduce((accumulator, numberOfDays) => {
-          return accumulator + numberOfDays;
-        });
-
-      const navButtonSize = '33px';
-
-      return (
-        <Container
-          id="project-timeline"
-          className={className || ''}
-          isHidden={phases.data.length === 1}
-        >
-          <ContentContainer>
-            <ContainerInner>
-              <Header>
-                <StyledProjectPageSectionTitle>
-                  <FormattedMessage {...messages.timeline} />
-                </StyledProjectPageSectionTitle>
-
-                <PhaseNavigation className="e2e-timeline-phase-navigation">
-                  <Tippy
-                    disabled={selectedPhaseId === phases.data[0].id}
-                    interactive={false}
-                    placement="bottom"
-                    content={formatMessage(messages.previousPhase)}
-                    theme="translucent"
-                    arrow={false}
-                    hideOnClick={true}
-                  >
-                    <PhaseNavigationButtonWrapper>
-                      <PreviousPhaseButton
-                        locale={locale}
-                        onClick={this.goToPreviousPhase}
-                        icon="chevron-left"
-                        iconSize="12px"
-                        iconColor={colors.label}
-                        buttonStyle="white"
-                        width={navButtonSize}
-                        height={navButtonSize}
-                        padding="0px"
-                        disabled={selectedPhaseId === phases.data[0].id}
-                        ariaLabel={formatMessage(messages.previousPhase)}
-                        className="e2e-previous-phase"
-                      />
-                    </PhaseNavigationButtonWrapper>
-                  </Tippy>
-                  {currentPhaseId && (
-                    <Tippy
-                      disabled={selectedPhaseId === currentPhaseId}
-                      interactive={false}
-                      placement="bottom"
-                      content={formatMessage(messages.currentPhase)}
-                      theme="translucent"
-                      arrow={false}
-                      hideOnClick={true}
-                    >
-                      <PhaseNavigationButtonWrapper>
-                        <CurrentPhaseButton
-                          locale={locale}
-                          onClick={this.goToCurrentPhase}
-                          icon="dot"
-                          iconSize="8px"
-                          iconColor={colors.clGreen}
-                          buttonStyle="white"
-                          width={navButtonSize}
-                          height={navButtonSize}
-                          padding="0px"
-                          disabled={selectedPhaseId === currentPhaseId}
-                          ariaLabel={formatMessage(messages.currentPhase)}
-                          className="e2e-current-phase"
-                        />
-                      </PhaseNavigationButtonWrapper>
-                    </Tippy>
-                  )}
-                  <Tippy
-                    disabled={
-                      selectedPhaseId === phases.data[phases.data.length - 1].id
-                    }
-                    interactive={false}
-                    placement="bottom"
-                    content={formatMessage(messages.nextPhase)}
-                    theme="translucent"
-                    arrow={false}
-                    hideOnClick={true}
-                  >
-                    <PhaseNavigationButtonWrapper>
-                      <NextPhaseButton
-                        locale={locale}
-                        onClick={this.goToNextPhase}
-                        icon="chevron-right"
-                        iconSize="12px"
-                        iconColor={colors.label}
-                        buttonStyle="white"
-                        width={navButtonSize}
-                        height={navButtonSize}
-                        padding="0px"
-                        disabled={
-                          selectedPhaseId ===
-                          phases.data[phases.data.length - 1].id
-                        }
-                        ariaLabel={formatMessage(messages.nextPhase)}
-                      />
-                    </PhaseNavigationButtonWrapper>
-                  </Tippy>
-                </PhaseNavigation>
-              </Header>
-
-              <Phases className="e2e-phases">
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_phasesOverview} />
-                </ScreenReaderOnly>
-                {phases.data.map((phase, index) => {
-                  const phaseNumber = index + 1;
-                  const phaseTitle = getLocalized(
-                    phase.attributes.title_multiloc,
-                    locale,
-                    currentTenantLocales
-                  );
-                  const isFirst = index === 0;
-                  const isLast = index === phases.data.length - 1;
-                  const isCurrentPhase = phase.id === currentPhaseId;
-                  const isSelectedPhase = phase.id === selectedPhaseId;
-                  const startIsoDate = getIsoDate(phase.attributes.start_at);
-                  const endIsoDate = getIsoDate(phase.attributes.end_at);
-                  const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-                  const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-                  const numberOfDays =
-                    Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-                  const width = Math.round(
-                    (numberOfDays / totalNumberOfDays) * 100
-                  );
-                  const classNames = [
-                    isFirst ? 'first' : null,
-                    isLast ? 'last' : null,
-                    isCurrentPhase ? 'currentPhase' : null,
-                    isSelectedPhase ? 'selectedPhase' : null,
-                  ]
-                    .filter((className) => className)
-                    .join(' ');
-
-                  return (
-                    <PhaseContainer
-                      className={classNames}
-                      key={index}
-                      width={width}
-                      onMouseDown={this.removeFocus}
-                      onClick={this.handleOnPhaseSelection(phase)}
-                    >
-                      <PhaseBar>
-                        <span aria-hidden>{phaseNumber}</span>
-                        <ScreenReaderOnly>
-                          <FormattedMessage
-                            {...messages.a11y_phaseX}
-                            values={{
-                              phaseNumber,
-                              phaseTitle,
-                            }}
-                          />
-                        </ScreenReaderOnly>
-                        {!isLast && (
-                          <PhaseArrow name="phase_arrow" ariaHidden />
-                        )}
-                      </PhaseBar>
-                      <PhaseText
-                        current={isCurrentPhase}
-                        selected={isSelectedPhase}
-                        aria-hidden
-                      >
-                        {phaseTitle}
-                      </PhaseText>
-                    </PhaseContainer>
-                  );
-                })}
-              </Phases>
-            </ContainerInner>
-          </ContentContainer>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-export default withRouter<Props>(injectIntl<Props & WithRouterProps>(Timeline));
+export default Timeline;

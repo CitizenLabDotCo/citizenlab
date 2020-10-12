@@ -1,30 +1,44 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
-import { Subscription } from 'rxjs';
+import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { isString } from 'lodash-es';
+import { withRouter, WithRouterProps } from 'react-router';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // components
-import Timeline, { selectedPhase$ } from './Timeline';
-import PhaseAbout from './About';
+import Timeline from './Timeline';
+import PhaseDescription from './PhaseDescription';
 import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
 import PhaseVolunteering from './Volunteering';
 import PhaseIdeas from './Ideas';
 import ContentContainer from 'components/ContentContainer';
+import PhaseNavigation from './PhaseNavigation';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
-import { IPhaseData } from 'services/phases';
+import {
+  IPhaseData,
+  getCurrentPhase,
+  getFirstPhase,
+  getLastPhase,
+} from 'services/phases';
 
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+// events
+import { selectedPhase$, selectPhase } from './events';
+
+// hooks
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
+import useWindowSize from 'hooks/useWindowSize';
+
+// i18n
+import messages from 'containers/ProjectsShowPage/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
 import { colors, viewportWidths, media } from 'utils/styleUtils';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 
 const Container = styled.div`
   width: 100%;
@@ -39,74 +53,112 @@ const Container = styled.div`
   `}
 `;
 
-interface InputProps {
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+`;
+
+const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
+  margin: 0px;
+  padding: 0px;
+`;
+
+interface Props {
   projectId: string;
   className?: string;
 }
 
-interface DataProps {
-  project: GetProjectChildProps;
-  windowSize: GetWindowSizeChildProps;
-}
+const ProjectTimelineContainer = memo<Props & WithRouterProps>(
+  ({ projectId, location, className }) => {
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
+    const windowSize = useWindowSize();
 
-interface Props extends InputProps, DataProps {}
+    const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
 
-interface State {
-  selectedPhase: IPhaseData | null;
-}
+    useEffect(() => {
+      const subscription = selectedPhase$.subscribe((selectedPhase) => {
+        setSelectedPhase(selectedPhase);
+      });
 
-class ProjectTimelineContainer extends PureComponent<Props, State> {
-  subscription: Subscription | null = null;
+      return () => {
+        subscription.unsubscribe();
+        selectPhase(null);
+      };
+    }, []);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedPhase: null,
-    };
-  }
+    useEffect(() => {
+      if (
+        !isNilOrError(location) &&
+        !isNilOrError(phases) &&
+        phases.length > 0
+      ) {
+        const currentPhase = getCurrentPhase(phases);
+        const firstPhase = getFirstPhase(phases);
+        const lastPhase = getLastPhase(phases);
 
-  componentDidMount() {
-    this.subscription = selectedPhase$.subscribe((selectedPhase) => {
-      this.setState({ selectedPhase });
-    });
-  }
+        // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
+        // then remove the param so that when the user navigates to other phases there is no mismatch
+        if (isString(location?.query?.phase)) {
+          const phase = phases.find(
+            (phase) => phase.id === location.query.phase
+          );
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.projectId !== this.props.projectId) {
-      this.setState({ selectedPhase: null });
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscription?.unsubscribe();
-    this.subscription = null;
-  }
-
-  render() {
-    const { project, className, windowSize } = this.props;
-    const { selectedPhase } = this.state;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-    const isPBPhase =
-      selectedPhase?.attributes?.participation_method === 'budgeting';
-    const participationMethod = !isNilOrError(selectedPhase)
-      ? selectedPhase.attributes.participation_method
-      : null;
-    const smallerThanBigTablet = windowSize
-      ? windowSize <= viewportWidths.smallTablet
-      : false;
+          if (phase) {
+            window.history.replaceState(null, '', location.pathname);
+            selectPhase(phase);
+          }
+        } else if (currentPhase) {
+          selectPhase(currentPhase);
+        } else if (
+          firstPhase &&
+          pastPresentOrFuture([
+            firstPhase.attributes.start_at,
+            firstPhase.attributes.end_at,
+          ]) === 'future'
+        ) {
+          selectPhase(firstPhase);
+        } else {
+          selectPhase(lastPhase || null);
+        }
+      }
+    }, [location, phases]);
 
     if (!isNilOrError(project) && selectedPhase !== undefined) {
+      const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+      const isPBPhase =
+        selectedPhase?.attributes?.participation_method === 'budgeting';
+      const participationMethod = !isNilOrError(selectedPhase)
+        ? selectedPhase.attributes.participation_method
+        : null;
+      const smallerThanSmallTablet = windowSize
+        ? windowSize.windowWidth <= viewportWidths.smallTablet
+        : false;
+
       return (
         <Container className={`${className || ''} e2e-project-process-page`}>
           <div>
-            <Timeline projectId={project.id} />
             <ContentContainer>
-              <PhaseAbout projectId={project.id} phaseId={selectedPhaseId} />
+              {smallerThanSmallTablet && (
+                <Header>
+                  <StyledProjectPageSectionTitle>
+                    <FormattedMessage {...messages.timeline} />
+                  </StyledProjectPageSectionTitle>
+                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
+                </Header>
+              )}
+              <Timeline projectId={project.id} />
+              <PhaseDescription
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
               {isPBPhase && (
                 <PBExpenses
                   participationContextId={selectedPhaseId}
                   participationContextType="phase"
-                  viewMode={smallerThanBigTablet ? 'column' : 'row'}
+                  viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                 />
               )}
               <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
@@ -140,17 +192,6 @@ class ProjectTimelineContainer extends PureComponent<Props, State> {
 
     return null;
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  windowSize: <GetWindowSize />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectTimelineContainer {...inputProps} {...dataProps} />}
-  </Data>
 );
+
+export default withRouter(ProjectTimelineContainer);

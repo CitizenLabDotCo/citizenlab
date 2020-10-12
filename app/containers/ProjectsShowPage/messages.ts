@@ -109,18 +109,6 @@ export default defineMessages({
     id: 'app.containers.Projects.startedOn',
     defaultMessage: 'Started on {date}',
   },
-  startedOnEndedOn: {
-    id: 'app.containers.Projects.startedOnEndedOn',
-    defaultMessage: 'Started on {startDate} - Ended on {endDate}',
-  },
-  startedOnEndsOn: {
-    id: 'app.containers.Projects.startedOnEndsOn',
-    defaultMessage: 'Started on {startDate} - Ends on {endDate}',
-  },
-  startsOnEndsOn: {
-    id: 'app.containers.Projects.startsOnEndsOn',
-    defaultMessage: 'Starts on {startDate} - Ends on {endDate}',
-  },
   previousPhase: {
     id: 'app.containers.Projects.previousPhase',
     defaultMessage: 'Previous phase',
@@ -219,6 +207,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
+  xIdeasInCurrentPhase: {
+    id: 'app.containers.Projects.xIdeasInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the current phase',
+  },
   noIdeasYet: {
     id: 'app.containers.Projects.noIdeasYet',
     defaultMessage: 'No ideas yet',
@@ -241,6 +234,11 @@ export default defineMessages({
     id: 'app.containers.Projects.xUpcomingEvents',
     defaultMessage:
       '{upcomingEventsCount, plural, no {# upcoming events} one {# upcoming event} other {# upcoming events}}',
+  },
+  xEvents: {
+    id: 'app.containers.Projects.xEvents',
+    defaultMessage:
+      '{eventsCount, plural, no {# events} one {# event} other {# events}}',
   },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
