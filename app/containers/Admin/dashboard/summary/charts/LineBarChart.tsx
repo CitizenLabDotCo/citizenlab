@@ -59,8 +59,6 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const StyledLabel = styled(Label)``;
-
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
   .recharts-wrapper {
     @media print {
