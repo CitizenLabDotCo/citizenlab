@@ -22,7 +22,7 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-top: 30px;
-  padding-bottom: 70px;
+  padding-bottom: 65px;
   background: #fff;
   position: relative;
   z-index: 2;

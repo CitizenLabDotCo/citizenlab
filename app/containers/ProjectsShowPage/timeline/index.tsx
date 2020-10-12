@@ -45,7 +45,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 60px;
+  padding-top: 65px;
   background: ${colors.background};
 
   ${media.smallerThanMinTablet`
@@ -63,6 +63,10 @@ const Header = styled.div`
 const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   margin: 0px;
   padding: 0px;
+`;
+
+const StyledTimeline = styled(Timeline)`
+  margin-bottom: 28px;
 `;
 
 interface Props {
@@ -149,7 +153,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   <PhaseNavigation projectId={project.id} buttonStyle="white" />
                 </Header>
               )}
-              <Timeline projectId={project.id} />
+              <StyledTimeline projectId={project.id} />
               <PhaseDescription
                 projectId={project.id}
                 phaseId={selectedPhaseId}

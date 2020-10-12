@@ -50,7 +50,6 @@ const Container = styled.footer<{ insideModal?: boolean }>`
 `;
 
 const Inner = styled.div`
-  width: 100vw;
   min-height: ${(props) => props.theme.footerHeight}px;
   display: flex;
   align-items: center;

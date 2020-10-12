@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { indexOf } from 'lodash-es';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -133,14 +133,24 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
         selectedPhase.attributes.start_at,
         selectedPhase.attributes.end_at,
       ]);
-    const startDate = moment(
+
+    const startMoment = moment(
       selectedPhase?.attributes.start_at,
       'YYYY-MM-DD'
-    ).format('ll');
-    const endDate = moment(
-      selectedPhase?.attributes.end_at,
-      'YYYY-MM-DD'
-    ).format('ll');
+    );
+    const startYear = startMoment.format('YYYY');
+    const endMoment = moment(selectedPhase?.attributes.end_at, 'YYYY-MM-DD');
+    const endYear = endMoment.format('YYYY');
+    const startDate = new Intl.DateTimeFormat(locale, {
+      day: 'numeric',
+      month: 'short',
+      year: startYear !== endYear ? '2-digit' : undefined,
+    }).format(startMoment.toDate());
+    const endDate = new Intl.DateTimeFormat(locale, {
+      day: 'numeric',
+      month: 'short',
+      year: startYear !== endYear ? '2-digit' : undefined,
+    }).format(endMoment.toDate());
 
     if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
       selectedPhaseTitle = `${selectedPhaseNumber}. ${selectedPhaseTitle}`;
@@ -172,7 +182,7 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             )}
           </HeaderTitle>
           <HeaderSubtitle className={selectedPhaseStatus || ''}>
-            {startDate} → {endDate}
+            {startDate} - {endDate} {startYear === endYear && endYear}
           </HeaderSubtitle>
         </HeaderTitleWrapper>
         <ScreenReaderOnly>

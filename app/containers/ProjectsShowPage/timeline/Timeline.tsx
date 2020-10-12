@@ -59,8 +59,6 @@ const ContainerInner = styled.div`
 
 const Phases = styled.div`
   width: 100%;
-  padding-top: 5px;
-  padding-bottom: 30px;
   margin: 0;
   margin-left: auto;
   margin-right: auto;
@@ -120,7 +118,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   margin-top: 6px;
   margin-left: 5px;
   margin-right: 5px;
-  transition: color 60ms ease-out;
+  transition: color 80ms ease-out;
 
   ${media.smallerThanMinTablet`
     display: none;
