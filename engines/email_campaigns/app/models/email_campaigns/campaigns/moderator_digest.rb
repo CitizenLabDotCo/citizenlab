@@ -99,7 +99,7 @@ module EmailCampaigns
             increase: participants_increase,
             past_increase: participants_past_increase
           },
-          total_participants: ps.projects_participants([project]).size
+          total_participants: ps.project_participants(project).size
         }
       }
     end

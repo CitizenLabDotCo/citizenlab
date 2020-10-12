@@ -71,6 +71,12 @@ class ParticipantsService
     participants
   end
 
+  def project_participants project, options={}
+    Rails.cache.fetch("#{project.cache_key}/participants", expires_in: 1.day) do
+      projects_participants [project], options
+    end
+  end
+
   def projects_participants projects, options={}
     since = options[:since]
     actions = options[:actions] || PARTICIPANT_ACTIONS
