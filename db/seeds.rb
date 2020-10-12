@@ -220,6 +220,18 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      intercom: {
+        enabled: true,
+        allowed: true
+      },
+      satismeter: {
+        enabled: true,
+        allowed: true
+      },
+      google_analytics: {
+        enabled: true,
+        allowed: true
+      },
       smart_groups: {
         enabled: true,
         allowed: true

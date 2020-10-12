@@ -82,6 +82,18 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        intercom: {
+          enabled: true,
+          allowed: true
+        },
+        satismeter: {
+          enabled: true,
+          allowed: true
+        },
+        google_analytics: {
+          enabled: true,
+          allowed: true
+        },
         surveys: {
           enabled: true,
           allowed: true
