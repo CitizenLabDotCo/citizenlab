@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import { ConsentManagerBuilder } from '@segment/consent-manager';
-import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 import { adopt } from 'react-adopt';
 import { withScope } from '@sentry/browser';
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 
 import {
-  ADVERTISING_CATEGORIES,
-  FUNCTIONAL_CATEGORIES,
-  MARKETING_AND_ANALYTICS_CATEGORIES,
+  ADVERTISING_DESTINATIONS,
+  FUNCTIONAL_DESTINATIONS,
+  MARKETING_AND_ANALYTICS_DESTINATIONS,
+  ADMIN_DESTINATIONS,
+  IDestination,
 } from './categories';
 
 // utils
@@ -16,31 +16,27 @@ import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 
 // components
-import ConsentManagerBuilderHandler from './ConsentManagerBuilderHandler';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
-export const adminIntegrations = ['Intercom', 'SatisMeter'];
-export const superAdminIntegrationsBl = ['SatisMeter'];
-
-// 3rd parties will receive events (Facebook, Google, ...). A destination is an object that represents such a 3rd party.
-// Also called integrations. Below is the format in which Sentry sends out destinations.
-export interface IDestination {
-  id: string;
-  name: string;
-  description: string;
-  website: string;
-  category: string;
-}
+import { Container } from './Container';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // the format in which the user will make its choices,
-// plus a way to remember tenantSettings last time the user gave consent.
-export interface CustomPreferences {
+export interface IPreferences {
   analytics: boolean | null;
   advertising: boolean | null;
   functional: boolean | null;
+}
+// he format in which we'll save the consent
+
+type SavedDestinations = {
+  [key in IDestination]?: boolean | null;
+};
+export interface CookieFormat extends SavedDestinations {
   tenantBlacklisted?: string[] | undefined;
   roleBlacklisted?: string[] | undefined;
 }
@@ -52,230 +48,76 @@ export interface CategorizedDestinations {
   functional: IDestination[];
 }
 
-// initially, preferences are set to null
-export const initialPreferences = {
-  analytics: null,
-  advertising: null,
-  functional: null,
-};
-
-// the interface of the object that Segment's consent manager will pass down to its child
-export interface ConsentManagerProps {
-  setPreferences: Function;
-  resetPreferences: () => void;
-  saveConsent: () => void;
-  destinations: IDestination[];
-  newDestinations: IDestination[];
-  preferences: CustomPreferences;
-  // isConsentRequired: boolean; // passed down by SCM  based on whether user is the EU, but we'll overwrite this
-  // implyConsentOnInteraction: boolean; // not in use here but passed through by SCM, defaults to false
-}
-
 interface InputProps {}
 interface DataProps {
   tenant: GetTenantChildProps;
+  intercom: GetFeatureFlagChildProps;
+  satismeter: GetFeatureFlagChildProps;
+  google_analytics: GetFeatureFlagChildProps;
   authUser: GetAuthUserChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
-function reportToSegment(err) {
-  withScope((scope) => {
-    scope.setExtra(
-      'explanation',
-      'Segment destination fetch has failed, probably blocked by ad-blocker'
-    );
-    reportError(err);
-  });
+interface State {
+  preferences: IPreferences;
 }
 
-function handleMapCustomPreferences(
-  tenantBlacklistedDestinationIds: string[] | undefined,
-  roleBlacklistedDestinationIds: string[] | undefined
-) {
-  return function _(
-    destinations: IDestination[],
-    preferences: CustomPreferences
-  ) {
-    /** takes in the full list of destinations (coming from Segment),
-     * the preferences set by the user and the destinations that the user doesn't have access to
-     * gives out both the custom preferences picked by the user to save and the preferences
-     * of the user in the format { [preferenceId]: booleanConsent }
-     **/
-
-    const blacklistedDestinationIds = [
-      ...(tenantBlacklistedDestinationIds || []),
-      ...(roleBlacklistedDestinationIds || []),
-    ];
-    const whitelistedDestinations = removeBlacklistedDestinations(
-      destinations,
-      blacklistedDestinationIds
-    );
-
-    const customPreferences = getCustomPreferences(
-      preferences,
-      whitelistedDestinations,
-      tenantBlacklistedDestinationIds || [],
-      roleBlacklistedDestinationIds || []
-    );
-
-    const destinationPreferences = {
-      ...getDestinationPreferences(customPreferences, whitelistedDestinations),
-      ...formatBlacklistDestinations(blacklistedDestinationIds),
-    };
-
-    return {
-      customPreferences,
-      destinationPreferences,
-    } as {
-      customPreferences: CustomPreferences;
-      destinationPreferences: { [destinationId: string]: boolean };
-    };
-  };
-}
-
-function getCustomPreferences(
-  preferences: CustomPreferences,
-  accessibleDestinations: IDestination[],
-  tenantBlacklistedDestinationIds: string[],
-  roleBlacklistedDestinationIds: string[]
-) {
-  const customPreferences = {} as CustomPreferences;
-
-  for (const [preferenceName, value] of Object.entries(preferences)) {
-    // use user preference if set
-    if (typeof value === 'boolean') {
-      customPreferences[preferenceName] = value;
-
-      // for categories that contain destinations (for implicit consent) default unset preferences to true (clicking accept without opening)
-    } else if (
-      preferenceName === 'advertising' &&
-      accessibleDestinations.find((destination) =>
-        ADVERTISING_CATEGORIES.includes(destination.category)
-      )
-    ) {
-      customPreferences['advertising'] = true;
-    } else if (
-      preferenceName === 'functional' &&
-      accessibleDestinations.find((destination) =>
-        FUNCTIONAL_CATEGORIES.includes(destination.category)
-      )
-    ) {
-      customPreferences['functional'] = true;
-    } else if (
-      preferenceName === 'analytics' &&
-      accessibleDestinations.find((destination) =>
-        MARKETING_AND_ANALYTICS_CATEGORIES.includes(destination.category)
-      )
-    ) {
-      customPreferences['analytics'] = true;
-      // and leave the empty categories null
-    } else {
-      customPreferences[preferenceName] = null;
-    }
-  }
-
-  // remember what was on the blacklists to determine what was consented by the user and what was overwritten
-  customPreferences.tenantBlacklisted = tenantBlacklistedDestinationIds;
-  customPreferences.roleBlacklisted = roleBlacklistedDestinationIds;
-
-  return customPreferences;
-}
-
-function removeBlacklistedDestinations(
-  destinations: IDestination[],
-  blacklistedDestinationIds: string[]
-) {
-  return destinations.filter(
-    (destination) => !blacklistedDestinationIds.includes(destination.id)
-  );
-}
-
-function getDestinationPreferences(
-  customPreferences: CustomPreferences,
-  remainingDestinations: IDestination[]
-) {
-  const destinationPreferences = {};
-
-  // for each non-blacklisted destination, set the preference for this destination to be
-  // the preference the user set for the category it belongs to
-  for (const destination of remainingDestinations) {
-    if (ADVERTISING_CATEGORIES.find((c) => c === destination.category)) {
-      destinationPreferences[destination.id] = customPreferences.advertising;
-    } else if (FUNCTIONAL_CATEGORIES.find((c) => c === destination.category)) {
-      destinationPreferences[destination.id] = customPreferences.functional;
-    } else if (
-      MARKETING_AND_ANALYTICS_CATEGORIES.find((c) => c === destination.category)
-    ) {
-      destinationPreferences[destination.id] = customPreferences.analytics;
-    } else {
-      // Fallback to marketing preference but send an error so we update the categories
-      withScope((scope) => {
-        scope.setExtra('wrongDestination', destination.id);
-        scope.setExtra('wrongDestinationCategory', destination.category);
-        reportError("A segment destination doesn't belong to a category");
-      });
-      destinationPreferences[destination.id] = customPreferences.analytics;
-    }
-  }
-
-  return destinationPreferences;
-}
-
-/** helper function
- * put the blacklist in the format { destinationId: false }
- **/
-function formatBlacklistDestinations(
-  blacklistedDestinationIds: string[] | null
-) {
-  /** helper function
-   * reducer function, when passed in to _array.reduce, transforms the array
-   * into an object with the elements of the array as keys, and false as values
-   **/
-  const reducerArrayToObject = (acc, curr) => ((acc[curr] = false), acc);
-
-  return blacklistedDestinationIds
-    ? blacklistedDestinationIds.reduce(reducerArrayToObject, {})
-    : {};
-}
-
-export class ConsentManager extends PureComponent<Props> {
-  render() {
-    const { tenant, authUser } = this.props;
+export class ConsentManager extends PureComponent<Props, State> {
+  getRoleBlacklist() {
+    const { authUser } = this.props;
 
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
+
     const isSuperAdminUser =
       !isNilOrError(authUser) && isSuperAdmin({ data: authUser });
-    const tenantBlacklistedDestinations =
-      (!isNilOrError(tenant)
-        ? tenant.attributes.settings.core.segment_destinations_blacklist
-        : []) || [];
-    const roleBlacklistedDestinations = !isPrivilegedUser
-      ? adminIntegrations
-      : isSuperAdminUser
-      ? superAdminIntegrationsBl
-      : [];
+
+    return !isPrivilegedUser || isSuperAdminUser ? ADMIN_DESTINATIONS : [];
+  }
+
+  getTenantBlacklist() {
+    return MARKETING_AND_ANALYTICS_DESTINATIONS.concat(ADVERTISING_DESTINATIONS)
+      .concat(FUNCTIONAL_DESTINATIONS)
+      .map((key) => !this.props[key] && key)
+      .filter((el) => el) as IDestination[];
+  }
+
+  render() {
+    const { tenant } = this.props;
+    const { preferences } = this.state;
+
+    const roleBlacklisted = this.getRoleBlacklist();
+    const tenantBlacklisted = this.getTenantBlacklist();
+
+    const categorizedDestinations = {
+      analytics: MARKETING_AND_ANALYTICS_DESTINATIONS.filter(
+        (destination) =>
+          tenantBlacklisted.includes(destination) ||
+          roleBlacklisted.includes(destination)
+      ),
+      advertising: ADVERTISING_DESTINATIONS.filter(
+        (destination) =>
+          tenantBlacklisted.includes(destination) ||
+          roleBlacklisted.includes(destination)
+      ),
+      functional: FUNCTIONAL_DESTINATIONS.filter(
+        (destination) =>
+          tenantBlacklisted.includes(destination) ||
+          roleBlacklisted.includes(destination)
+      ),
+    };
+
     if (!isNilOrError(tenant)) {
       return (
-        <ConsentManagerBuilder
-          writeKey={CL_SEGMENT_API_KEY}
-          mapCustomPreferences={handleMapCustomPreferences(
-            tenantBlacklistedDestinations,
-            roleBlacklistedDestinations
-          )}
-          initialPreferences={initialPreferences}
-          onError={reportToSegment}
-          // shouldReload={true}
-        >
-          {(consentManagerProps: ConsentManagerProps) => (
-            <ConsentManagerBuilderHandler
-              {...consentManagerProps}
-              tenantBlacklistedDestinationIds={tenantBlacklistedDestinations}
-              roleBlacklistedDestinationIds={roleBlacklistedDestinations}
-            />
-          )}
-        </ConsentManagerBuilder>
+        <Container
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={isConsentRequired}
+          preferences={preferences}
+          categorizedDestinations={categorizedDestinations}
+        />
       );
     }
 
@@ -285,6 +127,9 @@ export class ConsentManager extends PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
+  intercom: <GetFeatureFlag name="intercom" />,
+  satismeter: <GetFeatureFlag name="satismeter" />,
+  google_analytics: <GetFeatureFlag name="google_analytics" />,
   authUser: <GetAuthUser />,
 });
 
