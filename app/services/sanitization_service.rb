@@ -3,7 +3,7 @@
 class SanitizationService
   # https://blog.arkency.com/2015/09/sanitizing-html-input-youtube-iframes/
 
-  EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul li].freeze
+  EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul].freeze
 
   SANITIZER = Rails::Html::WhiteListSanitizer.new
 
@@ -46,11 +46,13 @@ class SanitizationService
   #
 
   def remove_empty_structure_tags(html)
+    html.gsub!('&#65279;', '')
+
     Nokogiri::HTML.fragment(html).yield_self do |doc|
       return html if doc.errors.any?
 
       while (last_node = last_structure_node(doc))
-        node_childess?(last_node) ? last_node.remove : break
+        node_and_children_empty?(last_node) ? last_node.remove : break
       end
 
       doc.to_s
@@ -92,8 +94,17 @@ class SanitizationService
   # Returns true if node has no children or all it's children are line breaks.
   #
 
-  def node_childess?(node)
-    node.children.empty? || node.children.all? { |child_node| child_node.name == 'br' }
+  def node_and_children_empty?(node)
+    node_empty?(node)# && node.children.all?(&method(:node_empty?))
+  end
+
+  #
+  #
+  # Returns true if node does not have content.
+  #
+
+  def node_empty?(node)
+    node.text.empty?
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber
