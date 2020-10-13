@@ -30,6 +30,10 @@ const Container = styled.nav`
     flex-direction: row-reverse;
   `}
 
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
   ${media.biggerThanMaxTablet`
     display: none;
   `}
