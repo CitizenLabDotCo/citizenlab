@@ -60,7 +60,7 @@ const ShortFeedbackContainer = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 28px;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px #ddd;
   background: #fff;
 
   ${media.smallerThanMaxTablet`
@@ -115,12 +115,8 @@ const FooterContainer = styled.div`
   padding-bottom: 11px;
   background: ${transparentize(0.1, colors.background)};
   background: #fff;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px #ddd;
   overflow: hidden;
-
-  /* &.showShortFeedback {
-    border-top: none;
-  } */
 
   ${media.smallerThanMaxTablet`
     display: flex;
