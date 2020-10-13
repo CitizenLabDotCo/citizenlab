@@ -6,8 +6,13 @@ import eventEmitter from 'utils/eventEmitter';
 import 'jest-styled-components';
 
 // component to test
-import { Container } from './Container';
-import { initialPreferences } from './';
+import Container from './Container';
+import {
+  DESTINATIONS,
+  MARKETING_AND_ANALYTICS_DESTINATIONS,
+  ADVERTISING_DESTINATIONS,
+  FUNCTIONAL_DESTINATIONS,
+} from './destinations';
 
 // mock utilities
 jest.mock('./Banner', () => 'Banner');
@@ -19,47 +24,27 @@ jest.mock('utils/cl-intl');
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
-const categorizedDestinations = {
-  advertising: [
-    {
-      name: 'Google Tag Manager',
-      description:
-        'Google Tag Manager is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-      category: 'Tag Managers',
-      website: 'http://google.com/tagManager',
-      id: 'Google Tag Manager',
-    },
-    {
-      name: 'AdvertisingTool',
-      description: 'Advertising BS',
-      category: 'Advertising',
-      website: 'http://random.com/advertising',
-      id: 'AdvertisingTool',
-    },
-  ],
-  functional: [
-    {
-      name: 'FunctionalTool',
-      description: 'Actually might be handy',
-      category: 'Security & Fraud',
-      website: 'http://random.com/securitycookie',
-      id: 'FunctionalTool',
-    },
-  ],
-  analytics: [
-    {
-      name: 'MarketingTool',
-      description:
-        'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-      category: 'Analytics',
-      website: 'http://random.com/marketing',
-      id: 'MarketingTool',
-    },
-  ],
-};
 let setPreferences: jest.Mock;
 let resetPreferences: jest.Mock;
 let saveConsent: jest.Mock;
+
+const categorizedDestinations = {
+  analytics: MARKETING_AND_ANALYTICS_DESTINATIONS.filter((destination) =>
+    DESTINATIONS.includes(destination)
+  ),
+  advertising: ADVERTISING_DESTINATIONS.filter((destination) =>
+    DESTINATIONS.includes(destination)
+  ),
+  functional: FUNCTIONAL_DESTINATIONS.filter((destination) =>
+    DESTINATIONS.includes(destination)
+  ),
+};
+
+const initialPreferences = {
+  analytics: undefined,
+  functional: undefined,
+  advertising: undefined,
+};
 
 describe('<Container />', () => {
   beforeEach(() => {
@@ -68,27 +53,6 @@ describe('<Container />', () => {
     saveConsent = jest.fn();
   });
 
-  it('lets the user accept all from the banner', () => {
-    const wrapper = shallow(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={true}
-        preferences={initialPreferences}
-        categorizedDestinations={categorizedDestinations}
-      />
-    );
-
-    wrapper.find('Banner').props().onAccept();
-
-    // accept all only calls saveConsent with preferences unchanged, so still equal to initialPreferences.
-    // it's tested on the ConsentManager that this will have the expected behaviour.
-    expect(setPreferences).not.toHaveBeenCalled();
-    expect(saveConsent).toHaveBeenCalled();
-    expect(resetPreferences).not.toHaveBeenCalled();
-  });
   it('renders correclty when no destinations are allowed by the tenant', () => {
     const wrapper = shallow(
       <Container

@@ -52,13 +52,13 @@ exports[`<CategoryCard /> renders correctly when allowed 1`] = `
         :
       </CategoryCard__Tools>
       <CategoryCard__SSpan>
-        Google Analytics
+        <FormattedMessage />
       </CategoryCard__SSpan>
       <CategoryCard__Separator>
         •
       </CategoryCard__Separator>
       <CategoryCard__SSpan>
-        MarketingTool
+        <FormattedMessage />
       </CategoryCard__SSpan>
     </p>
   </CategoryCard__TextContainer>
@@ -117,13 +117,13 @@ exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
         :
       </CategoryCard__Tools>
       <CategoryCard__SSpan>
-        Google Analytics
+        <FormattedMessage />
       </CategoryCard__SSpan>
       <CategoryCard__Separator>
         •
       </CategoryCard__Separator>
       <CategoryCard__SSpan>
-        MarketingTool
+        <FormattedMessage />
       </CategoryCard__SSpan>
     </p>
   </CategoryCard__TextContainer>
@@ -182,13 +182,13 @@ exports[`<CategoryCard /> renders correctly when null 1`] = `
         :
       </CategoryCard__Tools>
       <CategoryCard__SSpan>
-        Google Analytics
+        <FormattedMessage />
       </CategoryCard__SSpan>
       <CategoryCard__Separator>
         •
       </CategoryCard__Separator>
       <CategoryCard__SSpan>
-        MarketingTool
+        <FormattedMessage />
       </CategoryCard__SSpan>
     </p>
   </CategoryCard__TextContainer>

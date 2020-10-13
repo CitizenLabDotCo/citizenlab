@@ -39,7 +39,7 @@ interface State {
   isCancelling: boolean;
 }
 
-export class Container extends PureComponent<Props, State> {
+export default class Container extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
   constructor(props) {
@@ -199,5 +199,3 @@ export class Container extends PureComponent<Props, State> {
     );
   }
 }
-
-export default Container;
