@@ -76,6 +76,7 @@ interface Props {
   category: string;
   destinations: IDestination[];
   checked: boolean;
+  disableUncheck?: boolean;
   handleChange: (
     category: string,
     value: boolean
@@ -87,6 +88,7 @@ const CategoryCard = ({
   destinations,
   checked,
   handleChange,
+  disableUncheck,
 }: Props) => (
   <Container className="e2e-category">
     <TextContainer>
@@ -113,22 +115,25 @@ const CategoryCard = ({
           id={`${category}-radio-false`}
           label={<FormattedMessage {...messages.disallow} />}
           isRequired
+          disabled={disableUncheck}
         />
       </StyledFieldset>
       <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
-      <p>
-        <Tools>
-          <FormattedMessage {...messages.tools} />:
-        </Tools>
-        {destinations.map((d, index) => (
-          <Fragment key={d}>
-            {index !== 0 && <Separator>•</Separator>}
-            <SSpan>
-              <FormattedMessage {...messages[d]} />
-            </SSpan>
-          </Fragment>
-        ))}
-      </p>
+      {destinations.length > 0 && (
+        <p>
+          <Tools>
+            <FormattedMessage {...messages.tools} />:
+          </Tools>
+          {destinations.map((d, index) => (
+            <Fragment key={d}>
+              {index !== 0 && <Separator>•</Separator>}
+              <SSpan>
+                <FormattedMessage {...messages[d]} />
+              </SSpan>
+            </Fragment>
+          ))}
+        </p>
+      )}
     </TextContainer>
   </Container>
 );

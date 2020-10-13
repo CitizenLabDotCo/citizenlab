@@ -240,7 +240,7 @@ export class ConsentManager extends PureComponent<Props, State> {
   };
 
   render() {
-    const { tenant } = this.props;
+    const { tenant, authUser } = this.props;
     const { preferences, cookieConsent } = this.state;
 
     const activeDestinations = this.getActiveDestinations();
@@ -256,7 +256,7 @@ export class ConsentManager extends PureComponent<Props, State> {
           !Object.keys(cookieConsent?.savedChoices).includes(destination)
       );
 
-    if (!isNilOrError(tenant)) {
+    if (!isNilOrError(tenant) && authUser !== undefined) {
       return (
         <Container
           accept={this.accept}

@@ -40,6 +40,8 @@ interface Props {
   functional: boolean | undefined;
 }
 
+const doNothing = () => () => {};
+
 export default class PreferencesDialog extends PureComponent<Props> {
   static displayName = 'PreferencesDialog';
 
@@ -65,6 +67,14 @@ export default class PreferencesDialog extends PureComponent<Props> {
           }
           return;
         })}
+        <CategoryCard
+          key={'required'}
+          category={'required'}
+          destinations={[]}
+          checked={true}
+          handleChange={doNothing}
+          disableUncheck={true}
+        />
       </ContentContainer>
     );
   }
