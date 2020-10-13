@@ -26,6 +26,8 @@ export const ButtonContainer = styled.div`
 
 interface Props {
   setPreferences: Function;
+  resetPreferences: () => void;
+  accept: () => void;
   saveConsent: () => void;
   isConsentRequired: boolean;
   preferences: IPreferences;
@@ -72,12 +74,6 @@ export class Container extends PureComponent<Props, State> {
     });
   };
 
-  handleBannerAccept = () => {
-    const { saveConsent } = this.props;
-
-    saveConsent();
-  };
-
   handleCategoryChange = (category: string, value: boolean) => {
     const { setPreferences } = this.props;
 
@@ -91,7 +87,7 @@ export class Container extends PureComponent<Props, State> {
     const { preferences, categorizedDestinations } = this.props;
     for (const category of Object.keys(categorizedDestinations)) {
       if (categorizedDestinations[category].length > 0) {
-        res = res && !(preferences[category] === null);
+        res = res && !(preferences[category] === undefined);
       }
     }
     return res;
@@ -113,11 +109,10 @@ export class Container extends PureComponent<Props, State> {
   };
 
   handleCancel = () => {
-    const { isConsentRequired, preferences } = this.props;
+    const { resetPreferences, isConsentRequired, preferences } = this.props;
 
-    const isEmpty = Object.keys(preferences).every(
-      (e) => preferences[e] === null
-    );
+    const isEmpty = Object.values(preferences).every((e) => e === undefined);
+    console.log(preferences, isConsentRequired);
 
     // Only show the cancel confirmation if there's unconsented destinations...
     // or if the user made a choice and we want to confirm aborting it
@@ -125,6 +120,7 @@ export class Container extends PureComponent<Props, State> {
       this.setState({ isCancelling: true });
     } else {
       this.setState({ isDialogOpen: false });
+      resetPreferences();
     }
   };
 
@@ -133,10 +129,13 @@ export class Container extends PureComponent<Props, State> {
   };
 
   handleCancelConfirm = () => {
+    const { resetPreferences } = this.props;
+
     this.setState({
       isCancelling: false,
       isDialogOpen: false,
     });
+    resetPreferences();
   };
 
   render() {
@@ -144,6 +143,7 @@ export class Container extends PureComponent<Props, State> {
       preferences,
       isConsentRequired,
       categorizedDestinations,
+      accept,
     } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
     const noDestinations = Object.values(categorizedDestinations).every(
@@ -193,10 +193,7 @@ export class Container extends PureComponent<Props, State> {
           )}
         </LoadableModal>
         {isConsentRequired && (
-          <Banner
-            onAccept={this.handleBannerAccept}
-            onChangePreferences={this.openDialog}
-          />
+          <Banner onAccept={accept} onChangePreferences={this.openDialog} />
         )}
       </>
     );
