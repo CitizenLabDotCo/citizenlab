@@ -3,78 +3,38 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 // component to test
-import {
-  ConsentManager,
-  CustomPreferences,
-  IDestination,
-  initialPreferences,
-  adminIntegrations,
-} from './';
+import { ConsentManager } from './';
 
 // mock depencies
 jest.mock('services/tenant');
 jest.mock('resources/GetTenant', () => 'GetTenant');
-jest.mock(
-  './ConsentManagerBuilderHandler',
-  () => 'ConsentManagerBuilderHandler'
-);
-jest.mock('containers/App/constants', () => ({
-  CL_SEGMENT_API_KEY: 'IHaveTheKeyInMyHand_AllINeedToFindIsTheLock',
+jest.mock('./Container', () => 'Container');
+
+// by default, no cookie
+
+jest.mock('./consent', () => ({
+  getConsent: jest.fn(() => null),
+  setConsent: jest.fn(),
 }));
 
+import * as consent from './consent';
+
 import { makeUser } from 'services/__mocks__/users';
+import { DESTINATIONS } from './destinations';
 
-// mimics the destination/newDestinations objects from sentry
-const destinations = [
-  {
-    name: 'Google Tag Manager',
-    description:
-      'Google Tag Manager is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-    category: 'Tag Manager', // as per defined in categories file, this falls under advertising
-    website: 'http://google.com/analytics',
-    id: 'Google Tag Manager',
-  },
-  {
-    name: 'MarketingTool',
-    description:
-      'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-    category: 'Analytics',
-    website: 'http://random.com/marketing',
-    id: 'MarketingTool',
-  },
-  {
-    name: 'AdvertisingTool',
-    description: 'Advertising BS',
-    category: 'Advertising',
-    website: 'http://random.com/advertising',
-    id: 'AdvertisingTool',
-  },
-  {
-    name: 'FunctionalTool',
-    description: 'Actually might be handy',
-    category: 'Security & Fraud',
-    website: 'http://random.com/security',
-    id: 'FunctionalTool',
-  },
-  {
-    name: 'SatisMeter',
-    description: 'Measures satisfaction',
-    category: 'Surveys',
-    website: 'http://satismeter',
-    id: 'SatisMeter',
-  },
-] as IDestination[];
+// object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
+const featureFagAllDisabled = DESTINATIONS.map((destination) => [
+  destination,
+  false,
+]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+const featureFagAllEnabled = DESTINATIONS.map((destination) => [
+  destination,
+  true,
+]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
 
-// get simplified tenant object
-const getTenant = (blacklist: string[] | null) => ({
-  attributes: {
-    settings: {
-      core: {
-        segment_destinations_blacklist: blacklist,
-      },
-    },
-  },
-});
+const admin = makeUser({
+  roles: [{ type: 'admin' }],
+}).data;
 
 describe('<ConsentManager />', () => {
   describe('boundaries: ', () => {
@@ -89,217 +49,330 @@ describe('<ConsentManager />', () => {
       expect(wrapper.isEmptyRender()).toBe(true);
     });
     it('renders with a valid tenant', () => {
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={getTenant(null)} />
-      );
+      const wrapper = shallow(<ConsentManager authUser={null} tenant={{}} />);
       expect(wrapper.isEmptyRender()).toBe(false);
     });
   });
 
-  describe('instanciation details: ', () => {
-    it('passes segment API key from constants file to SCMB', () => {
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={getTenant(null)} />
-      );
-      expect(wrapper.find('ConsentManagerBuilder').props().writeKey).toBe(
-        'IHaveTheKeyInMyHand_AllINeedToFindIsTheLock'
-      );
-    });
-  });
-
-  describe('parsing user choices coming back from child component to set cookie (no blacklist): ', () => {
-    it('sets all but admin integrations to true when called with no preferences set and an unsigned user', () => {
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={getTenant(null)} />
-      );
-      const handleMapCustomPreferences = wrapper
-        .find('ConsentManagerBuilder')
-        .props().mapCustomPreferences;
-
-      const preferences = initialPreferences;
-      const {
-        customPreferences,
-        destinationPreferences,
-      } = handleMapCustomPreferences(destinations, preferences);
-      expect(customPreferences).toEqual({
-        advertising: true,
-        analytics: true,
-        functional: true,
-        tenantBlacklisted: [],
-        roleBlacklisted: adminIntegrations,
+  describe('parses tenant setting and user to show active destinations in categories', () => {
+    describe('unsingned user', () => {
+      it('acts properly when all enabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
       });
-      expect(destinationPreferences).toEqual({
-        AdvertisingTool: true,
-        FunctionalTool: true,
-        'Google Tag Manager': true,
-        MarketingTool: true,
-        SatisMeter: false,
-        Intercom: false,
+      it('acts properly when all disabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllDisabled}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
       });
     });
 
-    it('sets preferences according to the users choice', () => {
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={getTenant(null)} />
-      );
-      const handleMapCustomPreferences = wrapper
-        .find('ConsentManagerBuilder')
-        .props().mapCustomPreferences;
-
-      const preferences = {
-        advertising: false,
-        analytics: false,
-        functional: true,
-      } as CustomPreferences;
-      const {
-        customPreferences,
-        destinationPreferences,
-      } = handleMapCustomPreferences(destinations, preferences);
-      expect(customPreferences).toEqual({
-        advertising: false,
-        analytics: false,
-        functional: true,
-        tenantBlacklisted: [],
-        roleBlacklisted: adminIntegrations,
+    describe('admin user', () => {
+      it('acts properly when all enabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={admin}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
       });
-      expect(destinationPreferences).toEqual({
-        AdvertisingTool: false,
-        FunctionalTool: true,
-        'Google Tag Manager': false,
-        MarketingTool: false,
-        SatisMeter: false,
-        Intercom: false,
+      it('acts properly when all disabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={admin}
+            tenant={{}}
+            {...featureFagAllDisabled}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
       });
-    });
-  });
-
-  describe('respects the blacklist set on tenant', () => {
-    it('sets preferences according to the users choice, except blacklisted set to false, saves blacklisted', () => {
-      const blacklist = ['Google Tag Manager'];
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={getTenant(blacklist)} />
-      );
-      const handleMapCustomPreferences = wrapper
-        .find('ConsentManagerBuilder')
-        .props().mapCustomPreferences;
-
-      const preferences = {
-        advertising: true,
-        analytics: true,
-        functional: false,
-      } as CustomPreferences;
-      const {
-        customPreferences,
-        destinationPreferences,
-      } = handleMapCustomPreferences(destinations, preferences);
-      expect(customPreferences).toEqual({
-        advertising: true,
-        analytics: true,
-        functional: false,
-        tenantBlacklisted: blacklist,
-        roleBlacklisted: adminIntegrations,
-      });
-      expect(destinationPreferences).toEqual({
-        AdvertisingTool: true,
-        FunctionalTool: false,
-        'Google Tag Manager': false,
-        MarketingTool: true,
-        SatisMeter: false,
-        Intercom: false,
+      it('acts properly when only satismeter disabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={admin}
+            tenant={{}}
+            {...featureFagAllEnabled}
+            satismeter={false}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
       });
     });
-
-    it('sets all to true but blacklisted destinations when called with no preferences set, saves blacklisted', () => {
-      const blacklist = ['Google Tag Manager'];
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={getTenant(blacklist)} />
-      );
-      const handleMapCustomPreferences = wrapper
-        .find('ConsentManagerBuilder')
-        .props().mapCustomPreferences;
-
-      const preferences = initialPreferences;
-      const {
-        customPreferences,
-        destinationPreferences,
-      } = handleMapCustomPreferences(destinations, preferences);
-      expect(customPreferences).toEqual({
-        advertising: true,
-        analytics: true,
-        functional: true,
-        tenantBlacklisted: blacklist,
-        roleBlacklisted: adminIntegrations,
-      });
-      expect(destinationPreferences).toEqual({
-        AdvertisingTool: true,
-        FunctionalTool: true,
-        'Google Tag Manager': false,
-        MarketingTool: true,
-        Intercom: false,
-        SatisMeter: false,
-      });
-    });
-    it('acts correctly for admins (adds satismeter)', () => {
-      const blacklist = ['Google Tag Manager'];
-      const user = makeUser({ roles: [{ type: 'admin' }] });
-      const wrapper = shallow(
-        <ConsentManager authUser={user.data} tenant={getTenant(blacklist)} />
-      );
-      const handleMapCustomPreferences = wrapper
-        .find('ConsentManagerBuilder')
-        .props().mapCustomPreferences;
-
-      const preferences = initialPreferences;
-      const {
-        customPreferences,
-        destinationPreferences,
-      } = handleMapCustomPreferences(destinations, preferences);
-      expect(customPreferences).toEqual({
-        advertising: true,
-        analytics: true,
-        functional: true,
-        tenantBlacklisted: blacklist,
-        roleBlacklisted: [],
-      });
-      expect(destinationPreferences).toEqual({
-        AdvertisingTool: true,
-        FunctionalTool: true,
-        'Google Tag Manager': false,
-        MarketingTool: true,
-        SatisMeter: true,
-      });
-    });
-    it('acts correctly for super admins (no satismeter)', () => {
-      const blacklist = ['Google Tag Manager'];
-      const user = makeUser({
+    describe('super admin user', () => {
+      const superAdmin = makeUser({
         roles: [{ type: 'admin' }],
         highest_role: 'super_admin',
+      }).data;
+      it('acts properly when all enabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={superAdmin}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
       });
-      const wrapper = shallow(
-        <ConsentManager authUser={user.data} tenant={getTenant(blacklist)} />
-      );
-      const handleMapCustomPreferences = wrapper
-        .find('ConsentManagerBuilder')
-        .props().mapCustomPreferences;
+      it('acts properly when all disabled', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={superAdmin}
+            tenant={{}}
+            {...featureFagAllDisabled}
+          />
+        );
+        const categorizedDestinations = wrapper.find('Container').props()
+          .categorizedDestinations;
+        expect(categorizedDestinations).toMatchSnapshot();
+      });
+    });
+  });
 
-      const preferences = initialPreferences;
-      const {
-        customPreferences,
-        destinationPreferences,
-      } = handleMapCustomPreferences(destinations, preferences);
-      expect(customPreferences).toEqual({
-        advertising: true,
-        analytics: true,
-        functional: true,
-        tenantBlacklisted: blacklist,
-        roleBlacklisted: ['SatisMeter'],
+  describe('passes down preferences and preferences handling', () => {
+    describe('no cookie previously', () => {
+      describe('all destinations', () => {
+        it('initializes preferences object correctly', () => {
+          const wrapper = shallow(
+            <ConsentManager
+              authUser={null}
+              tenant={{}}
+              {...featureFagAllEnabled}
+            />
+          );
+          const preferences = wrapper.find('Container').props().preferences;
+          expect(preferences).toEqual({
+            analytics: undefined,
+            advertising: undefined,
+            functional: undefined,
+          });
+        });
+        it('changes it as required', () => {
+          const wrapper = shallow(
+            <ConsentManager
+              authUser={null}
+              tenant={{}}
+              {...featureFagAllEnabled}
+            />
+          );
+
+          const setPreferences = wrapper.find('Container').props()
+            .setPreferences;
+
+          setPreferences({ analytics: false });
+
+          const preferences = wrapper.find('Container').props().preferences;
+          expect(preferences).toEqual({
+            analytics: false,
+            advertising: undefined,
+            functional: undefined,
+          });
+        });
+        it('consent is required', () => {
+          const wrapper = shallow(
+            <ConsentManager
+              authUser={null}
+              tenant={{}}
+              {...featureFagAllEnabled}
+            />
+          );
+
+          const isConsentRequired = wrapper.find('Container').props()
+            .isConsentRequired;
+
+          expect(isConsentRequired).toBe(true);
+        });
       });
-      expect(destinationPreferences).toEqual({
-        AdvertisingTool: true,
-        FunctionalTool: true,
-        'Google Tag Manager': false,
-        MarketingTool: true,
-        SatisMeter: false,
+      describe('no destinations', () => {
+        it('initializes preferences object correctly', () => {
+          const wrapper = shallow(
+            <ConsentManager
+              authUser={null}
+              tenant={{}}
+              {...featureFagAllDisabled}
+            />
+          );
+          const preferences = wrapper.find('Container').props().preferences;
+          expect(preferences).toEqual({
+            analytics: undefined,
+            advertising: undefined,
+            functional: undefined,
+          });
+        });
+      });
+    });
+    describe('previously accepted, no new destinations', () => {
+      it('initializes preferences object correctly', () => {
+        // COOkIE mock
+        // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
+        const mock_savedChoices = DESTINATIONS.map((destination) => [
+          destination,
+          true,
+        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+        const spy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: true,
+            advertising: true,
+            functional: true,
+            savedChoices: mock_savedChoices,
+          }));
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const preferences = wrapper.find('Container').props().preferences;
+        expect(preferences).toEqual({
+          analytics: true,
+          advertising: true,
+          functional: true,
+        });
+        spy.mockRestore();
+      });
+
+      it('consent is not required', () => {
+        // COOkIE mock
+        // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
+        const mock_savedChoices = DESTINATIONS.map((destination) => [
+          destination,
+          true,
+        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+        const spy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: true,
+            advertising: true,
+            functional: true,
+            savedChoices: mock_savedChoices,
+          }));
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+
+        const isConsentRequired = wrapper.find('Container').props()
+          .isConsentRequired;
+
+        expect(isConsentRequired).toBe(false);
+
+        spy.mockRestore();
+      });
+    });
+    describe('previously accepted, new destinations', () => {
+      const mock_savedChoices = DESTINATIONS.filter((e) => e !== 'intercom')
+        .map((destination) => [destination, true])
+        .reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+      it('initializes preferences object correctly', () => {
+        // COOkIE mock
+        const spy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: true,
+            advertising: true,
+            functional: true,
+            savedChoices: mock_savedChoices,
+          }));
+
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={admin}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const preferences = wrapper.find('Container').props().preferences;
+        expect(preferences).toEqual({
+          analytics: true,
+          advertising: true,
+          functional: undefined,
+        });
+        spy.mockRestore();
+      });
+
+      it('consent is required', () => {
+        const spy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: true,
+            advertising: true,
+            functional: true,
+            savedChoices: mock_savedChoices,
+          }));
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={admin}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+
+        const isConsentRequired = wrapper.find('Container').props()
+          .isConsentRequired;
+
+        expect(isConsentRequired).toBe(true);
+
+        spy.mockRestore();
+      });
+    });
+    describe('previously refused', () => {
+      it('initializes preferences object correctly', () => {
+        const mock_savedChoices = DESTINATIONS.map((destination) => [
+          destination,
+          false,
+        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+        const spy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: false,
+            advertising: false,
+            functional: false,
+            savedChoices: mock_savedChoices,
+          }));
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        expect(mock_savedChoices).toMatchSnapshot();
+        const preferences = wrapper.find('Container').props().preferences;
+        expect(preferences).toEqual({
+          analytics: false,
+          advertising: false,
+          functional: false,
+        });
+        spy.mockRestore();
       });
     });
   });
