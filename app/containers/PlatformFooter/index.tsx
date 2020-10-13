@@ -71,9 +71,6 @@ const Inner = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-  `}
-
-  ${media.smallerThanMinTablet`
     padding: 15px 10px;
     border-top: solid 1px ${colors.separation};
 
@@ -86,14 +83,14 @@ const Inner = styled.div`
 const ShortFeedback = styled.div`
   display: flex;
 
-  ${media.biggerThanMinTablet`
+  ${media.biggerThanMaxTablet`
     position: absolute;
     z-index: 5;
     top: -36px;
     left: 20px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
     border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
   `}
@@ -114,7 +111,7 @@ const ShortFeedbackInner = styled.div`
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     width: 100%;
     justify-content: center;
     padding-left: 14px;
@@ -288,7 +285,7 @@ const PoweredBy = styled.div`
 const PoweredByText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   margin-right: 8px;
 
