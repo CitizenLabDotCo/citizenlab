@@ -7,26 +7,23 @@ import React, {
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNumber } from 'lodash-es';
-// import { sortBy, first, last, isNumber } from 'lodash-es';
-// import moment from 'moment';
+import moment from 'moment';
 
 // hooks
 import useTenant from 'hooks/useTenant';
-import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 import useWindowSize from 'hooks/useWindowSize';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 
 // components
-import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
 import { Icon } from 'cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
 import ProjectActionBar from './ProjectActionBar';
+import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -38,7 +35,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, viewportWidths, media } from 'utils/styleUtils';
+import { fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div`
@@ -93,16 +90,6 @@ const ListItemIcon = styled(Icon)`
   }
 `;
 
-// const ListItemInnerWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   margin-top: -3px;
-
-//   & > span:not(:last-child) {
-//     margin-bottom: 6px;
-//   }
-// `;
-
 const ListItemButton = styled.button`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -122,22 +109,6 @@ const ListItemButton = styled.button`
   }
 `;
 
-const ActionButtons = styled.div`
-  margin-top: 20px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 30px;
-  `}
-`;
-
-const AllocateBudgetButton = styled(Button)`
-  margin-bottom: 10px;
-`;
-
-const SeeIdeasButton = styled(Button)`
-  margin-bottom: 10px;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -145,7 +116,6 @@ interface Props {
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const tenant = useTenant();
-  const locale = useLocale();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
@@ -153,72 +123,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const [
-    ideasPresentOutsideViewport,
-    setIdeasPresentOutsideViewport,
-  ] = useState(false);
-  const [
-    surveyPresentOutsideViewport,
-    setSurveyPresentOutsideViewport,
-  ] = useState(false);
-  const [pollPresentOutsideViewport, setPollPresentOutsideViewport] = useState(
-    false
-  );
 
   const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
   useEffect(() => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
   }, [phases]);
-
-  useEffect(() => {
-    const loop = (counter: number) => {
-      if (counter < 20) {
-        setTimeout(() => {
-          const viewportHeight = Math.max(
-            document.documentElement.clientHeight || 0,
-            window.innerHeight || 0
-          );
-
-          const ideasElement = document.getElementById('project-ideas');
-          const surveyElement = document.getElementById('project-survey');
-          const pollElement = document.getElementById('project-poll');
-
-          if (ideasElement) {
-            const isIdeasInViewport =
-              ideasElement.getBoundingClientRect()?.top + 800 <= viewportHeight;
-
-            if (!isIdeasInViewport) {
-              setIdeasPresentOutsideViewport(true);
-            }
-          }
-
-          if (surveyElement) {
-            const isSurveyInViewport =
-              surveyElement.getBoundingClientRect()?.top + 400 <=
-              viewportHeight;
-
-            if (!isSurveyInViewport) {
-              setSurveyPresentOutsideViewport(true);
-            }
-          }
-
-          if (pollElement) {
-            const isPollInViewport =
-              pollElement.getBoundingClientRect()?.top + 200 <= viewportHeight;
-
-            if (!isPollInViewport) {
-              setPollPresentOutsideViewport(true);
-            }
-          }
-
-          loop(counter + 1);
-        }, 100);
-      }
-    };
-
-    loop(0);
-  }, [projectId]);
 
   const upcomingEvents = !isNilOrError(events)
     ? events.filter((event) => {
@@ -261,15 +171,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setShareModalOpened(false);
   }, []);
 
-  if (
-    !isNilOrError(tenant) &&
-    !isNilOrError(locale) &&
-    !isNilOrError(project)
-  ) {
+  if (!isNilOrError(tenant) && !isNilOrError(project)) {
     const {
       process_type,
       participation_method,
-      publication_status,
       participants_count,
     } = project.attributes;
     const currency = tenant.data.attributes.settings.core.currency;
@@ -281,151 +186,36 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       process_type === 'continuous'
         ? project.attributes.ideas_count
         : currentPhase?.attributes.ideas_count;
-
-    // const firstPhase = !isNilOrError(phases)
-    //   ? first(sortBy(phases, [(phase) => phase.attributes.start_at]))
-    //   : null;
-    // const lastPhase = !isNilOrError(phases)
-    //   ? last(sortBy(phases, [(phase) => phase.attributes.end_at]))
-    //   : null;
-    // const firstPhaseStart = firstPhase
-    //   ? pastPresentOrFuture([
-    //       firstPhase.attributes.start_at,
-    //       firstPhase.attributes.end_at,
-    //     ])
-    //   : null;
-    // const lastPhaseStart = lastPhase
-    //   ? pastPresentOrFuture([
-    //       lastPhase.attributes.start_at,
-    //       lastPhase.attributes.end_at,
-    //     ])
-    //   : null;
-
-    const actionButtons = (
-      <ActionButtons>
-        {ideasPresentOutsideViewport &&
-          ((process_type === 'continuous' &&
-            participation_method === 'budgeting') ||
-            currentPhase?.attributes.participation_method === 'budgeting') &&
-          ideas_count &&
-          ideas_count > 0 && (
-            <AllocateBudgetButton
-              id="e2e-project-allocate-budget-button"
-              buttonStyle="secondary"
-              onClick={scrollTo('project-ideas')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.allocateBudget} />
-            </AllocateBudgetButton>
-          )}
-        {ideasPresentOutsideViewport &&
-          ((process_type === 'continuous' &&
-            participation_method === 'ideation') ||
-            currentPhase?.attributes.participation_method === 'ideation') &&
-          ideas_count &&
-          ideas_count > 0 && (
-            <SeeIdeasButton
-              id="e2e-project-see-ideas-button"
-              buttonStyle="secondary"
-              onClick={scrollTo('project-ideas')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.seeTheIdeas} />
-            </SeeIdeasButton>
-          )}
-        {process_type === 'continuous' &&
-          participation_method === 'ideation' &&
-          publication_status !== 'archived' && (
-            <IdeaButton
-              id="project-ideabutton"
-              projectId={project.id}
-              participationContextType="project"
-              fontWeight="500"
-            />
-          )}
-        {currentPhase?.attributes.participation_method === 'ideation' && (
-          <IdeaButton
-            id="project-ideabutton"
-            projectId={project.id}
-            phaseId={currentPhase.id}
-            participationContextType="phase"
-            fontWeight="500"
-          />
-        )}
-        {surveyPresentOutsideViewport &&
-          ((process_type === 'continuous' &&
-            participation_method === 'survey') ||
-            currentPhase?.attributes.participation_method === 'survey') && (
-            <Button
-              buttonStyle="secondary"
-              onClick={scrollTo('project-survey')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.takeTheSurvey} />
-            </Button>
-          )}
-        {pollPresentOutsideViewport &&
-          ((process_type === 'continuous' && participation_method === 'poll') ||
-            currentPhase?.attributes.participation_method === 'poll') && (
-            <Button
-              buttonStyle="secondary"
-              onClick={scrollTo('project-poll')}
-              fontWeight="500"
-            >
-              <FormattedMessage {...messages.takeThePoll} />
-            </Button>
-          )}
-      </ActionButtons>
-    );
+    const lastPhase = getLastPhase(phases);
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
         <ProjectActionBar projectId={projectId} />
 
         {smallerThanLargeTablet ? (
-          actionButtons
+          <ProjectActionButtons projectId={projectId} />
         ) : (
           <>
             <Title>
               <FormattedMessage {...messages.about} />
             </Title>
             <List>
-              {/* {process_type === 'continuous' && (
-                <ListItem id="e2e-project-sidebar-startdate">
-                  <ListItemIcon ariaHidden name="finish_flag" />
-                  <FormattedMessage
-                    {...messages.startedOn}
-                    values={{
-                      date: moment(project.attributes.created_at).format('ll'),
-                    }}
-                  />
-                </ListItem>
-              )}
-              {process_type === 'timeline' && firstPhase && lastPhase && (
-                <ListItem id="e2e-project-sidebar-startdate-enddate">
-                  <ListItemIcon ariaHidden name="finish_flag" />
-                  <ListItemInnerWrapper>
+              {process_type === 'timeline' &&
+                lastPhase &&
+                pastPresentOrFuture([
+                  lastPhase.attributes.start_at,
+                  lastPhase.attributes.end_at,
+                ]) === 'past' && (
+                  <ListItem id="e2e-project-sidebar-enddate">
+                    <ListItemIcon ariaHidden name="finish_flag" />
                     <FormattedMessage
-                      {...messages[
-                        firstPhaseStart === 'future' ? 'startsOn' : 'startedOn'
-                      ]}
-                      values={{
-                        date: moment(firstPhase.attributes.start_at).format(
-                          'll'
-                        ),
-                      }}
-                    />
-                    <FormattedMessage
-                      {...messages[
-                        lastPhaseStart === 'past' ? 'endedOn' : 'endsOn'
-                      ]}
+                      {...messages.endedOn}
                       values={{
                         date: moment(lastPhase.attributes.end_at).format('ll'),
                       }}
                     />
-                  </ListItemInnerWrapper>
-                </ListItem>
-              )} */}
+                  </ListItem>
+                )}
               {isNumber(participants_count) && participants_count > 0 && (
                 <ListItem id="e2e-project-sidebar-participants-count">
                   <ListItemIcon ariaHidden name="person" />
@@ -553,7 +343,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 </ListItemButton>
               </ListItem>
             </List>
-            {actionButtons}
+            <ProjectActionButtons projectId={projectId} />
           </>
         )}
         <ProjectSharingModal
