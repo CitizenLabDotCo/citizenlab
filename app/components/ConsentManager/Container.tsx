@@ -112,7 +112,6 @@ export default class Container extends PureComponent<Props, State> {
     const { resetPreferences, isConsentRequired, preferences } = this.props;
 
     const isEmpty = Object.values(preferences).every((e) => e === undefined);
-    console.log(preferences, isConsentRequired);
 
     // Only show the cancel confirmation if there's unconsented destinations...
     // or if the user made a choice and we want to confirm aborting it

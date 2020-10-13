@@ -19,7 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { Container } from './Container';
+import Container from './Container';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -70,7 +70,6 @@ export class ConsentManager extends PureComponent<Props, State> {
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
-
     const isSuperAdminUser =
       !isNilOrError(authUser) && isSuperAdmin({ data: authUser });
 
@@ -129,7 +128,6 @@ export class ConsentManager extends PureComponent<Props, State> {
             undefined
           : // otherwise leave it as is
             cookieConsent.analytics;
-
       const advertisingEnabled =
         cookieConsent.advertising &&
         activeCategorizedDestinations.advertising.find(
