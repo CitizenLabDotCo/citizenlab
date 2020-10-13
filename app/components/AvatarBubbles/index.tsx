@@ -72,6 +72,7 @@ const AvatarImageBubble = styled.img<{
   z-index: ${(props) => props.index + 1};
   left: ${(props) => props.index * (props.size - props.overlap)}px;
   object-fit: cover;
+  object-position: center;
 `;
 
 const UserCountBubble = styled.div<{
