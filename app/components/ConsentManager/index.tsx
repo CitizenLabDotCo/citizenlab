@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { withScope } from '@sentry/browser';
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 
 import {
