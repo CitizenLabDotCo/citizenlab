@@ -465,7 +465,7 @@
   "app.components.admin.PostManager.header": "Ideas",
   "app.components.admin.PostManager.hiddenFieldsLink": "skjulte felt",
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
-  "app.components.admin.PostManager.hiddenFieldsTip": "Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.",
+  "app.components.admin.PostManager.hiddenFieldsTip": "Tipp: tilføy {hiddenFieldsLink} når du setter opp din Typeform spørreundersøkelse for å holde oversikt over hvem som har svart på din spørreundersøkelse.",
   "app.components.admin.PostManager.ideas": "ideas",
   "app.components.admin.PostManager.initiatives": "proposals",
   "app.components.admin.PostManager.latestFeedbackMode": "Use the most recent official update",
