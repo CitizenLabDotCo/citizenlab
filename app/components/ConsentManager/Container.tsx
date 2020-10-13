@@ -171,12 +171,7 @@ export default class Container extends PureComponent<Props, State> {
             />
           }
         >
-          {noDestinations && (
-            <ContentContainer role="dialog" aria-modal>
-              <FormattedMessage {...messages.noDestinations} tagName="h1" />
-            </ContentContainer>
-          )}
-          {!noDestinations && !isCancelling && (
+          {!isCancelling ? (
             <PreferencesDialog
               onChange={this.handleCategoryChange}
               categoryDestinations={categorizedDestinations}
@@ -184,13 +179,13 @@ export default class Container extends PureComponent<Props, State> {
               advertising={preferences.advertising}
               functional={preferences.functional}
             />
-          )}
-          {!noDestinations && isCancelling && (
+          ) : (
             <ContentContainer role="dialog" aria-modal>
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>
           )}
         </LoadableModal>
+
         {isConsentRequired && (
           <Banner onAccept={accept} onChangePreferences={this.openDialog} />
         )}
