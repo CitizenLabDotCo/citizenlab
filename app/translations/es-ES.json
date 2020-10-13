@@ -1830,7 +1830,7 @@
   "app.containers.Projects.archived": "Archivado",
   "app.containers.Projects.budgetExceeded": "Tus gastos exceden el presupuesto asignable",
   "app.containers.Projects.budgetValidated": "¡Gastos confirmados, Felicidades!",
-  "app.containers.Projects.currentPhase": "Current phase",
+  "app.containers.Projects.currentPhase": "Fase actual",
   "app.containers.Projects.endedOn": "Terminó el {date}",
   "app.containers.Projects.endsOn": "Termina el {date}",
   "app.containers.Projects.events": "Eventos",
