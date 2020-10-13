@@ -98,6 +98,19 @@ const ThankYouNote = styled.span`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  background: ${({ theme }) => rgba(theme.colorText, 0.08)};
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    justify-content: center;
+  `}
 `;
 
 const FeedbackQuestion = styled.span`
