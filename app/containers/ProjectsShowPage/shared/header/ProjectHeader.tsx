@@ -36,7 +36,7 @@ const Container = styled.div`
 const ProjectHeaderImageContainer = styled.div`
   width: 100%;
   height: 240px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;

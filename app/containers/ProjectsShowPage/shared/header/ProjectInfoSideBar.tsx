@@ -172,21 +172,22 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, []);
 
   if (!isNilOrError(tenant) && !isNilOrError(project)) {
-    const {
-      process_type,
-      participation_method,
-      participants_count,
-    } = project.attributes;
+    const projectType = project.attributes.process_type;
+    const projectParticipantsCount = project.attributes.participants_count;
     const currency = tenant.data.attributes.settings.core.currency;
     const totalBudget =
       currentPhase?.attributes?.max_budget ||
       project?.attributes?.max_budget ||
       0;
-    const ideas_count =
-      process_type === 'continuous'
+    const ideasCount =
+      projectType === 'continuous'
         ? project.attributes.ideas_count
         : currentPhase?.attributes.ideas_count;
     const lastPhase = getLastPhase(phases);
+    const projectParticipationMethod =
+      project?.attributes?.participation_method;
+    const currentPhaseParticipationMethod =
+      currentPhase?.attributes?.participation_method;
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
@@ -200,7 +201,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               <FormattedMessage {...messages.about} />
             </Title>
             <List>
-              {process_type === 'timeline' &&
+              {projectType === 'timeline' &&
                 lastPhase &&
                 pastPresentOrFuture([
                   lastPhase.attributes.start_at,
@@ -216,16 +217,17 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     />
                   </ListItem>
                 )}
-              {isNumber(participants_count) && participants_count > 0 && (
-                <ListItem id="e2e-project-sidebar-participants-count">
-                  <ListItemIcon ariaHidden name="person" />
-                  <FormattedMessage
-                    {...messages.xParticipants}
-                    values={{ participantsCount: participants_count }}
-                  />
-                </ListItem>
-              )}
-              {process_type === 'timeline' &&
+              {isNumber(projectParticipantsCount) &&
+                projectParticipantsCount > 0 && (
+                  <ListItem id="e2e-project-sidebar-participants-count">
+                    <ListItemIcon ariaHidden name="person" />
+                    <FormattedMessage
+                      {...messages.xParticipants}
+                      values={{ participantsCount: projectParticipantsCount }}
+                    />
+                  </ListItem>
+                )}
+              {projectType === 'timeline' &&
                 !isNilOrError(phases) &&
                 phases.length > 1 && (
                   <ListItem id="e2e-project-sidebar-phases-count">
@@ -240,10 +242,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     />
                   </ListItem>
                 )}
-              {((process_type === 'continuous' &&
-                participation_method === 'ideation') ||
-                currentPhase?.attributes.participation_method === 'ideation') &&
-                isNumber(ideas_count) && (
+              {((projectType === 'continuous' &&
+                projectParticipationMethod === 'ideation') ||
+                currentPhaseParticipationMethod === 'ideation') &&
+                isNumber(ideasCount) && (
                   <ListItem>
                     <ListItemIcon ariaHidden name="idea-filled" />
                     {project.attributes.ideas_count > 0 ? (
@@ -252,10 +254,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         onClick={scrollTo('project-ideas')}
                       >
                         <FormattedMessage
-                          {...(process_type === 'continuous'
+                          {...(projectType === 'continuous'
                             ? messages.xIdeas
                             : messages.xIdeasInCurrentPhase)}
-                          values={{ ideasCount: ideas_count }}
+                          values={{ ideasCount }}
                         />
                       </ListItemButton>
                     ) : (
@@ -263,8 +265,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     )}
                   </ListItem>
                 )}
-              {((process_type === 'continuous' &&
-                participation_method === 'budgeting') ||
+              {((projectType === 'continuous' &&
+                projectParticipationMethod === 'budgeting') ||
                 currentPhase?.attributes.participation_method ===
                   'budgeting') &&
                 totalBudget > 0 && (
@@ -286,9 +288,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     />
                   </ListItem>
                 )}
-              {((process_type === 'continuous' &&
-                participation_method === 'survey') ||
-                currentPhase?.attributes.participation_method === 'survey') && (
+              {((projectType === 'continuous' &&
+                projectParticipationMethod === 'survey') ||
+                currentPhaseParticipationMethod === 'survey') && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="survey" />
                   <ListItemButton
@@ -296,7 +298,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     onClick={scrollTo('project-survey')}
                   >
                     <FormattedMessage
-                      {...(process_type === 'continuous'
+                      {...(projectType === 'continuous'
                         ? messages.xSurveys
                         : messages.xSurveysInCurrentPhase)}
                       values={{ surveysCount: 1 }}
@@ -304,9 +306,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItemButton>
                 </ListItem>
               )}
-              {((process_type === 'continuous' &&
-                participation_method === 'poll') ||
-                currentPhase?.attributes.participation_method === 'poll') && (
+              {((projectType === 'continuous' &&
+                projectParticipationMethod === 'poll') ||
+                currentPhaseParticipationMethod === 'poll') && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="survey" />
                   <ListItemButton
@@ -314,7 +316,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     onClick={scrollTo('project-poll')}
                   >
                     <FormattedMessage
-                      {...(process_type === 'continuous'
+                      {...(projectType === 'continuous'
                         ? messages.xPolls
                         : messages.xPollsInCurrentPhase)}
                       values={{ pollsCount: 1 }}

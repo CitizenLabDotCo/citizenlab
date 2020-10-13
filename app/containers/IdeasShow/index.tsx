@@ -140,7 +140,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 60px;
+  padding-top: 40px;
   padding-left: 60px;
   padding-right: 60px;
   position: relative;
@@ -275,7 +275,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 const Comments = styled.div`
-  margin-bottom: 150px;
+  margin-bottom: 100px;
 `;
 
 interface DataProps {

@@ -3,11 +3,11 @@ import { fontSizes, media } from 'utils/styleUtils';
 
 export const SectionContainer = styled.div`
   padding-top: 70px;
-  margin-bottom: 70px;
+  padding-bottom: 70px;
 
   ${media.smallerThanMinTablet`
     padding-top: 45px;
-    margin-bottom: 45px;
+    padding-bottom: 45px;
   `}
 `;
 

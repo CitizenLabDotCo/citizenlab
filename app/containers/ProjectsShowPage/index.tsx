@@ -43,7 +43,6 @@ const Container = styled.main<{ background: string }>`
   flex-direction: column;
   align-items: center;
   background: ${(props) => props.background};
-  padding-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
