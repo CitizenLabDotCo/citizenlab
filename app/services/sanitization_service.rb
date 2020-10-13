@@ -31,7 +31,7 @@ class SanitizationService
 
   def remove_empty_paragraphs_multiloc(multiloc)
     multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = remove_empty_structure_tags(text)
+      output[locale] = remove_empty_trailing_tags(text)
     end
   end
 
@@ -41,11 +41,11 @@ class SanitizationService
   #
   # ===== Examples
   #
-  #   sanitation_service.remove_empty_structure_tags('<h1>Nice</h1><p></p>') # => '<h1>Nice</h1>'
-  #   sanitation_service.remove_empty_structure_tags('<h1>Nice</h1><h2><br></h2>') # => '<h1>Nice</h1>'
+  #   sanitation_service.remove_empty_trailing_tags('<h1>Nice</h1><p></p>') # => '<h1>Nice</h1>'
+  #   sanitation_service.remove_empty_trailing_tags('<h1>Nice</h1><h2><br></h2>') # => '<h1>Nice</h1>'
   #
 
-  def remove_empty_structure_tags(html)
+  def remove_empty_trailing_tags(html)
     html.gsub!('&#65279;', '')
 
     Nokogiri::HTML.fragment(html).yield_self do |doc|
