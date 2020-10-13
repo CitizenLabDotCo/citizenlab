@@ -82,11 +82,8 @@ class SanitizationService
   #
 
   def last_structure_node(doc)
-    to_last_child_selector = ->(tag) { [tag, ':last-child'].join }
-
-    EDITOR_STRUCTURE_TAGS.map(&to_last_child_selector).join(', ').yield_self do |selector|
-      doc.at_css(selector)
-    end
+    css_selector = EDITOR_STRUCTURE_TAGS.map { |tag| "#{tag}:last-child" }.join(', ')
+    doc.at_css(css_selector)
   end
 
 
