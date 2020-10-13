@@ -149,8 +149,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
 
     if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-      const redirectoTo = `/${urlSegments.slice(1, 3).join('/')}`;
-      clHistory.replace(redirectoTo);
+      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {
       return (
         <ProjectsShowPage
