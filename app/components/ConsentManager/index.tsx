@@ -14,7 +14,6 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { reportError } from 'utils/loggingUtils';
 
 // components
 
@@ -110,44 +109,42 @@ export class ConsentManager extends PureComponent<Props, State> {
       this.getActiveDestinations()
     );
 
-    if (!cookieConsent) {
+    if (
+      !cookieConsent ||
+      Object.values(cookieConsent).every((el) => el === undefined)
+    ) {
       return {
-        analytics: true,
-        advertising: true,
-        functional: true,
+        analytics: undefined,
+        advertising: undefined,
+        functional: undefined,
       };
     } else {
       const analyticsEnabled =
-        // if it was disabled, it still is
-        !cookieConsent.analytics
-          ? false
-          : // if there is a new destination
-          activeCategorizedDestinations.analytics.find(
-              (destination) =>
-                cookieConsent.savedChoices[destination] === undefined
-            )
+        // if it was enabled
+        cookieConsent.analytics && // if there is a new destination
+        activeCategorizedDestinations.analytics.find(
+          (destination) => cookieConsent.savedChoices[destination] === undefined
+        )
           ? // then set to undefined
             undefined
-          : // if it was enabled and there is no new destination, it's still enabled
-            true;
+          : // otherwise leave it as is
+            cookieConsent.analytics;
 
-      const advertisingEnabled = !cookieConsent.advertising
-        ? false
-        : activeCategorizedDestinations.advertising.find(
-            (destination) =>
-              cookieConsent.savedChoices[destination] === undefined
-          )
-        ? undefined
-        : true;
+      const advertisingEnabled =
+        cookieConsent.advertising &&
+        activeCategorizedDestinations.advertising.find(
+          (destination) => cookieConsent.savedChoices[destination] === undefined
+        )
+          ? undefined
+          : cookieConsent.advertising;
 
-      const functionalEnabled = !cookieConsent.functional
-        ? false
-        : activeCategorizedDestinations.functional.find(
-            (destination) =>
-              cookieConsent.savedChoices[destination] === undefined
-          )
-        ? undefined
-        : true;
+      const functionalEnabled =
+        cookieConsent.functional &&
+        activeCategorizedDestinations.functional.find(
+          (destination) => cookieConsent.savedChoices[destination] === undefined
+        )
+          ? undefined
+          : cookieConsent.functional;
 
       return {
         analytics: analyticsEnabled,
@@ -175,6 +172,13 @@ export class ConsentManager extends PureComponent<Props, State> {
     }));
   };
 
+  resetPreferences = () => {
+    this.setState((state) => ({
+      ...state,
+      preferences: this.getCurrentPreferences(state.cookieConsent),
+    }));
+  };
+
   saveConsent = () => {
     const { preferences, cookieConsent } = this.state;
 
@@ -189,11 +193,51 @@ export class ConsentManager extends PureComponent<Props, State> {
       ])
     ) as ISavedDestinations;
 
+    const advertisingDestinations = Object.fromEntries(
+      activeCategorizedDestinations.advertising.map((destination) => [
+        destination,
+        preferences.advertising,
+      ])
+    ) as ISavedDestinations;
+
+    const functionalDestinations = Object.fromEntries(
+      activeCategorizedDestinations.functional.map((destination) => [
+        destination,
+        preferences.functional,
+      ])
+    ) as ISavedDestinations;
+
     setConsent({
       ...preferences,
-      savedChoices: { ...cookieConsent?.savedChoices, ...analyicsDestinations },
+      savedChoices: {
+        ...cookieConsent?.savedChoices,
+        ...analyicsDestinations,
+        ...advertisingDestinations,
+        ...functionalDestinations,
+      },
     });
     this.setState({ cookieConsent: getConsent() });
+  };
+
+  accept = () => {
+    this.setState(
+      (state) => ({
+        ...state,
+        preferences: {
+          ...state.preferences,
+          ...(state.preferences.analytics === undefined
+            ? { analytics: true }
+            : {}),
+          ...(state.preferences.advertising === undefined
+            ? { advertising: true }
+            : {}),
+          ...(state.preferences.functional === undefined
+            ? { functional: true }
+            : {}),
+        },
+      }),
+      () => this.saveConsent()
+    );
   };
 
   render() {
@@ -216,7 +260,9 @@ export class ConsentManager extends PureComponent<Props, State> {
     if (!isNilOrError(tenant)) {
       return (
         <Container
+          accept={this.accept}
           setPreferences={this.setPreferences}
+          resetPreferences={this.resetPreferences}
           saveConsent={this.saveConsent}
           isConsentRequired={isConsentRequired}
           preferences={preferences}

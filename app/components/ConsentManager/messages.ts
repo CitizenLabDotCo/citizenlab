@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.title',
     defaultMessage: 'Your cookie preferences',
   },
+  back: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.back',
+    defaultMessage: 'Go back',
+  },
   functional: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.functional',
     defaultMessage: 'Functional',
@@ -83,7 +87,7 @@ export default defineMessages({
   },
   satismeter: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.satismeter',
-    defaultMessage: 'Google analytics',
+    defaultMessage: 'Satismeter',
   },
   allow: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.allow',
