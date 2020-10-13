@@ -52,7 +52,7 @@ class SanitizationService
       return html if doc.errors.any?
 
       while (last_node = last_structure_node(doc))
-        node.text.empty? ? last_node.remove : break
+        last_node.text.empty? ? last_node.remove : break
       end
 
       doc.to_s
