@@ -34,8 +34,14 @@ import GetWindowSize, {
 
 // style
 import styled from 'styled-components';
-import { transparentize } from 'polished';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { rgba, transparentize } from 'polished';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;
@@ -68,14 +74,22 @@ const ShortFeedbackContainer = styled.div`
 `;
 
 const ShortFeedback = styled.div`
+  width: 100%;
   display: flex;
-  align-items: center;
+  ${isRtl`
+    justify-content: flex-end;
+  `}
 
-  ${media.smallerThanMaxTablet`
-    justify-content: center;
-    margin: 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  ${media.biggerThanMinTablet`
+    position: absolute;
+    z-index: 5;
+    top: -41px;
+    left: 0px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
+    border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
   `}
 `;
 
@@ -92,11 +106,24 @@ const FeedbackQuestion = styled.span`
   font-weight: 400;
   line-height: normal;
   margin-right: 15px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 10px;
+  `}
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 15px;
+  `}
 `;
 
 const FeedbackButtons = styled.div`
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const FeedbackButton = styled.button`
@@ -300,6 +327,9 @@ const StyledSendFeedback = styled(SendFeedback)`
 
 const ShortFeedbackFormModalFooter = styled.div`
   display: flex;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const CitizenLabLogo = styled(Icon)`
