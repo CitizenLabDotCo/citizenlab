@@ -184,26 +184,27 @@ export class ConsentManager extends PureComponent<Props, State> {
       this.getActiveDestinations()
     );
 
-    const analyicsDestinations = Object.fromEntries(
-      activeCategorizedDestinations.analytics.map((destination) => [
-        destination,
-        preferences.analytics,
-      ])
-    ) as ISavedDestinations;
+    // Object.fromEntries is not yet supported by node, so replaced with a reduce
+    const analyicsDestinations = activeCategorizedDestinations.analytics
+      .map((destination) => [destination, preferences.analytics])
+      .reduce(
+        (a, [k, v]) => ({ ...a, [k as string]: v }),
+        {}
+      ) as ISavedDestinations;
 
-    const advertisingDestinations = Object.fromEntries(
-      activeCategorizedDestinations.advertising.map((destination) => [
-        destination,
-        preferences.advertising,
-      ])
-    ) as ISavedDestinations;
+    const advertisingDestinations = activeCategorizedDestinations.advertising
+      .map((destination) => [destination, preferences.advertising])
+      .reduce(
+        (a, [k, v]) => ({ ...a, [k as string]: v }),
+        {}
+      ) as ISavedDestinations;
 
-    const functionalDestinations = Object.fromEntries(
-      activeCategorizedDestinations.functional.map((destination) => [
-        destination,
-        preferences.functional,
-      ])
-    ) as ISavedDestinations;
+    const functionalDestinations = activeCategorizedDestinations.functional
+      .map((destination) => [destination, preferences.functional])
+      .reduce(
+        (a, [k, v]) => ({ ...a, [k as string]: v }),
+        {}
+      ) as ISavedDestinations;
 
     setConsent({
       ...preferences,

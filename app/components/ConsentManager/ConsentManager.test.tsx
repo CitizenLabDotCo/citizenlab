@@ -365,7 +365,6 @@ describe('<ConsentManager />', () => {
             {...featureFagAllEnabled}
           />
         );
-        expect(mock_savedChoices).toMatchSnapshot();
         const preferences = wrapper.find('Container').props().preferences;
         expect(preferences).toEqual({
           analytics: false,
@@ -375,5 +374,110 @@ describe('<ConsentManager />', () => {
         spy.mockRestore();
       });
     });
+    describe('preference reset', () => {
+      it('resets preferences when no previous cookie was set', () => {
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const setPreferences = wrapper.find('Container').props().setPreferences;
+
+        setPreferences({ analytics: false });
+        wrapper.find('Container').props().resetPreferences();
+
+        const preferences = wrapper.find('Container').props().preferences;
+        expect(preferences).toEqual({
+          analytics: undefined,
+          advertising: undefined,
+          functional: undefined,
+        });
+      });
+      it('resets preferences when previous cookie was set', () => {
+        const mock_savedChoices = DESTINATIONS.map((destination) => [
+          destination,
+          false,
+        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+        const spy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: true,
+            advertising: true,
+            functional: true,
+            savedChoices: mock_savedChoices,
+          }));
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        const setPreferences = wrapper.find('Container').props().setPreferences;
+
+        setPreferences({ analytics: false });
+
+        wrapper.find('Container').props().resetPreferences();
+
+        const preferences = wrapper.find('Container').props().preferences;
+        expect(preferences).toEqual({
+          analytics: true,
+          advertising: true,
+          functional: true,
+        });
+        spy.mockRestore();
+      });
+    });
+  });
+  describe('sets the cookie', () => {
+    describe('accept', () => {
+      it('accepts all when no cookie was set', () => {
+        const setConsentSpy = jest.spyOn(consent, 'setConsent');
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        wrapper.find('Container').props().accept();
+
+        expect(setConsentSpy).toHaveBeenCalledTimes(1);
+        expect(setConsentSpy.mock.calls[0][0]).toMatchSnapshot();
+      });
+      it('sets preferences to true when previous cookie was set without overwriting false values', () => {
+        const setConsentSpy = jest.spyOn(consent, 'setConsent');
+        const mock_savedChoices = DESTINATIONS.map((destination) => [
+          destination,
+          true,
+        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+        const getConsentSpy = jest
+          .spyOn(consent, 'getConsent')
+          .mockImplementation(() => ({
+            analytics: undefined,
+            advertising: false,
+            functional: true,
+            savedChoices: mock_savedChoices,
+          }));
+        const wrapper = shallow(
+          <ConsentManager
+            authUser={null}
+            tenant={{}}
+            {...featureFagAllEnabled}
+          />
+        );
+        wrapper.find('Container').props().accept();
+
+        expect(setConsentSpy).toHaveBeenCalledTimes(1);
+        expect(setConsentSpy.mock.calls[0][0]).toMatchSnapshot();
+      });
+    });
+    // describe('saveConsent', () => {
+    //   it('saves the preferences object and individual preferences for all destination available to this user on this tenant', () => {
+    //     // TODO
+    //   })
+    // });
   });
 });
