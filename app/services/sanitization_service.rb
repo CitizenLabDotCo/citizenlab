@@ -52,7 +52,7 @@ class SanitizationService
       return html if doc.errors.any?
 
       while (last_node = last_structure_node(doc))
-        node_and_children_empty?(last_node) ? last_node.remove : break
+        node.text.empty? ? last_node.remove : break
       end
 
       doc.to_s
@@ -89,23 +89,6 @@ class SanitizationService
     end
   end
 
-  #
-  #
-  # Returns true if node has no children or all it's children are line breaks.
-  #
-
-  def node_and_children_empty?(node)
-    node_empty?(node)# && node.children.all?(&method(:node_empty?))
-  end
-
-  #
-  #
-  # Returns true if node does not have content.
-  #
-
-  def node_empty?(node)
-    node.text.empty?
-  end
 
   class IframeScrubber < Rails::Html::PermitScrubber
     EDITOR_FEATURES = {
