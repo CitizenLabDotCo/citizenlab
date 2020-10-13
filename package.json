@@ -27,7 +27,6 @@
     "stats": "cross-env webpack-bundle-analyzer build/stats.json",
     "lint": "npm run lint:ts",
     "lint:ts": "tslint -p ./app/tsconfig.json -t stylish",
-    "e2e-setup": "selenium-standalone install",
     "test:pa11y": "cross-env NODE_ENV=staging pa11y-ci",
     "test": "jest",
     "test:watch": "jest --watch",
