@@ -91,24 +91,26 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${(props) => props.theme.mobileTopBarHeight}px);
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
   `}
 `;
 
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100vh -
-      ${({ theme: { menuHeight, footerHeight } }) =>
-        menuHeight + footerHeight}px
-  );
+  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   background: #fff;
   opacity: 0;
 

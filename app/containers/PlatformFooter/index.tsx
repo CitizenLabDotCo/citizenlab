@@ -34,7 +34,7 @@ import GetWindowSize, {
 
 // style
 import styled from 'styled-components';
-import { rgba, transparentize } from 'polished';
+import { transparentize } from 'polished';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
@@ -49,70 +49,21 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   `}
 `;
 
-const Inner = styled.div`
-  min-height: ${(props) => props.theme.footerHeight}px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 11px;
-  padding-bottom: 11px;
-  background: ${transparentize(0.1, colors.background)};
-  border-top: solid 1px #ccc;
-  overflow: hidden;
-
-  ${media.smallerThan1280px`
-    padding-left: 18px;
-    padding-right: 18px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 15px 10px;
-    border-top: solid 1px ${colors.separation};
-
-    &.showShortFeedback {
-      border-top: none;
-    }
-  `}
-`;
-
-const ShortFeedback = styled.div`
-  display: flex;
-
-  ${media.biggerThanMaxTablet`
-    position: absolute;
-    z-index: 5;
-    top: -36px;
-    left: 20px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-    border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-  `}
-`;
-
-const ShortFeedbackInner = styled.div`
+const ShortFeedbackContainer = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-left: 16px;
-  padding-right: 16px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.09)};
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  padding-left: 28px;
+  border-top: solid 1px ${colors.separation};
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
-    width: 100%;
     justify-content: center;
     padding-left: 14px;
     padding-right: 14px;
@@ -127,7 +78,7 @@ const FeedbackQuestion = styled.span`
   margin-right: 15px;
 `;
 
-const Buttons = styled.div`
+const FeedbackButtons = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -142,7 +93,6 @@ const FeedbackButton = styled.button`
   justify-content: center;
   padding: 0;
   margin: 0;
-  z-index: 1;
   cursor: pointer;
   appearance: none;
 
@@ -153,6 +103,31 @@ const FeedbackButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const FooterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: ${transparentize(0.1, colors.background)};
+  background: #fff;
+  border-top: solid 1px ${colors.separation};
+  overflow: hidden;
+
+  /* &.showShortFeedback {
+    border-top: none;
+  } */
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px 10px;
+  `}
 `;
 
 const PagesNav = styled.nav`
@@ -267,11 +242,6 @@ const PoweredBy = styled.div`
   padding-right: 20px;
   margin-right: 24px;
   border-right: 2px solid ${colors.separation};
-
-  ${media.smallerThan1280px`
-    padding-right: 8px;
-    margin-right: 13px;
-  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -443,40 +413,38 @@ class PlatformFooter extends PureComponent<Props, State> {
       >
         {showShortFeedback && (
           <>
-            <ShortFeedback>
-              <ShortFeedbackInner>
-                {shortFeedbackButtonClicked ? (
-                  feedbackModalOpen ? (
-                    <ThankYouNote>
-                      <FormattedMessage {...messages.moreInfo} />
-                    </ThankYouNote>
-                  ) : (
-                    <ThankYouNote>
-                      <FormattedMessage {...messages.thanksForFeedback} />
-                    </ThankYouNote>
-                  )
+            <ShortFeedbackContainer>
+              {shortFeedbackButtonClicked ? (
+                feedbackModalOpen ? (
+                  <ThankYouNote>
+                    <FormattedMessage {...messages.moreInfo} />
+                  </ThankYouNote>
                 ) : (
-                  <>
-                    <FeedbackQuestion>
-                      <FormattedMessage {...messages.feedbackQuestion} />
-                    </FeedbackQuestion>
-                    <Buttons>
-                      <FeedbackButton
-                        onClick={this.handleFeedbackButtonClick('yes')}
-                      >
-                        <FormattedMessage {...messages.yes} />
-                      </FeedbackButton>
-                      <FeedbackButton
-                        className="hasLeftMargin"
-                        onClick={this.handleFeedbackButtonClick('no')}
-                      >
-                        <FormattedMessage {...messages.no} />
-                      </FeedbackButton>
-                    </Buttons>
-                  </>
-                )}
-              </ShortFeedbackInner>
-            </ShortFeedback>
+                  <ThankYouNote>
+                    <FormattedMessage {...messages.thanksForFeedback} />
+                  </ThankYouNote>
+                )
+              ) : (
+                <>
+                  <FeedbackQuestion>
+                    <FormattedMessage {...messages.feedbackQuestion} />
+                  </FeedbackQuestion>
+                  <FeedbackButtons>
+                    <FeedbackButton
+                      onClick={this.handleFeedbackButtonClick('yes')}
+                    >
+                      <FormattedMessage {...messages.yes} />
+                    </FeedbackButton>
+                    <FeedbackButton
+                      className="hasLeftMargin"
+                      onClick={this.handleFeedbackButtonClick('no')}
+                    >
+                      <FormattedMessage {...messages.no} />
+                    </FeedbackButton>
+                  </FeedbackButtons>
+                </>
+              )}
+            </ShortFeedbackContainer>
 
             <Modal
               width={500}
@@ -514,7 +482,9 @@ class PlatformFooter extends PureComponent<Props, State> {
           </>
         )}
 
-        <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
+        <FooterContainer
+          className={showShortFeedback ? 'showShortFeedback' : ''}
+        >
           <PagesNav>
             <PagesNavList>
               {LEGAL_PAGES
@@ -560,7 +530,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 
             <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
           </Right>
-        </Inner>
+        </FooterContainer>
       </Container>
     );
   }
