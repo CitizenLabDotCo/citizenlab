@@ -35,6 +35,7 @@ import {
   fontSizes,
   defaultOutline,
   viewportWidths,
+  isRtl,
 } from 'utils/styleUtils';
 
 const desktopOpacityTimeout = 500;
@@ -82,6 +83,11 @@ const CloseButton = styled.button`
   background: #fff;
   transition: all 100ms ease-out;
   outline: none !important;
+
+  ${isRtl`
+    right: auto;
+    left: 25px;
+  `}
 
   &:hover {
     background: #e0e0e0;
@@ -217,7 +223,6 @@ export const HeaderContainer = styled.div`
   padding-right: 30px;
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-right: 45px;
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
@@ -237,6 +242,10 @@ export const HeaderTitle = styled.h1`
   line-height: normal;
   margin: 0;
   padding: 0;
+
+  ${isRtl`
+    text-align: right;
+  `}
 `;
 
 export const HeaderSubtitle = styled.h2`
@@ -248,6 +257,10 @@ export const HeaderSubtitle = styled.h2`
   margin: 0;
   margin-top: 5px;
   padding: 0;
+
+  ${isRtl`
+    text-align: right;
+  `}
 `;
 
 const FooterContainer = styled.div`
