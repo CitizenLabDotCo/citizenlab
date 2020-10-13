@@ -41,8 +41,8 @@ class SanitizationService
   #
   # ===== Examples
   #
-  #   sanitization_service.remove_empty_structure_tags('<h1>Nice</h1><p></p>') # => '<h1>Nice</h1>'
-  #   sanitization_service.remove_empty_structure_tags('<h1>Nice</h1><h2><br></h2>') # => '<h1>Nice</h1>'
+  #   sanitation_service.remove_empty_structure_tags('<h1>Nice</h1><p></p>') # => '<h1>Nice</h1>'
+  #   sanitation_service.remove_empty_structure_tags('<h1>Nice</h1><h2><br></h2>') # => '<h1>Nice</h1>'
   #
 
   def remove_empty_structure_tags(html)
@@ -85,7 +85,6 @@ class SanitizationService
     css_selector = EDITOR_STRUCTURE_TAGS.map { |tag| "#{tag}:last-child" }.join(', ')
     doc.at_css(css_selector)
   end
-
 
   class IframeScrubber < Rails::Html::PermitScrubber
     EDITOR_FEATURES = {
