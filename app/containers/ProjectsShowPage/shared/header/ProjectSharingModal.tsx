@@ -1,0 +1,95 @@
+import React, { memo, useCallback } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+
+// components
+import Modal from 'components/UI/Modal';
+import Sharing from 'components/Sharing';
+
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+
+// i18n
+import T from 'components/T';
+import messages from 'containers/ProjectsShowPage/messages';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
+// style
+import styled from 'styled-components';
+
+const Container = styled.div`
+  padding: 25px;
+`;
+
+interface Props {
+  projectId: string;
+  opened: boolean;
+  className?: string;
+  close: () => void;
+}
+
+const ProjectSharingModal = memo<Props & InjectedIntlProps>(
+  ({ projectId, className, opened, close, intl }) => {
+    const authUser = useAuthUser();
+    const project = useProject({ projectId });
+
+    const projectUrl = location.href;
+    const utmParams = !isNilOrError(authUser)
+      ? {
+          source: 'share_project',
+          campaign: 'share_content',
+          content: authUser.data.id,
+        }
+      : {
+          source: 'share_project',
+          campaign: 'share_content',
+        };
+
+    const onClose = useCallback(() => {
+      close();
+    }, [close]);
+
+    if (!isNilOrError(project)) {
+      return (
+        <Modal
+          width={450}
+          opened={opened}
+          close={onClose}
+          closeOnClickOutside={false}
+          noClose={false}
+          header={<FormattedMessage {...messages.shareThisProject} />}
+        >
+          <Container className={className}>
+            {opened && (
+              <>
+                <T value={project.attributes.title_multiloc} maxLength={50}>
+                  {(title) => {
+                    return (
+                      <Sharing
+                        context="project"
+                        url={projectUrl}
+                        twitterMessage={intl.formatMessage(
+                          messages.twitterMessage,
+                          {
+                            title,
+                          }
+                        )}
+                        utmParams={utmParams}
+                        layout={2}
+                      />
+                    );
+                  }}
+                </T>
+              </>
+            )}
+          </Container>
+        </Modal>
+      );
+    }
+
+    return null;
+  }
+);
+
+export default injectIntl(ProjectSharingModal);

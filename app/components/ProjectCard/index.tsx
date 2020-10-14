@@ -703,7 +703,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                     limit={3}
                     userCountBgColor={this.props.theme.colorMain}
                     avatarIds={avatarIds}
-                    userCount={project.attributes.avatars_count}
+                    userCount={project.attributes.participants_count}
                   />
                 )}
               </ContentFooterLeft>

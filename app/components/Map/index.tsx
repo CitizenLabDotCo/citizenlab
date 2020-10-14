@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 require('leaflet-simplestyle');
 
 // components
-import ReactResizeDetector from 'react-resize-detector';
 import { Icon } from 'cl2-component-library';
 import Legend from './Legend';
 
@@ -424,10 +423,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       );
   };
 
-  onMapElementResize = () => {
-    this.map && this.map.invalidateSize();
-  };
-
   handleBoxOnClose = (event: FormEvent) => {
     event.preventDefault();
     this.props.onBoxClose && this.props.onBoxClose(event);
@@ -454,13 +449,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               id="e2e-map"
               ref={this.bindMapContainer}
               mapHeight={mapHeight}
-            >
-              <ReactResizeDetector
-                handleWidth
-                handleHeight
-                onResize={this.onMapElementResize}
-              />
-            </LeafletMapContainer>
+            />
           </MapContainer>
           {projectId && <Legend projectId={projectId} />}
         </Container>

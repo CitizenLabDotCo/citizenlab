@@ -19,7 +19,7 @@ import messages from './SignUp/messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
@@ -50,7 +50,7 @@ const Line = styled.span`
 `;
 
 const OrText = styled.div`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   text-transform: lowercase;
@@ -81,7 +81,7 @@ const FranceConnectButton = styled.button`
 `;
 
 const SubSocialButtonLink = styled.a`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   text-decoration: underline;

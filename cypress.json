@@ -5,8 +5,6 @@
   "video": false,
   "chromeWebSecurity": false,
   "numTestsKeptInMemory": 10,
-  "defaultCommandTimeout": 10000,
-  "env": {
-    "RETRIES": 2
-  }
+  "defaultCommandTimeout": 15000,
+  "retries": 2
 }

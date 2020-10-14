@@ -63,7 +63,7 @@ const TooltipContentIcon = styled(Icon)`
 
 const TooltipContentText = styled.div`
   flex: 1 1 auto;
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -105,6 +105,7 @@ interface DataProps {
 }
 
 interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
+  id?: string;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
   latLng?: LatLng | null;
@@ -117,6 +118,7 @@ interface Props extends InputProps, DataProps {}
 
 const IdeaButton = memo<Props & InjectedIntlProps>(
   ({
+    id,
     project,
     phase,
     authUser,
@@ -291,7 +293,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       }
 
       return (
-        <Container className={className || ''}>
+        <Container id={id || ''} className={className || ''}>
           <Tippy
             disabled={!tippyContent}
             interactive={true}
