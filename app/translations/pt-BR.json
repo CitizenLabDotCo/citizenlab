@@ -1886,7 +1886,7 @@
   "app.containers.Projects.twitterMessage": "{title}: Compartilhe as suas ideias sobre",
   "app.containers.Projects.upcomingEvents": "Próximos eventos",
   "app.containers.Projects.xEvents": "{eventsCount, plural, no {# comentários} one {# comentário} other {# comentários}}",
-  "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}",
+  "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# ideia} other {# ideias}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, nenhuma {# ideas} uma {# ideia} other {# ideias}} na fase atual",
   "app.containers.Projects.xParticipants": "{participantsCount, plural, não {# comentários} um {# comentário} other {# comentários}}",
   "app.containers.Projects.xPhases": "{phasesCount, plural, não {# fases} um {# fase} other {# fases}}",
