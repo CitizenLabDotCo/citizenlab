@@ -34,6 +34,7 @@ import GetWindowSize, {
 
 // style
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
@@ -60,7 +61,8 @@ const ShortFeedbackContainer = styled.div`
   ${media.smallerThanMaxTablet`
     display: flex;
     justify-content: center;
-    background: #fff;
+    background: ${colors.background};
+    background: ${(props) => transparentize(0.9, props.theme.colorText)};
     border-top: solid 1px #ccc;
   `}
 `;
@@ -127,8 +129,8 @@ const FooterContainer = styled.div`
   justify-content: space-between;
   padding-left: 28px;
   padding-right: 28px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 11px;
+  padding-bottom: 11px;
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
@@ -138,6 +140,7 @@ const FooterContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 15px 10px;
+    background: #f4f4f4;
   `}
 `;
 
@@ -262,7 +265,7 @@ const PoweredBy = styled.div`
 
 const PoweredByText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;

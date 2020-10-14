@@ -460,7 +460,6 @@ export class InitiativesShow extends PureComponent<
       const initiativeHeaderImageLarge =
         initiative?.attributes?.header_bg?.large;
       const authorId = initiative?.relationships?.author?.data?.id;
-      const initiativePublishedAt = initiative?.attributes?.published_at;
       const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
       const initiativeImageLarge =
         initiativeImages?.[0]?.attributes?.versions?.large;
