@@ -252,7 +252,7 @@ class CommentBody extends PureComponent<Props, State> {
 
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-            <QuillEditedContent fontWeight={300} textColor={theme.colorText}>
+            <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
               <div aria-live="polite">
                 {translateButtonClicked ? (
                   <GetMachineTranslation
@@ -284,7 +284,7 @@ class CommentBody extends PureComponent<Props, State> {
       } else {
         content = (
           <StyledForm onSubmit={this.onSubmit}>
-            <QuillEditedContent fontWeight={300} textColor={theme.colorText}>
+            <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
               <MentionsTextArea
                 name="body"
                 value={editableCommentContent}

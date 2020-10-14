@@ -75,6 +75,7 @@ export interface IProjectData {
     visible_to: Visibility;
     process_type: ProcessType;
     timeline_active?: 'past' | 'present' | 'future' | null;
+    participants_count: number;
     participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
@@ -267,22 +268,7 @@ export async function deleteProject(projectId: string) {
 }
 
 export function getProjectUrl(project: IProjectData) {
-  // TODO MOVE projects root route
-  let lastUrlSegment: string;
-  const projectType = project.attributes.process_type;
-  const projectMethod = project.attributes.participation_method;
-  const rootProjectUrl = `/projects/${project.attributes.slug}`;
-
-  // Determine where to send the user based on process type & participation method
-  if (projectType === 'timeline') {
-    lastUrlSegment = 'process';
-  } else if (projectType === 'continuous' && projectMethod === 'budgeting') {
-    lastUrlSegment = 'ideas';
-  } else {
-    lastUrlSegment = 'info';
-  }
-
-  return `${rootProjectUrl}/${lastUrlSegment}`;
+  return `/projects/${project.attributes.slug}`;
 }
 
 export function getProjectIdeasUrl(project: IProjectData) {

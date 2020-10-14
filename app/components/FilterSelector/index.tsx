@@ -28,6 +28,10 @@ const Container = styled.div`
       margin-right: 30px;
     `}
 
+    ${media.smallerThanMinTablet`
+      margin-right: 25px;
+    `}
+
     ${media.smallPhone`
       margin-right: 20px;
     `}

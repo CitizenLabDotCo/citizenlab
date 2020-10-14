@@ -12,7 +12,6 @@
 
 1. `git clone` the repository
 2. Run `npm install` in the root of the repository
-3. Optional: If you want to be able to run the end-to-end tests, run `npm run e2e-setup`
 
 ## Running
 

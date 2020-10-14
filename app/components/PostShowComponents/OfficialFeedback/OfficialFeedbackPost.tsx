@@ -40,7 +40,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   padding: 30px;
@@ -67,7 +67,7 @@ const Body = styled.div`
   margin-bottom: 30px;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.clBlueDarker};
 
     &:hover {
       color: ${colors.clBlueDarker};
@@ -83,13 +83,13 @@ const Footer = styled.div`
 const Author = styled.span`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const DatesPostedEdited = styled.span`
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
-  font-weight: 300;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   display: flex;
   align-items: center;
 

@@ -186,9 +186,9 @@ const EmptyContainerInner = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
   fill: ${colors.label};
 `;
 
@@ -203,7 +203,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageMainLine = styled.div`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;

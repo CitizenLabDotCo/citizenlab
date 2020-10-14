@@ -10,7 +10,7 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import Tippy from '@tippyjs/react';
-import { colors, fontSizes, Icon } from 'cl2-component-library';
+import { colors, fontSizes, Icon, ButtonStyles } from 'cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { stringify } from 'qs';
@@ -76,123 +76,126 @@ interface Props {
   lng?: number | null;
   inMap?: boolean;
   location: 'initiatives_footer' | 'initiatives_header' | 'in_map';
+  buttonStyle?: ButtonStyles;
   className?: string;
 }
 
-export default memo<Props>(({ lat, lng, inMap, location, className }) => {
-  const { disabledReason, action, enabled } = useInitiativesPermissions(
-    'posting_initiative'
-  ) || { disabledReason: null, action: null, enabled: null };
+export default memo<Props>(
+  ({ lat, lng, inMap, location, buttonStyle, className }) => {
+    const { disabledReason, action, enabled } = useInitiativesPermissions(
+      'posting_initiative'
+    ) || { disabledReason: null, action: null, enabled: null };
 
-  const redirectToInitiativeForm = () => {
-    trackEventByName('redirected to initiatives form');
-    clHistory.push({
-      pathname: `/initiatives/new`,
-      search:
-        lat && lng
-          ? stringify({ lat, lng }, { addQueryPrefix: true })
-          : undefined,
-    });
-  };
-
-  const onNewInitiativeButtonClick = useCallback(
-    (event?: React.FormEvent) => {
-      event?.preventDefault();
-
-      trackEventByName('New initiative button clicked', {
-        extra: {
-          disabledReason,
-          location,
-        },
+    const redirectToInitiativeForm = () => {
+      trackEventByName('redirected to initiatives form');
+      clHistory.push({
+        pathname: `/initiatives/new`,
+        search:
+          lat && lng
+            ? stringify({ lat, lng }, { addQueryPrefix: true })
+            : undefined,
       });
+    };
 
-      if (enabled) {
-        switch (action) {
-          case 'sign_in_up':
-            trackEventByName(
-              'Sign up/in modal opened in response to clicking new initiative'
-            );
-            openSignUpInModal({
-              flow: 'signup',
-              verification: false,
-              verificationContext: undefined,
-              action: redirectToInitiativeForm,
-            });
-            break;
-          case 'sign_in_up_and_verify':
-            trackEventByName(
-              'Sign up/in modal opened in response to clicking new initiative'
-            );
-            openSignUpInModal({
-              flow: 'signup',
-              verification: true,
-              verificationContext: {
-                type: 'initiative',
-                action: 'posting_initiative',
-              },
-              action: redirectToInitiativeForm,
-            });
-            break;
-          case 'verify':
-            trackEventByName(
-              'Verification modal opened in response to clicking new initiative'
-            );
-            openVerificationModal({
-              context: {
-                action: 'posting_initiative',
-                type: 'initiative',
-              },
-            });
-            break;
-          default:
-            redirectToInitiativeForm();
+    const onNewInitiativeButtonClick = useCallback(
+      (event?: React.FormEvent) => {
+        event?.preventDefault();
+
+        trackEventByName('New initiative button clicked', {
+          extra: {
+            disabledReason,
+            location,
+          },
+        });
+
+        if (enabled) {
+          switch (action) {
+            case 'sign_in_up':
+              trackEventByName(
+                'Sign up/in modal opened in response to clicking new initiative'
+              );
+              openSignUpInModal({
+                flow: 'signup',
+                verification: false,
+                verificationContext: undefined,
+                action: redirectToInitiativeForm,
+              });
+              break;
+            case 'sign_in_up_and_verify':
+              trackEventByName(
+                'Sign up/in modal opened in response to clicking new initiative'
+              );
+              openSignUpInModal({
+                flow: 'signup',
+                verification: true,
+                verificationContext: {
+                  type: 'initiative',
+                  action: 'posting_initiative',
+                },
+                action: redirectToInitiativeForm,
+              });
+              break;
+            case 'verify':
+              trackEventByName(
+                'Verification modal opened in response to clicking new initiative'
+              );
+              openVerificationModal({
+                context: {
+                  action: 'posting_initiative',
+                  type: 'initiative',
+                },
+              });
+              break;
+            default:
+              redirectToInitiativeForm();
+          }
         }
-      }
-    },
-    [enabled, action, disabledReason, location]
-  );
+      },
+      [enabled, action, disabledReason, location]
+    );
 
-  const tippyContent = disabledReason ? (
-    <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
-      <TooltipContentIcon name="lock-outlined" ariaHidden />
-      <TooltipContentText>
-        <FormattedMessage {...disabledMessages[disabledReason]} />
-      </TooltipContentText>
-    </TooltipContent>
-  ) : null;
+    const tippyContent = disabledReason ? (
+      <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
+        <TooltipContentIcon name="lock-outlined" ariaHidden />
+        <TooltipContentText>
+          <FormattedMessage {...disabledMessages[disabledReason]} />
+        </TooltipContentText>
+      </TooltipContent>
+    ) : null;
 
-  if (inMap && tippyContent) {
-    return tippyContent;
-  }
+    if (inMap && tippyContent) {
+      return tippyContent;
+    }
 
-  return (
-    <div className={className || ''}>
-      <Tippy
-        disabled={!tippyContent}
-        interactive={true}
-        placement="bottom"
-        content={tippyContent || <></>}
-        theme="light"
-        hideOnClick={false}
-      >
-        <div
-          tabIndex={!enabled ? 0 : -1}
-          className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
-            disabledReason ? disabledReason : ''
-          }`}
+    return (
+      <div className={className || ''}>
+        <Tippy
+          disabled={!tippyContent}
+          interactive={true}
+          placement="bottom"
+          content={tippyContent || <></>}
+          theme="light"
+          hideOnClick={false}
         >
-          <Button
-            fontWeight="500"
-            padding="13px 22px"
-            buttonStyle={'initiatives_header' ? 'primary' : 'primary-inverse'}
-            onClick={onNewInitiativeButtonClick}
-            icon="arrowLeft"
-            iconPos="right"
-            disabled={!!disabledReason}
-            text={<FormattedMessage {...messages.startInitiative} />}
-          />
-        </div>
-      </Tippy>
-    </div>
-  );
-});
+          <div
+            tabIndex={!enabled ? 0 : -1}
+            className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+              disabledReason ? disabledReason : ''
+            }`}
+          >
+            <Button
+              fontWeight="500"
+              padding="13px 22px"
+              buttonStyle={buttonStyle || 'primary'}
+              onClick={onNewInitiativeButtonClick}
+              icon="arrowLeft"
+              iconPos="right"
+              disabled={!!disabledReason}
+              text={<FormattedMessage {...messages.startInitiative} />}
+            />
+          </div>
+        </Tippy>
+      </div>
+    );
+  }
+);
