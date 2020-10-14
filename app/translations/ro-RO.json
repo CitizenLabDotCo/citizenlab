@@ -1892,7 +1892,7 @@
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}} în faza curentă",
   "app.containers.Projects.xParticipants": "{participantsCount, plural, no {# participanți} one {# participant} other {# participanți}}",
   "app.containers.Projects.xPhases": "{phasesCount, plural, no {# faze} one {# fază} other {# faze}}",
-  "app.containers.Projects.xPolls": "{pollsCount, plural, no {# polls} one {# poll} other {# polls}}",
+  "app.containers.Projects.xPolls": "{pollsCount, plural, one {# poll} other {# polls}}",
   "app.containers.Projects.xPollsInCurrentPhase": "{pollsCount, plural, one {# poll} few {# polls} other {# polls}} în faza curentă",
   "app.containers.Projects.xSurveys": "{surveysCount, plural, one {# sondaj} few {# sondaje} other {# sondaje}}",
   "app.containers.Projects.xSurveysInCurrentPhase": "{surveysCount, plural, one {# sondaj} few {# sondaje} other {# sondaje}} în faza curentă",
