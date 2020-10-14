@@ -697,7 +697,6 @@ class IdeaForm extends PureComponent<
                 }
                 subtextSupportsHtml={true}
               />
-              <span>{formatMessage(messages.test)}</span>
               <Input
                 id="title"
                 type="text"
