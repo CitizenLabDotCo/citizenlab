@@ -101,15 +101,6 @@ describe('Initiative form page', () => {
       'eq',
       `/en-GB/initiatives/${initiativeTitle}`
     );
-
-    // verify modal with edit changelog
-    cy.get('#e2e-initiative-show')
-      .find('.e2e-post-last-modified-button')
-      .click();
-    cy.wait(1000);
-    cy.get('.e2e-activities-changelog')
-      .find('.e2e-idea-changelog-entry')
-      .should('have.length', 2);
   });
 
   after(() => {
