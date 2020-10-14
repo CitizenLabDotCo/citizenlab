@@ -37,7 +37,6 @@ const GlobalStyle = createGlobalStyle`
         direction: rtl;
     }
   `}
-
   }
 
   input, textarea {
