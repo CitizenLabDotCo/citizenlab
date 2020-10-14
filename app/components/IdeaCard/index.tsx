@@ -29,7 +29,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
@@ -64,6 +64,10 @@ const FooterInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   margin-bottom: 20px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Spacer = styled.div`
