@@ -90,18 +90,18 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  padding-top: ${(props) => props.theme.menuHeight}px;
   width: 100vw;
+  padding-top: ${(props) => props.theme.menuHeight}px;
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
   ${media.smallerThanMaxTablet`
-    padding-top: ${(props) => props.theme.menuHeight}px;
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
+    min-height: calc(100vh - ${(props) =>
+      props.theme.mobileTopBarHeight}px - ${(props) =>
+    props.theme.mobileMenuHeight}px);
   `}
 `;
 
