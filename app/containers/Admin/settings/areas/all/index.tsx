@@ -9,18 +9,19 @@ import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
+import { reorderArea } from 'services/areas';
+
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import {
   Section,
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
-import { List, Row, TextCell } from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
 import Collapse from 'components/UI/Collapse';
-import { reorderArea } from 'services/areas';
 
 interface InputProps {}
 
@@ -103,10 +104,10 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
           items={areas}
           onReorder={this.handleReorderArea}
           className="areas-list e2e-admin-areas-list"
-          id="e2e-admin-published-areas-list"
+          id="e2e-admin-areas-list"
         >
           {({ itemsList, handleDragRow, handleDropRow }) =>
-            itemsList.map((item: IAdminPublicationContent, index: number) => {
+            itemsList.map((item: IArea, index: number) => {
               return (
                 <SortableRow
                   key={item.id}
