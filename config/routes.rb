@@ -101,10 +101,14 @@ Rails.application.routes.draw do
       resources :topics do
         patch 'reorder', on: :member
       end
+
       resources :projects_topics, only: [:index, :show, :create, :reorder, :destroy] do
         patch 'reorder', on: :member
       end
-      resources :areas
+
+      resources :areas do
+        patch 'reorder', on: :member
+      end
 
       resources :tenants, only: [:update] do
         get :current, on: :collection

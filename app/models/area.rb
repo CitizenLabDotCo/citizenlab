@@ -1,4 +1,7 @@
 class Area < ApplicationRecord
+  acts_as_list column: :ordering, top_of_list: 0
+  default_scope -> { order(ordering: :asc) }
+
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
   has_many :areas_ideas, dependent: :destroy
@@ -12,6 +15,11 @@ class Area < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
+  validates :ordering, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: proc { Area.count }
+  }, unless: ->(area) { area.ordering.nil? }
 
   private
 
@@ -30,5 +38,5 @@ class Area < ApplicationRecord
       self.title_multiloc[key] = value.strip
     end
   end
-  
+
 end
