@@ -44,37 +44,53 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   position: relative;
 
   ${media.smallerThanMaxTablet`
+    margin-top: 0px;
     padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
       insideModal ? 0 : mobileMenuHeight}px;
   `}
 `;
 
 const ShortFeedbackContainer = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  line-height: normal;
+  ${media.biggerThanMaxTablet`
+    position: absolute;
+    top: -25px;
+    left: 25px;
+    z-index: 3;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    justify-content: center;
+    background: ${colors.background};
+    background: ${(props) => transparentize(0.9, props.theme.colorText)};
+    border-top: solid 1px #ccc;
+  `}
+`;
+
+const ShortFeedback = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 28px;
-  border-top: solid 1px #ddd;
-  background: #fff;
 
   ${media.smallerThanMaxTablet`
     justify-content: center;
-    padding-left: 14px;
-    padding-right: 14px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
   `}
 `;
 
 const ThankYouNote = styled.span`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
+  line-height: normal;
 `;
 
 const FeedbackQuestion = styled.span`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
   margin-right: 15px;
 `;
 
@@ -85,7 +101,9 @@ const FeedbackButtons = styled.div`
 
 const FeedbackButton = styled.button`
   color: ${({ theme }) => theme.colorText};
-  font-weight: 500;
+  font-size: ${fontSizes.small}px;
+  font-weight: 600;
+  line-height: normal;
   text-align: left;
   text-transform: uppercase;
   display: flex;
@@ -113,9 +131,8 @@ const FooterContainer = styled.div`
   padding-right: 28px;
   padding-top: 11px;
   padding-bottom: 11px;
-  background: ${transparentize(0.1, colors.background)};
   background: #fff;
-  border-top: solid 1px #ddd;
+  border-top: solid 1px #ccc;
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
@@ -123,6 +140,7 @@ const FooterContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 15px 10px;
+    background: #f4f4f4;
   `}
 `;
 
@@ -148,14 +166,14 @@ const PagesNavList = styled.ul`
   `}
 
   & li {
-    margin-right: 12px;
+    margin-right: 10px;
 
     &:after {
       color: ${colors.label};
       font-size: ${fontSizes.small}px;
       font-weight: 400;
       content: '•';
-      margin-left: 12px;
+      margin-left: 10px;
     }
 
     &:last-child {
@@ -171,6 +189,8 @@ const PagesNavList = styled.ul`
 
 const PagesNavListItem = styled.li`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
   font-weight: 400;
   list-style: none;
   margin: 0;
@@ -179,10 +199,9 @@ const PagesNavListItem = styled.li`
 
 const StyledButton = styled.button`
   color: ${colors.label};
-  font-weight: 400;
   font-size: ${fontSizes.small}px;
+  font-weight: 400;
   line-height: normal;
-  text-decoration: none;
   hyphens: auto;
   padding: 0;
   margin: 0;
@@ -228,10 +247,6 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  text-decoration: none;
   display: flex;
   align-items: center;
   outline: none;
@@ -255,13 +270,21 @@ const PoweredByText = styled.span`
   line-height: normal;
   margin-right: 8px;
 
+  ${media.smallerThan1100px`
+    display: none;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
+
   ${media.smallerThanMinTablet`
     margin-bottom: 10px;
   `}
 `;
 
 const CitizenlabLink = styled.a`
-  width: 135px;
+  width: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -410,36 +433,38 @@ class PlatformFooter extends PureComponent<Props, State> {
         {showShortFeedback && (
           <>
             <ShortFeedbackContainer>
-              {shortFeedbackButtonClicked ? (
-                feedbackModalOpen ? (
-                  <ThankYouNote>
-                    <FormattedMessage {...messages.moreInfo} />
-                  </ThankYouNote>
+              <ShortFeedback>
+                {shortFeedbackButtonClicked ? (
+                  feedbackModalOpen ? (
+                    <ThankYouNote>
+                      <FormattedMessage {...messages.moreInfo} />
+                    </ThankYouNote>
+                  ) : (
+                    <ThankYouNote>
+                      <FormattedMessage {...messages.thanksForFeedback} />
+                    </ThankYouNote>
+                  )
                 ) : (
-                  <ThankYouNote>
-                    <FormattedMessage {...messages.thanksForFeedback} />
-                  </ThankYouNote>
-                )
-              ) : (
-                <>
-                  <FeedbackQuestion>
-                    <FormattedMessage {...messages.feedbackQuestion} />
-                  </FeedbackQuestion>
-                  <FeedbackButtons>
-                    <FeedbackButton
-                      onClick={this.handleFeedbackButtonClick('yes')}
-                    >
-                      <FormattedMessage {...messages.yes} />
-                    </FeedbackButton>
-                    <FeedbackButton
-                      className="hasLeftMargin"
-                      onClick={this.handleFeedbackButtonClick('no')}
-                    >
-                      <FormattedMessage {...messages.no} />
-                    </FeedbackButton>
-                  </FeedbackButtons>
-                </>
-              )}
+                  <>
+                    <FeedbackQuestion>
+                      <FormattedMessage {...messages.feedbackQuestion} />
+                    </FeedbackQuestion>
+                    <FeedbackButtons>
+                      <FeedbackButton
+                        onClick={this.handleFeedbackButtonClick('yes')}
+                      >
+                        <FormattedMessage {...messages.yes} />
+                      </FeedbackButton>
+                      <FeedbackButton
+                        className="hasLeftMargin"
+                        onClick={this.handleFeedbackButtonClick('no')}
+                      >
+                        <FormattedMessage {...messages.no} />
+                      </FeedbackButton>
+                    </FeedbackButtons>
+                  </>
+                )}
+              </ShortFeedback>
             </ShortFeedbackContainer>
 
             <Modal

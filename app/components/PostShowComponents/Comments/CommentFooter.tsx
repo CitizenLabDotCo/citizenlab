@@ -32,7 +32,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const footerHeight = '30px';
-const footerTopMargin = '8px';
+const footerTopMargin = '6px';
 
 const Container = styled.div`
   display: flex;

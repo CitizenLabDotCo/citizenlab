@@ -31,7 +31,7 @@ const Container = styled.div`
   `}
 `;
 
-const AuthorContainer: any = styled.div`
+const AuthorContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0;
@@ -46,6 +46,7 @@ const StyledAvatar = styled(Avatar)`
 const AuthorMeta = styled.div`
   &.horizontalLayout {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
   }
 `;
@@ -57,7 +58,6 @@ const AuthorNameContainer = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 16px;
   text-decoration: none;
-  hyphens: manual;
 
   &.horizontalLayout {
     margin-right: 10px;
@@ -141,7 +141,7 @@ class Author extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <AuthorContainer authorCanModerate={authorCanModerate}>
+        <AuthorContainer>
           {showAvatar && (
             <StyledAvatar
               userId={authorId}
