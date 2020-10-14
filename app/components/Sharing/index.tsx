@@ -54,40 +54,57 @@ const Buttons = styled.div`
   display: flex;
   flex-wrap: wrap;
 
+  &.layout2 {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
   .sharingButton {
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
     padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
-    margin-right: 5px;
 
-    &.last {
-      margin-right: 0px;
+    &.layout1 {
+      margin-right: 5px;
+
+      &.last {
+        margin-right: 0px;
+      }
+
+      ${media.largePhone`
+        flex-basis: calc(50% - 2.5px);
+
+        &:nth-child(odd) {
+          margin-right: 5px;
+
+          &.last {
+            margin-right: 0px;
+          }
+        }
+
+        &:nth-child(-n+2) {
+          margin-bottom: 5px;
+        }
+
+        &:nth-child(even) {
+          margin-right: 0;
+        }
+      `}
     }
 
-    ${media.largePhone`
-      flex-basis: calc(50% - 2.5px);
+    &.layout2 {
+      margin-bottom: 12px;
 
-      &:nth-child(odd) {
-        margin-right: 5px;
-
-        &.last {
-          margin-right: 0px;
-        }
+      &.last {
+        margin-bottom: 0px;
       }
-
-      &:nth-child(-n+2) {
-        margin-bottom: 5px;
-      }
-
-      &:nth-child(even) {
-        margin-right: 0;
-      }
-    `}
+    }
 
     &.twitter {
       background: ${colors.twitter};
@@ -163,6 +180,7 @@ interface Props {
   emailBody?: string;
   utmParams: UtmParams;
   id?: string;
+  layout?: 1 | 2;
 }
 
 const Sharing = memo(
@@ -178,6 +196,7 @@ const Sharing = memo(
     id,
     url,
     utmParams,
+    layout,
   }: Props & InjectedIntlProps) => {
     const tenant = useTenant();
 
@@ -219,6 +238,7 @@ const Sharing = memo(
     if (!isNilOrError(tenant)) {
       const facebookAppId =
         tenant.data.attributes.settings.facebook_login?.app_id || null;
+      const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
 
       const facebook = facebookAppId ? (
         <FacebookButton
@@ -269,7 +289,7 @@ const Sharing = memo(
           url={getUrlWithUtm('twitter')}
           className={`sharingButton twitter ${
             !emailSubject || !emailBody ? 'last' : ''
-          }`}
+          } ${layoutClassName}`}
           sharer={true}
           onClick={handleClick('twitter')}
           aria-label={formatMessage(messages.shareOnTwitter)}
@@ -294,19 +314,23 @@ const Sharing = memo(
 
       return (
         <Container id={id || ''} className={className || ''}>
-          <Title isInModal={isInModal}>
-            {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
-            {context === 'project' && (
-              <FormattedMessage {...messages.shareThisProject} />
-            )}
-            {context === 'initiative' && (
-              <FormattedMessage {...messages.shareThisInitiative} />
-            )}
-            {context === 'folder' && (
-              <FormattedMessage {...messages.shareThisFolder} />
-            )}
-          </Title>
-          <Buttons>
+          {layout !== 2 && (
+            <Title isInModal={isInModal}>
+              {context === 'idea' && (
+                <FormattedMessage {...messages.shareIdea} />
+              )}
+              {context === 'project' && (
+                <FormattedMessage {...messages.share} />
+              )}
+              {context === 'initiative' && (
+                <FormattedMessage {...messages.shareThisInitiative} />
+              )}
+              {context === 'folder' && (
+                <FormattedMessage {...messages.shareThisFolder} />
+              )}
+            </Title>
+          )}
+          <Buttons className={layoutClassName}>
             {facebook}
             {messenger}
             {whatsapp}

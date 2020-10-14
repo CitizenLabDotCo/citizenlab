@@ -41,7 +41,7 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles } from 'utils/styleUtils';
+import { colors, defaultStyles, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -83,7 +83,7 @@ const HiddenLabel = styled.span`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 14px;
   margin-bottom: 10px;
   margin-right: 10px;
 `;
@@ -289,7 +289,14 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { focused } = this.state;
-    const { postId, postType, parentId, authUser, className } = this.props;
+    const {
+      postId,
+      postType,
+      parentId,
+      authUser,
+      windowSize,
+      className,
+    } = this.props;
 
     if (!isNilOrError(authUser) && focused) {
       const {
@@ -301,6 +308,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       } = this.state;
       const isModerator =
         !isNilOrError(authUser) && canModerate(postId, { data: authUser });
+      const smallerThanSmallTablet =
+        !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
 
       return (
         <Container className={`${className || ''} e2e-childcomment-form`}>
@@ -310,7 +319,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />
-          <FormContainer onClickOutside={this.onCancel}>
+          <FormContainer
+            onClickOutside={this.onCancel}
+            closeOnClickOutsideEnabled={false}
+          >
             <Form className={focused ? 'focused' : ''}>
               <label>
                 <HiddenLabel>
@@ -339,6 +351,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                     disabled={processing}
                     onClick={this.onCancel}
                     buttonStyle="secondary"
+                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
                   >
                     <FormattedMessage {...messages.cancel} />
                   </CancelButton>
@@ -347,6 +360,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                     processing={processing}
                     onClick={this.onSubmit}
                     disabled={!canSubmit}
+                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
                   >
                     <FormattedMessage {...messages.publishComment} />
                   </Button>

@@ -8,12 +8,12 @@ import {
   IProjectData,
 } from 'services/projects';
 
-interface Parameters {
+interface Props {
   projectId?: string | null;
   projectSlug?: string | null;
 }
 
-export default function useProject({ projectId, projectSlug }: Parameters) {
+export default function useProject({ projectId, projectSlug }: Props) {
   const [project, setProject] = useState<
     IProjectData | undefined | null | Error
   >(undefined);

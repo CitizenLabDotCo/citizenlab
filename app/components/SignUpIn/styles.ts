@@ -4,7 +4,7 @@ import {
   HeaderTitle,
   ModalContentContainer,
 } from 'components/UI/Modal';
-import { colors, fontSizes, defaultOutline, media } from 'utils/styleUtils';
+import { fontSizes, defaultOutline, media } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;
@@ -18,14 +18,14 @@ export const Options = styled.div`
 `;
 
 export const Option = styled.div`
-  color: ${colors.text};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
   margin-top: 20px;
 
   & .link {
-    color: ${colors.text};
+    color: ${(props: any) => props.theme.colorText};
     font-weight: 400;
     line-height: normal;
     text-decoration: underline;
@@ -40,7 +40,7 @@ export const Option = styled.div`
   & .button {
     display: flex;
     align-items: center;
-    color: ${colors.text};
+    color: ${(props: any) => props.theme.colorText};
     font-size: ${fontSizes.base}px;
     font-weight: 300;
     line-height: normal;

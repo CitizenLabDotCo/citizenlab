@@ -51,7 +51,7 @@ const HeaderContentWrapper = styled.div`
 `;
 
 const Title = styled.h3<{ hasHeader: boolean }>`
-  color: #333;
+  color: ${(props) => props.theme.colorText};
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
   font-weight: 500;

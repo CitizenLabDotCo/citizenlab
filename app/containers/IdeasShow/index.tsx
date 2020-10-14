@@ -63,6 +63,7 @@ import GetIdeaCustomFieldsSchemas, {
 } from 'resources/GetIdeaCustomFieldsSchemas';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -90,24 +91,26 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${(props) => props.theme.mobileTopBarHeight}px);
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
   `}
 `;
 
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100vh -
-      ${({ theme: { menuHeight, footerHeight } }) =>
-        menuHeight + footerHeight}px
-  );
+  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   background: #fff;
   opacity: 0;
 
@@ -139,7 +142,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 60px;
+  padding-top: 40px;
   padding-left: 60px;
   padding-right: 60px;
   position: relative;
@@ -228,6 +231,7 @@ const BodySectionTitle = styled.h2`
   font-size: ${(props) => props.theme.fontSizes.large}px;
   font-weight: 500;
   line-height: 28px;
+  padding: 0;
   margin: 0;
   margin-bottom: 15px;
 `;
@@ -273,7 +277,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 const Comments = styled.div`
-  margin-bottom: 150px;
+  margin-bottom: 100px;
 `;
 
 interface DataProps {
@@ -288,10 +292,11 @@ interface DataProps {
   postOfficialFeedbackPermission: GetPermissionChildProps;
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
   tenant: GetTenantChildProps;
+  comments: GetCommentsChildProps;
 }
 
 interface InputProps {
-  ideaId: string | null;
+  ideaId: string;
   projectId: string;
   insideModal: boolean;
   className?: string;
@@ -520,7 +525,7 @@ export class IdeasShow extends PureComponent<
       const authorId = idea.relationships?.author?.data?.id || null;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      const statusId = idea.relationships.idea_status.data.id;
+      const statusId = idea?.relationships?.idea_status?.data?.id;
       const ideaImageLarge =
         ideaImages?.[0]?.attributes?.versions?.large || null;
       const ideaId = idea.id;
@@ -767,6 +772,11 @@ const Data = adopt<DataProps, InputProps>({
       </GetIdeaCustomFieldsSchemas>
     );
   },
+  comments: ({ ideaId, render }) => (
+    <GetComments postId={ideaId} postType="idea">
+      {render}
+    </GetComments>
+  ),
 });
 
 export default (inputProps: InputProps) => (
