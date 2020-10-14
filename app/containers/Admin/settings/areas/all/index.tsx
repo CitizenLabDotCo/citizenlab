@@ -9,6 +9,7 @@ import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import {
   Section,
   SectionDescription,
@@ -19,6 +20,7 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
 import Collapse from 'components/UI/Collapse';
+import { reorderArea } from 'services/areas';
 
 interface InputProps {}
 
@@ -57,6 +59,10 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
+  handleReorderArea = (areaId: string, newOrder: number) => {
+    reorderArea(areaId, newOrder);
+  };
+
   render() {
     const { terminologyOpened } = this.state;
     const {
@@ -93,29 +99,45 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
             <FormattedMessage {...messages.addAreaButton} />
           </Button>
         </ButtonWrapper>
-        <List>
-          {areas.map((area, index) => (
-            <Row key={area.id} isLastItem={index === areas.length - 1}>
-              <TextCell className="expand">
-                <T value={area.attributes.title_multiloc} />
-              </TextCell>
-              <Button
-                onClick={this.handleDeleteClick(area.id)}
-                buttonStyle="text"
-                icon="delete"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-              <Button
-                linkTo={`/admin/settings/areas/${area.id}`}
-                buttonStyle="secondary"
-                icon="edit"
-              >
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
-            </Row>
-          ))}
-        </List>
+        <SortableList
+          items={areas}
+          onReorder={this.handleReorderArea}
+          className="areas-list e2e-admin-areas-list"
+          id="e2e-admin-published-areas-list"
+        >
+          {({ itemsList, handleDragRow, handleDropRow }) =>
+            itemsList.map((item: IAdminPublicationContent, index: number) => {
+              return (
+                <SortableRow
+                  key={item.id}
+                  id={item.id}
+                  index={index}
+                  moveRow={handleDragRow}
+                  dropRow={handleDropRow}
+                  lastItem={index === areas.length - 1}
+                >
+                  <TextCell className="expand">
+                    <T value={item.attributes.title_multiloc} />
+                  </TextCell>
+                  <Button
+                    onClick={this.handleDeleteClick(item.id)}
+                    buttonStyle="text"
+                    icon="delete"
+                  >
+                    <FormattedMessage {...messages.deleteButtonLabel} />
+                  </Button>
+                  <Button
+                    linkTo={`/admin/settings/areas/${item.id}`}
+                    buttonStyle="secondary"
+                    icon="edit"
+                  >
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </SortableRow>
+              );
+            })
+          }
+        </SortableList>
       </Section>
     );
   }

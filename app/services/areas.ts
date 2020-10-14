@@ -51,3 +51,9 @@ export function updateArea(areaId: string, object) {
 export function deleteArea(areaId: string) {
   return streams.delete(`${apiEndpoint}/${areaId}`, areaId);
 }
+
+export function reorderArea(areaId: string, newOrder: number) {
+  return streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, {
+    area: { ordering: newOrder },
+  });
+}
