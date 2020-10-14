@@ -11,8 +11,8 @@ const Outer = styled.div`
   padding-right: 30px;
 
   ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
   `}
 
   &:not(.ie) {
@@ -22,11 +22,10 @@ const Outer = styled.div`
   }
 `;
 
-const Inner: any = styled.div<{ maxWidth?: string }>`
+const Inner = styled.div<{ maxWidth?: string | number }>`
   width: 100%;
   max-width: ${({ maxWidth }) =>
     isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
-  z-index: 1;
 
   &.ie {
     margin-left: auto;

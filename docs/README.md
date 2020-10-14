@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-10-09
+
+### Added
+- Map configuration tool in AdminHQ (to configure maps and layers at the project level).
+
 ## 2020-10-08
 
 ### Added
@@ -8,6 +13,9 @@
 ### Changed
 - Small styling fixes
 - Smart group support multiple area codes
+- Layout refinements for the new idea page
+- More compact idea/proposal comment input
+- Proposal 'how does it work' redesign
 
 ## 2020-10-01
 

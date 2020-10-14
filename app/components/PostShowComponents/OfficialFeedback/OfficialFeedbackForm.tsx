@@ -46,7 +46,7 @@ const FormLabel = styled.div`
 `;
 
 const AddOfficialUpdateTitle = styled.h2`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.medium}px;
   line-height: normal;
   font-weight: 600;

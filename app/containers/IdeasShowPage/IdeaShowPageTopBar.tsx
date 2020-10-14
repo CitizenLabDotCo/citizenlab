@@ -129,6 +129,8 @@ const IdeaShowPageTopBar = memo<Props>(
 
         if (insideModal) {
           eventEmitter.emit('closeIdeaModal');
+        } else if (!isNilOrError(project)) {
+          clHistory.push(`/projects/${project.attributes.slug}`);
         } else {
           clHistory.push('/');
         }

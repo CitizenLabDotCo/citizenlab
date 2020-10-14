@@ -24,7 +24,7 @@ const Container = styled.nav`
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
-  z-index: 998;
+  z-index: 1005;
 
   ${media.biggerThanMaxTablet`
     display: none;
