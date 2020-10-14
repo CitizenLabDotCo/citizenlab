@@ -38,7 +38,7 @@ module Cl2Back
     config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'sidekiq').to_sym
 
     ### After https://stackoverflow.com/a/44985745/3585671
-    # Without lines below we get an uninitialized constant 
+    # Without lines below we get an uninitialized constant
     # error from files in the lib directory to other files
     # that need to be loaded.
     config.eager_load_paths << Rails.root.join('lib')
@@ -49,8 +49,20 @@ module Cl2Back
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
-    
-    config.skylight.environments = ["staging"]
+
+    config.skylight.environments = %w[staging]
+
+    config.after_initialize do
+      Bullet.enable = true
+      Bullet.rails_logger = true
+      Bullet.bullet_logger = true
+      # Bullet.sentry = true if Rails.env.staging?
+      # Bullet.raise = true if Rails.env.test?
+
+      # Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
+      # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+      # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
+    end
   end
 end
 
