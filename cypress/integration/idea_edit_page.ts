@@ -43,6 +43,14 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
+
+    // check original values
+    cy.visit(`/ideas/${ideaSlug}`);
+    cy.get('#e2e-idea-show');
+    cy.get('#e2e-idea-title').contains(ideaTitle);
+    cy.get('#e2e-idea-description').contains(ideaContent);
+
+    // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
     cy.acceptCookies();
 
@@ -51,7 +59,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-title-input #title').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
-    // check initial values
+    // check initial form values
     cy.get('@titleInput').should('contain.value', ideaTitle);
     cy.get('@descriptionInput').contains(ideaContent);
 
@@ -98,27 +106,14 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show #e2e-idea-topics')
+    cy.get('#e2e-idea-show')
+      .find('#e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
     cy.get('#e2e-idea-show #e2e-map-popup').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
     );
-    cy.get('#e2e-idea-show .e2e-post-last-modified-button').contains(
-      'modified'
-    );
-
-    // verify modal with edit changelog
-    cy.get('#e2e-idea-show .e2e-post-last-modified-button');
-    cy.get('#e2e-idea-show')
-      .find('.e2e-post-last-modified-button')
-      .first()
-      .click();
-    cy.wait(1000);
-    cy.get('.e2e-activities-changelog')
-      .find('.e2e-idea-changelog-entry')
-      .should('have.length', 2);
   });
 
   after(() => {
