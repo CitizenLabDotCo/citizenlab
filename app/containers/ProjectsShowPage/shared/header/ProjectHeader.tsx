@@ -48,6 +48,11 @@ const ProjectHeaderImageContainer = styled.div`
   `}
 `;
 
+const EditButton = styled(Button)`
+  display: table;
+  margin: 0 0 10px auto;
+`;
+
 const ShareButton = styled(Button)`
   position: absolute;
   top: 10px;
@@ -113,6 +118,15 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
       return (
         <Container className={className || ''}>
           <ContentContainer>
+            <EditButton
+              icon="edit"
+              locale={locale}
+              linkTo={`/admin/projects/${project.id}/edit`}
+              buttonStyle="primary"
+              padding="5px 8px"
+            >
+              {formatMessage(messages.editProject)}
+            </EditButton>
             {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
               <ProjectHeaderImageContainer>
                 <ShareButton
