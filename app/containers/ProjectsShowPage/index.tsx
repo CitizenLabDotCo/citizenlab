@@ -36,19 +36,22 @@ import { IProjectData } from 'services/projects';
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
+  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   display: flex;
   flex-direction: column;
   align-items: center;
   background: ${(props) => props.background};
-  padding-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
+      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
+    mobileTopBarHeight}px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
+      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
+    mobileTopBarHeight}px);
   `}
 `;
 
@@ -146,8 +149,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
 
     if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-      const redirectoTo = `/${urlSegments.slice(1, 3).join('/')}`;
-      clHistory.replace(redirectoTo);
+      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {
       return (
         <ProjectsShowPage

@@ -32,7 +32,7 @@ const ContainerInner = styled.div`
   position: relative;
 
   &.child {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 38px;
   }
 `;

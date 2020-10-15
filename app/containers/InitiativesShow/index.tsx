@@ -24,7 +24,6 @@ import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
-import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import TranslateButton from 'components/UI/TranslateButton';
 import InitiativeMeta from './InitiativeMeta';
@@ -461,7 +460,6 @@ export class InitiativesShow extends PureComponent<
       const initiativeHeaderImageLarge =
         initiative?.attributes?.header_bg?.large;
       const authorId = initiative?.relationships?.author?.data?.id;
-      const initiativePublishedAt = initiative?.attributes?.published_at;
       const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
       const initiativeImageLarge =
         initiativeImages?.[0]?.attributes?.versions?.large;
@@ -626,13 +624,6 @@ export class InitiativesShow extends PureComponent<
                     }
                   />
                 </div>
-
-                <ContentFooter
-                  postType="initiative"
-                  postId={initiativeId}
-                  publishedAt={initiativePublishedAt}
-                  commentsCount={initiative.attributes.comments_count}
-                />
 
                 {isNotDesktop && (
                   <SharingMobile
