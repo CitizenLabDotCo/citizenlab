@@ -3,21 +3,22 @@ import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import { deleteArea } from 'services/areas';
+import { reorderArea, IAreaData, deleteArea } from 'services/areas';
 
 import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-import { reorderArea } from 'services/areas';
-
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import {
+  SortableList,
+  SortableRow,
+  TextCell,
+} from 'components/admin/ResourceList';
 import {
   Section,
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
-import { TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
@@ -107,7 +108,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
           id="e2e-admin-areas-list"
         >
           {({ itemsList, handleDragRow, handleDropRow }) =>
-            itemsList.map((item: IArea, index: number) => {
+            itemsList.map((item: IAreaData, index: number) => {
               return (
                 <SortableRow
                   key={item.id}
