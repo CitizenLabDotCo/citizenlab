@@ -10,6 +10,7 @@ export interface IAreaData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
+    ordering: number;
   };
 }
 
