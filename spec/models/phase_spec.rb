@@ -31,14 +31,14 @@ RSpec.describe Phase, type: :model do
     end
   end
 
-  describe "participation_mode" do
-    it "can be null for non-ideation phases" do 
+  describe "participation_method" do
+    it "can be null for non-ideation phases" do
       p = create(:phase, participation_method: 'information')
       p.presentation_mode = nil
       expect(p.save).to eq true
     end
 
-    it "cannot be null for ideation phases" do 
+    it "cannot be null for ideation phases" do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
       expect(p.save).to eq false
@@ -80,9 +80,9 @@ RSpec.describe Phase, type: :model do
 
   describe "max_budget" do
     it "can be updated in a project with just one phase" do
-      project = create(:project_with_current_phase, 
+      project = create(:project_with_current_phase,
         phases_config: {sequence: 'xc'},
-        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234} 
+        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234}
         )
       phase = project.phases.find_by participation_method: 'budgeting'
 

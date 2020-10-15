@@ -16,7 +16,7 @@ module ParticipationContext
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
   VOTING_METHODS = %w[unlimited limited].freeze
   PRESENTATION_MODES = %w[card map].freeze
-  IDEAS_ORDERS = %i[trending random most_voted most_recent oldest].freeze
+  IDEAS_ORDERS = %w[trending random most_voted most_recent oldest].freeze
 
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
@@ -26,24 +26,24 @@ module ParticipationContext
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do
       validate :ideas_allowed_in_participation_method
-      validates :participation_method, presence: true, inclusion: { in: PARTICIPATION_METHODS }
+      validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
       validates :voting_enabled, boolean: true
       validates :posting_enabled, boolean: true
       validates :presentation_mode, presence: true, inclusion: { in: PRESENTATION_MODES }
       validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
+      validates :commenting_enabled, boolean: true
       validates :voting_limited_max,
                 presence: true,
                 numericality: { only_integer: true, greater_than: 0 },
                 if: %i[ideation? voting_limited?]
 
       with_options if: :ideation? do
-        validates :commenting_enabled, boolean: true
-        validates :ideas_order, presence: true, inclusion: { in: IDEAS_ORDERS }
+        validates :participation_method, presence: true
+        validates :ideas_order, inclusion: { in: IDEAS_ORDERS, unless: proc { |r| r.ideas_order.nil? } }
       end
 
       with_options if: :budgeting? do
         validates :max_budget, presence: true
-        validates :commenting_enabled, boolean: true
       end
 
       before_validation :set_participation_method, on: :create

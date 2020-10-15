@@ -9,8 +9,12 @@
 #
 class BooleanValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    return unless [true, false].include? value
+    return if [true, false, nil].include? value
 
-    record.errors.add(:base, attribute, message: 'Must be either true or false.')
+    record.errors.add(
+      attribute,
+      :attribute_not_boolean,
+      message: 'needs to be either true or false'
+    )
   end
 end
