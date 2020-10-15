@@ -118,52 +118,63 @@ Rails.application.routes.draw do
       resources :permissions, param: :permission_action do
         get 'participation_conditions', on: :member
       end
-      concern :participation_context do
+      concern :participation_context do |options|
         # :action is already used as param, so we chose :permission_action instead
         resources :permissions, param: :permission_action do
           get 'participation_conditions', on: :member
         end
+
+        resource :ideas_order, only: :update, module: options.dig(:module)
       end
 
       # Events and phases are split in two because we cannot have a non-shallow
       # resource (i.e. files) nested in a shallow resource. File resources have
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
-      resources :events, only: [:show, :edit, :update, :destroy] do
-        resources :files, defaults: {container_type: 'Event'}, shallow: false
+
+      resources :events, only: %i[show edit update destroy] do
+        resources :files, defaults: { container_type: 'Event' }, shallow: false
       end
-      resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
-        resources :files, defaults: {container_type: 'Phase'}, shallow: false
+
+      resources :phases,
+                only: %i[show edit update destroy],
+                defaults: { parent_param: :phase_id } do
+        concerns :participation_context, module: :phases
+        resources :files, defaults: { container_type: 'Phase' }, shallow: false
       end
-      resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
-        resources :events, only: [:index, :new, :create]
+
+      resources :projects,
+                defaults: { parent_param: :project_id } do
+        concerns :participation_context, module: :projects
+
+        resources :events, only: %i[index new create]
         resources :projects_topics, only: [:index]
-        resources :topics, only: [:index, :reorder] do
+        resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end
-        resources :phases, only: [:index, :new, :create]
-        resources :images, defaults: {container_type: 'Project'}
-        resources :files, defaults: {container_type: 'Project'}
+        resources :phases, only: %i[index new create]
+        resources :images, defaults: { container_type: 'Project' }
+        resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
-        resources :custom_fields, controller: 'idea_custom_fields', only: [:index, :show] do
+        resources :custom_fields, controller: 'idea_custom_fields', only: %i[index show] do
           get 'schema', on: :collection
           patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
-      resources :admin_publications, only: [:index, :show] do
+      resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
       end
       resources :project_folders do
-        resources :images, defaults: {container_type: 'ProjectFolder'}
-        resources :files, defaults: {container_type: 'ProjectFolder'}
+        resources :images, defaults: { container_type: 'ProjectFolder' }
+        resources :files, defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
       end
 
-      resources :notifications, only: [:index, :show] do
+      resources :notifications, only: %i[index show] do
         post 'mark_read', on: :member
         post 'mark_all_read', on: :collection
       end

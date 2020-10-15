@@ -5,7 +5,7 @@ module Volunteering::VolunteeringParticipationContext
     has_many :causes, class_name: 'Volunteering::Cause', as: :participation_context, dependent: :destroy
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
-    with_options unless: :is_timeline_project? do
+    with_options unless: :timeline_project? do
       validate :causes_allowed_in_participation_method
     end
   end

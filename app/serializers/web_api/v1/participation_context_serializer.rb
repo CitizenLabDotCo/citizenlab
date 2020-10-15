@@ -5,7 +5,7 @@ module WebApi::V1::ParticipationContextSerializer
 
   included do
     with_options if: Proc.new { |object|
-      object.is_participation_context?
+      object.participation_context?
     } do
       attribute :participation_method
       attribute :posting_enabled
