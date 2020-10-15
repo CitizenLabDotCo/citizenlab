@@ -28,7 +28,7 @@ const Container = styled.div`
   z-index: 2;
 
   ${media.smallerThanMinTablet`
-    padding-top: 20px;
+    padding-top: 30px;
     padding-bottom: 35px;
   `}
 `;
