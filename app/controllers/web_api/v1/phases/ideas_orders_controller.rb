@@ -4,7 +4,7 @@ module Phases
   #
   # The Controller responsible for changing the ideas_order in a given @phase
   #
-  class IdeasOrderController < Phases::BaseController
+  class IdeasOrdersController < Phases::BaseController
     def update
       run_side_effect :before_update
       if @phase.update(phase_params)

@@ -4,7 +4,7 @@ module Projects
   #
   # The Controller responsible for changing the ideas_order in a given @project
   #
-  class IdeasOrderController < Projects::BaseController
+  class IdeasOrdersController < Projects::BaseController
     def update
       run_side_effect :before_update
       if @project.update(project_params)
