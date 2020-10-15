@@ -13,7 +13,8 @@ import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -90,64 +91,66 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props>(({ projectId, className }) => {
-  const locale = useLocale();
-  const project = useProject({ projectId });
+const ProjectHeader = memo<Props & InjectedIntlProps>(
+  ({ projectId, className, intl: { formatMessage } }) => {
+    const locale = useLocale();
+    const project = useProject({ projectId });
 
-  const [shareModalOpened, setShareModalOpened] = useState(false);
+    const [shareModalOpened, setShareModalOpened] = useState(false);
 
-  const openShareModal = useCallback((event: FormEvent) => {
-    event.preventDefault();
-    setShareModalOpened(true);
-  }, []);
+    const openShareModal = useCallback((event: FormEvent) => {
+      event.preventDefault();
+      setShareModalOpened(true);
+    }, []);
 
-  const closeShareModal = useCallback(() => {
-    setShareModalOpened(false);
-  }, []);
+    const closeShareModal = useCallback(() => {
+      setShareModalOpened(false);
+    }, []);
 
-  if (!isNilOrError(locale) && !isNilOrError(project)) {
-    const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+    if (!isNilOrError(locale) && !isNilOrError(project)) {
+      const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
 
-    return (
-      <Container className={className || ''}>
-        <ContentContainer>
-          {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
-            <ProjectHeaderImageContainer>
-              <ShareButton
-                locale={locale}
-                icon="share"
-                onClick={openShareModal}
-                buttonStyle="white"
-                iconColor="#000"
-                textColor="#000"
-                bgColor="rgba(255, 255, 255, 0.92)"
-                borderColor="#ccc"
-                padding="5px 8px"
-              >
-                <FormattedMessage {...messages.share} />
-              </ShareButton>
-              <ProjectHeaderImage
-                src={projectHeaderImageLarge}
-                id="e2e-project-header-image"
-              />
-            </ProjectHeaderImageContainer>
-          )}
-          <StyledProjectArchivedIndicator
-            projectId={projectId}
-            hasHeaderImage={!!projectHeaderImageLarge}
+      return (
+        <Container className={className || ''}>
+          <ContentContainer>
+            {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
+              <ProjectHeaderImageContainer>
+                <ShareButton
+                  locale={locale}
+                  icon="share"
+                  onClick={openShareModal}
+                  buttonStyle="white"
+                  iconColor="#000"
+                  textColor="#000"
+                  bgColor="rgba(255, 255, 255, 0.92)"
+                  borderColor="#ccc"
+                  padding="5px 8px"
+                >
+                  <FormattedMessage {...messages.share} />
+                </ShareButton>
+                <ProjectHeaderImage
+                  src={projectHeaderImageLarge}
+                  id="e2e-project-header-image"
+                />
+              </ProjectHeaderImageContainer>
+            )}
+            <StyledProjectArchivedIndicator
+              projectId={projectId}
+              hasHeaderImage={!!projectHeaderImageLarge}
+            />
+            <StyledProjectInfo projectId={projectId} />
+          </ContentContainer>
+          <ProjectSharingModal
+            projectId={project.id}
+            opened={shareModalOpened}
+            close={closeShareModal}
           />
-          <StyledProjectInfo projectId={projectId} />
-        </ContentContainer>
-        <ProjectSharingModal
-          projectId={project.id}
-          opened={shareModalOpened}
-          close={closeShareModal}
-        />
-      </Container>
-    );
+        </Container>
+      );
+    }
+
+    return null;
   }
+);
 
-  return null;
-});
-
-export default ProjectHeader;
+export default injectIntl(ProjectHeader);
