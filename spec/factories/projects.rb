@@ -24,6 +24,7 @@ end
 
 FactoryBot.define do
   factory :project do
+    ideas_order { nil }
     title_multiloc {{
       "en" => "Renew West Parc",
       "nl-BE" => "Westpark vernieuwen"
