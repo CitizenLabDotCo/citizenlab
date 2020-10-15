@@ -47,7 +47,7 @@ describe('Idea card component', () => {
     cy.setLoginCookie(email, password);
 
     // visit ideas page and sort idea cards by newest first
-    cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+    cy.visit('/projects/an-idea-bring-it-to-your-council');
 
     cy.wait(2000);
     cy.get('#e2e-ideas-list');

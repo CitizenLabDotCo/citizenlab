@@ -30,15 +30,15 @@ const Container = styled.div`
 const PhaseNumberWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 42px;
-  width: 42px;
-  height: 42px;
+  flex-basis: 39px;
+  width: 39px;
+  height: 39px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: ${colors.label};
-  margin-right: 10px;
+  margin-right: 11px;
 
   &.present {
     background: ${colors.clGreen};
@@ -53,7 +53,7 @@ const PhaseNumber = styled.div`
   color: #fff;
   font-size: ${fontSizes.base}px;
   line-height: normal;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const HeaderTitleWrapper = styled.div`
@@ -65,7 +65,7 @@ const HeaderTitleWrapper = styled.div`
 
 const HeaderTitle = styled.h2`
   color: ${colors.label};
-  font-size: ${fontSizes.large + 2}px;
+  font-size: ${fontSizes.large + 1}px;
   line-height: normal;
   font-weight: 600;
   margin: 0;
@@ -80,13 +80,14 @@ const HeaderTitle = styled.h2`
 `;
 
 const HeaderSubtitle = styled.div`
-  color: ${(props: any) => props.theme.colorText};
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   line-height: normal;
   font-weight: 400;
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
   margin-top: 4px;
 `;
 
