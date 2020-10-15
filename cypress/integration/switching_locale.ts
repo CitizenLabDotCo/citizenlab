@@ -37,19 +37,17 @@ describe('Locale switcher', () => {
   it('keeps users locale', () => {
     cy.login('admin@citizenlab.co', 'democracy2.0');
     cy.location('pathname').should('eq', '/en-GB/');
+    cy.visit('/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak');
+    cy.location('pathname').should(
+      'eq',
+      '/en-GB/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
+    );
     cy.visit(
-      '/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak/info'
+      '/fr/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
     );
     cy.location('pathname').should(
       'eq',
-      '/en-GB/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak/info'
-    );
-    cy.visit(
-      '/fr/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak/info'
-    );
-    cy.location('pathname').should(
-      'eq',
-      '/en-GB/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak/info'
+      '/en-GB/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
     );
   });
 });

@@ -16,9 +16,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
 
-const Container = styled.div`
-  padding-bottom: 100px;
-`;
+const Container = styled.div``;
 
 const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   margin-bottom: 20px;

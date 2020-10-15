@@ -15,12 +15,12 @@ import { IEventData } from 'services/events';
 
 // i18n
 import T from 'components/T';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // utils
-import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
+import { getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -44,45 +44,82 @@ const Container = styled.div`
   `}
 `;
 
-const EventDateInfo = styled.div`
+const EventDateBlocks = styled.div`
   flex: 0 0 80px;
+  width: 80px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
 
   ${media.smallerThanMaxTablet`
-    width: 100%;
-    flex: 1 1 auto;
-    order: 1;
+    flex: 1;
+    width: auto;
+    flex-direction: row;
   `}
 `;
 
-const EventDates = styled.div`
+const Separator = styled.div`
+  height: 18px;
+
+  ${media.smallerThanMaxTablet`
+    width: 15px;
+    height: auto;
+  `}
+`;
+
+const EventDateBlockWrapper = styled.div`
+  flex: 0 0 80px;
+  width: 80px;
   display: flex;
   flex-direction: column;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  background: #fff;
-  background: ${transparentize(0.92, colors.label)};
-  border: solid 1px ${transparentize(0.6, colors.label)};
-  border-bottom: none;
+  justify-content: stretch;
 
-  &.past {
-    background: ${colors.grey};
-  }
+  ${media.smallerThanMinTablet`
+    flex: 1;
+    width: auto;
+  `}
+`;
+
+const EventDateBlockLabel = styled.div`
+  color: ${colors.label};
+  font-size: 12px;
+  line-height: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+`;
+
+const EventDateBlock = styled.div`
+  flex: 0 0 80px;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+
+  ${media.smallerThanMinTablet`
+    flex: 1;
+    width: auto;
+  `}
 `;
 
 const EventDate = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: stretch;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: ${transparentize(0.88, colors.label)};
+  border: solid 1px ${colors.label};
+  border-bottom: none;
 `;
 
 const EventMonth = styled.div`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
   font-size: 14px;
   line-height: normal;
   font-weight: 500;
@@ -90,20 +127,10 @@ const EventMonth = styled.div`
 `;
 
 const EventDay = styled.div`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
   font-size: 18px;
   line-height: normal;
   font-weight: 400;
-`;
-
-const EventDatesSeparator = styled.div`
-  color: ${colors.label};
-  font-size: 16px;
-  line-height: normal;
-  font-weight: 500;
-  text-align: center;
-  padding-top: 0px;
-  padding-bottom: 1px;
 `;
 
 const EventYear = styled.div`
@@ -119,10 +146,6 @@ const EventYear = styled.div`
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   background: ${colors.label};
-
-  &.past {
-    background: #555;
-  }
 `;
 
 const EventInformation = styled.div`
@@ -167,10 +190,6 @@ const EventLocationWrapper = styled.div`
   align-items: center;
   border-left: 1px solid ${colors.separation};
   margin-left: 60px;
-
-  &.past {
-    opacity: 0.6;
-  }
 
   ${media.smallerThanMaxTablet`
     width: 100%;
@@ -242,47 +261,60 @@ const EventCard = memo<Props & InjectedIntlProps>(
       const startAtMonth = startAtMoment.format('MMM');
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
+      const endAtYear = endAtMoment.format('YYYY');
       const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
-      const eventStatus = pastPresentOrFuture([
-        event.attributes.start_at,
-        event.attributes.end_at,
-      ]);
       const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
 
       return (
-        <Container className={`${className} ${eventStatus}`}>
-          <EventDateInfo>
-            <EventDates className={eventStatus}>
-              <EventDate>
-                <EventMonth>{startAtMonth}</EventMonth>
-                <EventDay>{startAtDay}</EventDay>
-              </EventDate>
-
+        <Container className={className || ''}>
+          <EventDateBlocks>
+            <EventDateBlockWrapper>
               {isMultiDayEvent && (
-                <>
-                  <EventDatesSeparator>-</EventDatesSeparator>
-                  <EventDate>
-                    <EventMonth>{endAtMonth}</EventMonth>
-                    <EventDay>{endAtDay}</EventDay>
-                  </EventDate>
-                </>
+                <EventDateBlockLabel>
+                  <FormattedMessage {...messages.startsAt} />
+                </EventDateBlockLabel>
               )}
-            </EventDates>
+              <EventDateBlock>
+                <EventDate>
+                  <EventMonth>{startAtMonth}</EventMonth>
+                  <EventDay>{startAtDay}</EventDay>
+                </EventDate>
+                <EventYear>
+                  <span>{startAtYear}</span>
+                </EventYear>
+              </EventDateBlock>
+            </EventDateBlockWrapper>
 
-            <EventYear className={eventStatus}>
-              <span>{startAtYear}</span>
-            </EventYear>
-          </EventDateInfo>
+            {isMultiDayEvent && (
+              <>
+                <Separator />
+                <EventDateBlockWrapper>
+                  <EventDateBlockLabel>
+                    <FormattedMessage {...messages.endsAt} />
+                  </EventDateBlockLabel>
+                  <EventDateBlock>
+                    <EventDate>
+                      <EventMonth>{endAtMonth}</EventMonth>
+                      <EventDay>{endAtDay}</EventDay>
+                    </EventDate>
+                    <EventYear>
+                      <span>{endAtYear}</span>
+                    </EventYear>
+                  </EventDateBlock>
+                </EventDateBlockWrapper>
+              </>
+            )}
+          </EventDateBlocks>
 
-          <EventInformation className={eventStatus}>
+          <EventInformation>
             <EventHeaderTime>
               {isMultiDayEvent ? (
                 <>
-                  {startAtMoment.format('LLL')} - {endAtMoment.format('LLL')}
+                  {startAtMoment.format('lll')} - {endAtMoment.format('lll')}
                 </>
               ) : (
                 <>
-                  {startAtMoment.format('LL')} {startAtMoment.format('LT')} →{' '}
+                  {startAtMoment.format('ll')} {startAtMoment.format('LT')} -{' '}
                   {endAtMoment.format('LT')}
                 </>
               )}
@@ -307,7 +339,7 @@ const EventCard = memo<Props & InjectedIntlProps>(
           </EventInformation>
 
           {hasLocation && (
-            <EventLocationWrapper className={eventStatus}>
+            <EventLocationWrapper>
               <EventLocation>
                 <MapIcon
                   title={formatMessage(messages.location)}
