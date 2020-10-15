@@ -1893,6 +1893,7 @@
   "app.containers.Projects.totalBudget": "Buget total",
   "app.containers.Projects.twitterMessage": "{title}: Împărtășiți-vă ideile dvs. pe",
   "app.containers.Projects.upcomingEvents": "Evenimente viitoare",
+  "app.containers.Projects.whatsAppMessage": "",
   "app.containers.Projects.xEvents": "{eventsCount, plural, no {# evenimente} one {# eveniment} other {# eventimente}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}} în faza curentă",

@@ -1893,6 +1893,7 @@
   "app.containers.Projects.totalBudget": "Totaalbedrag",
   "app.containers.Projects.twitterMessage": "{title}: Deel je ideeën op",
   "app.containers.Projects.upcomingEvents": "Aankomende activiteiten",
+  "app.containers.Projects.whatsAppMessage": "",
   "app.containers.Projects.xEvents": "{eventsCount, plural, no {# activiteiten} one {# activiteit} other {# activiteiten}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# ideeën} one {# idee} other {# ideeën}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# ideeën} one {# idee} other {# ideeën}} in de huidige fase",
