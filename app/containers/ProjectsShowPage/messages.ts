@@ -316,4 +316,12 @@ export default defineMessages({
     id: 'app.containers.Projects.phaseNotStartedYet',
     defaultMessage: `This phase hasn't started yet`,
   },
+  startsAt: {
+    id: 'app.containers.Projects.startsAt',
+    defaultMessage: 'Starts at',
+  },
+  endsAt: {
+    id: 'app.containers.Projects.endsAt',
+    defaultMessage: 'Ends at',
+  },
 });

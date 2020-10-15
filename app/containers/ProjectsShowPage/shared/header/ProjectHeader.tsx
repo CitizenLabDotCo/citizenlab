@@ -28,7 +28,7 @@ const Container = styled.div`
   z-index: 2;
 
   ${media.smallerThanMinTablet`
-    padding-top: 20px;
+    padding-top: 30px;
     padding-bottom: 35px;
   `}
 `;
@@ -36,7 +36,7 @@ const Container = styled.div`
 const ProjectHeaderImageContainer = styled.div`
   width: 100%;
   height: 240px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;

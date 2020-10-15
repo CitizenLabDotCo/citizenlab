@@ -375,7 +375,7 @@ export default class GetInitiatives extends React.Component<Props, State> {
   handleSearchOnChange = (search: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      search,
+      search: search || undefined,
       'page[number]': 1,
     });
   };
