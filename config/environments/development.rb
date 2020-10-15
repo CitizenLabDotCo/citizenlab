@@ -8,7 +8,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.  Changed this to true because of the
   # following issue, can be restored to false once this (puma?) issue is
-  # resolved: 
+  # resolved:
   # https://github.com/rails/rails/issues/27455
   # https://github.com/puma/puma/issues/1184
 
@@ -95,4 +95,15 @@ Rails.application.configure do
   # No whitelist for host header
   config.hosts = nil
 
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    # Bullet.sentry = true # for staging
+    # Bullet.raise = true # for testing
+
+    # Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
+    # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+    # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
+  end
 end
