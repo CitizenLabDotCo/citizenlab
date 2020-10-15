@@ -1893,6 +1893,7 @@
   "app.containers.Projects.totalBudget": "Samlet budget",
   "app.containers.Projects.twitterMessage": "{title}: Del dine ideer på",
   "app.containers.Projects.upcomingEvents": "Kommende begivenheder",
+  "app.containers.Projects.whatsAppMessage": "",
   "app.containers.Projects.xEvents": "{eventsCount, plural, no {# begivenheder} one {# begivenhed} other {# begivenheder}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}} in den nuværende fase",

@@ -1893,6 +1893,7 @@
   "app.containers.Projects.totalBudget": "Orçamento total",
   "app.containers.Projects.twitterMessage": "{title}: Compartilhe as suas ideias sobre",
   "app.containers.Projects.upcomingEvents": "Próximos eventos",
+  "app.containers.Projects.whatsAppMessage": "",
   "app.containers.Projects.xEvents": "{eventsCount, plural, no {# comentários} one {# comentário} other {# comentários}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# ideia} other {# ideias}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, nenhuma {# ideas} uma {# ideia} other {# ideias}} na fase atual",
