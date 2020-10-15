@@ -13,7 +13,7 @@ import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -126,7 +126,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                   borderColor="#ccc"
                   padding="5px 8px"
                 >
-                  <FormattedMessage {...messages.share} />
+                  {formatMessage(messages.share)}
                 </ShareButton>
                 <ProjectHeaderImage
                   src={projectHeaderImageLarge}
