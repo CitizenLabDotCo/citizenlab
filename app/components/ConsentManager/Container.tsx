@@ -48,6 +48,12 @@ export default class Container extends PureComponent<Props, State> {
       isDialogOpen: false,
       isCancelling: false,
     };
+    if (!props.isConsentRequired) {
+      const activeDestinations = Object.values(
+        props.categorizedDestinations
+      ).flat();
+      eventEmitter.emit('startTracking', activeDestinations);
+    }
   }
 
   componentDidMount() {
@@ -56,6 +62,16 @@ export default class Container extends PureComponent<Props, State> {
         .observeEvent('openConsentManager')
         .subscribe(this.openDialog),
     ];
+  }
+
+  componentDidUpdate({ isConsentRequired: prevIsConsentRequired }) {
+    const { isConsentRequired, categorizedDestinations } = this.props;
+
+    if (!isConsentRequired && prevIsConsentRequired) {
+      const activeDestinations = Object.values(categorizedDestinations).flat();
+      eventEmitter.emit('startTracking', activeDestinations);
+      console.log('starttrack');
+    }
   }
 
   componentWillUnmount() {
