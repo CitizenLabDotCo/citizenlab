@@ -52,7 +52,7 @@ export default class Container extends PureComponent<Props, State> {
       const activeDestinations = Object.values(
         props.categorizedDestinations
       ).flat();
-      eventEmitter.emit('startTracking', activeDestinations);
+      eventEmitter.emit('initializeTacking', activeDestinations);
     }
   }
 
@@ -64,12 +64,18 @@ export default class Container extends PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate({ isConsentRequired: prevIsConsentRequired }) {
+  componentDidUpdate({
+    isConsentRequired: prevIsConsentRequired,
+    categorizedDestinations: prevategorizedDestinations,
+  }) {
     const { isConsentRequired, categorizedDestinations } = this.props;
 
-    if (!isConsentRequired && prevIsConsentRequired) {
+    if (
+      isConsentRequired !== prevIsConsentRequired ||
+      prevategorizedDestinations !== categorizedDestinations
+    ) {
       const activeDestinations = Object.values(categorizedDestinations).flat();
-      eventEmitter.emit('startTracking', activeDestinations);
+      eventEmitter.emit('initializeTacking', activeDestinations);
       console.log('starttrack');
     }
   }

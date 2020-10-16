@@ -35,9 +35,9 @@ const authUser$ = authUserStream().observable;
 const events$ = new Subject<IEvent>();
 const pageChanges$ = new Subject<IPageChange>();
 
-const startTracking$ = eventEmitter.observeEvent('startTracking');
+const initializeTacking$ = eventEmitter.observeEvent('initializeTacking');
 
-combineLatest(tenant$, authUser$, startTracking$).subscribe(
+combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
   ([tenant, user, { eventValue }]) => {
     const { savedChoices } = getConsent();
     if (savedChoices.intercom && eventValue.includes('intercom')) {
@@ -75,6 +75,8 @@ combineLatest(tenant$, authUser$, startTracking$).subscribe(
         }
       })();
 
+      console.log('booty');
+
       window.Intercom &&
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
@@ -82,10 +84,21 @@ combineLatest(tenant$, authUser$, startTracking$).subscribe(
             ? {
                 email: user.data.attributes.email,
                 user_id: user.data.id,
-                created_at: user.data.attributes.created_at,
+              }
+            : {}),
+          ...(!isNilOrError(tenant)
+            ? {
+                company: {
+                  company_id: tenant.data.id,
+                  name: tenant.data.attributes.name,
+                },
               }
             : {}),
         });
+    }
+    if (!eventValue.includes('intercom') && window.Intercom) {
+      console.log('unboot i');
+      window.Intercom('shutdown');
     }
   }
 );
