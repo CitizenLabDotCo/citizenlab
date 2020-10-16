@@ -1,5 +1,20 @@
 # Changelog
 
+## 2020-10-16
+
+### Added
+- Ability to reorder geographic areas
+
+### Fixed
+- Stretched images in 'avatar bubbles'
+- Input fields where other people can be @mentioned don't grow too wide anymore 
+- Linebar charts overlapping elements in the admin dashboard
+
+## 2020-10-14
+
+### Changed
+- Project page redesign
+
 ## 2020-10-09
 
 ### Added
