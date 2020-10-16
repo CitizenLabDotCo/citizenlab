@@ -1,18 +1,19 @@
 class IdeaStatus < ApplicationRecord
   CODES = %w(proposed viewed under_consideration accepted implemented rejected custom)
   MINIMUM_REQUIRED_CODES = %w[proposed].freeze
-  #  viewed under_consideration accepted implemented rejected custom
+  #  Old codes: viewed under_consideration accepted implemented rejected custom
 
   has_many :ideas
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
-  before_destroy :remove_notifications
-
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, presence: true, multiloc: { presence: true }
   validates :code, presence: true, minimum_required: { values: MINIMUM_REQUIRED_CODES }
+  validates :color, presence: true
 
   before_validation :strip_title
+  before_destroy :remove_notifications
+  before_destroy :abort_if_code_required
 
   def self.create_defaults
     (CODES - ['custom']).each.with_index do |code, i|
@@ -42,6 +43,12 @@ class IdeaStatus < ApplicationRecord
 
   def strip_title
     title_multiloc.each { |key, value| title_multiloc[key] = value.strip }
+  end
+
+  def abort_if_code_required
+    valid?
+
+    throw(:abort) if errors[:code].present?
   end
 
   def remove_notifications
