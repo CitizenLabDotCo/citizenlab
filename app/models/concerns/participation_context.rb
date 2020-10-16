@@ -26,7 +26,7 @@ module ParticipationContext
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do
       validate :ideas_allowed_in_participation_method
-      validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+      validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }, if: :participation_method
       validates :voting_enabled, boolean: true
       validates :posting_enabled, boolean: true
       validates :presentation_mode, presence: true, inclusion: { in: PRESENTATION_MODES }
