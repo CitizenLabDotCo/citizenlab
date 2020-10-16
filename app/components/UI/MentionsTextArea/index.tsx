@@ -49,6 +49,10 @@ const Container = styled.div`
   }
 `;
 
+const StyledMentionsInput = styled(MentionsInput)`
+  word-break: break-word;
+`;
+
 export interface InputProps {
   id?: string;
   className?: string;
@@ -257,7 +261,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
     if (style) {
       return (
         <Container className={className}>
-          <MentionsInput
+          <StyledMentionsInput
             id={id}
             style={style}
             className={`textareaWrapper ${
@@ -282,7 +286,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
               appendSpaceOnAdd={true}
               style={mentionStyle}
             />
-          </MentionsInput>
+          </StyledMentionsInput>
           {children}
           <Error text={error} />
         </Container>
