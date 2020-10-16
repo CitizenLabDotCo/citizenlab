@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -11,6 +12,7 @@ import { Button } from 'cl2-component-library';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -100,6 +102,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const locale = useLocale();
     const project = useProject({ projectId });
+    const authUser = useAuthUser();
 
     const [shareModalOpened, setShareModalOpened] = useState(false);
 
@@ -114,19 +117,24 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
 
     if (!isNilOrError(locale) && !isNilOrError(project)) {
       const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+      const userCanEditProject =
+        !isNilOrError(authUser) &&
+        canModerate(project.id, { data: authUser.data });
 
       return (
         <Container className={className || ''}>
           <ContentContainer>
-            <EditButton
-              icon="edit"
-              locale={locale}
-              linkTo={`/admin/projects/${project.id}/edit`}
-              buttonStyle="primary"
-              padding="5px 8px"
-            >
-              {formatMessage(messages.editProject)}
-            </EditButton>
+            {userCanEditProject && (
+              <EditButton
+                icon="edit"
+                locale={locale}
+                linkTo={`/admin/projects/${project.id}/edit`}
+                buttonStyle="primary"
+                padding="5px 8px"
+              >
+                {formatMessage(messages.editProject)}
+              </EditButton>
+            )}
             {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
               <ProjectHeaderImageContainer>
                 <ShareButton
