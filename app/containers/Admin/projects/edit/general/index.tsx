@@ -1094,6 +1094,17 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveProject,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+
             {project && (
               <HasPermission item={project.data} action="delete">
                 <DeleteProjectSectionField>
@@ -1122,17 +1133,6 @@ class AdminProjectEditGeneral extends PureComponent<
                 </DeleteProjectSectionField>
               </HasPermission>
             )}
-
-            <SubmitWrapper
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveProject,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
           </Section>
         </StyledForm>
       );
