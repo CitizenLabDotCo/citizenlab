@@ -30,67 +30,77 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class Edit extends React.Component<
-  Props & WithRouterProps & InjectedIntlProps & InjectedLocalized
-> {
-  hasOptions = (inputType) => {
+const Edit = ({
+  intl: { formatMessage },
+  customField,
+  children,
+  localize,
+}: Props & WithRouterProps & InjectedIntlProps & InjectedLocalized) => {
+  const hasOptions = (inputType) => {
     return inputType === 'select' || inputType === 'multiselect';
   };
 
-  goBack = () => {
+  const goBack = () => {
     clHistory.push('/admin/settings/registration');
   };
 
-  getTabs = (customField: IUserCustomFieldData) => {
+  const getTabs = (customField: IUserCustomFieldData) => {
     const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
 
     const tabs = [
       {
-        label: this.props.intl.formatMessage(messages.generalTab),
+        label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/general`,
         className: 'general',
       },
     ];
 
     if (
-      this.hasOptions(customField.attributes.input_type) &&
+      hasOptions(customField.attributes.input_type) &&
       !isBuiltInField(customField)
     ) {
       tabs.push({
-        label: this.props.intl.formatMessage(messages.optionsTab),
+        label: formatMessage(messages.optionsTab),
         url: `${baseTabsUrl}/options`,
         className: 'options',
+      });
+    }
+
+    if (!isNilOrError(customFieldOptions)) {
+      tabs.push({
+        label: formatMessage(messages.optionsOrderTab),
+        url: `${baseTabsUrl}/options-order`,
+        className: 'options-order',
       });
     }
 
     return tabs;
   };
 
-  render() {
-    const { customField, children, localize } = this.props;
-    const childrenWithExtraProps = React.cloneElement(
-      children as React.ReactElement<any>,
-      { customField }
-    );
+  const childrenWithExtraProps = React.cloneElement(
+    children as React.ReactElement<any>,
+    { customField }
+  );
 
+  if (!isNilOrError(customField)) {
     return (
-      !isNilOrError(customField) && (
-        <>
-          <StyledGoBackButton onClick={this.goBack} />
-          <TabbedResource
-            tabs={this.getTabs(customField)}
-            resource={{
-              title: localize(customField.attributes.title_multiloc),
-              publicLink: '',
-            }}
-          >
-            {childrenWithExtraProps}
-          </TabbedResource>
-        </>
-      )
+      <>
+        <StyledGoBackButton onClick={goBack} />
+        <TabbedResource
+          tabs={getTabs(customField)}
+          resource={{
+            title: localize(customField.attributes.title_multiloc),
+            publicLink: '',
+          }}
+        >
+          {childrenWithExtraProps}
+        </TabbedResource>
+      </>
     );
   }
-}
+
+  return null;
+};
 
 const EditWithHOCs = injectIntl(injectLocalize(Edit));
 
