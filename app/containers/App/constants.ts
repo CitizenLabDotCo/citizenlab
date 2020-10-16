@@ -4,6 +4,7 @@ export const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 export const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 export const CL_GA_TRACKING_ID = 'UA-65562281-44';
 export const CL_GA_TRACKER_NAME = 'CitizenLab2';
+export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID || 'p4lr69wg';
 export const CL_SEGMENT_API_KEY =
   process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
 export const API_HOST =

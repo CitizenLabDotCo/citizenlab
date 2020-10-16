@@ -79,7 +79,7 @@ export default defineMessages({
   requiredPurpose: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose',
     defaultMessage:
-      'To have a fonctional platorm, we save an authenticating cookie if you sign up, and the language in which you use this platform',
+      'To have a fonctional platorm, we save the cookie preferences, an authenticating cookie if you sign up, and the language in which you use this platform',
   },
   tools: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.tools',
