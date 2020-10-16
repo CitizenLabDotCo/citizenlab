@@ -8,7 +8,7 @@ class WebApi::V1::Phases::IdeasOrdersController < WebApi::V1::Phases::BaseContro
     run_side_effect :before_update
     if @phase.update(phase_params)
       run_side_effect :after_update
-      render json: serialized_phase(includes: :ideas), status: :ok
+      render json: serialized_phase(params: phase_params.to_h), status: :ok
     else
       render json: serialized_phase_errors, status: :unprocessable_entity
     end

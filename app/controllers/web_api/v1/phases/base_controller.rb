@@ -14,7 +14,7 @@ class WebApi::V1::Phases::BaseController < ApplicationController
   end
 
   def serialized_phase(**options)
-    WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params, **options).serialized_json
+    WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params(options.delete(:params)), **options).serialized_json
   end
 
   def serialized_phase_errors

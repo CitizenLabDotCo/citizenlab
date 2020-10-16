@@ -14,7 +14,7 @@ class WebApi::V1::Projects::BaseController < ApplicationController
   end
 
   def serialized_project(**options)
-    WebApi::V1::ProjectSerializer.new(@project, params: fastjson_params, **options).serialized_json
+    WebApi::V1::ProjectSerializer.new(@project, params: fastjson_params(options.delete(:params)), **options).serialized_json
   end
 
   def serialized_project_errors
