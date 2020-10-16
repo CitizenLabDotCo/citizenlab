@@ -164,7 +164,7 @@ describe SanitizationService do
 
   describe "remove_empty_trailing_tags" do
     it "only removes one of the tags div, p, h2, h3, ol and ul" do
-      extpect service::EDITOR_STRUCTURE_TAGS .to match_array %w[div p h2 h3 ol ul]
+      extpect service.class::EDITOR_STRUCTURE_TAGS .to match_array %w[div p h2 h3 ol ul]
     end
 
     it "doesn't modify invalid html" do
