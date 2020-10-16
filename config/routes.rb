@@ -67,7 +67,7 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses, only: [:index, :show]
+      resources :idea_statuses
       resources :initiative_statuses, only: [:index, :show]
 
       # auth

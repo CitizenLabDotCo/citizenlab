@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
-  include Knock::Authenticable
-  include Pundit
+  extend Trickster
+
+  tricks Knock::Authenticable, Pundit
 
   before_action :set_current
   before_action :authenticate_user, if: :secure_controller?
@@ -11,7 +12,7 @@ class ApplicationController < ActionController::API
   rescue_from Apartment::TenantNotFound, with: :tenant_not_found
 
   rescue_from ActionController::UnpermittedParameters do |pme|
-    render json: { error:  { unknown_parameters: pme.params } }, 
+    render json: { error:  { unknown_parameters: pme.params } },
       status: :bad_request
   end
 
