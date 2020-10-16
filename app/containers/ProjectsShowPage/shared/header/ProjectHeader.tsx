@@ -129,7 +129,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                 icon="edit"
                 locale={locale}
                 linkTo={`/admin/projects/${project.id}/edit`}
-                buttonStyle="primary"
+                buttonStyle="secondary"
                 padding="5px 8px"
               >
                 {formatMessage(messages.editProject)}
