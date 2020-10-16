@@ -101,7 +101,7 @@ class Idea < ApplicationRecord
       self.body_multiloc,
       %i{title alignment list decoration link video}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 
