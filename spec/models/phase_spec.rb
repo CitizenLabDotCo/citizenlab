@@ -32,13 +32,21 @@ RSpec.describe Phase, type: :model do
   end
 
   describe "participation_method" do
+    it "cannot be null" do
+      p = create(:phase, participation_method: 'ideation')
+      p.participation_method = nil
+      expect(p.save).to eq false
+    end
+  end
+
+  describe "presentation_mode" do
     it "can be null for non-ideation phases" do
       p = create(:phase, participation_method: 'information')
       p.presentation_mode = nil
       expect(p.save).to eq true
     end
 
-    it "cannot be null for ideation phases" do
+    it "cannot be null" do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
       expect(p.save).to eq false

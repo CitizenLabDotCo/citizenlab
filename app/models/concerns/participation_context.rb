@@ -26,10 +26,10 @@ module ParticipationContext
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do
       validate :ideas_allowed_in_participation_method
-      validates :participation_method, inclusion: { in: PARTICIPATION_METHODS, unless: proc { |r| r.participation_method.nil? } }
+      validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
       validates :voting_enabled, boolean: true
       validates :posting_enabled, boolean: true
-      validates :presentation_mode, presence: true, inclusion: { in: PRESENTATION_MODES }
+      validates :presentation_mode, inclusion: { in: PRESENTATION_MODES, unless: proc { |r| r.presentation_mode.nil? } }
       validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
       validates :commenting_enabled, boolean: true
       validates :voting_limited_max,
@@ -38,7 +38,7 @@ module ParticipationContext
                 if: %i[ideation? voting_limited?]
 
       with_options if: :ideation? do
-        validates :participation_method, presence: true
+        validates :presentation_mode, presence: true
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS, unless: proc { |r| r.ideas_order.nil? } }
       end
 
