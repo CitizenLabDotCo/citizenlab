@@ -10,7 +10,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   belongs_to :project
 
   has_many :permissions
-  has_many :ideas
+  has_many :ideas, if: proc { |_, params| params[:ideas_order] }
 
   has_one :user_basket, if: Proc.new { |object, params|
     signed_in? object, params
