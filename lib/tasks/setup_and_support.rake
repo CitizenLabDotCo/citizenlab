@@ -8,7 +8,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       data.each do |d|
         idea = Idea.find d['ID']
-        first_name = idea.author&.first_name || idea.author_name.split(' ').first || ''
+        first_name = idea.author&.first_name || d['First name'] || ''
         d['Feedback'] = d['Feedback'].gsub '{{first_name}}', first_name
       end
 
@@ -23,12 +23,13 @@ namespace :setup_and_support do
         user = User.find_by email: d['Feedback Email']
         if idea && status
           idea.idea_status = status
-        idea.save!
-        LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
-        feedback = OfficialFeedback.create!(post: idea, body_multiloc: {args[:locale] => text}, author_multiloc: {args[:locale] => name}, user: user)
-        LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
-        end
+          idea.save!
+          LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
+          feedback = OfficialFeedback.create!(post: idea, body_multiloc: {args[:locale] => text}, author_multiloc: {args[:locale] => name}, user: user)
+          LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
+          end
         logs += ["#{i}) Couldn't find idea #{d['ID']}"] if !idea
+        logs += ["#{i}) Couldn't find idea author #{d['ID']}"] if idea && !idea.author_id
       end
       logs.each{|l| puts l} && true
 
