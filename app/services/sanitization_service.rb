@@ -7,7 +7,7 @@ class SanitizationService
 
   SANITIZER = Rails::Html::WhiteListSanitizer.new
 
-  private_constant :EDITOR_STRUCTURE_TAGS, :SANITIZER
+  private_constant :SANITIZER
 
   def sanitize(text, features)
     scrubber = IframeScrubber.new(features)
@@ -29,7 +29,7 @@ class SanitizationService
     end
   end
 
-  def remove_empty_paragraphs_multiloc(multiloc)
+  def remove_multiloc_empty_trailing_tags(multiloc)
     multiloc.each_with_object({}) do |(locale, text), output|
       output[locale] = remove_empty_trailing_tags(text)
     end

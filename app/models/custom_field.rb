@@ -64,7 +64,7 @@ class CustomField < ApplicationRecord
       self.description_multiloc,
       %i{decoration link list title}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 end
