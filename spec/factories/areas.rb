@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :area do
+    ordering { nil }
     title_multiloc {{
       "en" => "Westside",
       "nl-BE" => "Westerbuurt"
