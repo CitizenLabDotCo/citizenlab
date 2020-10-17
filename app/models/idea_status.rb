@@ -20,7 +20,7 @@ class IdeaStatus < ApplicationRecord
   before_destroy :abort_if_code_required
 
   def self.create_defaults
-    (CODES - ['custom']).each.with_index do |code, i|
+    (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
       title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
         translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}") }
         [locale, translation]
