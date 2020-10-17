@@ -18,7 +18,6 @@ module ExtractsControllerResource
 
   # ExtractsControllerResource::ClassMethods
   module ClassMethods
-
     private
 
     def resource(resource_name = nil, **options)
@@ -33,7 +32,7 @@ module ExtractsControllerResource
     end
 
     def define_resource_methods
-      define_method(:resource) do
+      define_method :resource do
         instance_variable_get self.class.resource_variable_from(params)
       end
     end
@@ -44,10 +43,6 @@ module ExtractsControllerResource
 
     def namespaced_resource_class
       to_s.gsub('Controller', '').singularize
-    end
-
-    def resource_collection
-      instance_variable_get "@#{@resource_name.pluralize}"
     end
 
     def controller_resource_name
