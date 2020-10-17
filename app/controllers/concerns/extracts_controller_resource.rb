@@ -10,7 +10,7 @@ module ExtractsControllerResource
   extend ActiveSupport::Concern
 
   COLLECTION_METHODS = %i[index bulk_update].freeze
-  MEMBER_METHODS = %i[show new update destroy reorder].freeze
+  MEMBER_METHODS = %i[show create update destroy reorder].freeze
 
   included do
     extend ClassMethods
@@ -18,6 +18,7 @@ module ExtractsControllerResource
 
   # ExtractsControllerResource::ClassMethods
   module ClassMethods
+
     private
 
     def resource(resource_name = nil, **options)
@@ -28,7 +29,7 @@ module ExtractsControllerResource
     end
 
     def collection_method?(params)
-      !params[:id] || COLLECTION_METHODS.include?(params[:action])
+      COLLECTION_METHODS.include?(params[:action].to_sym)
     end
 
     def define_resource_methods
@@ -53,6 +54,7 @@ module ExtractsControllerResource
       namespaced_resource_class.demodulize
     end
 
+    # @return ->
     def member_variable
       ['@', controller_resource_name.underscore].join
     end
