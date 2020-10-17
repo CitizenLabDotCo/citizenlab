@@ -33,7 +33,7 @@ module ExtractsControllerResource
 
     def define_resource_methods
       define_method :resource do
-        instance_variable_get self.class.resource_variable_from(params)
+        instance_variable_get self.class.resource_variable_from_params(params)
       end
     end
 
@@ -60,7 +60,7 @@ module ExtractsControllerResource
 
     public
 
-    def resource_variable_from(params)
+    def resource_variable_from_params(params)
       return collection_variable if collection_method?(params)
 
       member_variable
