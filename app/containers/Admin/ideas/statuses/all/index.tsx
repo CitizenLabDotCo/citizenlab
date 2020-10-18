@@ -11,6 +11,7 @@ import useIdeaStatuses from 'hooks/useIdeaStatuses';
 // components
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
+
 // import FeatureFlag from 'components/FeatureFlag';
 // import Button from 'components/UI/Button';
 // import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -34,16 +35,32 @@ const Buttons = styled.div`
 `;
 
 const StyledBadge = styled(Badge)`
-  margin-left: 10px;
+  background: #147985;
+  color: white;
+  border-color: #147985;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 9px;
+  padding: 0.15rem 0.35rem;
+  margin-left: 1.5rem;
 `;
 
 const Numbering = styled.span`
-  margin-right: 10px;
+  margin-right: 0.5rem;
 `;
 
-const LegendText = styled.span`
-  color: #147985;
-  font-weight: normal;
+const ColorLabel = styled.span`
+  width: 20px;
+  height: 20px;
+  background-color: ${(props) => props.color};
+  margin-right: 2rem;
+  border-radius: 2px;
+  display: inline-block;
+`;
+
+const FlexTextCell = styled(TextCell)`
+  display: flex;
+  align-items: center;
 `;
 
 export default function IdeaStatuses() {
@@ -93,20 +110,16 @@ export default function IdeaStatuses() {
               moveRow={handleDragRow}
               dropRow={handleDropRow}
             >
-              <TextCell className="expand">
+              <FlexTextCell className="expand">
+                <ColorLabel color={ideaStatus.attributes.color} />
                 <Numbering>{index + 1}.</Numbering>
                 <T value={ideaStatus.attributes.title_multiloc} />
-                {ideaStatus.attributes.required && (
-                  <StyledBadge className="inverse">
-                    <FormattedMessage {...messages.required} />
+                {isRequired(ideaStatus) && (
+                  <StyledBadge>
+                    <FormattedMessage {...messages.systemField} />
                   </StyledBadge>
                 )}
-              </TextCell>
-              {isRequired(ideaStatus) && (
-                <LegendText>
-                  <FormattedMessage {...messages.systemField} />
-                </LegendText>
-              )}
+              </FlexTextCell>
               <Buttons>
                 {!isRequired(ideaStatus) && (
                   <Button
