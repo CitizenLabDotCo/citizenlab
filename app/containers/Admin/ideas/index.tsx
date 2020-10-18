@@ -1,94 +1,111 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
+
+// router
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import PageWrapper from 'components/admin/PageWrapper';
-import PostManager from 'components/admin/PostManager';
-import { PageTitle, SectionDescription } from 'components/admin/Section';
+import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// styling
-import styled from 'styled-components';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import { reject } from 'lodash-es';
 
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
+export interface InputProps {}
 
-const Left = styled.div`
-  margin-right: 80px;
-`;
-
-export interface Props {
-  projects: GetProjectsChildProps;
+interface DataProps {
+  widgetsEnabled: GetFeatureFlagChildProps;
+  customTopicsEnabled: GetFeatureFlagChildProps;
 }
 
-class IdeaDashboard extends PureComponent<Props> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class SettingsPage extends React.PureComponent<
+  Props & InjectedIntlProps & WithRouterProps,
+  State
+> {
+  getTabs = () => {
+    const { widgetsEnabled, customTopicsEnabled } = this.props;
+    const { formatMessage } = this.props.intl;
+
+    let tabs: TabProps[] = [
+      {
+        label: formatMessage(messages.tabSettings),
+        url: '/admin/ideas',
+      },
+      {
+        label: formatMessage(messages.tabCustomize),
+        url: '/admin/ideas/statuses',
+      },
+    ];
+
+    const tabHideConditions = {
+      topics: function isTopicsTabHidden() {
+        if (!customTopicsEnabled) {
+          return true;
+        }
+
+        return false;
+      },
+      widgets: function isWidgetsTabHidden() {
+        if (!widgetsEnabled) {
+          return true;
+        }
+
+        return false;
+      },
+    };
+
+    const tabNames = tabs.map((tab) => tab.name);
+
+    tabNames.forEach((tabName) => {
+      if (tabName && tabHideConditions[tabName]()) {
+        tabs = reject(tabs, { name: tabName });
+      }
+    });
+
+    return tabs;
+  };
+
   render() {
-    const { projects } = this.props;
+    const { children } = this.props;
+    const { formatMessage } = this.props.intl;
+
+    const resource = {
+      title: formatMessage(messages.pageTitle),
+    };
 
     return (
-      <>
+      <TabbedResource resource={resource} tabs={this.getTabs()}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <HeaderContainer>
-          <Left>
-            <PageTitle>
-              <FormattedMessage {...messages.header} />
-            </PageTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.headerSubtitle} />
-            </SectionDescription>
-          </Left>
-        </HeaderContainer>
-
-        <PageWrapper>
-          {projects && projects.projectsList !== undefined && (
-            <PostManager
-              type="AllIdeas"
-              visibleFilterMenus={['projects', 'topics', 'statuses']}
-              projects={projects.projectsList}
-            />
-          )}
-        </PageWrapper>
-      </>
+        {children}
+      </TabbedResource>
     );
   }
 }
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
+const SettingsPageWithHocs = withRouter(injectIntl(SettingsPage));
 
-const Data = adopt<Props>({
-  projects: (
-    <GetProjects
-      pageSize={250}
-      sort="new"
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
-  ),
+const Data = adopt<DataProps, InputProps>({
+  widgetsEnabled: <GetFeatureFlag name="widgets" />,
+  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
 });
 
-export default () => (
-  <Data>{(dataProps) => <IdeaDashboard {...dataProps} />}</Data>
+export default (inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <SettingsPageWithHocs {...inputProps} {...dataProps} />}
+  </Data>
 );

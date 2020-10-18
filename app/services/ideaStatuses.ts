@@ -14,12 +14,13 @@ export interface IIdeaStatusData {
   };
 }
 
-export interface IIdeaStatuses {
-  data: IIdeaStatusData[];
-}
-
 export interface IIdeaStatus {
   data: IIdeaStatusData;
+}
+
+export interface IIdeaStatuses {
+  data: IIdeaStatusData[];
+  length: number;
 }
 
 export function ideaStatusStream(statusId: string) {

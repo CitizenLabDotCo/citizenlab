@@ -159,6 +159,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
     let lastItem = false;
+
     return (
       <>
         <FeatureFlag name="user_custom_fields">
