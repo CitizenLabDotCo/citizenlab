@@ -1,8 +1,20 @@
+# frozen_string_literal: true
+
+#
+# ===== Purpose
+#
+#     Adds errors to an object if a set of required values don't exist in the DB.
+#
+#
+# ===== Usage
+#
+#     validates :some_field, minimum_required: { values: [value_1, value_2] }
+#
 class MinimumRequiredValidator < ActiveModel::EachValidator
   def validate_each(*args)
     @record, @attribute, @value = args
 
-    return unless record_persisted? && required_attribute_will_change?
+    return unless updating_required_value? || destroying_required_object?
 
     record.errors.add(attribute, :value_required, message: 'is required and cannot be changed or deleted.')
   end
@@ -12,6 +24,14 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
   attr_reader :record, :attribute, :value
   delegate :persisted?, :changes, :class, to: :record, prefix: true
 
+  def updating_required_value?
+    record_persisted? && required_attribute_will_change?
+  end
+
+  def destroying_required_object?
+    record.will_be_destroyed? && attribute_value_required?
+  end
+
   def required_attribute_will_change?
     return unless attribute_value_required?
 
@@ -19,7 +39,7 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
   end
 
   def attribute_value_required?
-    value_in_required_list? || !other_records_contain_required_values?
+    value_in_required_list? && !other_records_contain_required_values?
   end
 
   def value_in_required_list?
