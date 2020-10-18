@@ -12,6 +12,7 @@ import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
+import ideasRoutes from './ideas/routes';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -95,6 +96,7 @@ export default () => ({
     pagesRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
+    ideasRoutes(),
     {
       path: 'moderation',
       component: Loadable({
@@ -107,14 +109,6 @@ export default () => ({
       path: 'workshops',
       component: Loadable({
         loader: () => import('containers/Admin/workshops'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    {
-      path: 'ideas',
-      component: Loadable({
-        loader: () => import('containers/Admin/ideas'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),

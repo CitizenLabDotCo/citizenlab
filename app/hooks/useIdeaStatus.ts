@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IIdeaStatusData, ideaStatusStream } from 'services/ideaStatuses';
 
-export default function useSimilarIdeas({ statusId }) {
+export default function useIdeaStatus({ statusId }) {
   const [ideaStatus, setIdeaStatus] = useState<
     IIdeaStatusData | Error | null | undefined
   >(undefined);
