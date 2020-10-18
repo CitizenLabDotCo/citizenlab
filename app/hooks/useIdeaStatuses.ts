@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { IIdeaStatuses, ideaStatusesStream } from 'services/ideaStatuses';
+import { IIdeaStatusData, ideaStatusesStream } from 'services/ideaStatuses';
 import { isNilOrError } from 'utils/helperUtils';
 
 export default function useIdeaStatuses() {
   const [ideaStatuses, setIdeaStatuses] = useState<
-    IIdeaStatuses | null | undefined
+    IIdeaStatusData[] | null | undefined | Error
   >(undefined);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function useIdeaStatuses() {
     const subscription = observable.subscribe((response) => {
       isNilOrError(response)
         ? setIdeaStatuses(response)
-        : setIdeaStatuses(response.data as any);
+        : setIdeaStatuses(response.data);
     });
 
     return () => subscription.unsubscribe();
