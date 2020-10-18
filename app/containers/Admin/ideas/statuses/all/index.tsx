@@ -1,12 +1,18 @@
 // libraries
 import React from 'react';
-import { last } from 'lodash';
 import styled from 'styled-components';
 
 import messages from '../../messages';
 
-// streams
+// hooks
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
+
+// streams
+import {
+  updateIdeaStatus,
+  deleteIdeaStatus,
+  IIdeaStatusData,
+} from 'services/ideaStatuses';
 
 // components
 import T from 'components/T';
@@ -16,6 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // import Button from 'components/UI/Button';
 // import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import CountBadge from 'components/UI/CountBadge';
 import {
   Section,
   SectionTitle,
@@ -35,14 +42,10 @@ const Buttons = styled.div`
 `;
 
 const StyledBadge = styled(Badge)`
-  background: #147985;
-  color: white;
-  border-color: #147985;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.3rem;
+  font-size: 10px;
   font-weight: bold;
-  text-transform: uppercase;
-  font-size: 9px;
-  padding: 0.15rem 0.35rem;
-  margin-left: 1.5rem;
 `;
 
 const Numbering = styled.span`
@@ -50,8 +53,8 @@ const Numbering = styled.span`
 `;
 
 const ColorLabel = styled.span`
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
   background-color: ${(props) => props.color};
   margin-right: 2rem;
   border-radius: 2px;
@@ -61,20 +64,33 @@ const ColorLabel = styled.span`
 const FlexTextCell = styled(TextCell)`
   display: flex;
   align-items: center;
+  text-transform: capitalize;
+`;
+
+const Badges = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
 `;
 
 export default function IdeaStatuses() {
   const ideaStatuses = useIdeaStatuses();
 
-  const lastIdeaStatus = last(ideaStatuses as any);
+  function handleReorder(id: string, ordering: number) {
+    updateIdeaStatus(id, { ordering });
+  }
 
-  function handleReorder() {}
-
-  function isRequired(ideaStatus: IIdeaStatus) {
+  function isRequired(ideaStatus: IIdeaStatusData) {
     return ideaStatus.attributes.code === 'proposed';
   }
 
-  function handleDelete(id: string) {}
+  function handleDelete(id: string) {
+    deleteIdeaStatus(id);
+  }
+
+  function isDeletable(ideaStatus: IIdeaStatusData) {
+    return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
+  }
 
   return ideaStatuses ? (
     <Section>
@@ -89,24 +105,24 @@ export default function IdeaStatuses() {
           className="e2e-add-custom-field-btn"
           buttonStyle="cl-blue"
           icon="plus-circle"
-          linkTo="/admin/settings/registration/custom_fields/new"
+          linkTo="/admin/ideas/statuses/new"
         >
           <FormattedMessage {...messages.addIdeaStatus} />
         </Button>
       </ButtonWrapper>
 
       <SortableList
-        items={ideaStatuses}
+        items={ideaStatuses || []}
         onReorder={handleReorder}
         id="e2e-admin-published-projects-list"
       >
         {({ itemsList, handleDragRow, handleDropRow }) =>
-          itemsList.map((ideaStatus: IIdeaStatus, index: number) => (
+          itemsList.map((ideaStatus: IIdeaStatusData, index: number) => (
             <SortableRow
               key={ideaStatus.id}
               id={ideaStatus.id}
               index={index}
-              lastItem={lastIdeaStatus == ideaStatus}
+              lastItem={index === itemsList.length - 1}
               moveRow={handleDragRow}
               dropRow={handleDropRow}
             >
@@ -114,14 +130,20 @@ export default function IdeaStatuses() {
                 <ColorLabel color={ideaStatus.attributes.color} />
                 <Numbering>{index + 1}.</Numbering>
                 <T value={ideaStatus.attributes.title_multiloc} />
-                {isRequired(ideaStatus) && (
-                  <StyledBadge>
-                    <FormattedMessage {...messages.systemField} />
-                  </StyledBadge>
-                )}
+                <Badges>
+                  <CountBadge
+                    count={ideaStatus.attributes.ideas_count || 0}
+                    bgColor="#147985"
+                  />
+                  {isRequired(ideaStatus) && (
+                    <StyledBadge className="inverse">
+                      <FormattedMessage {...messages.systemField} />
+                    </StyledBadge>
+                  )}
+                </Badges>
               </FlexTextCell>
               <Buttons>
-                {!isRequired(ideaStatus) && (
+                {isDeletable(ideaStatus) && (
                   <Button
                     className={`e2e-delete-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                     onClick={() => handleDelete(ideaStatus.id)}

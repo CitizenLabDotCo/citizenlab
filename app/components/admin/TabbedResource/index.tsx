@@ -129,14 +129,27 @@ class TabbedResource extends React.PureComponent<
   Props & WithRouterProps,
   State
 > {
+  activeClassForTab = (tab: TabProps) => {
+    if (tab.active) return 'active';
+
+    const { location } = this.props;
+
+    return location &&
+      location.pathname &&
+      getRegularExpression(tab.url).test(location.pathname)
+      ? 'active'
+      : '';
+  };
+
   render() {
     const {
       children,
       resource: { title, subtitle, publicLink },
       messages,
       tabs,
-      location,
     } = this.props;
+
+    const { activeClassForTab } = this;
 
     return (
       <>
@@ -161,13 +174,7 @@ class TabbedResource extends React.PureComponent<
                   <FeatureFlag key={tab.url} name={tab.feature}>
                     <Tab
                       key={tab.url}
-                      className={`${tab.name} ${
-                        location &&
-                        location.pathname &&
-                        getRegularExpression(tab.url).test(location.pathname)
-                          ? 'active'
-                          : ''
-                      }`}
+                      className={`${tab.name} ${activeClassForTab(tab)}`}
                     >
                       <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
@@ -177,13 +184,7 @@ class TabbedResource extends React.PureComponent<
                 return (
                   <Tab
                     key={tab.url}
-                    className={`${tab.name} ${
-                      location &&
-                      location.pathname &&
-                      getRegularExpression(tab.url).test(location.pathname)
-                        ? 'active'
-                        : ''
-                    }`}
+                    className={`${tab.name} ${activeClassForTab(tab)}`}
                   >
                     <Link to={tab.url}>{tab.label}</Link>
                   </Tab>

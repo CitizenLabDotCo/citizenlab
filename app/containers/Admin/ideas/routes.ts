@@ -16,13 +16,21 @@ export default () => ({
       delay: 500,
     }),
   },
-  // newIdeaStatus: {
-  //   component: Loadable({
-  //     loader: () => import('./statuses'),
-  //     loading: () => null,
-  //   }),
-  // },
   childRoutes: [
+    {
+      path: 'statuses/new',
+      component: Loadable({
+        loader: () => import('./statuses/new'),
+        loading: () => null,
+      }),
+    },
+    {
+      path: 'statuses/:id',
+      component: Loadable({
+        loader: () => import('./statuses/edit'),
+        loading: () => null,
+      }),
+    },
     {
       path: '/',
       component: Loadable({

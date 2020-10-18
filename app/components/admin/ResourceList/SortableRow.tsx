@@ -29,7 +29,6 @@ type State = {};
 
 class SortableRow extends React.Component<Props, State> {
   render() {
-    console.log(this.props.children);
     const {
       connectDropTarget,
       connectDragSource,
