@@ -125,7 +125,7 @@ class Initiative < ApplicationRecord
   def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
     if initial_status && self.initiative_status_changes.empty? && !self.draft?
-      self.initiative_status_changes.build(initiative_status: initial_status) 
+      self.initiative_status_changes.build(initiative_status: initial_status)
     end
   end
 
