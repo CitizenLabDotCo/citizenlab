@@ -16,7 +16,7 @@ class IdeaStatus < ApplicationRecord
 
   before_validation :strip_title
   before_destroy :remove_notifications
-  before_destroy :abort_if_code_required
+  before_destroy :abort_if_code_required, prepend: true
 
   def self.create_defaults
     (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
@@ -49,7 +49,7 @@ class IdeaStatus < ApplicationRecord
   end
 
   def abort_if_code_required
-    valid?
+    MinimumRequiredValidator.new(attributes: %i[code], values: MINIMUM_REQUIRED_CODES).validate(self)
 
     throw(:abort) if errors[:code].present?
   end
