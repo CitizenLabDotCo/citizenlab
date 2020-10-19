@@ -34,6 +34,14 @@ export interface IUserCustomFieldData {
   };
 }
 
+export interface IUserCustomField {
+  data: IUserCustomFieldData;
+}
+
+export interface IUserCustomFields {
+  data: IUserCustomFieldData[];
+}
+
 export interface UserCustomFieldsInfos {
   schema: any;
   uiSchema: any;
@@ -78,7 +86,7 @@ export interface IUserCustomFieldOptions {
   data: IUserCustomFieldOptionsData[];
 }
 
-export function customFieldForUsersStream(
+export function userCustomFieldStream(
   customFieldId: string,
   streamParams: IStreamParams | null = null
 ) {
@@ -88,7 +96,7 @@ export function customFieldForUsersStream(
   });
 }
 
-export function customFieldsForUsersStream(
+export function userCustomFieldsStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IUserCustomFields>({
