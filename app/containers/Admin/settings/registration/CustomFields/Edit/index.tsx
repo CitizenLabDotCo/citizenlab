@@ -3,14 +3,17 @@ import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  IUserCustomFieldData,
-  isBuiltInField,
-} from 'services/userCustomFields';
+
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
 
-import { IInputType } from 'resources/GetUserCustomFields';
+// services
+import {
+  IUserCustomFieldData,
+  isBuiltInField,
+  IInputType,
+} from 'services/userCustomFields';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
