@@ -55,11 +55,11 @@ const Buttons = styled.div`
 `;
 
 const ColorLabel = styled.span`
-  width: 1rem;
-  height: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
   background-color: ${(props) => props.color};
-  margin-right: 2rem;
-  border-radius: 2px;
+  margin-right: 1rem;
+  border-radius: 3px;
   display: inline-block;
 `;
 
