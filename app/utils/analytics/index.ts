@@ -61,7 +61,7 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
             const s = d.createElement('script');
             s.type = 'text/javascript';
             s.async = true;
-            s.src = 'https://widget.intercom.io/widget/' + INTERCOM_APP_ID;
+            s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
             x.parentNode.insertBefore(s, x);
           };
@@ -105,22 +105,31 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
 
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
-    if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
-      analytics.track(
-        event.name,
-        {
-          ...tenantInfo(tenant.data),
-          location: window?.location?.pathname,
-          ...event.properties,
-        },
-        { integrations: integrations(user) }
-      );
+    if (!isNilOrError(tenant)) {
+      window.Intercom &&
+        window.Intercom('trackEvent', event.name, event.properties);
+      console.log(event.name, event.properties, window.Intercom);
+      if (isFunction(get(window, 'analytics.track'))) {
+        analytics.track(
+          event.name,
+          {
+            ...tenantInfo(tenant.data),
+            location: window?.location?.pathname,
+            ...event.properties,
+          },
+          { integrations: integrations(user) }
+        );
+      }
     }
   }
 );
 
 combineLatest(tenant$, authUser$, pageChanges$).subscribe(
   ([tenant, user, pageChange]) => {
+    window.Intercom &&
+      window.Intercom('update', {
+        last_request_at: parseInt(new Date().getTime() / 1000),
+      });
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
       analytics.page(
         '',
