@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import {
-  customFieldsForUsersStream,
+  userCustomFieldsStream,
   IUserCustomFieldData,
 } from 'services/userCustomFields';
 import { isBoolean } from 'lodash-es';
@@ -42,7 +42,7 @@ export default class GetCustomFields extends React.Component<Props, State> {
   componentDidMount() {
     const { inputTypes, cache } = this.props;
     const cacheStream = isBoolean(cache) ? cache : true;
-    const userCustomFields$ = customFieldsForUsersStream({
+    const userCustomFields$ = userCustomFieldsStream({
       cacheStream,
       queryParameters: { input_types: inputTypes },
     }).observable;
