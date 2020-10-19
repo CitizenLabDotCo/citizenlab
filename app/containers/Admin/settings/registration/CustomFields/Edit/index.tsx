@@ -30,7 +30,9 @@ const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 20px;
 `;
 
-interface Props {}
+interface Props {
+  children: JSX.Element | null;
+}
 
 const Edit = ({
   intl: { formatMessage },
