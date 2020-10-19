@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import {
   userCustomFieldsStream,
   IUserCustomFieldData,
+  IInputType,
 } from 'services/userCustomFields';
 import { isBoolean } from 'lodash-es';
 
@@ -11,8 +12,6 @@ interface InputProps {}
 type children = (
   renderProps: GetUserCustomFieldsChildProps
 ) => JSX.Element | null;
-
-type IInputType = 'select' | 'multiselect' | 'checkbox' | 'number';
 
 interface Props extends InputProps {
   children?: children;
