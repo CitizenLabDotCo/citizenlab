@@ -16,6 +16,7 @@ import messages from './messages';
 import { CategorizedDestinations, IPreferences } from './';
 
 import styled from 'styled-components';
+import { IDestination } from './destinations';
 
 export const ButtonContainer = styled.div`
   width: 100%;
@@ -51,8 +52,11 @@ export default class Container extends PureComponent<Props, State> {
     if (!props.isConsentRequired) {
       const activeDestinations = Object.values(
         props.categorizedDestinations
-      ).flat();
-      eventEmitter.emit('initializeTacking', activeDestinations);
+      ).flat() as IDestination[];
+      eventEmitter.emit<IDestination[]>(
+        'initializeTacking',
+        activeDestinations
+      );
     }
   }
 
@@ -74,8 +78,13 @@ export default class Container extends PureComponent<Props, State> {
       isConsentRequired !== prevIsConsentRequired ||
       prevategorizedDestinations !== categorizedDestinations
     ) {
-      const activeDestinations = Object.values(categorizedDestinations).flat();
-      eventEmitter.emit('initializeTacking', activeDestinations);
+      const activeDestinations = Object.values(
+        categorizedDestinations
+      ).flat() as IDestination[];
+      eventEmitter.emit<IDestination[]>(
+        'initializeTacking',
+        activeDestinations
+      );
       console.log('starttrack');
     }
   }

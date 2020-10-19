@@ -9,6 +9,9 @@ declare global {
   }
   interface Window {
     googleMaps?: boolean;
+    Intercom?: any;
+    intercomSettings: any;
+    attachEvent?: any;
   }
 }
 
