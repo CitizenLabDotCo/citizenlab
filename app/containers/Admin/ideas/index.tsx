@@ -31,7 +31,7 @@ class IdeasPage extends React.PureComponent<
 
     let tabs: TabProps[] = [
       {
-        label: formatMessage(messages.tabSettings),
+        label: formatMessage(messages.tabManage),
         url: '/admin/ideas',
       },
       {
@@ -49,6 +49,7 @@ class IdeasPage extends React.PureComponent<
 
     const resource = {
       title: formatMessage(messages.pageTitle),
+      subtitle: formatMessage(messages.pageSubtitle),
     };
 
     return (

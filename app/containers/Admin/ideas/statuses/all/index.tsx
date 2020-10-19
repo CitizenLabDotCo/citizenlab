@@ -1,6 +1,7 @@
 // libraries
 import React from 'react';
 import styled from 'styled-components';
+import Tippy from '@tippyjs/react';
 
 import messages from '../../messages';
 
@@ -22,7 +23,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 // import Button from 'components/UI/Button';
 // import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import CountBadge from 'components/UI/CountBadge';
+import { Row } from 'components/admin/ResourceList';
+import { IconTooltip } from 'cl2-component-library';
 import {
   Section,
   SectionTitle,
@@ -33,23 +35,23 @@ import {
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
-import { Badge } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+
+const DragHandleSpacer = styled.div`
+  padding: 1rem;
+  height: 100%;
+  align-self: flex-start;
+
+  &::after {
+    width: 20px;
+    content: '';
+    display: block;
+  }
+`;
 
 const Buttons = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const StyledBadge = styled(Badge)`
-  margin-left: 0.5rem;
-  padding: 0.1rem 0.3rem;
-  font-size: 10px;
-  font-weight: bold;
-`;
-
-const Numbering = styled.span`
-  margin-right: 0.5rem;
 `;
 
 const ColorLabel = styled.span`
@@ -64,13 +66,14 @@ const ColorLabel = styled.span`
 const FlexTextCell = styled(TextCell)`
   display: flex;
   align-items: center;
-  text-transform: capitalize;
 `;
 
-const Badges = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 0.5rem;
+const ButtonIconTooltip = styled(IconTooltip)`
+  padding: 0 1rem;
+
+  svg {
+    fill: #cecece;
+  }
 `;
 
 export default function IdeaStatuses() {
@@ -92,11 +95,22 @@ export default function IdeaStatuses() {
     return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
   }
 
+  function defaultStatus() {
+    if (!ideaStatuses) return;
+
+    return ideaStatuses.find((status) => status.attributes.code === 'proposed');
+  }
+
+  function sortableStatuses() {
+    if (!ideaStatuses) return [];
+
+    return ideaStatuses.filter(
+      (status) => status.attributes.code !== 'proposed'
+    );
+  }
+
   return ideaStatuses ? (
     <Section>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleIdeaStatuses} />
-      </SectionTitle>
       <SectionDescription>
         <FormattedMessage {...messages.subtitleIdeaStatuses} />
       </SectionDescription>
@@ -111,8 +125,36 @@ export default function IdeaStatuses() {
         </Button>
       </ButtonWrapper>
 
+      {defaultStatus() && (
+        <Row>
+          <DragHandleSpacer />
+          <FlexTextCell className="expand">
+            <ColorLabel color={defaultStatus().attributes.color} />
+            <T value={defaultStatus().attributes.title_multiloc} />
+            <ButtonIconTooltip
+              content={<FormattedMessage {...messages.lockedStatusTooltip} />}
+              iconSize="1rem"
+              placement="top"
+              icon="lock"
+            />
+          </FlexTextCell>
+          <Buttons>
+            <Button
+              className={`e2e-custom-field-edit-btn e2e-${
+                defaultStatus().attributes.title_multiloc['en-GB']
+              }`}
+              linkTo={`/admin/ideas/statuses/${defaultStatus().id}`}
+              buttonStyle="secondary"
+              icon="edit"
+            >
+              <FormattedMessage {...messages.editButtonLabel} />
+            </Button>
+          </Buttons>
+        </Row>
+      )}
+
       <SortableList
-        items={ideaStatuses || []}
+        items={sortableStatuses()}
         onReorder={handleReorder}
         id="e2e-admin-published-projects-list"
       >
@@ -128,31 +170,30 @@ export default function IdeaStatuses() {
             >
               <FlexTextCell className="expand">
                 <ColorLabel color={ideaStatus.attributes.color} />
-                <Numbering>{index + 1}.</Numbering>
                 <T value={ideaStatus.attributes.title_multiloc} />
-                <Badges>
-                  <CountBadge
-                    count={ideaStatus.attributes.ideas_count || 0}
-                    bgColor="#147985"
-                  />
-                  {isRequired(ideaStatus) && (
-                    <StyledBadge className="inverse">
-                      <FormattedMessage {...messages.systemField} />
-                    </StyledBadge>
-                  )}
-                </Badges>
               </FlexTextCell>
               <Buttons>
-                {isDeletable(ideaStatus) && (
-                  <Button
-                    className={`e2e-delete-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
-                    onClick={() => handleDelete(ideaStatus.id)}
-                    buttonStyle="text"
-                    icon="delete"
-                  >
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </Button>
-                )}
+                <Tippy
+                  placement="top"
+                  theme="light"
+                  disabled={isDeletable(ideaStatus)}
+                  content={
+                    <FormattedMessage {...messages.deleteButtonTooltip} />
+                  }
+                  trigger="mouseenter"
+                >
+                  <div>
+                    <Button
+                      className={`e2e-delete§-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
+                      onClick={() => handleDelete(ideaStatus.id)}
+                      buttonStyle="text"
+                      disabled={!isDeletable(ideaStatus)}
+                      icon="delete"
+                    >
+                      <FormattedMessage {...messages.deleteButtonLabel} />
+                    </Button>
+                  </div>
+                </Tippy>
                 <Button
                   className={`e2e-custom-field-edit-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                   linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
