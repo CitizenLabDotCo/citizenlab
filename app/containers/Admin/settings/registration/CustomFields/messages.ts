@@ -149,4 +149,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',
     defaultMessage: 'Required',
   },
+  customFieldOptionDeletionConfirmation: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this custom field option?',
+  },
 });
