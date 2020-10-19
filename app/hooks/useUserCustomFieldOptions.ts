@@ -4,11 +4,7 @@ import {
   IUserCustomFieldOptionsData,
 } from 'services/userCustomFields';
 
-interface Props {
-  customFieldId: string;
-}
-
-export default function useUserCustomFieldOptions({ customFieldId }: Props) {
+export default function useUserCustomFieldOptions(customFieldId: string) {
   const [userCustomFieldOptions, setUserCustomFieldOptions] = useState<
     IUserCustomFieldOptionsData[] | undefined | null | Error
   >(undefined);
