@@ -15,6 +15,7 @@ import {
 import { IUser } from 'services/users';
 import eventEmitter from 'utils/eventEmitter';
 import { getConsent } from 'components/ConsentManager/consent';
+import { IDestination } from 'components/ConsentManager/destinations';
 
 export interface IEvent {
   name: string;
@@ -35,7 +36,9 @@ const authUser$ = authUserStream().observable;
 const events$ = new Subject<IEvent>();
 const pageChanges$ = new Subject<IPageChange>();
 
-const initializeTacking$ = eventEmitter.observeEvent('initializeTacking');
+const initializeTacking$ = eventEmitter.observeEvent<IDestination[]>(
+  'initializeTacking'
+);
 
 combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
   ([tenant, user, { eventValue }]) => {
@@ -63,7 +66,7 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
             s.async = true;
             s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
-            x.parentNode.insertBefore(s, x);
+            x.parentNode?.insertBefore(s, x);
           };
           if (document.readyState === 'complete') {
             l();
@@ -74,8 +77,6 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
           }
         }
       })();
-
-      console.log('booty');
 
       window.Intercom &&
         window.Intercom('boot', {
@@ -97,7 +98,6 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
         });
     }
     if (!eventValue.includes('intercom') && window.Intercom) {
-      console.log('unboot i');
       window.Intercom('shutdown');
     }
   }
@@ -108,7 +108,6 @@ combineLatest(tenant$, authUser$, events$).subscribe(
     if (!isNilOrError(tenant)) {
       window.Intercom &&
         window.Intercom('trackEvent', event.name, event.properties);
-      console.log(event.name, event.properties, window.Intercom);
       if (isFunction(get(window, 'analytics.track'))) {
         analytics.track(
           event.name,
@@ -128,7 +127,7 @@ combineLatest(tenant$, authUser$, pageChanges$).subscribe(
   ([tenant, user, pageChange]) => {
     window.Intercom &&
       window.Intercom('update', {
-        last_request_at: parseInt(new Date().getTime() / 1000),
+        last_request_at: new Date().getTime() / 1000,
       });
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
       analytics.page(
