@@ -23,27 +23,26 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
 
   attr_reader :record, :attribute, :value
   delegate :persisted?, :changes, :class, to: :record, prefix: true
+  delegate :any?, to: :record_changes, prefix: true, allow_nil: true
 
   def updating_required_value?
-    record_persisted? && required_attribute_will_change?
+    record_changes_any? && value_was_in_required_list? && !other_records_contain_required_values?
   end
 
   def destroying_required_object?
-    record.will_be_destroyed? && attribute_value_required?
+    record.will_be_destroyed? && value_in_required_list? && !other_records_contain_required_values?
   end
 
-  def required_attribute_will_change?
-    return unless attribute_value_required?
-
-    record_changes.key?(attribute.to_s)
-  end
-
-  def attribute_value_required?
-    value_in_required_list? && !other_records_contain_required_values?
+  def value_was_in_required_list?
+    required_values.include?(value_was&.to_sym)
   end
 
   def value_in_required_list?
-    required_values.include?(value.to_sym)
+    required_values.include?(value&.to_sym)
+  end
+
+  def value_was
+    record.changes[attribute.to_sym]&.first
   end
 
   def values_of_other_records
