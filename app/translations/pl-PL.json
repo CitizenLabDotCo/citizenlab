@@ -1241,6 +1241,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.addFieldButton": "Dodaj pytanie",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton": "Dodaj opcję",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "Czy na pewno chcesz usunąć to niestandardowe pole?",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Usuń",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel": "Edycja",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "Opis",
