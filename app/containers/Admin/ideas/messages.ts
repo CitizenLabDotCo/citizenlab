@@ -75,4 +75,39 @@ export default defineMessages({
     defaultMessage:
       'This is the default Status and it cannot be removed or moved.',
   },
+  fieldTitle: {
+    id: 'app.containers.admin.ideas.form.fieldTitle',
+    defaultMessage: 'Status Name',
+  },
+  fieldTitleTooltip: {
+    id: 'app.containers.admin.ideas.form.fieldTitleTooltip',
+    defaultMessage: 'How the status will be displayed in different languages',
+  },
+  fieldDescription: {
+    id: 'app.containers.admin.ideas.form.fieldDescription',
+    defaultMessage: 'Status Description',
+  },
+  fieldDescriptionTooltip: {
+    id: 'app.containers.admin.ideas.form.fieldDescriptionTooltip',
+    defaultMessage:
+      'A short description of the status and what it means for ideas assigned to it.',
+  },
+  fieldColor: {
+    id: 'app.containers.admin.ideas.form.fieldColor',
+    defaultMessage: 'Color',
+  },
+  fieldColorTooltip: {
+    id: 'app.containers.admin.ideas.form.fieldColorTooltip',
+    defaultMessage:
+      'A short description of the status and what it means for ideas assigned to it.',
+  },
+  fieldCode: {
+    id: 'app.containers.admin.ideas.form.fieldCode',
+    defaultMessage: 'Semantic Code',
+  },
+  fieldCodeTooltip: {
+    id: 'app.containers.admin.ideas.form.fieldCodeTooltip',
+    defaultMessage:
+      'A short Code of the status and what it means for ideas assigned to it.',
+  },
 });
