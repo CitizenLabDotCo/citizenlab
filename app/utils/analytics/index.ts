@@ -85,6 +85,7 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
             ? {
                 email: user.data.attributes.email,
                 user_id: user.data.id,
+                name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
               }
             : {}),
           ...(!isNilOrError(tenant)
