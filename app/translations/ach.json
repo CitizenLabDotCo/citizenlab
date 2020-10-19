@@ -1264,6 +1264,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionTitle": "",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsOrderTab": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField": "",
