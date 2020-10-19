@@ -16,8 +16,8 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
 
   before_validation :strip_title
+  before_destroy :abort_if_code_required
   before_destroy :remove_notifications
-  before_destroy :abort_if_code_required, prepend: true
 
   def self.create_defaults
     (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
