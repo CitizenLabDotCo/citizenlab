@@ -7,36 +7,37 @@ import {
   IUserCustomFieldData,
   isBuiltInField,
 } from 'services/userCustomFields';
-import GetCustomField, {
-  GetCustomFieldChildProps,
-} from 'resources/GetCustomField';
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
+
+import { IInputType } from 'resources/GetUserCustomFields';
+
+// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
+// hooks
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useUserCustomField from 'hooks/useUserCustomField';
+import useLocalize from 'hooks/useLocalize';
 
 const StyledGoBackButton = styled(GoBackButton)`
   display: flex;
   margin-bottom: 20px;
 `;
 
-export interface InputProps {}
-
-interface DataProps {
-  customField: GetCustomFieldChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+interface Props {}
 
 const Edit = ({
   intl: { formatMessage },
-  customField,
+  params: { customFieldId },
   children,
-  localize,
-}: Props & WithRouterProps & InjectedIntlProps & InjectedLocalized) => {
-  const hasOptions = (inputType) => {
+}: Props & WithRouterProps & InjectedIntlProps) => {
+  const localize = useLocalize();
+  const userCustomField = useUserCustomField(customFieldId);
+  const userCustomFieldOptions = useUserCustomFieldOptions(customFieldId);
+  const hasOptions = (inputType: IInputType) => {
     return inputType === 'select' || inputType === 'multiselect';
   };
 
@@ -66,7 +67,7 @@ const Edit = ({
       });
     }
 
-    if (!isNilOrError(customFieldOptions)) {
+    if (!isNilOrError(userCustomFieldOptions)) {
       tabs.push({
         label: formatMessage(messages.optionsOrderTab),
         url: `${baseTabsUrl}/options-order`,
@@ -79,17 +80,17 @@ const Edit = ({
 
   const childrenWithExtraProps = React.cloneElement(
     children as React.ReactElement<any>,
-    { customField }
+    { customField: userCustomField }
   );
 
-  if (!isNilOrError(customField)) {
+  if (!isNilOrError(userCustomField)) {
     return (
       <>
         <StyledGoBackButton onClick={goBack} />
         <TabbedResource
-          tabs={getTabs(customField)}
+          tabs={getTabs(userCustomField)}
           resource={{
-            title: localize(customField.attributes.title_multiloc),
+            title: localize(userCustomField.attributes.title_multiloc),
             publicLink: '',
           }}
         >
@@ -102,19 +103,4 @@ const Edit = ({
   return null;
 };
 
-const EditWithHOCs = injectIntl(injectLocalize(Edit));
-
-export default withRouter(
-  (
-    inputProps: InputProps &
-      WithRouterProps &
-      InjectedIntlProps &
-      InjectedLocalized
-  ) => (
-    <GetCustomField id={inputProps.params.customFieldId}>
-      {(customField) => (
-        <EditWithHOCs {...inputProps} customField={customField} />
-      )}
-    </GetCustomField>
-  )
-);
+export default withRouter(injectIntl(Edit));
