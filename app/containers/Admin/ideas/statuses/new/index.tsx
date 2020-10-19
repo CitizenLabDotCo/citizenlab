@@ -23,18 +23,15 @@ const FormTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-type Props = {};
-
-class New extends React.Component<Props> {
-  handleSubmit = (
+export default function New() {
+  function handleSubmit(
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
-  ) => {
-    addIdeaStatus({
-      ...values,
-    })
+  ) {
+    const { ideas_count, ordering, ...params } = values;
+    addIdeaStatus(params)
       .then((_response) => {
-        clHistory.push('/admin/ideas/statuses');
+        goBack();
       })
       .catch((errorResponse) => {
         if (isCLErrorJSON(errorResponse)) {
@@ -45,43 +42,35 @@ class New extends React.Component<Props> {
         }
         setSubmitting(false);
       });
-  };
-
-  renderFn = (props) => (
-    <IdeaStatusForm {...props} mode="new" builtInField={false} />
-  );
-
-  hasOptions = (inputType) => {
-    return inputType === 'select' || inputType === 'multiselect';
-  };
-
-  goBack = () => {
-    clHistory.push('/admin/settings/registration');
-  };
-
-  render() {
-    return (
-      <div>
-        <FormHeader>
-          <GoBackButton onClick={this.goBack} />
-          <FormTitle>
-            <FormattedMessage {...messages.addIdeaStatus} />
-          </FormTitle>
-        </FormHeader>
-        <Formik
-          initialValues={{
-            color: '#b5b5b5',
-            title_multiloc: {},
-            description_multiloc: {},
-            code: '',
-          }}
-          onSubmit={this.handleSubmit}
-          render={this.renderFn}
-          validate={IdeaStatusForm['validate']}
-        />
-      </div>
-    );
   }
-}
 
-export default New;
+  function renderFn(props) {
+    return <IdeaStatusForm {...props} mode="new" builtInField={false} />;
+  }
+
+  function goBack() {
+    clHistory.push('/admin/ideas/statuses');
+  }
+
+  return (
+    <div>
+      <FormHeader>
+        <GoBackButton onClick={goBack} />
+        <FormTitle>
+          <FormattedMessage {...messages.addIdeaStatus} />
+        </FormTitle>
+      </FormHeader>
+      <Formik
+        initialValues={{
+          color: '#b5b5b5',
+          title_multiloc: {},
+          description_multiloc: {},
+          code: '',
+        }}
+        onSubmit={handleSubmit}
+        render={renderFn}
+        validate={IdeaStatusForm['validate']}
+      />
+    </div>
+  );
+}

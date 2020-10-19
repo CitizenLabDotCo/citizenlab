@@ -105,7 +105,7 @@ export default function IdeaStatuses() {
     if (!ideaStatuses) return [];
 
     return ideaStatuses.filter(
-      (status) => status.attributes.code !== 'proposed'
+      (status) => status.attributes !== defaultStatus().attributes
     );
   }
 

@@ -103,11 +103,85 @@ export default defineMessages({
   },
   fieldCode: {
     id: 'app.containers.admin.ideas.form.fieldCode',
-    defaultMessage: 'Semantic Code',
+    defaultMessage: 'Context of the Status',
   },
   fieldCodeTooltip: {
     id: 'app.containers.admin.ideas.form.fieldCodeTooltip',
     defaultMessage:
       'A short Code of the status and what it means for ideas assigned to it.',
+  },
+  fieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCode',
+    defaultMessage:
+      'Select the option that better describes this status. By selecting one, you will help us analyze the ideas of your citizens and provide you with better insights.',
+  },
+  proposedFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.proposed',
+    defaultMessage: 'Proposed',
+  },
+  viewedFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.viewed',
+    defaultMessage: 'Viewed',
+  },
+  under_considerationFieldCodeTitle: {
+    id:
+      'app.containers.admin.ideas.form.fieldCodeLabelTitles.under_consideration',
+    defaultMessage: 'Under Consideration',
+  },
+  acceptedFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.accepted',
+    defaultMessage: 'Accepted',
+  },
+  implementedFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.implemented',
+    defaultMessage: 'Implemented',
+  },
+  rejectedFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.rejected',
+    defaultMessage: 'Rejected',
+  },
+  otherFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.other',
+    defaultMessage: 'Other',
+  },
+  proposedFieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.proposed',
+    defaultMessage:
+      'The idea has just been received and yet to be processed or categorized',
+  },
+  viewedFieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.viewed',
+    defaultMessage:
+      'The idea has been viewed by an admin but yet to be processed, or to enter a selection process.',
+  },
+  under_considerationFieldCodeDescription: {
+    id:
+      'app.containers.admin.ideas.form.fieldCodeLabelTitles.under_consideration',
+    defaultMessage:
+      'The idea is in an ongoing selection process and being considered by the city.',
+  },
+  acceptedFieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.accepted',
+    defaultMessage: 'The idea is officially accepted to be implemented.',
+  },
+  implementedFieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.implemented',
+    defaultMessage: 'The idea has officially been implemented.',
+  },
+  rejectedFieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.rejected',
+    defaultMessage: 'The idea is rejected for any reason.',
+  },
+  otherFieldCodeDescription: {
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.other',
+    defaultMessage: "The status doesn't fit any of the avove options.",
+  },
+  visualFields: {
+    id: 'app.containers.admin.ideas.form.visualFields',
+    defaultMessage: 'Visual Fields',
+  },
+  visualFieldsDescription: {
+    id: 'app.containers.admin.ideas.form.visualFieldsDescription',
+    defaultMessage: 'Customize the text and color of your status.',
   },
 });

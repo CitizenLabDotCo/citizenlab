@@ -1,12 +1,20 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
-import FormikSelect from 'components/UI/FormikSelect';
+import styled from 'styled-components';
+
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
+import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
+import FormikRadio from 'components/UI/FormikRadio';
 import Error from 'components/UI/Error';
-import { Section, SectionField } from 'components/admin/Section';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { Label, ColorPickerInput } from 'cl2-component-library';
+import { Label, IconTooltip } from 'cl2-component-library';
 
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -19,6 +27,8 @@ export interface FormValues {
   code: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
+  ideas_count: number;
+  ordering: number;
 }
 
 export interface Props {
@@ -26,6 +36,47 @@ export interface Props {
   ideaStatusId: string;
   builtInField: boolean;
 }
+
+const RadioSection = styled(SectionField)`
+  max-width: unset;
+  margin-bottom: 5rem;
+`;
+
+const SubSectionDescription = styled(SectionDescription)`
+  margin-bottom: 3rem;
+`;
+
+const RadioInputGroup = styled(SectionField)`
+  padding: 0 1rem 0 2rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  max-width: unset;
+`;
+
+const RadioLabel = styled(Label)`
+  display: block;
+  line-height: 1.4;
+  padding-left: 1rem;
+`;
+
+const RadioLabelTitle = styled.span`
+  display: flex;
+  font-weight: 500;
+  font-size: 1.1rem;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 0.5rem;
+
+  svg {
+    fill: #aeaeae;
+  }
+`;
+
+const StyledSectionField = styled(SectionField)`
+  margin-bottom: 5rem;
+`;
 
 class IdeaStatusForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
@@ -56,9 +107,8 @@ class IdeaStatusForm extends React.Component<
     }));
   };
 
-  handleColorChange = () => {};
-
-  codeOptions = () => {
+  codeRadioButtons = () => {
+    const { CodeRadio } = this;
     const codes = [
       'proposed',
       'viewed',
@@ -69,13 +119,35 @@ class IdeaStatusForm extends React.Component<
       'other',
     ];
 
-    return codes.map((code) => ({ value: code, label: code }));
+    return codes.map((code) => <CodeRadio key={code} code={code} />);
+  };
+
+  CodeRadio = ({ code }) => {
+    const { touched, errors } = this.props;
+    const titleMessage = messages[`${code}FieldCodeTitle`];
+    const descriptionMessage = messages[`${code}FieldCodeDescription`];
+
+    return (
+      <RadioInputGroup>
+        <FormikRadio name="code" value={code} />
+        <RadioLabel>
+          <RadioLabelTitle>
+            <FormattedMessage {...titleMessage} />
+            <StyledIconTooltip
+              iconSize="12px"
+              placement="top"
+              content={<FormattedMessage {...descriptionMessage} />}
+            />
+          </RadioLabelTitle>
+        </RadioLabel>
+        {touched.code && <Error apiErrors={errors.code as any} />}
+      </RadioInputGroup>
+    );
   };
 
   render() {
     const {
       isSubmitting,
-      mode,
       initialValues,
       errors,
       isValid,
@@ -88,32 +160,37 @@ class IdeaStatusForm extends React.Component<
     return (
       <Form>
         <Section>
-          <SectionField>
+          <RadioSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.fieldCode} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.fieldCodeTooltip} />}
+              />
+            </SubSectionTitle>
+            <SubSectionDescription>
+              <FormattedMessage {...messages.fieldCodeDescription} />
+            </SubSectionDescription>
+
+            {this.codeRadioButtons()}
+          </RadioSection>
+        </Section>
+
+        <Section>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.visualFields} />
+          </SubSectionTitle>
+          <SubSectionDescription>
+            <FormattedMessage {...messages.visualFieldsDescription} />
+          </SubSectionDescription>
+
+          <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldColor} />
             </Label>
-            <ColorPickerInput
-              type="text"
-              value={initialValues.color}
-              onChange={this.handleColorChange}
-            />
-          </SectionField>
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldCode} />
-            </Label>
-            <Field
-              name="code"
-              component={FormikSelect}
-              labelTooltipText={formatMessage(messages.fieldCodeTooltip)}
-              disabled={builtInField}
-              options={this.codeOptions()}
-            />
-            {touched.code && (
-              <Error fieldName="code" apiErrors={errors.code as any} />
-            )}
-          </SectionField>
-          <SectionField>
+            <Field name="color" component={FormikColorPickerInput} />
+          </StyledSectionField>
+
+          <StyledSectionField>
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
@@ -127,9 +204,9 @@ class IdeaStatusForm extends React.Component<
                 apiErrors={errors.title_multiloc as any}
               />
             )}
-          </SectionField>
+          </StyledSectionField>
 
-          <SectionField>
+          <StyledSectionField>
             <Field
               name="description_multiloc"
               component={FormikTextAreaMultiloc}
@@ -143,7 +220,7 @@ class IdeaStatusForm extends React.Component<
                 apiErrors={errors.description_multiloc as any}
               />
             )}
-          </SectionField>
+          </StyledSectionField>
         </Section>
 
         <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
