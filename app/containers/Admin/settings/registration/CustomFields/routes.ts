@@ -45,6 +45,13 @@ export default () => ({
             loading: () => null,
           }),
         },
+        {
+          path: 'options-order',
+          component: Loadable({
+            loader: () => import('./Edit/OptionsOrder'),
+            loading: () => null,
+          }),
+        },
       ],
     },
   ],
