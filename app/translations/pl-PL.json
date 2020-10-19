@@ -1264,6 +1264,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Usuń",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey": "Etykieta (widoczne tylko z poziomu administratora)",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionTitle": "Nazwa opcji",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsOrderTab": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab": "Opcje",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Wymagane",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField": "Pytanie domyślne",

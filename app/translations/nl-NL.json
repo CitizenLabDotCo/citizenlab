@@ -1264,6 +1264,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Verwijderen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey": "Label (voor intern gebruik)",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionTitle": "Naam van de optie",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsOrderTab": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab": "Opties",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Vereist",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField": "Standaardvraag",
