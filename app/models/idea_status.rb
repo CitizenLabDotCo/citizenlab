@@ -16,6 +16,7 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
 
   before_validation :strip_title
+  # abort_if_code_required to be the first before_destroy to be executed, but cannot be prepended.
   before_destroy :abort_if_code_required
   before_destroy :remove_notifications
 
