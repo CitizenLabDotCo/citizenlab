@@ -12,6 +12,7 @@ declare global {
     Intercom?: any;
     intercomSettings: any;
     attachEvent?: any;
+    satismeter?: any;
   }
 }
 
