@@ -8,7 +8,7 @@ class WebApi::V1::Projects::IdeasOrdersController < WebApi::V1::Projects::BaseCo
     run_side_effect :before_update
     if @project.update(project_params)
       run_side_effect :after_update
-      render json: serialized_project(params: phase_params.to_h), status: :ok
+      render json: serialized_project(params: project_params.to_h), status: :ok
     else
       render json: serialized_project_errors, status: :unprocessable_entity
     end
