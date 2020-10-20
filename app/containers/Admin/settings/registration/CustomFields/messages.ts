@@ -154,4 +154,9 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this custom field option?',
   },
+  editCustomFieldOptionFormTitle: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldOptionFormTitle',
+    defaultMessage: 'Edit ${customField} option',
+  },
 });
