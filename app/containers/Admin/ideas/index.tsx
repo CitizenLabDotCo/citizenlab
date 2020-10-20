@@ -29,7 +29,7 @@ class IdeasPage extends React.PureComponent<
   getTabs = () => {
     const { formatMessage } = this.props.intl;
 
-    let tabs: TabProps[] = [
+    const tabs: TabProps[] = [
       {
         label: formatMessage(messages.tabManage),
         url: '/admin/ideas',

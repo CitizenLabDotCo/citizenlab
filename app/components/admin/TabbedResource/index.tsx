@@ -149,8 +149,6 @@ class TabbedResource extends React.PureComponent<
       tabs,
     } = this.props;
 
-    const { activeClassForTab } = this;
-
     return (
       <>
         <ResourceHeader className="e2e-resource-header">
@@ -174,7 +172,7 @@ class TabbedResource extends React.PureComponent<
                   <FeatureFlag key={tab.url} name={tab.feature}>
                     <Tab
                       key={tab.url}
-                      className={`${tab.name} ${activeClassForTab(tab)}`}
+                      className={`${tab.name} ${this.activeClassForTab(tab)}`}
                     >
                       <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
@@ -184,7 +182,7 @@ class TabbedResource extends React.PureComponent<
                 return (
                   <Tab
                     key={tab.url}
-                    className={`${tab.name} ${activeClassForTab(tab)}`}
+                    className={`${tab.name} ${this.activeClassForTab(tab)}`}
                   >
                     <Link to={tab.url}>{tab.label}</Link>
                   </Tab>

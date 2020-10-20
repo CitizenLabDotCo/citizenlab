@@ -26,7 +26,7 @@ const FormTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-function Edit({ params }) {
+const Edit = ({ params }) => {
   const { id: statusId } = params;
   const ideaStatus = useIdeaStatus({ statusId });
 
@@ -77,6 +77,6 @@ function Edit({ params }) {
       />
     </div>
   );
-}
+};
 
 export default withRouter(Edit);

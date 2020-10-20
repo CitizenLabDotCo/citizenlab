@@ -23,7 +23,7 @@ const FormTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-export default function New() {
+const New = () => {
   function handleSubmit(
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
@@ -73,4 +73,6 @@ export default function New() {
       />
     </div>
   );
-}
+};
+
+export default New;
