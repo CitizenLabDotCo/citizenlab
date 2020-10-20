@@ -181,3 +181,15 @@ export function deleteUserCustomFieldOption(
     optionId
   );
 }
+
+export function reorderUserCustomFieldOption(
+  customFieldId: string,
+  customFieldOptionId: string,
+  params: { ordering: number }
+) {
+  return streams.update<IUserCustomField>(
+    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}/reorder`,
+    customFieldId,
+    { custom_field_option: params }
+  );
+}
