@@ -1,0 +1,26 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+  - 'db/schema.rb'
+
+Metrics/BlockLength:
+  Enabled: true
+  # Max: 25
+Metrics/MethodLength:
+  Enabled: true
+  # Max: 10
+Metrics/ClassLength:
+  Enabled: true
+  # Max: 100
+Style/Documentation:
+  Enabled: true
+Rails/LexicallyScopedActionFilter:
+  Enabled: true
+Layout/LineLength:
+  Enabled: true
+  # Max: 120
