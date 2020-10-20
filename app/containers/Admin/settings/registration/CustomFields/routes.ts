@@ -24,7 +24,7 @@ export default () => ({
       }),
     },
     {
-      path: ':customFieldId',
+      path: ':userCustomFieldId',
       component: Loadable({
         loader: () => import('./Edit'),
         loading: LoadableLoadingAdmin,
@@ -51,15 +51,13 @@ export default () => ({
             loader: () => import('./Edit/OptionsOrder'),
             loading: () => null,
           }),
-          childRoutes: [
-            {
-              path: ':userCustomFieldOptionId',
-              component: Loadable({
-                loader: () => import('./Edit/OptionsEdit'),
-                loading: () => null,
-              }),
-            },
-          ],
+        },
+        {
+          path: 'options-order/:userCustomFieldOptionId',
+          component: Loadable({
+            loader: () => import('./Edit/OptionsEdit'),
+            loading: () => null,
+          }),
         },
       ],
     },
