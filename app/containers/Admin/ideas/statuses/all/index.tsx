@@ -84,9 +84,9 @@ const IdeaStatuses = () => {
     return ideaStatus.attributes.code === 'proposed';
   }
 
-  function handleDelete(id: string) {
+  const handleDelete = (id) => (_event: React.FormEvent<any>) => {
     deleteIdeaStatus(id);
-  }
+  };
 
   function isDeletable(ideaStatus: IIdeaStatusData) {
     return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
@@ -184,7 +184,7 @@ const IdeaStatuses = () => {
                   <div>
                     <Button
                       className={`e2e-delete§-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
-                      onClick={() => handleDelete(ideaStatus.id)}
+                      onClick={handleDelete(ideaStatus.id)}
                       buttonStyle="text"
                       disabled={!isDeletable(ideaStatus)}
                       icon="delete"
