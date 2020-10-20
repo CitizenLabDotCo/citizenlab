@@ -37,12 +37,12 @@ export interface Props {
 const Edit = memo(
   ({
     intl: { formatMessage },
-    params: { customFieldId },
+    params: { userCustomFieldId },
     children,
   }: Props & WithRouterProps & InjectedIntlProps) => {
     const localize = useLocalize();
-    const userCustomField = useUserCustomField(customFieldId);
-    const userCustomFieldOptions = useUserCustomFieldOptions(customFieldId);
+    const userCustomField = useUserCustomField(userCustomFieldId);
+    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const hasOptions = (inputType: IInputType) => {
       return inputType === 'select' || inputType === 'multiselect';
     };
