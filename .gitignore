@@ -27,6 +27,7 @@ public/uploads
 !.elasticbeanstalk/*.global.yml
 
 doc/
+.yardoc/
 
 .custom_env
 
