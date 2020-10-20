@@ -11,3 +11,10 @@ export type ParticipationMethod =
   | 'budgeting'
   | 'poll'
   | 'volunteering';
+
+export type IdeaSortingMethod =
+  | 'trending'
+  | 'random'
+  | 'mostVotes'
+  | 'newestFirst'
+  | 'oldestFirst';
