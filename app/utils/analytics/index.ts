@@ -5,7 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import { INTERCOM_APP_ID } from 'containers/App/constants';
+import {
+  INTERCOM_APP_ID,
+  SATISMETER_WRITE_KEY,
+} from 'containers/App/constants';
 
 import {
   isAdmin,
@@ -98,6 +101,35 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
             : {}),
         });
     }
+
+    if (savedChoices.satismeter && eventValue.includes('satismeter')) {
+      (function () {
+        window.satismeter =
+          window.satismeter ||
+          function () {
+            (window.satismeter.q = window.satismeter.q || []).push(arguments);
+          };
+        window.satismeter.l = new Date();
+        const script = document.createElement('script');
+        const parent = document.getElementsByTagName('script')[0].parentNode;
+        script.async = true;
+        script.src = 'https://app.satismeter.com/satismeter.js';
+        parent?.appendChild(script);
+      })();
+      window.satismeter({
+        writeKey: SATISMETER_WRITE_KEY,
+        ...(!isNilOrError(user)
+          ? {
+              userId: user.data.id,
+              traits: {
+                name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
+                email: user.data.attributes.email,
+                createdAt: user.data.attributes.created_at,
+              },
+            }
+          : {}),
+      });
+    }
     if (!eventValue.includes('intercom') && window.Intercom) {
       window.Intercom('shutdown');
     }
@@ -109,6 +141,7 @@ combineLatest(tenant$, authUser$, events$).subscribe(
     if (!isNilOrError(tenant)) {
       window.Intercom &&
         window.Intercom('trackEvent', event.name, event.properties);
+      window.satismeter && window.satismeter('track', { event: event.name });
       if (isFunction(get(window, 'analytics.track'))) {
         analytics.track(
           event.name,
