@@ -65,7 +65,7 @@ export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
 
-export interface IUserCustomFieldOptionsData {
+export interface IUserCustomFieldOptionData {
   id: string;
   type: string;
   attributes: {
@@ -83,7 +83,11 @@ export interface IUserCustomFieldOptionsData {
 }
 
 export interface IUserCustomFieldOptions {
-  data: IUserCustomFieldOptionsData[];
+  data: IUserCustomFieldOptionData[];
+}
+
+export interface IUserCustomFieldOption {
+  data: IUserCustomFieldOptionData;
 }
 
 export function userCustomFieldStream(
@@ -149,6 +153,17 @@ export function userCustomFieldOptionsStream(
 ) {
   return streams.get<IUserCustomFieldOptions>({
     apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
+    ...streamParams,
+  });
+}
+
+export function userCustomFieldOptionStream(
+  customFieldId: string,
+  customFieldOptionId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IUserCustomFieldOption>({
+    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}`,
     ...streamParams,
   });
 }
