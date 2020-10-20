@@ -4,7 +4,7 @@ import {
   IUserCustomFieldData,
 } from 'services/userCustomFields';
 
-export default function useUserCustomFields(userCustomFieldId: string) {
+export default function useUserCustomField(userCustomFieldId: string) {
   const [userCustomField, setUserCustomField] = useState<
     IUserCustomFieldData | undefined | null | Error
   >(undefined);
