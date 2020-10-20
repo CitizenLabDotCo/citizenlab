@@ -26,7 +26,7 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-interface Props {
+export interface Props {
   customField: IUserCustomFieldData;
 }
 
@@ -68,28 +68,34 @@ const Options = memo(
         >
           {({ itemsList, handleDragRow, handleDropRow }) =>
             itemsList.map(
-              (item: IUserCustomFieldOptionsData, index: number) => {
+              (
+                userCustomFieldOption: IUserCustomFieldOptionsData,
+                index: number
+              ) => {
+                const userCustomFieldOptionId = userCustomFieldOption.id;
                 return (
                   <SortableRow
-                    key={item.id}
-                    id={item.id}
+                    key={userCustomFieldOptionId}
+                    id={userCustomFieldOptionId}
                     index={index}
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
                     lastItem={index === userCustomFieldOptions.length - 1}
                   >
                     <TextCell className="expand">
-                      {localize(item.attributes.title_multiloc)}
+                      {localize(
+                        userCustomFieldOption.attributes.title_multiloc
+                      )}
                     </TextCell>
                     <Button
-                      linkTo={`/admin/settings/areas/${item.id}`}
+                      linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options-order/${userCustomFieldOptionId}`}
                       buttonStyle="secondary"
                       icon="edit"
                     >
                       {formatMessage(messages.editButtonLabel)}
                     </Button>
                     <Button
-                      onClick={handleDeleteClick(item.id)}
+                      onClick={handleDeleteClick(userCustomFieldOptionId)}
                       buttonStyle="text"
                       icon="delete"
                     >
