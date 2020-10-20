@@ -151,7 +151,9 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   noOptionsMessage = (inputValue: string) => {
-    if (!isNonEmptyString(inputValue)) return null;
+    if (!isNonEmptyString(inputValue)) {
+      return null;
+    }
     return this.props.intl.formatMessage(messages.noOptions);
   };
 
