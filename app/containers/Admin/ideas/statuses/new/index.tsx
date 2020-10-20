@@ -25,7 +25,7 @@ const FormTitle = styled.h1`
 
 export default function New() {
   function handleSubmit(
-    values: Partial<FormValues>,
+    values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) {
     const { ...params } = values;

@@ -34,7 +34,7 @@ function Edit({ params }) {
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) {
-    const { ideas_count, ordering, ...params } = values;
+    const { ...params } = values;
 
     updateIdeaStatus(statusId, params)
       .then((_response) => {

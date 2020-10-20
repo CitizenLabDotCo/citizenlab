@@ -27,8 +27,6 @@ export interface FormValues {
   code: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  ideas_count: number;
-  ordering: number;
 }
 
 export interface Props {
