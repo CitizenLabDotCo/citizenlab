@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   IUserCustomFieldData,
   IUserCustomFieldOptionsData,
-  // reorderUserCustomFieldOption,
+  reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
 } from 'services/userCustomFields';
 
@@ -38,9 +38,11 @@ const Options = memo(
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
-      newOrder: number
+      ordering: number
     ) => {
-      // reorderUserCustomFieldOption(customFieldOptionId, newOrder);
+      reorderUserCustomFieldOption(userCustomFieldId, customFieldOptionId, {
+        ordering,
+      });
     };
 
     const handleDeleteClick = (userCustomFieldOptionId: string) => (
