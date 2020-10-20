@@ -26,7 +26,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    pcs = ParticipationContextService.new 
+    pcs = ParticipationContextService.new
     record.draft? ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
