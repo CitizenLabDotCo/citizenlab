@@ -207,10 +207,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
     defaultMessage: 'Ideas displayed by default as:',
   },
+  defaultIdeaSorting: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
+    defaultMessage: 'Default sorting method for ideas',
+  },
   presentationModeTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
     defaultMessage:
       'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
+  },
+  defaultIdeaSortingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip',
+    defaultMessage:
+      'You can choose the default method the ideas for this project are sorted by. Users can still sort by the other available methods.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
@@ -219,6 +228,26 @@ export default defineMessages({
   mapDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
+  },
+  trendingSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
+    defaultMessage: 'Trending',
+  },
+  randomSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
+    defaultMessage: 'Random',
+  },
+  mostVotesSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.mostVotesSortingMethod',
+    defaultMessage: 'Most votes',
+  },
+  newestFirstSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',
+    defaultMessage: 'Newest first',
+  },
+  oldestFirstSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.oldestFirstSortingMethod',
+    defaultMessage: 'Oldest first',
   },
   surveyService: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
