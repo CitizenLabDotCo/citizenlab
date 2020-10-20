@@ -182,14 +182,22 @@ export function deleteUserCustomFieldOption(
   );
 }
 
-export function reorderUserCustomFieldOption(
+export async function reorderUserCustomFieldOption(
   customFieldId: string,
   customFieldOptionId: string,
   params: { ordering: number }
 ) {
-  return streams.update<IUserCustomField>(
+  const response = streams.update<IUserCustomField>(
     `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}/reorder`,
-    customFieldId,
+    customFieldOptionId,
     { custom_field_option: params }
   );
+
+  streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
+    ],
+  });
+
+  return response;
 }
