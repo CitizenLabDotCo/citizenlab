@@ -59,18 +59,6 @@ const Options = memo(
     };
 
     if (!isNilOrError(userCustomFieldOptions)) {
-      // return (
-      //   <>
-      //     {userCustomFieldOptions.map((userCustomFieldOption, i) => {
-      //       return (
-      //         <div key={i}>
-      //           {localize(userCustomFieldOption.attributes.title_multiloc)}
-      //         </div>
-      //       );
-      //     })}
-      //   </>
-      // );
-
       return (
         <SortableList
           items={userCustomFieldOptions}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -34,78 +34,80 @@ export interface Props {
   children: JSX.Element | null;
 }
 
-const Edit = ({
-  intl: { formatMessage },
-  params: { customFieldId },
-  children,
-}: Props & WithRouterProps & InjectedIntlProps) => {
-  const localize = useLocalize();
-  const userCustomField = useUserCustomField(customFieldId);
-  const userCustomFieldOptions = useUserCustomFieldOptions(customFieldId);
-  const hasOptions = (inputType: IInputType) => {
-    return inputType === 'select' || inputType === 'multiselect';
-  };
+const Edit = memo(
+  ({
+    intl: { formatMessage },
+    params: { customFieldId },
+    children,
+  }: Props & WithRouterProps & InjectedIntlProps) => {
+    const localize = useLocalize();
+    const userCustomField = useUserCustomField(customFieldId);
+    const userCustomFieldOptions = useUserCustomFieldOptions(customFieldId);
+    const hasOptions = (inputType: IInputType) => {
+      return inputType === 'select' || inputType === 'multiselect';
+    };
 
-  const goBack = () => {
-    clHistory.push('/admin/settings/registration');
-  };
+    const goBack = () => {
+      clHistory.push('/admin/settings/registration');
+    };
 
-  const getTabs = (customField: IUserCustomFieldData) => {
-    const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
+    const getTabs = (customField: IUserCustomFieldData) => {
+      const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
 
-    const tabs = [
-      {
-        label: formatMessage(messages.generalTab),
-        url: `${baseTabsUrl}/general`,
-        className: 'general',
-      },
-    ];
+      const tabs = [
+        {
+          label: formatMessage(messages.generalTab),
+          url: `${baseTabsUrl}/general`,
+          className: 'general',
+        },
+      ];
 
-    if (
-      hasOptions(customField.attributes.input_type) &&
-      !isBuiltInField(customField)
-    ) {
-      tabs.push({
-        label: formatMessage(messages.optionsTab),
-        url: `${baseTabsUrl}/options`,
-        className: 'options',
-      });
-    }
+      if (
+        hasOptions(customField.attributes.input_type) &&
+        !isBuiltInField(customField)
+      ) {
+        tabs.push({
+          label: formatMessage(messages.optionsTab),
+          url: `${baseTabsUrl}/options`,
+          className: 'options',
+        });
+      }
 
-    if (!isNilOrError(userCustomFieldOptions)) {
-      tabs.push({
-        label: formatMessage(messages.optionsOrderTab),
-        url: `${baseTabsUrl}/options-order`,
-        className: 'options-order',
-      });
-    }
+      if (!isNilOrError(userCustomFieldOptions)) {
+        tabs.push({
+          label: formatMessage(messages.optionsOrderTab),
+          url: `${baseTabsUrl}/options-order`,
+          className: 'options-order',
+        });
+      }
 
-    return tabs;
-  };
+      return tabs;
+    };
 
-  const childrenWithExtraProps = React.cloneElement(
-    children as React.ReactElement<any>,
-    { customField: userCustomField }
-  );
-
-  if (!isNilOrError(userCustomField)) {
-    return (
-      <>
-        <StyledGoBackButton onClick={goBack} />
-        <TabbedResource
-          tabs={getTabs(userCustomField)}
-          resource={{
-            title: localize(userCustomField.attributes.title_multiloc),
-            publicLink: '',
-          }}
-        >
-          {childrenWithExtraProps}
-        </TabbedResource>
-      </>
+    const childrenWithExtraProps = React.cloneElement(
+      children as React.ReactElement<any>,
+      { customField: userCustomField }
     );
-  }
 
-  return null;
-};
+    if (!isNilOrError(userCustomField)) {
+      return (
+        <>
+          <StyledGoBackButton onClick={goBack} />
+          <TabbedResource
+            tabs={getTabs(userCustomField)}
+            resource={{
+              title: localize(userCustomField.attributes.title_multiloc),
+              publicLink: '',
+            }}
+          >
+            {childrenWithExtraProps}
+          </TabbedResource>
+        </>
+      );
+    }
+
+    return null;
+  }
+);
 
 export default withRouter(injectIntl(Edit));
