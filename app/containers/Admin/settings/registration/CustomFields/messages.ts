@@ -157,6 +157,6 @@ export default defineMessages({
   editCustomFieldOptionFormTitle: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldOptionFormTitle',
-    defaultMessage: 'Edit ${customField} option',
+    defaultMessage: 'Edit custom field option',
   },
 });
