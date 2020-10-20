@@ -169,7 +169,7 @@
   "app.components.InitiativeCards.showXInitiatives": "Show {initiativesCount, plural, one {# proposal} other {# proposals}}",
   "app.components.InitiativeCards.sortTitle": "Sorting",
   "app.components.InitiativeCards.trending": "Trending",
-  "app.components.InitiativeCards.tryOtherFilter": "Your search or filters did not yield any results. Try to adapt them to discover other proposals.",
+  "app.components.InitiativeCards.tryOtherFilter": "{tenantName, select, stirlingcouncil {Your search or filters did not yield any results. Try to adapt them to discover other petitions.} other {Your search or filters did not yield any results. Try to adapt them to discover other proposals.}}",
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, one {# proposal} other {# proposals}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Add a banner",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Make your page visually more appealing. This image will be shown on top of your page.",
