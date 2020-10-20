@@ -1244,6 +1244,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Slett",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel": "Rediger",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldOptionFormTitle": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "Beskrivelse",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionTooltip": "If needed, you can add some more information.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled": "Ask this question during signup?",
