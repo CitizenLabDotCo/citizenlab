@@ -5,12 +5,12 @@ import styled from 'styled-components';
 
 import { CLErrorsJSON } from 'typings';
 import {
-  IUserCustomFieldOptionsData,
+  IUserCustomFieldOptionData,
   updateUserCustomFieldOption,
   deleteUserCustomFieldOption,
   addUserCustomFieldOption,
-  IUserCustomFieldData,
-} from 'services/userCustomFields';
+} from 'services/userCustomFieldOptions';
+import { IUserCustomFieldData } from 'services/userCustomFields';
 import GetUserCustomFieldOptions, {
   GetUserCustomFieldOptionsChildProps,
 } from 'resources/GetUserCustomFieldOptions';
@@ -47,7 +47,7 @@ class OptionsForm extends React.Component<Props, State> {
     };
   }
 
-  initialValuesForEdit = (option: IUserCustomFieldOptionsData) => {
+  initialValuesForEdit = (option: IUserCustomFieldOptionData) => {
     return {
       key: option.attributes.key,
       title_multiloc: option.attributes.title_multiloc,
@@ -131,7 +131,7 @@ class OptionsForm extends React.Component<Props, State> {
     });
   };
 
-  renderFn = (option: IUserCustomFieldOptionsData | null = null) => (props) => (
+  renderFn = (option: IUserCustomFieldOptionData | null = null) => (props) => (
     <OptionForm
       onClickDelete={this.handleDelete(option)}
       onClickCancel={this.handleCancel}
