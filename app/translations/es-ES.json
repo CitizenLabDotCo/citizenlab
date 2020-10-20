@@ -1244,6 +1244,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Eliminar",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel": "Editar",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldOptionFormTitle": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "Descripción",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionTooltip": "Si es necesario, puede añadir más información.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled": "Haga esta pregunta durante el registro?",
