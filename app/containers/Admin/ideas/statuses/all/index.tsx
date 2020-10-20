@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
@@ -25,11 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { Row } from 'components/admin/ResourceList';
 import { IconTooltip } from 'cl2-component-library';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
+import { Section, SectionDescription } from 'components/admin/Section';
 import {
   SortableList,
   SortableRow,
@@ -96,16 +93,16 @@ export default function IdeaStatuses() {
   }
 
   function defaultStatus() {
-    if (!ideaStatuses) return;
+    if (isNilOrError(ideaStatuses)) return;
 
     return ideaStatuses.find((status) => status.attributes.code === 'proposed');
   }
 
   function sortableStatuses() {
-    if (!ideaStatuses) return [];
+    if (isNilOrError(ideaStatuses)) return [];
 
     return ideaStatuses.filter(
-      (status) => status.attributes !== defaultStatus().attributes
+      (status) => status.attributes !== defaultStatus()?.attributes
     );
   }
 

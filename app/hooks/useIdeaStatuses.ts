@@ -4,8 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export default function useIdeaStatuses() {
   const [ideaStatuses, setIdeaStatuses] = useState<
-    IIdeaStatusData[] | null | undefined | Error
-  >(undefined);
+    IIdeaStatusData[] | null | Error
+  >(null);
 
   useEffect(() => {
     const observable = ideaStatusesStream().observable;
