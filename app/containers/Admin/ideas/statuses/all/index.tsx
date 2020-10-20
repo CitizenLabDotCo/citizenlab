@@ -24,10 +24,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 // import Button from 'components/UI/Button';
 // import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { Row } from 'components/admin/ResourceList';
 import { IconTooltip } from 'cl2-component-library';
 import { Section, SectionDescription } from 'components/admin/Section';
 import {
+  Row,
   SortableList,
   SortableRow,
   TextCell,
@@ -73,7 +73,7 @@ const ButtonIconTooltip = styled(IconTooltip)`
   }
 `;
 
-export default function IdeaStatuses() {
+const IdeaStatuses = () => {
   const ideaStatuses = useIdeaStatuses();
 
   function handleReorder(id: string, ordering: number) {
@@ -208,4 +208,6 @@ export default function IdeaStatuses() {
       </SortableList>
     </Section>
   );
-}
+};
+
+export default IdeaStatuses;

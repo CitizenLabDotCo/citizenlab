@@ -106,7 +106,7 @@ class IdeaStatusForm extends React.Component<
   };
 
   codeRadioButtons = () => {
-    const { CodeRadio } = this;
+    const CodeRadio = this.CodeRadio;
     const codes = [
       'proposed',
       'viewed',
