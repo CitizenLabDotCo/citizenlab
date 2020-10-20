@@ -65,31 +65,6 @@ export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
 
-export interface IUserCustomFieldOptionData {
-  id: string;
-  type: string;
-  attributes: {
-    key: string;
-    title_multiloc: Multiloc;
-    ordering: number;
-    created_at: string;
-    updated_at: string;
-  };
-  relationships: {
-    custom_field_options: {
-      data: IRelationship;
-    };
-  };
-}
-
-export interface IUserCustomFieldOptions {
-  data: IUserCustomFieldOptionData[];
-}
-
-export interface IUserCustomFieldOption {
-  data: IUserCustomFieldOptionData;
-}
-
 export function userCustomFieldStream(
   customFieldId: string,
   streamParams: IStreamParams | null = null
@@ -145,74 +120,4 @@ export function deleteUserCustomField(customFieldId: string) {
     `${API_PATH}/users/custom_fields/${customFieldId}`,
     customFieldId
   );
-}
-
-export function userCustomFieldOptionsStream(
-  customFieldId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldOptions>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    ...streamParams,
-  });
-}
-
-export function userCustomFieldOptionStream(
-  customFieldId: string,
-  customFieldOptionId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldOption>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}`,
-    ...streamParams,
-  });
-}
-
-export function addUserCustomFieldOption(customFieldId: string, data) {
-  return streams.add<IUserCustomField>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    { custom_field_option: data }
-  );
-}
-
-export function updateUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string,
-  object
-) {
-  return streams.update<IUserCustomFieldOptions>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId,
-    { custom_field_option: object }
-  );
-}
-
-export function deleteUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string
-) {
-  return streams.delete(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId
-  );
-}
-
-export async function reorderUserCustomFieldOption(
-  customFieldId: string,
-  customFieldOptionId: string,
-  params: { ordering: number }
-) {
-  const response = streams.update<IUserCustomField>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}/reorder`,
-    customFieldOptionId,
-    { custom_field_option: params }
-  );
-
-  streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    ],
-  });
-
-  return response;
 }

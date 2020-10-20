@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
+import { IUserCustomFieldData } from 'services/userCustomFields';
 import {
-  IUserCustomFieldData,
-  IUserCustomFieldOptionsData,
+  IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
-} from 'services/userCustomFields';
+} from 'services/userCustomFieldOptions';
 
 // hooks
 import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
@@ -69,7 +69,7 @@ const Options = memo(
           {({ itemsList, handleDragRow, handleDropRow }) =>
             itemsList.map(
               (
-                userCustomFieldOption: IUserCustomFieldOptionsData,
+                userCustomFieldOption: IUserCustomFieldOptionData,
                 index: number
               ) => {
                 const userCustomFieldOptionId = userCustomFieldOption.id;

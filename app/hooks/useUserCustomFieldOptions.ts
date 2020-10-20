@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import {
   userCustomFieldOptionsStream,
-  IUserCustomFieldOptionsData,
-} from 'services/userCustomFields';
+  IUserCustomFieldOptionData,
+} from 'services/userCustomFieldOptions';
 
 export default function useUserCustomFieldOptions(customFieldId: string) {
   const [userCustomFieldOptions, setUserCustomFieldOptions] = useState<
-    IUserCustomFieldOptionsData[] | undefined | null | Error
+    IUserCustomFieldOptionData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
