@@ -1,14 +1,13 @@
 import { addLocaleData } from 'react-intl';
-import roLocaleData from 'react-intl/locale-data/ar';
+import localeData from 'react-intl/locale-data/ar';
 
 import { formatTranslationMessages } from './';
 
-addLocaleData(roLocaleData);
+addLocaleData(localeData);
 
-const roROTranslationMessages = require('translations/ar.json');
 const translationMessages = formatTranslationMessages(
   'ar',
-  roROTranslationMessages
+  require('translations/ar.json')
 );
 
 export default translationMessages;
