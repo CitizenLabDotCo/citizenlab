@@ -25,10 +25,10 @@ const FormTitle = styled.h1`
 
 export default function New() {
   function handleSubmit(
-    values: FormValues,
+    values: Partial<FormValues>,
     { setErrors, setSubmitting, setStatus }
   ) {
-    const { ideas_count, ordering, ...params } = values;
+    const { ...params } = values;
     addIdeaStatus(params)
       .then((_response) => {
         goBack();

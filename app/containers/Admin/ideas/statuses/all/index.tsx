@@ -106,7 +106,9 @@ export default function IdeaStatuses() {
     );
   }
 
-  return ideaStatuses ? (
+  return isNilOrError(ideaStatuses) ? (
+    <></>
+  ) : (
     <Section>
       <SectionDescription>
         <FormattedMessage {...messages.subtitleIdeaStatuses} />
@@ -126,8 +128,8 @@ export default function IdeaStatuses() {
         <Row>
           <DragHandleSpacer />
           <FlexTextCell className="expand">
-            <ColorLabel color={defaultStatus().attributes.color} />
-            <T value={defaultStatus().attributes.title_multiloc} />
+            <ColorLabel color={defaultStatus()?.attributes.color} />
+            <T value={defaultStatus()?.attributes.title_multiloc} />
             <ButtonIconTooltip
               content={<FormattedMessage {...messages.lockedStatusTooltip} />}
               iconSize="1rem"
@@ -138,9 +140,9 @@ export default function IdeaStatuses() {
           <Buttons>
             <Button
               className={`e2e-custom-field-edit-btn e2e-${
-                defaultStatus().attributes.title_multiloc['en-GB']
+                defaultStatus()?.attributes.title_multiloc['en-GB']
               }`}
-              linkTo={`/admin/ideas/statuses/${defaultStatus().id}`}
+              linkTo={`/admin/ideas/statuses/${defaultStatus()?.id}`}
               buttonStyle="secondary"
               icon="edit"
             >
@@ -205,7 +207,5 @@ export default function IdeaStatuses() {
         }
       </SortableList>
     </Section>
-  ) : (
-    <></>
   );
 }

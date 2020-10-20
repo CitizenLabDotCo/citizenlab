@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useIdeaStatus from 'hooks/useIdeaStatus';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -58,7 +59,9 @@ function Edit({ params }) {
     clHistory.push('/admin/ideas/statuses');
   }
 
-  return ideaStatus ? (
+  return isNilOrError(ideaStatus) ? (
+    <></>
+  ) : (
     <div>
       <FormHeader>
         <GoBackButton onClick={goBack} />
@@ -73,8 +76,6 @@ function Edit({ params }) {
         validate={IdeaStatusForm['validate']}
       />
     </div>
-  ) : (
-    <></>
   );
 }
 

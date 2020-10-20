@@ -148,7 +148,6 @@ class IdeaStatusForm extends React.Component<
   render() {
     const {
       isSubmitting,
-      initialValues,
       errors,
       isValid,
       touched,
