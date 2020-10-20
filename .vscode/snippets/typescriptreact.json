@@ -129,8 +129,8 @@
       "const theme: any = useTheme();"
     ]
   },
-  "console-log": {
-    "prefix": "console-log",
+  "conlog": {
+    "prefix": "conlog",
     "description": "Console log",
     "body": [
       "console.log(`${1}: ${${1}}`);"
