@@ -40,7 +40,6 @@ function Edit({ params }) {
         goBack();
       })
       .catch((errorResponse) => {
-        console.log(errorResponse);
         if (isCLErrorJSON(errorResponse)) {
           const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
           setErrors(apiErrors);
