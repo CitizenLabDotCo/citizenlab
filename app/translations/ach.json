@@ -1241,6 +1241,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.addFieldButton": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation": "",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "",
