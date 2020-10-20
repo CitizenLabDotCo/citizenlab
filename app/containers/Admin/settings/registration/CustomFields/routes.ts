@@ -51,6 +51,15 @@ export default () => ({
             loader: () => import('./Edit/OptionsOrder'),
             loading: () => null,
           }),
+          childRoutes: [
+            {
+              path: ':userCustomFieldOptionId',
+              component: Loadable({
+                loader: () => import('./Edit/OptionsEdit'),
+                loading: () => null,
+              }),
+            },
+          ],
         },
       ],
     },
