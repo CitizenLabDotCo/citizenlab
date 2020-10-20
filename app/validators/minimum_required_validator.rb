@@ -30,7 +30,7 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
   end
 
   def destroying_required_object?
-    record.will_be_destroyed? && value_in_required_list? && !other_records_contain_required_values?
+    record.to_be_destroyed? && value_in_required_list? && !other_records_contain_required_values?
   end
 
   def value_was_in_required_list?
