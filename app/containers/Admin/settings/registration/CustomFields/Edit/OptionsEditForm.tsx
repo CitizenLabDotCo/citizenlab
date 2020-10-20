@@ -9,7 +9,6 @@ import messages from '../messages';
 // components
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -21,7 +20,6 @@ export interface Props {}
 
 export interface FormValues {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
 }
 
 class OptionsEditForm extends React.Component<
@@ -60,21 +58,6 @@ class OptionsEditForm extends React.Component<
               <Error
                 fieldName="title_multiloc"
                 apiErrors={errors.title_multiloc as any}
-              />
-            )}
-          </SectionField>
-          <SectionField>
-            <Field
-              component={FormikQuillMultiloc}
-              name="description_multiloc"
-              label={<FormattedMessage {...messages.fieldDescription} />}
-              labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
-              withCTAButton
-            />
-            {touched.description_multiloc && (
-              <Error
-                fieldName="description_multiloc"
-                apiErrors={errors.description_multiloc as any}
               />
             )}
           </SectionField>
