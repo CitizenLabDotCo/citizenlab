@@ -145,35 +145,36 @@ export default defineMessages({
     defaultMessage: 'Other',
   },
   proposedFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.proposed',
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.proposed',
     defaultMessage:
       'The idea has just been received and yet to be processed or categorized',
   },
   viewedFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.viewed',
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.viewed',
     defaultMessage:
       'The idea has been viewed by an admin but yet to be processed, or to enter a selection process.',
   },
   under_considerationFieldCodeDescription: {
     id:
-      'app.containers.admin.ideas.form.fieldCodeLabelTitles.under_consideration',
+      'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.under_consideration',
     defaultMessage:
       'The idea is in an ongoing selection process and being considered by the city.',
   },
   acceptedFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.accepted',
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.accepted',
     defaultMessage: 'The idea is officially accepted to be implemented.',
   },
   implementedFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.implemented',
+    id:
+      'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.implemented',
     defaultMessage: 'The idea has officially been implemented.',
   },
   rejectedFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.rejected',
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.rejected',
     defaultMessage: 'The idea is rejected for any reason.',
   },
   otherFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeLabelTitles.other',
+    id: 'app.containers.admin.ideas.form.fieldCodeLabelDescriptions.other',
     defaultMessage: "The status doesn't fit any of the avove options.",
   },
   visualFields: {
