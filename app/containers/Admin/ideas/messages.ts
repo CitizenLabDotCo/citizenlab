@@ -111,7 +111,7 @@ export default defineMessages({
       'A short Code of the status and what it means for ideas assigned to it.',
   },
   fieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCode',
+    id: 'app.containers.admin.ideas.form.fieldCodeDescription',
     defaultMessage:
       'Select the option that better describes this status. By selecting one, you will help us analyze the ideas of your citizens and provide you with better insights.',
   },
