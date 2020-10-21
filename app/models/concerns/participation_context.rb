@@ -18,6 +18,7 @@ module ParticipationContext
   PRESENTATION_MODES = %w[card map].freeze
   IDEAS_ORDERS = %w[trending random most_voted most_recent oldest].freeze
 
+  # rubocop:disable Metrics/BlockLength
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permission_scope, dependent: :destroy
@@ -27,15 +28,6 @@ module ParticipationContext
     with_options unless: :timeline_project? do
       validate :ideas_allowed_in_participation_method
       validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
-      validates :voting_enabled, boolean: true
-      validates :posting_enabled, boolean: true
-      validates :presentation_mode, inclusion: { in: PRESENTATION_MODES, unless: proc { |r| r.presentation_mode.nil? } }
-      validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-      validates :commenting_enabled, boolean: true
-      validates :voting_limited_max,
-                presence: true,
-                numericality: { only_integer: true, greater_than: 0 },
-                if: %i[ideation? voting_limited?]
 
       with_options if: :ideation? do
         validates :presentation_mode, presence: true
@@ -46,9 +38,27 @@ module ParticipationContext
         validates :max_budget, presence: true
       end
 
+      with_options if: :ideation_or_budgeting? do
+        validates :voting_enabled, boolean: true
+        validates :posting_enabled, boolean: true
+        validates :presentation_mode,
+                  inclusion: { in: PRESENTATION_MODES, unless: proc { |r| r.presentation_mode.nil? } }
+        validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :commenting_enabled, boolean: true
+        validates :voting_limited_max,
+                  presence: true,
+                  numericality: { only_integer: true, greater_than: 0 },
+                  if: %i[ideation? voting_limited?]
+      end
+
       before_validation :set_participation_method, on: :create
       before_validation :set_presentation_mode, on: :create
     end
+  end
+  # rubocop:enable Metrics/BlockLength
+
+  def ideation_or_budgeting?
+    ideation? || budgeting?
   end
 
   def ideation?
