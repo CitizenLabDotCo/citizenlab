@@ -35,7 +35,7 @@ class IdeaStatus < ApplicationRecord
   end
 
   def self.default_status
-    find_by(code: :proposed).minimum(:created_at)
+    order(create_at: :asc).find_by(code: :proposed)
   end
 
   def self.create_defaults
