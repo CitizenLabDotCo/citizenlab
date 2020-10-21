@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
@@ -14,6 +14,7 @@ import {
   RowButton,
   ActionsRowContainer,
 } from './StyledComponents';
+import DeleteProjectButton from './DeletePublicationButton';
 import { IconNames, StatusLabel } from 'cl2-component-library';
 import PublicationStatusLabel from './PublicationStatusLabel';
 
@@ -51,7 +52,7 @@ export default ({
   hidePublicationStatusLabel,
   className,
 }: Props) => {
-  const DeleteButton = null;
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
 
   const ManageButton = (
     <RowButton
@@ -63,11 +64,20 @@ export default ({
       icon="edit"
       type="button"
       key="manage"
+      processing={isBeingDeleted}
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
   );
   const publicationStatus = publication.attributes.publication_status;
+
+  const DeleteButton = (
+    <DeleteProjectButton
+      publication={publication}
+      setDeleteIsProcessing={setIsBeingDeleted}
+      processing={isBeingDeleted}
+    />
+  );
 
   const renderRowButton = (action) => (
     <RowButton
@@ -84,7 +94,7 @@ export default ({
       onClick={action.handler(publication.publicationId)}
       buttonStyle="secondary"
       icon={action.icon}
-      processing={action.processing}
+      processing={action.processing || isBeingDeleted}
     >
       {action.buttonContent}
     </RowButton>
