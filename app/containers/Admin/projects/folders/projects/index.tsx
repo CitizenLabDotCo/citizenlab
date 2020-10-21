@@ -174,7 +174,6 @@ class AdminFoldersProjectsList extends Component<
                         <ProjectRow
                           publication={adminPublication}
                           actions={[
-                            'delete',
                             {
                               buttonContent: (
                                 <FormattedMessage
