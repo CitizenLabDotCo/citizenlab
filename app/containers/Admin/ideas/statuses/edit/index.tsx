@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,16 +17,16 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 const FormHeader = styled.div`
   width: 100%;
-  margin: 0 0 3rem;
+  margin: 0 0 48px;
 `;
 
 const FormTitle = styled.h1`
   width: 100%;
-  font-size: 2rem;
-  margin: 1rem 0 3rem 0;
+  font-size: 32px;
+  margin: 16px 0 48px 0;
 `;
 
-const Edit = ({ params }) => {
+const Edit = ({ params }: WithRouterProps) => {
   const { id: statusId } = params;
   const ideaStatus = useIdeaStatus({ statusId });
 
@@ -59,24 +59,25 @@ const Edit = ({ params }) => {
     clHistory.push('/admin/ideas/statuses');
   }
 
-  return isNilOrError(ideaStatus) ? (
-    <></>
-  ) : (
-    <div>
-      <FormHeader>
-        <GoBackButton onClick={goBack} />
-        <FormTitle>
-          <FormattedMessage {...messages.addIdeaStatus} />
-        </FormTitle>
-      </FormHeader>
-      <Formik
-        initialValues={ideaStatus.attributes}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={IdeaStatusForm['validate']}
-      />
-    </div>
-  );
+  if (!isNilOrError(ideaStatus))
+    return (
+      <div>
+        <FormHeader>
+          <GoBackButton onClick={goBack} />
+          <FormTitle>
+            <FormattedMessage {...messages.addIdeaStatus} />
+          </FormTitle>
+        </FormHeader>
+        <Formik
+          initialValues={ideaStatus.attributes}
+          onSubmit={handleSubmit}
+          render={renderFn}
+          validate={IdeaStatusForm['validate']}
+        />
+      </div>
+    );
+
+  return <></>;
 };
 
 export default withRouter(Edit);

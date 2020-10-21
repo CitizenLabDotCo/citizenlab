@@ -14,16 +14,16 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 const FormHeader = styled.div`
   width: 100%;
-  margin: 0 0 3rem;
+  margin: 0 0 48px;
 `;
 
 const FormTitle = styled.h1`
   width: 100%;
-  font-size: 2rem;
-  margin: 1rem 0 3rem 0;
+  font-size: 32px;
+  margin: 16px 0 48px 0;
 `;
 
-const New = () => {
+const NewIdeaStatus = () => {
   function handleSubmit(
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
@@ -75,4 +75,4 @@ const New = () => {
   );
 };
 
-export default New;
+export default NewIdeaStatus;

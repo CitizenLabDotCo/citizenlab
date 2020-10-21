@@ -99,32 +99,31 @@ const IdeaStatuses = memo(() => {
   }, [ideaStatuses]);
 
   const sortableStatuses = useMemo(() => {
-    if (isNilOrError(ideaStatuses) || !defaultStatus) return [];
+    if (!isNilOrError(ideaStatuses) && defaultStatus)
+      return ideaStatuses.filter(
+        (status) => status.attributes !== defaultStatus.attributes
+      );
 
-    return ideaStatuses.filter(
-      (status) => status.attributes !== defaultStatus.attributes
-    );
+    return [];
   }, [defaultStatus, ideaStatuses]);
 
-  return isNilOrError(ideaStatuses) ? (
-    <></>
-  ) : (
-    <Section>
-      <SectionDescription>
-        <FormattedMessage {...messages.subtitleIdeaStatuses} />
-      </SectionDescription>
-      <ButtonWrapper>
-        <Button
-          className="e2e-add-custom-field-btn"
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          linkTo="/admin/ideas/statuses/new"
-        >
-          <FormattedMessage {...messages.addIdeaStatus} />
-        </Button>
-      </ButtonWrapper>
+  if (!isNilOrError(ideaStatuses) && defaultStatus)
+    return (
+      <Section>
+        <SectionDescription>
+          <FormattedMessage {...messages.subtitleIdeaStatuses} />
+        </SectionDescription>
+        <ButtonWrapper>
+          <Button
+            className="e2e-add-custom-field-btn"
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo="/admin/ideas/statuses/new"
+          >
+            <FormattedMessage {...messages.addIdeaStatus} />
+          </Button>
+        </ButtonWrapper>
 
-      {defaultStatus && (
         <Row>
           <DragHandleSpacer />
           <FlexTextCell className="expand">
@@ -132,7 +131,7 @@ const IdeaStatuses = memo(() => {
             <T value={defaultStatus.attributes.title_multiloc} />
             <ButtonIconTooltip
               content={<FormattedMessage {...messages.lockedStatusTooltip} />}
-              iconSize="1rem"
+              iconSize="16px"
               placement="top"
               icon="lock"
             />
@@ -148,64 +147,67 @@ const IdeaStatuses = memo(() => {
             </Button>
           </Buttons>
         </Row>
-      )}
 
-      <SortableList
-        items={sortableStatuses}
-        onReorder={handleReorder}
-        id="e2e-admin-published-projects-list"
-      >
-        {({ itemsList, handleDragRow, handleDropRow }) =>
-          itemsList.map((ideaStatus: IIdeaStatusData, index: number) => (
-            <SortableRow
-              key={ideaStatus.id}
-              id={ideaStatus.id}
-              index={index}
-              lastItem={index === itemsList.length - 1}
-              moveRow={handleDragRow}
-              dropRow={handleDropRow}
-            >
-              <FlexTextCell className="expand">
-                <ColorLabel color={ideaStatus.attributes.color} />
-                <T value={ideaStatus.attributes.title_multiloc} />
-              </FlexTextCell>
-              <Buttons>
-                <Tippy
-                  placement="top"
-                  theme="light"
-                  disabled={isDeletable(ideaStatus)}
-                  content={
-                    <FormattedMessage {...messages.deleteButtonTooltip} />
-                  }
-                  trigger="mouseenter"
+        <SortableList
+          items={sortableStatuses}
+          onReorder={handleReorder}
+          id="e2e-admin-published-projects-list"
+        >
+          {({ itemsList, handleDragRow, handleDropRow }) => (
+            <>
+              {itemsList.map((ideaStatus: IIdeaStatusData, index: number) => (
+                <SortableRow
+                  key={ideaStatus.id}
+                  id={ideaStatus.id}
+                  index={index}
+                  lastItem={index === itemsList.length - 1}
+                  moveRow={handleDragRow}
+                  dropRow={handleDropRow}
                 >
-                  <div>
-                    <Button
-                      className={`e2e-delete§-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
-                      onClick={handleDelete(ideaStatus.id)}
-                      buttonStyle="text"
-                      disabled={!isDeletable(ideaStatus)}
-                      icon="delete"
+                  <FlexTextCell className="expand">
+                    <ColorLabel color={ideaStatus.attributes.color} />
+                    <T value={ideaStatus.attributes.title_multiloc} />
+                  </FlexTextCell>
+                  <Buttons>
+                    <Tippy
+                      placement="top"
+                      theme="light"
+                      disabled={isDeletable(ideaStatus)}
+                      content={
+                        <FormattedMessage {...messages.deleteButtonTooltip} />
+                      }
+                      trigger="mouseenter"
                     >
-                      <FormattedMessage {...messages.deleteButtonLabel} />
+                      <div>
+                        <Button
+                          className={`e2e-delete§-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
+                          onClick={handleDelete(ideaStatus.id)}
+                          buttonStyle="text"
+                          disabled={!isDeletable(ideaStatus)}
+                          icon="delete"
+                        >
+                          <FormattedMessage {...messages.deleteButtonLabel} />
+                        </Button>
+                      </div>
+                    </Tippy>
+                    <Button
+                      className={`e2e-custom-field-edit-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
+                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
+                      buttonStyle="secondary"
+                      icon="edit"
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
-                  </div>
-                </Tippy>
-                <Button
-                  className={`e2e-custom-field-edit-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
-                  linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
-                  buttonStyle="secondary"
-                  icon="edit"
-                >
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-              </Buttons>
-            </SortableRow>
-          ))
-        }
-      </SortableList>
-    </Section>
-  );
+                  </Buttons>
+                </SortableRow>
+              ))}
+            </>
+          )}
+        </SortableList>
+      </Section>
+    );
+
+  return <></>;
 });
 
 export default IdeaStatuses;

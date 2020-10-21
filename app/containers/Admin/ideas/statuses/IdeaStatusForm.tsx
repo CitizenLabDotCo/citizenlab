@@ -37,35 +37,35 @@ export interface Props {
 
 const RadioSection = styled(SectionField)`
   max-width: unset;
-  margin-bottom: 5rem;
+  margin-bottom: 72px;
 `;
 
 const SubSectionDescription = styled(SectionDescription)`
-  margin-bottom: 3rem;
+  margin-bottom: 48px;
 `;
 
 const RadioInputGroup = styled(SectionField)`
-  padding: 0 1rem 0 2rem;
+  padding: 0 16px 0 32px;
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   max-width: unset;
 `;
 
 const RadioLabel = styled(Label)`
   display: block;
   line-height: 1.4;
-  padding-left: 1rem;
+  padding-left: 16px;
 `;
 
 const RadioLabelTitle = styled.span`
   display: flex;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 18px;
 `;
 
 const StyledIconTooltip = styled(IconTooltip)`
-  margin-left: 0.5rem;
+  margin-left: 8px;
 
   svg {
     fill: #aeaeae;
@@ -73,8 +73,9 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const StyledSectionField = styled(SectionField)`
-  margin-bottom: 5rem;
+  margin-bottom: 72px;
 `;
+
 class IdeaStatusForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
 > {
