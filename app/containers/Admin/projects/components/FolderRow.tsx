@@ -9,6 +9,7 @@ import {
   RowButton,
   ActionsRowContainer,
 } from './StyledComponents';
+import DeleteFolderButton from './DeletePublicationButton';
 
 // styles
 import styled from 'styled-components';
@@ -17,7 +18,11 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+// services
+import { isAdmin } from 'services/permissions/roles';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -97,11 +102,17 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const FolderRow = memo<Props>(({ publication, adminPublications }) => {
+  const authUser = useAuthUser();
+
   const hasProjects =
     !isNilOrError(adminPublications) &&
     !!adminPublications.list?.length &&
     adminPublications.list.length > 0;
+  const userCanDeletePublication = isAdmin(authUser);
+
   const [folderOpen, setFolderOpen] = useState(false);
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
   return (
@@ -127,6 +138,13 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
           />
         </RowContentInner>
         <ActionsRowContainer>
+          {userCanDeletePublication && (
+            <DeleteFolderButton
+              publication={publication}
+              processing={isBeingDeleted}
+              setDeleteIsProcessing={setIsBeingDeleted}
+            />
+          )}
           <RowButton
             className={`e2e-admin-edit-project ${
               publication.attributes.publication_title_multiloc['en-GB'] || ''
@@ -134,6 +152,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
             linkTo={`/admin/projects/folders/${publication.publicationId}`}
             buttonStyle="secondary"
             icon="edit"
+            disabled={isBeingDeleted}
           >
             <FormattedMessage {...messages.manageButtonLabel} />
           </RowButton>
@@ -146,6 +165,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
             <InFolderProjectRow
               publication={publication}
               key={publication.id}
+              actions={isAdmin(authUser) ? ['delete', 'manage'] : ['manage']}
             />
           ))}
         </ProjectRows>

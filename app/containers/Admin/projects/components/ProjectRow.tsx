@@ -64,7 +64,7 @@ export default ({
       icon="edit"
       type="button"
       key="manage"
-      processing={isBeingDeleted}
+      disabled={isBeingDeleted}
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
@@ -76,6 +76,7 @@ export default ({
       publication={publication}
       setDeleteIsProcessing={setIsBeingDeleted}
       processing={isBeingDeleted}
+      key="delete"
     />
   );
 
@@ -94,7 +95,8 @@ export default ({
       onClick={action.handler(publication.publicationId)}
       buttonStyle="secondary"
       icon={action.icon}
-      processing={action.processing || isBeingDeleted}
+      processing={action.processing}
+      disabled={isBeingDeleted}
     >
       {action.buttonContent}
     </RowButton>
