@@ -35,7 +35,7 @@ import {
 import Button from 'components/UI/Button';
 
 const DragHandleSpacer = styled.div`
-  padding: 1rem;
+  padding: 16px;
   height: 100%;
   align-self: flex-start;
 
@@ -52,10 +52,10 @@ const Buttons = styled.div`
 `;
 
 const ColorLabel = styled.span`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 24px;
+  height: 24px;
   background-color: ${(props) => props.color};
-  margin-right: 1rem;
+  margin-right: 16px;
   border-radius: 3px;
   display: inline-block;
 `;
@@ -66,7 +66,7 @@ const FlexTextCell = styled(TextCell)`
 `;
 
 const ButtonIconTooltip = styled(IconTooltip)`
-  padding: 0 1rem;
+  padding: 0 16px;
 
   svg {
     fill: #cecece;
