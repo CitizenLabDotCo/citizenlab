@@ -39,6 +39,7 @@ interface Props {
         processing?: boolean;
       }
     | 'manage'
+    | 'delete'
   )[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
@@ -50,6 +51,8 @@ export default ({
   hidePublicationStatusLabel,
   className,
 }: Props) => {
+  const DeleteButton = null;
+
   const ManageButton = (
     <RowButton
       className={`
@@ -65,6 +68,27 @@ export default ({
     </RowButton>
   );
   const publicationStatus = publication.attributes.publication_status;
+
+  const renderRowButton = (action) => (
+    <RowButton
+      key={action.icon}
+      type="button"
+      className={`
+                e2e-admin-edit-publication
+                ${
+                  publication.attributes.publication_title_multiloc?.[
+                    'en-GB'
+                  ] || ''
+                }
+              `}
+      onClick={action.handler(publication.publicationId)}
+      buttonStyle="secondary"
+      icon={action.icon}
+      processing={action.processing}
+    >
+      {action.buttonContent}
+    </RowButton>
+  );
 
   return (
     <RowContent className={`e2e-admin-projects-list-item ${className}`}>
@@ -110,30 +134,15 @@ export default ({
       </RowContentInner>
       {actions ? (
         <ActionsRowContainer>
-          {actions.map((action) =>
-            action === 'manage' ? (
-              ManageButton
-            ) : (
-              <RowButton
-                key={action.icon}
-                type="button"
-                className={`
-                e2e-admin-edit-publication
-                ${
-                  publication.attributes.publication_title_multiloc?.[
-                    'en-GB'
-                  ] || ''
-                }
-              `}
-                onClick={action.handler(publication.publicationId)}
-                buttonStyle="secondary"
-                icon={action.icon}
-                processing={action.processing}
-              >
-                {action.buttonContent}
-              </RowButton>
-            )
-          )}
+          {actions.map((action) => {
+            if (action === 'delete') {
+              return DeleteButton;
+            } else if (action === 'manage') {
+              return ManageButton;
+            } else {
+              return renderRowButton(action);
+            }
+          })}
         </ActionsRowContainer>
       ) : (
         ManageButton
