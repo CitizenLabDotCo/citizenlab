@@ -8,15 +8,11 @@ import {
 } from 'rxjs/operators';
 import { isEmpty, get, isString } from 'lodash-es';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import { Radio, IconTooltip } from 'cl2-component-library';
-import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -30,7 +26,6 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import HasPermission from 'components/HasPermission';
 import Warning from 'components/UI/Warning';
 
 import Link from 'utils/cl-router/Link';
@@ -51,7 +46,6 @@ import {
   projectByIdStream,
   addProject,
   updateProject,
-  deleteProject,
 } from 'services/projects';
 import {
   projectFilesStream,
@@ -163,15 +157,6 @@ const ParticipationContextWrapper = styled.div`
   }
 `;
 
-const DeleteProjectSectionField = styled(SectionField)`
-  margin-top: 30px;
-  margin-bottom: 60px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-`;
-
 const StyledFileUploader = styled(FileUploader)`
   width: 500px;
 `;
@@ -211,8 +196,6 @@ interface State {
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: ISubmitState;
-  processingDelete: boolean;
-  deleteError: string | null;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -250,8 +233,6 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
-      processingDelete: false,
-      deleteError: null,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -276,47 +257,45 @@ class AdminProjectEditGeneral extends PureComponent<
     this.subscriptions = [
       combineLatest(locale$, currentTenant$, areas$, project$).subscribe(
         ([locale, currentTenant, areas, project]) => {
-          if (!this.state.processingDelete) {
-            this.setState((state) => {
-              const publicationStatus = project
-                ? project.data.attributes.publication_status
-                : state.publicationStatus;
-              const projectType = project
-                ? project.data.attributes.process_type
-                : state.projectType;
-              const areaType =
-                project && project.data.relationships.areas.data.length > 0
-                  ? 'selection'
-                  : 'all';
-              const areasOptions = areas.data.map((area) => ({
-                value: area.id,
-                label: getLocalized(
-                  area.attributes.title_multiloc,
-                  locale,
-                  currentTenant.data.attributes.settings.core.locales
-                ),
-              }));
-
-              return {
+          this.setState((state) => {
+            const publicationStatus = project
+              ? project.data.attributes.publication_status
+              : state.publicationStatus;
+            const projectType = project
+              ? project.data.attributes.process_type
+              : state.projectType;
+            const areaType =
+              project && project.data.relationships.areas.data.length > 0
+                ? 'selection'
+                : 'all';
+            const areasOptions = areas.data.map((area) => ({
+              value: area.id,
+              label: getLocalized(
+                area.attributes.title_multiloc,
                 locale,
-                currentTenant,
-                project,
-                publicationStatus,
-                projectType,
-                areaType,
-                areasOptions,
-                presentationMode:
-                  (project && project.data.attributes.presentation_mode) ||
-                  state.presentationMode,
-                areas: areas.data,
-                projectAttributesDiff: {
-                  admin_publication_attributes: {
-                    publication_status: publicationStatus,
-                  },
+                currentTenant.data.attributes.settings.core.locales
+              ),
+            }));
+
+            return {
+              locale,
+              currentTenant,
+              project,
+              publicationStatus,
+              projectType,
+              areaType,
+              areasOptions,
+              presentationMode:
+                (project && project.data.attributes.presentation_mode) ||
+                state.presentationMode,
+              areas: areas.data,
+              projectAttributesDiff: {
+                admin_publication_attributes: {
+                  publication_status: publicationStatus,
                 },
-              };
-            });
-          }
+              },
+            };
+          });
         }
       ),
 
@@ -419,23 +398,21 @@ class AdminProjectEditGeneral extends PureComponent<
           })
         )
         .subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
-          if (!this.state.processingDelete) {
-            this.setState({
-              projectFiles: projectFiles
-                ? (projectFiles.filter(
-                    (file) => !isNilOrError(file)
-                  ) as UploadFile[])
-                : [],
-              projectImages: projectImages
-                ? (projectImages.filter(
-                    (image) => !isNilOrError(image)
-                  ) as UploadFile[])
-                : [],
-              projectHeaderImage: projectHeaderImage
-                ? [projectHeaderImage]
-                : null,
-            });
-          }
+          this.setState({
+            projectFiles: projectFiles
+              ? (projectFiles.filter(
+                  (file) => !isNilOrError(file)
+                ) as UploadFile[])
+              : [],
+            projectImages: projectImages
+              ? (projectImages.filter(
+                  (image) => !isNilOrError(image)
+                ) as UploadFile[])
+              : [],
+            projectHeaderImage: projectHeaderImage
+              ? [projectHeaderImage]
+              : null,
+          });
         }),
 
       this.processing$.subscribe((processing) => {
@@ -736,29 +713,6 @@ class AdminProjectEditGeneral extends PureComponent<
     }
   };
 
-  deleteProject = async (event: FormEvent<any>) => {
-    event.preventDefault();
-
-    const { project } = this.state;
-    const { formatMessage } = this.props.intl;
-
-    if (
-      project &&
-      window.confirm(formatMessage(messages.deleteProjectConfirmation))
-    ) {
-      try {
-        this.setState({ processingDelete: true });
-        await deleteProject(project.data.id);
-        clHistory.push('/admin/projects');
-      } catch {
-        this.setState({
-          processingDelete: false,
-          deleteError: formatMessage(messages.deleteProjectError),
-        });
-      }
-    }
-  };
-
   render() {
     const {
       publicationStatus,
@@ -774,7 +728,6 @@ class AdminProjectEditGeneral extends PureComponent<
       areaType,
       submitState,
       apiErrors,
-      processingDelete,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -1104,35 +1057,6 @@ class AdminProjectEditGeneral extends PureComponent<
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
-
-            {project && (
-              <HasPermission item={project.data} action="delete">
-                <DeleteProjectSectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.deleteProjectLabel} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.deleteProjectLabelTooltip}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <ButtonWrapper>
-                    <Button
-                      type="button"
-                      icon="delete"
-                      buttonStyle="delete"
-                      onClick={this.deleteProject}
-                      processing={processingDelete}
-                    >
-                      <FormattedMessage {...messages.deleteProjectButton} />
-                    </Button>
-                  </ButtonWrapper>
-                  <Error text={this.state.deleteError} />
-                </DeleteProjectSectionField>
-              </HasPermission>
-            )}
           </Section>
         </StyledForm>
       );
