@@ -32,13 +32,6 @@ export default () => ({
       }),
     },
     {
-      path: '/',
-      component: Loadable({
-        loader: () => import('./all'),
-        loading: () => null,
-      }),
-    },
-    {
       path: 'statuses',
       component: Loadable({
         loader: () => import('./statuses/all'),

@@ -1,9 +1,3 @@
-/*
- *.admin.ideas.all Messages
- *
- * This contains all the text for the.admin.ideas.all component.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -16,11 +10,11 @@ export default defineMessages({
     defaultMessage: 'Admin ideas page',
   },
   pageTitle: {
-    id: 'app.containers.admin.ideas.all.header',
+    id: 'app.containers.admin.ideas.all.pageTitle',
     defaultMessage: 'Ideas',
   },
   pageSubtitle: {
-    id: 'app.containers.admin.ideas.all.headerSubtitle',
+    id: 'app.containers.admin.ideas.all.pageSubtitle',
     defaultMessage:
       'Give feedback on ideas, add topics to them or bring them from one project to another.',
   },
@@ -29,7 +23,7 @@ export default defineMessages({
     defaultMessage: 'Manage',
   },
   tabCustomize: {
-    id: 'app.containers.admin.ideas.all.tabCustomizeStatuses',
+    id: 'app.containers.admin.ideas.all.tabCustomize',
     defaultMessage: 'Customize Statuses',
   },
   required: {
@@ -41,15 +35,15 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.admin.ideas.all.manage',
+    id: 'app.containers.admin.ideas.all.editButtonLabel',
     defaultMessage: 'Manage',
   },
   systemField: {
-    id: 'app.containers.admin.ideas.all.default',
+    id: 'app.containers.admin.ideas.all.desystemFieldfault',
     defaultMessage: 'Default',
   },
   addIdeaStatus: {
-    id: 'app.containers.admin.ideas.all.addStatus',
+    id: 'app.containers.admin.ideas.all.addIdeaStatus',
     defaultMessage: 'Add Status',
   },
   titleIdeaStatuses: {
@@ -66,7 +60,7 @@ export default defineMessages({
     defaultMessage: 'ideas',
   },
   deleteButtonTooltip: {
-    id: 'app.containers.admin.ideas.all.disabledDeleteButtonTooltip',
+    id: 'app.containers.admin.ideas.all.deleteButtonTooltip',
     defaultMessage:
       'Cannot delete a status that has been assigned to ideas. Make sure to reassign your ideas to another status first.',
   },
