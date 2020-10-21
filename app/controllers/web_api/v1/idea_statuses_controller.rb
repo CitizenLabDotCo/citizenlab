@@ -33,6 +33,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def update
+    @idea_status.insert_at(params.dig(:idea_status, :ordering)) if params.dig(:idea_status, :ordering)
     if @idea_status.update(idea_status_params)
       render json: serialized_resource, status: :ok
     else
@@ -61,7 +62,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def idea_status_params
     params.require(:idea_status).permit(
-      :code, :color, :ordering,
+      :code, :color,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
