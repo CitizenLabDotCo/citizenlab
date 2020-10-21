@@ -21,7 +21,7 @@ class IdeaStatus < ApplicationRecord
   before_destroy :remove_notifications
 
   # TODO: move to observer, probably not the best solution as is.
-  after_save :move_default_to_top, unless: :default?
+  after_update :move_default_to_top, unless: :default?
 
   def default?
     self.class.default_status == self
