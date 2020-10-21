@@ -1,9 +1,12 @@
 // libraries
-import React from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// i18n
+import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // hooks
@@ -17,12 +20,6 @@ import {
 } from 'services/ideaStatuses';
 
 // components
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// import FeatureFlag from 'components/FeatureFlag';
-// import Button from 'components/UI/Button';
-// import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { IconTooltip } from 'cl2-component-library';
 import { Section, SectionDescription } from 'components/admin/Section';
@@ -73,7 +70,7 @@ const ButtonIconTooltip = styled(IconTooltip)`
   }
 `;
 
-const IdeaStatuses = () => {
+const IdeaStatuses = memo(() => {
   const ideaStatuses = useIdeaStatuses();
 
   function handleReorder(id: string, ordering: number) {
@@ -84,27 +81,34 @@ const IdeaStatuses = () => {
     return ideaStatus.attributes.code === 'proposed';
   }
 
-  const handleDelete = (id) => (_event: React.FormEvent<any>) => {
-    deleteIdeaStatus(id);
-  };
+  const handleDelete = useCallback(
+    (id) => (_event: React.FormEvent<any>) => {
+      deleteIdeaStatus(id);
+    },
+    []
+  );
 
-  function isDeletable(ideaStatus: IIdeaStatusData) {
+  const isDeletable = useCallback((ideaStatus: IIdeaStatusData) => {
     return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
-  }
+  }, []);
 
-  function defaultStatus() {
-    if (isNilOrError(ideaStatuses)) return;
+  const defaultStatus = useMemo(() => {
+    if (!isNilOrError(ideaStatuses)) {
+      return ideaStatuses.find(
+        (status) => status.attributes.code === 'proposed'
+      );
+    }
 
-    return ideaStatuses.find((status) => status.attributes.code === 'proposed');
-  }
+    return undefined;
+  }, [ideaStatuses]);
 
-  function sortableStatuses() {
-    if (isNilOrError(ideaStatuses)) return [];
+  const sortableStatuses = useMemo(() => {
+    if (isNilOrError(ideaStatuses) || !defaultStatus) return [];
 
     return ideaStatuses.filter(
-      (status) => status.attributes !== defaultStatus()?.attributes
+      (status) => status.attributes !== defaultStatus.attributes
     );
-  }
+  }, [defaultStatus, ideaStatuses]);
 
   return isNilOrError(ideaStatuses) ? (
     <></>
@@ -124,12 +128,12 @@ const IdeaStatuses = () => {
         </Button>
       </ButtonWrapper>
 
-      {defaultStatus() && (
+      {defaultStatus && (
         <Row>
           <DragHandleSpacer />
           <FlexTextCell className="expand">
-            <ColorLabel color={defaultStatus()?.attributes.color} />
-            <T value={defaultStatus()?.attributes.title_multiloc} />
+            <ColorLabel color={defaultStatus.attributes.color} />
+            <T value={defaultStatus.attributes.title_multiloc} />
             <ButtonIconTooltip
               content={<FormattedMessage {...messages.lockedStatusTooltip} />}
               iconSize="1rem"
@@ -139,10 +143,8 @@ const IdeaStatuses = () => {
           </FlexTextCell>
           <Buttons>
             <Button
-              className={`e2e-custom-field-edit-btn e2e-${
-                defaultStatus()?.attributes.title_multiloc['en-GB']
-              }`}
-              linkTo={`/admin/ideas/statuses/${defaultStatus()?.id}`}
+              className={`e2e-custom-field-edit-btn e2e-${defaultStatus.attributes.title_multiloc['en-GB']}`}
+              linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
               buttonStyle="secondary"
               icon="edit"
             >
@@ -153,7 +155,7 @@ const IdeaStatuses = () => {
       )}
 
       <SortableList
-        items={sortableStatuses()}
+        items={sortableStatuses}
         onReorder={handleReorder}
         id="e2e-admin-published-projects-list"
       >
@@ -208,6 +210,6 @@ const IdeaStatuses = () => {
       </SortableList>
     </Section>
   );
-};
+});
 
 export default IdeaStatuses;

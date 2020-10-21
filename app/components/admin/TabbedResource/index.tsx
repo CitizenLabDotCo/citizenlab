@@ -130,13 +130,12 @@ class TabbedResource extends React.PureComponent<
   State
 > {
   activeClassForTab = (tab: TabProps) => {
-    if (tab.active) return 'active';
+    const {
+      location: { pathname },
+    } = this.props;
 
-    const { location } = this.props;
-
-    return location &&
-      location.pathname &&
-      getRegularExpression(tab.url).test(location.pathname)
+    return tab.active ||
+      (pathname && getRegularExpression(tab.url).test(location.pathname))
       ? 'active'
       : '';
   };

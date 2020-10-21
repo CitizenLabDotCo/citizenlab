@@ -66,22 +66,19 @@ export async function updateIdeaStatus(
     id,
     {
       idea_status: ideaStatus,
-    }
+    },
+    true
   );
-
-  await refetchAndUpdateStream();
 
   return response;
 }
 
 export async function deleteIdeaStatus(id: string) {
-  const response = await streams.delete(`${API_PATH}/idea_statuses/${id}`, id);
-
-  await refetchAndUpdateStream();
+  const response = await streams.delete(
+    `${API_PATH}/idea_statuses/${id}`,
+    id,
+    true
+  );
 
   return response;
-}
-
-function refetchAndUpdateStream() {
-  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/idea_statuses`] });
 }
