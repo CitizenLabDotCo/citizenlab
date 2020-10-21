@@ -1832,6 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Your expenses exceed the total assignable budget",
   "app.containers.Projects.budgetValidated": "Expenses confirmed, congratulations!",
   "app.containers.Projects.currentPhase": "Current phase",
+  "app.containers.Projects.editProject": "Edit project",
   "app.containers.Projects.endedOn": "Ended on {date}",
   "app.containers.Projects.endsAt": "Ends at",
   "app.containers.Projects.endsOn": "Ends on {date}",
