@@ -95,10 +95,14 @@ class Idea < ApplicationRecord
   scope :order_with, ->(scope_name) { scope_name ? send("order_by_#{scope_name}") : where('TRUE') }
 
   scope :order_by_trending,    -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
-  scope :order_by_random,      -> { order('RANDOM()') }
   scope :order_by_most_voted,  -> { order(Arel.sql('(upvotes_count + downvotes_count), ideas.id')) }
   scope :order_by_most_recent, -> { order(created_at: :asc) }
   scope :order_by_oldest,      -> { order(created_at: :desc) }
+
+  # just to work with the order_by prefix
+  class << self
+    alias order_by_random order_random
+  end
 
   private
 
