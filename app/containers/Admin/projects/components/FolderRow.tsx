@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
+import Error from 'components/UI/Error';
 import {
   RowContent,
   RowContentInner,
@@ -112,6 +113,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
 
   const [folderOpen, setFolderOpen] = useState(false);
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+  const [folderDeletionError, setFolderDeletionError] = useState<string>('');
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
@@ -142,6 +144,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
             <DeleteFolderButton
               publication={publication}
               processing={isBeingDeleted}
+              setDeletionError={setFolderDeletionError}
               setDeleteIsProcessing={setIsBeingDeleted}
             />
           )}
@@ -158,6 +161,8 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
           </RowButton>
         </ActionsRowContainer>
       </FolderRowContent>
+
+      {folderDeletionError && <Error text={folderDeletionError} />}
 
       {hasProjects && folderOpen && (
         <ProjectRows>

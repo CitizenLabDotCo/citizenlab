@@ -15,8 +15,9 @@ import {
   ActionsRowContainer,
 } from './StyledComponents';
 import DeleteProjectButton from './DeletePublicationButton';
-import { IconNames, StatusLabel } from 'cl2-component-library';
 import PublicationStatusLabel from './PublicationStatusLabel';
+import { IconNames, StatusLabel } from 'cl2-component-library';
+import Error from 'components/UI/Error';
 
 // resources
 import GetProjectGroups from 'resources/GetProjectGroups';
@@ -28,6 +29,12 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
   margin-top: 4px;
   margin-bottom: 4px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 interface Props {
@@ -53,6 +60,7 @@ export default ({
   className,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+  const [deletionError, setDeletionError] = useState<string>('yeet');
 
   const ManageButton = (
     <RowButton
@@ -75,6 +83,7 @@ export default ({
     <DeleteProjectButton
       publication={publication}
       setDeleteIsProcessing={setIsBeingDeleted}
+      setDeletionError={setDeletionError}
       processing={isBeingDeleted}
       key="delete"
     />
@@ -103,62 +112,65 @@ export default ({
   );
 
   return (
-    <RowContent className={`e2e-admin-projects-list-item ${className}`}>
-      <RowContentInner className="expand primary">
-        <RowTitle value={publication.attributes.publication_title_multiloc} />
-        {publication.attributes?.publication_visible_to === 'groups' && (
-          <GetProjectGroups projectId={publication.publicationId}>
-            {(projectGroups) => {
-              if (!isNilOrError(projectGroups)) {
-                return (
-                  <StyledStatusLabel
-                    text={
-                      projectGroups.length > 0 ? (
-                        <FormattedMessage
-                          {...messages.xGroupsHaveAccess}
-                          values={{ groupCount: projectGroups.length }}
-                        />
-                      ) : (
-                        <FormattedMessage {...messages.onlyAdminsCanView} />
-                      )
-                    }
-                    backgroundColor="clBlue"
-                    icon="lock"
-                  />
-                );
+    <Container>
+      <RowContent className={`e2e-admin-projects-list-item ${className}`}>
+        <RowContentInner className="expand primary">
+          <RowTitle value={publication.attributes.publication_title_multiloc} />
+          {publication.attributes?.publication_visible_to === 'groups' && (
+            <GetProjectGroups projectId={publication.publicationId}>
+              {(projectGroups) => {
+                if (!isNilOrError(projectGroups)) {
+                  return (
+                    <StyledStatusLabel
+                      text={
+                        projectGroups.length > 0 ? (
+                          <FormattedMessage
+                            {...messages.xGroupsHaveAccess}
+                            values={{ groupCount: projectGroups.length }}
+                          />
+                        ) : (
+                          <FormattedMessage {...messages.onlyAdminsCanView} />
+                        )
+                      }
+                      backgroundColor="clBlue"
+                      icon="lock"
+                    />
+                  );
+                }
+
+                return null;
+              }}
+            </GetProjectGroups>
+          )}
+          {publication.attributes?.publication_visible_to === 'admins' && (
+            <StyledStatusLabel
+              text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+              backgroundColor="clBlue"
+              icon="lock"
+            />
+          )}
+
+          {!hidePublicationStatusLabel && (
+            <PublicationStatusLabel publicationStatus={publicationStatus} />
+          )}
+        </RowContentInner>
+        {actions ? (
+          <ActionsRowContainer>
+            {actions.map((action) => {
+              if (action === 'delete') {
+                return DeleteButton;
+              } else if (action === 'manage') {
+                return ManageButton;
+              } else {
+                return renderRowButton(action);
               }
-
-              return null;
-            }}
-          </GetProjectGroups>
+            })}
+          </ActionsRowContainer>
+        ) : (
+          ManageButton
         )}
-        {publication.attributes?.publication_visible_to === 'admins' && (
-          <StyledStatusLabel
-            text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-            backgroundColor="clBlue"
-            icon="lock"
-          />
-        )}
-
-        {!hidePublicationStatusLabel && (
-          <PublicationStatusLabel publicationStatus={publicationStatus} />
-        )}
-      </RowContentInner>
-      {actions ? (
-        <ActionsRowContainer>
-          {actions.map((action) => {
-            if (action === 'delete') {
-              return DeleteButton;
-            } else if (action === 'manage') {
-              return ManageButton;
-            } else {
-              return renderRowButton(action);
-            }
-          })}
-        </ActionsRowContainer>
-      ) : (
-        ManageButton
-      )}
-    </RowContent>
+      </RowContent>
+      {deletionError && <Error text={deletionError} />}
+    </Container>
   );
 };
