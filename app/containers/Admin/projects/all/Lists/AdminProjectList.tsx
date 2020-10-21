@@ -95,7 +95,10 @@ const AdminProjectList = memo<Props>(
                     lastItem={index === AdminPublicationsList.length - 1}
                   >
                     {item.publicationType === 'project' ? (
-                      <ProjectRow publication={item} />
+                      <ProjectRow
+                        actions={['delete', 'manage']}
+                        publication={item}
+                      />
                     ) : (
                       <FolderRow publication={item} />
                     )}
