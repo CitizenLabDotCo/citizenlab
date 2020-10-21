@@ -159,4 +159,13 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldOptionFormTitle',
     defaultMessage: 'Edit custom field option',
   },
+  newCustomFieldOptionFormTitle: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldOptionFormTitle',
+    defaultMessage: 'New custom field option',
+  },
+  addOption: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOption',
+    defaultMessage: 'Add option',
+  },
 });

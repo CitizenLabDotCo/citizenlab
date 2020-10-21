@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { Formik } from 'formik';
 import { CLErrorsJSON } from 'typings';
@@ -10,11 +9,8 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// hooks
-import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
-
 // services
-import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
+import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -26,17 +22,13 @@ export interface Props {
 }
 
 const OptionsNew = ({
-  params: { userCustomFieldId, userCustomFieldOptionId },
+  params: { userCustomFieldId },
 }: Props & WithRouterProps) => {
-  const userCustomFieldOption = useUserCustomFieldOption(
-    userCustomFieldId,
-    userCustomFieldOptionId
-  );
   const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
-    updateUserCustomFieldOption(userCustomFieldId, userCustomFieldOptionId, {
+    addUserCustomFieldOption(userCustomFieldId, {
       title_multiloc: values.title_multiloc,
     })
       .then(() => {
@@ -65,26 +57,22 @@ const OptionsNew = ({
     );
   };
 
-  if (!isNilOrError(userCustomFieldOption)) {
-    return (
-      <Section>
-        <GoBackButton onClick={goBack} />
-        <SectionTitle>
-          <FormattedMessage {...messages.editCustomFieldOptionFormTitle} />
-        </SectionTitle>
-        <Formik
-          initialValues={{
-            title_multiloc: userCustomFieldOption.attributes.title_multiloc,
-          }}
-          render={renderFn}
-          onSubmit={handleSubmit}
-          validate={(OptionsEditForm as any).validate}
-        />
-      </Section>
-    );
-  }
-
-  return null;
+  return (
+    <Section>
+      <GoBackButton onClick={goBack} />
+      <SectionTitle>
+        <FormattedMessage {...messages.newCustomFieldOptionFormTitle} />
+      </SectionTitle>
+      <Formik
+        initialValues={{
+          title_multiloc: {},
+        }}
+        render={renderFn}
+        onSubmit={handleSubmit}
+        validate={(OptionsEditForm as any).validate}
+      />
+    </Section>
+  );
 };
 
 export default withRouter(OptionsNew);
