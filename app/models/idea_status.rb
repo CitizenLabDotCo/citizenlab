@@ -29,6 +29,8 @@ class IdeaStatus < ApplicationRecord
 
   def move_default_to_top
     self.class.default_status.tap do |default_status|
+      break unless default_status
+
       default_status.move_to_top
       default_status.save
     end
