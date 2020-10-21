@@ -99,15 +99,16 @@ const IdeaStatuses = memo(() => {
   }, [ideaStatuses]);
 
   const sortableStatuses = useMemo(() => {
-    if (!isNilOrError(ideaStatuses) && defaultStatus)
+    if (!isNilOrError(ideaStatuses) && defaultStatus) {
       return ideaStatuses.filter(
         (status) => status.attributes !== defaultStatus.attributes
       );
+    }
 
     return [];
   }, [defaultStatus, ideaStatuses]);
 
-  if (!isNilOrError(ideaStatuses) && defaultStatus)
+  if (!isNilOrError(ideaStatuses) && defaultStatus) {
     return (
       <Section>
         <SectionDescription>
@@ -206,6 +207,7 @@ const IdeaStatuses = memo(() => {
         </SortableList>
       </Section>
     );
+  }
 
   return <></>;
 });

@@ -59,7 +59,7 @@ const Edit = ({ params }: WithRouterProps) => {
     clHistory.push('/admin/ideas/statuses');
   }
 
-  if (!isNilOrError(ideaStatus))
+  if (!isNilOrError(ideaStatus)) {
     return (
       <div>
         <FormHeader>
@@ -76,6 +76,7 @@ const Edit = ({ params }: WithRouterProps) => {
         />
       </div>
     );
+  }
 
   return <></>;
 };

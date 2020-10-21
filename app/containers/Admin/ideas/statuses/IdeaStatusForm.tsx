@@ -106,7 +106,7 @@ class IdeaStatusForm extends React.Component<
   };
 
   codeRadioButtons = () => {
-    const CodeRadio = this.CodeRadio;
+    const { touched, errors } = this.props;
     const codes = [
       'proposed',
       'viewed',
@@ -117,30 +117,26 @@ class IdeaStatusForm extends React.Component<
       'other',
     ];
 
-    return codes.map((code) => <CodeRadio key={code} code={code} />);
-  };
-
-  CodeRadio = ({ code }) => {
-    const { touched, errors } = this.props;
-    const titleMessage = messages[`${code}FieldCodeTitle`];
-    const descriptionMessage = messages[`${code}FieldCodeDescription`];
-
-    return (
-      <RadioInputGroup>
+    return codes.map((code) => (
+      <RadioInputGroup key={code}>
         <FormikRadio name="code" value={code} />
         <RadioLabel>
           <RadioLabelTitle>
-            <FormattedMessage {...titleMessage} />
+            <FormattedMessage {...messages[`${code}FieldCodeTitle`]} />
             <StyledIconTooltip
               iconSize="12px"
               placement="top"
-              content={<FormattedMessage {...descriptionMessage} />}
+              content={
+                <FormattedMessage
+                  {...messages[`${code}FieldCodeDescription`]}
+                />
+              }
             />
           </RadioLabelTitle>
         </RadioLabel>
         {touched.code && <Error apiErrors={errors.code as any} />}
       </RadioInputGroup>
-    );
+    ));
   };
 
   render() {
