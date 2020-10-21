@@ -60,7 +60,7 @@ export default ({
   className,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-  const [deletionError, setDeletionError] = useState<string>('yeet');
+  const [deletionError, setDeletionError] = useState<string>('');
 
   const ManageButton = (
     <RowButton

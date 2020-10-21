@@ -50,8 +50,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabelTooltip',
     defaultMessage: 'This will remove this folder and all the projects inside.',
   },
-  deleteButtonLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.deleteButtonLabel',
+  deleteFolderLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabel',
     defaultMessage: 'Delete',
   },
 });

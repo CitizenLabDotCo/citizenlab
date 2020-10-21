@@ -29,36 +29,32 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
     ...rest
   }) => {
     const publicationIsProject = publication.publicationType === 'project';
+    const publicationLabel = publicationIsProject ? 'Project' : 'Folder';
+    const deletionProps = {
+      copy: formatMessage(messages[`delete${publicationLabel}Label`]),
+      errorCopy: formatMessage(messages[`delete${publicationLabel}Error`]),
+      confirmationCopy: formatMessage(
+        messages[`delete${publicationLabel}Confirmation`]
+      ),
+      handleDelete: publicationIsProject ? deleteProject : deleteProjectFolder,
+    };
 
     const handleDeletePublication = async (event: FormEvent<any>) => {
       event.preventDefault();
 
-      const confirmationCopy = publicationIsProject
-        ? formatMessage(messages.deleteProjectConfirmation)
-        : formatMessage(messages.deleteFolderConfirmation);
-
-      if (publication && window.confirm(confirmationCopy)) {
+      if (publication && window.confirm(deletionProps.confirmationCopy)) {
         try {
-          const deleteFunction = publicationIsProject
-            ? deleteProject
-            : deleteProjectFolder;
           setDeleteIsProcessing(true);
-          await deleteFunction(publication.id);
+          await deletionProps.handleDelete(publication.id);
           setDeletionError('');
           setDeleteIsProcessing(false);
         } catch {
-          const deletionErrorCopy = publicationIsProject
-            ? formatMessage(messages.deleteProjectError)
-            : formatMessage(messages.deleteFolderError);
           setDeleteIsProcessing(false);
-          setDeletionError(deletionErrorCopy);
+          setDeletionError(deletionProps.errorCopy);
         }
       }
     };
 
-    const copy = publicationIsProject
-      ? formatMessage(messages.deleteProjectButton)
-      : formatMessage(messages.deleteButtonLabel);
     return (
       <RowButton
         onClick={handleDeletePublication}
@@ -68,7 +64,7 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
         className={`e2e-admin-delete-publication`}
         {...rest}
       >
-        {copy}
+        {deletionProps.copy}
       </RowButton>
     );
   }
