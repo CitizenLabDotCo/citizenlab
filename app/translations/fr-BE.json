@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Date de début",
   "app.containers.AdminPage.ProjectTimeline.subtitleTimeline": "Définissez les différentes phases de votre projet et décrivez ce qu'il se passe dans chaque phase. Dans chacune de ces phases, vous pouvez choisir une méthode de participation différente (collecte d’idée, sondage, budget participatif, information,...)",
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Nom de la phase",
-  "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Phases du project",
+  "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Phases du projet",
   "app.containers.AdminPage.ReportsTab.budgeting": "budget participatif",
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
   "app.containers.AdminPage.ReportsTab.ideation": "idéation",
