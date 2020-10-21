@@ -53,6 +53,20 @@ export default () => ({
           }),
         },
         {
+          path: 'options-order',
+          component: Loadable({
+            loader: () => import('./Edit/OptionsOrder'),
+            loading: () => null,
+          }),
+        },
+        {
+          path: 'options-order/new',
+          component: Loadable({
+            loader: () => import('./Edit/OptionsNew'),
+            loading: () => null,
+          }),
+        },
+        {
           path: 'options-order/:userCustomFieldOptionId',
           component: Loadable({
             loader: () => import('./Edit/OptionsEdit'),

@@ -20,6 +20,7 @@ import {
   TextCell,
 } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // i18n
 import messages from '../messages';
@@ -60,53 +61,64 @@ const Options = memo(
 
     if (!isNilOrError(userCustomFieldOptions)) {
       return (
-        <SortableList
-          items={userCustomFieldOptions}
-          onReorder={handleReorderCustomFieldOption}
-          className="areas-list e2e-admin-areas-list"
-          id="e2e-admin-areas-list"
-        >
-          {({ itemsList, handleDragRow, handleDropRow }) =>
-            itemsList.map(
-              (
-                userCustomFieldOption: IUserCustomFieldOptionData,
-                index: number
-              ) => {
-                const userCustomFieldOptionId = userCustomFieldOption.id;
-                return (
-                  <SortableRow
-                    key={userCustomFieldOptionId}
-                    id={userCustomFieldOptionId}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    lastItem={index === userCustomFieldOptions.length - 1}
-                  >
-                    <TextCell className="expand">
-                      {localize(
-                        userCustomFieldOption.attributes.title_multiloc
-                      )}
-                    </TextCell>
-                    <Button
-                      linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options-order/${userCustomFieldOptionId}`}
-                      buttonStyle="secondary"
-                      icon="edit"
+        <>
+          <ButtonWrapper>
+            <Button
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options-order/new`}
+            >
+              {formatMessage(messages.addOption)}
+            </Button>
+          </ButtonWrapper>
+          <SortableList
+            items={userCustomFieldOptions}
+            onReorder={handleReorderCustomFieldOption}
+            className="areas-list e2e-admin-areas-list"
+            id="e2e-admin-areas-list"
+          >
+            {({ itemsList, handleDragRow, handleDropRow }) =>
+              itemsList.map(
+                (
+                  userCustomFieldOption: IUserCustomFieldOptionData,
+                  index: number
+                ) => {
+                  const userCustomFieldOptionId = userCustomFieldOption.id;
+                  return (
+                    <SortableRow
+                      key={userCustomFieldOptionId}
+                      id={userCustomFieldOptionId}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                      lastItem={index === userCustomFieldOptions.length - 1}
                     >
-                      {formatMessage(messages.editButtonLabel)}
-                    </Button>
-                    <Button
-                      onClick={handleDeleteClick(userCustomFieldOptionId)}
-                      buttonStyle="text"
-                      icon="delete"
-                    >
-                      {formatMessage(messages.deleteButtonLabel)}
-                    </Button>
-                  </SortableRow>
-                );
-              }
-            )
-          }
-        </SortableList>
+                      <TextCell className="expand">
+                        {localize(
+                          userCustomFieldOption.attributes.title_multiloc
+                        )}
+                      </TextCell>
+                      <Button
+                        linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options-order/${userCustomFieldOptionId}`}
+                        buttonStyle="secondary"
+                        icon="edit"
+                      >
+                        {formatMessage(messages.editButtonLabel)}
+                      </Button>
+                      <Button
+                        onClick={handleDeleteClick(userCustomFieldOptionId)}
+                        buttonStyle="text"
+                        icon="delete"
+                      >
+                        {formatMessage(messages.deleteButtonLabel)}
+                      </Button>
+                    </SortableRow>
+                  );
+                }
+              )
+            }
+          </SortableList>
+        </>
       );
     }
 
