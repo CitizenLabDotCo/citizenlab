@@ -31,7 +31,7 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
     const publicationIsProject = publication.publicationType === 'project';
     const publicationLabel = publicationIsProject ? 'Project' : 'Folder';
     const deletionProps = {
-      copy: formatMessage(messages[`delete${publicationLabel}Label`]),
+      copy: formatMessage(messages[`delete${publicationLabel}Button`]),
       errorCopy: formatMessage(messages[`delete${publicationLabel}Error`]),
       confirmationCopy: formatMessage(
         messages[`delete${publicationLabel}Confirmation`]
@@ -46,8 +46,8 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
         try {
           setDeleteIsProcessing(true);
           await deletionProps.handleDelete(publication.id);
-          setDeletionError('');
           setDeleteIsProcessing(false);
+          setDeletionError('');
         } catch {
           setDeleteIsProcessing(false);
           setDeletionError(deletionProps.errorCopy);

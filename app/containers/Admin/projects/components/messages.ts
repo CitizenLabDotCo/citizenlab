@@ -14,44 +14,31 @@ export default defineMessages({
     defaultMessage: 'Draft',
   },
   deleteProjectConfirmation: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectConfirmation',
+    id: 'app.containers.Admin.projects.all.deleteProjectConfirmation',
     defaultMessage:
       'Are you sure you want to delete this project? This cannot be undone.',
   },
   deleteProjectError: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
+    id: 'app.containers.Admin.projects.all.deleteProjectError',
     defaultMessage:
       'There was an error deleting this project, please try again later.',
   },
-  deleteProjectLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
-    defaultMessage: 'Remove this project',
-  },
-  deleteProjectLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabelTooltip',
-    defaultMessage:
-      'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
-  },
   deleteProjectButton: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
-    defaultMessage: 'Remove',
+    id: 'app.containers.Admin.projects.all.deleteProjectButton',
+    defaultMessage: 'Delete',
   },
   deleteFolderError: {
-    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderError',
+    id: 'app.containers.Admin.projects.all.deleteFolderError',
     defaultMessage:
       'There was an issue removing this folder. Please try again.',
   },
   deleteFolderConfirmation: {
-    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation',
+    id: 'app.containers.Admin.projects.all.deleteFolderConfirmation',
     defaultMessage:
       'Are you sure you want to delete this folder and all the projects it contains?',
   },
-  deleteFolderLabelTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabelTooltip',
-    defaultMessage: 'This will remove this folder and all the projects inside.',
-  },
-  deleteFolderLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabel',
+  deleteFolderButton: {
+    id: 'app.containers.Admin.projects.all.deleteFolderButton',
     defaultMessage: 'Delete',
   },
 });
