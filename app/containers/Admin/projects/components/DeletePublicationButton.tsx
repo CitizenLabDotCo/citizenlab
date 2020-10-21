@@ -45,7 +45,7 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
       if (publication && window.confirm(deletionProps.confirmationCopy)) {
         try {
           setDeleteIsProcessing(true);
-          await deletionProps.handleDelete(publication.id);
+          await deletionProps.handleDelete(publication.publicationId);
           setDeleteIsProcessing(false);
           setDeletionError('');
         } catch {
