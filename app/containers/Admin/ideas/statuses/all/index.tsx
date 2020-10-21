@@ -64,10 +64,6 @@ const FlexTextCell = styled(TextCell)`
 
 const ButtonIconTooltip = styled(IconTooltip)`
   padding: 0 16px;
-
-  svg {
-    fill: #cecece;
-  }
 `;
 
 const IdeaStatuses = memo(() => {

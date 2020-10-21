@@ -75,7 +75,6 @@ const StyledIconTooltip = styled(IconTooltip)`
 const StyledSectionField = styled(SectionField)`
   margin-bottom: 5rem;
 `;
-
 class IdeaStatusForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
 > {
