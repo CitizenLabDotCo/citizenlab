@@ -75,7 +75,7 @@ module SerializesControllerResource
     def serialize_resource(resource_name = nil, **options)
       @serializer_options = options
 
-      resource(resource_name, @serializer_options.delete(:resource_options))
+      resource(resource_name, @serializer_options.delete(:resource_options) || {})
 
       define_api_serialized_resource_methods
     end
