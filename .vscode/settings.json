@@ -2,6 +2,7 @@
 {
   "editor.tabSize": 2,
   "files.exclude": {
+    "node_modules": true,
     ".babel-cache": true,
     ".cache-loader": true,
     "build": true,
