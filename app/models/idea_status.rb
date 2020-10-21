@@ -20,6 +20,24 @@ class IdeaStatus < ApplicationRecord
   before_destroy :abort_if_code_required
   before_destroy :remove_notifications
 
+  # TODO: move to observer, probably not the best solution as is.
+  after_save :move_default_to_top, unless: :default?
+
+  def default?
+    self.class.default_status == self
+  end
+
+  def move_default_to_top
+    self.class.default_status.tap do |default_status|
+      default_status.move_to_top
+      default_status.save
+    end
+  end
+
+  def self.default_status
+    find_by(code: :proposed).minimum(:created_at)
+  end
+
   def self.create_defaults
     (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
       title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
