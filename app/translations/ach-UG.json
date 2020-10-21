@@ -1832,6 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "crwdns19734:0crwdne19734:0",
   "app.containers.Projects.budgetValidated": "crwdns19736:0crwdne19736:0",
   "app.containers.Projects.currentPhase": "crwdns58916:0crwdne58916:0",
+  "app.containers.Projects.editProject": "crwdns59026:0crwdne59026:0",
   "app.containers.Projects.endedOn": "crwdns18394:0{date}crwdne18394:0",
   "app.containers.Projects.endsAt": "crwdns59022:0crwdne59022:0",
   "app.containers.Projects.endsOn": "crwdns18395:0{date}crwdne18395:0",
