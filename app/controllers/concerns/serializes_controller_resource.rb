@@ -73,41 +73,65 @@ module SerializesControllerResource
     # @param options [Hash, nil] The optional arguments to generate the resource helpers.
     # @return nil
     def serialize_resource(resource_name = nil, **options)
-      @serializer_options = options
+      @resource_name = resource_name
+      @default_serializer_options = options
 
-      resource(resource_name, @serializer_options.delete(:resource_options) || {})
+      resource(resource_name, default_serializer_options.delete(:resource_options) || {})
 
-      define_api_serialized_resource_methods
+      delegate_serializer_helpers_to_class
+      define_serialized_resource_method
+      define_serialized_resource_errors_method
+      define_default_serializer_params_helper
     end
 
     private
 
-    def define_api_serialized_resource_methods
+    ## Defines #serialized_resource
+    def define_serialized_resource_method
       define_method :serialized_resource do |options = {}|
-        self.class.serializer_class
-            .new(resource, params: fastjson_params, **self.class.serializer_options.merge(options))
-            .serialized_json
-      end
+        options[:params] ||= default_serializer_params
+        serializer_options = default_serializer_options.merge(options)
 
+        serializer_class.new(resource, **serializer_options).serialized_json
+      end
+    end
+
+    ## Defines #serialized_resource_errors
+    def define_serialized_resource_errors_method
       define_method :serialized_resource_errors do
         { errors: resource.errors.details }
       end
     end
 
-    def extract_serializer_class
-      return serializer_options.delete(:serializer) if serializer_options.dig(:serializer)
+    ## Defines #default_serializer_params helper method
+    def define_default_serializer_params_helper
+      define_method :default_serializer_params do
+        param_keys = default_serializer_options.delete(:params) || []
 
-      namespaced_resource_object_class(:serializer) || raise(ArgumentError, 'Could not find Serializer Class')
+        fastjson_params.merge(params.permit(param_keys))
+      end
+    end
+
+    def delegate_serializer_helpers_to_class
+      delegate :default_serializer_options, :serializer_class, to: :class
     end
 
     public
 
-    attr_reader :serializer_options
+    attr_reader :default_serializer_options
 
     ##
     # Returns the +serializer+ class from the controller name or +options+ parameter.
     def serializer_class
       @serializer_class ||= extract_serializer_class
+    end
+
+    private
+
+    def extract_serializer_class
+      return default_serializer_options.delete(:serializer) if default_serializer_options.dig(:serializer)
+
+      namespaced_resource_object_class(:serializer) || raise(ArgumentError, 'Could not find Serializer Class')
     end
   end
 end

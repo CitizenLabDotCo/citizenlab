@@ -11,7 +11,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   before_action :set_idea_status, except: %i[index create]
 
-  serialize_resource
+  serialize_resource :idea, params: :some_param
 
   def index
     @idea_statuses = policy_scope(IdeaStatus)
