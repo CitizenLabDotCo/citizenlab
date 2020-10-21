@@ -7,7 +7,6 @@ module ExtractsControllerResource
 
   included do
     extend ClassMethods
-    private_constant :COLLECTION_METHODS, :MEMBER_METHODS
   end
 
   # ActionDispatch::Routing::Resources::CANONICAL_ACTIONS
