@@ -1832,6 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Dine udgifter overstiger det samlede tildelte budget",
   "app.containers.Projects.budgetValidated": "Udgifter bekræftet, tillykke!",
   "app.containers.Projects.currentPhase": "Igangværende fase",
+  "app.containers.Projects.editProject": "",
   "app.containers.Projects.endedOn": "Sluttede den {date}",
   "app.containers.Projects.endsAt": "Ends at",
   "app.containers.Projects.endsOn": "Slutter den {date}",

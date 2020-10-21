@@ -1832,6 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Je uitgaven overstijgen het totaal te besteden bedrag",
   "app.containers.Projects.budgetValidated": "Proficiat, je uitgaven zijn bevestigd!",
   "app.containers.Projects.currentPhase": "Huidige fase",
+  "app.containers.Projects.editProject": "",
   "app.containers.Projects.endedOn": "Beëindigd op {date}",
   "app.containers.Projects.endsAt": "Ends at",
   "app.containers.Projects.endsOn": "Eindigt op {date}",
