@@ -43,19 +43,15 @@ describe('Idea posting permissions', () => {
   describe('a project that requires verification', () => {
     it('sends unverified users to the signup flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
-      cy.visit('projects/verified-ideation/info');
+      cy.visit('projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button:visible');
-      cy.get('.e2e-idea-button:visible').should('have.class', 'disabled');
-      cy.get('.e2e-idea-button:visible').should('have.class', 'notVerified');
       cy.get('.e2e-idea-button:visible').click();
-      cy.get('.e2e-disabled-tooltip').find('a').click();
       cy.get('#e2e-verification-wizard-root');
     });
 
     it('lets verified users post', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
-      cy.visit('projects/verified-ideation/info');
+      cy.visit('projects/verified-ideation');
       cy.acceptCookies();
       cy.get('.e2e-idea-button:visible').click();
       cy.get('#e2e-new-idea-form');

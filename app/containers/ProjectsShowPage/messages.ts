@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Projects.header',
     defaultMessage: 'Projects',
   },
+  editProject: {
+    id: 'app.containers.Projects.editProject',
+    defaultMessage: 'Edit project',
+  },
   project: {
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
