@@ -4,7 +4,7 @@ module ProjectFolders
     before_action :set_project_folder, only: [:show, :update, :destroy]
 
     def index
-      @project_folders = policy_scope(Folder).includes(:project_folder_images, admin_publication: [:children])
+      @project_folders = policy_scope(Folder).includes(:images, admin_publication: [:children])
       @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
       @project_folders = @project_folders
@@ -23,7 +23,7 @@ module ProjectFolders
           @project_folders,
           WebApi::V1::FolderSerializer,
           params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
-          include: [:admin_publication, :project_folder_images]
+          include: [:admin_publication, :images]
       )
     end
 
@@ -31,7 +31,7 @@ module ProjectFolders
       render json: WebApi::V1::FolderSerializer.new(
           @project_folder,
           params: fastjson_params,
-          include: [:admin_publication, :project_folder_images]
+          include: [:admin_publication, :images]
       ).serialized_json
     end
 

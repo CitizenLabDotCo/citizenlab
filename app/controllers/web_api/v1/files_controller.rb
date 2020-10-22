@@ -26,7 +26,7 @@ class WebApi::V1::FilesController < ApplicationController
       container_class: ProjectFolders::Folder,
       file_class: ProjectFolders::File,
       policy_scope_class: ProjectFolders::FilePolicy::Scope,
-      file_relationship: :project_folder_files,
+      file_relationship: :files,
       container_id: :project_folder_id
     },
     'Event' => {
