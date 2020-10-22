@@ -6,13 +6,13 @@ import FilterSelector from 'components/FilterSelector';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { IdeaSortingMethod } from 'services/participationContexts';
+import { IdeaDefaultSortMethod } from 'services/participationContexts';
 
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
   onChange: (value: string) => void;
-  defaultSortingMethod: IdeaSortingMethod | null;
+  defaultSortingMethod: IdeaDefaultSortMethod | null;
 };
 
 type State = {

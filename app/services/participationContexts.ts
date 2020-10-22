@@ -12,7 +12,7 @@ export type ParticipationMethod =
   | 'poll'
   | 'volunteering';
 
-export type IdeaSortingMethod =
+export type IdeaDefaultSortMethod =
   | 'trending'
   | 'random'
   | 'most_voted'

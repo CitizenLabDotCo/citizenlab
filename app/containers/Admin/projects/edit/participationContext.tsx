@@ -26,7 +26,7 @@ import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
   SurveyServices,
-  IdeaSortingMethod,
+  IdeaDefaultSortMethod,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -139,7 +139,7 @@ export interface IParticipationContextConfig {
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
-  ideas_order?: IdeaSortingMethod;
+  ideas_order?: IdeaDefaultSortMethod;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -431,7 +431,7 @@ class ParticipationContext extends PureComponent<
     this.setState({ presentation_mode });
   };
 
-  handleIdeaSortingMethodChange = (ideas_order: IdeaSortingMethod) => {
+  handleIdeaDefaultSortMethodChange = (ideas_order: IdeaDefaultSortMethod) => {
     this.setState({ ideas_order });
   };
 
@@ -896,10 +896,10 @@ class ParticipationContext extends PureComponent<
                   ].map((key) => (
                     <Radio
                       key={key}
-                      onChange={this.handleIdeaSortingMethodChange}
+                      onChange={this.handleIdeaDefaultSortMethodChange}
                       currentValue={ideas_order}
                       value={key}
-                      name="ideaSortingMethod"
+                      name="IdeaDefaultSortMethod"
                       id={`ideas_order-${key}`}
                       label={
                         <FormattedMessage

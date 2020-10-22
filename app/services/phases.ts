@@ -5,7 +5,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import {
   ParticipationMethod,
   SurveyServices,
-  IdeaSortingMethod,
+  IdeaDefaultSortMethod,
 } from './participationContexts';
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
@@ -35,7 +35,7 @@ export interface IPhaseData {
     survey_embed_url?: string;
     poll_anonymous?: boolean;
     ideas_count: number;
-    ideas_order?: IdeaSortingMethod;
+    ideas_order?: IdeaDefaultSortMethod;
   };
   relationships: {
     permissions: {
@@ -76,7 +76,7 @@ export interface IUpdatedPhaseProperties {
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaSortingMethod;
+  ideas_order?: IdeaDefaultSortMethod;
 }
 
 export function phasesStream(

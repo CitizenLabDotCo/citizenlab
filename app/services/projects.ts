@@ -4,7 +4,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import {
   SurveyServices,
   ParticipationMethod,
-  IdeaSortingMethod,
+  IdeaDefaultSortMethod,
 } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
@@ -95,7 +95,7 @@ export interface IProjectData {
     survey_embed_url?: string;
     ordering: number;
     poll_anonymous?: boolean;
-    ideas_order?: IdeaSortingMethod;
+    ideas_order?: IdeaDefaultSortMethod;
     action_descriptor: {
       posting_idea: {
         enabled: boolean;
@@ -171,7 +171,7 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaSortingMethod;
+  ideas_order?: IdeaDefaultSortMethod;
 }
 
 export interface IProject {
