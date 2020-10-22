@@ -50,7 +50,7 @@ import { rgba } from 'polished';
 
 // typings
 import {
-  IdeaSortingMethod,
+  IdeaDefaultSortMethod,
   ParticipationMethod,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
@@ -230,7 +230,7 @@ const ListView = styled.div``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
-  defaultSortingMethod: IdeaSortingMethod;
+  defaultSortingMethod: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;

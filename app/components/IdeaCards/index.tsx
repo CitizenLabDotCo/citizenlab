@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import {
   ParticipationMethod,
-  IdeaSortingMethod,
+  IdeaDefaultSortMethod,
 } from 'services/participationContexts';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 import { MessageDescriptor, IParticipationContextType } from 'typings';
@@ -26,7 +26,7 @@ const Container = styled.div`
 interface Props extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
-  defaultSortingMethod: IdeaSortingMethod;
+  defaultSortingMethod: IdeaDefaultSortMethod;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
