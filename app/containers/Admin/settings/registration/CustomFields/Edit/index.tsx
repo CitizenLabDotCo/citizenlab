@@ -67,17 +67,9 @@ const Edit = memo(
         !isBuiltInField(customField)
       ) {
         tabs.push({
-          label: formatMessage(messages.optionsTab),
+          label: formatMessage(messages.optionsOrderTab),
           url: `${baseTabsUrl}/options`,
           className: 'options',
-        });
-      }
-
-      if (!isNilOrError(userCustomFieldOptions)) {
-        tabs.push({
-          label: formatMessage(messages.optionsOrderTab),
-          url: `${baseTabsUrl}/options-order`,
-          className: 'options-order',
         });
       }
 
