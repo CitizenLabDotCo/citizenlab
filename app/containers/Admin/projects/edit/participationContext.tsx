@@ -212,7 +212,6 @@ class ParticipationContext extends PureComponent<
     }
     this.subscriptions = [
       data$.subscribe((data) => {
-        console.log(data);
         if (data) {
           const participation_method = data.data.attributes
             .participation_method as ParticipationMethod;
