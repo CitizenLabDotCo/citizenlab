@@ -237,15 +237,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',
   },
-  mostVotesSortingMethod: {
+  mostVotedSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.mostVotesSortingMethod',
     defaultMessage: 'Most votes',
   },
-  newestFirstSortingMethod: {
+  mostRecentSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',
     defaultMessage: 'Newest first',
   },
-  oldestFirstSortingMethod: {
+  oldestSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.oldestFirstSortingMethod',
     defaultMessage: 'Oldest first',
   },
