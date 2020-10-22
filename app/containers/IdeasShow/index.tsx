@@ -250,10 +250,6 @@ const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
 
 const MobileMetaInformation = styled(MetaInformation)`
   margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -626,12 +622,14 @@ export class IdeasShow extends PureComponent<
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                <MobileMetaInformation
-                  ideaId={ideaId}
-                  projectId={projectId}
-                  statusId={statusId}
-                  authorId={authorId}
-                />
+                {smallerThanLargeTablet && (
+                  <MobileMetaInformation
+                    ideaId={ideaId}
+                    projectId={projectId}
+                    statusId={statusId}
+                    authorId={authorId}
+                  />
+                )}
 
                 {showBudgetControl &&
                   participationContextId &&

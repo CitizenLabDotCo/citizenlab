@@ -130,7 +130,7 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
   if (isNilOrError(page)) return null;
 
   return (
-    <Container to={`/pages/${pageSlug}`} target="_blank">
+    <Container to={`/pages/${pageSlug}`}>
       <SuccessImageContainer>
         <SuccessImagePlaceholder>
           <SuccessImagePlaceholderIcon name="successStory" />

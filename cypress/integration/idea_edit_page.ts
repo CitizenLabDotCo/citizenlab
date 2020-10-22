@@ -55,7 +55,7 @@ describe('Idea edit page', () => {
     cy.acceptCookies();
 
     cy.get('#e2e-idea-edit-page');
-    cy.get('#idea-form');
+    cy.get('#idea-form', { timeout: 100000 });
     cy.get('#e2e-idea-title-input #title').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 

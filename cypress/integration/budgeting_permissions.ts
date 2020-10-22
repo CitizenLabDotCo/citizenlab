@@ -39,7 +39,7 @@ describe('Idea voting permissions', () => {
   describe('a project that requires verification on votes', () => {
     it('sends unverified users to the verification flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
-      cy.visit('projects/verified-participatory-budgeting/ideas');
+      cy.visit('projects/verified-participatory-budgeting');
       cy.get('#e2e-ideas-container');
       cy.acceptCookies();
       cy.wait(1000);
@@ -51,7 +51,7 @@ describe('Idea voting permissions', () => {
 
     it('lets verified users budget', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
-      cy.visit('projects/verified-participatory-budgeting/ideas');
+      cy.visit('projects/verified-participatory-budgeting');
       cy.get('#e2e-ideas-container');
       cy.acceptCookies();
       cy.wait(1000);
