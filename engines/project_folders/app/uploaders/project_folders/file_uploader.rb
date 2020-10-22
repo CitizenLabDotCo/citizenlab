@@ -1,5 +1,5 @@
 module ProjectFolders
-  class ProjectFolderFileUploader < CarrierWave::Uploader::Base
+  class FileUploader < CarrierWave::Uploader::Base
     include ::BaseFileUploader
 
     def size_range

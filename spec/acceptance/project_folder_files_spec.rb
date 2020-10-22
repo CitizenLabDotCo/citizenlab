@@ -27,7 +27,7 @@ resource "ProjectFolderFile" do
 
   get "web_api/v1/project_folders/:folder_id/files/:file_id" do
     let(:folder_id) { @folder.id }
-    let(:file_id) { ProjectFolderFile.first.id }
+    let(:file_id) { ProjectFolders::File.first.id }
 
     example_request "Get one file of a folder" do
       expect(status).to eq(200)
@@ -42,7 +42,7 @@ resource "ProjectFolderFile" do
       parameter :name, "The name of the file, including the file extension", required: true
       parameter :ordering, "An integer that is used to order the file attachments within a folder", required: false
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFolderFile)
+    ValidationErrorHelper.new.error_fields(self, ProjectFolders::File)
     let(:folder_id) { @folder.id }
     let(:ordering) { 1 }
     let(:name) { "afvalkalender.pdf" }
@@ -71,7 +71,7 @@ resource "ProjectFolderFile" do
     describe do
       example "[error] Add a file of which the size is too large" do
         # mock the size_range method of ProjectFolderFileUploader to have 3 bytes as maximum size
-        expect_any_instance_of(ProjectFolderFileUploader).to receive(:size_range).and_return(1..3)
+        expect_any_instance_of(ProjectFolders::FileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
         expect(response_status).to eq 422
@@ -83,11 +83,11 @@ resource "ProjectFolderFile" do
 
   delete "web_api/v1/project_folders/:folder_id/files/:file_id" do
     let(:folder_id) { @folder.id }
-    let(:file_id) { ProjectFolderFile.first.id }
+    let(:file_id) { ProjectFolders::File.first.id }
 
     example_request "Delete a file attachment from a folder" do
       expect(response_status).to eq 200
-      expect{ProjectFolderFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ProjectFolders::File.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

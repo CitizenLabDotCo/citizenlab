@@ -1,5 +1,5 @@
 module ProjectFolders
-  class ProjectFolderImageUploader < CarrierWave::Uploader::Base
+  class ImageUploader < CarrierWave::Uploader::Base
     include ::BaseImageUploader
 
     # Include RMagick or MiniMagick support:

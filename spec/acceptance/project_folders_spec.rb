@@ -82,7 +82,7 @@ resource 'ProjectFolder' do
       with_options scope: [:project_folder, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
       end
-      ValidationErrorHelper.new.error_fields(self, ProjectFolder)
+      ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:title_multiloc) { {"en" => "Folder title" } }
       let(:description_multiloc) { {"en" => "Folder desc" } }
@@ -111,7 +111,7 @@ resource 'ProjectFolder' do
       with_options scope: [:project_folder, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
       end
-      ValidationErrorHelper.new.error_fields(self, ProjectFolder)
+      ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:project_folder) { @folders.last }
       let(:id) { project_folder.id }
@@ -138,14 +138,14 @@ resource 'ProjectFolder' do
       let!(:id) { project_folder.id }
 
       example "Delete a folder" do
-        old_count = ProjectFolder.count
+        old_count = ProjectFolders::Folder.count
         old_publications_count = AdminPublication.count
         old_project_count = Project.count
         do_request
 
         expect(response_status).to eq 200
-        expect{ProjectFolder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(ProjectFolder.count).to eq (old_count - 1)
+        expect{ProjectFolders::Folder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(ProjectFolders::Folder.count).to eq (old_count - 1)
         expect(AdminPublication.count).to eq (old_publications_count - 4)
         expect(Project.count).to eq (old_project_count - 3)
       end

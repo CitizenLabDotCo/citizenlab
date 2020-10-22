@@ -12,7 +12,7 @@ module Frontend
       elsif model_instance.kind_of? Phase
         subroute = 'projects'
         slug = model_instance.project.slug
-      elsif model_instance.kind_of? ProjectFolder
+      elsif model_instance.kind_of? ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug
       elsif model_instance.kind_of? Idea

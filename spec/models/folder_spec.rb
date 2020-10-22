@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ProjectFolder, type: :model do
+RSpec.describe ProjectFolders::Folder, type: :model do
   describe "Default factory" do
     it "is valid" do
       expect(build(:project_folder)).to be_valid

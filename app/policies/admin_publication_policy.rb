@@ -8,7 +8,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(publication: Pundit.policy_scope(user, ProjectFolder))
+      scope.where(publication: Pundit.policy_scope(user, ProjectFolders::Folder))
         .or(scope.where(publication: Pundit.policy_scope(user, Project)))
     end
   end
@@ -18,7 +18,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     when 'Project'
       ProjectPolicy.new(user, record.publication).show?
     when 'ProjectFolder'
-      ProjectFolderPolicy.new(user, record.publication).show?
+      ProjectFolders::FolderPolicy.new(user, record.publication).show?
     else
       raise "No policy for #{record.publication_type}"
     end

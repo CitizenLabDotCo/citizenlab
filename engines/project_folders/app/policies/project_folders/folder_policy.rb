@@ -1,5 +1,5 @@
 module ProjectFolders
-  class ProjectFolderPolicy < ApplicationPolicy
+  class FolderPolicy < ApplicationPolicy
     class Scope
       attr_reader :user, :scope
 

@@ -1,10 +1,10 @@
 module ProjectFolders
-  class WebApi::V1::ProjectFoldersController < ::ApplicationController
+  class WebApi::V1::FoldersController < ::ApplicationController
 
     before_action :set_project_folder, only: [:show, :update, :destroy]
 
     def index
-      @project_folders = policy_scope(ProjectFolder).includes(:project_folder_images, admin_publication: [:children])
+      @project_folders = policy_scope(Folder).includes(:project_folder_images, admin_publication: [:children])
       @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
       @project_folders = @project_folders
@@ -21,14 +21,14 @@ module ProjectFolders
 
       render json: linked_json(
           @project_folders,
-          WebApi::V1::ProjectFolderSerializer,
+          WebApi::V1::FolderSerializer,
           params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
           include: [:admin_publication, :project_folder_images]
       )
     end
 
     def show
-      render json: WebApi::V1::ProjectFolderSerializer.new(
+      render json: WebApi::V1::FolderSerializer.new(
           @project_folder,
           params: fastjson_params,
           include: [:admin_publication, :project_folder_images]
@@ -36,20 +36,20 @@ module ProjectFolders
     end
 
     def by_slug
-      @project_folder = ProjectFolder.find_by!(slug: params[:slug])
+      @project_folder = Folder.find_by!(slug: params[:slug])
       authorize @project_folder
       show
     end
 
     def create
-      @project_folder = ProjectFolder.new(project_folder_params)
+      @project_folder = Folder.new(project_folder_params)
 
       authorize @project_folder
 
       if @project_folder.save
-        SideFxProjectFolderService.new.after_create(@project_folder, current_user)
+        SideFxService.new.after_create(@project_folder, current_user)
 
-        render json: WebApi::V1::ProjectFolderSerializer.new(
+        render json: WebApi::V1::FolderSerializer.new(
             @project_folder,
             params: fastjson_params,
             include: [:admin_publication]
@@ -63,8 +63,8 @@ module ProjectFolders
       @project_folder.assign_attributes project_folder_params
       authorize @project_folder
       if @project_folder.save
-        SideFxProjectFolderService.new.after_update(@project_folder, current_user)
-        render json: WebApi::V1::ProjectFolderSerializer.new(
+        SideFxService.new.after_update(@project_folder, current_user)
+        render json: WebApi::V1::FolderSerializer.new(
             @project_folder,
             params: fastjson_params,
             include: [:admin_publication]
@@ -81,7 +81,7 @@ module ProjectFolders
         frozen_folder = @project_folder.destroy
       end
       if frozen_folder.destroyed?
-        SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
+        SideFxService.new.after_destroy(frozen_folder, current_user)
         head :ok
       else
         head 500
@@ -95,7 +95,7 @@ module ProjectFolders
     end
 
     def set_project_folder
-      @project_folder = ProjectFolder.find(params[:id])
+      @project_folder = Folder.find(params[:id])
       authorize @project_folder
     end
 

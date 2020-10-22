@@ -3,7 +3,7 @@ class ProjectsFilteringService
   def apply_common_index_filters projects_scope, params
     if params.key? :folder
       parent_scope = if params[:folder].present?
-        AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolder.name)
+        AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolders::Folder.name)
       else # top-level projects
         nil 
       end

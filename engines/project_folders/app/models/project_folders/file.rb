@@ -1,9 +1,9 @@
 module ProjectFolders
-  class ProjectFolderFile < ::ApplicationRecord
+  class File < ::ApplicationRecord
     EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
 
     attr_accessor :filename
-    mount_base64_file_uploader :file, ProjectFolderFileUploader
+    mount_base64_file_uploader :file, FileUploader
     belongs_to :project_folder
 
     validates :project_folder, :file, :name, presence: true
