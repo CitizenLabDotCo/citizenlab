@@ -4,6 +4,7 @@
 
 ### Added
 - Project edit button on project page for admins/project manager
+- Copy for Sterling Council
 
 ### Fixed
 - Links will open in a new tab or stay on the same page depending on their context. Links to places on the platform will open on the same page, unless it breaks the flow (i.e. going to the T&C policy while signing up). Otherwise, they will open in a new tab.
