@@ -8,7 +8,7 @@ import messages from '../messages';
 
 // components
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -50,7 +50,7 @@ class OptionsEditForm extends React.Component<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldTitle} />}
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
             />
