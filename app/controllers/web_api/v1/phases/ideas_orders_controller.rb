@@ -17,7 +17,6 @@ class WebApi::V1::Phases::IdeasOrdersController < WebApi::V1::Phases::BaseContro
 
   private
 
-
   def phase_params
     params.require(:phase).permit(:ideas_order)
   end

@@ -16,7 +16,7 @@ module ParticipationContext
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
-  IDEAS_ORDERS          = %w[trending random votes_count -new new].freeze
+  IDEAS_ORDERS          = %w[trending random pupular -new new].freeze
 
   # rubocop:disable Metrics/BlockLength
   included do
@@ -30,7 +30,6 @@ module ParticipationContext
 
       with_options if: :ideation? do
         validates :presentation_mode, presence: true
-        validates :ideas_order, inclusion: { in: IDEAS_ORDERS, unless: proc { |r| r.ideas_order.nil? } }
       end
 
       with_options if: :budgeting? do
@@ -48,6 +47,7 @@ module ParticipationContext
                   presence: true,
                   numericality: { only_integer: true, greater_than: 0 },
                   if: %i[ideation? voting_limited?]
+        validates :ideas_order, inclusion: { in: IDEAS_ORDERS, unless: proc { |r| r.ideas_order.nil? } }
       end
 
       before_validation :set_participation_method, on: :create

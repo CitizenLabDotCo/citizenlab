@@ -26,7 +26,7 @@ resource 'Projects::IdeasOrder' do
       example_request 'Update a project\'s order of Ideas to most recent' do
         expect(response_status).to eq 200
 
-        ordered_ideas_ids = Idea.where(project: project).order_by_new_asc.pluck(:id)
+        ordered_ideas_ids = Idea.where(project: project).order_new.pluck(:id)
 
         response_idea_ids = json_parse(response_body).yield_self do |json|
           json.dig(:data, :relationships, :ideas, :data).map { |obj| obj[:id] }
