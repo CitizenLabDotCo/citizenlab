@@ -1832,7 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Cheltuielile tale depășesc bugetul total alocat",
   "app.containers.Projects.budgetValidated": "Cheltuielile au fost confirmate, felicitări!",
   "app.containers.Projects.currentPhase": "Faza curentă",
-  "app.containers.Projects.editProject": "Edit project",
+  "app.containers.Projects.editProject": "Editați acest proiect",
   "app.containers.Projects.endedOn": "Încheiat la {data}",
   "app.containers.Projects.endsAt": "Ends at",
   "app.containers.Projects.endsOn": "Se încheia la {date}",
