@@ -1,5 +1,16 @@
 # Changelog
 
+## 2020-10-22
+
+### Added
+- Project edit button on project page for admins/project manager
+
+### Fixed
+- Links will open in a new tab or stay on the same page depending on their context. Links to places on the platform will open on the same page, unless it breaks the flow (i.e. going to the T&C policy while signing up). Otherwise, they will open in a new tab.
+
+### Changed
+- In the project management rights no ambiguous 'no options' message will be shown anymore when you place your cursor in the search field
+
 ## 2020-10-16
 
 ### Added
