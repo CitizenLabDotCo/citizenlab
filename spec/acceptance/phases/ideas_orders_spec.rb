@@ -11,7 +11,7 @@ resource 'Phases::IdeasOrder' do
   context 'As an admin' do
     before do
       admin_header_token
-      create(:phase, :with_ideas, ideas_order: 'oldest')
+      create(:phase, :with_ideas, ideas_order: '-new')
     end
 
     patch 'web_api/v1/phases/:phase_id/ideas_order' do
@@ -19,7 +19,7 @@ resource 'Phases::IdeasOrder' do
         parameter :ideas_order, 'The default order of ideas.'
       end
 
-      let(:ideas_order) { 'most_recent' }
+      let(:ideas_order) { 'new' }
       let(:phase_id) { Phase.first.id }
       let(:phase) { Phase.find(phase_id) }
 
@@ -28,7 +28,7 @@ resource 'Phases::IdeasOrder' do
 
         ordered_ideas_ids = Idea.joins(:ideas_phases)
                                 .merge(IdeasPhase.where(phase: phase))
-                                .order_by_most_recent.pluck(:id)
+                                .order_by_new_asc.pluck(:id)
 
         response_idea_ids = json_parse(response_body).yield_self do |json|
           json.dig(:data, :relationships, :ideas, :data).map { |obj| obj[:id] }

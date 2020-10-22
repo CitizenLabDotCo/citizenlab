@@ -14,15 +14,14 @@ module ParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
-  VOTING_METHODS = %w[unlimited limited].freeze
-  PRESENTATION_MODES = %w[card map].freeze
-  IDEAS_ORDERS = %w[trending random most_voted most_recent oldest].freeze
+  PRESENTATION_MODES    = %w[card map].freeze
+  VOTING_METHODS        = %w[unlimited limited].freeze
+  IDEAS_ORDERS          = %w[trending random votes_count -new new].freeze
 
   # rubocop:disable Metrics/BlockLength
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permission_scope, dependent: :destroy
-    enum ideas_order: IDEAS_ORDERS
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :timeline_project? do

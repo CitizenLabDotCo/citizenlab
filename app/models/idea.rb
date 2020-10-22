@@ -92,17 +92,18 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  scope :order_with, ->(scope_name) { scope_name ? send("order_by_#{scope_name}") : where('TRUE') }
+  scope :order_with, lambda { |scope_name|
+    return order_random if scope_name == 'random'
 
-  scope :order_by_trending,    -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
-  scope :order_by_most_voted,  -> { order(Arel.sql('(upvotes_count + downvotes_count), ideas.id')) }
-  scope :order_by_most_recent, -> { order(created_at: :asc) }
-  scope :order_by_oldest,      -> { order(created_at: :desc) }
+    order = scope_name.delete_prefix!('-') ? 'desc' : 'asc'
 
-  # just to work with the order_by prefix
-  class << self
-    alias order_by_random order_random
-  end
+    send(['order_by', scope_name, order].join('_'))
+  }
+
+  scope :order_by_trending_asc,    -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
+  scope :order_by_votes_count_asc, -> { order(Arel.sql('(upvotes_count + downvotes_count), ideas.id')) }
+  scope :order_by_new_asc,         -> { order(created_at: :asc) }
+  scope :order_by_new_desc,        -> { order(created_at: :desc) }
 
   private
 
@@ -136,5 +137,4 @@ class Idea < ApplicationRecord
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
   end
-
 end
