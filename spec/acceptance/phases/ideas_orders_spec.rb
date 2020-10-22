@@ -28,7 +28,7 @@ resource 'Phases::IdeasOrder' do
 
         ordered_ideas_ids = Idea.joins(:ideas_phases)
                                 .merge(IdeasPhase.where(phase: phase))
-                                .order_by_new_asc.pluck(:id)
+                                .order_new.pluck(:id)
 
         response_idea_ids = json_parse(response_body).yield_self do |json|
           json.dig(:data, :relationships, :ideas, :data).map { |obj| obj[:id] }
