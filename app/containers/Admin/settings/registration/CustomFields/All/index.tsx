@@ -169,7 +169,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
               icon="plus-circle"
               linkTo="/admin/settings/registration/custom_fields/new"
             >
-              <FormattedMessage {...messages.addFieldButton} />
+              <FormattedMessage {...messages.addAFieldButton} />
             </Button>
           </ButtonWrapper>
         </FeatureFlag>
@@ -207,7 +207,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                 </TextCell>
                 {isBuiltInField(field) && (
                   <div>
-                    <FormattedMessage {...messages.systemField} />
+                    <FormattedMessage {...messages.defaultField} />
                   </div>
                 )}
                 {isHiddenField(field) && (

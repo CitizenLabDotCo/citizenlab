@@ -52,7 +52,7 @@ class SettingsPage extends React.PureComponent<
         url: '/admin/settings/pages',
       },
       {
-        label: formatMessage(messages.tabRegistration),
+        label: formatMessage(messages.registrationTab),
         url: '/admin/settings/registration',
       },
       {
