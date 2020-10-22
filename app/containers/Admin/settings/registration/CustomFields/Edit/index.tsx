@@ -67,7 +67,7 @@ const Edit = memo(
         !isBuiltInField(customField)
       ) {
         tabs.push({
-          label: formatMessage(messages.optionsOrderTab),
+          label: formatMessage(messages.optionsTab),
           url: `${baseTabsUrl}/options`,
           className: 'options',
         });

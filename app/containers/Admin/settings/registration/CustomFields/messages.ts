@@ -132,11 +132,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab',
     defaultMessage: 'Options',
   },
-  optionsOrderTab: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsOrderTab',
-    defaultMessage: 'Options order',
-  },
   systemField: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField',
     defaultMessage: 'System field',
