@@ -104,7 +104,6 @@ class Idea < ApplicationRecord
   }
 
   scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
-  scope :order_popular, -> { order(Arel.sql('(upvotes_count + downvotes_count), ideas.id')) }
   scope :order_new, -> { order(created_at: :asc) }
   scope :order_old, -> { order(created_at: :desc) }
 
