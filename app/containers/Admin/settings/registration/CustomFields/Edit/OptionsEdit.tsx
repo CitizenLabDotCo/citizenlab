@@ -19,7 +19,7 @@ import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
-import OptionsEditForm, { FormValues } from './OptionsEditForm';
+import OptionsForm, { FormValues } from './OptionsForm';
 
 export interface Props {
   userCustomFieldId: string;
@@ -56,7 +56,7 @@ const OptionsEdit = ({
   };
 
   const renderFn = (props) => {
-    return <OptionsEditForm {...props} />;
+    return <OptionsForm {...props} />;
   };
 
   const goBack = () => {
@@ -78,7 +78,7 @@ const OptionsEdit = ({
           }}
           render={renderFn}
           onSubmit={handleSubmit}
-          validate={(OptionsEditForm as any).validate}
+          validate={(OptionsForm as any).validate}
         />
       </Section>
     );
