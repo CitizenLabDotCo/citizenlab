@@ -21,7 +21,6 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 import useUserCustomField from 'hooks/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
 
@@ -42,7 +41,6 @@ const Edit = memo(
   }: Props & WithRouterProps & InjectedIntlProps) => {
     const localize = useLocalize();
     const userCustomField = useUserCustomField(userCustomFieldId);
-    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const hasOptions = (inputType: IInputType) => {
       return inputType === 'select' || inputType === 'multiselect';
     };
