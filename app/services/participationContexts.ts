@@ -17,4 +17,5 @@ export type IdeaSortingMethod =
   | 'random'
   | 'mostVotes'
   | 'newestFirst'
-  | 'oldestFirst';
+  | 'oldestFirst'
+  | null;

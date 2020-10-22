@@ -196,6 +196,7 @@ class ParticipationContext extends PureComponent<
       noVotingLimit: null,
       noBudgetingAmount: null,
       poll_anonymous: false,
+      idea_sorting_method: 'trending',
     };
     this.subscriptions = [];
   }
@@ -365,6 +366,11 @@ class ParticipationContext extends PureComponent<
       voting_enabled: participation_method === 'ideation' ? true : null,
       voting_method: participation_method === 'ideation' ? 'unlimited' : null,
       voting_limited_max: null,
+      idea_sorting_method:
+        participation_method === 'ideation' ||
+        participation_method === 'budgeting'
+          ? 'trending'
+          : null,
       downvoting_enabled: participation_method === 'ideation' ? true : null,
       presentation_mode: participation_method === 'ideation' ? 'card' : null,
       survey_embed_url: null,
