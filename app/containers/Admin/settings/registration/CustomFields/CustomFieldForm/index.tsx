@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { IInputType } from 'services/userCustomFields';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSelect from 'components/UI/FormikSelect';
@@ -110,7 +110,7 @@ class CustomFieldForm extends React.Component<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldTitle)}
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
               disabled={builtInField}
