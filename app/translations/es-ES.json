@@ -1832,6 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Tus gastos exceden el presupuesto asignable",
   "app.containers.Projects.budgetValidated": "¡Gastos confirmados, Felicidades!",
   "app.containers.Projects.currentPhase": "Fase actual",
+  "app.containers.Projects.editProject": "Editar este proyecto",
   "app.containers.Projects.endedOn": "Terminó el {date}",
   "app.containers.Projects.endsAt": "Ends at",
   "app.containers.Projects.endsOn": "Termina el {date}",
