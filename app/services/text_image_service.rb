@@ -70,6 +70,7 @@ class TextImageService
           .each do |img|
             text_reference = img.attr('data-cl2-text-image-text-reference')
             text_image = prefetched_text_images[text_reference]
+            # byebug if text_reference == 'e2c7bc7a-017d-4887-a3cb-b94185617a59'
             if text_image
               img.set_attribute('src', text_image.image.url)
             else
