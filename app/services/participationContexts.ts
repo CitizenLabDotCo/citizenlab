@@ -15,7 +15,7 @@ export type ParticipationMethod =
 export type IdeaSortingMethod =
   | 'trending'
   | 'random'
-  | 'mostVotes'
-  | 'newestFirst'
-  | 'oldestFirst'
+  | 'most_voted'
+  | 'most_recent'
+  | 'oldest'
   | null;
