@@ -328,7 +328,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
-  defaultSortingMethod: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -534,6 +534,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       ideas,
       ideasFilterCounts,
       windowSize,
@@ -693,7 +694,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
               {!showMapView && (
                 <AboveContentRight>
                   <SortFilterDropdown
-                    defaultSortingMethod={this.props.defaultSortingMethod}
+                    defaultSortingMethod={defaultSortingMethod || null}
                     onChange={this.handleSortOnChange}
                     alignment="right"
                   />

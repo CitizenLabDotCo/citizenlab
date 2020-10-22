@@ -26,7 +26,7 @@ const Container = styled.div`
 interface Props extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
-  defaultSortingMethod: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;

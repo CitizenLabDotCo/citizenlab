@@ -12,7 +12,7 @@ type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
   onChange: (value: string) => void;
-  defaultSortingMethod: IdeaDefaultSortMethod | null;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
 };
 
 type State = {

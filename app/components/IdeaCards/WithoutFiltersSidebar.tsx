@@ -230,7 +230,7 @@ const ListView = styled.div``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
-  defaultSortingMethod: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -336,6 +336,7 @@ class WithoutFiltersSidebar extends PureComponent<
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       windowSize,
       ideas,
       className,
@@ -386,9 +387,9 @@ class WithoutFiltersSidebar extends PureComponent<
               }`}
             >
               <SelectSort
-                defaultSortingMethod={this.props.defaultSortingMethod}
                 onChange={this.handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                defaultSortingMethod={defaultSortingMethod || null}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />
