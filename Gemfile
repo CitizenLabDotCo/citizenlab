@@ -146,4 +146,4 @@ gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
 gem 'maps', path: 'engines/maps'
 
-gem 'project_folders', path: 'project_folders'
+gem 'project_folders', path: 'engines/project_folders'
