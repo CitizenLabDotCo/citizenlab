@@ -16,7 +16,7 @@ module ParticipationContext
   PARTICIPATION_METHODS = %w[information ideation survey budgeting poll volunteering].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
-  IDEAS_ORDERS          = %w[trending random pupular -new new].freeze
+  IDEAS_ORDERS          = %w[trending random popular -new new].freeze
 
   # rubocop:disable Metrics/BlockLength
   included do
