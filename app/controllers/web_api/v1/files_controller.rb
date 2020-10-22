@@ -23,9 +23,9 @@ class WebApi::V1::FilesController < ApplicationController
       container_id: :project_id
     },
     'ProjectFolder' => {
-      container_class: ProjectFolder,
-      file_class: ProjectFolderFile,
-      policy_scope_class: ProjectFolderFilePolicy::Scope,
+      container_class: ProjectFolders::ProjectFolder,
+      file_class: ProjectFolders::ProjectFolderFile,
+      policy_scope_class: ProjectFolders::ProjectFolderFilePolicy::Scope,
       file_relationship: :project_folder_files,
       container_id: :project_folder_id
     },

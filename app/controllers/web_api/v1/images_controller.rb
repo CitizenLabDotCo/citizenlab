@@ -23,9 +23,9 @@ class WebApi::V1::ImagesController < ApplicationController
       container_id: :project_id
     },
     'ProjectFolder' => {
-      container_class: ProjectFolder,
-      image_class: ProjectFolderImage,
-      policy_scope_class: ProjectFolderImagePolicy::Scope,
+      container_class: ProjectFolders::ProjectFolder, # todo: move this to the engine or hooking it somehow
+      image_class: ProjectFolders::ProjectFolderImage,
+      policy_scope_class: ProjectFolders::ProjectFolderImagePolicy::Scope,
       image_relationship: :project_folder_images,
       container_id: :project_folder_id
     }
