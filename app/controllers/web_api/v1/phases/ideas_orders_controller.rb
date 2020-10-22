@@ -5,9 +5,10 @@
 #
 class WebApi::V1::Phases::IdeasOrdersController < WebApi::V1::Phases::BaseController
   def update
-    run_side_effect :before_update
+    @side_effects = SideFxPhaseService.new
+    @side_effects.before_update(@phase, current_user)
     if @phase.update(phase_params)
-      run_side_effect :after_update
+      @side_effects.after_update(@phase, current_user)
       render json: serialized_phase(params: phase_params.to_h), status: :ok
     else
       render json: serialized_phase_errors, status: :unprocessable_entity
@@ -16,12 +17,6 @@ class WebApi::V1::Phases::IdeasOrdersController < WebApi::V1::Phases::BaseContro
 
   private
 
-  # TODO: move to Rails Observer
-  def run_side_effect(callback_name)
-    @run_side_effect ||= SideFxPhaseService.new.tap do |service|
-      service.send(callback_name, @phase, current_user)
-    end
-  end
 
   def phase_params
     params.require(:phase).permit(:ideas_order)
