@@ -451,7 +451,7 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     2.times do
-      folder = ProjectFolder.create!(
+      folder = ProjectFolders::Folder.create!( # todo: move to ProjectFolders engine
         title_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
         description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         description_preview_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
@@ -480,7 +480,7 @@ if Apartment::Tenant.current == 'localhost'
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         topics: Topic.all.shuffle.take(rand(Topic.count)+1),
         admin_publication_attributes: {
-          parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first),
+          parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolders::Folder.name).ids.shuffle.first),
           publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
         }
       })
