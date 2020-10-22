@@ -1268,7 +1268,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Delete",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey": "Label (internal use)",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionTitle": "Option name",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsOrderTab": "Options order",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab": "Options",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.required": "Required",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField": "Default question",
