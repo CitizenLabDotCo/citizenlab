@@ -8,7 +8,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.  Changed this to true because of the
   # following issue, can be restored to false once this (puma?) issue is
-  # resolved: 
+  # resolved:
   # https://github.com/rails/rails/issues/27455
   # https://github.com/puma/puma/issues/1184
 
