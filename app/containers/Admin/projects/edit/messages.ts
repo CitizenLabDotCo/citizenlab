@@ -229,25 +229,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
   },
-  trendingSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
-    defaultMessage: 'Trending',
-  },
   randomSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',
   },
+  trendingSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
+    defaultMessage: 'Trending',
+  },
   mostVotedSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.mostVotesSortingMethod',
-    defaultMessage: 'Most votes',
+    defaultMessage: 'Most voted',
   },
   mostRecentSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',
-    defaultMessage: 'Newest first',
+    defaultMessage: 'Most recent',
   },
   oldestSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.oldestFirstSortingMethod',
-    defaultMessage: 'Oldest first',
+    defaultMessage: 'Oldest',
   },
   surveyService: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
