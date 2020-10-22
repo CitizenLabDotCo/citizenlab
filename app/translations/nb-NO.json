@@ -1832,7 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Dine utgifter er høyere enn hva som kan tildeles budsjettet",
   "app.containers.Projects.budgetValidated": "Gratulerer, utgiftene dine er bekreftet",
   "app.containers.Projects.currentPhase": "Nåværende fase",
-  "app.containers.Projects.editProject": "Rediger dette prosjektet",
+  "app.containers.Projects.editProject": "Rediger prosjekt",
   "app.containers.Projects.endedOn": "Ble avsluttet {date}",
   "app.containers.Projects.endsAt": "Slutter den",
   "app.containers.Projects.endsOn": "Avsluttes {date}",
