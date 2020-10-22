@@ -1,7 +1,7 @@
 import React from 'react';
 import TextAreaMultilocWithLocaleSwitcher, {
   Props,
-} from 'components/UI/TextAreaMultiloc';
+} from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import { FieldProps } from 'formik';
 
 class FormikTextAreaMultilocWithLocaleSwitcher extends React.Component<
