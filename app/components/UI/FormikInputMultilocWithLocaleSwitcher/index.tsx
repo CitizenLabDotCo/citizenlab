@@ -4,7 +4,7 @@ import InputMultilocWithLocaleSwitcher, {
 } from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { FieldProps } from 'formik';
 
-class FormikInputMultiloc extends PureComponent<
+class FormikInputMultilocWithLocaleSwitcher extends PureComponent<
   FieldProps & InputMultilocProps
 > {
   handleOnChange = (newValue) => {
@@ -30,4 +30,4 @@ class FormikInputMultiloc extends PureComponent<
   }
 }
 
-export default FormikInputMultiloc;
+export default FormikInputMultilocWithLocaleSwitcher;
