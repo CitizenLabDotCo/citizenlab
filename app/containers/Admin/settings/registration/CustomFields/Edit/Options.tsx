@@ -1,189 +1,129 @@
-import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
-import { CLErrorsJSON } from 'typings';
+// services
+import { IUserCustomFieldData } from 'services/userCustomFields';
 import {
   IUserCustomFieldOptionData,
-  updateUserCustomFieldOption,
+  reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
-  addUserCustomFieldOption,
 } from 'services/userCustomFieldOptions';
-import { IUserCustomFieldData } from 'services/userCustomFields';
-import GetUserCustomFieldOptions, {
-  GetUserCustomFieldOptionsChildProps,
-} from 'resources/GetUserCustomFieldOptions';
 
-import { Formik, FormikErrors } from 'formik';
-import OptionForm, { FormValues } from './OptionForm';
+// hooks
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useLocalize from 'hooks/useLocalize';
+
+// components
+import {
+  SortableList,
+  SortableRow,
+  TextCell,
+} from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 
-import { FormattedMessage } from 'utils/cl-intl';
+// i18n
 import messages from '../messages';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
-const OptionContainer = styled.div``;
-
-interface InputProps {
+export interface Props {
   customField: IUserCustomFieldData;
 }
 
-interface DataProps {
-  customFieldOptions: GetUserCustomFieldOptionsChildProps;
-}
+const Options = memo(
+  ({ customField, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+    const userCustomFieldOptions = useUserCustomFieldOptions(customField.id);
+    const localize = useLocalize();
+    const userCustomFieldId = customField.id;
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  addingOption: boolean;
-}
-
-class OptionsForm extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      addingOption: false,
-    };
-  }
-
-  initialValuesForEdit = (option: IUserCustomFieldOptionData) => {
-    return {
-      key: option.attributes.key,
-      title_multiloc: option.attributes.title_multiloc,
-    };
-  };
-
-  initialValuesForNew = () => {
-    return {
-      key: '',
-      title_multiloc: {},
-    };
-  };
-
-  validate = (values: FormValues) => {
-    const errors: FormikErrors<FormValues> = {};
-
-    if (isEmpty(values.key)) {
-      errors.key = [{ error: 'blank' }] as any;
-    }
-
-    if (!values.key.match(/^[a-zA-Z0-9_]+$/)) {
-      errors.key = [{ error: 'blank' }] as any;
-    }
-
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
-
-    return errors;
-  };
-
-  handleDelete = (option) => () => {
-    deleteUserCustomFieldOption(this.props.customField.id, option.id);
-  };
-
-  handleCancel = () => {
-    this.setState({
-      addingOption: false,
-    });
-  };
-
-  handleUpdateSubmit = (option) => (
-    values,
-    { setErrors, setSubmitting, resetForm, setStatus }
-  ) => {
-    updateUserCustomFieldOption(this.props.customField.id, option.id, values)
-      .then(() => {
-        resetForm();
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
+    const handleReorderCustomFieldOption = (
+      customFieldOptionId: string,
+      ordering: number
+    ) => {
+      reorderUserCustomFieldOption(userCustomFieldId, customFieldOptionId, {
+        ordering,
       });
-  };
+    };
 
-  handleCreateSubmit = (values, { setErrors, setSubmitting, setStatus }) => {
-    addUserCustomFieldOption(this.props.customField.id, values)
-      .then(() => {
-        setSubmitting(false);
-        this.setState({ addingOption: false });
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
+    const handleDeleteClick = (userCustomFieldOptionId: string) => (
+      event: React.FormEvent<any>
+    ) => {
+      const deleteMessage = formatMessage(
+        messages.customFieldOptionDeletionConfirmation
+      );
+      event.preventDefault();
 
-  addOption = () => {
-    this.setState({
-      addingOption: true,
-    });
-  };
+      if (window.confirm(deleteMessage)) {
+        deleteUserCustomFieldOption(userCustomFieldId, userCustomFieldOptionId);
+      }
+    };
 
-  renderFn = (option: IUserCustomFieldOptionData | null = null) => (props) => (
-    <OptionForm
-      onClickDelete={this.handleDelete(option)}
-      onClickCancel={this.handleCancel}
-      mode={option ? 'edit' : 'new'}
-      {...props}
-    />
-  );
-
-  render() {
-    const { customFieldOptions } = this.props;
-    const { addingOption } = this.state;
-
-    return (
-      !isNilOrError(customFieldOptions) && (
+    if (!isNilOrError(userCustomFieldOptions)) {
+      return (
         <>
-          {customFieldOptions.map((customFieldOption) => (
-            <OptionContainer key={customFieldOption.id}>
-              <Formik
-                initialValues={this.initialValuesForEdit(customFieldOption)}
-                onSubmit={this.handleUpdateSubmit(customFieldOption)}
-                render={this.renderFn(customFieldOption)}
-                validate={this.validate}
-              />
-            </OptionContainer>
-          ))}
-
-          {addingOption && (
-            <OptionContainer>
-              <Formik
-                initialValues={this.initialValuesForNew()}
-                onSubmit={this.handleCreateSubmit}
-                render={this.renderFn()}
-                validate={this.validate}
-              />
-            </OptionContainer>
-          )}
-
-          {!addingOption && (
-            <Button onClick={this.addOption} icon="plus">
-              <FormattedMessage {...messages.addOptionButton} />
+          <ButtonWrapper>
+            <Button
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options-order/new`}
+            >
+              {formatMessage(messages.addOption)}
             </Button>
-          )}
+          </ButtonWrapper>
+          <SortableList
+            items={userCustomFieldOptions}
+            onReorder={handleReorderCustomFieldOption}
+            className="areas-list e2e-admin-areas-list"
+            id="e2e-admin-areas-list"
+          >
+            {({ itemsList, handleDragRow, handleDropRow }) =>
+              itemsList.map(
+                (
+                  userCustomFieldOption: IUserCustomFieldOptionData,
+                  index: number
+                ) => {
+                  const userCustomFieldOptionId = userCustomFieldOption.id;
+                  return (
+                    <SortableRow
+                      key={userCustomFieldOptionId}
+                      id={userCustomFieldOptionId}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                      lastItem={index === userCustomFieldOptions.length - 1}
+                    >
+                      <TextCell className="expand">
+                        {localize(
+                          userCustomFieldOption.attributes.title_multiloc
+                        )}
+                      </TextCell>
+                      <Button
+                        linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options-order/${userCustomFieldOptionId}`}
+                        buttonStyle="secondary"
+                        icon="edit"
+                      >
+                        {formatMessage(messages.editButtonLabel)}
+                      </Button>
+                      <Button
+                        onClick={handleDeleteClick(userCustomFieldOptionId)}
+                        buttonStyle="text"
+                        icon="delete"
+                      >
+                        {formatMessage(messages.deleteButtonLabel)}
+                      </Button>
+                    </SortableRow>
+                  );
+                }
+              )
+            }
+          </SortableList>
         </>
-      )
-    );
-  }
-}
+      );
+    }
 
-export default (inputProps: InputProps) => (
-  <GetUserCustomFieldOptions customFieldId={inputProps.customField.id}>
-    {(customField) => (
-      <OptionsForm {...inputProps} customFieldOptions={customField} />
-    )}
-  </GetUserCustomFieldOptions>
+    return null;
+  }
 );
+
+export default injectIntl(Options);
