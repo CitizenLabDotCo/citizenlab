@@ -97,15 +97,13 @@ class Idea < ApplicationRecord
     when 'random'   then order_random
     when 'trending' then order_trending
     when 'popular'  then order_popular
-    when 'new'      then order_new
-    when '-new'     then order_old
+    when 'new'      then order_by_new
+    when '-new'     then order_by_new(:asc)
     else order_trending
     end
   }
 
   scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
-  scope :order_new, -> { order(created_at: :asc) }
-  scope :order_old, -> { order(created_at: :desc) }
 
   private
 
