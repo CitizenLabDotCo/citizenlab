@@ -357,9 +357,6 @@ class ParticipationContext extends PureComponent<
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  fieldKeyToCamelCase = (key: string) =>
-    key.replace(/([-_]\w)/g, (g) => g[1].toUpperCase());
-
   handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
@@ -888,24 +885,22 @@ class ParticipationContext extends PureComponent<
                     />
                   </SubSectionTitle>
                   {[
-                    'random',
-                    'trending',
-                    'most_voted',
-                    'most_recent',
-                    'oldest',
-                  ].map((key) => (
+                    { key: 'trending', value: 'trending' },
+                    { key: 'random', value: 'random' },
+                    { key: 'popular', value: 'popular' },
+                    { key: 'newest', value: 'new' },
+                    { key: 'oldest', value: '-new' },
+                  ].map(({ key, value }) => (
                     <Radio
                       key={key}
                       onChange={this.handleIdeaDefaultSortMethodChange}
                       currentValue={ideas_order}
-                      value={key}
+                      value={value}
                       name="IdeaDefaultSortMethod"
                       id={`ideas_order-${key}`}
                       label={
                         <FormattedMessage
-                          {...messages[
-                            `${this.fieldKeyToCamelCase(key)}SortingMethod`
-                          ]}
+                          {...messages[`${key}SortingMethod`]}
                         />
                       }
                     />
