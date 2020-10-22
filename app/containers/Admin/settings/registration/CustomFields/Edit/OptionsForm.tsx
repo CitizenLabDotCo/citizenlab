@@ -51,7 +51,7 @@ class OptionsForm extends React.Component<
             <Field
               name="title_multiloc"
               component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.fieldTitle} />}
+              label={<FormattedMessage {...messages.fieldLabel} />}
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
             />
             {touched.title_multiloc && (

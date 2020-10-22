@@ -66,7 +66,7 @@ class New extends React.Component<Props> {
       <div>
         <GoBackButton onClick={this.goBack} />
         <PageTitle>
-          <FormattedMessage {...messages.addFieldButton} />
+          <FormattedMessage {...messages.addANewField} />
         </PageTitle>
         <PageWrapper>
           <Formik

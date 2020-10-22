@@ -75,7 +75,7 @@ class CustomFieldForm extends React.Component<
         <Section>
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldEnabled} />
+              <FormattedMessage {...messages.isFieldEnabled} />
             </Label>
             <Field
               className={`e2e-custom-field-enabled-toggle ${
@@ -91,7 +91,7 @@ class CustomFieldForm extends React.Component<
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldInputType} />
+              <FormattedMessage {...messages.fieldType} />
             </Label>
             <Field
               name="input_type"
@@ -111,8 +111,8 @@ class CustomFieldForm extends React.Component<
             <Field
               name="title_multiloc"
               component={FormikInputMultilocWithLocaleSwitcher}
-              label={formatMessage(messages.fieldTitle)}
-              labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
+              label={formatMessage(messages.fieldLabel)}
+              labelTooltipText={formatMessage(messages.fieldLabelTooltip)}
               disabled={builtInField}
             />
             {touched.title_multiloc && (
@@ -128,7 +128,7 @@ class CustomFieldForm extends React.Component<
               name="description_multiloc"
               component={FormikTextAreaMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldDescription)}
-              labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
+              labelTooltipText={formatMessage(messages.fieldDescriptionInfo)}
               disabled={builtInField}
             />
             {touched.description_multiloc && (
@@ -141,7 +141,7 @@ class CustomFieldForm extends React.Component<
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldRequired} />
+              <FormattedMessage {...messages.isFieldRequired} />
             </Label>
             <Field
               className={`e2e-custom-field-required-toggle ${

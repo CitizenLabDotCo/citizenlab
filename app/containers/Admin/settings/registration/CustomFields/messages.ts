@@ -7,40 +7,41 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  fieldInputType: {
+  fieldType: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType',
+    defaultMessage: 'Field type',
+  },
+  isFieldEnabled: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldInputType',
-    defaultMessage: 'Input type',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.isFieldEnabled',
+    defaultMessage: 'Does this field need to be enabled for the signup?',
   },
-  fieldEnabled: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled',
-    defaultMessage: 'Enabled',
+  fieldLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldLabel',
+    defaultMessage: 'Field label',
   },
-  fieldTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle',
-    defaultMessage: 'Label',
-  },
-  fieldTitleTooltip: {
+  fieldLabelTooltip: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldLabelTooltip',
     defaultMessage:
-      'This is the name of the field users will see during signup.',
+      'This is the name of the field people will see during signup.',
   },
   fieldDescription: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
     defaultMessage: 'Description',
   },
-  fieldDescriptionTooltip: {
+  fieldDescriptionInfo: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionTooltip',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionInfo',
     defaultMessage:
-      'If confusion is possible, or you want to explain why you ask this information. This is shown below the field label during signup.',
+      'Optionally you can add some more information that will be shown underneath the field label.',
   },
-  fieldRequired: {
+  isFieldRequired: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
-    defaultMessage: 'Required?',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.isFieldRequired',
+    defaultMessage:
+      'Is it required to fill out this field to complete the signup?',
   },
   inputType_text: {
     id:
@@ -96,10 +97,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle',
     defaultMessage: 'Custom fields',
   },
-  addFieldButton: {
+  addAFieldButton: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addFieldButton',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton',
     defaultMessage: 'Add field',
+  },
+  addANewField: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewField',
+    defaultMessage: 'Add a new custom field',
   },
   optionKey: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey',
@@ -132,9 +137,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab',
     defaultMessage: 'Options',
   },
-  systemField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField',
-    defaultMessage: 'System field',
+  defaultField: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField',
+    defaultMessage: 'Default field',
   },
   hiddenField: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField',
