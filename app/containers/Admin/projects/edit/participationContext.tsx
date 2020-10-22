@@ -888,8 +888,8 @@ class ParticipationContext extends PureComponent<
                     />
                   </SubSectionTitle>
                   {[
-                    'trending',
                     'random',
+                    'trending',
                     'most_voted',
                     'most_recent',
                     'oldest',
