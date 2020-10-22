@@ -53,8 +53,16 @@ class TextImageService
       multiloc.each_with_object({}) do |(locale, text), output|
         doc = Nokogiri::HTML.fragment(text)
         if doc.errors.any?
-          Rails.logger.debug doc.errors
-          return text
+          Raven.capture_exception(
+            Exception.new('Syntax error in HTML multiloc'),
+            extra: {
+              imageable_type: imageable.class,
+              imageable_id: imageable.id,
+              imageable_created_at: imageable.created_at,
+              imageable_field: field,
+              tenant_created_at: Tenant.current.created_at
+            })
+          return multiloc
         end
 
         doc.css("img")
@@ -62,6 +70,7 @@ class TextImageService
           .each do |img|
             text_reference = img.attr('data-cl2-text-image-text-reference')
             text_image = prefetched_text_images[text_reference]
+            # byebug if text_reference == 'e2c7bc7a-017d-4887-a3cb-b94185617a59'
             if text_image
               img.set_attribute('src', text_image.image.url)
             else
