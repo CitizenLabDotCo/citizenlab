@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
-  extend Trickster
-
-  tricks Knock::Authenticable, Pundit
+  include Knock::Authenticable
+  include Pundit
 
   before_action :set_current
   before_action :authenticate_user, if: :secure_controller?
