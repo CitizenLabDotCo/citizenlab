@@ -9,14 +9,12 @@ Gem::Specification.new do |spec|
   spec.version     = ProjectFolders::VERSION
   spec.authors     = ["Adrien Dessy"]
   spec.email       = ["adrien@citizenlab.co"]
-  spec.homepage    = "TODO"
-  spec.summary     = "TODO: Summary of ProjectFolders."
-  spec.description = "TODO: Description of ProjectFolders."
+  spec.summary     = "Project folders for CitizenLab participation platform"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata["allowed_push_host"] = nil # Set to 'http://mygemserver.com'
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
