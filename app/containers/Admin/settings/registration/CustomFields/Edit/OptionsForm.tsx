@@ -22,7 +22,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
 }
 
-class OptionsEditForm extends React.Component<
+class OptionsForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
@@ -69,4 +69,4 @@ class OptionsEditForm extends React.Component<
   }
 }
 
-export default injectIntl(OptionsEditForm);
+export default injectIntl(OptionsForm);
