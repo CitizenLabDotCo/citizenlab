@@ -479,7 +479,11 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
   ideas: ({ render, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={12}
+      sort={getIdeasInputProps.defaultSortingMethod || 'trending'}
+    >
       {render}
     </GetIdeas>
   ),

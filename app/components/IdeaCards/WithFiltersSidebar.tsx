@@ -785,7 +785,11 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   ideas: ({ render, children, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={12}
+      sort={getIdeasInputProps.defaultSortingMethod || 'trending'}
+    >
       {render}
     </GetIdeas>
   ),
