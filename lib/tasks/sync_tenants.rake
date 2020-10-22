@@ -3,7 +3,7 @@ require 'yaml'
 
 namespace :sync_tenants do
 
-  desc "List updates that may have to be synced"
+  desc "Aggressively overwrites all multiloc translations for which a corresponding instance could be found"
   task :overwrite_multilocs, [:hosts] => [:environment] do |t, args|
     template = YAML.load open(Rails.root.join('config', 'tenant_templates', 'base.yml')).read
     Tenant.where(host: args[:hosts].split(';')).each do |tenant|
