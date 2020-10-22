@@ -461,10 +461,10 @@ if Apartment::Tenant.current == 'localhost'
         }
       )
       [0,1,2,3,4][rand(5)].times do |i|
-        folder.project_folder_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+        folder.images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
       (rand(3)+1).times do
-        folder.project_folder_files.create!(generate_file_attributes)
+        folder.files.create!(generate_file_attributes)
       end
     end
 
