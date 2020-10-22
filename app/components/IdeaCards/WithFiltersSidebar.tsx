@@ -55,7 +55,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaSortingMethod,
+  ParticipationMethod,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
 const gapWidth = 35;
@@ -325,6 +328,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod: IdeaSortingMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -689,6 +693,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
               {!showMapView && (
                 <AboveContentRight>
                   <SortFilterDropdown
+                    defaultSortingMethod={this.props.defaultSortingMethod}
                     onChange={this.handleSortOnChange}
                     alignment="right"
                   />
