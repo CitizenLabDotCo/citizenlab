@@ -25,8 +25,8 @@ import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
-  IdeaSortingMethod,
   SurveyServices,
+  IdeaSortingMethod,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -139,7 +139,7 @@ export interface IParticipationContextConfig {
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
-  idea_sorting_method?: IdeaSortingMethod;
+  ideas_order?: IdeaSortingMethod;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -196,7 +196,7 @@ class ParticipationContext extends PureComponent<
       noVotingLimit: null,
       noBudgetingAmount: null,
       poll_anonymous: false,
-      idea_sorting_method: 'trending',
+      ideas_order: 'trending',
     };
     this.subscriptions = [];
   }
@@ -210,9 +210,9 @@ class ParticipationContext extends PureComponent<
     } else if (phaseId) {
       data$ = phaseStream(phaseId).observable;
     }
-
     this.subscriptions = [
       data$.subscribe((data) => {
+        console.log(data);
         if (data) {
           const participation_method = data.data.attributes
             .participation_method as ParticipationMethod;
@@ -228,6 +228,7 @@ class ParticipationContext extends PureComponent<
             survey_embed_url,
             survey_service,
             poll_anonymous,
+            ideas_order,
           } = data.data.attributes;
 
           this.setState({
@@ -243,6 +244,7 @@ class ParticipationContext extends PureComponent<
             survey_embed_url,
             survey_service,
             poll_anonymous,
+            ideas_order,
             loaded: true,
           });
         } else {
@@ -274,6 +276,7 @@ class ParticipationContext extends PureComponent<
       survey_embed_url,
       survey_service,
       poll_anonymous,
+      ideas_order,
     } = this.state;
     let output: IParticipationContextConfig = {} as any;
 
@@ -289,6 +292,7 @@ class ParticipationContext extends PureComponent<
           commenting_enabled,
           voting_enabled,
           presentation_mode,
+          ideas_order,
           voting_method: voting_enabled ? voting_method : null,
           voting_limited_max:
             voting_enabled && voting_method === 'limited'
@@ -320,6 +324,7 @@ class ParticipationContext extends PureComponent<
           max_budget,
           commenting_enabled,
           presentation_mode,
+          ideas_order,
         },
         isNil
       ) as IParticipationContextConfig;
@@ -352,6 +357,9 @@ class ParticipationContext extends PureComponent<
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  fieldKeyToCamelCase = (key: string) =>
+    key.replace(/([-_]\w)/g, (g) => g[1].toUpperCase());
+
   handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
@@ -366,7 +374,7 @@ class ParticipationContext extends PureComponent<
       voting_enabled: participation_method === 'ideation' ? true : null,
       voting_method: participation_method === 'ideation' ? 'unlimited' : null,
       voting_limited_max: null,
-      idea_sorting_method:
+      ideas_order:
         participation_method === 'ideation' ||
         participation_method === 'budgeting'
           ? 'trending'
@@ -423,8 +431,8 @@ class ParticipationContext extends PureComponent<
     this.setState({ presentation_mode });
   };
 
-  handleIdeaSortingMethodChange = (idea_sorting_method: IdeaSortingMethod) => {
-    this.setState({ idea_sorting_method });
+  handleIdeaSortingMethodChange = (ideas_order: IdeaSortingMethod) => {
+    this.setState({ ideas_order });
   };
 
   handleBudgetingAmountChange = (max_budget: string) => {
@@ -503,7 +511,7 @@ class ParticipationContext extends PureComponent<
       noBudgetingAmount,
       poll_anonymous,
       presentation_mode,
-      idea_sorting_method,
+      ideas_order,
     } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
@@ -882,20 +890,22 @@ class ParticipationContext extends PureComponent<
                   {[
                     'trending',
                     'random',
-                    'mostVotes',
-                    'newestFirst',
-                    'oldestFirst',
+                    'most_voted',
+                    'most_recent',
+                    'oldest',
                   ].map((key) => (
                     <Radio
                       key={key}
                       onChange={this.handleIdeaSortingMethodChange}
-                      currentValue={idea_sorting_method}
+                      currentValue={ideas_order}
                       value={key}
                       name="ideaSortingMethod"
-                      id={`idea_sorting_method-${key}`}
+                      id={`ideas_order-${key}`}
                       label={
                         <FormattedMessage
-                          {...messages[`${key}SortingMethod`]}
+                          {...messages[
+                            `${this.fieldKeyToCamelCase(key)}SortingMethod`
+                          ]}
                         />
                       }
                     />
