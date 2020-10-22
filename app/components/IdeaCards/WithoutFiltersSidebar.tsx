@@ -49,7 +49,10 @@ import {
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaSortingMethod,
+  ParticipationMethod,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFields';
@@ -227,6 +230,7 @@ const ListView = styled.div``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod: IdeaSortingMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -382,6 +386,7 @@ class WithoutFiltersSidebar extends PureComponent<
               }`}
             >
               <SelectSort
+                defaultSortingMethod={this.props.defaultSortingMethod}
                 onChange={this.handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
               />
