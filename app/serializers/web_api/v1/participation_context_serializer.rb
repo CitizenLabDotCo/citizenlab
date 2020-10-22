@@ -16,6 +16,7 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :voting_limited_max
       attribute :presentation_mode
       attribute :max_budget
+      attribute :ideas_order
     end
   end
 
