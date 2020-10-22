@@ -23,7 +23,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: [props.defaultSortingMethod || 'Trending'],
+      selectedValue: [props.defaultSortingMethod || 'trending'],
     };
   }
 
