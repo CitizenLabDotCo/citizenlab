@@ -1,5 +1,5 @@
 module ProjectFolders
-  class SideFxProjectFolderService
+  class SideFxService
 
     include SideFxHelper
 

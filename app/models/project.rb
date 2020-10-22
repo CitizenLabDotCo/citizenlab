@@ -118,7 +118,7 @@ class Project < ApplicationRecord
     parent = if folder_id.present?
       AdminPublication.find_by!(
         publication_id: folder_id, 
-        publication_type: ProjectFolder.name
+        publication_type: ProjectFolders::Folder.name
         )
     else
       nil

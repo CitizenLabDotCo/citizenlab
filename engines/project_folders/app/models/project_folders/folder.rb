@@ -1,12 +1,12 @@
 module ProjectFolders
-  class ProjectFolder < ::ApplicationRecord
+  class Folder < ::ApplicationRecord
 
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :project_folder_images, -> { order(:ordering) }, dependent: :destroy
     has_many :project_folder_files, -> { order(:ordering) }, dependent: :destroy
 
-    mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
+    mount_base64_uploader :header_bg, HeaderBgUploader
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
     validates :slug, uniqueness: true, format: {with: SlugService.new.regex}

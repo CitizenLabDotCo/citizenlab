@@ -4,7 +4,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   def index
     @publications = policy_scope(AdminPublication).includes(:publication, :children)
 
-    @publications = @publications.where(publication_type: ProjectFolder.name)
+    @publications = @publications.where(publication_type: ProjectFolders::Folder.name)
       .or(@publications.where(publication: ProjectsFilteringService.new.apply_common_index_filters(
         Pundit.policy_scope(current_user, Project),
         params.except(:folder, :publication_statuses))))
@@ -13,7 +13,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
 
     if params.key? :folder
       parent_scope = if params[:folder].present?
-        AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolder.name)
+        AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolders::Folder.name)
       else # top-level projects and folders
         nil
       end
@@ -33,7 +33,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     if params[:filter_empty_folders].present?    
       # Only keep folders that have children
       # left.
-      @publications = @publications.where(publication_type: ProjectFolder.name, id: parent_ids_for_visible_children.uniq)
+      @publications = @publications.where(publication_type: ProjectFolders::Folder.name, id: parent_ids_for_visible_children.uniq)
         .or(@publications.where(publication_type: Project.name))
     end
 

@@ -27,7 +27,7 @@ resource "ProjectFolderImage" do
 
   get "web_api/v1/project_folders/:project_folder_id/images/:image_id" do
     let(:project_folder_id) { @project_folder.id }
-    let(:image_id) { ProjectFolderImage.first.id }
+    let(:image_id) { ProjectFolders::Image.first.id }
 
     example_request "Get one image of a project_folder" do
       expect(status).to eq(200)
@@ -41,7 +41,7 @@ resource "ProjectFolderImage" do
       parameter :image, "The base64 encoded image", required: true
       parameter :ordering, "An integer that is used to order the images within a project_folder", required: false
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFolderImage)
+    ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
     let(:image) { encode_image_as_base64("image13.png") }
     let(:ordering) { 1 }
@@ -80,9 +80,9 @@ resource "ProjectFolderImage" do
       parameter :image, "The base64 encoded image"
       parameter :ordering, "An integer that is used to order the images within a project_folder"
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFolderImage)
+    ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
-    let(:image_id) { ProjectFolderImage.first.id }
+    let(:image_id) { ProjectFolders::Image.first.id }
     let(:image) { encode_image_as_base64("image14.png") }
     let(:ordering) { 2 }
 
@@ -96,11 +96,11 @@ resource "ProjectFolderImage" do
 
   delete "web_api/v1/project_folders/:project_folder_id/images/:image_id" do
     let(:project_folder_id) { @project_folder.id }
-    let(:image_id) { ProjectFolderImage.first.id }
+    let(:image_id) { ProjectFolders::Image.first.id }
 
     example_request "Delete an image from a project_folder" do
       expect(response_status).to eq 200
-      expect{ProjectFolderImage.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ProjectFolders::Image.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

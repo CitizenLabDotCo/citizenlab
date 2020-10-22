@@ -1,6 +1,6 @@
 module ProjectFolders
-  class ProjectFolderImage < ::ApplicationRecord
-    mount_base64_uploader :image, ProjectFolderImageUploader
+  class Image < ::ApplicationRecord
+    mount_base64_uploader :image, ImageUploader
     belongs_to :project_folder
 
     validates :project_folder, presence: true
