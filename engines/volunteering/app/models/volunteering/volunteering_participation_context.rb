@@ -21,6 +21,4 @@ module Volunteering::VolunteeringParticipationContext
       errors.add(:base, :cannot_contain_causes, causes_count: causes.size, message: 'cannot contain causes in the current non-volunteering participation context')
     end
   end
-
-
 end

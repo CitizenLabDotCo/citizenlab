@@ -93,17 +93,20 @@ class Idea < ApplicationRecord
   }
 
   scope :order_with, lambda { |scope_name|
-    return order_random if scope_name == 'random'
-
-    order = scope_name.delete_prefix!('-') ? 'desc' : 'asc'
-
-    send(['order_by', scope_name, order].join('_'))
+    case scope_name
+    when 'random'   then order_random
+    when 'trending' then order_trending
+    when 'popular'  then order_popular
+    when 'new'      then order_new
+    when '-new'     then order_old
+    else order_trending
+    end
   }
 
-  scope :order_by_trending_asc,    -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
-  scope :order_by_votes_count_asc, -> { order(Arel.sql('(upvotes_count + downvotes_count), ideas.id')) }
-  scope :order_by_new_asc,         -> { order(created_at: :asc) }
-  scope :order_by_new_desc,        -> { order(created_at: :desc) }
+  scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
+  scope :order_popular, -> { order(Arel.sql('(upvotes_count + downvotes_count), ideas.id')) }
+  scope :order_new, -> { order(created_at: :asc) }
+  scope :order_old, -> { order(created_at: :desc) }
 
   private
 
