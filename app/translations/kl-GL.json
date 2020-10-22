@@ -1832,7 +1832,7 @@
   "app.containers.Projects.budgetExceeded": "Akiligassavit katillugit missingersuutit tunniunneqarsimasut qaangersimavaat",
   "app.containers.Projects.budgetValidated": "Akiligassat akuerineqarput, pilluarit!",
   "app.containers.Projects.currentPhase": "Igangværende fase",
-  "app.containers.Projects.editProject": "Edit project",
+  "app.containers.Projects.editProject": "Rediger dette projekt",
   "app.containers.Projects.endedOn": "Ulloq {date} taamaatippoq",
   "app.containers.Projects.endsAt": "Ends at",
   "app.containers.Projects.endsOn": "Ulloq {date} taamaatissaaq",
