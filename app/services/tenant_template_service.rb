@@ -339,7 +339,8 @@ class TenantTemplateService
         'title_multiloc'       => a.title_multiloc,
         'description_multiloc' => a.description_multiloc,
         'created_at'           => a.created_at.to_s,
-        'updated_at'           => a.updated_at.to_s
+        'updated_at'           => a.updated_at.to_s,
+        'ordering'             => a.ordering
       }
       store_ref yml_area, a.id, :area
       yml_area
