@@ -570,7 +570,7 @@
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
   "app.container.IdeaForm.budgetIsZeroError": "Please provide a budget larger than 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
-  "app.container.IdeaForm.fileAttachmentsTitle": "Vedhæftede filer",
+  "app.container.IdeaForm.fileAttachmentsTitle": "Billeder og vedhæftede filer",
   "app.container.IdeaForm.noBudgetError": "Please provide a budget",
   "app.container.IdeaForm.noproposedBudgetError": "Venligst kom med et budget estimat",
   "app.container.IdeaForm.proposedBudgetLabel": "Budget estimat i {currency}",
