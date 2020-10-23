@@ -29,7 +29,7 @@ export interface Props {
   builtInField: boolean;
 }
 
-class CustomFieldForm extends React.Component<
+class RegistrationCustomFieldForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
@@ -162,4 +162,4 @@ class CustomFieldForm extends React.Component<
   }
 }
 
-export default injectIntl(CustomFieldForm);
+export default injectIntl(RegistrationCustomFieldForm);

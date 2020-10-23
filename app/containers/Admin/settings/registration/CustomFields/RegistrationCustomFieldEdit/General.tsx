@@ -9,7 +9,7 @@ import {
   isBuiltInField,
 } from 'services/userCustomFields';
 
-import CustomFieldForm, { FormValues } from '../CustomFieldForm';
+import CustomFieldForm, { FormValues } from '../RegistrationCustomFieldForm';
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 

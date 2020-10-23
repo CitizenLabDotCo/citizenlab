@@ -33,7 +33,7 @@ export interface Props {
   children: JSX.Element | null;
 }
 
-const CustomFieldEdit = memo(
+const RegistrationCustomFieldEdit = memo(
   ({
     intl: { formatMessage },
     params: { userCustomFieldId },
@@ -100,4 +100,4 @@ const CustomFieldEdit = memo(
   }
 );
 
-export default withRouter(injectIntl(CustomFieldEdit));
+export default withRouter(injectIntl(RegistrationCustomFieldEdit));
