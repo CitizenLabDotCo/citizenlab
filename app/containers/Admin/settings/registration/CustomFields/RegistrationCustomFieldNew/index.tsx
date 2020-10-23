@@ -6,7 +6,9 @@ import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import CustomFieldForm, { FormValues } from '../RegistrationCustomFieldForm';
+import RegistrationCustomFieldForm, {
+  FormValues,
+} from '../RegistrationCustomFieldForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -50,7 +52,7 @@ class RegistrationCustomFieldNew extends React.Component<Props> {
   };
 
   renderFn = (props) => (
-    <CustomFieldForm {...props} mode="new" builtInField={false} />
+    <RegistrationCustomFieldForm {...props} mode="new" builtInField={false} />
   );
 
   hasOptions = (inputType) => {
@@ -79,7 +81,7 @@ class RegistrationCustomFieldNew extends React.Component<Props> {
             }}
             onSubmit={this.handleSubmit}
             render={this.renderFn}
-            validate={CustomFieldForm['validate']}
+            validate={RegistrationCustomFieldForm['validate']}
           />
         </PageWrapper>
       </div>
