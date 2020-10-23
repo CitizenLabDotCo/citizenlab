@@ -570,7 +570,7 @@
   "app.container.IdeaForm.budgetIsTooBig": "الميزانية المذكورة كبيرة جدًا",
   "app.container.IdeaForm.budgetIsZeroError": "يُرجى تقديم ميزانية أكبر من 0",
   "app.container.IdeaForm.budgetLabel": "الميزانية",
-  "app.container.IdeaForm.fileAttachmentsTitle": "المُرفقات",
+  "app.container.IdeaForm.fileAttachmentsTitle": "الصور والمُرفقات",
   "app.container.IdeaForm.noBudgetError": "يُرجى ذِكر الميزانية",
   "app.container.IdeaForm.noproposedBudgetError": "يُرجى ذِكر ميزانيتك المُقترحة",
   "app.container.IdeaForm.proposedBudgetLabel": "الميزانية المُقترحة بـ {currency}",
