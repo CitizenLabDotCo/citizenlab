@@ -48,7 +48,7 @@ class SettingsPage extends React.PureComponent<
         url: '/admin/settings/customize',
       },
       {
-        label: formatMessage(messages.registrationTab),
+        label: formatMessage(messages.tabRegistrationFields),
         url: '/admin/settings/registration',
       },
       {
