@@ -4,7 +4,7 @@ module ProjectFolders
 
     attr_accessor :filename
     mount_base64_file_uploader :file, FileUploader
-    belongs_to :project_folder
+    belongs_to :project_folder, class_name: 'Folder', foreign_key: 'project_folder_id' # todo rename to :folder
 
     validates :project_folder, :file, :name, presence: true
     validate :extension_whitelist
