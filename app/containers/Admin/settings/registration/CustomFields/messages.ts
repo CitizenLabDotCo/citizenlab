@@ -20,12 +20,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldLabel',
     defaultMessage: 'Field label',
   },
-  fieldLabelTooltip: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldLabelTooltip',
-    defaultMessage:
-      'This is the name of the field people will see during signup.',
-  },
   fieldDescription: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
