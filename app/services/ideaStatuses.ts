@@ -58,12 +58,12 @@ export function addIdeaStatus(ideaStatus: IIdeaStatusAdd) {
 }
 
 export async function updateIdeaStatus(
-  id: string,
+  ideaStatusId: string,
   ideaStatus: Partial<IIdeaStatusUpdate>
 ) {
   const response = await streams.update<IIdeaStatusUpdate>(
-    `${API_PATH}/idea_statuses/${id}`,
-    id,
+    `${API_PATH}/idea_statuses/${ideaStatusId}`,
+    ideaStatusId,
     {
       idea_status: ideaStatus,
     },
@@ -73,10 +73,10 @@ export async function updateIdeaStatus(
   return response;
 }
 
-export async function deleteIdeaStatus(id: string) {
+export async function deleteIdeaStatus(ideaStatusId: string) {
   const response = await streams.delete(
-    `${API_PATH}/idea_statuses/${id}`,
-    id,
+    `${API_PATH}/idea_statuses/${ideaStatusId}`,
+    ideaStatusId,
     true
   );
 
