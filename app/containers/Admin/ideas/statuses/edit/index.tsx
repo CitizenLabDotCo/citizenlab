@@ -30,10 +30,10 @@ const Edit = ({ params }: WithRouterProps) => {
   const { id: statusId } = params;
   const ideaStatus = useIdeaStatus({ statusId });
 
-  function handleSubmit(
+  const handleSubmit = () => (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
-  ) {
+  ) => {
     const { ...params } = values;
 
     updateIdeaStatus(statusId, params)
@@ -49,15 +49,15 @@ const Edit = ({ params }: WithRouterProps) => {
         }
         setSubmitting(false);
       });
-  }
+  };
 
-  function renderFn(props) {
+  const renderFn = (props) => {
     return <IdeaStatusForm {...props} mode="new" builtInField={false} />;
-  }
+  };
 
-  function goBack() {
+  const goBack = () => {
     clHistory.push('/admin/ideas/statuses');
-  }
+  };
 
   if (!isNilOrError(ideaStatus)) {
     return (
@@ -78,7 +78,7 @@ const Edit = ({ params }: WithRouterProps) => {
     );
   }
 
-  return <></>;
+  return null;
 };
 
 export default withRouter(Edit);
