@@ -24,6 +24,8 @@ class Idea < ApplicationRecord
   has_many :phases, through: :ideas_phases
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
 
   belongs_to :idea_status, optional: true
 
