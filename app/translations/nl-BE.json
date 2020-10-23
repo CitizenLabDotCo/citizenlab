@@ -1669,7 +1669,7 @@
   "app.containers.IdeasShow.twitterMessage": "Stem voor {ideaTitle} op",
   "app.containers.IdeasShow.xDaysLeft": "Nog {x, plural, =0 {minder dan een dag} one {één dag} other {# dagen}}",
   "app.containers.InitiativesButton.postingNotPermitted": "Je hebt niet de nodige rechten om een voorstel te plaatsen",
-  "app.containers.InitiativesButton.startInitiative": "Plaats je initiatief",
+  "app.containers.InitiativesButton.startInitiative": "Plaats je voorstel",
   "app.containers.InitiativesEditPage.metaDescription": "Bewerk je voorstel. Voeg meer informatie toe en maak het nog beter.",
   "app.containers.InitiativesEditPage.metaTitle": "Bewerk je voorstel • {orgName}",
   "app.containers.InitiativesIndexPage.constraints": "{voteThreshold} stemmen in {daysLimit} dagen",
