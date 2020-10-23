@@ -68,7 +68,7 @@ const OptionsEdit = ({
   if (!isNilOrError(userCustomFieldOption)) {
     return (
       <Section>
-        <GoBackButton onClick={goBack} />
+        {/* <GoBackButton onClick={goBack} /> */}
         <SectionTitle>
           <FormattedMessage {...messages.editCustomFieldOptionFormTitle} />
         </SectionTitle>
