@@ -37,11 +37,10 @@ export default defineMessages({
     defaultMessage:
       'Optionally you can add some more information that will be shown underneath the field label.',
   },
-  isFieldRequired: {
+  fieldRequired: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.isFieldRequired',
-    defaultMessage:
-      'Is it required to fill out this field to complete the signup?',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
+    defaultMessage: 'Make answering this field required?',
   },
   inputType_text: {
     id:

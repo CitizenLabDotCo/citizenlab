@@ -109,7 +109,7 @@ class RegistrationCustomFieldForm extends React.Component<
                 component={FormikToggle}
               />
               <StyledSpan>
-                <FormattedMessage {...messages.isFieldRequired} />
+                <FormattedMessage {...messages.fieldRequired} />
               </StyledSpan>
             </StyledLabel>
             {touched.required && (
