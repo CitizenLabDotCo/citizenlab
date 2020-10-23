@@ -5,13 +5,18 @@ module EmailCampaigns
 
     def campaign_mail campaign, command
       recipient = command[:recipient]
+      multiloc_service = MultilocService.new
       tenant = Tenant.current
 
       @first_name = recipient.first_name
 
       I18n.with_locale(recipient.locale) do
+        subject = I18n.t(
+          'email_campaigns.welcome.subject', 
+          organizationName: multiloc_service.t(tenant.settings.dig('core', 'organization_name'))
+          )
         message = mail(
-          subject: "Greetingz!",
+          subject: subject,
           to: recipient.email
         )
         if (ActionMailer::Base.delivery_method == :mailgun)
@@ -30,8 +35,8 @@ module EmailCampaigns
 
     private
 
-    def prrt
-      puts 'prrt'
+    def hagawaga
+      puts 'hagawaga'
     end
 
   end
