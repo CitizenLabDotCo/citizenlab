@@ -121,7 +121,7 @@
   "app.components.IdeaForm.noImageError": "يُرجى إضافة صورة",
   "app.components.IdeaForm.noLocationError": "يُرجى إدخال موقع",
   "app.components.IdeaForm.noTopicsError": "يُرجى تحديد موضوع",
-  "app.components.IdeaForm.otherFilesTitle": "ملفات أخرى",
+  "app.components.IdeaForm.otherFilesTitle": "المُرفقات",
   "app.components.IdeaForm.title": "العنوان",
   "app.components.IdeaForm.titleEmptyError": "يُرجى إضافة عنوان",
   "app.components.IdeaForm.titleLengthError": "يجب ألّا يقل طول عنوان الفكرة عن 10 حروف.",
