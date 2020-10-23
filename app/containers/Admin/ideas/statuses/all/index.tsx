@@ -116,7 +116,6 @@ const IdeaStatuses = () => {
         </SectionDescription>
         <ButtonWrapper>
           <Button
-            className="e2e-add-custom-field-btn"
             buttonStyle="cl-blue"
             icon="plus-circle"
             linkTo="/admin/ideas/statuses/new"
@@ -138,7 +137,6 @@ const IdeaStatuses = () => {
             />
           </FlexTextCell>
           <Button
-            className={`e2e-custom-field-edit-btn e2e-${defaultStatus.attributes.title_multiloc['en-GB']}`}
             linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
             buttonStyle="secondary"
             icon="edit"
@@ -147,11 +145,7 @@ const IdeaStatuses = () => {
           </Button>
         </Row>
 
-        <SortableList
-          items={sortableStatuses}
-          onReorder={handleReorder}
-          id="e2e-admin-published-projects-list"
-        >
+        <SortableList items={sortableStatuses} onReorder={handleReorder}>
           {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
               {itemsList.map((ideaStatus: IIdeaStatusData, index: number) => (
@@ -179,7 +173,6 @@ const IdeaStatuses = () => {
                     >
                       <div>
                         <Button
-                          className={`e2e-delete-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                           onClick={handleDelete(ideaStatus.id)}
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
@@ -190,7 +183,6 @@ const IdeaStatuses = () => {
                       </div>
                     </Tippy>
                     <Button
-                      className={`e2e-custom-field-edit-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                       linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
                       buttonStyle="secondary"
                       icon="edit"
