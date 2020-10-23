@@ -59,7 +59,7 @@ const OptionsNew = ({
 
   return (
     <Section>
-      <GoBackButton onClick={goBack} />
+      {/* <GoBackButton onClick={goBack} /> */}
       <SectionTitle>
         <FormattedMessage {...messages.newCustomFieldOptionFormTitle} />
       </SectionTitle>

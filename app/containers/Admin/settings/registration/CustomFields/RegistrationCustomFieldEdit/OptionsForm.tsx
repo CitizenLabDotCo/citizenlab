@@ -1,5 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -12,6 +15,13 @@ import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMult
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Button from 'components/UI/Button';
+
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const CancelButton = styled(Button)``;
 
 // Typings
 import { Multiloc } from 'typings';
@@ -23,7 +33,7 @@ export interface FormValues {
 }
 
 class OptionsForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
+  InjectedFormikProps<Props & InjectedIntlProps & WithRouterProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
@@ -32,6 +42,15 @@ class OptionsForm extends React.Component<
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
+  };
+
+  handleCancelClick = (e) => {
+    e.preventDefault();
+    const { userCustomFieldId } = this.props.params;
+
+    clHistory.push(
+      `/admin/settings/registration/custom_fields/${userCustomFieldId}/options/`
+    );
   };
 
   render() {
@@ -62,10 +81,17 @@ class OptionsForm extends React.Component<
           </SectionField>
         </Section>
 
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+        <Buttons>
+          <FormikSubmitWrapper
+            {...{ isValid, isSubmitting, status, touched }}
+          />
+          <CancelButton buttonStyle="text" onClick={this.handleCancelClick}>
+            Cancel
+          </CancelButton>
+        </Buttons>
       </Form>
     );
   }
 }
 
-export default injectIntl(OptionsForm);
+export default withRouter(injectIntl(OptionsForm));
