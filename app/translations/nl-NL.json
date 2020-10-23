@@ -570,7 +570,7 @@
   "app.container.IdeaForm.budgetIsTooBig": "Het voorziene bedrag is te groot",
   "app.container.IdeaForm.budgetIsZeroError": "Geef een bedrag groter dan 0",
   "app.container.IdeaForm.budgetLabel": "Bedrag",
-  "app.container.IdeaForm.fileAttachmentsTitle": "Bijlagen",
+  "app.container.IdeaForm.fileAttachmentsTitle": "Afbeeldingen en bijlagen",
   "app.container.IdeaForm.noBudgetError": "Gelieve een bedrag toe te voegen",
   "app.container.IdeaForm.noproposedBudgetError": "Geef hier een schatting van het benodigde budget",
   "app.container.IdeaForm.proposedBudgetLabel": "Voorgesteld budget in {currency}",
