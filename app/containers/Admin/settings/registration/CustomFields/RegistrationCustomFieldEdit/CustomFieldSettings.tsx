@@ -21,7 +21,7 @@ type Props = {
 
 type State = {};
 
-class General extends React.Component<Props, State> {
+class CustomFieldSettings extends React.Component<Props, State> {
   initialValues = () => {
     const { customField } = this.props;
     return (
@@ -92,4 +92,4 @@ class General extends React.Component<Props, State> {
   }
 }
 
-export default General;
+export default CustomFieldSettings;
