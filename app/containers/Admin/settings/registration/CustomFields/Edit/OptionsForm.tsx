@@ -3,7 +3,7 @@ import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
@@ -51,7 +51,7 @@ class OptionsForm extends React.Component<
             <Field
               name="title_multiloc"
               component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.option} />}
+              label={formatMessage(messages.option)}
             />
             {touched.title_multiloc && (
               <Error
