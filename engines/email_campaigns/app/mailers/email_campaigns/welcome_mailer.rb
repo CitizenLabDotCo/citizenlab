@@ -18,7 +18,10 @@ module EmailCampaigns
         message = mail(
           subject: subject,
           to: recipient.email
-        )
+        ) do |format|
+          format.text
+          format.mjml
+        end
         if (ActionMailer::Base.delivery_method == :mailgun)
           message.mailgun_headers = {
             'X-Mailgun-Variables' => {
