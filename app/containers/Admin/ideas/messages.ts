@@ -31,7 +31,7 @@ export default defineMessages({
     defaultMessage: 'Required',
   },
   deleteButtonLabel: {
-    id: 'app.containers.admin.ideas.all.delete',
+    id: 'app.containers.admin.ideas.all.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
@@ -39,7 +39,7 @@ export default defineMessages({
     defaultMessage: 'Manage',
   },
   systemField: {
-    id: 'app.containers.admin.ideas.all.desystemFieldfault',
+    id: 'app.containers.admin.ideas.all.systemField',
     defaultMessage: 'Default',
   },
   addIdeaStatus: {
