@@ -54,9 +54,9 @@ const CustomFieldEdit = memo(
 
       const tabs = [
         {
-          label: formatMessage(messages.generalTab),
-          url: `${baseTabsUrl}/general`,
-          className: 'general',
+          label: formatMessage(messages.fieldSettingsTab),
+          url: `${baseTabsUrl}/fieldSettings`,
+          className: 'fieldSettings',
         },
       ];
 
@@ -65,7 +65,7 @@ const CustomFieldEdit = memo(
         !isBuiltInField(customField)
       ) {
         tabs.push({
-          label: formatMessage(messages.optionsTab),
+          label: formatMessage(messages.answerOptionsTab),
           url: `${baseTabsUrl}/options`,
           className: 'options',
         });

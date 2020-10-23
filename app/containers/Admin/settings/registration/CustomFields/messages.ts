@@ -121,13 +121,15 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton',
     defaultMessage: 'Add option',
   },
-  generalTab: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab',
-    defaultMessage: 'General',
+  fieldSettingsTab: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldSettingsTab',
+    defaultMessage: 'Field settings',
   },
-  optionsTab: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab',
-    defaultMessage: 'Options',
+  answerOptionsTab: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab',
+    defaultMessage: 'Answer options',
   },
   defaultField: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField',
