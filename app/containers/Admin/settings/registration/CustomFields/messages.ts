@@ -102,9 +102,10 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton',
     defaultMessage: 'Add field',
   },
-  addANewField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewField',
-    defaultMessage: 'Add a new custom field',
+  addANewRegistrationField: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewRegistrationField',
+    defaultMessage: 'Add a new registration field',
   },
   optionDeleteButton: {
     id:
