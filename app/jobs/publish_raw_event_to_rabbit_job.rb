@@ -2,7 +2,7 @@ class PublishRawEventToRabbitJob < ApplicationJob
   queue_as :default
 
   def perform(event, routing_key)
-    service = LogToSegmentService.new
+    service = TrackingService.new
 
     begin
       tenant = Tenant.current

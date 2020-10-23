@@ -2,7 +2,7 @@ class LogToEventbusJob < ApplicationJob
   queue_as :default
 
   def perform activity
-    service = LogToSegmentService.new
+    service = TrackingService.new
 
     event = {
       event: service.activity_event_name(activity),
