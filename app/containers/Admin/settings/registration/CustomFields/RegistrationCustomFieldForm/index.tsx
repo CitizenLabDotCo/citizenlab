@@ -16,10 +16,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 
-const StyledField = styled(Field)`
-  margin-right: 10px;
-`;
-
 const StyledSpan = styled.span`
   display: inline-block;
   margin-left: 6px;
@@ -87,7 +83,7 @@ class RegistrationCustomFieldForm extends React.Component<
         <Section>
           <SectionField>
             <StyledLabel>
-              <StyledField
+              <Field
                 className={`e2e-custom-field-enabled-toggle ${
                   this.props.values.enabled ? 'enabled' : 'disabled'
                 }`}
@@ -105,7 +101,7 @@ class RegistrationCustomFieldForm extends React.Component<
 
           <SectionField>
             <StyledLabel>
-              <StyledField
+              <Field
                 className={`e2e-custom-field-required-toggle ${
                   this.props.values.required ? 'enabled' : 'disabled'
                 }`}
