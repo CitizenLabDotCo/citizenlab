@@ -24,10 +24,10 @@ const FormTitle = styled.h1`
 `;
 
 const NewIdeaStatus = () => {
-  function handleSubmit(
+  const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
-  ) {
+  ) => {
     const { ...params } = values;
     addIdeaStatus(params)
       .then((_response) => {
@@ -42,15 +42,15 @@ const NewIdeaStatus = () => {
         }
         setSubmitting(false);
       });
-  }
+  };
 
-  function renderFn(props) {
+  const renderFn = (props) => {
     return <IdeaStatusForm {...props} mode="new" builtInField={false} />;
-  }
+  };
 
-  function goBack() {
+  const goBack = () => {
     clHistory.push('/admin/ideas/statuses');
-  }
+  };
 
   return (
     <div>
