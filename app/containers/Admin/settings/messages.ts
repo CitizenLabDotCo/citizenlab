@@ -171,10 +171,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleRegistration',
     defaultMessage: 'Registration fields',
   },
-  subtitleRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
+  subtitleRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
     defaultMessage:
-      'Customize the registration form for people signing-up to your platform',
+      'Specify what information people are asked to provide when signing up.',
   },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
