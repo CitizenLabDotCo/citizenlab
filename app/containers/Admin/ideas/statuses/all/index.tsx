@@ -1,5 +1,5 @@
 // libraries
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -66,27 +66,27 @@ const ButtonIconTooltip = styled(IconTooltip)`
   padding: 0 16px;
 `;
 
-const IdeaStatuses = memo(() => {
+const IdeaStatuses = () => {
   const ideaStatuses = useIdeaStatuses();
 
-  function handleReorder(id: string, ordering: number) {
+  const handleReorder = (id: string, ordering: number) => () => {
     updateIdeaStatus(id, { ordering });
-  }
+  };
 
-  function isRequired(ideaStatus: IIdeaStatusData) {
+  const isRequired = (ideaStatus: IIdeaStatusData) => {
     return ideaStatus.attributes.code === 'proposed';
-  }
+  };
 
   const handleDelete = useCallback(
-    (id) => (_event: React.FormEvent<any>) => {
-      deleteIdeaStatus(id);
+    (ideaStatusId: string) => (_event: React.FormEvent<any>) => {
+      deleteIdeaStatus(ideaStatusId);
     },
     []
   );
 
-  const isDeletable = useCallback((ideaStatus: IIdeaStatusData) => {
+  const isDeletable = (ideaStatus: IIdeaStatusData) => {
     return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
-  }, []);
+  };
 
   const defaultStatus = useMemo(() => {
     if (!isNilOrError(ideaStatuses)) {
@@ -95,7 +95,7 @@ const IdeaStatuses = memo(() => {
       );
     }
 
-    return undefined;
+    return null;
   }, [ideaStatuses]);
 
   const sortableStatuses = useMemo(() => {
@@ -137,16 +137,14 @@ const IdeaStatuses = memo(() => {
               icon="lock"
             />
           </FlexTextCell>
-          <Buttons>
-            <Button
-              className={`e2e-custom-field-edit-btn e2e-${defaultStatus.attributes.title_multiloc['en-GB']}`}
-              linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
-              buttonStyle="secondary"
-              icon="edit"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-          </Buttons>
+          <Button
+            className={`e2e-custom-field-edit-btn e2e-${defaultStatus.attributes.title_multiloc['en-GB']}`}
+            linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
+            buttonStyle="secondary"
+            icon="edit"
+          >
+            <FormattedMessage {...messages.editButtonLabel} />
+          </Button>
         </Row>
 
         <SortableList
@@ -181,7 +179,7 @@ const IdeaStatuses = memo(() => {
                     >
                       <div>
                         <Button
-                          className={`e2e-delete§-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
+                          className={`e2e-delete-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                           onClick={handleDelete(ideaStatus.id)}
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
@@ -209,7 +207,7 @@ const IdeaStatuses = memo(() => {
     );
   }
 
-  return <></>;
-});
+  return null;
+};
 
 export default IdeaStatuses;
