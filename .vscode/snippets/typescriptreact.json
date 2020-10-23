@@ -90,6 +90,14 @@
       "import styled from 'styled-components';"
     ]
   },
+  "imp-withrouter": {
+    "prefix": "imp-withrouter",
+    "description": "Imports withRouter and WithRouterProps'",
+    "body": [
+      "import { withRouter, WithRouterProps } from 'react-router';"
+
+    ]
+  },
   "style-utils": {
     "prefix": "style-utils",
     "description": "Imports styleutils'",
