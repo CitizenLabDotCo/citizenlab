@@ -2,8 +2,8 @@ class PublishRawEventToSegmentJob < ApplicationJob
   queue_as :default
 
   def perform(event)
-    service = LogToSegmentService.new
-    
+    service = TrackingService.new
+
     begin
       tenant = Tenant.current
       event[:properties] ||= {}

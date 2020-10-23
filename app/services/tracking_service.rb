@@ -1,4 +1,4 @@
-class LogToSegmentService
+class TrackingService
 
   def activity_event_name activity
     if activity.item&.respond_to? :event_bus_item_name
@@ -44,14 +44,6 @@ class LogToSegmentService
 
   def add_environment_properties hash
     hash[:cl2_cluster] = CL2_CLUSTER
-  end
-
-  def integrations user, tenant=nil
-    {
-      All: true,
-      Intercom: [:admin, :project_moderator].include?(user.highest_role),
-      SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
-    }
   end
 
   def serialize serializer, object

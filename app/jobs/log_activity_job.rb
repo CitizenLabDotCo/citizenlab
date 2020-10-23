@@ -3,7 +3,7 @@ class LogActivityJob < ApplicationJob
   queue_as :default
 
   def perform(item, action, user, acted_at=Time.now, options={})
-    activity = if item.kind_of? String 
+    activity = if item.kind_of? String
       # when e.g. the item has been destroyed,
       # the class and id must be retrieved by
       # encoding and decoding to a string
@@ -31,8 +31,8 @@ class LogActivityJob < ApplicationJob
     # We're nog longer logging notifications to segment, as there are mass
     # notifications that count as segment's monthly active users, which is too
     # expensive
-    if Analytics && !item.kind_of?(Notification)
-      LogToSegmentJob.perform_later(activity)
+    if !item.kind_of?(Notification)
+      TrackEventJob.perform_later(activity)
     end
   end
 
