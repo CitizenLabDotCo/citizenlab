@@ -10,17 +10,26 @@ AllCops:
 
 Metrics/BlockLength:
   Enabled: true
+  Exclude:
+    - 'spec/**/*'
+    - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
   Enabled: true
+  Exclude:
+    - 'db/migrate/**/*'
   # Max: 10
 Metrics/ClassLength:
   Enabled: true
   # Max: 100
-Style/Documentation:
-  Enabled: true
-Rails/LexicallyScopedActionFilter:
-  Enabled: true
 Layout/LineLength:
   Enabled: true
   # Max: 120
+Rails/LexicallyScopedActionFilter:
+  Enabled: true
+Style/Documentation:
+  Enabled: true
+  Exclude:
+    - 'db/migrate/**/*'
+Style/ClassAndModuleChildren:
+  Enabled: false
