@@ -121,7 +121,7 @@
   "app.components.IdeaForm.noImageError": "Gelieve een afbeelding toe te voegen",
   "app.components.IdeaForm.noLocationError": "Gelieve een locatie toe te voegen",
   "app.components.IdeaForm.noTopicsError": "Gelieve een thema te selecteren",
-  "app.components.IdeaForm.otherFilesTitle": "Andere bestanden",
+  "app.components.IdeaForm.otherFilesTitle": "Bijlagen",
   "app.components.IdeaForm.title": "Titel",
   "app.components.IdeaForm.titleEmptyError": "Voeg a. u. b. een titel toe aan je idee",
   "app.components.IdeaForm.titleLengthError": "De titel van het idee moet ten minste 10 tekens lang zijn",
