@@ -25,11 +25,11 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
     defaultMessage: 'Description',
   },
-  fieldDescriptionInfo: {
+  descriptionTooltip: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionInfo',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.descriptionTooltip',
     defaultMessage:
-      'Optionally you can add some more information that will be shown underneath the field label.',
+      'Optional text shown under the field name on the signup form.',
   },
   fieldRequired: {
     id:
