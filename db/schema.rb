@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_161335) do
+ActiveRecord::Schema.define(version: 2020_10_23_084542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -322,7 +322,6 @@ ActiveRecord::Schema.define(version: 2020_10_22_161335) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "description_multiloc", default: {}
-    t.integer "ideas_count", default: 0
   end
 
   create_table "ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -657,7 +656,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_161335) do
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
-    t.string "ideas_order", default: "trending"
+    t.string "ideas_order"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -778,7 +777,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_161335) do
     t.boolean "poll_anonymous", default: false, null: false
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
-    t.string "ideas_order", default: "trending"
+    t.string "ideas_order"
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
