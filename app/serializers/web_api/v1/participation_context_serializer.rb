@@ -4,7 +4,7 @@ module WebApi::V1::ParticipationContextSerializer
   include Polls::WebApi::V1::PollParticipationContextSerializer
 
   included do
-    with_options if: Proc.new { |object|
+    with_options if: proc { |object|
       object.participation_context?
     } do
       attribute :participation_method
@@ -16,7 +16,7 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :voting_limited_max
       attribute :presentation_mode
       attribute :max_budget
+      attribute :ideas_order
     end
   end
-
 end
