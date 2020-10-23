@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { IInputType } from 'services/userCustomFields';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
@@ -14,6 +15,17 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
+
+const StyledField = styled(Field)`
+  margin-right: 10px;
+`;
+
+const StyledSpan = styled.span`
+  display: inline-block;
+  margin-left: 6px;
+`;
+
+const StyledLabel = styled(Label)``;
 
 export interface FormValues {
   enabled: boolean;
@@ -74,18 +86,38 @@ class RegistrationCustomFieldForm extends React.Component<
       <Form>
         <Section>
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.isFieldEnabled} />
-            </Label>
-            <Field
-              className={`e2e-custom-field-enabled-toggle ${
-                this.props.values.enabled ? 'enabled' : 'disabled'
-              }`}
-              name="enabled"
-              component={FormikToggle}
-            />
+            <StyledLabel>
+              <StyledField
+                className={`e2e-custom-field-enabled-toggle ${
+                  this.props.values.enabled ? 'enabled' : 'disabled'
+                }`}
+                name="enabled"
+                component={FormikToggle}
+              />
+              <StyledSpan>
+                <FormattedMessage {...messages.isFieldEnabled} />
+              </StyledSpan>
+            </StyledLabel>
             {touched.enabled && (
               <Error fieldName="enabled" apiErrors={errors.enabled as any} />
+            )}
+          </SectionField>
+
+          <SectionField>
+            <StyledLabel>
+              <StyledField
+                className={`e2e-custom-field-required-toggle ${
+                  this.props.values.required ? 'enabled' : 'disabled'
+                }`}
+                name="required"
+                component={FormikToggle}
+              />
+              <StyledSpan>
+                <FormattedMessage {...messages.isFieldRequired} />
+              </StyledSpan>
+            </StyledLabel>
+            {touched.required && (
+              <Error fieldName="required" apiErrors={errors.required as any} />
             )}
           </SectionField>
 
@@ -136,22 +168,6 @@ class RegistrationCustomFieldForm extends React.Component<
                 fieldName="description_multiloc"
                 apiErrors={errors.description_multiloc as any}
               />
-            )}
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.isFieldRequired} />
-            </Label>
-            <Field
-              className={`e2e-custom-field-required-toggle ${
-                this.props.values.required ? 'enabled' : 'disabled'
-              }`}
-              name="required"
-              component={FormikToggle}
-            />
-            {touched.required && (
-              <Error fieldName="required" apiErrors={errors.required as any} />
             )}
           </SectionField>
         </Section>
