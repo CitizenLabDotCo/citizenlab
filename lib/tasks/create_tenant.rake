@@ -86,6 +86,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        segment: {
+          enabled: true,
+          allowed: true
+        },
         satismeter: {
           enabled: true,
           allowed: true

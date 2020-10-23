@@ -63,7 +63,7 @@ class SideFxTenantService
     user = User.admin.first
     user ||= User.first
     TrackIdentifyJob.perform_later(user) if user
-    TrackTenantJob.perform_later()
+    TrackTenantJob.perform_later(user)
   end
 
 

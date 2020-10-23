@@ -442,6 +442,17 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "segment": {
+        "type": "object",
+        "title": "Segment Integration",
+        "description":  "Integrates segment data collection",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
 
       "satismeter": {
         "type": "object",

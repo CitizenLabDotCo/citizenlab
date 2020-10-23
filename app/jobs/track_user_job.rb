@@ -8,11 +8,11 @@ class TrackUserJob < ApplicationJob
     begin
       tenant = Tenant.current
       if tenant
-        if tenant.settings.intercom.enabled && tenant.settings.intercom.allowed
+        if  tenant.has_feature?('intercom')
           intercom_service = TrackIntercomService.new()
           intercom_service.identify_user(user, tenant)
         end
-        if tenant.settings.segment.enabled && tenant.settings.segment.allowed
+        if  tenant.has_feature?('segment')
           segment_service = TrackSegmentService.new()
           segment_service.identify_user(user, tenant)
         end
