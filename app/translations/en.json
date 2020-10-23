@@ -121,7 +121,7 @@
   "app.components.IdeaForm.noImageError": "Please add an image",
   "app.components.IdeaForm.noLocationError": "Please enter a location",
   "app.components.IdeaForm.noTopicsError": "Please select a topic",
-  "app.components.IdeaForm.otherFilesTitle": "Other files",
+  "app.components.IdeaForm.otherFilesTitle": "Attachments",
   "app.components.IdeaForm.title": "Title",
   "app.components.IdeaForm.titleEmptyError": "Please provide a title",
   "app.components.IdeaForm.titleLengthError": "The idea title must be at least 10 characters long",
