@@ -26,7 +26,7 @@ export default () => ({
     {
       path: ':userCustomFieldId',
       component: Loadable({
-        loader: () => import('./Edit'),
+        loader: () => import('./CustomFieldEdit'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
@@ -34,28 +34,28 @@ export default () => ({
         {
           path: 'general',
           component: Loadable({
-            loader: () => import('./Edit/General'),
+            loader: () => import('./CustomFieldEdit/General'),
             loading: () => null,
           }),
         },
         {
           path: 'options',
           component: Loadable({
-            loader: () => import('./Edit/Options'),
+            loader: () => import('./CustomFieldEdit/Options'),
             loading: () => null,
           }),
         },
         {
           path: 'options/new',
           component: Loadable({
-            loader: () => import('./Edit/OptionsNew'),
+            loader: () => import('./CustomFieldEdit/OptionsNew'),
             loading: () => null,
           }),
         },
         {
           path: 'options/:userCustomFieldOptionId',
           component: Loadable({
-            loader: () => import('./Edit/OptionsEdit'),
+            loader: () => import('./CustomFieldEdit/OptionsEdit'),
             loading: () => null,
           }),
         },
