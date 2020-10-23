@@ -18,7 +18,7 @@ export default () => ({
     {
       path: 'new',
       component: Loadable({
-        loader: () => import('./New'),
+        loader: () => import('./CustomFieldNew'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
