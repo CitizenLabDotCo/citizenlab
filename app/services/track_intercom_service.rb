@@ -1,5 +1,7 @@
 class TrackIntercomService
 
+  # Here's how to add new attributes to the contact model
+  # IntercomInstance.data_attributes.create({ name: "isProjectModerator", model: "contact", data_type: "boolean" })
   def identify_user user, tenant
     if IntercomInstance && (user.admin? || user.project_moderator?) && !user.super_admin?
      contact_search = IntercomInstance.contacts.search(
@@ -17,10 +19,10 @@ class TrackIntercomService
         contact.name = user.first_name + " " +  user.last_name
         contact.signed_up_at =  user.created_at
         contact.custom_attributes = {
-          isAdmin => user.admin?,
-          isSuperAdmin => user.super_admin?,
-          isProjectModerator => user.project_moderator?,
-          highestRole => user.highest_role
+          isAdmin: user.admin?,
+          isSuperAdmin: user.super_admin?,
+          isProjectModerator: user.project_moderator?,
+          highestRole: user.highest_role
         }
         IntercomInstance.contacts.save(contact)
       else
@@ -31,31 +33,27 @@ class TrackIntercomService
         name: user.first_name + ' ' + user.last_name,
         signed_up_at:  user.created_at,
         custom_attributes: {
-          isAdmin => user.admin?,
-          isSuperAdmin => user.super_admin?,
-          isProjectModerator => user.project_moderator?,
-          highestRole => user.highestRole
+          isAdmin: user.admin?,
+          isSuperAdmin: user.super_admin?,
+          isProjectModerator: user.project_moderator?,
+          highestRole: user.highest_role
         }
       )
       end
       if tenant
-        company = IntercomInstance.companies.find(id: tenant.id)
-        contact.add_company(id: company.id)
+        begin
+          company = IntercomInstance.companies.find(id: tenant.id)
+          contact.add_company(id: company.id)
+        rescue Intercom::ResourceNotFound
+        end
       end
     end
   end
 
   def identify_tenant tenant
     if IntercomInstance
-      company_search = IntercomInstance.companies.search(
-       "query": {
-          "field": 'external_id',
-          "operator": '=',
-          "value": tenant.id
-        })
-
-      if company_search.count.positive?
-        company = company_search[0]
+      begin
+        company = IntercomInstance.companies.find(id: tenant.id)
         company.name = tenant.name,
         company.website = "https://#{tenant.host}"
         company.avatar = tenant&.logo&.medium&.url
@@ -63,7 +61,7 @@ class TrackIntercomService
         company.tenantLocales = tenant.settings.dig('core', 'locales')
         TrackingService.new.add_tenant_properties(company, tenant)
         IntercomInstance.companies.save(company)
-      else
+      rescue Intercom::ResourceNotFound
         traits = {
          name: tenant.name,
           website: "https://#{tenant.host}",
@@ -71,8 +69,8 @@ class TrackIntercomService
           createdAt: tenant.created_at,
           tenantLocales: tenant.settings.dig('core', 'locales')
         }
-        traits.add_tenant_properties(traits, tenant)
-        IntercomInstance.contacts.create(traits)
+        TrackingService.new.add_tenant_properties(traits, tenant)
+        IntercomInstance.companies.create(traits)
       end
     end
   end

@@ -2,17 +2,17 @@ class TrackTenantJob < ApplicationJob
   queue_as :default
   # creates or updates tenants in tracking destinations, should be called every tenant change
 
-  def perform(user)
+  def perform(user=nil)
     tenant = nil
 
     begin
       tenant = Tenant.current
       if tenant
-        if tenant.settings.intercom.enabled && tenant.settings.intercom.allowed
+        if tenant.has_feature?('intercom')
           intercom_service = TrackIntercomService.new()
-          intercom_service.identify_tenant(user, tenant)
+          intercom_service.identify_tenant(tenant)
         end
-        if tenant.settings.segment.enabled && tenant.settings.segment.allowed
+        if tenant.has_feature?('segment')
           segment_service = TrackSegmentService.new()
           segment_service.identify_tenant(user, tenant)
         end
