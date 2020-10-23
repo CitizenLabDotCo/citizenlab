@@ -140,7 +140,6 @@ class RegistrationCustomFieldForm extends React.Component<
               name="title_multiloc"
               component={FormikInputMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldLabel)}
-              labelTooltipText={formatMessage(messages.fieldLabelTooltip)}
               disabled={builtInField}
             />
             {touched.title_multiloc && (
