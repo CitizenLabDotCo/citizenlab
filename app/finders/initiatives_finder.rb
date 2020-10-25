@@ -39,9 +39,7 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def author_condition(author_id)
-    filter_records do
-      records.includes(:author).where(author_id: author_id)
-    end
+    filter_records { records.includes(:author).where(author_id: author_id) }
   end
 
   def search_condition(search_term)

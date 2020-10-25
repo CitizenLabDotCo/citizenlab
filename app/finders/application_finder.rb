@@ -10,11 +10,10 @@ class ApplicationFinder
   ## You can now use #find instead of call.
   callable_with :find, error_class: FinderError, default_error: 'Something went wrong'
 
-  def initialize(params: {}, scope: nil, includes: [], current_user: nil)
+  def initialize(params: {}, scope: nil, includes: [])
     @pagination_params = params.dig(:page) || {}
     @sort_param        = params.dig(:sort)
     @params            = params
-    @current_user      = current_user
     @base_scope        = scope || _base_scope
     @records           = @base_scope.includes(includes)
   end
