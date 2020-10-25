@@ -54,7 +54,7 @@ class InitiativesFinder < ApplicationFinder
     where(publication_status: status)
   end
 
-  def bounding_box_condition(_param)
-    scope(:with_bounding_box)
+  def bounding_box_condition(bounding_box)
+    scope(:with_bounding_box, bounding_box)
   end
 end
