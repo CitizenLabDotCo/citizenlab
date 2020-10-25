@@ -57,4 +57,8 @@ class InitiativesFinder < ApplicationFinder
   def bounding_box_condition(bounding_box)
     scope(:with_bounding_box, bounding_box)
   end
+
+  def initiatives_condition(initiative_ids)
+    where(id: initiative_ids)
+  end
 end
