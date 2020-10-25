@@ -10,8 +10,8 @@ class IdeasFinder < ApplicationFinder
     '-trending'     => proc { |ideas| TrendingIdeaService.new.sort_trending(ideas).reverse },
     'popular'       => :order_popular,
     '-popular'      => { order_popular: :asc },
-    'author_name'   => proc { |ideas| ideas.order('users.first_name ASC', 'users.last_name ASC') },
-    '-author_name'  => proc { |ideas| ideas.order('users.first_name DESC', 'users.last_name DESC') },
+    'author_name'   => ['users.first_name ASC', 'users.last_name ASC'],
+    '-author_name'  => ['users.first_name DESC', 'users.last_name DESC'],
     'status'        => :order_status,
     '-status'       => { order_status: :asc },
     'random'        => :order_random
