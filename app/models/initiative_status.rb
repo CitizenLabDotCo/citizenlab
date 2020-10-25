@@ -14,7 +14,6 @@ class InitiativeStatus < ApplicationRecord
   validates :description_multiloc, presence: true, multiloc: {presence: true}
 
   before_validation :strip_title
-  
 
   def custom?
     self.code == 'custom'

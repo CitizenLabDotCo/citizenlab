@@ -5,31 +5,22 @@ class WebApi::V1::InitiativesController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @initiatives = InitiativesFinder.find(
-      scope: policy_scope(Initiative),
-      params: params.merge(display_names_restricted: display_names_restricted?),
-      includes: %i[author assignee topics areas]
-    ).records
-
+    @result = InitiativesFinder.find(params, authorize_with: current_user, includes: %i[author assignee topics areas])
+    @initiatives = @result.records
     render json: linked_json(@initiatives, WebApi::V1::InitiativeSerializer, serialization_options)
   end
 
   def index_initiative_markers
-    @initiatives = InitiativesFinder.find(
-      scope: policy_scope(Initiative),
-      params: params.merge(display_names_restricted: display_names_restricted?)
-    ).records
-
+    @result = InitiativesFinder.find(params, authorize_with: current_user)
+    @initiatives = @result.records
     render json: linked_json(@initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
-    authorize :initiative, :index_xlsx?
-    @initiatives = InitiativesFinder.find(
-      scope: policy_scope(Initiative),
-      params: params.merge(publication_status: 'published'),
-      includes: %i[author initiative_status topics areas]
-    ).records
+    finder_params = params.merge(publication_status: 'published')
+    included_associations = %i[author initiative_status topics areas]
+    @result = InitiativesFinder.find(finder_params, authorize_with: current_user, includes: included_associations)
+    @initiatives = @result.records
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
@@ -38,29 +29,10 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def filter_counts
-    @initiatives = policy_scope(Initiative)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
-    counts = {
-      'initiative_status_id' => {},
-      'area_id' => {},
-      'topic_id' => {}
-    }
-    @initiatives
-      .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
-      .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
-      .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
-      .select('initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
-      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
-      .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
-      .each do |record|
-        %w(initiative_status_id area_id topic_id).each do |attribute|
-          id = record.send attribute
-          counts[attribute][id] = record.count if id
-        end
-      end
-    counts['total'] = @initiatives.count
-    render json: counts
+    @result = InitiativesFinder.find(params, authorize_with: current_user)
+    @initiatives = @result.records
+    @counts = InitiativesCountCalculator.calculate(@initiatives, counts: %i[initiative_status_id area_id topic_id]).counts
+    render json: @counts
   end
 
   def show
