@@ -48,7 +48,7 @@ class PostsFilteringService
     else
       posts = posts.where(publication_status: 'published')
     end
-    
+
     posts
   end
 
