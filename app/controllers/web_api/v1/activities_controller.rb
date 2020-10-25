@@ -14,8 +14,8 @@ class WebApi::V1::ActivitiesController < ApplicationController
       .per(params.dig(:page, :size))
 
     render json: linked_json(
-      @activities, 
-      WebApi::V1::ActivitySerializer, 
+      @activities,
+      WebApi::V1::ActivitySerializer,
       params: fastjson_params,
       include: [:user]
       )

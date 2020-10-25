@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   rescue_from Apartment::TenantNotFound, with: :tenant_not_found
 
   rescue_from ActionController::UnpermittedParameters do |pme|
-    render json: { error:  { unknown_parameters: pme.params } }, 
+    render json: { error:  { unknown_parameters: pme.params } },
       status: :bad_request
   end
 
@@ -22,6 +22,11 @@ class ApplicationController < ActionController::API
   # all controllers are secured by default
   def secure_controller?
     true
+  end
+
+  def verify_policy_scoped
+    @_pundit_policy_scoped = @result&.performed_authorization
+    super
   end
 
   def send_success(data=nil, status=200)

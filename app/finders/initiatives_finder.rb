@@ -43,7 +43,7 @@ class InitiativesFinder < ApplicationFinder
   end
 
   def search_condition(search_term)
-    if params[:display_names_restricted]
+    if _search_restricted?
       scope(:restricted_search, search_term)
     else
       scope(:search_by_all, search_term)
@@ -60,5 +60,9 @@ class InitiativesFinder < ApplicationFinder
 
   def initiatives_condition(initiative_ids)
     where(id: initiative_ids)
+  end
+
+  def _search_restricted?
+    UserDisplayNameService.new(Tenant.current, @authorized_with).restricted?
   end
 end
