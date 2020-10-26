@@ -35,7 +35,9 @@ export default () => ({
           path: 'field-settings',
           component: Loadable({
             loader: () =>
-              import('./RegistrationCustomFieldEdit/CustomFieldSettings'),
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+              ),
             loading: () => null,
           }),
         },
