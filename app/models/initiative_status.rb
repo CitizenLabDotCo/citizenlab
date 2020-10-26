@@ -19,7 +19,6 @@ class InitiativeStatus < ApplicationRecord
     self.code == 'custom'
   end
 
-
   private
 
   def strip_title

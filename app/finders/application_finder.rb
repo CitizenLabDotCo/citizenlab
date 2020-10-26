@@ -27,8 +27,10 @@ class ApplicationFinder
     _filter_records
     _sort_records
     _paginate_records
-
     result.records = records
+    result.count = records.count
+  rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
+    raise FinderError, e
   end
 
   def _raise_error_if_records_class_invalid

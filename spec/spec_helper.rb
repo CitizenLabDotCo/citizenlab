@@ -156,6 +156,8 @@ RSpec.configure do |config|
   config.after(:each) do
     # Reset tentant back to `public`
     Apartment::Tenant.reset
+  rescue ActiveRecord::StatementInvalid
+  else
     # Rollback transaction
     DatabaseCleaner.clean
   end
@@ -163,7 +165,6 @@ RSpec.configure do |config|
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
   config.filter_run_excluding slow_test: true
   config.filter_run_excluding template_test: true
-
 end
 
 RspecApiDocumentation.configure do |config|

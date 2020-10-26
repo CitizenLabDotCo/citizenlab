@@ -34,7 +34,9 @@ class InitiativesFinder < ApplicationFinder
     where(assignee_id: assignee_id)
   end
 
-  def feedback_needed_condition(_param)
+  def feedback_needed_condition(param)
+    return unless param
+
     scope(:feedback_needed)
   end
 
