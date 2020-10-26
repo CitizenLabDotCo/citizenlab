@@ -80,7 +80,7 @@ export class InitiativesPage extends React.PureComponent<
             <Button
               id="e2e-new-proposal"
               buttonStyle="cl-blue-outlined"
-              icon="idea"
+              icon="initiativesAdminMenuIcon"
               linkTo={`/initiatives/new`}
               text={formatMessage(messages.addNewProposal)}
               onClick={this.onNewProposal(pathname)}
