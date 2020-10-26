@@ -6,8 +6,6 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useIdeaStatus from 'hooks/useIdeaStatus';
-import GoBackButton from 'components/UI/GoBackButton';
-import IdeaStatusForm, { FormValues } from '../IdeaStatusForm';
 import { Formik } from 'formik';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
@@ -15,15 +13,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const FormHeader = styled.div`
-  width: 100%;
-  margin: 0 0 48px;
+// components
+import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
+import IdeaStatusForm, { FormValues } from '../IdeaStatusForm';
+
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 25px;
 `;
 
-const FormTitle = styled.h1`
-  width: 100%;
-  font-size: 32px;
-  margin: 16px 0 48px 0;
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 20px;
 `;
 
 const Edit = ({ params }: WithRouterProps) => {
@@ -61,20 +61,20 @@ const Edit = ({ params }: WithRouterProps) => {
 
   if (!isNilOrError(ideaStatus)) {
     return (
-      <div>
-        <FormHeader>
-          <GoBackButton onClick={goBack} />
-          <FormTitle>
+      <>
+        <StyledGoBackButton onClick={goBack} />
+        <Section>
+          <StyledSectionTitle>
             <FormattedMessage {...messages.addIdeaStatus} />
-          </FormTitle>
-        </FormHeader>
-        <Formik
-          initialValues={ideaStatus.attributes}
-          onSubmit={handleSubmit}
-          render={renderFn}
-          validate={IdeaStatusForm['validate']}
-        />
-      </div>
+          </StyledSectionTitle>
+          <Formik
+            initialValues={ideaStatus.attributes}
+            onSubmit={handleSubmit}
+            render={renderFn}
+            validate={IdeaStatusForm['validate']}
+          />
+        </Section>
+      </>
     );
   }
 
