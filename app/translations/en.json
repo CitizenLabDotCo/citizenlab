@@ -2077,7 +2077,6 @@
   "app.containers.VoteControl.voteErrorTitle": "Something went wrong",
   "app.containers.VoteControl.voteSuccessTitle": "Your vote was successfully registered!",
   "app.containers.admin.ideas.acceptedFieldCodeTitle": "Accepted",
-  "app.containers.admin.ideas.all.addIdeaStatus": "Add Status",
   "app.containers.admin.ideas.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideas.all.deleteButtonTooltip": "Cannot delete a status that has been assigned to ideas. Make sure to reassign your ideas to another status first.",
   "app.containers.admin.ideas.all.editButtonLabel": "Manage",
