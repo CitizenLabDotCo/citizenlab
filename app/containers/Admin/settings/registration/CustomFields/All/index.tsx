@@ -229,7 +229,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   {!isHiddenField(field) && (
                     <Button
                       className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                      linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
+                      linkTo={`/admin/settings/registration/custom_fields/${field.id}/field-settings`}
                       buttonStyle="secondary"
                       icon="edit"
                     >

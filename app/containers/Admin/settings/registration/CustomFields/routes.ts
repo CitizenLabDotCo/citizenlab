@@ -32,7 +32,7 @@ export default () => ({
       }),
       childRoutes: [
         {
-          path: 'general',
+          path: 'field-settings',
           component: Loadable({
             loader: () =>
               import('./RegistrationCustomFieldEdit/CustomFieldSettings'),
