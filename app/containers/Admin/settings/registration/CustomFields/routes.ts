@@ -54,14 +54,20 @@ export default () => ({
         {
           path: 'options/new',
           component: Loadable({
-            loader: () => import('./RegistrationCustomFieldEdit/OptionsNew'),
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+              ),
             loading: () => null,
           }),
         },
         {
           path: 'options/:userCustomFieldOptionId',
           component: Loadable({
-            loader: () => import('./RegistrationCustomFieldEdit/OptionsEdit'),
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+              ),
             loading: () => null,
           }),
         },
