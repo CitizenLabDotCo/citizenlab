@@ -76,7 +76,7 @@ class ApplicationFinder
 
   protected
 
-  delegate :table_name, to: :klass
+  delegate :table_name, to: :_klass
 
   attr_reader :params, :records, :pagination_params
   attr_accessor :sort_param

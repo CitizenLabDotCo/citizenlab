@@ -62,6 +62,20 @@ describe InitiativesFinder do
         end
       end
 
+      describe '#upvotes_count' do
+        it 'sorts initiatives by \'upvotes_count\'' do
+          params[:sort] = 'upvotes_count'
+          expect(result).to be_a_success
+          expect(record_ids).to eq Initiative.order(upvotes_count: :asc).pluck(:id)
+        end
+
+        it 'sorts initiatives by \'-upvotes_count\'' do
+          params[:sort] = '-upvotes_count'
+          expect(result).to be_a_success
+          expect(record_ids).to eq Initiative.order(upvotes_count: :desc).pluck(:id)
+        end
+      end
+
       describe '#random' do
         it 'sorts initiatives by \'random\'' do
           params[:sort] = 'random'
