@@ -22,7 +22,11 @@ import {
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { IconTooltip } from 'cl2-component-library';
-import { Section, SectionDescription } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import {
   Row,
   SortableList,
@@ -100,6 +104,9 @@ const IdeaStatuses = () => {
   if (!isNilOrError(ideaStatuses) && defaultStatus) {
     return (
       <Section>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleIdeaStatuses} />
+        </SectionTitle>
         <SectionDescription>
           <FormattedMessage {...messages.subtitleIdeaStatuses} />
         </SectionDescription>
