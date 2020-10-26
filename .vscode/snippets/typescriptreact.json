@@ -98,6 +98,14 @@
 
     ]
   },
+  "imp-link": {
+    "prefix": "imp-link",
+    "description": "Imports Link from cl-router",
+    "body": [
+      "import Link from 'utils/cl-router/Link';"
+
+    ]
+  },
   "style-utils": {
     "prefix": "style-utils",
     "description": "Imports styleutils'",
