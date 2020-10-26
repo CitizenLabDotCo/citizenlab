@@ -51,25 +51,29 @@ class TrackIntercomService
   end
 
   def identify_tenant tenant
+    # TODO add necessary properties, remove the rest
     if IntercomInstance
       begin
         company = IntercomInstance.companies.find(id: tenant.id)
         company.name = tenant.name,
         company.website = "https://#{tenant.host}"
-        company.avatar = tenant&.logo&.medium&.url
-        company.createdAt = tenant.created_at
-        company.tenantLocales = tenant.settings.dig('core', 'locales')
-        TrackingService.new.add_tenant_properties(company, tenant)
+        company.created_at = tenant.created_at
+        company.custom_attributes = {
+          tenantLocales: tenant.settings.dig('core', 'locales'),
+          tenantOrganizationType: tenant.settings.dig('core', 'organization_type'),
+          tenantLifecycleStage: tenant.settings.dig('core', 'lifecycle_stage')
+        }
         IntercomInstance.companies.save(company)
       rescue Intercom::ResourceNotFound
         traits = {
          name: tenant.name,
           website: "https://#{tenant.host}",
-          avatar: tenant&.logo&.medium&.url,
-          createdAt: tenant.created_at,
-          tenantLocales: tenant.settings.dig('core', 'locales')
+          created_at: tenant.created_at,
+          custom_attributes: {
+            tenantLocales: tenant.settings.dig('core', 'locales'),
+            tenantOrganizationType: tenant.settings.dig('core', 'organization_type'),
+            tenantLifecycleStage: tenant.settings.dig('core', 'lifecycle_stage')          }
         }
-        TrackingService.new.add_tenant_properties(traits, tenant)
         IntercomInstance.companies.create(traits)
       end
     end
