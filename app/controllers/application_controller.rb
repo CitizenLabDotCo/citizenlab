@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include Knock::Authenticable
   include Pundit
+  include Finder::Pundit
 
   before_action :set_current
   before_action :authenticate_user, if: :secure_controller?
@@ -22,11 +23,6 @@ class ApplicationController < ActionController::API
   # all controllers are secured by default
   def secure_controller?
     true
-  end
-
-  def verify_policy_scoped
-    @_pundit_policy_scoped ||= @result&.performed_authorization
-    super
   end
 
   def send_success(data=nil, status=200)

@@ -48,7 +48,7 @@ module Finder
       return unless @authorize_with
 
       result.performed_authorization = true
-      filter_records { Pundit.policy_scope(@authorize_with, records) }
+      filter_records { ::Pundit.policy_scope(@authorize_with, records) }
     end
 
     def _filter_records

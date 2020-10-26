@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 describe InitiativesFinder do
-  subject(:result) { InitiativesFinder.find(params, **options) }
+  subject(:result) { described_class.find(params, **options) }
   let(:record_ids) { result.records.pluck(:id) }
   let(:options) { {} }
   let(:params) { {} }
