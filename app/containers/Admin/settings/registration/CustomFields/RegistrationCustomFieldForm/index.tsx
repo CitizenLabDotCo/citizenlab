@@ -52,17 +52,17 @@ class RegistrationCustomFieldForm extends React.Component<
 
   inputTypeOptions = () => {
     const fieldTypes = [
-      'text',
-      'number',
-      'multiline_text',
       'select',
       'multiselect',
       'checkbox',
+      'text',
+      'multiline_text',
+      'number',
       'date',
     ];
     return fieldTypes.map((inputType) => ({
       value: inputType,
-      label: this.props.intl.formatMessage(messages[`inputType_${inputType}`]),
+      label: this.props.intl.formatMessage(messages[`fieldType_${inputType}`]),
     }));
   };
 

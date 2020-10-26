@@ -1253,7 +1253,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel": "Edit",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle": "Edit answer option",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "Description",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName": "Name",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired": "Make answering this field required?",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldSettingsTab": "Field settings",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText": "Geographic areas tab",

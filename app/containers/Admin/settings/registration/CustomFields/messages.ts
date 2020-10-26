@@ -13,7 +13,7 @@ export default defineMessages({
   },
   fieldName: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName',
-    defaultMessage: 'Name',
+    defaultMessage: 'Field name',
   },
   fieldDescription: {
     id:
@@ -31,39 +31,39 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
     defaultMessage: 'Make answering this field required?',
   },
-  inputType_text: {
+  fieldType_text: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text',
-    defaultMessage: 'Text',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_text',
+    defaultMessage: 'Short answer',
   },
-  inputType_number: {
+  fieldType_number: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number',
-    defaultMessage: 'Number',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_number',
+    defaultMessage: 'Numeric value',
   },
-  inputType_multiline_text: {
+  fieldType_multiline_text: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text',
-    defaultMessage: 'Multiline text',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiline_text',
+    defaultMessage: 'Long answer',
   },
-  inputType_select: {
+  fieldType_select: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_select',
-    defaultMessage: 'Select',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_select',
+    defaultMessage: 'Multiple choice (select one)',
   },
-  inputType_multiselect: {
+  fieldType_multiselect: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiselect',
-    defaultMessage: 'Select multiple',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiselect',
+    defaultMessage: 'Multiple choice (select multiple)',
   },
-  inputType_checkbox: {
+  fieldType_checkbox: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_checkbox',
-    defaultMessage: 'Checkbox',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_checkbox',
+    defaultMessage: 'Yes-no (checkbox)',
   },
-  inputType_date: {
+  fieldType_date: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_date',
     defaultMessage: 'Date',
   },
   deleteButtonLabel: {
