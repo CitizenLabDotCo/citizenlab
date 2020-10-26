@@ -119,4 +119,8 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.granularPermissionsTitle',
     defaultMessage: 'Who can contribute ?',
   },
+  addNewProposal: {
+    id: 'app.containers.Admin.initiatives.addNewProposal',
+    defaultMessage: 'Add a proposal',
+  },
 });
