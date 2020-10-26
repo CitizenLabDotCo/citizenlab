@@ -23,7 +23,7 @@ describe InitiativesFinder do
         expect(result.records.count).to eq Initiative.count
       end
 
-      it 'sorts the initiatives by \'new\'' do
+      it 'sorts initiatives by \'new\'' do
         expect(record_ids).to eq Initiative.order_new.pluck(:id)
       end
     end
@@ -35,7 +35,7 @@ describe InitiativesFinder do
       end
 
       describe '#new' do
-        it 'sorts the initiatives by \'new\'' do
+        it 'sorts initiatives by \'new\'' do
           params[:sort] = 'new'
           expect(result).to be_a_success
           expect(record_ids).to eq Initiative.order_new(:desc).pluck(:id)
@@ -63,6 +63,10 @@ describe InitiativesFinder do
       end
 
       describe '#upvotes_count' do
+        before do
+          create(:initiative, upvotes_count: 10)
+        end
+
         it 'sorts initiatives by \'upvotes_count\'' do
           params[:sort] = 'upvotes_count'
           expect(result).to be_a_success
