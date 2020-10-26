@@ -31,18 +31,6 @@ import {
 } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
-const DragHandleSpacer = styled.div`
-  padding: 16px;
-  height: 100%;
-  align-self: flex-start;
-
-  &::after {
-    width: 20px;
-    content: '';
-    display: block;
-  }
-`;
-
 const Buttons = styled.div`
   display: flex;
   align-items: center;
@@ -62,7 +50,8 @@ const FlexTextCell = styled(TextCell)`
   align-items: center;
 `;
 
-const ButtonIconTooltip = styled(IconTooltip)`
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-right: 20px;
   padding: 0 16px;
 `;
 
@@ -125,16 +114,15 @@ const IdeaStatuses = () => {
         </ButtonWrapper>
 
         <Row>
-          <DragHandleSpacer />
           <FlexTextCell className="expand">
-            <ColorLabel color={defaultStatus.attributes.color} />
-            <T value={defaultStatus.attributes.title_multiloc} />
-            <ButtonIconTooltip
+            <StyledIconTooltip
               content={<FormattedMessage {...messages.lockedStatusTooltip} />}
               iconSize="16px"
               placement="top"
               icon="lock"
             />
+            <ColorLabel color={defaultStatus.attributes.color} />
+            <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Button
             linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
