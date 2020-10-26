@@ -25,7 +25,7 @@ class ApplicationController < ActionController::API
   end
 
   def verify_policy_scoped
-    @_pundit_policy_scoped = @result&.performed_authorization
+    @_pundit_policy_scoped ||= @result&.performed_authorization
     super
   end
 
