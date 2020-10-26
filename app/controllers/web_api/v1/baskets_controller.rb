@@ -3,10 +3,10 @@ class WebApi::V1::BasketsController < ApplicationController
 
   def show
     render json: WebApi::V1::BasketSerializer.new(
-      @basket, 
-      params: fastjson_params, 
+      @basket,
+      params: fastjson_params,
       include: [:ideas]
-      ).serialized_json
+    ).serialized_json
   end
 
   def create
@@ -18,7 +18,7 @@ class WebApi::V1::BasketsController < ApplicationController
     if @basket.save save_params
       SideFxBasketService.new.after_create @basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
-        @basket, 
+        @basket,
         params: fastjson_params,
         ).serialized_json, status: :created
     else
@@ -45,10 +45,10 @@ class WebApi::V1::BasketsController < ApplicationController
         save_params = {}
         save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
         raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save(save_params)
-        SideFxBasketService.new.after_update @basket, current_user 
+        SideFxBasketService.new.after_update @basket, current_user
       end
       render json: WebApi::V1::BasketSerializer.new(
-        @basket, 
+        @basket,
         params: fastjson_params,
         ).serialized_json, status: :ok
     rescue ClErrors::TransactionError => e
