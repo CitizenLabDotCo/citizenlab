@@ -114,21 +114,22 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
         const parent = document.getElementsByTagName('script')[0].parentNode;
         script.async = true;
         script.src = 'https://app.satismeter.com/satismeter.js';
+        script.onload = () =>
+          window.satismeter({
+            writeKey: SATISMETER_WRITE_KEY,
+            ...(!isNilOrError(user)
+              ? {
+                  userId: user.data.id,
+                  traits: {
+                    name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
+                    email: user.data.attributes.email,
+                    createdAt: user.data.attributes.created_at,
+                  },
+                }
+              : {}),
+          });
         parent?.appendChild(script);
       })();
-      window.satismeter({
-        writeKey: SATISMETER_WRITE_KEY,
-        ...(!isNilOrError(user)
-          ? {
-              userId: user.data.id,
-              traits: {
-                name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
-                email: user.data.attributes.email,
-                createdAt: user.data.attributes.created_at,
-              },
-            }
-          : {}),
-      });
     }
     if (
       savedChoices.google_tag_manager &&
@@ -144,6 +145,26 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
         j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
         f.parentNode?.insertBefore(j, f);
       })(window, document, 'script', 'dataLayer', 'GTM-KBM5894');
+    }
+
+    if (
+      savedChoices.google_analytics &&
+      eventValue.includes('google_analytics')
+    ) {
+      const script = document.createElement('script');
+      const parent = document.getElementsByTagName('script')[0].parentNode;
+      script.async = true;
+      script.src =
+        'https://www.googletagmanager.com/gtag/js?id=UA-101738826-16';
+      parent?.appendChild(script);
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer?.push(arguments);
+      }
+      // @ts-ignore
+      gtag('js', new Date());
+      // @ts-ignore
+      gtag('config', 'UA-101738826-16');
     }
     // shutdown
     if (!eventValue.includes('intercom') && window.Intercom) {

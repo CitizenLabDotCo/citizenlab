@@ -13,6 +13,7 @@ declare global {
     intercomSettings: any;
     attachEvent?: any;
     satismeter?: any;
+    dataLayer?: any[];
   }
 }
 
