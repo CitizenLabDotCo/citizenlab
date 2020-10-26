@@ -86,7 +86,7 @@ class OptionsForm extends React.Component<
             {...{ isValid, isSubmitting, status, touched }}
           />
           <CancelButton buttonStyle="text" onClick={this.handleCancelClick}>
-            Cancel
+            {formatMessage(messages.optionCancelButton)}
           </CancelButton>
         </Buttons>
       </Form>

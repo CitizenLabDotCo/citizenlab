@@ -17,7 +17,6 @@ import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
 import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import OptionsForm, { FormValues } from './OptionsForm';
 
@@ -59,16 +58,9 @@ const OptionsEdit = ({
     return <OptionsForm {...props} />;
   };
 
-  const goBack = () => {
-    clHistory.push(
-      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
-    );
-  };
-
   if (!isNilOrError(userCustomFieldOption)) {
     return (
       <Section>
-        {/* <GoBackButton onClick={goBack} /> */}
         <SectionTitle>
           <FormattedMessage
             {...messages.editCustomFieldAnswerOptionFormTitle}

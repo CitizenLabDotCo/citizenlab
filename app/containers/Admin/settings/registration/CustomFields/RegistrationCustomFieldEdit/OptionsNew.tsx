@@ -51,15 +51,8 @@ const OptionsNew = ({
     return <OptionsForm {...props} />;
   };
 
-  const goBack = () => {
-    clHistory.push(
-      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
-    );
-  };
-
   return (
     <Section>
-      {/* <GoBackButton onClick={goBack} /> */}
       <SectionTitle>
         <FormattedMessage {...messages.newCustomFieldAnswerOptionFormTitle} />
       </SectionTitle>
