@@ -139,10 +139,7 @@ class IdeaStatusForm extends React.Component<
         <Section>
           <RadioSection>
             <SubSectionTitle>
-              <FormattedMessage {...messages.fieldCode} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.fieldCodeTooltip} />}
-              />
+              <FormattedMessage {...messages.statusContext} />
             </SubSectionTitle>
             <SubSectionDescription>
               <FormattedMessage {...messages.fieldCodeDescription} />
