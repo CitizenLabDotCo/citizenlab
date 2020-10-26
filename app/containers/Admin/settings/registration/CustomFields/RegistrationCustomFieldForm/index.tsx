@@ -83,7 +83,7 @@ class RegistrationCustomFieldForm extends React.Component<
         <Section>
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldType} />
+              <FormattedMessage {...messages.answerFormat} />
             </Label>
             <Field
               name="input_type"
