@@ -70,7 +70,9 @@ const OptionsEdit = ({
       <Section>
         {/* <GoBackButton onClick={goBack} /> */}
         <SectionTitle>
-          <FormattedMessage {...messages.editCustomFieldOptionFormTitle} />
+          <FormattedMessage
+            {...messages.editCustomFieldAnswerOptionFormTitle}
+          />
         </SectionTitle>
         <Formik
           initialValues={{

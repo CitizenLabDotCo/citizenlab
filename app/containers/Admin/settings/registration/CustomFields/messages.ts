@@ -132,22 +132,22 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this custom field option?',
   },
-  editCustomFieldOptionFormTitle: {
+  editCustomFieldAnswerOptionFormTitle: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldOptionFormTitle',
-    defaultMessage: 'Edit custom field option',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle',
+    defaultMessage: 'Edit answer option',
   },
-  newCustomFieldOptionFormTitle: {
+  newCustomFieldAnswerOptionFormTitle: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldOptionFormTitle',
-    defaultMessage: 'New custom field option',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle',
+    defaultMessage: 'Add answer option',
   },
   addOption: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOption',
     defaultMessage: 'Add option',
   },
-  option: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.option',
-    defaultMessage: 'Option',
+  answerOption: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOption',
+    defaultMessage: 'Answer option',
   },
 });

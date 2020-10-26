@@ -61,7 +61,7 @@ const OptionsNew = ({
     <Section>
       {/* <GoBackButton onClick={goBack} /> */}
       <SectionTitle>
-        <FormattedMessage {...messages.newCustomFieldOptionFormTitle} />
+        <FormattedMessage {...messages.newCustomFieldAnswerOptionFormTitle} />
       </SectionTitle>
       <Formik
         initialValues={{
