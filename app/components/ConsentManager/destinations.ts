@@ -1,11 +1,17 @@
-export type IDestination = 'intercom' | 'satismeter' | 'google_analytics';
+export type IDestination =
+  | 'intercom'
+  | 'satismeter'
+  | 'google_analytics'
+  | 'google_tag_manager';
 
 export const MARKETING_AND_ANALYTICS_DESTINATIONS = [
   'google_analytics',
   'satismeter',
 ] as IDestination[];
 
-export const ADVERTISING_DESTINATIONS = [] as IDestination[];
+export const ADVERTISING_DESTINATIONS = [
+  'google_tag_manager',
+] as IDestination[];
 
 export const FUNCTIONAL_DESTINATIONS = ['intercom'] as IDestination[];
 

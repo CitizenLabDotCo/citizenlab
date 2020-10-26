@@ -85,7 +85,6 @@ export default class Container extends PureComponent<Props, State> {
         'initializeTacking',
         activeDestinations
       );
-      console.log('starttrack');
     }
   }
 

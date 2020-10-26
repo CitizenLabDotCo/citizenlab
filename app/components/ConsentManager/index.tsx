@@ -19,11 +19,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Container from './Container';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { getConsent, setConsent } from './consent';
+import { get } from 'lodash-es';
 
 // the format in which the user will make its choices,
 export interface IPreferences {
@@ -50,9 +48,6 @@ export interface CategorizedDestinations {
 interface InputProps {}
 interface DataProps {
   tenant: GetTenantChildProps;
-  intercom: GetFeatureFlagChildProps;
-  satismeter: GetFeatureFlagChildProps;
-  google_analytics: GetFeatureFlagChildProps;
   authUser: GetAuthUserChildProps;
 }
 interface Props extends InputProps, DataProps {}
@@ -64,7 +59,8 @@ interface State {
 
 export class ConsentManager extends PureComponent<Props, State> {
   getActiveDestinations() {
-    const { authUser } = this.props;
+    const { authUser, tenant } = this.props;
+    if (isNilOrError(tenant)) return [];
 
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
@@ -75,11 +71,21 @@ export class ConsentManager extends PureComponent<Props, State> {
     const roleBlacklisted =
       !isPrivilegedUser || isSuperAdminUser ? ADMIN_DESTINATIONS : [];
 
+    console.log(tenant.attributes.settings?.google_tag_manager?.destinations);
+    console.log(tenant.attributes.settings);
+    console.log(
+      !!get(tenant.attributes.settings, `google_tag_manager.allowed`)
+    );
     // for each destination
     return DESTINATIONS.map(
       (key) =>
         // if feature flag enabled
-        this.props[key] &&
+        get(tenant.attributes.settings, `${key}.allowed`) === true &&
+        get(tenant.attributes.settings, `${key}.enabled`) === true &&
+        // for GTM, if there is active destinations
+        (key === 'google_tag_manager'
+          ? !!tenant.attributes.settings?.google_tag_manager?.destinations
+          : true) &&
         // and role allows it
         !roleBlacklisted.includes(key) &&
         // add this key to the array
@@ -89,6 +95,7 @@ export class ConsentManager extends PureComponent<Props, State> {
   }
 
   categorizeDestinations(destinations) {
+    console.log(destinations);
     return {
       analytics: MARKETING_AND_ANALYTICS_DESTINATIONS.filter((destination) =>
         destinations.includes(destination)
@@ -275,9 +282,6 @@ export class ConsentManager extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  intercom: <GetFeatureFlag name="intercom" />,
-  satismeter: <GetFeatureFlag name="satismeter" />,
-  google_analytics: <GetFeatureFlag name="google_analytics" />,
   authUser: <GetAuthUser />,
 });
 
