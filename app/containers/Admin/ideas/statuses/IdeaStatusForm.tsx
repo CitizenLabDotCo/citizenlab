@@ -89,22 +89,6 @@ class IdeaStatusForm extends React.Component<
     return errors;
   };
 
-  inputTypeOptions = () => {
-    const fieldTypes = [
-      'text',
-      'number',
-      'multiline_text',
-      'select',
-      'multiselect',
-      'checkbox',
-      'date',
-    ];
-    return fieldTypes.map((inputType) => ({
-      value: inputType,
-      label: this.props.intl.formatMessage(messages[`inputType_${inputType}`]),
-    }));
-  };
-
   codeRadioButtons = () => {
     const { touched, errors } = this.props;
     const codes = [
