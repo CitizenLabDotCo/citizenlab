@@ -1,8 +1,10 @@
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
@@ -13,7 +15,16 @@ import { injectIntl } from 'utils/cl-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
+// styles
+import styled from 'styled-components';
+
+const TopContainer = styled.div``;
+
+const ActionsContainer = styled.div``;
+
+export class InitiativesPage extends React.PureComponent<
+  InjectedIntlProps & WithRouterProps
+> {
   private tabs = [
     {
       label: this.props.intl.formatMessage(messages.settingsTab),
@@ -41,17 +52,37 @@ export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   };
 
   render() {
-    const { children } = this.props;
+    const {
+      children,
+      intl: { formatMessage },
+      location,
+    } = this.props;
+
+    const { pathname } = location;
     return (
-      <TabbedResource resource={this.resource} tabs={this.tabs}>
-        <HelmetIntl
-          title={messages.metaTitle}
-          description={messages.metaDescription}
-        />
-        {children}
-      </TabbedResource>
+      <>
+        <TopContainer>
+          <ActionsContainer>
+            <Button
+              id="e2e-new-proposal"
+              buttonStyle="cl-blue-outlined"
+              icon="idea"
+              linkTo={`/initiatives/new`}
+              text={formatMessage(messages.addNewProposal)}
+              onClick={this.onNewProposal(pathname)}
+            />
+          </ActionsContainer>
+        </TopContainer>
+        <TabbedResource resource={this.resource} tabs={this.tabs}>
+          <HelmetIntl
+            title={messages.metaTitle}
+            description={messages.metaDescription}
+          />
+          {children}
+        </TabbedResource>
+      </>
     );
   }
 }
 
-export default injectIntl(InitiativesPage);
+export default withRouter(injectIntl(InitiativesPage));
