@@ -41,7 +41,7 @@ const OptionsEdit = ({
     })
       .then(() => {
         clHistory.push(
-          `/admin/settings/registration/custom_fields/${userCustomFieldId}/options/`
+          `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
         );
       })
       .catch((errorResponse) => {
@@ -61,7 +61,7 @@ const OptionsEdit = ({
 
   const goBack = () => {
     clHistory.push(
-      `/admin/settings/registration/custom_fields/${userCustomFieldId}/options/`
+      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
     );
   };
 

@@ -50,7 +50,7 @@ const RegistrationCustomFieldEdit = memo(
     };
 
     const getTabs = (customField: IUserCustomFieldData) => {
-      const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
+      const baseTabsUrl = `/admin/settings/registration/custom-fields/${customField.id}`;
 
       const tabs = [
         {

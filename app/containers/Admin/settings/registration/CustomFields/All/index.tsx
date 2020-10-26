@@ -167,7 +167,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
               className="e2e-add-custom-field-btn"
               buttonStyle="cl-blue"
               icon="plus-circle"
-              linkTo="/admin/settings/registration/custom_fields/new"
+              linkTo="/admin/settings/registration/custom-fields/new"
             >
               <FormattedMessage {...messages.addAFieldButton} />
             </Button>
@@ -229,7 +229,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   {!isHiddenField(field) && (
                     <Button
                       className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                      linkTo={`/admin/settings/registration/custom_fields/${field.id}/field-settings`}
+                      linkTo={`/admin/settings/registration/custom-fields/${field.id}/field-settings`}
                       buttonStyle="secondary"
                       icon="edit"
                     >

@@ -33,7 +33,7 @@ const OptionsNew = ({
     })
       .then(() => {
         clHistory.push(
-          `/admin/settings/registration/custom_fields/${userCustomFieldId}/options/`
+          `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
         );
       })
       .catch((errorResponse) => {
@@ -53,7 +53,7 @@ const OptionsNew = ({
 
   const goBack = () => {
     clHistory.push(
-      `/admin/settings/registration/custom_fields/${userCustomFieldId}/options/`
+      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
     );
   };
 
