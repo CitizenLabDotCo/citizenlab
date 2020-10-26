@@ -24,7 +24,7 @@ export default defineMessages({
   },
   tabCustomize: {
     id: 'app.containers.admin.ideas.all.tabCustomize',
-    defaultMessage: 'Customize Statuses',
+    defaultMessage: 'Customise statuses',
   },
   required: {
     id: 'app.containers.admin.ideas.all.required',
@@ -48,7 +48,7 @@ export default defineMessages({
   },
   titleIdeaStatuses: {
     id: 'app.containers.admin.ideas.all.titleIdeaStatuses',
-    defaultMessage: 'Customize Statuses',
+    defaultMessage: 'Customise statuses',
   },
   subtitleIdeaStatuses: {
     id: 'app.containers.admin.ideas.all.subtitleIdeaStatuses',
