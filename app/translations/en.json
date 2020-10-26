@@ -2084,7 +2084,6 @@
   "app.containers.admin.ideas.all.helmetDescription": "Admin ideas page",
   "app.containers.admin.ideas.all.helmetTitle": "Admin ideas page",
   "app.containers.admin.ideas.all.ideasCount": "ideas",
-  "app.containers.admin.ideas.all.lockedStatusTooltip": "This is the default Status and it cannot be removed or moved.",
   "app.containers.admin.ideas.all.pageSubtitle": "Give feedback on ideas, add topics to them or bring them from one project to another.",
   "app.containers.admin.ideas.all.pageTitle": "Ideas",
   "app.containers.admin.ideas.all.required": "Required",
