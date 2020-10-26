@@ -11,9 +11,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerFormat',
     defaultMessage: 'Answer format',
   },
-  fieldLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldLabel',
-    defaultMessage: 'Field label',
+  fieldName: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName',
+    defaultMessage: 'Name',
   },
   fieldDescription: {
     id:
