@@ -807,6 +807,7 @@
   "app.containers.Admin.emails.subtitleEmails": "",
   "app.containers.Admin.emails.titleEmails": "",
   "app.containers.Admin.emails.toAllUsers": "",
+  "app.containers.Admin.initiatives.addNewProposal": "",
   "app.containers.Admin.initiatives.enabledToggle": "",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "",
