@@ -1,34 +1,40 @@
 # frozen_string_literal: true
 
-## Defines the sorting methods used by a Finder.
-module FinderSortMethods
-  extend ActiveSupport::Concern
+module Finder
+  ## Defines the sorting methods used by a Finder.
+  module Sortable
+    extend ActiveSupport::Concern
 
-  class_methods do
-    attr_reader :_sort_scopes, :_default_sort, :_default_sort_order
-
-    def sort_scopes(scopes)
-      @_sort_scopes = scopes.with_indifferent_access
+    def self.included(base)
+      base.class_eval do
+        extend ClassMethods
+      end
     end
 
-    def default_sort(scope)
-      @_default_sort, @_default_sort_order = scope.first if scope.is_a? Hash
+    # Finder::Sortable::ClassMethods
+    module ClassMethods
+      attr_reader :_sort_scopes, :_default_sort, :_default_sort_order
 
-      @_default_sort_order = scope.to_s.delete_prefix!('-') ? :asc : :desc
-      @_default_sort = scope.to_s
+      def sort_scopes(scopes)
+        @_sort_scopes = scopes.with_indifferent_access
+      end
+
+      def default_sort(scope)
+        @_default_sort, @_default_sort_order = scope.first if scope.is_a? Hash
+
+        @_default_sort_order = scope.to_s.delete_prefix!('-') ? :asc : :desc
+        @_default_sort = scope.to_s
+      end
+
+      def sortable_attributes(*attributes)
+        @_sortable_attributes = attributes.map(&:to_s)
+      end
+
+      def _sortable_attributes
+        @_sortable_attributes ||= []
+      end
     end
 
-    def sortable_attributes(*attributes)
-      @_sortable_attributes = attributes.map(&:to_s)
-    end
-
-    def _sortable_attributes
-      @_sortable_attributes ||= []
-    end
-  end
-
-  # rubocop:disable Metrics/BlockLength
-  included do
     private
 
     delegate :_default_sort, :_default_sort_order, :_sortable_attributes, :_sort_scopes, to: :class
@@ -79,5 +85,4 @@ module FinderSortMethods
       _sort_method.start_with?('-') ? 'desc' : 'asc'
     end
   end
-  # rubocop:enable Metrics/BlockLength
 end

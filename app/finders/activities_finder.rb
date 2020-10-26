@@ -5,9 +5,8 @@ class ActivitiesFinder < ApplicationFinder
 
   private
 
-  def post_condition(post_type)
-    id = params.dig("#{post_type.underscore}_id")
-    where(item_id: id, item_type: post_type)
+  def post_condition(id:, type:)
+    where(item_id: id, item_type: type)
   end
 
   def action_condition(actions)
