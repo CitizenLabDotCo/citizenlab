@@ -44,7 +44,10 @@ export default () => ({
         {
           path: 'options',
           component: Loadable({
-            loader: () => import('./RegistrationCustomFieldEdit/Options'),
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+              ),
             loading: () => null,
           }),
         },

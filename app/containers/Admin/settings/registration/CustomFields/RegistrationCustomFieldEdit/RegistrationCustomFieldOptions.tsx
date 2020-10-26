@@ -31,7 +31,7 @@ export interface Props {
   customField: IUserCustomFieldData;
 }
 
-const Options = memo(
+const RegistrationCustomFieldOptions = memo(
   ({ customField, intl: { formatMessage } }: Props & InjectedIntlProps) => {
     const userCustomFieldOptions = useUserCustomFieldOptions(customField.id);
     const localize = useLocalize();
@@ -126,4 +126,4 @@ const Options = memo(
   }
 );
 
-export default injectIntl(Options);
+export default injectIntl(RegistrationCustomFieldOptions);
