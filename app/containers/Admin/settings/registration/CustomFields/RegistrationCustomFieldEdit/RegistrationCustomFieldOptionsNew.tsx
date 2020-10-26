@@ -13,15 +13,16 @@ import messages from '../messages';
 import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
-import OptionsForm, { FormValues } from './OptionsForm';
+import RegistrationCustomFieldOptionsForm, {
+  FormValues,
+} from './RegistrationCustomFieldOptionsForm';
 
 export interface Props {
   userCustomFieldId: string;
 }
 
-const OptionsNew = ({
+const RegistrationCustomFieldOptionsNew = ({
   params: { userCustomFieldId },
 }: Props & WithRouterProps) => {
   const handleSubmit = (
@@ -48,7 +49,7 @@ const OptionsNew = ({
   };
 
   const renderFn = (props) => {
-    return <OptionsForm {...props} />;
+    return <RegistrationCustomFieldOptionsForm {...props} />;
   };
 
   return (
@@ -62,10 +63,10 @@ const OptionsNew = ({
         }}
         render={renderFn}
         onSubmit={handleSubmit}
-        validate={(OptionsForm as any).validate}
+        validate={(RegistrationCustomFieldOptionsForm as any).validate}
       />
     </Section>
   );
 };
 
-export default withRouter(OptionsNew);
+export default withRouter(RegistrationCustomFieldOptionsNew);

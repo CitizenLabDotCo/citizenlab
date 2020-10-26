@@ -18,13 +18,15 @@ import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
-import OptionsForm, { FormValues } from './OptionsForm';
+import RegistrationCustomFieldOptionsForm, {
+  FormValues,
+} from './RegistrationCustomFieldOptionsForm';
 
 export interface Props {
   userCustomFieldId: string;
 }
 
-const OptionsEdit = ({
+const RegistrationCustomFieldOptionsEdit = ({
   params: { userCustomFieldId, userCustomFieldOptionId },
 }: Props & WithRouterProps) => {
   const userCustomFieldOption = useUserCustomFieldOption(
@@ -55,7 +57,7 @@ const OptionsEdit = ({
   };
 
   const renderFn = (props) => {
-    return <OptionsForm {...props} />;
+    return <RegistrationCustomFieldOptionsForm {...props} />;
   };
 
   if (!isNilOrError(userCustomFieldOption)) {
@@ -72,7 +74,7 @@ const OptionsEdit = ({
           }}
           render={renderFn}
           onSubmit={handleSubmit}
-          validate={(OptionsForm as any).validate}
+          validate={(RegistrationCustomFieldOptionsForm as any).validate}
         />
       </Section>
     );
@@ -81,4 +83,4 @@ const OptionsEdit = ({
   return null;
 };
 
-export default withRouter(OptionsEdit);
+export default withRouter(RegistrationCustomFieldOptionsEdit);

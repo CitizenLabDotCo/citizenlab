@@ -32,7 +32,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
 }
 
-class OptionsForm extends React.Component<
+class RegistrationCustomFieldOptionsForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps & WithRouterProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
@@ -94,4 +94,4 @@ class OptionsForm extends React.Component<
   }
 }
 
-export default withRouter(injectIntl(OptionsForm));
+export default withRouter(injectIntl(RegistrationCustomFieldOptionsForm));
