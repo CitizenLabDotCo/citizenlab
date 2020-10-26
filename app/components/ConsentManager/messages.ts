@@ -94,6 +94,11 @@ export default defineMessages({
       'app.components.ConsentManager.Modal.PreferencesDialog.google_analytics',
     defaultMessage: 'Google analytics',
   },
+  google_tag_manager: {
+    id:
+      'app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager',
+    defaultMessage: 'Google Tag Manager ({destinations})',
+  },
   satismeter: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.satismeter',
     defaultMessage: 'Satismeter',

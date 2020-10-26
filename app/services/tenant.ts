@@ -78,6 +78,11 @@ export interface ITenantSettings {
     client_id: string;
     enabled: boolean;
   };
+  google_tag_manager?: {
+    allowed: boolean;
+    destinations: string;
+    enabled: boolean;
+  };
   azure_ad_login?: {
     allowed: boolean;
     enabled: boolean;

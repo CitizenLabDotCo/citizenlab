@@ -6,6 +6,8 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from 'cl2-component-library';
 import { IDestination } from './destinations';
+import useTenant from 'hooks/useTenant';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -89,53 +91,66 @@ const CategoryCard = ({
   checked,
   handleChange,
   disableUncheck,
-}: Props) => (
-  <Container className="e2e-category">
-    <TextContainer>
-      <FormattedMessage
-        id={`${category}-label`}
-        tagName="h2"
-        {...messages[category]}
-      />
-      <StyledFieldset>
-        <Radio
-          onChange={handleChange(category, true)}
-          currentValue={checked}
-          value={true}
-          name={category}
-          id={`${category}-radio-true`}
-          label={<FormattedMessage {...messages.allow} />}
-          isRequired
+}: Props) => {
+  const tenant = useTenant();
+  const gtm_Destinations = isNilOrError(tenant)
+    ? null
+    : tenant.data.attributes.settings.google_tag_manager?.destinations;
+  return (
+    <Container className="e2e-category">
+      <TextContainer>
+        <FormattedMessage
+          id={`${category}-label`}
+          tagName="h2"
+          {...messages[category]}
         />
-        <Radio
-          onChange={handleChange(category, false)}
-          currentValue={checked}
-          value={false}
-          name={category}
-          id={`${category}-radio-false`}
-          label={<FormattedMessage {...messages.disallow} />}
-          isRequired
-          disabled={disableUncheck}
-        />
-      </StyledFieldset>
-      <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
-      {destinations.length > 0 && (
-        <p>
-          <Tools>
-            <FormattedMessage {...messages.tools} />:
-          </Tools>
-          {destinations.map((d, index) => (
-            <Fragment key={d}>
-              {index !== 0 && <Separator>•</Separator>}
-              <SSpan>
-                <FormattedMessage {...messages[d]} />
-              </SSpan>
-            </Fragment>
-          ))}
-        </p>
-      )}
-    </TextContainer>
-  </Container>
-);
+        <StyledFieldset>
+          <Radio
+            onChange={handleChange(category, true)}
+            currentValue={checked}
+            value={true}
+            name={category}
+            id={`${category}-radio-true`}
+            label={<FormattedMessage {...messages.allow} />}
+            isRequired
+          />
+          <Radio
+            onChange={handleChange(category, false)}
+            currentValue={checked}
+            value={false}
+            name={category}
+            id={`${category}-radio-false`}
+            label={<FormattedMessage {...messages.disallow} />}
+            isRequired
+            disabled={disableUncheck}
+          />
+        </StyledFieldset>
+        <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
+        {destinations.length > 0 && (
+          <p>
+            <Tools>
+              <FormattedMessage {...messages.tools} />:
+            </Tools>
+            {destinations.map((d, index) => (
+              <Fragment key={d}>
+                {index !== 0 && <Separator>•</Separator>}
+                <SSpan>
+                  <FormattedMessage
+                    {...messages[d]}
+                    values={{
+                      ...(d === 'google_tag_manager'
+                        ? { destinations: gtm_Destinations }
+                        : {}),
+                    }}
+                  />
+                </SSpan>
+              </Fragment>
+            ))}
+          </p>
+        )}
+      </TextContainer>
+    </Container>
+  );
+};
 
 export default CategoryCard;
