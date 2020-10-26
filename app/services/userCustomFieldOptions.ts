@@ -84,7 +84,7 @@ export async function reorderUserCustomFieldOption(
   customFieldOptionId: string,
   params: { ordering: number }
 ) {
-  const response = streams.update<IUserCustomFieldOption>(
+  const response = await streams.update<IUserCustomFieldOption>(
     `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}/reorder`,
     customFieldOptionId,
     { custom_field_option: params }
