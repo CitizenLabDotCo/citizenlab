@@ -82,24 +82,6 @@ class RegistrationCustomFieldForm extends React.Component<
       <Form>
         <Section>
           <SectionField>
-            <StyledLabel>
-              <Field
-                className={`e2e-custom-field-enabled-toggle ${
-                  this.props.values.enabled ? 'enabled' : 'disabled'
-                }`}
-                name="enabled"
-                component={FormikToggle}
-              />
-              <StyledSpan>
-                <FormattedMessage {...messages.isFieldEnabled} />
-              </StyledSpan>
-            </StyledLabel>
-            {touched.enabled && (
-              <Error fieldName="enabled" apiErrors={errors.enabled as any} />
-            )}
-          </SectionField>
-
-          <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldType} />
             </Label>

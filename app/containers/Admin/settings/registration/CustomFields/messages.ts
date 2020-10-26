@@ -11,11 +11,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType',
     defaultMessage: 'Field type',
   },
-  isFieldEnabled: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.isFieldEnabled',
-    defaultMessage: 'Does this field need to be enabled for the signup?',
-  },
   fieldLabel: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldLabel',
     defaultMessage: 'Field label',
