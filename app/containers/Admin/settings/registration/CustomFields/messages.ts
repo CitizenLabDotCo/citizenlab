@@ -150,4 +150,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOption',
     defaultMessage: 'Answer option',
   },
+  domicileManagementInfo: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.domicileManagementInfo',
+    defaultMessage:
+      'Domicile options can be set in the {geographicAreasTabLink}.',
+  },
+  geographicAreasTabLinkText: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText',
+    defaultMessage: 'Geographic areas tab',
+  },
 });

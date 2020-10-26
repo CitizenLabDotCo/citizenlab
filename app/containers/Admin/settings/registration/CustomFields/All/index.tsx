@@ -1,8 +1,6 @@
 // libraries
 import React, { Component } from 'react';
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
+import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -19,7 +17,8 @@ import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Toggle, Badge } from 'cl2-component-library';
+import { Toggle, Badge, IconTooltip } from 'cl2-component-library';
+
 // services
 import {
   IUserCustomFieldData,
@@ -30,6 +29,11 @@ import {
   isHiddenField,
 } from 'services/userCustomFields';
 
+// resources
+import GetUserCustomFields, {
+  GetUserCustomFieldsChildProps,
+} from 'resources/GetUserCustomFields';
+
 const Buttons = styled.div`
   display: flex;
   align-items: center;
@@ -37,6 +41,15 @@ const Buttons = styled.div`
 
 const StyledBadge = styled(Badge)`
   margin-left: 10px;
+`;
+
+const TextCellContent = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
 `;
 
 interface State {
@@ -156,6 +169,9 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   };
 
   render() {
+    const {
+      intl: { formatMessage },
+    } = this.props;
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
     let lastItem = false;
@@ -198,7 +214,27 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   onChange={this.handleOnEnabledToggle(field)}
                 />
                 <TextCell className="expand">
-                  <T value={field.attributes.title_multiloc} />
+                  <TextCellContent>
+                    <T value={field.attributes.title_multiloc} />
+                    {field.attributes.code === 'domicile' && (
+                      <StyledIconTooltip
+                        content={
+                          <FormattedMessage
+                            {...messages.domicileManagementInfo}
+                            values={{
+                              geographicAreasTabLink: (
+                                <Link to={'/admin/settings/areas'}>
+                                  {formatMessage(
+                                    messages.geographicAreasTabLinkText
+                                  )}
+                                </Link>
+                              ),
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  </TextCellContent>
                   {field.attributes.required && (
                     <StyledBadge className="inverse">
                       <FormattedMessage {...messages.required} />
