@@ -55,8 +55,8 @@ const RegistrationCustomFieldEdit = memo(
       const tabs = [
         {
           label: formatMessage(messages.fieldSettingsTab),
-          url: `${baseTabsUrl}/fieldSettings`,
-          className: 'fieldSettings',
+          url: `${baseTabsUrl}/field-settings`,
+          className: 'field-settings',
         },
       ];
 
