@@ -66,8 +66,7 @@ export default defineMessages({
   },
   lockedStatusTooltip: {
     id: 'app.containers.admin.ideas.all.lockedStatusTooltip',
-    defaultMessage:
-      'This is the default Status and it cannot be removed or moved.',
+    defaultMessage: 'The default status cannot be removed or moved.',
   },
   fieldTitle: {
     id: 'app.containers.admin.ideas.form.fieldTitle',
