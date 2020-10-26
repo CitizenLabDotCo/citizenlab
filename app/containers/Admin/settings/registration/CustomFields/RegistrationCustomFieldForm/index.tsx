@@ -100,24 +100,6 @@ class RegistrationCustomFieldForm extends React.Component<
           </SectionField>
 
           <SectionField>
-            <StyledLabel>
-              <Field
-                className={`e2e-custom-field-required-toggle ${
-                  this.props.values.required ? 'enabled' : 'disabled'
-                }`}
-                name="required"
-                component={FormikToggle}
-              />
-              <StyledSpan>
-                <FormattedMessage {...messages.fieldRequired} />
-              </StyledSpan>
-            </StyledLabel>
-            {touched.required && (
-              <Error fieldName="required" apiErrors={errors.required as any} />
-            )}
-          </SectionField>
-
-          <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldType} />
             </Label>
@@ -163,6 +145,24 @@ class RegistrationCustomFieldForm extends React.Component<
                 fieldName="description_multiloc"
                 apiErrors={errors.description_multiloc as any}
               />
+            )}
+          </SectionField>
+
+          <SectionField>
+            <StyledLabel>
+              <Field
+                className={`e2e-custom-field-required-toggle ${
+                  this.props.values.required ? 'enabled' : 'disabled'
+                }`}
+                name="required"
+                component={FormikToggle}
+              />
+              <StyledSpan>
+                <FormattedMessage {...messages.fieldRequired} />
+              </StyledSpan>
+            </StyledLabel>
+            {touched.required && (
+              <Error fieldName="required" apiErrors={errors.required as any} />
             )}
           </SectionField>
         </Section>
