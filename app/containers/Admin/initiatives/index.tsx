@@ -9,6 +9,10 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   private tabs = [
     {
@@ -28,6 +32,12 @@ export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
 
   private resource = {
     title: this.props.intl.formatMessage(messages.titleInitiatives),
+  };
+
+  onNewProposal = (pathname: string) => (_event) => {
+    trackEventByName(tracks.clickNewProposal.name, {
+      extra: { pathnameFrom: pathname },
+    });
   };
 
   render() {
