@@ -94,14 +94,9 @@ export default defineMessages({
     defaultMessage:
       'A short description of the status and what it means for ideas assigned to it.',
   },
-  fieldCode: {
-    id: 'app.containers.admin.ideas.form.fieldCode',
-    defaultMessage: 'Context of the Status',
-  },
-  fieldCodeTooltip: {
-    id: 'app.containers.admin.ideas.form.fieldCodeTooltip',
-    defaultMessage:
-      'A short Code of the status and what it means for ideas assigned to it.',
+  statusContext: {
+    id: 'app.containers.admin.ideas.form.statusContext',
+    defaultMessage: 'Status context',
   },
   fieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.fieldCodeDescription',
