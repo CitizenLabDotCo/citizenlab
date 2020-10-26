@@ -7,14 +7,14 @@ module Callable
       @errors = []
     end
 
-    attr_accessor :errors
+    attr_accessor :error
 
     def success?
-      errors.empty?
+      error.blank?
     end
 
     def failure?
-      errors.any?
+      error.present?
     end
 
     def respond_to_missing?(method_name, include_private = false)

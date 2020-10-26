@@ -9,7 +9,7 @@ module Callable
         @result = Callable::Result.new
         new(*args).send(_call_alias)
       rescue _error_class => e
-        result.errors << e
+        result.error = e
       end
 
       result
