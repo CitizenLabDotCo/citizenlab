@@ -57,7 +57,7 @@ module FinderSortMethods
       if @records.respond_to?(sort_scope)
         @records.send(sort_scope, sort_order)
       else
-        @records.order(sort_scope.first)
+        @records.order(*sort_scope)
       end
     end
 
@@ -69,7 +69,6 @@ module FinderSortMethods
 
     def _sort_method
       @_sort_method ||= sort_param
-      @_sort_method.delete_prefix('-')
     end
 
     def _sort_order

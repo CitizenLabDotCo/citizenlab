@@ -17,6 +17,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def index_xlsx
+    authorize :initiative, :index_xlsx?
     finder_params = params.merge(publication_status: 'published')
     included_associations = %i[author initiative_status topics areas]
     @result = InitiativesFinder.find(finder_params, authorize_with: current_user, includes: included_associations)

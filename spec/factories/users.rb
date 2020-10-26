@@ -47,7 +47,5 @@ FactoryBot.define do
         create(:invite, invitee: user)
       end
     end
-
   end
-
 end

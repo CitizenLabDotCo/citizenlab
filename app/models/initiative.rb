@@ -80,7 +80,6 @@ class Initiative < ApplicationRecord
       .where('initiative_statuses.code = ?', 'proposed')
   }
 
-
   def votes_needed tenant=Tenant.current
     [tenant.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
   end
@@ -125,7 +124,7 @@ class Initiative < ApplicationRecord
   def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
     if initial_status && self.initiative_status_changes.empty? && !self.draft?
-      self.initiative_status_changes.build(initiative_status: initial_status) 
+      self.initiative_status_changes.build(initiative_status: initial_status)
     end
   end
 
