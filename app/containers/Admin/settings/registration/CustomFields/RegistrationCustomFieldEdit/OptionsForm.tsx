@@ -70,7 +70,7 @@ class OptionsForm extends React.Component<
             <Field
               name="title_multiloc"
               component={FormikInputMultilocWithLocaleSwitcher}
-              label={formatMessage(messages.option)}
+              label={formatMessage(messages.answerOption)}
             />
             {touched.title_multiloc && (
               <Error
