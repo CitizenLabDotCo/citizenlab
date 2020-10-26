@@ -19,7 +19,7 @@ module FinderSortMethods
     end
 
     def sortable_attributes(*attributes)
-      @_sortable_attributes = attributes
+      @_sortable_attributes = attributes.map(&:to_s)
     end
 
     def _sortable_attributes
@@ -37,7 +37,7 @@ module FinderSortMethods
       self.sort_param ||= _default_sort
       if _sort_scopes.key? _sort_method
         _sort_with_method
-      elsif _sortable_attributes.include? _sort_method
+      elsif _sortable_attributes.include? _sort_method_suffix
         _sort_with_attribute
       end
     end
@@ -62,19 +62,21 @@ module FinderSortMethods
     end
 
     def _sort_with_attribute
-      attribute = _sort_method.include?('.') ? "#{table_name}.#{_sort_method}" : _sort_method
+      attribute = _sort_method_suffix.include?('.') ? _sort_method_suffix : "#{table_name}.#{_sort_method_suffix}"
 
-      order(attribute => sort_order)
+      order(attribute => _sort_order)
     end
 
     def _sort_method
       @_sort_method ||= sort_param
     end
 
-    def _sort_order
-      return _default_sort_order if sort_params.blank?
+    def _sort_method_suffix
+      @_sort_method_suffix ||= _sort_method.delete_prefix('-')
+    end
 
-      sort_params.start_with?('-') ? 'desc' : 'asc'
+    def _sort_order
+      _sort_method.start_with?('-') ? 'desc' : 'asc'
     end
   end
   # rubocop:enable Metrics/BlockLength

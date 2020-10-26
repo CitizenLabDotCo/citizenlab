@@ -13,6 +13,8 @@ class InitiativesFinder < ApplicationFinder
   )
   # rubocop:enable Layout/HashAlignment
 
+  sortable_attributes :upvotes_count
+
   private
 
   def topics_condition(topics)
