@@ -18,9 +18,23 @@ import tracks from './tracks';
 // styles
 import styled from 'styled-components';
 
-const TopContainer = styled.div``;
+const TopContainer = styled.div`
+  width: 100%;
+  margin-top: -5px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+`;
 
-const ActionsContainer = styled.div``;
+const ActionsContainer = styled.div`
+  display: flex;
+
+  & > *:not(:last-child) {
+    margin-right: 15px;
+  }
+`;
 
 export class InitiativesPage extends React.PureComponent<
   InjectedIntlProps & WithRouterProps
