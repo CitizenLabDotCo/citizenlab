@@ -105,11 +105,6 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
     defaultMessage: 'Cancel',
   },
-  addOptionButton: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton',
-    defaultMessage: 'Add option',
-  },
   fieldSettingsTab: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldSettingsTab',
