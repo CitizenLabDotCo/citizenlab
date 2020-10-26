@@ -66,7 +66,7 @@ const Options = memo(
             <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
-              linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options/new`}
+              linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/new`}
             >
               {formatMessage(messages.addOption)}
             </Button>
@@ -99,7 +99,7 @@ const Options = memo(
                         )}
                       </TextCell>
                       <Button
-                        linkTo={`/admin/settings/registration/custom_fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
+                        linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
                         buttonStyle="secondary"
                         icon="edit"
                       >

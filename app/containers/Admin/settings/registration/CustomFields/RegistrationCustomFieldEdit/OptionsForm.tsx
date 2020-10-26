@@ -49,7 +49,7 @@ class OptionsForm extends React.Component<
     const { userCustomFieldId } = this.props.params;
 
     clHistory.push(
-      `/admin/settings/registration/custom_fields/${userCustomFieldId}/options/`
+      `/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`
     );
   };
 
