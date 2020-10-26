@@ -61,6 +61,10 @@ const AuthorMeta = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+
+    ${isRtl`
+        flex-direction: row-reverse;
+    `}
   }
 `;
 
@@ -74,6 +78,11 @@ const AuthorNameContainer = styled.div`
 
   &.horizontalLayout {
     margin-right: 10px;
+
+    ${isRtl`
+        margin-right: 0;
+        margin-left: 10px;
+    `}
   }
 `;
 
