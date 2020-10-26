@@ -3,7 +3,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
-    @activities = ActivitesFinder.find(finder_params, includes: :user, authorize_with: current_user).records
+    @activities = ActivitiesFinder.find(finder_params, includes: :user, authorize_with: current_user).records
 
     render json: linked_json(
       @activities,
