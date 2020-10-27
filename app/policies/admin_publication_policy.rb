@@ -17,7 +17,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     case record.publication_type
     when 'Project'
       ProjectPolicy.new(user, record.publication).show?
-    when 'ProjectFolder'
+    when 'ProjectFolders::Folder'  # todo remove dependency to the project folder engine
       ProjectFolders::FolderPolicy.new(user, record.publication).show?
     else
       raise "No policy for #{record.publication_type}"
