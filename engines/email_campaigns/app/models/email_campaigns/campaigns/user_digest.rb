@@ -30,6 +30,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, time: nil
       time ||= Time.now
+      @notifications_counts = notifications_counts
       top_ideas = top_ideas recipient
       discover_projects = discover_projects recipient
       name_service = UserDisplayNameService.new(Tenant.current, recipient)
@@ -40,6 +41,7 @@ module EmailCampaigns
       end.compact
       [{
         event_payload: {
+          notifications_count: @notifications_counts[recipient.id] recipient.unread_notifications.count
           top_ideas: top_ideas.map{ |idea|
             top_idea_payload idea, recipient
           },
@@ -68,6 +70,12 @@ module EmailCampaigns
 
     def user_filter_no_invitees users_scope, options={}
       users_scope.active
+    end
+
+    def notifications_counts
+      User.includes(:unread_notifications).map do |u|
+        [u.id, u.unread_notifications.size]
+      end.to_h
     end
 
     def top_ideas recipient
