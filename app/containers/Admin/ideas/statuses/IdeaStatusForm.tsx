@@ -11,6 +11,7 @@ import {
   Section,
   SectionField,
   SubSectionTitle,
+  SubSectionTitleWithDescription,
   SectionDescription,
 } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
@@ -35,9 +36,8 @@ export interface Props {
   builtInField: boolean;
 }
 
-const RadioSection = styled(SectionField)`
-  max-width: unset;
-  margin-bottom: 72px;
+const StyledSection = styled(Section)`
+  margin-bottom: 40px;
 `;
 
 const SubSectionDescription = styled(SectionDescription)`
@@ -69,10 +69,6 @@ const LabelText = styled.div`
   .description {
     color: ${colors.adminSecondaryTextColor};
   }
-`;
-
-const StyledSectionField = styled(SectionField)`
-  margin-bottom: 72px;
 `;
 
 class IdeaStatusForm extends React.Component<
@@ -139,8 +135,8 @@ class IdeaStatusForm extends React.Component<
 
     return (
       <Form>
-        <Section>
-          <RadioSection>
+        <StyledSection>
+          <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.statusContext} />
               <IconTooltip
@@ -151,25 +147,25 @@ class IdeaStatusForm extends React.Component<
             </SubSectionTitle>
 
             {this.codeRadioButtons()}
-          </RadioSection>
-        </Section>
+          </SectionField>
+        </StyledSection>
 
         <Section>
-          <SubSectionTitle>
+          <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.visualFields} />
-          </SubSectionTitle>
+          </SubSectionTitleWithDescription>
           <SubSectionDescription>
             <FormattedMessage {...messages.visualFieldsDescription} />
           </SubSectionDescription>
 
-          <StyledSectionField>
+          <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldColor} />
             </Label>
             <Field name="color" component={FormikColorPickerInput} />
-          </StyledSectionField>
+          </SectionField>
 
-          <StyledSectionField>
+          <SectionField>
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
@@ -183,9 +179,9 @@ class IdeaStatusForm extends React.Component<
                 apiErrors={errors.title_multiloc as any}
               />
             )}
-          </StyledSectionField>
+          </SectionField>
 
-          <StyledSectionField>
+          <SectionField>
             <Field
               name="description_multiloc"
               component={FormikTextAreaMultiloc}
@@ -199,7 +195,7 @@ class IdeaStatusForm extends React.Component<
                 apiErrors={errors.description_multiloc as any}
               />
             )}
-          </StyledSectionField>
+          </SectionField>
         </Section>
 
         <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
