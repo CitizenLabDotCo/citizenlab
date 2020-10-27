@@ -80,6 +80,11 @@ const CommentIcon = styled(Icon)`
   fill: ${colors.label};
   margin-right: 6px;
   margin-top: 2px;
+
+  ${isRtl`
+  margin-right: 0;
+  margin-left: 6px;
+`}
 `;
 
 const CommentCount = styled.div`
@@ -92,6 +97,10 @@ const CommentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+ `}
 
   &:not(.enabled) {
     opacity: 0.71;
