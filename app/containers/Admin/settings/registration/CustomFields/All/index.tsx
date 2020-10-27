@@ -191,7 +191,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
         </FeatureFlag>
 
         <List key={listItems.length}>
-          fr{' '}
           <>
             {listItems.map((field, index) => {
               if (index === listItemsLength - 1) {
