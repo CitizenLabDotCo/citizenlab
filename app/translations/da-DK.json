@@ -63,6 +63,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funktionalitet",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Påkrævet for at aktivere og overvåge grundlæggende funktioner på websiden. Nogle af de værktøjer som er angivet her gælder måske ikke for dig. Se venligst vores cookie-politik for mere information.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_analytics": "",
+  "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "",
   "app.components.ConsentManager.Modal.PreferencesDialog.intercom": "",
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "",
