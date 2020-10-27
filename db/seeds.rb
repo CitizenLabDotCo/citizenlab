@@ -236,6 +236,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      google_tag_manager: {
+        enabled: false,
+        allowed: false
+      },
       smart_groups: {
         enabled: true,
         allowed: true
