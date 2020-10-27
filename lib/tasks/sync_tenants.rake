@@ -19,7 +19,6 @@ namespace :sync_tenants do
                     translation = I18n.with_locale(locale) { I18n.t!(field_value) }
                     [locale, translation]
                   end.to_h
-                  byebug if model_name == 'page'
                   object.update_columns(field_name => value)
                 end
               end
