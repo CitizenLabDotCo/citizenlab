@@ -468,13 +468,25 @@
 
       "google_analytics": {
         "type": "object",
-        "title": "Intercom Integration",
-        "description":  "Integrates Goole analytics data collection to the front-end",
+        "title": "Google Analytics Integration",
+        "description":  "Integrates Google Analytics data collection to the front-end",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "google_tag_manager": {
+        "type": "object",
+        "title": "Google Tag Manager Integration",
+        "description":  "Integrates Google Tag Manager to the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "destinations": { "type": "string" }
         }
       },
 
