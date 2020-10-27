@@ -2081,6 +2081,7 @@
   "app.containers.admin.ideas.all.deleteButtonLabel": "",
   "app.containers.admin.ideas.all.deleteButtonTooltip": "",
   "app.containers.admin.ideas.all.editButtonLabel": "",
+  "app.containers.admin.ideas.all.editIdeaStatus": "",
   "app.containers.admin.ideas.all.helmetDescription": "",
   "app.containers.admin.ideas.all.helmetTitle": "",
   "app.containers.admin.ideas.all.ideasCount": "",
