@@ -2114,8 +2114,6 @@
   "app.containers.admin.ideas.form.under_considerationFieldCodeTitle": "",
   "app.containers.admin.ideas.form.viewedFieldCodeDescription": "",
   "app.containers.admin.ideas.form.viewedFieldCodeTitle": "",
-  "app.containers.admin.ideas.form.visualFields": "",
-  "app.containers.admin.ideas.form.visualFieldsDescription": "",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administradores y moderadores",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Todo el mundo",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Algunos grupos de usuarios",
