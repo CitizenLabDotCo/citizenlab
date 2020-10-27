@@ -153,6 +153,7 @@ class IdeaStatusForm extends React.Component<
         <StyledSection>
           <SubSectionTitle>
             <FormattedMessage {...messages.fieldColor} />
+            <IconTooltip content={formatMessage(messages.fieldColorTooltip)} />
           </SubSectionTitle>
 
           <SectionField>
@@ -165,13 +166,13 @@ class IdeaStatusForm extends React.Component<
         <StyledSection>
           <SubSectionTitle>
             <FormattedMessage {...messages.fieldTitle} />
+            <IconTooltip content={formatMessage(messages.fieldTitleTooltip)} />
           </SubSectionTitle>
           <SectionField>
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
               label={formatMessage(messages.fieldTitle)}
-              labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
               disabled={builtInField}
             />
             {touched.title_multiloc && (
@@ -186,13 +187,15 @@ class IdeaStatusForm extends React.Component<
         <StyledSection>
           <SubSectionTitle>
             <FormattedMessage {...messages.fieldDescription} />
+            <IconTooltip
+              content={formatMessage(messages.fieldDescriptionTooltip)}
+            />
           </SubSectionTitle>
           <SectionField>
             <Field
               name="description_multiloc"
               component={FormikTextAreaMultiloc}
               label={formatMessage(messages.fieldDescription)}
-              labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
               disabled={builtInField}
             />
             {touched.description_multiloc && (

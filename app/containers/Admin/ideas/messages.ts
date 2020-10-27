@@ -89,6 +89,11 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.form.fieldColor',
     defaultMessage: 'Color',
   },
+  fieldColorTooltip: {
+    id: 'app.containers.admin.ideas.form.fieldColorTooltip',
+    defaultMessage:
+      'The color of the idea status, which helps to recognise different statuses.',
+  },
   statusContext: {
     id: 'app.containers.admin.ideas.form.statusContext',
     defaultMessage: 'Context',
