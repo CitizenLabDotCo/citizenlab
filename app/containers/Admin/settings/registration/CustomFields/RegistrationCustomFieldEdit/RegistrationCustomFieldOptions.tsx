@@ -77,46 +77,48 @@ const RegistrationCustomFieldOptions = memo(
             className="areas-list e2e-admin-areas-list"
             id="e2e-admin-areas-list"
           >
-            {({ itemsList, handleDragRow, handleDropRow }) =>
-              itemsList.map(
-                (
-                  userCustomFieldOption: IUserCustomFieldOptionData,
-                  index: number
-                ) => {
-                  const userCustomFieldOptionId = userCustomFieldOption.id;
-                  return (
-                    <SortableRow
-                      key={userCustomFieldOptionId}
-                      id={userCustomFieldOptionId}
-                      index={index}
-                      moveRow={handleDragRow}
-                      dropRow={handleDropRow}
-                      lastItem={index === userCustomFieldOptions.length - 1}
-                    >
-                      <TextCell className="expand">
-                        {localize(
-                          userCustomFieldOption.attributes.title_multiloc
-                        )}
-                      </TextCell>
-                      <Button
-                        linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
-                        buttonStyle="secondary"
-                        icon="edit"
+            {({ itemsList, handleDragRow, handleDropRow }) => (
+              <>
+                {itemsList.map(
+                  (
+                    userCustomFieldOption: IUserCustomFieldOptionData,
+                    index: number
+                  ) => {
+                    const userCustomFieldOptionId = userCustomFieldOption.id;
+                    return (
+                      <SortableRow
+                        key={userCustomFieldOptionId}
+                        id={userCustomFieldOptionId}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={index === userCustomFieldOptions.length - 1}
                       >
-                        {formatMessage(messages.editButtonLabel)}
-                      </Button>
-                      <Button
-                        onClick={handleDeleteClick(userCustomFieldOptionId)}
-                        buttonStyle="text"
-                        icon="delete"
-                      >
-                        {formatMessage(messages.deleteButtonLabel)}
-                      </Button>
-                    </SortableRow>
-                  );
-                }
-              )
-            }
+                        <TextCell className="expand">
+                          {localize(
+                            userCustomFieldOption.attributes.title_multiloc
+                          )}
+                        </TextCell>
+                        <Button
+                          linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
+                          buttonStyle="secondary"
+                          icon="edit"
+                        >
+                          {formatMessage(messages.editButtonLabel)}
+                        </Button>
+                        <Button
+                          onClick={handleDeleteClick(userCustomFieldOptionId)}
+                          buttonStyle="text"
+                          icon="delete"
+                        >
+                          {formatMessage(messages.deleteButtonLabel)}
+                        </Button>
+                      </SortableRow>
+                    );
+                  }
+                )}
+              </>
+            )}
           </SortableList>
         </>
       );
