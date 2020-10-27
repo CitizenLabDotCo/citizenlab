@@ -65,7 +65,7 @@ const Edit = ({ params }: WithRouterProps) => {
         <StyledGoBackButton onClick={goBack} />
         <Section>
           <StyledSectionTitle>
-            <FormattedMessage {...messages.addIdeaStatus} />
+            <FormattedMessage {...messages.editIdeaStatus} />
           </StyledSectionTitle>
           <Formik
             initialValues={ideaStatus.attributes}
