@@ -220,6 +220,10 @@ const MobileIdeaMoreActions = styled(IdeaMoreActions)`
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledGoBackButton = styled(GoBackButton)`
