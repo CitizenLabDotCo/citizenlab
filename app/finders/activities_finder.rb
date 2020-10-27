@@ -6,7 +6,7 @@ class ActivitiesFinder < ApplicationFinder
   private
 
   def post_condition(param)
-    return unless param.any?
+    return if param.blank?
 
     where(item_id: param.dig(:id), item_type: param.dig(:type))
   end
