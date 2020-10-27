@@ -150,13 +150,10 @@ class IdeaStatusForm extends React.Component<
           </SectionField>
         </StyledSection>
 
-        <Section>
-          <SubSectionTitleWithDescription>
-            <FormattedMessage {...messages.visualFields} />
-          </SubSectionTitleWithDescription>
-          <SubSectionDescription>
-            <FormattedMessage {...messages.visualFieldsDescription} />
-          </SubSectionDescription>
+        <StyledSection>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.fieldColor} />
+          </SubSectionTitle>
 
           <SectionField>
             <Label>
@@ -164,7 +161,11 @@ class IdeaStatusForm extends React.Component<
             </Label>
             <Field name="color" component={FormikColorPickerInput} />
           </SectionField>
-
+        </StyledSection>
+        <StyledSection>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.fieldTitle} />
+          </SubSectionTitle>
           <SectionField>
             <Field
               name="title_multiloc"
@@ -180,7 +181,12 @@ class IdeaStatusForm extends React.Component<
               />
             )}
           </SectionField>
+        </StyledSection>
 
+        <StyledSection>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.fieldDescription} />
+          </SubSectionTitle>
           <SectionField>
             <Field
               name="description_multiloc"
@@ -196,7 +202,7 @@ class IdeaStatusForm extends React.Component<
               />
             )}
           </SectionField>
-        </Section>
+        </StyledSection>
 
         <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
       </Form>
