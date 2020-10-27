@@ -41,7 +41,7 @@ module Finder
 
     def _sort_records
       self.sort_param ||= _default_sort
-      if _sort_scopes.key? _sort_method
+      if _sort_scopes&.key? _sort_method
         _sort_with_method
       elsif _sortable_attributes.include? _sort_method_suffix
         _sort_with_attribute
