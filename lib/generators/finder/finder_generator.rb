@@ -1,6 +1,6 @@
 require 'generators/service/service_generator'
 
-class FinderGenerator < ServiceGenerator
+class Generators::Finder::FinderGenerator < ServiceGenerator
   template 'finder.erb'
   folder 'app/finders'
   service_name 'finder'

@@ -1,6 +1,6 @@
 require 'rails/generators'
 
-class ServiceGenerator < Rails::Generators::NamedBase
+class  Generators::Service::ServiceGenerator < Rails::Generators::NamedBase
   class << self
     def folder(folder_name)
       define_method(:service_folder_name) { folder_name }
