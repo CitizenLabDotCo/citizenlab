@@ -1,6 +1,6 @@
 ro:
   symbols:
-    outside: somewhere else
+    outside: altundeva
   idea_statuses:
     proposed: propus
     proposed_description: Această idee a fost propusă orașului
@@ -163,8 +163,8 @@ ro:
     custom_field_select:
       has_value: "%{property} este %{value}"
       not_has_value: "%{property} nu este %{value}"
-      is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the follow values: %{value}"
+      is_one_of: "%{property} are una dintre următoarele valori: %{value}"
+      not_is_one_of: "%{property} nu are niciuna dintre următoarele valori: %{value}"
     custom_field_text:
       is: "%{property} este %{value}"
       not_is: "%{property} nu este %{value}"
