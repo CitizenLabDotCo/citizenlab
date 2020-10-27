@@ -41,7 +41,7 @@ module EmailCampaigns
       end.compact
       [{
         event_payload: {
-          notifications_count: @notifications_counts[recipient.id] recipient.unread_notifications.count
+          notifications_count: @notifications_counts[recipient.id],
           top_ideas: top_ideas.map{ |idea|
             top_idea_payload idea, recipient
           },
