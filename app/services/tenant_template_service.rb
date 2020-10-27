@@ -339,7 +339,8 @@ class TenantTemplateService
         'title_multiloc'       => a.title_multiloc,
         'description_multiloc' => a.description_multiloc,
         'created_at'           => a.created_at.to_s,
-        'updated_at'           => a.updated_at.to_s
+        'updated_at'           => a.updated_at.to_s,
+        'ordering'             => a.ordering
       }
       store_ref yml_area, a.id, :area
       yml_area
@@ -865,7 +866,16 @@ class TenantTemplateService
         'location_description'   => i.location_description,
         'idea_status_ref'        => lookup_ref(i.idea_status_id, :idea_status),
         'budget'                 => i.budget,
-        'proposed_budget'       => i.proposed_budget
+        'proposed_budget'       => i.proposed_budget,
+        'text_images_attributes'       => i.text_images.map{ |i|
+          {
+            'imageable_field'          => i.imageable_field,
+            'remote_image_url'         => i.image_url,
+            'text_reference'           => i.text_reference,
+            'created_at'               => i.created_at.to_s,
+            'updated_at'               => i.updated_at.to_s
+          }
+        }
       }
       store_ref yml_idea, i.id, :idea
       yml_idea
