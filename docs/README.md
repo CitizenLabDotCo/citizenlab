@@ -1,5 +1,11 @@
 # Changelog
 
+## 2010-10-27
+
+### Added
+- Support for Arabic
+- An idea description can now contain images and buttons
+
 ## 2020-10-22
 
 ### Added
