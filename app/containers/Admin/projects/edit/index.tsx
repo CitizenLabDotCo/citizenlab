@@ -216,6 +216,7 @@ export class AdminProjectEdition extends PureComponent<
       },
       'survey-results': function surveyResultsTabHidden() {
         if (
+          participationMethod !== 'survey' ||
           !surveys_enabled ||
           !typeform_enabled ||
           (surveys_enabled &&
