@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.all.addIdeaStatus',
     defaultMessage: 'Add status',
   },
+  editIdeaStatus: {
+    id: 'app.containers.admin.ideas.all.editIdeaStatus',
+    defaultMessage: 'Edit status',
+  },
   titleIdeaStatuses: {
     id: 'app.containers.admin.ideas.all.titleIdeaStatuses',
     defaultMessage: 'Customise statuses',
