@@ -69,14 +69,22 @@ export function updateUserCustomFieldOption(
   );
 }
 
-export function deleteUserCustomFieldOption(
+export async function deleteUserCustomFieldOption(
   customFieldId: string,
   optionId: string
 ) {
-  return streams.delete(
+  const response = await streams.delete(
     `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
     optionId
   );
+
+  streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
+    ],
+  });
+
+  return response;
 }
 
 export async function reorderUserCustomFieldOption(
