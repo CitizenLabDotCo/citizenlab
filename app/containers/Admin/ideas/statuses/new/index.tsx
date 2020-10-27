@@ -4,23 +4,18 @@ import { addIdeaStatus } from 'services/ideaStatuses';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import IdeaStatusForm, { FormValues } from '../IdeaStatusForm';
 import { Formik } from 'formik';
+import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const FormHeader = styled.div`
-  width: 100%;
-  margin: 0 0 48px;
-`;
-
-const FormTitle = styled.h1`
-  width: 100%;
-  font-size: 32px;
-  margin: 16px 0 48px 0;
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 20px;
 `;
 
 const NewIdeaStatus = () => {
@@ -53,13 +48,11 @@ const NewIdeaStatus = () => {
   };
 
   return (
-    <div>
-      <FormHeader>
-        <GoBackButton onClick={goBack} />
-        <FormTitle>
-          <FormattedMessage {...messages.addIdeaStatus} />
-        </FormTitle>
-      </FormHeader>
+    <Section>
+      <GoBackButton onClick={goBack} />
+      <StyledSectionTitle>
+        <FormattedMessage {...messages.addIdeaStatus} />
+      </StyledSectionTitle>
       <Formik
         initialValues={{
           color: '#b5b5b5',
@@ -71,7 +64,7 @@ const NewIdeaStatus = () => {
         render={renderFn}
         validate={IdeaStatusForm['validate']}
       />
-    </div>
+    </Section>
   );
 };
 
