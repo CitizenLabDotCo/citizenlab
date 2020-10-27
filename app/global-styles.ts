@@ -33,6 +33,9 @@ const GlobalStyle = createGlobalStyle`
 
   ${isRtl`
     text-align: right;
+    ul {
+        direction: rtl;
+    }
   `}
 
   }
