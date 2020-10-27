@@ -89,11 +89,6 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.form.fieldColor',
     defaultMessage: 'Color',
   },
-  fieldColorTooltip: {
-    id: 'app.containers.admin.ideas.form.fieldColorTooltip',
-    defaultMessage:
-      'A short description of the status and what it means for ideas assigned to it.',
-  },
   statusContext: {
     id: 'app.containers.admin.ideas.form.statusContext',
     defaultMessage: 'Context',
@@ -162,13 +157,5 @@ export default defineMessages({
   otherFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.otherFieldCodeDescription',
     defaultMessage: "The status doesn't fit any of the avove options.",
-  },
-  visualFields: {
-    id: 'app.containers.admin.ideas.form.visualFields',
-    defaultMessage: 'Visual Fields',
-  },
-  visualFieldsDescription: {
-    id: 'app.containers.admin.ideas.form.visualFieldsDescription',
-    defaultMessage: 'Customize the text and color of your status.',
   },
 });
