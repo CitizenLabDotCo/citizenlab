@@ -18,7 +18,7 @@ module Finder
     def initialize(params, scope: nil, includes: [], authorize_with: nil)
       @pagination_params = params.dig(:page) || {}
       @sort_param        = params.dig(:sort)
-      @params            = params.is_a? ActionController::UnfilteredParameters ? params.permit! : params
+      @params            = params.respond_to?(:permit!) ? params.permit! : params
       @authorize_with    = authorize_with
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
