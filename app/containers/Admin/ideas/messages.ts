@@ -96,10 +96,10 @@ export default defineMessages({
   },
   statusContext: {
     id: 'app.containers.admin.ideas.form.statusContext',
-    defaultMessage: 'Status context',
+    defaultMessage: 'Context',
   },
-  fieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeDescription',
+  statusContextDescription: {
+    id: 'app.containers.admin.ideas.form.statusContextDescription',
     defaultMessage:
       'Select the option that better describes this status. By selecting one, you will help us analyze the ideas of your citizens and provide you with better insights.',
   },

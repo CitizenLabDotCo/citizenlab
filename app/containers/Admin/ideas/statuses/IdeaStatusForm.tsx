@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import styled from 'styled-components';
-
+import { colors, fontSizes } from 'utils/styleUtils';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
@@ -44,31 +44,30 @@ const SubSectionDescription = styled(SectionDescription)`
   margin-bottom: 48px;
 `;
 
-const RadioInputGroup = styled(SectionField)`
-  padding: 0 16px 0 32px;
+const StyledFormikRadio = styled(FormikRadio)`
+  margin-bottom: 25px;
+`;
+
+const LabelText = styled.div`
   display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  max-width: unset;
-`;
+  flex-direction: column;
+  margin-top: -2px;
 
-const RadioLabel = styled(Label)`
-  display: block;
-  line-height: 1.4;
-  padding-left: 16px;
-`;
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 
-const RadioLabelTitle = styled.span`
-  display: flex;
-  font-weight: 500;
-  font-size: 18px;
-`;
+  .header {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 3px;
+    font-weight: 600;
+    font-size: ${fontSizes.base}px;
+  }
 
-const StyledIconTooltip = styled(IconTooltip)`
-  margin-left: 8px;
-
-  svg {
-    fill: #aeaeae;
+  .description {
+    color: ${colors.adminSecondaryTextColor};
   }
 `;
 
@@ -90,7 +89,11 @@ class IdeaStatusForm extends React.Component<
   };
 
   codeRadioButtons = () => {
-    const { touched, errors } = this.props;
+    const {
+      touched,
+      errors,
+      intl: { formatMessage },
+    } = this.props;
     const codes = [
       'proposed',
       'viewed',
@@ -102,24 +105,24 @@ class IdeaStatusForm extends React.Component<
     ];
 
     return codes.map((code) => (
-      <RadioInputGroup key={code}>
-        <FormikRadio name="code" value={code} />
-        <RadioLabel>
-          <RadioLabelTitle>
-            <FormattedMessage {...messages[`${code}FieldCodeTitle`]} />
-            <StyledIconTooltip
-              iconSize="12px"
-              placement="top"
-              content={
-                <FormattedMessage
-                  {...messages[`${code}FieldCodeDescription`]}
-                />
-              }
-            />
-          </RadioLabelTitle>
-        </RadioLabel>
+      <>
+        <StyledFormikRadio
+          label={
+            <LabelText>
+              <span className="header">
+                {formatMessage(messages[`${code}FieldCodeTitle`])}
+              </span>
+              <span className="description">
+                {formatMessage(messages[`${code}FieldCodeDescription`])}
+              </span>
+            </LabelText>
+          }
+          id={`${code}-input`}
+          name="code"
+          value={code}
+        />
         {touched.code && <Error apiErrors={errors.code as any} />}
-      </RadioInputGroup>
+      </>
     ));
   };
 
@@ -140,10 +143,12 @@ class IdeaStatusForm extends React.Component<
           <RadioSection>
             <SubSectionTitle>
               <FormattedMessage {...messages.statusContext} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.statusContextDescription} />
+                }
+              />
             </SubSectionTitle>
-            <SubSectionDescription>
-              <FormattedMessage {...messages.fieldCodeDescription} />
-            </SubSectionDescription>
 
             {this.codeRadioButtons()}
           </RadioSection>

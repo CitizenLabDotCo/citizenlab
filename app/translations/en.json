@@ -2109,7 +2109,6 @@
   "app.containers.admin.ideas.form.proposedFieldCodeTitle": "Proposed",
   "app.containers.admin.ideas.form.rejectedFieldCodeDescription": "The idea is rejected for any reason.",
   "app.containers.admin.ideas.form.rejectedFieldCodeTitle": "Rejected",
-  "app.containers.admin.ideas.form.statusContext": "Status context",
   "app.containers.admin.ideas.form.under_considerationFieldCodeDescription": "The idea is in an ongoing selection process and being considered by the city.",
   "app.containers.admin.ideas.form.under_considerationFieldCodeTitle": "Under Consideration",
   "app.containers.admin.ideas.form.viewedFieldCodeDescription": "The idea has been viewed by an admin but yet to be processed, or to enter a selection process.",
