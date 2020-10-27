@@ -77,7 +77,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -192,6 +192,10 @@ const IdeaHeader = styled.div`
   justify-content: space-between;
   margin-top: -5px;
   margin-bottom: 25px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
