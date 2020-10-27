@@ -2081,6 +2081,7 @@
   "app.containers.admin.ideas.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideas.all.deleteButtonTooltip": "Cannot delete a status that has been assigned to ideas. Make sure to reassign your ideas to another status first.",
   "app.containers.admin.ideas.all.editButtonLabel": "Manage",
+  "app.containers.admin.ideas.all.editIdeaStatus": "Edit status",
   "app.containers.admin.ideas.all.helmetDescription": "Admin ideas page",
   "app.containers.admin.ideas.all.helmetTitle": "Admin ideas page",
   "app.containers.admin.ideas.all.ideasCount": "ideas",
