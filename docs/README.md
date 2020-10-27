@@ -4,7 +4,6 @@
 
 ### Added
 - Support for Arabic
-- An idea description can now contain images and buttons
 
 ## 2020-10-22
 
