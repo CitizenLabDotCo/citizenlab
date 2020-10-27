@@ -5,8 +5,10 @@ class ActivitiesFinder < ApplicationFinder
 
   private
 
-  def post_condition(id:, type:)
-    where(item_id: id, item_type: type)
+  def post_condition(param)
+    return unless param.any?
+
+    where(item_id: param.dig(:id), item_type: param.dig(:type))
   end
 
   def action_condition(actions)
