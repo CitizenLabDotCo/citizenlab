@@ -79,115 +79,109 @@ export function validate(values: FormValues): FormikErrors<FormValues> {
   return errors;
 }
 
-class IdeaStatusForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
-> {
-  render() {
-    const {
-      isSubmitting,
-      errors,
-      isValid,
-      touched,
-      builtInField,
-      status,
-      intl: { formatMessage },
-    } = this.props;
-
-    return (
-      <Form>
-        <StyledSection>
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.statusContext} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.statusContextDescription} />
-                }
-              />
-            </SubSectionTitle>
-            {ideaStatusCodes.map((code, i) => (
-              <StyledFormikRadio
-                key={`code-input-${i}`}
-                label={
-                  <LabelText>
-                    <span className="header">
-                      {formatMessage(messages[`${code}FieldCodeTitle`])}
-                    </span>
-                    <span className="description">
-                      {formatMessage(messages[`${code}FieldCodeDescription`])}
-                    </span>
-                  </LabelText>
-                }
-                id={`${code}-input`}
-                name="code"
-                value={code}
-              />
-            ))}
-            {touched.code && <Error apiErrors={errors.code as any} />}
-          </SectionField>
-        </StyledSection>
-
-        <StyledSection>
+const IdeaStatusForm = ({
+  isSubmitting,
+  errors,
+  isValid,
+  touched,
+  builtInField,
+  status,
+  intl: { formatMessage },
+}: InjectedFormikProps<Props & InjectedIntlProps, FormValues>) => {
+  return (
+    <Form>
+      <StyledSection>
+        <SectionField>
           <SubSectionTitle>
-            <FormattedMessage {...messages.fieldColor} />
-            <IconTooltip content={formatMessage(messages.fieldColorTooltip)} />
-          </SubSectionTitle>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldColor} />
-            </Label>
-            <Field name="color" component={FormikColorPickerInput} />
-          </SectionField>
-        </StyledSection>
-        <StyledSection>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.fieldTitle} />
-            <IconTooltip content={formatMessage(messages.fieldTitleTooltip)} />
-          </SubSectionTitle>
-          <SectionField>
-            <Field
-              name="title_multiloc"
-              component={FormikInputMultiloc}
-              label={formatMessage(messages.fieldTitle)}
-              disabled={builtInField}
-            />
-            {touched.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
-          </SectionField>
-        </StyledSection>
-
-        <StyledSection>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.fieldDescription} />
+            <FormattedMessage {...messages.statusContext} />
             <IconTooltip
-              content={formatMessage(messages.fieldDescriptionTooltip)}
+              content={
+                <FormattedMessage {...messages.statusContextDescription} />
+              }
             />
           </SubSectionTitle>
-          <SectionField>
-            <Field
-              name="description_multiloc"
-              component={FormikTextAreaMultiloc}
-              label={formatMessage(messages.fieldDescription)}
-              disabled={builtInField}
+          {ideaStatusCodes.map((code, i) => (
+            <StyledFormikRadio
+              key={`code-input-${i}`}
+              label={
+                <LabelText>
+                  <span className="header">
+                    {formatMessage(messages[`${code}FieldCodeTitle`])}
+                  </span>
+                  <span className="description">
+                    {formatMessage(messages[`${code}FieldCodeDescription`])}
+                  </span>
+                </LabelText>
+              }
+              id={`${code}-input`}
+              name="code"
+              value={code}
             />
-            {touched.description_multiloc && (
-              <Error
-                fieldName="description_multiloc"
-                apiErrors={errors.description_multiloc as any}
-              />
-            )}
-          </SectionField>
-        </StyledSection>
+          ))}
+          {touched.code && <Error apiErrors={errors.code as any} />}
+        </SectionField>
+      </StyledSection>
 
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-      </Form>
-    );
-  }
-}
+      <StyledSection>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.fieldColor} />
+          <IconTooltip content={formatMessage(messages.fieldColorTooltip)} />
+        </SubSectionTitle>
+
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.fieldColor} />
+          </Label>
+          <Field name="color" component={FormikColorPickerInput} />
+        </SectionField>
+      </StyledSection>
+      <StyledSection>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.fieldTitle} />
+          <IconTooltip content={formatMessage(messages.fieldTitleTooltip)} />
+        </SubSectionTitle>
+        <SectionField>
+          <Field
+            name="title_multiloc"
+            component={FormikInputMultiloc}
+            label={formatMessage(messages.fieldTitle)}
+            disabled={builtInField}
+          />
+          {touched.title_multiloc && (
+            <Error
+              fieldName="title_multiloc"
+              apiErrors={errors.title_multiloc as any}
+            />
+          )}
+        </SectionField>
+      </StyledSection>
+
+      <StyledSection>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.fieldDescription} />
+          <IconTooltip
+            content={formatMessage(messages.fieldDescriptionTooltip)}
+          />
+        </SubSectionTitle>
+        <SectionField>
+          <Field
+            name="description_multiloc"
+            component={FormikTextAreaMultiloc}
+            label={formatMessage(messages.fieldDescription)}
+            disabled={builtInField}
+          />
+          {touched.description_multiloc && (
+            <Error
+              fieldName="description_multiloc"
+              apiErrors={errors.description_multiloc as any}
+            />
+          )}
+        </SectionField>
+      </StyledSection>
+
+      <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+    </Form>
+  );
+};
 
 export default injectIntl(IdeaStatusForm);
