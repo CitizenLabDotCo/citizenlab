@@ -2,6 +2,10 @@ import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { Multiloc } from 'typings';
+import { ideaStatusCodes } from 'services/ideaStatuses';
+
+// components
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
@@ -14,11 +18,11 @@ import {
 } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import { Label, IconTooltip } from 'cl2-component-library';
-
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+
+// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { Multiloc } from 'typings';
 import messages from '../messages';
 
 export interface FormValues {
@@ -78,44 +82,6 @@ class IdeaStatusForm extends React.Component<
     return errors;
   };
 
-  codeRadioButtons = () => {
-    const {
-      touched,
-      errors,
-      intl: { formatMessage },
-    } = this.props;
-    const codes = [
-      'proposed',
-      'viewed',
-      'under_consideration',
-      'accepted',
-      'implemented',
-      'rejected',
-      'other',
-    ];
-
-    return codes.map((code) => (
-      <>
-        <StyledFormikRadio
-          label={
-            <LabelText>
-              <span className="header">
-                {formatMessage(messages[`${code}FieldCodeTitle`])}
-              </span>
-              <span className="description">
-                {formatMessage(messages[`${code}FieldCodeDescription`])}
-              </span>
-            </LabelText>
-          }
-          id={`${code}-input`}
-          name="code"
-          value={code}
-        />
-        {touched.code && <Error apiErrors={errors.code as any} />}
-      </>
-    ));
-  };
-
   render() {
     const {
       isSubmitting,
@@ -139,8 +105,26 @@ class IdeaStatusForm extends React.Component<
                 }
               />
             </SubSectionTitle>
-
-            {this.codeRadioButtons()}
+            {ideaStatusCodes.map((code) => (
+              <>
+                <StyledFormikRadio
+                  label={
+                    <LabelText>
+                      <span className="header">
+                        {formatMessage(messages[`${code}FieldCodeTitle`])}
+                      </span>
+                      <span className="description">
+                        {formatMessage(messages[`${code}FieldCodeDescription`])}
+                      </span>
+                    </LabelText>
+                  }
+                  id={`${code}-input`}
+                  name="code"
+                  value={code}
+                />
+                {touched.code && <Error apiErrors={errors.code as any} />}
+              </>
+            ))}
           </SectionField>
         </StyledSection>
 
