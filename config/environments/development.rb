@@ -43,6 +43,8 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.preview_path = "#{Rails.root}/engines/email_campaigns/spec/mailers/previews"
+
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
