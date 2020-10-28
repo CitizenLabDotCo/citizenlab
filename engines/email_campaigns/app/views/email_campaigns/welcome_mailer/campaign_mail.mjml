@@ -9,7 +9,7 @@
     <!-- Event description + action list -->
     <mj-section padding="30px 25px 20px">
       <mj-column>
-        <mj-text color="black">
+        <mj-text color="blue">
           <h1 style="font-size: 25px; margin-bottom: 40px;">
             Welcome!
           </h1>
