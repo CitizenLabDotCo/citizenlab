@@ -20,9 +20,7 @@ class FormikRadio extends PureComponent<Props> {
           return (
             <Radio
               {...this.props}
-              currentValue={
-                formikContext.values[this.props.name] || this.props.currentValue
-              }
+              currentValue={formikContext.values[this.props.name]}
               onChange={this.handleOnChange(formikContext)}
             />
           );
