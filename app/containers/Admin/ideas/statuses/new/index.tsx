@@ -40,7 +40,7 @@ const NewIdeaStatus = () => {
   };
 
   const renderFn = (props) => {
-    return <IdeaStatusForm {...props} mode="new" builtInField={false} />;
+    return <IdeaStatusForm {...props} />;
   };
 
   const goBack = () => {

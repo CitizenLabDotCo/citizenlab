@@ -33,9 +33,7 @@ export interface FormValues {
 }
 
 export interface Props {
-  mode: 'new' | 'edit';
   ideaStatusId: string;
-  builtInField: boolean;
 }
 
 const StyledSection = styled(Section)`
@@ -84,7 +82,6 @@ const IdeaStatusForm = ({
   errors,
   isValid,
   touched,
-  builtInField,
   status,
   intl: { formatMessage },
 }: InjectedFormikProps<Props & InjectedIntlProps, FormValues>) => {
@@ -145,7 +142,6 @@ const IdeaStatusForm = ({
             name="title_multiloc"
             component={FormikInputMultiloc}
             label={formatMessage(messages.fieldTitle)}
-            disabled={builtInField}
           />
           {touched.title_multiloc && (
             <Error
@@ -168,7 +164,6 @@ const IdeaStatusForm = ({
             name="description_multiloc"
             component={FormikTextAreaMultiloc}
             label={formatMessage(messages.fieldDescription)}
-            disabled={builtInField}
           />
           {touched.description_multiloc && (
             <Error
