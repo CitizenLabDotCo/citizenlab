@@ -40,12 +40,13 @@ class IdeaStatus < ApplicationRecord
   end
 
   def self.create_defaults
+    locales = Tenant.current.settings.dig('core', 'locales') || CL2_SUPPORTED_LOCALES
     (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
-      title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+      title_multiloc = locales.map do |locale|
         translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}") }
         [locale, translation]
       end.to_h
-      description_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+      description_multiloc = locales.map do |locale|
         translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}_description") }
         [locale, translation]
       end.to_h
