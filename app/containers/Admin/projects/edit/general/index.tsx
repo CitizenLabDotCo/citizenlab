@@ -15,7 +15,7 @@ import clHistory from 'utils/cl-router/history';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
-import { Radio, IconTooltip } from 'cl2-component-library';
+import { Radio, IconTooltip, Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
@@ -612,6 +612,8 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
+  handleSlugOnChange = () => {};
+
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
@@ -875,6 +877,23 @@ class AdminProjectEditGeneral extends PureComponent<
                 fieldName="title_multiloc"
                 apiErrors={this.state.apiErrors.title_multiloc}
               />
+            </StyledSectionField>
+
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectSlug} />
+              </SubSectionTitle>
+              <Input
+                id="project-slug"
+                type="text"
+                label={<FormattedMessage {...messages.slugLabel} />}
+                labelTooltipText={formatMessage(messages.slugLabelTooltip)}
+                onChange={this.handleSlugOnChange}
+              />
+              {/* <Error
+                fieldName="title_multiloc"
+                apiErrors={this.state.apiErrors.title_multiloc}
+              /> */}
             </StyledSectionField>
 
             <StyledSectionField>

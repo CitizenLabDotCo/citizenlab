@@ -166,4 +166,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
     defaultMessage: 'Project name',
   },
+  projectSlug: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectSlug',
+    defaultMessage: 'Project slug',
+  },
+  slugLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.slugLabel',
+    defaultMessage: 'Project slug',
+  },
+  slugLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.slugLabelTooltip',
+    defaultMessage: 'This is the URL of your project.',
+  },
 });
