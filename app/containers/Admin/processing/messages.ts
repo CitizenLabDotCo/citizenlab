@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.tags',
     defaultMessage: 'Tags',
   },
+  title: {
+    id: 'app.containers.Admin.Moderation.title',
+    defaultMessage: 'Title',
+  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
