@@ -48,7 +48,7 @@ const Legend = memo(({ projectId }: Props) => {
   const legend = !isNilOrError(mapConfig) && mapConfig.attributes.legend;
   const localize = useLocalize();
 
-  if (legend) {
+  if (legend && legend.length !== 0) {
     return (
       <LegendContainer>
         <LegendItems>
