@@ -11,8 +11,8 @@ import {
   deleteProjectFolderImage,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileTools';
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useProjectFolderImages from 'modules/project-folder/hooks/useProjectFolderImages';
+import useProjectFolder from 'modules/project-folder/hooks/useProjectFolder';
 import useTenantLocales from 'hooks/useTenantLocales';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -30,7 +30,7 @@ import {
   addProjectFolderFile,
   deleteProjectFolderFile,
 } from 'services/projectFolderFiles';
-import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useProjectFolderFiles from 'modules/project-folder/hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 
 interface Props {
