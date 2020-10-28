@@ -11,7 +11,7 @@ AdminApi::Engine.routes.draw do
     resources :phases, only: [:index]
   end
 
-  resources :users, only: [:create, :update, :show] do
+  resources :users, only: [:index, :create, :update, :show] do
     get :by_email, on: :collection
   end
 
