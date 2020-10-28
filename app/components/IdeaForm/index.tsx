@@ -726,11 +726,11 @@ class IdeaForm extends PureComponent<
               />
               <QuillEditor
                 id="editor"
-                noImages={true}
                 value={description}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
                 hasError={descriptionError !== null}
+                withCTAButton
               />
               {descriptionError && <Error text={descriptionError} />}
             </FormElement>
