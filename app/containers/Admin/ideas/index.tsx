@@ -25,10 +25,10 @@ const IdeasPage = memo(
     location,
     children,
   }: Props & InjectedIntlProps & WithRouterProps) => {
-    // const ideaCustomisationEnabled = useFeatureFlag(
+    // const ideaStatusCustomisationEnabled = useFeatureFlag(
     //   'idea_status_customisation'
     // );
-    const ideaCustomisationEnabled = true; // TO DELETE
+    const ideaStatusCustomisationEnabled = true; // TO DELETE
     const resource = {
       title: formatMessage(messages.pageTitle),
       subtitle: formatMessage(messages.pageSubtitle),
@@ -42,7 +42,7 @@ const IdeasPage = memo(
         },
       ];
 
-      if (ideaCustomisationEnabled) {
+      if (ideaStatusCustomisationEnabled) {
         tabs.push({
           label: formatMessage(messages.tabCustomize),
           url: '/admin/ideas/statuses',
