@@ -19,7 +19,7 @@ module EmailCampaigns
           subject: subject,
           to: recipient.email
         ) do |format|
-          format.text
+          # format.text
           format.mjml
         end
         if (ActionMailer::Base.delivery_method == :mailgun)
