@@ -11,8 +11,6 @@ import {
   Section,
   SectionField,
   SubSectionTitle,
-  SubSectionTitleWithDescription,
-  SectionDescription,
 } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import { Label, IconTooltip } from 'cl2-component-library';
@@ -38,10 +36,6 @@ export interface Props {
 
 const StyledSection = styled(Section)`
   margin-bottom: 40px;
-`;
-
-const SubSectionDescription = styled(SectionDescription)`
-  margin-bottom: 48px;
 `;
 
 const StyledFormikRadio = styled(FormikRadio)`
