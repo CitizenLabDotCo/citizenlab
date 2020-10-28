@@ -10,7 +10,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import Error from 'components/UI/Error';
 import { isNilOrError } from 'utils/helperUtils';
-import { deleteProjectFolder } from 'services/projectFolders';
+import { deleteProjectFolder } from 'modules/project-folder/services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
