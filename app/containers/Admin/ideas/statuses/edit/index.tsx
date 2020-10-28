@@ -30,7 +30,7 @@ const Edit = ({ params }: WithRouterProps) => {
   const { id: statusId } = params;
   const ideaStatus = useIdeaStatus({ statusId });
 
-  const handleSubmit = () => (
+  const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
