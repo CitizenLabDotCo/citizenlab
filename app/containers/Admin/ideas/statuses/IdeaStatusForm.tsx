@@ -90,6 +90,7 @@ class IdeaStatusForm extends React.Component<
       touched,
       builtInField,
       status,
+      values,
       intl: { formatMessage },
     } = this.props;
 
@@ -121,6 +122,7 @@ class IdeaStatusForm extends React.Component<
                   id={`${code}-input`}
                   name="code"
                   value={code}
+                  currentValue={values.code || 'proposed'}
                 />
                 {touched.code && <Error apiErrors={errors.code as any} />}
               </>
