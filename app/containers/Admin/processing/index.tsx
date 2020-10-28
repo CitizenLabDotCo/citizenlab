@@ -1,30 +1,14 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
-import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select } from 'cl2-component-library';
-import Button from 'components/UI/Button';
-import Tabs from 'components/UI/Tabs';
-import { PageTitle } from 'components/admin/Section';
-import SelectType from './SelectType';
+import { Icon, Button, Select } from 'cl2-component-library';
+
 import SelectProject from './SelectProject';
-import SearchInput from 'components/UI/SearchInput';
-
-// hooks
-import useModerations from 'hooks/useModerations';
-
-// services
-import {
-  updateModerationStatus,
-  IModerationData,
-  TModerationStatuses,
-  TModeratableTypes,
-} from 'services/moderations';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -40,29 +24,18 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IOption } from 'typings';
+
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import { adopt } from 'react-adopt';
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import { IIdeaData } from 'services/ideas';
+import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: stretch;
   margin-bottom: 80px;
-`;
-
-const PageTitleWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 40px;
-`;
-
-const StyledPageTitle = styled(PageTitle)`
-  line-height: ${fontSizes.xxxl}px;
-  margin-bottom: 0px;
-`;
-
-const StyledIconTooltip = styled(IconTooltip)`
-  margin-left: 8px;
-  margin-bottom: 3px;
 `;
 
 const Filters = styled.div`
@@ -74,12 +47,6 @@ const Filters = styled.div`
   align-items: flex-start;
   margin-bottom: 55px;
   z-index: 100;
-`;
-
-const MarkAsButton = styled(Button)``;
-
-const StyledTabs = styled(Tabs)`
-  margin-right: 20px;
 `;
 
 const StyledTable = styled(Table)`
@@ -104,392 +71,175 @@ const StyledTable = styled(Table)`
 `;
 
 const StyledCheckbox = styled(Checkbox)`
-  margin-top: -3px;
+  margin-top: 0px;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 30px;
-`;
+interface DataProps {
+  ideas: GetIdeasChildProps;
+  topics: GetTopicsChildProps;
+}
 
-const StyledPagination = styled(Pagination)`
-  margin-left: -12px;
-`;
-
-const Spacer = styled.div`
-  flex: 1;
-`;
-
-const RowsPerPage = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const RowsPerPageLabel = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  margin-right: 10px;
-`;
-
-const PageSizeSelect = styled(Select)`
-  select {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-`;
-
-const Empty = styled.div`
-  height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const EmptyIcon = styled(Icon)`
-  height: 60px;
-  fill: #bfe7eb;
-  margin-bottom: 18px;
-`;
-
-const EmptyMessage = styled.div`
-  max-width: 350px;
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.medium}px;
-  line-height: normal;
-  font-weight: 500;
-  text-align: center;
-`;
-
-const StyledSearchInput = styled(SearchInput)`
-  margin-left: auto;
-  width: 320px;
-`;
-
-interface Props {
+interface InputProps {
   className?: string;
 }
 
-const Processing = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-  const moderationStatuses = [
-    {
-      value: 'unread',
-      label: intl.formatMessage(messages.unread),
-    },
-    {
-      value: 'read',
-      label: intl.formatMessage(messages.read),
-    },
-  ];
+interface Props extends InputProps, DataProps {}
 
-  const pageSizes = [
-    {
-      value: 10,
-      label: '10',
-    },
-    {
-      value: 25,
-      label: '25',
-    },
-    {
-      value: 50,
-      label: '50',
-    },
-    {
-      value: 100,
-      label: '100',
-    },
-  ];
+const Processing = memo<Props & InjectedIntlProps>(
+  ({ className, intl, ideas, topics }) => {
+    const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
+      ideas.list
+    );
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+    const [processing, setProcessing] = useState(false);
+    const [previewPostId, setPreviewPostId] = useState<string | null>(null);
+    const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
+    const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
-  const {
-    list,
-    pageSize,
-    moderationStatus,
-    currentPage,
-    lastPage,
-    onModerationStatusChange,
-    onPageNumberChange,
-    onPageSizeChange,
-    onModeratableTypesChange,
-    onProjectIdsChange,
-    onSearchTermChange,
-  } = useModerations({
-    pageSize: 1000,
-    moderationStatus: 'read',
-    moderatableTypes: [],
-    projectIds: [],
-    searchTerm: '',
-  });
+    const handleOnSelectAll = useCallback(
+      (_event: React.ChangeEvent) => {
+        if (!isNilOrError(ideaList) && !processing) {
+          const newSelectedRows =
+            selectedRows.length < ideaList.length
+              ? ideaList.map((item) => item.id)
+              : [];
+          setSelectedRows(newSelectedRows);
+        }
+      },
+      [ideaList, selectedRows, processing]
+    );
 
-  const [moderationItems, setModerationItems] = useState(list);
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [processing, setProcessing] = useState(false);
-  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
-  const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
-
-  const handleOnSelectAll = useCallback(
-    (_event: React.ChangeEvent) => {
-      if (!isNilOrError(moderationItems) && !processing) {
-        const newSelectedRows =
-          selectedRows.length < moderationItems.length
-            ? moderationItems.map((item) => item.id)
-            : [];
-        setSelectedRows(newSelectedRows);
-      }
-    },
-    [moderationItems, selectedRows, processing]
-  );
-
-  const handleOnModerationStatusChange = useCallback(
-    (value: TModerationStatuses) => {
-      trackEventByName(
-        value === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
-      );
-      onModerationStatusChange(value);
-    },
-    [onModerationStatusChange]
-  );
-
-  const handePageNumberChange = useCallback(
-    (pageNumber: number) => {
-      trackEventByName(tracks.pageNumberClicked);
-      onPageNumberChange(pageNumber);
-    },
-    [onPageNumberChange]
-  );
-
-  const handleOnPageSizeChange = useCallback(
-    (option: IOption) => {
-      onPageSizeChange(option.value);
-    },
-    [onPageSizeChange]
-  );
-
-  const handleModeratableTypesChange = useCallback(
-    (newSelectedTypes: TModeratableTypes[]) => {
-      setSelectedTypes(newSelectedTypes);
-      onModeratableTypesChange(newSelectedTypes);
-      trackEventByName(tracks.typeFilterUsed);
-    },
-    [onModeratableTypesChange]
-  );
-
-  const handleProjectIdsChange = useCallback(
-    (newProjectIds: string[]) => {
+    const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
+      const { onChangeProjects } = ideas as GetIdeasChildProps;
       setSelectedProjectIds(newProjectIds);
-      onProjectIdsChange(newProjectIds);
+      onChangeProjects(newProjectIds);
       trackEventByName(tracks.projectFilterUsed);
-    },
-    [onModeratableTypesChange]
-  );
+    }, []);
 
-  const handleSearchTermChange = useCallback(
-    (searchTerm: string) => {
-      onSearchTermChange(searchTerm);
-      trackEventByName(tracks.searchUsed, {
-        searchTerm,
-      });
-    },
-    [onSearchTermChange]
-  );
+    const handleRowOnSelect = useCallback(
+      (selectedModerationId: string) => {
+        if (!processing) {
+          const newSelectedRows = includes(selectedRows, selectedModerationId)
+            ? selectedRows.filter((id) => id !== selectedModerationId)
+            : [...selectedRows, selectedModerationId];
+          setSelectedRows(newSelectedRows);
+        }
+      },
+      [selectedRows, processing]
+    );
 
-  const handleRowOnSelect = useCallback(
-    (selectedModerationId: string) => {
+    const openPreview = (id: string) => {
+      setPreviewPostId(id);
+    };
+
+    useEffect(() => {
       if (!processing) {
-        const newSelectedRows = includes(selectedRows, selectedModerationId)
-          ? selectedRows.filter((id) => id !== selectedModerationId)
-          : [...selectedRows, selectedModerationId];
-        setSelectedRows(newSelectedRows);
-      }
-    },
-    [selectedRows, processing]
-  );
-
-  const markAs = useCallback(
-    async (event: React.FormEvent) => {
-      if (
-        selectedRows.length > 0 &&
-        !isNilOrError(moderationItems) &&
-        moderationStatus &&
-        !processing
-      ) {
-        event.preventDefault();
-        trackEventByName(
-          moderationStatus === 'read'
-            ? tracks.markedAsNotViewedButtonClicked
-            : tracks.markedAsNotViewedButtonClicked,
-          { selectedItemsCount: selectedRows.length }
-        );
-        setProcessing(true);
-        const moderations = selectedRows.map((moderationId) =>
-          moderationItems.find((item) => item.id === moderationId)
-        ) as IModerationData[];
-        const updatedModerationStatus =
-          moderationStatus === 'read' ? 'unread' : 'read';
-        const promises = moderations.map((moderation) =>
-          updateModerationStatus(
-            moderation.id,
-            moderation.attributes.moderatable_type,
-            updatedModerationStatus
-          )
-        );
-        await Promise.all(promises);
-        setProcessing(false);
         setSelectedRows([]);
       }
-    },
-    [selectedRows, moderationItems, moderationStatus]
-  );
+    }, [processing]);
 
-  useEffect(() => {
-    if (!processing) {
-      setSelectedRows([]);
-    }
-  }, [currentPage, moderationStatus, pageSize, processing]);
+    useEffect(() => {
+      if (!processing) {
+        setIdeaList(ideas?.list);
+      }
+    }, [ideas, processing]);
 
-  useEffect(() => {
-    if (!processing) {
-      setModerationItems(list);
-    }
-  }, [list, processing]);
-
-  if (!isNilOrError(moderationItems)) {
-    return (
-      <Container className={className}>
-        <Filters>
-          {selectedRows.length > 0 && (
-            <MarkAsButton
-              icon="label"
-              buttonStyle="cl-blue"
-              processing={processing}
-              onClick={markAs}
-            >
-              {moderationStatus === 'unread' ? (
-                <FormattedMessage
-                  {...messages.markAsViewed}
-                  values={{ selectedItemsCount: selectedRows.length }}
-                />
-              ) : (
-                <FormattedMessage
-                  {...messages.markAsNotViewed}
-                  values={{ selectedItemsCount: selectedRows.length }}
-                />
-              )}
-            </MarkAsButton>
-          )}
-
-          {selectedRows.length === 0 && (
-            <>
-              {/* <StyledTabs
-                items={moderationStatuses}
-                selectedValue={moderationStatus || 'unread'}
-                onClick={handleOnModerationStatusChange}
-              /> */}
-              <SelectType
-                selectedTypes={selectedTypes}
-                onChange={handleModeratableTypesChange}
-              />
-              <SelectProject
-                selectedProjectIds={selectedProjectIds}
-                onChange={handleProjectIdsChange}
-              />
-            </>
-          )}
-          {/* <StyledSearchInput onChange={handleSearchTermChange} /> */}
-        </Filters>
-
-        <StyledTable>
-          <thead>
-            <tr>
-              <th className="checkbox">
-                <StyledCheckbox
-                  checked={
-                    moderationItems.length > 0 &&
-                    selectedRows.length === moderationItems.length
-                  }
-                  indeterminate={
-                    selectedRows.length > 0 &&
-                    selectedRows.length < moderationItems.length
-                  }
-                  disabled={moderationItems.length === 0}
-                  onChange={handleOnSelectAll}
-                />
-              </th>
-              {/* <th className="date">
-                <FormattedMessage {...messages.date} />
-              </th> */}
-              <th className="type">
-                <FormattedMessage {...messages.type} />
-              </th>
-              {/* <th className="belongsTo">
-                <FormattedMessage {...messages.belongsTo} />
-              </th> */}
-              <th className="content">
-                <FormattedMessage {...messages.content} />
-              </th>
-              <th className="tag">
-                <FormattedMessage {...messages.tags} />
-              </th>
-              <th className="goto">&nbsp;</th>
-            </tr>
-          </thead>
-          {moderationItems.length > 0 && (
-            <tbody>
-              {moderationItems.map((moderationItem) => (
-                <ModerationRow
-                  key={moderationItem.id}
-                  moderation={moderationItem}
-                  selected={includes(selectedRows, moderationItem.id)}
-                  onSelect={handleRowOnSelect}
-                />
-              ))}
-            </tbody>
-          )}
-        </StyledTable>
-
-        {moderationItems.length > 0 && (
-          <Footer>
-            <StyledPagination
-              currentPage={currentPage}
-              totalPages={lastPage}
-              loadPage={handePageNumberChange}
+    if (!isNilOrError(ideaList)) {
+      return (
+        <Container className={className}>
+          <Filters>
+            <SelectProject
+              selectedProjectIds={selectedProjectIds}
+              onChange={handleProjectIdsChange}
             />
 
-            <Spacer />
+            {/* <StyledSearchInput onChange={handleSearchTermChange} /> */}
+          </Filters>
 
-            <RowsPerPage>
-              <RowsPerPageLabel>
-                <FormattedMessage {...messages.rowsPerPage} />:
-              </RowsPerPageLabel>
-              <PageSizeSelect
-                options={pageSizes}
-                onChange={handleOnPageSizeChange}
-                value={pageSizes.find((item) => item.value === pageSize)}
-              />
-            </RowsPerPage>
-          </Footer>
-        )}
+          <StyledTable>
+            <thead>
+              <tr>
+                <th className="checkbox">
+                  <StyledCheckbox
+                    checked={
+                      ideaList.length > 0 &&
+                      selectedRows.length === ideaList?.length
+                    }
+                    indeterminate={
+                      selectedRows.length > 0 &&
+                      selectedRows.length < ideaList.length
+                    }
+                    disabled={ideaList?.length === 0}
+                    onChange={handleOnSelectAll}
+                  />
+                </th>
 
-        {moderationItems.length === 0 && (
-          <Empty>
-            <EmptyIcon name="inbox" />
-            <EmptyMessage>
-              {moderationStatus === 'read' ? (
-                <FormattedMessage {...messages.noViewedItems} />
-              ) : (
-                <FormattedMessage {...messages.noUnviewedItems} />
-              )}
-            </EmptyMessage>
-          </Empty>
-        )}
-      </Container>
-    );
+                <th className="title">
+                  <FormattedMessage {...messages.title} />
+                </th>
+                <th className="tags">
+                  <FormattedMessage {...messages.tags} />
+                </th>
+                {/* <th className="goto">&nbsp;</th> */}
+              </tr>
+            </thead>
+            {ideaList?.length > 0 && (
+              <tbody>
+                {ideaList?.map((moderationItem) => (
+                  <ModerationRow
+                    key={moderationItem.id}
+                    idea={moderationItem}
+                    selected={includes(selectedRows, moderationItem.id)}
+                    onSelect={handleRowOnSelect}
+                    openPreview={openPreview}
+                  />
+                ))}
+              </tbody>
+            )}
+          </StyledTable>
+          <Suspense fallback={null}>
+            <LazyPostPreview
+              type={'AllIdeas'}
+              postId={previewPostId}
+              mode={previewMode}
+              onClose={() => setPreviewPostId(null)}
+              onSwitchPreviewMode={() =>
+                setPreviewMode(previewMode === 'edit' ? 'view' : 'edit')
+              }
+            />
+          </Suspense>
+        </Container>
+      );
+    }
+
+    return null;
   }
+);
 
-  return null;
+const Data = adopt<DataProps, InputProps>({
+  ideas: ({ render }) => {
+    return (
+      <GetIdeas
+        type="paginated"
+        pageSize={2000000}
+        sort="new"
+        projectIds={undefined}
+      >
+        {render}
+      </GetIdeas>
+    );
+  },
+  topics: ({ render }) => {
+    return <GetTopics>{render}</GetTopics>;
+  },
 });
 
-export default injectIntl(Processing);
+const ProcessingWithIntl = injectIntl(Processing);
+
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <ProcessingWithIntl {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};
