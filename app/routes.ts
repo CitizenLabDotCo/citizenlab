@@ -182,9 +182,7 @@ export default function createRoutes() {
           name: 'Project folder page',
           component: Loadable({
             loader: () =>
-              import(
-                'modules/project-folders/containers/ProjectFolderShowPage'
-              ),
+              import('modules/project-folder/containers/ProjectFolderShowPage'),
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),
