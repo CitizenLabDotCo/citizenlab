@@ -69,18 +69,18 @@ COPY engines ./engines
 # cache all of our gems so that if we make an application code
 # change, it won't re-run bundle install unless a gem changed.
 
-RUN bundle install
-# We want binstubs to be available so we can directly call sidekiq and
-# potentially other binaries as command overrides without depending on
-# bundle exec.
-# This is mainly due for production compatibility assurance.
-
 #TODO? Get this in emails engine?
 RUN apt-get update
 RUN apt-get -y install curl gnupg
 RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
 RUN apt-get -y install nodejs
-RUN npm install mjml@4.7.1
+RUN npm install -g mjml@4.7.1
+
+RUN bundle install
+# We want binstubs to be available so we can directly call sidekiq and
+# potentially other binaries as command overrides without depending on
+# bundle exec.
+# This is mainly due for production compatibility assurance.
 
 COPY . .
 # This might look a bit alien but it's copying in everything from

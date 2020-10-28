@@ -1,10 +1,5 @@
 <mjml>
   <mj-body>
-    <mj-text>
-      <span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-        Here's what you can do on the platform of Hagawaga
-      </span>
-    </mj-text>
 
     <!-- Event description + action list -->
     <mj-section padding="30px 25px 20px">
@@ -14,7 +9,7 @@
             Welcome!
           </h1>
           <p style="margin-bottom: 40px;">
-            Congratulations, you successfully signed up on the participation platform of Hagawaga. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.
+            Congratulations <%= @first_name %>, you successfully signed up on the participation platform of Hagawaga. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.
           </p>
         </mj-text>
       </mj-column>
