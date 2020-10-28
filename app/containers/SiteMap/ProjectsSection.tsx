@@ -14,7 +14,7 @@ import messages from './messages';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
-import ProjectFolder from './ProjectFolder';
+import ProjectFolder from 'modules/project-folder/containers/SiteMap/ProjectFolder';
 
 const AllProjectsLink = styled(Link)`
   display: block;
