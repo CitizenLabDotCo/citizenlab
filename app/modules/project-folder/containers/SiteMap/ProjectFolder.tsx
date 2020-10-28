@@ -1,18 +1,18 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { H3, H4 } from './';
+import { H3, H4 } from 'containers/SiteMap';
 import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from 'containers/SiteMap/messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
-import Project from './Project';
+import Project from 'containers/SiteMap/Project';
 
 interface InputProps {
   adminPublication: IAdminPublicationContent;
