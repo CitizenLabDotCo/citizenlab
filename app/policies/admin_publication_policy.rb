@@ -14,14 +14,10 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def show?
-    case record.publication_type
-    when 'Project'
-      ProjectPolicy.new(user, record.publication).show?
-    when 'ProjectFolders::Folder'  # todo remove dependency to the project folder engine
-      ProjectFolders::FolderPolicy.new(user, record.publication).show?
-    else
-      raise "No policy for #{record.publication_type}"
-    end
+    publication_class = record.publication_type.constantize
+    publication_class.new(user, record.publication).show?
+  rescue NameError
+    raise "No policy for #{record.publication_type}"
   end
 
   def reorder?
