@@ -3,6 +3,15 @@ module AdminApi
 
     before_action :set_user, only: [:update, :show]
 
+    def index
+      @users = User.all
+        .order(:created_at)
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
+
+      render json: @users
+    end
+
     def by_email
       @user = User.find_by!(email: params[:email])
       render json: @user
