@@ -17,7 +17,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'resources/GetProjectFolder';
+} from 'modules/project-folder/resources/GetProjectFolder';
 
 // i18n
 import messages from './messages';

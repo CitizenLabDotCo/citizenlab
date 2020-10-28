@@ -14,7 +14,7 @@ import { deleteProjectFolder } from 'modules/project-folder/services/projectFold
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'resources/GetProjectFolder';
+} from 'modules/project-folder/resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
