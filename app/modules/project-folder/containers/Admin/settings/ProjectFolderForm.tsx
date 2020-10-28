@@ -5,11 +5,14 @@ import { isEmpty, isEqual } from 'lodash-es';
 import { Multiloc, UploadFile } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
+import {
+  addProjectFolder,
+  updateProjectFolder,
+} from 'modules/project-folder/services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
-} from 'services/projectFolderImages';
+} from 'modules/project-folder/services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import useProjectFolderImages from 'modules/project-folder/hooks/useProjectFolderImages';
 import useProjectFolder from 'modules/project-folder/hooks/useProjectFolder';
@@ -29,7 +32,7 @@ import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
   deleteProjectFolderFile,
-} from 'services/projectFolderFiles';
+} from 'modules/project-folder/services/projectFolderFiles';
 import useProjectFolderFiles from 'modules/project-folder/hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 

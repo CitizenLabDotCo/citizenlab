@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   projectFolderFilesStream,
   IProjectFolderFiles,
-} from 'services/projectFolderFiles';
+} from 'modules/project-folder/services/projectFolderFiles';
 
 export default function useProjectFolderFiles(
   projectFolderId: string | undefined
