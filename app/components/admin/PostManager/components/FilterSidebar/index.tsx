@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
@@ -30,7 +31,7 @@ const InfoIcon = styled(Icon)`
 interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
-  statuses: IIdeaStatusData[];
+  statuses: IIdeaStatusData[] | IInitiativeStatusData[];
   topics: ITopicData[];
   selectedTopics?: string[] | null;
   selectedPhase?: string | null;
