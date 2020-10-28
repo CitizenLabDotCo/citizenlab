@@ -16,7 +16,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
-import IdeaStatusForm, { FormValues } from '../IdeaStatusForm';
+import IdeaStatusForm, { FormValues, validate } from '../IdeaStatusForm';
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 25px;
@@ -60,6 +60,12 @@ const Edit = ({ params }: WithRouterProps) => {
   };
 
   if (!isNilOrError(ideaStatus)) {
+    const {
+      color,
+      title_multiloc,
+      description_multiloc,
+      code,
+    } = ideaStatus.attributes;
     return (
       <>
         <StyledGoBackButton onClick={goBack} />
@@ -68,10 +74,15 @@ const Edit = ({ params }: WithRouterProps) => {
             <FormattedMessage {...messages.editIdeaStatus} />
           </StyledSectionTitle>
           <Formik
-            initialValues={ideaStatus.attributes}
+            initialValues={{
+              color,
+              title_multiloc,
+              description_multiloc,
+              code,
+            }}
             onSubmit={handleSubmit}
             render={renderFn}
-            validate={IdeaStatusForm['validate']}
+            validate={validate}
           />
         </Section>
       </>
