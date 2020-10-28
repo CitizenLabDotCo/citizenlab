@@ -16,6 +16,7 @@ import useProjectFolder from 'hooks/useProjectFolder';
 import useTenantLocales from 'hooks/useTenantLocales';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 import { SectionField, Section } from 'components/admin/Section';
@@ -24,6 +25,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 import { IconTooltip, Radio, Label } from 'cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import {
@@ -38,7 +40,11 @@ interface Props {
   projectFolderId: string;
 }
 
-const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
+const ProjectFolderForm = ({
+  mode,
+  projectFolderId,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
@@ -130,6 +136,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
     string[]
   >([]);
+  const [isArchiveWarningShown, setIsArchiveWarningShown] = useState<boolean>(
+    false
+  );
 
   const getHandler = useCallback(
     (setter: (value: any) => void) => (value: any) => {
@@ -201,6 +210,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     []
   );
 
+  const handlePublicationStatusChanged = (value) => {
+    setStatus('enabled');
+    const isArchiveWarningShown =
+      !isNilOrError(adminPublication) &&
+      value === 'archived' &&
+      adminPublication.attributes.publication_status !== value;
+    setIsArchiveWarningShown(isArchiveWarningShown);
+    setPublicationStatus(value);
+  };
+
   // form status
   const [status, setStatus] = useState<
     'enabled' | 'error' | 'apiError' | 'success' | 'disabled' | 'loading'
@@ -234,6 +253,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   // form submission
   const onSubmit = async () => {
+    if (
+      !isNilOrError(adminPublication) &&
+      publicationStatus === 'archived' &&
+      publicationStatus !== adminPublication.attributes.publication_status &&
+      !window.confirm(formatMessage(messages.archiveFolderConfirmation))
+    ) {
+      return;
+    }
     if (validate()) {
       setStatus('loading');
       if (mode === 'new') {
@@ -388,7 +415,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </Label>
           <Radio
-            onChange={getHandler(setPublicationStatus)}
+            onChange={handlePublicationStatusChanged}
             currentValue={publicationStatus}
             value="draft"
             name="projectstatus"
@@ -397,7 +424,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.draftStatus} />}
           />
           <Radio
-            onChange={getHandler(setPublicationStatus)}
+            onChange={handlePublicationStatusChanged}
             currentValue={publicationStatus}
             value="published"
             name="projectstatus"
@@ -406,7 +433,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.publishedStatus} />}
           />
           <Radio
-            onChange={getHandler(setPublicationStatus)}
+            onChange={handlePublicationStatusChanged}
             currentValue={publicationStatus}
             value="archived"
             name="projectstatus"
@@ -414,6 +441,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             className="e2e-projecstatus-archived"
             label={<FormattedMessage {...messages.archivedStatus} />}
           />
+          {isArchiveWarningShown && (
+            <Warning text={formatMessage(messages.archiveStatusWarning)} />
+          )}
         </SectionField>
         <SectionField>
           <InputMultilocWithLocaleSwitcher
