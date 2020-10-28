@@ -3,7 +3,7 @@ import { isEmpty, values as getValues, every } from 'lodash-es';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
-import { ideaStatusCodes } from 'services/ideaStatuses';
+import { ideaStatusCodes, Code } from 'services/ideaStatuses';
 
 // components
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
@@ -27,7 +27,7 @@ import messages from '../messages';
 
 export interface FormValues {
   color: string;
-  code: string;
+  code: Code;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
@@ -122,7 +122,6 @@ class IdeaStatusForm extends React.Component<
                 id={`${code}-input`}
                 name="code"
                 value={code}
-                currentValue={values.code || 'proposed'}
               />
             ))}
             {touched.code && <Error apiErrors={errors.code as any} />}

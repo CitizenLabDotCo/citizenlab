@@ -58,7 +58,7 @@ const NewIdeaStatus = () => {
           color: '#b5b5b5',
           title_multiloc: {},
           description_multiloc: {},
-          code: '',
+          code: 'proposed',
         }}
         onSubmit={handleSubmit}
         render={renderFn}

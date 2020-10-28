@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
-type Code =
+export type Code =
   | 'proposed'
   | 'viewed'
   | 'under_consideration'
