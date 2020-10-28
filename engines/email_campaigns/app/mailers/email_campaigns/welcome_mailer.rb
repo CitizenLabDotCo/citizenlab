@@ -39,7 +39,7 @@ module EmailCampaigns
     private
 
     def hagawaga
-      puts 'hagawaga'
+      'Hagawaga'
     end
 
   end
