@@ -26,17 +26,18 @@ export interface IIdeaStatusData {
 
 export interface IIdeaStatusAdd {
   title_multiloc: Multiloc;
-  color: string;
-  code: Code;
-  description_multiloc: Multiloc;
+  description_multiloc?: Multiloc;
+  color?: string;
+  code?: Code;
+  ordering?: number;
 }
 
 export interface IIdeaStatusUpdate {
   title_multiloc: Multiloc;
-  color: string;
-  code: Code;
-  description_multiloc: Multiloc;
-  ordering: number;
+  description_multiloc?: Multiloc;
+  color?: string;
+  code?: Code;
+  ordering?: number;
 }
 
 export interface IIdeaStatus {
