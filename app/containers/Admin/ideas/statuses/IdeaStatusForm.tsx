@@ -69,19 +69,19 @@ const LabelText = styled.div`
   }
 `;
 
+export function validate(values: FormValues): FormikErrors<FormValues> {
+  const errors: FormikErrors<FormValues> = {};
+
+  if (every(getValues(values.title_multiloc), isEmpty)) {
+    errors.title_multiloc = [{ error: 'blank' }] as any;
+  }
+
+  return errors;
+}
+
 class IdeaStatusForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
 > {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
-
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
-
-    return errors;
-  };
-
   render() {
     const {
       isSubmitting,
@@ -90,7 +90,6 @@ class IdeaStatusForm extends React.Component<
       touched,
       builtInField,
       status,
-      values,
       intl: { formatMessage },
     } = this.props;
 

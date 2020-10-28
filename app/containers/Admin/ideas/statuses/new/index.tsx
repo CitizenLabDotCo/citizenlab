@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
-import IdeaStatusForm, { FormValues } from '../IdeaStatusForm';
+import IdeaStatusForm, { FormValues, validate } from '../IdeaStatusForm';
 import { Formik } from 'formik';
 import { Section, SectionTitle } from 'components/admin/Section';
 
@@ -62,7 +62,7 @@ const NewIdeaStatus = () => {
         }}
         onSubmit={handleSubmit}
         render={renderFn}
-        validate={IdeaStatusForm['validate']}
+        validate={validate}
       />
     </Section>
   );
