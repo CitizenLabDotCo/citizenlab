@@ -28,8 +28,8 @@ import {
   SortableList,
   SortableRow,
 } from 'components/admin/ResourceList';
-import { HeaderTitle } from '../../all/StyledComponents';
-import ProjectRow from '../../components/ProjectRow';
+import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 
 // style
 import styled from 'styled-components';
