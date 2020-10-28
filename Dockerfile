@@ -75,6 +75,13 @@ RUN bundle install
 # bundle exec.
 # This is mainly due for production compatibility assurance.
 
+#TODO? Get this in emails engine?
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN apt-get -y install nodejs
+RUN npm install mjml@4.4.1
+
 COPY . .
 # This might look a bit alien but it's copying in everything from
 # the current directory relative to the Dockerfile, over to the
