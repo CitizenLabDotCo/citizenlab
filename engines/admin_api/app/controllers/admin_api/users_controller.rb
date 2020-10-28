@@ -9,7 +9,7 @@ module AdminApi
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
 
-      render json: @users
+      render json: @users, adapter: nil
     end
 
     def by_email
