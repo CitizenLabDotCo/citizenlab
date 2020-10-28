@@ -106,27 +106,26 @@ class IdeaStatusForm extends React.Component<
                 }
               />
             </SubSectionTitle>
-            {ideaStatusCodes.map((code) => (
-              <>
-                <StyledFormikRadio
-                  label={
-                    <LabelText>
-                      <span className="header">
-                        {formatMessage(messages[`${code}FieldCodeTitle`])}
-                      </span>
-                      <span className="description">
-                        {formatMessage(messages[`${code}FieldCodeDescription`])}
-                      </span>
-                    </LabelText>
-                  }
-                  id={`${code}-input`}
-                  name="code"
-                  value={code}
-                  currentValue={values.code || 'proposed'}
-                />
-                {touched.code && <Error apiErrors={errors.code as any} />}
-              </>
+            {ideaStatusCodes.map((code, i) => (
+              <StyledFormikRadio
+                key={`code-input-${i}`}
+                label={
+                  <LabelText>
+                    <span className="header">
+                      {formatMessage(messages[`${code}FieldCodeTitle`])}
+                    </span>
+                    <span className="description">
+                      {formatMessage(messages[`${code}FieldCodeDescription`])}
+                    </span>
+                  </LabelText>
+                }
+                id={`${code}-input`}
+                name="code"
+                value={code}
+                currentValue={values.code || 'proposed'}
+              />
             ))}
+            {touched.code && <Error apiErrors={errors.code as any} />}
           </SectionField>
         </StyledSection>
 
