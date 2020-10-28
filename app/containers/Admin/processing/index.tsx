@@ -40,11 +40,12 @@ const Container = styled.div`
 
 const Filters = styled.div`
   position: fixed;
-  min-height: 50px;
+  min-height: 80vh;
   max-width: 150px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: space-between;
   margin-bottom: 55px;
   z-index: 100;
 `;
@@ -148,12 +149,16 @@ const Processing = memo<Props & InjectedIntlProps>(
       return (
         <Container className={className}>
           <Filters>
-            <SelectProject
-              selectedProjectIds={selectedProjectIds}
-              onChange={handleProjectIdsChange}
-            />
+            <div>
+              <SelectProject
+                selectedProjectIds={selectedProjectIds}
+                onChange={handleProjectIdsChange}
+              />
+              <Button locale="en">Autotag</Button>
+            </div>
 
             {/* <StyledSearchInput onChange={handleSearchTermChange} /> */}
+            <Button locale="en">Export</Button>
           </Filters>
 
           <StyledTable>
