@@ -14,6 +14,9 @@ import { deleteProjectFolder } from 'services/projectFolders';
 import { RowButton } from './StyledComponents';
 import { ButtonContainerProps } from 'components/UI/Button';
 
+// styles
+import { colors } from 'utils/styleUtils';
+
 interface Props extends ButtonContainerProps {
   publication: IAdminPublicationContent;
   setDeleteIsProcessing: (status: boolean) => void;
@@ -62,6 +65,8 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
         icon="delete"
         buttonStyle="text"
         className={`e2e-admin-delete-publication`}
+        iconHoverColor={colors.clRedError}
+        textHoverColor={colors.clRedError}
         {...rest}
       >
         {deletionProps.copy}
