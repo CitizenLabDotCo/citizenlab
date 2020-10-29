@@ -9,7 +9,6 @@ import { isPage } from 'utils/helperUtils';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Text = styled.span`
   color: ${colors.label};
