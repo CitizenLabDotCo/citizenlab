@@ -617,14 +617,16 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   handleSlugOnChange = (slug: string) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      slug,
-      submitState: 'enabled',
-      projectAttributesDiff: {
+    this.setState(({ projectAttributesDiff }) => {
+      return {
         slug,
-        ...projectAttributesDiff,
-      },
-    }));
+        submitState: 'enabled',
+        projectAttributesDiff: {
+          ...projectAttributesDiff,
+          slug,
+        },
+      };
+    });
   };
 
   validate = () => {
