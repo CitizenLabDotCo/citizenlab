@@ -12,7 +12,7 @@ import GetTenantLocales, {
 } from 'resources/GetTenantLocales';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'modules/project-folder/resources/GetProjectFolder';
+} from 'modules/projectFolder/resources/GetProjectFolder';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils

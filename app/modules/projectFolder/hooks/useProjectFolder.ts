@@ -5,7 +5,7 @@ import {
   projectFolderByIdStream,
   projectFolderBySlugStream,
   IProjectFolderData,
-} from 'modules/project-folder/services/projectFolders';
+} from 'modules/projectFolder/services/projectFolders';
 
 interface Props {
   projectFolderId?: string | null;
