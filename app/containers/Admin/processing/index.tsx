@@ -5,8 +5,7 @@ import { includes } from 'lodash-es';
 // components
 import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
-import Checkbox from 'components/UI/Checkbox';
-import { Icon, Button, Select } from 'cl2-component-library';
+import { Icon, Button, Select, Checkbox } from 'cl2-component-library';
 
 import SelectProject from './SelectProject';
 
@@ -30,6 +29,11 @@ import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
 import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
+import Modal, {
+  ButtonsWrapper,
+  Content,
+  ModalContentContainer,
+} from 'components/UI/Modal';
 
 const Container = styled.div`
   display: flex;
@@ -92,7 +96,8 @@ const Processing = memo<Props & InjectedIntlProps>(
       ideas.list
     );
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
-    const [processing, setProcessing] = useState(false);
+    const [processing, setProcessing] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
@@ -154,11 +159,26 @@ const Processing = memo<Props & InjectedIntlProps>(
                 selectedProjectIds={selectedProjectIds}
                 onChange={handleProjectIdsChange}
               />
-              <Button locale="en">Autotag</Button>
+              <Button
+                locale="en"
+                buttonStyle="admin-dark"
+                disabled={!!(selectedRows.length === 0)}
+                processing={processing}
+                onClick={() => setIsModalOpen(true)}
+              >
+                <FormattedMessage {...messages.autotag} />
+              </Button>
             </div>
 
-            {/* <StyledSearchInput onChange={handleSearchTermChange} /> */}
-            <Button locale="en">Export</Button>
+            <Button
+              locale="en"
+              buttonStyle="admin-dark-outlined"
+              disabled={!!(selectedRows.length === 0)}
+              processing={processing}
+              onClick={() => console.log(selectedRows)}
+            >
+              <FormattedMessage {...messages.export} />
+            </Button>
           </Filters>
 
           <StyledTable>
@@ -213,6 +233,32 @@ const Processing = memo<Props & InjectedIntlProps>(
               }
             />
           </Suspense>
+          <Modal
+            opened={isModalOpen}
+            close={() => setIsModalOpen(false)}
+            header={<FormattedMessage {...messages.autotag} />}
+          >
+            <ModalContentContainer>
+              <Content>
+                <FormattedMessage {...messages.export} />
+              </Content>
+              <ButtonsWrapper>
+                <Button
+                  buttonStyle="secondary"
+                  onClick={() => console.log('closeSendConfirmationModal')}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  buttonStyle="delete"
+                  onClick={() => console.log('handleTopicDeletionConfirm')}
+                  processing={processing}
+                >
+                  Delete
+                </Button>
+              </ButtonsWrapper>
+            </ModalContentContainer>
+          </Modal>
         </Container>
       );
     }

@@ -3,7 +3,7 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import ModerationContentCell from './ModerationContentCell';
-import Checkbox from 'components/UI/Checkbox';
+import { Checkbox, Tag } from 'cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -58,7 +58,9 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
         <td className="title" onClick={() => openPreview(idea.id)}>
           <ModerationContentCell contentTitle={contentTitle} />
         </td>
-        <td className="content">tags tags tags</td>
+        <td className="content">
+          <Tag text={'tag'} isAutoTag={true} />
+        </td>
       </Container>
     );
   }
