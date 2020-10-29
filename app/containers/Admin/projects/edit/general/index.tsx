@@ -214,6 +214,7 @@ interface State {
   processingDelete: boolean;
   deleteError: string | null;
   slug: string | null;
+  showSlugErrorMessage: boolean;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -254,6 +255,7 @@ class AdminProjectEditGeneral extends PureComponent<
       processingDelete: false,
       deleteError: null,
       slug: null,
+      showSlugErrorMessage: false,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -776,6 +778,18 @@ class AdminProjectEditGeneral extends PureComponent<
     }
   };
 
+  validateSlug = (event) => {
+    const slug = event.target.value.length;
+    const slugRegExConditions = RegExp('/A[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*z/');
+    const isSlugValid = slugRegExConditions.test(slug);
+
+    if (!isSlugValid) {
+      this.setState({
+        showSlugErrorMessage: true,
+      });
+    }
+  };
+
   render() {
     const {
       publicationStatus,
@@ -793,6 +807,7 @@ class AdminProjectEditGeneral extends PureComponent<
       apiErrors,
       processingDelete,
       slug,
+      showSlugErrorMessage,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -895,32 +910,32 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
-            {slug && (
-              <StyledSectionField>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.projectUrlSlug} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage {...messages.urlSlugLabelTooltip} />
-                    }
-                  />
-                </SubSectionTitle>
-                <StyledWarning>
-                  <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-                </StyledWarning>
-                <Input
-                  id="project-slug"
-                  type="text"
-                  label={<FormattedMessage {...messages.urlSlugLabel} />}
-                  onChange={this.handleSlugOnChange}
-                  value={slug}
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectUrlSlug} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.urlSlugLabelTooltip} />
+                  }
                 />
-                {/* <Error
+              </SubSectionTitle>
+              <StyledWarning>
+                <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+              </StyledWarning>
+              <Input
+                id="project-slug"
+                type="text"
+                label={<FormattedMessage {...messages.urlSlugLabel} />}
+                onChange={this.handleSlugOnChange}
+                onBlur={this.validateSlug}
+                value={slug}
+              />
+              {showSlugErrorMessage && 'This is not good'}
+              {/* <Error
                 fieldName="title_multiloc"
                 apiErrors={this.state.apiErrors.title_multiloc}
               /> */}
-              </StyledSectionField>
-            )}
+            </StyledSectionField>
 
             <StyledSectionField>
               {!project ? (
