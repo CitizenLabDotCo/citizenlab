@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -35,42 +35,33 @@ const ActionsContainer = styled.div`
     margin-right: 15px;
   }
 `;
+const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
+  ({ children, intl: { formatMessage }, location }) => {
+    const tabs = [
+      {
+        label: formatMessage(messages.settingsTab),
+        url: '/admin/initiatives',
+      },
+      {
+        label: formatMessage(messages.manageTab),
+        url: '/admin/initiatives/manage',
+      },
+      {
+        label: formatMessage(messages.permissionTab),
+        url: '/admin/initiatives/permissions',
+        feature: 'granular_permissions',
+      },
+    ];
 
-export class InitiativesPage extends React.PureComponent<
-  InjectedIntlProps & WithRouterProps
-> {
-  private tabs = [
-    {
-      label: this.props.intl.formatMessage(messages.settingsTab),
-      url: '/admin/initiatives',
-    },
-    {
-      label: this.props.intl.formatMessage(messages.manageTab),
-      url: '/admin/initiatives/manage',
-    },
-    {
-      label: this.props.intl.formatMessage(messages.permissionTab),
-      url: '/admin/initiatives/permissions',
-      feature: 'granular_permissions',
-    },
-  ];
+    const resource = {
+      title: formatMessage(messages.titleInitiatives),
+    };
 
-  private resource = {
-    title: this.props.intl.formatMessage(messages.titleInitiatives),
-  };
-
-  onNewProposal = (pathname: string) => (_event) => {
-    trackEventByName(tracks.clickNewProposal.name, {
-      extra: { pathnameFrom: pathname },
-    });
-  };
-
-  render() {
-    const {
-      children,
-      intl: { formatMessage },
-      location,
-    } = this.props;
+    const onNewProposal = (pathname: string) => (_event) => {
+      trackEventByName(tracks.clickNewProposal.name, {
+        extra: { pathnameFrom: pathname },
+      });
+    };
 
     const { pathname } = location;
     return (
@@ -83,11 +74,11 @@ export class InitiativesPage extends React.PureComponent<
               icon="initiativesAdminMenuIcon"
               linkTo={`/initiatives/new`}
               text={formatMessage(messages.addNewProposal)}
-              onClick={this.onNewProposal(pathname)}
+              onClick={onNewProposal(pathname)}
             />
           </ActionsContainer>
         </TopContainer>
-        <TabbedResource resource={this.resource} tabs={this.tabs}>
+        <TabbedResource resource={resource} tabs={tabs}>
           <HelmetIntl
             title={messages.metaTitle}
             description={messages.metaDescription}
@@ -97,6 +88,6 @@ export class InitiativesPage extends React.PureComponent<
       </>
     );
   }
-}
+);
 
 export default withRouter(injectIntl(InitiativesPage));
