@@ -1,5 +1,7 @@
 module EmailCampaigns
   class WelcomeMailer < ActionMailer::Base
+    add_template_helper(CampaignHelper)
+
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     default reply_to: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
 
@@ -37,10 +39,6 @@ module EmailCampaigns
 
 
     private
-
-    def hagawaga
-      'Hagawaga'
-    end
 
   end
 end
