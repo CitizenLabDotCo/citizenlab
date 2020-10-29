@@ -1800,7 +1800,7 @@
   "app.containers.PasswordReset.updatePassword": "Confirmă noua parolă",
   "app.containers.ProjectCards.areasTitle": "Filtrul după zonă",
   "app.containers.ProjectFolderCards.allProjects": "Toate proiectele",
-  "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName}  lucrează în prezent la",
+  "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} lucrează în prezent la:",
   "app.containers.ProjectFolderShowPage.goBackToList": "Du-te înapoi la lista",
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informații despre acest proiect",
   "app.containers.ProjectFolderShowPage.metaTitle": "Proiect: {title}",
