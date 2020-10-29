@@ -58,6 +58,7 @@ import { rgba } from 'polished';
 import {
   IdeaDefaultSortMethod,
   ParticipationMethod,
+  ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
@@ -789,7 +790,9 @@ const Data = adopt<DataProps, InputProps>({
     <GetIdeas
       {...getIdeasInputProps}
       pageSize={12}
-      sort={getIdeasInputProps.defaultSortingMethod || 'trending'}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
     >
       {render}
     </GetIdeas>

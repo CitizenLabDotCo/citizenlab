@@ -19,3 +19,5 @@ export type IdeaDefaultSortMethod =
   | 'new'
   | '-new'
   | null;
+
+export const ideaDefaultSortMethodFallback = 'trending';
