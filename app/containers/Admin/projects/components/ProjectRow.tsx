@@ -97,14 +97,12 @@ export default ({
     <RowButton
       key={action.icon}
       type="button"
-      className={`
-                e2e-admin-edit-publication
-                ${
-                  publication.attributes.publication_title_multiloc?.[
-                    'en-GB'
-                  ] || ''
-                }
-              `}
+      className={[
+        'e2e-admin-edit-publication',
+        publication.attributes.publication_title_multiloc?.['en-GB'],
+      ]
+        .filter((item) => item)
+        .join(' ')}
       onClick={action.handler(publication.publicationId)}
       buttonStyle="secondary"
       icon={action.icon}
