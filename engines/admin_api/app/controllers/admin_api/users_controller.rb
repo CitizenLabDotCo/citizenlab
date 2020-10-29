@@ -9,6 +9,9 @@ module AdminApi
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
 
+      # Without `adapter: nil` an empty @users scope would render in json API
+      # instead of json. As there's no data records to derive the type from,
+      # it falls back to json-api.
       render json: @users, adapter: nil
     end
 
