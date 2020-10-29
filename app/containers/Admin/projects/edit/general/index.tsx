@@ -896,13 +896,20 @@ class AdminProjectEditGeneral extends PureComponent<
             {slug && (
               <StyledSectionField>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.projectSlug} />
+                  <FormattedMessage {...messages.projectUrlSlug} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.urlSlugLabelTooltip} />
+                    }
+                  />
                 </SubSectionTitle>
+                <StyledWarning>
+                  <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+                </StyledWarning>
                 <Input
                   id="project-slug"
                   type="text"
-                  label={<FormattedMessage {...messages.slugLabel} />}
-                  labelTooltipText={formatMessage(messages.slugLabelTooltip)}
+                  label={<FormattedMessage {...messages.urlSlugLabel} />}
                   onChange={this.handleSlugOnChange}
                   value={slug}
                 />
