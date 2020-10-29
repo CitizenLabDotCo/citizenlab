@@ -213,6 +213,7 @@ interface State {
   submitState: ISubmitState;
   processingDelete: boolean;
   deleteError: string | null;
+  slug: string | null;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -252,6 +253,7 @@ class AdminProjectEditGeneral extends PureComponent<
       submitState: 'disabled',
       processingDelete: false,
       deleteError: null,
+      slug: null,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -296,6 +298,7 @@ class AdminProjectEditGeneral extends PureComponent<
                   currentTenant.data.attributes.settings.core.locales
                 ),
               }));
+              const slug = project ? project.data.attributes.slug : null;
 
               return {
                 locale,
@@ -305,6 +308,7 @@ class AdminProjectEditGeneral extends PureComponent<
                 projectType,
                 areaType,
                 areasOptions,
+                slug,
                 presentationMode:
                   (project && project.data.attributes.presentation_mode) ||
                   state.presentationMode,
@@ -612,7 +616,16 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
-  handleSlugOnChange = () => {};
+  handleSlugOnChange = (slug: string) => {
+    this.setState(({ projectAttributesDiff }) => ({
+      slug,
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        slug,
+        ...projectAttributesDiff,
+      },
+    }));
+  };
 
   validate = () => {
     let hasErrors = false;
@@ -777,6 +790,7 @@ class AdminProjectEditGeneral extends PureComponent<
       submitState,
       apiErrors,
       processingDelete,
+      slug,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -889,6 +903,7 @@ class AdminProjectEditGeneral extends PureComponent<
                 label={<FormattedMessage {...messages.slugLabel} />}
                 labelTooltipText={formatMessage(messages.slugLabelTooltip)}
                 onChange={this.handleSlugOnChange}
+                value={slug}
               />
               {/* <Error
                 fieldName="title_multiloc"
