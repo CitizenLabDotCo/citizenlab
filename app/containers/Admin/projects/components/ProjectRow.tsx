@@ -20,7 +20,7 @@ import { IconNames, StatusLabel } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 
 // resources
-import GetProjectGroups from 'resources/GetProjectGroups';
+import useProjectGroups from 'hooks/useProjectGroups';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -62,6 +62,10 @@ export default ({
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [deletionError, setDeletionError] = useState<string>('');
 
+  const projectGroups = useProjectGroups({
+    projectId: publication.publicationId,
+  });
+  console.log(projectGroups);
   const ManageButton = (
     <RowButton
       className={`
@@ -116,32 +120,23 @@ export default ({
       <RowContent className={`e2e-admin-projects-list-item ${className}`}>
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
-          {publication.attributes?.publication_visible_to === 'groups' && (
-            <GetProjectGroups projectId={publication.publicationId}>
-              {(projectGroups) => {
-                if (!isNilOrError(projectGroups)) {
-                  return (
-                    <StyledStatusLabel
-                      text={
-                        projectGroups.length > 0 ? (
-                          <FormattedMessage
-                            {...messages.xGroupsHaveAccess}
-                            values={{ groupCount: projectGroups.length }}
-                          />
-                        ) : (
-                          <FormattedMessage {...messages.onlyAdminsCanView} />
-                        )
-                      }
-                      backgroundColor="clBlue"
-                      icon="lock"
+          {publication.attributes?.publication_visible_to === 'groups' &&
+            !isNilOrError(projectGroups) && (
+              <StyledStatusLabel
+                text={
+                  projectGroups.length > 0 ? (
+                    <FormattedMessage
+                      {...messages.xGroupsHaveAccess}
+                      values={{ groupCount: projectGroups.length }}
                     />
-                  );
+                  ) : (
+                    <FormattedMessage {...messages.onlyAdminsCanView} />
+                  )
                 }
-
-                return null;
-              }}
-            </GetProjectGroups>
-          )}
+                backgroundColor="clBlue"
+                icon="lock"
+              />
+            )}
           {publication.attributes?.publication_visible_to === 'admins' && (
             <StyledStatusLabel
               text={<FormattedMessage {...messages.onlyAdminsCanView} />}
