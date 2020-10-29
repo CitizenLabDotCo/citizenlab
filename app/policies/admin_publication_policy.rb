@@ -14,10 +14,7 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def show?
-    publication_class = record.publication_type.constantize
-    publication_class.new(user, record.publication).show?
-  rescue NameError
-    raise "No policy for #{record.publication_type}"
+    Pundit.policy(user, record.publication).show?
   end
 
   def reorder?
