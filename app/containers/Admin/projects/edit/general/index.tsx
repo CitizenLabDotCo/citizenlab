@@ -893,23 +893,25 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.projectSlug} />
-              </SubSectionTitle>
-              <Input
-                id="project-slug"
-                type="text"
-                label={<FormattedMessage {...messages.slugLabel} />}
-                labelTooltipText={formatMessage(messages.slugLabelTooltip)}
-                onChange={this.handleSlugOnChange}
-                value={slug}
-              />
-              {/* <Error
+            {slug && (
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.projectSlug} />
+                </SubSectionTitle>
+                <Input
+                  id="project-slug"
+                  type="text"
+                  label={<FormattedMessage {...messages.slugLabel} />}
+                  labelTooltipText={formatMessage(messages.slugLabelTooltip)}
+                  onChange={this.handleSlugOnChange}
+                  value={slug}
+                />
+                {/* <Error
                 fieldName="title_multiloc"
                 apiErrors={this.state.apiErrors.title_multiloc}
               /> */}
-            </StyledSectionField>
+              </StyledSectionField>
+            )}
 
             <StyledSectionField>
               {!project ? (
