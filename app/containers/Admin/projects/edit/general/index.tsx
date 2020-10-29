@@ -910,32 +910,34 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.projectUrlSlug} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.urlSlugLabelTooltip} />
-                  }
+            {project?.data.attributes.slug && (
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.projectUrlSlug} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.urlSlugLabelTooltip} />
+                    }
+                  />
+                </SubSectionTitle>
+                <StyledWarning>
+                  <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+                </StyledWarning>
+                <Input
+                  id="project-slug"
+                  type="text"
+                  label={<FormattedMessage {...messages.urlSlugLabel} />}
+                  onChange={this.handleSlugOnChange}
+                  onBlur={this.validateSlug}
+                  value={slug}
                 />
-              </SubSectionTitle>
-              <StyledWarning>
-                <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-              </StyledWarning>
-              <Input
-                id="project-slug"
-                type="text"
-                label={<FormattedMessage {...messages.urlSlugLabel} />}
-                onChange={this.handleSlugOnChange}
-                onBlur={this.validateSlug}
-                value={slug}
-              />
-              {showSlugErrorMessage && 'This is not good'}
-              {/* <Error
+                {showSlugErrorMessage && 'This is not good'}
+                {/* <Error
                 fieldName="title_multiloc"
                 apiErrors={this.state.apiErrors.title_multiloc}
               /> */}
-            </StyledSectionField>
+              </StyledSectionField>
+            )}
 
             <StyledSectionField>
               {!project ? (
