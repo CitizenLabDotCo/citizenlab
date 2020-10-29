@@ -8,14 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   addProjectFolder,
   updateProjectFolder,
-} from 'modules/project-folder/services/projectFolders';
+} from 'modules/projectFolder/services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
-} from 'modules/project-folder/services/projectFolderImages';
+} from 'modules/projectFolder/services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileTools';
-import useProjectFolderImages from 'modules/project-folder/hooks/useProjectFolderImages';
-import useProjectFolder from 'modules/project-folder/hooks/useProjectFolder';
+import useProjectFolderImages from 'modules/projectFolder/hooks/useProjectFolderImages';
+import useProjectFolder from 'modules/projectFolder/hooks/useProjectFolder';
 import useTenantLocales from 'hooks/useTenantLocales';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -32,8 +32,8 @@ import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
   deleteProjectFolderFile,
-} from 'modules/project-folder/services/projectFolderFiles';
-import useProjectFolderFiles from 'modules/project-folder/hooks/useProjectFolderFiles';
+} from 'modules/projectFolder/services/projectFolderFiles';
+import useProjectFolderFiles from 'modules/projectFolder/hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 
 interface Props {

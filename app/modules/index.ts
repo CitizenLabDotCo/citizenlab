@@ -1,6 +1,6 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFolderConfiguration from './project-folder';
+import projectFolderConfiguration from './projectFolder';
 
 export default loadModules([
   {

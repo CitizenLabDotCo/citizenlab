@@ -8,7 +8,7 @@ import ContentContainer from 'components/ContentContainer';
 // resources
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'modules/project-folder/resources/GetProjectFolder';
+} from 'modules/projectFolder/resources/GetProjectFolder';
 
 // i18n
 import T from 'components/T';

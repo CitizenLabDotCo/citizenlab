@@ -10,11 +10,11 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import Error from 'components/UI/Error';
 import { isNilOrError } from 'utils/helperUtils';
-import { deleteProjectFolder } from 'modules/project-folder/services/projectFolders';
+import { deleteProjectFolder } from 'modules/projectFolder/services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'modules/project-folder/resources/GetProjectFolder';
+} from 'modules/projectFolder/resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
