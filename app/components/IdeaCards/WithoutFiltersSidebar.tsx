@@ -52,6 +52,7 @@ import { rgba } from 'polished';
 import {
   IdeaDefaultSortMethod,
   ParticipationMethod,
+  ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -483,7 +484,9 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     <GetIdeas
       {...getIdeasInputProps}
       pageSize={12}
-      sort={getIdeasInputProps.defaultSortingMethod || 'trending'}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
     >
       {render}
     </GetIdeas>

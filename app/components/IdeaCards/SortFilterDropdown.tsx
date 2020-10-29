@@ -6,7 +6,10 @@ import FilterSelector from 'components/FilterSelector';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 
 type Props = {
   id?: string | undefined;
@@ -23,7 +26,9 @@ class SortFilterDropdown extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: [props.defaultSortingMethod || 'trending'],
+      selectedValue: [
+        props.defaultSortingMethod || ideaDefaultSortMethodFallback,
+      ],
     };
   }
 
