@@ -24,6 +24,8 @@ class Idea < ApplicationRecord
   has_many :phases, through: :ideas_phases
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
 
   belongs_to :idea_status, optional: true
 
@@ -111,7 +113,7 @@ class Idea < ApplicationRecord
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
       self.body_multiloc,
-      %i{title alignment list decoration link video}
+      %i{title alignment list decoration link image video}
     )
     self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
