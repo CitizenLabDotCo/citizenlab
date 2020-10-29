@@ -1,7 +1,8 @@
 import adminRoutes from 'containers/Admin/routes';
 import Loadable from 'react-loadable';
 import { LoadableLoadingCitizen } from 'components/UI/LoadableLoading';
-import projectFolderConfiguration from 'modules/project-folder';
+import moduleConfiguration from 'modules';
+import { parseModuleRoutes, RouteTypes } from 'utils/moduleUtils';
 
 export default function createRoutes() {
   return [
@@ -281,7 +282,10 @@ export default function createRoutes() {
             delay: 500,
           }),
         },
-        ...projectFolderConfiguration.routes.citizen,
+        ...parseModuleRoutes(
+          moduleConfiguration.routes.citizen,
+          RouteTypes.CITIZEN
+        ),
         {
           path: '*',
           name: 'notfound',

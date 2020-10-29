@@ -13,7 +13,7 @@ import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
 
-import projectFolderConfiguration from 'modules/project-folder';
+import moduleConfiguration from 'modules';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -25,6 +25,7 @@ import { currentTenantStream } from 'services/tenant';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
+import { parseModuleRoutes, RouteTypes } from 'utils/moduleUtils';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -146,6 +147,6 @@ export default () => ({
         delay: 500,
       }),
     },
-    ...projectFolderConfiguration.routes.admin,
+    ...parseModuleRoutes(moduleConfiguration.routes.admin, RouteTypes.ADMIN),
   ],
 });
