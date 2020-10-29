@@ -9,7 +9,7 @@
             Welcome!
           </h1>
           <p style="margin-bottom: 40px;">
-            Congratulations <%= @first_name %>, you successfully signed up on the participation platform of Hagawaga. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.
+            Congratulations <%= @first_name %>, you successfully signed up on the participation platform of <%= hagawaga(5) %>. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.
           </p>
         </mj-text>
       </mj-column>
