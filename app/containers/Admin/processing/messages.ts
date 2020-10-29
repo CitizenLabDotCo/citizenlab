@@ -41,6 +41,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.title',
     defaultMessage: 'Title',
   },
+  export: {
+    id: 'app.containers.Admin.Moderation.export',
+    defaultMessage: 'Export',
+  },
+  autotag: {
+    id: 'app.containers.Admin.Moderation.autotag',
+    defaultMessage: 'Autotag',
+  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
