@@ -181,7 +181,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 `;
 
 const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;
 
 type Props = {
