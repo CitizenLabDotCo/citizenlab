@@ -166,16 +166,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
     defaultMessage: 'Project name',
   },
-  projectSlug: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectSlug',
+  projectUrlSlug: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectUrlSlug',
     defaultMessage: 'Project slug',
   },
-  slugLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.slugLabel',
+  urlSlugLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugLabel',
     defaultMessage: 'Project slug',
   },
-  slugLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.slugLabelTooltip',
-    defaultMessage: 'This is the URL of your project.',
+  urlSlugLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugLabelTooltip',
+    defaultMessage:
+      'The slug can only contain letters, numbers and dashes (-). The preferred format is words separated by dashes.',
+  },
+  urlSlugBrokenLinkWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',
+    defaultMessage:
+      'Changing the project slug will break links that use the current slug in their URL.',
   },
 });

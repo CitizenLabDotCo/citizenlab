@@ -1152,7 +1152,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Search the templates",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Select group(s)",
   "app.containers.AdminPage.ProjectEdit.slugLabel": "Project slug",
-  "app.containers.AdminPage.ProjectEdit.slugLabelTooltip": "This is the URL of your project.",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Project status",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Set up and personalise your project.",
   "app.containers.AdminPage.ProjectEdit.survey": "Survey",
