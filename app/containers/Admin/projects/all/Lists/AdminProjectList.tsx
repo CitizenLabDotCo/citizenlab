@@ -55,7 +55,6 @@ const AdminProjectList = memo<Props>(
       !isNilOrError(AdminPublicationsList) &&
       AdminPublicationsList.length > 0
     ) {
-      console.log(AdminPublicationsList);
       return (
         <>
           <StyledListHeader>
