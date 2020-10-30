@@ -152,6 +152,7 @@ class LanguageSelector extends PureComponent<Props, State> {
     if (!isNilOrError(tenant) && !isNilOrError(locale)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const currentlySelectedLocale = locale;
+      const isRtl = !!locale.startsWith('ar');
 
       return (
         <Container
@@ -172,9 +173,10 @@ class LanguageSelector extends PureComponent<Props, State> {
           <Dropdown
             width="180px"
             top="68px"
-            right={!locale.startsWith('ar') ? '0px' : undefined}
-            left={locale.startsWith('ar') ? '0px' : undefined}
-            mobileRight="5px"
+            right={!isRtl ? '0px' : undefined}
+            left={isRtl ? '0px' : undefined}
+            mobileRight={!isRtl ? '5px' : undefined}
+            mobileLeft={isRtl ? '5px' : undefined}
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={
