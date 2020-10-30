@@ -25,7 +25,6 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
@@ -33,7 +32,7 @@ import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
 
-//hooks
+// hooks
 import useKeyPress from '../../../hooks/useKeyPress';
 
 const Container = styled.div`
@@ -98,7 +97,7 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 const Processing = memo<Props & InjectedIntlProps>(
-  ({ className, intl, ideas, topics }) => {
+  ({ className, ideas, topics }) => {
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       ideas.list
     );
@@ -190,6 +189,14 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     }, [ideas, processing]);
 
+    const closeModal = () => setIsModalOpen(false);
+    const openModal = () => setIsModalOpen(true);
+    const exportIdeasAsXlsx = () => console.log(selectedRows);
+    const closeSideModal = () => setPreviewPostId(null);
+    const confirmTags = () => console.log('confirm Tags');
+    const switchPreviewMode = () =>
+      setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
+
     if (!isNilOrError(ideaList)) {
       return (
         <Container className={className}>
@@ -204,7 +211,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 buttonStyle="admin-dark"
                 disabled={!!(selectedRows.length === 0)}
                 processing={processing}
-                onClick={() => setIsModalOpen(true)}
+                onClick={openModal}
               >
                 <FormattedMessage {...messages.autotag} />
               </Button>
@@ -214,7 +221,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 buttonStyle="admin-dark-outlined"
                 disabled={!!(selectedRows.length === 0)}
                 processing={processing}
-                onClick={() => console.log(selectedRows)}
+                onClick={exportIdeasAsXlsx}
               >
                 <FormattedMessage {...messages.export} />
               </Button>
@@ -271,15 +278,13 @@ const Processing = memo<Props & InjectedIntlProps>(
               type={'AllIdeas'}
               postId={previewPostId}
               mode={previewMode}
-              onClose={() => setPreviewPostId(null)}
-              onSwitchPreviewMode={() =>
-                setPreviewMode(previewMode === 'edit' ? 'view' : 'edit')
-              }
+              onClose={closeSideModal}
+              onSwitchPreviewMode={switchPreviewMode}
             />
           </Suspense>
           <Modal
             opened={isModalOpen}
-            close={() => setIsModalOpen(false)}
+            close={closeModal}
             header={<FormattedMessage {...messages.autotag} />}
           >
             <ModalContentContainer>
@@ -287,18 +292,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                 <FormattedMessage {...messages.export} />
               </Content>
               <ButtonsWrapper>
-                <Button
-                  buttonStyle="secondary"
-                  onClick={() => console.log('closeSendConfirmationModal')}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  buttonStyle="delete"
-                  onClick={() => console.log('handleTopicDeletionConfirm')}
-                  processing={processing}
-                >
-                  Delete
+                <Button buttonStyle="secondary" onClick={confirmTags}>
+                  Confirm
                 </Button>
               </ButtonsWrapper>
             </ModalContentContainer>

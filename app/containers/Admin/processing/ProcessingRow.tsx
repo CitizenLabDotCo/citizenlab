@@ -59,11 +59,13 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [onSelect]
     );
 
+    const handleClick = useCallback(() => openPreview(idea.id), [openPreview]);
+
     return (
       <Container
         className={className}
         bgColor={bgColor}
-        onClick={(e) => handleOnChecked(e)}
+        onClick={handleOnChecked}
       >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
@@ -72,7 +74,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         <td className="title">
           <ProcessingTableCell
             contentTitle={contentTitle}
-            handleClick={() => openPreview(idea.id)}
+            handleClick={handleClick}
           />
         </td>
         <td className="content">
