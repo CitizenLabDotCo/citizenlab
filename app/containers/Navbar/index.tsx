@@ -344,8 +344,7 @@ const Right = styled.div`
     margin-left: 30px;
 
     &.ie {
-        margin-left: 50px;
-        border: 2px solid red !important;
+      margin-left: 50px;
     }
     ${media.desktop`
         margin-left: 40px;
