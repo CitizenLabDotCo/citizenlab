@@ -447,7 +447,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider
-              theme={{ ...theme, isRtl: this.state.locale?.startsWith('ar') }}
+              theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
               <LiveAnnouncer>
                 <GlobalStyle />
