@@ -1,4 +1,5 @@
-import React, { useState, memo } from 'react';
+import React, { useState, useContext, memo } from 'react';
+import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -86,6 +87,8 @@ export const UsersShowPage = memo<Props & InjectedIntlProps>(
     const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
     const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
+    const previousPathName = useContext(PreviousPathnameContext);
+
     const changeTab = (toTab: UserTab) => () => {
       const oldScroll = savedScrollIndex;
       setCurrentTab(toTab);
@@ -98,7 +101,7 @@ export const UsersShowPage = memo<Props & InjectedIntlProps>(
         <NotFoundContainer className={className || ''}>
           <p>{formatMessage(messages.userNotFound)}</p>
           <Button
-            onClick={clHistory.goBack}
+            linkTo={previousPathName || '/'}
             text={formatMessage(messages.goBackToPreviousPage)}
             icon="arrow-back"
           />
