@@ -40,10 +40,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   input, textarea {
-    direction: rtl;
 
     ${isRtl`
         text-align: right;
+        direction: rtl;
     `}
     }
 
