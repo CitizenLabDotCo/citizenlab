@@ -122,13 +122,11 @@ Rails.application.routes.draw do
       resources :permissions, param: :permission_action do
         get 'participation_conditions', on: :member
       end
-      concern :participation_context do |options|
+      concern :participation_context
         # :action is already used as param, so we chose :permission_action instead
         resources :permissions, param: :permission_action do
           get 'participation_conditions', on: :member
         end
-
-        resource :ideas_order, only: :update, module: options.dig(:module)
       end
 
       # Events and phases are split in two because we cannot have a non-shallow
@@ -143,13 +141,13 @@ Rails.application.routes.draw do
       resources :phases,
                 only: %i[show edit update destroy],
                 defaults: { parent_param: :phase_id } do
-        concerns :participation_context, module: :phases
+        concerns :participation_context
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
       end
 
       resources :projects,
                 defaults: { parent_param: :project_id } do
-        concerns :participation_context, module: :projects
+        concerns :participation_context
 
         resources :events, only: %i[index new create]
         resources :projects_topics, only: [:index]

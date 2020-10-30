@@ -16,7 +16,7 @@ resource "Phases" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of phases per page"
-    end 
+    end
     let(:project_id) { @project.id }
 
     example_request "List all phases of a project" do
@@ -74,7 +74,7 @@ resource "Phases" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
-        parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false        
+        parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
