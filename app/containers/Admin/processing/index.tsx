@@ -5,7 +5,7 @@ import { includes } from 'lodash-es';
 // components
 import Table from 'components/UI/Table';
 import ProcessingRow from './ProcessingRow';
-import { Icon, Button, Select, Checkbox } from 'cl2-component-library';
+import { Button, Checkbox } from 'cl2-component-library';
 import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
 import Modal, {
   ButtonsWrapper,
