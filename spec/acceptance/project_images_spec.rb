@@ -40,17 +40,21 @@ resource "ProjectImage" do
     with_options scope: :image do
       parameter :image, "The base64 encoded image", required: true
       parameter :ordering, "An integer that is used to order the images within a project", required: false
+      parameter :ideas_order, 'The default order of ideas.'
     end
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
     let(:project_id) { @project.id }
     let(:image) { encode_image_as_base64("image13.png") }
     let(:ordering) { 1 }
+    let(:ideas_order) { 'new' }
 
     example_request "Add an image to a project" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
+      expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+      expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
     end
 
     describe do
@@ -79,18 +83,23 @@ resource "ProjectImage" do
     with_options scope: :image do
       parameter :image, "The base64 encoded image"
       parameter :ordering, "An integer that is used to order the images within a project"
+      parameter :ideas_order, 'The default order of ideas.'
     end
+
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
     let(:project_id) { @project.id }
     let(:image_id) { ProjectImage.first.id }
     let(:image) { encode_image_as_base64("image14.png") }
     let(:ordering) { 2 }
+    let(:ideas_order) { 'new' }
 
     example_request "Edit an image for a project" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
+      expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+      expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
     end
   end
 
