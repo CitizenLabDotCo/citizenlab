@@ -70,6 +70,10 @@ const LabelText = styled.div`
 export function validate(tenantLocales: Locale[]) {
   return function (values: FormValues) {
     const errors: FormikErrors<FormValues> = {};
+    // the default idea statuses have titles for every possible locale,
+    // not just the tenant locale, so without filtering our the
+    // irrelevant languages, the edit form could be submitted
+    // with all titles empty for the tenant locales
     const tenantLocalesTitleMultiloc = {};
 
     tenantLocales.forEach((locale) => {
