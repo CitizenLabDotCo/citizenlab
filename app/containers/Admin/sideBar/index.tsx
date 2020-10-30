@@ -196,6 +196,18 @@ class Sidebar extends PureComponent<
             ),
         },
         {
+          id: 'processing',
+          link: '/admin/processing',
+          iconName: 'setting',
+          message: 'processing',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/processing`
+            ),
+        },
+        {
           id: 'workshops',
           link: '/admin/workshops',
           iconName: 'workshops',
@@ -280,18 +292,6 @@ class Sidebar extends PureComponent<
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
               }/admin/settings`
-            ),
-        },
-        {
-          id: 'processing',
-          link: '/admin/processing',
-          iconName: 'setting',
-          message: 'processing',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/processing`
             ),
         },
       ],

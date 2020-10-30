@@ -134,7 +134,9 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
     } = this.props;
 
     const adminNoPadding =
-      this.state.adminNoPadding || pathname.includes('admin/dashboard');
+      this.state.adminNoPadding ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
 
     const adminFullWidth =
       this.state.adminFullWidth === true ||
