@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
+  items: {
+    id: 'app.containers.Admin.Processing.items',
+    defaultMessage: '{amount} items',
+  },
   helpTooltipText: {
     id: 'app.containers.Admin.Processing.helpTooltipText',
     defaultMessage:
