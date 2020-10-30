@@ -2270,5 +2270,6 @@
   "app.containers.Admin.Processing.title": "title",
   "app.containers.Admin.Processing.export": "export",
   "app.containers.Admin.Processing.autotag": "autotag",
+  "app.containers.Admin.Processing.item": "item",
   "app.containers.Admin.Processing.helpTooltipText": "Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?"
 }

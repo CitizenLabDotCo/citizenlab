@@ -239,7 +239,12 @@ const Processing = memo<Props & InjectedIntlProps>(
                 </th>
 
                 <th className="title">
-                  <FormattedMessage {...messages.title} />
+                  <FormattedMessage
+                    {...messages.items}
+                    values={{
+                      amount: ideaList.length,
+                    }}
+                  />
                 </th>
                 <th className="tags">
                   <FormattedMessage {...messages.tags} />
