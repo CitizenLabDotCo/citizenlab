@@ -21,7 +21,7 @@ import { Multiloc } from 'typings';
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
   :hover {
-    background-color: ${rgba(colors.adminTextColor, 0.3)};
+    background-color: #ebedef;
   }
 `;
 
