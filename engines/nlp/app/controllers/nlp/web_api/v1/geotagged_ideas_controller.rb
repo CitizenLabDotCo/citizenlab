@@ -14,8 +14,8 @@ module NLP
           end.to_h
 
           render json: linked_json(
-            @ideas, 
-            ::WebApi::V1::IdeaGeotagSerializer, 
+            @ideas,
+            ::WebApi::V1::IdeaGeotagSerializer,
             params: fastjson_params(geotags: geotags)
             )
         end
