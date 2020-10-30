@@ -1,6 +1,9 @@
 <mjml>
   <%= render partial: "application/header" %>
   <mj-body>
+    <!-- TODO: Preheader code is invalid -->
+
+    <%= render partial: "application/logo_medium_top" %>
 
     <!-- Event description + action list -->
     <mj-section padding="30px 25px 20px">
@@ -17,6 +20,10 @@
       </mj-column>
     </mj-section>
 
+    <!-- CTA button -->
+    <% @cta[:href] = @url_service.home_url(tenant: @tenant, locale: @locale) %>
+    <% @cta[:message] = formatMessage('cta_join_platform') %>
+    <%= render partial: "application/cta_button" %>
 
     <%= render partial: "application/footer" %>
 
