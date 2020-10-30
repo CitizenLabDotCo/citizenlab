@@ -172,7 +172,8 @@ class LanguageSelector extends PureComponent<Props, State> {
           <Dropdown
             width="180px"
             top="68px"
-            right="0px"
+            right={!locale.startsWith('ar') ? '0px' : undefined}
+            left={locale.startsWith('ar') ? '0px' : undefined}
             mobileRight="5px"
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
