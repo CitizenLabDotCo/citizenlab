@@ -157,12 +157,17 @@ const Processing = memo<Props & InjectedIntlProps>(
       [ideaList, selectedRows, processing]
     );
 
-    const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
+    const handleProjectIdsChange = (newProjectIds: string[]) => {
       const { onChangeProjects } = ideas as GetIdeasChildProps;
+
       setSelectedProjectIds(newProjectIds);
-      onChangeProjects(newProjectIds);
+      debugger;
+      newProjectIds.length > 0
+        ? onChangeProjects(newProjectIds)
+        : onChangeProjects([...projectList.map((project) => project.value)]);
+
       trackEventByName(tracks.projectFilterUsed);
-    }, []);
+    };
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
@@ -390,13 +395,14 @@ const Data = adopt<DataProps, InputProps>({
       </GetProjects>
     );
   },
-  ideas: ({ render }) => {
+  ideas: ({ render, projects }) => {
+    const projectIds = projects?.projectsList?.map((project) => project.id);
     return (
       <GetIdeas
         type="paginated"
         pageSize={2000000}
         sort="new"
-        projectIds={undefined}
+        projectIds={projectIds}
       >
         {render}
       </GetIdeas>
