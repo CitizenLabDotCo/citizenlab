@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import IdeaCards from 'components/IdeaCards';
@@ -116,7 +117,7 @@ export class UsersShowPage extends PureComponent<
         <NotFoundContainer className={className || ''}>
           <p>{formatMessage(messages.userNotFound)}</p>
           <Button
-            linkTo="/projects"
+            onClick={clHistory.goBack}
             text={formatMessage(messages.goBackToPreviousPage)}
             icon="arrow-back"
           />
