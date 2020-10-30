@@ -1,4 +1,5 @@
 <mjml>
+  <%= render partial: "application/header" %>
   <mj-body>
 
     <!-- Event description + action list -->
@@ -15,6 +16,9 @@
         </mj-text>
       </mj-column>
     </mj-section>
+
+
+    <%= render partial: "application/footer" %>
 
   </mj-body>
 </mjml>
