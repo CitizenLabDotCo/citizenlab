@@ -4,9 +4,6 @@ import React, { memo, useState, useCallback } from 'react';
 import { LocaleSwitcher } from 'cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-
-import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -14,7 +11,6 @@ import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Multiloc, Locale } from 'typings';
-import Tippy from '@tippyjs/react';
 
 const Container = styled.div`
   overflow-wrap: break-word;
@@ -27,10 +23,11 @@ const Content = styled.div``;
 const ContentTitle = styled.div`
   display: inline-block;
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  margin-bottom: 12px;
-  text-decoration: underline;
+  font-weight: 400;
   cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const StyledLocaleSwitcher = styled(LocaleSwitcher)`
@@ -70,14 +67,9 @@ const ProcessingTableCell = memo<Props>(
         )}
         <Content>
           {contentTitle && contentTitle[selectedLocale] && (
-            <Tippy
-              placement="bottom-start"
-              content={<FormattedMessage {...messages.helpTooltipText} />}
-            >
-              <ContentTitle onClick={handleClick}>
-                {contentTitle[selectedLocale]}
-              </ContentTitle>
-            </Tippy>
+            <ContentTitle onClick={handleClick}>
+              {contentTitle[selectedLocale]}
+            </ContentTitle>
           )}
         </Content>
       </Container>
