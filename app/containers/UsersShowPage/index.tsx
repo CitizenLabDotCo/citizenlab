@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -81,36 +81,17 @@ interface Props extends InputProps, DataProps {}
 
 export type UserTab = 'ideas' | 'comments';
 
-interface State {
-  currentTab: UserTab;
-  savedScrollIndex: number;
-}
+export const UsersShowPage = memo<Props & InjectedIntlProps>(
+  ({ user, className, intl: { formatMessage } }) => {
+    const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
+    const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
-export class UsersShowPage extends PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentTab: 'ideas',
-      savedScrollIndex: 0,
+    const changeTab = (toTab: UserTab) => () => {
+      const oldScroll = savedScrollIndex;
+      setCurrentTab(toTab);
+      setSavedScrollIndex(window.pageYOffset);
+      window.scrollTo(0, oldScroll);
     };
-  }
-
-  changeTab = (toTab: UserTab) => () => {
-    const oldScroll = this.state.savedScrollIndex;
-    this.setState({ currentTab: toTab, savedScrollIndex: window.pageYOffset });
-    window.scrollTo(0, oldScroll);
-  };
-
-  render() {
-    const {
-      user,
-      className,
-      intl: { formatMessage },
-    } = this.props;
-    const { currentTab } = this.state;
 
     if (isNilOrError(user)) {
       return (
@@ -132,7 +113,7 @@ export class UsersShowPage extends PureComponent<
 
           <UserNavbar
             currentTab={currentTab}
-            selectTab={this.changeTab}
+            selectTab={changeTab}
             userId={user.id}
           />
 
@@ -153,14 +134,14 @@ export class UsersShowPage extends PureComponent<
       </>
     );
   }
-}
+);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   user: ({ params, render }) => <GetUser slug={params.slug}>{render}</GetUser>,
 });
 
 export default withRouter(
-  injectIntl((inputProps: InputProps & WithRouterProps) => (
+  injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
     <Data {...inputProps}>
       {(dataProps) => <UsersShowPage {...inputProps} {...dataProps} />}
     </Data>
