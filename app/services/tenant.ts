@@ -151,6 +151,7 @@ export interface ITenantSettings {
   project_visibility?: TenantFeature;
   project_management?: TenantFeature;
   idea_assignment?: TenantFeature;
+  custom_idea_statuses?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
