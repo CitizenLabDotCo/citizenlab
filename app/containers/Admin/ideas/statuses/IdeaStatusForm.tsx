@@ -2,7 +2,7 @@ import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 import { ideaStatusCodes, Code } from 'services/ideaStatuses';
 
 // components
@@ -67,14 +67,21 @@ const LabelText = styled.div`
   }
 `;
 
-export function validate(values: FormValues): FormikErrors<FormValues> {
-  const errors: FormikErrors<FormValues> = {};
+export function validate(tenantLocales: Locale[]) {
+  return function (values: FormValues) {
+    const errors: FormikErrors<FormValues> = {};
+    const tenantLocalesTitleMultiloc = {};
 
-  if (every(getValues(values.title_multiloc), isEmpty)) {
-    errors.title_multiloc = [{ error: 'blank' }] as any;
-  }
+    tenantLocales.forEach((locale) => {
+      tenantLocalesTitleMultiloc[locale] = values.title_multiloc[locale];
+    });
 
-  return errors;
+    if (every(getValues(tenantLocalesTitleMultiloc), isEmpty)) {
+      errors.title_multiloc = [{ error: 'blank' }] as any;
+    }
+
+    return errors;
+  };
 }
 
 const IdeaStatusForm = ({

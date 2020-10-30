@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { addIdeaStatus } from 'services/ideaStatuses';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import useTenantLocales from 'hooks/useTenantLocales';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -19,6 +21,7 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 const NewIdeaStatus = () => {
+  const tenantLocales = useTenantLocales();
   const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
@@ -47,25 +50,29 @@ const NewIdeaStatus = () => {
     clHistory.push('/admin/ideas/statuses');
   };
 
-  return (
-    <Section>
-      <GoBackButton onClick={goBack} />
-      <StyledSectionTitle>
-        <FormattedMessage {...messages.addIdeaStatus} />
-      </StyledSectionTitle>
-      <Formik
-        initialValues={{
-          color: '#b5b5b5',
-          title_multiloc: {},
-          description_multiloc: {},
-          code: 'proposed',
-        }}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={validate}
-      />
-    </Section>
-  );
+  if (!isNilOrError(tenantLocales)) {
+    return (
+      <Section>
+        <GoBackButton onClick={goBack} />
+        <StyledSectionTitle>
+          <FormattedMessage {...messages.addIdeaStatus} />
+        </StyledSectionTitle>
+        <Formik
+          initialValues={{
+            color: '#b5b5b5',
+            title_multiloc: {},
+            description_multiloc: {},
+            code: 'proposed',
+          }}
+          onSubmit={handleSubmit}
+          render={renderFn}
+          validate={validate(tenantLocales)}
+        />
+      </Section>
+    );
+  }
+
+  return null;
 };
 
 export default NewIdeaStatus;
