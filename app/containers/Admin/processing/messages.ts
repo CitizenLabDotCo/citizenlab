@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.export',
     defaultMessage: 'Export',
   },
+  project: {
+    id: 'app.containers.Admin.Processing.project',
+    defaultMessage: 'Project',
+  },
   autotag: {
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
