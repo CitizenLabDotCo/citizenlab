@@ -12,8 +12,7 @@ import Modal, {
   Content,
   ModalContentContainer,
 } from 'components/UI/Modal';
-
-import SelectProject from './SelectProject';
+import SelectProject from '../moderation/SelectProject';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
