@@ -10,6 +10,7 @@ module EmailCampaigns
       multiloc_service = MultilocService.new
       
       @url_service = Frontend::UrlService.new
+      @cta = {}
       @locale = recipient.locale
       @user = recipient
       @tenant = Tenant.current
