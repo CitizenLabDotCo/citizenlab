@@ -28,7 +28,7 @@ export const SectionField = styled.div`
   }
 
   ${isRtl`
-    aligh-items: felx-end;
+    align-items: flex-end;
   `}
 `;
 

@@ -284,7 +284,7 @@ export class OfficialFeedbackPost extends PureComponent<
           key={officialFeedbackPost.id}
           className={`e2e-official-feedback-post ${className || ''}`}
         >
-          {(editingAllowed || true) && (
+          {editingAllowed && (
             <StyledMoreActionsMenu
               ariaLabel={this.props.intl.formatMessage(
                 messages.showMoreActions

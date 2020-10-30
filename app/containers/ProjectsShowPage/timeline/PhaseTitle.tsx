@@ -162,18 +162,16 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
       selectedPhase?.attributes.start_at,
       'YYYY-MM-DD'
     );
-    const startYear = startMoment.format('YYYY');
     const endMoment = moment(selectedPhase?.attributes.end_at, 'YYYY-MM-DD');
-    const endYear = endMoment.format('YYYY');
     const startDate = new Intl.DateTimeFormat(locale, {
       day: 'numeric',
       month: 'short',
-      year: startYear !== endYear ? '2-digit' : undefined,
+      year: 'numeric',
     }).format(startMoment.toDate());
     const endDate = new Intl.DateTimeFormat(locale, {
       day: 'numeric',
       month: 'short',
-      year: startYear !== endYear ? '2-digit' : undefined,
+      year: 'numeric',
     }).format(endMoment.toDate());
 
     if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
@@ -206,8 +204,7 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             )}
           </HeaderTitle>
           <HeaderSubtitle className={selectedPhaseStatus || ''}>
-            <span>{startDate}</span> {' - '} <span>{endDate} </span>{' '}
-            <span>{startYear === endYear && endYear} </span>
+            {startDate} - {endDate}
           </HeaderSubtitle>
         </HeaderTitleWrapper>
         <ScreenReaderOnly>

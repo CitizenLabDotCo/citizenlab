@@ -69,16 +69,17 @@ const Left = styled.ul`
     ${isRtl`
         margin-left: 0;
         margin-right: 12px;
+
         &:after {
-            content: '';
+          content: '';
         }
 
         &:before {
-            color: ${colors.label};
-            font-size: ${fontSizes.small}px;
-            font-weight: 400;
-            content: '•';
-            margin-right: 12px;
+          color: ${colors.label};
+          font-size: ${fontSizes.small}px;
+          font-weight: 400;
+          content: '•';
+          margin-right: 12px;
         }
     `}
 

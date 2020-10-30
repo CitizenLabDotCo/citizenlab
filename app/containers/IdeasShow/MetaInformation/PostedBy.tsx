@@ -32,9 +32,9 @@ const StyledAvatar = styled(Avatar)`
   margin-right: 5px;
   margin-left: -4px;
 
-  margin-right: -4px;
-  margin-left: 5px;
   ${isRtl`
+    margin-right: -4px;
+    margin-left: 5px;
   `}
 `;
 

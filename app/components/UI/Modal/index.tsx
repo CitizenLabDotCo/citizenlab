@@ -223,6 +223,7 @@ export const HeaderContainer = styled.div`
   padding-right: 30px;
   padding-top: 20px;
   padding-bottom: 20px;
+  margin-right: 45px;
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
