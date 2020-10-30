@@ -1,6 +1,7 @@
 import React, { useState, useContext, memo } from 'react';
 import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
+import { isError } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -95,7 +96,7 @@ export const UsersShowPage = memo<Props & InjectedIntlProps>(
       window.scrollTo(0, oldScroll);
     };
 
-    if (isNilOrError(user)) {
+    if (isError(user)) {
       return (
         <NotFoundContainer className={className || ''}>
           <p>{formatMessage(messages.userNotFound)}</p>
@@ -106,35 +107,37 @@ export const UsersShowPage = memo<Props & InjectedIntlProps>(
           />
         </NotFoundContainer>
       );
+    } else if (!isNilOrError(user)) {
+      return (
+        <>
+          <UsersShowPageMeta user={user} />
+          <Container id="e2e-usersshowpage" className={className}>
+            <UserHeader userSlug={user.attributes.slug} />
+
+            <UserNavbar
+              currentTab={currentTab}
+              selectTab={changeTab}
+              userId={user.id}
+            />
+
+            <StyledContentContainer>
+              {currentTab === 'ideas' && (
+                <UserIdeas>
+                  <IdeaCards
+                    type="load-more"
+                    authorId={user.id}
+                    invisibleTitleMessage={messages.invisibleTitleIdeasList}
+                  />
+                </UserIdeas>
+              )}
+
+              {currentTab === 'comments' && <UserComments userId={user.id} />}
+            </StyledContentContainer>
+          </Container>
+        </>
+      );
     }
-    return (
-      <>
-        <UsersShowPageMeta user={user} />
-        <Container id="e2e-usersshowpage" className={className}>
-          <UserHeader userSlug={user.attributes.slug} />
-
-          <UserNavbar
-            currentTab={currentTab}
-            selectTab={changeTab}
-            userId={user.id}
-          />
-
-          <StyledContentContainer>
-            {currentTab === 'ideas' && (
-              <UserIdeas>
-                <IdeaCards
-                  type="load-more"
-                  authorId={user.id}
-                  invisibleTitleMessage={messages.invisibleTitleIdeasList}
-                />
-              </UserIdeas>
-            )}
-
-            {currentTab === 'comments' && <UserComments userId={user.id} />}
-          </StyledContentContainer>
-        </Container>
-      </>
-    );
+    return null;
   }
 );
 
