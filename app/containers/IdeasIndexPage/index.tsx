@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Container = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -57,6 +57,12 @@ const PageTitle = styled.h1`
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.xxxl}px;
   `}
+
+ ${isRtl`
+  ${media.smallerThanMaxTablet`
+    text-align: right;
+  `}
+ `}
 `;
 
 export default memo(() => (
