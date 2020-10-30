@@ -694,7 +694,7 @@
   "app.containers.Admin.Processing.autotag": "autotag",
   "app.containers.Admin.Processing.export": "export",
   "app.containers.Admin.Processing.helpTooltipText": "Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?",
-  "app.containers.Admin.Processing.items": "{amount} items",
+  "app.containers.Admin.Processing.items": "{selected} {items} selected out of {amount}",
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "title",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Delete Group",

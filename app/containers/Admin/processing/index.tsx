@@ -287,7 +287,9 @@ const Processing = memo<Props & InjectedIntlProps>(({ className, ideas }) => {
                 <FormattedMessage
                   {...messages.items}
                   values={{
+                    items: selectedRows.length > 1 ? 'items' : 'item',
                     amount: ideaList.length,
+                    selected: selectedRows.length,
                   }}
                 />
               </th>

@@ -19,7 +19,7 @@ export default defineMessages({
   },
   items: {
     id: 'app.containers.Admin.Processing.items',
-    defaultMessage: '{amount} items',
+    defaultMessage: '{seleted} {items} selected out of {amount}',
   },
   helpTooltipText: {
     id: 'app.containers.Admin.Processing.helpTooltipText',
