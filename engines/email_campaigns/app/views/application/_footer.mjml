@@ -1,0 +1,28 @@
+<mj-section full-width="full-width" background-color="#F6F6F6" padding="40px 25px">
+  <mj-column>
+    <mj-text padding-bottom="20px">
+      <a href="http://localhost:3000"
+        style="color: #84939E;text-decoration: none; margin-right: 10px;">Unsubscribe</a>
+      |
+      <a href="http://localhost:3000/pages/terms-and-conditions"
+        style="color: #84939E;text-decoration: none; margin: 0 10px;">Terms & Conditions</a>
+      |
+      <a href="http://localhost:3000/pages/privacy-policy"
+        style="color: #84939E;text-decoration: none; margin-left: 10px;">Privacy Policy</a>
+    </mj-text>
+    <mj-text color="#84939E" padding-bottom="20px">
+      <p style="font-size: 12px;">
+        This e-mail was sent to you by CitizenLab on behalf of Hagawa, because you are a registered user of Hagawa. You can Hagawa if you do not want to receive these e-mails in the future.
+      </p>
+    </mj-text>
+    <mj-text color="#84939E">
+      <span style="font-style: italic; 
+                    font-weight: bold;
+                    font-size: 12px;
+                    display: inline-block;
+                    margin-bottom: 10px">Powered by</span>
+    </mj-text>
+    <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
+      src="https://res.cloudinary.com/citizenlabco/image/upload/v1593689890/logo-email-x2_wbnwkf.png" alt="CitizenLab logo" />
+  </mj-column>
+</mj-section>
