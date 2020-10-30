@@ -2,7 +2,6 @@ import React, { useState, useContext, memo } from 'react';
 import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import IdeaCards from 'components/IdeaCards';
