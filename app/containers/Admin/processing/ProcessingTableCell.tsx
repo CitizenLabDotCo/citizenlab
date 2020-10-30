@@ -1,19 +1,16 @@
-import React, { memo, useState, useCallback, MouseEvent } from 'react';
-import { truncate } from 'lodash-es';
+import React, { memo, useState, useCallback } from 'react';
 
 // components
 import { LocaleSwitcher } from 'cl2-component-library';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
-import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Multiloc, Locale } from 'typings';
