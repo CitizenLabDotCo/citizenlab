@@ -1,113 +1,25 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageTitle: {
-    id: 'app.containers.Admin.Moderation.pageTitle',
-    defaultMessage: 'Moderation',
-  },
-  type: {
-    id: 'app.containers.Admin.Moderation.type',
-    defaultMessage: 'Type',
-  },
-  belongsTo: {
-    id: 'app.containers.Admin.Moderation.belongsTo',
-    defaultMessage: 'Belongs to',
-  },
-  project: {
-    id: 'app.containers.Admin.Moderation.project',
-    defaultMessage: 'Project',
-  },
-  idea: {
-    id: 'app.containers.Admin.Moderation.idea',
-    defaultMessage: 'Idea',
-  },
-  initiative: {
-    id: 'app.containers.Admin.Moderation.initiative',
-    defaultMessage: 'Initiative',
-  },
-  comment: {
-    id: 'app.containers.Admin.Moderation.comment',
-    defaultMessage: 'Comment',
-  },
-  content: {
-    id: 'app.containers.Admin.Moderation.content',
-    defaultMessage: 'Content',
-  },
   tags: {
-    id: 'app.containers.Admin.Moderation.tags',
+    id: 'app.containers.Admin.Processing.tags',
     defaultMessage: 'Tags',
   },
   title: {
-    id: 'app.containers.Admin.Moderation.title',
+    id: 'app.containers.Admin.Processing.title',
     defaultMessage: 'Title',
   },
   export: {
-    id: 'app.containers.Admin.Moderation.export',
+    id: 'app.containers.Admin.Processing.export',
     defaultMessage: 'Export',
   },
   autotag: {
-    id: 'app.containers.Admin.Moderation.autotag',
+    id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
-  date: {
-    id: 'app.containers.Admin.Moderation.date',
-    defaultMessage: 'Date',
-  },
-  rowsPerPage: {
-    id: 'app.containers.Admin.Moderation.rowsPerPage',
-    defaultMessage: 'Rows per page',
-  },
-  show: {
-    id: 'app.containers.Admin.Moderation.show',
-    defaultMessage: 'Show',
-  },
-  status: {
-    id: 'app.containers.Admin.Moderation.status',
-    defaultMessage: 'Status',
-  },
-  all: {
-    id: 'app.containers.Admin.Moderation.all',
-    defaultMessage: 'All',
-  },
-  read: {
-    id: 'app.containers.Admin.Moderation.read',
-    defaultMessage: 'Viewed',
-  },
-  unread: {
-    id: 'app.containers.Admin.Moderation.unread',
-    defaultMessage: 'Not viewed',
-  },
-  noViewedItems: {
-    id: 'app.containers.Admin.Moderation.noViewedItems',
-    defaultMessage: 'There are no viewed items',
-  },
-  noUnviewedItems: {
-    id: 'app.containers.Admin.Moderation.noUnviewedItems',
-    defaultMessage: 'There are no unviewed items',
-  },
-  readMore: {
-    id: 'app.containers.Admin.Moderation.readMore',
-    defaultMessage: '...see more',
-  },
-  collapse: {
-    id: 'app.containers.Admin.Moderation.collapse',
-    defaultMessage: 'see less',
-  },
-  markAsViewed: {
-    id: 'app.containers.Admin.Moderation.markAsViewed',
-    defaultMessage: 'Mark {selectedItemsCount} items as viewed',
-  },
-  markAsNotViewed: {
-    id: 'app.containers.Admin.Moderation.markAsNotViewed',
-    defaultMessage: 'Mark {selectedItemsCount} items as not viewed',
-  },
-  goToThisContentType: {
-    id: 'app.containers.Admin.Moderation.goToThisContentType',
-    defaultMessage: 'Open this {contentType} in a new tab',
-  },
   helpTooltipText: {
-    id: 'app.containers.Admin.Moderation.helpTooltipText',
+    id: 'app.containers.Admin.Processing.helpTooltipText',
     defaultMessage:
-      "This page allows you to quickly check all new input that has been placed on your platform: ideas, comments & initiatives. Everything that you checked, can be marked as 'Viewed'. This makes sure you keep an easy overview of what has been checked by you or your colleagues and what not.",
+      'Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?',
   },
 });

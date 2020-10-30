@@ -75,9 +75,7 @@ const ProcessingTableCell = memo<Props>(
           {contentTitle && contentTitle[selectedLocale] && (
             <Tippy
               placement="bottom-start"
-              content={
-                'Did you know you can hit your keyboard up and down arrow to show and navigate through ideas content ?'
-              }
+              content={<FormattedMessage {...messages.helpTooltipText} />}
             >
               <ContentTitle onClick={handleClick}>
                 {contentTitle[selectedLocale]}

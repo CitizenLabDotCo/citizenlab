@@ -2265,5 +2265,10 @@
   "containers.SiteMap.timeline": "Project phases",
   "containers.SiteMap.userSpaceSection": "Your account",
   "containers.SubscriptionEndedPage.accessDenied": "You no longer have access",
-  "containers.SubscriptionEndedPage.subscriptionEnded": "It appears that you no longer can access this page, since your CitizenLab subscription has ended."
+  "containers.SubscriptionEndedPage.subscriptionEnded": "It appears that you no longer can access this page, since your CitizenLab subscription has ended.",
+  "app.containers.Admin.Processing.tags": "tags",
+  "app.containers.Admin.Processing.title": "title",
+  "app.containers.Admin.Processing.export": "export",
+  "app.containers.Admin.Processing.autotag": "autotag",
+  "app.containers.Admin.Processing.helpTooltipText": "Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?"
 }
