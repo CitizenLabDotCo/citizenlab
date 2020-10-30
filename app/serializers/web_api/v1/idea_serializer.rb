@@ -6,6 +6,10 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     name_service.display_name!(object.author)
   end
 
+  attribute :body_multiloc do |object|
+    TextImageService.new.render_data_images object, :body_multiloc
+  end
+
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
