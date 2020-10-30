@@ -52,8 +52,8 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       : '#fff';
 
     const handleOnChecked = useCallback(
-      (_event: React.ChangeEvent) => {
-        console.log('select', idea.id);
+      (_event: React.ChangeEvent | React.MouseEvent) => {
+        _event.preventDefault();
         onSelect(idea.id);
       },
       [onSelect]
@@ -63,7 +63,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       <Container
         className={className}
         bgColor={bgColor}
-        onClick={() => handleOnChecked}
+        onClick={(e) => handleOnChecked(e)}
       >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
