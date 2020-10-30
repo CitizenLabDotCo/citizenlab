@@ -691,6 +691,12 @@
   "app.containers.Admin.Moderation.status": "Status",
   "app.containers.Admin.Moderation.type": "Type",
   "app.containers.Admin.Moderation.unread": "Not seen",
+  "app.containers.Admin.Processing.autotag": "autotag",
+  "app.containers.Admin.Processing.export": "export",
+  "app.containers.Admin.Processing.helpTooltipText": "Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?",
+  "app.containers.Admin.Processing.items": "{amount} items",
+  "app.containers.Admin.Processing.tags": "tags",
+  "app.containers.Admin.Processing.title": "title",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Delete Group",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Edit Group",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Users",
@@ -1351,6 +1357,7 @@
   "app.containers.AdminPage.SideBar.initiatives": "Proposals",
   "app.containers.AdminPage.SideBar.invitations": "Invitations",
   "app.containers.AdminPage.SideBar.moderation": "Activity",
+  "app.containers.AdminPage.SideBar.processing": "Processing",
   "app.containers.AdminPage.SideBar.projects": "Projects",
   "app.containers.AdminPage.SideBar.settings": "Settings",
   "app.containers.AdminPage.SideBar.users": "Users",
@@ -2265,11 +2272,5 @@
   "containers.SiteMap.timeline": "Project phases",
   "containers.SiteMap.userSpaceSection": "Your account",
   "containers.SubscriptionEndedPage.accessDenied": "You no longer have access",
-  "containers.SubscriptionEndedPage.subscriptionEnded": "It appears that you no longer can access this page, since your CitizenLab subscription has ended.",
-  "app.containers.Admin.Processing.tags": "tags",
-  "app.containers.Admin.Processing.title": "title",
-  "app.containers.Admin.Processing.export": "export",
-  "app.containers.Admin.Processing.autotag": "autotag",
-  "app.containers.Admin.Processing.item": "item",
-  "app.containers.Admin.Processing.helpTooltipText": "Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?"
+  "containers.SubscriptionEndedPage.subscriptionEnded": "It appears that you no longer can access this page, since your CitizenLab subscription has ended."
 }
