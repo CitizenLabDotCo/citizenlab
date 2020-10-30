@@ -1835,6 +1835,7 @@
   "app.containers.Projects.budgetExceeded": "",
   "app.containers.Projects.budgetValidated": "",
   "app.containers.Projects.currentPhase": "",
+  "app.containers.Projects.editProject": "",
   "app.containers.Projects.endedOn": "",
   "app.containers.Projects.endsAt": "",
   "app.containers.Projects.endsOn": "",
