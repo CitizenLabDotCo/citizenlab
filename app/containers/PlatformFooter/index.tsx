@@ -35,7 +35,13 @@ import GetWindowSize, {
 // style
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;
@@ -56,6 +62,11 @@ const ShortFeedbackContainer = styled.div`
     top: -25px;
     left: 25px;
     z-index: 3;
+
+    ${isRtl`
+      left: auto;
+      right: 25px;
+    `}
   `}
 
   ${media.smallerThanMaxTablet`
@@ -70,6 +81,10 @@ const ShortFeedbackContainer = styled.div`
 const ShortFeedback = styled.div`
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMaxTablet`
     justify-content: center;
@@ -92,6 +107,11 @@ const FeedbackQuestion = styled.span`
   font-weight: 400;
   line-height: normal;
   margin-right: 15px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 15px;
+  `}
 `;
 
 const FeedbackButtons = styled.div`
