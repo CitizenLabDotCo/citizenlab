@@ -228,8 +228,8 @@ class AdminProjectTimelineEdit extends PureComponent<
       submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
-        start_at: startDate ? startDate.format('YYYY-MM-DD') : '',
-        end_at: endDate ? endDate.format('YYYY-MM-DD') : '',
+        start_at: startDate ? startDate.toISOString().substring(0, 10) : '',
+        end_at: endDate ? endDate.toISOString().substring(0, 10) : '',
       },
     }));
   };
@@ -320,6 +320,7 @@ class AdminProjectTimelineEdit extends PureComponent<
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ attributeDiff: {} });
         } else if (projectId && !isEmpty(attributeDiff)) {
+          console.log(attributeDiff);
           phaseResponse = await addPhase(projectId, attributeDiff);
           redirect = true;
         }
