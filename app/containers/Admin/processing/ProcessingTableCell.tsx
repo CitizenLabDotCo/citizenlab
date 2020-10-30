@@ -28,6 +28,7 @@ const Container = styled.div`
 const Content = styled.div``;
 
 const ContentTitle = styled.div`
+  display: inline-block;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-bottom: 12px;
