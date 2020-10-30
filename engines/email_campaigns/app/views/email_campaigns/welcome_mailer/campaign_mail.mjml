@@ -11,7 +11,7 @@
           </h1>
           <p style="margin-bottom: 40px;">
             <%= formatMessage('message_welcome', 
-            {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
+            values: {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
           </p>
         </mj-text>
       </mj-column>
