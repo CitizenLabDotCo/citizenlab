@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, isRtl } from 'utils/styleUtils';
 
 export const SectionContainer = styled.div`
   padding-top: 70px;
@@ -23,4 +23,8 @@ export const ProjectPageSectionTitle = styled.h2`
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
+
+  ${isRtl`
+    text-align: right;
+  `}
 `;

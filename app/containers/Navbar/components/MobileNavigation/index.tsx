@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { Icon } from 'cl2-component-library';
@@ -25,6 +25,14 @@ const Container = styled.nav`
   align-items: stretch;
   justify-content: space-evenly;
   z-index: 1005;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -67,6 +75,11 @@ const NavigationLabel = styled.div`
   font-weight: 400;
   margin-left: 6px;
 
+  ${isRtl`
+  margin-left: 0;
+  margin-right: 6px;
+`}
+
   ${media.smallPhone`
     font-size: ${fontSizes.base - 1}px;
   `}
@@ -77,6 +90,10 @@ const NavigationItem = styled(Link)`
   align-items: center;
   cursor: pointer;
   margin: 0 auto;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+`}
 
   &.active {
     ${NavigationIcon} {
