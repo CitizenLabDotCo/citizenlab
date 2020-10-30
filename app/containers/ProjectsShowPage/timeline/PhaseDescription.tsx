@@ -24,7 +24,12 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { defaultCardStyle, media, viewportWidths } from 'utils/styleUtils';
+import {
+  defaultCardStyle,
+  media,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -45,6 +50,10 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledFileAttachments = styled(FileAttachments)`
