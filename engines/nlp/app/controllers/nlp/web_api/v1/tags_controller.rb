@@ -8,14 +8,10 @@ module NLP
 
         def generate_tags
           locale = params['locale']
-          @tags = []
-          TagSuggestionService.new.suggest(policy_scope(Idea).where(id: params['idea_ids']), locale).each { |e|
-            tag_data = {
-              title_multiloc: {}
-            }
-            tag_data[:title_multiloc][locale] = e[:text]
-            tag = Tag.create(tag_data)
-            @tags.push(tag) if tag #TODO error handle
+          @tags = TagSuggestionService.new.suggest(policy_scope(Idea).where(id: params['idea_ids']), locale).map { |e|
+            Tag.create(title_multiloc: {
+              locale => e["text"]
+            })
           }
 
           render json: ::WebApi::V1::TagSerializer.new(@tags, params: fastjson_params).serialized_json, status: :ok

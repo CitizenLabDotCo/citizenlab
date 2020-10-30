@@ -14,7 +14,7 @@ resource "TagSuggestion" do
 
   get "/web_api/v1/tag_suggestions" do
     before do
-      @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'Lalalal.'})
+      @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'})
     end
     parameter :idea_ids, 'The ideas to suggest topics for', required: true
     parameter :locale, 'The locale', required: true
@@ -26,12 +26,12 @@ resource "TagSuggestion" do
       example "generate tags" do
         allow_any_instance_of(NLP::TagSuggestionService).to receive(:suggest).and_return([
       {
-        "text": "kaggle",
-        "frequency": 11
+        "text" => "kaggle",
+        "frequency" => 11
       },
       {
-        "text": "google",
-        "frequency": 10
+        "text" => "google",
+        "frequency" => 10
       }])
      do_request
 
