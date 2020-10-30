@@ -5,7 +5,9 @@ import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
+// hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
+import useTenantLocales from 'hooks/useTenantLocales';
 import { Formik } from 'formik';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
@@ -29,6 +31,7 @@ const StyledSectionTitle = styled(SectionTitle)`
 const Edit = ({ params }: WithRouterProps) => {
   const { id: statusId } = params;
   const ideaStatus = useIdeaStatus({ statusId });
+  const tenantLocales = useTenantLocales();
 
   const handleSubmit = (
     values: FormValues,
@@ -59,7 +62,7 @@ const Edit = ({ params }: WithRouterProps) => {
     clHistory.push('/admin/ideas/statuses');
   };
 
-  if (!isNilOrError(ideaStatus)) {
+  if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {
     const {
       color,
       title_multiloc,
@@ -82,7 +85,7 @@ const Edit = ({ params }: WithRouterProps) => {
             }}
             onSubmit={handleSubmit}
             render={renderFn}
-            validate={validate}
+            validate={validate(tenantLocales)}
           />
         </Section>
       </>
