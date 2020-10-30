@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_14_180247) do
+ActiveRecord::Schema.define(version: 2020_10_29_180155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -528,6 +528,12 @@ ActiveRecord::Schema.define(version: 2020_10_14_180247) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
+  end
+
+  create_table "nlp_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
