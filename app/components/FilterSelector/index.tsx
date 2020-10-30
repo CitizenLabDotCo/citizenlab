@@ -40,23 +40,23 @@ const Container = styled.div`
   &.last {
     margin-right: 0px;
   }
+
   ${isRtl`
+    &:not(:last-child) {
+      margin-left: 40px;
 
-  &:not(:last-child) {
-    margin-left: 40px;
+      ${media.smallerThanMaxTablet`
+        margin-left: 30px;
+      `}
 
-    ${media.smallerThanMaxTablet`
-      margin-left: 30px;
-    `}
+      ${media.smallPhone`
+        margin-left: 20px;
+      `}
+    }
 
-    ${media.smallPhone`
-      margin-left: 20px;
-    `}
-  }
-
-  &.last {
-    margin-left: 0px;
-  }
+    &.last {
+      margin-left: 0px;
+    }
   `}
 `;
 
