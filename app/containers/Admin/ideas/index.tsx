@@ -25,10 +25,9 @@ const IdeasPage = memo(
     location,
     children,
   }: Props & InjectedIntlProps & WithRouterProps) => {
-    // const ideaStatusCustomisationEnabled = useFeatureFlag(
-    //   'idea_status_customisation'
-    // );
-    const ideaStatusCustomisationEnabled = true; // TO DELETE
+    const ideaStatusCustomisationEnabled = useFeatureFlag(
+      'custom_idea_statuses'
+    );
     const resource = {
       title: formatMessage(messages.pageTitle),
       subtitle: formatMessage(messages.pageSubtitle),
