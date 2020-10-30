@@ -320,7 +320,6 @@ class AdminProjectTimelineEdit extends PureComponent<
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ attributeDiff: {} });
         } else if (projectId && !isEmpty(attributeDiff)) {
-          console.log(attributeDiff);
           phaseResponse = await addPhase(projectId, attributeDiff);
           redirect = true;
         }
