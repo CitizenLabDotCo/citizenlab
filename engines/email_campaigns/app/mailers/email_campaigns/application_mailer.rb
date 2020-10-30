@@ -1,6 +1,6 @@
 module EmailCampaigns
   class ApplicationMailer < ActionMailer::Base
-    add_template_helper(CampaignHelper)
+    add_template_helper CampaignHelper
 
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     default reply_to: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
