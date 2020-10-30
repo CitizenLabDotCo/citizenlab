@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/CitizenLabDotCo/omniauth-azure-activedirectory.git
-  revision: 11de479589a43efac3d0703de3f6e651443701c5
+  revision: 756be9d4fd93faedd56f5e11ba309b89c07f8bbf
   specs:
     omniauth-azure-activedirectory (1.1.0)
       jwt (~> 2.0)
