@@ -34,7 +34,7 @@ import GetWindowSize, {
 
 // style
 import styled from 'styled-components';
-import { rgba, transparentize } from 'polished';
+import { transparentize } from 'polished';
 import {
   media,
   colors,
@@ -62,6 +62,11 @@ const ShortFeedbackContainer = styled.div`
     top: -25px;
     left: 25px;
     z-index: 3;
+
+    ${isRtl`
+      left: auto;
+      right: 25px;
+    `}
   `}
 
   ${media.smallerThanMaxTablet`
@@ -74,22 +79,18 @@ const ShortFeedbackContainer = styled.div`
 `;
 
 const ShortFeedback = styled.div`
-  width: 100%;
   display: flex;
+  align-items: center;
+
   ${isRtl`
-    justify-content: flex-end;
+    flex-direction: row-reverse;
   `}
 
-  ${media.biggerThanMinTablet`
-    position: absolute;
-    z-index: 5;
-    top: -41px;
-    left: 0px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-    border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
+  ${media.smallerThanMaxTablet`
+    justify-content: center;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
   `}
 `;
 
@@ -98,19 +99,6 @@ const ThankYouNote = styled.span`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
-  display: flex;
-  align-items: center;
-  padding: 12px 25px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.08)};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    justify-content: center;
-  `}
 `;
 
 const FeedbackQuestion = styled.span`
@@ -119,10 +107,6 @@ const FeedbackQuestion = styled.span`
   font-weight: 400;
   line-height: normal;
   margin-right: 15px;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-  `}
 
   ${isRtl`
     margin-right: 0;
@@ -133,10 +117,6 @@ const FeedbackQuestion = styled.span`
 const FeedbackButtons = styled.div`
   display: flex;
   align-items: center;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const FeedbackButton = styled.button`
@@ -340,9 +320,6 @@ const StyledSendFeedback = styled(SendFeedback)`
 
 const ShortFeedbackFormModalFooter = styled.div`
   display: flex;
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const CitizenLabLogo = styled(Icon)`
