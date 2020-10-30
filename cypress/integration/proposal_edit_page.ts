@@ -95,13 +95,27 @@ describe('Initiative form page', () => {
     // save the form
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
 
-    // verify updated initiative page
-    cy.get('#e2e-initiative-show', { timeout: 200000 });
+    // manually wait for form to be saved
+    cy.wait(20000);
 
-    cy.location('pathname').should(
-      'eq',
-      `/en-GB/initiatives/${initiativeTitle}`
-    );
+    // verify updated initiative page
+    cy.visit(`/initiatives/${initiativeTitle}`);
+
+    cy.get('#e2e-initiative-show');
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-initiative-title')
+      .contains(newInitiativeTitle);
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-initiative-description')
+      .contains(newInitiativeContent);
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-initiative-topics')
+      .find('.e2e-initiative-topic')
+      .should('have.length', 1);
+    cy.get('#e2e-initiative-image');
+    cy.get('#e2e-initiative-show')
+      .find('#e2e-map-toggle')
+      .contains('Antwerpen, Belgium');
   });
 
   after(() => {
