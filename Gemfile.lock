@@ -62,6 +62,7 @@ PATH
       active_model_serializers (~> 0.10.7)
       apartment (~> 2.2.1)
       graphql (~> 1.8.0)
+      kaminari (~> 1.2)
       rails (~> 6.0.0)
 
 PATH
