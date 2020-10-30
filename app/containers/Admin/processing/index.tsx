@@ -4,8 +4,14 @@ import { includes } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
-import ModerationRow from './ModerationRow';
+import ProcessingRow from './ProcessingRow';
 import { Icon, Button, Select, Checkbox } from 'cl2-component-library';
+import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
+import Modal, {
+  ButtonsWrapper,
+  Content,
+  ModalContentContainer,
+} from 'components/UI/Modal';
 
 import SelectProject from './SelectProject';
 
@@ -23,17 +29,13 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
-import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
-import Modal, {
-  ButtonsWrapper,
-  Content,
-  ModalContentContainer,
-} from 'components/UI/Modal';
+
+//hooks
+import useKeyPress from '../../../hooks/useKeyPress';
 
 const Container = styled.div`
   display: flex;
@@ -42,9 +44,9 @@ const Container = styled.div`
   margin-bottom: 80px;
 `;
 
-const Filters = styled.div`
+const SidePanel = styled.div`
   position: fixed;
-  min-height: 80vh;
+  height: calc(100vh - 200px);
   max-width: 150px;
   display: flex;
   flex-direction: column;
@@ -52,6 +54,12 @@ const Filters = styled.div`
   align-items: space-between;
   margin-bottom: 55px;
   z-index: 100;
+`;
+
+const StyledActions = styled.div`
+  > * {
+    margin: 10px;
+  }
 `;
 
 const StyledTable = styled(Table)`
@@ -95,12 +103,15 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       ideas.list
     );
+
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [processing, setProcessing] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+    const upArrow = useKeyPress('ArrowUp');
+    const downArrow = useKeyPress('ArrowDown');
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
@@ -123,11 +134,11 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, []);
 
     const handleRowOnSelect = useCallback(
-      (selectedModerationId: string) => {
+      (selectedItemId: string) => {
         if (!processing) {
-          const newSelectedRows = includes(selectedRows, selectedModerationId)
-            ? selectedRows.filter((id) => id !== selectedModerationId)
-            : [...selectedRows, selectedModerationId];
+          const newSelectedRows = includes(selectedRows, selectedItemId)
+            ? selectedRows.filter((id) => id !== selectedItemId)
+            : [...selectedRows, selectedItemId];
           setSelectedRows(newSelectedRows);
         }
       },
@@ -145,6 +156,36 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [processing]);
 
     useEffect(() => {
+      if (upArrow && ideaList) {
+        if (!previewPostId) {
+          setPreviewPostId(ideaList[0].id);
+        } else {
+          const ideaIndex = ideaList.findIndex(
+            (idea) => idea.id === previewPostId
+          );
+          const newIndex =
+            ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
+          setPreviewPostId(ideaList[newIndex].id);
+        }
+      }
+    }, [upArrow]);
+
+    useEffect(() => {
+      if (downArrow && ideaList) {
+        if (!previewPostId) {
+          setPreviewPostId(ideaList[0].id);
+        } else {
+          const ideaIndex = ideaList.findIndex(
+            (idea) => idea.id === previewPostId
+          );
+          const newIndex =
+            ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
+          setPreviewPostId(ideaList[newIndex].id);
+        }
+      }
+    }, [downArrow]);
+
+    useEffect(() => {
       if (!processing) {
         setIdeaList(ideas?.list);
       }
@@ -153,12 +194,12 @@ const Processing = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(ideaList)) {
       return (
         <Container className={className}>
-          <Filters>
-            <div>
-              <SelectProject
-                selectedProjectIds={selectedProjectIds}
-                onChange={handleProjectIdsChange}
-              />
+          <SidePanel>
+            <SelectProject
+              selectedProjectIds={selectedProjectIds}
+              onChange={handleProjectIdsChange}
+            />
+            <StyledActions>
               <Button
                 locale="en"
                 buttonStyle="admin-dark"
@@ -168,19 +209,18 @@ const Processing = memo<Props & InjectedIntlProps>(
               >
                 <FormattedMessage {...messages.autotag} />
               </Button>
-            </div>
 
-            <Button
-              locale="en"
-              buttonStyle="admin-dark-outlined"
-              disabled={!!(selectedRows.length === 0)}
-              processing={processing}
-              onClick={() => console.log(selectedRows)}
-            >
-              <FormattedMessage {...messages.export} />
-            </Button>
-          </Filters>
-
+              <Button
+                locale="en"
+                buttonStyle="admin-dark-outlined"
+                disabled={!!(selectedRows.length === 0)}
+                processing={processing}
+                onClick={() => console.log(selectedRows)}
+              >
+                <FormattedMessage {...messages.export} />
+              </Button>
+            </StyledActions>
+          </SidePanel>
           <StyledTable>
             <thead>
               <tr>
@@ -205,16 +245,16 @@ const Processing = memo<Props & InjectedIntlProps>(
                 <th className="tags">
                   <FormattedMessage {...messages.tags} />
                 </th>
-                {/* <th className="goto">&nbsp;</th> */}
               </tr>
             </thead>
             {ideaList?.length > 0 && (
               <tbody>
-                {ideaList?.map((moderationItem) => (
-                  <ModerationRow
-                    key={moderationItem.id}
-                    idea={moderationItem}
-                    selected={includes(selectedRows, moderationItem.id)}
+                {ideaList?.map((idea) => (
+                  <ProcessingRow
+                    key={idea.id}
+                    idea={idea}
+                    selected={includes(selectedRows, idea.id)}
+                    highlighted={idea.id === previewPostId}
                     onSelect={handleRowOnSelect}
                     openPreview={openPreview}
                   />

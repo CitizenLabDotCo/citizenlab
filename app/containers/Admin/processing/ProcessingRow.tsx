@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import ModerationContentCell from './ModerationContentCell';
+import ProcessingTableCell from './ProcessingTableCell';
 import { Checkbox, Tag } from 'cl2-component-library';
 
 // i18n
@@ -20,6 +20,9 @@ import { Multiloc } from 'typings';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
+  :hover {
+    background-color: ${rgba(colors.adminTextColor, 0.3)};
+  }
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -29,34 +32,48 @@ const StyledCheckbox = styled(Checkbox)`
 interface Props {
   idea: IIdeaData;
   selected: boolean;
+  highlighted: boolean;
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
 }
 
-const ModerationRow = memo<Props & InjectedIntlProps>(
-  ({ idea, selected, onSelect, className, openPreview }) => {
+const ProcessingRow = memo<Props & InjectedIntlProps>(
+  ({ idea, selected, onSelect, className, openPreview, highlighted }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
       (value) => isNil(value) || isEmpty(value)
     ) as Multiloc;
 
-    const bgColor = selected ? rgba(colors.adminTextColor, 0.1) : '#fff';
+    const bgColor = highlighted
+      ? rgba(colors.adminTextColor, 0.3)
+      : selected
+      ? rgba(colors.adminTextColor, 0.1)
+      : '#fff';
 
     const handleOnChecked = useCallback(
       (_event: React.ChangeEvent) => {
+        console.log('select', idea.id);
         onSelect(idea.id);
       },
       [onSelect]
     );
 
     return (
-      <Container className={className} bgColor={bgColor}>
+      <Container
+        className={className}
+        bgColor={bgColor}
+        onClick={() => handleOnChecked}
+      >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
         </td>
-        <td className="title" onClick={() => openPreview(idea.id)}>
-          <ModerationContentCell contentTitle={contentTitle} />
+
+        <td className="title">
+          <ProcessingTableCell
+            contentTitle={contentTitle}
+            handleClick={() => openPreview(idea.id)}
+          />
         </td>
         <td className="content">
           <Tag text={'tag'} isAutoTag={true} />
@@ -66,4 +83,4 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(ModerationRow);
+export default injectIntl(ProcessingRow);
