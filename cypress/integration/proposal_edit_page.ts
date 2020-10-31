@@ -62,60 +62,20 @@ describe('Initiative form page', () => {
       .find('button.selected')
       .should('have.length', 1);
 
-    // add a location
-    cy.get('.e2e-initiative-location-input input').type('antwerp{enter}');
-    cy.get(
-      '.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div'
-    )
-      .first()
-      .click();
-
-    // verify location
-    cy.get('.e2e-initiative-location-input input').should(
-      'contain.value',
-      'Antwerp'
-    );
-    cy.get('.e2e-initiative-location-input input').should(
-      'not.have.value',
-      'antwerp'
-    );
-
-    // verify that image and file upload components are present
-    cy.get('#e2e-initiative-file-upload');
-
-    // add an image
-    cy.get('#e2e-iniatiative-banner-dropzone');
-
-    // add an image
-    cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
-
-    // check that the base64 image was added to the dropzone component
-    cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
-
     // save the form
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
 
-    // manually wait for form to be saved
-    cy.wait(20000);
+    // verify redirect to the initiative page
+    cy.get('#e2e-initiative-show', { timeout: 200000 });
 
-    // verify updated initiative page
-    cy.visit(`/initiatives/${initiativeTitle}`);
+    cy.location('pathname').should(
+      'eq',
+      `/en-GB/initiatives/${initiativeTitle}`
+    );
 
-    cy.get('#e2e-initiative-show');
-    cy.get('#e2e-initiative-show')
-      .find('#e2e-initiative-title')
-      .contains(newInitiativeTitle);
-    cy.get('#e2e-initiative-show')
-      .find('#e2e-initiative-description')
-      .contains(newInitiativeContent);
-    cy.get('#e2e-initiative-show')
-      .find('#e2e-initiative-topics')
-      .find('.e2e-initiative-topic')
-      .should('have.length', 1);
-    cy.get('#e2e-initiative-image');
-    cy.get('#e2e-initiative-show')
-      .find('#e2e-map-toggle')
-      .contains('Antwerpen, Belgium');
+    // verify the content on the initiative page
+    cy.get('#e2e-initiative-title').contains(newInitiativeTitle);
+    cy.get('#e2e-initiative-description').contains(newInitiativeContent);
   });
 
   after(() => {
