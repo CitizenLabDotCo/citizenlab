@@ -140,14 +140,14 @@ Rails.application.routes.draw do
 
       resources :phases,
                 only: %i[show edit update destroy],
+                concerns: %i[participation_context],
                 defaults: { parent_param: :phase_id } do
-        concerns :participation_context
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
       end
 
       resources :projects,
+                concerns: %i[participation_context],
                 defaults: { parent_param: :project_id } do
-        concerns :participation_context
 
         resources :events, only: %i[index new create]
         resources :projects_topics, only: [:index]
