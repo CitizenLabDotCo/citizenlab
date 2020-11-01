@@ -8,11 +8,6 @@ import ProcessingRow from './ProcessingRow';
 import { Checkbox } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
-import Modal, {
-  ButtonsWrapper,
-  Content,
-  ModalContentContainer,
-} from 'components/UI/Modal';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -40,6 +35,11 @@ import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
+
+// resources
+import { requestBlob } from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
+import { reportError } from 'utils/loggingUtils';
 
 const Container = styled.div`
   padding-top: 45px;
@@ -125,16 +125,19 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 const Processing = memo<Props & InjectedIntlProps>(
-  ({ className, ideas, projects }) => {
+  ({ className, ideas, projects, topics }) => {
     const localize = useLocalize();
+
+    const [showTopics, setShowTopics] = useState<boolean>(false);
+
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       ideas.list
     );
     const [projectList, setProjectList] = useState<IFilterSelectorValue[]>([]);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
-    const [processing] = useState<boolean>(false);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [processing, setProcessing] = useState<boolean>(false);
+    const [exporting, setExporting] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
@@ -144,48 +147,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     const downArrow = useKeyPress('ArrowDown');
     const enterModalKey = useKeyPress('ArrowRight');
     const selectIdeaKey = useKeyPress(' ');
-
-    const handleOnSelectAll = useCallback(
-      (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !processing) {
-          const newSelectedRows =
-            selectedRows.length < ideaList.length
-              ? ideaList.map((item) => item.id)
-              : [];
-          setSelectedRows(newSelectedRows);
-        }
-      },
-      [ideaList, selectedRows, processing]
-    );
-
-    const handleProjectIdsChange = (newProjectIds: string[]) => {
-      const { onChangeProjects } = ideas as GetIdeasChildProps;
-
-      setSelectedProjectIds(newProjectIds);
-      debugger;
-      newProjectIds.length > 0
-        ? onChangeProjects(newProjectIds)
-        : onChangeProjects([...projectList.map((project) => project.value)]);
-
-      trackEventByName(tracks.projectFilterUsed);
-    };
-
-    const handleRowOnSelect = useCallback(
-      (selectedItemId: string) => {
-        if (!processing) {
-          const newSelectedRows = getNewSelectedRows(
-            selectedRows,
-            selectedItemId
-          );
-          setSelectedRows(newSelectedRows);
-        }
-      },
-      [selectedRows, processing]
-    );
-
-    const openPreview = (id: string) => {
-      setPreviewPostId(id);
-    };
 
     useEffect(() => {
       if (selectIdeaKey && ideaList && highlightedId) {
@@ -280,11 +241,87 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     }, [ideas, processing]);
 
-    const closeModal = () => setIsModalOpen(false);
-    const openModal = () => setIsModalOpen(true);
-    const exportIdeasAsXlsx = () => console.log(selectedRows);
+    const handleExportSelectedIdeasAsXlsx = async () => {
+      const exportQueryParameter = selectedRows;
+
+      const queryParametersObject = {};
+      if (
+        typeof exportQueryParameter === 'string' &&
+        exportQueryParameter !== 'all'
+      ) {
+        queryParametersObject['project'] = exportQueryParameter;
+      } else if (typeof exportQueryParameter !== 'string') {
+        queryParametersObject['ideas'] = exportQueryParameter;
+      }
+
+      try {
+        setExporting(true);
+        const blob = await requestBlob(
+          `${API_PATH}/ideas/as_xlsx`,
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          queryParametersObject
+        );
+        saveAs(blob, 'ideas-export.xlsx');
+        setExporting(false);
+      } catch (error) {
+        reportError(error);
+        setExporting(false);
+      }
+
+      // track this click for user analytics
+      // trackEventByName(tracks.clickExportIdeas.name);
+    };
+    const handleGetTopics = () => {
+      setProcessing(true);
+
+      setTimeout(() => {
+        setProcessing(false);
+        setShowTopics(true);
+      }, 4000);
+    };
+
+    const handleOnSelectAll = useCallback(
+      (_event: React.ChangeEvent) => {
+        if (!isNilOrError(ideaList) && !processing) {
+          const newSelectedRows =
+            selectedRows.length < ideaList.length
+              ? ideaList.map((item) => item.id)
+              : [];
+          setSelectedRows(newSelectedRows);
+        }
+      },
+      [ideaList, selectedRows, processing]
+    );
+
+    const handleProjectIdsChange = (newProjectIds: string[]) => {
+      const { onChangeProjects } = ideas as GetIdeasChildProps;
+
+      setSelectedProjectIds(newProjectIds);
+      debugger;
+      newProjectIds.length > 0
+        ? onChangeProjects(newProjectIds)
+        : onChangeProjects([...projectList.map((project) => project.value)]);
+
+      trackEventByName(tracks.projectFilterUsed);
+    };
+
+    const handleRowOnSelect = useCallback(
+      (selectedItemId: string) => {
+        if (!processing) {
+          const newSelectedRows = getNewSelectedRows(
+            selectedRows,
+            selectedItemId
+          );
+          setSelectedRows(newSelectedRows);
+        }
+      },
+      [selectedRows, processing]
+    );
+
+    const openPreview = (id: string) => {
+      setPreviewPostId(id);
+    };
     const closeSideModal = () => setPreviewPostId(null);
-    const confirmTags = () => console.log('confirm Tags');
     const switchPreviewMode = () =>
       setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
 
@@ -306,7 +343,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 buttonStyle="admin-dark"
                 disabled={!!(selectedRows.length === 0)}
                 processing={processing}
-                onClick={openModal}
+                onClick={handleGetTopics}
               >
                 <FormattedMessage {...messages.autotag} />
               </Button>
@@ -314,8 +351,8 @@ const Processing = memo<Props & InjectedIntlProps>(
               <Button
                 buttonStyle="admin-dark-outlined"
                 disabled={!!(selectedRows.length === 0)}
-                processing={processing}
-                onClick={exportIdeasAsXlsx}
+                processing={exporting}
+                onClick={handleExportSelectedIdeasAsXlsx}
               >
                 <FormattedMessage {...messages.export} />
               </Button>
@@ -364,6 +401,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                     highlighted={idea.id === highlightedId}
                     onSelect={handleRowOnSelect}
                     openPreview={openPreview}
+                    topics={topics}
+                    showTopics={showTopics}
                   />
                 ))}
               </tbody>
@@ -378,22 +417,6 @@ const Processing = memo<Props & InjectedIntlProps>(
               onSwitchPreviewMode={switchPreviewMode}
             />
           </Suspense>
-          <Modal
-            opened={isModalOpen}
-            close={closeModal}
-            header={<FormattedMessage {...messages.autotag} />}
-          >
-            <ModalContentContainer>
-              <Content>
-                <FormattedMessage {...messages.export} />
-              </Content>
-              <ButtonsWrapper>
-                <Button buttonStyle="secondary" onClick={confirmTags}>
-                  Confirm
-                </Button>
-              </ButtonsWrapper>
-            </ModalContentContainer>
-          </Modal>
         </Container>
       );
     }
@@ -426,8 +449,14 @@ const Data = adopt<DataProps, InputProps>({
       </GetIdeas>
     );
   },
-  topics: ({ render }) => {
-    return <GetTopics>{render}</GetTopics>;
+  topics: ({ render, ideas }) => {
+    const topicIds: string[] = [];
+    ideas.list?.forEach((idea) =>
+      idea?.relationships?.topics?.data.forEach((topic) =>
+        topicIds.push(topic.id)
+      )
+    );
+    return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
   },
 });
 
