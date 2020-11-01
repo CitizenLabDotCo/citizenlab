@@ -16,7 +16,11 @@ import { rgba } from 'polished';
 
 // typings
 import { IIdeaData } from 'services/ideas';
+import { ITopicData } from 'services/topics';
 import { Multiloc } from 'typings';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -33,17 +37,30 @@ interface Props {
   idea: IIdeaData;
   selected: boolean;
   highlighted: boolean;
+  showTopics?: boolean;
+  topics: ITopicData[] | undefined | null | Error;
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
-  ({ idea, selected, onSelect, className, openPreview, highlighted }) => {
+  ({
+    idea,
+    selected,
+    onSelect,
+    className,
+    openPreview,
+    highlighted,
+    topics,
+    showTopics,
+  }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
       (value) => isNil(value) || isEmpty(value)
     ) as Multiloc;
+
+    const localize = useLocalize();
 
     const bgColor = highlighted
       ? rgba(colors.adminTextColor, 0.3)
@@ -78,7 +95,16 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           />
         </td>
         <td className="content">
-          <Tag text={'tag'} isAutoTag={true} />
+          {showTopics &&
+            idea?.relationships?.topics?.data.map((topic) => {
+              let richTopic = topics?.filter((t) => t.id === topic.id);
+              return (
+                <Tag
+                  text={localize(richTopic[0].attributes.title_multiloc)}
+                  isAutoTag={true}
+                />
+              );
+            })}
         </td>
       </Container>
     );
