@@ -27,6 +27,7 @@ import {
   ParticipationMethod,
   SurveyServices,
   IdeaDefaultSortMethod,
+  ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -196,7 +197,7 @@ class ParticipationContext extends PureComponent<
       noVotingLimit: null,
       noBudgetingAmount: null,
       poll_anonymous: false,
-      ideas_order: 'trending',
+      ideas_order: ideaDefaultSortMethodFallback,
     };
     this.subscriptions = [];
   }
@@ -373,7 +374,7 @@ class ParticipationContext extends PureComponent<
       ideas_order:
         participation_method === 'ideation' ||
         participation_method === 'budgeting'
-          ? 'trending'
+          ? ideaDefaultSortMethodFallback
           : null,
       downvoting_enabled: participation_method === 'ideation' ? true : null,
       presentation_mode: participation_method === 'ideation' ? 'card' : null,
