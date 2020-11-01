@@ -122,7 +122,7 @@ Rails.application.routes.draw do
       resources :permissions, param: :permission_action do
         get 'participation_conditions', on: :member
       end
-      concern :participation_context
+      concern :participation_context do
         # :action is already used as param, so we chose :permission_action instead
         resources :permissions, param: :permission_action do
           get 'participation_conditions', on: :member
