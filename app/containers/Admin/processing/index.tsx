@@ -143,6 +143,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
     const enterModalKey = useKeyPress('ArrowRight');
+    const selectIdeaKey = useKeyPress(' ');
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
@@ -172,9 +173,10 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
         if (!processing) {
-          const newSelectedRows = includes(selectedRows, selectedItemId)
-            ? selectedRows.filter((id) => id !== selectedItemId)
-            : [...selectedRows, selectedItemId];
+          const newSelectedRows = getNewSelectedRows(
+            selectedRows,
+            selectedItemId
+          );
           setSelectedRows(newSelectedRows);
         }
       },
@@ -183,6 +185,22 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const openPreview = (id: string) => {
       setPreviewPostId(id);
+    };
+
+    useEffect(() => {
+      if (selectIdeaKey && ideaList && highlightedId) {
+        const newSelectedRows = getNewSelectedRows(selectedRows, highlightedId);
+        setSelectedRows(newSelectedRows);
+      }
+    }, [selectIdeaKey]);
+
+    const getNewSelectedRows = (
+      selectedRows: string[],
+      highlightedId: string
+    ) => {
+      return includes(selectedRows, highlightedId)
+        ? selectedRows.filter((id) => id !== highlightedId)
+        : [...selectedRows, highlightedId];
     };
 
     useEffect(() => {
