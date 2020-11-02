@@ -89,7 +89,6 @@ resource "Phases" do
       let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
-      let(:ideas_order) { 'new' }
 
       example_request "Create a phase for a project" do
         expect(response_status).to eq 201
@@ -105,8 +104,6 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
         expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.to_s
         expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
       end
 
       describe do
@@ -150,12 +147,15 @@ resource "Phases" do
       describe do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
+        let(:ideas_order) { 'new' }
 
         example "Create a participatory budgeting phase", document: false do
           do_request
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
         end
       end
 
