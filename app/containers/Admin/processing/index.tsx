@@ -148,12 +148,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     const enterModalKey = useKeyPress('ArrowRight');
 
     useEffect(() => {
-      if (!processing) {
-        setSelectedRows([]);
-      }
-    }, [processing]);
-
-    useEffect(() => {
       if (
         !isNilOrError(projects.projectsList) &&
         projects.projectsList?.length > 0
@@ -279,12 +273,9 @@ const Processing = memo<Props & InjectedIntlProps>(
       const { onChangeProjects } = ideas as GetIdeasChildProps;
 
       setSelectedProjectIds(newProjectIds);
-      debugger;
       newProjectIds.length > 0
         ? onChangeProjects(newProjectIds)
         : onChangeProjects([...projectList.map((project) => project.value)]);
-
-      trackEventByName(tracks.projectFilterUsed);
     };
 
     const handleRowOnSelect = useCallback(
