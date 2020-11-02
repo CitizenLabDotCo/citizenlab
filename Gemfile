@@ -41,6 +41,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'bullet'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'pry'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
@@ -73,7 +74,7 @@ gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem "activerecord-import", '~> 1.0'
 gem "activerecord_json_validator", "~> 1.3.0"
 
-# This branch must be used because the latest version (2.1.1) 
+# This branch must be used because the latest version (2.1.1)
 # requires activerecord < 6.0, while activerecord = 6.0.1 is
 # required by Rails 6.0.1.
 gem "apartment", github: 'influitive/apartment', branch: 'development'
@@ -130,7 +131,7 @@ gem 'rails_semantic_logger'
 gem 'bootsnap', require: false
 # For serialization of heterogeneous collections (i.e. notifications), see
 # https://github.com/Netflix/fast_jsonapi/pull/410.
-gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection' 
+gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
 gem 'rack-attack', '~> 6'
 
 gem 'admin_api', path: 'engines/admin_api'
