@@ -291,6 +291,9 @@ GEM
     bootsnap (1.4.6)
       msgpack (~> 1.0)
     builder (3.2.4)
+    bullet (6.1.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     bunny (2.14.3)
       amq-protocol (~> 2.3, >= 2.3.0)
     byebug (11.0.1)
@@ -650,6 +653,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    uniform_notifier (1.13.0)
     validate_email (0.1.6)
       activemodel (>= 3.0)
       mail (>= 2.2.5)
@@ -689,6 +693,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
   bootsnap
+  bullet
   bunny (>= 2.7.2)
   byebug
   carrierwave (~> 2.0.2)
