@@ -2,7 +2,6 @@ import React, { memo, useCallback } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import ProcessingTableCell from './ProcessingTableCell';
 import { Checkbox, Tag } from 'cl2-component-library';
 
 // i18n
@@ -11,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
@@ -34,6 +33,16 @@ const StyledCheckbox = styled(Checkbox)`
 `;
 const StyledTag = styled(Tag)`
   margin-right: 4px;
+`;
+
+const ContentTitle = styled.div`
+  display: inline-block;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 interface Props {
@@ -92,17 +101,17 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         </td>
 
         <td className="title">
-          <ProcessingTableCell
-            contentTitle={contentTitle}
-            handleClick={handleClick}
-          />
+          <ContentTitle onClick={handleClick}>
+            {localize(contentTitle)}
+          </ContentTitle>
         </td>
         <td className="content">
           {showTopics &&
-            idea?.relationships?.topics?.data.map((topic) => {
+            idea?.relationships?.topics?.data.map((topic, index) => {
               const richTopic = topics?.filter((t) => t.id === topic.id);
               richTopic && (
                 <StyledTag
+                  key={index}
                   text={localize(richTopic[0].attributes.title_multiloc)}
                   isAutoTag={true}
                 />
