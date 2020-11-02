@@ -43,6 +43,10 @@ const StyledBadge = styled(Badge)`
   margin-left: 10px;
 `;
 
+const StyledTextCell = styled(TextCell)`
+  display: flex;
+`;
+
 const TextCellContent = styled.span`
   display: flex;
   align-items: center;
@@ -214,7 +218,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     disabled={isHiddenField(field)}
                     onChange={this.handleOnEnabledToggle(field)}
                   />
-                  <TextCell className="expand">
+                  <StyledTextCell className="expand">
                     <TextCellContent>
                       <T value={field.attributes.title_multiloc} />
                       {field.attributes.code === 'domicile' && (
@@ -241,7 +245,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                         <FormattedMessage {...messages.required} />
                       </StyledBadge>
                     )}
-                  </TextCell>
+                  </StyledTextCell>
                   {isBuiltInField(field) && (
                     <div>
                       <FormattedMessage {...messages.defaultField} />
