@@ -38,7 +38,6 @@ resource "TagSuggestion" do
      do_request
 
         expect(status).to eq 200
-        debugger
         expect(@ideas.first.tags.first.id).to eq @tags.first.id
       end
     end
