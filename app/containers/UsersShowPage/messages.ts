@@ -56,7 +56,7 @@ export default defineMessages({
       "We couldn't find this user's profile. If it was here before, it may have been deleted.",
   },
   goBackToPreviousPage: {
-    id: 'app.containers.Projects.goBackToPreviousPage',
+    id: 'app.containers.UsersShowPage.goBackToPreviousPage',
     defaultMessage: 'Go back to the previous page',
   },
   loadMoreComments: {
