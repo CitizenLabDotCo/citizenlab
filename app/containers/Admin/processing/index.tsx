@@ -146,23 +146,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
     const enterModalKey = useKeyPress('ArrowRight');
-    const selectIdeaKey = useKeyPress(' ');
-
-    useEffect(() => {
-      if (selectIdeaKey && ideaList && highlightedId) {
-        const newSelectedRows = getNewSelectedRows(selectedRows, highlightedId);
-        setSelectedRows(newSelectedRows);
-      }
-    }, [selectIdeaKey]);
-
-    const getNewSelectedRows = (
-      selectedRows: string[],
-      highlightedId: string
-    ) => {
-      return includes(selectedRows, highlightedId)
-        ? selectedRows.filter((id) => id !== highlightedId)
-        : [...selectedRows, highlightedId];
-    };
 
     useEffect(() => {
       if (!processing) {
@@ -242,6 +225,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [ideas, processing]);
 
     const handleExportSelectedIdeasAsXlsx = async () => {
+      trackEventByName(tracks.clickExportIdeas.name);
       const exportQueryParameter = selectedRows;
 
       const queryParametersObject = {};
@@ -267,11 +251,9 @@ const Processing = memo<Props & InjectedIntlProps>(
         reportError(error);
         setExporting(false);
       }
-
-      // track this click for user analytics
-      // trackEventByName(tracks.clickExportIdeas.name);
     };
     const handleGetTopics = () => {
+      trackEventByName(tracks.clickAutotag.name);
       setProcessing(true);
 
       setTimeout(() => {
@@ -308,10 +290,9 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
         if (!processing) {
-          const newSelectedRows = getNewSelectedRows(
-            selectedRows,
-            selectedItemId
-          );
+          const newSelectedRows = includes(selectedRows, selectedItemId)
+            ? selectedRows.filter((id) => id !== selectedItemId)
+            : [...selectedRows, selectedItemId];
           setSelectedRows(newSelectedRows);
         }
       },
