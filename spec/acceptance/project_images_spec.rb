@@ -92,7 +92,6 @@ resource "ProjectImage" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
-      expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
     end
   end
 
