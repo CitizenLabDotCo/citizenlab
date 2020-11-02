@@ -82,6 +82,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        idea_tagging: {
+          enabled: false,
+          allowed: false
+        },
         surveys: {
           enabled: true,
           allowed: true
