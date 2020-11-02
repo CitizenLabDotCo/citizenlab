@@ -45,6 +45,7 @@ import {
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
@@ -65,6 +66,10 @@ const Container = styled(Link)`
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
+
+    ${isRtl`
+        flex-direction: row-reverse;
+    `}
 
     ${media.smallerThanMinTablet`
       width: 100%;
@@ -184,6 +189,15 @@ const ProjectContent = styled.div`
       padding-right: 20px;
     `};
   }
+
+  ${isRtl`
+    align-items: flex-end;
+
+    &.large {
+        padding-right: 68px;
+        padding-left: 32px;
+    }
+  `}
 `;
 
 const ContentHeaderHeight = 39;
@@ -317,6 +331,10 @@ const ProjectTitle = styled.h3`
   margin: 0;
   padding: 0;
 
+  ${isRtl`
+    text-align: right;
+    `}
+
   &:hover {
     text-decoration: underline;
   }
@@ -331,6 +349,10 @@ const ProjectDescription = styled.div`
   word-wrap: break-word;
   word-break: break-word;
   margin-top: 15px;
+
+  ${isRtl`
+   text-align: right;
+ `}
 `;
 
 const ContentFooter = styled.div`
