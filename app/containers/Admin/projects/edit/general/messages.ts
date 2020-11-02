@@ -184,4 +184,19 @@ export default defineMessages({
     defaultMessage:
       'Changing the project slug will break links that use the current slug in their URL.',
   },
+  regexFirstCharError: {
+    id: 'app.containers.AdminPage.ProjectEdit.regexFirstCharError',
+    defaultMessage:
+      'The first character must be a letter or number. (Letters must be without special characters.)',
+  },
+  regexMiddleError: {
+    id: 'app.containers.AdminPage.ProjectEdit.regexMiddleError',
+    defaultMessage:
+      'Characters between the first and last characters must be a letter (a-z), number (0-9) or a dash (-).',
+  },
+  regexLastCharError: {
+    id: 'app.containers.AdminPage.ProjectEdit.regexLastCharError',
+    defaultMessage:
+      'The last character must be a letter or number. (Letters must be without special characters.)',
+  },
 });

@@ -931,7 +931,9 @@ class AdminProjectEditGeneral extends PureComponent<
                   onBlur={this.validateSlug}
                   value={slug}
                 />
-                {showSlugErrorMessage && 'This is not good'}
+                {showSlugErrorMessage && (
+                  <Error text={formatMessage(messages.regexFirstCharError)} />
+                )}
                 {/* <Error
                 fieldName="title_multiloc"
                 apiErrors={this.state.apiErrors.title_multiloc}
