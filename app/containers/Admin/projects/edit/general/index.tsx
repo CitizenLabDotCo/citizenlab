@@ -905,13 +905,15 @@ class AdminProjectEditGeneral extends PureComponent<
             <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.projectName} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.titleLabelTooltip} />}
+                />
               </SubSectionTitle>
               <StyledInputMultiloc
                 id="project-title"
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
-                labelTooltipText={formatMessage(messages.titleLabelTooltip)}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
