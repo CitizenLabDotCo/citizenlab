@@ -10,6 +10,31 @@ resource "User", admin_api: true do
 
   let!(:user) { create(:user, email: 'moderator@citizenlab.co') }
 
+  get "admin_api/users" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of users per page"
+    end
+
+    before do
+      create_list(:user, 5)
+    end
+
+    example_request "Get all users" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.size).to eq 6
+      expect(json_response.map{|u| u[:email]}).to match_array User.all.pluck(:email) 
+    end
+
+    example "Get users on first page" do
+      do_request(page: {number: 1, size: 3})
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.size).to eq 3
+    end
+  end
+
   get "admin_api/users/by_email" do
     parameter :email, "The email of the user"
 
