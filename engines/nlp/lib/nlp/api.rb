@@ -99,5 +99,15 @@ module NLP
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
+
+    def zeroshot_classification(body)
+      resp = self.class.post(
+        '/v2/zeroshot_classification',
+        body: body.to_json,
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
+      )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
+    end
   end
 end

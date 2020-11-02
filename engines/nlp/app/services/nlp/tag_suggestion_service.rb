@@ -5,7 +5,7 @@ module NLP
 
       @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
       @texts = ideas.map { |idea|
-        idea.body_multiloc[locale]
+        ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
       }.reject(&:blank?)
       @texts.any? ? @api.tag_suggestions({
         locale: locale,
