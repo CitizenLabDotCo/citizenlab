@@ -209,7 +209,7 @@ export default defineMessages({
   },
   defaultIdeaSorting: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
-    defaultMessage: 'Default sorting method for ideas',
+    defaultMessage: 'Idea sorting order',
   },
   presentationModeTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
@@ -219,7 +219,7 @@ export default defineMessages({
   defaultIdeaSortingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip',
     defaultMessage:
-      'You can choose the default method the ideas for this project are sorted by. Users can still sort by the other available methods.',
+      'You can set the default order for ideas to be displayed on the main project page.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
