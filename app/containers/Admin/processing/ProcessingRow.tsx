@@ -32,13 +32,16 @@ const Container = styled.tr<{ bgColor: string }>`
 const StyledCheckbox = styled(Checkbox)`
   margin-top: -4px;
 `;
+const StyledTag = styled(Tag)`
+  margin-right: 4px;
+`;
 
 interface Props {
   idea: IIdeaData;
   selected: boolean;
   highlighted: boolean;
   showTopics?: boolean;
-  topics: ITopicData[] | undefined | null | Error;
+  topics?: ITopicData[] | undefined | null;
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
@@ -97,9 +100,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         <td className="content">
           {showTopics &&
             idea?.relationships?.topics?.data.map((topic) => {
-              let richTopic = topics?.filter((t) => t.id === topic.id);
-              return (
-                <Tag
+              const richTopic = topics?.filter((t) => t.id === topic.id);
+              richTopic && (
+                <StyledTag
                   text={localize(richTopic[0].attributes.title_multiloc)}
                   isAutoTag={true}
                 />
