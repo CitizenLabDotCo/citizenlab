@@ -11,13 +11,13 @@ import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
 
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// hooks
+import useUser from 'hooks/useUser';
 
 // style
 import styled from 'styled-components';
@@ -25,7 +25,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
-import { adopt } from 'react-adopt';
 
 const NotFoundContainer = styled.main`
   height: 100%;
@@ -71,24 +70,20 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  user: GetUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 export type UserTab = 'ideas' | 'comments';
 
-export const UsersShowPage = memo<Props & InjectedIntlProps>(
-  ({ user, className, intl: { formatMessage } }) => {
+export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
+  ({ className, params, intl: { formatMessage } }) => {
     const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
     const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
     const previousPathName = useContext(PreviousPathnameContext);
+
+    const user = useUser({ slug: params.slug });
 
     const changeTab = (toTab: UserTab) => () => {
       const oldScroll = savedScrollIndex;
@@ -145,14 +140,4 @@ export const UsersShowPage = memo<Props & InjectedIntlProps>(
   }
 );
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  user: ({ params, render }) => <GetUser slug={params.slug}>{render}</GetUser>,
-});
-
-export default withRouter(
-  injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-    <Data {...inputProps}>
-      {(dataProps) => <UsersShowPage {...inputProps} {...dataProps} />}
-    </Data>
-  ))
-);
+export default withRouter(injectIntl(UsersShowPage));
