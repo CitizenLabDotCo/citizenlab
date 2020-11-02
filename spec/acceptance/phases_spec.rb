@@ -75,7 +75,9 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
+        parameter :ideas_order, 'The default order of ideas.'
       end
+
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
       response_field :base, "Array containing objects with signature {error: 'has_other_overlapping_phases'}", scope: :errors
@@ -87,6 +89,7 @@ resource "Phases" do
       let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
+      let(:ideas_order) { 'new' }
 
       example_request "Create a phase for a project" do
         expect(response_status).to eq 201
@@ -102,6 +105,8 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
         expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.to_s
         expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
       end
 
       describe do
