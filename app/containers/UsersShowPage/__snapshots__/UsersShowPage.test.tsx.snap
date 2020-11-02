@@ -144,6 +144,15 @@ exports[`<UsersShowPage /> renders correctly with an erroneous user 1`] = `
 <UsersShowPage__NotFoundContainer
   className=""
 >
+  <HelmetWrapper
+    defer={true}
+    encodeSpecialCharacters={true}
+  >
+    <meta
+      content="404"
+      name="prerender-status-code"
+    />
+  </HelmetWrapper>
   <p>
     We couldn't find this user's profile. If it was here before, it may have been deleted.
   </p>
