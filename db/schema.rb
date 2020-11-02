@@ -530,17 +530,17 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
-  create_table "nlp_tag_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "tag_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "assignment_method", null: false
     t.uuid "idea_id"
-    t.uuid "nlp_tag_id"
+    t.uuid "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["idea_id"], name: "index_nlp_tag_assignments_on_idea_id"
-    t.index ["nlp_tag_id"], name: "index_nlp_tag_assignments_on_nlp_tag_id"
+    t.index ["idea_id"], name: "index_tag_assignments_on_idea_id"
+    t.index ["tag_id"], name: "index_tag_assignments_on_tag_id"
   end
 
-  create_table "nlp_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -997,8 +997,8 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
   add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
-  add_foreign_key "nlp_tag_assignments", "ideas"
-  add_foreign_key "nlp_tag_assignments", "nlp_tags"
+  add_foreign_key "tag_assignments", "ideas"
+  add_foreign_key "tag_assignments", "tags"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"

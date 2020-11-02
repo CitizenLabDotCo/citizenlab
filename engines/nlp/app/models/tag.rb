@@ -1,8 +1,7 @@
-module NLP
   class Tag < ApplicationRecord
 
     has_many :tag_assignments, dependent: :destroy
-    has_many :ideas, through: :tag_assignment
+    has_many :ideas, through: :tag_assignments
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
 
@@ -16,4 +15,3 @@ module NLP
       end
     end
   end
-end
