@@ -1697,7 +1697,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.relevantAttachments": "Adăugați atașamente convingătoare, cum ar fi clipuri video, poze, detalii tehnice sau planuri.",
   "app.containers.InitiativesNewPage.shareSocialMedia": "Distribuie ideea ta pe social media și alte canale pentru a atrage sprijinul concetățenilor tăi.",
-  "app.containers.InitiativesNewPage.tipsTitle": "Câteva sfaturi utile pentru publicarea propunerii tale",
+  "app.containers.InitiativesNewPage.tipsTitle": "Câteva sfaturi utile pentru publicarea propunerii tale:",
   "app.containers.InitiativesNewPage.unkownAddress": "Adresă necunoscută",
   "app.containers.InitiativesNewPage.visualise": "Asigură-te că alegi o imagine potrivită pentru proiectul tău astfel încât să iasă în evidență.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Votarea rămâne deschisă.",
