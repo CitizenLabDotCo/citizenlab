@@ -177,12 +177,12 @@ export default defineMessages({
   urlSlugTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugTooltip',
     defaultMessage:
-      'The slug is the last part of the link to the project. For this project, the current link is {currentProjectLink}, of which {currentProjectSlug} is the slug.',
+      'The slug is the last part of the link to the project. For example, for this project the current link is {currentProjectLink}, of which {currentProjectSlug} is the slug.',
   },
   urlSlugBrokenLinkWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',
     defaultMessage:
-      'Changing the project slug will break links that use the current slug in their URL.',
+      'Changing the project slug will break links that contain the old slug.',
   },
   regexFirstCharError: {
     id: 'app.containers.AdminPage.ProjectEdit.regexFirstCharError',
