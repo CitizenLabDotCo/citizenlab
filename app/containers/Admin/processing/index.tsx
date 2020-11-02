@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useState, useEffect, Suspense } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useState,
+  useEffect,
+  Suspense,
+  FormEvent,
+} from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 
@@ -40,6 +47,7 @@ import useLocalize from 'hooks/useLocalize';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { reportError } from 'utils/loggingUtils';
+import useTagSuggestion from 'hooks/useTags';
 
 const Container = styled.div`
   padding-top: 45px;
@@ -125,17 +133,20 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 const Processing = memo<Props & InjectedIntlProps>(
-  ({ className, ideas, projects, topics }) => {
+  ({ className, ideas, projects }) => {
     const localize = useLocalize();
 
-    const [showTopics, setShowTopics] = useState<boolean>(false);
+    // const [showTopics, setShowTopics] = useState<boolean>(false);
 
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
-      ideas.list
+      []
     );
     const [projectList, setProjectList] = useState<IFilterSelectorValue[]>([]);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+    const { tagSuggestion, onIdeasChange } = useTagSuggestion();
+
     const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
@@ -218,6 +229,12 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     }, [ideas, processing]);
 
+    useEffect(() => {
+      if (processing) {
+        setProcessing(false);
+      }
+    }, [tagSuggestion]);
+
     const handleExportSelectedIdeasAsXlsx = async () => {
       trackEventByName(tracks.clickExportIdeas.name);
       const exportQueryParameter = selectedRows;
@@ -246,14 +263,13 @@ const Processing = memo<Props & InjectedIntlProps>(
         setExporting(false);
       }
     };
-    const handleGetTopics = () => {
-      trackEventByName(tracks.clickAutotag.name);
-      setProcessing(true);
 
-      setTimeout(() => {
-        setProcessing(false);
-        setShowTopics(true);
-      }, 4000);
+    const handleAutoTag = (e: FormEvent) => {
+      e.preventDefault;
+      trackEventByName(tracks.clickAutotag.name);
+
+      setProcessing(true);
+      onIdeasChange(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
@@ -315,7 +331,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 buttonStyle="admin-dark"
                 disabled={!!(selectedRows.length === 0)}
                 processing={processing}
-                onClick={handleGetTopics}
+                onClick={(e) => handleAutoTag(e)}
               >
                 <FormattedMessage {...messages.autotag} />
               </Button>
@@ -328,6 +344,12 @@ const Processing = memo<Props & InjectedIntlProps>(
               >
                 <FormattedMessage {...messages.export} />
               </Button>
+              {!isNilOrError(tagSuggestion) &&
+                tagSuggestion.map((tag, index) => (
+                  <div key={index}>
+                    {localize(tag.attributes.title_multiloc)}
+                  </div>
+                ))}
             </StyledActions>
           </SidePanel>
           <StyledTable>
@@ -373,8 +395,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                     highlighted={idea.id === highlightedId}
                     onSelect={handleRowOnSelect}
                     openPreview={openPreview}
-                    topics={topics}
-                    showTopics={showTopics}
                   />
                 ))}
               </tbody>
