@@ -188,7 +188,10 @@ const StyledInput = styled(Input)`
   margin-bottom: 20px;
 `;
 
-const SlugPreview = styled.span``;
+const SlugPreview = styled.div`
+  margin-bottom: 20px;
+  font-size: ${fontSizes.base}px;
+`;
 
 type Props = {
   params?: {
@@ -945,9 +948,9 @@ class AdminProjectEditGeneral extends PureComponent<
                     }
                   />
                 </SubSectionTitle>
-                {/* <StyledWarning>
+                <StyledWarning>
                   <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-                </StyledWarning> */}
+                </StyledWarning>
                 <StyledInput
                   id="project-slug"
                   type="text"
