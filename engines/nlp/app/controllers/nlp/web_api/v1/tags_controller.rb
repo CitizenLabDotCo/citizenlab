@@ -18,6 +18,14 @@ module NLP
         end
       end
 
+      def index
+        @tags = Tag.all
+          .page(params.dig(:page, :number))
+          .per(params.dig(:page, :size))
+
+        render json: linked_json(@tags, WebApi::V1::TagSerializer, params: fastjson_params)
+      end
+
       private
 
       def secure_controller?

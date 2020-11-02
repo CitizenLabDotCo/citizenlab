@@ -12,7 +12,7 @@ resource "TagSuggestion" do
     header 'Authorization', "Bearer #{token}"
   end
 
-  get "/web_api/v1/automatic_tag_assignment" do
+  get "/web_api/v1/generate_tag_assignment" do
     before do
       @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'})
       Tag.create(title_multiloc: {'en' => 'label'})
@@ -38,6 +38,7 @@ resource "TagSuggestion" do
      do_request
 
         expect(status).to eq 200
+        debugger
         expect(@ideas.first.tags.first.id).to eq @tags.first.id
       end
     end
