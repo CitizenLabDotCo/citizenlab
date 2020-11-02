@@ -283,7 +283,6 @@ resource "Projects" do
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
         let(:default_assignee_id) { create(:admin).id }
-        let(:ideas_order) { 'new' }
 
         example_request "Create a timeline project" do
           expect(response_status).to eq 201
@@ -297,8 +296,6 @@ resource "Projects" do
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
           expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
           expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
@@ -308,7 +305,6 @@ resource "Projects" do
         example "Create a project in a folder" do
           folder = create(:project_folder)
           do_request folder_id: folder.id
-
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           # New folder projects are added to the top
@@ -332,6 +328,7 @@ resource "Projects" do
         let(:voting_enabled) { project.voting_enabled }
         let(:voting_method) { project.voting_method }
         let(:voting_limited_max) { project.voting_limited_max }
+        let(:ideas_order) { 'new' }
 
         example_request "Create a continuous project" do
           expect(response_status).to eq 201
@@ -350,7 +347,8 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
-
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
         end
 
         context 'when not admin' do
