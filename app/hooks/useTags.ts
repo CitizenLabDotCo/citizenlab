@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ITag, tagSuggestionStream } from 'services/tags';
+import {
+  ITag,
+  tagAssignmentsSuggestionStream,
+  tagSuggestionStream,
+} from 'services/tags';
 import useLocale from 'hooks/useLocale';
 
 export default function useTagSuggestion() {
@@ -21,8 +25,25 @@ export default function useTagSuggestion() {
     }).observable;
 
     const subscription = observable.subscribe((response) => {
+      console.log(ideaIds, locale);
       console.log(response);
-      setTagSuggestion([...response.data]);
+      tagAssignmentsSuggestionStream({
+        queryParameters: {
+          idea_ids: ideaIds,
+          locale,
+          tag_ids: response.data.map((tag) => tag.id),
+        },
+      }).observable.subscribe((assignments) => {
+        console.log(assignments);
+        setTagSuggestion(
+          response.data.map((tag) => ({
+            ...tag,
+            idea_ids: assignments.data
+              .filter((assignment) => assignment.attributes.tag_id === tag.id)
+              .map((assignment) => assignment.attributes.idea_id),
+          }))
+        );
+      });
     });
 
     return () => subscription.unsubscribe();

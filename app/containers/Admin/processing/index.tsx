@@ -312,6 +312,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const closeSideModal = () => setPreviewPostId(null);
     const switchPreviewMode = () =>
       setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
+    console.log(tagSuggestion);
 
     if (!isNilOrError(ideaList)) {
       return (
