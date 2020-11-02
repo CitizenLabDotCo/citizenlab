@@ -27,7 +27,7 @@ import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
 import { adopt } from 'react-adopt';
 
-const NotFoundContainer = styled.div`
+const NotFoundContainer = styled.main`
   height: 100%;
   flex: 1 0 auto;
   display: flex;
