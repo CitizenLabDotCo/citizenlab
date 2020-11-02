@@ -1,4 +1,5 @@
 import React, { useState, useContext, memo } from 'react';
+import { Helmet } from 'react-helmet';
 import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
 import { isError } from 'lodash-es';
@@ -99,6 +100,9 @@ export const UsersShowPage = memo<Props & InjectedIntlProps>(
     if (isError(user)) {
       return (
         <NotFoundContainer className={className || ''}>
+          <Helmet>
+            <meta name="prerender-status-code" content="404" />
+          </Helmet>
           <p>{formatMessage(messages.userNotFound)}</p>
           <Button
             linkTo={previousPathName || '/'}
