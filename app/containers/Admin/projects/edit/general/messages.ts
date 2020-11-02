@@ -199,4 +199,8 @@ export default defineMessages({
     defaultMessage:
       'The last character must be a letter or number. (Letters must be without special characters.)',
   },
+  resultingLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.resultingLink',
+    defaultMessage: 'Resulting project link',
+  },
 });

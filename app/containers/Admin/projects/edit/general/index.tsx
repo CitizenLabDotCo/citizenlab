@@ -962,7 +962,7 @@ class AdminProjectEditGeneral extends PureComponent<
                   value={slug}
                 />
                 <SlugPreview>
-                  <b>Resulting project URL</b>:{' '}
+                  <b>{formatMessage(messages.resultingLink)}</b>:{' '}
                   {currentTenant?.data.attributes.host}/{locale}/projects/
                   {slug}
                 </SlugPreview>
