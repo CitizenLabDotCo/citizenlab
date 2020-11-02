@@ -396,6 +396,9 @@ const Processing = memo<Props & InjectedIntlProps>(
                     highlighted={idea.id === highlightedId}
                     onSelect={handleRowOnSelect}
                     openPreview={openPreview}
+                    tagSuggestion={tagSuggestion?.filter((tag) =>
+                      tag.idea_ids.includes(idea.id)
+                    )}
                   />
                 ))}
               </tbody>

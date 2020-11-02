@@ -6,9 +6,13 @@ import {
 } from 'services/tags';
 import useLocale from 'hooks/useLocale';
 
+export interface IAutoTag extends ITag {
+  idea_ids: string[];
+}
+
 export default function useTagSuggestion() {
   const [tagSuggestion, setTagSuggestion] = useState<
-    ITag[] | Error | null | undefined
+    IAutoTag[] | null | undefined
   >(undefined);
 
   const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>([]);
