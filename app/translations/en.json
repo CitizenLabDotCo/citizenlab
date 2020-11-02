@@ -1249,7 +1249,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField": "Default field",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.descriptionTooltip": "Optional text shown under the field name on the signup form.",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.domicileManagementInfo": "Domicile options can be set in the {geographicAreasTabLink}.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel": "Edit",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle": "Edit answer option",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription": "Description",
