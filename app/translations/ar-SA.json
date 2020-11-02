@@ -1094,7 +1094,7 @@
   "app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip": "هذا يحدد طريقة عرض المشروع بعد النقر على \"حفظ\". وتعني \"المسوّدة\" أن المشروع غير معروض، بينما يعني الخيار \"منشور\" أن المشروع معروض ونشط، في حين يعني الخيار \"مؤرشف\" أن المشروع معروض لكنه غير نشط.",
   "app.containers.AdminPage.ProjectEdit.google_forms": "نماذج جوجل",
   "app.containers.AdminPage.ProjectEdit.headerImageLabel": "صورة الترويسة (مطلوبة)",
-  "app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip": "تظهر هذه الصورة في أعلى صفحة المشروع. الأبعاد المثالية هي 1440×500.",
+  "app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip": "تظهر هذه الصورة في أعلى صفحة المشروع. الأبعاد المثالية هي 952×240.",
   "app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle": "لمن تم تعيين الأفكار؟",
   "app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltipText": "الشخص المسؤول عن الأفكار سيتلقى جميع الأفكار الجديدة ضمن هذا المشروع والذي تم تعيينه إليه. ويمكن تغيير الشخص المعيّن إليه دائمًا في {ideaManagerLink}.",
   "app.containers.AdminPage.ProjectEdit.ideaFormTab": "نموذج الفكرة",
