@@ -45,6 +45,7 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
@@ -79,6 +80,10 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.mapView {
     justify-content: flex-end;
@@ -149,9 +154,15 @@ const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
 
+  ${isRtl`
+    margin-right: 0;
+    margin-left: auto;
+  `}
+
   ${media.smallerThanMinTablet`
     width: 100%;
     margin-right: 0px;
+    margin-left: 0px;
     margin-bottom: 20px;
   `}
 `;
@@ -161,6 +172,10 @@ const IdeasList = styled.div`
   margin-right: -13px;
   display: flex;
   flex-wrap: wrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIdeaCard = styled(IdeaCard)`
