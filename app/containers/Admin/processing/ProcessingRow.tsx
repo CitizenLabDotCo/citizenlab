@@ -20,6 +20,7 @@ import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
+import { IAutoTag } from 'hooks/useTags';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -54,6 +55,7 @@ interface Props {
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
+  tagSuggestion: IAutoTag[] | null | undefined;
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
@@ -66,6 +68,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     highlighted,
     topics,
     showTopics,
+    tagSuggestion,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -107,16 +110,13 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         </td>
         <td className="content">
           {showTopics &&
-            idea?.relationships?.topics?.data.map((topic, index) => {
-              const richTopic = topics?.filter((t) => t.id === topic.id);
-              richTopic && (
-                <StyledTag
-                  key={index}
-                  text={localize(richTopic[0].attributes.title_multiloc)}
-                  isAutoTag={true}
-                />
-              );
-            })}
+            tagSuggestion?.map((tag) => (
+              <StyledTag
+                key={tag.id}
+                text={localize(tag.attributes.title_multiloc)}
+                isAutoTag={true}
+              />
+            ))}
         </td>
       </Container>
     );
