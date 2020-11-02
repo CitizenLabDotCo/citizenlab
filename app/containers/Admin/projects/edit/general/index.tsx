@@ -184,6 +184,12 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 15px;
 `;
 
+const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+`;
+
+const SlugPreview = styled.span``;
+
 type Props = {
   params?: {
     projectId: string;
@@ -808,6 +814,8 @@ class AdminProjectEditGeneral extends PureComponent<
       processingDelete,
       slug,
       showSlugErrorMessage,
+      currentTenant,
+      locale,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -920,10 +928,10 @@ class AdminProjectEditGeneral extends PureComponent<
                     }
                   />
                 </SubSectionTitle>
-                <StyledWarning>
+                {/* <StyledWarning>
                   <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-                </StyledWarning>
-                <Input
+                </StyledWarning> */}
+                <StyledInput
                   id="project-slug"
                   type="text"
                   label={<FormattedMessage {...messages.urlSlugLabel} />}
@@ -931,6 +939,10 @@ class AdminProjectEditGeneral extends PureComponent<
                   onBlur={this.validateSlug}
                   value={slug}
                 />
+                <SlugPreview>
+                  <b>Resulting project URL</b>:{' '}
+                  {currentTenant?.data.attributes.host}/{locale}/projects/{slug}
+                </SlugPreview>
                 {showSlugErrorMessage && (
                   <Error text={formatMessage(messages.regexFirstCharError)} />
                 )}
@@ -1206,4 +1218,4 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(AdminProjectEditGeneral);
+export default injectIntl(AdminProjectEditGeneral);
