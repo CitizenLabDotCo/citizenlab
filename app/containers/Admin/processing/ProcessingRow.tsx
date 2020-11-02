@@ -66,8 +66,6 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     className,
     openPreview,
     highlighted,
-    topics,
-    showTopics,
     tagSuggestion,
   }) => {
     const contentTitle = omitBy(
@@ -92,6 +90,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     );
 
     const handleClick = useCallback(() => openPreview(idea.id), [openPreview]);
+    console.log(tagSuggestion);
 
     return (
       <Container
@@ -109,14 +108,13 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           </ContentTitle>
         </td>
         <td className="content">
-          {showTopics &&
-            tagSuggestion?.map((tag) => (
-              <StyledTag
-                key={tag.id}
-                text={localize(tag.attributes.title_multiloc)}
-                isAutoTag={true}
-              />
-            ))}
+          {tagSuggestion?.map((tag, index) => (
+            <StyledTag
+              key={index}
+              text={localize(tag.attributes.title_multiloc)}
+              isAutoTag={true}
+            />
+          ))}
         </td>
       </Container>
     );
