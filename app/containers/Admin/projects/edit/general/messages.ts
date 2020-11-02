@@ -174,10 +174,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugLabel',
     defaultMessage: 'Project slug',
   },
-  urlSlugLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.urlSlugLabelTooltip',
+  urlSlugTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugTooltip',
     defaultMessage:
-      'The slug can only contain letters, numbers and dashes (-). The preferred format is words separated by dashes.',
+      'The slug is the last part of the link to the project. For this project, the current link is {currentProjectLink}, of which {currentProjectSlug} is the slug.',
   },
   urlSlugBrokenLinkWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',

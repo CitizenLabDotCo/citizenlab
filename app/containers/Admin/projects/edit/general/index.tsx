@@ -918,13 +918,30 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
-            {project?.data.attributes.slug && (
+            {currentTenant && project?.data.attributes.slug && (
               <StyledSectionField>
                 <SubSectionTitle>
                   <FormattedMessage {...messages.projectUrlSlug} />
                   <IconTooltip
                     content={
-                      <FormattedMessage {...messages.urlSlugLabelTooltip} />
+                      <FormattedMessage
+                        {...messages.urlSlugTooltip}
+                        values={{
+                          currentProjectLink: (
+                            <em>
+                              <b>
+                                {currentTenant.data.attributes.host}/{locale}
+                                /projects/{project.data.attributes.slug}
+                              </b>
+                            </em>
+                          ),
+                          currentProjectSlug: (
+                            <em>
+                              <b>{project.data.attributes.slug}</b>
+                            </em>
+                          ),
+                        }}
+                      />
                     }
                   />
                 </SubSectionTitle>
@@ -941,7 +958,8 @@ class AdminProjectEditGeneral extends PureComponent<
                 />
                 <SlugPreview>
                   <b>Resulting project URL</b>:{' '}
-                  {currentTenant?.data.attributes.host}/{locale}/projects/{slug}
+                  {currentTenant?.data.attributes.host}/{locale}/projects/
+                  {slug}
                 </SlugPreview>
                 {showSlugErrorMessage && (
                   <Error text={formatMessage(messages.regexFirstCharError)} />
