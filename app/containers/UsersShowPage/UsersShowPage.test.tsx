@@ -1,6 +1,7 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
+import { intl } from 'utils/cl-intl';
 
 // component to test
 import { UsersShowPage } from './';
@@ -18,18 +19,22 @@ import { makeUser } from 'services/__mocks__/users';
 
 describe('<UsersShowPage />', () => {
   it('renders correctly by default', () => {
-    const wrapper = shallow(<UsersShowPage user={makeUser().data} />);
+    const wrapper = shallow(
+      <UsersShowPage intl={intl} user={makeUser().data} />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly on the other tab', () => {
-    const wrapper = shallow(<UsersShowPage user={makeUser().data} />);
+    const wrapper = shallow(
+      <UsersShowPage intl={intl} user={makeUser().data} />
+    );
     wrapper.find('WrappedUserNavbar').prop('selectTab')('comments')();
     wrapper.update();
     expect(mockScroll).toHaveBeenCalledWith(0, 0);
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly with an erroneous user', () => {
-    const wrapper = shallow(<UsersShowPage user={new Error()} />);
+    const wrapper = shallow(<UsersShowPage intl={intl} user={new Error()} />);
 
     expect(wrapper).toMatchSnapshot();
   });
