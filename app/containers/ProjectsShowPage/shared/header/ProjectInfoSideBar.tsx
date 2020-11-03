@@ -35,7 +35,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { fontSizes, colors, viewportWidths, isRtl } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div`
@@ -81,6 +81,11 @@ const ListItemIcon = styled(Icon)`
   height: 18px;
   fill: ${colors.label};
   margin-right: 14px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 14px;
+  `}
 
   &.timeline {
     flex: 0 0 22px;

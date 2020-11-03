@@ -171,7 +171,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                 <a
                   href={`/${key}s/${moderation.attributes.belongs_to[key].slug}`}
                   role="button"
-                  target="_blank"
                   onClick={handleBelongsToLinkOnClick}
                   data-belongstotype={key}
                 >
@@ -204,7 +203,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
               <GoToLink
                 to={viewLink}
                 onClick={handleGoToLinkOnClick}
-                target="_blank"
                 data-type={contentType}
               >
                 <GoToIcon name="goTo" />
