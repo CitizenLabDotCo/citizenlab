@@ -187,17 +187,17 @@ export default defineMessages({
   regexFirstCharError: {
     id: 'app.containers.AdminPage.ProjectEdit.regexFirstCharError',
     defaultMessage:
-      'The first character must be a letter or number. (Letters must be without special characters and not be capitalized.)',
+      'The first character must be a letter or number. (Letters must be without special characters and not capitalized.)',
   },
   regexMiddleError: {
     id: 'app.containers.AdminPage.ProjectEdit.regexMiddleError',
     defaultMessage:
-      'Characters between the first and last characters must be letters (a-z), numbers (0-9) or hyphens (-). (Consecutive hyphens (--) are forbidden. Letters must be without special characters and not be capitalized.)',
+      'Characters between the first and last characters must be letters (a-z), numbers (0-9) or hyphens (-). (Consecutive hyphens (--) are forbidden. Letters must be without special characters and not capitalized.)',
   },
   regexLastCharError: {
     id: 'app.containers.AdminPage.ProjectEdit.regexLastCharError',
     defaultMessage:
-      'The last character must be a letter or number. (Letters must be without special characters and not be capitalized.)',
+      'The last character must be a letter or number. (Letters must be without special characters and not capitalized.)',
   },
   resultingLink: {
     id: 'app.containers.AdminPage.ProjectEdit.resultingLink',
