@@ -200,7 +200,8 @@ export default defineMessages({
   },
   whatsAppMessage: {
     id: 'app.containers.Projects.whatsAppMessage',
-    defaultMessage: '{title}: Share your ideas on',
+    defaultMessage:
+      '{projectName} | from the participation platform of {orgName}',
   },
   aboutThisProject: {
     id: 'app.containers.Projects.aboutThisProject',

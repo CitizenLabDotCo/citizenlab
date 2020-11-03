@@ -72,7 +72,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                         whatsAppMessage={formatMessage(
                           messages.whatsAppMessage,
                           {
-                            title,
+                            projectName: title,
                           }
                         )}
                         twitterMessage={formatMessage(messages.twitterMessage, {

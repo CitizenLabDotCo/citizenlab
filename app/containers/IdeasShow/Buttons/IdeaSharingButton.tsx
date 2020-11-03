@@ -49,7 +49,6 @@ const Component = ({
         url={ideaUrl}
         whatsAppMessage={formatMessage(messages.whatsAppMessage, {
           ideaTitle,
-          ideaUrl,
         })}
         twitterMessage={formatMessage(messages.twitterMessage, {
           ideaTitle,
