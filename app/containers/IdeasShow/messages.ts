@@ -101,7 +101,8 @@ export default defineMessages({
   },
   whatsAppMessage: {
     id: 'app.containers.IdeasShow.whatsAppMessage',
-    defaultMessage: 'Vote for {ideaTitle} on {ideaUrl}',
+    defaultMessage:
+      '{ideaTitle} | from the participation platform of {orgName}',
   },
   emailSharingSubject: {
     id: 'app.containers.IdeasShow.emailSharingSubject',
