@@ -1894,6 +1894,7 @@
   "app.containers.Projects.totalBudget": "Total budget",
   "app.containers.Projects.twitterMessage": "{title}: Share your ideas on",
   "app.containers.Projects.upcomingEvents": "Upcoming events",
+  "app.containers.Projects.whatsAppMessage": "",
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# event} other {# events}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# idea} other {# ideas}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# idea} other {# ideas}} in the current phase",
