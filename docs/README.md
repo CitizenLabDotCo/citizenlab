@@ -1,8 +1,16 @@
 # Changelog
 
+## 2010-10-30
+
+### Added
+
+- Initial Right to left layout for Arabic language
+- Idea description WYSIWYG editor now supports adding images and/or buttons
+
 ## 2010-10-27
 
 ### Added
+
 - Support for Arabic
 
 ## 2020-10-22
