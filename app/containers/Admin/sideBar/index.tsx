@@ -198,7 +198,7 @@ class Sidebar extends PureComponent<
         {
           id: 'processing',
           link: '/admin/processing',
-          iconName: 'setting',
+          iconName: 'processing',
           featureName: 'processing',
           message: 'processing',
           isActive: (pathName) =>
