@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import qs from 'qs';
 
 // styling
 import styled from 'styled-components';
@@ -25,8 +26,9 @@ interface DataProps {
 interface InputProps {
   name: string;
   title?: string;
-  children: any;
+  children?: any;
   className?: string;
+  queryParameters?: { [key: string]: string };
 }
 
 interface Props extends DataProps, InputProps {}
@@ -50,9 +52,10 @@ class Fragment extends PureComponent<Props, State> {
   }
 
   fragmentUrl = (): string => {
-    const { tenant } = this.props;
+    const { tenant, queryParameters } = this.props;
     if (!isNilOrError(tenant)) {
-      return `/fragments/${tenant.id}/${this.props.name}.html`;
+      const params = qs.stringify(queryParameters, { addQueryPrefix: true });
+      return `/fragments/${tenant.id}/${this.props.name}.html${params}`;
     } else {
       return '';
     }
@@ -103,7 +106,7 @@ class Fragment extends PureComponent<Props, State> {
         />
       );
     } else {
-      return children;
+      return children || null;
     }
   }
 }
