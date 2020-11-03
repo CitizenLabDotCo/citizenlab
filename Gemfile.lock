@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/CitizenLabDotCo/omniauth-azure-activedirectory.git
-  revision: 11de479589a43efac3d0703de3f6e651443701c5
+  revision: 756be9d4fd93faedd56f5e11ba309b89c07f8bbf
   specs:
     omniauth-azure-activedirectory (1.1.0)
       jwt (~> 2.0)
@@ -62,6 +62,7 @@ PATH
       active_model_serializers (~> 0.10.7)
       apartment (~> 2.2.1)
       graphql (~> 1.8.0)
+      kaminari (~> 1.2)
       rails (~> 6.0.0)
 
 PATH
@@ -290,6 +291,9 @@ GEM
     bootsnap (1.4.6)
       msgpack (~> 1.0)
     builder (3.2.4)
+    bullet (6.1.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     bunny (2.14.3)
       amq-protocol (~> 2.3, >= 2.3.0)
     byebug (11.0.1)
@@ -364,7 +368,7 @@ GEM
     gyoku (1.3.1)
       builder (>= 2.1.2)
     hashdiff (0.3.7)
-    hashie (3.6.0)
+    hashie (4.1.0)
     htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -390,7 +394,7 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     jsonapi-renderer (0.2.2)
-    jwt (2.2.1)
+    jwt (2.2.2)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -444,8 +448,8 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     okcomputer (1.18.0)
-    omniauth (1.9.0)
-      hashie (>= 3.4.6, < 3.7.0)
+    omniauth (1.9.1)
+      hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
     omniauth-facebook (5.0.0)
       omniauth-oauth2 (~> 1.2)
@@ -649,6 +653,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    uniform_notifier (1.13.0)
     validate_email (0.1.6)
       activemodel (>= 3.0)
       mail (>= 2.2.5)
@@ -688,6 +693,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
   bootsnap
+  bullet
   bunny (>= 2.7.2)
   byebug
   carrierwave (~> 2.0.2)
