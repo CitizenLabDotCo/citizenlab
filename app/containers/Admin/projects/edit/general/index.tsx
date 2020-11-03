@@ -805,6 +805,12 @@ class AdminProjectEditGeneral extends PureComponent<
       showLastCharSlugErrorMessage: !isLastCharValid,
       showMiddleCharsSlugErrorMessage: !areMiddleCharsValid,
     });
+
+    if (!isFirstCharValid || !isLastCharValid || !areMiddleCharsValid) {
+      this.setState({
+        submitState: 'disabled',
+      });
+    }
   };
 
   render() {
