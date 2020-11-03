@@ -178,7 +178,7 @@ const ProjectFolderInfo = ({
                     title,
                   })}
                   whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                    title,
+                    projectFolderName: title,
                   })}
                   utmParams={utmParams}
                 />

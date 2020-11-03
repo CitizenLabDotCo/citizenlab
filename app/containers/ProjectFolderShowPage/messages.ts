@@ -7,7 +7,8 @@ export default defineMessages({
   },
   whatsAppMessage: {
     id: 'app.containers.ProjectFolderShowPage.whatsAppMessage',
-    defaultMessage: '{title}',
+    defaultMessage:
+      '{projectFolderName} | from the participation platform of {orgName}',
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
