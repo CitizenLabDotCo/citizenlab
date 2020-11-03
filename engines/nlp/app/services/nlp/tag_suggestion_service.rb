@@ -9,7 +9,7 @@ module NLP
       }.reject(&:blank?)
       @texts.any? ? @api.tag_suggestions({
         locale: locale,
-        max_number_of_suggestions: 5,
+        max_number_of_suggestions: 20,
         texts: @texts
       }.freeze) : []
     end
