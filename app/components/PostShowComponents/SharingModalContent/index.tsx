@@ -156,6 +156,10 @@ class SharingModalContent extends PureComponent<
         idea: messages.ideaEmailSharingBody,
         initiative: messages.initiativeEmailSharingBody,
       }[postType];
+      const whatsAppMessage = {
+        idea: messages.whatsAppMessageIdea,
+        initiative: messages.whatsAppMessageProposal,
+      }[postType];
 
       return (
         <Container className={className}>
@@ -172,7 +176,7 @@ class SharingModalContent extends PureComponent<
               twitterMessage={formatMessage(messages.twitterMessage, {
                 postTitle,
               })}
-              whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+              whatsAppMessage={formatMessage(whatsAppMessage, {
                 postTitle,
               })}
               emailSubject={formatMessage(emailSharingSubject, { postTitle })}
