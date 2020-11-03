@@ -268,14 +268,16 @@ const Sharing = memo(
         </button>
       ) : null;
 
+      const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
+        ' ',
+        getUrlWithUtm('whatsapp')
+      );
       const whatsapp = (
         <button
           className={`sharingButton whatsapp ${layoutClassName}`}
           onClick={handleClick(
             'whatsapp',
-            `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
-              whatsAppMessage
-            )}`
+            `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
           )}
           aria-label={formatMessage(messages.shareViaWhatsApp)}
         >
