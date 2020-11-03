@@ -125,8 +125,8 @@ describe('Idea Page', () => {
 
     it('displays the location on the idea page and the map pops up', () => {
       cy.visit(`/ideas/${ideaTitle}`);
-      cy.get('#e2e-idea-show-page-content');
-      cy.get('#e2e-map-popup').click();
+      cy.acceptCookies();
+      cy.get('#e2e-map-popup:visible').click();
       cy.get('#e2e-map');
     });
 

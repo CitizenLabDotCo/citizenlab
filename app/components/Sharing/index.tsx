@@ -301,7 +301,7 @@ const Sharing = memo(
       const email =
         emailSubject && emailBody ? (
           <button
-            className="sharingButton last email"
+            className={`sharingButton last email ${layoutClassName}`}
             onClick={handleClick(
               'email',
               `mailto:?subject=${emailSubject}&body=${emailBody}`

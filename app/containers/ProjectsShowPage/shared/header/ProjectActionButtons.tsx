@@ -6,6 +6,7 @@ import React, {
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { isNumber } from 'lodash-es';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -157,7 +158,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           ((process_type === 'continuous' &&
             participation_method === 'budgeting') ||
             currentPhase?.attributes.participation_method === 'budgeting') &&
-          ideas_count &&
+          isNumber(ideas_count) &&
           ideas_count > 0 && (
             <AllocateBudgetButton
               id="e2e-project-allocate-budget-button"
@@ -172,7 +173,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           ((process_type === 'continuous' &&
             participation_method === 'ideation') ||
             currentPhase?.attributes.participation_method === 'ideation') &&
-          ideas_count &&
+          isNumber(ideas_count) &&
           ideas_count > 0 && (
             <SeeIdeasButton
               id="e2e-project-see-ideas-button"
