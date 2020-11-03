@@ -57,7 +57,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: flex-start;
   margin-bottom: 80px;
 `;
 
@@ -136,8 +136,6 @@ const Processing = memo<Props & InjectedIntlProps>(
   ({ className, ideas, projects }) => {
     const localize = useLocalize();
 
-    // const [showTopics, setShowTopics] = useState<boolean>(false);
-
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       []
     );
@@ -147,8 +145,8 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const { tagSuggestion, onIdeasChange } = useTagSuggestion();
 
-    const [processing, setProcessing] = useState<boolean>(false);
-    const [exporting, setExporting] = useState<boolean>(false);
+    const [isAutoTagging, setIsAutoTagging] = useState<boolean>(false);
+    const [isExportingXlsx, setIsExportingXlsx] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
@@ -224,14 +222,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [enterModalKey]);
 
     useEffect(() => {
-      if (!processing) {
+      if (!isAutoTagging) {
         setIdeaList(ideas?.list);
       }
-    }, [ideas, processing]);
+    }, [ideas, isAutoTagging]);
 
     useEffect(() => {
-      if (processing) {
-        setProcessing(false);
+      if (isAutoTagging) {
+        setIsAutoTagging(false);
       }
     }, [tagSuggestion]);
 
@@ -250,17 +248,17 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
 
       try {
-        setExporting(true);
+        setIsExportingXlsx(true);
         const blob = await requestBlob(
           `${API_PATH}/ideas/as_xlsx`,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           queryParametersObject
         );
         saveAs(blob, 'ideas-export.xlsx');
-        setExporting(false);
+        setIsExportingXlsx(false);
       } catch (error) {
         reportError(error);
-        setExporting(false);
+        setIsExportingXlsx(false);
       }
     };
 
@@ -268,13 +266,13 @@ const Processing = memo<Props & InjectedIntlProps>(
       e.preventDefault;
       trackEventByName(tracks.clickAutotag.name);
 
-      setProcessing(true);
+      setIsAutoTagging(true);
       onIdeasChange(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !processing) {
+        if (!isNilOrError(ideaList) && !isAutoTagging) {
           const newSelectedRows =
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
@@ -282,7 +280,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           setSelectedRows(newSelectedRows);
         }
       },
-      [ideaList, selectedRows, processing]
+      [ideaList, selectedRows, isAutoTagging]
     );
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
@@ -296,14 +294,14 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
-        if (!processing) {
+        if (!isAutoTagging) {
           const newSelectedRows = includes(selectedRows, selectedItemId)
             ? selectedRows.filter((id) => id !== selectedItemId)
             : [...selectedRows, selectedItemId];
           setSelectedRows(newSelectedRows);
         }
       },
-      [selectedRows, processing]
+      [selectedRows, isAutoTagging]
     );
 
     const openPreview = (id: string) => {
@@ -312,7 +310,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     const closeSideModal = () => setPreviewPostId(null);
     const switchPreviewMode = () =>
       setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
-    console.log(tagSuggestion);
 
     if (!isNilOrError(ideaList)) {
       return (
@@ -331,7 +328,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               <Button
                 buttonStyle="admin-dark"
                 disabled={!!(selectedRows.length === 0)}
-                processing={processing}
+                processing={isAutoTagging}
                 onClick={(e) => handleAutoTag(e)}
               >
                 <FormattedMessage {...messages.autotag} />
@@ -340,17 +337,11 @@ const Processing = memo<Props & InjectedIntlProps>(
               <Button
                 buttonStyle="admin-dark-outlined"
                 disabled={!!(selectedRows.length === 0)}
-                processing={exporting}
+                processing={isExportingXlsx}
                 onClick={handleExportSelectedIdeasAsXlsx}
               >
                 <FormattedMessage {...messages.export} />
               </Button>
-              {!isNilOrError(tagSuggestion) &&
-                tagSuggestion.map((tag, index) => (
-                  <div key={index}>
-                    {localize(tag.attributes.title_multiloc)}
-                  </div>
-                ))}
             </StyledActions>
           </SidePanel>
           <StyledTable>
@@ -370,7 +361,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                     onChange={handleOnSelectAll}
                   />
                 </th>
-
                 <th className="title">
                   <FormattedMessage
                     {...messages.items}
