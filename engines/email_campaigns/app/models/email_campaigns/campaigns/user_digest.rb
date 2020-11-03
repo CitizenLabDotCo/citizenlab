@@ -17,10 +17,18 @@ module EmailCampaigns
 
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|
-        s.add_recurrence_rule(
-          IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
-        )
+      if [true, false].sample
+        IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2020)) do |s|
+          s.add_recurrence_rule(
+            IceCube::Rule.weekly(1).day(:thursday).hour_of_day(13)
+          )
+        end
+      else
+        IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2020)) do |s|
+          s.add_recurrence_rule(
+            IceCube::Rule.weekly(1).day(:saturday).hour_of_day(8)
+          )
+        end
       end
     end
 
@@ -30,7 +38,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, time: nil
       time ||= Time.now
-      @notifications_counts = notifications_counts
+      @notifications_counts ||= notifications_counts
       top_ideas = top_ideas recipient
       discover_projects = discover_projects recipient
       name_service = UserDisplayNameService.new(Tenant.current, recipient)
