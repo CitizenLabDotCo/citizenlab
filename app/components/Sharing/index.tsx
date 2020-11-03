@@ -244,7 +244,7 @@ const Sharing = memo(
         <FacebookButton
           appId={facebookAppId}
           url={getUrlWithUtm('facebook')}
-          className="sharingButton facebook first"
+          className={`sharingButton facebook ${layoutClassName}`}
           sharer={true}
           onClick={handleClick('facebook')}
           aria-label={formatMessage(messages.shareOnFacebook)}
@@ -255,7 +255,7 @@ const Sharing = memo(
 
       const messenger = facebookAppId ? (
         <button
-          className="sharingButton messenger"
+          className={`sharingButton messenger ${layoutClassName}`}
           onClick={handleClick(
             'messenger',
             `fb-messenger://share/?link=${encodeURIComponent(
@@ -270,7 +270,7 @@ const Sharing = memo(
 
       const whatsapp = (
         <button
-          className="sharingButton whatsapp"
+          className={`sharingButton whatsapp ${layoutClassName}`}
           onClick={handleClick(
             'whatsapp',
             `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
