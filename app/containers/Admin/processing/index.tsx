@@ -48,6 +48,7 @@ import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { reportError } from 'utils/loggingUtils';
 import useTagSuggestion from 'hooks/useTags';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.div`
   padding-top: 45px;
@@ -313,97 +314,99 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     if (!isNilOrError(ideaList)) {
       return (
-        <Container className={className}>
-          <SidePanel>
-            <FilterSelector
-              title={<FormattedMessage {...messages.project} />}
-              name={'Projects'}
-              values={projectList}
-              onChange={handleProjectIdsChange}
-              multipleSelectionAllowed={true}
-              selected={selectedProjectIds}
-            />
+        <FeatureFlag name={'processing'}>
+          <Container className={className}>
+            <SidePanel>
+              <FilterSelector
+                title={<FormattedMessage {...messages.project} />}
+                name={'Projects'}
+                values={projectList}
+                onChange={handleProjectIdsChange}
+                multipleSelectionAllowed={true}
+                selected={selectedProjectIds}
+              />
 
-            <StyledActions>
-              <Button
-                buttonStyle="admin-dark"
-                disabled={!!(selectedRows.length === 0)}
-                processing={isAutoTagging}
-                onClick={(e) => handleAutoTag(e)}
-              >
-                <FormattedMessage {...messages.autotag} />
-              </Button>
+              <StyledActions>
+                <Button
+                  buttonStyle="admin-dark"
+                  disabled={!!(selectedRows.length === 0)}
+                  processing={isAutoTagging}
+                  onClick={(e) => handleAutoTag(e)}
+                >
+                  <FormattedMessage {...messages.autotag} />
+                </Button>
 
-              <Button
-                buttonStyle="admin-dark-outlined"
-                disabled={!!(selectedRows.length === 0)}
-                processing={isExportingXlsx}
-                onClick={handleExportSelectedIdeasAsXlsx}
-              >
-                <FormattedMessage {...messages.export} />
-              </Button>
-            </StyledActions>
-          </SidePanel>
-          <StyledTable>
-            <thead>
-              <tr>
-                <th className="checkbox">
-                  <StyledCheckbox
-                    checked={
-                      ideaList.length > 0 &&
-                      selectedRows.length === ideaList?.length
-                    }
-                    indeterminate={
-                      selectedRows.length > 0 &&
-                      selectedRows.length < ideaList.length
-                    }
-                    disabled={ideaList?.length === 0}
-                    onChange={handleOnSelectAll}
-                  />
-                </th>
-                <th className="title">
-                  <FormattedMessage
-                    {...messages.items}
-                    values={{
-                      items: selectedRows.length > 1 ? 'items' : 'item',
-                      amount: ideaList.length,
-                      selected: selectedRows.length,
-                    }}
-                  />
-                </th>
-                <th className="tags">
-                  <FormattedMessage {...messages.tags} />
-                </th>
-              </tr>
-            </thead>
-            {ideaList?.length > 0 && (
-              <tbody>
-                {ideaList?.map((idea) => (
-                  <ProcessingRow
-                    key={idea.id}
-                    idea={idea}
-                    selected={includes(selectedRows, idea.id)}
-                    highlighted={idea.id === highlightedId}
-                    onSelect={handleRowOnSelect}
-                    openPreview={openPreview}
-                    tagSuggestion={tagSuggestion?.filter((tag) =>
-                      tag.idea_ids.includes(idea.id)
-                    )}
-                  />
-                ))}
-              </tbody>
-            )}
-          </StyledTable>
-          <Suspense fallback={null}>
-            <LazyPostPreview
-              type={'AllIdeas'}
-              postId={previewPostId}
-              mode={previewMode}
-              onClose={closeSideModal}
-              onSwitchPreviewMode={switchPreviewMode}
-            />
-          </Suspense>
-        </Container>
+                <Button
+                  buttonStyle="admin-dark-outlined"
+                  disabled={!!(selectedRows.length === 0)}
+                  processing={isExportingXlsx}
+                  onClick={handleExportSelectedIdeasAsXlsx}
+                >
+                  <FormattedMessage {...messages.export} />
+                </Button>
+              </StyledActions>
+            </SidePanel>
+            <StyledTable>
+              <thead>
+                <tr>
+                  <th className="checkbox">
+                    <StyledCheckbox
+                      checked={
+                        ideaList.length > 0 &&
+                        selectedRows.length === ideaList?.length
+                      }
+                      indeterminate={
+                        selectedRows.length > 0 &&
+                        selectedRows.length < ideaList.length
+                      }
+                      disabled={ideaList?.length === 0}
+                      onChange={handleOnSelectAll}
+                    />
+                  </th>
+                  <th className="title">
+                    <FormattedMessage
+                      {...messages.items}
+                      values={{
+                        items: selectedRows.length > 1 ? 'items' : 'item',
+                        amount: ideaList.length,
+                        selected: selectedRows.length,
+                      }}
+                    />
+                  </th>
+                  <th className="tags">
+                    <FormattedMessage {...messages.tags} />
+                  </th>
+                </tr>
+              </thead>
+              {ideaList?.length > 0 && (
+                <tbody>
+                  {ideaList?.map((idea) => (
+                    <ProcessingRow
+                      key={idea.id}
+                      idea={idea}
+                      selected={includes(selectedRows, idea.id)}
+                      highlighted={idea.id === highlightedId}
+                      onSelect={handleRowOnSelect}
+                      openPreview={openPreview}
+                      tagSuggestion={tagSuggestion?.filter((tag) =>
+                        tag.idea_ids.includes(idea.id)
+                      )}
+                    />
+                  ))}
+                </tbody>
+              )}
+            </StyledTable>
+            <Suspense fallback={null}>
+              <LazyPostPreview
+                type={'AllIdeas'}
+                postId={previewPostId}
+                mode={previewMode}
+                onClose={closeSideModal}
+                onSwitchPreviewMode={switchPreviewMode}
+              />
+            </Suspense>
+          </Container>
+        </FeatureFlag>
       );
     }
 
