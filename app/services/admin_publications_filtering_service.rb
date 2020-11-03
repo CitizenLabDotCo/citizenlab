@@ -1,4 +1,4 @@
-module AdminPublicationsFilteringService
+class AdminPublicationsFilteringService
   include Filterer
 
   add_filter("by_publication_status") do |scope, options|
