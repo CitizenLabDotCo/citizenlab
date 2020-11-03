@@ -3,13 +3,17 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   skip_after_action :verify_policy_scoped, only: [:index]
 
   def index
-    @projects = if params[:filter_can_moderate]
-      ProjectPolicy::Scope.new(current_user, Project).moderatable 
-    else 
-      policy_scope(Project)
-    end
-    @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]  
-    @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
+    publications = policy_scope(AdminPublication).includes(:publication)
+    @projects = AdminPublicationsFilteringService.new.filter(publications, params)
+                                               .where(publication_type: Project.name)
+                                               .pluck(:publication)
+
+    # todo
+    # @projects = if params[:filter_can_moderate]
+    #   ProjectPolicy::Scope.new(current_user, Project).moderatable
+    # else
+    #   policy_scope(Project)
+    # end
 
     @projects = @projects.ordered
       .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
