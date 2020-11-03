@@ -61,9 +61,12 @@ namespace :email_campaigns do
     logs = []
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        camp = EmailCampaigns::UserDigest.first
+        camp = EmailCampaigns::Campaigns::UserDigest.first
         if camp
           camp.ic_schedule = camp.class.default_schedule
+          if !camp.save
+             logs += ["Failed to update campaign for #{tenant.host}"]
+          end
         else
           logs += ["No user digest campaign found for #{tenant.host}"]
         end
