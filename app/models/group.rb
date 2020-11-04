@@ -13,7 +13,7 @@ class Group < ApplicationRecord
   has_many :permissions, through: :groups_permissions
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :slug, uniqueness: true, presence: true
   validates :membership_type, presence: true, inclusion: {in: MEMBERSHIP_TYPES}
   validates :rules, if: :rules?, json: {
     schema: -> { SmartGroupsService.new.generate_rules_json_schema },

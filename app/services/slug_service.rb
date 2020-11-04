@@ -55,15 +55,11 @@ class SlugService
     end
   end
 
-  def regex
-    /\A[A-Za-z0-9%]+(?:-[A-Za-z0-9%]+)*\z/
-  end
-
   def slugify str
     if latinish? str
       str.downcase.parameterize.gsub('_', '-')
     else
-      URI::encode(str).gsub('_', '-')
+      str.gsub('_', '-')
     end
   end
 
