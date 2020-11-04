@@ -635,13 +635,14 @@ class AdminProjectEditGeneral extends PureComponent<
     this.setState(({ projectAttributesDiff }) => {
       return {
         slug,
-        submitState: 'enabled',
         projectAttributesDiff: {
           ...projectAttributesDiff,
           slug,
         },
       };
     });
+
+    this.validateSlug(slug);
   };
 
   validate = () => {
@@ -791,8 +792,7 @@ class AdminProjectEditGeneral extends PureComponent<
     }
   };
 
-  validateSlug = (event) => {
-    const slug = event.target.value;
+  validateSlug = (slug: string) => {
     const FirstCharRegEx = RegExp(/^[a-z0-9]{1}/);
     const LastCharRegEx = RegExp(/[a-z0-9]{1}$/);
     const MiddleCharsRegEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -809,6 +809,10 @@ class AdminProjectEditGeneral extends PureComponent<
     if (!isFirstCharValid || !isLastCharValid || !areMiddleCharsValid) {
       this.setState({
         submitState: 'disabled',
+      });
+    } else {
+      this.setState({
+        submitState: 'enabled',
       });
     }
   };
@@ -974,7 +978,6 @@ class AdminProjectEditGeneral extends PureComponent<
                   type="text"
                   label={<FormattedMessage {...messages.urlSlugLabel} />}
                   onChange={this.handleSlugOnChange}
-                  onBlur={this.validateSlug}
                   value={slug}
                 />
                 <SlugPreview>
