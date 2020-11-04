@@ -799,22 +799,15 @@ class AdminProjectEditGeneral extends PureComponent<
     const isFirstCharValid = FirstCharRegEx.test(slug);
     const isLastCharValid = LastCharRegEx.test(slug);
     const areMiddleCharsValid = MiddleCharsRegEx.test(slug);
+    const isSlugValid =
+      isFirstCharValid && isLastCharValid && areMiddleCharsValid;
 
     this.setState({
       showFirstCharSlugErrorMessage: !isFirstCharValid,
       showLastCharSlugErrorMessage: !isLastCharValid,
       showMiddleCharsSlugErrorMessage: !areMiddleCharsValid,
+      submitState: isSlugValid ? 'enabled' : 'disabled',
     });
-
-    if (!isFirstCharValid || !isLastCharValid || !areMiddleCharsValid) {
-      this.setState({
-        submitState: 'disabled',
-      });
-    } else {
-      this.setState({
-        submitState: 'enabled',
-      });
-    }
   };
 
   render() {
