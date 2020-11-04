@@ -1148,7 +1148,7 @@
   "app.containers.AdminPage.ProjectEdit.regexFirstCharError": "",
   "app.containers.AdminPage.ProjectEdit.regexLastCharError": "",
   "app.containers.AdminPage.ProjectEdit.regexMiddleError": "",
-  "app.containers.AdminPage.ProjectEdit.resultingLink": "",
+  "app.containers.AdminPage.ProjectEdit.resultingURL": "",
   "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "Error al guardar los datos. Por favor, inténtalo de nuevo.",
   "app.containers.AdminPage.ProjectEdit.saveProject": "Guardar",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "¡guardado!",
