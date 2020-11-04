@@ -94,11 +94,14 @@ const AdminProjectList = memo<Props>(
                     dropRow={handleDropRow}
                     lastItem={index === AdminPublicationsList.length - 1}
                   >
-                    {item.publicationType === 'project' ? (
-                      <ProjectRow publication={item} />
-                    ) : (
-                      <FolderRow publication={item} />
-                    )}
+                    <ProjectRow
+                      publication={item}
+                      visible={item.publicationType === 'project'}
+                    />
+                    <FolderRow
+                      publication={item}
+                      visible={item.publicationType === 'project_folder'}
+                    />
                   </SortableRow>
                 );
               })

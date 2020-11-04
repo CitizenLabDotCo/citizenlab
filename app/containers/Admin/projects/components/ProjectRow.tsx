@@ -42,6 +42,7 @@ interface Props {
   )[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
+  visible?: boolean;
 }
 
 export default ({
@@ -49,6 +50,7 @@ export default ({
   actions,
   hidePublicationStatusLabel,
   className,
+  visible = true,
 }: Props) => {
   const ManageButton = (
     <RowButton
@@ -65,6 +67,10 @@ export default ({
     </RowButton>
   );
   const publicationStatus = publication.attributes.publication_status;
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <RowContent className={`e2e-admin-projects-list-item ${className}`}>

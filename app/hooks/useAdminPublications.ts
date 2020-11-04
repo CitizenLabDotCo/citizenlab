@@ -18,7 +18,7 @@ export interface InputProps {
 
 export type IAdminPublicationContent = {
   id: string;
-  publicationType: 'project' | 'projectFolder';
+  publicationType: 'project' | 'project_folder';
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
 };
