@@ -42,7 +42,6 @@ interface Props {
   )[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
-  visible?: boolean;
 }
 
 export default ({
@@ -50,7 +49,6 @@ export default ({
   actions,
   hidePublicationStatusLabel,
   className,
-  visible = true,
 }: Props) => {
   const ManageButton = (
     <RowButton
@@ -68,7 +66,7 @@ export default ({
   );
   const publicationStatus = publication.attributes.publication_status;
 
-  if (!visible) {
+  if (publication.publicationType !== 'project') {
     return null;
   }
 
