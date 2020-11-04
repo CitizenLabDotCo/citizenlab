@@ -7,7 +7,7 @@ export default () => {
 
   useEffect(() => {
     setJwt(getJwt() || null);
-  });
+  }, []);
 
   return (
     <Fragment
