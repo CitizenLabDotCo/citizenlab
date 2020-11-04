@@ -15,7 +15,6 @@ import GetAdminPublications, {
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import FolderRow from 'modules/projectFolder/components/FolderRow/FolderRow';
 import Button from 'components/UI/Button';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 
@@ -27,6 +26,7 @@ import messages from '../messages';
 import { reorderAdminPublication } from 'services/adminPublications';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import useOutlet from 'hooks/useOutlet';
 
 const StyledListHeader = styled(ListHeader)`
   margin-bottom: 30px;
@@ -50,6 +50,10 @@ function handleReorderAdminPublication(itemId, newOrder) {
 const AdminProjectList = memo<Props>(
   ({ AdminPublications, foldersEnabled }) => {
     const AdminPublicationsList = AdminPublications.list;
+
+    const rowOutlet = useOutlet(
+      'app.containers.AdminPage.projects.all.projectsAndFolders'
+    );
 
     if (
       !isNilOrError(AdminPublicationsList) &&
@@ -94,8 +98,9 @@ const AdminProjectList = memo<Props>(
                     dropRow={handleDropRow}
                     lastItem={index === AdminPublicationsList.length - 1}
                   >
+                    {/* app.containers.AdminPage.projects.all.projectsAndFolders */}
                     <ProjectRow publication={item} />
-                    <FolderRow publication={item} />
+                    {rowOutlet({ publication: item })}
                   </SortableRow>
                 );
               })
