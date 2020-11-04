@@ -114,8 +114,8 @@ export default ({
   );
 
   return (
-    <Container>
-      <RowContent className={`e2e-admin-projects-list-item ${className}`}>
+    <Container className={className}>
+      <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
           {publication.attributes?.publication_visible_to === 'groups' &&
