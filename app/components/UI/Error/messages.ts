@@ -170,6 +170,6 @@ export default defineMessages({
   slug_taken: {
     id: 'app.errors.slug_taken',
     defaultMessage:
-      'This slug is already taken by another project. Please try another one.',
+      'This project URL already exists. Please change the project slug to something else',
   },
 });
