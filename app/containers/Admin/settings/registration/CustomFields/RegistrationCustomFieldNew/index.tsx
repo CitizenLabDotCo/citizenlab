@@ -6,7 +6,9 @@ import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import CustomFieldForm, { FormValues } from '../CustomFieldForm';
+import RegistrationCustomFieldForm, {
+  FormValues,
+} from '../RegistrationCustomFieldForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +23,7 @@ const PageTitle = styled.h1`
 
 type Props = {};
 
-class New extends React.Component<Props> {
+class RegistrationCustomFieldNew extends React.Component<Props> {
   handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
@@ -32,7 +34,7 @@ class New extends React.Component<Props> {
       .then((response) => {
         if (this.hasOptions(values.input_type)) {
           clHistory.push(
-            `/admin/settings/registration/custom_fields/${response.data.id}/options`
+            `/admin/settings/registration/custom-fields/${response.data.id}/options`
           );
         } else {
           clHistory.push('/admin/settings/registration');
@@ -50,7 +52,7 @@ class New extends React.Component<Props> {
   };
 
   renderFn = (props) => (
-    <CustomFieldForm {...props} mode="new" builtInField={false} />
+    <RegistrationCustomFieldForm {...props} mode="new" builtInField={false} />
   );
 
   hasOptions = (inputType) => {
@@ -66,7 +68,7 @@ class New extends React.Component<Props> {
       <div>
         <GoBackButton onClick={this.goBack} />
         <PageTitle>
-          <FormattedMessage {...messages.addFieldButton} />
+          <FormattedMessage {...messages.addANewRegistrationField} />
         </PageTitle>
         <PageWrapper>
           <Formik
@@ -79,7 +81,7 @@ class New extends React.Component<Props> {
             }}
             onSubmit={this.handleSubmit}
             render={this.renderFn}
-            validate={CustomFieldForm['validate']}
+            validate={RegistrationCustomFieldForm['validate']}
           />
         </PageWrapper>
       </div>
@@ -87,4 +89,4 @@ class New extends React.Component<Props> {
   }
 }
 
-export default New;
+export default RegistrationCustomFieldNew;
