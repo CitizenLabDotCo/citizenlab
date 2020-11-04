@@ -190,7 +190,7 @@
   "app.components.InitiativeForm.publishUnknownError": "Une erreur est survenue lors de la publication de votre proposition, veuillez réessayer plus tard.",
   "app.components.InitiativeForm.titleEmptyError": "Veuillez donner un titre",
   "app.components.InitiativeForm.titleLabel": "Titre",
-  "app.components.InitiativeForm.titleLabelSubtext2": "Choose a descriptive, yet concise title (min. 10 characters, max. 72 characters)",
+  "app.components.InitiativeForm.titleLabelSubtext2": "Choisissez un titre descriptif et concis (min. 10 caractères, max. 72 caractères)",
   "app.components.InitiativeForm.titleMaxLengthError": "The provided title is too long. Please add a title that is between 10 and 72 characters long.",
   "app.components.InitiativeForm.titleMinLengthError": "The provided title is too short. Please add a title that is between 10 and 72 characters long.",
   "app.components.InitiativeForm.topicEmptyError": "Veuillez sélectionner une thématique",
