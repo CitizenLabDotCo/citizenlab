@@ -839,7 +839,7 @@
   "app.containers.Admin.projects.all.components.draft": "Szkic",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Zarządzaj",
   "app.containers.Admin.projects.all.deleteFolderButton": "",
-  "app.containers.Admin.projects.all.deleteFolderConfirmation": "",
+  "app.containers.Admin.projects.all.deleteFolderConfirm": "",
   "app.containers.Admin.projects.all.deleteFolderError": "",
   "app.containers.Admin.projects.all.deleteProjectButton": "",
   "app.containers.Admin.projects.all.deleteProjectConfirmation": "",
