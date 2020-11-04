@@ -10,25 +10,26 @@ import messages from './messages';
 // style
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 interface Props {
   className?: string;
 }
 
 const Container = styled.div`
-  background: ${colors.lightGreyishBlue};
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
   border: 1px solid #e7e7e7;
+  background: ${darken(0.045, colors.background)};
 `;
 
 const TipsTitle = styled.h2`
-  margin-bottom: 0;
   font-size: ${fontSizes.large}px;
   line-height: 24px;
   font-weight: 600;
+  margin-bottom: 0;
 `;
 
 const TipsBox = memo(({ className }: Props) => {
