@@ -223,9 +223,7 @@ interface State {
   processingDelete: boolean;
   deleteError: string | null;
   slug: string | null;
-  showFirstCharSlugErrorMessage: boolean;
-  showLastCharSlugErrorMessage: boolean;
-  showMiddleCharsSlugErrorMessage: boolean;
+  showSlugErrorMessage: boolean;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -266,9 +264,7 @@ class AdminProjectEditGeneral extends PureComponent<
       processingDelete: false,
       deleteError: null,
       slug: null,
-      showFirstCharSlugErrorMessage: false,
-      showLastCharSlugErrorMessage: false,
-      showMiddleCharsSlugErrorMessage: false,
+      showSlugErrorMessage: false,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -793,19 +789,11 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   validateSlug = (slug: string) => {
-    const FirstCharRegEx = RegExp(/^[a-z0-9]{1}/);
-    const LastCharRegEx = RegExp(/[a-z0-9]{1}$/);
-    const MiddleCharsRegEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-    const isFirstCharValid = FirstCharRegEx.test(slug);
-    const isLastCharValid = LastCharRegEx.test(slug);
-    const areMiddleCharsValid = MiddleCharsRegEx.test(slug);
-    const isSlugValid =
-      isFirstCharValid && isLastCharValid && areMiddleCharsValid;
+    const slugRexEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    const isSlugValid = slugRexEx.test(slug);
 
     this.setState({
-      showFirstCharSlugErrorMessage: !isFirstCharValid,
-      showLastCharSlugErrorMessage: !isLastCharValid,
-      showMiddleCharsSlugErrorMessage: !areMiddleCharsValid,
+      showSlugErrorMessage: !isSlugValid,
       submitState: isSlugValid ? 'enabled' : 'disabled',
     });
   };
@@ -827,9 +815,7 @@ class AdminProjectEditGeneral extends PureComponent<
       apiErrors,
       processingDelete,
       slug,
-      showFirstCharSlugErrorMessage,
-      showLastCharSlugErrorMessage,
-      showMiddleCharsSlugErrorMessage,
+      showSlugErrorMessage,
       currentTenant,
       locale,
     } = this.state;
@@ -979,15 +965,11 @@ class AdminProjectEditGeneral extends PureComponent<
                   {currentTenant?.data.attributes.host}/{locale}/projects/
                   {slug}
                 </SlugPreview>
+                {/* Backend error */}
                 <Error fieldName="slug" apiErrors={this.state.apiErrors.slug} />
-                {showFirstCharSlugErrorMessage && (
-                  <Error text={formatMessage(messages.regexFirstCharError)} />
-                )}
-                {showLastCharSlugErrorMessage && (
-                  <Error text={formatMessage(messages.regexLastCharError)} />
-                )}
-                {showMiddleCharsSlugErrorMessage && (
-                  <Error text={formatMessage(messages.regexMiddleError)} />
+                {/* Frontend error */}
+                {showSlugErrorMessage && (
+                  <Error text={formatMessage(messages.regexError)} />
                 )}
               </StyledSectionField>
             )}
