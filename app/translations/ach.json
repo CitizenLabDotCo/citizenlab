@@ -1148,7 +1148,7 @@
   "app.containers.AdminPage.ProjectEdit.regexFirstCharError": "",
   "app.containers.AdminPage.ProjectEdit.regexLastCharError": "",
   "app.containers.AdminPage.ProjectEdit.regexMiddleError": "",
-  "app.containers.AdminPage.ProjectEdit.resultingLink": "",
+  "app.containers.AdminPage.ProjectEdit.resultingURL": "",
   "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "",
   "app.containers.AdminPage.ProjectEdit.saveProject": "",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "",
