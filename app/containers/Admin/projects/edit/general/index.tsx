@@ -982,6 +982,7 @@ class AdminProjectEditGeneral extends PureComponent<
                   {currentTenant?.data.attributes.host}/{locale}/projects/
                   {slug}
                 </SlugPreview>
+                <Error fieldName="slug" apiErrors={this.state.apiErrors.slug} />
                 {showFirstCharSlugErrorMessage && (
                   <Error text={formatMessage(messages.regexFirstCharError)} />
                 )}
