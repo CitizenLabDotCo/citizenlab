@@ -14,7 +14,7 @@ RSpec.describe User, type: :model do
       u.first_name = "Not Really_%40)"
       u.last_name = "286^$@sluggable"
       u.save
-      expect(u.slug).to eq("not-really_-40-286-sluggable")
+      expect(u.slug).to eq("not-really--40-286-sluggable")
     end
   end
 
