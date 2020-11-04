@@ -221,16 +221,6 @@ RSpec.describe User, type: :model do
 
   describe "slug" do
 
-    it "is valid when it's only containing alphanumeric and hyphens" do
-      user = build(:user, slug: 'aBc-123-g3S')
-      expect(user).to be_valid
-    end
-
-    it "is invalid when there's others than alphanumeric and hyphens" do
-      user = build(:user, slug: 'ab_c-.asdf@')
-      expect{ user.valid? }.to change{ user.errors[:slug] }
-    end
-
     it "is generated on create when not given" do
       user = create(:user, slug: nil)
       expect(user.slug).to be_present
