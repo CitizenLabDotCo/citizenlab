@@ -143,7 +143,7 @@ const DropdownContent = ({
       <FacebookButton
         appId={facebookAppId}
         url={getUrlWithUtm('facebook')}
-        className="sharingButton facebook first"
+        className="sharingButton facebook"
         sharer={true}
         onClick={trackEventByName(tracks.clickShare.name, {
           network: 'facebook',
