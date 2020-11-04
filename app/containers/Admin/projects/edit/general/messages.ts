@@ -184,20 +184,10 @@ export default defineMessages({
     defaultMessage:
       'If you change the project URL, links to the project page using the old URL will no longer work.',
   },
-  regexFirstCharError: {
-    id: 'app.containers.AdminPage.ProjectEdit.regexFirstCharError',
+  regexError: {
+    id: 'app.containers.AdminPage.ProjectEdit.regexError',
     defaultMessage:
-      'The first character must be a letter or number. Letters must be lowercase without special characters.',
-  },
-  regexMiddleError: {
-    id: 'app.containers.AdminPage.ProjectEdit.regexMiddleError',
-    defaultMessage:
-      'Characters between the first and last characters must be letters, numbers or hyphens (-). Consecutive hyphens (--) are forbidden. Letters must be lowercase without special characters.',
-  },
-  regexLastCharError: {
-    id: 'app.containers.AdminPage.ProjectEdit.regexLastCharError',
-    defaultMessage:
-      'The last character must be a letter or number. Letters must be lowercase without special characters.',
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
   },
   resultingURL: {
     id: 'app.containers.AdminPage.ProjectEdit.resultingURL',
