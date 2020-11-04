@@ -88,6 +88,7 @@ const InFolderProjectRow = styled(ProjectRow)`
 
 interface InputProps {
   publication: IAdminPublicationContent;
+  visible?: boolean;
 }
 
 interface DataProps {
@@ -96,63 +97,69 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const FolderRow = memo<Props>(({ publication, adminPublications }) => {
-  const hasProjects =
-    !isNilOrError(adminPublications) &&
-    !!adminPublications.list?.length &&
-    adminPublications.list.length > 0;
-  const [folderOpen, setFolderOpen] = useState(false);
-  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
+const FolderRow = memo<Props>(
+  ({ publication, adminPublications, visible = false }) => {
+    const hasProjects =
+      !isNilOrError(adminPublications) &&
+      !!adminPublications.list?.length &&
+      adminPublications.list.length > 0;
+    const [folderOpen, setFolderOpen] = useState(false);
+    const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
-  return (
-    <Container>
-      <FolderRowContent
-        className="e2e-admin-adminPublications-list-item"
-        expanded={hasProjects && folderOpen}
-        hasProjects={hasProjects}
-        role="button"
-        onClick={toggleExpand}
-      >
-        <RowContentInner className="expand primary">
-          {hasProjects && (
-            <ArrowIcon
-              expanded={hasProjects && folderOpen}
-              name="chevron-right"
-            />
-          )}
-          <FolderIcon name="simpleFolder" />
-          <RowTitle value={publication.attributes.publication_title_multiloc} />
-          <PublicationStatusLabel
-            publicationStatus={publication.attributes.publication_status}
-          />
-        </RowContentInner>
-        <ActionsRowContainer>
-          <RowButton
-            className={`e2e-admin-edit-project ${
-              publication.attributes.publication_title_multiloc['en-GB'] || ''
-            }`}
-            linkTo={`/admin/projects/folders/${publication.publicationId}`}
-            buttonStyle="secondary"
-            icon="edit"
-          >
-            <FormattedMessage {...messages.manageButtonLabel} />
-          </RowButton>
-        </ActionsRowContainer>
-      </FolderRowContent>
+    if (!visible) return null;
 
-      {hasProjects && folderOpen && (
-        <ProjectRows>
-          {adminPublications?.list?.map((publication) => (
-            <InFolderProjectRow
-              publication={publication}
-              key={publication.id}
+    return (
+      <Container>
+        <FolderRowContent
+          className="e2e-admin-adminPublications-list-item"
+          expanded={hasProjects && folderOpen}
+          hasProjects={hasProjects}
+          role="button"
+          onClick={toggleExpand}
+        >
+          <RowContentInner className="expand primary">
+            {hasProjects && (
+              <ArrowIcon
+                expanded={hasProjects && folderOpen}
+                name="chevron-right"
+              />
+            )}
+            <FolderIcon name="simpleFolder" />
+            <RowTitle
+              value={publication.attributes.publication_title_multiloc}
             />
-          ))}
-        </ProjectRows>
-      )}
-    </Container>
-  );
-});
+            <PublicationStatusLabel
+              publicationStatus={publication.attributes.publication_status}
+            />
+          </RowContentInner>
+          <ActionsRowContainer>
+            <RowButton
+              className={`e2e-admin-edit-project ${
+                publication.attributes.publication_title_multiloc['en-GB'] || ''
+              }`}
+              linkTo={`/admin/projects/folders/${publication.publicationId}`}
+              buttonStyle="secondary"
+              icon="edit"
+            >
+              <FormattedMessage {...messages.manageButtonLabel} />
+            </RowButton>
+          </ActionsRowContainer>
+        </FolderRowContent>
+
+        {hasProjects && folderOpen && (
+          <ProjectRows>
+            {adminPublications?.list?.map((publication) => (
+              <InFolderProjectRow
+                publication={publication}
+                key={publication.id}
+              />
+            ))}
+          </ProjectRows>
+        )}
+      </Container>
+    );
+  }
+);
 
 const Data = adopt<DataProps, InputProps>({
   adminPublications: ({ publication: { publicationId }, render }) => (
