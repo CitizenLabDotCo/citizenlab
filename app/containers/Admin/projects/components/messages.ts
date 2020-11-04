@@ -33,9 +33,9 @@ export default defineMessages({
       'There was an issue removing this folder. Please try again.',
   },
   deleteFolderConfirmation: {
-    id: 'app.containers.Admin.projects.all.deleteFolderConfirmation',
+    id: 'app.containers.Admin.projects.all.deleteFolderConfirm',
     defaultMessage:
-      'Are you sure you want to delete this folder and all the projects it contains?',
+      'Are you sure you want to delete this folder? All of the projects within the folder will also be deleted. This action cannot be undone.',
   },
   deleteFolderButton: {
     id: 'app.containers.Admin.projects.all.deleteFolderButton',
