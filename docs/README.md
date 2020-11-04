@@ -1,5 +1,18 @@
 # Changelog
 
+## 2010-11-5
+
+### Added
+- Reordering of and cleaner interface for managing custom registration field options
+- An 'add proposal' button in the proposals admin
+- Fragment to user profile page to manage party membership settings (CD&V)
+
+### Changed
+- Proposal title max. length error message
+
+### Fixed
+- The automatic scroll to the survey on survey project page
+
 ## 2010-11-3
 
 ### Fixed
