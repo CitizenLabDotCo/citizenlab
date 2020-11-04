@@ -808,6 +808,7 @@
   "app.containers.Admin.emails.subtitleEmails": "crwdns19906:0crwdne19906:0",
   "app.containers.Admin.emails.titleEmails": "crwdns19457:0crwdne19457:0",
   "app.containers.Admin.emails.toAllUsers": "crwdns53608:0crwdne53608:0",
+  "app.containers.Admin.initiatives.addNewProposal": "crwdns63650:0crwdne63650:0",
   "app.containers.Admin.initiatives.enabledToggle": "crwdns53906:0crwdne53906:0",
   "app.containers.Admin.initiatives.fieldPostingEnabled": "crwdns53908:0crwdne53908:0",
   "app.containers.Admin.initiatives.fieldVotingDaysLimit": "crwdns53910:0crwdne53910:0",
