@@ -45,27 +45,24 @@ export const loadModules = (modules, outlets) => {
     .filter((module) => module.enabled)
     .map((module) => module.configuration);
 
-  return enabledModuleConfigurations.reduce(
+  const mergedRoutes = enabledModuleConfigurations.reduce(
     (mergedConfiguration, configuration) => {
       return {
-        routes: {
-          citizen: [
-            ...mergedConfiguration.routes.citizen,
-            ...configuration.routes.citizen,
-          ],
-          admin: [
-            ...mergedConfiguration.routes.admin,
-            ...configuration.routes.admin,
-          ],
-        },
+        citizen: [
+          ...mergedConfiguration.citizen,
+          ...configuration.routes.citizen,
+        ],
+        admin: [...mergedConfiguration.admin, ...configuration.routes.admin],
       };
     },
     {
-      routes: {
-        citizen: [],
-        admin: [],
-      },
-      outlets,
+      citizen: [],
+      admin: [],
     }
   );
+
+  return {
+    routes: mergedRoutes,
+    outlets,
+  };
 };

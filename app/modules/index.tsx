@@ -1,6 +1,8 @@
+import React from 'react';
 import { loadModules } from 'utils/moduleUtils';
 
 import projectFolderConfiguration from './projectFolder';
+import FolderRow from './projectFolder/components/FolderRow';
 
 export default loadModules(
   [
@@ -10,6 +12,6 @@ export default loadModules(
     },
   ],
   {
-    'app.containers.AdminPage.projects.all.projectsAndFolders': [],
+    'app.containers.AdminPage.projects.all.projectsAndFolders': [<FolderRow />],
   }
 );
