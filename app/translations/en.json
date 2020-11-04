@@ -1170,7 +1170,6 @@
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Unassigned",
   "app.containers.AdminPage.ProjectEdit.unlimited": "Unlimited",
-  "app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning": "If you change the project slug, links to the project page using the URL with the current slug will no longer work.",
   "app.containers.AdminPage.ProjectEdit.urlSlugLabel": "Project slug",
   "app.containers.AdminPage.ProjectEdit.urlSlugTooltip": "The slug is the last part of the link to the project. For example, for this project the current link is {currentProjectLink}, of which {currentProjectSlug} is the slug.",
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Use this template",
