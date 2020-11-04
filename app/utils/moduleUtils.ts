@@ -40,7 +40,7 @@ const convertConfigurationToRoute = ({
 export const parseModuleRoutes = (routes, type = RouteTypes.CITIZEN) =>
   routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-export const loadModules = (modules) => {
+export const loadModules = (modules, outlets) => {
   const enabledModuleConfigurations = modules
     .filter((module) => module.enabled)
     .map((module) => module.configuration);
@@ -65,6 +65,7 @@ export const loadModules = (modules) => {
         citizen: [],
         admin: [],
       },
+      outlets,
     }
   );
 };
