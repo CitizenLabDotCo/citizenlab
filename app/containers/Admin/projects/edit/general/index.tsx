@@ -936,6 +936,7 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
+            {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
             {currentTenant && project?.data.attributes.slug && (
               <StyledSectionField>
                 <SubSectionTitle>
