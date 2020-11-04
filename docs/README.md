@@ -6,6 +6,7 @@
 - Reordering of and cleaner interface for managing custom registration field options
 - An 'add proposal' button in the proposals admin
 - Fragment to user profile page to manage party membership settings (CD&V)
+- "User not found" message when visiting a profile for a user that was deleted or could not be found.
 
 ### Changed
 - Proposal title max. length error message
