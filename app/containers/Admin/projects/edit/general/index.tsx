@@ -946,13 +946,13 @@ class AdminProjectEditGeneral extends PureComponent<
             {currentTenant && project?.data.attributes.slug && (
               <StyledSectionField>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.projectUrlSlug} />
+                  <FormattedMessage {...messages.projectUrl} />
                   <IconTooltip
                     content={
                       <FormattedMessage
                         {...messages.urlSlugTooltip}
                         values={{
-                          currentProjectLink: (
+                          currentProjectURL: (
                             <em>
                               <b>
                                 {currentTenant.data.attributes.host}/{locale}
