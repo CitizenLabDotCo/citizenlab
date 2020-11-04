@@ -15,7 +15,7 @@ import GetAdminPublications, {
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import FolderRow from '../../components/FolderRow';
+import FolderRow from 'modules/projectFolder/components/FolderRow/FolderRow';
 import Button from 'components/UI/Button';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 
