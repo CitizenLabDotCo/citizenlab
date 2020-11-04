@@ -161,6 +161,13 @@ const Buttons = styled.div`
   }
 `;
 
+const ButtonText = styled.span`
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 10px;
+`;
+
 export type UtmParams = {
   source: string;
   campaign: string;
@@ -250,6 +257,11 @@ const Sharing = memo(
           aria-label={formatMessage(messages.shareOnFacebook)}
         >
           <StyledIcon ariaHidden name="facebook" />
+          {layout === 2 && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareOnFacebook)}
+            </ButtonText>
+          )}
         </FacebookButton>
       ) : null;
 
@@ -265,6 +277,11 @@ const Sharing = memo(
           aria-label={formatMessage(messages.shareViaMessenger)}
         >
           <StyledIcon ariaHidden name="messenger" />
+          {layout === 2 && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareViaMessenger)}
+            </ButtonText>
+          )}
         </button>
       ) : null;
 
@@ -282,6 +299,11 @@ const Sharing = memo(
           aria-label={formatMessage(messages.shareViaWhatsApp)}
         >
           <StyledIcon ariaHidden name="whatsapp" />
+          {layout === 2 && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareViaWhatsApp)}
+            </ButtonText>
+          )}
         </button>
       );
 
@@ -297,6 +319,11 @@ const Sharing = memo(
           aria-label={formatMessage(messages.shareOnTwitter)}
         >
           <StyledIcon ariaHidden name="twitter" />
+          {layout === 2 && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareOnTwitter)}
+            </ButtonText>
+          )}
         </TwitterButton>
       );
 
@@ -311,6 +338,11 @@ const Sharing = memo(
             aria-label={formatMessage(messages.shareByEmail)}
           >
             <StyledIcon ariaHidden name="email" />
+            {layout === 2 && (
+              <ButtonText aria-hidden>
+                {formatMessage(messages.shareByEmail)}
+              </ButtonText>
+            )}
           </button>
         ) : null;
 
