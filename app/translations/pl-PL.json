@@ -1148,7 +1148,7 @@
   "app.containers.AdminPage.ProjectEdit.regexFirstCharError": "",
   "app.containers.AdminPage.ProjectEdit.regexLastCharError": "",
   "app.containers.AdminPage.ProjectEdit.regexMiddleError": "",
-  "app.containers.AdminPage.ProjectEdit.resultingLink": "",
+  "app.containers.AdminPage.ProjectEdit.resultingURL": "",
   "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "Podczas zapisywania danych wystąpił błąd. Proszę spróbuj jeszcze raz.",
   "app.containers.AdminPage.ProjectEdit.saveProject": "Zapisz",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Zapisane!",
