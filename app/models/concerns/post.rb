@@ -46,7 +46,7 @@ module Post
       post.validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
       post.validates :body_multiloc, presence: true, multiloc: {presence: true}
       post.validates :author, presence: true, on: :create
-      post.validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+      post.validates :slug, uniqueness: true, presence: true
 
       post.before_validation :strip_title
       post.before_validation :generate_slug
