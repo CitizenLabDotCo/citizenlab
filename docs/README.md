@@ -1,5 +1,10 @@
 # Changelog
 
+## 2010-11-4
+
+### Fixed
+- Fixed broken date picker for phase start and end date
+
 ## 2010-10-30
 
 ### Added
