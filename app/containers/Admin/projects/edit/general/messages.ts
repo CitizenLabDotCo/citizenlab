@@ -182,7 +182,7 @@ export default defineMessages({
   urlSlugBrokenLinkWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',
     defaultMessage:
-      'If you change the project slug, links to the project page using the URL with the current slug will no longer work.',
+      'If you change the project URL, links to the project page using the old URL will no longer work.',
   },
   regexFirstCharError: {
     id: 'app.containers.AdminPage.ProjectEdit.regexFirstCharError',
@@ -199,8 +199,8 @@ export default defineMessages({
     defaultMessage:
       'The last character must be a letter or number. Letters must be lowercase without special characters.',
   },
-  resultingLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.resultingLink',
-    defaultMessage: 'Resulting project link',
+  resultingURL: {
+    id: 'app.containers.AdminPage.ProjectEdit.resultingURL',
+    defaultMessage: 'Resulting project URL',
   },
 });
