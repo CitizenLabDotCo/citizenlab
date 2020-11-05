@@ -94,7 +94,9 @@ const AdminProjectList = memo<Props>(
                     dropRow={handleDropRow}
                     lastItem={index === AdminPublicationsList.length - 1}
                   >
-                    <ProjectRow publication={item} />
+                    {item.publicationType === 'project' && (
+                      <ProjectRow publication={item} />
+                    )}
                     <Outlet
                       id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
                       publication={item}

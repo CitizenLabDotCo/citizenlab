@@ -104,9 +104,6 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
   const [folderOpen, setFolderOpen] = useState(false);
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
-  if (publication.publicationType !== 'project_folder') {
-    return null;
-  }
   return (
     <Container>
       <FolderRowContent

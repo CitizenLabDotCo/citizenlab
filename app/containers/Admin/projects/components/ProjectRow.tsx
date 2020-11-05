@@ -66,10 +66,6 @@ export default ({
   );
   const publicationStatus = publication.attributes.publication_status;
 
-  if (publication.publicationType !== 'project') {
-    return null;
-  }
-
   return (
     <RowContent className={`e2e-admin-projects-list-item ${className}`}>
       <RowContentInner className="expand primary">
