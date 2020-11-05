@@ -126,10 +126,14 @@ const DropdownContent = ({
   const getUrlWithUtm = (medium: Medium) => {
     let resUrl = url;
 
-    resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
+    resUrl += `?utm_source=${encodeURIComponent(
+      utmParams.source
+    )}&utm_campaign=${encodeURIComponent(
+      utmParams.campaign
+    )}&utm_medium=${encodeURIComponent(medium)}`;
 
     if (utmParams.content) {
-      resUrl += `&utm_content=${utmParams.content}`;
+      resUrl += `&utm_content=${encodeURIComponent(utmParams.content)}`;
     }
 
     return resUrl;
@@ -160,8 +164,8 @@ const DropdownContent = ({
         className="sharingButton messenger"
         onClick={onClick(
           'messenger',
-          `fb-messenger://share/?link=${encodeURIComponent(
-            getUrlWithUtm('messenger')
+          `fb-messenger://share/?link=${getUrlWithUtm(
+            'messenger'
           )}&app_id=${facebookAppId}`
         )}
         aria-label={formatMessage(messages.shareViaMessenger)}
