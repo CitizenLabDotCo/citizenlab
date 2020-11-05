@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { cloneElement } from 'react';
 import useOutlet from 'hooks/useOutlet';
 
