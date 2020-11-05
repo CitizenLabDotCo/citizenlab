@@ -2,7 +2,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   before_action :set_admin_publication, only: [:reorder, :show]
 
   def index
-    publications = policy_scope(AdminPublication).includes(:publication, :children)
+    publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)
 
     @publications = publications
@@ -11,8 +11,8 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       .per(params.dig(:page, :size))
 
     children_counts = Hash.new(0).tap do |counts|
-      parent_ids = @publication.pluck(:parent_id).compact
-      parent_ids.inject(counts) { |counts| counts[id] += 1 }
+      parent_ids = @publications.pluck(:parent_id).compact
+      parent_ids.each { |id| counts[id] += 1 }
     end
 
     render json: linked_json(

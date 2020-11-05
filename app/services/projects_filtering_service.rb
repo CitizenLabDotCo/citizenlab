@@ -1,21 +1,28 @@
 
-#noinspection RubyJumpError
 class ProjectsFilteringService
   include Filterer
 
   add_filter("by_topics") do |scope, options|
-    return scope unless (topics = options[:topics])
-    scope.with_all_topics(topics)
+    topics = options[:topics]
+    topics ? scope.with_all_topics(topics) : scope
   end
 
   add_filter("by_areas") do |scope, options|
-    return scope unless (areas = options[:areas])
-    scope.with_some_areas(areas).or(scope.without_areas)
+    if (areas = options[:areas])
+      scope.with_some_areas(areas).or(scope.without_areas)
+    else
+      scope
+    end
   end
 
   add_filter("filter_ids") do |scope, options|
-    return scope unless (keep_ids = options[:filter_ids])
-    scope.where(id: keep_ids)
+    keep_ids = options[:filter_ids]
+    keep_ids ? scope.where(id: keep_ids) : scope
+  end
+
+  add_filter("by_moderator") do |scope, options|
+    moderator = options[:moderator]
+    moderator ? ProjectPolicy::Scope.new(moderator, scope).moderatable : scope
   end
 
 end

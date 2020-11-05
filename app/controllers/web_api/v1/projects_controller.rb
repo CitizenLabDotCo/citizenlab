@@ -3,22 +3,20 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   skip_after_action :verify_policy_scoped, only: [:index]
 
   def index
-    publications = policy_scope(AdminPublication).includes(:publication)
-    @projects = AdminPublicationsFilteringService.new.filter(publications, params)
-                                               .where(publication_type: Project.name)
-                                               .pluck(:publication)
+    params["moderator"] = current_user if params[:filter_can_moderate]
 
-    # todo
-    # @projects = if params[:filter_can_moderate]
-    #   ProjectPolicy::Scope.new(current_user, Project).moderatable
-    # else
-    #   policy_scope(Project)
-    # end
-
-    @projects = @projects.ordered
-      .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    publications = policy_scope(AdminPublication)
+    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+                                                 .where(publication_type: Project.name)
+    # Not very satisfied with this ping-pong of SQL queries (knowing that the
+    # AdminPublicationsFilteringService is also making a request on projects).
+    # But could not find a way to eager-load the polymorphic type in the publication
+    # scope.
+    @projects = Project.where(id:publications.select(:publication_id))
+                       .ordered
+                       .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
+                       .page(params.dig(:page, :number))
+                       .per(params.dig(:page, :size))
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -26,6 +24,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
         [basket.participation_context_id, basket.participation_context_type]
       end
     user_baskets ||= {}
+
     instance_options = {
       user_baskets: user_baskets,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
@@ -104,8 +103,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     if saved
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @project, 
-        params: fastjson_params, 
+        @project,
+        params: fastjson_params,
         include: [:admin_publication],
         ).serialized_json, status: :ok
     else
