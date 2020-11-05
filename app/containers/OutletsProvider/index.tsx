@@ -1,12 +1,13 @@
 import React, { createContext } from 'react';
 import moduleConfiguration from 'modules';
+import { parseOutlets } from 'utils/moduleUtils';
 
-console.log(moduleConfiguration);
+const parsedOutlets = parseOutlets(moduleConfiguration.outlets);
 
-export const OutletsContext = createContext(moduleConfiguration.outlets);
+export const OutletsContext = createContext(parsedOutlets);
 
 const OutletsProvider = ({ children }) => (
-  <OutletsContext.Provider value={moduleConfiguration.outlets}>
+  <OutletsContext.Provider value={parsedOutlets}>
     {children}
   </OutletsContext.Provider>
 );

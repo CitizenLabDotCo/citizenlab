@@ -13,8 +13,11 @@ const Outlet = ({ id, ...props }) => {
 
   return (
     <>
-      {wrapWithArray(outlet).map((component) =>
-        cloneElement(component, { ...component.props, ...props })
+      {wrapWithArray(outlet).map((element) =>
+        cloneElement(element, {
+          ...element.props,
+          ...props,
+        })
       )}
     </>
   );
