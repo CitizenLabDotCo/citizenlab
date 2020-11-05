@@ -33,17 +33,17 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     }
 
     render json: linked_json(
-      @projects, 
-      WebApi::V1::ProjectSerializer, 
-      params: fastjson_params(instance_options), 
+      @projects,
+      WebApi::V1::ProjectSerializer,
+      params: fastjson_params(instance_options),
       include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
       )
   end
 
   def show
     render json: WebApi::V1::ProjectSerializer.new(
-      @project, 
-      params: fastjson_params, 
+      @project,
+      params: fastjson_params,
       include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
       ).serialized_json
   end
@@ -72,8 +72,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     if saved
       SideFxProjectService.new.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @project, 
-        params: fastjson_params, 
+        @project,
+        params: fastjson_params,
         include: [:admin_publication],
         ).serialized_json, status: :created
     else
@@ -86,7 +86,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     params[:project][:default_assignee_id] ||= nil if params[:project].has_key?(:default_assignee_id)
 
     project_params = permitted_attributes(Project)
-    
+
     @project.assign_attributes project_params.except(:folder_id)
     if project_params.key?(:header_bg) && project_params[:header_bg].nil?
       # setting the header image attribute to nil will not remove the header image
