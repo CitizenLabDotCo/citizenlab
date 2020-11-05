@@ -224,10 +224,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      idea_tagging: {
-        enabled: true,
-        allowed: true
-      },
       smart_groups: {
         enabled: true,
         allowed: true
