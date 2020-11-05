@@ -212,10 +212,14 @@ const Sharing = memo(
     const getUrlWithUtm = (medium: string) => {
       let resUrl = url;
 
-      resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
+      resUrl += `?utm_source=${encodeURIComponent(
+        utmParams.source
+      )}&utm_campaign=${encodeURIComponent(
+        utmParams.campaign
+      )}&utm_medium=${encodeURIComponent(medium)}`;
 
       if (utmParams.content) {
-        resUrl += `&utm_content=${utmParams.content}`;
+        resUrl += `&utm_content=${encodeURIComponent(utmParams.content)}`;
       }
 
       return resUrl;
