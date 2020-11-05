@@ -1323,7 +1323,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Wybierz, jak wyświetlana będzie Twoja nazwa, wybierz języki Twojej platformy i link do Twojej strony.",
   "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Skonfiguruj własny styl i dodaj swoje wiadomości.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Podany podtytuł przekracza maksymalny limit znaków wynoszący 90",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "Określ, jakie pytania chcesz zadać swoim użytkownikom podczas rejestracji.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Obszary geograficzne",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Styl strony głównej",
