@@ -154,7 +154,7 @@ export default defineMessages({
   urlSlugTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugTooltip',
     defaultMessage:
-      "In this field you can determine the project slug. The slug is the last part of the project's URL. For example, the current project's URL is {currentProjectURL}, where {currentProjectSlug} is the slug.",
+      "You can specify the last part of your project page's URL (called the slug). For example, the current project's URL is {currentProjectURL}, where {currentProjectSlug} is the slug.",
   },
   urlSlugBrokenLinkWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',
