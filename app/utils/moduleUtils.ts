@@ -3,6 +3,8 @@ import {
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
 
+import { createElement } from 'react';
+
 import Loadable from 'react-loadable';
 
 export const RouteTypes = {
@@ -39,6 +41,16 @@ const convertConfigurationToRoute = ({
 
 export const parseModuleRoutes = (routes, type = RouteTypes.CITIZEN) =>
   routes.map((route) => convertConfigurationToRoute({ ...route, type }));
+
+export const parseOutlets = (outlets = {}) =>
+  Object.entries(outlets).reduce(
+    (acc, [id, definitions]: [string, any]) => ({
+      ...acc,
+      [id]: definitions.map((definition) => createElement(definition)),
+    }),
+    {}
+  );
+// routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
 export const loadModules = (modules, outlets) => {
   const enabledModuleConfigurations = modules

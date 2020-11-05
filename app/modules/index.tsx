@@ -12,6 +12,8 @@ export default loadModules(
     },
   ],
   {
-    'app.containers.AdminPage.projects.all.projectsAndFolders': [<FolderRow />],
+    'app.containers.AdminPage.projects.all.projectsAndFolders.row': [
+      (props) => <FolderRow {...props} />,
+    ],
   }
 );
