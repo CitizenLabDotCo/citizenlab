@@ -632,6 +632,9 @@ export class InitiativesShow extends PureComponent<
                     twitterMessage={formatMessage(messages.twitterMessage, {
                       initiativeTitle,
                     })}
+                    whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+                      initiativeTitle,
+                    })}
                     emailSubject={formatMessage(messages.emailSharingSubject, {
                       initiativeTitle,
                     })}
@@ -668,6 +671,12 @@ export class InitiativesShow extends PureComponent<
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           initiativeTitle,
                         })}
+                        whatsAppMessage={formatMessage(
+                          messages.whatsAppMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
                         emailSubject={formatMessage(
                           messages.emailSharingSubject,
                           { initiativeTitle }

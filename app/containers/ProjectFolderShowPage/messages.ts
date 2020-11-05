@@ -5,6 +5,11 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.twitterMessage',
     defaultMessage: '{title}',
   },
+  whatsAppMessage: {
+    id: 'app.containers.ProjectFolderShowPage.whatsAppMessage',
+    defaultMessage:
+      '{projectFolderName} | from the participation platform of {orgName}',
+  },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
     defaultMessage: '{title}',
