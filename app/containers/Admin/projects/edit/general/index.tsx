@@ -12,7 +12,7 @@ import { isEmpty, get, isString } from 'lodash-es';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
-import { Radio, IconTooltip } from 'cl2-component-library';
+import { Radio, IconTooltip, Input } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -166,7 +166,16 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 `;
 
 const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+`;
+
+const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+`;
+
+const SlugPreview = styled.div`
+  margin-bottom: 20px;
+  font-size: ${fontSizes.base}px;
 `;
 
 type Props = {
@@ -196,6 +205,8 @@ interface State {
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: ISubmitState;
+  slug: string | null;
+  showSlugErrorMessage: boolean;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -233,6 +244,8 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
+      slug: null,
+      showSlugErrorMessage: false,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -276,6 +289,7 @@ class AdminProjectEditGeneral extends PureComponent<
                 currentTenant.data.attributes.settings.core.locales
               ),
             }));
+            const slug = project ? project.data.attributes.slug : null;
 
             return {
               locale,
@@ -285,6 +299,7 @@ class AdminProjectEditGeneral extends PureComponent<
               projectType,
               areaType,
               areasOptions,
+              slug,
               presentationMode:
                 (project && project.data.attributes.presentation_mode) ||
                 state.presentationMode,
@@ -589,6 +604,20 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
+  handleSlugOnChange = (slug: string) => {
+    this.setState(({ projectAttributesDiff }) => {
+      return {
+        slug,
+        projectAttributesDiff: {
+          ...projectAttributesDiff,
+          slug,
+        },
+      };
+    });
+
+    this.validateSlug(slug);
+  };
+
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
@@ -713,6 +742,16 @@ class AdminProjectEditGeneral extends PureComponent<
     }
   };
 
+  validateSlug = (slug: string) => {
+    const slugRexEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    const isSlugValid = slugRexEx.test(slug);
+
+    this.setState({
+      showSlugErrorMessage: !isSlugValid,
+      submitState: isSlugValid ? 'enabled' : 'disabled',
+    });
+  };
+
   render() {
     const {
       publicationStatus,
@@ -728,6 +767,10 @@ class AdminProjectEditGeneral extends PureComponent<
       areaType,
       submitState,
       apiErrors,
+      slug,
+      showSlugErrorMessage,
+      currentTenant,
+      locale,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -814,13 +857,15 @@ class AdminProjectEditGeneral extends PureComponent<
             <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.projectName} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.titleLabelTooltip} />}
+                />
               </SubSectionTitle>
               <StyledInputMultiloc
                 id="project-title"
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
-                labelTooltipText={formatMessage(messages.titleLabelTooltip)}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
@@ -829,6 +874,58 @@ class AdminProjectEditGeneral extends PureComponent<
                 apiErrors={this.state.apiErrors.title_multiloc}
               />
             </StyledSectionField>
+
+            {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
+            {currentTenant && project?.data.attributes.slug && (
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.projectUrl} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.urlSlugTooltip}
+                        values={{
+                          currentProjectURL: (
+                            <em>
+                              <b>
+                                {currentTenant.data.attributes.host}/{locale}
+                                /projects/{project.data.attributes.slug}
+                              </b>
+                            </em>
+                          ),
+                          currentProjectSlug: (
+                            <em>
+                              <b>{project.data.attributes.slug}</b>
+                            </em>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </SubSectionTitle>
+                <StyledWarning>
+                  <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+                </StyledWarning>
+                <StyledInput
+                  id="project-slug"
+                  type="text"
+                  label={<FormattedMessage {...messages.urlSlugLabel} />}
+                  onChange={this.handleSlugOnChange}
+                  value={slug}
+                />
+                <SlugPreview>
+                  <b>{formatMessage(messages.resultingURL)}</b>:{' '}
+                  {currentTenant?.data.attributes.host}/{locale}/projects/
+                  {slug}
+                </SlugPreview>
+                {/* Backend error */}
+                <Error fieldName="slug" apiErrors={this.state.apiErrors.slug} />
+                {/* Frontend error */}
+                {showSlugErrorMessage && (
+                  <Error text={formatMessage(messages.regexError)} />
+                )}
+              </StyledSectionField>
+            )}
 
             <StyledSectionField>
               {!project ? (
@@ -1066,4 +1163,4 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(AdminProjectEditGeneral);
+export default injectIntl(AdminProjectEditGeneral);
