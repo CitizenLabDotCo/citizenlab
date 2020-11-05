@@ -1323,7 +1323,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Choose how people will see your name, select the languages of your platform and link to your website.",
   "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Apply your own style and add personal messages.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "The provided subtitle exceeds the maximum allowed character limit of 90",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "Define what questions you want to ask your users when they sign up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminology",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geographic areas",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Homepage and style",
