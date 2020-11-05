@@ -13,16 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTitleErrorMessage',
     defaultMessage: 'Please enter a project title',
   },
-  deleteProjectConfirmation: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectConfirmation',
-    defaultMessage:
-      'Are you sure you want to delete this project? This cannot be undone.',
-  },
-  deleteProjectError: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
-    defaultMessage:
-      'There was an error deleting this project, please try again later.',
-  },
   statusLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
     defaultMessage: 'Publication status',
@@ -122,19 +112,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip',
     defaultMessage:
       'Files should not be larger than 50Mb. Added files will be shown on the project information page.',
-  },
-  deleteProjectLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
-    defaultMessage: 'Remove this project',
-  },
-  deleteProjectLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabelTooltip',
-    defaultMessage:
-      'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
-  },
-  deleteProjectButton: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
-    defaultMessage: 'Remove',
   },
   saveProject: {
     id: 'app.containers.AdminPage.ProjectEdit.saveProject',
