@@ -37,7 +37,7 @@ export default class TypeformSurvey extends PureComponent<Props, State> {
   handleIframeOnLoad = () => {
     setTimeout(() => {
       this.setState({ isIframeLoaded: true });
-    }, 200);
+    }, 1000);
   };
 
   render() {
