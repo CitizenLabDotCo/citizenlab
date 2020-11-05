@@ -3,7 +3,7 @@ import {
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
 
-import { createElement } from 'react';
+import { createElement, isValidElement } from 'react';
 
 import Loadable from 'react-loadable';
 
@@ -46,7 +46,12 @@ export const parseOutlets = (outlets = {}) =>
   Object.entries(outlets).reduce(
     (acc, [id, definitions]: [string, any]) => ({
       ...acc,
-      [id]: definitions.map((definition) => createElement(definition)),
+      [id]: definitions.map((definition) => {
+        if (isValidElement(definition)) {
+          return definition;
+        }
+        return createElement(definition);
+      }),
     }),
     {}
   );
