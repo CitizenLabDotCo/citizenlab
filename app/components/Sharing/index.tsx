@@ -252,7 +252,7 @@ const Sharing = memo(
       const facebook = facebookAppId ? (
         <FacebookButton
           appId={facebookAppId}
-          url={encodeURI(getUrlWithUtm('facebook'))}
+          url={getUrlWithUtm('facebook')}
           className={`sharingButton facebook ${layoutClassName}`}
           sharer={true}
           onClick={handleClick('facebook')}
@@ -272,11 +272,9 @@ const Sharing = memo(
           className={`sharingButton messenger ${layoutClassName}`}
           onClick={handleClick(
             'messenger',
-            encodeURI(
-              `fb-messenger://share/?link=${getUrlWithUtm(
-                'messenger'
-              )}&app_id=${facebookAppId}`
-            )
+            `fb-messenger://share/?link=${getUrlWithUtm(
+              'messenger'
+            )}&app_id=${facebookAppId}`
           )}
           aria-label={formatMessage(messages.shareViaMessenger)}
         >
@@ -289,7 +287,7 @@ const Sharing = memo(
         </button>
       ) : null;
 
-      const whatsAppSharingText = whatsAppMessage.concat(
+      const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
         ' ',
         getUrlWithUtm('whatsapp')
       );
@@ -298,9 +296,7 @@ const Sharing = memo(
           className={`sharingButton whatsapp ${layoutClassName}`}
           onClick={handleClick(
             'whatsapp',
-            encodeURI(
-              `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
-            )
+            `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
           )}
           aria-label={formatMessage(messages.shareViaWhatsApp)}
         >
@@ -339,7 +335,7 @@ const Sharing = memo(
             className={`sharingButton last email ${layoutClassName}`}
             onClick={handleClick(
               'email',
-              encodeURI(`mailto:?subject=${emailSubject}&body=${emailBody}`)
+              `mailto:?subject=${emailSubject}&body=${emailBody}`
             )}
             aria-label={formatMessage(messages.shareByEmail)}
           >
