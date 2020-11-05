@@ -70,7 +70,9 @@ const Title = styled.h1`
   `}
 `;
 
-const CommentCount = styled.span``;
+const CommentCount = styled.span`
+  margin-left: 5px;
+`;
 
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
@@ -171,7 +173,7 @@ const CommentsSection = memo<Props>(
         <Container className={className || ''}>
           <Header>
             <Title id="comments-main-title">
-              <FormattedMessage {...messages.invisibleTitleComments} />{' '}
+              <FormattedMessage {...messages.invisibleTitleComments} />
               {commentCount > 0 && (
                 <CommentCount>({commentCount})</CommentCount>
               )}
