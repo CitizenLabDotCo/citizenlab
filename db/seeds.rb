@@ -216,6 +216,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: false,
         allowed: false
       },
+      processing: {
+        enabled: true,
+        allowed: true
+      },
       geographic_dashboard: {
         enabled: true,
         allowed: true

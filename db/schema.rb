@@ -530,22 +530,6 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
-  create_table "tag_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "assignment_method", null: false
-    t.uuid "idea_id"
-    t.uuid "tag_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["idea_id"], name: "index_tag_assignments_on_idea_id"
-    t.index ["tag_id"], name: "index_tag_assignments_on_tag_id"
-  end
-
-  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.datetime "read_at"
@@ -845,6 +829,22 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
+  create_table "tag_assignments", id: :serial, force: :cascade do |t|
+    t.integer "assignment_method", default: 0
+    t.uuid "idea_id"
+    t.uuid "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_tag_assignments_on_idea_id"
+    t.index ["tag_id"], name: "index_tag_assignments_on_tag_id"
+  end
+
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
@@ -997,8 +997,6 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
   add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
-  add_foreign_key "tag_assignments", "ideas"
-  add_foreign_key "tag_assignments", "tags"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
@@ -1026,6 +1024,8 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "tag_assignments", "ideas"
+  add_foreign_key "tag_assignments", "tags"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 
