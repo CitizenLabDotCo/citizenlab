@@ -1,5 +1,11 @@
 # Changelog
 
+## 2010-11-6
+
+### Added
+- Social sharing via WhatsApp
+- Ability to edit the project URL
+
 ## 2010-11-5
 
 ### Added
