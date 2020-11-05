@@ -87,7 +87,7 @@ export default () => ({
     usersRoutes(),
     projectsRoutes(),
     {
-      path: 'settings/registration/custom_fields',
+      path: 'settings/registration/custom-fields',
       ...customFieldRoutes(),
     },
     settingsRoutes(),
