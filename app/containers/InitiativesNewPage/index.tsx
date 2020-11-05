@@ -27,7 +27,6 @@ import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
-import Fragment from 'components/Fragment';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -144,25 +143,16 @@ export class InitiativesNewPage extends React.PureComponent<
       (topic) => !isNilOrError(topic)
     ) as ITopicData[];
 
-    const pageContent = (
-      <PageLayout>
-        <InitiativesNewFormWrapper
-          locale={locale}
-          topics={initiativeTopics}
-          {...locationInfo}
-        />
-      </PageLayout>
-    );
-
     return (
       <>
         <InitiativesNewMeta />
-        {/* Show edit form for admins only if external form fragment is enabled */}
-        {isAdmin({ data: authUser }) ? (
-          pageContent
-        ) : (
-          <Fragment name="external-proposal-form">{pageContent}</Fragment>
-        )}
+        <PageLayout isAdmin={isAdmin({ data: authUser })}>
+          <InitiativesNewFormWrapper
+            locale={locale}
+            topics={initiativeTopics}
+            {...locationInfo}
+          />
+        </PageLayout>
       </>
     );
   }
