@@ -252,7 +252,7 @@ const Sharing = memo(
       const facebook = facebookAppId ? (
         <FacebookButton
           appId={facebookAppId}
-          url={getUrlWithUtm('facebook')}
+          url={encodeURI(getUrlWithUtm('facebook'))}
           className={`sharingButton facebook ${layoutClassName}`}
           sharer={true}
           onClick={handleClick('facebook')}
@@ -272,9 +272,11 @@ const Sharing = memo(
           className={`sharingButton messenger ${layoutClassName}`}
           onClick={handleClick(
             'messenger',
-            `fb-messenger://share/?link=${encodeURIComponent(
-              getUrlWithUtm('messenger')
-            )}&app_id=${facebookAppId}`
+            encodeURI(
+              `fb-messenger://share/?link=${getUrlWithUtm(
+                'messenger'
+              )}&app_id=${facebookAppId}`
+            )
           )}
           aria-label={formatMessage(messages.shareViaMessenger)}
         >
@@ -287,7 +289,7 @@ const Sharing = memo(
         </button>
       ) : null;
 
-      const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
+      const whatsAppSharingText = whatsAppMessage.concat(
         ' ',
         getUrlWithUtm('whatsapp')
       );
@@ -296,7 +298,9 @@ const Sharing = memo(
           className={`sharingButton whatsapp ${layoutClassName}`}
           onClick={handleClick(
             'whatsapp',
-            `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
+            encodeURI(
+              `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
+            )
           )}
           aria-label={formatMessage(messages.shareViaWhatsApp)}
         >
@@ -335,7 +339,7 @@ const Sharing = memo(
             className={`sharingButton last email ${layoutClassName}`}
             onClick={handleClick(
               'email',
-              `mailto:?subject=${emailSubject}&body=${emailBody}`
+              encodeURI(`mailto:?subject=${emailSubject}&body=${emailBody}`)
             )}
             aria-label={formatMessage(messages.shareByEmail)}
           >
