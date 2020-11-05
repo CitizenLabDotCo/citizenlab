@@ -1323,7 +1323,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Agregue el nombre de su organización o ciudad, una dirección url de su sitio de Internet y los idiomas en que esta plataforma debe ponerse a disposición.",
   "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Define cómo se ve tu página de inicio, elige el color de los botones y el diseño del campo personalizado en la página de inicio.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "El subtítulo excede el límite de máximo de 90 caracteres",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "Define qué datos de usuario que deseas recibir cuando las personas crean una cuenta. Utiliza esta información para crear grupos inteligentes y definir permisos de acceso del proyecto.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminología",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Áreas geográficas",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Página de inicio y estilo",
