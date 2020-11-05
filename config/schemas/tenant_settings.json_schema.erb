@@ -868,6 +868,18 @@
         }
       },
 
+      "processing": {
+        "type": "object",
+        "title": "Processing",
+        "description": "Processing allows to automatically analyze text inputs",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "project_management": {
         "type": "object",
         "title": "Project Managers",
