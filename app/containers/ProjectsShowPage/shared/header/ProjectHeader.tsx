@@ -21,7 +21,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -53,6 +53,10 @@ const ProjectHeaderImageContainer = styled.div`
 const EditButton = styled(Button)`
   display: table;
   margin: 0 0 10px auto;
+
+  ${isRtl`
+    margin: 0 0 auto 10px;
+  `}
 `;
 
 const ShareButton = styled(Button)`

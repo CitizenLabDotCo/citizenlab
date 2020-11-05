@@ -15,18 +15,27 @@ import useIdea from 'hooks/useIdea';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 5px;
   margin-left: -4px;
+
+  ${isRtl`
+    margin-right: -4px;
+    margin-left: 5px;
+  `}
 `;
 
 export interface Props {

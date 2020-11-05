@@ -1323,7 +1323,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Voeg de naam van je organisatie, gemeente of stad, de url van je website toe, alsook de talen waarin dit platform beschikbaar moet zijn.",
   "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Bepaal hoe je homepagina er moet uitzien, kies de kleur van de knoppen en geef het custom veld op de homepagina vorm.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "De ondertitel overschrijdt het maximaal aantal toegestane 90 karakters",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "Bepaal welke gebruikersdata je wil ontvangen wanneer gebruikers zich registreren. Gebruik deze data om Slimme Groepen aan te maken en toegangsrechten te bepalen.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geografische gebieden",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Startpagina en stijl",
