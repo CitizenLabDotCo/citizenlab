@@ -1,12 +1,12 @@
 # Changelog
 
-## 2010-11-6
+## 2020-11-6
 
 ### Added
 - Social sharing via WhatsApp
 - Ability to edit the project URL
 
-## 2010-11-5
+## 2020-11-5
 
 ### Added
 - Reordering of and cleaner interface for managing custom registration field options
@@ -21,19 +21,19 @@
 ### Fixed
 - The automatic scroll to the survey on survey project page
 
-## 2010-11-3
+## 2020-11-3
 
 ### Fixed
 - Fixed broken date picker for phase start and end date
 
-## 2010-10-30
+## 2020-10-30
 
 ### Added
 
 - Initial Right to left layout for Arabic language
 - Idea description WYSIWYG editor now supports adding images and/or buttons
 
-## 2010-10-27
+## 2020-10-27
 
 ### Added
 
