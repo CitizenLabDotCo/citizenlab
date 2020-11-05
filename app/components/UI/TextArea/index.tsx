@@ -8,7 +8,7 @@ import { IconTooltip, Label } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { colors, defaultInputStyle } from 'utils/styleUtils';
+import { colors, defaultInputStyle, isRtl } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -25,6 +25,9 @@ const TextAreaContainer = styled.div`
   textarea {
     width: 100%;
     ${defaultInputStyle}
+    ${isRtl`
+        direction: rtl
+    `}
   }
 `;
 

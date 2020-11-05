@@ -50,6 +50,7 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
@@ -104,6 +105,10 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
   margin-bottom: 22px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;

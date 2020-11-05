@@ -7,74 +7,63 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  fieldInputType: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldInputType',
-    defaultMessage: 'Input type',
+  answerFormat: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerFormat',
+    defaultMessage: 'Answer format',
   },
-  fieldEnabled: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled',
-    defaultMessage: 'Enabled',
-  },
-  fieldTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle',
-    defaultMessage: 'Label',
-  },
-  fieldTitleTooltip: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip',
-    defaultMessage:
-      'This is the name of the field users will see during signup.',
+  fieldName: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName',
+    defaultMessage: 'Field name',
   },
   fieldDescription: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
     defaultMessage: 'Description',
   },
-  fieldDescriptionTooltip: {
+  descriptionTooltip: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionTooltip',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.descriptionTooltip',
     defaultMessage:
-      'If confusion is possible, or you want to explain why you ask this information. This is shown below the field label during signup.',
+      'Optional text shown under the field name on the signup form.',
   },
   fieldRequired: {
     id:
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
-    defaultMessage: 'Required?',
+    defaultMessage: 'Make answering this field required?',
   },
-  inputType_text: {
+  fieldType_text: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text',
-    defaultMessage: 'Text',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_text',
+    defaultMessage: 'Short answer',
   },
-  inputType_number: {
+  fieldType_number: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number',
-    defaultMessage: 'Number',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_number',
+    defaultMessage: 'Numeric value',
   },
-  inputType_multiline_text: {
+  fieldType_multiline_text: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text',
-    defaultMessage: 'Multiline text',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiline_text',
+    defaultMessage: 'Long answer',
   },
-  inputType_select: {
+  fieldType_select: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_select',
-    defaultMessage: 'Select',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_select',
+    defaultMessage: 'Multiple choice (select one)',
   },
-  inputType_multiselect: {
+  fieldType_multiselect: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiselect',
-    defaultMessage: 'Select multiple',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_multiselect',
+    defaultMessage: 'Multiple choice (select multiple)',
   },
-  inputType_checkbox: {
+  fieldType_checkbox: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_checkbox',
-    defaultMessage: 'Checkbox',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_checkbox',
+    defaultMessage: 'Yes-no (checkbox)',
   },
-  inputType_date: {
+  fieldType_date: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_date',
     defaultMessage: 'Date',
   },
   deleteButtonLabel: {
@@ -96,18 +85,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle',
     defaultMessage: 'Custom fields',
   },
-  addFieldButton: {
+  addAFieldButton: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addFieldButton',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton',
     defaultMessage: 'Add field',
   },
-  optionKey: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey',
-    defaultMessage: 'Option key',
-  },
-  optionTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionTitle',
-    defaultMessage: 'Option title',
+  addANewRegistrationField: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewRegistrationField',
+    defaultMessage: 'Add a new registration field',
   },
   optionDeleteButton: {
     id:
@@ -119,22 +105,19 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
     defaultMessage: 'Cancel',
   },
-  addOptionButton: {
+  fieldSettingsTab: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton',
-    defaultMessage: 'Add option',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldSettingsTab',
+    defaultMessage: 'Field settings',
   },
-  generalTab: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab',
-    defaultMessage: 'General',
+  answerOptionsTab: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab',
+    defaultMessage: 'Answer options',
   },
-  optionsTab: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab',
-    defaultMessage: 'Options',
-  },
-  systemField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField',
-    defaultMessage: 'System field',
+  defaultField: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField',
+    defaultMessage: 'Default field',
   },
   hiddenField: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField',
@@ -143,5 +126,39 @@ export default defineMessages({
   required: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',
     defaultMessage: 'Required',
+  },
+  customFieldOptionDeletionConfirmation: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldOptionDeletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this custom field option?',
+  },
+  editCustomFieldAnswerOptionFormTitle: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle',
+    defaultMessage: 'Edit answer option',
+  },
+  newCustomFieldAnswerOptionFormTitle: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.newCustomFieldAnswerOptionFormTitle',
+    defaultMessage: 'Add answer option',
+  },
+  addOption: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOption',
+    defaultMessage: 'Add option',
+  },
+  answerOption: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOption',
+    defaultMessage: 'Answer option',
+  },
+  domicileManagementInfo: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.domicileManagementInfo',
+    defaultMessage:
+      'Answer options for place of residence can be set in the {geographicAreasTabLink}.',
+  },
+  geographicAreasTabLinkText: {
+    id:
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText',
+    defaultMessage: 'Geographic areas tab',
   },
 });
