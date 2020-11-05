@@ -13,7 +13,10 @@ export default loadModules(
   ],
   {
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': [
-      (props) => <FolderRow {...props} />,
+      (props) =>
+        props.publication.publicationType === 'project_folder' && (
+          <FolderRow {...props} />
+        ),
     ],
   }
 );
