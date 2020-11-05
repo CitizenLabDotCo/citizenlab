@@ -16,6 +16,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import InitiativesNewMeta from './InitiativesNewMeta';
@@ -26,6 +27,7 @@ import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import Fragment from 'components/Fragment';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -142,16 +144,25 @@ export class InitiativesNewPage extends React.PureComponent<
       (topic) => !isNilOrError(topic)
     ) as ITopicData[];
 
+    const pageContent = (
+      <PageLayout>
+        <InitiativesNewFormWrapper
+          locale={locale}
+          topics={initiativeTopics}
+          {...locationInfo}
+        />
+      </PageLayout>
+    );
+
     return (
       <>
         <InitiativesNewMeta />
-        <PageLayout>
-          <InitiativesNewFormWrapper
-            locale={locale}
-            topics={initiativeTopics}
-            {...locationInfo}
-          />
-        </PageLayout>
+        {/* Show edit form for admins only if external form fragment is enabled */}
+        {isAdmin({ data: authUser }) ? (
+          pageContent
+        ) : (
+          <Fragment name="external-proposal-form">{pageContent}</Fragment>
+        )}
       </>
     );
   }
