@@ -6,6 +6,9 @@
 - Social sharing via WhatsApp
 - Ability to edit the project URL
 
+### Fixed
+- The project about section is visibile in mobile view again
+
 ## 2020-11-5
 
 ### Added
