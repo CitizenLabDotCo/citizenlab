@@ -855,7 +855,7 @@
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter": "projet",
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter": "thème",
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter": "jusqu'à",
-  "app.containers.AdminPage.DashboardPage.ExportMenu.downloadSvg": "Télécharger en image",
+  "app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage": "",
   "app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx": "Télécharger Excel",
   "app.containers.AdminPage.DashboardPage.Report.participants": "participants",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "nombre total sur la plate-forme",
