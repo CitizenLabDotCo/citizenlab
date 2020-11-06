@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :project_folder do
+  factory :project_folder, class: ProjectFolders::Folder do
     title_multiloc {{
       "en" => "All things swimming pools",
       "nl-BE" => "Alles rond zwembaden"
