@@ -1,6 +1,5 @@
 module NLP
   class TagAssignmentSuggestionService
-    @full_sanitizer = ActionView::Base.full_sanitizer
 
     def suggest(ideas, tags, locale)
       @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
@@ -20,7 +19,7 @@ module NLP
     def parse_ideas(ideas, locale)
       ideas.map { |idea|
         {
-          text: @full_sanitizer.sanitize(idea.body_multiloc[locale]),
+          text: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale]),
           doc_id: idea.id
         }
       }.reject{ |doc| doc[:text].blank? }
