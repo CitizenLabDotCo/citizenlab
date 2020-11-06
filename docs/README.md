@@ -5,6 +5,7 @@
 ### Added
 - Social sharing via WhatsApp
 - Ability to edit the project URL
+- Fragment to embed a form directly into the new proposal page, for regular users only
 
 ### Fixed
 - The project about section is visibile in mobile view again
