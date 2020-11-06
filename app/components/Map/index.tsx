@@ -93,6 +93,7 @@ const CloseIcon = styled(Icon)`
 const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   flex: 1;
   height: ${(props) => props.mapHeight}px;
+  overflow: hidden;
 
   .leaflet-container {
     height: 100%;
