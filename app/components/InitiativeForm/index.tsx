@@ -383,7 +383,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   maxCharCount={72}
                 />
                 {touched.title_multiloc && errors.title_multiloc ? (
-                  <Error message={errors.title_multiloc.message} />
+                  <Error
+                    id="e2e-proposal-title-error"
+                    message={errors.title_multiloc.message}
+                  />
                 ) : (
                   apiErrors &&
                   apiErrors.title_multiloc && (
