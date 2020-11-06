@@ -46,6 +46,8 @@ import FilterSelector, {
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
 import useTagSuggestion from 'hooks/useTags';
+import useLocale from 'hooks/useLocale';
+import useTenant from 'hooks/useTenant';
 
 const Container = styled.div`
   padding-top: 45px;
@@ -132,6 +134,8 @@ interface Props extends InputProps, DataProps {}
 const Processing = memo<Props & InjectedIntlProps>(
   ({ className, ideas, projects }) => {
     const localize = useLocalize();
+    const tenant = useTenant();
+    const locale = useLocale();
 
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       []
@@ -155,20 +159,29 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     useEffect(() => {
       if (
+        !isNilOrError(projects) &&
         !isNilOrError(projects.projectsList) &&
-        projects.projectsList?.length > 0
+        projects.projectsList?.length > 0 &&
+        tenant &&
+        locale
       ) {
-        const filterSelectorValues: IFilterSelectorValue[] = projects.projectsList.map(
-          (project) => {
-            return {
+        const filterSelectorValues = [
+          ...projects.projectsList
+            .filter(
+              (project) =>
+                project.attributes.process_type === 'timeline' ||
+                !['information', 'survey', 'volunteering', null].includes(
+                  project.attributes.participation_method
+                )
+            )
+            .map((project) => ({
               text: localize(project.attributes.title_multiloc),
               value: project.id,
-            };
-          }
-        );
+            })),
+        ];
         setProjectList(filterSelectorValues);
       }
-    }, [projects]);
+    }, [projects, tenant, locale]);
 
     useEffect(() => {
       if (upArrow && ideaList) {
