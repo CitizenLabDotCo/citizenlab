@@ -34,7 +34,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, viewportWidths, isRtl } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div`
