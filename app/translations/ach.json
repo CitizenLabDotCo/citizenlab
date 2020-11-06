@@ -855,7 +855,7 @@
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter": "",
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter": "",
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter": "",
-  "app.containers.AdminPage.DashboardPage.ExportMenu.downloadSvg": "",
+  "app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage": "",
   "app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx": "",
   "app.containers.AdminPage.DashboardPage.Report.participants": "",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "",

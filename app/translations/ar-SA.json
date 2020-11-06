@@ -855,7 +855,7 @@
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.projectFilter": "مشروع",
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.topicFilter": "موضوع",
   "app.containers.AdminPage.DashboardPage.ExportMenu.FileName.untilFilter": "حتى",
-  "app.containers.AdminPage.DashboardPage.ExportMenu.downloadSvg": "تنزيل SVG",
+  "app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage": "",
   "app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx": "تنزيل إكسل",
   "app.containers.AdminPage.DashboardPage.Report.participants": "مشاركين",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "الإجمالي على المنصة",
