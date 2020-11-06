@@ -329,12 +329,6 @@ const Processing = memo<Props & InjectedIntlProps>(
               >
                 <FormattedMessage {...messages.export} />
               </Button>
-              {!isNilOrError(tagSuggestion) &&
-                tagSuggestion.map((tag, index) => (
-                  <div key={index}>
-                    {localize(tag.attributes.title_multiloc)}
-                  </div>
-                ))}
             </StyledActions>
           </SidePanel>
           <StyledTable>
