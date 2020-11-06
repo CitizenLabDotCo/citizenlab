@@ -22,7 +22,7 @@ module Filterer
   end
 
   def filter(object, options={})
-    self.class.filters.inject(object) { |object, filter| filter.apply(object, options)  }
+    self.class.filters.inject(object) { |object, filter| filter.apply(object, self, options)  }
   end
 
   module ClassMethods
@@ -47,8 +47,13 @@ module Filterer
       @name, @block = name, block
     end
 
-    def apply(scope, options={})
-      block.call(scope, options)
+    # The context is most useful when the filter needs to access instance variables (e.g. to store partial results).
+    # But we should try to avoid that kind of stateful filters and try to stick to functional filters that take
+    # an object as input and just returns the object filtered according the +options+.
+    #
+    # @param [Object] context the context (self) in which the block of the filter will be executed.
+    def apply(scope, context=nil, options={})
+      (context || self).instance_exec(scope, options, &block)
     end
   end
 
