@@ -8,11 +8,15 @@ import React, {
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
+import { requestBlob } from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
+import { reportError } from 'utils/loggingUtils';
+import { saveAs } from 'file-saver';
 
 // components
 import Table from 'components/UI/Table';
 import ProcessingRow from './ProcessingRow';
-import { Checkbox } from 'cl2-component-library';
+import { Checkbox, fontSizes } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
 
@@ -30,26 +34,18 @@ import styled from 'styled-components';
 import { stylingConsts } from 'utils/styleUtils';
 
 // typings
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
 
-// hooks
+// hooks & res
 import useKeyPress from '../../../hooks/useKeyPress';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
-
-// resources
-import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
-import { reportError } from 'utils/loggingUtils';
 import useTagSuggestion from 'hooks/useTags';
-
-import { saveAs } from 'file-saver';
 
 const Container = styled.div`
   padding-top: 45px;
@@ -79,7 +75,7 @@ const StyledActions = styled.div`
 `;
 
 const StyledTable = styled(Table)`
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-decoration: none;
   margin-left: 150px;
@@ -93,7 +89,7 @@ const StyledTable = styled(Table)`
   }
 
   thead tr th {
-    font-size: 12px;
+    font-size: ${fontSizes.xs}px;
     height: 24px;
     padding-left: 8px;
     padding-right: 8px;
@@ -124,7 +120,6 @@ const StyledCheckbox = styled(Checkbox)`
 
 interface DataProps {
   ideas: GetIdeasChildProps;
-  topics: GetTopicsChildProps;
   projects: GetProjectsChildProps;
 }
 
@@ -137,8 +132,6 @@ interface Props extends InputProps, DataProps {}
 const Processing = memo<Props & InjectedIntlProps>(
   ({ className, ideas, projects }) => {
     const localize = useLocalize();
-
-    // const [showTopics, setShowTopics] = useState<boolean>(false);
 
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       []
@@ -193,7 +186,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           }
         }
       }
-    }, [upArrow]);
+    }, [upArrow, ideaList]);
 
     useEffect(() => {
       if (downArrow && ideaList) {
@@ -212,7 +205,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           }
         }
       }
-    }, [downArrow]);
+    }, [downArrow, ideaList]);
 
     useEffect(() => {
       if (enterModalKey && ideaList) {
@@ -223,7 +216,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           setPreviewPostId(highlightedId);
         }
       }
-    }, [enterModalKey]);
+    }, [enterModalKey, ideaList]);
 
     useEffect(() => {
       if (!processing) {
@@ -239,40 +232,25 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleExportSelectedIdeasAsXlsx = async () => {
       trackEventByName(tracks.clickExportIdeas.name);
-      const exportQueryParameter = selectedRows;
-
-      const queryParametersObject = {};
-      if (
-        typeof exportQueryParameter === 'string' &&
-        exportQueryParameter !== 'all'
-      ) {
-        queryParametersObject['project'] = exportQueryParameter;
-      } else if (typeof exportQueryParameter !== 'string') {
-        queryParametersObject['ideas'] = exportQueryParameter;
-      }
 
       try {
         setExporting(true);
-        console.log(0);
         const blob = await requestBlob(
           `${API_PATH}/ideas/as_xlsx_with_tags`,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          queryParametersObject
+          { ideas: selectedRows }
         );
-        console.log(1);
-        console.log(saveAs, blob);
         saveAs(blob, 'ideas-export.xlsx');
 
         setExporting(false);
       } catch (error) {
-        console.log(error);
         reportError(error);
         setExporting(false);
       }
     };
 
     const handleAutoTag = (e: FormEvent) => {
-      e.preventDefault;
+      e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
 
       setProcessing(true);
@@ -319,7 +297,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     const closeSideModal = () => setPreviewPostId(null);
     const switchPreviewMode = () =>
       setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
-    console.log(tagSuggestion);
 
     if (!isNilOrError(ideaList)) {
       return (
@@ -337,16 +314,16 @@ const Processing = memo<Props & InjectedIntlProps>(
             <StyledActions>
               <Button
                 buttonStyle="admin-dark"
-                disabled={!!(selectedRows.length === 0)}
+                disabled={selectedRows.length === 0}
                 processing={processing}
-                onClick={(e) => handleAutoTag(e)}
+                onClick={handleAutoTag}
               >
                 <FormattedMessage {...messages.autotag} />
               </Button>
 
               <Button
                 buttonStyle="admin-dark-outlined"
-                disabled={!!(selectedRows.length === 0)}
+                disabled={selectedRows.length === 0}
                 processing={exporting}
                 onClick={handleExportSelectedIdeasAsXlsx}
               >
@@ -382,9 +359,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                   <FormattedMessage
                     {...messages.items}
                     values={{
-                      items: selectedRows.length > 1 ? 'items' : 'item',
-                      amount: ideaList.length,
-                      selected: selectedRows.length,
+                      totalCount: ideaList.length,
+                      selectedCount: selectedRows.length,
                     }}
                   />
                 </th>
@@ -451,15 +427,6 @@ const Data = adopt<DataProps, InputProps>({
         {render}
       </GetIdeas>
     );
-  },
-  topics: ({ render, ideas }) => {
-    const topicIds: string[] = [];
-    ideas.list?.forEach((idea) =>
-      idea?.relationships?.topics?.data.forEach((topic) =>
-        topicIds.push(topic.id)
-      )
-    );
-    return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
   },
 });
 
