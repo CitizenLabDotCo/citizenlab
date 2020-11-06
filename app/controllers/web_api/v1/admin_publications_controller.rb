@@ -2,24 +2,21 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   before_action :set_admin_publication, only: [:reorder, :show]
 
   def index
+    publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication)
-    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+    publications = publication_filterer.filter(publications, params)
 
     @publications = publications
       .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    children_counts = Hash.new(0).tap do |counts|
-      parent_ids = @publications.pluck(:parent_id).compact
-      parent_ids.each { |id| counts[id] += 1 }
-    end
-
     render json: linked_json(
       @publications,
       WebApi::V1::AdminPublicationSerializer,
-      params: fastjson_params(visible_children_count_by_parent_id: children_counts)
-      )
+      params: fastjson_params(
+          visible_children_count_by_parent_id: publication_filterer.children_counts
+      ))
   end
 
   def reorder
