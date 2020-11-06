@@ -9,6 +9,7 @@
 
 ### Fixed
 - The project about section is visibile in mobile view again
+- Maps will no longer overflow on page resizes
 
 ## 2020-11-5
 
