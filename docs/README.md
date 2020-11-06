@@ -1,5 +1,20 @@
 # Changelog
 
+## 2010-11-5
+
+### Added
+- Reordering of and cleaner interface for managing custom registration field options
+- An 'add proposal' button in the proposals admin
+- Fragment to user profile page to manage party membership settings (CD&V)
+- "User not found" message when visiting a profile for a user that was deleted or could not be found
+
+### Changed
+- Proposal title max. length error message
+- Moved delete functionality for projects and project folders to the admin overview
+
+### Fixed
+- The automatic scroll to the survey on survey project page
+
 ## 2010-11-3
 
 ### Fixed
