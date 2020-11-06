@@ -1673,7 +1673,7 @@
   "app.containers.IdeasShow.shareSubtitle": "Bli hørt og nå ut til flere",
   "app.containers.IdeasShow.shareTitle": "Gratulerer, ideen din ble lagt ut!",
   "app.containers.IdeasShow.twitterMessage": "Stem på {ideaTitle} på",
-  "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | from the participation platform of {orgName}",
+  "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | fra involveringsplattformen av {orgName}",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} venstre",
   "app.containers.InitiativesButton.postingNotPermitted": "Du har ikke rett til å publisere et initiativ",
   "app.containers.InitiativesButton.startInitiative": "Start et initiativ",
