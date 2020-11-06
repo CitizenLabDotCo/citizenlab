@@ -21,8 +21,9 @@ class ProjectsFilteringService
   end
 
   add_filter("by_moderator") do |scope, options|
-    moderator = options[:moderator]
-    moderator ? ProjectPolicy::Scope.new(moderator, scope).moderatable : scope
+    next scope unless options.has_key? :moderator
+    moderator = options[:moderator] # nil means the user is not logged in
+    ProjectPolicy::Scope.new(moderator, scope).moderatable
   end
 
 end
