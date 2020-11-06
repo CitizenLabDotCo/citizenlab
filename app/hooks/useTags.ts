@@ -25,7 +25,10 @@ export default function useTagSuggestion() {
 
   useEffect(() => {
     const observable = tagSuggestionStream({
-      queryParameters: { idea_ids: ideaIds, locale },
+      queryParameters: {
+        locale,
+        idea_ids: ideaIds,
+      },
     }).observable;
 
     const subscription = observable.subscribe((response) => {
