@@ -90,7 +90,6 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     );
 
     const handleClick = useCallback(() => openPreview(idea.id), [openPreview]);
-    console.log(tagSuggestion);
 
     return (
       <Container
@@ -108,11 +107,12 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           </ContentTitle>
         </td>
         <td className="content">
-          {tagSuggestion?.map((tag, index) => (
+          {tagSuggestion?.map((tag) => (
             <StyledTag
-              key={index}
+              key={tag.id}
               text={localize(tag.attributes.title_multiloc)}
               isAutoTag={true}
+              isSelected={selected}
             />
           ))}
         </td>
