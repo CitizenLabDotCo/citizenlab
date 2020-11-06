@@ -100,7 +100,6 @@ resource "User", admin_api: true do
     let(:id) { user.id }
     let(:first_name) { 'Jacqueline' }
     let(:roles) { [{type: 'admin'}] }
-    let(:remote_avatar_url) { 'https://res.cloudinary.com/citizenlabco/image/upload/v1528120749/shield_logo_pzbx2x.png' }
     let!(:cf) { create(:custom_field, key: 'favourite_drink') }
     let (:custom_field_values) { { favourite_drink: "wine" } }
 
