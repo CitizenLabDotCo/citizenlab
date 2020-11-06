@@ -1,6 +1,8 @@
 class AdminPublicationsFilteringService
   include Filterer
 
+  attr_reader :children_counts
+
   add_filter("by_publication_status") do |scope, options|
     publication_status = options[:publication_statuses]
     publication_status ? scope.where(publication_status: publication_status) : scope
@@ -24,11 +26,22 @@ class AdminPublicationsFilteringService
     filtered_folders.or(non_folders)
   end
 
+  add_filter("compute_visible_children_counts") do |scope, _|
+    # todo: this is a workaround (not a filter) to compute @children_counts before the 'by_folder' filter.
+    # It must be done before bc when keeping only top-level publications (by_folder with folder == ""), the
+    # children counts cannot be longer properly computed ex post.
+    @children_counts = Hash.new(0).tap do |counts|
+      parent_ids = scope.pluck(:parent_id).compact
+      parent_ids.each { |id| counts[id] += 1 }
+    end
+    scope
+  end
+
   add_filter("by_folder") do |scope, options|
     next scope unless options.key? :folder
 
     folder_id = options[:folder]
-    if folder_id.blank? # todo: bug: children count = 0 for folders
+    if folder_id.blank?
       scope.where(parent_id: nil) # keeps on top-level publications
     else
       folder = AdminPublication.where(publication_id: folder_id, publication_type: ProjectFolders::Folder.name)
