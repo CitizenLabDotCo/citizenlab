@@ -58,6 +58,10 @@ const Container = styled.div`
 
 const Left = styled.div`
   flex: 1;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 const Right = styled.div`
