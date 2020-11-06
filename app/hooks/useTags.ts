@@ -29,16 +29,13 @@ export default function useTagSuggestion() {
     }).observable;
 
     const subscription = observable.subscribe((response) => {
-      console.log(ideaIds, locale);
-      console.log(response);
       tagAssignmentsSuggestionStream({
         queryParameters: {
-          idea_ids: ideaIds,
           locale,
+          idea_ids: ideaIds,
           tag_ids: response.data.map((tag) => tag.id),
         },
       }).observable.subscribe((assignments) => {
-        console.log(assignments);
         setTagSuggestion(
           response.data.map((tag) => ({
             ...tag,
