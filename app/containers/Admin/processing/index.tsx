@@ -48,7 +48,8 @@ import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { reportError } from 'utils/loggingUtils';
 import useTagSuggestion from 'hooks/useTags';
-import FeatureFlag from 'components/FeatureFlag';
+
+import { saveAs } from 'file-saver';
 
 const Container = styled.div`
   padding-top: 45px;
@@ -58,7 +59,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   margin-bottom: 80px;
 `;
 
@@ -137,6 +138,8 @@ const Processing = memo<Props & InjectedIntlProps>(
   ({ className, ideas, projects }) => {
     const localize = useLocalize();
 
+    // const [showTopics, setShowTopics] = useState<boolean>(false);
+
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       []
     );
@@ -146,8 +149,8 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const { tagSuggestion, onIdeasChange } = useTagSuggestion();
 
-    const [isAutoTagging, setIsAutoTagging] = useState<boolean>(false);
-    const [isExportingXlsx, setIsExportingXlsx] = useState<boolean>(false);
+    const [processing, setProcessing] = useState<boolean>(false);
+    const [exporting, setExporting] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
@@ -223,14 +226,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [enterModalKey]);
 
     useEffect(() => {
-      if (!isAutoTagging) {
+      if (!processing) {
         setIdeaList(ideas?.list);
       }
-    }, [ideas, isAutoTagging]);
+    }, [ideas, processing]);
 
     useEffect(() => {
-      if (isAutoTagging) {
-        setIsAutoTagging(false);
+      if (processing) {
+        setProcessing(false);
       }
     }, [tagSuggestion]);
 
@@ -249,17 +252,22 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
 
       try {
-        setIsExportingXlsx(true);
+        setExporting(true);
+        console.log(0);
         const blob = await requestBlob(
-          `${API_PATH}/ideas/as_xlsx`,
+          `${API_PATH}/ideas/as_xlsx_with_tags`,
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           queryParametersObject
         );
+        console.log(1);
+        console.log(saveAs, blob);
         saveAs(blob, 'ideas-export.xlsx');
-        setIsExportingXlsx(false);
+
+        setExporting(false);
       } catch (error) {
+        console.log(error);
         reportError(error);
-        setIsExportingXlsx(false);
+        setExporting(false);
       }
     };
 
@@ -267,13 +275,13 @@ const Processing = memo<Props & InjectedIntlProps>(
       e.preventDefault;
       trackEventByName(tracks.clickAutotag.name);
 
-      setIsAutoTagging(true);
+      setProcessing(true);
       onIdeasChange(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !isAutoTagging) {
+        if (!isNilOrError(ideaList) && !processing) {
           const newSelectedRows =
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
@@ -281,7 +289,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           setSelectedRows(newSelectedRows);
         }
       },
-      [ideaList, selectedRows, isAutoTagging]
+      [ideaList, selectedRows, processing]
     );
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
@@ -295,14 +303,14 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
-        if (!isAutoTagging) {
+        if (!processing) {
           const newSelectedRows = includes(selectedRows, selectedItemId)
             ? selectedRows.filter((id) => id !== selectedItemId)
             : [...selectedRows, selectedItemId];
           setSelectedRows(newSelectedRows);
         }
       },
-      [selectedRows, isAutoTagging]
+      [selectedRows, processing]
     );
 
     const openPreview = (id: string) => {
@@ -311,102 +319,108 @@ const Processing = memo<Props & InjectedIntlProps>(
     const closeSideModal = () => setPreviewPostId(null);
     const switchPreviewMode = () =>
       setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
+    console.log(tagSuggestion);
 
     if (!isNilOrError(ideaList)) {
       return (
-        <FeatureFlag name={'processing'}>
-          <Container className={className}>
-            <SidePanel>
-              <FilterSelector
-                title={<FormattedMessage {...messages.project} />}
-                name={'Projects'}
-                values={projectList}
-                onChange={handleProjectIdsChange}
-                multipleSelectionAllowed={true}
-                selected={selectedProjectIds}
-              />
+        <Container className={className}>
+          <SidePanel>
+            <FilterSelector
+              title={<FormattedMessage {...messages.project} />}
+              name={'Projects'}
+              values={projectList}
+              onChange={handleProjectIdsChange}
+              multipleSelectionAllowed={true}
+              selected={selectedProjectIds}
+            />
 
-              <StyledActions>
-                <Button
-                  buttonStyle="admin-dark"
-                  disabled={!!(selectedRows.length === 0)}
-                  processing={isAutoTagging}
-                  onClick={(e) => handleAutoTag(e)}
-                >
-                  <FormattedMessage {...messages.autotag} />
-                </Button>
+            <StyledActions>
+              <Button
+                buttonStyle="admin-dark"
+                disabled={!!(selectedRows.length === 0)}
+                processing={processing}
+                onClick={(e) => handleAutoTag(e)}
+              >
+                <FormattedMessage {...messages.autotag} />
+              </Button>
 
-                <Button
-                  buttonStyle="admin-dark-outlined"
-                  disabled={!!(selectedRows.length === 0)}
-                  processing={isExportingXlsx}
-                  onClick={handleExportSelectedIdeasAsXlsx}
-                >
-                  <FormattedMessage {...messages.export} />
-                </Button>
-              </StyledActions>
-            </SidePanel>
-            <StyledTable>
-              <thead>
-                <tr>
-                  <th className="checkbox">
-                    <StyledCheckbox
-                      checked={
-                        ideaList.length > 0 &&
-                        selectedRows.length === ideaList?.length
-                      }
-                      indeterminate={
-                        selectedRows.length > 0 &&
-                        selectedRows.length < ideaList.length
-                      }
-                      disabled={ideaList?.length === 0}
-                      onChange={handleOnSelectAll}
-                    />
-                  </th>
-                  <th className="title">
-                    <FormattedMessage
-                      {...messages.items}
-                      values={{
-                        items: selectedRows.length > 1 ? 'items' : 'item',
-                        amount: ideaList.length,
-                        selected: selectedRows.length,
-                      }}
-                    />
-                  </th>
-                  <th className="tags">
-                    <FormattedMessage {...messages.tags} />
-                  </th>
-                </tr>
-              </thead>
-              {ideaList?.length > 0 && (
-                <tbody>
-                  {ideaList?.map((idea) => (
-                    <ProcessingRow
-                      key={idea.id}
-                      idea={idea}
-                      selected={includes(selectedRows, idea.id)}
-                      highlighted={idea.id === highlightedId}
-                      onSelect={handleRowOnSelect}
-                      openPreview={openPreview}
-                      tagSuggestion={tagSuggestion?.filter((tag) =>
-                        tag.idea_ids.includes(idea.id)
-                      )}
-                    />
-                  ))}
-                </tbody>
-              )}
-            </StyledTable>
-            <Suspense fallback={null}>
-              <LazyPostPreview
-                type={'AllIdeas'}
-                postId={previewPostId}
-                mode={previewMode}
-                onClose={closeSideModal}
-                onSwitchPreviewMode={switchPreviewMode}
-              />
-            </Suspense>
-          </Container>
-        </FeatureFlag>
+              <Button
+                buttonStyle="admin-dark-outlined"
+                disabled={!!(selectedRows.length === 0)}
+                processing={exporting}
+                onClick={handleExportSelectedIdeasAsXlsx}
+              >
+                <FormattedMessage {...messages.export} />
+              </Button>
+              {!isNilOrError(tagSuggestion) &&
+                tagSuggestion.map((tag, index) => (
+                  <div key={index}>
+                    {localize(tag.attributes.title_multiloc)}
+                  </div>
+                ))}
+            </StyledActions>
+          </SidePanel>
+          <StyledTable>
+            <thead>
+              <tr>
+                <th className="checkbox">
+                  <StyledCheckbox
+                    checked={
+                      ideaList.length > 0 &&
+                      selectedRows.length === ideaList?.length
+                    }
+                    indeterminate={
+                      selectedRows.length > 0 &&
+                      selectedRows.length < ideaList.length
+                    }
+                    disabled={ideaList?.length === 0}
+                    onChange={handleOnSelectAll}
+                  />
+                </th>
+
+                <th className="title">
+                  <FormattedMessage
+                    {...messages.items}
+                    values={{
+                      items: selectedRows.length > 1 ? 'items' : 'item',
+                      amount: ideaList.length,
+                      selected: selectedRows.length,
+                    }}
+                  />
+                </th>
+                <th className="tags">
+                  <FormattedMessage {...messages.tags} />
+                </th>
+              </tr>
+            </thead>
+            {ideaList?.length > 0 && (
+              <tbody>
+                {ideaList?.map((idea) => (
+                  <ProcessingRow
+                    key={idea.id}
+                    idea={idea}
+                    selected={includes(selectedRows, idea.id)}
+                    highlighted={idea.id === highlightedId}
+                    onSelect={handleRowOnSelect}
+                    openPreview={openPreview}
+                    tagSuggestion={tagSuggestion?.filter((tag) =>
+                      tag.idea_ids.includes(idea.id)
+                    )}
+                  />
+                ))}
+              </tbody>
+            )}
+          </StyledTable>
+          <Suspense fallback={null}>
+            <LazyPostPreview
+              type={'AllIdeas'}
+              postId={previewPostId}
+              mode={previewMode}
+              onClose={closeSideModal}
+              onSwitchPreviewMode={switchPreviewMode}
+            />
+          </Suspense>
+        </Container>
       );
     }
 
