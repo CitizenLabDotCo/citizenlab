@@ -3,6 +3,7 @@ import bowser from 'bowser';
 
 // components
 import Link from 'utils/cl-router/Link';
+import Avatar from 'components/Avatar';
 import LazyImage from 'components/LazyImage';
 
 // styling
@@ -80,7 +81,7 @@ const BodyWrapper = styled.div`
   align-items: center;
 `;
 
-const AvatarWrapper = styled.div`
+const StyledAvatar = styled(Avatar)`
   margin-right: 12px;
 `;
 
@@ -95,8 +96,10 @@ const Footer = styled.footer``;
 interface Props {
   to: string;
   imageUrl?: string | null;
-  authorName?: string | null;
-  authorAvatarUrl?: string | null;
+  author?: {
+    name: string;
+    id: string;
+  } | null;
   title: JSX.Element | string;
   body?: JSX.Element | string;
   footer?: JSX.Element | string;
@@ -108,8 +111,7 @@ export const Card = ({
   to,
   onClick,
   imageUrl,
-  authorName,
-  authorAvatarUrl,
+  author,
   title,
   body,
   footer,
@@ -140,11 +142,7 @@ export const Card = ({
       )}
 
       <BodyWrapper>
-        {authorName && authorAvatarUrl && (
-          <AvatarWrapper>
-            <img src="" alt="" role="presentation" />
-          </AvatarWrapper>
-        )}
+        {author && <StyledAvatar size="36" userId={author.id} />}
         <Body>{typeof body === 'string' ? truncate(body, 100) : body}</Body>
       </BodyWrapper>
 
