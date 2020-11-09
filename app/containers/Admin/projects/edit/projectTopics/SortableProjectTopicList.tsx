@@ -72,7 +72,7 @@ const SortableProjectTopicList = memo(
     };
 
     const handleReorderTopicProject = (projectTopicId, newOrder) => {
-      reorderProjectTopic(projectTopicId, newOrder);
+      reorderProjectTopic(projectTopicId, newOrder, projectId);
     };
 
     const closeSendConfirmationModal = () => {
