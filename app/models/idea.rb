@@ -94,6 +94,18 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
+  scope :order_with, lambda { |scope_name|
+    case scope_name
+    when 'random'   then order_random
+    when 'trending' then order_trending
+    when 'popular'  then order_popular
+    when 'new'      then order_new
+    when '-new'     then order_new(:asc)
+    else order_trending
+    end
+  }
+
+  scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
   private
 
@@ -127,5 +139,4 @@ class Idea < ApplicationRecord
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
   end
-
 end
