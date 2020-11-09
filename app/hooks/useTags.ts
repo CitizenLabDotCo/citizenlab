@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   ITag,
   tagAssignmentsSuggestionStream,
-  tagSuggestionStream,
+  tagSuggestionsStream,
 } from 'services/tags';
 import useLocale from 'hooks/useLocale';
 
@@ -24,7 +24,7 @@ export default function useTagSuggestion() {
   }, []);
 
   useEffect(() => {
-    const observable = tagSuggestionStream({
+    const observable = tagSuggestionsStream({
       queryParameters: {
         locale,
         idea_ids: ideaIds,

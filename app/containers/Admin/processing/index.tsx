@@ -81,6 +81,7 @@ const StyledTable = styled(Table)`
   font-weight: 400;
   text-decoration: none;
   margin-left: 150px;
+  width: calc(100% - 150px);
   tbody tr td {
     padding-top: 12px;
     padding-bottom: 10px;
@@ -306,6 +307,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const openPreview = (id: string) => {
       setPreviewPostId(id);
+      setHighlightedId(id);
     };
     const closeSideModal = () => setPreviewPostId(null);
     const switchPreviewMode = () =>
@@ -386,7 +388,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                     highlighted={idea.id === highlightedId}
                     onSelect={handleRowOnSelect}
                     openPreview={openPreview}
-                    tagSuggestion={tagSuggestion?.filter((tag) =>
+                    tagSuggestions={tagSuggestion?.filter((tag) =>
                       tag.idea_ids.includes(idea.id)
                     )}
                   />

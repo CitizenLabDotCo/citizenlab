@@ -55,7 +55,7 @@ interface Props {
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
-  tagSuggestion: IAutoTag[] | null | undefined;
+  tagSuggestions: IAutoTag[] | null | undefined;
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
@@ -66,7 +66,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     className,
     openPreview,
     highlighted,
-    tagSuggestion,
+    tagSuggestions,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -75,11 +75,11 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
 
     const localize = useLocalize();
 
-    const bgColor = highlighted
-      ? rgba(colors.adminTextColor, 0.3)
-      : selected
-      ? rgba(colors.adminTextColor, 0.1)
-      : '#fff';
+    const bgColor = () => {
+      if (highlighted) return rgba(colors.adminTextColor, 0.3);
+      else if (selected) return rgba(colors.adminTextColor, 0.1);
+      return '#fff';
+    };
 
     const handleOnChecked = useCallback(
       (_event: React.ChangeEvent | React.MouseEvent) => {
@@ -89,12 +89,19 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [onSelect]
     );
 
-    const handleClick = useCallback(() => openPreview(idea.id), [openPreview]);
+    const handleClick = useCallback(
+      (_event: React.ChangeEvent | React.MouseEvent) => {
+        _event.preventDefault();
+        _event.stopPropagation();
+        openPreview(idea.id);
+      },
+      [openPreview]
+    );
 
     return (
       <Container
         className={className}
-        bgColor={bgColor}
+        bgColor={bgColor()}
         onClick={handleOnChecked}
       >
         <td className="checkbox">
@@ -107,7 +114,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           </ContentTitle>
         </td>
         <td className="content">
-          {tagSuggestion?.map((tag) => (
+          {tagSuggestions?.map((tag) => (
             <StyledTag
               key={tag.id}
               text={localize(tag.attributes.title_multiloc)}
