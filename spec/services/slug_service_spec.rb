@@ -43,4 +43,35 @@ describe SlugService do
     end
 
   end
+
+  describe "slugify" do
+
+    it "retains normal latin chars and numbers" do
+      expect(service.slugify("abcaz123")).to eq "abcaz123"
+    end
+
+    it "converts uppercase to lowercase" do
+      expect(service.slugify("ABCDEabc")).to eq "abcdeabc"
+    end
+
+    it "replaces spaces with dashes" do
+      expect(service.slugify("this is great")).to eq "this-is-great"
+    end
+
+    it "replaces underscores with dashes" do
+      expect(service.slugify("this_is_great")).to eq "this-is-great"
+    end
+
+    it "ignores prefix or postfix whitespace" do
+      expect(service.slugify(" great ")).to eq "great"
+    end
+
+    it "removes accents on latin characters when there's at least one normal latin character" do
+      expect(service.slugify("gáöüóáàØ")).to eq "gaouoaao"
+    end
+
+    it "retains all non-latin characters if there's no normal latin characters" do
+      expect(service.slugify("عربى")).to eq "عربى"
+    end
+  end
 end
