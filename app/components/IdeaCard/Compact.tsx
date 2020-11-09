@@ -2,7 +2,7 @@ import React, { memo, FormEvent } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
-import Card from 'components/UI/Card';
+import Card from 'components/UI/Card/Compact';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -14,12 +14,15 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
+// styles
+import styled from 'styled-components';
+
 interface Props {
   ideaId: string;
 }
 
 const CompactIdeaCard = memo<Props & InjectedLocalized>(
-  ({ ideaId, localize }) => {
+  ({ ideaId, localize, ...rest }) => {
     const idea = useIdea({ ideaId });
 
     if (isNilOrError(idea)) {
@@ -42,6 +45,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         onClick={onCardClick}
         title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
+        {...rest}
       />
     );
   }
