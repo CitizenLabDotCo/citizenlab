@@ -8,15 +8,11 @@ import {
 } from 'rxjs/operators';
 import { isEmpty, get, isString } from 'lodash-es';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
-import { Radio, IconTooltip } from 'cl2-component-library';
-import Button from 'components/UI/Button';
+import { Radio, IconTooltip, Input } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -30,7 +26,6 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import HasPermission from 'components/HasPermission';
 import Warning from 'components/UI/Warning';
 
 import Link from 'utils/cl-router/Link';
@@ -51,7 +46,6 @@ import {
   projectByIdStream,
   addProject,
   updateProject,
-  deleteProject,
 } from 'services/projects';
 import {
   projectFilesStream,
@@ -163,15 +157,6 @@ const ParticipationContextWrapper = styled.div`
   }
 `;
 
-const DeleteProjectSectionField = styled(SectionField)`
-  margin-top: 30px;
-  margin-bottom: 60px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-`;
-
 const StyledFileUploader = styled(FileUploader)`
   width: 500px;
 `;
@@ -181,7 +166,16 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 `;
 
 const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+`;
+
+const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+`;
+
+const SlugPreview = styled.div`
+  margin-bottom: 20px;
+  font-size: ${fontSizes.base}px;
 `;
 
 type Props = {
@@ -211,8 +205,8 @@ interface State {
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: ISubmitState;
-  processingDelete: boolean;
-  deleteError: string | null;
+  slug: string | null;
+  showSlugErrorMessage: boolean;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -250,8 +244,8 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
-      processingDelete: false,
-      deleteError: null,
+      slug: null,
+      showSlugErrorMessage: false,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -276,47 +270,47 @@ class AdminProjectEditGeneral extends PureComponent<
     this.subscriptions = [
       combineLatest(locale$, currentTenant$, areas$, project$).subscribe(
         ([locale, currentTenant, areas, project]) => {
-          if (!this.state.processingDelete) {
-            this.setState((state) => {
-              const publicationStatus = project
-                ? project.data.attributes.publication_status
-                : state.publicationStatus;
-              const projectType = project
-                ? project.data.attributes.process_type
-                : state.projectType;
-              const areaType =
-                project && project.data.relationships.areas.data.length > 0
-                  ? 'selection'
-                  : 'all';
-              const areasOptions = areas.data.map((area) => ({
-                value: area.id,
-                label: getLocalized(
-                  area.attributes.title_multiloc,
-                  locale,
-                  currentTenant.data.attributes.settings.core.locales
-                ),
-              }));
-
-              return {
+          this.setState((state) => {
+            const publicationStatus = project
+              ? project.data.attributes.publication_status
+              : state.publicationStatus;
+            const projectType = project
+              ? project.data.attributes.process_type
+              : state.projectType;
+            const areaType =
+              project && project.data.relationships.areas.data.length > 0
+                ? 'selection'
+                : 'all';
+            const areasOptions = areas.data.map((area) => ({
+              value: area.id,
+              label: getLocalized(
+                area.attributes.title_multiloc,
                 locale,
-                currentTenant,
-                project,
-                publicationStatus,
-                projectType,
-                areaType,
-                areasOptions,
-                presentationMode:
-                  (project && project.data.attributes.presentation_mode) ||
-                  state.presentationMode,
-                areas: areas.data,
-                projectAttributesDiff: {
-                  admin_publication_attributes: {
-                    publication_status: publicationStatus,
-                  },
+                currentTenant.data.attributes.settings.core.locales
+              ),
+            }));
+            const slug = project ? project.data.attributes.slug : null;
+
+            return {
+              locale,
+              currentTenant,
+              project,
+              publicationStatus,
+              projectType,
+              areaType,
+              areasOptions,
+              slug,
+              presentationMode:
+                (project && project.data.attributes.presentation_mode) ||
+                state.presentationMode,
+              areas: areas.data,
+              projectAttributesDiff: {
+                admin_publication_attributes: {
+                  publication_status: publicationStatus,
                 },
-              };
-            });
-          }
+              },
+            };
+          });
         }
       ),
 
@@ -419,23 +413,21 @@ class AdminProjectEditGeneral extends PureComponent<
           })
         )
         .subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
-          if (!this.state.processingDelete) {
-            this.setState({
-              projectFiles: projectFiles
-                ? (projectFiles.filter(
-                    (file) => !isNilOrError(file)
-                  ) as UploadFile[])
-                : [],
-              projectImages: projectImages
-                ? (projectImages.filter(
-                    (image) => !isNilOrError(image)
-                  ) as UploadFile[])
-                : [],
-              projectHeaderImage: projectHeaderImage
-                ? [projectHeaderImage]
-                : null,
-            });
-          }
+          this.setState({
+            projectFiles: projectFiles
+              ? (projectFiles.filter(
+                  (file) => !isNilOrError(file)
+                ) as UploadFile[])
+              : [],
+            projectImages: projectImages
+              ? (projectImages.filter(
+                  (image) => !isNilOrError(image)
+                ) as UploadFile[])
+              : [],
+            projectHeaderImage: projectHeaderImage
+              ? [projectHeaderImage]
+              : null,
+          });
         }),
 
       this.processing$.subscribe((processing) => {
@@ -612,6 +604,20 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
+  handleSlugOnChange = (slug: string) => {
+    this.setState(({ projectAttributesDiff }) => {
+      return {
+        slug,
+        projectAttributesDiff: {
+          ...projectAttributesDiff,
+          slug,
+        },
+      };
+    });
+
+    this.validateSlug(slug);
+  };
+
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
@@ -736,27 +742,14 @@ class AdminProjectEditGeneral extends PureComponent<
     }
   };
 
-  deleteProject = async (event: FormEvent<any>) => {
-    event.preventDefault();
+  validateSlug = (slug: string) => {
+    const slugRexEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    const isSlugValid = slugRexEx.test(slug);
 
-    const { project } = this.state;
-    const { formatMessage } = this.props.intl;
-
-    if (
-      project &&
-      window.confirm(formatMessage(messages.deleteProjectConfirmation))
-    ) {
-      try {
-        this.setState({ processingDelete: true });
-        await deleteProject(project.data.id);
-        clHistory.push('/admin/projects');
-      } catch {
-        this.setState({
-          processingDelete: false,
-          deleteError: formatMessage(messages.deleteProjectError),
-        });
-      }
-    }
+    this.setState({
+      showSlugErrorMessage: !isSlugValid,
+      submitState: isSlugValid ? 'enabled' : 'disabled',
+    });
   };
 
   render() {
@@ -774,7 +767,10 @@ class AdminProjectEditGeneral extends PureComponent<
       areaType,
       submitState,
       apiErrors,
-      processingDelete,
+      slug,
+      showSlugErrorMessage,
+      currentTenant,
+      locale,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -861,13 +857,15 @@ class AdminProjectEditGeneral extends PureComponent<
             <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.projectName} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.titleLabelTooltip} />}
+                />
               </SubSectionTitle>
               <StyledInputMultiloc
                 id="project-title"
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
-                labelTooltipText={formatMessage(messages.titleLabelTooltip)}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
@@ -876,6 +874,58 @@ class AdminProjectEditGeneral extends PureComponent<
                 apiErrors={this.state.apiErrors.title_multiloc}
               />
             </StyledSectionField>
+
+            {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
+            {currentTenant && project?.data.attributes.slug && (
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.projectUrl} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage
+                        {...messages.urlSlugTooltip}
+                        values={{
+                          currentProjectURL: (
+                            <em>
+                              <b>
+                                {currentTenant.data.attributes.host}/{locale}
+                                /projects/{project.data.attributes.slug}
+                              </b>
+                            </em>
+                          ),
+                          currentProjectSlug: (
+                            <em>
+                              <b>{project.data.attributes.slug}</b>
+                            </em>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </SubSectionTitle>
+                <StyledWarning>
+                  <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+                </StyledWarning>
+                <StyledInput
+                  id="project-slug"
+                  type="text"
+                  label={<FormattedMessage {...messages.urlSlugLabel} />}
+                  onChange={this.handleSlugOnChange}
+                  value={slug}
+                />
+                <SlugPreview>
+                  <b>{formatMessage(messages.resultingURL)}</b>:{' '}
+                  {currentTenant?.data.attributes.host}/{locale}/projects/
+                  {slug}
+                </SlugPreview>
+                {/* Backend error */}
+                <Error fieldName="slug" apiErrors={this.state.apiErrors.slug} />
+                {/* Frontend error */}
+                {showSlugErrorMessage && (
+                  <Error text={formatMessage(messages.regexError)} />
+                )}
+              </StyledSectionField>
+            )}
 
             <StyledSectionField>
               {!project ? (
@@ -1094,35 +1144,6 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             </StyledSectionField>
 
-            {project && (
-              <HasPermission item={project.data} action="delete">
-                <DeleteProjectSectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.deleteProjectLabel} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.deleteProjectLabelTooltip}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <ButtonWrapper>
-                    <Button
-                      type="button"
-                      icon="delete"
-                      buttonStyle="delete"
-                      onClick={this.deleteProject}
-                      processing={processingDelete}
-                    >
-                      <FormattedMessage {...messages.deleteProjectButton} />
-                    </Button>
-                  </ButtonWrapper>
-                  <Error text={this.state.deleteError} />
-                </DeleteProjectSectionField>
-              </HasPermission>
-            )}
-
             <SubmitWrapper
               loading={processing}
               status={submitState}
@@ -1142,4 +1163,4 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(AdminProjectEditGeneral);
+export default injectIntl(AdminProjectEditGeneral);

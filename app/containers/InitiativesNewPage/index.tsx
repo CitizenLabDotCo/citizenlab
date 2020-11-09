@@ -16,6 +16,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import InitiativesNewMeta from './InitiativesNewMeta';
@@ -145,7 +146,7 @@ export class InitiativesNewPage extends React.PureComponent<
     return (
       <>
         <InitiativesNewMeta />
-        <PageLayout>
+        <PageLayout isAdmin={isAdmin({ data: authUser })}>
           <InitiativesNewFormWrapper
             locale={locale}
             topics={initiativeTopics}

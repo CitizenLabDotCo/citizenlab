@@ -3,16 +3,18 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import {
-  customFieldForUsersStream,
+  userCustomFieldStream,
   IUserCustomFieldData,
 } from 'services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  id: string;
+  userCustomFieldId: string;
 }
 
-type children = (renderProps: GetCustomFieldChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetUserCustomFieldChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -22,13 +24,13 @@ interface State {
   customField: IUserCustomFieldData | undefined | null | Error;
 }
 
-export type GetCustomFieldChildProps =
+export type GetUserCustomFieldChildProps =
   | IUserCustomFieldData
   | undefined
   | null
   | Error;
 
-export default class GetCustomField extends React.Component<Props, State> {
+export default class GetUserCustomField extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
@@ -40,15 +42,18 @@ export default class GetCustomField extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id } = this.props;
+    const { userCustomFieldId } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ id });
+    this.inputProps$ = new BehaviorSubject({ userCustomFieldId });
 
     this.subscriptions = [
       this.inputProps$
         .pipe(
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-          switchMap(({ id }) => customFieldForUsersStream(id).observable)
+          switchMap(
+            ({ userCustomFieldId }) =>
+              userCustomFieldStream(userCustomFieldId).observable
+          )
         )
         .subscribe((customField) =>
           this.setState({
@@ -61,8 +66,8 @@ export default class GetCustomField extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { id } = this.props;
-    this.inputProps$.next({ id });
+    const { userCustomFieldId } = this.props;
+    this.inputProps$.next({ userCustomFieldId });
   }
 
   componentWillUnmount() {

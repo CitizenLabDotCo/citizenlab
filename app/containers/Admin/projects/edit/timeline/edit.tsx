@@ -228,8 +228,8 @@ class AdminProjectTimelineEdit extends PureComponent<
       submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
-        start_at: startDate ? startDate.toISOString().substring(0, 10) : '',
-        end_at: endDate ? endDate.toISOString().substring(0, 10) : '',
+        start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
+        end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
       },
     }));
   };
@@ -316,12 +316,14 @@ class AdminProjectTimelineEdit extends PureComponent<
 
         this.setState({ processing: true });
 
-        if (phase && !isEmpty(attributeDiff)) {
-          phaseResponse = await updatePhase(phase.data.id, attributeDiff);
-          this.setState({ attributeDiff: {} });
-        } else if (projectId && !isEmpty(attributeDiff)) {
-          phaseResponse = await addPhase(projectId, attributeDiff);
-          redirect = true;
+        if (!isEmpty(attributeDiff)) {
+          if (phase) {
+            phaseResponse = await updatePhase(phase.data.id, attributeDiff);
+            this.setState({ attributeDiff: {} });
+          } else if (projectId) {
+            phaseResponse = await addPhase(projectId, attributeDiff);
+            redirect = true;
+          }
         }
 
         if (phaseResponse) {
