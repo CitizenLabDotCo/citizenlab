@@ -159,7 +159,6 @@ class TenantTemplateService
       @template['models']['polls/option']                          = yml_poll_options
       @template['models']['polls/response']                        = yml_poll_responses
       @template['models']['polls/response_option']                 = yml_poll_response_options
-      @template['models']['text_image']                            = yml_text_images
       @template['models']['volunteering/cause']                    = yml_volunteering_causes
       @template['models']['volunteering/volunteer']                = yml_volunteering_volunteers
       @template['models']['maps/map_config']                       = yml_maps_map_configs
@@ -1177,19 +1176,6 @@ class TenantTemplateService
       }
       store_ref yml_volunteer, v.id, :volunteering_volunteer
       yml_volunteer
-    end
-  end
-
-  def yml_text_images
-    TextImage.all.map do |ti|
-      {
-        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiaitve, :email_campaign]),
-        'imageable_field'  => ti.imageable_field,
-        'remote_image_url' => ti.image_url,
-        'text_reference'   => ti.text_reference,
-        'created_at'       => ti.created_at.to_s,
-        'updated_at'       => ti.updated_at.to_s
-      }
     end
   end
 
