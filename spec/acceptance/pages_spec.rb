@@ -124,7 +124,7 @@ resource "Pages" do
       example_request "[error] Create an invalid page", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:slug)).to eq [{:error=>"blank"}, {:error=>"invalid", :value=>""}]
+        expect(json_response.dig(:errors,:slug)).to eq [{:error=>"blank"}]
       end
     end
   end

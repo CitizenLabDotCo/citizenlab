@@ -11,12 +11,14 @@ class SideFxIdeaService
   end
 
   def after_create idea, user
+    idea.update!(body_multiloc: TextImageService.new.swap_data_images(idea, :body_multiloc))
     if idea.published?
       after_publish idea, user
     end
   end
 
   def before_update idea, user
+    idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
     if idea.project_id_changed?
       unless ProjectPolicy.new(idea.assignee, idea.project).moderate?
         idea.assignee = nil
