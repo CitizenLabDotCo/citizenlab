@@ -12,8 +12,8 @@ class User < ApplicationRecord
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
-  pg_search_scope :search_by_all, 
-    :against => [:first_name, :last_name, :email], 
+  pg_search_scope :search_by_all,
+    :against => [:first_name, :last_name, :email],
     :using => { :tsearch => {:prefix => true} }
 
   pg_search_scope :by_full_name,
@@ -110,7 +110,7 @@ class User < ApplicationRecord
     .group('users.id')
   }
 
-  scope :admin, -> { 
+  scope :admin, -> {
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
@@ -170,7 +170,7 @@ class User < ApplicationRecord
 
   # This method is used by knock to get the user.
   # Default is by email, but we want to compare
-  # case insensitively and forbid login for 
+  # case insensitively and forbid login for
   # invitees.
   def self.from_token_request request
     email = request.params["auth"]["email"]
@@ -285,7 +285,7 @@ class User < ApplicationRecord
   def group_ids
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
-  
+
 
   private
 
@@ -304,7 +304,7 @@ class User < ApplicationRecord
       self.bio_multiloc,
       %i{title alignment list decoration link video}
     )
-    self.bio_multiloc = service.remove_empty_paragraphs_multiloc(self.bio_multiloc)
+    self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(self.bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(self.bio_multiloc)
   end
 

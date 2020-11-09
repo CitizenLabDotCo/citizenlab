@@ -15,7 +15,7 @@ class Event < ApplicationRecord
 
 
   private
-  
+
   def sanitize_description_multiloc
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
@@ -23,7 +23,7 @@ class Event < ApplicationRecord
       %i{title alignment list decoration link image video}
     )
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
   end
 
   def validate_start_at_before_end_at
