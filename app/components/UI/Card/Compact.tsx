@@ -3,7 +3,6 @@ import bowser from 'bowser';
 
 // components
 import Link from 'utils/cl-router/Link';
-import Avatar from 'components/Avatar';
 import LazyImage from 'components/LazyImage';
 
 // styling
@@ -75,22 +74,6 @@ const Title = styled.h3<{ title?: string }>`
   min-height: 40px;
 `;
 
-const BodyWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  margin-right: 12px;
-`;
-
-const Body = styled.div`
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
 const Footer = styled.footer``;
 
 interface Props {
@@ -111,7 +94,6 @@ export const Card = ({
   to,
   onClick,
   imageUrl,
-  author,
   title,
   body,
   footer,
@@ -141,10 +123,7 @@ export const Card = ({
         <Title className="e2e-card-title">{title}</Title>
       )}
 
-      <BodyWrapper>
-        {author && <StyledAvatar size="36" userId={author.id} />}
-        <Body>{typeof body === 'string' ? truncate(body, 100) : body}</Body>
-      </BodyWrapper>
+      {body}
 
       <Footer aria-live="polite">{footer}</Footer>
     </ContentWrapper>
