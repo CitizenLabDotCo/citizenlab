@@ -54,7 +54,6 @@ const ContentWrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 142px;
   margin-left: 20px;
 `;
@@ -71,7 +70,10 @@ const Title = styled.h3<{ title?: string }>`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  min-height: 40px;
+`;
+
+const Body = styled.div`
+  flex-grow: 1;
 `;
 
 const Footer = styled.footer``;
@@ -123,9 +125,9 @@ export const Card = ({
         <Title className="e2e-card-title">{title}</Title>
       )}
 
-      {body}
+      <Body>{body}</Body>
 
-      <Footer aria-live="polite">{footer}</Footer>
+      <Footer>{footer}</Footer>
     </ContentWrapper>
   </Container>
 );

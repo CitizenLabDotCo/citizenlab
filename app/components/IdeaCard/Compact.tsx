@@ -18,6 +18,7 @@ import { truncate } from 'utils/textUtils';
 
 // styles
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -25,10 +26,12 @@ const BodyWrapper = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  margin-right: 12px;
+  margin-right: 8px;
 `;
 
 const Body = styled.div`
+  font-size: ${fontSizes.small}px;
+  color: ${colors.label};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -62,18 +65,19 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       .replace(/<[^>]*>?/gm, '')
       .trim();
 
-    const body = (
-      <BodyWrapper>
-        {authorId && <StyledAvatar size="36" userId={authorId} />}
-        <Body>{truncate(bodyText, 100)}</Body>
-      </BodyWrapper>
-    );
+    const footer = <p>sf</p>;
     return (
       <Card
         onClick={onCardClick}
         title={localize(idea.attributes.title_multiloc)}
-        body={body}
         to={`/ideas/${idea.attributes.slug}`}
+        body={
+          <BodyWrapper>
+            {authorId && <StyledAvatar size="36" userId={authorId} />}
+            <Body>{truncate(bodyText, 55)}</Body>
+          </BodyWrapper>
+        }
+        footer={footer}
         {...rest}
       />
     );
