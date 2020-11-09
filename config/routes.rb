@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
   mount Maps::Engine => "", as: 'maps'
-  mount ProjectFolders::Engine => ''
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
