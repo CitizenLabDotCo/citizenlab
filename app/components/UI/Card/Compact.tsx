@@ -13,12 +13,15 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 
+// utils
+import { truncate } from 'utils/textUtils';
+
 // assets
 import placeholderImage from './placeholder.png';
 
 const Container = styled(Link)`
   width: 100%;
-  height: 212px;
+  height: 192px;
   margin-bottom: 24px;
   cursor: pointer;
   display: flex;
@@ -32,8 +35,8 @@ const Container = styled(Link)`
 `;
 
 const ImageWrapper = styled.div`
-  width: 162px;
-  height: 162px;
+  width: 142px;
+  height: 142px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,13 +55,13 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 162px;
+  height: 142px;
   margin-left: 30px;
 `;
 
-const Title = styled.h3<{ hasHeader: boolean }>`
+const Title = styled.h3<{ hasHeader: boolean; title?: string }>`
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.large}px;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -69,7 +72,6 @@ const Title = styled.h3<{ hasHeader: boolean }>`
   word-wrap: break-word;
   word-break: break-word;
 `;
-// why the :first-child ? -> to conteract the css reset that overrides top margin for h3:first-child.
 
 const Body = styled.div``;
 
@@ -112,9 +114,15 @@ export const Card = ({
     </ImageWrapper>
 
     <ContentWrapper>
-      <Title className="e2e-card-title" hasHeader={!!header}>
-        {title}
-      </Title>
+      {typeof title === 'string' ? (
+        <Title title={title} className="e2e-card-title" hasHeader={!!header}>
+          {truncate(title, 60)}
+        </Title>
+      ) : (
+        <Title className="e2e-card-title" hasHeader={!!header}>
+          {title}
+        </Title>
+      )}
 
       <Body>{body}</Body>
       <Footer aria-live="polite">{footer}</Footer>
