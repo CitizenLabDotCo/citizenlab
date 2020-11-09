@@ -27,4 +27,13 @@ export default defineMessages({
     defaultMessage:
       'What do you think of this initiative? Vote on it and share the discussion at {postUrl} to make your voice heard!',
   },
+  whatsAppMessageIdea: {
+    id: 'app.components.PostComponents.SharingModalContent.whatsAppMessageIdea',
+    defaultMessage: 'I just posted an idea for {orgName}: {postTitle}',
+  },
+  whatsAppMessageProposal: {
+    id:
+      'app.components.PostComponents.SharingModalContent.whatsAppMessageProposal',
+    defaultMessage: 'I just posted a proposal for {orgName}: {postTitle}',
+  },
 });

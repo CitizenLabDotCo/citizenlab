@@ -172,6 +172,7 @@ export interface IUpdatedProjectProperties {
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  slug?: string;
 }
 
 export interface IProject {
