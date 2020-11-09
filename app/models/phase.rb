@@ -24,7 +24,6 @@ class Phase < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
-
   private
 
   def sanitize_description_multiloc
