@@ -55,12 +55,20 @@ class SlugService
     end
   end
 
-  def regex
-    /\A[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*\z/
+  def slugify str
+    if latinish? str
+      str.downcase.parameterize.gsub('_', '-')
+    else
+      str.gsub('_', '-')
+    end
   end
 
-  def slugify str
-    str.parameterize
+
+  private
+
+  def latinish? str
+    # When it contains a character A-Z or a-z.
+    str =~ /\A.*[A-Za-z]+.*\z/
   end
 
 end

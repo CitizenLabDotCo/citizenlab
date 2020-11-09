@@ -66,18 +66,6 @@ RSpec.describe Project, type: :model do
     end
   end
 
-  describe "slug" do
-    it "is valid when it's only containing alphanumeric and hyphens" do
-      project = build(:project, slug: 'aBc-123-g3S')
-      expect(project).to be_valid
-    end
-
-    it "is invalid when there's others than alphanumeric and hyphens" do
-      project = build(:project, slug: 'ab_c-.asdf@')
-      expect{ project.valid? }.to change{ project.errors[:slug] }
-    end
-  end
-
   describe "visible_to" do
     it "gets set to 'public' when not specified on create" do
       project = create(:project, visible_to: nil)

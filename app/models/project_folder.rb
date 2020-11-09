@@ -8,7 +8,7 @@ class ProjectFolder < ApplicationRecord
   mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :slug, uniqueness: true, presence: true
   validate :admin_publication_must_exist
 
   before_validation :generate_slug, on: :create
