@@ -58,8 +58,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def create
-    params = permitted_attributes(Project)
-    @project = Project.new(params.except(:folder_id))
+    project_params = permitted_attributes(Project)
+    @project = Project.new(project_params)
     SideFxProjectService.new.before_create(@project, current_user)
 
     authorize @project
@@ -83,7 +83,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     project_params = permitted_attributes(Project)
 
-    @project.assign_attributes project_params.except(:folder_id)
+    @project.assign_attributes project_params
     if project_params.key?(:header_bg) && project_params[:header_bg].nil?
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
