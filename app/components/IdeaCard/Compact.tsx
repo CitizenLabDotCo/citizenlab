@@ -39,12 +39,20 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       });
     };
 
+    const authorId = idea.relationships.author.data?.id;
     return (
       <Card
         onClick={onCardClick}
         title={localize(idea.attributes.title_multiloc)}
         body={localize(idea.attributes.body_multiloc)}
-        authorName={idea.attributes.author_avatar.url}
+        author={
+          authorId
+            ? {
+                name: idea.attributes.author_name,
+                id: authorId,
+              }
+            : null
+        }
         to={`/ideas/${idea.attributes.slug}`}
         {...rest}
       />

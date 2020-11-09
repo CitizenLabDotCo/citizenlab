@@ -45,9 +45,6 @@ export interface IIdeaData {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
     author_name: string;
-    author_avatar: {
-      url: string;
-    };
     slug: string;
     publication_status: IdeaPublicationStatus;
     upvotes_count: number;
