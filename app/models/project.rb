@@ -159,7 +159,7 @@ class Project < ApplicationRecord
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 
@@ -169,7 +169,7 @@ class Project < ApplicationRecord
       self.description_preview_multiloc,
       %i{decoration link}
     )
-    self.description_preview_multiloc = service.remove_empty_paragraphs_multiloc(self.description_preview_multiloc)
+    self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_preview_multiloc)
   end
 
   def set_visible_to
