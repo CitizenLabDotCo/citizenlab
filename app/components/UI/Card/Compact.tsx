@@ -21,11 +21,11 @@ import placeholderImage from './placeholder.png';
 
 const Container = styled(Link)`
   width: 100%;
-  height: 192px;
+  height: 174px;
   margin-bottom: 24px;
   cursor: pointer;
   display: flex;
-  padding: 22px;
+  padding: 16px;
   align-items: center;
   ${defaultCardStyle};
 
@@ -56,10 +56,10 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 142px;
-  margin-left: 30px;
+  margin-left: 20px;
 `;
 
-const Title = styled.h3<{ hasHeader: boolean; title?: string }>`
+const Title = styled.h3<{ title?: string }>`
   color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.large}px;
   font-weight: 500;
@@ -71,16 +71,32 @@ const Title = styled.h3<{ hasHeader: boolean; title?: string }>`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+  min-height: 40px;
 `;
 
-const Body = styled.div``;
+const BodyWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const AvatarWrapper = styled.div`
+  margin-right: 12px;
+`;
+
+const Body = styled.div`
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
 
 const Footer = styled.footer``;
 
 interface Props {
   to: string;
   imageUrl?: string | null;
-  header?: JSX.Element;
+  authorName?: string | null;
+  authorAvatarUrl?: string | null;
   title: JSX.Element | string;
   body?: JSX.Element | string;
   footer?: JSX.Element | string;
@@ -92,7 +108,8 @@ export const Card = ({
   to,
   onClick,
   imageUrl,
-  header,
+  authorName,
+  authorAvatarUrl,
   title,
   body,
   footer,
@@ -115,16 +132,22 @@ export const Card = ({
 
     <ContentWrapper>
       {typeof title === 'string' ? (
-        <Title title={title} className="e2e-card-title" hasHeader={!!header}>
+        <Title title={title} className="e2e-card-title">
           {truncate(title, 60)}
         </Title>
       ) : (
-        <Title className="e2e-card-title" hasHeader={!!header}>
-          {title}
-        </Title>
+        <Title className="e2e-card-title">{title}</Title>
       )}
 
-      <Body>{body}</Body>
+      <BodyWrapper>
+        {authorName && authorAvatarUrl && (
+          <AvatarWrapper>
+            <img src="" alt="" role="presentation" />
+          </AvatarWrapper>
+        )}
+        <Body>{typeof body === 'string' ? truncate(body, 100) : body}</Body>
+      </BodyWrapper>
+
       <Footer aria-live="polite">{footer}</Footer>
     </ContentWrapper>
   </Container>

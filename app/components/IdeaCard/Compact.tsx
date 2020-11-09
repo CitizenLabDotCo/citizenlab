@@ -28,7 +28,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     if (isNilOrError(idea)) {
       return null;
     }
-
+    console.log(idea);
     const onCardClick = (event: FormEvent) => {
       event.preventDefault();
 
@@ -39,11 +39,12 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       });
     };
 
-    const ideaTitle = localize(idea.attributes.title_multiloc);
     return (
       <Card
         onClick={onCardClick}
-        title={ideaTitle}
+        title={localize(idea.attributes.title_multiloc)}
+        body={localize(idea.attributes.body_multiloc)}
+        authorName={idea.attributes.author_avatar.url}
         to={`/ideas/${idea.attributes.slug}`}
         {...rest}
       />
