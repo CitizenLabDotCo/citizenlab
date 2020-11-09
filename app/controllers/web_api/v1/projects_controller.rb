@@ -2,6 +2,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   before_action :set_project, only: [:show, :update, :reorder, :destroy]
   skip_after_action :verify_policy_scoped, only: [:index]
 
+  define_callbacks :save_project
+  attr_reader :project, :project_saved
+
   def index
     params["moderator"] = current_user if params[:filter_can_moderate]
 
@@ -60,14 +63,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     SideFxProjectService.new.before_create(@project, current_user)
 
     authorize @project
-
-    saved = nil
-    ActiveRecord::Base.transaction do
-      saved = @project.save
-      if saved
-        set_folder! params[:folder_id] if params.key? :folder_id
-      end
-    end
+    saved = ActiveRecord::Base.transaction { save_project }
 
     if saved
       SideFxProjectService.new.after_create(@project, current_user)
@@ -95,11 +91,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
 
-    saved = nil
-    ActiveRecord::Base.transaction do
-      saved = @project.save
-      @project.set_folder! project_params[:folder_id] if saved && project_params.key?(:folder_id)
-    end
+    saved = ActiveRecord::Base.transaction { save_project }
+
     if saved
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
@@ -123,8 +116,13 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
   end
 
-
   private
+
+  def save_project
+    run_callbacks :save_project do
+      @project_saved = @project.save
+    end
+  end
 
   def secure_controller?
     false
