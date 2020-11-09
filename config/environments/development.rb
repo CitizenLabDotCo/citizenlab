@@ -95,4 +95,14 @@ Rails.application.configure do
   # No whitelist for host header
   config.hosts = nil
 
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    # Bullet.sentry = true # for staging
+    # Bullet.raise = true # for testing
+
+    # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+    # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
+  end
 end

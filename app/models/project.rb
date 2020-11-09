@@ -37,7 +37,7 @@ class Project < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :description_preview_multiloc, multiloc: {presence: false}
-  validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :slug, presence: true, uniqueness: true
   validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
   validates :description_preview_multiloc, json: {
     schema: DESCRIPTION_PREVIEW_JSON_SCHEMA,
