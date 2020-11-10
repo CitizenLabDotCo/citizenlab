@@ -1,7 +1,6 @@
 class IdeaStatus < ApplicationRecord
-  CODES = %w(proposed viewed under_consideration accepted implemented rejected custom)
+  CODES = %w[proposed viewed under_consideration accepted implemented rejected custom].freeze
   MINIMUM_REQUIRED_CODES = %w[proposed].freeze
-  #  Old codes: viewed under_consideration accepted implemented rejected custom
 
   acts_as_list column: :ordering, top_of_list: 0
 
@@ -12,7 +11,7 @@ class IdeaStatus < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, presence: true, multiloc: { presence: true }
-  validates :code, presence: true, minimum_required: { values: MINIMUM_REQUIRED_CODES }
+  validates :code, presence: true, inclusion: { in: CODES }, minimum_required: { values: MINIMUM_REQUIRED_CODES }
   validates :color, presence: true
 
   before_validation :strip_title
