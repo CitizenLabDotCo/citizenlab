@@ -12,6 +12,7 @@ import useIdeaImage from 'hooks/useIdeaImage';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { FormattedRelative } from 'react-intl';
 
 // utils
 import { get } from 'lodash-es';
@@ -39,6 +40,11 @@ const Body = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+`;
+
+const Separator = styled.span`
+  display: inline-block;
+  margin: 0 4px;
 `;
 
 const Footer = styled.footer`
@@ -73,18 +79,18 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     };
 
     const authorId = idea.relationships.author.data?.id;
+    const ideaTitle = localize(idea.attributes.title_multiloc);
+
     // remove html tags from wysiwyg output
     const bodyText = localize(idea.attributes.body_multiloc)
       .replace(/<[^>]*>?/gm, '')
       .trim();
 
     const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
-
-    console.log(ideaImage);
     return (
       <Card
         onClick={onCardClick}
-        title={localize(idea.attributes.title_multiloc)}
+        title={truncate(ideaTitle, 70)}
         to={`/ideas/${idea.attributes.slug}`}
         image={
           !isNilOrError(ideaImage)
@@ -94,7 +100,16 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         body={
           <BodyWrapper>
             {authorId && <StyledAvatar size="36" userId={authorId} />}
-            <Body>{truncate(bodyText, 55)}</Body>
+            <Body>
+              <strong>
+                <FormattedRelative
+                  value={idea.attributes.created_at}
+                  style="numeric"
+                />
+                <Separator aria-hidden>&bull;</Separator>
+              </strong>
+              {truncate(bodyText, ideaTitle.length > 60 ? 40 : 50)}
+            </Body>
           </BodyWrapper>
         }
         footer={
