@@ -1,10 +1,12 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
-  attr_accessor :will_be_destroyed
 
-  alias will_be_destroyed? will_be_destroyed
+  # do not rename to will_be_destroyed, it overrides activerecord.
+  attr_accessor :to_be_destroyed
+
+  alias to_be_destroyed? to_be_destroyed
 
   before_destroy prepend: true do
-    self.will_be_destroyed = true
+    self.to_be_destroyed = true
   end
 end
