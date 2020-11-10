@@ -115,13 +115,7 @@ export const Card = ({
     )}
 
     <ContentWrapper>
-      {typeof title === 'string' ? (
-        <Title title={title} className="e2e-card-title">
-          {truncate(title, 55)}
-        </Title>
-      ) : (
-        <Title className="e2e-card-title">{title}</Title>
-      )}
+      <Title className="e2e-card-title">{title}</Title>
 
       <Body>{body}</Body>
 
