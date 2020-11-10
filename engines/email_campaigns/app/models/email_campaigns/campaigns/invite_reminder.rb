@@ -6,6 +6,7 @@ module EmailCampaigns
     include Trackable
     allow_lifecycle_stages except: ['trial','churned']
 
+    before_send :check_send_invite_email_toggle
     recipient_filter :filter_recipient
 
 
@@ -28,6 +29,10 @@ module EmailCampaigns
           activate_invite_url: Frontend::UrlService.new.invite_url(activity.item.token, locale: activity.item.invitee.locale)
         }
       }]
+    end
+
+    def check_send_invite_email_toggle activity:, time: nil
+      !!activity.item&.send_invite_email
     end
   end
 end
