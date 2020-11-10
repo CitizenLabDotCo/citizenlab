@@ -34,6 +34,14 @@ export interface IUserCustomFieldData {
   };
 }
 
+export interface IUserCustomField {
+  data: IUserCustomFieldData;
+}
+
+export interface IUserCustomFields {
+  data: IUserCustomFieldData[];
+}
+
 export interface UserCustomFieldsInfos {
   schema: any;
   uiSchema: any;
@@ -57,28 +65,7 @@ export interface IUserCustomFields {
   data: IUserCustomFieldData[];
 }
 
-export interface IUserCustomFieldOptionsData {
-  id: string;
-  type: string;
-  attributes: {
-    key: string;
-    title_multiloc: Multiloc;
-    ordering: number;
-    created_at: string;
-    updated_at: string;
-  };
-  relationships: {
-    custom_field_options: {
-      data: IRelationship;
-    };
-  };
-}
-
-export interface IUserCustomFieldOptions {
-  data: IUserCustomFieldOptionsData[];
-}
-
-export function customFieldForUsersStream(
+export function userCustomFieldStream(
   customFieldId: string,
   streamParams: IStreamParams | null = null
 ) {
@@ -88,7 +75,7 @@ export function customFieldForUsersStream(
   });
 }
 
-export function customFieldsForUsersStream(
+export function userCustomFieldsStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IUserCustomFields>({
@@ -132,44 +119,5 @@ export function deleteUserCustomField(customFieldId: string) {
   return streams.delete(
     `${API_PATH}/users/custom_fields/${customFieldId}`,
     customFieldId
-  );
-}
-
-export function userCustomFieldOptionsStream(
-  customFieldId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldOptions>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    ...streamParams,
-  });
-}
-
-export function addUserCustomFieldOption(customFieldId: string, data) {
-  return streams.add<IUserCustomField>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    { custom_field_option: data }
-  );
-}
-
-export function updateUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string,
-  object
-) {
-  return streams.update<IUserCustomFieldOptions>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId,
-    { custom_field_option: object }
-  );
-}
-
-export function deleteUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string
-) {
-  return streams.delete(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId
   );
 }

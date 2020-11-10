@@ -7,7 +7,7 @@ import { Dropdown } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const List = styled.ul`
   margin: 0;
@@ -27,6 +27,9 @@ const ListItemText = styled.span`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+  ${isRtl`
+    text-align: right;
+  `}
 `;
 
 const ListItem = styled.li`

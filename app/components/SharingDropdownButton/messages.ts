@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.components.SharingButton.shareByEmail',
     defaultMessage: 'Share by email',
   },
+  shareViaWhatsApp: {
+    id: 'app.components.SharingButton.shareViaWhatsApp',
+    defaultMessage: 'Share via WhatsApp',
+  },
 });

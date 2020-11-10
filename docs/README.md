@@ -1,8 +1,47 @@
 # Changelog
 
-## 2010-10-27
+## 2020-11-6
 
 ### Added
+- Social sharing via WhatsApp
+- Ability to edit the project URL
+- Fragment to embed a form directly into the new proposal page, for regular users only
+
+### Fixed
+- The project about section is visibile in mobile view again
+- Maps will no longer overflow on page resizes
+
+## 2020-11-5
+
+### Added
+- Reordering of and cleaner interface for managing custom registration field options
+- An 'add proposal' button in the proposals admin
+- Fragment to user profile page to manage party membership settings (CD&V)
+- "User not found" message when visiting a profile for a user that was deleted or could not be found
+
+### Changed
+- Proposal title max. length error message
+- Moved delete functionality for projects and project folders to the admin overview
+
+### Fixed
+- The automatic scroll to the survey on survey project page
+
+## 2020-11-3
+
+### Fixed
+- Fixed broken date picker for phase start and end date
+
+## 2020-10-30
+
+### Added
+
+- Initial Right to left layout for Arabic language
+- Idea description WYSIWYG editor now supports adding images and/or buttons
+
+## 2020-10-27
+
+### Added
+
 - Support for Arabic
 
 ## 2020-10-22

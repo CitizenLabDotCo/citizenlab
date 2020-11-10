@@ -48,7 +48,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
@@ -88,6 +88,11 @@ const ContainerInner = styled.div`
   justify-content: space-between;
   padding-left: 20px;
   position: relative;
+  ${isRtl`
+    padding-left: 0px;
+    padding-right: 20px;
+    flex-direction: row-reverse;
+    `}
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
@@ -98,6 +103,9 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
+  ${isRtl`
+    flex-direction: row-reverse;
+    `}
 `;
 
 const LogoLink = styled(Link)`
@@ -124,6 +132,11 @@ const NavigationItems = styled.nav`
 
   ${media.smallerThanMaxTablet`
     display: none;
+  `}
+  ${isRtl`
+    margin-right: 35px;
+    margin-left: 0;
+    flex-direction: row-reverse;
   `}
 `;
 
@@ -241,6 +254,9 @@ const NavigationDropdownItem = styled.button`
         theme.navbarActiveItemBorderColor || theme.colorMain};
     }
   }
+  ${isRtl`
+     flex-direction: row-reverse;
+  `}
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
@@ -249,12 +265,19 @@ const NavigationDropdownItemIcon = styled(Icon)`
   fill: inherit;
   margin-left: 4px;
   margin-top: 3px;
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 4px;
+  `}
 `;
 
 const ProjectsList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  ${isRtl`
+    text-align: right;
+  `}
 `;
 
 const ProjectsListItem = styled(Link)`
@@ -316,6 +339,21 @@ const Right = styled.div`
   ${media.smallerThanMinTablet`
     margin-right: 20px;
   `}
+  ${isRtl`
+    flex-direction: row-reverse;
+    margin-left: 30px;
+
+    &.ie {
+      margin-left: 50px;
+    }
+    ${media.desktop`
+        margin-left: 40px;
+    `}
+
+    ${media.smallerThanMinTablet`
+        margin-left: 20px;
+    `}
+    `}
 `;
 
 const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
@@ -323,6 +361,13 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
+  `}
+  ${isRtl`
+    padding-left: 0px;
+    padding-right: 20px;
+  ${media.smallerThanMinTablet`
+    padding-right: 15px;
+  `}
   `}
 `;
 
@@ -340,6 +385,19 @@ const RightItem = styled.div`
 
   ${media.smallerThanMinTablet`
     margin-left: 30px;
+  `}
+
+  ${isRtl`
+    margin-right: 40px;
+    margin-left: 0;
+    ${media.smallerThanMinTablet`
+        margin-right: 30px;
+    `}
+    &.noLeftMargin {
+        margin-left: 0;
+        margin-right: 0px;
+    }
+
   `}
 `;
 
