@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  # all controllers are secured by default
+  # all controllers are secured by defaultryb
   def secure_controller?
     true
   end
