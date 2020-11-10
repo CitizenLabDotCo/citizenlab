@@ -14,7 +14,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   serialize_resource
 
   def index
-    @idea_statuses = policy_scope(IdeaStatus).order(:ordering)
+    @idea_statuses = policy_scope(IdeaStatus)
     render json: serialized_resource, status: :ok
   end
 
@@ -24,6 +24,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def create
     @idea_status = IdeaStatus.new(idea_status_params)
+    authorize @idea_status
     if @idea_status.save
       render json: serialized_resource, status: :ok
     else
@@ -41,7 +42,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def destroy
     if @idea_status.destroy
-      render head: :no_content
+      head :no_content
     else
       render serialized_resource_errors, status: :not_allowed
     end
