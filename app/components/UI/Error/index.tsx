@@ -8,7 +8,7 @@ import { darken } from 'polished';
 import { CLError, Message } from 'typings';
 import { IInviteError } from 'services/invites';
 import messages from './messages';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const timeout = 350;
 
@@ -43,6 +43,11 @@ const ErrorIcon = styled(Icon)`
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+  `}
 `;
 
 const ContainerInner = styled.div<{ showBackground: boolean }>`
@@ -54,6 +59,10 @@ const ContainerInner = styled.div<{ showBackground: boolean }>`
   background: ${colors.clRedErrorBackground};
   background: ${(props) =>
     props.showBackground ? colors.clRedErrorBackground : 'transparent'};
+
+  ${isRtl`
+    flex-direction: row-reverse;
+ `}
 `;
 
 const Container = styled.div<{ marginTop: string; marginBottom: string }>`

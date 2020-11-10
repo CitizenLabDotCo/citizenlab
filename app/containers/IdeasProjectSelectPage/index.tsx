@@ -23,7 +23,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -80,6 +80,9 @@ const PageTitle = styled.h1`
   &:not(.noProjects) {
     ${media.smallerThanMaxTablet`
       text-align: left;
+      ${isRtl`
+        text-align: right;
+      `}
     `}
   }
 `;
@@ -88,6 +91,10 @@ const ColumnsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  ${isRtl`
+   flex-direction: row-reverse;
+ `}
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -180,6 +187,14 @@ const ButtonBarInner = styled.div`
   ${media.smallerThanMaxTablet`
     margin-left: 35px;
   `}
+
+  ${isRtl`
+    flex-direction: row-reverse;
+    .Button {
+        margin-right: auto;
+        margin-left: 10px;
+    }
+ `}
 `;
 
 const EmptyStateContainer = styled.div`

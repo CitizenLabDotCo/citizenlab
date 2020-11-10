@@ -9,7 +9,9 @@ import {
   isBuiltInField,
 } from 'services/userCustomFields';
 
-import CustomFieldForm, { FormValues } from '../CustomFieldForm';
+import RegistrationCustomFieldForm, {
+  FormValues,
+} from '../RegistrationCustomFieldForm';
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
@@ -19,7 +21,7 @@ type Props = {
 
 type State = {};
 
-class General extends React.Component<Props, State> {
+class RegistrationCustomFieldSettings extends React.Component<Props, State> {
   initialValues = () => {
     const { customField } = this.props;
     return (
@@ -66,7 +68,7 @@ class General extends React.Component<Props, State> {
 
   renderFn = (props) =>
     this.props.customField && (
-      <CustomFieldForm
+      <RegistrationCustomFieldForm
         {...props}
         mode="edit"
         customFieldId={this.props.customField.id}
@@ -83,11 +85,11 @@ class General extends React.Component<Props, State> {
           initialValues={this.initialValues()}
           onSubmit={this.handleSubmit}
           render={this.renderFn}
-          validate={CustomFieldForm['validate']}
+          validate={RegistrationCustomFieldForm['validate']}
         />
       )
     );
   }
 }
 
-export default General;
+export default RegistrationCustomFieldSettings;

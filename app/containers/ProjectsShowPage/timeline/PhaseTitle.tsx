@@ -19,12 +19,22 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const PhaseNumberWrapper = styled.div`
@@ -39,6 +49,11 @@ const PhaseNumberWrapper = styled.div`
   border-radius: 50%;
   background: ${colors.label};
   margin-right: 11px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 11px;
+  `}
 
   &.present {
     background: ${colors.clGreen};
@@ -61,6 +76,10 @@ const HeaderTitleWrapper = styled.div`
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
+
+  ${isRtl`
+    align-items: flex-end;
+  `}
 `;
 
 const HeaderTitle = styled.h2`
@@ -89,6 +108,10 @@ const HeaderSubtitle = styled.div`
   margin: 0;
   padding: 0;
   margin-top: 4px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+ `}
 `;
 
 interface Props {
@@ -139,18 +162,16 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
       selectedPhase?.attributes.start_at,
       'YYYY-MM-DD'
     );
-    const startYear = startMoment.format('YYYY');
     const endMoment = moment(selectedPhase?.attributes.end_at, 'YYYY-MM-DD');
-    const endYear = endMoment.format('YYYY');
     const startDate = new Intl.DateTimeFormat(locale, {
       day: 'numeric',
       month: 'short',
-      year: startYear !== endYear ? '2-digit' : undefined,
+      year: 'numeric',
     }).format(startMoment.toDate());
     const endDate = new Intl.DateTimeFormat(locale, {
       day: 'numeric',
       month: 'short',
-      year: startYear !== endYear ? '2-digit' : undefined,
+      year: 'numeric',
     }).format(endMoment.toDate());
 
     if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
@@ -183,7 +204,7 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
             )}
           </HeaderTitle>
           <HeaderSubtitle className={selectedPhaseStatus || ''}>
-            {startDate} - {endDate} {startYear === endYear && endYear}
+            {startDate} - {endDate}
           </HeaderSubtitle>
         </HeaderTitleWrapper>
         <ScreenReaderOnly>

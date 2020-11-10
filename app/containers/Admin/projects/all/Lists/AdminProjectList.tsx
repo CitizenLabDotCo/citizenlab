@@ -83,26 +83,35 @@ const AdminProjectList = memo<Props>(
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
           >
-            {({ itemsList, handleDragRow, handleDropRow }) =>
-              itemsList.map((item: IAdminPublicationContent, index: number) => {
-                return (
-                  <SortableRow
-                    key={item.id}
-                    id={item.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    lastItem={index === AdminPublicationsList.length - 1}
-                  >
-                    {item.publicationType === 'project' ? (
-                      <ProjectRow publication={item} />
-                    ) : (
-                      <FolderRow publication={item} />
-                    )}
-                  </SortableRow>
-                );
-              })
-            }
+            {({ itemsList, handleDragRow, handleDropRow }) => {
+              return (
+                <>
+                  {itemsList.map(
+                    (item: IAdminPublicationContent, index: number) => {
+                      return (
+                        <SortableRow
+                          key={item.id}
+                          id={item.id}
+                          index={index}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                          lastItem={index === AdminPublicationsList.length - 1}
+                        >
+                          {item.publicationType === 'project' ? (
+                            <ProjectRow
+                              actions={['delete', 'manage']}
+                              publication={item}
+                            />
+                          ) : (
+                            <FolderRow publication={item} />
+                          )}
+                        </SortableRow>
+                      );
+                    }
+                  )}
+                </>
+              );
+            }}
           </SortableList>
         </>
       );
