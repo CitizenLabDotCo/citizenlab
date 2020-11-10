@@ -9,13 +9,16 @@ export function addErrorPayload(errors, fieldName, errorType, payload) {
   const error = errors[fieldName].find(({ error }) => error === errorType);
 
   if (error) {
-    errors = remove(errors, ({ error }) => error === errorType);
+    const transformedErrors = remove(
+      errors,
+      ({ error }) => error === errorType
+    );
 
     const errorsWithPayload = {
-      [fieldName]: [{ ...error, payload: payload }],
+      [fieldName]: [{ ...error, payload }],
     };
 
-    errors = merge(errors, errorsWithPayload);
+    return merge(transformedErrors, errorsWithPayload);
   }
 
   return errors;

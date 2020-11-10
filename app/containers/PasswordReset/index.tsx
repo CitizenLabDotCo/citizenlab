@@ -1,9 +1,9 @@
 import React from 'react';
 import { isString } from 'lodash-es';
-import { Link } from 'react-router';
 
 // router
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 
 // components
 import { Input, Success } from 'cl2-component-library';
@@ -19,8 +19,8 @@ import { CLError } from 'typings';
 import { addErrorPayload } from 'utils/errorUtils';
 
 // i18n
-import { InjectedIntlProps, FormattedMessage } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -226,6 +226,7 @@ class PasswordReset extends React.PureComponent<
               {apiErrors &&
                 Object.keys(apiErrors).map((errorField) => (
                   <Error
+                    key={errorField}
                     apiErrors={apiErrors[errorField]}
                     fieldName={errorField}
                   />
