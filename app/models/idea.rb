@@ -4,12 +4,16 @@ class Idea < ApplicationRecord
   include Moderatable
 
   belongs_to :project, touch: true
+  belongs_to :idea_status, optional: true
+
+  counter_culture :idea_status, touch: true
   counter_culture :project,
-    column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
+    column_name: proc { |idea| idea.publication_status == 'published' ? "ideas_count" : nil },
     column_names: {
       ["ideas.publication_status = ?", 'published'] => 'ideas_count'
     },
     touch: true
+
   counter_culture :project,
     column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
@@ -26,8 +30,6 @@ class Idea < ApplicationRecord
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
-
-  belongs_to :idea_status, optional: true
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
