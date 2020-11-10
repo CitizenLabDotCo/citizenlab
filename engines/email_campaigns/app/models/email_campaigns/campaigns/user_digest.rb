@@ -95,7 +95,9 @@ module EmailCampaigns
 
     def top_ideas
       ti_service = TrendingIdeaService.new
-      top_ideas = IdeaPolicy::Scope.new(nil, Idea).resolve.published
+      top_ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
+        .published
+        .includes(:comments)
 
       truly_trending_ids = ti_service.filter_trending(top_ideas).ids
       top_ideas = ti_service.sort_trending top_ideas.where(id: truly_trending_ids)
@@ -140,7 +142,7 @@ module EmailCampaigns
           }
         },
         top_comments: idea.comments
-          .where(publication_status: 'published')
+          .select{|c| c.publication_status == 'published'}
           .sort_by{|c| -c.children.size}
           .take(N_TOP_COMMENTS).map{ |comment|
             top_comment_payload comment, name_service
