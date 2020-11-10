@@ -80,14 +80,14 @@ const Footer = styled.footer``;
 
 interface Props {
   to: string;
-  imageUrl?: string | null;
+  image: string | null;
   author?: {
     name: string;
     id: string;
   } | null;
   title: JSX.Element | string;
-  body?: JSX.Element | string;
-  footer?: JSX.Element | string;
+  body: JSX.Element | string;
+  footer: JSX.Element | string;
   onClick: (event: MouseEvent<HTMLDivElement>) => void;
   className?: string;
 }
@@ -95,7 +95,7 @@ interface Props {
 export const Card = ({
   to,
   onClick,
-  imageUrl,
+  image,
   title,
   body,
   footer,
@@ -108,18 +108,16 @@ export const Card = ({
       !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
     }`}
   >
-    <ImageWrapper>
-      {imageUrl ? (
-        <Image src={imageUrl} alt="" />
-      ) : (
-        <Image src={placeholderImage} alt="" />
-      )}
-    </ImageWrapper>
+    {image && (
+      <ImageWrapper>
+        <Image src={image} alt="" />
+      </ImageWrapper>
+    )}
 
     <ContentWrapper>
       {typeof title === 'string' ? (
         <Title title={title} className="e2e-card-title">
-          {truncate(title, 60)}
+          {truncate(title, 55)}
         </Title>
       ) : (
         <Title className="e2e-card-title">{title}</Title>
@@ -127,7 +125,7 @@ export const Card = ({
 
       <Body>{body}</Body>
 
-      <Footer>{footer}</Footer>
+      {footer}
     </ContentWrapper>
   </Container>
 );
