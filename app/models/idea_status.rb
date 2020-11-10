@@ -3,6 +3,10 @@ class IdeaStatus < ApplicationRecord
   MINIMUM_REQUIRED_CODES = %w[proposed].freeze
   #  Old codes: viewed under_consideration accepted implemented rejected custom
 
+  acts_as_list column: :ordering, top_of_list: 0
+
+  default_scope -> { order(ordering: :asc) }
+
   has_many :ideas
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
