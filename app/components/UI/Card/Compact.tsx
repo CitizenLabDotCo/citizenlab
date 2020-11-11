@@ -13,12 +13,6 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 
-// utils
-import { truncate } from 'utils/textUtils';
-
-// assets
-import placeholderImage from './placeholder.png';
-
 const Container = styled(Link)`
   width: 100%;
   height: 174px;
@@ -58,15 +52,17 @@ const ContentWrapper = styled.div`
   margin-left: 20px;
 `;
 
-const Title = styled.h3<{ title?: string }>`
+const Header = styled.header`
+  overflow: hidden;
+  margin: 0;
+  margin-bottom: 10px;
+`;
+
+const Title = styled.h3`
   color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.large}px;
   font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
   line-height: normal;
-  margin: 0;
-  margin-bottom: 10px;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -75,8 +71,6 @@ const Title = styled.h3<{ title?: string }>`
 const Body = styled.div`
   flex-grow: 1;
 `;
-
-const Footer = styled.footer``;
 
 interface Props {
   to: string;
@@ -115,7 +109,9 @@ export const Card = ({
     )}
 
     <ContentWrapper>
-      <Title className="e2e-card-title">{title}</Title>
+      <Header className="e2e-card-title">
+        {typeof title === 'string' ? <Title>{title}</Title> : title}
+      </Header>
 
       <Body>{body}</Body>
 
