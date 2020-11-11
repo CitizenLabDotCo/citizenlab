@@ -4,6 +4,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import Card from 'components/UI/Card/Compact';
 import Avatar from 'components/Avatar';
+import { Icon } from 'cl2-component-library';
 import ideaImagePlaceholder from './idea-placeholder.png';
 
 // hooks
@@ -45,6 +46,22 @@ const Body = styled.div`
 const Separator = styled.span`
   display: inline-block;
   margin: 0 4px;
+`;
+
+const CommentsCount = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 20px;
+`;
+
+const CommentIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
+  fill: ${colors.label};
+  margin-right: 6px;
 `;
 
 const Footer = styled.footer`
@@ -108,7 +125,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
                 />
                 <Separator aria-hidden>&bull;</Separator>
               </strong>
-              {truncate(bodyText, ideaTitle.length > 60 ? 40 : 50)}
+              {truncate(bodyText, ideaTitle.length > 60 ? 40 : 70)}
             </Body>
           </BodyWrapper>
         }
@@ -121,6 +138,10 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
               ariaHidden={true}
               showDownvote={votingDescriptor?.downvoting_enabled}
             />
+            <CommentsCount>
+              <CommentIcon name="comments" />
+              {idea.attributes.comments_count}
+            </CommentsCount>
           </Footer>
         }
         {...rest}
