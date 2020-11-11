@@ -4,6 +4,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import Card from 'components/UI/Card/Compact';
 import Avatar from 'components/Avatar';
+import StatusBadge from 'components/StatusBadge';
 import { Icon } from 'cl2-component-library';
 import ideaImagePlaceholder from './idea-placeholder.png';
 
@@ -54,14 +55,14 @@ const CommentsCount = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 20px;
+  margin: 0 20px;
 `;
 
 const CommentIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.label};
-  margin-right: 6px;
+  margin-right: 8px;
 `;
 
 const Footer = styled.footer`
@@ -80,6 +81,8 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       ideaId,
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
+
+    const ideaStatusId = get(idea, 'relationships.idea_status.data.id');
 
     if (isNilOrError(idea)) {
       return null;
@@ -142,6 +145,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
               <CommentIcon name="comments" />
               {idea.attributes.comments_count}
             </CommentsCount>
+            <StatusBadge statusId={ideaStatusId} />
           </Footer>
         }
         {...rest}
