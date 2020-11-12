@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency "ice_cube"
   s.add_dependency 'mailgun-ruby', '~>1.1.6'
   s.add_dependency "liquid", "~> 4.0"
-  s.add_dependency "mjml-rails", "~> 4.4"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"
