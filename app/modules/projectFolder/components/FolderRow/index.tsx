@@ -9,8 +9,8 @@ import {
   RowTitle,
   RowButton,
   ActionsRowContainer,
-} from './StyledComponents';
-import DeleteFolderButton from './DeletePublicationButton';
+} from 'containers/Admin/projects/components/StyledComponents';
+import DeleteFolderButton from 'containers/Admin/projects/components/DeletePublicationButton';
 
 // styles
 import styled from 'styled-components';
