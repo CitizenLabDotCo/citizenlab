@@ -10,7 +10,7 @@ import { createElement } from 'react';
 import Loadable from 'react-loadable';
 
 interface Outlets {
-  [key: string]: Array<any>;
+  [key: string]: any[];
 }
 
 interface RouteConfiguration {
@@ -23,18 +23,18 @@ interface RouteConfiguration {
 }
 
 interface Routes {
-  citizen: Array<RouteConfiguration>;
-  admin: Array<RouteConfiguration>;
+  citizen: RouteConfiguration[];
+  admin: RouteConfiguration[];
 }
 
 export interface ModuleConfiguration {
   routes: Routes;
 }
 
-type Modules = Array<{
+type Modules = {
   configuration: ModuleConfiguration;
   enabled: boolean;
-}>;
+}[];
 
 export const RouteTypes = {
   CITIZEN: 'citizen',
@@ -74,7 +74,7 @@ const parseModuleRoutes = (
 
 const parseOutlets = (outlets: Outlets = {}) =>
   Object.entries(outlets).reduce(
-    (acc, [id, definitions]: [string, Array<any>]) => ({
+    (acc, [id, definitions]: [string, any[]]) => ({
       ...acc,
       [id]: definitions.map((definition) => createElement(definition)),
     }),
