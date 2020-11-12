@@ -5,23 +5,41 @@ import {
 
 import { mergeWith } from 'lodash-es';
 
-import { createElement, isValidElement } from 'react';
+import { createElement } from 'react';
 
 import Loadable from 'react-loadable';
 
-export const RouteTypes = {
-  CITIZEN: 'citizen',
-  ADMIN: 'admin',
-};
+interface Outlets {
+  [key: string]: Array<any>;
+}
 
 interface RouteConfiguration {
-  path: string;
+  path?: string;
   name: string;
   container: () => Promise<any>;
   type?: string;
   indexRoute?: RouteConfiguration;
   childRoutes?: RouteConfiguration[];
 }
+
+interface Routes {
+  citizen: Array<RouteConfiguration>;
+  admin: Array<RouteConfiguration>;
+}
+
+export interface ModuleConfiguration {
+  routes: Routes;
+}
+
+type Modules = Array<{
+  configuration: ModuleConfiguration;
+  enabled: boolean;
+}>;
+
+export const RouteTypes = {
+  CITIZEN: 'citizen',
+  ADMIN: 'admin',
+};
 
 const convertConfigurationToRoute = ({
   path,
@@ -54,24 +72,25 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-const parseOutlets = (outlets = {}) =>
+const parseOutlets = (outlets: Outlets = {}) =>
   Object.entries(outlets).reduce(
-    (acc, [id, definitions]: [string, any]) => ({
+    (acc, [id, definitions]: [string, Array<any>]) => ({
       ...acc,
-      [id]: definitions.map((definition) => {
-        if (isValidElement(definition)) return definition;
-        return createElement(definition);
-      }),
+      [id]: definitions.map((definition) => createElement(definition)),
     }),
     {}
   );
 
-export const loadModules = (modules, outlets) => {
+export const loadModules = (modules: Modules, outlets: Outlets) => {
   const enabledModuleConfigurations = modules
     .filter((module) => module.enabled)
     .map((module) => module.configuration);
 
-  const mergedRoutes = mergeWith(
+  const mergedRoutes: Routes = mergeWith(
+    {
+      citizen: [],
+      admin: [],
+    },
     ...enabledModuleConfigurations.map(({ routes }) => routes),
     (objValue, srcValue) => objValue.concat(srcValue)
   );
