@@ -91,13 +91,16 @@ class Streams {
     this.streams[authApiEndpoint].observer.next(authUser);
 
     const promises: Promise<any>[] = [];
+    const promisesToAwait: Promise<any>[] = [];
 
     Object.keys(this.streams).forEach((streamId) => {
       if (
         streamId === authApiEndpoint ||
         streamId === currentTenantApiEndpoint ||
-        this.isActiveStream(streamId)
+        streamId === '/web_api/v1/users/custom_fields/schema'
       ) {
+        promisesToAwait.push(this.streams[streamId].fetch());
+      } else if (this.isActiveStream(streamId)) {
         promises.push(this.streams[streamId].fetch());
       } else {
         this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
@@ -105,7 +108,8 @@ class Streams {
     });
 
     try {
-      await Promise.all(promises);
+      Promise.all(promises);
+      await Promise.all(promisesToAwait);
     } finally {
       return true;
     }
@@ -144,9 +148,9 @@ class Streams {
     const refCount = cloneDeep(
       this.streams[streamId].observable.source['_refCount']
     );
-    const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
+    const isCacheStream = cloneDeep(this.streams[streamId].cacheStream);
 
-    if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+    if ((isCacheStream && refCount > 1) || (!isCacheStream && refCount > 0)) {
       return true;
     }
 
