@@ -25,6 +25,12 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
 # packages to ensure that we can compile assets (nodejs) and
 # communicate with PostgreSQL (libpq-dev).
 
+RUN apt-get -y install curl
+RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g mjml@4.4.1
+# Install MJML parser required by email engine.
+
 ENV INSTALL_PATH /cl2_back
 # The name of the application is my_dockerized_app and while there
 # is no standard on where your project should live inside of the Docker
@@ -68,13 +74,6 @@ COPY engines ./engines
 # This is an advanced concept but it means that we'll be able to
 # cache all of our gems so that if we make an application code
 # change, it won't re-run bundle install unless a gem changed.
-
-#TODO? Get this in emails engine?
-RUN apt-get update
-RUN apt-get -y install curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
-RUN apt-get -y install nodejs
-RUN npm install -g mjml@4.7.1
 
 RUN bundle install
 # We want binstubs to be available so we can directly call sidekiq and

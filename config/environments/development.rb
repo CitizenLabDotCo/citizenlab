@@ -43,7 +43,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # TODO? Move to email engine.
+  # Previewing mails from the email engine.
   config.action_mailer.preview_path = "#{Rails.root}/engines/email_campaigns/spec/mailers/previews"
 
 
