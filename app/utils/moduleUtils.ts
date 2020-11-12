@@ -3,6 +3,8 @@ import {
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
 
+import { mergeWith } from 'lodash-es';
+
 import { createElement, isValidElement } from 'react';
 
 import Loadable from 'react-loadable';
@@ -12,6 +14,15 @@ export const RouteTypes = {
   ADMIN: 'admin',
 };
 
+interface RouteConfiguration {
+  path: string;
+  name: string;
+  container: () => Promise<any>;
+  type?: string;
+  indexRoute?: RouteConfiguration;
+  childRoutes?: RouteConfiguration[];
+}
+
 const convertConfigurationToRoute = ({
   path,
   name,
@@ -19,7 +30,7 @@ const convertConfigurationToRoute = ({
   type = RouteTypes.CITIZEN,
   indexRoute,
   childRoutes,
-}) => ({
+}: RouteConfiguration) => ({
   path,
   name,
   component: Loadable({
@@ -28,28 +39,27 @@ const convertConfigurationToRoute = ({
       type === RouteTypes.ADMIN ? LoadableLoadingAdmin : LoadableLoadingCitizen,
     delay: 500,
   }),
-  indexRoute: indexRoute
-    ? convertConfigurationToRoute({ ...indexRoute, type })
-    : undefined,
+  indexRoute:
+    indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
   childRoutes:
-    childRoutes && childRoutes.length > 0
-      ? childRoutes.map((childRoute) =>
-          convertConfigurationToRoute({ ...childRoute, type })
-        )
-      : undefined,
+    childRoutes &&
+    childRoutes.length > 0 &&
+    childRoutes.map((childRoute) =>
+      convertConfigurationToRoute({ ...childRoute, type })
+    ),
 });
 
-const parseModuleRoutes = (routes, type = RouteTypes.CITIZEN) =>
-  routes.map((route) => convertConfigurationToRoute({ ...route, type }));
+const parseModuleRoutes = (
+  routes: RouteConfiguration[],
+  type = RouteTypes.CITIZEN
+) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
 const parseOutlets = (outlets = {}) =>
   Object.entries(outlets).reduce(
     (acc, [id, definitions]: [string, any]) => ({
       ...acc,
       [id]: definitions.map((definition) => {
-        if (isValidElement(definition)) {
-          return definition;
-        }
+        if (isValidElement(definition)) return definition;
         return createElement(definition);
       }),
     }),
@@ -61,20 +71,9 @@ export const loadModules = (modules, outlets) => {
     .filter((module) => module.enabled)
     .map((module) => module.configuration);
 
-  const mergedRoutes = enabledModuleConfigurations.reduce(
-    (mergedConfiguration, configuration) => {
-      return {
-        citizen: [
-          ...mergedConfiguration.citizen,
-          ...configuration.routes.citizen,
-        ],
-        admin: [...mergedConfiguration.admin, ...configuration.routes.admin],
-      };
-    },
-    {
-      citizen: [],
-      admin: [],
-    }
+  const mergedRoutes = mergeWith(
+    ...enabledModuleConfigurations.map(({ routes }) => routes),
+    (objValue, srcValue) => objValue.concat(srcValue)
   );
 
   return {
