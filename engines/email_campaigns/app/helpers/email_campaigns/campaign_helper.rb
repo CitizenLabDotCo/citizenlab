@@ -12,7 +12,7 @@ module EmailCampaigns
     end
 
     def localize multiloc
-      multiloc[@locale]
+      @multiloc_service.t multiloc, @user
     end
 
   end
