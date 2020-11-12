@@ -63,9 +63,10 @@ const Title = styled.h3`
   font-size: ${fontSizes.large}px;
   font-weight: 500;
   line-height: normal;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const Body = styled.div`
@@ -110,7 +111,11 @@ export const Card = ({
 
     <ContentWrapper>
       <Header className="e2e-card-title">
-        {typeof title === 'string' ? <Title>{title}</Title> : title}
+        {typeof title === 'string' ? (
+          <Title title={title}>{title}</Title>
+        ) : (
+          title
+        )}
       </Header>
 
       <Body>{body}</Body>
