@@ -28,6 +28,7 @@ import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
+import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
@@ -97,7 +98,7 @@ class Streams {
       if (
         streamId === authApiEndpoint ||
         streamId === currentTenantApiEndpoint ||
-        streamId === '/web_api/v1/users/custom_fields/schema'
+        streamId === userCustomFieldsSchemaApiEndpoint
       ) {
         promisesToAwait.push(this.streams[streamId].fetch());
       } else if (this.isActiveStream(streamId)) {
