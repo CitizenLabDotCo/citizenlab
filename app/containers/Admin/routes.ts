@@ -25,7 +25,6 @@ import { currentTenantStream } from 'services/tenant';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
-import { parseModuleRoutes, RouteTypes } from 'utils/moduleUtils';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -147,6 +146,6 @@ export default () => ({
         delay: 500,
       }),
     },
-    ...parseModuleRoutes(moduleConfiguration.routes.admin, RouteTypes.ADMIN),
+    ...moduleConfiguration.routes.admin,
   ],
 });
