@@ -8,6 +8,10 @@ import StatusBadge from 'components/StatusBadge';
 import { Icon } from 'cl2-component-library';
 import ideaImagePlaceholder from './idea-placeholder.png';
 
+// types
+import { ParticipationMethod } from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
+
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
@@ -20,7 +24,6 @@ import { FormattedRelative } from 'react-intl';
 import { get } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-import { truncate } from 'utils/textUtils';
 
 // styles
 import styled from 'styled-components';
@@ -39,9 +42,10 @@ const StyledAvatar = styled(Avatar)`
 const Body = styled.div`
   font-size: ${fontSizes.small}px;
   color: ${colors.label};
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const Separator = styled.span`
@@ -55,7 +59,7 @@ const CommentsCount = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 20px;
+  margin: 0 22px;
 `;
 
 const CommentIcon = styled(Icon)`
@@ -71,6 +75,9 @@ const Footer = styled.footer`
 
 interface Props {
   ideaId: string;
+  participationMethod?: ParticipationMethod | null;
+  participationContextId?: string | null;
+  participationContextType?: IParticipationContextType | null;
 }
 
 const CompactIdeaCard = memo<Props & InjectedLocalized>(
@@ -110,7 +117,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     return (
       <Card
         onClick={onCardClick}
-        title={truncate(ideaTitle, 70)}
+        title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
         image={
           !isNilOrError(ideaImage)
@@ -128,7 +135,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
                 />
                 <Separator aria-hidden>&bull;</Separator>
               </strong>
-              {truncate(bodyText, ideaTitle.length > 60 ? 40 : 70)}
+              {bodyText}
             </Body>
           </BodyWrapper>
         }
