@@ -114,7 +114,7 @@ module EmailCampaigns
             res[user_id] += [project]
           end
       end
-      res.each.each(&:uniq!)
+      res.each(&:uniq!)
       res
     end
 

@@ -72,7 +72,7 @@ namespace :email_campaigns do
         end
       end
     end
-    logs.each{|l| puts l}
+    logs.each{|l| Rails.logger.info l}
   end
 
 end
