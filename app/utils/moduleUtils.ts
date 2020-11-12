@@ -39,10 +39,10 @@ const convertConfigurationToRoute = ({
       : undefined,
 });
 
-export const parseModuleRoutes = (routes, type = RouteTypes.CITIZEN) =>
+const parseModuleRoutes = (routes, type = RouteTypes.CITIZEN) =>
   routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-export const parseOutlets = (outlets = {}) =>
+const parseOutlets = (outlets = {}) =>
   Object.entries(outlets).reduce(
     (acc, [id, definitions]: [string, any]) => ({
       ...acc,
@@ -55,7 +55,6 @@ export const parseOutlets = (outlets = {}) =>
     }),
     {}
   );
-// routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
 export const loadModules = (modules, outlets) => {
   const enabledModuleConfigurations = modules
@@ -79,7 +78,10 @@ export const loadModules = (modules, outlets) => {
   );
 
   return {
-    routes: mergedRoutes,
-    outlets,
+    routes: {
+      citizen: parseModuleRoutes(mergedRoutes.citizen),
+      admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
+    },
+    outlets: parseOutlets(outlets),
   };
 };
