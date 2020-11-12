@@ -135,7 +135,7 @@ gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-
 gem 'rack-attack', '~> 6'
 
 gem 'admin_api', path: 'engines/admin_api'
-gem "mjml-rails", "~> 4.4" # here because it didnt work in engines gemspec (needed for global initializer)
+gem "mjml-rails", "~> 4.4"
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'machine_translations', path: 'engines/machine_translations'
 gem 'nlp', path: 'engines/nlp'
