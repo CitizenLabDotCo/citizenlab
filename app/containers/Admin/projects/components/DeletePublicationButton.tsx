@@ -8,7 +8,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { deleteProject } from 'services/projects';
-import { deleteProjectFolder } from 'services/projectFolders';
+import { deleteProjectFolder } from 'modules/projectFolder/services/projectFolders';
 
 // components
 import { RowButton } from './StyledComponents';
