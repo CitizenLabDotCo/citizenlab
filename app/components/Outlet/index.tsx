@@ -13,8 +13,9 @@ const Outlet = ({ id, ...props }) => {
 
   return (
     <>
-      {wrapWithArray(outlet).map((element) =>
+      {wrapWithArray(outlet).map((element, index) =>
         cloneElement(element, {
+          key: `${id}_${index}`,
           ...element.props,
           ...props,
         })
