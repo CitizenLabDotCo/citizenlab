@@ -59,7 +59,7 @@ namespace :email_campaigns do
   desc "Update all user digest schedules"
   task :update_user_digest_schedules => :environment do |t, args|
     logs = []
-    Tenant.all.each do |tenant|
+    Tenant.find_each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         camp = EmailCampaigns::Campaigns::UserDigest.first
         if camp

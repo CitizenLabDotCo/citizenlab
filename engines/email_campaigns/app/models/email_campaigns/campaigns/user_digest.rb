@@ -142,7 +142,7 @@ module EmailCampaigns
           }
         },
         top_comments: idea.comments
-          .select{|c| c.publication_status == 'published'}
+          .select{|c| c.published?}
           .sort_by{|c| -c.children.size}
           .take(N_TOP_COMMENTS).map{ |comment|
             top_comment_payload comment, name_service
