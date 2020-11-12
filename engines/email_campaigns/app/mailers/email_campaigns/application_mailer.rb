@@ -41,7 +41,7 @@ module EmailCampaigns
     protected
 
     def subject
-      ''
+      raise NotImplementedError 
     end
   end
 end
