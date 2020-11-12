@@ -29,9 +29,10 @@
     </mj-section>
 
     <!-- CTA button -->
-    <% @cta[:href] = @url_service.home_url(tenant: @tenant, locale: @locale) %>
-    <% @cta[:message] = formatMessage('cta_join_platform') %>
-    <%= render partial: "application/cta_button" %>
+    <%= render partial: "application/cta_button", locals: {
+      href: @url_service.home_url(tenant: @tenant, locale: @locale),
+      message: formatMessage('cta_join_platform')
+    } %>
 
     <%= render partial: "application/footer" %>
 
