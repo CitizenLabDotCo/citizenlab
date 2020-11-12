@@ -7,7 +7,7 @@ import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import { Icon } from 'cl2-component-library';
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const Container = styled.div`
@@ -33,6 +33,10 @@ const ContentContainerInner = styled.div`
   display: flex;
   align-items: center;
 
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
   ${media.smallerThanMinTablet`
     max-width: auto;
     flex-direction: column;
@@ -50,6 +54,15 @@ const Left = styled.div`
   ${media.smallerThanMinTablet`
     margin-right: 0px;
     margin-bottom: 20px;
+  `}
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 40px;
+
+    ${media.smallerThanMinTablet`
+        margin-left: 0px;
+    `}
   `}
 `;
 
@@ -85,6 +98,10 @@ const StyledLink = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const PreferencesButton = styled(Button)`
@@ -93,6 +110,15 @@ const PreferencesButton = styled(Button)`
   ${media.smallerThanMinTablet`
     margin-right: 0px;
     order: 2;
+  `}
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+
+    ${media.smallerThanMinTablet`
+        margin-left: 0px;
+    `}
   `}
 `;
 

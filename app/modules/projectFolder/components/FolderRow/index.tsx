@@ -2,13 +2,15 @@ import React, { memo, useState } from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
+import Error from 'components/UI/Error';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
   ActionsRowContainer,
-} from 'containers/Admin/projects/components/StyledComponents';
+} from './StyledComponents';
+import DeleteFolderButton from './DeletePublicationButton';
 
 // styles
 import styled from 'styled-components';
@@ -17,7 +19,11 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+// services
+import { isAdmin } from 'services/permissions/roles';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -97,11 +103,18 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const FolderRow = memo<Props>(({ publication, adminPublications }) => {
+  const authUser = useAuthUser();
+
   const hasProjects =
     !isNilOrError(adminPublications) &&
     !!adminPublications.list?.length &&
     adminPublications.list.length > 0;
+  const userCanDeletePublication = isAdmin(authUser);
+
   const [folderOpen, setFolderOpen] = useState(false);
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+  const [folderDeletionError, setFolderDeletionError] = useState<string>('');
+
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
   return (
@@ -127,6 +140,14 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
           />
         </RowContentInner>
         <ActionsRowContainer>
+          {userCanDeletePublication && (
+            <DeleteFolderButton
+              publication={publication}
+              processing={isBeingDeleted}
+              setDeletionError={setFolderDeletionError}
+              setDeleteIsProcessing={setIsBeingDeleted}
+            />
+          )}
           <RowButton
             className={`e2e-admin-edit-project ${
               publication.attributes.publication_title_multiloc['en-GB'] || ''
@@ -134,11 +155,14 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
             linkTo={`/admin/projects/folders/${publication.publicationId}`}
             buttonStyle="secondary"
             icon="edit"
+            disabled={isBeingDeleted}
           >
             <FormattedMessage {...messages.manageButtonLabel} />
           </RowButton>
         </ActionsRowContainer>
       </FolderRowContent>
+
+      {folderDeletionError && <Error text={folderDeletionError} />}
 
       {hasProjects && folderOpen && (
         <ProjectRows>
@@ -146,6 +170,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
             <InFolderProjectRow
               publication={publication}
               key={publication.id}
+              actions={isAdmin(authUser) ? ['delete', 'manage'] : ['manage']}
             />
           ))}
         </ProjectRows>

@@ -6,13 +6,17 @@ import AdminBadge from './AdminBadge';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Left = styled.div`

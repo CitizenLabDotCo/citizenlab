@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { Icon, IconNames } from 'cl2-component-library';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { isPage } from 'utils/helperUtils';
 
 const Container = styled.div`
@@ -11,6 +11,10 @@ const Container = styled.div`
   padding: 14px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.clBlueDarkBg};
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.adminPage {
     padding: 12px;
@@ -25,6 +29,11 @@ const StyledIcon = styled(Icon)`
   padding: 0px;
   margin: 0px;
   margin-right: 10px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+  `}
 `;
 
 const Text = styled.div`

@@ -177,6 +177,9 @@ const ProjectFolderInfo = ({
                   twitterMessage={formatMessage(messages.twitterMessage, {
                     title,
                   })}
+                  whatsAppMessage={formatMessage(messages.whatsAppMessage, {
+                    projectFolderName: title,
+                  })}
                   utmParams={utmParams}
                 />
               );

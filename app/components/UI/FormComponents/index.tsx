@@ -6,6 +6,7 @@ import {
   invisibleA11yText,
   media,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
@@ -77,6 +78,10 @@ export const FormLabelStyled = styled.label`
   &.invisible {
     ${invisibleA11yText}
   }
+
+  ${isRtl`
+    text-align: right;
+`}
 `;
 
 export const FormSubtextStyled = styled.div`

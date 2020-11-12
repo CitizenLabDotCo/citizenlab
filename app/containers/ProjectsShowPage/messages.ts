@@ -198,6 +198,11 @@ export default defineMessages({
     id: 'app.containers.Projects.twitterMessage',
     defaultMessage: '{title}: Share your ideas on',
   },
+  whatsAppMessage: {
+    id: 'app.containers.Projects.whatsAppMessage',
+    defaultMessage:
+      '{projectName} | from the participation platform of {orgName}',
+  },
   aboutThisProject: {
     id: 'app.containers.Projects.aboutThisProject',
     defaultMessage: 'About this project',
