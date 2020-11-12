@@ -76,7 +76,6 @@ PATH
       kaminari (~> 1.2)
       liquid (~> 4.0)
       mailgun-ruby (~> 1.1.6)
-      mjml-rails (~> 4.4)
       pundit (~> 2.0)
       rails (~> 6.0.0)
 
