@@ -12,7 +12,7 @@ import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
@@ -84,6 +84,10 @@ const Author = styled.span`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
+
+  ${isRtl`
+    text-align: left;
+  `}
 `;
 
 const DatesPostedEdited = styled.span`
@@ -97,6 +101,13 @@ const DatesPostedEdited = styled.span`
     flex-direction: column;
     align-items: flex-start;
   `}
+
+  ${isRtl`
+    justify-content: flex-end;
+    ${media.smallerThanMinTablet`
+        align-items: flex-end;
+    `}
+ `}
 `;
 
 const DatePosted = styled.span``;
@@ -125,6 +136,15 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
     top: 5px;
     right: 5px;
   `}
+
+  ${isRtl`
+    right: auto;
+    left: 15px;
+
+    ${media.smallerThanMinTablet`
+        left: 5px;
+    `}
+`}
 `;
 
 interface DataProps {

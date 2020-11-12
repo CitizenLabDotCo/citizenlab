@@ -50,6 +50,15 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
+  userNotFound: {
+    id: 'app.containers.UsersShowPage.userNotFound',
+    defaultMessage:
+      "We couldn't find this user's profile. If it was here before, it may have been deleted.",
+  },
+  goBackToPreviousPage: {
+    id: 'app.containers.UsersShowPage.goBackToPreviousPage',
+    defaultMessage: 'Go back to the previous page',
+  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',

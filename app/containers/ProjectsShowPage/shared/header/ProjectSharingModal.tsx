@@ -30,7 +30,7 @@ interface Props {
 }
 
 const ProjectSharingModal = memo<Props & InjectedIntlProps>(
-  ({ projectId, className, opened, close, intl }) => {
+  ({ projectId, className, opened, close, intl: { formatMessage } }) => {
     const authUser = useAuthUser();
     const project = useProject({ projectId });
 
@@ -69,12 +69,15 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                       <Sharing
                         context="project"
                         url={projectUrl}
-                        twitterMessage={intl.formatMessage(
-                          messages.twitterMessage,
+                        whatsAppMessage={formatMessage(
+                          messages.whatsAppMessage,
                           {
-                            title,
+                            projectName: title,
                           }
                         )}
+                        twitterMessage={formatMessage(messages.twitterMessage, {
+                          title,
+                        })}
                         utmParams={utmParams}
                         layout={2}
                       />
