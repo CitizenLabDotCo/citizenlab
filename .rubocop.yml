@@ -11,7 +11,7 @@ AllCops:
 Metrics/BlockLength:
   Enabled: true
   Exclude:
-    - 'spec/**/*'
+    - '**/spec/**/*'
     - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
