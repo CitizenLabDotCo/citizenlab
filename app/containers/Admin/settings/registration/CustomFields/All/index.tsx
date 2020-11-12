@@ -34,6 +34,9 @@ import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
 } from 'resources/GetUserCustomFields';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 const Buttons = styled.div`
   display: flex;
   align-items: center;
@@ -241,7 +244,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                       )}
                     </TextCellContent>
                     {field.attributes.required && (
-                      <StyledBadge className="inverse">
+                      <StyledBadge className="inverse" color={colors.clRed}>
                         <FormattedMessage {...messages.required} />
                       </StyledBadge>
                     )}
