@@ -225,30 +225,15 @@ namespace :setup_and_support do
     end
   end
 
-  desc "Add JSON map layer"
-  task :add_map_layer, [:host,:project_slug,:json_url,:map_title,:default_enabled] => [:environment] do |t, args|
+  desc "Add map layer"
+  task :add_map_legend, [:host,:project_slug,:legend_title,:color] => [:environment] do |t, args|
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       project = Project.find_by slug: args[:project_slug]
       config = project.map_config || Maps::MapConfig.create!(project: project)
-      config.layers.create!(
-        title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:map_title]},
-        geojson: JSON.parse(open(args[:json_url]).read),
-        default_enabled: args[:default_enabled].blank? || (args[:default_enabled] == 'true')
+      config.legend_items.create!(
+        title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:legend_title]},
+        color: args[:color]
         )
-    end
-  end
-
-  desc "Change the map center of a project"
-  task :change_map_center, [:host,:project_slug,:latitude,:longitude,:zoom_level] => [:environment] do |t, args|
-    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
-      project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || Maps::MapConfig.create!(project: project)
-      config.center_geojson = {
-          "coordinates" => [args[:longitude].to_f, args[:latitude].to_f],
-          "type" => "Point"
-        }
-      config.zoom_level = args[:zoom_level].to_i
-      config.save!
     end
   end
 

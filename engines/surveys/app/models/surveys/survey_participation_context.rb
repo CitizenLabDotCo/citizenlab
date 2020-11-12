@@ -6,7 +6,7 @@ module Surveys::SurveyParticipationContext
   included do
     has_many :survey_responses, class_name: 'Surveys::Response', as: :participation_context, dependent: :destroy
 
-    with_options if: :survey?, unless: :is_timeline_project? do |survey|
+    with_options if: :survey?, unless: :timeline_project? do |survey|
       survey.validates :survey_embed_url, presence: true
       survey.validates :survey_service, presence: true, inclusion: {in: SURVEY_SERVICES}
       survey.validates :survey_embed_url, if: [:survey?, :typeform?], format: {

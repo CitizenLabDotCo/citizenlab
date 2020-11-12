@@ -147,6 +147,10 @@ class InvitesService
       end
       hash.delete('language')
 
+      if hash['send_invite_email'].present?
+        hash['send_invite_email'] = to_boolean(hash['send_invite_email'])
+      end
+
       coerce_custom_field_types(hash)
     end
   rescue Exception => e
@@ -265,7 +269,7 @@ class InvitesService
       invitee: invitee,
       inviter: inviter,
       invite_text: params["invite_text"] || default_params["invite_text"],
-      send_invite_email: params[:send_invite_email].nil? ? true : params[:send_invite_email]
+      send_invite_email: params["send_invite_email"].nil? ? true  : params["send_invite_email"]
     )
   end
 

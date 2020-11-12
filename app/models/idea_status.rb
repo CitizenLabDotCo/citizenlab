@@ -1,5 +1,4 @@
 class IdeaStatus < ApplicationRecord
-
   CODES = %w(proposed viewed under_consideration accepted implemented rejected custom)
 
   has_many :ideas, dependent: :nullify
