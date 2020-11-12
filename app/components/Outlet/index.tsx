@@ -1,5 +1,4 @@
-import React from 'react';
-import { cloneElement } from 'react';
+import React, { cloneElement } from 'react';
 import useOutlet from 'hooks/useOutlet';
 
 const wrapWithArray = (item) => (Array.isArray(item) ? item : [item]);
