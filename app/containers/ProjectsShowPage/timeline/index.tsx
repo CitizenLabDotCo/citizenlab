@@ -17,6 +17,7 @@ import PhaseNavigation from './PhaseNavigation';
 import {
   SectionContainer,
   ProjectPageSectionTitle,
+  maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -148,7 +149,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         <Container className={`${className || ''} e2e-project-process-page`}>
           <StyledSectionContainer>
             <div>
-              <ContentContainer>
+              <ContentContainer maxWidth={maxPageWidth}>
                 {smallerThanSmallTablet && (
                   <Header>
                     <StyledProjectPageSectionTitle>
@@ -176,7 +177,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
               </ContentContainer>
             </div>
             <div>
-              <ContentContainer>
+              <ContentContainer maxWidth={maxPageWidth}>
                 <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
                 <PhaseVolunteering
                   projectId={project.id}
@@ -189,7 +190,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
               participationMethod === 'budgeting') &&
               selectedPhaseId && (
                 <div>
-                  <ContentContainer>
+                  <ContentContainer maxWidth={maxPageWidth}>
                     <PhaseIdeas
                       projectId={project.id}
                       phaseId={selectedPhaseId}

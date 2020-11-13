@@ -11,6 +11,7 @@ import ContentContainer from 'components/ContentContainer';
 import {
   SectionContainer,
   ProjectPageSectionTitle,
+  maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 
 // i18n
@@ -48,7 +49,7 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
     if (upcomingEvents && upcomingEvents.length > 0) {
       return (
         <Container id="project-events" className={className || ''}>
-          <ContentContainer>
+          <ContentContainer maxWidth={maxPageWidth}>
             <SectionContainer>
               <ProjectPageSectionTitle>
                 <FormattedMessage {...messages.upcomingEvents} />
