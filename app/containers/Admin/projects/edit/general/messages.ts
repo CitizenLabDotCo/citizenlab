@@ -13,16 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTitleErrorMessage',
     defaultMessage: 'Please enter a project title',
   },
-  deleteProjectConfirmation: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectConfirmation',
-    defaultMessage:
-      'Are you sure you want to delete this project? This cannot be undone.',
-  },
-  deleteProjectError: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
-    defaultMessage:
-      'There was an error deleting this project, please try again later.',
-  },
   statusLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
     defaultMessage: 'Publication status',
@@ -123,19 +113,6 @@ export default defineMessages({
     defaultMessage:
       'Files should not be larger than 50Mb. Added files will be shown on the project information page.',
   },
-  deleteProjectLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
-    defaultMessage: 'Remove this project',
-  },
-  deleteProjectLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabelTooltip',
-    defaultMessage:
-      'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
-  },
-  deleteProjectButton: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
-    defaultMessage: 'Remove',
-  },
   saveProject: {
     id: 'app.containers.AdminPage.ProjectEdit.saveProject',
     defaultMessage: 'Save',
@@ -165,5 +142,32 @@ export default defineMessages({
   projectName: {
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
     defaultMessage: 'Project name',
+  },
+  projectUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectUrl',
+    defaultMessage: 'Project URL',
+  },
+  urlSlugLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugLabel',
+    defaultMessage: 'Project slug',
+  },
+  urlSlugTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugTooltip',
+    defaultMessage:
+      "You can specify the last part of your project page's URL (called the slug). For example, the current project's URL is {currentProjectURL}, where {currentProjectSlug} is the slug.",
+  },
+  urlSlugBrokenLinkWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.urlSlugBrokenLinkWarning',
+    defaultMessage:
+      'If you change the project URL, links to the project page using the old URL will no longer work.',
+  },
+  regexError: {
+    id: 'app.containers.AdminPage.ProjectEdit.regexError',
+    defaultMessage:
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
+  },
+  resultingURL: {
+    id: 'app.containers.AdminPage.ProjectEdit.resultingURL',
+    defaultMessage: 'Resulting project URL',
   },
 });

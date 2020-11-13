@@ -14,7 +14,7 @@ import useTenant from 'hooks/useTenant';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
-import useWindowSize from 'hooks/useWindowSize';
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -22,7 +22,7 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 // components
 import { Icon } from 'cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
-import ProjectActionBar from './ProjectActionBar';
+import StickyProjectActionBar from './StickyProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
@@ -35,7 +35,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 const Container = styled.div`
@@ -82,6 +82,11 @@ const ListItemIcon = styled(Icon)`
   fill: ${colors.label};
   margin-right: 14px;
 
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 14px;
+  `}
+
   &.timeline {
     flex: 0 0 22px;
     width: 22px;
@@ -109,6 +114,8 @@ const ListItemButton = styled.button`
   }
 `;
 
+const About = styled.div``;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -119,12 +126,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
-  const { windowWidth } = useWindowSize();
+  const authUser = useAuthUser();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
-
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
   useEffect(() => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
@@ -191,108 +196,104 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
-        <ProjectActionBar projectId={projectId} />
-
-        {smallerThanLargeTablet ? (
-          <ProjectActionButtons projectId={projectId} />
-        ) : (
-          <>
-            <Title>
-              <FormattedMessage {...messages.about} />
-            </Title>
-            <List>
-              {projectType === 'timeline' &&
-                lastPhase &&
-                pastPresentOrFuture([
-                  lastPhase.attributes.start_at,
-                  lastPhase.attributes.end_at,
-                ]) === 'past' && (
-                  <ListItem id="e2e-project-sidebar-enddate">
-                    <ListItemIcon ariaHidden name="finish_flag" />
-                    <FormattedMessage
-                      {...messages.endedOn}
-                      values={{
-                        date: moment(lastPhase.attributes.end_at).format('ll'),
-                      }}
-                    />
-                  </ListItem>
-                )}
-              {isNumber(projectParticipantsCount) &&
-                projectParticipantsCount > 0 && (
-                  <ListItem id="e2e-project-sidebar-participants-count">
-                    <ListItemIcon ariaHidden name="person" />
-                    <FormattedMessage
-                      {...messages.xParticipants}
-                      values={{ participantsCount: projectParticipantsCount }}
-                    />
-                  </ListItem>
-                )}
-              {projectType === 'timeline' &&
-                !isNilOrError(phases) &&
-                phases.length > 1 && (
-                  <ListItem id="e2e-project-sidebar-phases-count">
-                    <ListItemIcon
-                      ariaHidden
-                      name="timeline"
-                      className="timeline"
-                    />
-                    <FormattedMessage
-                      {...messages.xPhases}
-                      values={{ phasesCount: phases.length }}
-                    />
-                  </ListItem>
-                )}
-              {((projectType === 'continuous' &&
-                projectParticipationMethod === 'ideation') ||
-                currentPhaseParticipationMethod === 'ideation') &&
-                isNumber(ideasCount) && (
-                  <ListItem>
-                    <ListItemIcon ariaHidden name="idea-filled" />
-                    {project.attributes.ideas_count > 0 ? (
-                      <ListItemButton
-                        id="e2e-project-sidebar-ideas-count"
-                        onClick={scrollTo('project-ideas')}
-                      >
-                        <FormattedMessage
-                          {...(projectType === 'continuous'
-                            ? messages.xIdeas
-                            : messages.xIdeasInCurrentPhase)}
-                          values={{ ideasCount }}
-                        />
-                      </ListItemButton>
-                    ) : (
-                      <FormattedMessage {...messages.noIdeasYet} />
-                    )}
-                  </ListItem>
-                )}
-              {((projectType === 'continuous' &&
-                projectParticipationMethod === 'budgeting') ||
-                currentPhase?.attributes.participation_method ===
-                  'budgeting') &&
-                totalBudget > 0 && (
-                  <ListItem>
-                    <ListItemIcon ariaHidden name="moneybag" />
-                    <FormattedMessage
-                      {...messages.budget}
-                      values={{
-                        amount: (
-                          <FormattedNumber
-                            value={totalBudget}
-                            style="currency"
-                            currency={currency}
-                            minimumFractionDigits={0}
-                            maximumFractionDigits={0}
-                          />
-                        ),
-                      }}
-                    />
-                  </ListItem>
-                )}
-              {((projectType === 'continuous' &&
-                projectParticipationMethod === 'survey') ||
-                currentPhaseParticipationMethod === 'survey') && (
+        <StickyProjectActionBar projectId={projectId} />
+        <About>
+          <Title>
+            <FormattedMessage {...messages.about} />
+          </Title>
+          <List>
+            {projectType === 'timeline' &&
+              lastPhase &&
+              pastPresentOrFuture([
+                lastPhase.attributes.start_at,
+                lastPhase.attributes.end_at,
+              ]) === 'past' && (
+                <ListItem id="e2e-project-sidebar-enddate">
+                  <ListItemIcon ariaHidden name="finish_flag" />
+                  <FormattedMessage
+                    {...messages.endedOn}
+                    values={{
+                      date: moment(lastPhase.attributes.end_at).format('ll'),
+                    }}
+                  />
+                </ListItem>
+              )}
+            {isNumber(projectParticipantsCount) &&
+              projectParticipantsCount > 0 && (
+                <ListItem id="e2e-project-sidebar-participants-count">
+                  <ListItemIcon ariaHidden name="person" />
+                  <FormattedMessage
+                    {...messages.xParticipants}
+                    values={{ participantsCount: projectParticipantsCount }}
+                  />
+                </ListItem>
+              )}
+            {projectType === 'timeline' &&
+              !isNilOrError(phases) &&
+              phases.length > 1 && (
+                <ListItem id="e2e-project-sidebar-phases-count">
+                  <ListItemIcon
+                    ariaHidden
+                    name="timeline"
+                    className="timeline"
+                  />
+                  <FormattedMessage
+                    {...messages.xPhases}
+                    values={{ phasesCount: phases.length }}
+                  />
+                </ListItem>
+              )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'ideation') ||
+              currentPhaseParticipationMethod === 'ideation') &&
+              isNumber(ideasCount) && (
                 <ListItem>
-                  <ListItemIcon ariaHidden name="survey" />
+                  <ListItemIcon ariaHidden name="idea-filled" />
+                  {project.attributes.ideas_count > 0 ? (
+                    <ListItemButton
+                      id="e2e-project-sidebar-ideas-count"
+                      onClick={scrollTo('project-ideas')}
+                    >
+                      <FormattedMessage
+                        {...(projectType === 'continuous'
+                          ? messages.xIdeas
+                          : messages.xIdeasInCurrentPhase)}
+                        values={{ ideasCount }}
+                      />
+                    </ListItemButton>
+                  ) : (
+                    <FormattedMessage {...messages.noIdeasYet} />
+                  )}
+                </ListItem>
+              )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'budgeting') ||
+              currentPhase?.attributes.participation_method === 'budgeting') &&
+              totalBudget > 0 && (
+                <ListItem>
+                  <ListItemIcon ariaHidden name="moneybag" />
+                  <FormattedMessage
+                    {...messages.budget}
+                    values={{
+                      amount: (
+                        <FormattedNumber
+                          value={totalBudget}
+                          style="currency"
+                          currency={currency}
+                          minimumFractionDigits={0}
+                          maximumFractionDigits={0}
+                        />
+                      ),
+                    }}
+                  />
+                </ListItem>
+              )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'survey') ||
+              currentPhaseParticipationMethod === 'survey') && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="survey" />
+                {!isNilOrError(authUser) ? (
                   <ListItemButton
                     id="e2e-project-sidebar-surveys-count"
                     onClick={scrollTo('project-survey')}
@@ -304,50 +305,57 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       values={{ surveysCount: 1 }}
                     />
                   </ListItemButton>
-                </ListItem>
-              )}
-              {((projectType === 'continuous' &&
-                projectParticipationMethod === 'poll') ||
-                currentPhaseParticipationMethod === 'poll') && (
-                <ListItem>
-                  <ListItemIcon ariaHidden name="survey" />
-                  <ListItemButton
-                    id="e2e-project-sidebar-polls-count"
-                    onClick={scrollTo('project-poll')}
-                  >
-                    <FormattedMessage
-                      {...(projectType === 'continuous'
-                        ? messages.xPolls
-                        : messages.xPollsInCurrentPhase)}
-                      values={{ pollsCount: 1 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              )}
-              {upcomingEvents.length > 0 && (
-                <ListItem>
-                  <ListItemIcon ariaHidden name="event" />
-                  <ListItemButton
-                    id="e2e-project-sidebar-eventcount"
-                    onClick={scrollTo('project-events', false)}
-                  >
-                    <FormattedMessage
-                      {...messages.xUpcomingEvents}
-                      values={{ upcomingEventsCount: upcomingEvents.length }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              )}
-              <ListItem id="e2e-project-sidebar-share-button">
-                <ListItemIcon ariaHidden name="share" />
-                <ListItemButton onClick={openShareModal}>
-                  <FormattedMessage {...messages.share} />
+                ) : (
+                  <FormattedMessage
+                    {...(projectType === 'continuous'
+                      ? messages.xSurveys
+                      : messages.xSurveysInCurrentPhase)}
+                    values={{ surveysCount: 1 }}
+                  />
+                )}
+              </ListItem>
+            )}
+            {((projectType === 'continuous' &&
+              projectParticipationMethod === 'poll') ||
+              currentPhaseParticipationMethod === 'poll') && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="survey" />
+                <ListItemButton
+                  id="e2e-project-sidebar-polls-count"
+                  onClick={scrollTo('project-poll')}
+                >
+                  <FormattedMessage
+                    {...(projectType === 'continuous'
+                      ? messages.xPolls
+                      : messages.xPollsInCurrentPhase)}
+                    values={{ pollsCount: 1 }}
+                  />
                 </ListItemButton>
               </ListItem>
-            </List>
-            <ProjectActionButtons projectId={projectId} />
-          </>
-        )}
+            )}
+            {upcomingEvents.length > 0 && (
+              <ListItem>
+                <ListItemIcon ariaHidden name="event" />
+                <ListItemButton
+                  id="e2e-project-sidebar-eventcount"
+                  onClick={scrollTo('project-events', false)}
+                >
+                  <FormattedMessage
+                    {...messages.xUpcomingEvents}
+                    values={{ upcomingEventsCount: upcomingEvents.length }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )}
+            <ListItem id="e2e-project-sidebar-share-button">
+              <ListItemIcon ariaHidden name="share" />
+              <ListItemButton onClick={openShareModal}>
+                <FormattedMessage {...messages.share} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <ProjectActionButtons projectId={projectId} />
+        </About>
         <ProjectSharingModal
           projectId={project.id}
           opened={shareModalOpened}

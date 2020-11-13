@@ -24,7 +24,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // typings
 import { CommentsSort } from 'services/comments';
@@ -46,6 +46,10 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Title = styled.h1`
@@ -55,13 +59,20 @@ const Title = styled.h1`
   line-height: normal;
   margin: 0;
   padding: 0;
+  display: flex;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxl}px;
   `}
 `;
 
-const CommentCount = styled.span``;
+const CommentCount = styled.span`
+  margin-left: 5px;
+`;
 
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
@@ -162,7 +173,7 @@ const CommentsSection = memo<Props>(
         <Container className={className || ''}>
           <Header>
             <Title id="comments-main-title">
-              <FormattedMessage {...messages.invisibleTitleComments} />{' '}
+              <FormattedMessage {...messages.invisibleTitleComments} />
               {commentCount > 0 && (
                 <CommentCount>({commentCount})</CommentCount>
               )}

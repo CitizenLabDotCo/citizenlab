@@ -48,6 +48,7 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
@@ -72,6 +73,10 @@ const Header = styled.div`
     justify-content: center;
     border: none;
   `};
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Title = styled.h2`
@@ -89,6 +94,12 @@ const Title = styled.h2`
     text-align: center;
     margin: 0;
   `};
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 45px;
+    justify-content: flex-end;
+  `}
 `;
 
 const ProjectsList = styled.div`
@@ -187,6 +198,10 @@ const FiltersArea = styled.div`
   ${media.smallerThanMinTablet`
     display: none;
   `};
+
+  ${isRtl`
+    justify-content: flex-start;
+  `}
 `;
 
 const FilterArea = styled.div`
@@ -483,7 +498,9 @@ class ProjectAndFolderCards extends PureComponent<
                 bgColor={rgba(theme.colorText, 0.08)}
                 bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
-                className="e2e-project-cards-show-more-button"
+                className={`e2e-project-cards-show-more-button ${
+                  loadingMore ? 'loading' : ''
+                }`}
               />
             )}
           </Footer>

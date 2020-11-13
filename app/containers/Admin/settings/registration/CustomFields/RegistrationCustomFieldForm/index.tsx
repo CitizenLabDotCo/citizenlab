@@ -1,8 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { IInputType } from 'services/userCustomFields';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
+import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
@@ -14,6 +15,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
+
+const StyledSpan = styled.span`
+  display: inline-block;
+  margin-left: 6px;
+`;
+
+const StyledLabel = styled(Label)``;
 
 export interface FormValues {
   enabled: boolean;
@@ -29,7 +37,7 @@ export interface Props {
   builtInField: boolean;
 }
 
-class CustomFieldForm extends React.Component<
+class RegistrationCustomFieldForm extends React.Component<
   InjectedFormikProps<Props & InjectedIntlProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
@@ -44,17 +52,17 @@ class CustomFieldForm extends React.Component<
 
   inputTypeOptions = () => {
     const fieldTypes = [
-      'text',
-      'number',
-      'multiline_text',
       'select',
       'multiselect',
       'checkbox',
+      'text',
+      'multiline_text',
+      'number',
       'date',
     ];
     return fieldTypes.map((inputType) => ({
       value: inputType,
-      label: this.props.intl.formatMessage(messages[`inputType_${inputType}`]),
+      label: this.props.intl.formatMessage(messages[`fieldType_${inputType}`]),
     }));
   };
 
@@ -75,23 +83,7 @@ class CustomFieldForm extends React.Component<
         <Section>
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldEnabled} />
-            </Label>
-            <Field
-              className={`e2e-custom-field-enabled-toggle ${
-                this.props.values.enabled ? 'enabled' : 'disabled'
-              }`}
-              name="enabled"
-              component={FormikToggle}
-            />
-            {touched.enabled && (
-              <Error fieldName="enabled" apiErrors={errors.enabled as any} />
-            )}
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldInputType} />
+              <FormattedMessage {...messages.answerFormat} />
             </Label>
             <Field
               name="input_type"
@@ -110,9 +102,8 @@ class CustomFieldForm extends React.Component<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
-              label={formatMessage(messages.fieldTitle)}
-              labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
+              component={FormikInputMultilocWithLocaleSwitcher}
+              label={formatMessage(messages.fieldName)}
               disabled={builtInField}
             />
             {touched.title_multiloc && (
@@ -126,9 +117,9 @@ class CustomFieldForm extends React.Component<
           <SectionField>
             <Field
               name="description_multiloc"
-              component={FormikTextAreaMultiloc}
+              component={FormikTextAreaMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldDescription)}
-              labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
               disabled={builtInField}
             />
             {touched.description_multiloc && (
@@ -140,16 +131,18 @@ class CustomFieldForm extends React.Component<
           </SectionField>
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldRequired} />
-            </Label>
-            <Field
-              className={`e2e-custom-field-required-toggle ${
-                this.props.values.required ? 'enabled' : 'disabled'
-              }`}
-              name="required"
-              component={FormikToggle}
-            />
+            <StyledLabel>
+              <Field
+                className={`e2e-custom-field-required-toggle ${
+                  this.props.values.required ? 'enabled' : 'disabled'
+                }`}
+                name="required"
+                component={FormikToggle}
+              />
+              <StyledSpan>
+                <FormattedMessage {...messages.fieldRequired} />
+              </StyledSpan>
+            </StyledLabel>
             {touched.required && (
               <Error fieldName="required" apiErrors={errors.required as any} />
             )}
@@ -162,4 +155,4 @@ class CustomFieldForm extends React.Component<
   }
 }
 
-export default injectIntl(CustomFieldForm);
+export default injectIntl(RegistrationCustomFieldForm);

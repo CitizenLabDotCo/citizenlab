@@ -77,7 +77,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -193,6 +193,10 @@ const IdeaHeader = styled.div`
   margin-top: -5px;
   margin-bottom: 25px;
 
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
     margin-bottom: 25px;
@@ -216,6 +220,10 @@ const MobileIdeaMoreActions = styled(IdeaMoreActions)`
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledGoBackButton = styled(GoBackButton)`

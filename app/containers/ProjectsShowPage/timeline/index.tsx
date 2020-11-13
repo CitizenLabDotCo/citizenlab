@@ -41,7 +41,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths } from 'utils/styleUtils';
+import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -57,6 +57,10 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 25px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`

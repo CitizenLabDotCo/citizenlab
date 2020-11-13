@@ -4,8 +4,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import {
   userCustomFieldOptionsStream,
-  IUserCustomFieldOptionsData,
-} from 'services/userCustomFields';
+  IUserCustomFieldOptionData,
+} from 'services/userCustomFieldOptions';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -21,11 +21,11 @@ interface Props extends InputProps {
 }
 
 interface State {
-  customFieldOptions: IUserCustomFieldOptionsData[] | undefined | null | Error;
+  customFieldOptions: IUserCustomFieldOptionData[] | undefined | null | Error;
 }
 
 export type GetUserCustomFieldOptionsChildProps =
-  | IUserCustomFieldOptionsData[]
+  | IUserCustomFieldOptionData[]
   | undefined
   | null
   | Error;
