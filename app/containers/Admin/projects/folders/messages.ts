@@ -77,11 +77,6 @@ export default defineMessages({
     defaultMessage:
       'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
-  archiveStatusWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.generalTab.archiveStatusWarning',
-    defaultMessage:
-      'If you archive this folder, it will be moved to the bottom of the homepage. You can reorder it again in the project overview.',
-  },
   projectsAlreadyAdded: {
     id: 'app.containers.AdminPage.FoldersEdit.projectsAlreadyAdded',
     defaultMessage: 'Projects added to this folder',
@@ -118,11 +113,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderError',
     defaultMessage:
       'There was an issue removing this folder. Please try again.',
-  },
-  archiveFolderConfirmation: {
-    id: 'app.containers.AdminPage.FoldersEdit.archiveFolderConfirmation',
-    defaultMessage:
-      'Are you sure you want to archive this folder? This will also archive the projects it contains.',
   },
   deleteFolderConfirmation: {
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation',
