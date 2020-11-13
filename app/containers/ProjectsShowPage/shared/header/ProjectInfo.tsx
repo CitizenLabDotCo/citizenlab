@@ -28,7 +28,13 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { fontSizes, colors, media, viewportWidths } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  media,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const desktopCollapsedDescriptionMaxHeight = 400;
@@ -39,6 +45,10 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
   ${media.smallerThanMaxTablet`
     flex-direction: column;
     align-items: stretch;
@@ -48,12 +58,21 @@ const Container = styled.div`
 
 const Left = styled.div`
   flex: 1;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 const Right = styled.div`
   flex: 0 0 300px;
   width: 300px;
   margin-left: 110px;
+
+  ${isRtl`
+    margin-right: 110px;
+    margin-left: auto;
+  `}
 
   ${media.smallerThanMaxTablet`
     flex: 1 1 auto;
@@ -74,6 +93,10 @@ const ProjectTitle = styled.h1`
   margin: 0;
   margin-bottom: 27px;
   padding: 0;
+
+  ${isRtl`
+    text-align: right;
+  `}
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl}px;

@@ -40,7 +40,7 @@ import { openVerificationModal } from 'components/Verification/verificationModal
 
 // style
 import styled, { css, keyframes } from 'styled-components';
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
+import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 interface IVoteComponent {
@@ -65,6 +65,10 @@ const vote = keyframes`
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   * {
     user-select: none;
@@ -188,6 +192,10 @@ const Vote = styled.button<IVoteComponent>`
   margin: 0;
   border: none;
 
+${isRtl`
+    flex-direction: row-reverse;
+`}
+
   &.voteClick ${VoteIconContainer} {
     animation: ${css`
       ${vote} 350ms
@@ -218,6 +226,11 @@ const Upvote = styled(Vote)`
   &:not(.enabled) {
     ${VoteCount} {
       margin-right: 14px;
+
+      ${isRtl`
+        margin-right: 5px;
+        margin-left: 14px;
+        `}
     }
   }
 

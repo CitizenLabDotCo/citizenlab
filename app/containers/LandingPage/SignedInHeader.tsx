@@ -38,7 +38,7 @@ import T from 'components/T';
 // style
 import styled, { withTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -72,6 +72,10 @@ const HeaderImageContainerInner = styled.div`
   justify-content: center;
   overflow: hidden;
   position: relative;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const HeaderImage = styled.img`
@@ -117,6 +121,10 @@ const HeaderContent = styled.div`
   padding-left: 75px;
   padding-right: 75px;
   overflow: hidden;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.content-enter {
     opacity: 0;
@@ -184,6 +192,10 @@ const Left = styled.div`
   align-items: center;
   margin-right: 60px;
 
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
   ${media.smallerThanMinTablet`
     margin-right: 0;
   `}
@@ -192,6 +204,11 @@ const Left = styled.div`
 const Icons = styled.div`
   display: flex;
   margin-right: 30px;
+
+  ${isRtl`
+    margin-right: 0px;
+    margin-left: 30px;
+  `}
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -216,6 +233,14 @@ const Right = styled.div`
     justify-content: flex-start;
     margin-top: 30px;
   `}
+
+  ${isRtl`
+    flex-direction: row-reverse;
+
+    ${media.smallerThanMinTablet`
+        align-items: flex-end;
+    `}
+  `}
 `;
 
 const SkipButton = styled(Button)`
@@ -224,6 +249,11 @@ const SkipButton = styled(Button)`
   ${media.smallerThanMinTablet`
     order: 2;
     margin-right: 0px;
+  `}
+
+  ${isRtl`
+    margin-right: 0px;
+    margin-left: 10px;
   `}
 `;
 

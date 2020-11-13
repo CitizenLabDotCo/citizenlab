@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
+import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -22,6 +22,11 @@ const StyledIcon = styled(Icon)`
   height: 18px;
   fill: ${colors.label};
   margin-right: 10px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 10px;
+  `}
 `;
 
 const Input = styled.input`
@@ -53,6 +58,10 @@ const Label = styled.label`
   color: ${colors.label};
   background: transparent;
   font-weight: 400;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &:hover {
     color: #000;

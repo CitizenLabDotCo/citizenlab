@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
 
-export default function useProjectFolderFiles(projectId: string | null | undefined) {
+export default function useProjectFolderFiles(
+  projectId: string | null | undefined
+) {
   const [projectFiles, setProjectFiles] = useState<
     IProjectFiles | undefined | null | Error
   >(undefined);
