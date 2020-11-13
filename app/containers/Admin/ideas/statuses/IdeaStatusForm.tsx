@@ -15,6 +15,8 @@ import {
 } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import { Label, IconTooltip } from 'cl2-component-library';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -89,22 +91,6 @@ class IdeaStatusForm extends React.Component<
     return errors;
   };
 
-  inputTypeOptions = () => {
-    const fieldTypes = [
-      'text',
-      'number',
-      'multiline_text',
-      'select',
-      'multiselect',
-      'checkbox',
-      'date',
-    ];
-    return fieldTypes.map((inputType) => ({
-      value: inputType,
-      label: this.props.intl.formatMessage(messages[`inputType_${inputType}`]),
-    }));
-  };
-
   codeRadioButtons = () => {
     const { touched, errors } = this.props;
     const codes = [
@@ -153,22 +139,6 @@ class IdeaStatusForm extends React.Component<
     return (
       <Form>
         <Section>
-          <RadioSection>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.fieldCode} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.fieldCodeTooltip} />}
-              />
-            </SubSectionTitle>
-            <SubSectionDescription>
-              <FormattedMessage {...messages.fieldCodeDescription} />
-            </SubSectionDescription>
-
-            {this.codeRadioButtons()}
-          </RadioSection>
-        </Section>
-
-        <Section>
           <SubSectionTitle>
             <FormattedMessage {...messages.visualFields} />
           </SubSectionTitle>
@@ -186,7 +156,7 @@ class IdeaStatusForm extends React.Component<
           <StyledSectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={InputMultilocWithLocaleSwitcherWrapper}
               label={formatMessage(messages.fieldTitle)}
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
               disabled={builtInField}
@@ -202,7 +172,7 @@ class IdeaStatusForm extends React.Component<
           <StyledSectionField>
             <Field
               name="description_multiloc"
-              component={FormikTextAreaMultiloc}
+              component={TextAreaMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldDescription)}
               labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
               disabled={builtInField}
@@ -214,6 +184,22 @@ class IdeaStatusForm extends React.Component<
               />
             )}
           </StyledSectionField>
+        </Section>
+
+        <Section>
+          <RadioSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.fieldCode} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.fieldCodeTooltip} />}
+              />
+            </SubSectionTitle>
+            <SubSectionDescription>
+              <FormattedMessage {...messages.fieldCodeDescription} />
+            </SubSectionDescription>
+
+            {this.codeRadioButtons()}
+          </RadioSection>
         </Section>
 
         <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
