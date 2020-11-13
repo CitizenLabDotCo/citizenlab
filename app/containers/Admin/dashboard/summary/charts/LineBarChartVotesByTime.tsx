@@ -330,7 +330,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                     value={formatMessage(messages.total)}
                     angle={-90}
                     position={'center'}
-                    offset={-20}
+                    dx={-15}
                   />
                 </YAxis>
                 <YAxis yAxisId="barValue" orientation="right" tickLine={false}>
@@ -340,7 +340,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                     })}
                     angle={90}
                     position={'center'}
-                    offset={-20}
+                    dx={15}
                   />
                 </YAxis>
                 <Tooltip

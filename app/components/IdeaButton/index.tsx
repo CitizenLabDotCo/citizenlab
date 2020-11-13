@@ -239,21 +239,17 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     };
 
     const verificationLink = (
-      <a href="" role="button" onClick={verify}>
+      <button onClick={verify}>
         {formatMessage(messages.verificationLinkText)}
-      </a>
+      </button>
     );
 
     const signUpLink = (
-      <a href="" role="button" onClick={signUp}>
-        {formatMessage(messages.signUpLinkText)}
-      </a>
+      <button onClick={signUp}>{formatMessage(messages.signUpLinkText)}</button>
     );
 
     const signInLink = (
-      <a href="" role="button" onClick={signIn}>
-        {formatMessage(messages.signInLinkText)}
-      </a>
+      <button onClick={signIn}>{formatMessage(messages.signInLinkText)}</button>
     );
 
     if (show) {

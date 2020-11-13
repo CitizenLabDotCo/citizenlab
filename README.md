@@ -45,6 +45,8 @@ To run the e2e tests in watcher mode:
 npm run cypress:open
 ```
 
+**Note**: The e2e tests depend on some data being available in the back-end. To set it up for testing, see [e2e tests in cl2-back](https://github.com/CitizenLabDotCo/cl2-back#end-to-end-tests).
+
 ## Unit and integration tests
 
 These tests are run on each PR. Jest will consider every file with the extention `.test.(ts|tsx)` a test.

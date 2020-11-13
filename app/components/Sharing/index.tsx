@@ -310,6 +310,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
           <a
             className={`sharingButton last email ${layoutClassName}`}
             href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
+            target="_blank"
             onClick={trackEmailShare}
             role="button"
             aria-label={emailButtonText}

@@ -2,13 +2,22 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
+export type Code =
+  | 'proposed'
+  | 'viewed'
+  | 'under_consideration'
+  | 'accepted'
+  | 'implemented'
+  | 'rejected'
+  | 'other';
+
 export interface IIdeaStatusData {
   id: string;
   type: string;
   attributes: {
     title_multiloc: Multiloc;
     color: string;
-    code: string;
+    code: Code;
     ordering: number;
     description_multiloc: Multiloc;
     ideas_count?: number;
@@ -17,17 +26,18 @@ export interface IIdeaStatusData {
 
 export interface IIdeaStatusAdd {
   title_multiloc: Multiloc;
-  color: string;
-  code: string;
-  description_multiloc: Multiloc;
+  description_multiloc?: Multiloc;
+  color?: string;
+  code?: Code;
+  ordering?: number;
 }
 
 export interface IIdeaStatusUpdate {
   title_multiloc: Multiloc;
-  color: string;
-  code: string;
-  description_multiloc: Multiloc;
-  ordering: number;
+  description_multiloc?: Multiloc;
+  color?: string;
+  code?: Code;
+  ordering?: number;
 }
 
 export interface IIdeaStatus {
@@ -37,6 +47,16 @@ export interface IIdeaStatus {
 export interface IIdeaStatuses {
   data: IIdeaStatusData[];
 }
+
+export const ideaStatusCodes = [
+  'proposed',
+  'viewed',
+  'under_consideration',
+  'accepted',
+  'implemented',
+  'rejected',
+  'other',
+];
 
 export function ideaStatusStream(statusId: string) {
   return streams.get<IIdeaStatus>({
