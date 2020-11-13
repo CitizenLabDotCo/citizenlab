@@ -1,6 +1,8 @@
 import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState } from 'services/globalState';
+import { isAdmin, isModerator } from 'services/permissions/roles';
+import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import Sidebar from './sideBar/';
@@ -8,7 +10,8 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
-import { endsWith } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -85,11 +88,13 @@ type Props = {
 
 const AdminPage = memo<Props & WithRouterProps>(
   ({ className, children, location: { pathname } }) => {
+    const authUser = useAuthUser();
+
     const [adminFullWidth, setAdminFullWidth] = useState<boolean>(false);
     const [adminNoPadding, setAdminNoPadding] = useState<boolean>(false);
 
-    let FullWidth = globalState.init('AdminFullWidth', { enabled: false });
-    let NoPadding = globalState.init('AdminNoPadding', { enabled: false });
+    const FullWidth = globalState.init('AdminFullWidth', { enabled: false });
+    const NoPadding = globalState.init('AdminNoPadding', { enabled: false });
 
     useEffect(() => {
       const subscriptions = [
@@ -104,6 +109,18 @@ const AdminPage = memo<Props & WithRouterProps>(
         subscription.unsubscribe()
       );
     }, []);
+
+    const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
+
+    useEffect(() => {
+      if (authUser === null && !userCanViewAdmin(authUser)) {
+        clHistory.push('/');
+      }
+    }, [authUser]);
+
+    if (authUser === null || !userCanViewAdmin(authUser)) {
+      return null;
+    }
 
     const noPadding = adminNoPadding || pathname.includes('admin/dashboard');
     const fullWidth =
