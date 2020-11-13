@@ -165,7 +165,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
         <FeatureFlag name="user_custom_fields">
           <ButtonWrapper>
             <Button
-              className="e2e-add-custom-field-btn"
               buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/settings/registration/custom_fields/new"

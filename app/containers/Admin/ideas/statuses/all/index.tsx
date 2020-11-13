@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-
 // hooks
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
 
@@ -77,16 +76,13 @@ const IdeaStatuses = memo(() => {
     return ideaStatus.attributes.code === 'proposed';
   }
 
-  const handleDelete = useCallback(
-    (id) => (_event: React.FormEvent<any>) => {
-      deleteIdeaStatus(id);
-    },
-    []
-  );
+  const handleDelete = (id) => (_event: React.FormEvent<any>) => {
+    deleteIdeaStatus(id);
+  };
 
-  const isDeletable = useCallback((ideaStatus: IIdeaStatusData) => {
+  const isDeletable = (ideaStatus: IIdeaStatusData) => {
     return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
-  }, []);
+  };
 
   const defaultStatus = useMemo(() => {
     if (!isNilOrError(ideaStatuses)) {
@@ -116,7 +112,6 @@ const IdeaStatuses = memo(() => {
         </SectionDescription>
         <ButtonWrapper>
           <Button
-            className="e2e-add-custom-field-btn"
             buttonStyle="cl-blue"
             icon="plus-circle"
             linkTo="/admin/ideas/statuses/new"
