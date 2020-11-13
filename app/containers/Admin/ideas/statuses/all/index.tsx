@@ -2,6 +2,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
+import { parseInt } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -66,7 +67,7 @@ const IdeaStatuses = () => {
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.code === 'proposed';
+    return ideaStatus === defaultStatus;
   };
 
   const handleDelete = (id) => (_event: React.FormEvent<any>) => {
@@ -74,7 +75,11 @@ const IdeaStatuses = () => {
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
-    return !isRequired(ideaStatus) && ideaStatus.attributes.ideas_count === 0;
+    return (
+      !isRequired(ideaStatus) &&
+      (!ideaStatus.attributes.ideas_count ||
+        ideaStatus.attributes.ideas_count === 0)
+    );
   };
 
   const defaultStatus = useMemo(() => {
