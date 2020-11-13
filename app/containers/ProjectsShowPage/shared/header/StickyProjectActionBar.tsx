@@ -22,6 +22,7 @@ import T from 'components/T';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { fontSizes, media, colors, viewportWidths } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const slideInOutTimeout = 250;
 const slideInOutDistance = 14;
@@ -208,7 +209,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
           isActionBarVisible ? 'visible' : 'hidden'
         }`}
       >
-        <ContentContainer>
+        <ContentContainer maxWidth={maxPageWidth}>
           <InnerContainer>
             <Left>
               <ProjectTitle>

@@ -5,7 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import ContentContainer from 'components/ContentContainer';
 import Survey from '../shared/survey';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { SectionContainer } from 'containers/ProjectsShowPage/styles';
+import {
+  SectionContainer,
+  maxPageWidth,
+} from 'containers/ProjectsShowPage/styles';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -47,7 +50,7 @@ const SurveyContainer = memo<Props & InjectedIntlProps>(
             className || ''
           }`}
         >
-          <StyledContentContainer>
+          <StyledContentContainer maxWidth={maxPageWidth}>
             <SectionContainer>
               <ScreenReaderOnly>
                 <h2>{formatMessage(messages.invisibleTitleSurvey)}</h2>
