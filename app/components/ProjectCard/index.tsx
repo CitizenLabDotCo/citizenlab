@@ -567,13 +567,19 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
-      if (!isArchived && isFinished) {
+      if (isArchived) {
+        countdown = (
+          <ContentHeaderLabel className="e2e-project-card-archived-label">
+            <FormattedMessage {...messages.archived} />
+          </ContentHeaderLabel>
+        );
+      } else if (isFinished) {
         countdown = (
           <ContentHeaderLabel>
             <FormattedMessage {...messages.finished} />
           </ContentHeaderLabel>
         );
-      } else if (!isArchived && timeRemaining) {
+      } else if (timeRemaining) {
         const totalDays = timeRemaining
           ? moment.duration(moment(endAt).diff(moment(startAt))).asDays()
           : null;
@@ -623,28 +629,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
       }
 
-      let headerRightContent = isArchived && (
-        <ContentHeaderRight className={`${size}`}>
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
-            <FormattedMessage {...messages.archived} />
-          </ContentHeaderLabel>
-        </ContentHeaderRight>
-      );
-      if (ctaMessage !== null && !isFinished && !isArchived) {
-        headerRightContent = (
-          <ContentHeaderRight
-            className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
-          >
-            <ProjectLabel
-              onClick={this.handleCTAOnClick(project.id)}
-              className="e2e-project-card-cta"
-            >
-              {ctaMessage}
-            </ProjectLabel>
-          </ContentHeaderRight>
-        );
-      }
-
       const contentHeader = (
         <ContentHeader
           className={`${size} ${
@@ -657,7 +641,18 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <ContentHeaderLeft className={size}>{countdown}</ContentHeaderLeft>
           )}
 
-          {headerRightContent}
+          {ctaMessage !== null && !isFinished && !isArchived && (
+            <ContentHeaderRight
+              className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
+            >
+              <ProjectLabel
+                onClick={this.handleCTAOnClick(project.id)}
+                className="e2e-project-card-cta"
+              >
+                {ctaMessage}
+              </ProjectLabel>
+            </ContentHeaderRight>
+          )}
         </ContentHeader>
       );
 
