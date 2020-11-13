@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -12,48 +12,48 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-export interface InputProps {}
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-interface DataProps {
-  location;
+export interface Props {
+  children: JSX.Element;
 }
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class IdeasPage extends React.PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
-  getTabs = () => {
-    const { formatMessage } = this.props.intl;
-
-    const tabs: TabProps[] = [
-      {
-        label: formatMessage(messages.tabManage),
-        url: '/admin/ideas',
-      },
-      {
-        label: formatMessage(messages.tabCustomize),
-        url: '/admin/ideas/statuses',
-        active: this.props.location.pathname.includes('/admin/ideas/statuses'),
-      },
-    ];
-    return tabs;
-  };
-
-  render() {
-    const { children } = this.props;
-    const { formatMessage } = this.props.intl;
-
+const IdeasPage = memo(
+  ({
+    intl: { formatMessage },
+    location,
+    children,
+  }: Props & InjectedIntlProps & WithRouterProps) => {
+    const ideaStatusCustomisationEnabled = useFeatureFlag(
+      'custom_idea_statuses'
+    );
     const resource = {
       title: formatMessage(messages.pageTitle),
       subtitle: formatMessage(messages.pageSubtitle),
     };
 
+    const getTabs = () => {
+      const tabs: TabProps[] = [
+        {
+          label: formatMessage(messages.tabManage),
+          url: '/admin/ideas',
+        },
+      ];
+
+      if (ideaStatusCustomisationEnabled) {
+        tabs.push({
+          label: formatMessage(messages.tabCustomize),
+          url: '/admin/ideas/statuses',
+          active: location.pathname.includes('/admin/ideas/statuses'),
+        });
+      }
+
+      return tabs;
+    };
+
     return (
-      <TabbedResource resource={resource} tabs={this.getTabs()}>
+      <TabbedResource resource={resource} tabs={getTabs()}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
@@ -62,10 +62,6 @@ class IdeasPage extends React.PureComponent<
       </TabbedResource>
     );
   }
-}
-
-const IdeasPageWithHocs = withRouter(injectIntl(IdeasPage));
-
-export default (inputProps: InputProps & WithRouterProps) => (
-  <IdeasPageWithHocs {...inputProps} />
 );
+
+export default withRouter(injectIntl(IdeasPage));

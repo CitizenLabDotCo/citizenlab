@@ -1,5 +1,5 @@
 // libraries
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -21,7 +21,11 @@ import {
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { IconTooltip } from 'cl2-component-library';
-import { Section, SectionDescription } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import {
   Row,
   SortableList,
@@ -29,18 +33,6 @@ import {
   TextCell,
 } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-
-const DragHandleSpacer = styled.div`
-  padding: 16px;
-  height: 100%;
-  align-self: flex-start;
-
-  &::after {
-    width: 20px;
-    content: '';
-    display: block;
-  }
-`;
 
 const Buttons = styled.div`
   display: flex;
@@ -61,20 +53,21 @@ const FlexTextCell = styled(TextCell)`
   align-items: center;
 `;
 
-const ButtonIconTooltip = styled(IconTooltip)`
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-right: 20px;
   padding: 0 16px;
 `;
 
-const IdeaStatuses = memo(() => {
+const IdeaStatuses = () => {
   const ideaStatuses = useIdeaStatuses();
 
-  function handleReorder(id: string, ordering: number) {
+  const handleReorder = (id: string, ordering: number) => () => {
     updateIdeaStatus(id, { ordering });
-  }
+  };
 
-  function isRequired(ideaStatus: IIdeaStatusData) {
+  const isRequired = (ideaStatus: IIdeaStatusData) => {
     return ideaStatus.attributes.code === 'proposed';
-  }
+  };
 
   const handleDelete = (id) => (_event: React.FormEvent<any>) => {
     deleteIdeaStatus(id);
@@ -91,7 +84,7 @@ const IdeaStatuses = memo(() => {
       );
     }
 
-    return undefined;
+    return null;
   }, [ideaStatuses]);
 
   const sortableStatuses = useMemo(() => {
@@ -107,6 +100,9 @@ const IdeaStatuses = memo(() => {
   if (!isNilOrError(ideaStatuses) && defaultStatus) {
     return (
       <Section>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleIdeaStatuses} />
+        </SectionTitle>
         <SectionDescription>
           <FormattedMessage {...messages.subtitleIdeaStatuses} />
         </SectionDescription>
@@ -121,34 +117,26 @@ const IdeaStatuses = memo(() => {
         </ButtonWrapper>
 
         <Row>
-          <DragHandleSpacer />
           <FlexTextCell className="expand">
-            <ColorLabel color={defaultStatus.attributes.color} />
-            <T value={defaultStatus.attributes.title_multiloc} />
-            <ButtonIconTooltip
+            <StyledIconTooltip
               content={<FormattedMessage {...messages.lockedStatusTooltip} />}
               iconSize="16px"
               placement="top"
               icon="lock"
             />
+            <ColorLabel color={defaultStatus.attributes.color} />
+            <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
-          <Buttons>
-            <Button
-              className={`e2e-custom-field-edit-btn e2e-${defaultStatus.attributes.title_multiloc['en-GB']}`}
-              linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
-              buttonStyle="secondary"
-              icon="edit"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-          </Buttons>
+          <Button
+            linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
+            buttonStyle="secondary"
+            icon="edit"
+          >
+            <FormattedMessage {...messages.editButtonLabel} />
+          </Button>
         </Row>
 
-        <SortableList
-          items={sortableStatuses}
-          onReorder={handleReorder}
-          id="e2e-admin-published-projects-list"
-        >
+        <SortableList items={sortableStatuses} onReorder={handleReorder}>
           {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
               {itemsList.map((ideaStatus: IIdeaStatusData, index: number) => (
@@ -176,7 +164,6 @@ const IdeaStatuses = memo(() => {
                     >
                       <div>
                         <Button
-                          className={`e2e-delete§-custom-field-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                           onClick={handleDelete(ideaStatus.id)}
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
@@ -187,7 +174,6 @@ const IdeaStatuses = memo(() => {
                       </div>
                     </Tippy>
                     <Button
-                      className={`e2e-custom-field-edit-btn e2e-${ideaStatus.attributes.title_multiloc['en-GB']}`}
                       linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
                       buttonStyle="secondary"
                       icon="edit"
@@ -204,7 +190,7 @@ const IdeaStatuses = memo(() => {
     );
   }
 
-  return <></>;
-});
+  return null;
+};
 
 export default IdeaStatuses;

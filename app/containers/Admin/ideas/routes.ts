@@ -18,6 +18,13 @@ export default () => ({
   },
   childRoutes: [
     {
+      path: 'statuses',
+      component: Loadable({
+        loader: () => import('./statuses/all'),
+        loading: () => null,
+      }),
+    },
+    {
       path: 'statuses/new',
       component: Loadable({
         loader: () => import('./statuses/new'),
@@ -28,13 +35,6 @@ export default () => ({
       path: 'statuses/:id',
       component: Loadable({
         loader: () => import('./statuses/edit'),
-        loading: () => null,
-      }),
-    },
-    {
-      path: 'statuses',
-      component: Loadable({
-        loader: () => import('./statuses/all'),
         loading: () => null,
       }),
     },

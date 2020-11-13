@@ -24,14 +24,14 @@ export default defineMessages({
   },
   tabCustomize: {
     id: 'app.containers.admin.ideas.all.tabCustomize',
-    defaultMessage: 'Customize Statuses',
+    defaultMessage: 'Customise statuses',
   },
   required: {
     id: 'app.containers.admin.ideas.all.required',
     defaultMessage: 'Required',
   },
   deleteButtonLabel: {
-    id: 'app.containers.admin.ideas.all.delete',
+    id: 'app.containers.admin.ideas.all.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
@@ -39,16 +39,20 @@ export default defineMessages({
     defaultMessage: 'Manage',
   },
   systemField: {
-    id: 'app.containers.admin.ideas.all.desystemFieldfault',
+    id: 'app.containers.admin.ideas.all.systemField',
     defaultMessage: 'Default',
   },
   addIdeaStatus: {
     id: 'app.containers.admin.ideas.all.addIdeaStatus',
-    defaultMessage: 'Add Status',
+    defaultMessage: 'Add status',
+  },
+  editIdeaStatus: {
+    id: 'app.containers.admin.ideas.all.editIdeaStatus',
+    defaultMessage: 'Edit status',
   },
   titleIdeaStatuses: {
     id: 'app.containers.admin.ideas.all.titleIdeaStatuses',
-    defaultMessage: 'Customize Statuses',
+    defaultMessage: 'Customise statuses',
   },
   subtitleIdeaStatuses: {
     id: 'app.containers.admin.ideas.all.subtitleIdeaStatuses',
@@ -66,8 +70,7 @@ export default defineMessages({
   },
   lockedStatusTooltip: {
     id: 'app.containers.admin.ideas.all.lockedStatusTooltip',
-    defaultMessage:
-      'This is the default Status and it cannot be removed or moved.',
+    defaultMessage: 'The default status cannot be removed or moved.',
   },
   fieldTitle: {
     id: 'app.containers.admin.ideas.form.fieldTitle',
@@ -93,19 +96,14 @@ export default defineMessages({
   fieldColorTooltip: {
     id: 'app.containers.admin.ideas.form.fieldColorTooltip',
     defaultMessage:
-      'A short description of the status and what it means for ideas assigned to it.',
+      'The color of the idea status, which helps to recognise different statuses.',
   },
-  fieldCode: {
-    id: 'app.containers.admin.ideas.form.fieldCode',
-    defaultMessage: 'Context of the Status',
+  statusContext: {
+    id: 'app.containers.admin.ideas.form.statusContext',
+    defaultMessage: 'Context',
   },
-  fieldCodeTooltip: {
-    id: 'app.containers.admin.ideas.form.fieldCodeTooltip',
-    defaultMessage:
-      'A short Code of the status and what it means for ideas assigned to it.',
-  },
-  fieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.fieldCodeDescription',
+  statusContextDescription: {
+    id: 'app.containers.admin.ideas.form.statusContextDescription',
     defaultMessage:
       'Select the option that better describes this status. By selecting one, you will help us analyze the ideas of your citizens and provide you with better insights.',
   },
@@ -168,13 +166,5 @@ export default defineMessages({
   otherFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.otherFieldCodeDescription',
     defaultMessage: "The status doesn't fit any of the avove options.",
-  },
-  visualFields: {
-    id: 'app.containers.admin.ideas.form.visualFields',
-    defaultMessage: 'Visual Fields',
-  },
-  visualFieldsDescription: {
-    id: 'app.containers.admin.ideas.form.visualFieldsDescription',
-    defaultMessage: 'Customize the text and color of your status.',
   },
 });

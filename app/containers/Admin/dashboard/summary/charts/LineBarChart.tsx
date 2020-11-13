@@ -360,8 +360,8 @@ class LineBarChart extends React.PureComponent<
                   <Label
                     value={formatMessage(messages.total)}
                     angle={-90}
-                    position={'insideLeft'}
-                    offset={0}
+                    position={'center'}
+                    dx={-15}
                   />
                 </YAxis>
                 <YAxis
@@ -375,8 +375,8 @@ class LineBarChart extends React.PureComponent<
                       period: formatMessage(messages[resolution]),
                     })}
                     angle={90}
-                    position={'insideRight'}
-                    offset={0}
+                    position={'center'}
+                    dx={15}
                   />
                 </YAxis>
                 <Tooltip

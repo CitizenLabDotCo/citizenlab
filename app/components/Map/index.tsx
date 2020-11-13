@@ -272,7 +272,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
       subdomains: ['a', 'b', 'c'],
     });
 

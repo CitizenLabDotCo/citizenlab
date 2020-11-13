@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -11,9 +12,11 @@ import { Button } from 'cl2-component-library';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -45,6 +48,11 @@ const ProjectHeaderImageContainer = styled.div`
     height: 160px;
     margin-bottom: 20px;
   `}
+`;
+
+const EditButton = styled(Button)`
+  display: table;
+  margin: 0 0 10px auto;
 `;
 
 const ShareButton = styled(Button)`
@@ -90,64 +98,81 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props>(({ projectId, className }) => {
-  const locale = useLocale();
-  const project = useProject({ projectId });
+const ProjectHeader = memo<Props & InjectedIntlProps>(
+  ({ projectId, className, intl: { formatMessage } }) => {
+    const locale = useLocale();
+    const project = useProject({ projectId });
+    const authUser = useAuthUser();
 
-  const [shareModalOpened, setShareModalOpened] = useState(false);
+    const [shareModalOpened, setShareModalOpened] = useState(false);
 
-  const openShareModal = useCallback((event: FormEvent) => {
-    event.preventDefault();
-    setShareModalOpened(true);
-  }, []);
+    const openShareModal = useCallback((event: FormEvent) => {
+      event.preventDefault();
+      setShareModalOpened(true);
+    }, []);
 
-  const closeShareModal = useCallback(() => {
-    setShareModalOpened(false);
-  }, []);
+    const closeShareModal = useCallback(() => {
+      setShareModalOpened(false);
+    }, []);
 
-  if (!isNilOrError(locale) && !isNilOrError(project)) {
-    const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+    if (!isNilOrError(locale) && !isNilOrError(project)) {
+      const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+      const userCanEditProject =
+        !isNilOrError(authUser) &&
+        canModerate(project.id, { data: authUser.data });
 
-    return (
-      <Container className={className || ''}>
-        <ContentContainer>
-          {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
-            <ProjectHeaderImageContainer>
-              <ShareButton
+      return (
+        <Container className={className || ''}>
+          <ContentContainer>
+            {userCanEditProject && (
+              <EditButton
+                icon="edit"
                 locale={locale}
-                icon="share"
-                onClick={openShareModal}
-                buttonStyle="white"
-                iconColor="#000"
-                textColor="#000"
-                bgColor="rgba(255, 255, 255, 0.92)"
-                borderColor="#ccc"
+                linkTo={`/admin/projects/${project.id}/edit`}
+                buttonStyle="secondary"
                 padding="5px 8px"
               >
-                <FormattedMessage {...messages.share} />
-              </ShareButton>
-              <ProjectHeaderImage
-                src={projectHeaderImageLarge}
-                id="e2e-project-header-image"
-              />
-            </ProjectHeaderImageContainer>
-          )}
-          <StyledProjectArchivedIndicator
-            projectId={projectId}
-            hasHeaderImage={!!projectHeaderImageLarge}
+                {formatMessage(messages.editProject)}
+              </EditButton>
+            )}
+            {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
+              <ProjectHeaderImageContainer>
+                <ShareButton
+                  locale={locale}
+                  icon="share"
+                  onClick={openShareModal}
+                  buttonStyle="white"
+                  iconColor="#000"
+                  textColor="#000"
+                  bgColor="rgba(255, 255, 255, 0.92)"
+                  borderColor="#ccc"
+                  padding="5px 8px"
+                >
+                  {formatMessage(messages.share)}
+                </ShareButton>
+                <ProjectHeaderImage
+                  src={projectHeaderImageLarge}
+                  id="e2e-project-header-image"
+                />
+              </ProjectHeaderImageContainer>
+            )}
+            <StyledProjectArchivedIndicator
+              projectId={projectId}
+              hasHeaderImage={!!projectHeaderImageLarge}
+            />
+            <StyledProjectInfo projectId={projectId} />
+          </ContentContainer>
+          <ProjectSharingModal
+            projectId={project.id}
+            opened={shareModalOpened}
+            close={closeShareModal}
           />
-          <StyledProjectInfo projectId={projectId} />
-        </ContentContainer>
-        <ProjectSharingModal
-          projectId={project.id}
-          opened={shareModalOpened}
-          close={closeShareModal}
-        />
-      </Container>
-    );
+        </Container>
+      );
+    }
+
+    return null;
   }
+);
 
-  return null;
-});
-
-export default ProjectHeader;
+export default injectIntl(ProjectHeader);

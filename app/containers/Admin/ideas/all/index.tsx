@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import PostManager from 'components/admin/PostManager';
@@ -10,27 +11,25 @@ import GetProjects, {
   PublicationStatus,
 } from 'resources/GetProjects';
 
-export interface Props {
+interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-class IdeasTab extends PureComponent<Props> {
-  render() {
-    const { projects } = this.props;
+export interface Props extends DataProps {}
 
+const IdeasTab = memo(({ projects }: Props) => {
+  if (!isNilOrError(projects) && projects.projectsList !== undefined) {
     return (
-      <>
-        {projects && projects.projectsList !== undefined && (
-          <PostManager
-            type="AllIdeas"
-            visibleFilterMenus={['projects', 'topics', 'statuses']}
-            projects={projects.projectsList}
-          />
-        )}
-      </>
+      <PostManager
+        type="AllIdeas"
+        visibleFilterMenus={['projects', 'topics', 'statuses']}
+        projects={projects.projectsList}
+      />
     );
   }
-}
+
+  return null;
+});
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
@@ -49,4 +48,6 @@ const Data = adopt<Props>({
   ),
 });
 
-export default () => <Data>{(dataProps) => <IdeasTab {...dataProps} />}</Data>;
+export default () => (
+  <Data>{(dataProps: DataProps) => <IdeasTab {...dataProps} />}</Data>
+);

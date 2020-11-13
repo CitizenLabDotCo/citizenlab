@@ -3,31 +3,29 @@ import styled from 'styled-components';
 import { addIdeaStatus } from 'services/ideaStatuses';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import useTenantLocales from 'hooks/useTenantLocales';
+import { isNilOrError } from 'utils/helperUtils';
 
+// components
 import GoBackButton from 'components/UI/GoBackButton';
-import IdeaStatusForm, { FormValues } from '../IdeaStatusForm';
+import IdeaStatusForm, { FormValues, validate } from '../IdeaStatusForm';
 import { Formik } from 'formik';
+import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const FormHeader = styled.div`
-  width: 100%;
-  margin: 0 0 48px;
-`;
-
-const FormTitle = styled.h1`
-  width: 100%;
-  font-size: 32px;
-  margin: 16px 0 48px 0;
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 20px;
 `;
 
 const NewIdeaStatus = () => {
-  function handleSubmit(
+  const tenantLocales = useTenantLocales();
+  const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
-  ) {
+  ) => {
     const { ...params } = values;
     addIdeaStatus(params)
       .then((_response) => {
@@ -42,37 +40,39 @@ const NewIdeaStatus = () => {
         }
         setSubmitting(false);
       });
-  }
+  };
 
-  function renderFn(props) {
-    return <IdeaStatusForm {...props} mode="new" builtInField={false} />;
-  }
+  const renderFn = (props) => {
+    return <IdeaStatusForm {...props} />;
+  };
 
-  function goBack() {
+  const goBack = () => {
     clHistory.push('/admin/ideas/statuses');
+  };
+
+  if (!isNilOrError(tenantLocales)) {
+    return (
+      <Section>
+        <GoBackButton onClick={goBack} />
+        <StyledSectionTitle>
+          <FormattedMessage {...messages.addIdeaStatus} />
+        </StyledSectionTitle>
+        <Formik
+          initialValues={{
+            color: '#b5b5b5',
+            title_multiloc: {},
+            description_multiloc: {},
+            code: 'proposed',
+          }}
+          onSubmit={handleSubmit}
+          render={renderFn}
+          validate={validate(tenantLocales)}
+        />
+      </Section>
+    );
   }
 
-  return (
-    <div>
-      <FormHeader>
-        <GoBackButton onClick={goBack} />
-        <FormTitle>
-          <FormattedMessage {...messages.addIdeaStatus} />
-        </FormTitle>
-      </FormHeader>
-      <Formik
-        initialValues={{
-          color: '#b5b5b5',
-          title_multiloc: {},
-          description_multiloc: {},
-          code: '',
-        }}
-        onSubmit={handleSubmit}
-        render={renderFn}
-        validate={IdeaStatusForm['validate']}
-      />
-    </div>
-  );
+  return null;
 };
 
 export default NewIdeaStatus;
