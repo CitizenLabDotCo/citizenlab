@@ -6,20 +6,14 @@ import { Multiloc, Locale } from 'typings';
 import { ideaStatusCodes, Code } from 'services/ideaStatuses';
 
 // components
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
 import FormikRadio from 'components/UI/FormikRadio';
 import Error from 'components/UI/Error';
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import { Label, IconTooltip } from 'cl2-component-library';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
+import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
@@ -117,7 +111,7 @@ const IdeaStatusForm = ({
         <SectionField>
           <Field
             name="title_multiloc"
-            component={InputMultilocWithLocaleSwitcherWrapper}
+            component={FormikInputMultilocWithLocaleSwitcher}
             label={formatMessage(messages.fieldTitle)}
           />
           {touched.title_multiloc && (
@@ -133,7 +127,7 @@ const IdeaStatusForm = ({
         <SectionField>
           <Field
             name="description_multiloc"
-            component={TextAreaMultilocWithLocaleSwitcher}
+            component={FormikTextAreaMultilocWithLocaleSwitcher}
             label={formatMessage(messages.fieldDescription)}
           />
           {touched.description_multiloc && (
