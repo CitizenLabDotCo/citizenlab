@@ -1,7 +1,12 @@
 import React from 'react';
-
-// components
 import HelmetIntl from 'components/HelmetIntl';
+
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+// resources
+import useAuthUser from 'hooks/useAuthUser';
+import { isAdmin, isModerator } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
@@ -11,6 +16,11 @@ type Props = {
 };
 
 const ProjectDashboard = ({ children }: Props) => {
+  const authUser = useAuthUser();
+  if (isNilOrError(authUser) || !isAdmin(authUser) || !isModerator(authUser)) {
+    clHistory.push('/');
+    return null;
+  }
   return (
     <>
       <HelmetIntl
