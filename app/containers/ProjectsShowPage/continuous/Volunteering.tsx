@@ -5,7 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import ContentContainer from 'components/ContentContainer';
 import Volunteering from '../shared/volunteering';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { SectionContainer } from 'containers/ProjectsShowPage/styles';
+import {
+  SectionContainer,
+  maxPageWidth,
+} from 'containers/ProjectsShowPage/styles';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -42,7 +45,7 @@ const VolunteeringContainer = memo<Props>(({ projectId, className }) => {
         id="e2e-continuous-project-volunteering-container"
         className={className || ''}
       >
-        <StyledContentContainer>
+        <StyledContentContainer maxWidth={maxPageWidth}>
           <SectionContainer>
             <ScreenReaderOnly>
               <FormattedMessage tagName="h2" {...messages.invisibleTitlePoll} />
