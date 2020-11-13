@@ -1,12 +1,6 @@
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import {
-  globalState,
-  IAdminFullWidth,
-  IAdminNoPadding,
-  IGlobalStateService,
-} from 'services/globalState';
+import { globalState } from 'services/globalState';
 
 // components
 import Sidebar from './sideBar/';
@@ -86,70 +80,47 @@ const RightColumn = styled.div`
 
 type Props = {
   className?: string;
+  children: React.ReactNode;
 };
 
-type State = {
-  adminFullWidth: boolean;
-  adminNoPadding: boolean;
-};
+const AdminPage = memo<Props & WithRouterProps>(
+  ({ className, children, location: { pathname } }) => {
+    const [adminFullWidth, setAdminFullWidth] = useState<boolean>(false);
+    const [adminNoPadding, setAdminNoPadding] = useState<boolean>(false);
 
-class AdminPage extends PureComponent<Props & WithRouterProps, State> {
-  FullWidth: IGlobalStateService<IAdminFullWidth>;
-  NoPadding: IGlobalStateService<IAdminNoPadding>;
-  subscriptions: Subscription[];
+    let FullWidth = globalState.init('AdminFullWidth', { enabled: false });
+    let NoPadding = globalState.init('AdminNoPadding', { enabled: false });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      adminFullWidth: false,
-      adminNoPadding: false,
-    };
-    this.FullWidth = globalState.init('AdminFullWidth', { enabled: false });
-    this.NoPadding = globalState.init('AdminNoPadding', { enabled: false });
-  }
+    useEffect(() => {
+      const subscriptions = [
+        FullWidth.observable.subscribe(({ enabled }) =>
+          setAdminFullWidth(enabled)
+        ),
+        NoPadding.observable.subscribe(({ enabled }) =>
+          setAdminNoPadding(enabled)
+        ),
+      ];
+      return subscriptions.forEach((subscription) =>
+        subscription.unsubscribe()
+      );
+    }, []);
 
-  componentDidMount() {
-    const FullWidth$ = this.FullWidth.observable;
-    const NoPadding$ = this.NoPadding.observable;
-
-    this.subscriptions = [
-      FullWidth$.subscribe(({ enabled }) =>
-        this.setState({ adminFullWidth: enabled })
-      ),
-      NoPadding$.subscribe(({ enabled }) =>
-        this.setState({ adminNoPadding: enabled })
-      ),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const {
-      children,
-      className,
-      location: { pathname },
-    } = this.props;
-
-    const adminNoPadding =
-      this.state.adminNoPadding || pathname.includes('admin/dashboard');
-    const adminFullWidth =
-      this.state.adminFullWidth === true ||
+    const noPadding = adminNoPadding || pathname.includes('admin/dashboard');
+    const fullWidth =
+      adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard');
-    const adminWhiteBg =
+    const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard');
 
     return (
       <>
-        <Container className={`${className} ${adminWhiteBg ? 'whiteBg' : ''}`}>
+        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn
-            className={`${adminFullWidth && 'fullWidth'} ${
-              adminNoPadding && 'noPadding'
+            className={`${fullWidth && 'fullWidth'} ${
+              noPadding && 'noPadding'
             }`}
           >
             {children}
@@ -158,6 +129,6 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
       </>
     );
   }
-}
+);
 
 export default withRouter<Props>(AdminPage);
