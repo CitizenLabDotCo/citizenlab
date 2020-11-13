@@ -172,9 +172,10 @@ const FolderContent = styled.div`
 const ContentHeaderHeight = 39;
 const ContentHeaderBottomMargin = 13;
 
-const ContentHeader = styled.div`
+const ContentHeader = styled.div<{ hasLabel: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ hasLabel }) =>
+    hasLabel ? 'space-between' : 'flex-end'};
   align-items: center;
   padding-right: 0;
   padding-left: 0;
@@ -315,7 +316,7 @@ const ProjectFolderCard = memo<Props>(
 
     const isArchived = publication.attributes.publication_status === 'archived';
     const contentHeader = (
-      <ContentHeader className={`${size} hasContent`}>
+      <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
           <ContentHeaderLabel className="e2e-project-card-archived-label">
             <FormattedMessage {...messages.archived} />
