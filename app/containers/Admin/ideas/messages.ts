@@ -66,7 +66,7 @@ export default defineMessages({
   deleteButtonTooltip: {
     id: 'app.containers.admin.ideas.all.deleteButtonTooltip',
     defaultMessage:
-      'Cannot delete a status that has been assigned to ideas. Make sure to reassign your ideas to another status first.',
+      'Status currently assigned to a post cannot be deleted. You can remove/change a status from a post in the idea manager.',
   },
   lockedStatusTooltip: {
     id: 'app.containers.admin.ideas.all.lockedStatusTooltip',
