@@ -40,7 +40,7 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 `;
 
 const LabelText = styled.span`
-  color: ${colors.adminTextColor};
+  color: ${colors.label};
 `;
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {

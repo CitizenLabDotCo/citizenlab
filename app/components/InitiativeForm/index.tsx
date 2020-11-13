@@ -89,6 +89,7 @@ interface State {
 
 class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   static titleMinLength = 10;
+  static titleMaxLength = 72;
   static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 500;
   static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
 
@@ -159,15 +160,23 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       const title = title_multiloc
         ? title_multiloc[this.props.locale]
         : undefined;
+
       if (
         title &&
-        title.length < InitiativeForm.titleMinLength &&
-        title.length > 0
+        title.length > 0 &&
+        title.length < InitiativeForm.titleMinLength
       ) {
-        return { message: messages.titleLengthError };
+        return { message: messages.titleMinLengthError };
+      } else if (
+        title &&
+        title.length > 0 &&
+        title.length > InitiativeForm.titleMaxLength
+      ) {
+        return { message: messages.titleMaxLengthError };
       } else if (!title || title === '') {
         return { message: messages.titleEmptyError };
       }
+
       return undefined;
     },
     body_multiloc: () => {
@@ -220,6 +229,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
   handleOnPublish = () => {
     const { errors, touched } = this.state;
+
     if (Object.values(errors).every((val) => val === undefined)) {
       this.props.onPublish();
     } else {
@@ -233,6 +243,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           () => undefined
         )();
       });
+
       this.setState({ touched: newTouched, errors: newErrors });
 
       if (newErrors.title_multiloc && this.titleInputElement) {
@@ -358,7 +369,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <SectionField id="e2e-initiative-form-title-section">
               <FormLabel
                 labelMessage={messages.titleLabel}
-                subtextMessage={messages.titleLabelSubtext}
+                subtextMessage={messages.titleLabelSubtext2}
               >
                 <Input
                   type="text"
@@ -369,9 +380,13 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   onBlur={this.onBlur('title_multiloc')}
                   autocomplete="off"
                   setRef={this.handleTitleInputSetRef}
+                  maxCharCount={72}
                 />
                 {touched.title_multiloc && errors.title_multiloc ? (
-                  <Error message={errors.title_multiloc.message} />
+                  <Error
+                    id="e2e-proposal-title-error"
+                    message={errors.title_multiloc.message}
+                  />
                 ) : (
                   apiErrors &&
                   apiErrors.title_multiloc && (

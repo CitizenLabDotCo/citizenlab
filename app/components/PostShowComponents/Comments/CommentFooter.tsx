@@ -29,7 +29,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -38,6 +38,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Left = styled.ul`
@@ -46,6 +50,10 @@ const Left = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   & li {
     margin-right: 12px;
@@ -58,9 +66,28 @@ const Left = styled.ul`
       margin-left: 12px;
     }
 
+    ${isRtl`
+        margin-left: 0;
+        margin-right: 12px;
+
+        &:after {
+          content: '';
+        }
+
+        &:before {
+          color: ${colors.label};
+          font-size: ${fontSizes.small}px;
+          font-weight: 400;
+          content: '•';
+          margin-right: 12px;
+        }
+    `}
+
     &:last-child {
-      &:after {
+      &:after,
+      &:before {
         margin-left: 0px;
+        margin-right: 0px;
         content: '';
       }
     }
