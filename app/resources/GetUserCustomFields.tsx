@@ -1,8 +1,9 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import {
-  customFieldsForUsersStream,
+  userCustomFieldsStream,
   IUserCustomFieldData,
+  IInputType,
 } from 'services/userCustomFields';
 import { isBoolean } from 'lodash-es';
 
@@ -11,8 +12,6 @@ interface InputProps {}
 type children = (
   renderProps: GetUserCustomFieldsChildProps
 ) => JSX.Element | null;
-
-type IInputType = 'select' | 'multiselect' | 'checkbox' | 'number';
 
 interface Props extends InputProps {
   children?: children;
@@ -42,7 +41,7 @@ export default class GetCustomFields extends React.Component<Props, State> {
   componentDidMount() {
     const { inputTypes, cache } = this.props;
     const cacheStream = isBoolean(cache) ? cache : true;
-    const userCustomFields$ = customFieldsForUsersStream({
+    const userCustomFields$ = userCustomFieldsStream({
       cacheStream,
       queryParameters: { input_types: inputTypes },
     }).observable;

@@ -1,20 +1,27 @@
-import React, { memo } from 'react';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import React from 'react';
+import TextAreaMultilocWithLocaleSwitcher, {
+  Props,
+} from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import { FieldProps } from 'formik';
 
-const FormikTextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
-  const handleOnChange = (newValue) => {
-    props.form.setFieldTouched(props.field.name);
-    props.form.setFieldValue(props.field.name, newValue);
+class FormikTextAreaMultilocWithLocaleSwitcher extends React.Component<
+  FieldProps & Props
+> {
+  handleOnChange = (newValue) => {
+    this.props.form.setFieldTouched(this.props.field.name);
+    this.props.form.setFieldValue(this.props.field.name, newValue);
   };
 
-  const { value } = props.field;
-  return (
-    <TextAreaMultilocWithLocaleSwitcher
-      {...props}
-      valueMultiloc={value}
-      onChange={handleOnChange}
-    />
-  );
-});
+  render() {
+    const { value } = this.props.field;
+    return (
+      <TextAreaMultilocWithLocaleSwitcher
+        {...this.props}
+        valueMultiloc={value}
+        onChange={this.handleOnChange}
+      />
+    );
+  }
+}
 
 export default FormikTextAreaMultilocWithLocaleSwitcher;

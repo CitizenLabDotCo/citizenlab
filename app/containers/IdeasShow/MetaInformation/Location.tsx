@@ -6,9 +6,15 @@ import { darken } from 'polished';
 import { Icon, colors } from 'cl2-component-library';
 import ModalWithMap from './ModalWithMap';
 
+import { isRtl } from 'utils/styleUtils';
+
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIcon = styled(Icon)`
@@ -16,6 +22,10 @@ const StyledIcon = styled(Icon)`
   height: 21px;
   fill: ${colors.label};
   margin-right: 8px;
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 8px;
+  `}
 `;
 
 const OpenMapModalButton = styled.button`

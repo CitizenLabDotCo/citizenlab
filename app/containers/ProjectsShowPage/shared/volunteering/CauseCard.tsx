@@ -32,6 +32,7 @@ import {
   media,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -40,6 +41,10 @@ const Container = styled.div`
   display: flex;
   align-items: stretch;
   ${defaultCardStyle};
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -63,6 +68,11 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 40px;
+
+  ${isRtl`
+  margin-left: 0;
+  margin-right: 40px;
+  `}
 
   ${media.smallerThanMinTablet`
     margin-left: 0px;
@@ -128,6 +138,11 @@ const VolunteersCount = styled.div`
   padding-right: 10px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: rgba(0, 0, 0, 0.75);
+
+  ${isRtl`
+    left: auto;
+    right: 10px;
+  `}
 `;
 
 const VolunteersCountIcon = styled(Icon)`
@@ -146,6 +161,10 @@ const VolunteersCountText = styled.span`
 
 const ActionWrapper = styled.div`
   display: flex;
+
+  ${isRtl`
+   flex-direction: row-reverse;
+ `}
 `;
 
 interface Props {

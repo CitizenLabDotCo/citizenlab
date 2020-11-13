@@ -1,8 +1,6 @@
 // libraries
 import React, { Component } from 'react';
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
+import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -19,7 +17,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Toggle, Badge } from 'cl2-component-library';
+import { Toggle, Badge, IconTooltip } from 'cl2-component-library';
 
 // services
 import {
@@ -31,6 +29,14 @@ import {
   isHiddenField,
 } from 'services/userCustomFields';
 
+// resources
+import GetUserCustomFields, {
+  GetUserCustomFieldsChildProps,
+} from 'resources/GetUserCustomFields';
+
+// styling
+import { colors } from 'utils/styleUtils';
+
 const Buttons = styled.div`
   display: flex;
   align-items: center;
@@ -38,6 +44,19 @@ const Buttons = styled.div`
 
 const StyledBadge = styled(Badge)`
   margin-left: 10px;
+`;
+
+const StyledTextCell = styled(TextCell)`
+  display: flex;
+`;
+
+const TextCellContent = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
 `;
 
 interface State {
@@ -157,6 +176,9 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   };
 
   render() {
+    const {
+      intl: { formatMessage },
+    } = this.props;
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
     let lastItem = false;
@@ -168,79 +190,101 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
-              linkTo="/admin/settings/registration/custom_fields/new"
+              linkTo="/admin/settings/registration/custom-fields/new"
             >
-              <FormattedMessage {...messages.addFieldButton} />
+              <FormattedMessage {...messages.addAFieldButton} />
             </Button>
           </ButtonWrapper>
         </FeatureFlag>
 
         <List key={listItems.length}>
-          {listItems.map((field, index) => {
-            if (index === listItemsLength - 1) {
-              lastItem = true;
-            }
-            return (
-              <SortableRow
-                key={field.id}
-                id={field.id}
-                className="e2e-custom-registration-field-row"
-                index={index}
-                lastItem={lastItem}
-                moveRow={this.handleDragRow}
-                dropRow={this.handleDropRow}
-              >
-                <Toggle
-                  className={`e2e-custom-registration-field-toggle ${
-                    field.attributes.enabled ? 'enabled' : 'disabled'
-                  }`}
-                  checked={field.attributes.enabled}
-                  disabled={isHiddenField(field)}
-                  onChange={this.handleOnEnabledToggle(field)}
-                />
-                <TextCell className="expand">
-                  <T value={field.attributes.title_multiloc} />
-                  {field.attributes.required && (
-                    <StyledBadge className="inverse">
-                      <FormattedMessage {...messages.required} />
-                    </StyledBadge>
+          <>
+            {listItems.map((field, index) => {
+              if (index === listItemsLength - 1) {
+                lastItem = true;
+              }
+              return (
+                <SortableRow
+                  key={field.id}
+                  id={field.id}
+                  className="e2e-custom-registration-field-row"
+                  index={index}
+                  lastItem={lastItem}
+                  moveRow={this.handleDragRow}
+                  dropRow={this.handleDropRow}
+                >
+                  <Toggle
+                    className={`e2e-custom-registration-field-toggle ${
+                      field.attributes.enabled ? 'enabled' : 'disabled'
+                    }`}
+                    checked={field.attributes.enabled}
+                    disabled={isHiddenField(field)}
+                    onChange={this.handleOnEnabledToggle(field)}
+                  />
+                  <StyledTextCell className="expand">
+                    <TextCellContent>
+                      <T value={field.attributes.title_multiloc} />
+                      {field.attributes.code === 'domicile' && (
+                        <StyledIconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.domicileManagementInfo}
+                              values={{
+                                geographicAreasTabLink: (
+                                  <Link to={'/admin/settings/areas'}>
+                                    {formatMessage(
+                                      messages.geographicAreasTabLinkText
+                                    )}
+                                  </Link>
+                                ),
+                              }}
+                            />
+                          }
+                        />
+                      )}
+                    </TextCellContent>
+                    {field.attributes.required && (
+                      <StyledBadge className="inverse" color={colors.clRed}>
+                        <FormattedMessage {...messages.required} />
+                      </StyledBadge>
+                    )}
+                  </StyledTextCell>
+                  {isBuiltInField(field) && (
+                    <div>
+                      <FormattedMessage {...messages.defaultField} />
+                    </div>
                   )}
-                </TextCell>
-                {isBuiltInField(field) && (
-                  <div>
-                    <FormattedMessage {...messages.systemField} />
-                  </div>
-                )}
-                {isHiddenField(field) && (
-                  <div>
-                    <FormattedMessage {...messages.hiddenField} />
-                  </div>
-                )}
-                <Buttons>
-                  {!isBuiltInField(field) && !isHiddenField(field) && (
-                    <Button
-                      className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                      onClick={this.handleOnDeleteClick(field.id)}
-                      buttonStyle="text"
-                      icon="delete"
-                    >
-                      <FormattedMessage {...messages.deleteButtonLabel} />
-                    </Button>
+                  {isHiddenField(field) && (
+                    <div>
+                      <FormattedMessage {...messages.hiddenField} />
+                    </div>
                   )}
-                  {!isHiddenField(field) && (
-                    <Button
-                      className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                      linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
-                      buttonStyle="secondary"
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
-                  )}
-                </Buttons>
-              </SortableRow>
-            );
-          })}
+                  <Buttons>
+                    {!isBuiltInField(field) && !isHiddenField(field) && (
+                      <Button
+                        className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                        onClick={this.handleOnDeleteClick(field.id)}
+                        buttonStyle="text"
+                        icon="delete"
+                      >
+                        <FormattedMessage {...messages.deleteButtonLabel} />
+                      </Button>
+                    )}
+                    {!isHiddenField(field) && (
+                      <Button
+                        className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                        linkTo={`/admin/settings/registration/custom-fields/${field.id}/field-settings`}
+                        buttonStyle="secondary"
+                        icon="edit"
+                      >
+                        <FormattedMessage {...messages.editButtonLabel} />
+                      </Button>
+                    )}
+                  </Buttons>
+                </SortableRow>
+              );
+            })}
+          </>
         </List>
       </>
     );

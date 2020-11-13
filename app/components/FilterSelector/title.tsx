@@ -8,7 +8,7 @@ import { isPage } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Text = styled.span`
   color: ${colors.label};
@@ -28,6 +28,11 @@ const DropdownIcon = styled(Icon)`
   margin-left: 4px;
   margin-top: 4px;
   transition: all 100ms ease-out;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 4px;
+  `}
 `;
 
 const Container = styled.button`
@@ -39,6 +44,10 @@ const Container = styled.button`
   padding: 0;
   margin: 0;
   position: relative;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.adminpage {
     ${Text} {
