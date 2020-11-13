@@ -316,6 +316,11 @@ const ProjectFolderCard = memo<Props>(
     const isArchived = publication.attributes.publication_status === 'archived';
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`}>
+        {isArchived && (
+          <ContentHeaderLabel className="e2e-project-card-archived-label">
+            <FormattedMessage {...messages.archived} />
+          </ContentHeaderLabel>
+        )}
         <div>
           <MapIcon name="folder" ariaHidden />
           <MapIconDescription
@@ -324,18 +329,13 @@ const ProjectFolderCard = memo<Props>(
           >
             {numberOfProjectsInFolder}
           </MapIconDescription>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.numberOfProjectsInFolder}
+              values={{ numberOfProjectsInFolder }}
+            />
+          </ScreenReaderOnly>
         </div>
-        {isArchived && (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
-            <FormattedMessage {...messages.archived} />
-          </ContentHeaderLabel>
-        )}
-        <ScreenReaderOnly>
-          <FormattedMessage
-            {...messages.numberOfProjectsInFolder}
-            values={{ numberOfProjectsInFolder }}
-          />
-        </ScreenReaderOnly>
       </ContentHeader>
     );
 
