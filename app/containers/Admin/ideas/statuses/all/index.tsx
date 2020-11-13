@@ -2,7 +2,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
-import { parseInt } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
