@@ -134,6 +134,21 @@ const VoteIconContainer = styled.div<{
           height: 50px;
         `
       : css``}
+
+    &.compact {
+      border: none;
+      ${(props) => {
+        let size = `width: 24px; height: 24px;`;
+        if (props.size === '2') {
+          size = `width: 28px; height: 28px;`;
+        } else if (props.size === '3') {
+          size = `width: 32px; height: 32px;`;
+        }
+        return css`
+          ${size}
+        `;
+      }}
+    }
 `;
 
 const VoteIcon = styled(Icon)<{
@@ -238,6 +253,9 @@ const Upvote = styled(Vote)`
     ${(props) =>
       props.active &&
       `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
+    &.compact {
+      background: none;
+    }
   }
 
   ${VoteIcon} {
@@ -245,6 +263,9 @@ const Upvote = styled(Vote)`
     ${(props) =>
       props.active &&
       (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
+    &.compact {
+      ${(props) => props.active && props.enabled && `fill: ${colors.clGreen}`}
+    }
   }
 
   ${VoteCount} {
@@ -273,12 +294,18 @@ const Downvote = styled(Vote)`
     ${(props) =>
       props.active &&
       `border-color: ${colors.clRed}; background: ${colors.clRed};`}
+    &.compact {
+      background: none;
+    }
   }
 
   ${VoteIcon} {
     margin-top: 4px;
     ${(props) =>
       props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
+    &.compact {
+      ${(props) => props.active && props.enabled && `fill: ${colors.clRed}`}
+    }
   }
 
   ${VoteCount} {
@@ -308,7 +335,7 @@ interface Props {
   ariaHidden?: boolean;
   className?: string;
   showDownvote: boolean;
-  style: 'border' | 'shadow';
+  style: 'border' | 'shadow' | 'compact';
 }
 
 interface State {
@@ -839,6 +866,7 @@ class VoteControl extends PureComponent<
               votingEnabled={upvotingEnabled}
             >
               <VoteIcon
+                className={style}
                 name="upvote"
                 size={size}
                 enabled={upvotingEnabled}
@@ -874,6 +902,7 @@ class VoteControl extends PureComponent<
               >
                 <VoteIcon
                   name="downvote"
+                  className={style}
                   size={size}
                   enabled={downvotingEnabled}
                   ariaHidden

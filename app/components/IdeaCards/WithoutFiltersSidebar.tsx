@@ -7,7 +7,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard/Compact';
 import IdeasMap from 'components/IdeasMap';
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
@@ -176,12 +176,12 @@ const IdeasList = styled.div`
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(100% * (1 / 3) - 26px);
-  margin-left: 13px;
-  margin-right: 13px;
+  width: calc(50% - 20px);
+  margin-left: 10px;
+  margin-right: 10px;
 
   ${media.smallerThanMaxTablet`
-    width: calc(100% * (1/2) - 26px);
+    width: calc(50% - 20px);
   `};
 
   ${media.smallerThanMinTablet`
