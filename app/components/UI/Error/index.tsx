@@ -267,10 +267,10 @@ export default class Error extends PureComponent<Props, State> {
 
                       if (errorMessage) {
                         // Variables for inside messages.js
-                        const value = get(error, 'value', null);
-                        const row = get(error, 'row', null);
-                        const rows = get(error, 'rows', null);
-                        const payload = get(error, 'payload', null);
+                        const payload = error?.payload ?? null;
+                        const value = error?.value ?? null;
+                        const row = error?.row ?? null;
+                        const rows = error?.rows ?? null;
 
                         let values = {
                           row: <strong>{row}</strong>,
