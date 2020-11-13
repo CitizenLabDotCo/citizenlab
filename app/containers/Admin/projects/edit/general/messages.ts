@@ -33,11 +33,6 @@ export default defineMessages({
     defaultMessage:
       'Choose whether this project is "draft", "published" or "archived" (not shown, shown and active, shown but inactive)',
   },
-  archiveStatusWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.generalTab.archiveStatusWarning',
-    defaultMessage:
-      'If you archive this project, it will be moved to the bottom of the homepage. You can reorder it again in the project overview.',
-  },
   draftStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
     defaultMessage: 'Draft',

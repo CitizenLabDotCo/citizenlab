@@ -213,7 +213,6 @@ interface State {
   submitState: ISubmitState;
   processingDelete: boolean;
   deleteError: string | null;
-  isArchiveWarningShown: boolean;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -253,7 +252,6 @@ class AdminProjectEditGeneral extends PureComponent<
       submitState: 'disabled',
       processingDelete: false,
       deleteError: null,
-      isArchiveWarningShown: false,
     };
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -602,13 +600,7 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   handleStatusChange = (value: 'draft' | 'published' | 'archived') => {
-    const { project } = this.state;
-    const isArchiveWarningShown =
-      !isNilOrError(project) &&
-      value === 'archived' &&
-      project.data.attributes.publication_status !== value;
     this.setState(({ projectAttributesDiff }) => ({
-      isArchiveWarningShown,
       submitState: 'enabled',
       publicationStatus: value,
       projectAttributesDiff: {
@@ -783,7 +775,6 @@ class AdminProjectEditGeneral extends PureComponent<
       submitState,
       apiErrors,
       processingDelete,
-      isArchiveWarningShown,
     } = this.state;
     const {
       intl: { formatMessage },
@@ -865,9 +856,6 @@ class AdminProjectEditGeneral extends PureComponent<
                 className="e2e-projecstatus-archived"
                 label={<FormattedMessage {...messages.archivedStatus} />}
               />
-              {isArchiveWarningShown && (
-                <Warning text={formatMessage(messages.archiveStatusWarning)} />
-              )}
             </StyledSectionField>
 
             <StyledSectionField>
