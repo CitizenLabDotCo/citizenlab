@@ -105,7 +105,7 @@ export default defineMessages({
   statusContextDescription: {
     id: 'app.containers.admin.ideas.form.statusContextDescription',
     defaultMessage:
-      'Select the option that better describes this status. By selecting one, you will help us analyze the ideas of your citizens and provide you with better insights.',
+      'Please select the category that best represents your status. This selection will help our analytics tool to more accurately process and analyze posts.',
   },
   proposedFieldCodeTitle: {
     id: 'app.containers.admin.ideas.form.proposedFieldCodeTitle',
@@ -121,7 +121,7 @@ export default defineMessages({
   },
   acceptedFieldCodeTitle: {
     id: 'app.containers.admin.ideas.acceptedFieldCodeTitle',
-    defaultMessage: 'Accepted',
+    defaultMessage: 'Approved',
   },
   implementedFieldCodeTitle: {
     id: 'app.containers.admin.ideas.form.implementedFieldCodeTitle',
@@ -129,7 +129,7 @@ export default defineMessages({
   },
   rejectedFieldCodeTitle: {
     id: 'app.containers.admin.ideas.form.rejectedFieldCodeTitle',
-    defaultMessage: 'Rejected',
+    defaultMessage: 'Not Selected',
   },
   otherFieldCodeTitle: {
     id: 'app.containers.admin.ideas.form.otherFieldCodeTitle',
@@ -137,34 +137,31 @@ export default defineMessages({
   },
   proposedFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.proposedFieldCodeDescription',
-    defaultMessage:
-      'The idea has just been received and yet to be processed or categorized',
+    defaultMessage: 'The post has been successfully submitted to the platform',
   },
   viewedFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.viewedFieldCodeDescription',
-    defaultMessage:
-      'The idea has been viewed by an admin but yet to be processed, or to enter a selection process.',
+    defaultMessage: 'The post has been viewed but has not yet been processed',
   },
   under_considerationFieldCodeDescription: {
     id:
       'app.containers.admin.ideas.form.under_considerationFieldCodeDescription',
-    defaultMessage:
-      'The idea is in an ongoing selection process and being considered by the city.',
+    defaultMessage: 'The post is under consideration.',
   },
   acceptedFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.acceptedFieldCodeDescription',
-    defaultMessage: 'The idea is officially accepted to be implemented.',
+    defaultMessage: 'The post has been selected for implementation.',
   },
   implementedFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.implementedFieldCodeDescription',
-    defaultMessage: 'The idea has officially been implemented.',
+    defaultMessage: 'The post has been implemented.',
   },
   rejectedFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.rejectedFieldCodeDescription',
-    defaultMessage: 'The idea is rejected for any reason.',
+    defaultMessage: 'The post was inegible or not selected to move forward.',
   },
   otherFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.otherFieldCodeDescription',
-    defaultMessage: "The status doesn't fit any of the avove options.",
+    defaultMessage: 'None of the above.',
   },
 });
