@@ -3,7 +3,7 @@ module Surveys::WebApi::V1::SurveyParticipationContextSerializer
 
   included do
     with_options if: Proc.new { |object|
-      object.is_participation_context?
+      object.participation_context?
     } do
       attribute :survey_embed_url
       attribute :survey_service
