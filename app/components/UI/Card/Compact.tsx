@@ -67,6 +67,9 @@ const Title = styled.h3`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 const Body = styled.div`

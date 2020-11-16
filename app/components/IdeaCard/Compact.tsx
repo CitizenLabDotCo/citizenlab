@@ -46,6 +46,9 @@ const Body = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 const Separator = styled.span`
