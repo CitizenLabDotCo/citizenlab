@@ -216,6 +216,7 @@ export class AdminProjectEdition extends PureComponent<
       },
       'survey-results': function surveyResultsTabHidden() {
         if (
+          participationMethod !== 'survey' ||
           !surveys_enabled ||
           !typeform_enabled ||
           (surveys_enabled &&
@@ -391,7 +392,7 @@ export class AdminProjectEdition extends PureComponent<
                 -1 && (
                 <Button
                   id="e2e-new-idea"
-                  buttonStyle="cl-blue-outlined"
+                  buttonStyle="cl-blue"
                   icon="idea"
                   linkTo={`/projects/${project.attributes.slug}/ideas/new`}
                   text={formatMessage(messages.addNewIdea)}

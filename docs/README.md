@@ -15,7 +15,16 @@
 - Project Topics table now updates if a topic is deleted or reordered.
 - Empty lines with formatting (like bold or italic) in a Quill editor are now removed if not used as paragraphs.
 
-## 2020-11-6
+## 2020-11-10
+
+### Added
+
+#### Integration of trial management into AdminHQ
+- The lifecycle of the trials created from AdminHQ and from the website has been unified.
+- After 14 days, a trial platform goes to Purgatory (`expired_trial`) and is no longer accessible. Fourteen days later, the expired trial will be removed altogether (at this point, there is no way back). 
+- The end date of a trial can be modified in AdminHQ (> Edit tenant > Internal tab).
+
+## 2020-11-06
 
 ### Added
 - Social sharing via WhatsApp
@@ -26,7 +35,7 @@
 - The project about section is visibile in mobile view again
 - Maps will no longer overflow on page resizes
 
-## 2020-11-5
+## 2020-11-05
 
 ### Added
 - Reordering of and cleaner interface for managing custom registration field options
@@ -41,7 +50,7 @@
 ### Fixed
 - The automatic scroll to the survey on survey project page
 
-## 2020-11-3
+## 2020-11-03
 
 ### Fixed
 - Fixed broken date picker for phase start and end date

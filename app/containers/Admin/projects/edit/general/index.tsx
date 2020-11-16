@@ -743,7 +743,10 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   validateSlug = (slug: string) => {
-    const slugRexEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    // Default slug rules including arabic character ranges
+    const slugRexEx = RegExp(
+      /^[a-z0-9\u0600-\u06FF\u0750-\u077F]+(?:-[a-z0-9\u0600-\u06FF\u0750-\u077F]+)*$/
+    );
     const isSlugValid = slugRexEx.test(slug);
 
     this.setState({
