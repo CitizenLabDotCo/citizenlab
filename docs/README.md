@@ -2,6 +2,16 @@
 
 ## 2020-11-16
 
+### Added
+- Admins can now select the default sort order for ideas in ideation and participatory budgeting projects, per project
+
+### Changed
+- The default sort order of ideas is now "Trending" instead of "Random" for every project if left unchanged
+
+### Fixed
+- Custom project slugs can now contain alphanumeric Arabic characters
+
+
 ## 2020-11-6
 
 ### Added
