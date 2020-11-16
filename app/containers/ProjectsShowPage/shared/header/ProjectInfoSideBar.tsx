@@ -135,16 +135,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
   }, [phases]);
 
-  const upcomingEvents = !isNilOrError(events)
-    ? events.filter((event) => {
-        const eventTime = pastPresentOrFuture([
-          event.attributes.start_at,
-          event.attributes.end_at,
-        ]);
-        return eventTime === 'present' || eventTime === 'future';
-      })
-    : [];
-
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase: boolean = true) => (
       event: FormEvent
@@ -231,16 +221,21 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {projectType === 'timeline' &&
               !isNilOrError(phases) &&
               phases.length > 1 && (
-                <ListItem id="e2e-project-sidebar-phases-count">
+                <ListItem>
                   <ListItemIcon
                     ariaHidden
                     name="timeline"
                     className="timeline"
                   />
-                  <FormattedMessage
-                    {...messages.xPhases}
-                    values={{ phasesCount: phases.length }}
-                  />
+                  <ListItemButton
+                    id="e2e-project-sidebar-phases-count"
+                    onClick={scrollTo('project-timeline')}
+                  >
+                    <FormattedMessage
+                      {...messages.xPhases}
+                      values={{ phasesCount: phases.length }}
+                    />
+                  </ListItemButton>
                 </ListItem>
               )}
             {((projectType === 'continuous' &&
@@ -333,7 +328,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 </ListItemButton>
               </ListItem>
             )}
-            {upcomingEvents.length > 0 && (
+            {!isNilOrError(events) && events.length > 0 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="event" />
                 <ListItemButton
@@ -341,8 +336,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   onClick={scrollTo('project-events', false)}
                 >
                   <FormattedMessage
-                    {...messages.xUpcomingEvents}
-                    values={{ upcomingEventsCount: upcomingEvents.length }}
+                    {...messages.xEvents}
+                    values={{ eventsCount: events.length }}
                   />
                 </ListItemButton>
               </ListItem>
