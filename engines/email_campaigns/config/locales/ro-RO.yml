@@ -53,51 +53,51 @@ ro:
       "manual": Mesaj oficial - toți utilizatorii
       "admin_rights_received": Drepturi de administrare primite - administratori
       "comment_deleted_by_admin": Ștergerea comentariului dvs. - toți utilizatorii
-      "comment_marked_as_spam": Raportează comentariul ca mesaj spam - administratori și manageri de proiect
+      "comment_marked_as_spam": Comentează raportul spam - administratori și manageri de proiect
       "comment_on_your_comment": Răspundeți la comentariul dvs. - toți utilizatorii
       "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
       "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
       "first_idea_published": Publicarea primei tale idei - toți utilizatorii
       "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
-      "idea_marked_as_spam": Raportează ideea ca mesaj spam - administratori și manageri de proiect
+      "idea_marked_as_spam": Raport spam de idei - administratori și manageri de proiect
       "idea_published": Publicarea ideii dvs. - toți utilizatorii
       "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
-      "initiative_marked_as_spam": Proposal spam report - admins
+      "initiative_marked_as_spam": Raport spam al propunerii - administratori
       "initiative_published": Publicarea propunerii dvs. - toți utilizatorii
       "invite_received": Invitație - toți utilizatorii
       "invite_reminder": Memento invitație - toți utilizatorii
       "mention_in_comment": Menționează într-un comentariu - toți utilizatorii
       "mention_in_official_feedback": Menționați într-o actualizare - toți utilizatorii
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "new_comment_for_admin": Comentariu nou - administratori și manageri de proiect
+      "new_comment_on_commented_idea": Comentariu nou la o idee pe care ați comentat-o - toți utilizatorii
+      "new_comment_on_commented_initiative": Comentariu nou la o propunere pe care ați comentat-o - toți utilizatorii
+      "new_comment_on_voted_idea": Comentariu nou la o idee pentru care ați votat-o - toți utilizatorii
+      "new_comment_on_voted_initiative": Comentariu nou la o propunere pentru care ați votat - toți utilizatorii
+      "new_idea_for_admin": Idee nouă - administratori și manageri de proiect
+      "new_initiative_for_admin": Propunere nouă - administratori
+      "official_feedback_on_commented_idea": Actualizați o idee pe care ați comentat-o - toți utilizatorii
+      "official_feedback_on_commented_initiative": Actualizați o propunere pe care ați comentat-o - toți utilizatorii
+      "official_feedback_on_voted_idea": Actualizați o idee pe care ați votat-o - toți utilizatorii
+      "official_feedback_on_voted_initiative": Actualizați o propunere pe care ați votat-o - toți utilizatorii
+      "official_feedback_on_your_idea": Actualizați-vă ideea - toți utilizatorii
+      "official_feedback_on_your_initiative": Actualizați propunerea dvs. - toți utilizatorii
+      "password_reset": Resetare parolă - toți utilizatorii
+      "project_moderation_rights_received": Drepturi de moderare a proiectului primite - manageri de proiect
+      "project_phase_started": Faza proiectului nou - toți utilizatorii
+      "project_phase_upcoming": Faza următoare a noului proiect - administratori și manageri de proiect
+      "status_change_of_commented_idea": Schimbarea stării unei idei pe care ați comentat-o - toți utilizatorii
+      "status_change_of_commented_initiative": Modificarea stării unei propuneri pe care ați comentat-o - toți utilizatorii
+      "status_change_of_voted_idea": Schimbarea stării unei idei pe care ați votat-o - toți utilizatorii
+      "status_change_of_voted_initiative": Modificarea stării unei propuneri pe care ați votat-o - toți utilizatorii
+      "status_change_of_your_idea": Schimbarea stării ideii dvs. - toți utilizatorii
+      "status_change_of_your_initiative": Modificarea stării propunerii dvs. - toți utilizatorii
+      "threshold_reached_for_admin": Propunerea a atins pragul de vot - administratori
+      "welcome": Utilizator nou - administratori
+      "admin_digest": Prezentare săptămânală - administratori
+      "moderator_digest": Prezentare săptămânală - manageri de proiect
+      "assignee_digest": Prezentare săptămânală a ideilor atribuite - administratori și manageri de proiect
+      "user_digest": Prezentare săptămânală - toți utilizatorii
+      "your_proposed_initiatives_digest": Prezentare săptămânală a propriilor dvs. propuneri - toți utilizatorii
     footer:
       "link_privacy_policy": "Politica de confidențialitate"
       "link_terms_conditions": "Termeni și condiții"
@@ -109,5 +109,5 @@ ro:
       "cta_join_platform": "Descoperiți platforma"
       "subject": "Bine ați venit pe platforma %{organizationName}"
       "main_header": "Bine ați venit!"
-      "message_welcome": "Felicitări, v-ați înscris cu succes pe platforma de participare a %{organizationName}. Acum puteți descoperi platforma și vă puteți face vocea auzită. Puteți adăuga, de asemenea, o imagine de profil și o scurtă descriere pentru a spune celorlalți cine sunteți."
+      "message_welcome": "Felicitări, v-ați înscris cu succes pe platforma de bugetare participativă a %{organizationName}. Acum puteți descoperi platforma și vă puteți face vocea auzită. Puteți adăuga, de asemenea, o imagine de profil și o scurtă descriere pentru a le spune celorlalți cine sunteți."
       "preheader": "Iată ce puteți face pe platforma %{organizationName}"
