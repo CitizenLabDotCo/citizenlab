@@ -417,13 +417,12 @@ resource "Ideas" do
       example_request 'XLSX export by project' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        label_col = worksheet.map {|col| col.cells[3].value}
+        label_col = worksheet.map {|col| col.cells[4].value}
         _, *labels = label_col
-        debugger
-        expect(labels).to match_array [1,1,0]
-        item_col = worksheet.map {|col| col.cells[4].value}
+        expect(labels).to match_array([1,1,0])
+        item_col = worksheet.map {|col| col.cells[3].value}
         _, *items = item_col
-        expect(items).to match_array [1,0,0]
+        expect(items).to match_array([1,0,0])
         expect(worksheet.count).to eq (@selected_ideas.size + 1)
       end
     end
