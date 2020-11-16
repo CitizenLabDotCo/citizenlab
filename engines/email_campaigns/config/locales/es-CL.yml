@@ -98,3 +98,16 @@ es-CL:
       "assignee_digest": Resumen semanal de ideas asignadas - administradores y administradores de proyecto
       "user_digest": 'Resumen semanal: todos los usuarios'
       "your_proposed_initiatives_digest": 'Resumen semanal de tus propias propuestas: todos los usuarios'
+    footer:
+      "link_privacy_policy": "Privacy Policy"
+      "link_terms_conditions": "Terms & Conditions"
+      "link_unsubscribe": "Unsubscribe"
+      "powered_by": "Powered by"
+      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "unsubscribe_text": "unsubscribe"
+    welcome:
+      "cta_join_platform": "Discover the platform"
+      "subject": "Welcome to the platform of %{organizationName}"
+      "main_header": "Welcome!"
+      "message_welcome": "Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are."
+      "preheader": "Here's what you can do on the platform of %{organizationName}"
