@@ -99,15 +99,15 @@ ar:
       "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "سياسة الخصوصيّة"
+      "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
       "link_unsubscribe": "إلغاء الاشتراك"
-      "powered_by": "بواسطة"
-      "statement": "رسالة البريد الإلكتروني هذه مرسلة إليك من قِبل CitizenLab، بالنيابة عن %{organizationName}، لأنك مستخدم مسجّل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا كنت لا تريد استقبال هذه الرسائل فيما بعد."
+      "powered_by": "مشغّل بواسطة"
+      "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
       "unsubscribe_text": "إلغاء الاشتراك"
     welcome:
-      "cta_join_platform": "استكشف المنصّة"
-      "subject": "مرحباً بك في منصّة %{organizationName}"
-      "main_header": "مرحباً!"
-      "message_welcome": "تهانينا، لقد قمت بالتسجيل في منصّة المشاركة لدى %{organizationName}. يمكنك الآن استكشاف المنصّة والتعبير عن نفسك. يمكنك أيضاً إضافة صورة شخصيّة ونبذة مختصرة، لتعريف الآخرين بنفسك."
-      "preheader": "إليك ما يمكنك فعله على منصّة %{organizationName}"
+      "cta_join_platform": "استكشف المنصة"
+      "subject": "مرحبًا بك في المنصة الخاصة بـ %{organizationName}"
+      "main_header": "مرحبًا!"
+      "message_welcome": "تهانينا لك، لقد قمت بالتسجيل في منصة المشاركة الخاصة بـ %{organizationName} بنجاح. يمكنك الآن استكشاف المنصة وجعل صوتك مسموعًا. يمكنك أيضًا إضافة صورة لملف التعريف ووصف قصير لتعريف الآخرين بك."
+      "preheader": "إليك ما يمكنك القيام به على المنصة الخاصة بـ %{organizationName}"
