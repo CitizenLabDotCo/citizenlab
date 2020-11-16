@@ -15,11 +15,11 @@ import {
 
 const Container = styled(Link)`
   width: 100%;
-  height: 174px;
+  height: 212px;
   margin-bottom: 24px;
   cursor: pointer;
   display: flex;
-  padding: 16px;
+  padding: 24px;
   align-items: center;
   ${defaultCardStyle};
 
@@ -29,8 +29,8 @@ const Container = styled(Link)`
 `;
 
 const ImageWrapper = styled.div`
-  width: 142px;
-  height: 142px;
+  width: 162px;
+  height: 162px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,7 +48,7 @@ const ContentWrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: 142px;
+  height: 162px;
   margin-left: 20px;
 `;
 
