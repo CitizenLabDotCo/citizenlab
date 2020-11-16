@@ -7,7 +7,7 @@ class Project < ApplicationRecord
 
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
-  
+
   has_many :projects_topics, dependent: :destroy
   has_many :topics, through: :projects_topics
   has_many :areas_projects, dependent: :destroy
@@ -39,8 +39,8 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true
   validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
-  validates :description_preview_multiloc, json: { 
-    schema: DESCRIPTION_PREVIEW_JSON_SCHEMA, 
+  validates :description_preview_multiloc, json: {
+    schema: DESCRIPTION_PREVIEW_JSON_SCHEMA,
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
     options: {
       errors_as_objects: true
@@ -93,8 +93,8 @@ class Project < ApplicationRecord
     where.not(process_type: 'timeline')
   }
 
-  scope :ordered, -> { 
-    includes(:admin_publication).order('admin_publications.ordering') 
+  scope :ordered, -> {
+    includes(:admin_publication).order('admin_publications.ordering')
   }
 
 
@@ -117,7 +117,7 @@ class Project < ApplicationRecord
   def set_folder! folder_id
     parent = if folder_id.present?
       AdminPublication.find_by!(
-        publication_id: folder_id, 
+        publication_id: folder_id,
         publication_type: ProjectFolder.name
         )
     else
@@ -159,7 +159,7 @@ class Project < ApplicationRecord
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 
@@ -169,7 +169,7 @@ class Project < ApplicationRecord
       self.description_preview_multiloc,
       %i{decoration link}
     )
-    self.description_preview_multiloc = service.remove_empty_paragraphs_multiloc(self.description_preview_multiloc)
+    self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_preview_multiloc)
   end
 
   def set_visible_to

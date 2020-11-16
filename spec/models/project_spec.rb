@@ -64,9 +64,7 @@ RSpec.describe Project, type: :model do
       })
       expect(project.description_multiloc).to eq({"en" => '<p>Test</p>This should be removed!<h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'})
     end
-    
   end
-
 
   describe "visible_to" do
     it "gets set to 'public' when not specified on create" do
@@ -82,12 +80,11 @@ RSpec.describe Project, type: :model do
     end
   end
 
-  describe "participation_mode" do
-    it "can be null for timeline projects" do 
+  describe "participation_method" do
+    it "can be null for timeline projects" do
       p = create(:project_with_current_phase)
       p.presentation_mode = nil
       expect(p.save).to eq true
     end
   end
-
 end
