@@ -132,7 +132,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const [shareModalOpened, setShareModalOpened] = useState(false);
 
   useEffect(() => {
-    setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
+    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
   const scrollTo = useCallback(
@@ -174,11 +174,16 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase?.attributes?.max_budget ||
       project?.attributes?.max_budget ||
       0;
+    const hasProjectEnded = currentPhase
+      ? pastPresentOrFuture([
+          currentPhase.attributes.start_at,
+          currentPhase.attributes.end_at,
+        ]) === 'past'
+      : false;
     const ideasCount =
       projectType === 'continuous'
         ? project.attributes.ideas_count
         : currentPhase?.attributes.ideas_count;
-    const lastPhase = getLastPhase(phases);
     const projectParticipationMethod =
       project?.attributes?.participation_method;
     const currentPhaseParticipationMethod =
@@ -193,17 +198,18 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
           </Title>
           <List>
             {projectType === 'timeline' &&
-              lastPhase &&
+              currentPhase &&
+              hasProjectEnded &&
               pastPresentOrFuture([
-                lastPhase.attributes.start_at,
-                lastPhase.attributes.end_at,
+                currentPhase.attributes.start_at,
+                currentPhase.attributes.end_at,
               ]) === 'past' && (
                 <ListItem id="e2e-project-sidebar-enddate">
                   <ListItemIcon ariaHidden name="finish_flag" />
                   <FormattedMessage
                     {...messages.endedOn}
                     values={{
-                      date: moment(lastPhase.attributes.end_at).format('ll'),
+                      date: moment(currentPhase.attributes.end_at).format('ll'),
                     }}
                   />
                 </ListItem>
@@ -229,7 +235,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   />
                   <ListItemButton
                     id="e2e-project-sidebar-phases-count"
-                    onClick={scrollTo('project-timeline')}
+                    onClick={scrollTo('project-timeline', false)}
                   >
                     <FormattedMessage
                       {...messages.xPhases}
@@ -240,7 +246,11 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'ideation') ||
-              currentPhaseParticipationMethod === 'ideation') &&
+              currentPhaseParticipationMethod === 'ideation' ||
+              (currentPhase &&
+                hasProjectEnded &&
+                currentPhase?.attributes.participation_method ===
+                  'ideation')) &&
               isNumber(ideasCount) && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="idea-filled" />
@@ -249,12 +259,26 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                       id="e2e-project-sidebar-ideas-count"
                       onClick={scrollTo('project-ideas')}
                     >
-                      <FormattedMessage
-                        {...(projectType === 'continuous'
-                          ? messages.xIdeas
-                          : messages.xIdeasInCurrentPhase)}
-                        values={{ ideasCount }}
-                      />
+                      {projectType === 'continuous' && (
+                        <FormattedMessage
+                          {...messages.xIdeas}
+                          values={{ ideasCount }}
+                        />
+                      )}
+                      {currentPhaseParticipationMethod === 'ideation' &&
+                        !hasProjectEnded && (
+                          <FormattedMessage
+                            {...messages.xIdeasInCurrentPhase}
+                            values={{ ideasCount }}
+                          />
+                        )}
+                      {currentPhaseParticipationMethod === 'ideation' &&
+                        hasProjectEnded && (
+                          <FormattedMessage
+                            {...messages.xIdeasInFinalPhase}
+                            values={{ ideasCount }}
+                          />
+                        )}
                     </ListItemButton>
                   ) : (
                     <FormattedMessage {...messages.noIdeasYet} />
