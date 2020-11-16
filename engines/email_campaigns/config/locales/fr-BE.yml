@@ -99,15 +99,15 @@ fr-BE:
       "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
     footer:
-      "link_privacy_policy": "Privacy Policy"
-      "link_terms_conditions": "Terms & Conditions"
-      "link_unsubscribe": "Unsubscribe"
+      "link_privacy_policy": "Politique de confidentialité"
+      "link_terms_conditions": "Conditions Générales d'Utilisation"
+      "link_unsubscribe": "Se désabonner"
       "powered_by": "Powered by"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
-      "unsubscribe_text": "unsubscribe"
+      "statement": "Cet e-mail vous a été envoyé par %{organizationName} via CitizenLab, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
+      "unsubscribe_text": "vous désabonner"
     welcome:
-      "cta_join_platform": "Discover the platform"
-      "subject": "Welcome to the platform of %{organizationName}"
-      "main_header": "Welcome!"
-      "message_welcome": "Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are."
-      "preheader": "Here's what you can do on the platform of %{organizationName}"
+      "cta_join_platform": "Découvrir la plateforme"
+      "subject": "Bienvenue sur la plateforme de %{organizationName}"
+      "main_header": "Bienvenue !"
+      "message_welcome": "Félicitations, vous vous êtes inscrit avec succès sur la plateforme de participation de %{organizationName}. Vous pouvez maintenant découvrir la plateforme et faire entendre votre voix. Vous pouvez également ajouter une photo de profil et une courte description pour dire aux autres qui vous êtes."
+      "preheader": "Voici ce que vous pouvez faire sur la plateforme de %{organizationName}"
