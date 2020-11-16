@@ -108,7 +108,7 @@ class Initiative < ApplicationRecord
       self.body_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 
@@ -125,7 +125,7 @@ class Initiative < ApplicationRecord
   def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
     if initial_status && self.initiative_status_changes.empty? && !self.draft?
-      self.initiative_status_changes.build(initiative_status: initial_status) 
+      self.initiative_status_changes.build(initiative_status: initial_status)
     end
   end
 

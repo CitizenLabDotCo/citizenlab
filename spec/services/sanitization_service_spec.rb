@@ -160,56 +160,77 @@ describe SanitizationService do
       features = []
       expect(service.sanitize(input, features)).to eq "<p>Test</p> Hello! This should be removed! Bye!\n"
     end
-
   end
 
-  describe "remove_empty_paragraphs" do
+  describe "remove_empty_trailing_tags" do
+    it "only removes one of the tags div, p, h2, h3, ol and ul" do
+      expect(service.class::EDITOR_STRUCTURE_TAGS).to match_array %w[div p h2 h3 ol ul]
+    end
+
     it "doesn't modify invalid html" do
       input = "<p Not</p>really <h1>valid</div>"
-      output = service.remove_empty_paragraphs(input)
+      output = service.remove_empty_trailing_tags(input)
       expect(output).to eq input
     end
 
-    it "deletes empty <p/> tag at the end" do
+    it "deletes empty structure tag at the end" do
       html = "<h1>Nice</h1><p></p>"
-      output = service.remove_empty_paragraphs(html)
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq "<h1>Nice</h1>"
     end
 
-    it "deletes <p/> tag that only contain line breaks at the end" do
-      html = "<h1>Nice</h1><p><br></p>"
-      output = service.remove_empty_paragraphs(html)
+    it "deletes structure tag that only contain line breaks at the end" do
+      html = "<h1>Nice</h1><h2><br></h2>"
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq "<h1>Nice</h1>"
     end
 
-    it "deletes empty <p/> tags at the end" do
-      html = "<h1>Nice</h1><p></p><p></p>"
-      output = service.remove_empty_paragraphs(html)
+    it "deletes empty structure tags at the end" do
+      html = "<h1>Nice</h1><p></p><ol></ol>"
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq "<h1>Nice</h1>"
     end
 
-    it "deletes empty <p/> tags that only contain line breaks at the end" do
-      html = "<h1>Nice</h1><p><br></p><p></p>"
-      output = service.remove_empty_paragraphs(html)
+    it "deletes empty structure tags that only contain line breaks at the end" do
+      html = "<h1>Nice</h1><p><br></p><h3></h3>"
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq "<h1>Nice</h1>"
     end
 
-    it "doesn't delete empty <p/> tags in between" do
+    it "doesn't delete empty structure tags in between" do
       html = "<p>Great</p><p></p><p>Really</p>"
-      output = service.remove_empty_paragraphs(html)
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
     end
 
-    it "doesn't delete empty <p/> tags at the start" do
+    it "doesn't delete empty structure tags at the start" do
       html = "<p></p><h1>Nice</h1>"
-      output = service.remove_empty_paragraphs(html)
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
     end
 
-    it "doesn't delete non-empty <p/> tags at the end" do
+    it "doesn't delete non-empty structure tags at the end" do
       html = "<h1>Nice</h1><p>Well<br>done</p>"
-      output = service.remove_empty_paragraphs(html)
+      output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
+    end
+
+    it 'deletes zero width spaces from the html' do
+      html = '<p>Nice&#65279;</p>'
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq '<p>Nice</p>'
+    end
+
+    it "deletes empty spaces in nested empty tags if they're last" do
+      html = '<p>Nice</p><p><br></p><p>Well done</p><p><br></p><h3><strong>&#65279;</strong></h3>'
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq '<p>Nice</p><p><br></p><p>Well done</p>'
+    end
+
+    it "doesn't delete empty nested tags with trailing content" do
+      html = '<p>Nice</p><p><br></p><p>Well done</p><p><br></p><h3><strong>&#65279;</strong></h3><p>Well done</p>'
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq '<p>Nice</p><p><br></p><p>Well done</p><p><br></p><h3><strong></strong></h3><p>Well done</p>'
     end
   end
 
