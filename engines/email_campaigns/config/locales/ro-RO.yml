@@ -53,16 +53,16 @@ ro:
       "manual": Mesaj oficial - toți utilizatorii
       "admin_rights_received": Drepturi de administrare primite - administratori
       "comment_deleted_by_admin": Ștergerea comentariului dvs. - toți utilizatorii
-      "comment_marked_as_spam": Raportează comentariul ca mesaj spam - administratori și manageri de proiect
+      "comment_marked_as_spam": Comentează raportul spam - administratori și manageri de proiect
       "comment_on_your_comment": Răspundeți la comentariul dvs. - toți utilizatorii
       "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
       "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
       "first_idea_published": Publicarea primei tale idei - toți utilizatorii
       "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
-      "idea_marked_as_spam": Raportează ideea ca mesaj spam - administratori și manageri de proiect
+      "idea_marked_as_spam": Raport spam de idei - administratori și manageri de proiect
       "idea_published": Publicarea ideii dvs. - toți utilizatorii
       "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
-      "initiative_marked_as_spam": Proposal spam report - admins
+      "initiative_marked_as_spam": Raport spam al propunerii - administratori
       "initiative_published": Publicarea propunerii dvs. - toți utilizatorii
       "invite_received": Invitație - toți utilizatorii
       "invite_reminder": Memento invitație - toți utilizatorii
@@ -109,5 +109,5 @@ ro:
       "cta_join_platform": "Descoperiți platforma"
       "subject": "Bine ați venit pe platforma %{organizationName}"
       "main_header": "Bine ați venit!"
-      "message_welcome": "Felicitări, v-ați înscris cu succes pe platforma de participare a %{organizationName}. Acum puteți descoperi platforma și vă puteți face vocea auzită. Puteți adăuga, de asemenea, o imagine de profil și o scurtă descriere pentru a spune celorlalți cine sunteți."
+      "message_welcome": "Felicitări, v-ați înscris cu succes pe platforma de bugetare participativă a %{organizationName}. Acum puteți descoperi platforma și vă puteți face vocea auzită. Puteți adăuga, de asemenea, o imagine de profil și o scurtă descriere pentru a le spune celorlalți cine sunteți."
       "preheader": "Iată ce puteți face pe platforma %{organizationName}"
