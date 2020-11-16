@@ -74,7 +74,7 @@ class TenantTemplateService
         new_attributes[field_name] = field_value.map do |v|
           restore_template_attributes v, obj_to_id_and_class
         end
-      elsif field_name.end_with?('_ref') 
+      elsif field_name.end_with?('_ref')
         ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
         if field_value
           id, ref_class = obj_to_id_and_class[field_value.object_id]
@@ -163,7 +163,7 @@ class TenantTemplateService
       @template['models']['volunteering/volunteer']                = yml_volunteering_volunteers
       @template['models']['maps/map_config']                       = yml_maps_map_configs
       @template['models']['maps/layer']                            = yml_maps_layers
-      @template['models']['maps/legend_item']                      = yml_maps_legend_items    
+      @template['models']['maps/legend_item']                      = yml_maps_legend_items
     end
     @template
   end
@@ -455,7 +455,7 @@ class TenantTemplateService
         'description_preview_multiloc' => f.description_preview_multiloc,
         'created_at'                   => f.created_at.to_s,
         'updated_at'                   => f.updated_at.to_s,
-        'admin_publication_attributes' => { 
+        'admin_publication_attributes' => {
           'publication_status'         => f.admin_publication.publication_status,
           'ordering'                   => f.admin_publication.ordering
         }
@@ -501,11 +501,12 @@ class TenantTemplateService
         'updated_at'                   => p.updated_at.to_s,
         'remote_header_bg_url'         => p.header_bg_url,
         'visible_to'                   => p.visible_to,
+        'ideas_order'                  => p.ideas_order,
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_form),
-        'admin_publication_attributes' => { 
+        'admin_publication_attributes' => {
           'publication_status'         => p.admin_publication.publication_status,
           'ordering'                   => p.admin_publication.ordering,
           'parent_ref'                 => lookup_ref(p.admin_publication.parent_id, :admin_publication_attributes)
@@ -571,6 +572,7 @@ class TenantTemplateService
         'description_multiloc'   => p.description_multiloc,
         'start_at'               => p.start_at.to_s,
         'end_at'                 => p.end_at.to_s,
+        'ideas_order'            => p.ideas_order,
         'created_at'             => p.created_at.to_s,
         'updated_at'             => p.updated_at.to_s,
         'text_images_attributes' => p.text_images.map{ |ti|
