@@ -62,7 +62,7 @@ const CommentsCount = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 22px;
+  margin: 0 24px;
 `;
 
 const CommentIcon = styled(Icon)`
