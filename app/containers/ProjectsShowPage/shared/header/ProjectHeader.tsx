@@ -36,20 +36,6 @@ const Container = styled.div`
   `}
 `;
 
-const ProjectHeaderImageContainer = styled.div`
-  width: 100%;
-  height: 240px;
-  margin-bottom: 30px;
-  position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  overflow: hidden;
-
-  ${media.smallerThanMinTablet`
-    height: 160px;
-    margin-bottom: 20px;
-  `}
-`;
-
 const EditButton = styled(Button)`
   display: table;
   margin: 0 0 10px auto;
@@ -59,29 +45,18 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const ShareButton = styled(Button)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  display: none;
+const ProjectHeaderImage = styled.img<{ src: string }>`
+  width: 100%;
+  height: 240px;
+  margin-bottom: 30px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${media.smallerThanMinTablet`
-    display: block;
+    height: 160px;
+    margin-bottom: 20px;
   `}
-`;
 
-const ProjectHeaderImage = styled.div<{ src: string }>`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-image: url(${(props: any) => props.src});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  overflow: hidden;
+  object-fit: cover;
 `;
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
@@ -140,25 +115,11 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
               </EditButton>
             )}
             {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
-              <ProjectHeaderImageContainer>
-                <ShareButton
-                  locale={locale}
-                  icon="share"
-                  onClick={openShareModal}
-                  buttonStyle="white"
-                  iconColor="#000"
-                  textColor="#000"
-                  bgColor="rgba(255, 255, 255, 0.92)"
-                  borderColor="#ccc"
-                  padding="5px 8px"
-                >
-                  {formatMessage(messages.share)}
-                </ShareButton>
-                <ProjectHeaderImage
-                  src={projectHeaderImageLarge}
-                  id="e2e-project-header-image"
-                />
-              </ProjectHeaderImageContainer>
+              <ProjectHeaderImage
+                src={projectHeaderImageLarge}
+                id="e2e-project-header-image"
+                alt=""
+              />
             )}
             <StyledProjectArchivedIndicator
               projectId={projectId}
