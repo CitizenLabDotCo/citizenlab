@@ -7,6 +7,8 @@
 
 ### Changed
 - The default sort order of ideas is now "Trending" instead of "Random" for every project if left unchanged
+- Improved sign in/up loading speed
+- Removed link to survey in the project page sidebar when not logged in. Instead it will show plain none-clickable text (e.g. '1 survey')
 
 ### Fixed
 - Custom project slugs can now contain alphanumeric Arabic characters
