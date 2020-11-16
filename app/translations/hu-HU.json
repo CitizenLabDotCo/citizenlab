@@ -1914,6 +1914,7 @@
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# event} other {# events}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# idea} other {# ideas}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# idea} other {# ideas}} in the current phase",
+  "app.containers.Projects.xIdeasInFinalPhase": "",
   "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# participant} other {# participants}}",
   "app.containers.Projects.xPhases": "{phasesCount, plural, one {# phase} other {# phases}}",
   "app.containers.Projects.xPolls": "{pollsCount, plural, one {# poll} other {# polls}}",
