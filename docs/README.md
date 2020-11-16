@@ -12,7 +12,8 @@
 
 ### Fixed
 - Custom project slugs can now contain alphanumeric Arabic characters
-
+- Project Topics table now updates if a topic is deleted or reordered.
+- Empty lines with formatting (like bold or italic) in a Quill editor are now removed if not used as paragraphs.
 
 ## 2020-11-6
 
