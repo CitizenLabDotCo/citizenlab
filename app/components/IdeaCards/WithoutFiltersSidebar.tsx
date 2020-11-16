@@ -50,7 +50,11 @@ import {
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFields';
@@ -242,6 +246,7 @@ const ListView = styled.div``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -347,6 +352,7 @@ class WithoutFiltersSidebar extends PureComponent<
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       windowSize,
       ideas,
       className,
@@ -399,6 +405,7 @@ class WithoutFiltersSidebar extends PureComponent<
               <SelectSort
                 onChange={this.handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                defaultSortingMethod={defaultSortingMethod || null}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />
@@ -489,7 +496,13 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
   ideas: ({ render, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={12}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
+    >
       {render}
     </GetIdeas>
   ),

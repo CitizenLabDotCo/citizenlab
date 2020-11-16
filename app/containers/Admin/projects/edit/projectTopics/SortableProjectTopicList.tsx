@@ -72,7 +72,7 @@ const SortableProjectTopicList = memo(
     };
 
     const handleReorderTopicProject = (projectTopicId, newOrder) => {
-      reorderProjectTopic(projectTopicId, newOrder);
+      reorderProjectTopic(projectTopicId, newOrder, projectId);
     };
 
     const closeSendConfirmationModal = () => {
@@ -105,10 +105,10 @@ const SortableProjectTopicList = memo(
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
           >
-            {({ itemsList, handleDragRow, handleDropRow }) =>
-              itemsList.map(
-                (projectTopic: IProjectTopicData, index: number) => {
-                  return (
+            {({ itemsList, handleDragRow, handleDropRow }) => (
+              <>
+                {itemsList.map(
+                  (projectTopic: IProjectTopicData, index: number) => (
                     <SortableRow
                       id={projectTopic.id}
                       key={index}
@@ -142,10 +142,10 @@ const SortableProjectTopicList = memo(
                         <FormattedMessage {...messages.delete} />
                       </Button>
                     </SortableRow>
-                  );
-                }
-              )
-            }
+                  )
+                )}
+              </>
+            )}
           </SortableList>
           <Modal
             opened={showConfirmationModal}

@@ -70,7 +70,7 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
           <ActionsContainer>
             <Button
               id="e2e-new-proposal"
-              buttonStyle="cl-blue-outlined"
+              buttonStyle="cl-blue"
               icon="initiativesAdminMenuIcon"
               linkTo={`/initiatives/new`}
               text={formatMessage(messages.addNewProposal)}
