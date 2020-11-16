@@ -99,15 +99,15 @@ es-CL:
       "user_digest": 'Resumen semanal: todos los usuarios'
       "your_proposed_initiatives_digest": 'Resumen semanal de tus propias propuestas: todos los usuarios'
     footer:
-      "link_privacy_policy": "Privacy Policy"
-      "link_terms_conditions": "Terms & Conditions"
-      "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
-      "unsubscribe_text": "unsubscribe"
+      "link_privacy_policy": "Política de privacidad"
+      "link_terms_conditions": "Términos & Condiciones"
+      "link_unsubscribe": "Cancelar la suscripción"
+      "powered_by": "Impulsado por"
+      "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
+      "unsubscribe_text": "cancelar la suscripción"
     welcome:
-      "cta_join_platform": "Discover the platform"
-      "subject": "Welcome to the platform of %{organizationName}"
-      "main_header": "Welcome!"
-      "message_welcome": "Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are."
-      "preheader": "Here's what you can do on the platform of %{organizationName}"
+      "cta_join_platform": "Descubre la plataforma"
+      "subject": "Bienvenido a la plataforma de %{organizationName}"
+      "main_header": "Bienvenidos!"
+      "message_welcome": "Felicidades, se ha registrado con éxito en la plataforma de participación de %{organizationName}. Ahora puede descubrir la plataforma y hacer que se escuche su voz. También puede añadir una foto de perfil y una breve descripción para darse a conocer."
+      "preheader": "Aquí lo que puedes hacer en la plataforma de %{organizationName}"
