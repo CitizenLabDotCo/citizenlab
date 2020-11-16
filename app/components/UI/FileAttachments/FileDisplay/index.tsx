@@ -40,12 +40,13 @@ const Paperclip = styled(Icon)`
 
 const FileDownloadLink = styled.a`
   color: ${colors.label};
+  text-decoration: underline;
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
 
   &:hover {
-    color: inherit;
+    color: #000;
     text-decoration: underline;
   }
 
