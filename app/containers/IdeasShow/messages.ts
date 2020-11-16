@@ -113,9 +113,9 @@ export default defineMessages({
     defaultMessage:
       'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
-  shareIdea: {
-    id: 'app.containers.IdeasShow.shareIdea',
-    defaultMessage: 'Share idea',
+  share: {
+    id: 'app.containers.IdeasShow.share',
+    defaultMessage: 'Share',
   },
   commentCTA: {
     id: 'app.containers.IdeasShow.commentCTA',
