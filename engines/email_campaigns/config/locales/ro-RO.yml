@@ -53,21 +53,21 @@ ro:
       "manual": Mesaj oficial - toți utilizatorii
       "admin_rights_received": Drepturi de administrare primite - administratori
       "comment_deleted_by_admin": Ștergerea comentariului dvs. - toți utilizatorii
-      "comment_marked_as_spam": Raport de comentariu spam - administratori și manageri de proiect
+      "comment_marked_as_spam": Raportează comentariul ca mesaj spam - administratori și manageri de proiect
       "comment_on_your_comment": Răspundeți la comentariul dvs. - toți utilizatorii
       "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
       "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
       "first_idea_published": Publicarea primei tale idei - toți utilizatorii
       "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
-      "idea_marked_as_spam": Raport spam al unei idei - administratori și manageri de proiect
+      "idea_marked_as_spam": Raportează ideea ca mesaj spam - administratori și manageri de proiect
       "idea_published": Publicarea ideii dvs. - toți utilizatorii
       "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
       "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
+      "initiative_published": Publicarea propunerii dvs. - toți utilizatorii
+      "invite_received": Invitație - toți utilizatorii
+      "invite_reminder": Memento invitație - toți utilizatorii
+      "mention_in_comment": Menționează într-un comentariu - toți utilizatorii
+      "mention_in_official_feedback": Menționați într-o actualizare - toți utilizatorii
       "new_comment_for_admin": New comment - admins and project managers
       "new_comment_on_commented_idea": New comment on an idea you commented on - all users
       "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
@@ -99,15 +99,15 @@ ro:
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Privacy Policy"
-      "link_terms_conditions": "Terms & Conditions"
-      "link_unsubscribe": "Unsubscribe"
-      "powered_by": "Powered by"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
-      "unsubscribe_text": "unsubscribe"
+      "link_privacy_policy": "Politica de confidențialitate"
+      "link_terms_conditions": "Termeni și condiții"
+      "link_unsubscribe": "Dezabonare"
+      "powered_by": "Cu sprijinul"
+      "statement": "Acest e-mail v-a fost trimis de CitizenLab în numele %{organizationName}, deoarece sunteți un utilizator înregistrat al %{organizationLink}. Puteți %{unsubscribeLink} dacă nu doriți să primiți aceste e-mailuri în viitor."
+      "unsubscribe_text": "Dezabonare"
     welcome:
-      "cta_join_platform": "Discover the platform"
-      "subject": "Welcome to the platform of %{organizationName}"
-      "main_header": "Welcome!"
-      "message_welcome": "Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are."
-      "preheader": "Here's what you can do on the platform of %{organizationName}"
+      "cta_join_platform": "Descoperiți platforma"
+      "subject": "Bine ați venit pe platforma %{organizationName}"
+      "main_header": "Bine ați venit!"
+      "message_welcome": "Felicitări, v-ați înscris cu succes pe platforma de participare a %{organizationName}. Acum puteți descoperi platforma și vă puteți face vocea auzită. Puteți adăuga, de asemenea, o imagine de profil și o scurtă descriere pentru a spune celorlalți cine sunteți."
+      "preheader": "Iată ce puteți face pe platforma %{organizationName}"
