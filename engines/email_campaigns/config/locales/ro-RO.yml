@@ -1,7 +1,7 @@
 ro:
   email_campaigns:
     campaign_type_description:
-      "manual": Mesajele oficiale
+      "manual": Mesaje oficiale
       "admin_rights_received": Drepturi de administrator primite
       "comment_deleted_by_admin": Ștergerea comentariului meu
       "comment_marked_as_spam": Comentează raportul de spam
@@ -50,18 +50,18 @@ ro:
       "user_digest": Rezumate săptămânale
       "your_proposed_initiatives_digest": Rezumate săptămânale ale propunerilor dumneavoastră
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
+      "manual": Mesaj oficial - toți utilizatorii
+      "admin_rights_received": Drepturi de administrare primite - administratori
+      "comment_deleted_by_admin": Ștergerea comentariului dvs. - toți utilizatorii
+      "comment_marked_as_spam": Raport de comentariu spam - administratori și manageri de proiect
+      "comment_on_your_comment": Răspundeți la comentariul dvs. - toți utilizatorii
+      "comment_on_your_idea": Comentează ideea ta - toți utilizatorii
+      "comment_on_your_initiative": Comentează propunerea ta - toți utilizatorii
+      "first_idea_published": Publicarea primei tale idei - toți utilizatorii
+      "idea_assigned_to_you": Atribuirea unei idei - administratori și manageri de proiect
+      "idea_marked_as_spam": Raport spam al unei idei - administratori și manageri de proiect
+      "idea_published": Publicarea ideii dvs. - toți utilizatorii
+      "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
       "invite_received": Invitation - all users
