@@ -98,3 +98,16 @@ nl-BE:
       "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectbeheerders
       "user_digest": Weekoverzicht - alle gebruikers
       "your_proposed_initiatives_digest": Weekoverzicht van je eigen voorstellen - alle gebruikers
+    footer:
+      "link_privacy_policy": "Privacybeleid"
+      "link_terms_conditions": "Gebruiksvoorwaarden"
+      "link_unsubscribe": "Uitschrijven"
+      "powered_by": "Mogelijk gemaakt door"
+      "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
+      "unsubscribe_text": "uitschrijven"
+    welcome:
+      "cta_join_platform": "Ontdek het platform"
+      "subject": "Welkom op het platform van %{organizationName}"
+      "main_header": "Welkom!"
+      "message_welcome": "Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent."
+      "preheader": "Hier is wat je kan doen op het platform van %{organizationName}"

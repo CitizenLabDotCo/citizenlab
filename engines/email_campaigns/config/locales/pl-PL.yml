@@ -98,3 +98,16 @@ pl:
       "assignee_digest": Cotygodniowy przegląd przydzielonych pomysłów - administratorzy i menadżerowie projektu
       "user_digest": Przegląd tygodniowy - wszyscy użytkownicy
       "your_proposed_initiatives_digest": Tygodniowy przegląd własnych propozycji - wszyscy użytkownicy
+    footer:
+      "link_privacy_policy": "Privacy Policy"
+      "link_terms_conditions": "Regulamin"
+      "link_unsubscribe": "Wypisz mnie z subskrypcji"
+      "powered_by": "Wspierane przez"
+      "statement": "Ten e-mail został wysłany do Ciebie przez CitizenLab w imieniu %{organizationName}, ponieważ jesteś zarejestrowanym użytkownikiem %{organizationLink}. Możesz %{unsubscribeLink} jeśli nie chcesz otrzymywać tych e-maili w przyszłości."
+      "unsubscribe_text": "zrezygnować z subskrybcji"
+    welcome:
+      "cta_join_platform": "Odkryj platformę"
+      "subject": "Witamy na platformie %{organizationName}"
+      "main_header": "Witaj!"
+      "message_welcome": "Gratulacje, zapisałeś się na platformę uczestnictwa %{organizationName}. Teraz możesz odkryć platformę i sprawić, że Twój głos będzie słyszalny. Możesz również dodać zdjęcie profilowe i krótki opis, aby się przedstawić."
+      "preheader": "Oto co możesz zrobić na platformie %{organizationName}"
