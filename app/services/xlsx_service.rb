@@ -180,7 +180,7 @@ class XlsxService
     end
 
     if with_tags
-      Tag.find_each { |tag|
+      Tag.all.each { |tag|
         columns.insert(3,{header: @@multiloc_service.t(tag.title_multiloc), f: -> (i) {
           i.tag_ids.include?(tag.id.freeze) ? '1' : '0'
           }})
