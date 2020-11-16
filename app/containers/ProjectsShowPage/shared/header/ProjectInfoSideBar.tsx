@@ -14,6 +14,7 @@ import useTenant from 'hooks/useTenant';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
@@ -125,6 +126,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const events = useEvents(projectId);
+  const authUser = useAuthUser();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const [shareModalOpened, setShareModalOpened] = useState(false);
@@ -291,17 +293,26 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               currentPhaseParticipationMethod === 'survey') && (
               <ListItem>
                 <ListItemIcon ariaHidden name="survey" />
-                <ListItemButton
-                  id="e2e-project-sidebar-surveys-count"
-                  onClick={scrollTo('project-survey')}
-                >
+                {!isNilOrError(authUser) ? (
+                  <ListItemButton
+                    id="e2e-project-sidebar-surveys-count"
+                    onClick={scrollTo('project-survey')}
+                  >
+                    <FormattedMessage
+                      {...(projectType === 'continuous'
+                        ? messages.xSurveys
+                        : messages.xSurveysInCurrentPhase)}
+                      values={{ surveysCount: 1 }}
+                    />
+                  </ListItemButton>
+                ) : (
                   <FormattedMessage
                     {...(projectType === 'continuous'
                       ? messages.xSurveys
                       : messages.xSurveysInCurrentPhase)}
                     values={{ surveysCount: 1 }}
                   />
-                </ListItemButton>
+                )}
               </ListItem>
             )}
             {((projectType === 'continuous' &&

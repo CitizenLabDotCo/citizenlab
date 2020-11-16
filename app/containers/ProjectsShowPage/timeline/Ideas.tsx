@@ -62,6 +62,7 @@ class IdeasContainer extends PureComponent<Props, State> {
               projectIds={projectIds}
               phaseId={phaseId}
               showViewToggle={true}
+              defaultSortingMethod={phase.attributes.ideas_order || null}
               defaultView={phase.attributes.presentation_mode}
               participationMethod={participationMethod}
               participationContextId={phase.id}

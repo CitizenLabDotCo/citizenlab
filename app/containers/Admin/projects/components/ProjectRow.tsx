@@ -65,7 +65,7 @@ export default ({
   const projectGroups = useProjectGroups({
     projectId: publication.publicationId,
   });
-  console.log(projectGroups);
+
   const ManageButton = (
     <RowButton
       className={`
