@@ -56,7 +56,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
 const gapWidth = 35;
@@ -330,6 +334,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -535,6 +540,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       ideas,
       ideasFilterCounts,
       windowSize,
@@ -694,6 +700,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
               {!showMapView && (
                 <AboveContentRight>
                   <SortFilterDropdown
+                    defaultSortingMethod={defaultSortingMethod || null}
                     onChange={this.handleSortOnChange}
                     alignment="right"
                   />
@@ -785,7 +792,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   ideas: ({ render, children, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={12}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
+    >
       {render}
     </GetIdeas>
   ),
