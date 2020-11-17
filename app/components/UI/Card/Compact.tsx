@@ -11,6 +11,7 @@ import {
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
+  media,
 } from 'utils/styleUtils';
 
 const Container = styled(Link)`
@@ -38,6 +39,14 @@ const ImageWrapper = styled.div`
   border-top-left-radius: ${(props: any) => props.theme.borderRadius};
   border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   flex-shrink: 0;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+
+  ${media.smallerThanMinTablet`
+    display: flex;
+  `}
 `;
 
 const Image = styled(LazyImage)`
