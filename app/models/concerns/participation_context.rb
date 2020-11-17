@@ -47,16 +47,12 @@ module ParticipationContext
                   presence: true,
                   numericality: { only_integer: true, greater_than: 0 },
                   if: %i[ideation? voting_limited?]
-        validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, presence: true
-        before_validation :set_ideas_order, on: :create
+        validates :ideas_order, inclusion: { in: IDEAS_ORDERS, unless: proc { |r| r.ideas_order.nil? } }
+        before_validation :set_ideas_order
       end
 
       before_validation :set_participation_method, on: :create
       before_validation :set_presentation_mode, on: :create
-    end
-
-    with_options unless: :ideation_or_budgeting? do
-      validates :ideas_order, inclusion: { in: [nil] }
     end
   end
   # rubocop:enable Metrics/BlockLength
