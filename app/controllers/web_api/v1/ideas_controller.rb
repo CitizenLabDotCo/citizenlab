@@ -109,6 +109,25 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def index_with_tags_xlsx
+    if params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    else
+      authorize :idea, :index_xlsx?
+    end
+
+    @ideas = policy_scope(Idea)
+      .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
+      .where(publication_status: 'published')
+    @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+    @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?, with_tags: true
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    end
+  end
+
   def filter_counts
     @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
     search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
