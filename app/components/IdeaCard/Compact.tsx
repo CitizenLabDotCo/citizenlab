@@ -37,6 +37,7 @@ const BodyWrapper = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 8px;
+  opacity: 0.7;
 `;
 
 const Body = styled.div`
@@ -46,6 +47,9 @@ const Body = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Separator = styled.span`
@@ -59,7 +63,7 @@ const CommentsCount = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 22px;
+  margin: 0 24px;
 `;
 
 const CommentIcon = styled(Icon)`
@@ -126,7 +130,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         }
         body={
           <BodyWrapper>
-            {authorId && <StyledAvatar size="36" userId={authorId} />}
+            {authorId && <StyledAvatar size="37" userId={authorId} />}
             <Body>
               <strong>
                 <FormattedRelative

@@ -164,8 +164,8 @@ const StyledSearchInput = styled(SearchInput)`
 `;
 
 const IdeasList = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
+  margin-left: -12px;
+  margin-right: -12px;
   display: flex;
   flex-wrap: wrap;
 
@@ -176,12 +176,12 @@ const IdeasList = styled.div`
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(50% - 20px);
-  margin-left: 10px;
-  margin-right: 10px;
+  width: calc(50% - 24px);
+  margin-left: 12px;
+  margin-right: 12px;
 
   ${media.smallerThanMaxTablet`
-    width: calc(50% - 20px);
+    width: calc(50% - 24px);
   `};
 
   ${media.smallerThanMinTablet`

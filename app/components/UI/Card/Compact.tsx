@@ -11,15 +11,16 @@ import {
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
+  media,
 } from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: 100%;
-  height: 174px;
+  height: 212px;
   margin-bottom: 24px;
   cursor: pointer;
   display: flex;
-  padding: 16px;
+  padding: 24px;
   align-items: center;
   ${defaultCardStyle};
 
@@ -29,8 +30,8 @@ const Container = styled(Link)`
 `;
 
 const ImageWrapper = styled.div`
-  width: 142px;
-  height: 142px;
+  width: 162px;
+  height: 162px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,6 +39,14 @@ const ImageWrapper = styled.div`
   border-top-left-radius: ${(props: any) => props.theme.borderRadius};
   border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   flex-shrink: 0;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+
+  ${media.smallerThanMinTablet`
+    display: flex;
+  `}
 `;
 
 const Image = styled(LazyImage)`
@@ -48,7 +57,7 @@ const ContentWrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: 142px;
+  height: 162px;
   margin-left: 20px;
 `;
 
@@ -67,6 +76,9 @@ const Title = styled.h3`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 const Body = styled.div`
