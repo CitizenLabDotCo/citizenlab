@@ -12,7 +12,7 @@ export const LEGAL_PAGES = [
   'accessibility-statement',
 ];
 
-export const EDITABLE_LEGAL_PAGES = [
+export const LEGAL_PAGES_ALLOWED_TO_EDIT = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
