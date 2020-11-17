@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, FormEvent } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
 
@@ -6,7 +6,6 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import ProjectSharingModal from './ProjectSharingModal';
 import { Button } from 'cl2-component-library';
 
 // hooks
@@ -59,6 +58,32 @@ const ProjectHeaderImage = styled.img<{ src: string }>`
   object-fit: cover;
 `;
 
+const ProjectHeaderImageFallback = styled.div`
+  width: 100%;
+  height: 240px;
+  margin-bottom: 30px;
+  position: relative;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  overflow: hidden;
+  ${media.smallerThanMinTablet`
+    height: 160px;
+    margin-bottom: 20px;
+  `}
+`;
+
+const FallbackImage = styled.div<{ src: string }>`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url(${(props: any) => props.src});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
+`;
+
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   hasHeaderImage: boolean;
 }>`
@@ -83,22 +108,36 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
     const project = useProject({ projectId });
     const authUser = useAuthUser();
 
-    const [shareModalOpened, setShareModalOpened] = useState(false);
+    const getProjectImage = (projectImageUrl: string | null) => {
+      if (projectImageUrl) {
+        // real img needed for a11y (alt attribute)
+        // object-fit is not supported pre 2014: https://caniuse.com/object-fit
+        // in that case, we hide (aria-hidden) the fallback div
+        return window['CSS'] && CSS.supports('object-fit: cover') ? (
+          <ProjectHeaderImage
+            src={projectImageUrl}
+            id="e2e-project-header-image"
+            alt=""
+          />
+        ) : (
+          <ProjectHeaderImageFallback aria-hidden>
+            <FallbackImage
+              src={projectImageUrl}
+              id="e2e-project-header-image"
+            />
+          </ProjectHeaderImageFallback>
+        );
+      }
 
-    const openShareModal = useCallback((event: FormEvent) => {
-      event.preventDefault();
-      setShareModalOpened(true);
-    }, []);
-
-    const closeShareModal = useCallback(() => {
-      setShareModalOpened(false);
-    }, []);
+      return null;
+    };
 
     if (!isNilOrError(locale) && !isNilOrError(project)) {
-      const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+      const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
       const userCanEditProject =
         !isNilOrError(authUser) &&
         canModerate(project.id, { data: authUser.data });
+      const projectImage = getProjectImage(projectHeaderImageLargeUrl);
 
       return (
         <Container className={className || ''}>
@@ -114,24 +153,13 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                 {formatMessage(messages.editProject)}
               </EditButton>
             )}
-            {projectHeaderImageLarge && projectHeaderImageLarge.length > 1 && (
-              <ProjectHeaderImage
-                src={projectHeaderImageLarge}
-                id="e2e-project-header-image"
-                alt=""
-              />
-            )}
+            {projectImage}
             <StyledProjectArchivedIndicator
               projectId={projectId}
-              hasHeaderImage={!!projectHeaderImageLarge}
+              hasHeaderImage={!!projectImage}
             />
             <StyledProjectInfo projectId={projectId} />
           </ContentContainer>
-          <ProjectSharingModal
-            projectId={project.id}
-            opened={shareModalOpened}
-            close={closeShareModal}
-          />
         </Container>
       );
     }
