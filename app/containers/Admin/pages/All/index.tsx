@@ -15,15 +15,11 @@ import Button from 'components/UI/Button';
 
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
-import PageWrapper from 'components/admin/PageWrapper';
+import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 
 const PageTitle = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 3rem;
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 2rem;
 `;
 
 export interface InputProps {}
