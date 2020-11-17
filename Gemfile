@@ -62,12 +62,9 @@ end
 gem "pundit", "~> 2.0"
 gem "active_model_serializers", "~> 0.10.8"
 
-# Fork was made for the following reasons:
-# 1) To update the version of jws which is required for
-#    the google omniauth gem.
-# 2) To not auto load Generators::Base which would result
-#    in an error.
-gem "knock", github: 'CitizenLabDotCo/knock'
+# See https://github.com/nsarno/knock/issues/250
+# Installs v2.2 which is not available on rubygems.org
+gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
 gem "sidekiq", "~> 6.1"
 
 gem 'activerecord-postgis-adapter', '~> 6.0.0'
