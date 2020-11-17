@@ -64,9 +64,11 @@ const Pages = ({
           <List key={pages.length}>
             {pages
               .filter((page) => {
-                // These two pages are only changeable in Crowdin
+                // These pages are only changeable in Crowdin.
                 // Changing them here wouldn't have any effect.
+                // So to avoid confusion, they're not shown.
                 return (
+                  page.attributes.slug !== 'homepage_info' &&
                   page.attributes.slug !== 'cookie-policy' &&
                   page.attributes.slug !== 'accessibility-statement'
                 );
