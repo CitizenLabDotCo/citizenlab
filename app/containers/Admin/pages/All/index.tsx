@@ -62,34 +62,43 @@ const Pages = ({
             </ButtonWrapper>
           </FeatureFlag>
           <List key={pages.length}>
-            {pages.map((page) => (
-              <Row key={page.id} id={page.id}>
-                <TextCell className="expand">
-                  <T value={page.attributes.title_multiloc} />
-                </TextCell>
-                <Button
-                  onClick={handleOnDeleteClick(page.id)}
-                  buttonStyle="text"
-                  icon="delete"
-                >
-                  <FormattedMessage {...messages.deleteButtonLabel} />
-                </Button>
-                <Button
-                  linkTo={`/pages/${page.attributes.slug}`}
-                  buttonStyle="text"
-                  icon="search"
-                >
-                  <FormattedMessage {...messages.showButtonLabel} />
-                </Button>
-                <Button
-                  linkTo={`/admin/pages/${page.id}`}
-                  buttonStyle="secondary"
-                  icon="edit"
-                >
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-              </Row>
-            ))}
+            {pages
+              .filter((page) => {
+                // These two pages are only changeable in Crowdin
+                // Changing them here wouldn't have any effect.
+                return (
+                  page.attributes.slug !== 'cookie-policy' &&
+                  page.attributes.slug !== 'accessibility-statement'
+                );
+              })
+              .map((page) => (
+                <Row key={page.id} id={page.id}>
+                  <TextCell className="expand">
+                    <T value={page.attributes.title_multiloc} />
+                  </TextCell>
+                  <Button
+                    onClick={handleOnDeleteClick(page.id)}
+                    buttonStyle="text"
+                    icon="delete"
+                  >
+                    <FormattedMessage {...messages.deleteButtonLabel} />
+                  </Button>
+                  <Button
+                    linkTo={`/pages/${page.attributes.slug}`}
+                    buttonStyle="text"
+                    icon="search"
+                  >
+                    <FormattedMessage {...messages.showButtonLabel} />
+                  </Button>
+                  <Button
+                    linkTo={`/admin/pages/${page.id}`}
+                    buttonStyle="secondary"
+                    icon="edit"
+                  >
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </Row>
+              ))}
           </List>
         </PageWrapper>
       </>
