@@ -157,9 +157,11 @@ const IdeaStatusForm = ({
                   <span className="header">
                     {formatMessage(messages[`${code}FieldCodeTitle`])}
                   </span>
-                  <span className="description">
-                    {formatMessage(messages[`${code}FieldCodeDescription`])}
-                  </span>
+                  {code !== 'custom' && (
+                    <span className="description">
+                      {formatMessage(messages[`${code}FieldCodeDescription`])}
+                    </span>
+                  )}
                 </LabelText>
               }
               id={`${code}-input`}
