@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { EDITABLE_LEGAL_PAGES } from 'services/pages';
+import { LEGAL_PAGES_ALLOWED_TO_EDIT } from 'services/pages';
 import PageEditor from './PageEditor';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
@@ -17,7 +17,7 @@ export default class AdminSettingsPages extends PureComponent {
         <SectionDescription>
           <FormattedMessage {...messages.subtitlePages} />
         </SectionDescription>
-        {EDITABLE_LEGAL_PAGES.map((slug) => (
+        {LEGAL_PAGES_ALLOWED_TO_EDIT.map((slug) => (
           <PageEditor key={slug} slug={slug} />
         ))}
       </>
