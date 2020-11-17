@@ -37,6 +37,7 @@ const BodyWrapper = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 8px;
+  opacity: 0.7;
 `;
 
 const Body = styled.div`
@@ -48,7 +49,7 @@ const Body = styled.div`
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 const Separator = styled.span`
@@ -129,7 +130,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         }
         body={
           <BodyWrapper>
-            {authorId && <StyledAvatar size="36" userId={authorId} />}
+            {authorId && <StyledAvatar size="37" userId={authorId} />}
             <Body>
               <strong>
                 <FormattedRelative
