@@ -98,3 +98,16 @@ kl:
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    footer:
+      "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
+      "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
+      "link_unsubscribe": "Atuisuujunnaarneq"
+      "powered_by": "Ingerlanneqartoq"
+      "statement": "Emaili una %{organizationName} sinnerlugu CitizenLabimit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
+      "unsubscribe_text": "atuisuujunnaarit"
+    welcome:
+      "cta_join_platform": "Platformi misissuataaruk"
+      "subject": "%{organizationName}-mut platformimut tikilluarit"
+      "main_header": "Tikilluarit!"
+      "message_welcome": "Pilluarit, %{organizationName}-mi platformimi peqataanissamut nalunaarsimavutit. Ilisimasat, isumassarsiat isummatillu siaruartikkit platformilu misissuataaruk. Eqqaamajuk, aamma assitaliisinnaagavit naatsumillu kinaanerit oqaluttuaralugu."
+      "preheader": "Uani %{organizationName} platformimi taamaaliorsinnaavutit"

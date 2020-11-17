@@ -87,14 +87,27 @@ ar:
       "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
       "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقتَ عليه - جميع المستخدمين
-      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتًّ لها - جميع المستخدمين
+      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتَّ لها - جميع المستخدمين
       "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتَّ له - جميع المستخدمين
       "status_change_of_your_idea": تغيرت حالة فكرتك - جميع المستخدمين
       "status_change_of_your_initiative": تغيرت حالة مُقترحك - جميع المستخدمين
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
+      "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب - المسؤولين
+      "welcome": مستخدم جديد - المسؤولين
+      "admin_digest": نظرة عامة أسبوعية - المسؤولين
+      "moderator_digest": نظرة عامة أسبوعية - مديري المشاريع
+      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
+      "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    footer:
+      "link_privacy_policy": "سياسة الخصوصية"
+      "link_terms_conditions": "الشروط والأحكام"
+      "link_unsubscribe": "إلغاء الاشتراك"
+      "powered_by": "مشغّل بواسطة"
+      "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
+      "unsubscribe_text": "إلغاء الاشتراك"
+    welcome:
+      "cta_join_platform": "استكشف المنصة"
+      "subject": "مرحبًا بك في المنصة الخاصة بـ %{organizationName}"
+      "main_header": "مرحبًا!"
+      "message_welcome": "تهانينا لك، لقد قمت بالتسجيل في منصة المشاركة الخاصة بـ %{organizationName} بنجاح. يمكنك الآن استكشاف المنصة وجعل صوتك مسموعًا. يمكنك أيضًا إضافة صورة لملف التعريف ووصف قصير لتعريف الآخرين بك."
+      "preheader": "إليك ما يمكنك القيام به على المنصة الخاصة بـ %{organizationName}"
