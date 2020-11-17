@@ -12,6 +12,12 @@ export const LEGAL_PAGES = [
   'accessibility-statement',
 ];
 
+export const EDITABLE_LEGAL_PAGES = [
+  'information',
+  'terms-and-conditions',
+  'privacy-policy',
+];
+
 export interface IPageData {
   id: string;
   type: string;
