@@ -78,7 +78,7 @@ const Title = styled.h3`
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 const Body = styled.div`
