@@ -16,7 +16,7 @@ export default defineMessages({
   pageSubtitle: {
     id: 'app.containers.admin.ideas.all.pageSubtitle',
     defaultMessage:
-      'Give feedback on ideas, add topics to them or bring them from one project to another.',
+      'Give feedback on ideas, add topics to them or bring them from one project to ancustom.',
   },
   tabManage: {
     id: 'app.containers.admin.ideas.all.tabManage',
@@ -131,8 +131,8 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.form.rejectedFieldCodeTitle',
     defaultMessage: 'Not Selected',
   },
-  otherFieldCodeTitle: {
-    id: 'app.containers.admin.ideas.form.otherFieldCodeTitle',
+  customFieldCodeTitle: {
+    id: 'app.containers.admin.ideas.form.customFieldCodeTitle',
     defaultMessage: 'Other',
   },
   proposedFieldCodeDescription: {
@@ -159,9 +159,5 @@ export default defineMessages({
   rejectedFieldCodeDescription: {
     id: 'app.containers.admin.ideas.form.rejectedFieldCodeDescription',
     defaultMessage: 'The post was inegible or not selected to move forward.',
-  },
-  otherFieldCodeDescription: {
-    id: 'app.containers.admin.ideas.form.otherFieldCodeDescription',
-    defaultMessage: 'None of the above.',
   },
 });

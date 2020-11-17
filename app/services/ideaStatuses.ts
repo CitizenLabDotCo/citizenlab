@@ -9,7 +9,7 @@ export type Code =
   | 'accepted'
   | 'implemented'
   | 'rejected'
-  | 'other';
+  | 'custom';
 
 export interface IIdeaStatusData {
   id: string;
@@ -55,7 +55,7 @@ export const ideaStatusCodes = [
   'accepted',
   'implemented',
   'rejected',
-  'other',
+  'custom',
 ];
 
 export function ideaStatusStream(statusId: string) {
