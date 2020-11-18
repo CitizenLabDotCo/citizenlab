@@ -1,15 +1,15 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-import FolderRow from './components/FolderRow';
 import ProjectFolderCard from './components/ProjectFolderCard';
+import ProjectFolderRow from './components/ProjectFolderRow';
 
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <>
         {props.publication.publicationType === 'project_folder' && (
-          <FolderRow {...props} />
+          <ProjectFolderRow {...props} />
         )}
       </>
     ),
