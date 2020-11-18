@@ -10,6 +10,9 @@
 - Projects without idea sorting methods are no longer invalid.
 - Surveys tab now shows for projects with survey phases.
 
+## Changes
+- Moved welcome email from cl2-emails to cl2-back
+
 ## 2020-11-16
 
 ### Added
