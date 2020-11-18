@@ -24,7 +24,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ProjectFolder = ({
+const ProjectFolderSitemap = ({
   adminPublication,
   hightestTitle,
   childProjects,
@@ -70,6 +70,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <ProjectFolder {...inputProps} {...dataprops} />}
+    {(dataprops) => <ProjectFolderSitemap {...inputProps} {...dataprops} />}
   </Data>
 );
