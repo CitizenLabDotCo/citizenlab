@@ -574,7 +574,7 @@ resource "Ideas" do
         project.update_attribute(:ideas_order, nil)
       end
 
-      example_request "Creates an idea" do
+      example_request "Creates an idea", document: false do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id

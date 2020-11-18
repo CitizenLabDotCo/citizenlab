@@ -40,14 +40,14 @@ module ParticipationContext
         validates :voting_enabled, boolean: true
         validates :posting_enabled, boolean: true
         validates :presentation_mode,
-                  inclusion: { in: PRESENTATION_MODES, unless: proc { |r| r.presentation_mode.nil? } }
+                  inclusion: { in: PRESENTATION_MODES }, allow_nil: true
         validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
         validates :commenting_enabled, boolean: true
         validates :voting_limited_max,
                   presence: true,
                   numericality: { only_integer: true, greater_than: 0 },
                   if: %i[ideation? voting_limited?]
-        validates :ideas_order, inclusion: { in: IDEAS_ORDERS, unless: proc { |r| r.ideas_order.nil? } }
+        validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         before_validation :set_ideas_order
       end
 
