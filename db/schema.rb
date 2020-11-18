@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_02_093045) do
+ActiveRecord::Schema.define(version: 2020_11_16_092906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -131,6 +131,16 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
   create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "password"
     t.index ["password"], name: "index_common_passwords_on_password"
+  end
+
+  create_table "configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "logo"
+    t.string "header_bg"
+    t.string "favicon"
+    t.jsonb "settings", default: {}
+    t.jsonb "style", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
