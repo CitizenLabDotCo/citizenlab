@@ -26,7 +26,8 @@ module OmniauthMethods
       if !image_available?(auth.info.image) || [
         'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg',
         'https://lh3.googleusercontent.com/-WCx8qoBI50k/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq3-Bmls0fR0ufuVUuB9ji2PyIS4-A/mo/s640-c/photo.jpg',
-        'https://lh3.googleusercontent.com/-WCx8qoBI50k/AAAAAAAAAAI/AAAAAAAAAKY/AMZuuclNq4xVqLLevwCXEtn5i7-xnPI6yg/s96-c/s640-c/photo.jpg'
+        'https://lh3.googleusercontent.com/-WCx8qoBI50k/AAAAAAAAAAI/AAAAAAAAAKY/AMZuuclNq4xVqLLevwCXEtn5i7-xnPI6yg/s96-c/s640-c/photo.jpg',
+        'https://lh5.googleusercontent.com/-0y1S7QcsnKw/AAAAAAAAAAI/AAAAAAAAAPg/AMZuuclIdj2jyyvAgIhslEOe9W5Q-hhvDQ/s96-c/s640-c/photo.jpg'
       ].include?(auth.info.image)
         user_attrs[:remote_avatar_url] = nil
       end
