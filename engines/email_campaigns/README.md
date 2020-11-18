@@ -7,6 +7,10 @@ This engine
 * Keeps track of all the state required to send out e-mails
 * Provides APIs to let cl2-front configure it all
 
+# Previewing emails
+
+http://localhost:4000/rails/mailers/
+
 # Campaign
 
 Campaign is a class that is not intended to be used directly. It is a unified model that should be subclassed to implement specific campaign.
