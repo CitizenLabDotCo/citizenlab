@@ -2,10 +2,12 @@ import React, { memo, FormEvent } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
+import { Icon } from 'cl2-component-library';
 import Card from 'components/UI/Card/Compact';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
-import { Icon } from 'cl2-component-library';
+import VoteControl from 'components/VoteControl';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import ideaImagePlaceholder from './idea-placeholder.png';
 
 // types
@@ -28,7 +30,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import VoteControl from 'components/VoteControl';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -57,13 +58,13 @@ const Separator = styled.span`
   margin: 0 4px;
 `;
 
-const CommentsCount = styled.span`
+const CommentsCount = styled.span<{ hasMargin: boolean }>`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 24px;
+  margin: ${(props) => (props.hasMargin ? '0 24px' : null)};
 `;
 
 const CommentIcon = styled(Icon)`
@@ -73,8 +74,9 @@ const CommentIcon = styled(Icon)`
   margin-right: 8px;
 `;
 
-const Footer = styled.footer`
+const Footer = styled.footer<{ spaceBetween: boolean }>`
   display: flex;
+  ${(props) => props.spaceBetween && 'justify-content: space-between;'};
 `;
 
 interface Props {
@@ -86,7 +88,14 @@ interface Props {
 }
 
 const CompactIdeaCard = memo<Props & InjectedLocalized>(
-  ({ ideaId, localize, className }) => {
+  ({
+    ideaId,
+    localize,
+    className,
+    participationMethod,
+    participationContextId,
+    participationContextType,
+  }) => {
     const idea = useIdea({ ideaId });
 
     const ideaImage = useIdeaImage({
@@ -110,6 +119,10 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       });
     };
 
+    const isBudgetingProject = participationMethod === 'budgeting';
+    const ideaBudget = idea?.attributes?.budget;
+
+    const projectId = idea?.relationships?.project.data?.id;
     const authorId = idea.relationships.author.data?.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
 
@@ -136,6 +149,10 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     ]
       .filter((item) => typeof item === 'string' && item !== '')
       .join(' ');
+
+    const disabledAssignBudgetClick = () => {
+      // set state ({ showAssignBudgetDisabled: 'assignBudgetDisabled' });
+    };
 
     return (
       <Card
@@ -164,19 +181,35 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
           </BodyWrapper>
         }
         footer={
-          <Footer>
-            <VoteControl
-              style="compact"
-              ideaId={idea.id}
-              size="1"
-              ariaHidden={true}
-              showDownvote={votingDescriptor?.downvoting_enabled}
-            />
-            <CommentsCount>
+          <Footer spaceBetween={isBudgetingProject}>
+            {!isBudgetingProject && (
+              <VoteControl
+                style="compact"
+                ideaId={idea.id}
+                size="1"
+                ariaHidden={true}
+                showDownvote={votingDescriptor?.downvoting_enabled}
+              />
+            )}
+            <CommentsCount hasMargin={!isBudgetingProject}>
               <CommentIcon name="comments" />
               {idea.attributes.comments_count}
             </CommentsCount>
-            <StatusBadge statusId={ideaStatusId} />
+            {!isBudgetingProject && <StatusBadge statusId={ideaStatusId} />}
+            {isBudgetingProject &&
+              ideaBudget &&
+              participationContextId &&
+              participationContextType && (
+                <AssignBudgetControl
+                  view="ideaCard"
+                  ideaId={idea.id}
+                  participationContextId={participationContextId}
+                  participationContextType={participationContextType}
+                  openIdea={onCardClick}
+                  disabledAssignBudgetClick={disabledAssignBudgetClick}
+                  projectId={projectId}
+                />
+              )}
           </Footer>
         }
       />
