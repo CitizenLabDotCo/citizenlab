@@ -12,7 +12,7 @@ import {
 // resources
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'modules/projectFolder/resources/GetProjectFolder';
+} from 'modules/project_folders/resources/GetProjectFolder';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';

@@ -3,14 +3,18 @@ import {
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
 
-import { mergeWith } from 'lodash-es';
+import { mergeWith, castArray } from 'lodash-es';
 
-import { createElement } from 'react';
+import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 
-interface Outlets {
-  [key: string]: any[];
+export interface Outlets {
+  [key: string]: FunctionComponent<any>;
+}
+
+export interface MergedOutlets {
+  [key: string]: FunctionComponent<any>[];
 }
 
 interface RouteConfiguration {
@@ -29,6 +33,7 @@ interface Routes {
 
 export interface ModuleConfiguration {
   routes: Routes;
+  outlets: Outlets;
 }
 
 type Modules = {
@@ -72,34 +77,30 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-const parseOutlets = (outlets: Outlets = {}) =>
-  Object.entries(outlets).reduce(
-    (acc, [id, definitions]: [string, any[]]) => ({
-      ...acc,
-      [id]: definitions.map((definition) => createElement(definition)),
-    }),
-    {}
-  );
-
-export const loadModules = (modules: Modules, outlets: Outlets) => {
+export const loadModules = (modules: Modules) => {
   const enabledModuleConfigurations = modules
     .filter((module) => module.enabled)
     .map((module) => module.configuration);
 
   const mergedRoutes: Routes = mergeWith(
-    {
-      citizen: [],
-      admin: [],
-    },
+    {},
     ...enabledModuleConfigurations.map(({ routes }) => routes),
-    (objValue, srcValue) => objValue.concat(srcValue)
+    (objValue = [], srcValue = []) =>
+      castArray(objValue).concat(castArray(srcValue))
+  );
+
+  const mergedOutlets: MergedOutlets = mergeWith(
+    {},
+    ...enabledModuleConfigurations.map(({ outlets }) => outlets),
+    (objValue = [], srcValue = []) =>
+      castArray(objValue).concat(castArray(srcValue))
   );
 
   return {
+    outlets: mergedOutlets,
     routes: {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
     },
-    outlets: parseOutlets(outlets),
   };
 };
