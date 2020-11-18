@@ -10,7 +10,6 @@ import {
   RowButton,
   ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
-import DeleteFolderButton from 'containers/Admin/projects/components/DeletePublicationButton';
 
 // styles
 import styled from 'styled-components';
@@ -40,6 +39,7 @@ import ProjectRow from '../../../../containers/Admin/projects/components/Project
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from '../../../../containers/Admin/projects/components/PublicationStatusLabel';
+import DeleteFolderButton from '../DeleteFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 11px;
