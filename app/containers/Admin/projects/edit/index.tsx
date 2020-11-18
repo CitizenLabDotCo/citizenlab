@@ -214,18 +214,17 @@ export class AdminProjectEdition extends PureComponent<
 
         return false;
       },
-      'survey-results': function isSurveyResultsTabHidden() {
-        // hide surveys tab if
-        return (
-          !surveys_enabled || // surveys or typeform disabled
+      'survey-results': function surveyResultsTabHidden() {
+        if (
+          (participationMethod !== 'survey' && processType === 'continuous') ||
+          !surveys_enabled ||
           !typeform_enabled ||
-          (participationMethod !== 'survey' && processType === 'continuous') || // or the project is continuous but not a survey project
-          (surveys_enabled && // or surveys enabled for a continuous survey project without typeform
+          (surveys_enabled &&
             typeform_enabled &&
             processType === 'continuous' &&
             participationMethod === 'survey' &&
             project.attributes.survey_service !== 'typeform') ||
-          (processType === 'timeline' && // or this is a timeline project without survey phases served by typeform
+          (processType === 'timeline' &&
             !isNilOrError(phases) &&
             phases.filter((phase) => {
               return (
@@ -233,7 +232,11 @@ export class AdminProjectEdition extends PureComponent<
                 phase.attributes.survey_service === 'typeform'
               );
             }).length === 0)
-        );
+        ) {
+          return true;
+        }
+
+        return false;
       },
       ideaform: function isIdeaformTabHidden() {
         if (
