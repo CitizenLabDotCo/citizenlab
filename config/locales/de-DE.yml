@@ -187,7 +187,7 @@ de:
       has_value: "%{property} ist %{value}"
       not_has_value: "%{property} ist nicht %{value}"
       is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the follow values: %{value}"
+      not_is_one_of: "%{property} does not have any of the following values: %{value}"
     custom_field_text:
       is: "%{property} ist %{value}"
       not_is: "%{property} ist nicht %{value}"
