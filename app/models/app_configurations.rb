@@ -8,7 +8,7 @@ class AppConfigurations < ApplicationRecord
     private :new  # We need a singleton
 
     def instance
-      @instance ||= self.first || self.create_default
+      self.first || self.create_default
     end
 
     def settings_json_schema_str
