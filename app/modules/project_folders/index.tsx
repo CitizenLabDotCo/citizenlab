@@ -7,7 +7,7 @@ import ProjectFolderRow from './components/ProjectFolderRow';
 import ProjectFolderSiteMap from './components/ProjectFolderSiteMap';
 import ProjectFolderTitle from './components/ProjectFolderTitle';
 
-const RenderWhenProjectFolder = ({ publication, children }) => {
+const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'project_folder') return null;
   return <>{children}</>;
 };
@@ -16,6 +16,7 @@ const RenderOnFeatureFlag = ({ featureFlag, children }) => {
   if (!featureFlag) return null;
   return <>{children}</>;
 };
+
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.AdminPage.projects.all.projectsAndFolders.title': (
@@ -33,19 +34,19 @@ const configuration: ModuleConfiguration = {
       </RenderOnFeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
-      <RenderWhenProjectFolder publication={props.publication}>
+      <RenderOnPublicationType publication={props.publication}>
         <ProjectFolderRow {...props} />
-      </RenderWhenProjectFolder>
+      </RenderOnPublicationType>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (
-      <RenderWhenProjectFolder publication={props.publication}>
+      <RenderOnPublicationType publication={props.publication}>
         <ProjectFolderCard {...props} />
-      </RenderWhenProjectFolder>
+      </RenderOnPublicationType>
     ),
     'app.containers.SiteMap.ProjectsSection.listitem': (props) => (
-      <RenderWhenProjectFolder publication={props.adminPublication}>
+      <RenderOnPublicationType publication={props.adminPublication}>
         <ProjectFolderSiteMap {...props} />
-      </RenderWhenProjectFolder>
+      </RenderOnPublicationType>
     ),
   },
   routes: {
