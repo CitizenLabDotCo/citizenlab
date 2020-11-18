@@ -2,12 +2,10 @@ import React, { memo, FormEvent } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
-import { Icon } from 'cl2-component-library';
 import Card from 'components/UI/Card/Compact';
 import Avatar from 'components/Avatar';
-import StatusBadge from 'components/StatusBadge';
-import VoteControl from 'components/VoteControl';
-import AssignBudgetControl from 'components/AssignBudgetControl';
+import FooterWithVoteControl from './FooterWithVoteControl';
+import FooterWithBudgetControl from './FooterWithBudgetControl';
 import ideaImagePlaceholder from './idea-placeholder.png';
 
 // types
@@ -58,27 +56,6 @@ const Separator = styled.span`
   margin: 0 4px;
 `;
 
-const CommentsCount = styled.span<{ hasMargin: boolean }>`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: ${(props) => (props.hasMargin ? '0 24px' : null)};
-`;
-
-const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${colors.label};
-  margin-right: 8px;
-`;
-
-const Footer = styled.footer<{ spaceBetween: boolean }>`
-  display: flex;
-  ${(props) => props.spaceBetween && 'justify-content: space-between;'};
-`;
-
 interface Props {
   ideaId: string;
   className?: string;
@@ -103,8 +80,6 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
 
-    const ideaStatusId = get(idea, 'relationships.idea_status.data.id');
-
     if (isNilOrError(idea)) {
       return null;
     }
@@ -119,10 +94,6 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       });
     };
 
-    const isBudgetingProject = participationMethod === 'budgeting';
-    const ideaBudget = idea?.attributes?.budget;
-
-    const projectId = idea?.relationships?.project.data?.id;
     const authorId = idea.relationships.author.data?.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
 
@@ -149,10 +120,6 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     ]
       .filter((item) => typeof item === 'string' && item !== '')
       .join(' ');
-
-    const disabledAssignBudgetClick = () => {
-      // set state ({ showAssignBudgetDisabled: 'assignBudgetDisabled' });
-    };
 
     return (
       <Card
@@ -181,36 +148,16 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
           </BodyWrapper>
         }
         footer={
-          <Footer spaceBetween={isBudgetingProject}>
-            {!isBudgetingProject && (
-              <VoteControl
-                style="compact"
-                ideaId={idea.id}
-                size="1"
-                ariaHidden={true}
-                showDownvote={votingDescriptor?.downvoting_enabled}
-              />
-            )}
-            <CommentsCount hasMargin={!isBudgetingProject}>
-              <CommentIcon name="comments" />
-              {idea.attributes.comments_count}
-            </CommentsCount>
-            {!isBudgetingProject && <StatusBadge statusId={ideaStatusId} />}
-            {isBudgetingProject &&
-              ideaBudget &&
-              participationContextId &&
-              participationContextType && (
-                <AssignBudgetControl
-                  view="ideaCard"
-                  ideaId={idea.id}
-                  participationContextId={participationContextId}
-                  participationContextType={participationContextType}
-                  openIdea={onCardClick}
-                  disabledAssignBudgetClick={disabledAssignBudgetClick}
-                  projectId={projectId}
-                />
-              )}
-          </Footer>
+          participationMethod === 'budgeting' ? (
+            <FooterWithBudgetControl
+              idea={idea}
+              openIdea={onCardClick}
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+            />
+          ) : (
+            <FooterWithVoteControl idea={idea} />
+          )
         }
       />
     );
