@@ -5,6 +5,7 @@
 ### Added
 - Archived project folder cards on the homepage will now have an "Archived" label, the same way archived projects do\
 - Improved support for right-to-left layout
+- Experimental processing feature that allows admins and project managers to automatically assign tags to a set of ideas.
 
 ### Fixed
 - Projects without idea sorting methods are no longer invalid.
