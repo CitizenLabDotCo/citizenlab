@@ -1,10 +1,10 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import projectFolderConfiguration from './projectFolder';
+import projectFoldersConfiguration from './project_folders';
 
 export default loadModules([
   {
-    configuration: projectFolderConfiguration,
+    configuration: projectFoldersConfiguration,
     enabled: true,
   },
 ]);

@@ -21,7 +21,7 @@ import messages from './messages';
 // Resources
 import GetProjectFolder, {
   GetProjectFolderChildProps,
-} from 'modules/projectFolder/resources/GetProjectFolder';
+} from 'modules/project_folders/resources/GetProjectFolder';
 
 // style
 import styled from 'styled-components';

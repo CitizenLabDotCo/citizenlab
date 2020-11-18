@@ -29,7 +29,7 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import useProjectFolderImages from 'modules/projectFolder/hooks/useProjectFolderImages';
+import useProjectFolderImages from 'modules/project_folders/hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const Container = styled(Link)`
