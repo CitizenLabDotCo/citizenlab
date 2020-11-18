@@ -7,7 +7,6 @@ import { stringify } from 'qs';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import ProjectFolderCard from 'modules/project_folders/components/ProjectFolderCard';
 import SelectAreas from './SelectAreas';
 import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
