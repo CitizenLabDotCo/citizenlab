@@ -3,7 +3,11 @@
 ## 2020-11-18
 
 ### Added
-- Archived project folder cards on the homepage will now have an "Archived" label, the same way archived projects do
+- Archived project folder cards on the homepage will now have an "Archived" label, the same way archived projects do\
+
+### Fixed
+- Projects without idea sorting methods are no longer invalid.
+- Surveys tab now shows for projects with survey phases.
 
 ## 2020-11-16
 
