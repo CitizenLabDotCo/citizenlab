@@ -5,28 +5,27 @@ import ProjectFolderCard from './components/ProjectFolderCard';
 import ProjectFolderRow from './components/ProjectFolderRow';
 import ProjectFolderSiteMap from './components/ProjectFolderSiteMap';
 
+const RenderWhenProjectFolder = ({ publication, children }) => {
+  if (publication.publicationType !== 'project_folder') return null;
+  return <>{children}</>;
+};
+
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
-      <>
-        {props.publication.publicationType === 'project_folder' && (
-          <ProjectFolderRow {...props} />
-        )}
-      </>
+      <RenderWhenProjectFolder publication={props.publication}>
+        <ProjectFolderRow {...props} />
+      </RenderWhenProjectFolder>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (
-      <>
-        {props.publication.publicationType === 'project_folder' && (
-          <ProjectFolderCard {...props} />
-        )}
-      </>
+      <RenderWhenProjectFolder publication={props.publication}>
+        <ProjectFolderCard {...props} />
+      </RenderWhenProjectFolder>
     ),
     'app.containers.SiteMap.ProjectsSection.listitem': (props) => (
-      <>
-        {props.adminPublication.publicationType === 'project_folder' && (
-          <ProjectFolderSiteMap {...props} />
-        )}
-      </>
+      <RenderWhenProjectFolder publication={props.adminPublication}>
+        <ProjectFolderSiteMap {...props} />
+      </RenderWhenProjectFolder>
     ),
   },
   routes: {
