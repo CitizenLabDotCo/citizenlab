@@ -1,17 +1,37 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import NewProjectFolderButton from './components/NewProjectFolderButton';
 
 import ProjectFolderCard from './components/ProjectFolderCard';
 import ProjectFolderRow from './components/ProjectFolderRow';
 import ProjectFolderSiteMap from './components/ProjectFolderSiteMap';
+import ProjectFolderTitle from './components/ProjectFolderTitle';
 
 const RenderWhenProjectFolder = ({ publication, children }) => {
   if (publication.publicationType !== 'project_folder') return null;
   return <>{children}</>;
 };
 
+const RenderOnFeatureFlag = ({ featureFlag, children }) => {
+  if (!featureFlag) return null;
+  return <>{children}</>;
+};
 const configuration: ModuleConfiguration = {
   outlets: {
+    'app.containers.AdminPage.projects.all.projectsAndFolders.title': (
+      props
+    ) => (
+      <RenderOnFeatureFlag featureFlag={props.featureFlag}>
+        <ProjectFolderTitle />
+      </RenderOnFeatureFlag>
+    ),
+    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': (
+      props
+    ) => (
+      <RenderOnFeatureFlag featureFlag={props.featureFlag}>
+        <NewProjectFolderButton />
+      </RenderOnFeatureFlag>
+    ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderWhenProjectFolder publication={props.publication}>
         <ProjectFolderRow {...props} />
