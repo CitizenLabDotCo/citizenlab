@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.emails',
     defaultMessage: 'Emails',
   },
+  processing: {
+    id: 'app.containers.AdminPage.SideBar.processing',
+    defaultMessage: 'Processing',
+  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
