@@ -51,7 +51,7 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  min-height: 69px;
+  min-height: 61px;
   display: flex;
   align-items: center;
 
@@ -183,7 +183,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
           actionButtonElement &&
           actionButtonYOffset &&
           window.pageYOffset >
-            actionButtonYOffset - (smallerThanLargeTablet ? 14 : 40)
+            actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
         );
         const actionBarVisible = !smallerThanLargeTablet
           ? window.pageYOffset > 78
