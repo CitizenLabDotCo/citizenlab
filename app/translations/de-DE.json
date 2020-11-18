@@ -105,6 +105,7 @@
   "app.components.FiltersModal.resetFilters": "Filter zurücksetzen",
   "app.components.FolderFolderCard.a11y_folderDescription": "Beschreibung des Ordners:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Titel des Ordners:",
+  "app.components.FolderFolderCard.archived": "Archived",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# Projekte} one {# Projekt} other {# Projekte}}",
   "app.components.GoBackButton.group.edit.goBack": "Zurück",
   "app.components.IdeaCards.empty": "Hier sind noch keine Ideen.",
