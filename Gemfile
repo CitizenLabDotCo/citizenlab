@@ -131,6 +131,11 @@ gem 'bootsnap', require: false
 gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
 gem 'rack-attack', '~> 6'
 
+# mjml-rails cannot find the MJML parser when installed
+# through the emails engine and is therefore specified
+# in the main app.
+gem "mjml-rails", "~> 4.4"
+
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'machine_translations', path: 'engines/machine_translations'
