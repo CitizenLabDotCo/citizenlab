@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
@@ -85,8 +85,13 @@ const MetaInformation = ({
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
-  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
   const ideaStatus = useIdeaStatus({ statusId });
+  let similarIdeas;
+  useEffect(() => {
+    if (similarIdeasEnabled) {
+      similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+    }
+  }, [ideaId, similarIdeasEnabled]);
 
   if (
     !isNilOrError(idea) &&
