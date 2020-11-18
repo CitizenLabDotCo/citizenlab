@@ -14,7 +14,7 @@ export interface Outlets {
 }
 
 export interface MergedOutlets {
-  [key: string]: FunctionComponent<any>;
+  [key: string]: FunctionComponent<any>[];
 }
 
 interface RouteConfiguration {
