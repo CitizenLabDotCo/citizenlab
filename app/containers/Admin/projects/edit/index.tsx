@@ -216,7 +216,7 @@ export class AdminProjectEdition extends PureComponent<
       },
       'survey-results': function surveyResultsTabHidden() {
         if (
-          participationMethod !== 'survey' ||
+          (participationMethod !== 'survey' && processType === 'continuous') ||
           !surveys_enabled ||
           !typeform_enabled ||
           (surveys_enabled &&
