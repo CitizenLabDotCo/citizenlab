@@ -3,7 +3,6 @@ import { useContext } from 'react';
 
 const useOutlet = (identifier) => {
   const outlets = useContext(OutletsContext);
-  if (!identifier) return;
   return outlets[identifier];
 };
 

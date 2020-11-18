@@ -7,10 +7,10 @@ import Sharing from 'components/Sharing';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // services
-import useProjectFolder from 'modules/projectFolder/hooks/useProjectFolder';
+import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectFolderFiles from 'modules/projectFolder/hooks/useProjectFolderFiles';
-import useProjectFolderImages from 'modules/projectFolder/hooks/useProjectFolderImages';
+import useProjectFolderFiles from 'modules/project_folders/hooks/useProjectFolderFiles';
+import useProjectFolderImages from 'modules/project_folders/hooks/useProjectFolderImages';
 
 // i18n
 import T from 'components/T';

@@ -1,6 +1,26 @@
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
+import FolderRow from './components/FolderRow';
+import ProjectFolderCard from './components/ProjectFolderCard';
+
 const configuration: ModuleConfiguration = {
+  outlets: {
+    'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
+      <>
+        {props.publication.publicationType === 'project_folder' && (
+          <FolderRow {...props} />
+        )}
+      </>
+    ),
+    'app.components.ProjectAndFolderCards.card': (props) => (
+      <>
+        {props.publication.publicationType === 'project_folder' && (
+          <ProjectFolderCard {...props} />
+        )}
+      </>
+    ),
+  },
   routes: {
     citizen: [
       {

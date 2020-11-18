@@ -29,7 +29,7 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import useProjectFolderImages from 'modules/projectFolder/hooks/useProjectFolderImages';
+import useProjectFolderImages from 'modules/project_folders/hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const Container = styled(Link)`
@@ -172,8 +172,10 @@ const FolderContent = styled.div`
 const ContentHeaderHeight = 39;
 const ContentHeaderBottomMargin = 13;
 
-const ContentHeader = styled.div`
+const ContentHeader = styled.div<{ hasLabel: boolean }>`
   display: flex;
+  justify-content: ${({ hasLabel }) =>
+    hasLabel ? 'space-between' : 'flex-end'};
   align-items: center;
   padding-right: 0;
   padding-left: 0;
@@ -223,6 +225,16 @@ const ContentBody = styled.div`
     max-width: 400px;
     justify-content: center;
   }
+`;
+
+const ContentHeaderLabel = styled.span`
+  height: ${ContentHeaderHeight}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
 `;
 
 const FolderTitle = styled.h3`
@@ -302,21 +314,29 @@ const ProjectFolderCard = memo<Props>(
     const numberOfProjectsInFolder =
       publication.attributes.visible_children_count;
 
+    const isArchived = publication.attributes.publication_status === 'archived';
     const contentHeader = (
-      <ContentHeader className={`${size} hasContent`}>
-        <MapIcon name="folder" ariaHidden />
-        <MapIconDescription
-          aria-hidden
-          className="e2e-folder-card-numberofprojects"
-        >
-          {numberOfProjectsInFolder}
-        </MapIconDescription>
-        <ScreenReaderOnly>
-          <FormattedMessage
-            {...messages.numberOfProjectsInFolder}
-            values={{ numberOfProjectsInFolder }}
-          />
-        </ScreenReaderOnly>
+      <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
+        {isArchived && (
+          <ContentHeaderLabel className="e2e-project-card-archived-label">
+            <FormattedMessage {...messages.archived} />
+          </ContentHeaderLabel>
+        )}
+        <div>
+          <MapIcon name="folder" ariaHidden />
+          <MapIconDescription
+            aria-hidden
+            className="e2e-folder-card-numberofprojects"
+          >
+            {numberOfProjectsInFolder}
+          </MapIconDescription>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.numberOfProjectsInFolder}
+              values={{ numberOfProjectsInFolder }}
+            />
+          </ScreenReaderOnly>
+        </div>
       </ContentHeader>
     );
 

@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       '{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}',
   },
+  archived: {
+    id: 'app.components.FolderFolderCard.archived',
+    defaultMessage: 'Archived',
+  },
 });
