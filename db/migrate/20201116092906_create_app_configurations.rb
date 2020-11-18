@@ -1,6 +1,6 @@
-class CreateConfigurations < ActiveRecord::Migration[6.0]
+class CreateAppConfigurations < ActiveRecord::Migration[6.0]
   def change
-    create_table :configurations, id: :uuid do |t|
+    create_table :app_configurations, id: :uuid do |t|
       t.string :logo
       t.string :header_bg
       t.string :favicon
