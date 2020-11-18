@@ -1,26 +1,11 @@
-import React, { cloneElement } from 'react';
+import React from 'react';
 import useOutlet from 'hooks/useOutlet';
 
-const wrapWithArray = (item) => (Array.isArray(item) ? item : [item]);
-
 const Outlet = ({ id, ...props }) => {
-  const outlet = useOutlet(id);
-
-  if (!outlet) {
-    return null;
-  }
-
-  return (
-    <>
-      {wrapWithArray(outlet).map((element, index) =>
-        cloneElement(element, {
-          key: `${id}_${index}`,
-          ...element.props,
-          ...props,
-        })
-      )}
-    </>
-  );
+  const outlets = useOutlet(id);
+  return outlets.map((Outlet, index) => (
+    <Outlet key={`${id}_${index}`} {...props} />
+  ));
 };
 
 export default Outlet;
