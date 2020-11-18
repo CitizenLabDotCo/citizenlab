@@ -2,6 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import FolderRow from './components/FolderRow';
+import ProjectFolderCard from './components/ProjectFolderCard';
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -9,6 +10,13 @@ const configuration: ModuleConfiguration = {
       <>
         {props.publication.publicationType === 'project_folder' && (
           <FolderRow {...props} />
+        )}
+      </>
+    ),
+    'app.components.ProjectAndFolderCards.card': (props) => (
+      <>
+        {props.publication.publicationType === 'project_folder' && (
+          <ProjectFolderCard {...props} />
         )}
       </>
     ),
