@@ -1,4 +1,4 @@
-class AppConfigurations < ApplicationRecord
+class AppConfiguration < ApplicationRecord
   # [TODO] checks mixins
   include PublicApi::TenantDecorator
   include Frontend::TenantStyle
@@ -41,7 +41,7 @@ class AppConfigurations < ApplicationRecord
   mount_base64_uploader :favicon, FaviconUploader
 
   validates :settings, presence: true, json: {
-      schema: -> { AppConfigurations.settings_json_schema_str },
+      schema: -> { AppConfiguration.settings_json_schema_str },
       message: ->(errors) { errors.map { |e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
       options: { errors_as_objects: true }
   }
