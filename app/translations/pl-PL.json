@@ -105,7 +105,7 @@
   "app.components.FiltersModal.resetFilters": "Usuwanie filtrów",
   "app.components.FolderFolderCard.a11y_folderDescription": "Opis folderu:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Tytuł folderu:",
-  "app.components.FolderFolderCard.archived": "Archived",
+  "app.components.FolderFolderCard.archived": "Zarchiwizowany",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# projekt} few {# projekty} many {# projektów} other {# projekty}}",
   "app.components.GoBackButton.group.edit.goBack": "Wróć",
   "app.components.IdeaCards.empty": "Nie ma tu jeszcze żadnych pomysłów.",
