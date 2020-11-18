@@ -1,11 +1,12 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import NewProjectFolderButton from './components/NewProjectFolderButton';
 
-import ProjectFolderCard from './components/ProjectFolderCard';
-import ProjectFolderRow from './components/ProjectFolderRow';
-import ProjectFolderSiteMap from './components/ProjectFolderSiteMap';
-import ProjectFolderTitle from './components/ProjectFolderTitle';
+import NewProjectFolderButton from './components/admin/NewProjectFolderButton';
+import ProjectFolderRow from './components/admin/ProjectFolderRow';
+import ProjectFolderTitle from './components/admin/ProjectFolderTitle';
+
+import ProjectFolderCard from './components/citizen/ProjectFolderCard';
+import ProjectFolderSiteMap from './components/citizen/ProjectFolderSiteMap';
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'project_folder') return null;
