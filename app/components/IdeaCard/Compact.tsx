@@ -79,13 +79,14 @@ const Footer = styled.footer`
 
 interface Props {
   ideaId: string;
+  className?: string;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
 }
 
 const CompactIdeaCard = memo<Props & InjectedLocalized>(
-  ({ ideaId, localize, ...rest }) => {
+  ({ ideaId, localize, className }) => {
     const idea = useIdea({ ideaId });
 
     const ideaImage = useIdeaImage({
@@ -118,9 +119,28 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       .trim();
 
     const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
+    const commentingDescriptor =
+      idea?.attributes?.action_descriptor?.commenting_idea;
+
+    const newClassName = [
+      className,
+      'e2e-idea-card',
+      idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
+      commentingDescriptor && commentingDescriptor.enabled
+        ? 'e2e-comments-enabled'
+        : 'e2e-comments-disabled',
+      idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
+      votingDescriptor && votingDescriptor.downvoting_enabled
+        ? 'e2e-downvoting-enabled'
+        : 'e2e-downvoting-disabled',
+    ]
+      .filter((item) => typeof item === 'string' && item !== '')
+      .join(' ');
+
     return (
       <Card
         onClick={onCardClick}
+        className={newClassName}
         title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
         image={
@@ -159,7 +179,6 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
             <StatusBadge statusId={ideaStatusId} />
           </Footer>
         }
-        {...rest}
       />
     );
   }
