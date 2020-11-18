@@ -33,9 +33,8 @@ class AdminPublication < ApplicationRecord
   def self.publication_types
     # If we ever need in the future to iterate over all publication types (classes) -- even those that are not yet
     # represented in the table -- we can complement this with a public method to register new types explicitly.
-    self.distinct.pluck(:publication_type)
+    self.distinct.pluck(:publication_type).map(&:constantize)
   end
-
 
   private
 
