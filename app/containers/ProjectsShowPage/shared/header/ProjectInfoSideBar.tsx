@@ -22,7 +22,7 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 // components
 import { Icon } from 'cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
-import StickyProjectActionBar from './StickyProjectActionBar';
+import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
@@ -191,7 +191,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
-        <StickyProjectActionBar projectId={projectId} />
+        <ProjectActionBar projectId={projectId} />
         <About>
           <Title>
             <FormattedMessage {...messages.about} />

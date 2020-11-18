@@ -16,6 +16,8 @@ import { IEventData } from 'services/events';
 
 // i18n
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from 'containers/ProjectsShowPage/messages';
 
 // utils
 import { getIsoDate } from 'utils/dateUtils';
@@ -40,7 +42,7 @@ const Container = styled.div`
   ${defaultCardStyle};
   border: solid 1px #ccc;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     flex-direction: column;
     padding: 25px;
   `}
@@ -54,15 +56,18 @@ const EventDateBlocks = styled.div`
   align-items: center;
   justify-content: stretch;
 
-  ${media.smallerThanMaxTablet`
-    display: none;
+  ${media.smallerThanMinTablet`
+    flex: 1;
+    width: auto;
+    flex-direction: row;
+    margin-bottom: 20px;
   `}
 `;
 
 const Separator = styled.div`
   height: 18px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     width: 15px;
     height: auto;
   `}
@@ -75,10 +80,29 @@ const EventDateBlockWrapper = styled.div`
   flex-direction: column;
   justify-content: stretch;
 
+  &.second {
+    margin-top: 15px;
+  }
+
   ${media.smallerThanMinTablet`
     flex: 1;
     width: auto;
+    margin: 0;
+
+    &.second {
+      margin: 0;
+      margin-left: 20px;
+    }
   `}
+`;
+
+const EventDateBlockLabel = styled.div`
+  color: ${colors.label};
+  font-size: 12px;
+  line-height: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 `;
 
 const EventDateBlock = styled.div`
@@ -145,7 +169,7 @@ const EventInformation = styled.div`
   flex-direction: column;
   margin-left: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     border: none;
     margin: 0px;
   `}
@@ -273,7 +297,12 @@ const EventCard = memo<Props>(({ event, className }) => {
     return (
       <Container className={className || ''}>
         <EventDateBlocks>
-          <EventDateBlockWrapper>
+          <EventDateBlockWrapper className={isMultiYear ? 'first' : ''}>
+            {isMultiYear && (
+              <EventDateBlockLabel>
+                <FormattedMessage {...messages.startsAt} />
+              </EventDateBlockLabel>
+            )}
             <EventDateBlock>
               <EventDate>
                 <EventMonth>{startAtMonth}</EventMonth>
@@ -293,20 +322,22 @@ const EventCard = memo<Props>(({ event, className }) => {
           </EventDateBlockWrapper>
 
           {isMultiDayEvent && isMultiYear && (
-            <>
-              <Separator>-</Separator>
-              <EventDateBlockWrapper>
-                <EventDateBlock>
-                  <EventDate>
-                    <EventMonth>{endAtMonth}</EventMonth>
-                    <EventDay>{endAtDay}</EventDay>
-                  </EventDate>
-                  <EventYear>
-                    <span>{endAtYear}</span>
-                  </EventYear>
-                </EventDateBlock>
-              </EventDateBlockWrapper>
-            </>
+            <EventDateBlockWrapper className={isMultiYear ? 'second' : ''}>
+              {isMultiYear && (
+                <EventDateBlockLabel>
+                  <FormattedMessage {...messages.endsAt} />
+                </EventDateBlockLabel>
+              )}
+              <EventDateBlock>
+                <EventDate>
+                  <EventMonth>{endAtMonth}</EventMonth>
+                  <EventDay>{endAtDay}</EventDay>
+                </EventDate>
+                <EventYear>
+                  <span>{endAtYear}</span>
+                </EventYear>
+              </EventDateBlock>
+            </EventDateBlockWrapper>
           )}
         </EventDateBlocks>
 
