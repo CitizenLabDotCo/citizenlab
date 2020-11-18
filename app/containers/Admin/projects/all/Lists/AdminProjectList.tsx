@@ -15,7 +15,6 @@ import GetAdminPublications, {
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 
@@ -38,7 +37,7 @@ const Spacer = styled.div`
 
 interface DataProps {
   AdminPublications: GetAdminPublicationsChildProps;
-  foldersEnabled: boolean;
+  projectFoldersEnabled: boolean;
 }
 
 interface Props extends DataProps {}
@@ -48,7 +47,7 @@ function handleReorderAdminPublication(itemId, newOrder) {
 }
 
 const AdminProjectList = memo<Props>(
-  ({ AdminPublications, foldersEnabled }) => {
+  ({ AdminPublications, projectFoldersEnabled }) => {
     const AdminPublicationsList = AdminPublications.list;
 
     if (
@@ -59,23 +58,19 @@ const AdminProjectList = memo<Props>(
         <>
           <StyledListHeader>
             <HeaderTitle>
-              {foldersEnabled ? (
-                <FormattedMessage {...messages.projectsAndFolders} />
-              ) : (
+              {!projectFoldersEnabled && (
                 <FormattedMessage {...messages.existingProjects} />
               )}
+              <Outlet
+                id="app.containers.AdminPage.projects.all.projectsAndFolders.title"
+                featureFlag={projectFoldersEnabled}
+              />
             </HeaderTitle>
-            {foldersEnabled && (
-              <>
-                <Spacer />
-                <Button
-                  linkTo={'/admin/projects/folders/new'}
-                  buttonStyle="admin-dark"
-                >
-                  <FormattedMessage {...messages.newProjectFolder} />
-                </Button>
-              </>
-            )}
+            <Spacer />
+            <Outlet
+              id="app.containers.AdminPage.projects.all.projectsAndFolders.actions"
+              featureFlag={projectFoldersEnabled}
+            />
           </StyledListHeader>
           <SortableList
             items={AdminPublicationsList}
@@ -130,7 +125,7 @@ const Data = adopt<DataProps>({
       folderId={null}
     />
   ),
-  foldersEnabled: <GetFeatureFlag name="project_folders" />,
+  projectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default () => (
