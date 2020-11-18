@@ -182,6 +182,28 @@ export class AdminProjectEdition extends PureComponent<
       },
     ];
 
+    const isSurveyResultsTabHidden = () => {
+      // hide surveys tab if
+      return (
+        !surveys_enabled || // surveys or typeform disabled
+        !typeform_enabled ||
+        (participationMethod !== 'survey' && processType === 'continuous') || // or the project is continuous but not a survey project
+        (surveys_enabled && // or surveys enabled for a continuous survey project without typeform
+          typeform_enabled &&
+          processType === 'continuous' &&
+          participationMethod === 'survey' &&
+          project.attributes.survey_service !== 'typeform') ||
+        (processType === 'timeline' && // or this is a timeline project without survey phases served by typeform
+          !isNilOrError(phases) &&
+          phases.filter((phase) => {
+            return (
+              phase.attributes.participation_method === 'survey' &&
+              phase.attributes.survey_service === 'typeform'
+            );
+          }).length === 0)
+      );
+    };
+
     const tabHideConditions = {
       general: function isGeneralTabHidden() {
         return false;
@@ -214,30 +236,7 @@ export class AdminProjectEdition extends PureComponent<
 
         return false;
       },
-      'survey-results': function surveyResultsTabHidden() {
-        if (
-          participationMethod !== 'survey' ||
-          !surveys_enabled ||
-          !typeform_enabled ||
-          (surveys_enabled &&
-            typeform_enabled &&
-            processType === 'continuous' &&
-            participationMethod === 'survey' &&
-            project.attributes.survey_service !== 'typeform') ||
-          (processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter((phase) => {
-              return (
-                phase.attributes.participation_method === 'survey' &&
-                phase.attributes.survey_service === 'typeform'
-              );
-            }).length === 0)
-        ) {
-          return true;
-        }
-
-        return false;
-      },
+      'survey-results': isSurveyResultsTabHidden,
       ideaform: function isIdeaformTabHidden() {
         if (
           (processType === 'continuous' &&
