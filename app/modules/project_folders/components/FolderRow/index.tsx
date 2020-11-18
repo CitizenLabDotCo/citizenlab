@@ -35,10 +35,10 @@ import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
 import { adopt } from 'react-adopt';
-import ProjectRow from '../../../../containers/Admin/projects/components/ProjectRow';
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
-import PublicationStatusLabel from '../../../../containers/Admin/projects/components/PublicationStatusLabel';
+import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import DeleteFolderButton from '../DeleteFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
