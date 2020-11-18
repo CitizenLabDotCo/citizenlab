@@ -102,7 +102,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const FolderRow = memo<Props>(({ publication, adminPublications }) => {
+const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
   const authUser = useAuthUser();
 
   const hasProjects =
@@ -192,6 +192,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <FolderRow {...inputProps} {...dataprops} />}
+    {(dataprops) => <ProjectFolderRow {...inputProps} {...dataprops} />}
   </Data>
 );
