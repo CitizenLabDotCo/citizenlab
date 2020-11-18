@@ -39,7 +39,7 @@ import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import DeleteFolderButton from '../DeleteFolderButton';
+import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 11px;
@@ -141,7 +141,7 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
         </RowContentInner>
         <ActionsRowContainer>
           {userCanDeletePublication && (
-            <DeleteFolderButton
+            <DeleteProjectFolderButton
               publication={publication}
               processing={isBeingDeleted}
               setDeletionError={setFolderDeletionError}
