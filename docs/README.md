@@ -1,5 +1,39 @@
 # Changelog
 
+## Next release
+
+### Fixed
+- The project header image is screen reader friendly.
+
+## 2020-11-18
+
+### Added
+- Archived project folder cards on the homepage will now have an "Archived" label, the same way archived projects do\
+- Improved support for right-to-left layout
+- Experimental processing feature that allows admins and project managers to automatically assign tags to a set of ideas.
+
+### Fixed
+- Projects without idea sorting methods are no longer invalid.
+- Surveys tab now shows for projects with survey phases.
+
+### Changed
+- Moved welcome email from cl2-emails to cl2-back
+
+## 2020-11-16
+
+### Added
+- Admins can now select the default sort order for ideas in ideation and participatory budgeting projects, per project
+
+### Changed
+- The default sort order of ideas is now "Trending" instead of "Random" for every project if left unchanged
+- Improved sign in/up loading speed
+- Removed link to survey in the project page sidebar when not logged in. Instead it will show plain none-clickable text (e.g. '1 survey')
+
+### Fixed
+- Custom project slugs can now contain alphanumeric Arabic characters
+- Project Topics table now updates if a topic is deleted or reordered.
+- Empty lines with formatting (like bold or italic) in a Quill editor are now removed if not used as paragraphs.
+
 ## 2020-11-10
 
 ### Added
