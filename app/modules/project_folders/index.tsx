@@ -1,12 +1,12 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-import NewProjectFolderButton from './components/admin/NewProjectFolderButton';
-import ProjectFolderRow from './components/admin/ProjectFolderRow';
-import ProjectFolderTitle from './components/admin/ProjectFolderTitle';
+import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
+import ProjectFolderRow from './admin/components/ProjectFolderRow';
+import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
 
-import ProjectFolderCard from './components/citizen/ProjectFolderCard';
-import ProjectFolderSiteMap from './components/citizen/ProjectFolderSiteMap';
+import ProjectFolderCard from './citizen/components/ProjectFolderCard';
+import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'project_folder') return null;
@@ -55,28 +55,28 @@ const configuration: ModuleConfiguration = {
       {
         path: 'folders/:slug',
         name: 'Project folder page',
-        container: () => import('./containers/citizen/ProjectFolderShowPage'),
+        container: () => import('./citizen/containers/ProjectFolderShowPage'),
       },
     ],
     admin: [
       {
         path: 'projects/folders/new',
         name: 'admin projects single project',
-        container: () => import('./containers/admin/settings'),
+        container: () => import('./admin/containers/settings'),
       },
       {
         path: 'projects/folders/:projectFolderId',
         name: 'admin projects edit folder',
-        container: () => import('./containers/admin'),
+        container: () => import('./admin/containers'),
         indexRoute: {
           name: 'admin projects edit folder projects',
-          container: () => import('./containers/admin/projects'),
+          container: () => import('./admin/containers/projects'),
         },
         childRoutes: [
           {
             path: 'settings',
             name: 'admin projects edit folder settings',
-            container: () => import('./containers/admin/settings'),
+            container: () => import('./admin/containers/settings'),
           },
         ],
       },
