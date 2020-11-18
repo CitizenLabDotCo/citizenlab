@@ -7,7 +7,6 @@ import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
-import { deleteProject } from 'services/projects';
 import { deleteProjectFolder } from 'modules/project_folders/services/projectFolders';
 
 // components
@@ -23,7 +22,7 @@ interface Props extends ButtonContainerProps {
   setDeletionError: (error: string) => void;
 }
 
-const DeletePublicationButton = memo<Props & InjectedIntlProps>(
+const DeleteFolderButton = memo<Props & InjectedIntlProps>(
   ({
     publication,
     setDeleteIsProcessing,
@@ -31,15 +30,11 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
     intl: { formatMessage },
     ...rest
   }) => {
-    const publicationIsProject = publication.publicationType === 'project';
-    const publicationLabel = publicationIsProject ? 'Project' : 'Folder';
     const deletionProps = {
-      copy: formatMessage(messages[`delete${publicationLabel}Button`]),
-      errorCopy: formatMessage(messages[`delete${publicationLabel}Error`]),
-      confirmationCopy: formatMessage(
-        messages[`delete${publicationLabel}Confirmation`]
-      ),
-      handleDelete: publicationIsProject ? deleteProject : deleteProjectFolder,
+      copy: formatMessage(messages[`deleteFolderButton`]),
+      errorCopy: formatMessage(messages[`deleteFolderError`]),
+      confirmationCopy: formatMessage(messages[`deleteFolderConfirmation`]),
+      handleDelete: deleteProjectFolder,
     };
 
     const handleDeletePublication = async (event: FormEvent<any>) => {
@@ -75,4 +70,4 @@ const DeletePublicationButton = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(DeletePublicationButton);
+export default injectIntl(DeleteFolderButton);
