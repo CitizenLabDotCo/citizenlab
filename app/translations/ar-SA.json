@@ -105,6 +105,7 @@
   "app.components.FiltersModal.resetFilters": "إعادة تعيين عوامل التصفية",
   "app.components.FolderFolderCard.a11y_folderDescription": "وصف المجلد:",
   "app.components.FolderFolderCard.a11y_folderTitle": "عنوان المجلد:",
+  "app.components.FolderFolderCard.archived": "Archived",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# من المشاريع} one {# مشروع} other {# من المشاريع}}",
   "app.components.GoBackButton.group.edit.goBack": "العودة",
   "app.components.IdeaCards.empty": "لا توجد أفكار هنا بعد.",
