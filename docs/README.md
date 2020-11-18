@@ -1,5 +1,10 @@
 # Changelog
 
+## Next release
+
+### Fixed
+- The project header image is screen reader friendly.
+
 ## 2020-11-18
 
 ### Added
