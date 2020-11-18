@@ -3,6 +3,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import ProjectFolderCard from './components/ProjectFolderCard';
 import ProjectFolderRow from './components/ProjectFolderRow';
+import ProjectFolderSiteMap from './components/ProjectFolderSiteMap';
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -17,6 +18,13 @@ const configuration: ModuleConfiguration = {
       <>
         {props.publication.publicationType === 'project_folder' && (
           <ProjectFolderCard {...props} />
+        )}
+      </>
+    ),
+    'app.containers.SiteMap.ProjectsSection.listitem': (props) => (
+      <>
+        {props.adminPublication.publicationType === 'project_folder' && (
+          <ProjectFolderSiteMap {...props} />
         )}
       </>
     ),
