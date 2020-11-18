@@ -1,5 +1,20 @@
 # Changelog
 
+## 2020-11-16
+
+### Added
+- Admins can now select the default sort order for ideas in ideation and participatory budgeting projects, per project
+
+### Changed
+- The default sort order of ideas is now "Trending" instead of "Random" for every project if left unchanged
+- Improved sign in/up loading speed
+- Removed link to survey in the project page sidebar when not logged in. Instead it will show plain none-clickable text (e.g. '1 survey')
+
+### Fixed
+- Custom project slugs can now contain alphanumeric Arabic characters
+- Project Topics table now updates if a topic is deleted or reordered.
+- Empty lines with formatting (like bold or italic) in a Quill editor are now removed if not used as paragraphs.
+
 ## 2020-11-10
 
 ### Added
