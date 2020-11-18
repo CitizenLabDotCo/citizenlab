@@ -8,7 +8,6 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { deleteProject } from 'services/projects';
-// import { deleteProjectFolder } from 'modules/project_folders/services/projectFolders';
 
 // components
 import { RowButton } from './StyledComponents';
