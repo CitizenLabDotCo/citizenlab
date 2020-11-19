@@ -8,7 +8,6 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousInformation/edit",
   "/admin/projects/continuousInformation/description",
-  "/admin/projects/continuousInformation/survey-results",
   "/admin/projects/continuousInformation/events",
   "/admin/projects/continuousInformation/permissions",
 ]
