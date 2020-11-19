@@ -20,5 +20,15 @@ module Tagging
     def show?
       user&.active? && user.admin?
     end
+
+    def update?
+      user&.active? && user.admin?
+    end
+
+    def permitted_attributes_for_update
+      [
+        title_multiloc: CL2_SUPPORTED_LOCALES
+      ]
+    end
   end
 end
