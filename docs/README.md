@@ -5,6 +5,11 @@
 ### Fixed
 - The project header image is screen reader friendly.
 
+## 2020-11-19
+
+### Changed 
+- Refactoring of the feature 'project folders' in preparation for the open-sourcing.
+
 ## 2020-11-18
 
 ### Added
