@@ -634,6 +634,25 @@ resource "Ideas" do
       end
     end
 
+    describe 'For projects without ideas_order' do
+      let(:project) { create(:continuous_project, with_permissions: true) }
+
+      before do
+        project.update_attribute(:ideas_order, nil)
+      end
+
+      example_request "Creates an idea", document: false do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(project.reload.ideas_count).to eq 1
+      end
+    end
+
     describe do
       let(:idea) { build(:idea) }
       let(:project) { create(:continuous_project, with_permissions: true) }
