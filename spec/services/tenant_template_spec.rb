@@ -184,9 +184,9 @@ describe TenantTemplateService do
 
         service.apply_template(template)
 
-        expect(ProjectFolder.count).to eq 1
+        expect(ProjectFolders::Folder.count).to eq 1
         expect(Project.count).to eq 2
-        expect(Project.all.map{|pj| pj.folder&.id}.uniq).to eq [ProjectFolder.first.id]
+        expect(Project.all.map{|pj| pj.folder&.id}.uniq).to eq [ProjectFolders::Folder.first.id]
     end
   end
 
