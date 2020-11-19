@@ -90,8 +90,8 @@ const AdminPage = memo<Props & WithRouterProps>(
   ({ className, children, location: { pathname } }) => {
     const authUser = useAuthUser();
 
-    const [adminFullWidth, setAdminFullWidth] = useState<boolean>(false);
-    const [adminNoPadding, setAdminNoPadding] = useState<boolean>(false);
+    const [adminFullWidth, setAdminFullWidth] = useState(false);
+    const [adminNoPadding, setAdminNoPadding] = useState(false);
 
     useEffect(() => {
       const subscriptions = [
