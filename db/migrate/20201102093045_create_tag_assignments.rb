@@ -1,4 +1,4 @@
-class CreateTagAssignments < ActiveRecord::Migration[5.0]
+class CreateTaggings < ActiveRecord::Migration[5.0]
   def change
     create_table :tag_assignments do |t|
       t.column :assignment_method, :integer, default: 0
