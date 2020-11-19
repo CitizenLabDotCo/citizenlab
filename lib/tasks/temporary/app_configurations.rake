@@ -53,7 +53,7 @@ namespace :app_configurations do
   # AppConfiguration. This has a consequence on the storage directory path (bc
   # the model class is part of the path). So we need to move (copy here) the
   # uploaded to the new expected location).
-  desc "Migrate tenant images."
+  desc "Migrate tenant images"
   task :migrate_s3_image_uploads, [:dry_run] => :environment do |_, args|
     dry_run = args.dry_run.nil? || args.dry_run.downcase != "false"
     each_tenant do |tenant|
@@ -61,6 +61,16 @@ namespace :app_configurations do
       migrate_uploads(:favicon, tenant, app_configuration, dry_run)
       migrate_uploads(:logo, tenant, app_configuration, dry_run)
       migrate_uploads(:header_bg, tenant, app_configuration, dry_run)
+    end
+  end
+
+  desc "Delete tenant images"
+  task :delete_tenant_s3_images => :environment do
+    each_tenant do |tenant|
+      tenant.remove_logo!
+      tenant.remove_favicon!
+      tenant.remove_header_bg!
+      tenant.save
     end
   end
 end
