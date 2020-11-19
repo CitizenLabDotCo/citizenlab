@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,7 +24,6 @@ import useIdea from 'hooks/useIdea';
 import useResourceFiles from 'hooks/useResourceFiles';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import useSimilarIdeas from 'hooks/useSimilarIdeas';
 import useIdeaStatus from 'hooks/useIdeaStatus';
 
 // resources
@@ -86,12 +85,6 @@ const MetaInformation = ({
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   const ideaStatus = useIdeaStatus({ statusId });
-  let similarIdeas;
-  useEffect(() => {
-    if (similarIdeasEnabled) {
-      similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
-    }
-  }, [ideaId, similarIdeasEnabled]);
 
   if (
     !isNilOrError(idea) &&
@@ -163,16 +156,14 @@ const MetaInformation = ({
             <Attachments files={files} />
           </Item>
         )}
-        {similarIdeasEnabled &&
-          !isNilOrError(similarIdeas) &&
-          similarIdeas.length > 0 && (
-            <Item>
-              <Header>
-                <FormattedMessage {...messages.similarIdeas} />
-              </Header>
-              <SimilarIdeas similarIdeas={similarIdeas} />
-            </Item>
-          )}
+        {similarIdeasEnabled && (
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.similarIdeas} />
+            </Header>
+            <SimilarIdeas ideaId={ideaId} />
+          </Item>
+        )}
       </Container>
     );
   }
