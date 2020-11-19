@@ -221,7 +221,7 @@ describe TenantTemplateService do
       create(:project_folder, projects: create_list(:project, 2))
       template = service.tenant_to_template Tenant.current
 
-      admin_publication_attributes = template.dig('models', 'project_folder').first['admin_publication_attributes']
+      admin_publication_attributes = template.dig('models', 'project_folders/folder').first['admin_publication_attributes']
       expect(admin_publication_attributes).to be_present
       template.dig('models', 'project').each do |pj|
         expect(pj.dig('admin_publication_attributes', 'parent_ref')).to eq admin_publication_attributes
