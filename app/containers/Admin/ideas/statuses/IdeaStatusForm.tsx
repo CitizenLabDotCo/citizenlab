@@ -20,7 +20,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 export interface FormValues {
   color: string;
