@@ -30,7 +30,7 @@ def move_objects(from_bucket, from_prefix, to_bucket, to_prefix, dry_run = true)
 
   objects.each do |object|
     new_key = object.key.sub(from_prefix, to_prefix)
-    puts "#{from_bucket}/#{from_prefix} => #{to_bucket}/#{to_prefix}"
+    puts "Copying '#{from_bucket}/#{from_prefix}' => '#{to_bucket}/#{to_prefix}'"
     object.copy_to(bucket: to_bucket, key: new_key) unless dry_run
   end
 end
