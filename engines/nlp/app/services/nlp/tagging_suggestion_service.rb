@@ -1,5 +1,5 @@
 module NLP
-  class TagAssignmentSuggestionService
+  class TaggingSuggestionService
 
     def suggest(ideas, tags, locale)
       @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')

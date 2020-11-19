@@ -59,35 +59,4 @@ resource "Tags" do
     end
 
   end
-
-  # get "/web_api/v1/generate_tag_assignment" do
-  #   before do
-  #     @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'})
-  #     Tagging::Tag.create(title_multiloc: {'en' => 'label'})
-  #     Tagging::Tag.create(title_multiloc: {'en' => 'item'})
-  #     @tags = Tagging::Tag.all()
-  #   end
-  #   parameter :idea_ids, 'The ideas to suggest tags for', required: true
-  #   parameter :tag_ids, 'The tags assign', required: true
-  #   parameter :locale, 'Locale', required: true
-  #   let(:idea_ids) { @ideas.map(&:id) }
-  #   let(:tag_ids) { @tags.map(&:id) }
-  #   let(:locale) { 'en' }
-  #
-  #   describe do
-  #     example "generate tags" do
-  #       response = [
-  #         {
-  #         "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags.first.id}],
-  #         "id" => @ideas.first.id,
-  #         }
-  #       ]
-  #       allow_any_instance_of(NLP::TagAssignmentSuggestionService).to receive(:suggest).and_return(response)
-  #    do_request
-  #
-  #       expect(status).to eq 200
-  #       expect(@ideas.first.tags.first.id).to eq @tags.first.id
-  #     end
-  #   end
-  # end
 end

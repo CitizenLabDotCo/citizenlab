@@ -34,7 +34,7 @@ resource "TagSuggestion" do
           "id" => @ideas.first.id,
           }
         ]
-        allow_any_instance_of(NLP::TagAssignmentSuggestionService).to receive(:suggest).and_return(response)
+        allow_any_instance_of(NLP::TaggingsuggestionService).to receive(:suggest).and_return(response)
      do_request
 
         expect(status).to eq 200
