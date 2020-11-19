@@ -129,7 +129,8 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/dashboard');
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard');
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
 
     return (
       <>
