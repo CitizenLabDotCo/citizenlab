@@ -447,7 +447,7 @@ class TenantTemplateService
   end
 
   def yml_project_folders
-    ProjectFolder.all.map do |f|
+    ProjectFolders::Folder.all.map do |f|
       yml_folder = {
         'title_multiloc'               => f.title_multiloc,
         'description_multiloc'         => f.description_multiloc,
@@ -467,7 +467,7 @@ class TenantTemplateService
   end
 
   def yml_project_folder_images
-    ProjectFolderImage.all.map do |p|
+    ProjectFolders::Image.all.map do |p|
       {
         'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
         'remote_image_url'   => p.image_url,
@@ -479,7 +479,7 @@ class TenantTemplateService
   end
 
   def yml_project_folder_files
-    ProjectFolderFile.all.map do |p|
+    ProjectFolders::File.all.map do |p|
       {
         'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
         'name'               => p.name,
