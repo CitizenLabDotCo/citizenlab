@@ -110,12 +110,15 @@ const AdminPage = memo<Props & WithRouterProps>(
     const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
 
     useEffect(() => {
-      if (authUser === null && !userCanViewAdmin(authUser)) {
+      if (
+        authUser === null ||
+        (authUser !== undefined && !userCanViewAdmin(authUser))
+      ) {
         clHistory.push('/');
       }
     }, [authUser]);
 
-    if (authUser === null || !userCanViewAdmin(authUser)) {
+    if (!userCanViewAdmin(authUser)) {
       return null;
     }
 
