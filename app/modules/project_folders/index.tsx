@@ -8,6 +8,8 @@ import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
+import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
+
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'project_folder') return null;
   return <>{children}</>;
@@ -20,17 +22,30 @@ const RenderOnFeatureFlag = ({ featureFlag, children }) => {
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.AdminPage.projects.all.projectsAndFolders.title': (
-      props
-    ) => (
-      <RenderOnFeatureFlag featureFlag={props.featureFlag}>
+    'app.containers.Navbar.projectlist.item': (props) => {
+      const { localize, publication } = props;
+      return (
+        <RenderOnPublicationType publication={publication}>
+          <ProjectsListItem
+            to={`/folders/${publication.attributes.publication_slug}`}
+            {...props}
+          >
+            {localize(publication.attributes.publication_title_multiloc)}
+          </ProjectsListItem>
+        </RenderOnPublicationType>
+      );
+    },
+    'app.containers.AdminPage.projects.all.projectsAndFolders.title': ({
+      featureFlag,
+    }) => (
+      <RenderOnFeatureFlag featureFlag={featureFlag}>
         <ProjectFolderTitle />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': (
-      props
-    ) => (
-      <RenderOnFeatureFlag featureFlag={props.featureFlag}>
+    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': ({
+      featureFlag,
+    }) => (
+      <RenderOnFeatureFlag featureFlag={featureFlag}>
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
