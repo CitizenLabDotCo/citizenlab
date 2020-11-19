@@ -1,7 +1,9 @@
+module Tagging
   class TagAssignment < ApplicationRecord
-    enum assignment_method: [ :automatic, :manual ]
+    enum assignment_method: %i[automatic manual]
 
     belongs_to :idea
     belongs_to :tag
 
   end
+end

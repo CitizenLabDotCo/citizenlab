@@ -1,4 +1,4 @@
-module NLP
+module Tagging
   module WebApi
     module V1
       class TagAssignmentsController < ApplicationController
@@ -13,11 +13,11 @@ module NLP
             params['locale']).each { |document|
               Idea.find(document["id"]).update(tag_ids: document["predicted_labels"].map{|label| label["id"]})
             }
-          render json: ::WebApi::V1::TagAssignmentSerializer.new(TagAssignment.automatic.all, params: fastjson_params).serialized_json, status: :ok
+          render json: WebApi::V1::TagAssignmentSerializer.new(TagAssignment.automatic.all, params: fastjson_params).serialized_json, status: :ok
         end
 
         def index_automatic
-          render json: ::WebApi::V1::TagAssignmentSerializer.new(TagAssignment.automatic.all, params: fastjson_params).serialized_json, status: :ok
+          render json: WebApi::V1::TagAssignmentSerializer.new(TagAssignment.automatic.all, params: fastjson_params).serialized_json, status: :ok
         end
       end
 
