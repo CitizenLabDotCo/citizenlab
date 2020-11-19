@@ -1,3 +1,4 @@
+module Tagging
   class Tag < ApplicationRecord
     include PgSearch
 
@@ -9,7 +10,7 @@
 
     pg_search_scope :search_by_all,
                     against: [:title_multiloc],
-                    using: { :tsearch => {:prefix => true} }
+                    using: { tsearch: {prefix: true} }
 
     before_validation :strip_title
 
@@ -21,3 +22,4 @@
       end
     end
   end
+end

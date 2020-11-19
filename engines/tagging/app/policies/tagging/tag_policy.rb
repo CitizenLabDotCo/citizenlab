@@ -1,3 +1,4 @@
+module Tagging
   class TagPolicy < ApplicationPolicy
     class Scope
       attr_reader :user, :scope
@@ -19,8 +20,5 @@
     def show?
       user&.active? && user.admin?
     end
-
-    def generate_tags?
-      user&.active? && user.admin?
-    end
   end
+end

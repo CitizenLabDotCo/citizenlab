@@ -165,6 +165,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/tagging
+  specs:
+    tagging (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/verification
   specs:
     verification (0.1.0)
@@ -773,6 +779,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
+  tagging!
   verification!
   volunteering!
   webmock (~> 3.4)
