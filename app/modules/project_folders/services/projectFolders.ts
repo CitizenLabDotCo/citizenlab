@@ -4,7 +4,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { API_PATH } from 'containers/App/constants';
-import { PublicationStatus } from 'services/projects';
+import { IProject, PublicationStatus } from 'services/projects';
 const apiEndpoint = `${API_PATH}/project_folders`;
 
 export interface IProjectFolderDiff {
@@ -96,6 +96,27 @@ export async function deleteProjectFolder(projectFolderId: string) {
 
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`],
+  });
+
+  return response;
+}
+
+export async function updateProjectFolderMembership(
+  projectId: string,
+  newProjectFolderId: string | null,
+  oldProjectFolderId?: string
+) {
+  const response = await streams.update<IProject>(
+    `${apiEndpoint}/${projectId}`,
+    projectId,
+    { project: { folder_id: newProjectFolderId } }
+  );
+
+  await streams.fetchAllWith({
+    dataId: [newProjectFolderId, oldProjectFolderId].filter(
+      (item) => item
+    ) as string[],
+    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
   });
 
   return response;
