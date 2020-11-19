@@ -93,17 +93,14 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState<boolean>(false);
     const [adminNoPadding, setAdminNoPadding] = useState<boolean>(false);
 
-    const FullWidth = globalState.init('AdminFullWidth', { enabled: false });
-    const NoPadding = globalState.init('AdminNoPadding', { enabled: false });
-
     useEffect(() => {
       const subscriptions = [
-        FullWidth.observable.subscribe(({ enabled }) =>
-          setAdminFullWidth(enabled)
-        ),
-        NoPadding.observable.subscribe(({ enabled }) =>
-          setAdminNoPadding(enabled)
-        ),
+        globalState
+          .init('AdminFullWidth', { enabled: false })
+          .observable.subscribe(({ enabled }) => setAdminFullWidth(enabled)),
+        globalState
+          .init('AdminNoPadding', { enabled: false })
+          .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
       ];
       return subscriptions.forEach((subscription) =>
         subscription.unsubscribe()
