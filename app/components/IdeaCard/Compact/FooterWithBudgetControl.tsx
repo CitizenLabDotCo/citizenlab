@@ -24,7 +24,22 @@ const Footer = styled.footer`
   justify-content: space-between;
 `;
 
-const IdeaBudget = styled.span``;
+const BudgetControl = styled.div`
+  display: flex;
+`;
+
+const IdeaBudget = styled.span`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background: ${colors.lightGreyishBlue};
+  font-weight: 500;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  cursor: default;
+`;
 
 const CommentsCount = styled.span`
   color: ${colors.label};
@@ -61,6 +76,12 @@ const CompactIdeaCard = memo<Props>(
     const ideaBudget = idea?.attributes?.budget;
 
     const clickDisabledAssignBudget = () => {};
+
+    const onLabelClick = (event: FormEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
     return (
       <Footer>
         <CommentsCount>
@@ -68,8 +89,8 @@ const CompactIdeaCard = memo<Props>(
           {idea.attributes.comments_count}
         </CommentsCount>
         {participationContextId && participationContextType && ideaBudget && (
-          <>
-            <IdeaBudget>
+          <BudgetControl>
+            <IdeaBudget onClick={onLabelClick}>
               <FormattedNumber
                 value={ideaBudget}
                 style="currency"
@@ -87,7 +108,7 @@ const CompactIdeaCard = memo<Props>(
               disabledAssignBudgetClick={clickDisabledAssignBudget}
               projectId={projectId}
             />
-          </>
+          </BudgetControl>
         )}
       </Footer>
     );
