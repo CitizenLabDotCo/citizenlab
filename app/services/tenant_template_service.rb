@@ -116,9 +116,9 @@ class TenantTemplateService
       @template['models']['topic']                                 = yml_topics
       @template['models']['user']                                  = yml_users
       @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
-      @template['models']['project_folder']                        = yml_project_folders
-      @template['models']['project_folder_image']                  = yml_project_folder_images
-      @template['models']['project_folder_file']                   = yml_project_folder_files
+      @template['models']['project_folders/folder']                = yml_project_folders
+      @template['models']['project_folders/image']                 = yml_project_folder_images
+      @template['models']['project_folders/file']                  = yml_project_folder_files
       @template['models']['project']                               = yml_projects
       @template['models']['project_file']                          = yml_project_files
       @template['models']['project_image']                         = yml_project_images
