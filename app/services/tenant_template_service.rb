@@ -18,7 +18,7 @@ class TenantTemplateService
   def apply_template template, validate: true
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
-      model_class = model_name.classify.constantize
+      model_class = get_model_class(model_name)
       fields.each do |attributes|
         model = model_class.new
         image_assignments = {}
@@ -280,6 +280,18 @@ class TenantTemplateService
 
 
   private
+
+
+  def get_model_class(model_name)
+    legacy_class_names = {
+        "ProjectFolder" => ProjectFolders::Folder,
+        "ProjectFolderFile" => ProjectFolders::File,
+        "ProjectFolderImage" => ProjectFolders::Image,
+    }
+
+    class_name = model_name.classify
+    legacy_class_names[class_name] || class_name.constantize
+  end
 
   def available_external_templates external_subfolder: 'release'
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
