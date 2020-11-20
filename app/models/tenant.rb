@@ -152,7 +152,7 @@ class Tenant < ApplicationRecord
   end
 
   def valid_host_format
-    if host != 'localhost' && (!host.include?('.') || (host =~ /[A-Z]/) || host.include?('_'))
+    if host != 'localhost' && (!host.include?('.') || host.include?(' ') || (host =~ /[A-Z]/) || host.include?('_'))
       self.errors.add(
         :host,
         :invalid_format,
