@@ -9,13 +9,18 @@ import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 
-export interface Outlets {
-  [key: string]: FunctionComponent<any>;
-}
+export type OutletId =
+  | 'app.containers.AdminPage.projects.all.projectsAndFolders.row'
+  | 'app.components.ProjectAndFolderCards.card'
+  | 'app.containers.SiteMap.ProjectsSection.listitem';
 
-export interface MergedOutlets {
-  [key: string]: FunctionComponent<any>[];
-}
+export type Outlets = {
+  [key in OutletId]?: FunctionComponent<any>;
+};
+
+export type MergedOutlets = {
+  [key in OutletId]?: FunctionComponent<any>[];
+};
 
 interface RouteConfiguration {
   path?: string;
