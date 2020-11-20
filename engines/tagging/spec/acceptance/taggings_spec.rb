@@ -37,4 +37,86 @@ resource "Taggings" do
     end
   end
 
+  get "web_api/v1/taggings" do
+    parameter :idea_ids, "The ideas to get the tags for", required: false
+    parameter :assignment_method, "An assignment method filter", required: false
+
+    before do
+      @ideas = create_list(:idea, 5)
+      @fish = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
+      @sea_lion = Tagging::Tag.create(title_multiloc: { en: 'Sea Lion' })
+      @dolphin = Tagging::Tag.create(title_multiloc: { en: 'Dolphin' })
+      @shark = Tagging::Tag.create(title_multiloc: { en: 'Shark' })
+      Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @fish.id, assignment_method: 'manual')
+      Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @dolphin.id, assignment_method: 'manual')
+      Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @shark.id, assignment_method: 'manual')
+      Tagging::Tagging.create(idea_id: @ideas[1].id, tag_id:  @shark.id, assignment_method: 'automatic')
+      Tagging::Tagging.create(idea_id: @ideas[1].id, tag_id:  @sea_lion.id, assignment_method: 'automatic')
+      Tagging::Tagging.create(idea_id: @ideas[2].id, tag_id:  @sea_lion.id, assignment_method: 'automatic')
+    end
+
+    example_request 'List all taggings' do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+    end
+
+    example 'List taggings for some ideas' do
+      do_request idea_ids: [@ideas[0].id, @ideas[2].id]
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 4
+    end
+
+    example 'List taggings for one idea' do
+      do_request idea_ids: [@ideas[1].id]
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+    end
+
+    example 'List automatic taggings' do
+      do_request assignment_method: "automatic"
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+    end
+
+    example 'List manual taggings' do
+      do_request assignment_method: "manual"
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+    end
+  end
+
+  get "web_api/v1/taggings/:id" do
+    before do
+      @ideas = create_list(:idea, 1)
+      @fish = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @fish.id, assignment_method: 'automatic', confidence_score: 0.22)
+    end
+
+    example 'Get a tagging by id' do
+      do_request id: @tagging.id
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+    end
+  end
+
+  delete "web_api/v1/taggings/:id" do
+    before do
+      @ideas = create_list(:idea, 1)
+      @fish = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @fish.id, assignment_method: 'automatic', confidence_score: 0.22)
+    end
+
+    example 'Destroy a tagging' do
+      do_request id: @tagging.id
+      expect(status).to eq(200)
+      expect(Tagging::Tag.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound
+    end
+  end
+
 end
