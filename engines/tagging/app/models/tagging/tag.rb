@@ -2,8 +2,8 @@ module Tagging
   class Tag < ApplicationRecord
     include PgSearch
 
-    has_many :tag_assignments, dependent: :destroy
-    has_many :ideas, through: :tag_assignments
+    has_many :taggings, dependent: :destroy
+    has_many :ideas, through: :taggings
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
 
