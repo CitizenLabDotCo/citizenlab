@@ -3,6 +3,18 @@ import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 
+type IProjectInput = 'idea' | 'contribution';
+type IProjectInputMessages = {
+  [key in IProjectInput]: ReactIntl.FormattedMessage.MessageDescriptor;
+};
+
+export const projectInputTypeMessages = (
+  projectInputType: IProjectInput,
+  messages: IProjectInputMessages
+) => {
+  return messages[projectInputType];
+};
+
 export function getLocalized(
   multiloc: Multiloc | GraphqlMultiloc | null | undefined,
   locale: Locale | null | undefined | Error,
