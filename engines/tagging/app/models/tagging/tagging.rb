@@ -5,5 +5,6 @@ module Tagging
     belongs_to :idea
     belongs_to :tag
 
+    accepts_nested_attributes_for :tag
   end
 end
