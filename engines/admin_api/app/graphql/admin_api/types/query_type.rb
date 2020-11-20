@@ -121,7 +121,7 @@ module AdminApi
     field :public_project_folders , Types::ProjectFolderType.connection_type, null:false
 
     def public_project_folders
-      ::ProjectFolders::FolderPolicy::Scope.new(nil, Folder).resolve.includes(:admin_publication)
+      ::ProjectFolders::FolderPolicy::Scope.new(nil, ::ProjectFolders::Folder).resolve.includes(:admin_publication)
     end
 
     field :idea, Types::IdeaType, null: false do
