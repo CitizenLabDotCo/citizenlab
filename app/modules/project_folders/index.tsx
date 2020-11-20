@@ -6,7 +6,9 @@ import ProjectFolderRow from './components/ProjectFolderRow';
 import ProjectFolderSiteMap from './components/ProjectFolderSiteMap';
 
 const RenderWhenProjectFolder = ({ publication, children }) => {
-  if (publication.publicationType !== 'project_folder') return null;
+  if (publication.publicationType !== 'folder') {
+    return null;
+  }
   return <>{children}</>;
 };
 
