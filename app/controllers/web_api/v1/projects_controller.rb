@@ -2,19 +2,23 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   before_action :set_project, only: [:show, :update, :reorder, :destroy]
   skip_after_action :verify_policy_scoped, only: [:index]
 
-  def index
-    @projects = if params[:filter_can_moderate]
-      ProjectPolicy::Scope.new(current_user, Project).moderatable 
-    else 
-      policy_scope(Project)
-    end
-    @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]  
-    @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
+  define_callbacks :save_project
 
-    @projects = @projects.ordered
-      .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+  def index
+    params["moderator"] = current_user if params[:filter_can_moderate]
+
+    publications = policy_scope(AdminPublication)
+    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+                                                 .where(publication_type: Project.name)
+    # Not very satisfied with this ping-pong of SQL queries (knowing that the
+    # AdminPublicationsFilteringService is also making a request on projects).
+    # But could not find a way to eager-load the polymorphic type in the publication
+    # scope.
+    @projects = Project.where(id:publications.select(:publication_id))
+                       .ordered
+                       .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
+                       .page(params.dig(:page, :number))
+                       .per(params.dig(:page, :size))
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -22,6 +26,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
         [basket.participation_context_id, basket.participation_context_type]
       end
     user_baskets ||= {}
+
     instance_options = {
       user_baskets: user_baskets,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
@@ -30,17 +35,17 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     }
 
     render json: linked_json(
-      @projects, 
-      WebApi::V1::ProjectSerializer, 
-      params: fastjson_params(instance_options), 
+      @projects,
+      WebApi::V1::ProjectSerializer,
+      params: fastjson_params(instance_options),
       include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
       )
   end
 
   def show
     render json: WebApi::V1::ProjectSerializer.new(
-      @project, 
-      params: fastjson_params, 
+      @project,
+      params: fastjson_params,
       include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
       ).serialized_json
   end
@@ -52,25 +57,18 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def create
-    params = permitted_attributes(Project)
-    @project = Project.new(params.except(:folder_id))
+    project_params = permitted_attributes(Project)
+    @project = Project.new(project_params)
     SideFxProjectService.new.before_create(@project, current_user)
 
     authorize @project
-
-    saved = nil
-    ActiveRecord::Base.transaction do
-      saved = @project.save
-      if saved
-        set_folder! params[:folder_id] if params.key? :folder_id
-      end
-    end
+    saved = ActiveRecord::Base.transaction { save_project(@project) }
 
     if saved
       SideFxProjectService.new.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @project, 
-        params: fastjson_params, 
+        @project,
+        params: fastjson_params,
         include: [:admin_publication],
         ).serialized_json, status: :created
     else
@@ -83,8 +81,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     params[:project][:default_assignee_id] ||= nil if params[:project].has_key?(:default_assignee_id)
 
     project_params = permitted_attributes(Project)
-    
-    @project.assign_attributes project_params.except(:folder_id)
+
+    @project.assign_attributes project_params
     if project_params.key?(:header_bg) && project_params[:header_bg].nil?
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
@@ -92,16 +90,13 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
 
-    saved = nil
-    ActiveRecord::Base.transaction do
-      saved = @project.save
-      @project.set_folder! project_params[:folder_id] if saved && project_params.key?(:folder_id)
-    end
+    saved = ActiveRecord::Base.transaction { save_project(@project) }
+
     if saved
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
-        @project, 
-        params: fastjson_params, 
+        @project,
+        params: fastjson_params,
         include: [:admin_publication],
         ).serialized_json, status: :ok
     else
@@ -120,8 +115,15 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
   end
 
-
   private
+
+  def save_project(project)
+    result = run_callbacks(:save_project) do
+      saved = project.save
+      [saved, project]  # We include the project bc the result of the block can
+    end                 # be used by :around callbacks. But there is no point
+    result[0]           # to include it in the value returned by the method.
+  end
 
   def secure_controller?
     false

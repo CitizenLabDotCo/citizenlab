@@ -171,11 +171,6 @@ Rails.application.routes.draw do
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
       end
-      resources :project_folders do
-        resources :images, defaults: { container_type: 'ProjectFolder' }
-        resources :files, defaults: { container_type: 'ProjectFolder' }
-        get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
-      end
 
       resources :notifications, only: %i[index show] do
         post 'mark_read', on: :member
