@@ -69,6 +69,7 @@ export interface IProjectData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
+    input_type: 'idea' | 'contribution';
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;

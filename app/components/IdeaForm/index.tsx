@@ -39,6 +39,7 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -113,6 +114,7 @@ interface InputProps {
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   topics: GetTopicsChildProps;
+  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -612,7 +614,7 @@ class IdeaForm extends PureComponent<
 
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled, topics } = this.props;
+    const { projectId, pbEnabled, topics, project } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -646,7 +648,8 @@ class IdeaForm extends PureComponent<
     if (
       !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale) &&
-      !isNilOrError(topics)
+      !isNilOrError(topics) &&
+      !isNilOrError(project)
     ) {
       const topicsEnabled = this.isFieldEnabled(
         'topic_ids',
@@ -676,10 +679,14 @@ class IdeaForm extends PureComponent<
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
 
+      const projectInputType = project.attributes.input_type;
+
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
-            <FormSectionTitle message={messages.formGeneralSectionTitle} />
+            <FormSectionTitle
+              message={messages[`${projectInputType}FormGeneralSectionTitle`]}
+            />
             <FormElement id="e2e-idea-title-input">
               <FormLabel
                 htmlFor="title"
@@ -933,6 +940,7 @@ class IdeaForm extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
+  project: ({ projectId }) => <GetProject projectId={projectId} />,
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
   },

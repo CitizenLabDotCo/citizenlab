@@ -73,6 +73,14 @@ export default defineMessages({
     id: 'app.components.IdeaForm.formGeneralSectionTitle',
     defaultMessage: 'What is your idea?',
   },
+  ideaFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.formGeneralSectionTitle',
+    defaultMessage: 'What is your idea?',
+  },
+  contributionFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.formGeneralSectionTitle',
+    defaultMessage: 'What is your contribution?',
+  },
   formDetailsSectionTitle: {
     id: 'app.components.IdeaForm.formDetailsSectionTitle',
     defaultMessage: 'Details',
