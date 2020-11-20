@@ -4,6 +4,7 @@
 
 ### Fixed
 - The project header image is screen reader friendly.
+- The similar ideas feature doesn't make backend requests anymore when it's not enabled.
 
 ## 2020-11-19
 
