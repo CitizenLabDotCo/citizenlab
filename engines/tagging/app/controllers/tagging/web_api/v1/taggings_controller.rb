@@ -31,9 +31,9 @@ module Tagging
           @tagging.confidence_score = 1
           authorize @tagging
 
-          # SideFxTaggingService.new.before_create(@tagging, current_user)
+          SideFxTaggingService.new.before_create(@tagging, current_user)
           if @tagging.save
-            # SideFxTaggingService.new.after_create(@tagging, current_user)
+            SideFxTaggingService.new.after_create(@tagging, current_user)
             render json: WebApi::V1::TaggingSerializer.new(
               @tagging,
               params: fastjson_params,
@@ -45,10 +45,10 @@ module Tagging
         end
 
         def destroy
-          # SideFxTaggingService.new.before_destroy(@tagging, current_user)
+          SideFxTaggingService.new.before_destroy(@tagging, current_user)
           tagging = @tagging.destroy
           if tagging.destroyed?
-            # SideFxTaggingService.new.after_destroy(option, current_user)
+            SideFxTaggingService.new.after_destroy(tagging, current_user)
             head :ok
           else
             head 500

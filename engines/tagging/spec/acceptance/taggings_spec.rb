@@ -106,16 +106,33 @@ resource "Taggings" do
 
   delete "web_api/v1/taggings/:id" do
     before do
-      @ideas = create_list(:idea, 1)
-      @fish = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
-      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @fish.id, assignment_method: 'automatic', confidence_score: 0.22)
+      @ideas = create_list(:idea, 2)
+      @tag = Tagging::Tag.create(title_multiloc: { en: 'Banana' })
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @tag.id, assignment_method: 'automatic', confidence_score: 0.22)
+      Tagging::Tagging.create(idea_id: @ideas[1].id, tag_id:  @tag.id, assignment_method: 'manual', confidence_score: 0.22)
+      @lone_tag = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
+      @lone_tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @lone_tag.id, assignment_method: 'automatic', confidence_score: 0.22)
     end
 
-    example 'Destroy a tagging' do
+    example 'Destroy the only tagging associaed whith a tag also destroys the tag' do
+      do_request id: @lone_tagging.id
+      expect(status).to eq(200)
+      begin
+        expect(Tagging::Tagging.find(@lone_tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound => _
+      end
+      expect(Tagging::Tag.find(@lone_tag.id)).to raise_error(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound
+    end
+
+    example 'Destroy the only tagging associaed whith a tag also destroys the tag' do
       do_request id: @tagging.id
       expect(status).to eq(200)
-      expect(Tagging::Tag.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
-      rescue ActiveRecord::RecordNotFound
+      begin
+        expect(Tagging::Tagging.find(@tagging.id)).to raise_error(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound => _
+      end
+      expect(Tagging::Tag.find(@tag.id).id).to eq @tag.id
     end
   end
 
