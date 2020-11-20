@@ -9,8 +9,13 @@ module Tagging
       end
 
       def resolve
-        if user&.active_admin_or_moderator?(record.idea.project.id)
+        if user&.active? && user.admin?
           scope.all
+        elsif user&.active? && user.project_moderator?
+          projects = Project.where(id: user.moderatable_project_ids)
+          idea_ids = Ideas.where(project: projects)
+
+          scope.where(idea_id: idea_ids)
         else
           scope.none
         end
@@ -22,6 +27,10 @@ module Tagging
     end
 
     def show?
+      user&.active_admin_or_moderator?(record.idea.project.id)
+    end
+
+    def destroy?
       user&.active_admin_or_moderator?(record.idea.project.id)
     end
 
