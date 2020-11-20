@@ -12,7 +12,7 @@ import { Formik } from 'formik';
 import { updateIdeaStatus } from 'services/ideaStatuses';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../messages';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // components

@@ -13,7 +13,7 @@ import { Formik } from 'formik';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../messages';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const StyledSectionTitle = styled(SectionTitle)`
