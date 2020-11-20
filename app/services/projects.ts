@@ -13,6 +13,7 @@ type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
+export type ProjectInput = 'idea' | 'contribution';
 
 // keys in project.attributes.action_descriptor
 export type IProjectAction =
@@ -69,7 +70,7 @@ export interface IProjectData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
-    input_type: 'idea' | 'contribution';
+    input_type: ProjectInput;
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;

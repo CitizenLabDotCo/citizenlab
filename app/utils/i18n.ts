@@ -2,14 +2,14 @@ import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
+import { ProjectInput } from 'services/projects';
 
-type IProjectInput = 'idea' | 'contribution';
 type IProjectInputMessages = {
-  [key in IProjectInput]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in ProjectInput]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
 export const projectInputTypeMessages = (
-  projectInputType: IProjectInput,
+  projectInputType: ProjectInput,
   messages: IProjectInputMessages
 ) => {
   return messages[projectInputType];
