@@ -9,6 +9,7 @@
 - The similar ideas feature doesn't make backend requests anymore when it's not enabled.
 
 ### Changed 
+- Refactoring of the feature 'project folders' in the backend in preparation for the open-sourcing.
 - Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
 
 ## 2020-11-18
