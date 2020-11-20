@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
@@ -13,8 +14,8 @@ import Link from 'utils/cl-router/Link';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
-// services
-import { IMinimalIdeaData } from 'services/ideas';
+// hooks
+import useSimilarIdeas from 'hooks/useSimilarIdeas';
 
 const IdeaList = styled.ul`
   margin: 0;
@@ -49,29 +50,34 @@ const IdeaLink = styled(Link)`
 `;
 
 interface Props {
-  similarIdeas: IMinimalIdeaData[];
   className?: string;
+  ideaId: string;
 }
 
-const SimilarIdeas = memo<Props>(({ similarIdeas, className }) => {
+const SimilarIdeas = memo<Props>(({ className, ideaId }) => {
+  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
   const onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   };
 
-  return (
-    <IdeaList className={className}>
-      {similarIdeas.map((similarIdea, index) => (
-        <IdeaListItem key={similarIdea.id}>
-          <IdeaLink
-            to={`/ideas/${similarIdea.attributes.slug}`}
-            onClick={onClickIdeaLink(index)}
-          >
-            <T value={similarIdea.attributes.title_multiloc} />
-          </IdeaLink>
-        </IdeaListItem>
-      ))}
-    </IdeaList>
-  );
+  if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
+    return (
+      <IdeaList className={className}>
+        {similarIdeas.map((similarIdea, index) => (
+          <IdeaListItem key={similarIdea.id}>
+            <IdeaLink
+              to={`/ideas/${similarIdea.attributes.slug}`}
+              onClick={onClickIdeaLink(index)}
+            >
+              <T value={similarIdea.attributes.title_multiloc} />
+            </IdeaLink>
+          </IdeaListItem>
+        ))}
+      </IdeaList>
+    );
+  }
+
+  return null;
 });
 
 export default SimilarIdeas;
