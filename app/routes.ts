@@ -1,6 +1,7 @@
 import adminRoutes from 'containers/Admin/routes';
 import Loadable from 'react-loadable';
 import { LoadableLoadingCitizen } from 'components/UI/LoadableLoading';
+import moduleConfiguration from 'modules';
 
 export default function createRoutes() {
   return [
@@ -178,15 +179,6 @@ export default function createRoutes() {
           }),
         },
         {
-          path: 'folders/:slug',
-          name: 'Project folder page',
-          component: Loadable({
-            loader: () => import('containers/ProjectFolderShowPage'),
-            loading: LoadableLoadingCitizen,
-            delay: 500,
-          }),
-        },
-        {
           path: 'projects/:slug',
           name: 'Project page',
           component: Loadable({
@@ -289,6 +281,7 @@ export default function createRoutes() {
             delay: 500,
           }),
         },
+        ...moduleConfiguration.routes.citizen,
         {
           path: '*',
           name: 'notfound',
