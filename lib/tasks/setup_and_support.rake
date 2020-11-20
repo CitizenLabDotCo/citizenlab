@@ -8,7 +8,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       data.each do |d|
         idea = Idea.find d['ID']
-        first_name = idea.author&.first_name || idea.author_name.split(' ').first || ''
+        first_name = idea.author&.first_name || d['First name'] || ''
         d['Feedback'] = d['Feedback'].gsub '{{first_name}}', first_name
       end
 
@@ -23,12 +23,13 @@ namespace :setup_and_support do
         user = User.find_by email: d['Feedback Email']
         if idea && status
           idea.idea_status = status
-        idea.save!
-        LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
-        feedback = OfficialFeedback.create!(post: idea, body_multiloc: {args[:locale] => text}, author_multiloc: {args[:locale] => name}, user: user)
-        LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
-        end
+          idea.save!
+          LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
+          feedback = OfficialFeedback.create!(post: idea, body_multiloc: {args[:locale] => text}, author_multiloc: {args[:locale] => name}, user: user)
+          LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
+          end
         logs += ["#{i}) Couldn't find idea #{d['ID']}"] if !idea
+        logs += ["#{i}) Couldn't find idea author #{d['ID']}"] if idea && !idea.author_id
       end
       logs.each{|l| puts l} && true
 
@@ -224,30 +225,15 @@ namespace :setup_and_support do
     end
   end
 
-  desc "Add JSON map layer"
-  task :add_map_layer, [:host,:project_slug,:json_url,:map_title,:default_enabled] => [:environment] do |t, args|
+  desc "Add map layer"
+  task :add_map_legend, [:host,:project_slug,:legend_title,:color] => [:environment] do |t, args|
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       project = Project.find_by slug: args[:project_slug]
       config = project.map_config || Maps::MapConfig.create!(project: project)
-      config.layers.create!(
-        title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:map_title]},
-        geojson: JSON.parse(open(args[:json_url]).read),
-        default_enabled: args[:default_enabled].blank? || (args[:default_enabled] == 'true')
+      config.legend_items.create!(
+        title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:legend_title]},
+        color: args[:color]
         )
-    end
-  end
-
-  desc "Change the map center of a project"
-  task :change_map_center, [:host,:project_slug,:latitude,:longitude,:zoom_level] => [:environment] do |t, args|
-    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
-      project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || Maps::MapConfig.create!(project: project)
-      config.center_geojson = {
-          "coordinates" => [args[:longitude].to_f, args[:latitude].to_f],
-          "type" => "Point"
-        }
-      config.zoom_level = args[:zoom_level].to_i
-      config.save!
     end
   end
 

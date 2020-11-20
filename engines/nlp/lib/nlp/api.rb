@@ -3,7 +3,7 @@ require 'httparty'
 module NLP
   class API
     include HTTParty
-    debug_output $stdout 
+    debug_output $stdout
 
     LONG_TIMEOUT = 2 * 60 # 2 minutes
 
@@ -42,7 +42,7 @@ module NLP
         "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
         headers: {'Content-Type' => 'application/json'},
-        timeout: LONG_TIMEOUT 
+        timeout: LONG_TIMEOUT
       )
       if !resp.success?
         raise ClErrors::TransactionError.new(error_key: resp['code'])
@@ -90,5 +90,24 @@ module NLP
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
 
+    def tag_suggestions(body)
+      resp = self.class.post(
+        '/v2/tag_suggestions',
+        body: body.to_json,
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
+      )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
+    end
+
+    def zeroshot_classification(body)
+      resp = self.class.post(
+        '/v2/zeroshot_classification',
+        body: body.to_json,
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
+      )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_07_102916) do
+ActiveRecord::Schema.define(version: 2020_11_02_093045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.jsonb "description_multiloc", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "ordering"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -655,6 +656,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
+    t.string "ideas_order"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -709,26 +711,17 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
-  create_table "project_folder_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "project_folders_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_folder_id"
     t.string "file"
     t.string "name"
     t.integer "ordering"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_folder_id"], name: "index_project_folder_files_on_project_folder_id"
+    t.index ["project_folder_id"], name: "index_project_folders_files_on_project_folder_id"
   end
 
-  create_table "project_folder_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "project_folder_id"
-    t.string "image"
-    t.integer "ordering"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_folder_id"], name: "index_project_folder_images_on_project_folder_id"
-  end
-
-  create_table "project_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "project_folders_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.jsonb "description_multiloc"
     t.jsonb "description_preview_multiloc"
@@ -736,7 +729,16 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["slug"], name: "index_project_folders_on_slug"
+    t.index ["slug"], name: "index_project_folders_folders_on_slug"
+  end
+
+  create_table "project_folders_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_folder_id"
+    t.string "image"
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_folder_id"], name: "index_project_folders_images_on_project_folder_id"
   end
 
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -775,6 +777,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.boolean "poll_anonymous", default: false, null: false
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
+    t.string "ideas_order"
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -826,6 +829,22 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
     t.datetime "updated_at", null: false
     t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
+  end
+
+  create_table "tag_assignments", id: :serial, force: :cascade do |t|
+    t.integer "assignment_method", default: 0
+    t.uuid "idea_id"
+    t.uuid "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_tag_assignments_on_idea_id"
+    t.index ["tag_id"], name: "index_tag_assignments_on_tag_id"
+  end
+
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -999,14 +1018,16 @@ ActiveRecord::Schema.define(version: 2020_10_07_102916) do
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
-  add_foreign_key "project_folder_files", "project_folders"
-  add_foreign_key "project_folder_images", "project_folders"
+  add_foreign_key "project_folders_files", "project_folders_folders", column: "project_folder_id"
+  add_foreign_key "project_folders_images", "project_folders_folders", column: "project_folder_id"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "tag_assignments", "ideas"
+  add_foreign_key "tag_assignments", "tags"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 

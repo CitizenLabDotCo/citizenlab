@@ -7,7 +7,7 @@ class SideFxProjectService
   end
 
   def before_create project, user
-    @sfx_pc.before_create project, user if project.is_participation_context?
+    @sfx_pc.before_create project, user if project.participation_context?
     set_default_assignee project, user
   end
 
@@ -18,12 +18,12 @@ class SideFxProjectService
     if project.admin_publication.published?
       after_publish project, user
     end
-    @sfx_pc.after_create project, user if project.is_participation_context?
+    @sfx_pc.after_create project, user if project.participation_context?
   end
 
   def before_update project, user
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
-    @sfx_pc.before_update project, user if project.is_participation_context?
+    @sfx_pc.before_update project, user if project.participation_context?
   end
 
   def after_update project, user
@@ -31,11 +31,11 @@ class SideFxProjectService
       after_publish project, user
     end
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
-    @sfx_pc.after_update project, user if project.is_participation_context?
+    @sfx_pc.after_update project, user if project.participation_context?
   end
 
   def before_destroy project, user
-    @sfx_pc.before_destroy project, user if project.is_participation_context?
+    @sfx_pc.before_destroy project, user if project.participation_context?
     SmartGroupsService.new.filter_by_rule_value(Group.all, project.id).destroy_all
   end
 
@@ -47,7 +47,7 @@ class SideFxProjectService
       user, Time.now.to_i,
       payload: {project: serialized_project}
     )
-    @sfx_pc.after_destroy frozen_project, user if frozen_project.is_participation_context?
+    @sfx_pc.after_destroy frozen_project, user if frozen_project.participation_context?
   end
 
 

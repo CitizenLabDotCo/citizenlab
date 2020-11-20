@@ -1,6 +1,6 @@
 fr:
   symbols:
-    outside: quelque part d'autre
+    outside: autre lieu
   idea_statuses:
     proposed: soumise
     proposed_description: Cette idée à été proposée à l'administration
@@ -163,8 +163,8 @@ fr:
     custom_field_select:
       has_value: "%{property} est %{value}"
       not_has_value: "%{property} n'est pas %{value}"
-      is_one_of: "%{property} est un de: %{value}"
-      not_is_one_of: "%{property} n'est pas un de: %{value}"
+      is_one_of: "%{property} a l'une des valeurs suivantes : %{value}"
+      not_is_one_of: "%{property} ne possède aucune des valeurs suivantes : %{value}"
     custom_field_text:
       is: "%{property} est %{value}"
       not_is: "%{property} n'est pas %{value}"

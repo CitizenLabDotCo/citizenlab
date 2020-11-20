@@ -43,7 +43,7 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
-  # The normal scope: Given this user, which resources can she access? 
+  # The normal scope: Given this user, which resources can she access?
   # The inverse scope: Given this resource, which users can access it?
   class InverseScope
     attr_reader :record, :scope
@@ -104,7 +104,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def shared_permitted_attributes
     shared = [
-      :slug, 
+      :slug,
       :header_bg,
       :visible_to,
       :participation_method,
@@ -119,9 +119,9 @@ class ProjectPolicy < ApplicationPolicy
       :presentation_mode,
       :default_assignee_id,
       :poll_anonymous,
-      :folder_id,
+      :ideas_order,
       admin_publication_attributes: [:publication_status],
-      title_multiloc: CL2_SUPPORTED_LOCALES, 
+      title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,
       area_ids: []
