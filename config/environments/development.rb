@@ -43,6 +43,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Previewing mails from the email engine.
+  config.action_mailer.preview_path = "#{Rails.root}/engines/email_campaigns/spec/mailers/previews"
+
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
@@ -94,4 +97,15 @@ Rails.application.configure do
 
   # No whitelist for host header
   config.hosts = nil
+
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    # Bullet.sentry = true # for staging
+    # Bullet.raise = true # for testing
+
+    # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+    # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
+  end
 end

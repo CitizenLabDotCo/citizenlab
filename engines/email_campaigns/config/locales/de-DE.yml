@@ -12,7 +12,7 @@ de:
       "idea_assigned_to_you": Zuweisung einer Idee zu mir
       "idea_marked_as_spam": Ideen-Spam-Bericht
       "idea_published": Veröffentlichung meiner Idee
-      "initiative_assigned_to_you": Zuweisung eines Vorschlags zu mir
+      "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
       "initiative_marked_as_spam": Vorschlag-Spam-Bericht
       "initiative_published": Veröffentlichung meines Vorschlags
       "invite_received": Einladung
@@ -35,14 +35,14 @@ de:
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projekt-Moderatorrechte erhalten
       "project_phase_started": Neue Projekt-Phase
-      "project_phase_upcoming": Bevorstehende neue Projekt-Phase
+      "project_phase_upcoming": Bevorstehende neue Projektphase
       "status_change_of_commented_idea": Status-Änderung einer Idee, die ich kommentiert habe
       "status_change_of_commented_initiative": Status-Änderung eines Vorschlags, den ich kommentiert habe
       "status_change_of_voted_idea": Status-Änderung einer Idee, für die ich gestimmt habe
       "status_change_of_voted_initiative": Status-Änderung eines Vorschlags, für den ich gestimmt habe
       "status_change_of_your_idea": Status-Änderung meiner Idee
-      "status_change_of_your_initiative": Status-Änderung meines Vorschlags
-      "threshold_reached_for_admin": Vorschlag hat sein Stimmschwelle erreicht
+      "status_change_of_your_initiative": Statusänderung meines Vorschlags
+      "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentliche Übersicht für Administratoren
       "moderator_digest": Wöchentliche Übersicht für Projekt Manager
@@ -58,43 +58,56 @@ de:
       "comment_on_your_idea": Kommentieren Sie Ihre Idee - alle Benutzer
       "comment_on_your_initiative": Kommentieren Sie Ihren Vorschlag - alle Benutzer
       "first_idea_published": Veröffentlichung Ihrer ersten Idee - alle Benutzer
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektleiter
       "idea_marked_as_spam": Ideen-Spam-Bericht - Admins und Projektleiter
-      "idea_published": Publication of your idea - all users
+      "idea_published": Veröffentlichung Ihrer Idee - alle Nutzer
       "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
       "initiative_marked_as_spam": Vorschlag Spam-Bericht - Admins
-      "initiative_published": Veröffentlichung Ihres Vorschlags - alle Benutzer
-      "invite_received": Einladung - alle Benutzer
-      "invite_reminder": Einladungserinnerung - alle Benutzer
-      "mention_in_comment": Erwähnung in einem Kommentar - alle Benutzer
+      "initiative_published": Veröffentlichung Ihres Vorschlags - alle Nutzer
+      "invite_received": Einladung - alle Nutzer
+      "invite_reminder": Einladungserinnerung - alle Nutzer
+      "mention_in_comment": Erwähnung in einem Kommentar - alle Nutzer
       "mention_in_official_feedback": Erwähnung in einem Update - alle Benutzer
       "new_comment_for_admin": Neuer Kommentar - Admins und Projektleiter
       "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle Benutzer
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den ich kommentiert habe
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die Sie gestimmt haben - alle Benutzer
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Benutzer
+      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den Sie kommentiert haben - alle Nutzer
+      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die Sie gestimmt haben - alle Nutzer
+      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer
       "new_idea_for_admin": Neue Idee - Admins und Projektleiter
       "new_initiative_for_admin": Neuer Vorschlag - Admins
-      "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle Benutzer
+      "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle Nutzer
       "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den Sie kommentiert haben - alle Benutzer
-      "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle Benutzer
-      "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den Sie abgestimmt haben - alle Benutzer
+      "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle Nutzer
+      "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den Sie abgestimmt haben - alle Nutzer
       "official_feedback_on_your_idea": Update zu Ihrer Idee - alle Benutzer
-      "official_feedback_on_your_initiative": Update zu Ihrem Vorschlag - alle Benutzer
+      "official_feedback_on_your_initiative": Update zu Ihrem Vorschlag - alle Nutzer
       "password_reset": Passwort zurücksetzen - alle Benutzer
       "project_moderation_rights_received": Projekt-Moderationsrechte erhalten - Projektleiter
-      "project_phase_started": Neue Projektphase - alle Benutzer
+      "project_phase_started": Neue Projektphase - alle Nutzer
       "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und Projektleiter
-      "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle Benutzer
+      "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle Nutzer
       "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den Sie kommentiert haben - alle Benutzer
-      "status_change_of_voted_idea": Statusänderung einer Idee, über die Sie abgestimmt haben - alle Benutzer
-      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, über den Sie abgestimmt haben - alle Benutzer
+      "status_change_of_voted_idea": Statusänderung einer Idee, über die Sie abgestimmt haben - alle Nutzer
+      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, über den Sie abgestimmt haben - alle Nutzer
       "status_change_of_your_idea": Statusänderung Ihrer Idee - alle Benutzer
-      "status_change_of_your_initiative": Statusänderung Ihres Vorschlags - alle Benutzer
+      "status_change_of_your_initiative": Statusänderung Ihres Vorschlags - alle Nutzer
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht - Admins
       "welcome": Neuer Benutzer - Admins
       "admin_digest": Wöchentlicher Überblick - Admins
       "moderator_digest": Wöchentlicher Überblick - Projektleiter
       "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und Projektmanager
-      "user_digest": Wochenübersicht - alle Benutzer
-      "your_proposed_initiatives_digest": Wöchentlicher Überblick über Ihre eigenen Vorschläge - alle Benutzer
+      "user_digest": Wochenübersicht - alle Nutzer
+      "your_proposed_initiatives_digest": Wöchentlicher Überblick über Ihre eigenen Vorschläge - alle Nutzer
+    footer:
+      "link_privacy_policy": "Datenschutzrichtlinie"
+      "link_terms_conditions": "Allgemeine Geschäftsbedingungen"
+      "link_unsubscribe": "Abbestellen"
+      "powered_by": "Ermöglicht durch"
+      "statement": "Diese e-Mail wurde dir durch CitizenLab im Auftrag von %{organizationName} gesandt, weil du dich auf %{organizationLink} registriert hast. Wenn du diese E-Mails in Zukunft nicht mehr erhalten möchtest, dann kannst du sie %{unsubscribeLink}."
+      "unsubscribe_text": "abbestellen"
+    welcome:
+      "cta_join_platform": "Entdecke die Plattform"
+      "subject": "Willkommen auf der Plattform von %{organizationName}"
+      "main_header": "Herzlich Willkommen!"
+      "message_welcome": "Glückwunsch, du hast dich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Nun kannst du die Plattform erkunden und deiner Stimme Gehör verschaffen. Du kannst außerdem ein Profilbild sowie eine kurze Beschreibung hinzufügen, um dich anderen vorzustellen."
+      "preheader": "Hier ist was du machen kannst auf der Plattform von %{organizationName}"
