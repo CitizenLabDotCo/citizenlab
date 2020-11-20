@@ -15,12 +15,25 @@ resource "Taggings" do
   post "web_api/v1/taggings" do
     parameter :idea_id, "The idea to tag", required: true
     parameter :tag_id, "The id of the tag to assign", required: false
+    parameter :tag_attributes, "The content to create a tag and assign it", required: false
 
-    let(:idea_id) { create(:idea).id }
-    let(:tag_id) { Tagging::Tag.create(title_multiloc: { en: 'Fish' }).id }
 
-    example_request "Create a tagging" do
-      expect(response_status).to eq 201
+    context do
+      let(:idea_id) { create(:idea).id }
+      let(:tag_id) { Tagging::Tag.create(title_multiloc: { en: 'Fish' }).id }
+
+      example_request "Create a tagging with tag_id" do
+        expect(response_status).to eq 201
+      end
+    end
+
+    context do
+      let(:idea_id) { create(:idea).id }
+      let(:tag_attributes) { { title_multiloc: { en: 'Apples' } } }
+
+      example_request "Create a tagging with tag attributes" do
+        expect(response_status).to eq 201
+      end
     end
   end
 
