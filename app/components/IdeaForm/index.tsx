@@ -50,6 +50,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { projectInputTypeMessages } from 'utils/i18n';
 
 // typings
 import { IOption, UploadFile, Locale } from 'typings';
@@ -685,7 +686,10 @@ class IdeaForm extends PureComponent<
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={messages[`${projectInputType}FormGeneralSectionTitle`]}
+              message={projectInputTypeMessages(projectInputType, {
+                idea: messages.ideaFormGeneralSectionTitle,
+                contribution: messages.contributionFormGeneralSectionTitle,
+              })}
             />
             <FormElement id="e2e-idea-title-input">
               <FormLabel
