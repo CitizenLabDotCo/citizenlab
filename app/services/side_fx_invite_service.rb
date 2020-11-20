@@ -14,7 +14,7 @@ class SideFxInviteService
   end
 
   def after_accept invite
-    TrackIdentifyJob.perform_later(invite.invitee)
+    TrackUserJob.perform_later(invite.invitee)
     LogActivityJob.perform_later(invite, 'accepted', invite.invitee, invite.accepted_at.to_i)
     if invite.invitee&.registration_completed_at
       LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.accepted_at.to_i)
