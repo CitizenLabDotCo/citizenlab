@@ -71,11 +71,6 @@ export class ConsentManager extends PureComponent<Props, State> {
     const roleBlacklisted =
       !isPrivilegedUser || isSuperAdminUser ? ADMIN_DESTINATIONS : [];
 
-    console.log(tenant.attributes.settings?.google_tag_manager?.destinations);
-    console.log(tenant.attributes.settings);
-    console.log(
-      !!get(tenant.attributes.settings, `google_tag_manager.allowed`)
-    );
     // for each destination
     return DESTINATIONS.map(
       (key) =>
@@ -95,7 +90,6 @@ export class ConsentManager extends PureComponent<Props, State> {
   }
 
   categorizeDestinations(destinations) {
-    console.log(destinations);
     return {
       analytics: MARKETING_AND_ANALYTICS_DESTINATIONS.filter((destination) =>
         destinations.includes(destination)

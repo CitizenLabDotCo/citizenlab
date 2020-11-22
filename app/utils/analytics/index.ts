@@ -1,14 +1,12 @@
 import React from 'react';
 import { Subject, combineLatest } from 'rxjs';
+import { filter, pairwise } from 'rxjs/operators';
 import { mapValues, isFunction, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import {
-  INTERCOM_APP_ID,
-  SATISMETER_WRITE_KEY,
-} from 'containers/App/constants';
+import { SATISMETER_WRITE_KEY } from 'containers/App/constants';
 
 import {
   isAdmin,
@@ -36,71 +34,44 @@ export interface IPageChange {
 
 const tenant$ = currentTenantStream().observable;
 const authUser$ = authUserStream().observable;
-const events$ = new Subject<IEvent>();
-const pageChanges$ = new Subject<IPageChange>();
+export const events$ = new Subject<IEvent>();
+export const pageChanges$ = new Subject<IPageChange>();
 
 const initializeTacking$ = eventEmitter.observeEvent<IDestination[]>(
   'initializeTacking'
 );
 
-combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
-  ([tenant, user, { eventValue }]) => {
-    const { savedChoices } = getConsent();
-    if (savedChoices.intercom && eventValue.includes('intercom')) {
-      (function () {
-        const w = window;
-        const ic = w.Intercom;
-        if (typeof ic === 'function') {
-          ic('reattach_activator');
-          ic('update', w.intercomSettings);
-        } else {
-          const d = document;
-          const i = function () {
-            i.c(arguments);
-          };
-          i.q = [];
-          i.c = function (args) {
-            i.q.push(args);
-          };
-          w.Intercom = i;
-          const l = function () {
-            const s = d.createElement('script');
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
-            const x = d.getElementsByTagName('script')[0];
-            x.parentNode?.insertBefore(s, x);
-          };
-          if (document.readyState === 'complete') {
-            l();
-          } else if (w.attachEvent) {
-            w.attachEvent('onload', l);
-          } else {
-            w.addEventListener('load', l, false);
-          }
-        }
-      })();
+/** Stream that emits when the given destination should initialize. Only emits
+ * if the user gave consent for this destination. Can emit more then once.
+ */
+export const initializeFor = (destination: IDestination) => {
+  return initializeTacking$.pipe(
+    filter((event) => {
+      const { savedChoices } = getConsent();
+      return (
+        savedChoices[destination] && event.eventValue.includes(destination)
+      );
+    })
+  );
+};
 
-      window.Intercom &&
-        window.Intercom('boot', {
-          app_id: INTERCOM_APP_ID,
-          ...(!isNilOrError(user)
-            ? {
-                email: user.data.attributes.email,
-                user_id: user.data.id,
-                name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
-              }
-            : {}),
-          ...(!isNilOrError(tenant)
-            ? {
-                company: {
-                  company_id: tenant.data.id,
-                  name: tenant.data.attributes.name,
-                },
-              }
-            : {}),
-        });
-    }
+/** Stream that emits when the given destination should shut itself down.
+ */
+export const shutdownFor = (destination: IDestination) => {
+  return initializeTacking$.pipe(
+    pairwise(),
+    filter(([prevInit, latestInit]) => {
+      return (
+        prevInit.eventValue.includes(destination) &&
+        !latestInit.eventValue.includes(destination)
+      );
+    })
+  );
+};
+
+combineLatest(authUser$, initializeTacking$).subscribe(
+  ([user, { eventValue }]) => {
+    const { savedChoices } = getConsent();
 
     if (savedChoices.satismeter && eventValue.includes('satismeter')) {
       (function () {
@@ -131,21 +102,6 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
         parent?.appendChild(script);
       })();
     }
-    if (
-      savedChoices.google_tag_manager &&
-      eventValue.includes('google_tag_manager')
-    ) {
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        const f = d.getElementsByTagName(s)[0];
-        const j = d.createElement(s) as HTMLScriptElement;
-        const dl = l !== 'dataLayer' ? `&l=${l}` : '';
-        j.async = true;
-        j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
-        f.parentNode?.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-KBM5894');
-    }
 
     if (
       savedChoices.google_analytics &&
@@ -166,18 +122,12 @@ combineLatest(tenant$, authUser$, initializeTacking$).subscribe(
       // @ts-ignore
       gtag('config', 'UA-101738826-16');
     }
-    // shutdown
-    if (!eventValue.includes('intercom') && window.Intercom) {
-      window.Intercom('shutdown');
-    }
   }
 );
 
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
     if (!isNilOrError(tenant)) {
-      window.Intercom &&
-        window.Intercom('trackEvent', event.name, event.properties);
       window.satismeter && window.satismeter('track', { event: event.name });
       if (isFunction(get(window, 'analytics.track'))) {
         analytics.track(
@@ -196,10 +146,6 @@ combineLatest(tenant$, authUser$, events$).subscribe(
 
 combineLatest(tenant$, authUser$, pageChanges$).subscribe(
   ([tenant, user, pageChange]) => {
-    window.Intercom &&
-      window.Intercom('update', {
-        last_request_at: new Date().getTime() / 1000,
-      });
     if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
       analytics.page(
         '',
