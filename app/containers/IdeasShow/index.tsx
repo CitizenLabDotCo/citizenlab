@@ -77,7 +77,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -91,24 +91,26 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${(props) => props.theme.mobileTopBarHeight}px);
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
   `}
 `;
 
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100vh -
-      ${({ theme: { menuHeight, footerHeight } }) =>
-        menuHeight + footerHeight}px
-  );
+  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   background: #fff;
   opacity: 0;
 
@@ -140,7 +142,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 60px;
+  padding-top: 40px;
   padding-left: 60px;
   padding-right: 60px;
   position: relative;
@@ -191,6 +193,10 @@ const IdeaHeader = styled.div`
   margin-top: -5px;
   margin-bottom: 25px;
 
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
     margin-bottom: 25px;
@@ -214,6 +220,10 @@ const MobileIdeaMoreActions = styled(IdeaMoreActions)`
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledGoBackButton = styled(GoBackButton)`
@@ -248,10 +258,6 @@ const StyledIdeaProposedBudget = styled(IdeaProposedBudget)`
 
 const MobileMetaInformation = styled(MetaInformation)`
   margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -275,7 +281,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 const Comments = styled.div`
-  margin-bottom: 150px;
+  margin-bottom: 100px;
 `;
 
 interface DataProps {
@@ -624,12 +630,14 @@ export class IdeasShow extends PureComponent<
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                <MobileMetaInformation
-                  ideaId={ideaId}
-                  projectId={projectId}
-                  statusId={statusId}
-                  authorId={authorId}
-                />
+                {smallerThanLargeTablet && (
+                  <MobileMetaInformation
+                    ideaId={ideaId}
+                    projectId={projectId}
+                    statusId={statusId}
+                    authorId={authorId}
+                  />
+                )}
 
                 {showBudgetControl &&
                   participationContextId &&

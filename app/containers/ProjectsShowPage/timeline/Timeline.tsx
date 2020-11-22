@@ -36,7 +36,7 @@ import { getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba, transparentize } from 'polished';
 
@@ -65,6 +65,10 @@ const Phases = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const phaseBarHeight = '24px';
@@ -96,6 +100,12 @@ const PhaseArrow = styled(Icon)`
   top: 0px;
   right: -9px;
   z-index: 2;
+
+  ${isRtl`
+    transform: rotate(180deg);
+    right: auto;
+    left: -9px;
+  `}
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
@@ -115,7 +125,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   word-break: break-word;
   hyphens: auto;
   max-height: 60px;
-  margin-top: 6px;
+  margin-top: 5px;
   margin-left: 5px;
   margin-right: 5px;
   transition: color 80ms ease-out;

@@ -11,3 +11,13 @@ export type ParticipationMethod =
   | 'budgeting'
   | 'poll'
   | 'volunteering';
+
+export type IdeaDefaultSortMethod =
+  | 'trending'
+  | 'random'
+  | 'popular'
+  | 'new'
+  | '-new'
+  | null;
+
+export const ideaDefaultSortMethodFallback = 'trending';

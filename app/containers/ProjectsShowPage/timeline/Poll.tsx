@@ -3,16 +3,19 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Poll from '../shared/poll';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // hooks
 import usePhase from 'hooks/usePhase';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from 'containers/ProjectsShowPage/messages';
+
 // styling
 import styled from 'styled-components';
 
-const Container = styled.div`
-  padding-bottom: 100px;
-`;
+const Container = styled.div``;
 
 interface Props {
   projectId: string;
@@ -29,9 +32,11 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
   ) {
     return (
       <Container
-        id="e2e-timeline-project-poll-container"
-        className={className || ''}
+        className={`e2e-timeline-project-poll-container ${className || ''}`}
       >
+        <ProjectPageSectionTitle>
+          <FormattedMessage {...messages.navPoll} />
+        </ProjectPageSectionTitle>
         <Poll phaseId={phaseId} projectId={projectId} type="phase" />
       </Container>
     );

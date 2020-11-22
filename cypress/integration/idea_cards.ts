@@ -18,7 +18,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   });
 
   beforeEach(() => {
-    cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+    cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.get('#e2e-ideas-container');
     cy.wait(1000);
   });
@@ -116,7 +116,7 @@ describe('Idea cards without filter sidebar pagination', () => {
       })
       .then((idea3) => {
         ideaId3 = idea3.body.data.id;
-        cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+        cy.visit('/projects/an-idea-bring-it-to-your-council');
         cy.get('#e2e-ideas-container');
         cy.wait(1000);
       });

@@ -16,9 +16,7 @@ describe('Idea Page', () => {
       cy.get('#e2e-idea-show-page-content');
 
       // shows the link to the project page with correct href
-      cy.get('#e2e-idea-other-link')
-        .should('have.attr', 'href')
-        .and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
+      cy.get('#e2e-idea-other-link');
 
       // shows the idea Title
       cy.get('#e2e-idea-title');
@@ -127,8 +125,9 @@ describe('Idea Page', () => {
 
     it('displays the location on the idea page and the map pops up', () => {
       cy.visit(`/ideas/${ideaTitle}`);
+      cy.get('#e2e-idea-show');
       cy.get('#e2e-idea-show-page-content');
-      cy.get('#e2e-map-popup').click();
+      cy.get('#e2e-map-popup:visible').click();
       cy.get('#e2e-map');
     });
 

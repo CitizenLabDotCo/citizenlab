@@ -9,12 +9,8 @@ describe('Idea voting permissions', () => {
       const password = randomString();
 
       // try to vote while not signed in
-      cy.visit('projects/verified-ideation/ideas');
-      cy.location('pathname').should(
-        'eq',
-        '/en-GB/projects/verified-ideation/ideas'
-      );
-      cy.get('#e2e-project-ideas-page');
+      cy.visit('projects/verified-ideation');
+      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
@@ -67,7 +63,7 @@ describe('Idea voting permissions', () => {
     });
 
     it('sends unverified users to the verification flow', () => {
-      cy.visit('projects/verified-ideation/ideas');
+      cy.visit('projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
@@ -107,7 +103,7 @@ describe('Idea voting permissions', () => {
     });
 
     it('lets verified users vote', () => {
-      cy.visit('projects/verified-ideation/ideas');
+      cy.visit('projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
@@ -127,7 +123,7 @@ describe('Idea voting permissions', () => {
       const password = randomString();
 
       // Try to vote
-      cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
+      cy.visit('projects/an-idea-bring-it-to-your-council');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').first().click();
@@ -144,11 +140,13 @@ describe('Idea voting permissions', () => {
 
       // success check
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
+      cy.wait(2000);
       cy.get(
         '#e2e-signup-success-container .e2e-signup-success-close-button'
       ).click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
+      cy.wait(2000);
       cy.get('.e2e-ideacard-upvote-button')
         .first()
         .should('have.class', 'active');

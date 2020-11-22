@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
   },
-  tabRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
-    defaultMessage: 'Registration',
+  tabRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.tabRegistrationFields',
+    defaultMessage: 'Registration fields',
   },
   tabTopics: {
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
@@ -167,14 +167,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  titleRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.titleRegistrationFields',
+  titleRegistration: {
+    id: 'app.containers.AdminPage.SettingsPage.titleRegistration',
     defaultMessage: 'Registration fields',
   },
   subtitleRegistrationFields: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
     defaultMessage:
-      'Define what specific information you want to ask people while creating an account. Use this information to create Smart Groups and give particular user groups access to certain projects.',
+      'Specify what information people are asked to provide when signing up.',
   },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
@@ -210,5 +210,10 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage:
       "The color you selected doesn't have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. {lineBreak} {lineBreak} A ratio of at least 4.5 to 1 is needed to comply. Current ratio: {contrastRatio} to 1. Choose a darker color to increase the ratio.",
+  },
+  dummyCrowdinTestText: {
+    id: 'app.components.AdminPage.SettingsPage.dummyCrowdinTestText',
+    defaultMessage:
+      "This is a dummy text just to test crowdin branch translations. Don't waste time translating this!",
   },
 });

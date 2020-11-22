@@ -10,6 +10,7 @@ export interface IAreaData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
+    ordering: number;
   };
 }
 
@@ -50,4 +51,16 @@ export function updateArea(areaId: string, object) {
 
 export function deleteArea(areaId: string) {
   return streams.delete(`${apiEndpoint}/${areaId}`, areaId);
+}
+
+export async function reorderArea(areaId: string, newOrder: number) {
+  const response = streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, {
+    area: { ordering: newOrder },
+  });
+
+  await streams.fetchAllWith({
+    apiEndpoint: [apiEndpoint],
+  });
+
+  return response;
 }

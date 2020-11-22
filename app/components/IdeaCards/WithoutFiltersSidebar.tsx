@@ -45,11 +45,16 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  isRtl,
 } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  ParticipationMethod,
+  ideaDefaultSortMethodFallback,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFields';
@@ -75,6 +80,10 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 
   &.mapView {
     justify-content: flex-end;
@@ -145,9 +154,15 @@ const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
 
+  ${isRtl`
+    margin-right: 0;
+    margin-left: auto;
+  `}
+
   ${media.smallerThanMinTablet`
     width: 100%;
     margin-right: 0px;
+    margin-left: 0px;
     margin-bottom: 20px;
   `}
 `;
@@ -157,6 +172,10 @@ const IdeasList = styled.div`
   margin-right: -13px;
   display: flex;
   flex-wrap: wrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIdeaCard = styled(IdeaCard)`
@@ -227,6 +246,7 @@ const ListView = styled.div``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
+  defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -332,6 +352,7 @@ class WithoutFiltersSidebar extends PureComponent<
       participationMethod,
       participationContextId,
       participationContextType,
+      defaultSortingMethod,
       windowSize,
       ideas,
       className,
@@ -384,6 +405,7 @@ class WithoutFiltersSidebar extends PureComponent<
               <SelectSort
                 onChange={this.handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                defaultSortingMethod={defaultSortingMethod || null}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />
@@ -474,7 +496,13 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
   ideas: ({ render, ...getIdeasInputProps }) => (
-    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+    <GetIdeas
+      {...getIdeasInputProps}
+      pageSize={12}
+      sort={
+        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
+      }
+    >
       {render}
     </GetIdeas>
   ),

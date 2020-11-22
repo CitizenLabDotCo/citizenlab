@@ -27,7 +27,7 @@ describe('Idea form settings', () => {
   describe('Enabled setting', () => {
     describe('Location enabled', () => {
       it('Shows the list/view toggle above the idea cards', () => {
-        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.visit(`projects/${projectTitle}`);
         cy.get('#e2e-ideas-container');
         cy.get('.e2e-list-map-viewbuttons').should('exist');
       });
@@ -94,9 +94,9 @@ describe('Idea form settings', () => {
 
       it("Doesn't show the list/view toggle above the idea cards", () => {
         // check that the list/view toggle is initially above the idea cards
-        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.visit(`projects/${projectTitle}`);
         cy.get('#e2e-ideas-container');
-        cy.get('.e2e-list-map-viewbuttons').should('exist');
+        cy.get('.e2e-list-map-viewbuttons');
 
         // go to idea form settings of our newly created project
         cy.visit(`admin/projects/${projectId}/ideaform`);
@@ -107,7 +107,7 @@ describe('Idea form settings', () => {
         cy.get('#e2e-ideaform-settings-submit').click();
 
         // verify that the list/view toggle buttons are not there anymore
-        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.visit(`projects/${projectTitle}`);
         cy.get('#e2e-ideas-container');
         cy.get('.e2e-list-map-viewbuttons').should('not.exist');
       });

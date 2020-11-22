@@ -93,6 +93,7 @@ const CloseIcon = styled(Icon)`
 const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   flex: 1;
   height: ${(props) => props.mapHeight}px;
+  overflow: hidden;
 
   .leaflet-container {
     height: 100%;
@@ -272,7 +273,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
       subdomains: ['a', 'b', 'c'],
     });
 

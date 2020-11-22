@@ -17,7 +17,7 @@ import { FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -26,27 +26,45 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
 
+  ${isRtl`
+    justify-content: flex-end;
+  `}
+
   ${media.smallPhone`
     flex-direction: column;
   `}
 `;
 
-const AuthorContainer: any = styled.div`
+const AuthorContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 6px;
   margin-bottom: 1px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 6px;
+  `}
 `;
 
 const AuthorMeta = styled.div`
   &.horizontalLayout {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+
+    ${isRtl`
+        flex-direction: row-reverse;
+    `}
   }
 `;
 
@@ -57,10 +75,14 @@ const AuthorNameContainer = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 16px;
   text-decoration: none;
-  hyphens: manual;
 
   &.horizontalLayout {
     margin-right: 10px;
+
+    ${isRtl`
+        margin-right: 0;
+        margin-left: 10px;
+    `}
   }
 `;
 
@@ -141,7 +163,7 @@ class Author extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <AuthorContainer authorCanModerate={authorCanModerate}>
+        <AuthorContainer>
           {showAvatar && (
             <StyledAvatar
               userId={authorId}

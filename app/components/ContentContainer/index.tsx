@@ -26,7 +26,6 @@ const Inner = styled.div<{ maxWidth?: string | number }>`
   width: 100%;
   max-width: ${({ maxWidth }) =>
     isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
-  z-index: 1;
 
   &.ie {
     margin-left: auto;

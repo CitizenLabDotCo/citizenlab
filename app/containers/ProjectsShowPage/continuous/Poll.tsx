@@ -5,23 +5,24 @@ import { isNilOrError } from 'utils/helperUtils';
 import ContentContainer from 'components/ContentContainer';
 import Poll from '../shared/poll';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { SectionContainer } from 'containers/ProjectsShowPage/styles';
+import {
+  SectionContainer,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
 
 // hooks
 import useProject from 'hooks/useProject';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 100%;
-`;
+const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};
@@ -43,11 +44,13 @@ const PollContainer = memo<Props & InjectedIntlProps>(
     ) {
       return (
         <Container
-          id="e2e-continuous-project-poll-container"
-          className={className || ''}
+          className={`e2e-continuous-project-poll-container ${className || ''}`}
         >
           <StyledContentContainer>
             <SectionContainer>
+              <ProjectPageSectionTitle>
+                <FormattedMessage {...messages.navPoll} />
+              </ProjectPageSectionTitle>
               <ScreenReaderOnly>
                 <h2>{formatMessage(messages.invisibleTitlePoll)}</h2>
               </ScreenReaderOnly>

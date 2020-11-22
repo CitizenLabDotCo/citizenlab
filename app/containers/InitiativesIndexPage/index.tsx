@@ -19,7 +19,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.main``;
 
-const FooterBanner: any = styled.div`
+const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
   min-height: 300px;
@@ -88,7 +88,7 @@ const InitiativeIndexPage = memo<Props>(() => {
             <FormattedMessage {...messages.footer} />
           </FooterMessage>
 
-          <InitiativeButton location="initiatives_footer" />
+          <InitiativeButton buttonStyle="white" location="initiatives_footer" />
         </FooterBanner>
         <CityLogoSection />
       </Container>

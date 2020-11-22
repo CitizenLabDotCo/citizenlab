@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // Services
 import { findMembership, addMembership } from 'services/moderators';
@@ -60,6 +60,7 @@ interface State {
   selection: IOption[];
   loading: boolean;
   processing: boolean;
+  searchInput: string;
 }
 
 function isModerator(user: IGroupMembershipsFoundUserData) {
@@ -73,6 +74,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
       selection: [],
       loading: false,
       processing: false,
+      searchInput: '',
     };
   }
 
@@ -144,14 +146,22 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
-  noOptionsMessage = () => {
+  setSearchInput = (inputValue: string) => {
+    this.setState({ searchInput: inputValue });
+  };
+
+  noOptionsMessage = (inputValue: string) => {
+    if (!isNonEmptyString(inputValue)) {
+      return null;
+    }
     return this.props.intl.formatMessage(messages.noOptions);
   };
 
   render() {
-    const { selection } = this.state;
+    const { selection, searchInput } = this.state;
     const { formatMessage } = this.props.intl;
 
+    const isDropdownIconHidden = !isNonEmptyString(searchInput);
     return (
       <Container>
         <SelectGroupsContainer>
@@ -168,6 +178,12 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             placeholder={formatMessage(messages.searchUsers)}
             styles={selectStyles}
             noOptionsMessage={this.noOptionsMessage}
+            onInputChange={this.setSearchInput}
+            components={
+              isDropdownIconHidden && {
+                DropdownIndicator: () => null,
+              }
+            }
           />
 
           <AddGroupButton

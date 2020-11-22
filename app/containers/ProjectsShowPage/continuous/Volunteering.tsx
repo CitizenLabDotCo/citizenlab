@@ -18,9 +18,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 100%;
-`;
+const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};

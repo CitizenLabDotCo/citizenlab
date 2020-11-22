@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.components.Sharing.shareViaMessenger',
     defaultMessage: 'Share via Messenger',
   },
+  shareViaWhatsApp: {
+    id: 'app.components.Sharing.shareViaWhatsApp',
+    defaultMessage: 'Share via WhatsApp',
+  },
   shareOnTwitter: {
     id: 'app.components.Sharing.shareOnTwitter',
     defaultMessage: 'Share on Twitter',

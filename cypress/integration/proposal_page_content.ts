@@ -51,10 +51,6 @@ describe('when logged out', () => {
     // Get child comment
     cy.get('#e2e-parent-and-childcomments').find('.e2e-childcomment');
   });
-
-  it('shows the initiative content footer', () => {
-    cy.get('#e2e-initiative-content-footer');
-  });
 });
 
 describe('when logged in as an admin', () => {

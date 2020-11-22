@@ -17,7 +17,6 @@ esw
 !.elasticbeanstalk/*.global.yml
 
 # Tests logs and reports
-selenium-debug.log
 e2e/reports/*
 .awcache
 local.log

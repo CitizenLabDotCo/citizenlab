@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 
-type Props = {};
+export interface Props {}
 
-type State = {};
+interface State {}
 
 export default class CustomFieldsDashboard extends PureComponent<Props, State> {
   render() {
