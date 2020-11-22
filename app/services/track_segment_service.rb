@@ -14,9 +14,9 @@ class TrackSegmentService
       isAdmin: user.admin?,
       isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role,
+      **TrackingService.new.tenant_properties(tenant)
     }
     if tenant
-      TrackingService.new.add_tenant_properties(traits, tenant)
       traits[:timezone] = tenant.settings.dig('core', 'timezone')
     end
 
@@ -33,9 +33,9 @@ class TrackSegmentService
       website: "https://#{tenant.host}",
       avatar: tenant&.logo&.medium&.url,
       createdAt: tenant.created_at,
-      tenantLocales: tenant.settings.dig('core', 'locales')
+      tenantLocales: tenant.settings.dig('core', 'locales'),
+      **TrackingService.new.tenant_properties(tenant)
     }
-    TrackingService.new.add_tenant_properties(traits, tenant)
 
     Analytics && tenant && Analytics.group(
       user_id: user.id,
@@ -45,12 +45,16 @@ class TrackSegmentService
     )
   end
 
-  def track activity
+  def track activity, tenant
+    service = TrackingService.new
     event = {
-      event: TrackingService.new.activity_event_name(activity),
+      event: service.activity_event_name(activity),
       timestamp: activity.acted_at,
       properties: {
-        source: 'cl2-back'
+        source: 'cl2-back',
+        **service.activity_properties(activity),
+        **service.environment_properties,
+        item_content: service.activity_item_content(activity)
       }
     }
 
@@ -62,15 +66,14 @@ class TrackSegmentService
     else
     	event[:anonymous_id] = SecureRandom.base64
     end
-    TrackingService.new.add_activity_properties event[:properties], activity
-    begin
-      tenant = Tenant.current
-      TrackingService.new.add_tenant_properties event[:properties], tenant
-    rescue  ActiveRecord::RecordNotFound => e
-      # Tenant can't be found, so we don't add anything
+
+    if tenant
+      event[:properties] = {
+        **event[:properties],
+        **service.tenant_properties(tenant)
+      }
     end
-    TrackingService.new.add_activity_item_content event, event[:properties], activity
-    TrackingService.new.add_environment_properties event[:properties]
+
     Analytics.track event
   end
 

@@ -1,48 +1,55 @@
 class TrackIntercomService
 
+  def initialize intercom_client=IntercomInstance
+    @intercom = intercom_client
+  end
+
   # Here's how to add new attributes to the contact model
-  # IntercomInstance.data_attributes.create({ name: "isProjectModerator", model: "contact", data_type: "boolean" })
+  # @intercom.data_attributes.create({ name: "isProjectModerator", model: "contact", data_type: "boolean" })
   def identify_user user, tenant
-    if IntercomInstance && (user.admin? || user.project_moderator?) && !user.super_admin?
-     contact_search = IntercomInstance.contacts.search(
+    if @intercom && (user.admin? || user.project_moderator?) && !user.super_admin?
+     contact_search = @intercom.contacts.search(
       "query": {
         "field": 'external_id',
         "operator": '=',
         "value": user.id
       })
 
-      if contact_search.count.positive?
+      contact = if contact_search.count.positive?
         contact = contact_search[0]
         contact.role = "user"
         contact.external_id = user.id
         contact.email = user.email
         contact.name = user.first_name + " " +  user.last_name
-        contact.signed_up_at =  user.created_at
+        contact.signed_up_at =  user.registration_completed_at
         contact.custom_attributes = {
           isAdmin: user.admin?,
           isSuperAdmin: user.super_admin?,
           isProjectModerator: user.project_moderator?,
-          highestRole: user.highest_role
+          highestRole: user.highest_role.to_s,
+          **TrackingService.new.tenant_properties(tenant)
         }
-        IntercomInstance.contacts.save(contact)
+        @intercom.contacts.save(contact)
       else
-      contact = IntercomInstance.contacts.create(
-        role: 'user',
-        external_id: user.id,
-        email: user.email,
-        name: user.first_name + ' ' + user.last_name,
-        signed_up_at:  user.created_at,
-        custom_attributes: {
-          isAdmin: user.admin?,
-          isSuperAdmin: user.super_admin?,
-          isProjectModerator: user.project_moderator?,
-          highestRole: user.highest_role
-        }
-      )
+        @intercom.contacts.create(
+          role: 'user',
+          external_id: user.id,
+          email: user.email,
+          name: user.first_name + ' ' + user.last_name,
+          signed_up_at:  user.registration_completed_at,
+          custom_attributes: {
+            isAdmin: user.admin?,
+            isSuperAdmin: user.super_admin?,
+            isProjectModerator: user.project_moderator?,
+            highestRole: user.highest_role.to_s,
+            **TrackingService.new.tenant_properties(tenant)
+          }
+        )
       end
+
       if tenant
         begin
-          company = IntercomInstance.companies.find(id: tenant.id)
+          company = @intercom.companies.find(id: tenant.id)
           contact.add_company(id: company.id)
         rescue Intercom::ResourceNotFound
         end
@@ -52,49 +59,43 @@ class TrackIntercomService
 
   def identify_tenant tenant
     # TODO add necessary properties, remove the rest
-    if IntercomInstance
+    if @intercom
       begin
-        company = IntercomInstance.companies.find(id: tenant.id)
-        company.name = tenant.name,
+        company = @intercom.companies.find(id: tenant.id)
+        company.name = tenant.name
         company.website = "https://#{tenant.host}"
-        company.created_at = tenant.created_at
-        company.custom_attributes = {
-          tenantLocales: tenant.settings.dig('core', 'locales'),
-          tenantOrganizationType: tenant.settings.dig('core', 'organization_type'),
-          tenantLifecycleStage: tenant.settings.dig('core', 'lifecycle_stage')
-        }
-        IntercomInstance.companies.save(company)
+        company.custom_attributes = TrackingService.new.tenant_properties(tenant)
+        @intercom.companies.save(company)
       rescue Intercom::ResourceNotFound
-        traits = {
-         name: tenant.name,
+        @intercom.companies.create({
+          company_id: tenant.id,
+          name: tenant.name,
           website: "https://#{tenant.host}",
-          created_at: tenant.created_at,
-          custom_attributes: {
-            tenantLocales: tenant.settings.dig('core', 'locales'),
-            tenantOrganizationType: tenant.settings.dig('core', 'organization_type'),
-            tenantLifecycleStage: tenant.settings.dig('core', 'lifecycle_stage')          }
-        }
-        IntercomInstance.companies.create(traits)
+          remote_created_at: tenant.created_at,
+          custom_attributes: TrackingService.new.tenant_properties(tenant)
+        })
       end
     end
   end
 
-  def track activity
-    if activity.user && IntercomInstance && (activity.user.admin? || activity.user.project_moderator?) && !activity.user.super_admin?
+  def track activity, tenant
+    if activity.user && @intercom && (activity.user.admin? || activity.user.project_moderator?) && !activity.user.super_admin?
+      service = TrackingService.new()
+
       event = {
         event_name: service.activity_event_name(activity),
         created_at: activity.acted_at,
-        user_id: event[:user_id],
+        user_id: activity.user_id,
         metadata: {
-          source: 'cl2-back'
+          source: 'cl2-back',
+          **service.tenant_properties(tenant),
+          **service.environment_properties,
+          **service.activity_properties(activity),
+          item_content: service.activity_item_content(activity),
         }
       }
-      service = TrackingService.new()
-      service.add_activity_properties event[:metadata], activity
 
-      service.add_activity_item_content event, event[:metadata], activity
-      service.add_environment_properties event[:metadata]
-      Intercom.events.create(event)
+      @intercom.events.create(event)
     end
   end
 end

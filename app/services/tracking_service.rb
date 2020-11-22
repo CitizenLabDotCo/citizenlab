@@ -8,42 +8,45 @@ class TrackingService
     end
   end
 
-  def add_tenant_properties hash, tenant
-    hash[:tenantId]               = tenant.id
-    hash[:tenantName]             = tenant.name
-    hash[:tenantHost]             = tenant.host
-    hash[:tenantOrganizationType] = tenant.settings.dig('core', 'organization_type')
-    hash[:tenantLifecycleStage]   = tenant.settings.dig('core', 'lifecycle_stage')
+  def tenant_properties tenant
+    {
+      tenantId:               tenant.id,
+      tenantName:             tenant.name,
+      tenantHost:             tenant.host,
+      tenantOrganizationType: tenant.settings.dig('core', 'organization_type'),
+      tenantLifecycleStage:   tenant.settings.dig('core', 'lifecycle_stage'),
+    }
   end
 
-  def add_activity_properties hash, activity
-    hash[:item_type] = activity.item_type
-    hash[:item_id]   = activity.item_id
-    hash[:action]    = activity.action
-    hash[:payload]   = activity.payload
+  def activity_properties activity
+    {
+      item_type: activity.item_type,
+      item_id:   activity.item_id,
+      action:    activity.action,
+      payload:   activity.payload,
+    }
   end
 
-  def add_activity_item_content hash_for_event, hash_for_item_content, activity
-    if activity.item
-      serializer = nil
-      begin
-        serializer = "WebApi::V1::External::#{activity.item_type}Serializer".constantize
-      rescue NameError => e
-        # There's no serializer, so we don't add anything
-      end
-      if serializer
-        hash_for_item_content[:item_content] =
-          if activity.item.respond_to? :event_bus_item_content
-            activity.item.event_bus_item_content
-          else
-            serialize serializer, activity.item
-          end
-      end
+  def activity_item_content activity
+    return {} if !activity.item
+
+    serializer = begin
+      "WebApi::V1::External::#{activity.item_type}Serializer".constantize
+    rescue NameError => e
+      return {}
+    end
+
+    if activity.item.respond_to? :event_bus_item_content
+      activity.item.event_bus_item_content
+    else
+      serialize serializer, activity.item
     end
   end
 
-  def add_environment_properties hash
-    hash[:cl2_cluster] = CL2_CLUSTER
+  def environment_properties
+    {
+      cl2_cluster: CL2_CLUSTER
+    }
   end
 
   def serialize serializer, object
