@@ -181,13 +181,11 @@ describe TrackIntercomService do
           item_type: activity.item_type,
           cl2_cluster: 'local',
           action: 'published',
-          payload: {},
           tenantId: tenant.id,
           tenantName: "test-tenant",
           tenantHost: "example.org",
           tenantOrganizationType: "medium_city",
           tenantLifecycleStage: "active",
-          item_content: {}
         }
       })
 

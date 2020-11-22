@@ -90,8 +90,9 @@ class TrackIntercomService
           source: 'cl2-back',
           **service.tenant_properties(tenant),
           **service.environment_properties,
-          **service.activity_properties(activity),
-          item_content: service.activity_item_content(activity),
+          item_type: activity.item_type,
+          item_id: activity.item_id,
+          action: activity.action
         }
       }
 
