@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -30,7 +30,22 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     position: relative;
     width: 100%;
+
+  ${isRtl`
+    text-align: right;
+    ul {
+        direction: rtl;
+    }
+  `}
   }
+
+  input, textarea {
+
+    ${isRtl`
+        text-align: right;
+        direction: rtl;
+    `}
+    }
 
   html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea, .ql-container, .ql-toolbar.ql-snow {
     font-family: ${(props: any) =>

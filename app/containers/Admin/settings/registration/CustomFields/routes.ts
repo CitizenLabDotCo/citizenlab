@@ -18,30 +18,56 @@ export default () => ({
     {
       path: 'new',
       component: Loadable({
-        loader: () => import('./New'),
+        loader: () => import('./RegistrationCustomFieldNew'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
     },
     {
-      path: ':customFieldId',
+      path: ':userCustomFieldId',
       component: Loadable({
-        loader: () => import('./Edit'),
+        loader: () => import('./RegistrationCustomFieldEdit'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
       childRoutes: [
         {
-          path: 'general',
+          path: 'field-settings',
           component: Loadable({
-            loader: () => import('./Edit/General'),
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+              ),
             loading: () => null,
           }),
         },
         {
           path: 'options',
           component: Loadable({
-            loader: () => import('./Edit/Options'),
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+              ),
+            loading: () => null,
+          }),
+        },
+        {
+          path: 'options/new',
+          component: Loadable({
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+              ),
+            loading: () => null,
+          }),
+        },
+        {
+          path: 'options/:userCustomFieldOptionId',
+          component: Loadable({
+            loader: () =>
+              import(
+                './RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+              ),
             loading: () => null,
           }),
         },

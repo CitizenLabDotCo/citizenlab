@@ -19,9 +19,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 100%;
-`;
+const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};
@@ -45,8 +43,9 @@ const SurveyContainer = memo<Props & InjectedIntlProps>(
     ) {
       return (
         <Container
-          id="e2e-continuous-project-survey-container"
-          className={className || ''}
+          className={`e2e-continuous-project-survey-container ${
+            className || ''
+          }`}
         >
           <StyledContentContainer>
             <SectionContainer>

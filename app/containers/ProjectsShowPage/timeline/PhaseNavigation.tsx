@@ -27,22 +27,40 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   margin-left: 15px;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 15px;
+    flex-direction: row-reverse;
+  `}
 `;
 
 const PreviousPhaseButton = styled(Button)`
   margin-right: 5px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 5px;
+    transform: rotate(180deg);
+  `}
 `;
 
 const CurrentPhaseButton = styled(Button)``;
 
 const NextPhaseButton = styled(Button)`
   margin-left: 5px;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 5px;
+    transform: rotate(180deg);
+  `}
 `;
 
 interface Props {
@@ -107,7 +125,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
     }, [phases]);
 
     if (!isNilOrError(locale) && !isNilOrError(phases) && phases.length > 0) {
-      const navButtonSize = '33px';
+      const navButtonSize = '34px';
       const navButtonStyle = buttonStyle || 'secondary';
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
       const currentPhase = getCurrentPhase(phases);

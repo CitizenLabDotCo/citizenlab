@@ -14,7 +14,10 @@ import PhaseVolunteering from './Volunteering';
 import PhaseIdeas from './Ideas';
 import ContentContainer from 'components/ContentContainer';
 import PhaseNavigation from './PhaseNavigation';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import {
+  SectionContainer,
+  ProjectPageSectionTitle,
+} from 'containers/ProjectsShowPage/styles';
 
 // services
 import {
@@ -38,19 +41,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, viewportWidths, media } from 'utils/styleUtils';
+import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 100%;
+const Container = styled.div``;
+
+const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 65px;
   background: ${colors.background};
-
-  ${media.smallerThanMinTablet`
-    padding-top: 40px;
-  `}
 `;
 
 const Header = styled.div`
@@ -58,6 +57,10 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 25px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
@@ -66,7 +69,7 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 `;
 
 const StyledTimeline = styled(Timeline)`
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 `;
 
 interface Props {
@@ -143,53 +146,58 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
       return (
         <Container className={`${className || ''} e2e-project-process-page`}>
-          <div>
-            <ContentContainer>
-              {smallerThanSmallTablet && (
-                <Header>
-                  <StyledProjectPageSectionTitle>
-                    <FormattedMessage {...messages.timeline} />
-                  </StyledProjectPageSectionTitle>
-                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
-                </Header>
-              )}
-              <StyledTimeline projectId={project.id} />
-              <PhaseDescription
-                projectId={project.id}
-                phaseId={selectedPhaseId}
-              />
-              {isPBPhase && (
-                <PBExpenses
-                  participationContextId={selectedPhaseId}
-                  participationContextType="phase"
-                  viewMode={smallerThanSmallTablet ? 'column' : 'row'}
+          <StyledSectionContainer>
+            <div>
+              <ContentContainer>
+                {smallerThanSmallTablet && (
+                  <Header>
+                    <StyledProjectPageSectionTitle>
+                      <FormattedMessage {...messages.timeline} />
+                    </StyledProjectPageSectionTitle>
+                    <PhaseNavigation
+                      projectId={project.id}
+                      buttonStyle="white"
+                    />
+                  </Header>
+                )}
+                <StyledTimeline projectId={project.id} />
+                <PhaseDescription
+                  projectId={project.id}
+                  phaseId={selectedPhaseId}
                 />
-              )}
-              <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
-            </ContentContainer>
-          </div>
-          <div>
-            <ContentContainer>
-              <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
-              <PhaseVolunteering
-                projectId={project.id}
-                phaseId={selectedPhaseId}
-              />
-            </ContentContainer>
-          </div>
-
-          {(participationMethod === 'ideation' ||
-            participationMethod === 'budgeting') &&
-            selectedPhaseId && (
-              <div>
-                <ContentContainer>
-                  <PhaseIdeas
-                    projectId={project.id}
-                    phaseId={selectedPhaseId}
+                {isPBPhase && (
+                  <PBExpenses
+                    participationContextId={selectedPhaseId}
+                    participationContextType="phase"
+                    viewMode={smallerThanSmallTablet ? 'column' : 'row'}
                   />
-                </ContentContainer>
-              </div>
-            )}
+                )}
+                <PhaseSurvey projectId={project.id} phaseId={selectedPhaseId} />
+              </ContentContainer>
+            </div>
+            <div>
+              <ContentContainer>
+                <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
+                <PhaseVolunteering
+                  projectId={project.id}
+                  phaseId={selectedPhaseId}
+                />
+              </ContentContainer>
+            </div>
+
+            {(participationMethod === 'ideation' ||
+              participationMethod === 'budgeting') &&
+              selectedPhaseId && (
+                <div>
+                  <ContentContainer>
+                    <PhaseIdeas
+                      projectId={project.id}
+                      phaseId={selectedPhaseId}
+                    />
+                  </ContentContainer>
+                </div>
+              )}
+          </StyledSectionContainer>
         </Container>
       );
     }

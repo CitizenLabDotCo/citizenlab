@@ -18,7 +18,6 @@ import {
 const Container = styled.div`
   flex: 1 1 auto;
   width: 100%;
-  margin-top: 50px;
 `;
 
 const Content = styled.div`
@@ -59,7 +58,7 @@ interface Props {
 
 const Footer = memo<Props>(({ postId, postType, className }) => {
   return (
-    <Container className={className}>
+    <Container className={className || ''}>
       <Content>
         <ContentInner>
           <Suspense fallback={<LoadingComments />}>

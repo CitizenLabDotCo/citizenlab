@@ -22,15 +22,15 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 import { viewportWidths, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 100%;
-`;
+const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};
 `;
 
-const StyledSectionContainer = styled(SectionContainer)``;
+const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
+  margin-bottom: 20px;
+`;
 
 interface Props {
   projectId: string;
@@ -65,7 +65,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
           className={className || ''}
         >
           <StyledContentContainer id="project-ideas">
-            <StyledSectionContainer>
+            <SectionContainer>
               {isPBProject && (
                 <PBExpenses
                   participationContextId={projectId}
@@ -73,9 +73,9 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               )}
-              <ProjectPageSectionTitle>
+              <StyledProjectPageSectionTitle>
                 <FormattedMessage {...messages.ideas} />
-              </ProjectPageSectionTitle>
+              </StyledProjectPageSectionTitle>
               <IdeaCards
                 type="load-more"
                 projectIds={projectIds}
@@ -83,10 +83,11 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 participationContextId={projectId}
                 participationContextType="project"
                 showViewToggle={true}
+                defaultSortingMethod={project.attributes.ideas_order || null}
                 defaultView={project.attributes.presentation_mode || null}
                 invisibleTitleMessage={messages.invisibleTitleIdeasList}
               />
-            </StyledSectionContainer>
+            </SectionContainer>
           </StyledContentContainer>
         </Container>
       );

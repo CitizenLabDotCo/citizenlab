@@ -17,7 +17,7 @@ class SettingsRegistrationTab extends PureComponent<Props, State> {
     return (
       <Section key={'signup_fields'}>
         <SectionTitle>
-          <FormattedMessage {...messages.titleRegistrationFields} />
+          <FormattedMessage {...messages.titleRegistration} />
         </SectionTitle>
         <SectionDescription>
           <FormattedMessage {...messages.subtitleRegistrationFields} />

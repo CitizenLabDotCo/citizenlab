@@ -34,8 +34,14 @@ import GetWindowSize, {
 
 // style
 import styled from 'styled-components';
-import { rgba, transparentize } from 'polished';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { transparentize } from 'polished';
+import {
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;
@@ -44,100 +50,80 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   position: relative;
 
   ${media.smallerThanMaxTablet`
+    margin-top: 0px;
     padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
       insideModal ? 0 : mobileMenuHeight}px;
   `}
 `;
 
-const Inner = styled.div`
-  min-height: ${(props) => props.theme.footerHeight}px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 11px;
-  padding-bottom: 11px;
-  background: ${transparentize(0.1, colors.background)};
-  border-top: solid 1px #ccc;
-  overflow: hidden;
+const ShortFeedbackContainer = styled.div`
+  ${media.biggerThanMaxTablet`
+    position: absolute;
+    top: -25px;
+    left: 25px;
+    z-index: 3;
 
-  ${media.smallerThan1280px`
-    padding-left: 18px;
-    padding-right: 18px;
+    ${isRtl`
+      left: auto;
+      right: 25px;
+    `}
   `}
 
   ${media.smallerThanMaxTablet`
     display: flex;
-    flex-direction: column;
     justify-content: center;
-  `}
-
-  ${media.smallerThanMinTablet`
-    padding: 15px 10px;
-    border-top: solid 1px ${colors.separation};
-
-    &.showShortFeedback {
-      border-top: none;
-    }
+    background: ${colors.background};
+    background: ${(props) => transparentize(0.9, props.theme.colorText)};
+    border-top: solid 1px #ccc;
   `}
 `;
 
 const ShortFeedback = styled.div`
   display: flex;
-
-  ${media.biggerThanMinTablet`
-    position: absolute;
-    z-index: 5;
-    top: -36px;
-    left: 20px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-    border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
-  `}
-`;
-
-const ShortFeedbackInner = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  line-height: normal;
-  display: flex;
   align-items: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 16px;
-  padding-right: 16px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.09)};
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
 
-  ${media.smallerThanMinTablet`
-    width: 100%;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${media.smallerThanMaxTablet`
     justify-content: center;
-    padding-left: 14px;
-    padding-right: 14px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
   `}
 `;
 
 const ThankYouNote = styled.span`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
+  line-height: normal;
 `;
 
 const FeedbackQuestion = styled.span`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
   margin-right: 15px;
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 15px;
+  `}
 `;
 
-const Buttons = styled.div`
+const FeedbackButtons = styled.div`
   display: flex;
   align-items: center;
 `;
 
 const FeedbackButton = styled.button`
   color: ${({ theme }) => theme.colorText};
-  font-weight: 500;
+  font-size: ${fontSizes.small}px;
+  font-weight: 600;
+  line-height: normal;
   text-align: left;
   text-transform: uppercase;
   display: flex;
@@ -145,7 +131,6 @@ const FeedbackButton = styled.button`
   justify-content: center;
   padding: 0;
   margin: 0;
-  z-index: 1;
   cursor: pointer;
   appearance: none;
 
@@ -156,6 +141,27 @@ const FeedbackButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const FooterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: #fff;
+  border-top: solid 1px #ccc;
+  overflow: hidden;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px 10px;
+    background: #f4f4f4;
+  `}
 `;
 
 const PagesNav = styled.nav`
@@ -180,14 +186,14 @@ const PagesNavList = styled.ul`
   `}
 
   & li {
-    margin-right: 12px;
+    margin-right: 10px;
 
     &:after {
       color: ${colors.label};
       font-size: ${fontSizes.small}px;
       font-weight: 400;
       content: '•';
-      margin-left: 12px;
+      margin-left: 10px;
     }
 
     &:last-child {
@@ -203,6 +209,8 @@ const PagesNavList = styled.ul`
 
 const PagesNavListItem = styled.li`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
   font-weight: 400;
   list-style: none;
   margin: 0;
@@ -211,10 +219,9 @@ const PagesNavListItem = styled.li`
 
 const StyledButton = styled.button`
   color: ${colors.label};
-  font-weight: 400;
   font-size: ${fontSizes.small}px;
+  font-weight: 400;
   line-height: normal;
-  text-decoration: none;
   hyphens: auto;
   padding: 0;
   margin: 0;
@@ -260,21 +267,12 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  text-decoration: none;
   display: flex;
   align-items: center;
   outline: none;
   padding-right: 20px;
   margin-right: 24px;
   border-right: 2px solid ${colors.separation};
-
-  ${media.smallerThan1280px`
-    padding-right: 8px;
-    margin-right: 13px;
-  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -288,9 +286,17 @@ const PoweredBy = styled.div`
 const PoweredByText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   margin-right: 8px;
+
+  ${media.smallerThan1100px`
+    display: none;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
 
   ${media.smallerThanMinTablet`
     margin-bottom: 10px;
@@ -298,7 +304,7 @@ const PoweredByText = styled.span`
 `;
 
 const CitizenlabLink = styled.a`
-  width: 135px;
+  width: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,8 +452,8 @@ class PlatformFooter extends PureComponent<Props, State> {
       >
         {showShortFeedback && (
           <>
-            <ShortFeedback>
-              <ShortFeedbackInner>
+            <ShortFeedbackContainer>
+              <ShortFeedback>
                 {shortFeedbackButtonClicked ? (
                   feedbackModalOpen ? (
                     <ThankYouNote>
@@ -463,7 +469,7 @@ class PlatformFooter extends PureComponent<Props, State> {
                     <FeedbackQuestion>
                       <FormattedMessage {...messages.feedbackQuestion} />
                     </FeedbackQuestion>
-                    <Buttons>
+                    <FeedbackButtons>
                       <FeedbackButton
                         onClick={this.handleFeedbackButtonClick('yes')}
                       >
@@ -475,11 +481,11 @@ class PlatformFooter extends PureComponent<Props, State> {
                       >
                         <FormattedMessage {...messages.no} />
                       </FeedbackButton>
-                    </Buttons>
+                    </FeedbackButtons>
                   </>
                 )}
-              </ShortFeedbackInner>
-            </ShortFeedback>
+              </ShortFeedback>
+            </ShortFeedbackContainer>
 
             <Modal
               width={500}
@@ -517,7 +523,9 @@ class PlatformFooter extends PureComponent<Props, State> {
           </>
         )}
 
-        <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
+        <FooterContainer
+          className={showShortFeedback ? 'showShortFeedback' : ''}
+        >
           <PagesNav>
             <PagesNavList>
               {LEGAL_PAGES
@@ -553,7 +561,7 @@ class PlatformFooter extends PureComponent<Props, State> {
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
-              <CitizenlabLink href="https://www.citizenlab.co/">
+              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
                 <CitizenLabLogo
                   name="citizenlab-footer-logo"
                   title="CitizenLab"
@@ -563,7 +571,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 
             <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
           </Right>
-        </Inner>
+        </FooterContainer>
       </Container>
     );
   }

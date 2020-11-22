@@ -16,8 +16,10 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
 
-const Container = styled.div`
-  padding-bottom: 100px;
+const Container = styled.div``;
+
+const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
+  margin-bottom: 20px;
 `;
 
 interface InputProps {
@@ -51,15 +53,16 @@ class IdeasContainer extends PureComponent<Props, State> {
             id="project-ideas"
             className={`e2e-timeline-project-idea-cards ${className || ''}`}
           >
-            <ProjectPageSectionTitle>
+            <StyledProjectPageSectionTitle>
               <FormattedMessage {...messages.ideas} />
-            </ProjectPageSectionTitle>
+            </StyledProjectPageSectionTitle>
             <IdeaCards
               className={participationMethod}
               type="load-more"
               projectIds={projectIds}
               phaseId={phaseId}
               showViewToggle={true}
+              defaultSortingMethod={phase.attributes.ideas_order || null}
               defaultView={phase.attributes.presentation_mode}
               participationMethod={participationMethod}
               participationContextId={phase.id}

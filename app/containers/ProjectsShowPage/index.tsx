@@ -23,6 +23,9 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -30,21 +33,25 @@ import { media, colors } from 'utils/styleUtils';
 // typings
 import { IProjectData } from 'services/projects';
 
-const Container = styled.main`
+const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
+  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${colors.background};
+  background: ${(props) => props.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
+      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
+    mobileTopBarHeight}px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
+      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
+    mobileTopBarHeight}px);
   `}
 `;
 
@@ -82,6 +89,16 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
     isUndefined(phases) ||
     isUndefined(events);
 
+  const upcomingEvents = !isNilOrError(events)
+    ? events.filter((event) => {
+        const eventTime = pastPresentOrFuture([
+          event.attributes.start_at,
+          event.attributes.end_at,
+        ]);
+        return eventTime === 'present' || eventTime === 'future';
+      })
+    : [];
+
   let content: JSX.Element | null = null;
 
   if (loading) {
@@ -112,7 +129,9 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   }
 
   return (
-    <Container>
+    <Container
+      background={upcomingEvents.length > 0 ? '#fff' : colors.background}
+    >
       {!isNilOrError(project) && <ProjectHelmet project={project} />}
       {content}
     </Container>
@@ -130,8 +149,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
 
     if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-      const redirectoTo = `/${urlSegments.slice(1, 3).join('/')}`;
-      clHistory.replace(redirectoTo);
+      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {
       return (
         <ProjectsShowPage

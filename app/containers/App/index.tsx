@@ -80,6 +80,7 @@ import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import { SSOParams } from 'services/singleSignOn';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -90,18 +91,18 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  padding-top: ${(props) => props.theme.menuHeight}px;
   width: 100vw;
+  padding-top: ${(props) => props.theme.menuHeight}px;
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
   ${media.smallerThanMaxTablet`
-    padding-top: ${(props) => props.theme.menuHeight}px;
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+    padding-top: ${(props) => props.theme.mobileTopBarHeight}px;
+    min-height: calc(100vh - ${(props) =>
+      props.theme.mobileTopBarHeight}px - ${(props) =>
+    props.theme.mobileMenuHeight}px);
   `}
 `;
 
@@ -127,6 +128,7 @@ type State = {
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
+  locale: Locale | null;
 };
 
 class App extends PureComponent<Props & WithRouterProps, State> {
@@ -149,6 +151,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
+      locale: null,
     };
     this.subscriptions = [];
   }
@@ -207,7 +210,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       ).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        this.setState({ tenant, authUser });
+        this.setState({ tenant, authUser, locale });
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
@@ -443,7 +446,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       <>
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider
+              theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
+            >
               <LiveAnnouncer>
                 <GlobalStyle />
 

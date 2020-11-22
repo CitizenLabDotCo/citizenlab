@@ -124,7 +124,7 @@ const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
       } else {
         const link = (
           // tslint:disable-next-line
-          <a href="mailto:support@citizenlab.co">
+          <a href="mailto:support@citizenlab.co" target="_blank">
             <FormattedMessage {...messages.citizenlabExpert} />
           </a>
         );

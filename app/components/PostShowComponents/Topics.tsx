@@ -10,7 +10,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
@@ -19,6 +19,10 @@ import { ITopicData } from 'services/topics';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const Topic = styled.div`
@@ -30,6 +34,11 @@ const Topic = styled.div`
   margin-bottom: 5px;
   background: ${({ theme }) => transparentize(0.92, theme.colorSecondary)};
   border-radius: ${(props: any) => props.theme.borderRadius};
+
+  ${isRtl`
+    margin-right: 0;
+    margin-left: 5px;
+  `}
 `;
 
 interface InputProps {

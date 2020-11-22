@@ -274,7 +274,7 @@ class LineBarChart extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitle, infoMessage } = this.props;
+    const { className, graphTitle, infoMessage, resolution } = this.props;
     const { serie } = this.state;
 
     const {
@@ -361,7 +361,7 @@ class LineBarChart extends React.PureComponent<
                     value={formatMessage(messages.total)}
                     angle={-90}
                     position={'center'}
-                    offset={-20}
+                    dx={-15}
                   />
                 </YAxis>
                 <YAxis
@@ -372,11 +372,11 @@ class LineBarChart extends React.PureComponent<
                 >
                   <Label
                     value={formatMessage(messages.perPeriod, {
-                      period: this.props.resolution,
+                      period: formatMessage(messages[resolution]),
                     })}
                     angle={90}
                     position={'center'}
-                    offset={-20}
+                    dx={15}
                   />
                 </YAxis>
                 <Tooltip
@@ -392,7 +392,7 @@ class LineBarChart extends React.PureComponent<
                   fill={newBarFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {
-                    period: this.props.resolution,
+                    period: formatMessage(messages[resolution]),
                   })}
                 />
                 <Line

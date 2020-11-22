@@ -11,12 +11,11 @@ describe('Existing continuous project with survey', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey', () => {
-    cy.get('#e2e-continuous-project-survey-container');
+    cy.get('.e2e-continuous-project-survey-container');
     cy.get('.e2e-typeform-survey');
     cy.wait(3000);
     cy.get('.e2e-typeform-survey iframe');
@@ -59,12 +58,11 @@ describe('New continuous project with survey', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey', () => {
-    cy.get('#e2e-continuous-project-survey-container');
+    cy.get('.e2e-continuous-project-survey-container');
     cy.get('.e2e-typeform-survey');
     cy.wait(3000);
     cy.get('.e2e-typeform-survey iframe');

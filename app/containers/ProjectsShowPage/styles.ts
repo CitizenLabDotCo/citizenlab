@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, isRtl } from 'utils/styleUtils';
 
 export const SectionContainer = styled.div`
   padding-top: 70px;
-  margin-bottom: 70px;
+  padding-bottom: 80px;
 
   ${media.smallerThanMinTablet`
     padding-top: 45px;
-    margin-bottom: 45px;
+    padding-bottom: 45px;
   `}
 `;
 
@@ -23,4 +23,8 @@ export const ProjectPageSectionTitle = styled.h2`
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
+
+  ${isRtl`
+    text-align: right;
+  `}
 `;

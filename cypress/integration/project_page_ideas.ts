@@ -18,7 +18,6 @@ describe('Existing continuous ideation project', () => {
     cy.get('#e2e-project-header-image');
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate');
     cy.get('#e2e-project-sidebar-participants-count');
     cy.get('#e2e-project-sidebar-ideas-count');
     cy.get('#e2e-project-sidebar-share-button');
@@ -77,7 +76,6 @@ describe('Existing timeline project with ended ideation phase', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate-enddate');
     cy.get('#e2e-project-sidebar-participants-count');
     cy.get('#e2e-project-sidebar-phases-count');
     cy.get('#e2e-project-sidebar-share-button');
@@ -153,7 +151,6 @@ describe('New timeline project with active ideation phase', () => {
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-startdate-enddate');
     cy.get('#e2e-project-sidebar-phases-count');
     cy.get('#e2e-project-sidebar-share-button');
   });

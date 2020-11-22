@@ -5,6 +5,7 @@
   "video": false,
   "chromeWebSecurity": false,
   "numTestsKeptInMemory": 10,
-  "defaultCommandTimeout": 10000,
-  "retries": 2
+  "defaultCommandTimeout": 15000,
+  "retries": 2,
+  "experimentalNetworkStubbing": true
 }
