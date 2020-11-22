@@ -187,6 +187,7 @@ describe TrackIntercomService do
           tenantHost: "example.org",
           tenantOrganizationType: "medium_city",
           tenantLifecycleStage: "active",
+          item_content: {}
         }
       })
 
