@@ -2,10 +2,6 @@
 
 ## Next release
 
-### Fixed
-- Clicking the toggle button of a custom registration field no longer duplicated the row
-- Buttons added in the WYSIWYG editor now have the correct color when hovered
-
 ## 2020-11-20 (2)
 
 ### Fixed
