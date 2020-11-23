@@ -37,8 +37,8 @@ class AppConfiguration < ApplicationRecord
   end
 
   mount_base64_uploader :logo, LogoUploader
-  mount_base64_uploader :header_bg, TenantHeaderBgUploader
-  mount_base64_uploader :favicon, TenantFaviconUploader
+  mount_base64_uploader :header_bg, AppHeaderBgUploader
+  mount_base64_uploader :favicon, FaviconUploader
 
   validates :settings, presence: true, json: {
       schema: -> { AppConfiguration.settings_json_schema_str },
