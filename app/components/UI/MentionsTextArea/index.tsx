@@ -36,7 +36,6 @@ const Container = styled.div`
   & .textareaWrapper__highlighter,
   & textarea {
     background: transparent !important;
-    transition: all 200ms cubic-bezier(0.165, 0.84, 0.44, 1) !important;
   }
 
   & textarea::placeholder {
@@ -160,6 +159,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
           background: this.props.background,
           appearance: 'none',
           WebkitAppearance: 'none',
+          transition: 'min-height 200ms cubic-bezier(0.165, 0.84, 0.44, 1)',
         },
         suggestions: {
           list: {
