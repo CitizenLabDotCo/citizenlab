@@ -60,8 +60,9 @@ module Tagging
           Tagging.automatic.destroy_all
 
           tags = params["tags"]
+          tag_ids = params["tag_ids"]
           @new_tags = tags ? tags.map {|tag, index| { title_multiloc: tag, id: index } } : []
-          @old_tags = Tag.where(tag_id: params["tag_ids"])
+          @old_tags = tag_ids ? Tag.where(tag_id: tag_ids) : []
 
           NLP::TaggingSuggestionService.new.suggest(
             policy_scope(Idea).where(id: params['idea_ids']),
@@ -70,7 +71,11 @@ module Tagging
           ).each do |document|
             idea = Idea.find(document['id'])
             document['predicted_labels'].each{ |label|
-              tag = Tag.find(label['id']) || Tag.create(title_multiloc: params['tags'][label['id']])
+              begin
+                tag = Tag.find(label['id'])
+              rescue ActiveRecord::RecordNotFound => _
+                Tag.create(title_multiloc: params['tags'][label['id']])
+              end
               Tagging.create(
                 tag: tag,
                 idea: idea,
