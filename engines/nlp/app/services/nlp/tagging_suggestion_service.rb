@@ -1,13 +1,13 @@
 module NLP
   class TaggingSuggestionService
+    @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
 
-    def suggest(ideas, tags, locale)
-      @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
+    def suggest(ideas, tags, locale, api = @api)
 
       @documents = parse_ideas ideas, locale
       @candidate_labels = parse_tags tags, locale
 
-      @documents.any? ? @api.zeroshot_classification({
+      @documents.any? ? api.zeroshot_classification({
         candidate_labels: @candidate_labels,
         min_confidence_treshold: 0.5,
         documents: @documents
@@ -26,7 +26,7 @@ module NLP
     end
 
     def parse_tags(tags, locale)
-      tags.map{ |tag|
+      tags.map{ |tag, index|
         {
           text: tag.title_multiloc[locale],
           label_id: tag.id
