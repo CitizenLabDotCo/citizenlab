@@ -27,7 +27,7 @@
 
 **Admin project configuration page:**
 
-- Replaced 'Project images' upload widget in back-office with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with recommended image dimensions
+- Replaced 'Project images' upload widget in back-office with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with new recommended image dimensions
 
 **Idea page:**
 
