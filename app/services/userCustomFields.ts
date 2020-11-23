@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
+export const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
+
 export type IInputType =
   | 'text'
   | 'number'
@@ -88,7 +90,7 @@ export function customFieldsSchemaForUsersStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<any>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/schema`,
+    apiEndpoint: userCustomFieldsSchemaApiEndpoint,
     ...streamParams,
   });
 }

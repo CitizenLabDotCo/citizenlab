@@ -84,6 +84,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 participationContextId={projectId}
                 participationContextType="project"
                 showViewToggle={true}
+                defaultSortingMethod={project.attributes.ideas_order || null}
                 defaultView={project.attributes.presentation_mode || null}
                 invisibleTitleMessage={messages.invisibleTitleIdeasList}
               />

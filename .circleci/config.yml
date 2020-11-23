@@ -253,6 +253,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - lint:
@@ -260,6 +261,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - build:
@@ -267,6 +269,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - extract_intl:
@@ -274,6 +277,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - deploy_demo:

@@ -1,6 +1,6 @@
 import React from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd-cjs';
+import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 

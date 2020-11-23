@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { sortBy } from 'lodash-es';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -18,14 +19,15 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
 // style
 import styled from 'styled-components';
 
 const Container = styled.div`
   background: #fff;
+`;
+
+const StyledEventCard = styled(EventCard)`
+  margin-bottom: 30px;
 `;
 
 interface Props {
@@ -37,31 +39,23 @@ const EventsContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const events = useEvents(projectId);
 
-  if (!isNilOrError(project) && !isNilOrError(events)) {
-    const upcomingEvents = events.filter((event) => {
-      const eventTime = pastPresentOrFuture([
-        event.attributes.start_at,
-        event.attributes.end_at,
-      ]);
-      return eventTime === 'present' || eventTime === 'future';
-    });
+  if (!isNilOrError(project) && !isNilOrError(events) && events.length > 0) {
+    const sortedEvents = sortBy(events, [(event) => event.attributes.start_at]);
 
-    if (upcomingEvents && upcomingEvents.length > 0) {
-      return (
-        <Container id="project-events" className={className || ''}>
-          <ContentContainer maxWidth={maxPageWidth}>
-            <SectionContainer>
-              <ProjectPageSectionTitle>
-                <FormattedMessage {...messages.upcomingEvents} />
-              </ProjectPageSectionTitle>
-              {upcomingEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </SectionContainer>
-          </ContentContainer>
-        </Container>
-      );
-    }
+    return (
+      <Container id="project-events" className={className || ''}>
+        <ContentContainer maxWidth={maxPageWidth}>
+          <SectionContainer>
+            <ProjectPageSectionTitle>
+              <FormattedMessage {...messages.events} />
+            </ProjectPageSectionTitle>
+            {sortedEvents.map((event) => (
+              <StyledEventCard key={event.id} event={event} />
+            ))}
+          </SectionContainer>
+        </ContentContainer>
+      </Container>
+    );
   }
 
   return null;

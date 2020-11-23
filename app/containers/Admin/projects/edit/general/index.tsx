@@ -101,7 +101,6 @@ const StyledSectionField = styled(SectionField)`
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
-  padding-right: 100px;
 `;
 
 const ParticipationContextWrapper = styled.div`
@@ -743,7 +742,10 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   validateSlug = (slug: string) => {
-    const slugRexEx = RegExp(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    // Default slug rules including arabic character ranges
+    const slugRexEx = RegExp(
+      /^[a-z0-9\u0600-\u06FF\u0750-\u077F]+(?:-[a-z0-9\u0600-\u06FF\u0750-\u077F]+)*$/
+    );
     const isSlugValid = slugRexEx.test(slug);
 
     this.setState({
@@ -1079,7 +1081,7 @@ class AdminProjectEditGeneral extends PureComponent<
               </SubSectionTitle>
               <StyledImagesDropzone
                 images={projectHeaderImage}
-                imagePreviewRatio={120 / 480}
+                imagePreviewRatio={240 / 952}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxImageFileSize={5000000}
                 maxNumberOfImages={1}
@@ -1091,37 +1093,22 @@ class AdminProjectEditGeneral extends PureComponent<
 
             <StyledSectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.projectImageLabel} />
+                <FormattedMessage {...messages.projectCardImageLabel} />
                 <IconTooltip
                   content={
                     <FormattedMessage
-                      {...messages.projectImageLabelTooltip}
-                      values={{
-                        imageSupportArticleLink: (
-                          // tslint:disable-next-line:react-a11y-anchors
-                          <a
-                            target="_blank"
-                            href={this.props.intl.formatMessage(
-                              messages.imageSupportArticleLinkTarget
-                            )}
-                          >
-                            <FormattedMessage
-                              {...messages.imageSupportArticleLinkText}
-                            />
-                          </a>
-                        ),
-                      }}
+                      {...messages.projectCardImageLabelTooltip}
                     />
                   }
                 />
               </SubSectionTitle>
               <StyledImagesDropzone
                 images={projectImages}
-                imagePreviewRatio={1}
-                maxImagePreviewWidth="160px"
+                imagePreviewRatio={960 / 1440}
+                maxImagePreviewWidth="240px"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxImageFileSize={5000000}
-                maxNumberOfImages={5}
+                maxNumberOfImages={1}
                 onAdd={this.handleProjectImagesOnAdd}
                 onRemove={this.handleProjectImageOnRemove}
               />
