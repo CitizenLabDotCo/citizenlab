@@ -1,11 +1,28 @@
 import React, { lazy, Suspense } from 'react';
 import Modal from 'components/UI/Modal';
-const Map = lazy(() => import('./Map'));
-import useWindowSize from 'hooks/useWindowSize';
 import { Spinner } from 'cl2-component-library';
-import { viewportWidths } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
+const Map = lazy(() => import('./Map'));
+
+const Container = styled.div`
+  padding: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+  `}
+`;
+
+const Location = styled.div`
+  width: calc(100% - 35px);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
 
 interface Props {
+  address: string;
   position: GeoJSON.Point;
   onCloseModal: () => void;
   projectId: string;
@@ -13,22 +30,22 @@ interface Props {
 }
 
 const ModalWithMap = ({
+  address,
   position,
   projectId,
   isOpened,
   onCloseModal,
 }: Props) => {
-  const { windowWidth } = useWindowSize();
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
-
   return (
     <Modal
-      padding={smallerThanSmallTablet ? '70px 0 30px' : '70px 30px 30px'}
       opened={isOpened}
       close={onCloseModal}
+      header={<Location>{address}</Location>}
     >
       <Suspense fallback={<Spinner />}>
-        <Map position={position} projectId={projectId} />
+        <Container>
+          <Map position={position} projectId={projectId} />
+        </Container>
       </Suspense>
     </Modal>
   );
