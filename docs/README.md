@@ -13,10 +13,9 @@
 
 **Project page:**
 
-- Reduced padding of sticky top bar
 - Show all events at bottom of page instead of only upcoming events
-- Added tracking events
-- Only show sticky action bar up top when an action button (e.g. 'Post an idea') is present, and you've scrolled past it.
+- Reduced padding of sticky top bar
+- Only show sticky top bar when an action button (e.g. 'Post an idea') is present, and you've scrolled past it.
 
 **Project page right-hand sidebar:**
 
