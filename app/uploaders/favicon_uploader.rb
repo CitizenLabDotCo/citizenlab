@@ -4,7 +4,8 @@ class FaviconUploader < CarrierWave::Uploader::Base
 
 
   def store_dir
-    tenant = Tenant.current
+    tenant = model # instead of Tenant.current (like in the base uploader)  bc the uploader can be used in a context
+                   # where +Tenant.current+ is +nil+. But the uploader is mounted on +Tenant+ so +model+ is a tenant.
     "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
