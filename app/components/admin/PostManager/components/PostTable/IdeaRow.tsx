@@ -3,7 +3,7 @@ import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd';
+import { DragSource } from 'react-dnd-cjs';
 
 // services
 import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';

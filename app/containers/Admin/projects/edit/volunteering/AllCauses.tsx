@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { clone } from 'lodash-es';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd-cjs';
+import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useCauses from 'hooks/useCauses';
