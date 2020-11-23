@@ -4,6 +4,9 @@
 
 ## 2020-11-23
 
+### Fixed
+- The Admin UI is no longer exposed to regular (and unauthenticated) users
+
 ## 2020-11-20 (2)
 
 ### Fixed
