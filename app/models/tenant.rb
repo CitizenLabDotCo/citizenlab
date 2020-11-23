@@ -4,7 +4,7 @@ class Tenant < ApplicationRecord
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, TenantHeaderBgUploader
-  mount_base64_uploader :favicon, FaviconUploader
+  mount_base64_uploader :favicon, TenantFaviconUploader
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }

@@ -1,4 +1,4 @@
-class FaviconUploader < CarrierWave::Uploader::Base
+class TenantFaviconUploader < CarrierWave::Uploader::Base
   include BaseImageUploader
   include CarrierWave::MiniMagick
 
