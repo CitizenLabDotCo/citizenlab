@@ -136,4 +136,34 @@ resource "Taggings" do
     end
   end
 
+  post "web_api/v1/taggings/generate" do
+    parameter :idea_ids, "The ideas to tag", required: true
+    parameter :tag_ids, "The id of the tags to assign", required: false
+    parameter :tags, "The content to create a tag and assign it", required: false
+
+
+    before do
+      @ideas = create_list(:idea, 2)
+      Tagging::Tag.create(title_multiloc: {'en' => 'label', 'fr-BE' => 'label'})
+      Tagging::Tag.create(title_multiloc: {'en' => 'item'})
+      @tags = Tagging::Tag.all()
+      response = [
+        {
+        "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags.first.id}],
+        "id" => @ideas.first.id,
+        }
+      ]
+      allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
+    end
+
+    context do
+      let(:idea_ids) { @ideas.map(&:id) }
+      let(:tag_ids) { @tags.map(&:id) }
+
+      example_request "Generates taggings" do
+        expect(response_status).to eq 200
+      end
+    end
+  end
+
 end

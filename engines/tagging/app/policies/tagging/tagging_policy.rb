@@ -34,6 +34,10 @@ module Tagging
       user&.active_admin_or_moderator?(record.idea.project.id)
     end
 
+    def generate?
+      user&.active_admin_or_moderator?(record.idea.project.id)
+    end
+
     def permitted_attributes
       [
         :idea_id,
