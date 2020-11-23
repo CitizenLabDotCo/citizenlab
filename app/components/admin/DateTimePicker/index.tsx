@@ -11,8 +11,9 @@ import { SingleDatePicker } from 'react-dates';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const Wrapper = styled.div`
-  display: inline-flex;
+const Container = styled.div`
+  width: 245px;
+  display: flex;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ccc;
@@ -74,6 +75,11 @@ const TimeWrapper = styled.div`
 
   input {
     width: 40px;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    opacity: 1;
   }
 `;
 
@@ -150,7 +156,7 @@ class DateTimePicker extends React.PureComponent<Props, State> {
     const minutes = parseInt(selectedMoment.format('mm'), 10);
 
     return (
-      <Wrapper>
+      <Container>
         <SingleDatePicker
           id="singledatepicker"
           date={selectedMoment}
@@ -187,7 +193,7 @@ class DateTimePicker extends React.PureComponent<Props, State> {
             onChange={this.createTimeChangeHandler('minute')}
           />
         </TimeWrapper>
-      </Wrapper>
+      </Container>
     );
   }
 }

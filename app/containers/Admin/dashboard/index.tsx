@@ -78,7 +78,7 @@ export const GraphCardInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 35px;
-  border: solid 1px ${colors.adminBorder};
+  border: solid 1px #ccc;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.adminContentBackground};
   p {

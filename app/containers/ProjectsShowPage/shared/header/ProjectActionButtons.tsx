@@ -13,11 +13,14 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 
 // services
-import { IPhaseData, getCurrentPhase } from 'services/phases';
+import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 
 // components
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -67,7 +70,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   );
 
   useEffect(() => {
-    setCurrentPhase(!isNilOrError(phases) ? getCurrentPhase(phases) : null);
+    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
   useEffect(() => {
@@ -151,6 +154,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       process_type === 'continuous'
         ? project.attributes.ideas_count
         : currentPhase?.attributes.ideas_count;
+    const hasProjectEnded = currentPhase
+      ? pastPresentOrFuture([
+          currentPhase.attributes.start_at,
+          currentPhase.attributes.end_at,
+        ]) === 'past'
+      : false;
 
     return (
       <Container className={className || ''}>
@@ -158,6 +167,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           ((process_type === 'continuous' &&
             participation_method === 'budgeting') ||
             currentPhase?.attributes.participation_method === 'budgeting') &&
+          !hasProjectEnded &&
           isNumber(ideas_count) &&
           ideas_count > 0 && (
             <AllocateBudgetButton
@@ -194,19 +204,21 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               fontWeight="500"
             />
           )}
-        {currentPhase?.attributes.participation_method === 'ideation' && (
-          <IdeaButton
-            id="project-ideabutton"
-            projectId={project.id}
-            phaseId={currentPhase.id}
-            participationContextType="phase"
-            fontWeight="500"
-          />
-        )}
+        {currentPhase?.attributes.participation_method === 'ideation' &&
+          !hasProjectEnded && (
+            <IdeaButton
+              id="project-ideabutton"
+              projectId={project.id}
+              phaseId={currentPhase.id}
+              participationContextType="phase"
+              fontWeight="500"
+            />
+          )}
         {surveyPresentOutsideViewport &&
           ((process_type === 'continuous' &&
             participation_method === 'survey') ||
-            currentPhase?.attributes.participation_method === 'survey') && (
+            currentPhase?.attributes.participation_method === 'survey') &&
+          !hasProjectEnded && (
             <Button
               buttonStyle="secondary"
               onClick={scrollTo('project-survey')}
@@ -217,7 +229,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           )}
         {pollPresentOutsideViewport &&
           ((process_type === 'continuous' && participation_method === 'poll') ||
-            currentPhase?.attributes.participation_method === 'poll') && (
+            currentPhase?.attributes.participation_method === 'poll') &&
+          !hasProjectEnded && (
             <Button
               buttonStyle="secondary"
               onClick={scrollTo('project-poll')}

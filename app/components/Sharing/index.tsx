@@ -116,13 +116,12 @@ const Buttons = styled.div`
     }
 
     &.whatsapp {
-      color: ${colors.label};
-      background: #fff;
-      border: 1px solid ${colors.label};
+      color: #fff;
+      background: #23b43a;
 
       &:hover {
-        color: ${darken(0.15, colors.label)};
-        border: 1px solid ${darken(0.15, colors.label)};
+        color: #fff;
+        background: ${darken(0.12, '#23B43A')};
       }
     }
 

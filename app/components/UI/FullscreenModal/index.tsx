@@ -222,7 +222,9 @@ class FullscreenModal extends PureComponent<Props, State> {
         >
           <StyledFocusOn autoFocus={false} shards={shards}>
             {topBar}
-            <Content>{children}</Content>
+            <Content className="fullscreenmodal-scrollcontainer">
+              {children}
+            </Content>
             {bottomBar}
           </StyledFocusOn>
         </Container>

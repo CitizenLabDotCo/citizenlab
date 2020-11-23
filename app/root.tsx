@@ -17,6 +17,7 @@ import { initializeAnalytics } from 'utils/analytics';
 import { init } from '@sentry/browser';
 import { isError } from 'util';
 import GetTenant from 'resources/GetTenant';
+import OutletsProvider from 'containers/OutletsProvider';
 
 const rootRoute = {
   component: App,
@@ -36,13 +37,15 @@ const Root = () => {
           window.location.href = 'https://www.citizenlab.co/expired-trial';
         }
         return (
-          <LanguageProvider>
-            <Router
-              history={browserHistory}
-              routes={rootRoute}
-              render={applyRouterMiddleware(useScroll())}
-            />
-          </LanguageProvider>
+          <OutletsProvider>
+            <LanguageProvider>
+              <Router
+                history={browserHistory}
+                routes={rootRoute}
+                render={applyRouterMiddleware(useScroll())}
+              />
+            </LanguageProvider>
+          </OutletsProvider>
         );
       }}
     </GetTenant>
