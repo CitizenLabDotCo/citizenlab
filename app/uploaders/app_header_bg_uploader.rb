@@ -1,17 +1,17 @@
-class LogoUploader < CarrierWave::Uploader::Base
+class AppHeaderBgUploader < CarrierWave::Uploader::Base
   include BaseImageUploader
   include CarrierWave::MiniMagick
 
-  version :small do
-    process resize_to_limit: [nil,40]
+  version :large do
+    process safe_resize_to_fill_for_gif: [1440,480]
   end
 
   version :medium do
-    process resize_to_limit: [nil,80]
+    process safe_resize_to_fill_for_gif: [720,152]
   end
 
-  version :large do
-    process resize_to_limit: [nil,160]
+  version :small do
+    process safe_resize_to_fill_for_gif: [520,250]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
