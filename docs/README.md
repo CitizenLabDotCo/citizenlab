@@ -8,6 +8,7 @@
 - The Admin UI is no longer exposed to regular (and unauthenticated) users
 - Clicking the toggle button of a custom registration field (in Admin > Settings > Registration fields) no longer duplicated the row
 - Buttons added in the WYSIWYG editor now have the correct color when hovered
+- The cookie policy and accessibility statement are not editable anymore from Admin > Settings > Pages
 
 ### Changed
 
@@ -38,7 +39,7 @@
 
 **Other:**
 
-- Adjusted FileDisplay link style to show underline by default, and increased contrast of hover color
+- Adjusted FileDisplay (downloadable files for a project or idea) link style to show underline by default, and increased contrast of hover color
 - Reduced width of DateTimePicker, and always show arrows for time input
 
 ## 2020-11-20 (2)
