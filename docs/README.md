@@ -4,6 +4,9 @@
 
 ## 2020-11-23
 
+### Added
+- Some specific copy for Sterling Council
+
 ### Fixed
 - The Admin UI is no longer exposed to regular (and unauthenticated) users
 - Clicking the toggle button of a custom registration field (in Admin > Settings > Registration fields) no longer duplicated the row
