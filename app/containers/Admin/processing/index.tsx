@@ -3,22 +3,20 @@ import React, {
   useCallback,
   useState,
   useEffect,
-  Suspense,
   FormEvent,
+  useRef,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { includes } from 'lodash-es';
+import { includes, isNil } from 'lodash-es';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 
 // components
-import Table from 'components/UI/Table';
 import ProcessingRow from './ProcessingRow';
-import { Checkbox, fontSizes } from 'cl2-component-library';
-import Button from 'components/UI/Button';
-import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
+import { Checkbox, fontSizes, Spinner, Button } from 'cl2-component-library';
+import Table from 'components/UI/Table';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -48,26 +46,76 @@ import useLocalize from 'hooks/useLocalize';
 import useTagSuggestion from 'hooks/useTags';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
+import PostPreview from './PostPreview';
+import { CSSTransition } from 'react-transition-group';
 
 const Container = styled.div`
-  padding-top: 45px;
-  padding-right: 51px;
-  padding-bottom: 0px;
-  padding-left: 24px;
-
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  margin-bottom: 80px;
+`;
+
+const StyledSpinner = styled(Spinner)`
+  margin: auto;
+`;
+
+const PostPreviewTransitionWrapper = styled.div`
+  &.slide-enter {
+    transform: translateX(100%);
+    opacity: 0;
+
+    &.slide-enter-active {
+      transition: 1000ms;
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  &.slide-exit {
+    transition: 1000ms;
+    transform: translateX(0%);
+    opacity: 1;
+
+    &.slide-exit-active {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+`;
+
+const SidePanelTransitionWrapper = styled.div`
+  &.slide-enter {
+    transform: translateX(-100%);
+
+    &.slide-enter-active {
+      transition: 1000ms;
+      transform: translateX(0%);
+    }
+  }
+
+  &.slide-exit {
+    transition: 1000ms;
+    transform: translateX(0%);
+
+    &.slide-exit-active {
+      transform: translateX(-100%);
+    }
+  }
 `;
 
 const SidePanel = styled.div`
-  position: fixed;
-  height: calc(100vh - ${stylingConsts.menuHeight});
+  padding-top: 45px;
+  padding-right: 18px;
+  padding-left: 18px;
+  position: sticky;
+  top: ${stylingConsts.menuHeight}px;
+  height: calc(100vh - ${stylingConsts.menuHeight}px);
   max-width: 150px;
   display: flex;
   flex-direction: column;
   z-index: 100;
+  background-color: #eaeaea;
 `;
 
 const StyledActions = styled.div`
@@ -76,12 +124,18 @@ const StyledActions = styled.div`
   }
 `;
 
+const TableWrapper = styled.div`
+  flex: 1;
+  max-width: 100%;
+  background: white;
+  overflow-y: auto;
+  padding: 24px;
+`;
+
 const StyledTable = styled(Table)`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-decoration: none;
-  margin-left: 150px;
-  width: calc(100% - 150px);
   tbody tr td {
     padding-top: 12px;
     padding-bottom: 10px;
@@ -149,14 +203,23 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
+    const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
-    const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
     const enterModalKey = useKeyPress('ArrowRight');
+    const exitModalKey = useKeyPress('ArrowLeft');
+
+    const rowRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (highlightedId && !isNilOrError(rowRef) && rowRef.current) {
+        rowRef.current.scrollIntoView(true);
+      }
+    }, [highlightedId]);
 
     useEffect(() => {
       if (
@@ -233,7 +296,13 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [enterModalKey, ideaList]);
 
     useEffect(() => {
-      if (!processing) {
+      if (exitModalKey && ideaList) {
+        setPreviewPostId('');
+      }
+    }, [exitModalKey, ideaList]);
+
+    useEffect(() => {
+      if (!processing && selectedProjectIds.length > 0) {
         setIdeaList(ideas?.list);
       }
     }, [ideas, processing]);
@@ -243,6 +312,12 @@ const Processing = memo<Props & InjectedIntlProps>(
         setProcessing(false);
       }
     }, [tagSuggestion]);
+
+    useEffect(() => {
+      if (loadingIdeas) {
+        setLoadingIdeas(false);
+      }
+    }, [ideaList]);
 
     const handleExportSelectedIdeasAsXlsx = async () => {
       trackEventByName(tracks.clickExportIdeas.name);
@@ -286,11 +361,14 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
       const { onChangeProjects } = ideas as GetIdeasChildProps;
-
+      setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
-      newProjectIds.length > 0
-        ? onChangeProjects(newProjectIds)
-        : onChangeProjects([...projectList.map((project) => project.value)]);
+      if (newProjectIds.length > 0) {
+        onChangeProjects(newProjectIds);
+        setLoadingIdeas(true);
+      } else {
+        setIdeaList([]);
+      }
     };
 
     const handleRowOnSelect = useCallback(
@@ -310,101 +388,137 @@ const Processing = memo<Props & InjectedIntlProps>(
       setHighlightedId(id);
     };
     const closeSideModal = () => setPreviewPostId(null);
-    const switchPreviewMode = () =>
-      setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
 
-    if (!isNilOrError(ideaList)) {
+    if (!isNilOrError(projectList) && !isNilOrError(locale)) {
       return (
         <Container className={className}>
-          <SidePanel>
-            <FilterSelector
-              title={<FormattedMessage {...messages.project} />}
-              name={'Projects'}
-              values={projectList}
-              onChange={handleProjectIdsChange}
-              multipleSelectionAllowed={true}
-              selected={selectedProjectIds}
-            />
+          <CSSTransition
+            in={!previewPostId}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            classNames="slide"
+            timeout={{
+              appear: 500,
+              enter: 300,
+              exit: 500,
+            }}
+          >
+            <SidePanelTransitionWrapper>
+              <SidePanel>
+                <FilterSelector
+                  title={<FormattedMessage {...messages.project} />}
+                  name={'Projects'}
+                  values={projectList}
+                  onChange={handleProjectIdsChange}
+                  multipleSelectionAllowed={true}
+                  selected={selectedProjectIds}
+                />
 
-            <StyledActions>
-              <Button
-                buttonStyle="admin-dark"
-                disabled={selectedRows.length === 0}
-                processing={processing}
-                onClick={handleAutoTag}
-              >
-                <FormattedMessage {...messages.autotag} />
-              </Button>
+                <StyledActions>
+                  <Button
+                    buttonStyle="admin-dark"
+                    disabled={selectedRows.length === 0}
+                    processing={processing}
+                    onClick={handleAutoTag}
+                    locale={locale}
+                  >
+                    <FormattedMessage {...messages.autotag} />
+                  </Button>
 
-              <Button
-                buttonStyle="admin-dark-outlined"
-                disabled={selectedRows.length === 0}
-                processing={exporting}
-                onClick={handleExportSelectedIdeasAsXlsx}
-              >
-                <FormattedMessage {...messages.export} />
-              </Button>
-            </StyledActions>
-          </SidePanel>
-          <StyledTable>
-            <thead>
-              <tr>
-                <th className="checkbox">
-                  <StyledCheckbox
-                    checked={
-                      ideaList.length > 0 &&
-                      selectedRows.length === ideaList?.length
-                    }
-                    indeterminate={
-                      selectedRows.length > 0 &&
-                      selectedRows.length < ideaList.length
-                    }
-                    disabled={ideaList?.length === 0}
-                    onChange={handleOnSelectAll}
-                  />
-                </th>
-
-                <th className="title">
-                  <FormattedMessage
-                    {...messages.items}
-                    values={{
-                      totalCount: ideaList.length,
-                      selectedCount: selectedRows.length,
-                    }}
-                  />
-                </th>
-                <th className="tags">
-                  <FormattedMessage {...messages.tags} />
-                </th>
-              </tr>
-            </thead>
-            {ideaList?.length > 0 && (
-              <tbody>
-                {ideaList?.map((idea) => (
-                  <ProcessingRow
-                    key={idea.id}
-                    idea={idea}
-                    selected={includes(selectedRows, idea.id)}
-                    highlighted={idea.id === highlightedId}
-                    onSelect={handleRowOnSelect}
-                    openPreview={openPreview}
-                    tagSuggestions={tagSuggestion?.filter((tag) =>
-                      tag.idea_ids.includes(idea.id)
+                  <Button
+                    buttonStyle="admin-dark-outlined"
+                    disabled={selectedRows.length === 0}
+                    processing={exporting}
+                    onClick={handleExportSelectedIdeasAsXlsx}
+                    locale={locale}
+                  >
+                    <FormattedMessage {...messages.export} />
+                  </Button>
+                </StyledActions>
+              </SidePanel>
+            </SidePanelTransitionWrapper>
+          </CSSTransition>
+          {!isNilOrError(ideaList) && !loadingIdeas ? (
+            <TableWrapper>
+              <StyledTable>
+                <thead>
+                  <tr>
+                    {!previewPostId && (
+                      <th className="checkbox">
+                        <StyledCheckbox
+                          checked={
+                            ideaList.length > 0 &&
+                            selectedRows.length === ideaList?.length
+                          }
+                          indeterminate={
+                            selectedRows.length > 0 &&
+                            selectedRows.length < ideaList.length
+                          }
+                          disabled={ideaList?.length === 0}
+                          onChange={handleOnSelectAll}
+                        />
+                      </th>
                     )}
-                  />
-                ))}
-              </tbody>
-            )}
-          </StyledTable>
-          <Suspense fallback={null}>
-            <LazyPostPreview
-              type={'AllIdeas'}
-              postId={previewPostId}
-              mode={previewMode}
-              onClose={closeSideModal}
-              onSwitchPreviewMode={switchPreviewMode}
-            />
-          </Suspense>
+
+                    <th className="title">
+                      <FormattedMessage
+                        {...messages.items}
+                        values={{
+                          totalCount: ideaList.length,
+                          selectedCount: selectedRows.length,
+                        }}
+                      />
+                    </th>
+                    {!previewPostId && (
+                      <th className="tags">
+                        <FormattedMessage {...messages.tags} />
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                {ideaList?.length > 0 && (
+                  <tbody>
+                    {ideaList?.map((idea) => (
+                      <ProcessingRow
+                        key={idea.id}
+                        idea={idea}
+                        selected={includes(selectedRows, idea.id)}
+                        highlighted={idea.id === highlightedId}
+                        rowRef={idea.id === highlightedId ? rowRef : undefined}
+                        showTagColumn={!previewPostId}
+                        onSelect={handleRowOnSelect}
+                        openPreview={openPreview}
+                        tagSuggestions={tagSuggestion?.filter((tag) =>
+                          tag.idea_ids.includes(idea.id)
+                        )}
+                      />
+                    ))}
+                  </tbody>
+                )}
+              </StyledTable>
+            </TableWrapper>
+          ) : (
+            <StyledSpinner />
+          )}
+          <CSSTransition
+            in={!!previewPostId}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            classNames="slide"
+            timeout={{
+              appear: 500,
+              enter: 300,
+              exit: 500,
+            }}
+          >
+            <PostPreviewTransitionWrapper>
+              <PostPreview
+                type={'AllIdeas'}
+                postId={previewPostId}
+                onClose={closeSideModal}
+              />
+            </PostPreviewTransitionWrapper>
+          </CSSTransition>
         </Container>
       );
     }
@@ -430,8 +544,8 @@ const Data = adopt<DataProps, InputProps>({
       <GetIdeas
         type="paginated"
         pageSize={2000000}
-        sort="new"
         projectIds={projectIds}
+        cache={true}
       >
         {render}
       </GetIdeas>

@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
@@ -56,6 +56,8 @@ interface Props {
   className?: string;
   openPreview: (id: string) => void;
   tagSuggestions: IAutoTag[] | null | undefined;
+  showTagColumn: boolean;
+  rowRef?: RefObject<any>;
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
@@ -67,6 +69,8 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     openPreview,
     highlighted,
     tagSuggestions,
+    showTagColumn,
+    rowRef,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -103,26 +107,30 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         className={className}
         bgColor={bgColor()}
         onClick={handleOnChecked}
+        ref={rowRef}
       >
-        <td className="checkbox">
-          <StyledCheckbox checked={selected} onChange={handleOnChecked} />
-        </td>
-
+        {showTagColumn && (
+          <td className="checkbox">
+            <StyledCheckbox checked={selected} onChange={handleOnChecked} />
+          </td>
+        )}
         <td className="title">
           <ContentTitle onClick={handleClick}>
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        <td className="content">
-          {tagSuggestions?.map((tag) => (
-            <StyledTag
-              key={tag.id}
-              text={localize(tag.attributes.title_multiloc)}
-              isAutoTag={true}
-              isSelected={selected}
-            />
-          ))}
-        </td>
+        {showTagColumn && (
+          <td className="tags">
+            {tagSuggestions?.map((tag) => (
+              <StyledTag
+                key={tag.id}
+                text={localize(tag.attributes.title_multiloc)}
+                isAutoTag={true}
+                isSelected={selected}
+              />
+            ))}
+          </td>
+        )}
       </Container>
     );
   }
