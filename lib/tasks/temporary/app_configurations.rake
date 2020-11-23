@@ -25,7 +25,7 @@ namespace :app_configurations do
   end
 
   desc "Delete tenant images"
-  task :delete_tenant_s3_images => :environment do
+  task :delete_tenant_images => :environment do
     each_tenant do |tenant|
       tenant.remove_logo!
       tenant.remove_favicon!
