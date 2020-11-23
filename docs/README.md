@@ -22,11 +22,11 @@
 - Show 'See the ideas' button when the project has ended and the last phase was an ideation phase
 - Show 'X ideas in the final phase' when the project has ended and the last phase was an ideation phase
 - 'X phases' is now clickable and scrolls to the timeline when clicked
-- 'X upcoming events' changed to 'X events', and event count now counst all events, not only upcoming events
+- 'X upcoming events' changed to 'X events', and event count now counts all events, not only upcoming events
 
 **Admin project configuration page:**
 
-- Replaced 'Project images' upload widget in back-office with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with new recommended image dimensions
+- Replaced 'Project images' upload widget in back-office (Project > General) with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with new recommended image dimensions
 
 **Idea page:**
 
