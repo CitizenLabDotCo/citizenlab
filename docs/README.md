@@ -6,6 +6,40 @@
 
 ### Fixed
 - The Admin UI is no longer exposed to regular (and unauthenticated) users
+- Clicking the toggle button of a custom registration field no longer duplicated the row
+- Buttons added in the WYSIWYG editor now have the correct color when hovered
+
+### Changed
+
+**Project page:**
+
+- Reduced padding of sticky top bar
+- Show all events at bottom of page instead of only upcoming events
+- Added tracking events
+
+**Project page right-hand sidebar:**
+
+- Show 'See the ideas' button when the project has ended and the last phase was an ideation phase
+- Show 'X ideas in the final phase' when the project has ended and the last phase was an ideation phase
+- 'X phases' is now clickable and scrolls to the timeline when clicked
+- 'X upcoming events' changed to 'X events', and event count now counst all events, not only upcoming events
+
+**Admin project configuration page:**
+
+- Replaced 'Project images' upload widget in back-office with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with recommended image dimensions
+
+**Idea page:**
+
+- Idea page map modal now shows address on top of the map
+- Share button copy change from "share idea" to "share"
+- Right-hand sidebar is sticky now when its height allows it
+- Comment box now has an animation when it expands
+- Adjusted scroll-to position when pressing 'Add a comment' to make sure the comment box is always fully visible in the viewport.
+
+**Other:**
+
+- Adjusted FileDisplay link style to show underline by default, and increased contrast of hover color
+- Reduced width of DateTimePicker, and always show arrows for time input
 
 ## 2020-11-20 (2)
 
