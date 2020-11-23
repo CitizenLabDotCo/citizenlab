@@ -30,9 +30,9 @@
 
 **Idea page:**
 
-- Idea page map modal now shows address on top of the map
+- The map modal now shows address on top of the map when opened
 - Share button copy change from "share idea" to "share"
-- Right-hand sidebar is sticky now when its height allows it
+- Right-hand sidebar is sticky now when its height allows it (= when the viewport is taller than the sidebar)
 - Comment box now has an animation when it expands
 - Adjusted scroll-to position when pressing 'Add a comment' to make sure the comment box is always fully visible in the viewport.
 
