@@ -6,7 +6,7 @@
 
 ### Fixed
 - The Admin UI is no longer exposed to regular (and unauthenticated) users
-- Clicking the toggle button of a custom registration field no longer duplicated the row
+- Clicking the toggle button of a custom registration field (in Admin > Settings > Registration fields) no longer duplicated the row
 - Buttons added in the WYSIWYG editor now have the correct color when hovered
 
 ### Changed
