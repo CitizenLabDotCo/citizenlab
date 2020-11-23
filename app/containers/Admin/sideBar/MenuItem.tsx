@@ -110,6 +110,10 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &.processing svg {
+    height: 31px;
+  }
 `;
 
 type Props = {
@@ -127,7 +131,7 @@ export default ({ route }: Props) => {
         }`}
         to={route.link}
       >
-        <IconWrapper>
+        <IconWrapper className={route.iconName}>
           <Icon name={route.iconName} />
         </IconWrapper>
         <Text>

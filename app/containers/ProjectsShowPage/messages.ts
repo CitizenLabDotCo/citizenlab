@@ -221,6 +221,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the current phase',
   },
+  xIdeasInFinalPhase: {
+    id: 'app.containers.Projects.xIdeasInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the final phase',
+  },
   xSurveys: {
     id: 'app.containers.Projects.xSurveys',
     defaultMessage:

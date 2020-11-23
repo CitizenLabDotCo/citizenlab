@@ -95,14 +95,14 @@ export default defineMessages({
     defaultMessage:
       'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
-  projectImageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
-    defaultMessage: 'Project Images',
+  projectCardImageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabel',
+    defaultMessage: 'Project Card Image',
   },
-  projectImageLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip',
+  projectCardImageLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip',
     defaultMessage:
-      'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
+      'This image will be shown on the project card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.',
   },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
