@@ -3,9 +3,7 @@ NLP::Engine.routes.draw do
     namespace :v1 do
       get 'ideas/:idea_id/similar', action: :index, controller: 'similar_ideas'
       get 'ideas/geotagged', action: :index, controller: 'geotagged_ideas'
-      get 'tag_suggestions', action: :generate_tags, controller: 'tags'
-      get 'tag_assignments/automatic', action: :index_automatic, controller: 'tag_assignments'
-      get 'generate_tag_assignment', action: :generate_tag_assignments, controller: 'tag_assignments'
+      get 'tag_suggestions', action: :generate_tags, controller: 'tag_suggestions'
     end
   end
 end

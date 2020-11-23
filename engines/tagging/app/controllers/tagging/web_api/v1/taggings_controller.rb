@@ -3,6 +3,7 @@ module Tagging
     module V1
       class TaggingsController < ApplicationController
         before_action :set_tagging, only: %i[show destroy]
+        skip_after_action :verify_authorized, only: [:generate]
 
         def index
           @taggings = policy_scope(Tagging)
@@ -53,6 +54,32 @@ module Tagging
           else
             head 500
           end
+        end
+
+        def generate
+          Tagging.automatic.destroy_all
+
+          tags = params["tags"]
+          @new_tags = tags ? tags.map {|tag, index| { title_multiloc: tag, id: index } } : []
+          @old_tags = Tag.where(tag_id: params["tag_ids"])
+
+          NLP::TaggingSuggestionService.new.suggest(
+            policy_scope(Idea).where(id: params['idea_ids']),
+            @new_tags + policy_scope(Tag).where(id: params['tag_ids']),
+            current_user.locale
+          ).each do |document|
+            idea = Idea.find(document['id'])
+            document['predicted_labels'].each{ |label|
+              tag = Tag.find(label['id']) || Tag.create(title_multiloc: params['tags'][label['id']])
+              Tagging.create(
+                tag: tag,
+                idea: idea,
+                assignment_method: :automatic,
+                confidence_score: label['confidence']
+              )
+            }
+          end
+          render json: WebApi::V1::TaggingSerializer.new(Tagging.automatic.all, params: fastjson_params, include: [:tag]).serialized_json, status: :ok
         end
 
         private
