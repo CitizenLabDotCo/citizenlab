@@ -17,6 +17,10 @@ class FaviconUploader < CarrierWave::Uploader::Base
     process convert: :png
   end
 
+  def store_dir
+    "uploads/#{Tenant.current.id}/favicon/#{model.id}"
+  end
+
   def extension_whitelist
     %w(jpg jpeg gif png ico svg)
   end
