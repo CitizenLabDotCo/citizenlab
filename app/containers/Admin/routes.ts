@@ -13,6 +13,8 @@ import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
 
+import moduleConfiguration from 'modules';
+
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
@@ -86,6 +88,7 @@ export default () => ({
     initiativesRoutes(),
     usersRoutes(),
     projectsRoutes(),
+
     {
       path: 'settings/registration/custom-fields',
       ...customFieldRoutes(),
@@ -151,5 +154,6 @@ export default () => ({
         delay: 500,
       }),
     },
+    ...moduleConfiguration.routes.admin,
   ],
 });

@@ -15,8 +15,8 @@ import GetAdminPublications, {
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import FolderRow from '../../components/FolderRow';
 import Button from 'components/UI/Button';
+import Outlet from 'components/Outlet';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 
 // i18n
@@ -82,6 +82,7 @@ const AdminProjectList = memo<Props>(
             onReorder={handleReorderAdminPublication}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
+            key={AdminPublicationsList.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => {
               return (
@@ -97,14 +98,16 @@ const AdminProjectList = memo<Props>(
                           dropRow={handleDropRow}
                           lastItem={index === AdminPublicationsList.length - 1}
                         >
-                          {item.publicationType === 'project' ? (
+                          {item.publicationType === 'project' && (
                             <ProjectRow
                               actions={['delete', 'manage']}
                               publication={item}
                             />
-                          ) : (
-                            <FolderRow publication={item} />
                           )}
+                          <Outlet
+                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                            publication={item}
+                          />
                         </SortableRow>
                       );
                     }

@@ -685,6 +685,7 @@ export class IdeasShow extends PureComponent<
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     budgetingDescriptor={budgetingDescriptor}
+                    insideModal={insideModal}
                   />
                 </Suspense>
               )}

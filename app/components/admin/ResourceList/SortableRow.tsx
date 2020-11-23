@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
-import { DragSource, DropTarget } from 'react-dnd';
+import { DragSource, DropTarget } from 'react-dnd-cjs';
 import { Row } from 'components/admin/ResourceList';
 import { Icon } from 'semantic-ui-react';
 

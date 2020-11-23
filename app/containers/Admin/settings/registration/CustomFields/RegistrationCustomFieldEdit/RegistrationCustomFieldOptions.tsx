@@ -76,6 +76,7 @@ const RegistrationCustomFieldOptions = memo(
             onReorder={handleReorderCustomFieldOption}
             className="areas-list e2e-admin-areas-list"
             id="e2e-admin-areas-list"
+            key={userCustomFieldOptions.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
