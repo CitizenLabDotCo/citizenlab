@@ -2,6 +2,46 @@
 
 ## Next release
 
+## 2020-11-23
+
+### Fixed
+- The Admin UI is no longer exposed to regular (and unauthenticated) users
+- Clicking the toggle button of a custom registration field (in Admin > Settings > Registration fields) no longer duplicated the row
+- Buttons added in the WYSIWYG editor now have the correct color when hovered
+- The cookie policy and accessibility statement are not editable anymore from Admin > Settings > Pages
+
+### Changed
+
+**Project page:**
+
+- Show all events at bottom of page instead of only upcoming events
+- Reduced padding of sticky top bar
+- Only show sticky top bar when an action button (e.g. 'Post an idea') is present, and you've scrolled past it.
+
+**Project page right-hand sidebar:**
+
+- Show 'See the ideas' button when the project has ended and the last phase was an ideation phase
+- Show 'X ideas in the final phase' when the project has ended and the last phase was an ideation phase
+- 'X phases' is now clickable and scrolls to the timeline when clicked
+- 'X upcoming events' changed to 'X events', and event count now counts all events, not only upcoming events
+
+**Admin project configuration page:**
+
+- Replaced 'Project images' upload widget in back-office (Project > General) with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with new recommended image dimensions
+
+**Idea page:**
+
+- The map modal now shows address on top of the map when opened
+- Share button copy change from "share idea" to "share"
+- Right-hand sidebar is sticky now when its height allows it (= when the viewport is taller than the sidebar)
+- Comment box now has an animation when it expands
+- Adjusted scroll-to position when pressing 'Add a comment' to make sure the comment box is always fully visible in the viewport.
+
+**Other:**
+
+- Adjusted FileDisplay (downloadable files for a project or idea) link style to show underline by default, and increased contrast of hover color
+- Reduced width of DateTimePicker, and always show arrows for time input
+
 ## 2020-11-20 (2)
 
 ### Fixed
