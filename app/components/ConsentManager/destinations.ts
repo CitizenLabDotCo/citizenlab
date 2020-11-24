@@ -2,9 +2,7 @@ import { isFeatureActive } from 'components/FeatureFlag';
 import { ITenantData } from 'services/tenant';
 import { IUserData } from 'services/users';
 
-export interface IDestinationMap {
-  google_analytics: 'google_analytics';
-}
+export interface IDestinationMap {}
 
 export type IDestination = IDestinationMap[keyof IDestinationMap];
 export const CATEGORIES = ['analytics', 'advertising', 'functional'] as const;
@@ -13,10 +11,15 @@ export type TCategory = typeof CATEGORIES[number];
 const destinationConfigs: IDestinationConfig[] = [];
 
 export interface IDestinationConfig {
+  /** A unique key, used to name the destination in the stored cookie */
   key: IDestination;
+  /** Destinations are grouped in categories. Under which category should it be listed? */
   category: TCategory;
+  /** The name of the feature flag that should be active for the destination to be functional */
   feature_flag?: string;
+  /** Can the destination be active for the given user? */
   hasPermission?: (user?: IUserData) => boolean;
+  /** Name of the destination shown in the UI */
   name?: (tenant: ITenantData) => JSX.Element | string;
 }
 
