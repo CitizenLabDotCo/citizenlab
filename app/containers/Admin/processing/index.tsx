@@ -248,7 +248,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [projects, tenant, locale]);
 
     useEffect(() => {
-      if (upArrow && ideaList) {
+      if (upArrow && !isNilOrError(ideaList) && ideaList.length !== 0) {
         if (!highlightedId && !previewPostId) {
           setHighlightedId(ideaList[0].id);
         } else {
@@ -266,7 +266,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [upArrow, ideaList]);
 
     useEffect(() => {
-      if (downArrow && ideaList) {
+      if (downArrow && !isNilOrError(ideaList) && ideaList.length !== 0) {
         if (!highlightedId && !previewPostId) {
           setHighlightedId(ideaList[0].id);
         } else {
@@ -441,9 +441,9 @@ const Processing = memo<Props & InjectedIntlProps>(
           {!isNilOrError(ideaList) && !loadingIdeas ? (
             <TableWrapper>
               <StyledTable>
-                <thead>
-                  <tr>
-                    {!previewPostId && (
+                {!previewPostId && (
+                  <thead>
+                    <tr>
                       <th className="checkbox">
                         <StyledCheckbox
                           checked={
@@ -458,24 +458,23 @@ const Processing = memo<Props & InjectedIntlProps>(
                           onChange={handleOnSelectAll}
                         />
                       </th>
-                    )}
 
-                    <th className="title">
-                      <FormattedMessage
-                        {...messages.items}
-                        values={{
-                          totalCount: ideaList.length,
-                          selectedCount: selectedRows.length,
-                        }}
-                      />
-                    </th>
-                    {!previewPostId && (
+                      <th className="title">
+                        <FormattedMessage
+                          {...messages.items}
+                          values={{
+                            totalCount: ideaList.length,
+                            selectedCount: selectedRows.length,
+                          }}
+                        />
+                      </th>
+
                       <th className="tags">
                         <FormattedMessage {...messages.tags} />
                       </th>
-                    )}
-                  </tr>
-                </thead>
+                    </tr>
+                  </thead>
+                )}
                 {ideaList?.length > 0 && (
                   <tbody>
                     {ideaList?.map((idea) => (
