@@ -82,10 +82,12 @@ const StyledTag = styled(Tag)`
 
 interface DataProps {}
 
+type Direction = 'up' | 'down';
 interface InputProps {
   type: ManagerType;
   onClose: () => void;
   postId: string | null;
+  handleNavigation: (direction: Direction) => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -142,12 +144,14 @@ export default class PostPreview extends PureComponent<Props, State> {
               locale={'en'}
               icon={'chevron-up'}
               buttonStyle={'admin-dark-outlined'}
+              onClick={() => this.props.handleNavigation('up')}
             />
             <StyledNavButton
               iconSize={'8px'}
               locale={'en'}
               icon={'chevron-down'}
               buttonStyle={'admin-dark-outlined'}
+              onClick={() => this.props.handleNavigation('down')}
             />
           </div>
         </Navigation>
