@@ -27,7 +27,7 @@ export default defineMessages({
   },
   titleIdeaStatuses: {
     id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses',
-    defaultMessage: 'Customise statuses',
+    defaultMessage: 'Statuses',
   },
   subtitleIdeaStatuses: {
     id: 'app.containers.admin.ideaStatuses.all.subtitleIdeaStatuses',

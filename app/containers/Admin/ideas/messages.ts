@@ -22,8 +22,8 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.all.tabManage',
     defaultMessage: 'Manage',
   },
-  tabCustomize: {
-    id: 'app.containers.admin.ideas.all.tabCustomize',
-    defaultMessage: 'Customise statuses',
+  tabStatuses: {
+    id: 'app.containers.admin.ideas.all.tabStatuses',
+    defaultMessage: 'Statuses',
   },
 });

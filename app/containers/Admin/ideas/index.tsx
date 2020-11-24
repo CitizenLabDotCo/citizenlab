@@ -43,7 +43,7 @@ const IdeasPage = memo(
 
       if (ideaStatusCustomisationEnabled) {
         tabs.push({
-          label: formatMessage(messages.tabCustomize),
+          label: formatMessage(messages.tabStatuses),
           url: '/admin/ideas/statuses',
           active: location.pathname.includes('/admin/ideas/statuses'),
         });
