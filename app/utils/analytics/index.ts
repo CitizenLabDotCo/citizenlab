@@ -68,33 +68,9 @@ export const shutdownFor = (destination: IDestination) => {
   );
 };
 
-combineLatest(initializeTacking$).subscribe(([{ eventValue }]) => {
-  const { savedChoices } = getConsent();
-
-  if (
-    savedChoices.google_analytics &&
-    eventValue.includes('google_analytics')
-  ) {
-    const script = document.createElement('script');
-    const parent = document.getElementsByTagName('script')[0].parentNode;
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=UA-101738826-16';
-    parent?.appendChild(script);
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer?.push(arguments);
-    }
-    // @ts-ignore
-    gtag('js', new Date());
-    // @ts-ignore
-    gtag('config', 'UA-101738826-16');
-  }
-});
-
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
     if (!isNilOrError(tenant)) {
-      window.satismeter && window.satismeter('track', { event: event.name });
       if (isFunction(get(window, 'analytics.track'))) {
         analytics.track(
           event.name,

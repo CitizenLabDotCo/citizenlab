@@ -1,5 +1,5 @@
 import { authUserStream } from 'services/auth';
-import { initializeFor } from 'utils/analytics';
+import { events$, initializeFor } from 'utils/analytics';
 import { SATISMETER_WRITE_KEY } from 'containers/App/constants';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
@@ -59,4 +59,8 @@ combineLatest([
       });
     parent?.appendChild(script);
   })();
+});
+
+events$.subscribe((event) => {
+  window.satismeter && window.satismeter('track', { event: event.name });
 });
