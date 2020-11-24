@@ -145,7 +145,7 @@ en:
         title_platform_setup: 'Set your platform up'
         title_what_can_you_do_administrator: 'What can you do as an administrator?'
         title_you_became_administrator: 'You became an administrator'
-    comment_spam_notification:
+    comment_marked_as_spam:
         by_author: 'by %{authorName}'
         commented: '%{authorName} commented:'
         cta_review_comment: 'Review comment'
@@ -190,7 +190,7 @@ en:
         initiative_section: Proposals
         title_initiatives_past_week: 'New proposals assigned to you'
         title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
-    idea_spam_notification:
+    idea_marked_as_spam:
         by_author: 'by %{authorName}'
         cta_review_idea: 'Review idea'
         report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
@@ -265,7 +265,7 @@ en:
         main_header: 'People are talking about you'
         subject: 'Someone mentioned you on the platform of %{organizationName}'
         preheader: '%{commentAuthor} mentioned you in a comment'
-    moderator_report:
+    moderator_digest:
         subject: 'Your weekly project manager report of %{time}'
         preheader: 'Project manager digest of %{organizationName}'
         title_your_weekly_report: '%{firstName}, your weekly report'
@@ -286,7 +286,7 @@ en:
         main_header: '%{commentAuthor} wrote a comment on the same proposal'
         subject: 'There''s another comment on the proposal you commented on'
         preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
-    new_comment_on_platform:
+    new_comment_for_admin:
         by_author: 'by %{authorName}'
         commented: '%{authorFirstName} commented:'
         cta_reply_to: 'Check the comment of %{commentAuthor}'
@@ -297,7 +297,7 @@ en:
         preheader: '%{authorName} left a comment'
         today: Today
         yesterday: Yesterday
-    new_comment_on_your_idea:
+    comment_on_your_idea:
         by_author: 'by %{authorName}'
         commented: '%{authorFirstName} wrote:'
         cta_reply_to: 'Reply to %{commentAuthor}'
@@ -330,7 +330,7 @@ en:
         main_header: '%{firstName}, a new proposal has been published on your platform'
         subject: 'Someone published a new proposal on the platform of %{organizationName}'
         preheader: '%{authorName} published a new proposal on your platform'
-    new_idea_on_platform:
+    new_idea_for_admin:
         by_author: 'by %{authorName}'
         commented: '%{authorFirstName} commented:'
         cta_reply_to: 'Give feedback to %{authorName}'
@@ -341,7 +341,7 @@ en:
         preheader: '%{authorName} published a new idea on your platform'
         today: Today
         yesterday: Yesterday
-    new_reply_to_your_comment:
+    comment_on_your_comment:
         cta_reply_to: 'Reply to %{firstName}'
         event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
         subject: 'You have received a reply on your comment on the platform of %{organizationName}'
@@ -395,7 +395,7 @@ en:
         main_header: 'You received an update from %{officialName}'
         subject: 'You''ve received an official update on the platform of %{organizationName}'
         preheader: '%{officialName} left an official update on your proposal'
-    project_moderator_rights_received:
+    project_moderation_rights_received:
         cta_moderate_project: 'Moderate this project'
         message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
         no_ideas: 'No ideas yet'
@@ -492,7 +492,7 @@ en:
         main_header: 'An initiative reached the voting threshold!'
         subject: 'An initiative reached the voting threshold on your platform'
         preheader: 'Make sure to take the next steps'
-    your_first_idea_published:
+    first_idea_published:
         action_add_image: '%{addImageLink} to increase visibility'
         action_comment: '%{textComment} on existing ideas'
         action_published_idea: 'Published idea'
@@ -516,7 +516,7 @@ en:
         main_header: Welcome!
         message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
         preheader: 'Here''s what you can do on the platform of %{organizationName}'
-    your_idea_published:
+    idea_published:
         action_add_image: '%{addImageLink} to increase visibility'
         action_published_idea: 'Published idea'
         action_send_email: 'Send your contacts an %{sendEmailLink}'
