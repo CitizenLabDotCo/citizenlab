@@ -2,7 +2,8 @@
 
 ## Next release
 
-/
+### Fixed
+- Sections with extra padding or funky widths in Admin were returned to normal
 
 ## 2020-11-23
 
