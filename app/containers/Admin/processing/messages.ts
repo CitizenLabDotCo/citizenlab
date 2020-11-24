@@ -107,20 +107,28 @@ export default defineMessages({
     defaultMessage: 'Error',
   },
   postedIn: {
-    id: 'app.containers.IdeasShow.postedIn',
+    id: 'app.components.admin.PostManager.PostPreview.postedIn',
     defaultMessage: 'Posted in {projectLink}',
   },
   xDaysLeft: {
-    id: 'app.containers.IdeasShow.xDaysLeft',
+    id: 'app.components.admin.PostManager.PostPreview.xDaysLeft',
     defaultMessage:
       '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
   },
   proposedBudgetTitle: {
-    id: 'app.containers.IdeasShow.proposedBudgetTitle',
+    id: 'app.components.admin.PostManager.PostPreview.proposedBudgetTitle',
     defaultMessage: 'Proposed budget',
   },
   bodyTitle: {
-    id: 'app.containers.IdeasShow.bodyTitle',
+    id: 'app.components.admin.PostManager.PostPreview.bodyTitle',
     defaultMessage: 'Description',
+  },
+  addTag: {
+    id: 'app.components.admin.PostManager.PostPreview.addTag',
+    defaultMessage: 'Add a tag',
+  },
+  createTag: {
+    id: 'app.components.admin.PostManager.PostPreview.createTag',
+    defaultMessage: 'Create a tag',
   },
 });
