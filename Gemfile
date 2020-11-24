@@ -62,12 +62,9 @@ end
 gem "pundit", "~> 2.0"
 gem "active_model_serializers", "~> 0.10.8"
 
-# Fork was made for the following reasons:
-# 1) To update the version of jws which is required for
-#    the google omniauth gem.
-# 2) To not auto load Generators::Base which would result
-#    in an error.
-gem "knock", github: 'CitizenLabDotCo/knock'
+# See https://github.com/nsarno/knock/issues/250
+# Installs v2.2 which is not available on rubygems.org
+gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
 gem "sidekiq", "~> 6.1"
 
 gem 'activerecord-postgis-adapter', '~> 6.0.0'
@@ -134,6 +131,11 @@ gem 'bootsnap', require: false
 gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
 gem 'rack-attack', '~> 6'
 
+# mjml-rails cannot find the MJML parser when installed
+# through the emails engine and is therefore specified
+# in the main app.
+gem "mjml-rails", "~> 4.4"
+
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'machine_translations', path: 'engines/machine_translations'
@@ -146,3 +148,5 @@ gem 'polls', path: 'engines/polls'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
 gem 'maps', path: 'engines/maps'
+
+gem 'project_folders', path: 'engines/project_folders'

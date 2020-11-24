@@ -46,6 +46,7 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_type: 'Idea'}
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        get :as_xlsx_with_tags, on: :collection, action: 'index_with_tags_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
@@ -169,11 +170,6 @@ Rails.application.routes.draw do
       end
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
-      end
-      resources :project_folders do
-        resources :images, defaults: { container_type: 'ProjectFolder' }
-        resources :files, defaults: { container_type: 'ProjectFolder' }
-        get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
       end
 
       resources :notifications, only: %i[index show] do

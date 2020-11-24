@@ -98,3 +98,16 @@ pt:
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    footer:
+      "link_privacy_policy": "Política de Privacidade"
+      "link_terms_conditions": "Termos e condições"
+      "link_unsubscribe": "Cancelar a inscrição"
+      "powered_by": "Criado por"
+      "statement": "Este e-mail foi enviado pelo CitizenLab em nome de %{organizationName}, porque você é um usuário registrado de %{organizationLink}. Você pode %{unsubscribeLink} se você não quiser receber estes e-mails no futuro."
+      "unsubscribe_text": "Cancelar a inscrição"
+    welcome:
+      "cta_join_platform": "Explorar a plataforma"
+      "subject": "Bem-vindo à plataforma de %{organizationName}"
+      "main_header": "Bem-vindo!"
+      "message_welcome": "Parabéns, você se cadastrou com sucesso na plataforma de participação de %{organizationName}. Agora você pode descobrir a plataforma e fazer ouvir a sua voz. Você também pode adicionar uma foto do perfil e uma breve descrição para dizer aos outros quem você é."
+      "preheader": "Aqui esta o que você pode fazer na plataforma de %{organizationName}"
