@@ -167,6 +167,13 @@ const IdeaStatuses = () => {
                     <T value={ideaStatus.attributes.title_multiloc} />
                   </FlexTextCell>
                   <Buttons>
+                    <Button
+                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
+                      buttonStyle="secondary"
+                      icon="edit"
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
                     <Tippy
                       placement="top"
                       theme="light"
@@ -187,13 +194,6 @@ const IdeaStatuses = () => {
                         </Button>
                       </div>
                     </Tippy>
-                    <Button
-                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
-                      buttonStyle="secondary"
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
                   </Buttons>
                 </SortableRow>
               ))}
