@@ -166,8 +166,6 @@ en:
         main_header: '%{commentAuthor} commented on your initiative'
         subject: 'You''ve received a comment on %{organizationName}''s platform'
         preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
-    custom:
-        cta_go_to_platform: 'Go to the platform'
     idea_assigned_to_you:
         by_author: 'by %{authorName}'
         cta_reply_to: 'Give feedback to %{authorName}'
