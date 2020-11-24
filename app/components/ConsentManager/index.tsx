@@ -117,7 +117,6 @@ export class ConsentManager extends PureComponent<Props, State> {
   };
 
   saveConsent = () => {
-    debugger;
     const { preferences, cookieConsent } = this.state;
 
     const newChoices = {};
