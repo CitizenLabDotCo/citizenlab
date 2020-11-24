@@ -102,9 +102,9 @@ const AdminPage = memo<Props & WithRouterProps>(
           .init('AdminNoPadding', { enabled: false })
           .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
       ];
-      return subscriptions.forEach((subscription) =>
-        subscription.unsubscribe()
-      );
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
     }, []);
 
     const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
