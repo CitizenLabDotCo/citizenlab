@@ -100,5 +100,10 @@ export async function deleteIdeaStatus(ideaStatusId: string) {
     true
   );
 
+  streams.fetchAllWith({
+    dataId: [ideaStatusId],
+    apiEndpoint: [`${API_PATH}/idea_statuses`],
+  });
+
   return response;
 }
