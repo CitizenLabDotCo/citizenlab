@@ -1,26 +1,48 @@
+import { isFeatureActive } from 'components/FeatureFlag';
+import { ITenantData } from 'services/tenant';
+import { IUserData } from 'services/users';
+
 export interface IDestinationMap {
-  satismeter: 'satismeter';
   google_analytics: 'google_analytics';
 }
 
 export type IDestination = IDestinationMap[keyof IDestinationMap];
+export const CATEGORIES = ['analytics', 'advertising', 'functional'] as const;
+export type TCategory = typeof CATEGORIES[number];
 
-export const MARKETING_AND_ANALYTICS_DESTINATIONS = [
-  'google_analytics',
-  'satismeter',
-] as IDestination[];
+const destinationConfigs: IDestinationConfig[] = [];
 
-export const ADVERTISING_DESTINATIONS = [
-  'google_tag_manager',
-] as IDestination[];
+export interface IDestinationConfig {
+  key: IDestination;
+  category: TCategory;
+  feature_flag?: string;
+  hasPermission?: (user?: IUserData) => boolean;
+}
 
-export const FUNCTIONAL_DESTINATIONS = ['intercom'] as IDestination[];
+export const getDestinationConfigs = () => {
+  return destinationConfigs;
+};
 
-export const DESTINATIONS = [
-  ...MARKETING_AND_ANALYTICS_DESTINATIONS,
-  ...ADVERTISING_DESTINATIONS,
-  ...FUNCTIONAL_DESTINATIONS,
-];
+export const allCategories = () => {
+  return CATEGORIES;
+};
 
-// Destinations only for admins & moderators, no super admins nor user
-export const ADMIN_DESTINATIONS = ['intercom', 'satismeter'];
+export const registerDestination = (destinationConfig: IDestinationConfig) => {
+  destinationConfigs.push(destinationConfig);
+};
+
+export const isDestinationActive = (
+  config: IDestinationConfig,
+  tenant: ITenantData,
+  user?: IUserData | null
+): boolean => {
+  if (config?.feature_flag && !isFeatureActive(config.feature_flag, tenant)) {
+    return false;
+  }
+
+  if (config?.hasPermission && !config?.hasPermission(user || undefined)) {
+    return false;
+  }
+
+  return true;
+};

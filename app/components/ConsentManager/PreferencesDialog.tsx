@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import CategoryCard from './CategoryCard';
 
 // Typing
-import { IDestination } from './destinations';
+import { CategorizedDestinations, IPreferences } from '.';
 
 // Styling
 import styled from 'styled-components';
@@ -30,14 +30,8 @@ export const ContentContainer = styled.div`
 
 interface Props {
   onChange: (category, value) => void;
-  categoryDestinations: {
-    analytics: IDestination[];
-    advertising: IDestination[];
-    functional: IDestination[];
-  };
-  analytics: boolean | undefined;
-  advertising: boolean | undefined;
-  functional: boolean | undefined;
+  categoryDestinations: CategorizedDestinations;
+  preferences: IPreferences;
 }
 
 const doNothing = () => () => {};
@@ -50,7 +44,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
   };
 
   render() {
-    const { categoryDestinations } = this.props;
+    const { categoryDestinations, preferences } = this.props;
     return (
       <ContentContainer id="e2e-preference-dialog">
         {Object.keys(categoryDestinations).map((category) => {
@@ -60,7 +54,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
                 key={category}
                 category={category}
                 destinations={categoryDestinations[category]}
-                checked={this.props[category]}
+                checked={preferences[category]}
                 handleChange={this.handleChange}
               />
             );

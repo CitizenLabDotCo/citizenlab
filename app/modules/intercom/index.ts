@@ -1,4 +1,3 @@
-import 'components/ConsentManager/destinations';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { currentTenantStream } from 'services/tenant';
@@ -11,12 +10,29 @@ import {
 } from 'utils/analytics';
 import { INTERCOM_APP_ID } from 'containers/App/constants';
 import { isNilOrError } from 'utils/helperUtils';
+import {
+  IDestinationConfig,
+  registerDestination,
+} from 'components/ConsentManager/destinations';
+import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     intercom: 'intercom';
   }
 }
+
+const destinationConfig: IDestinationConfig = {
+  key: 'intercom',
+  category: 'functional',
+  feature_flag: 'intercom',
+  hasPermission: (user) =>
+    !!user &&
+    (isAdmin({ data: user }) || isModerator({ data: user })) &&
+    !isSuperAdmin({ data: user }),
+};
+
+registerDestination(destinationConfig);
 
 combineLatest([
   currentTenantStream().observable,
