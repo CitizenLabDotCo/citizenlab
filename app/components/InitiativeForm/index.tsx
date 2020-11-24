@@ -187,7 +187,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         stripHtmlTags(body).length < InitiativeForm.bodyMinLength &&
         body.length > 0
       ) {
-        return { message: messages.descriptionLengthError };
+        return { message: messages.descriptionBodyLengthError };
       } else if (!body || body === '') {
         return { message: messages.descriptionEmptyError };
       }
