@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { includes, isNil } from 'lodash-es';
+import { includes } from 'lodash-es';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { reportError } from 'utils/loggingUtils';
@@ -15,6 +15,7 @@ import { saveAs } from 'file-saver';
 
 // components
 import ProcessingRow from './ProcessingRow';
+import AutotagView from './AutotagView';
 import { Checkbox, fontSizes, Spinner, Button } from 'cl2-component-library';
 import Table from 'components/UI/Table';
 
@@ -84,7 +85,7 @@ const PostPreviewTransitionWrapper = styled.div`
   }
 `;
 
-const SidePanelTransitionWrapper = styled.div`
+const FilterSectionTransitionWrapper = styled.div`
   &.slide-enter {
     transform: translateX(-100%);
 
@@ -104,7 +105,7 @@ const SidePanelTransitionWrapper = styled.div`
   }
 `;
 
-const SidePanel = styled.div`
+const FilterSection = styled.div`
   padding-top: 45px;
   padding-right: 18px;
   padding-left: 18px;
@@ -203,8 +204,11 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
+
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
+    const [isAutotagMode, setIsAutotagMode] = useState<boolean>(false);
+
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
@@ -341,9 +345,17 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
+      setIsAutotagMode(true);
+      // setProcessing(true);
+      // onIdeasChange(selectedRows);
+    };
 
-      setProcessing(true);
-      onIdeasChange(selectedRows);
+    const handleCloseAutotagView = (e: FormEvent) => {
+      e.preventDefault();
+
+      setIsAutotagMode(false);
+      // setProcessing(true);
+      // onIdeasChange(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
@@ -387,9 +399,10 @@ const Processing = memo<Props & InjectedIntlProps>(
       setPreviewPostId(id);
       setHighlightedId(id);
     };
+
     const closeSideModal = () => setPreviewPostId(null);
 
-    if (!isNilOrError(projectList) && !isNilOrError(locale)) {
+    if (!isNilOrError(projectList) && !isNilOrError(locale) && !isAutotagMode)
       return (
         <Container className={className}>
           <CSSTransition
@@ -403,8 +416,8 @@ const Processing = memo<Props & InjectedIntlProps>(
               exit: 500,
             }}
           >
-            <SidePanelTransitionWrapper>
-              <SidePanel>
+            <FilterSectionTransitionWrapper>
+              <FilterSection>
                 <FilterSelector
                   title={<FormattedMessage {...messages.project} />}
                   name={'Projects'}
@@ -435,8 +448,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                     <FormattedMessage {...messages.export} />
                   </Button>
                 </StyledActions>
-              </SidePanel>
-            </SidePanelTransitionWrapper>
+              </FilterSection>
+            </FilterSectionTransitionWrapper>
           </CSSTransition>
           {!isNilOrError(ideaList) && !loadingIdeas ? (
             <TableWrapper>
@@ -520,9 +533,9 @@ const Processing = memo<Props & InjectedIntlProps>(
           </CSSTransition>
         </Container>
       );
-    }
-
-    return null;
+    if (!isNilOrError(projectList) && !isNilOrError(locale) && isAutotagMode)
+      return <AutotagView closeView={handleCloseAutotagView} />;
+    else return null;
   }
 );
 
