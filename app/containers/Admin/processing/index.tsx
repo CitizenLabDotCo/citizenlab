@@ -248,39 +248,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [projects, tenant, locale]);
 
     useEffect(() => {
-      if (upArrow && !isNilOrError(ideaList) && ideaList.length !== 0) {
-        if (!highlightedId && !previewPostId) {
-          setHighlightedId(ideaList[0].id);
-        } else {
-          const ideaIndex = ideaList.findIndex(
-            (idea) => idea.id === highlightedId
-          );
-          const newIndex =
-            ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
-          setHighlightedId(ideaList[newIndex].id);
-          if (previewPostId) {
-            setPreviewPostId(ideaList[newIndex].id);
-          }
-        }
+      if (upArrow) {
+        navigate('up');
       }
     }, [upArrow, ideaList]);
 
     useEffect(() => {
-      if (downArrow && !isNilOrError(ideaList) && ideaList.length !== 0) {
-        if (!highlightedId && !previewPostId) {
-          setHighlightedId(ideaList[0].id);
-        } else {
-          const ideaIndex = ideaList.findIndex(
-            (idea) => idea.id === highlightedId
-          );
-          const newIndex =
-            ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
-          setHighlightedId(ideaList[newIndex].id);
-
-          if (previewPostId) {
-            setPreviewPostId(ideaList[newIndex].id);
-          }
-        }
+      if (downArrow) {
+        navigate('down');
       }
     }, [downArrow, ideaList]);
 
@@ -358,6 +333,31 @@ const Processing = memo<Props & InjectedIntlProps>(
       },
       [ideaList, selectedRows, processing]
     );
+
+    const navigate = (direction: 'up' | 'down') => {
+      if (!isNilOrError(ideaList) && ideaList.length !== 0) {
+        if (!highlightedId && !previewPostId) {
+          setHighlightedId(ideaList[0].id);
+        } else {
+          const ideaIndex = ideaList.findIndex(
+            (idea) => idea.id === highlightedId
+          );
+
+          let newIndex;
+          if (direction === 'down')
+            newIndex = ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
+
+          if (direction === 'up')
+            newIndex = ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
+
+          setHighlightedId(ideaList[newIndex].id);
+
+          if (previewPostId) {
+            setPreviewPostId(ideaList[newIndex].id);
+          }
+        }
+      }
+    };
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
       const { onChangeProjects } = ideas as GetIdeasChildProps;
@@ -515,6 +515,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 type={'AllIdeas'}
                 postId={previewPostId}
                 onClose={closeSideModal}
+                handleNavigation={navigate}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
