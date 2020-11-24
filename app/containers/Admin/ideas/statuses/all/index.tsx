@@ -41,7 +41,13 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-const DummyButton = styled(Button)``;
+const DummyButton = styled(Button)`
+  margin-right: 10px;
+`;
+
+const DeleteButton = styled(Button)`
+  margin-right: 10px;
+`;
 
 const ColorLabel = styled.span`
   width: 24px;
@@ -145,6 +151,9 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
+            <DummyButton buttonStyle="text" disabled={true} icon="delete">
+              <FormattedMessage {...messages.deleteButtonLabel} />
+            </DummyButton>
             <Button
               linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
               buttonStyle="secondary"
@@ -152,9 +161,6 @@ const IdeaStatuses = () => {
             >
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
-            <DummyButton buttonStyle="text" disabled={true} icon="delete">
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </DummyButton>
           </Buttons>
         </Row>
 
@@ -175,13 +181,6 @@ const IdeaStatuses = () => {
                     <T value={ideaStatus.attributes.title_multiloc} />
                   </FlexTextCell>
                   <Buttons>
-                    <Button
-                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
-                      buttonStyle="secondary"
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
                     <Tippy
                       placement="top"
                       theme="light"
@@ -192,7 +191,7 @@ const IdeaStatuses = () => {
                       trigger="mouseenter"
                     >
                       <div>
-                        <Button
+                        <DeleteButton
                           onClick={handleDelete(ideaStatus.id)}
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
@@ -201,9 +200,16 @@ const IdeaStatuses = () => {
                           textHoverColor={colors.clRedError}
                         >
                           <FormattedMessage {...messages.deleteButtonLabel} />
-                        </Button>
+                        </DeleteButton>
                       </div>
                     </Tippy>
+                    <Button
+                      linkTo={`/admin/ideas/statuses/${ideaStatus.id}`}
+                      buttonStyle="secondary"
+                      icon="edit"
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
                   </Buttons>
                 </SortableRow>
               ))}
