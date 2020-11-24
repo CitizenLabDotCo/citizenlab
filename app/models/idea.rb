@@ -28,6 +28,8 @@ class Idea < ApplicationRecord
   has_many :phases, through: :ideas_phases
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
@@ -94,6 +96,18 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
+  scope :order_with, lambda { |scope_name|
+    case scope_name
+    when 'random'   then order_random
+    when 'trending' then order_trending
+    when 'popular'  then order_popular
+    when 'new'      then order_new
+    when '-new'     then order_new(:asc)
+    else order_trending
+    end
+  }
+
+  scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
 
   private
 
@@ -101,9 +115,9 @@ class Idea < ApplicationRecord
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
       self.body_multiloc,
-      %i{title alignment list decoration link video}
+      %i{title alignment list decoration link image video}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 
@@ -127,5 +141,4 @@ class Idea < ApplicationRecord
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
   end
-
 end
