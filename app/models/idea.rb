@@ -16,8 +16,8 @@ class Idea < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
-  has_many :taggings, dependent: :destroy
-  has_many :tags, through: :taggings
+  has_many :tagging_taggings
+  has_many :tagging_tags, through: :tagging_taggings
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
@@ -55,6 +55,14 @@ class Idea < ApplicationRecord
 
   scope :with_some_topics, (Proc.new do |topic_ids|
     with_dups = joins(:ideas_topics).where(ideas_topics: {topic_id: topic_ids})
+    # Removing duplicate results in this manner,
+    # because .distinct gives SQL errors when
+    # combined with other queries.
+    where(id: with_dups)
+  end)
+
+  scope :with_some_tags, (Proc.new do |tag_ids|
+    with_dups = joins(:tagging_taggings).where(tagging_taggings: { tag_id: tag_ids } )
     # Removing duplicate results in this manner,
     # because .distinct gives SQL errors when
     # combined with other queries.
