@@ -30,6 +30,7 @@ const destinationConfig: IDestinationConfig = {
     !!user &&
     (isAdmin({ data: user }) || isModerator({ data: user })) &&
     !isSuperAdmin({ data: user }),
+  name: () => 'Intercom',
 };
 
 registerDestination(destinationConfig);

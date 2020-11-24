@@ -5,9 +5,10 @@ import { transparentize } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from 'cl2-component-library';
-import { IDestination } from './destinations';
+import { getDestinationConfig, IDestination } from './destinations';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
+import { ITenant } from 'services/tenant';
 
 const Container = styled.div`
   display: flex;
@@ -85,6 +86,23 @@ interface Props {
   ) => (e: FormEvent<HTMLInputElement>) => void;
 }
 
+const DestinationName = ({
+  tenant,
+  destination,
+}: {
+  tenant: ITenant;
+  destination: IDestination;
+}) => {
+  const config = getDestinationConfig(destination);
+  if (config?.name) {
+    return <>{config.name(tenant.data)}</>;
+  } else if (config) {
+    return <>{config.key}</>;
+  } else {
+    return null;
+  }
+};
+
 const CategoryCard = ({
   category,
   destinations,
@@ -93,9 +111,8 @@ const CategoryCard = ({
   disableUncheck,
 }: Props) => {
   const tenant = useTenant();
-  const gtm_Destinations = isNilOrError(tenant)
-    ? null
-    : tenant.data.attributes.settings.google_tag_manager?.destinations;
+  if (isNilOrError(tenant)) return null;
+
   return (
     <Container className="e2e-category">
       <TextContainer>
@@ -135,14 +152,7 @@ const CategoryCard = ({
               <Fragment key={d}>
                 {index !== 0 && <Separator>•</Separator>}
                 <SSpan>
-                  <FormattedMessage
-                    {...messages[d]}
-                    values={{
-                      ...(d === 'google_tag_manager'
-                        ? { destinations: gtm_Destinations }
-                        : {}),
-                    }}
-                  />
+                  <DestinationName tenant={tenant} destination={d} />
                 </SSpan>
               </Fragment>
             ))}

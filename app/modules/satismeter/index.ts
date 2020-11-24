@@ -23,6 +23,7 @@ const destinationConfig: IDestinationConfig = {
     !!user &&
     (isAdmin({ data: user }) || isModerator({ data: user })) &&
     !isSuperAdmin({ data: user }),
+  name: () => 'Satismeter',
 };
 
 registerDestination(destinationConfig);

@@ -17,10 +17,15 @@ export interface IDestinationConfig {
   category: TCategory;
   feature_flag?: string;
   hasPermission?: (user?: IUserData) => boolean;
+  name?: (tenant: ITenantData) => JSX.Element | string;
 }
 
 export const getDestinationConfigs = () => {
   return destinationConfigs;
+};
+
+export const getDestinationConfig = (destination: IDestination) => {
+  return destinationConfigs.find((d) => d.key === destination);
 };
 
 export const allCategories = () => {

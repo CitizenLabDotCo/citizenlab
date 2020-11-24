@@ -1,11 +1,34 @@
-import 'components/ConsentManager/destinations';
+import React from 'react';
+import {
+  IDestinationConfig,
+  registerDestination,
+} from 'components/ConsentManager/destinations';
 import { initializeFor } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     google_tag_manager: 'google_tag_manager';
   }
 }
+
+const destinationConfig: IDestinationConfig = {
+  key: 'google_tag_manager',
+  category: 'analytics',
+  feature_flag: 'google_tag_manager',
+  name: (tenant) => (
+    <FormattedMessage
+      {...messages.google_tag_manager}
+      values={{
+        destinations:
+          tenant.attributes.settings.google_tag_manager?.destinations,
+      }}
+    />
+  ),
+};
+
+registerDestination(destinationConfig);
 
 initializeFor('google_tag_manager').subscribe(() => {
   (function (w, d, s, l, i) {
