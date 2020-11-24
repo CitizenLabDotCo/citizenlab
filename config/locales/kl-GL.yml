@@ -164,7 +164,7 @@ kl:
       has_value: "%{property} %{value} -juvoq"
       not_has_value: "%{property} %{value} -junngilaq"
       is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the follow values: %{value}"
+      not_is_one_of: "%{property} does not have any of the following values: %{value}"
     custom_field_text:
       is: "%{property} %{value} -juvoq"
       not_is: "%{property} %{value} -junngilaq"

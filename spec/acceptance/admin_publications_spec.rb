@@ -37,7 +37,7 @@ resource "AdminPublication" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 10
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 2
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 2
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 8
       end
 
@@ -45,7 +45,7 @@ resource "AdminPublication" do
         do_request(folder: nil)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 2
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 2
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
       end
 
@@ -53,7 +53,7 @@ resource "AdminPublication" do
         do_request(folder: @folder.id)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 0
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 0
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 3
       end
 
@@ -62,7 +62,7 @@ resource "AdminPublication" do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @projects[2].id, @projects[3].id, @projects[5].id, @projects[6].id]
-        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 0
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 0
       end
 
       example "List all admin publications with the specified areas (i.e. given an array of areas); always includes folders; returns all publications by default;" do
@@ -101,9 +101,9 @@ resource "AdminPublication" do
         do_request(folder: nil, filter_empty_folders: true)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 6
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
-        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 3
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 3
       end
 
       example "Listing admin publications with visible child projects takes account with applied filters", document: false do
@@ -185,9 +185,9 @@ resource "AdminPublication" do
         do_request(folder: nil)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 2
-        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 2
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 2
       end
 
       example "Visible children count should take account with applied filters", document: false do
@@ -195,9 +195,9 @@ resource "AdminPublication" do
         do_request(folder: nil, publication_statuses: ['published'])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
-        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
       end
     end
   end

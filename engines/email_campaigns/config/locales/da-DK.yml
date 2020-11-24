@@ -98,3 +98,16 @@ da:
       "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+    footer:
+      "link_privacy_policy": "Anonymitetspolitik"
+      "link_terms_conditions": "Betingelser og vilkår"
+      "link_unsubscribe": "Afmeld abonnement"
+      "powered_by": "Drevet af"
+      "statement": "Denne e-mail blev sendt til dig fra CitizenLab på vegne af %{organizationName}, fordi du har registreret en bruger på %{organizationLink}. Du kan %{unsubscribeLink}, hvis du ikke ønsker at modtage disse e-mails i fremtiden."
+      "unsubscribe_text": "afmeld abonnement"
+    welcome:
+      "cta_join_platform": "Udforsk platformen"
+      "subject": "Velkommen til platformen for %{organizationName}"
+      "main_header": "Velkommen!"
+      "message_welcome": "Tillykke, du har tilmeldt dig deltagelsesplatformen for %{organizationName}. Del din viden, ideer og holdninger, og udforsk platformen. Husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er."
+      "preheader": "Her er det du kan gøre på %{organizationName} platformen"
