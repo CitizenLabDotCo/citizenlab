@@ -142,11 +142,9 @@ const IdeaStatusForm = ({
       <StyledSection>
         <SectionField>
           <StyledLabel>
-            <FormattedMessage {...messages.statusContext} />
+            <FormattedMessage {...messages.category} />
             <IconTooltip
-              content={
-                <FormattedMessage {...messages.statusContextDescription} />
-              }
+              content={<FormattedMessage {...messages.categoryDescription} />}
             />
           </StyledLabel>
           {ideaStatusCodes.map((code, i) => (

@@ -77,12 +77,12 @@ export default defineMessages({
     defaultMessage:
       'The color of the idea status, which helps to recognise different statuses.',
   },
-  statusContext: {
-    id: 'app.containers.admin.ideaStatuses.form.statusContext',
-    defaultMessage: 'Context',
+  category: {
+    id: 'app.containers.admin.ideaStatuses.form.category',
+    defaultMessage: 'Category',
   },
-  statusContextDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.statusContextDescription',
+  categoryDescription: {
+    id: 'app.containers.admin.ideaStatuses.form.categoryDescription',
     defaultMessage:
       'Please select the category that best represents your status. This selection will help our analytics tool to more accurately process and analyze posts.',
   },
@@ -117,28 +117,28 @@ export default defineMessages({
   },
   proposedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription',
-    defaultMessage: 'The post has been successfully submitted to the platform',
+    defaultMessage: 'Successfully submitted as a proposal for consideration',
   },
   viewedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.viewedFieldCodeDescription',
-    defaultMessage: 'The post has been viewed but has not yet been processed',
+    defaultMessage: 'Viewed but not yet processed',
   },
   under_considerationFieldCodeDescription: {
     id:
       'app.containers.admin.ideaStatuses.form.under_considerationFieldCodeDescription',
-    defaultMessage: 'The post is under consideration.',
+    defaultMessage: 'Considered for implementation or next steps',
   },
   acceptedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription',
-    defaultMessage: 'The post has been selected for implementation.',
+    defaultMessage: 'Selected for implementation or next steps',
   },
   implementedFieldCodeDescription: {
     id:
       'app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription',
-    defaultMessage: 'The post has been implemented.',
+    defaultMessage: 'Successfully implemented',
   },
   rejectedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription',
-    defaultMessage: 'The post was inegible or not selected to move forward.',
+    defaultMessage: 'Ineligible or not selected to move forward',
   },
 });
