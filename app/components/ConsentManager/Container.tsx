@@ -17,6 +17,7 @@ import { CategorizedDestinations, IPreferences } from './';
 
 import styled from 'styled-components';
 import { IDestination } from './destinations';
+import { isEqual } from 'lodash-es';
 
 export const ButtonContainer = styled.div`
   width: 100%;
@@ -76,7 +77,7 @@ export default class Container extends PureComponent<Props, State> {
 
     if (
       isConsentRequired !== prevIsConsentRequired ||
-      prevategorizedDestinations !== categorizedDestinations
+      !isEqual(prevategorizedDestinations, categorizedDestinations)
     ) {
       const activeDestinations = Object.values(
         categorizedDestinations
@@ -205,9 +206,7 @@ export default class Container extends PureComponent<Props, State> {
             <PreferencesDialog
               onChange={this.handleCategoryChange}
               categoryDestinations={categorizedDestinations}
-              analytics={preferences.analytics}
-              advertising={preferences.advertising}
-              functional={preferences.functional}
+              preferences={preferences}
             />
           ) : (
             <ContentContainer role="dialog" aria-modal>

@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import { SATISMETER_WRITE_KEY } from 'containers/App/constants';
 
 import {
   isAdmin,
@@ -69,61 +68,28 @@ export const shutdownFor = (destination: IDestination) => {
   );
 };
 
-combineLatest(authUser$, initializeTacking$).subscribe(
-  ([user, { eventValue }]) => {
-    const { savedChoices } = getConsent();
+combineLatest(initializeTacking$).subscribe(([{ eventValue }]) => {
+  const { savedChoices } = getConsent();
 
-    if (savedChoices.satismeter && eventValue.includes('satismeter')) {
-      (function () {
-        window.satismeter =
-          window.satismeter ||
-          function () {
-            (window.satismeter.q = window.satismeter.q || []).push(arguments);
-          };
-        window.satismeter.l = new Date();
-        const script = document.createElement('script');
-        const parent = document.getElementsByTagName('script')[0].parentNode;
-        script.async = true;
-        script.src = 'https://app.satismeter.com/satismeter.js';
-        script.onload = () =>
-          window.satismeter({
-            writeKey: SATISMETER_WRITE_KEY,
-            ...(!isNilOrError(user)
-              ? {
-                  userId: user.data.id,
-                  traits: {
-                    name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
-                    email: user.data.attributes.email,
-                    createdAt: user.data.attributes.created_at,
-                  },
-                }
-              : {}),
-          });
-        parent?.appendChild(script);
-      })();
+  if (
+    savedChoices.google_analytics &&
+    eventValue.includes('google_analytics')
+  ) {
+    const script = document.createElement('script');
+    const parent = document.getElementsByTagName('script')[0].parentNode;
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=UA-101738826-16';
+    parent?.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer?.push(arguments);
     }
-
-    if (
-      savedChoices.google_analytics &&
-      eventValue.includes('google_analytics')
-    ) {
-      const script = document.createElement('script');
-      const parent = document.getElementsByTagName('script')[0].parentNode;
-      script.async = true;
-      script.src =
-        'https://www.googletagmanager.com/gtag/js?id=UA-101738826-16';
-      parent?.appendChild(script);
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        window.dataLayer?.push(arguments);
-      }
-      // @ts-ignore
-      gtag('js', new Date());
-      // @ts-ignore
-      gtag('config', 'UA-101738826-16');
-    }
+    // @ts-ignore
+    gtag('js', new Date());
+    // @ts-ignore
+    gtag('config', 'UA-101738826-16');
   }
-);
+});
 
 combineLatest(tenant$, authUser$, events$).subscribe(
   ([tenant, user, event]) => {
