@@ -2104,6 +2104,7 @@
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.deleteButtonTooltip": "Status currently assigned to a post cannot be deleted. You can remove/change a status from a post in the idea manager.",
+  "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Edit status",
   "app.containers.admin.ideaStatuses.all.ideasCount": "ideas",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "This status cannot be deleted or moved.",
