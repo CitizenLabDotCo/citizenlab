@@ -40,6 +40,8 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
+const DummyButton = styled(Button)``;
+
 const ColorLabel = styled.span`
   width: 24px;
   height: 24px;
@@ -141,13 +143,18 @@ const IdeaStatuses = () => {
             <ColorLabel color={defaultStatus.attributes.color} />
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
-          <Button
-            linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
-            buttonStyle="secondary"
-            icon="edit"
-          >
-            <FormattedMessage {...messages.editButtonLabel} />
-          </Button>
+          <Buttons>
+            <Button
+              linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
+              buttonStyle="secondary"
+              icon="edit"
+            >
+              <FormattedMessage {...messages.editButtonLabel} />
+            </Button>
+            <DummyButton buttonStyle="text" disabled={true} icon="delete">
+              <FormattedMessage {...messages.deleteButtonLabel} />
+            </DummyButton>
+          </Buttons>
         </Row>
 
         <SortableList items={sortableStatuses} onReorder={handleReorder}>
