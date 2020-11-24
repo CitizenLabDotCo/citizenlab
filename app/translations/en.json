@@ -2109,7 +2109,6 @@
   "app.containers.admin.ideaStatuses.all.ideasCount": "ideas",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "This status cannot be deleted or moved.",
   "app.containers.admin.ideaStatuses.all.required": "Required",
-  "app.containers.admin.ideaStatuses.all.subtitleIdeaStatuses": "Rename, move, add or change the colors of an idea's lifecycle status.",
   "app.containers.admin.ideaStatuses.all.systemField": "Default",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "The post has been selected for implementation.",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Approved",
