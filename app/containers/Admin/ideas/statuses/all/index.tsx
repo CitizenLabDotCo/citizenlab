@@ -4,6 +4,7 @@ import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import T from 'components/T';
@@ -196,6 +197,8 @@ const IdeaStatuses = () => {
                           buttonStyle="text"
                           disabled={!isDeletable(ideaStatus)}
                           icon="delete"
+                          iconHoverColor={colors.clRedError}
+                          textHoverColor={colors.clRedError}
                         >
                           <FormattedMessage {...messages.deleteButtonLabel} />
                         </Button>
