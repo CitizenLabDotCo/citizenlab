@@ -11,7 +11,7 @@ export default defineMessages({
   },
   editButtonLabel: {
     id: 'app.containers.admin.ideaStatuses.all.editButtonLabel',
-    defaultMessage: 'Manage',
+    defaultMessage: 'Edit',
   },
   systemField: {
     id: 'app.containers.admin.ideaStatuses.all.systemField',
