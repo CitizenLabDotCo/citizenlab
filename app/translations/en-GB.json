@@ -177,7 +177,7 @@
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Make your page visually more appealing. This image will be shown on top of your page.",
   "app.components.InitiativeForm.descriptionEmptyError": "Please provide a description",
   "app.components.InitiativeForm.descriptionLabel": "{tenantName, select, stirlingcouncil {What is your petition about?} other {What is your proposal about?}}",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "{tenantName, select, stirlingcouncil {Describe your petition clearly (max. 250 characters)} other {Describe your proposal clearly (min. 500 characters)}}",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Describe your proposal clearly (min. 500 characters)",
   "app.components.InitiativeForm.descriptionLengthError": "{tenantName, select, stirlingcouncil {The petition description must be at least 500 characters long} other {The proposal description must be at least 500 characters long}}",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Images and attachments",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Details",
