@@ -5,7 +5,7 @@ module Volunteering::VolunteeringParticipationContext
     has_many :causes, class_name: 'Volunteering::Cause', as: :participation_context, dependent: :destroy
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
-    with_options unless: :is_timeline_project? do
+    with_options unless: :timeline_project? do
       validate :causes_allowed_in_participation_method
     end
   end
@@ -21,6 +21,4 @@ module Volunteering::VolunteeringParticipationContext
       errors.add(:base, :cannot_contain_causes, causes_count: causes.size, message: 'cannot contain causes in the current non-volunteering participation context')
     end
   end
-
-
 end

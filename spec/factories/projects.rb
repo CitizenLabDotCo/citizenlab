@@ -24,6 +24,7 @@ end
 
 FactoryBot.define do
   factory :project do
+    ideas_order { nil }
     admin_publication_attributes { {} }
     title_multiloc {{
       'en' => 'Renew West Parc',
@@ -44,7 +45,7 @@ FactoryBot.define do
     end
 
     after(:create) do |project, evaluator|
-      if evaluator.with_permissions && project.is_participation_context?
+      if evaluator.with_permissions && project.participation_context?
         PermissionsService.new.update_permissions_for_context project
       end
     end

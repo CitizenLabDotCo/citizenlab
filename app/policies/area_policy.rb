@@ -27,4 +27,12 @@ class AreaPolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
+  def reorder?
+    update?
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
+  end
 end

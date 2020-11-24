@@ -1,0 +1,100 @@
+ar:
+  email_campaigns:
+    campaign_type_description:
+      "manual": رسائل رسمية
+      "admin_rights_received": تم استلام حقوق المسؤول
+      "comment_deleted_by_admin": حذف حسابي
+      "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
+      "comment_on_your_comment": رد على تعليقي
+      "comment_on_your_idea": تعليق على فكرتي
+      "comment_on_your_initiative": تعليق على مُقترحي
+      "first_idea_published": نشر فكرتي الأولى
+      "idea_assigned_to_you": تعيين فكرة إلي
+      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
+      "idea_published": نشر فكرتي
+      "initiative_assigned_to_you": تعيين مُقترح إلي
+      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج
+      "initiative_published": نشر مُقترحي
+      "invite_received": دعوة
+      "invite_reminder": تذكير بالدعوة
+      "mention_in_comment": ذكر في تعليق
+      "mention_in_official_feedback": ذكر في تحديث
+      "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
+      "new_comment_on_commented_idea": تعليق جديد على فكرة علّقت عليها
+      "new_comment_on_commented_initiative": تعليق جديد على مُقترح علّقت عليه
+      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتّ لها
+      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتّ له
+      "new_idea_for_admin": فكرة جديدة في مشروع أُشرف عليه
+      "new_initiative_for_admin": مُقترح جديد
+      "official_feedback_on_commented_idea": تحديث على فكرة علقت عليها
+      "official_feedback_on_commented_initiative": تحديث على مُقترح علقت عليه
+      "official_feedback_on_voted_idea": تحديث على فكرة صوتّ لها
+      "official_feedback_on_voted_initiative": تحديث على مُقترح صوتّ له
+      "official_feedback_on_your_idea": تحديث على فكرتي
+      "official_feedback_on_your_initiative": تحديث على مُقترحي
+      "password_reset": تمت إعادة تعيين كلمة المرور
+      "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع
+      "project_phase_started": مرحلة مشروع جديدة
+      "project_phase_upcoming": مرحلة مشروع جديدة قادمة
+      "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقت عليها
+      "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقت عليه
+      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتّ لها
+      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتّ له
+      "status_change_of_your_idea": تغيرت حالة فكرتي
+      "status_change_of_your_initiative": تغيرت حالة مُقترحي
+      "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
+      "welcome": بعد التسجيل
+      "admin_digest": نظرة عامة أسبوعية للمسؤولين
+      "moderator_digest": نظرة عامة أسبوعية لمديري المشاريع
+      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
+      "user_digest": نظرة عامة أسبوعية
+      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
+    admin_campaign_type_description:
+      "manual": رسالة رسمية - جميع المستخدمين
+      "admin_rights_received": تم استلام حقوق المسؤول - المسؤولين
+      "comment_deleted_by_admin": حذف تعليقك - جميع المستخدمين
+      "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج - المسؤولين ومديري المشاريع
+      "comment_on_your_comment": الرد على تعليقك - جميع المستخدمين
+      "comment_on_your_idea": التعليق على فكرتك - جميع المستخدمين
+      "comment_on_your_initiative": التعليق على مُقترحك - جميع المستخدمين
+      "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
+      "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
+      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة - المسؤولين ومديري المشاريع
+      "idea_published": نشر فكرتك - جميع المستخدمين
+      "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
+      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج - المسؤولين
+      "initiative_published": نشر مُقترحك - جميع المستخدمين
+      "invite_received": الدعوة - جميع المستخدمين
+      "invite_reminder": تذكير بالدعوة - جميع المستخدمين
+      "mention_in_comment": الذكر في تعليق - جميع المستخدمين
+      "mention_in_official_feedback": الذكر في تحديث - جميع المستخدمين
+      "new_comment_for_admin": تعليق جديد - المسؤولين ومديري المشاريع
+      "new_comment_on_commented_idea": تعليق جديد على فكرة كنتَ علّقتَ عليها - جميع المستخدمين
+      "new_comment_on_commented_initiative": تعليق جديد على مُقترح كنت قد علّقتَ عليه - جميع المستخدمين
+      "new_comment_on_voted_idea": تعليق جديد على فكرة صوتَّ لها - جميع المستخدمين
+      "new_comment_on_voted_initiative": تعليق جديد على مُقترح صوتَّ له - جميع المستخدمين
+      "new_idea_for_admin": فكرة جديدة - المسؤولين ومديري المشاريع
+      "new_initiative_for_admin": مُقترح جديد - المسؤولين
+      "official_feedback_on_commented_idea": تحديث على فكرة علقتَ عليها - جميع المستخدمين
+      "official_feedback_on_commented_initiative": تحديث على مُقترح علقتَ عليه - جميع المستخدمين
+      "official_feedback_on_voted_idea": تحديث على فكرة قد صوتّ لها - جميع المستخدمين
+      "official_feedback_on_voted_initiative": تحديث على مُقترح قد صوتّ له - جميع المستخدمين
+      "official_feedback_on_your_idea": تحديث على فكرتك - جميع المستخدمين
+      "official_feedback_on_your_initiative": تحديث على مُقترحك - جميع المستخدمين
+      "password_reset": تمت إعادة تعيين كلمة المرور - جميع المستخدمين
+      "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع - مديري المشاريع
+      "project_phase_started": مرحلة مشروع جديدة - جميع المستخدمين
+      "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
+      "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
+      "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقتَ عليه - جميع المستخدمين
+      "status_change_of_voted_idea": تغيرت حالة فكرة كنت قد صوتًّ لها - جميع المستخدمين
+      "status_change_of_voted_initiative": تغيرت حالة مُقترح كنت قد صوتَّ له - جميع المستخدمين
+      "status_change_of_your_idea": تغيرت حالة فكرتك - جميع المستخدمين
+      "status_change_of_your_initiative": تغيرت حالة مُقترحك - جميع المستخدمين
+      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
+      "welcome": New user - admins
+      "admin_digest": Weekly overview - admins
+      "moderator_digest": Weekly overview - project managers
+      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
+      "user_digest": Weekly overview - all users
+      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
