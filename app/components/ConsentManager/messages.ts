@@ -85,24 +85,6 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.tools',
     defaultMessage: 'Tools',
   },
-  intercom: {
-    id: 'app.components.ConsentManager.Modal.PreferencesDialog.intercom',
-    defaultMessage: 'Intercom',
-  },
-  google_analytics: {
-    id:
-      'app.components.ConsentManager.Modal.PreferencesDialog.google_analytics',
-    defaultMessage: 'Google analytics',
-  },
-  google_tag_manager: {
-    id:
-      'app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager',
-    defaultMessage: 'Google Tag Manager ({destinations})',
-  },
-  satismeter: {
-    id: 'app.components.ConsentManager.Modal.PreferencesDialog.satismeter',
-    defaultMessage: 'Satismeter',
-  },
   allow: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.allow',
     defaultMessage: 'Allow',
