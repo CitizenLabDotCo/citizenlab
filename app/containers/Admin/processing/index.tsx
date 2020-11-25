@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { includes, isNil } from 'lodash-es';
+import { includes } from 'lodash-es';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { reportError } from 'utils/loggingUtils';
