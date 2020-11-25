@@ -30,15 +30,16 @@ const Container = styled(Link)`
 `;
 
 const ImageWrapper = styled.div`
+  flex: 0 0 162px;
   width: 162px;
   height: 162px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  flex-shrink: 0;
+  object-fit: cover;
+  object-position: center;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -50,7 +51,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Image = styled(LazyImage)`
-  width: 100%;
+  height: 100%;
 `;
 
 const ContentWrapper = styled.div`
