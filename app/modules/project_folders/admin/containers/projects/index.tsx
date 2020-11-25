@@ -4,10 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
-import {
-  updateProjectFolderMembership,
-  PublicationStatus,
-} from 'services/projects';
+import { PublicationStatus } from 'services/projects';
+import { updateProjectFolderMembership } from 'modules/project_folders/services/projectFolders';
 
 // resources
 import GetProjectFolder, {
