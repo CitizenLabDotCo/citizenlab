@@ -242,6 +242,10 @@ const Upvote = styled(Vote)`
     ${VoteCount} {
       margin-right: 14px;
 
+      &.compact {
+        margin-right: 0px;
+      }
+
       ${isRtl`
         margin-right: 5px;
         margin-left: 14px;
@@ -856,6 +860,7 @@ class VoteControl extends PureComponent<
               votingAnimation === 'up' ? 'voteClick' : 'upvote',
               upvotingEnabled ? 'enabled' : 'disabled',
               myVoteMode === 'up' ? 'active' : '',
+              style,
             ].join(' ')}
             enabled={upvotingEnabled}
             tabIndex={ariaHidden ? -1 : 0}
@@ -876,7 +881,10 @@ class VoteControl extends PureComponent<
                 <FormattedMessage {...messages.upvote} />
               </ScreenReaderOnly>
             </VoteIconContainer>
-            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>
+            <VoteCount
+              aria-hidden
+              className={[votingEnabled ? 'enabled' : '', style].join(' ')}
+            >
               {upvotesCount}
             </VoteCount>
           </Upvote>
@@ -891,6 +899,7 @@ class VoteControl extends PureComponent<
                 'e2e-ideacard-downvote-button',
                 votingAnimation === 'down' ? 'voteClick' : 'downvote',
                 downvotingEnabled ? 'enabled' : 'disabled',
+                style,
               ].join(' ')}
               enabled={downvotingEnabled}
               tabIndex={ariaHidden ? -1 : 0}

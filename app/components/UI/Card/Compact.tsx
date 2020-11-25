@@ -8,7 +8,6 @@ import LazyImage from 'components/LazyImage';
 // styling
 import styled from 'styled-components';
 import {
-  fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
@@ -16,11 +15,11 @@ import {
 
 const Container = styled(Link)`
   width: 100%;
-  height: 212px;
+  height: 204px;
   margin-bottom: 24px;
   cursor: pointer;
   display: flex;
-  padding: 24px;
+  padding: 20px;
   align-items: center;
   ${defaultCardStyle};
 
@@ -70,12 +69,13 @@ const Header = styled.header`
 
 const Title = styled.h3`
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.large}px;
+  font-size: 20px;
   font-weight: 500;
-  line-height: normal;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  line-height: 24px;
+  max-height: 72px;
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
