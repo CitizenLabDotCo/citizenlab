@@ -5,7 +5,7 @@ module ActionDispatch::Routing
 
       roled_resources.each do |roled_resource|
         roled_resource_roles(roled_resource).each do |role_name|
-          next if options.dig(:skip, role_name)
+          next if options.dig(:skip)&.to_a&.flatten&.include? role_name
 
           scope path: roled_resource do
             params = options.merge(roled: roled_resource_class(roled_resource).name, role_name: role_name)
