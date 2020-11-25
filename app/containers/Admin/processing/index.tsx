@@ -328,11 +328,13 @@ const Processing = memo<Props & InjectedIntlProps>(
           );
 
           let newIndex;
-          if (direction === 'down')
+          if (direction === 'down') {
             newIndex = ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
+          }
 
-          if (direction === 'up')
+          if (direction === 'up') {
             newIndex = ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
+          }
 
           setHighlightedId(ideaList[newIndex].id);
 
