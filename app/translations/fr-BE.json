@@ -175,7 +175,11 @@
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, no {# propositions} one {# proposition} other {# propositions}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Ajouter une bannière",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Rendez votre page visuellement plus attrayante. Cette image sera affichée en haut de votre page.",
+<<<<<<< HEAD
   "app.components.InitiativeForm.descriptionBodyLengthError": "The initiative description must be at least 30 characters long",
+=======
+  "app.components.InitiativeForm.descriptionBodyLengthError": "",
+>>>>>>> 806b8a62b654ae288b755479ad916a86febbbb2b
   "app.components.InitiativeForm.descriptionEmptyError": "Veuillez fournir une description",
   "app.components.InitiativeForm.descriptionLabel": "Quel est le sujet de votre proposition ?",
   "app.components.InitiativeForm.descriptionLabelSubtext": "Décrivez clairement votre proposition (min. 500 caractères)",

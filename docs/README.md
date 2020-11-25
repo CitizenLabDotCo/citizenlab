@@ -2,7 +2,8 @@
 
 ## Next release
 
-/
+### Changed
+- Proposal descriptions now require 30 characters instead of the previous 500
 
 ## 2020-11-23
 
@@ -55,11 +56,6 @@
 
 ### Changed 
 - Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
-
-## 2020-11-20
-
-### Changed 
-- Refactoring of the feature 'project folders' in the backend in preparation for the open-sourcing.
 
 ## 2020-11-18
 
