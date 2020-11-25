@@ -83,7 +83,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     if (isNilOrError(idea)) {
       return null;
     }
-    console.log(idea);
+
     const onCardClick = (event: FormEvent) => {
       event.preventDefault();
 

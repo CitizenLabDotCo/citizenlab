@@ -245,7 +245,7 @@ const Upvote = styled(Vote)`
       ${isRtl`
         margin-right: 5px;
         margin-left: 14px;
-        `}
+      `}
     }
   }
 
