@@ -11,7 +11,7 @@ import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 
 const RenderOnPublicationType = ({ publication, children }) => {
-  if (publication.publicationType !== 'project_folder') return null;
+  if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
 };
 

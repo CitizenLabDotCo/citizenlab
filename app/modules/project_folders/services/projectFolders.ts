@@ -19,7 +19,7 @@ export interface IProjectFolderDiff {
 
 export interface IProjectFolderData {
   id: string;
-  type: 'project_folder';
+  type: 'folder';
   attributes: {
     title_multiloc: Multiloc; // Text, > 10
     description_multiloc: Multiloc; // HTML

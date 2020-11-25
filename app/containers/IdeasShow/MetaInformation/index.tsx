@@ -24,7 +24,6 @@ import useIdea from 'hooks/useIdea';
 import useResourceFiles from 'hooks/useResourceFiles';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import useSimilarIdeas from 'hooks/useSimilarIdeas';
 import useIdeaStatus from 'hooks/useIdeaStatus';
 
 // resources
@@ -85,7 +84,6 @@ const MetaInformation = ({
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
-  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
   const ideaStatus = useIdeaStatus({ statusId });
 
   if (
@@ -158,16 +156,14 @@ const MetaInformation = ({
             <Attachments files={files} />
           </Item>
         )}
-        {similarIdeasEnabled &&
-          !isNilOrError(similarIdeas) &&
-          similarIdeas.length > 0 && (
-            <Item>
-              <Header>
-                <FormattedMessage {...messages.similarIdeas} />
-              </Header>
-              <SimilarIdeas similarIdeas={similarIdeas} />
-            </Item>
-          )}
+        {similarIdeasEnabled && (
+          <Item>
+            <Header>
+              <FormattedMessage {...messages.similarIdeas} />
+            </Header>
+            <SimilarIdeas ideaId={ideaId} />
+          </Item>
+        )}
       </Container>
     );
   }
