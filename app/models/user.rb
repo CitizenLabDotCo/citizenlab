@@ -76,6 +76,11 @@ class User < ApplicationRecord
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate :validate_password_not_common
 
+  has_one_role :admin
+  has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
+  has_many_roles :project_moderator, through: :admin_publication_moderator, class: 'Project', source: :publication
+  has_many_roles :project_folder_moderator, through: :admin_publication_moderator, class: 'ProjectFolders::Folder', source: :publication
+
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)

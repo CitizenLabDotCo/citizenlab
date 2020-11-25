@@ -151,6 +151,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/roles
+  specs:
+    roles (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/surveys
   specs:
     surveys (0.1.0)
@@ -753,6 +759,7 @@ DEPENDENCIES
   rest-client
   rgeo-geojson
   rinku (~> 2)
+  roles!
   rspec-rails
   rspec_api_documentation
   rspec_junit_formatter
