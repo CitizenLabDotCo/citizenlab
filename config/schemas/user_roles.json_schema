@@ -21,9 +21,22 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["project_moderator"]              
+            "enum": ["project_moderator"]
           },
           "project_id": {
+            "type": "string"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "required": ["type", "admin_publication_id"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["admin_publication_moderator"]
+          },
+          "admin_publication_id": {
             "type": "string"
           }
         }

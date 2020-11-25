@@ -76,7 +76,7 @@ module HasRoles
           role_name = self.role_name
           # foreign_key = self.foreign_key
           define_klass_instance_method(:"add_#{role_name}_role") do |*|
-            add_role(role_name) unless send(:"#{role_name}?")
+            add_role(role_name.to_s) unless send(:"#{role_name}?")
           end
         end
 
@@ -95,7 +95,7 @@ module HasRoles
           role_name = self.role_name
           # foreign_key = self.foreign_key
           define_klass_instance_method(:"remove_#{role_name}_role") do |*|
-            remove_role(role_name) if send(:"#{role_name}?")
+            remove_role(role_name.to_s) if send(:"#{role_name}?")
           end
         end
 

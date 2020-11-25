@@ -8,6 +8,30 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'managing admin role' do
+    subject { create(:user) }
+
+    include_examples 'has_one_role', 'admin'
+  end
+
+  describe 'managing admin publication moderator roles' do
+    let(:roleable) { create(:project).admin_publication }
+
+    include_examples 'has_many_associated_roles', 'admin_publication_moderator'
+  end
+
+  describe 'managing project moderator roles' do
+    let(:roleable) { create(:project) }
+
+    include_examples 'has_many_polymorphic_associated_through_roles', 'project_moderator'
+  end
+
+  # describe 'managing project folder moderator roles' do
+  #   let(:roleable) { create(:project) }
+
+  #   include_examples 'has_many_polymorphic_associated_through_roles', 'project_folder_moderator'
+  # end
+
   describe "creating a user" do
     it "generates a slug" do
       u = build(:user)
@@ -168,7 +192,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "add_role" do
-    it "gives a user moderator rights for a project" do 
+    it "gives a user moderator rights for a project" do
       usr = create(:user, roles: [])
       prj = create(:project)
       expect(usr.project_moderator? prj.id).to eq false
@@ -393,7 +417,7 @@ RSpec.describe User, type: :model do
       group = create(:group)
       users = create_list(:user, 3, manual_groups: [group])
       create_list(:user, 2)
-      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id) 
+      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id)
     end
 
     it "gets all users in a rules group" do
