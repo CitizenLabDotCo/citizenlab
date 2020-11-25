@@ -175,7 +175,7 @@
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, one {# مُقترح} other {# مُقترحات}}",
   "app.components.InitiativeForm.bannerUploadLabel": "أضِف لافتة",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "اجعل صفحتك أكثر جاذبية. ستظهر هذه الصورة في أعلى صفحتك.",
-  "app.components.InitiativeForm.descriptionBodyLengthError": "The initiative description must be at least 30 characters long",
+  "app.components.InitiativeForm.descriptionBodyLengthError": "يجب ألا يقل الوصف عن 30 حرفًا",
   "app.components.InitiativeForm.descriptionEmptyError": "يُرجى إضافة وصف",
   "app.components.InitiativeForm.descriptionLabel": "ما موضوع مُقترحك؟",
   "app.components.InitiativeForm.descriptionLabelSubtext": "قدّم وصفًا واضحًا لمُقترحك (500 حرف على الأقل)",
