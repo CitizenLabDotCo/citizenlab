@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.tag',
     defaultMessage: 'tag',
   },
+  pleaseSelectAProject: {
+    id: 'app.containers.Admin.Processing.pleaseSelectAProject',
+    defaultMessage: 'please select a project',
+  },
+  automaticallyAssign: {
+    id: 'app.containers.Admin.Processing.automaticallyAssign',
+    defaultMessage: 'Automatically assign tags to selected ideas',
+  },
   addNewTag: {
     id: 'app.containers.Admin.Processing.addNewTag',
     defaultMessage: 'Add new tag',
