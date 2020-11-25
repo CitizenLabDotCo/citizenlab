@@ -36,15 +36,18 @@ const BodyWrapper = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 8px;
-  opacity: 0.7;
+  margin-left: -2px;
 `;
 
 const Body = styled.div`
   font-size: ${fontSizes.small}px;
+  font-weight: 300;
   color: ${colors.label};
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-height: 20px;
+  max-height: 40px;
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -134,7 +137,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         }
         body={
           <BodyWrapper>
-            {authorId && <StyledAvatar size="37" userId={authorId} />}
+            {authorId && <StyledAvatar size="35" userId={authorId} />}
             <Body>
               <strong>
                 <FormattedRelative
