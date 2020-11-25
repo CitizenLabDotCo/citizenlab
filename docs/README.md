@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Fixed
+- Sections with extra padding or funky widths in Admin were returned to normal
+
 ### Changed
 - Proposal descriptions now require 30 characters instead of the previous 500
 
