@@ -1924,7 +1924,7 @@
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# wydarzenie} few {# wydarzenia} many {# wydarzeń} other {# wydarzenia}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# pomysł} few {# pomysły} many {# pomysłów} other {# pomysły}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# pomysł} few {# pomysły} many {# pomysłów} other {# pomysły}} na obecnym etapie",
-  "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# pomysł} few {# pomysły} many {# pomysłów} other {# pomysły}} w ostanim etapie",
+  "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# idea} other {# ideas}} in the final phase",
   "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# uczestnik} few {# uczestników} many {# uczestników} other {# uczestnicy}}",
   "app.containers.Projects.xPhases": "{phasesCount, plural, one {# etap} few {# etapy} many {# etapów} other {# etapy}}",
   "app.containers.Projects.xPolls": "{pollsCount, plural, no {# badań} one {# badanie} few {# badań} other {# badania}}",
