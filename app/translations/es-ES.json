@@ -175,11 +175,7 @@
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, no {# propuestas} one {# propuesta} other {# propuestas}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Añadir un banner",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Haz que tu página sea visualmente más atractiva. Esta imagen se mostrará en la parte superior de tu página.",
-<<<<<<< HEAD
   "app.components.InitiativeForm.descriptionBodyLengthError": "The initiative description must be at least 30 characters long",
-=======
-  "app.components.InitiativeForm.descriptionBodyLengthError": "",
->>>>>>> 806b8a62b654ae288b755479ad916a86febbbb2b
   "app.components.InitiativeForm.descriptionEmptyError": "Por favor proporcione una descripción",
   "app.components.InitiativeForm.descriptionLabel": "¿De qué se trata la propuesta?",
   "app.components.InitiativeForm.descriptionLabelSubtext": "Describe claramente tu propuesta (mínimo 500 caracteres)",
