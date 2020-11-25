@@ -1153,7 +1153,7 @@
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Meeste stemmen",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Ideeën posten",
   "app.containers.AdminPage.ProjectEdit.presentationModeTooltip": "Je kan kiezen hoe de ideeën standaard worden weergegeven: als kaarten in een lijst of als pinnen op een kaart.",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabel": "Project afbeelding",
+  "app.containers.AdminPage.ProjectEdit.projectCardImageLabel": "Projectafbeelding",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Deze afbeelding wordt getoond bij het project op de homepagina. De ideale afmetingen zijn een breedte van 1440 pixels en een hoogte tussen 1440 en 720 pixels.",
   "app.containers.AdminPage.ProjectEdit.projectName": "Projectnaam",
   "app.containers.AdminPage.ProjectEdit.projectTypeTitle": "Projecttype",
