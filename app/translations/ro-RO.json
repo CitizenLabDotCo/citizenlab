@@ -1924,7 +1924,7 @@
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# eveniment} other {# evenimente}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}} în faza curentă",
-  "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the final phase",
+  "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}} în faza finală",
   "app.containers.Projects.xParticipants": "{participantsCount, plural, no {# participanți} one {# participant} other {# participanți}}",
   "app.containers.Projects.xPhases": "{phasesCount, plural, no {# faze} one {# fază} other {# faze}}",
   "app.containers.Projects.xPolls": "{pollsCount, plural, one {# poll} other {# polls}}",
