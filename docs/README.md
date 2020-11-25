@@ -2,8 +2,14 @@
 
 ## Next release
 
+/
+
+## 2020-11-25
+
 ### Fixed
 - Sections with extra padding or funky widths in Admin were returned to normal
+- Added missing copy from previous release
+- Copy improvements in French
 
 ### Changed
 - Proposal descriptions now require 30 characters instead of the previous 500
