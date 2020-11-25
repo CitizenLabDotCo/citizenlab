@@ -3,6 +3,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import {
   listAdminPublications,
   IAdminPublicationData,
+  AdminPublicationType,
 } from 'services/adminPublications';
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,7 +19,7 @@ export interface InputProps {
 
 export type IAdminPublicationContent = {
   id: string;
-  publicationType: 'project' | 'project_folder';
+  publicationType: AdminPublicationType;
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
 };

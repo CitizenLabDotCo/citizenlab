@@ -38,7 +38,7 @@ describe('Initiative new page', () => {
     );
   });
 
-  it('shows an error when the description is less than 300 characters long ()', () => {
+  it('shows an error when the description is less than 30 characters long', () => {
     cy.get('#e2e-initiative-form-description-section .ql-editor')
       .type(randomString(9))
       .blur()
@@ -46,7 +46,7 @@ describe('Initiative new page', () => {
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
     cy.get(
       '#e2e-initiative-form-description-section .e2e-error-message'
-    ).contains('at least 500 characters long');
+    ).contains('at least 30 characters long');
   });
 
   it('has a working initiative form', () => {
