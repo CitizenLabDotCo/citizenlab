@@ -37,7 +37,7 @@ const Spacer = styled.div`
 
 interface DataProps {
   AdminPublications: GetAdminPublicationsChildProps;
-  projectFoldersEnabled: boolean;
+  isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends DataProps {}
@@ -47,7 +47,7 @@ function handleReorderAdminPublication(itemId, newOrder) {
 }
 
 const AdminProjectList = memo<Props>(
-  ({ AdminPublications, projectFoldersEnabled }) => {
+  ({ AdminPublications, isProjectFoldersEnabled }) => {
     const AdminPublicationsList = AdminPublications.list;
 
     if (
@@ -58,19 +58,13 @@ const AdminProjectList = memo<Props>(
         <>
           <StyledListHeader>
             <HeaderTitle>
-              {!projectFoldersEnabled && (
+              {!isProjectFoldersEnabled && (
                 <FormattedMessage {...messages.existingProjects} />
               )}
-              <Outlet
-                id="app.containers.AdminPage.projects.all.projectsAndFolders.title"
-                featureFlag={projectFoldersEnabled}
-              />
+              <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.title" />
             </HeaderTitle>
             <Spacer />
-            <Outlet
-              id="app.containers.AdminPage.projects.all.projectsAndFolders.actions"
-              featureFlag={projectFoldersEnabled}
-            />
+            <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
           </StyledListHeader>
           <SortableList
             items={AdminPublicationsList}
@@ -126,7 +120,7 @@ const Data = adopt<DataProps>({
       folderId={null}
     />
   ),
-  projectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
+  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default () => (

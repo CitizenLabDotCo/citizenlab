@@ -9,16 +9,21 @@ import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ featureFlag, children }) => {
-  if (!featureFlag) return null;
-  return <>{children}</>;
-};
+const RenderOnFeatureFlag = ({ children }) => (
+  <GetFeatureFlag name="project_folders">
+    {(isFeatureFlagEnabled) => {
+      if (!isFeatureFlagEnabled) return null;
+      return <>{children}</>;
+    }}
+  </GetFeatureFlag>
+);
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -35,17 +40,13 @@ const configuration: ModuleConfiguration = {
         </RenderOnPublicationType>
       );
     },
-    'app.containers.AdminPage.projects.all.projectsAndFolders.title': ({
-      featureFlag,
-    }) => (
-      <RenderOnFeatureFlag featureFlag={featureFlag}>
+    'app.containers.AdminPage.projects.all.projectsAndFolders.title': () => (
+      <RenderOnFeatureFlag>
         <ProjectFolderTitle />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': ({
-      featureFlag,
-    }) => (
-      <RenderOnFeatureFlag featureFlag={featureFlag}>
+    'app.containers.AdminPage.projects.all.projectsAndFolders.actions': () => (
+      <RenderOnFeatureFlag>
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
