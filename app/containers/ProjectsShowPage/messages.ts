@@ -237,7 +237,7 @@ export default defineMessages({
       '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}} in the current phase',
   },
   poll: {
-    id: 'app.containers.Projects.polls',
+    id: 'app.containers.Projects.poll',
     defaultMessage: '1 poll',
   },
   pollInCurrentPhase: {
