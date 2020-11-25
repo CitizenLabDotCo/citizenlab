@@ -72,6 +72,15 @@ module Roles
       options.dig(:through)
     end
 
+    def find_polymorphic_source(record_or_id)
+      id = record_or_id.is_a?(::ActiveRecord::Base) ? record_or_id.id : record_or_id
+
+      through_roleable_class.find_by(
+        polymorphic_source_type => roleable_class.to_s,
+        polymorphic_source_foreign_key => id
+      )
+    end
+
     def through_role_options
       klass.reflections_on_role_associations[through_role_name]
     end

@@ -26,7 +26,6 @@ module HasRoles
           return unless options_valid?
 
           define_base_methods
-
           if polymorphic_through? then Definers::HasMany::Association::PolymorphicThrough.define(klass, role_name, options)
           elsif associated?       then Definers::HasMany::Association::Base.define(klass, role_name, options)
           end
@@ -95,7 +94,7 @@ module HasRoles
           role_name = self.role_name
 
           define_klass_instance_method(:"add_#{role_name}_role") do |*|
-            add_role(role_name)
+            add_role(role_name.to_s)
           end
         end
 
@@ -114,7 +113,7 @@ module HasRoles
           role_name = self.role_name
 
           define_klass_instance_method(:"remove_#{role_name}_role") do |*|
-            remove_role(role_name)
+            remove_role(role_name.to_s)
           end
         end
 
