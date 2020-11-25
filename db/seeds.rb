@@ -241,8 +241,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       google_tag_manager: {
-        enabled: false,
-        allowed: false
+        enabled: true,
+        allowed: true,
+        destinations: 'InvasiveTracking'
       },
       smart_groups: {
         enabled: true,

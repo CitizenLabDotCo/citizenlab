@@ -96,7 +96,7 @@ gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
-gem 'simple_segment', '~> 0.3'
+gem 'simple_segment', '~>1.2'
 gem 'okcomputer'
 gem 'sentry-raven'
 gem 'omniauth' # , '~> 1.7.1'
