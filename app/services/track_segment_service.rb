@@ -74,7 +74,7 @@ class TrackSegmentService
       }
     end
 
-    Analytics.track event
+    Analytics.track(event)
   end
 
   def integrations user
