@@ -10,7 +10,10 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 
 export type OutletId =
+  | 'app.containers.Navbar.projectlist.item'
+  | 'app.containers.AdminPage.projects.all.projectsAndFolders.title'
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.row'
+  | 'app.containers.AdminPage.projects.all.projectsAndFolders.actions'
   | 'app.components.ProjectAndFolderCards.card'
   | 'app.containers.SiteMap.ProjectsSection.listitem';
 
