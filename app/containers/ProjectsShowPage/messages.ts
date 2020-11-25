@@ -236,13 +236,15 @@ export default defineMessages({
     defaultMessage:
       '{surveysCount, plural, no {# surveys} one {# survey} other {# surveys}} in the current phase',
   },
-  poll: {
-    id: 'app.containers.Projects.poll',
-    defaultMessage: '1 poll',
+  xPolls: {
+    id: 'app.containers.Projects.xPolls',
+    defaultMessage:
+      '{pollsCount, plural, no {# polls} one {# poll} other {# polls}}',
   },
-  pollInCurrentPhase: {
-    id: 'app.containers.Projects.pollInCurrentPhase',
-    defaultMessage: '1 poll in the current phase',
+  xPollsInCurrentPhase: {
+    id: 'app.containers.Projects.xPollsInCurrentPhase',
+    defaultMessage:
+      '{pollsCount, plural, no {# polls} one {# poll} other {# polls}} in the current phase',
   },
   budget: {
     id: 'app.containers.Projects.budget',
