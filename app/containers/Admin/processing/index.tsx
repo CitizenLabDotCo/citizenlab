@@ -30,7 +30,7 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts, colors } from 'utils/styleUtils';
 
 // typings
 import { adopt } from 'react-adopt';
@@ -115,12 +115,18 @@ const FilterSection = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 100;
-  background-color: #eaeaea;
+  background-color: #f9f9fa;
 `;
 
 const StyledActions = styled.div`
   > * {
     margin-top: 10px;
+  }
+`;
+
+const StyledFilterSelector = styled(FilterSelector)`
+  &:not(:last-child) {
+    margin-right: 0px;
   }
 `;
 
@@ -173,6 +179,16 @@ const StyledTable = styled(Table)`
 
 const StyledCheckbox = styled(Checkbox)`
   margin-top: 0px;
+`;
+
+const InformationBox = styled.div`
+  margin: 24px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 27px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: ${colors.clBlueDarkBg};
 `;
 
 interface DataProps {
@@ -407,7 +423,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           >
             <FilterSectionTransitionWrapper>
               <FilterSection>
-                <FilterSelector
+                <StyledFilterSelector
                   title={<FormattedMessage {...messages.project} />}
                   name={'Projects'}
                   values={projectList}
@@ -440,7 +456,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               </FilterSection>
             </FilterSectionTransitionWrapper>
           </CSSTransition>
-          {!isNilOrError(ideaList) && !loadingIdeas ? (
+          {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
             <TableWrapper>
               <StyledTable>
                 {!previewPostId && (
@@ -477,27 +493,29 @@ const Processing = memo<Props & InjectedIntlProps>(
                     </tr>
                   </thead>
                 )}
-                {ideaList?.length > 0 && (
-                  <tbody>
-                    {ideaList?.map((idea) => (
-                      <ProcessingRow
-                        key={idea.id}
-                        idea={idea}
-                        selected={includes(selectedRows, idea.id)}
-                        highlighted={idea.id === highlightedId}
-                        rowRef={idea.id === highlightedId ? rowRef : undefined}
-                        showTagColumn={!previewPostId}
-                        onSelect={handleRowOnSelect}
-                        openPreview={openPreview}
-                        tagSuggestions={null}
-                      />
-                    ))}
-                  </tbody>
-                )}
+                <tbody>
+                  {ideaList.map((idea) => (
+                    <ProcessingRow
+                      key={idea.id}
+                      idea={idea}
+                      selected={includes(selectedRows, idea.id)}
+                      highlighted={idea.id === highlightedId}
+                      rowRef={idea.id === highlightedId ? rowRef : undefined}
+                      showTagColumn={!previewPostId}
+                      onSelect={handleRowOnSelect}
+                      openPreview={openPreview}
+                      tagSuggestions={null}
+                    />
+                  ))}
+                </tbody>
               </StyledTable>
             </TableWrapper>
-          ) : (
+          ) : loadingIdeas ? (
             <StyledSpinner />
+          ) : (
+            <InformationBox>
+              <FormattedMessage {...messages.pleaseSelectAProject} />
+            </InformationBox>
           )}
           <CSSTransition
             in={!!previewPostId}
