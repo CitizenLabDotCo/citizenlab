@@ -708,6 +708,7 @@
   "app.containers.Admin.Processing.items": "{selectedCount} {selectedCount, plural, =0 {items} one {item} other {items}} selected out of {totalCount}",
   "app.containers.Admin.Processing.project": "Project",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Proposed Budget",
+  "app.containers.Admin.Processing.pleaseSelectAProject": "Please Select A Project",
   "app.containers.Admin.Processing.tag": "Tag",
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "title",
