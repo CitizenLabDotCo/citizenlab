@@ -345,9 +345,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 >
                   <FormattedMessage
                     {...(projectType === 'continuous'
-                      ? messages.xPolls
-                      : messages.xPollsInCurrentPhase)}
-                    values={{ pollsCount: 1 }}
+                      ? messages.poll
+                      : messages.pollInCurrentPhase)}
                   />
                 </ListItemButton>
               </ListItem>
