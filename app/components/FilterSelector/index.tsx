@@ -212,7 +212,6 @@ export default class FilterSelector extends PureComponent<Props, State> {
         }`}
       >
         <Title
-          key={this.baseID}
           title={currentTitle}
           opened={opened}
           onClick={this.toggleExpanded}

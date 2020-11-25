@@ -35,6 +35,7 @@ import GetInitiativesCount, {
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
+  z-index: 10;
   flex: 0 0 auto;
   width: 210px;
 

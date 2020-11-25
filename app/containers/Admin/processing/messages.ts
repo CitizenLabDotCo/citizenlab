@@ -21,6 +21,22 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
+  tag: {
+    id: 'app.containers.Admin.Processing.tag',
+    defaultMessage: 'tag',
+  },
+  addNewTag: {
+    id: 'app.containers.Admin.Processing.addNewTag',
+    defaultMessage: 'Add new tag',
+  },
+  addExistingTag: {
+    id: 'app.containers.Admin.Processing.addExistingTag',
+    defaultMessage: 'Add existing tag',
+  },
+  addSmartTag: {
+    id: 'app.containers.Admin.Processing.addSmartTag',
+    defaultMessage: 'Add smart tag',
+  },
   items: {
     id: 'app.containers.Admin.Processing.items',
     defaultMessage:
@@ -30,5 +46,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.helpTooltipText',
     defaultMessage:
       'Did you know you can hit your keyboard up and down arrows to show and navigate through ideas content ?',
+  },
+  description: {
+    id: 'app.containers.Admin.Processing.description',
+    defaultMessage: 'Description',
+  },
+  proposedBudgetTitle: {
+    id: 'app.containers.Admin.Processing.proposedBudgetTitle',
+    defaultMessage: 'Proposed Budget',
   },
 });
