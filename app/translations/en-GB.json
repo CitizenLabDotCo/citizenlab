@@ -175,7 +175,7 @@
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, one {# post} other {# posts}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Add a banner",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Make your page visually more appealing. This image will be shown on top of your page.",
-  "app.components.InitiativeForm.descriptionBodyLengthError": "The initiative description must be at least 30 characters long",
+  "app.components.InitiativeForm.descriptionBodyLengthError": "The description must be at least 30 characters long",
   "app.components.InitiativeForm.descriptionEmptyError": "Please provide a description",
   "app.components.InitiativeForm.descriptionLabel": "{tenantName, select, stirlingcouncil {What is your petition about?} other {What is your proposal about?}}",
   "app.components.InitiativeForm.descriptionLabelSubtext": "{tenantName, select, stirlingcouncil {Describe your petition clearly (max. 250 characters)} other {Describe your proposal clearly (min. 500 characters)}}",
