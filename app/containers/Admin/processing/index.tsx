@@ -3,8 +3,8 @@ import React, {
   useCallback,
   useState,
   useEffect,
-  FormEvent,
   useRef,
+  FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
@@ -44,7 +44,6 @@ import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
-import useTagSuggestion from 'hooks/useTags';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
@@ -200,9 +199,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const { tagSuggestion } = useTagSuggestion();
-
-    const [processing, setProcessing] = useState<boolean>(false);
+    const [processing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
@@ -252,39 +249,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [projects, tenant, locale]);
 
     useEffect(() => {
-      if (upArrow && !isNilOrError(ideaList) && ideaList.length !== 0) {
-        if (!highlightedId && !previewPostId) {
-          setHighlightedId(ideaList[0].id);
-        } else {
-          const ideaIndex = ideaList.findIndex(
-            (idea) => idea.id === highlightedId
-          );
-          const newIndex =
-            ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
-          setHighlightedId(ideaList[newIndex].id);
-          if (previewPostId) {
-            setPreviewPostId(ideaList[newIndex].id);
-          }
-        }
+      if (upArrow) {
+        navigate('up');
       }
     }, [upArrow, ideaList]);
 
     useEffect(() => {
-      if (downArrow && !isNilOrError(ideaList) && ideaList.length !== 0) {
-        if (!highlightedId && !previewPostId) {
-          setHighlightedId(ideaList[0].id);
-        } else {
-          const ideaIndex = ideaList.findIndex(
-            (idea) => idea.id === highlightedId
-          );
-          const newIndex =
-            ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
-          setHighlightedId(ideaList[newIndex].id);
-
-          if (previewPostId) {
-            setPreviewPostId(ideaList[newIndex].id);
-          }
-        }
+      if (downArrow) {
+        navigate('down');
       }
     }, [downArrow, ideaList]);
 
@@ -311,12 +283,6 @@ const Processing = memo<Props & InjectedIntlProps>(
         setIdeaList(ideas?.list);
       }
     }, [ideas, processing]);
-
-    useEffect(() => {
-      if (processing) {
-        setProcessing(false);
-      }
-    }, [tagSuggestion]);
 
     useEffect(() => {
       if (loadingIdeas) {
@@ -347,16 +313,11 @@ const Processing = memo<Props & InjectedIntlProps>(
       e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
       setIsAutotagMode(true);
-      // setProcessing(true);
-      // onIdeasChange(selectedRows);
     };
 
     const handleCloseAutotagView = (e: FormEvent) => {
       e.preventDefault();
-
       setIsAutotagMode(false);
-      // setProcessing(true);
-      // onIdeasChange(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
@@ -371,6 +332,33 @@ const Processing = memo<Props & InjectedIntlProps>(
       },
       [ideaList, selectedRows, processing]
     );
+
+    const navigate = (direction: 'up' | 'down') => {
+      if (!isNilOrError(ideaList) && ideaList.length !== 0) {
+        if (!highlightedId && !previewPostId) {
+          setHighlightedId(ideaList[0].id);
+        } else {
+          const ideaIndex = ideaList.findIndex(
+            (idea) => idea.id === highlightedId
+          );
+
+          let newIndex;
+          if (direction === 'down') {
+            newIndex = ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
+          }
+
+          if (direction === 'up') {
+            newIndex = ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
+          }
+
+          setHighlightedId(ideaList[newIndex].id);
+
+          if (previewPostId) {
+            setPreviewPostId(ideaList[newIndex].id);
+          }
+        }
+      }
+    };
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
       const { onChangeProjects } = ideas as GetIdeasChildProps;
@@ -433,8 +421,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                     buttonStyle="admin-dark"
                     disabled={selectedRows.length === 0}
                     processing={processing}
-                    onClick={handleAutoTag}
                     locale={locale}
+                    onClick={handleAutoTag}
                   >
                     <FormattedMessage {...messages.autotag} />
                   </Button>
@@ -501,9 +489,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                         showTagColumn={!previewPostId}
                         onSelect={handleRowOnSelect}
                         openPreview={openPreview}
-                        tagSuggestions={tagSuggestion?.filter((tag) =>
-                          tag.idea_ids.includes(idea.id)
-                        )}
+                        tagSuggestions={null}
                       />
                     ))}
                   </tbody>
@@ -529,6 +515,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 type={'AllIdeas'}
                 postId={previewPostId}
                 onClose={closeSideModal}
+                handleNavigation={navigate}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>

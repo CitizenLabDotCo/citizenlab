@@ -98,7 +98,7 @@ export class IdeaContent extends PureComponent<
                 )}
               />
               <BodySectionTitle>
-                <FormattedMessage {...messages.bodyTitle} />
+                <FormattedMessage {...messages.description} />
               </BodySectionTitle>
             </>
           )}
