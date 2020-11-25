@@ -1,5 +1,79 @@
 # Changelog
 
+## Next release
+
+### Fixed
+- Sections with extra padding or funky widths in Admin were returned to normal
+
+### Changed
+- Proposal descriptions now require 30 characters instead of the previous 500
+
+## 2020-11-23
+
+### Added
+- Some specific copy for Sterling Council
+
+### Fixed
+- The Admin UI is no longer exposed to regular (and unauthenticated) users
+- Clicking the toggle button of a custom registration field (in Admin > Settings > Registration fields) no longer duplicated the row
+- Buttons added in the WYSIWYG editor now have the correct color when hovered
+- The cookie policy and accessibility statement are not editable anymore from Admin > Settings > Pages
+
+### Changed
+
+**Project page:**
+
+- Show all events at bottom of page instead of only upcoming events
+- Reduced padding of sticky top bar
+- Only show sticky top bar when an action button (e.g. 'Post an idea') is present, and you've scrolled past it.
+
+**Project page right-hand sidebar:**
+
+- Show 'See the ideas' button when the project has ended and the last phase was an ideation phase
+- Show 'X ideas in the final phase' when the project has ended and the last phase was an ideation phase
+- 'X phases' is now clickable and scrolls to the timeline when clicked
+- 'X upcoming events' changed to 'X events', and event count now counts all events, not only upcoming events
+
+**Admin project configuration page:**
+
+- Replaced 'Project images' upload widget in back-office (Project > General) with 'Project card image', reduced the max count from 5 to 1 and updated the corresponding tooltip with new recommended image dimensions
+
+**Idea page:**
+
+- The map modal now shows address on top of the map when opened
+- Share button copy change from "share idea" to "share"
+- Right-hand sidebar is sticky now when its height allows it (= when the viewport is taller than the sidebar)
+- Comment box now has an animation when it expands
+- Adjusted scroll-to position when pressing 'Add a comment' to make sure the comment box is always fully visible in the viewport.
+
+**Other:**
+
+- Adjusted FileDisplay (downloadable files for a project or idea) link style to show underline by default, and increased contrast of hover color
+- Reduced width of DateTimePicker, and always show arrows for time input
+
+## 2020-11-20 (2)
+
+### Fixed
+- The project header image is screen reader friendly.
+- The similar ideas feature doesn't make backend requests anymore when it's not enabled.
+
+### Changed 
+- Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
+
+## 2020-11-18
+
+### Added
+- Archived project folder cards on the homepage will now have an "Archived" label, the same way archived projects do\
+- Improved support for right-to-left layout
+- Experimental processing feature that allows admins and project managers to automatically assign tags to a set of ideas.
+
+### Fixed
+- Projects without idea sorting methods are no longer invalid.
+- Surveys tab now shows for projects with survey phases.
+
+### Changed
+- Moved welcome email from cl2-emails to cl2-back
+
 ## 2020-11-16
 
 ### Added

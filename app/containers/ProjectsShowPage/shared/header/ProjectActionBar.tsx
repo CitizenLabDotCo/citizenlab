@@ -51,7 +51,7 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  min-height: 69px;
+  min-height: 61px;
   display: flex;
   align-items: center;
 
@@ -158,8 +158,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   const { windowWidth } = useWindowSize();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const [isActionBarVisible, setIsActionBarVisible] = useState(false);
-  const [isActionButtonVisible, setIsActionButtonVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
@@ -179,17 +178,14 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
         const actionButtonYOffset = actionButtonElement
           ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
           : undefined;
-        const actionButtonVisible = !!(
-          actionButtonElement &&
-          actionButtonYOffset &&
-          window.pageYOffset >
-            actionButtonYOffset - (smallerThanLargeTablet ? 14 : 40)
+        setIsVisible(
+          !!(
+            actionButtonElement &&
+            actionButtonYOffset &&
+            window.pageYOffset >
+              actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
+          )
         );
-        const actionBarVisible = !smallerThanLargeTablet
-          ? window.pageYOffset > 78
-          : actionButtonVisible;
-        setIsActionBarVisible(actionBarVisible);
-        setIsActionButtonVisible(actionButtonVisible);
       },
       { passive: true }
     );
@@ -204,9 +200,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
 
     return ReactDOM.createPortal(
       <Container
-        className={`${className || ''} ${
-          isActionBarVisible ? 'visible' : 'hidden'
-        }`}
+        className={`${className || ''} ${isVisible ? 'visible' : 'hidden'}`}
       >
         <ContentContainer>
           <InnerContainer>
@@ -220,7 +214,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                 participation_method === 'ideation' &&
                 publication_status !== 'archived' && (
                   <CSSTransition
-                    in={isActionButtonVisible}
+                    in={isVisible}
                     timeout={slideInOutTimeout}
                     mountOnEnter={false}
                     unmountOnExit={false}
@@ -239,7 +233,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
 
               {currentPhase?.attributes.participation_method === 'ideation' && (
                 <CSSTransition
-                  in={isActionButtonVisible}
+                  in={isVisible}
                   timeout={slideInOutTimeout}
                   mountOnEnter={false}
                   unmountOnExit={false}

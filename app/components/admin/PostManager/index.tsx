@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend-cjs';
+import { DragDropContext } from 'react-dnd-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
