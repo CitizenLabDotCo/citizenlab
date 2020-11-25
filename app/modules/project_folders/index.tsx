@@ -19,8 +19,8 @@ const RenderOnPublicationType = ({ publication, children }) => {
 const RenderOnFeatureFlag = ({ children }) => (
   <GetFeatureFlag name="project_folders">
     {(isFeatureFlagEnabled) => {
-      if (!isFeatureFlagEnabled) return null;
-      return <>{children}</>;
+      if (isFeatureFlagEnabled) return <>{children}</>;
+      return null;
     }}
   </GetFeatureFlag>
 );
