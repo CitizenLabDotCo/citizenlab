@@ -175,7 +175,7 @@
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, no {# initiatieven} one {# initiatief} other {# initiatieven}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Voeg een coverafbeelding toe",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Maak je pagina visueel aantrekkelijker. Deze afbeelding wordt bovenaan je pagina weergegeven.",
-  "app.components.InitiativeForm.descriptionBodyLengthError": "The initiative description must be at least 30 characters long",
+  "app.components.InitiativeForm.descriptionBodyLengthError": "De beschrijving moet minstens 30 tekens lang zijn",
   "app.components.InitiativeForm.descriptionEmptyError": "Gelieve een beschrijving te geven",
   "app.components.InitiativeForm.descriptionLabel": "Waar gaat je initiatief over?",
   "app.components.InitiativeForm.descriptionLabelSubtext": "Beschrijf je initiatief op een heldere manier (min. 500 tekens)",
