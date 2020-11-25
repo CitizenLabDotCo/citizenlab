@@ -43,7 +43,6 @@ import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
-import useTagSuggestion from 'hooks/useTags';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
@@ -199,8 +198,6 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const { tagSuggestion, onIdeasChange } = useTagSuggestion();
-
     const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
@@ -283,12 +280,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [ideas, processing]);
 
     useEffect(() => {
-      if (processing) {
-        setProcessing(false);
-      }
-    }, [tagSuggestion]);
-
-    useEffect(() => {
       if (loadingIdeas) {
         setLoadingIdeas(false);
       }
@@ -313,13 +304,13 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     };
 
-    const handleAutoTag = (e: FormEvent) => {
-      e.preventDefault();
-      trackEventByName(tracks.clickAutotag.name);
+    // const handleAutoTag = (e: FormEvent) => {
+    //   e.preventDefault();
+    //   trackEventByName(tracks.clickAutotag.name);
 
-      setProcessing(true);
-      onIdeasChange(selectedRows);
-    };
+    //   setProcessing(true);
+    //   onIdeasChange(selectedRows);
+    // };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
@@ -419,7 +410,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                     buttonStyle="admin-dark"
                     disabled={selectedRows.length === 0}
                     processing={processing}
-                    onClick={handleAutoTag}
                     locale={locale}
                   >
                     <FormattedMessage {...messages.autotag} />
@@ -487,9 +477,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                         showTagColumn={!previewPostId}
                         onSelect={handleRowOnSelect}
                         openPreview={openPreview}
-                        tagSuggestions={tagSuggestion?.filter((tag) =>
-                          tag.idea_ids.includes(idea.id)
-                        )}
+                        tagSuggestions={null}
                       />
                     ))}
                   </tbody>
