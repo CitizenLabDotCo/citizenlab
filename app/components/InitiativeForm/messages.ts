@@ -81,10 +81,10 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.descriptionEmptyError',
     defaultMessage: 'Please provide a description',
   },
-  descriptionLengthError: {
-    id: 'app.components.InitiativeForm.descriptionLengthError',
+  descriptionBodyLengthError: {
+    id: 'app.components.InitiativeForm.descriptionBodyLengthError',
     defaultMessage:
-      'The initiative description must be at least 500 characters long',
+      'The initiative description must be at least 30 characters long',
   },
   formDetailsSectionTitle: {
     id: 'app.components.InitiativeForm.formDetailsSectionTitle',
