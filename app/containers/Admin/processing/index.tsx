@@ -200,7 +200,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const { tagSuggestion, onIdeasChange } = useTagSuggestion();
+    const { tagSuggestion } = useTagSuggestion();
 
     const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
@@ -289,7 +289,8 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [downArrow, ideaList]);
 
     useEffect(() => {
-      if (enterModalKey && ideaList) {
+      console.log('right arrow');
+      if (enterModalKey && !isNilOrError(ideaList) && ideaList.length > 0) {
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
           setPreviewPostId(ideaList[0].id);

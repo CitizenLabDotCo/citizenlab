@@ -1,9 +1,8 @@
 import { Button } from 'cl2-component-library';
-import React, { ReactElement } from 'react';
+import React, { FormEvent } from 'react';
 
 // styling
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -12,7 +11,7 @@ const Container = styled.div`
 `;
 
 interface Props {
-  closeView: () => void;
+  closeView: (e: FormEvent) => void;
 }
 
 // const Processing = memo<Props & InjectedIntlProps>(
