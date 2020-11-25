@@ -3,8 +3,7 @@ module HasRoles
     module Roled
       def self.included(base)
         base.class_eval do
-          extend ActiveRecord::Roled::ClassMethods     unless ancestors.include?(ActiveRecord::Roled::ClassMethods)
-          include ActiveRecord::Roled::Scopes          unless included_modules.include?(ActiveRecord::Roled::Scopes)
+          extend ActiveRecord::Roled::ClassMethods unless ancestors.include?(ActiveRecord::Roled::ClassMethods)
 
           unless included_modules.include?(ActiveRecord::Roled::InstanceMethods)
             include ActiveRecord::Roled::InstanceMethods
