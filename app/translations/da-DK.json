@@ -284,7 +284,7 @@
   "app.components.ProjectCard.viewTheIdeas": "{tenantName, select, DeloitteDK {Vis indlæg} other {Vis ideerne}}",
   "app.components.ProjectCard.vote": "{tenantName, select, DeloitteDK {Deltag} other {Stem}}",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, no {# kommentarer} one {# kommentar} other {# kommentarer}}",
-  "app.components.ProjectCard.xIdeas": "{tenantName, select, DeloitteDK {{x, plural, =0 {ingen indlæg} one {# indlæg} other {# indlæg}}} other {{x, plural, =0 {ingen ideer} one {# idé} other {# ideer}}}}",
+  "app.components.ProjectCard.xIdeas": "{x, plural, =0 {ingen ideer} one {# idé} other {# ideer}}",
   "app.components.ProjectFolderCards.noProjectYet": "Der er endnu noget projekt",
   "app.components.ProjectFolderCards.showMore": "Vis mere",
   "app.components.ProjectFolderCards.stayTuned": "Følg med, der dukker snart et projekt op.",
