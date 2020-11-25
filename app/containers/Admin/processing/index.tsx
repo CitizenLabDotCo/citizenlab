@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useState,
-  useEffect,
-  FormEvent,
-  useRef,
-} from 'react';
+import React, { memo, useCallback, useState, useEffect, useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 import { requestBlob } from 'utils/request';
@@ -198,7 +191,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const [processing, setProcessing] = useState<boolean>(false);
+    const [processing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
