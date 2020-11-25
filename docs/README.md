@@ -2,6 +2,18 @@
 
 ## Next release
 
+/
+
+## 2020-11-25
+
+### Fixed
+- Sections with extra padding or funky widths in Admin were returned to normal
+- Added missing copy from previous release
+- Copy improvements in French
+
+### Changed
+- Proposal descriptions now require 30 characters instead of the previous 500
+
 ## 2020-11-23
 
 ### Added
@@ -53,11 +65,6 @@
 
 ### Changed 
 - Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
-
-## 2020-11-20
-
-### Changed 
-- Refactoring of the feature 'project folders' in the backend in preparation for the open-sourcing.
 
 ## 2020-11-18
 
