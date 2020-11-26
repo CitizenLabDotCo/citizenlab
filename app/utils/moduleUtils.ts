@@ -42,8 +42,8 @@ interface Routes {
 }
 
 export interface ModuleConfiguration {
-  routes: Routes;
-  outlets: Outlets;
+  routes?: Routes;
+  outlets?: Outlets;
 }
 
 type Modules = {
