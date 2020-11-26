@@ -79,11 +79,6 @@ export class UsersGroup extends React.PureComponent<
     this.setState({ groupEditionModal: false });
   };
 
-  renderForm = (type: 'normal' | 'rules') => (props) => {
-    if (type === 'normal') return <NormalGroupForm {...props} />;
-    return null;
-  };
-
   openGroupEditionModal = () => {
     const { group, trackEditGroup } = this.props;
 
