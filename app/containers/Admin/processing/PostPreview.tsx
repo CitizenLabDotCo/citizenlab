@@ -14,7 +14,7 @@ import { ManagerType } from 'components/admin/PostManager';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { addTagging, deleteTagging } from 'services/taggings';
+import { addTagging, deleteTagging, switchToManual } from 'services/taggings';
 import TagSearch from './TagSearch';
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -157,6 +157,9 @@ class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
   removeTagging = (taggingId) => () => {
     deleteTagging(taggingId);
   };
+  switchToManual = (taggingId) => () => {
+    switchToManual(taggingId);
+  };
 
   render() {
     const { taggings, localize, tags } = this.props;
@@ -212,6 +215,7 @@ class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
                           key={tagging.id}
                           icon="close"
                           onIconClick={this.removeTagging(tagging.id)}
+                          onTagClick={this.switchToManual(tagging.id)}
                           isAutoTag={true}
                           isSelected={false}
                           text={localize(tagging.tag.attributes.title_multiloc)}

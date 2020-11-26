@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-  FormEvent,
-} from 'react';
+import React, { memo, useCallback, useState, useEffect, useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 import { requestBlob } from 'utils/request';

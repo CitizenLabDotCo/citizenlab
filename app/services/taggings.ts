@@ -62,3 +62,17 @@ export async function deleteTagging(taggingId: string) {
 
   return response;
 }
+
+export async function switchToManual(taggingId: string) {
+  const response = await streams.update(
+    `${API_PATH}/taggings/${taggingId}`,
+    taggingId,
+    { assignment_method: 'manual' }
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/tags`],
+  });
+
+  return response;
+}
