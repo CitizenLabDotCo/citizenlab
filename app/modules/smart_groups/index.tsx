@@ -14,6 +14,21 @@ const RenderOnType = ({ type, children }) => {
   return null;
 };
 
+const ModalHeaderOutlet = ({ type }) => (
+  <RenderOnType type={type}>
+    <SmartGroupModalHeader />
+  </RenderOnType>
+);
+
+const ModalFormOutlet = ({ type, onSubmit, isVerificationEnabled }) => (
+  <RenderOnType type={type}>
+    <RulesGroupFormWithValidation
+      onSubmit={onSubmit}
+      isVerificationEnabled={isVerificationEnabled}
+    />
+  </RenderOnType>
+);
+
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.users.GroupCreationStep1.type': ({
@@ -30,40 +45,10 @@ const configuration: ModuleConfiguration = {
         <HeaderIcon />
       </RenderOnType>
     ),
-    'app.containers.Admin.users.form': ({
-      type,
-      onSubmit,
-      isVerificationEnabled,
-    }) => (
-      <RenderOnType type={type}>
-        <RulesGroupFormWithValidation
-          onSubmit={onSubmit}
-          isVerificationEnabled={isVerificationEnabled}
-        />
-      </RenderOnType>
-    ),
-    'app.containers.Admin.users.header': ({ type }) => (
-      <RenderOnType type={type}>
-        <SmartGroupModalHeader />
-      </RenderOnType>
-    ),
-    'app.containers.Admin.users.UsersGroup.form': ({
-      type,
-      onSubmit,
-      isVerificationEnabled,
-    }) => (
-      <RenderOnType type={type}>
-        <RulesGroupFormWithValidation
-          onSubmit={onSubmit}
-          isVerificationEnabled={isVerificationEnabled}
-        />
-      </RenderOnType>
-    ),
-    'app.containers.Admin.users.UsersGroup.header': ({ type }) => (
-      <RenderOnType type={type}>
-        <SmartGroupModalHeader />
-      </RenderOnType>
-    ),
+    'app.containers.Admin.users.form': ModalFormOutlet,
+    'app.containers.Admin.users.UsersGroup.form': ModalFormOutlet,
+    'app.containers.Admin.users.UsersGroup.header': ModalHeaderOutlet,
+    'app.containers.Admin.users.header': ModalHeaderOutlet,
   },
 };
 
