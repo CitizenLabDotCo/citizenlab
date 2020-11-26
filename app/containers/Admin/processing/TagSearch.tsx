@@ -49,7 +49,7 @@ const AddGroupButton = styled(Button)`
 
 interface InputProps {
   ideaId: string;
-  ideaTagIds: string[];
+  ideaTagIds: (string | undefined)[];
 }
 interface DataProps {
   tags: GetTagsChildProps;

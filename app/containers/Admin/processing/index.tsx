@@ -218,13 +218,13 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [projectList, setProjectList] = useState<IFilterSelectorValue[]>([]);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
-
-    const {
-      tagSuggestions,
-      onIdeasChange: onIdeasChangeTagSugs,
-    } = useTagSuggestions();
-    const { tags, onIdeasChange: onIdeasChangeTags } = useTags();
-    const { taggings, onIdeasChange: onIdeasChangeTaggings } = useTaggings();
+    //
+    // const {
+    //   tagSuggestions,
+    //   onIdeasChange: onIdeasChangeTagSugs,
+    // } = useTagSuggestions();
+    const { taggings } = useTaggings(); // TODO make use of included data.
+    const { tags } = useTags();
 
     const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
@@ -233,9 +233,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
 
-    const [previewPostTaggings, setPreviewPostTaggings] = useState<
-      ITagging[] | null
-    >(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
@@ -425,7 +422,19 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const closeSideModal = () => setPreviewPostId(null);
 
-    if (!isNilOrError(projectList) && !isNilOrError(locale) && !showAutotagView)
+    const getIdeaTaggings = useCallback(
+      (id: string | null) =>
+        (!isNilOrError(taggings) &&
+          taggings.filter((tagging) => tagging.attributes.idea_id === id)) ||
+        [],
+      [taggings]
+    );
+
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      !showAutotagView
+    ) {
       return (
         <Container className={className}>
           <CSSTransition
@@ -511,20 +520,22 @@ const Processing = memo<Props & InjectedIntlProps>(
                     </tr>
                   </thead>
                 )}
-                <tbody>
-                  {ideaList.map((idea) => (
-                    <ProcessingRow
-                      key={idea.id}
-                      idea={idea}
-                      selected={includes(selectedRows, idea.id)}
-                      highlighted={idea.id === highlightedId}
-                      rowRef={idea.id === highlightedId ? rowRef : undefined}
-                      showTagColumn={!previewPostId}
-                      onSelect={handleRowOnSelect}
-                      openPreview={openPreview}
-                    />
-                  ))}
-                </tbody>
+                {ideaList?.length > 0 && (
+                  <tbody>
+                    {ideaList?.map((idea) => (
+                      <ProcessingRow
+                        key={idea.id}
+                        idea={idea}
+                        selected={includes(selectedRows, idea.id)}
+                        highlighted={idea.id === highlightedId}
+                        rowRef={idea.id === highlightedId ? rowRef : undefined}
+                        onSelect={handleRowOnSelect}
+                        openPreview={openPreview}
+                        taggings={getIdeaTaggings(idea.id)}
+                      />
+                    ))}
+                  </tbody>
+                )}
               </StyledTable>
             </TableWrapper>
           ) : loadingIdeas ? (
@@ -551,15 +562,21 @@ const Processing = memo<Props & InjectedIntlProps>(
                 postId={previewPostId}
                 onClose={closeSideModal}
                 handleNavigation={navigate}
-                taggings={previewPostTaggings}
+                taggings={getIdeaTaggings(previewPostId)}
+                tags={tags}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
         </Container>
       );
-    if (!isNilOrError(projectList) && !isNilOrError(locale) && showAutotagView)
+    }
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      showAutotagView
+    ) {
       return <AutotagView closeView={handleCloseAutotagView} />;
-    else return null;
+    } else return null;
   }
 );
 
