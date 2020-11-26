@@ -19,7 +19,10 @@ export type OutletId =
   | 'app.containers.Admin.users.GroupsListPanel.listitem.icon'
   | 'app.containers.Admin.users.GroupCreationStep1.type'
   | 'app.containers.Admin.users.form'
-  | 'app.containers.Admin.users.UsersGroup.form';
+  | 'app.containers.Admin.users.header'
+  | 'app.containers.Admin.users.UsersGroup.form'
+  | 'app.containers.Admin.users.UsersGroup.header'
+  | 'app.containers.Admin.users.UsersHeader.icon';
 
 export type Outlets = {
   [key in OutletId]?: FunctionComponent<any>;
