@@ -20,6 +20,7 @@ import useTagSuggestions from 'hooks/useTagSuggestions';
 import useLocalize from 'hooks/useLocalize';
 import { ITag } from 'services/tags';
 import useTags from 'hooks/useTags';
+import { generateTaggings } from 'services/taggings';
 
 const Container = styled.div`
   display: flex;
@@ -134,7 +135,7 @@ const VerticalSeparator = styled.div`
 `;
 
 interface Props {
-  closeView: (e: FormEvent) => void;
+  closeView: (e?: FormEvent) => void;
   selectedRows: string[];
 }
 
@@ -148,6 +149,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   const { tags } = useTags();
 
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
+  const [processing, setProcessing] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'detected' | 'existing'>(
     'detected'
   );
@@ -215,6 +217,17 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
     );
   }, [newTag]);
 
+  const handleGenerate = () => {
+    setProcessing(true);
+    generateTaggings(
+      selectedRows,
+      selectedTagsList.map((tag) => tag.id),
+      newTagsList
+    )
+      .then(() => closeView())
+      .catch(() => setProcessing(false));
+  };
+
   if (!isNilOrError(locale)) {
     return (
       <Container>
@@ -273,6 +286,8 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
             locale={locale}
             text={<FormattedMessage {...messages.automaticallyAssign} />}
             buttonStyle={'admin-dark'}
+            onClick={handleGenerate}
+            processing={processing}
           />
         </Left>
         <Right>

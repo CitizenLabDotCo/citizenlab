@@ -333,8 +333,8 @@ const Processing = memo<Props & InjectedIntlProps>(
       setShowAutotagView(true);
     };
 
-    const handleCloseAutotagView = (e: FormEvent) => {
-      e.preventDefault();
+    const handleCloseAutotagView = (e?: FormEvent) => {
+      e?.preventDefault();
       setShowAutotagView(false);
     };
 
