@@ -12,7 +12,7 @@
 - Copy improvements in French
 
 ### Changed
-- Proposal descriptions now require 30 characters instead of the previous 500
+- Proposal and idea descriptions now require 30 characters instead of the previous 500
 
 ## 2020-11-23
 
