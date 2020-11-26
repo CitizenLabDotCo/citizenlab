@@ -4,7 +4,6 @@ class User < ApplicationRecord
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
-  include ProjectFolders::UserDecorator
   include PgSearch
 
   GENDERS = %w(male female unspecified)
@@ -55,7 +54,9 @@ class User < ApplicationRecord
 
   has_one_role :admin
   has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
-  has_many_roles :project_moderator, through: :admin_publication_moderator, class: 'Project', source: :publication
+  has_many_roles :project_moderator, class: 'Project', foreign_key: 'project_id'
+
+  prepend ProjectFolders::RoledDecorator
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 

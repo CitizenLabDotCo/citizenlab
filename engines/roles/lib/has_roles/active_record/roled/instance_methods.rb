@@ -5,6 +5,8 @@ module HasRoles
         def add_role_for(role_type, role_id_key, *records_or_ids)
           return unless self.class.associated_role_type?(role_type)
 
+          add_role(role_type.to_s) if records_or_ids.flatten.empty?
+
           records_or_ids.flatten.each do |record_or_id|
             add_role(role_type.to_s, role_id_key => (record_or_id.is_a?(::ActiveRecord::Base) ? record_or_id.id : record_or_id))
           end
@@ -12,6 +14,8 @@ module HasRoles
 
         def remove_role_for(role_type, role_id_key, *records_or_ids)
           return unless self.class.associated_role_type?(role_type)
+
+          remove_role(role_type.to_s) if records_or_ids.flatten.empty?
 
           records_or_ids.flatten.each do |record_or_id|
             remove_role(role_type.to_s, role_id_key => (record_or_id.is_a?(::ActiveRecord::Base) ? record_or_id.id : record_or_id))

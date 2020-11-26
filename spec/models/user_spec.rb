@@ -25,12 +25,13 @@ RSpec.describe User, type: :model do
     let(:roleable) { create(:project) }
     let(:other_roleable) { create(:project) }
 
+    # include_examples 'has_many_associated_roles', 'project_moderator'
     include_examples 'has_many_associated_roles', 'project_moderator'
-    # include_examples 'has_many_polymorphic_associated_through_roles', 'project_moderator'
   end
 
   describe 'managing project folder moderator roles' do
-    let(:roleable) { create(:project) }
+    let(:roleable) { create(:project_folder) }
+    let(:other_roleable) { create(:project_folder) }
 
     include_examples 'has_many_polymorphic_associated_through_roles', 'project_folder_moderator'
   end
@@ -166,7 +167,8 @@ RSpec.describe User, type: :model do
   describe "project_moderator?" do
     it "responds true when the user has the project_moderator role" do
       l = create(:project)
-      u = build(:user, roles: [{type: "project_moderator", project_id: l.id}])
+      u = build(:user)
+      u.add_project_moderator_role l
       expect(u.project_moderator? l.id).to eq true
     end
 
@@ -179,12 +181,14 @@ RSpec.describe User, type: :model do
     it "responds false when the user does not have a project_moderator role for the given project" do
       l1 = create(:project)
       l2 = create(:project)
-      u = build(:user, roles: [{type: "project_moderator", project_id: l1.id}])
+      u = build(:user)
+      u.add_project_moderator_role l1
       expect(u.project_moderator? l2.id).to eq false
     end
 
     it "response true when the user is project_moderator and no project_id is passed" do
-      u = build(:user, roles: [{type: "project_moderator"}])
+      u = build(:user)
+      u.add_project_moderator_role
       expect(u.project_moderator?).to eq true
     end
 
