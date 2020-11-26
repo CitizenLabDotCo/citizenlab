@@ -1,27 +1,29 @@
-/*
- * AdminPage.IdeaDashboard Messages
- *
- * This contains all the text for the AdminPage.IdeaDashboard component.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
-    id: 'app.containers.AdminPage.IdeaDashboard.helmetTitle',
-    defaultMessage: 'Admin - ideas dashboard',
+    id: 'app.containers.admin.ideas.all.helmetTitle',
+    defaultMessage: 'Admin ideas page',
   },
   helmetDescription: {
-    id: 'app.containers.AdminPage.IdeaDashboard.helmetDescription',
-    defaultMessage: 'Idea list in admin backoffice',
+    id: 'app.containers.admin.ideas.all.helmetDescription',
+    defaultMessage: 'Admin ideas page',
   },
-  header: {
-    id: 'app.containers.admin.ideas.all.header',
+  pageTitle: {
+    id: 'app.containers.admin.ideas.all.pageTitle',
     defaultMessage: 'Ideas',
   },
-  headerSubtitle: {
-    id: 'app.containers.admin.ideas.all.headerSubtitle',
+  pageSubtitle: {
+    id: 'app.containers.admin.ideas.all.pageSubtitle',
     defaultMessage:
-      'Get a complete overview of all the ideas of all projects. Add themes, change the status by dragging and dropping them to one of the left columns or edit the ideas. If you want to use other statuses or topics, hand us your personal list via support@citizenlab.co.',
+      'Give feedback on ideas, add topics to them or bring them from one project to ancustom.',
+  },
+  tabManage: {
+    id: 'app.containers.admin.ideas.all.tabManage',
+    defaultMessage: 'Manage',
+  },
+  tabStatuses: {
+    id: 'app.containers.admin.ideas.all.tabStatuses',
+    defaultMessage: 'Statuses',
   },
 });
