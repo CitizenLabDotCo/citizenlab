@@ -1825,7 +1825,7 @@
   "app.containers.PasswordReset.passwordError": "Twoje hasło musi zawierać co najmniej 8 znaków",
   "app.containers.PasswordReset.passwordLabel": "Hasło",
   "app.containers.PasswordReset.passwordPlaceholder": "Nowe hasło",
-  "app.containers.PasswordReset.resetPassword": "",
+  "app.containers.PasswordReset.requestPasswordReset": "",
   "app.containers.PasswordReset.submitError": "Coś poszło nie tak. Proszę spróbuj ponownie później.",
   "app.containers.PasswordReset.successMessage": "Twoje hasło zostało pomyślnie zaktualizowane",
   "app.containers.PasswordReset.title": "Zmień swoje hasło",

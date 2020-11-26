@@ -1825,7 +1825,7 @@
   "app.containers.PasswordReset.passwordError": "",
   "app.containers.PasswordReset.passwordLabel": "",
   "app.containers.PasswordReset.passwordPlaceholder": "",
-  "app.containers.PasswordReset.resetPassword": "",
+  "app.containers.PasswordReset.requestPasswordReset": "",
   "app.containers.PasswordReset.submitError": "",
   "app.containers.PasswordReset.successMessage": "",
   "app.containers.PasswordReset.title": "",

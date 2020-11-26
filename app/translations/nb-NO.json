@@ -1825,7 +1825,7 @@
   "app.containers.PasswordReset.passwordError": "Passordet må inneholde minst 8 tegn",
   "app.containers.PasswordReset.passwordLabel": "Passord",
   "app.containers.PasswordReset.passwordPlaceholder": "Nytt passord",
-  "app.containers.PasswordReset.resetPassword": "",
+  "app.containers.PasswordReset.requestPasswordReset": "",
   "app.containers.PasswordReset.submitError": "Noe gikk galt. Vennligst prøv igjen senere.",
   "app.containers.PasswordReset.successMessage": "Passordet ditt har blitt oppdatert",
   "app.containers.PasswordReset.title": "Tilbakestill passordet ditt",
