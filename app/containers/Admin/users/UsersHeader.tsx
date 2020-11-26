@@ -15,6 +15,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+import { MembershipType } from 'services/groups';
 
 const TitleWrapper = styled.div`
   min-height: 105px;
@@ -75,7 +76,7 @@ const DeleteGroupButton = styled(Button)``;
 
 interface Props {
   title?: Multiloc;
-  groupType?: string;
+  groupType?: MembershipType;
   onEdit?: () => void;
   onDelete?: () => void;
   onSearch: (newValue: string) => void;
