@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import { Multiloc } from 'typings';
 
 // Components
-import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import SearchInput from 'components/UI/SearchInput';
@@ -15,6 +14,7 @@ import messages from './messages';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 
 const TitleWrapper = styled.div`
   min-height: 105px;
@@ -48,14 +48,6 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const SmartGroupIcon = styled(Icon)`
-  flex: 0 0 13px;
-  width: 13px;
-  fill: ${colors.adminOrangeIcons};
-  margin-top: 10px;
-  margin-right: 12px;
-`;
-
 const TextAndButtons = styled.div`
   h1 {
     display: inline;
@@ -83,14 +75,14 @@ const DeleteGroupButton = styled(Button)``;
 
 interface Props {
   title?: Multiloc;
-  smartGroup?: boolean;
+  groupType?: string;
   onEdit?: () => void;
   onDelete?: () => void;
   onSearch: (newValue: string) => void;
 }
 
 const UsersHeader = memo(
-  ({ title, smartGroup, onEdit, onDelete, onSearch }: Props) => {
+  ({ title, groupType, onEdit, onDelete, onSearch }: Props) => {
     const handleSearchChange = (newValue: string) => {
       onSearch(newValue);
     };
@@ -98,7 +90,10 @@ const UsersHeader = memo(
     if (title) {
       return (
         <OnlyRow>
-          {smartGroup && <SmartGroupIcon name="lightningBolt" />}
+          <Outlet
+            id="app.containers.Admin.users.UsersHeader.icon"
+            type={groupType}
+          />
           <TextAndButtons>
             <T as="h1" value={title} />
             <Buttons>

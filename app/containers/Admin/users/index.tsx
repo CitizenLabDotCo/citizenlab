@@ -124,23 +124,26 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
   renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
 
+  renderModalHeader = () => {
+    const { groupCreationModal } = this.state;
+    if (groupCreationModal === 'step1') {
+      return <FormattedMessage {...messages.modalHeaderStep1} />;
+    }
+    if (groupCreationModal === 'manual') {
+      return <FormattedMessage {...messages.modalHeaderStep1} />;
+    }
+    return (
+      <Outlet
+        id="app.containers.Admin.users.header"
+        type={groupCreationModal}
+      />
+    );
+  };
+
   render() {
     if (!this.props.location) return null;
 
     const { groupCreationModal } = this.state;
-
-    let ModalHeader;
-    switch (groupCreationModal) {
-      case 'step1':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderStep1} />;
-        break;
-      case 'manual':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
-        break;
-      case 'rules':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
-        break;
-    }
 
     return (
       <>
@@ -158,7 +161,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
         </Wrapper>
 
         <Modal
-          header={ModalHeader}
+          header={this.renderModalHeader()}
           opened={groupCreationModal !== false}
           close={this.closeGroupCreationModal}
         >

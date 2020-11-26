@@ -136,10 +136,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderManual',
     defaultMessage: 'Define a group name',
   },
-  modalHeaderRules: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderRules',
-    defaultMessage: 'Define your smart group settings',
-  },
   fieldGroupName: {
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',

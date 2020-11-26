@@ -168,26 +168,29 @@ export class UsersGroup extends React.PureComponent<
 
   renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
 
+  renderModalHeader = () => {
+    const { groupEditionModal } = this.state;
+    if (groupEditionModal === 'manual') {
+      return <FormattedMessage {...messages.modalHeaderManual} />;
+    }
+    return (
+      <Outlet
+        id="app.containers.Admin.users.UsersGroup.header"
+        type={groupEditionModal}
+      />
+    );
+  };
+
   render() {
     const { group } = this.props;
     const { groupEditionModal, search } = this.state;
-    let ModalHeader;
-
-    switch (groupEditionModal) {
-      case 'manual':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
-        break;
-      case 'rules':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
-        break;
-    }
 
     if (!isNilOrError(group)) {
       return (
         <>
           <UsersHeader
             title={group.attributes.title_multiloc}
-            smartGroup={group.attributes.membership_type === 'rules'}
+            groupType={group.attributes.membership_type}
             onEdit={this.openGroupEditionModal}
             onDelete={this.deleteGroup(group.id)}
             onSearch={this.searchGroup}
@@ -201,7 +204,7 @@ export class UsersGroup extends React.PureComponent<
           />
 
           <Modal
-            header={ModalHeader}
+            header={this.renderModalHeader()}
             fixedHeight={true}
             opened={groupEditionModal !== false}
             close={this.closeGroupEditionModal}
