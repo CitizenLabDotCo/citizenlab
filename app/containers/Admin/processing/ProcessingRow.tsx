@@ -21,6 +21,7 @@ import { Multiloc } from 'typings';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import { ITagging } from 'services/taggings';
+import { IMergedTagging } from 'hooks/useTaggings';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -67,7 +68,6 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     className,
     openPreview,
     highlighted,
-    showTagColumn,
     rowRef,
     taggings,
   }) => {
@@ -117,14 +117,16 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           </ContentTitle>
         </td>
         <td className="tags">
-          {taggings.map((tagging) => (
-            <StyledTag
-              key={tagging.tag.id}
-              text={localize(tagging.tag.attributes.title_multiloc)}
-              isAutoTag={tagging.attributes.assignment_method === 'automatic'}
-              isSelected={selected}
-            />
-          ))}
+          {taggings.map((tagging) =>
+            tagging.tag ? (
+              <StyledTag
+                key={tagging.tag.id}
+                text={localize(tagging.tag.attributes.title_multiloc)}
+                isAutoTag={tagging.attributes.assignment_method === 'automatic'}
+                isSelected={selected}
+              />
+            ) : null
+          )}
         </td>
       </Container>
     );
