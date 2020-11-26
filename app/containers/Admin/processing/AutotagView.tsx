@@ -17,6 +17,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import useKeyPress from 'hooks/useKeyPress';
 import { taggingSuggestionStream } from 'services/taggings';
+import useTagSuggestions from 'hooks/useTagSuggestions';
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   display: flex;
@@ -132,32 +134,23 @@ const VerticalSeparator = styled.div`
 
 interface Props {
   closeView: (e: FormEvent) => void;
+  selectedRows: string[];
 }
 
-const AutotagView = ({ closeView }: Props) => {
+const AutotagView = ({ closeView, selectedRows }: Props) => {
   const locale = useLocale();
   const addTagInputKeyPress = useKeyPress('Enter');
   const [newTag, setNewTag] = useState('');
   const [selectedTagsList, setSelectedTagsList] = useState<string[] | []>([]);
-  const [suggestions, setSuggestions] = useState<string[] | []>([]);
+
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'detected' | 'existing'>(
     'detected'
   );
 
-  useEffect(() => {
-    const suggestions = [
-      'rezarez',
-      'rezj rejzkalre rezarezr',
-      'jkdl fdjsklfd sfjdskqlf jdksql',
-      'jkfl ds jfkdlsq jfkdlsq jfkdlsq',
-      'hjk fds fgdfqdsq',
-      'ghjfkd sfghjdsq gfhj ',
-      'ghj g',
-    ];
+  const localize = useLocalize();
 
-    setTimeout(() => setSuggestions(suggestions), 5000);
-  }, []);
+  const { tagSuggestions } = useTagSuggestions(selectedRows);
 
   useEffect(() => {
     if (addTagInputKeyPress && isValidTag) {
@@ -191,7 +184,7 @@ const AutotagView = ({ closeView }: Props) => {
       setSelectedTagsList([]);
       return;
     }
-    let newSelectedTags = selectedTagsList;
+    const newSelectedTags = selectedTagsList;
     newSelectedTags.splice(
       newSelectedTags.findIndex((tag) => removedTag === tag),
       1
@@ -206,7 +199,7 @@ const AutotagView = ({ closeView }: Props) => {
       return false;
     }
 
-    let splitTag = tag;
+    const splitTag = tag;
     const wordCount = splitTag.split(' ').filter((n) => {
       return n != '';
     }).length;
@@ -287,14 +280,14 @@ const AutotagView = ({ closeView }: Props) => {
           </TabsContainer>
           {activeTab === 'detected' ? (
             <SuggestionList>
-              {suggestions.length > 0 ? (
-                suggestions.map((suggestion) => (
+              {tagSuggestions && tagSuggestions?.length > 0 ? (
+                tagSuggestions.map((suggestion) => (
                   <Button
                     locale={locale}
                     icon="plus-circle"
                     buttonStyle="text"
                     onClick={handleNewTagFromSuggestion}
-                    text={suggestion}
+                    text={localize(suggestion.title_multiloc)}
                   />
                   // <StyledSuggestion
                   //   onClick={handleNewTagInput}
@@ -307,7 +300,7 @@ const AutotagView = ({ closeView }: Props) => {
               ) : (
                 <>
                   <StyledSubtitle>
-                    We're retrieving tag suggestions for the selected ideas
+                    We're retrieving tag tagSuggestions for the selected ideas
                   </StyledSubtitle>
                   <Spinner />
                 </>
