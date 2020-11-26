@@ -22,7 +22,7 @@ interface Props extends ButtonContainerProps {
   setDeletionError: (error: string) => void;
 }
 
-const DeleteFolderButton = memo<Props & InjectedIntlProps>(
+const DeleteProjectFolderButton = memo<Props & InjectedIntlProps>(
   ({
     publication,
     setDeleteIsProcessing,
@@ -70,4 +70,4 @@ const DeleteFolderButton = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(DeleteFolderButton);
+export default injectIntl(DeleteProjectFolderButton);
