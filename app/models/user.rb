@@ -119,25 +119,25 @@ class User < ApplicationRecord
   scope :normal_user,       -> { where(NORMAL_USER_QUERY_SQL) }
   scope :not_normal_user,   -> { where.not(NORMAL_USER_QUERY_SQL) }
 
-  scope :admin, -> {
-    where("roles @> '[{\"type\":\"admin\"}]'")
-  }
+  # scope :admin, -> {
+  #   where("roles @> '[{\"type\":\"admin\"}]'")
+  # }
 
-  scope :not_admin, -> {
-    where.not("roles @> '[{\"type\":\"admin\"}]'")
-  }
+  # scope :not_admin, -> {
+  #   where.not("roles @> '[{\"type\":\"admin\"}]'")
+  # }
 
-  scope :project_moderator, -> (project_id=nil) {
-    if project_id
-      where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
-    else
-      where("roles @> '[{\"type\":\"project_moderator\"}]'")
-    end
-  }
+  # scope :project_moderator, -> (project_id=nil) {
+  #   if project_id
+  #     where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+  #   else
+  #     where("roles @> '[{\"type\":\"project_moderator\"}]'")
+  #   end
+  # }
 
-  scope :not_project_moderator, -> {
-    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
-  }
+  # scope :not_project_moderator, -> {
+  #   where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
+  # }
 
   scope :normal_user, -> {
     where("roles = '[]'::jsonb")
@@ -221,17 +221,17 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(" ")
   end
 
-  def admin?
-    !!self.roles.find{|r| r["type"] == "admin"}
-  end
+  # def admin?
+  #   !!self.roles.find{|r| r["type"] == "admin"}
+  # end
 
   def super_admin?
     admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
 
-  def project_moderator? project_id=nil
-    !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
-  end
+  # def project_moderator? project_id=nil
+  #   !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
+  # end
 
   def admin_or_moderator? project_id
     admin? || (project_id && project_moderator?(project_id))
@@ -259,10 +259,10 @@ class User < ApplicationRecord
       .map{|role| role['project_id']}.compact
   end
 
-  def add_role type, options={}
-    self.roles << {"type" => type}.merge(options)
-    self.roles.uniq!
-  end
+  # def add_role type, options={}
+  #   self.roles << {"type" => type}.merge(options)
+  #   self.roles.uniq!
+  # end
 
   def delete_role type, options={}
     self.roles.delete({"type" => type}.merge(options.stringify_keys))
