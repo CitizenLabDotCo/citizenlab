@@ -433,6 +433,7 @@
   "app.components.admin.PostManager.PostPreview.picks": "Sélections: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Enregistrer",
   "app.components.admin.PostManager.PostPreview.submitError": "Erreur",
+  "app.components.admin.PostManager.PostPreview.suggestionLoading": "",
   "app.components.admin.PostManager.PostPreview.voteCounts": "Compte des votes:",
   "app.components.admin.PostManager.allPhases": "Toutes les phases",
   "app.components.admin.PostManager.allProjects": "Tous les projets",
