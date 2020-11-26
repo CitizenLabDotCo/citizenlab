@@ -120,7 +120,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           {taggings.map((tagging) =>
             tagging.tag ? (
               <StyledTag
-                key={tagging.tag.id}
+                key={tagging.id}
                 text={localize(tagging.tag.attributes.title_multiloc)}
                 isAutoTag={tagging.attributes.assignment_method === 'automatic'}
                 isSelected={selected}

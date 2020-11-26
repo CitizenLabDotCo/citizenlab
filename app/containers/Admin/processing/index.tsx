@@ -527,6 +527,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 onClose={closeSideModal}
                 handleNavigation={navigate}
                 taggings={getIdeaTaggings(previewPostId)}
+                tags={tags}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
