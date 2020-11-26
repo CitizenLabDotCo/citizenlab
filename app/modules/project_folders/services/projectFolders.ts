@@ -100,24 +100,3 @@ export async function deleteProjectFolder(projectFolderId: string) {
 
   return response;
 }
-
-export async function updateProjectFolderMembership(
-  projectId: string,
-  newProjectFolderId: string | null,
-  oldProjectFolderId?: string
-) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: { folder_id: newProjectFolderId } }
-  );
-
-  await streams.fetchAllWith({
-    dataId: [newProjectFolderId, oldProjectFolderId].filter(
-      (item) => item
-    ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
-  });
-
-  return response;
-}
