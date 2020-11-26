@@ -25,7 +25,8 @@ RSpec.describe User, type: :model do
     let(:roleable) { create(:project) }
     let(:other_roleable) { create(:project) }
 
-    include_examples 'has_many_polymorphic_associated_through_roles', 'project_moderator'
+    include_examples 'has_many_associated_roles', 'project_moderator'
+    # include_examples 'has_many_polymorphic_associated_through_roles', 'project_moderator'
   end
 
   # describe 'managing project folder moderator roles' do
