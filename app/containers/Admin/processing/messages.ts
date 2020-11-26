@@ -55,4 +55,12 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.proposedBudgetTitle',
     defaultMessage: 'Proposed Budget',
   },
+  addTag: {
+    id: 'app.components.admin.PostManager.PostPreview.addTag',
+    defaultMessage: 'Add a tag',
+  },
+  createTag: {
+    id: 'app.components.admin.PostManager.PostPreview.createTag',
+    defaultMessage: 'Create a tag',
+  },
 });

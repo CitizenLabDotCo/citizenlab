@@ -40,6 +40,10 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
+import useTagSuggestions from 'hooks/useTagSuggestion';
+import useTags from 'hooks/useTags';
+import useTaggings from 'hooks/useTaggings';
+import { ITagging } from 'services/taggings';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -191,10 +195,20 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const [processing] = useState<boolean>(false);
+    const {
+      tagSuggestions,
+      onIdeasChange: onIdeasChangeTagSugs,
+    } = useTagSuggestions();
+    const { tags, onIdeasChange: onIdeasChangeTags } = useTags();
+    const { taggings, onIdeasChange: onIdeasChangeTaggings } = useTaggings();
+
+    const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
+    const [previewPostTaggings, setPreviewPostTaggings] = useState<
+      ITagging[] | null
+    >(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
@@ -297,13 +311,15 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     };
 
-    // const handleAutoTag = (e: FormEvent) => {
-    //   e.preventDefault();
-    //   trackEventByName(tracks.clickAutotag.name);
+    const handleAutoTag = (e: FormEvent) => {
+      e.preventDefault();
+      trackEventByName(tracks.clickAutotag.name);
 
-    //   setProcessing(true);
-    //   onIdeasChange(selectedRows);
-    // };
+      setProcessing(true);
+      onIdeasChangeTags(selectedRows);
+      onIdeasChangeTagSugs(selectedRows);
+      onIdeasChangeTaggings(selectedRows);
+    };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
@@ -472,7 +488,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                         showTagColumn={!previewPostId}
                         onSelect={handleRowOnSelect}
                         openPreview={openPreview}
-                        tagSuggestions={null}
                       />
                     ))}
                   </tbody>
@@ -498,6 +513,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 type={'AllIdeas'}
                 postId={previewPostId}
                 onClose={closeSideModal}
+                taggings={previewPostTaggings}
                 handleNavigation={navigate}
               />
             </PostPreviewTransitionWrapper>
