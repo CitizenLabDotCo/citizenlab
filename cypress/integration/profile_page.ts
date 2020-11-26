@@ -50,11 +50,11 @@ describe('Profile Page', () => {
 
   beforeEach(() => {
     cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.get('#e2e-usersshowpage');
     cy.wait(1000);
   });
 
   it('shows the page, and main infos', () => {
-    cy.get('#e2e-usersshowpage');
     cy.get('#e2e-usersshowpage-fullname').contains(
       `${newUserName} ${newUserSurname}`
     );
@@ -71,6 +71,7 @@ describe('Profile Page', () => {
 
   it('shows the comments the user posted', () => {
     cy.get('.e2e-comment-section-nav').click();
+    cy.get('.e2e-profile-comments');
     cy.get('.e2e-profile-comments').contains(commentContent);
   });
 

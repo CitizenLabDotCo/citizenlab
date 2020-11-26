@@ -67,14 +67,15 @@ const MessengerIcon = styled(Icon)`
 const WhatsAppIcon = styled(Icon)`
   width: 22px;
   height: 22px;
+  fill: #23b43a;
   margin-right: 10px;
 `;
 
 const TwitterIcon = styled(Icon)`
-  margin-right: 10px;
   width: 22px;
   height: 17px;
   fill: #1da1f2;
+  margin-right: 10px;
 `;
 
 const EmailIcon = styled(Icon)`

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IPhaseData, canContainIdeas } from 'services/phases';
 import { Menu, Label } from 'semantic-ui-react';
-import { DropTarget } from 'react-dnd';
+import { DropTarget } from 'react-dnd-cjs';
 import T from 'components/T';
 
 interface Props {

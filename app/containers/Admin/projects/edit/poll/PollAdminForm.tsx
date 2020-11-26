@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent, Fragment } from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd-cjs';
+import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isEqual, clone } from 'lodash-es';
 import styled from 'styled-components';
 
