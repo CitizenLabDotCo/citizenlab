@@ -16,7 +16,7 @@ module HasRoles
       @ids ||= records_or_ids.flatten.map do |record_or_id|
         if record_or_id.is_a?(::ActiveRecord::Base)
           record_or_id.id
-        elsif record_or_id.is_a?(String)
+        elsif record_or_id.is_a?(String) || record_or_id.is_a?(Integer)
           record_or_id
         end
       end.uniq.compact
@@ -30,9 +30,9 @@ module HasRoles
     end
 
     def include?(other_records_or_ids)
-      other_ids = self.class.new(other_records_or_ids)
+      other_ids = self.class.new(other_records_or_ids).ids
 
-      ids.intersection(other_ids) == other_ids
+      (ids & other_ids) == other_ids
     end
 
     def map_ids(&blk)

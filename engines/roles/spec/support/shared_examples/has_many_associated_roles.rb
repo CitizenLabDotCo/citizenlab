@@ -13,18 +13,56 @@ shared_examples 'has_many_associated_roles' do |role_name|
   end
 
   describe "##{role_name}?" do
-    it "returns true if #{role_name} role is present" do
-      subject.send("add_#{role_name}_role", roleable)
+    context 'without passing arguments' do
+      it "returns true if #{role_name} role is present" do
+        subject.send("add_#{role_name}_role", roleable)
 
-      expect(subject.send("#{role_name}?")).to be_truthy
-      expect(subject.roles).to include(role_hash)
+        expect(subject.send("#{role_name}?")).to be_truthy
+        expect(subject.roles).to include(role_hash)
+      end
+
+      it "returns false if #{role_name} role is not present" do
+        subject.send("remove_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?")).to be_falsey
+        expect(subject.roles).not_to include(role_hash)
+      end
     end
 
-    it "returns false if #{role_name} role is not present" do
-      subject.send("remove_#{role_name}_role", roleable)
+    context "when passing a #{role_mapping.association_name}" do
+      it "returns true if #{role_name} role is present" do
+        expect(subject.roles).not_to include(role_hash)
 
-      expect(subject.send("#{role_name}?")).to be_falsey
-      expect(subject.roles).not_to include(role_hash)
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", roleable)).to be_truthy
+        expect(subject.roles).to include(role_hash)
+      end
+
+      it "returns false if #{role_name} role is not present" do
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", other_roleable)).to be_falsey
+        expect(subject.roles).to include(role_hash)
+      end
+    end
+
+    context "when passing a #{role_mapping.association_name} id" do
+      it "returns true if #{role_name} role is present" do
+        expect(subject.roles).not_to include(role_hash)
+
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", roleable.id)).to be_truthy
+        expect(subject.roles).to include(role_hash)
+      end
+
+      it "returns false if #{role_name} role is not present" do
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", other_roleable.id)).to be_falsey
+        expect(subject.roles).to include(role_hash)
+      end
     end
   end
 
@@ -56,8 +94,15 @@ shared_examples 'has_many_associated_roles' do |role_name|
   end
 
   describe "#add_#{role_name}_role" do
-    it "allows adding a #{role_name} role" do
+    it "allows adding a #{role_name} role with an object" do
       subject.send("add_#{role_name}_role", roleable)
+
+      expect(subject.send("#{role_name}?")).to be_truthy
+      expect(subject.roles.count).to eq 1
+    end
+
+    it "allows adding a #{role_name} role with an id" do
+      subject.send("add_#{role_name}_role", roleable.id)
 
       expect(subject.send("#{role_name}?")).to be_truthy
       expect(subject.roles.count).to eq 1
@@ -68,12 +113,19 @@ shared_examples 'has_many_associated_roles' do |role_name|
     before do
       subject.send("add_#{role_name}_role", roleable)
       expect(subject.send("#{role_name}?")).to be_truthy
+      expect(subject.send("#{role_name}_roles").count).to eq 1
     end
 
-    it "allows removing a #{role_name} role" do
+    it "allows removing a #{role_name} role with an object" do
       subject.send("remove_#{role_name}_role", roleable)
       expect(subject.send("#{role_name}?")).to be_falsey
-      expect(subject.roles.count).to eq 0
+      expect(subject.send("#{role_name}_roles").count).to eq 0
+    end
+
+    it "allows removing a #{role_name} role with an id" do
+      subject.send("remove_#{role_name}_role", roleable.id)
+      expect(subject.send("#{role_name}?")).to be_falsey
+      expect(subject.send("#{role_name}_roles").count).to eq 0
     end
   end
 
