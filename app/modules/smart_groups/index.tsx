@@ -3,6 +3,8 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import LightningBolt from './components/LightningBolt';
+import SmartGroupType from './components/SmartGroupType';
+
 
 const RenderOnFeatureFlag = ({ children }) => {
   const isSmartGroupsEnabled = useFeatureFlag('smart_groups');
@@ -21,6 +23,10 @@ const RenderOnType = ({ type, children }) => {
 
 const configuration: ModuleConfiguration = {
   outlets: {
+    'app.containers.Admin.users.GroupCreationStep1.type': ({
+      onClick,
+      formattedLink,
+    }) => <SmartGroupType onClick={onClick} formattedLink={formattedLink} />,
     'app.containers.Admin.users.GroupsListPanel.listitem.icon': ({ type }) => (
       <RenderOnType type={type}>
         <LightningBolt />

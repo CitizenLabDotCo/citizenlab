@@ -205,13 +205,4 @@ export default defineMessages({
     defaultMessage:
       'Verification is disabled for your platform, remove the verification rule or contact support.',
   },
-  smartGroupsAvailability: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability',
-    defaultMessage:
-      'Smart groups are available on the Standard and Premium plans.',
-  },
-  learnMorePlans: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.learnMorePlans',
-    defaultMessage: 'Learn more about our plans',
-  },
 });
