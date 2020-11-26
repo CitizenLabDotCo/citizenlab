@@ -37,6 +37,7 @@ const BodyWrapper = styled.div`
 const StyledAvatar = styled(Avatar)`
   margin-right: 8px;
   margin-left: -2px;
+  margin-top: -1px;
 `;
 
 const Body = styled.div`
@@ -52,11 +53,15 @@ const Body = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+
+  & strong {
+    font-weight: 500;
+  }
 `;
 
 const Separator = styled.span`
   display: inline-block;
-  margin: 0 4px;
+  margin: 0 5px;
 `;
 
 interface Props {
@@ -144,8 +149,8 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
                   value={idea.attributes.created_at}
                   style="numeric"
                 />
-                <Separator aria-hidden>&bull;</Separator>
               </strong>
+              <Separator aria-hidden>&bull;</Separator>
               {bodyText}
             </Body>
           </BodyWrapper>

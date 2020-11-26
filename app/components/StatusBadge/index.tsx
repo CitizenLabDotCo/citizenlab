@@ -1,16 +1,8 @@
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-
-// services
-import { ideaStatusStream, IIdeaStatus } from 'services/ideaStatuses';
-
-// i18n
+import React, { memo } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import useIdeaStatus from 'hooks/useIdeaStatus';
 import T from 'components/T';
-
-// style
 import styled from 'styled-components';
-
-// utils
 import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -26,54 +18,26 @@ const Container = styled.div`
   background-color: ${(props: any) => props.color};
 `;
 
-type Props = {
+interface Props {
   statusId: string;
   className?: string;
   id?: string;
-};
-
-type State = {
-  ideaStatus: IIdeaStatus | null;
-};
-
-export default class StatusBadge extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      ideaStatus: null,
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { statusId } = this.props;
-    const ideaStatus$ = ideaStatusStream(statusId).observable;
-
-    this.subscriptions = [
-      ideaStatus$.subscribe((ideaStatus) => this.setState({ ideaStatus })),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { ideaStatus } = this.state;
-    const { className, id } = this.props;
-
-    if (ideaStatus !== null) {
-      const color = ideaStatus ? ideaStatus.data.attributes.color : '#bbb';
-
-      return (
-        <Container id={id} className={className} color={color}>
-          <T value={ideaStatus.data.attributes.title_multiloc} />
-        </Container>
-      );
-    }
-
-    return null;
-  }
 }
+
+const StatusBadge = memo<Props>(({ statusId, id, className }) => {
+  const ideaStatus = useIdeaStatus({ statusId });
+
+  if (!isNilOrError(ideaStatus)) {
+    const color = ideaStatus?.attributes?.color || '#bbb';
+
+    return (
+      <Container id={id || ''} className={className || ''} color={color}>
+        <T value={ideaStatus.attributes.title_multiloc} />
+      </Container>
+    );
+  }
+
+  return null;
+});
+
+export default StatusBadge;
