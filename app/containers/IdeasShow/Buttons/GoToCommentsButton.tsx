@@ -34,7 +34,19 @@ const GoToCommentsButton = ({
 
       observer = new IntersectionObserver(callback);
       observer.observe(commentInputField);
-      commentInputField.scrollIntoView({ behavior: 'smooth' });
+
+      // commentInputField.scrollIntoView({ behavior: 'smooth' });
+
+      const scrollContainer =
+        document.getElementsByClassName(
+          'fullscreenmodal-scrollcontainer'
+        )?.[0] || window;
+      const top =
+        commentInputField.getBoundingClientRect().top +
+        window.pageYOffset -
+        150;
+      const behavior = 'smooth';
+      scrollContainer.scrollTo({ top, behavior });
     }
   };
 

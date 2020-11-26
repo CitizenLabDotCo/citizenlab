@@ -179,7 +179,13 @@ const config = {
 
   resolve: {
     modules: [path.join(process.cwd(), 'app'), 'node_modules'],
-    extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      'polished': path.resolve('./node_modules/polished'),
+      'moment': path.resolve('./node_modules/moment'),
+      'react': path.resolve('./node_modules/react'),
+      'styled-components': path.resolve('./node_modules/styled-components'),
+    }
   },
 };
 

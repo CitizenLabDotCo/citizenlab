@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { IParticipationContextType } from 'typings';
-import styled from 'styled-components';
-import {
-  rightColumnWidthDesktop,
-  rightColumnWidthTablet,
-} from '../styleConstants';
-import { media, colors } from 'utils/styleUtils';
+
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import MetaInformation from '../MetaInformation';
@@ -13,13 +10,31 @@ import VotingCTABox from '../CTABox/VotingCTABox';
 import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox';
 import Buttons from '../CTABox/Buttons';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
+// styling
+import styled, { css } from 'styled-components';
+import { media, colors } from 'utils/styleUtils';
+import {
+  rightColumnWidthDesktop,
+  rightColumnWidthTablet,
+} from '../styleConstants';
+
+const Container = styled.div<{ isSticky: boolean; insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
   width: ${rightColumnWidthDesktop}px;
+
+  ${({ isSticky, insideModal }) => {
+    const top = insideModal ? '30px' : '110px';
+
+    if (isSticky) {
+      return css`
+        position: sticky;
+        top: ${top};
+        align-self: flex-start;
+      `;
+    }
+
+    return;
+  }}
 
   ${media.tablet`
     flex: 0 0 ${rightColumnWidthTablet}px;
@@ -29,6 +44,11 @@ const Container = styled.div`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
+`;
+
+const InnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledVotingCTABox = styled(VotingCTABox)`
@@ -60,6 +80,7 @@ interface Props {
   participationContextId: string | null;
   participationContextType: IParticipationContextType | null;
   budgetingDescriptor: any | null;
+  insideModal: boolean;
 }
 
 const RightColumnDesktop = ({
@@ -72,35 +93,53 @@ const RightColumnDesktop = ({
   participationContextId,
   participationContextType,
   budgetingDescriptor,
+  insideModal,
 }: Props) => {
+  const { windowHeight } = useWindowSize();
+  const [isSticky, setIsSticky] = useState(true);
+
+  const callBackRef = useCallback((domNode) => {
+    if (domNode) {
+      setTimeout(() => {
+        const elementDimensions = domNode.getBoundingClientRect();
+
+        if (elementDimensions?.height > windowHeight - 120) {
+          setIsSticky(false);
+        }
+      }, 1000);
+    }
+  }, []);
+
   return (
-    <Container>
-      {showVoteControl && (
-        <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
-      )}
-      {showBudgetControl &&
-        participationContextId &&
-        participationContextType &&
-        budgetingDescriptor && (
-          <StyledPBCTABox
-            ideaId={ideaId}
-            projectId={projectId}
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-            budgetingDescriptor={budgetingDescriptor}
-          />
+    <Container isSticky={isSticky} insideModal={insideModal}>
+      <InnerContainer ref={callBackRef}>
+        {showVoteControl && (
+          <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
         )}
-      {!showVoteControl && !showBudgetControl && (
-        <ButtonsFallback>
-          <Buttons ideaId={ideaId} />
-        </ButtonsFallback>
-      )}
-      <StyledMetaInformation
-        ideaId={ideaId}
-        projectId={projectId}
-        statusId={statusId}
-        authorId={authorId}
-      />
+        {showBudgetControl &&
+          participationContextId &&
+          participationContextType &&
+          budgetingDescriptor && (
+            <StyledPBCTABox
+              ideaId={ideaId}
+              projectId={projectId}
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+              budgetingDescriptor={budgetingDescriptor}
+            />
+          )}
+        {!showVoteControl && !showBudgetControl && (
+          <ButtonsFallback>
+            <Buttons ideaId={ideaId} />
+          </ButtonsFallback>
+        )}
+        <StyledMetaInformation
+          ideaId={ideaId}
+          projectId={projectId}
+          statusId={statusId}
+          authorId={authorId}
+        />
+      </InnerContainer>
     </Container>
   );
 };

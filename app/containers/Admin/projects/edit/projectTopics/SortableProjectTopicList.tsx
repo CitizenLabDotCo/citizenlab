@@ -104,6 +104,7 @@ const SortableProjectTopicList = memo(
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
+            key={projectTopics.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
