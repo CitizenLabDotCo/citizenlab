@@ -34,14 +34,6 @@ module WebApi::V1::Roles
 
     private
 
-    def current_user
-      User.first
-    end
-
-    def secure_controller?
-      false
-    end
-
     def find_roled_resource
       @roled_resource = roled_resource_class.find(params[:id])
       authorize(@roled_resource, policy_class: policy_class) if policy_present?
