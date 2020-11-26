@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
-import { TRule } from 'components/admin/UserFilterConditions/rules';
+import { TRule } from 'modules/smart_groups/components/UserFilterConditions/rules';
 
 export type MembershipType = 'manual' | 'rules';
 
