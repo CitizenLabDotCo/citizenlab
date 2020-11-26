@@ -136,6 +136,21 @@ resource "Taggings" do
     end
   end
 
+  patch "web_api/v1/taggings/:id" do
+    before do
+      @ideas = create_list(:idea, 2)
+      @tag = Tagging::Tag.create(title_multiloc: { en: 'Banana' })
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @tag.id, assignment_method: 'automatic', confidence_score: 0.22)
+    end
+
+    example 'Update a tagging from automatic to manual' do
+      do_request id: @tagging.id, assignment_method: 'manual'
+      expect(status).to eq(200)
+      expect(Tagging::Tagging.find(@tagging.id).assignment_method).to eq 'manual'
+      expect(Tagging::Tagging.find(@tagging.id).confidence_score).to eq 1
+    end
+  end
+
   post "web_api/v1/taggings/generate" do
     parameter :idea_ids, "The ideas to tag", required: true
     parameter :tag_ids, "The id of the tags to assign", required: false
