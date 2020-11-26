@@ -38,7 +38,7 @@ Rails.application.routes.draw do
         resources :spam_reports, shallow: true
       end
 
-      # roles_for :users, skip: %i[admin project_moderator]
+      roles_for :users, skip: %i[admin admin_publication_moderator project_moderator]
 
       resources :ideas,
         concerns: [:votable, :spam_reportable, :post],

@@ -205,6 +205,10 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
+  def normal?
+    roles.empty?
+  end
+
   def highest_role
     if super_admin?                 then :super_admin
     elsif admin?                    then :admin
