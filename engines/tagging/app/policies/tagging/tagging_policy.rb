@@ -30,6 +30,10 @@ module Tagging
       user&.active_admin_or_moderator?(record.idea.project.id)
     end
 
+    def update?
+      user&.active_admin_or_moderator?(record.idea.project.id)
+    end
+
     def destroy?
       user&.active_admin_or_moderator?(record.idea.project.id)
     end
@@ -38,13 +42,19 @@ module Tagging
       user&.active_admin_or_moderator?(record.idea.project.id)
     end
 
-    def permitted_attributes
+    def permitted_attributes_for_create
       [
         :idea_id,
         :tag_id,
         tag_attributes: [
           title_multiloc: CL2_SUPPORTED_LOCALES
         ]
+      ]
+    end
+
+    def permitted_attributes_for_update
+      [
+        :assignment_method
       ]
     end
   end

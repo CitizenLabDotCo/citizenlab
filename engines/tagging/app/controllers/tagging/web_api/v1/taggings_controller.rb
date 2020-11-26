@@ -2,7 +2,7 @@ module Tagging
   module WebApi
     module V1
       class TaggingsController < ApplicationController
-        before_action :set_tagging, only: %i[show destroy]
+        before_action :set_tagging, only: %i[show destroy update]
         skip_after_action :verify_authorized, only: [:generate]
 
         def index
@@ -42,6 +42,26 @@ module Tagging
               ).serialized_json, status: :created
           else
             render json: { errors: @tagging.errors.details }, status: :unprocessable_entity
+          end
+        end
+
+        def update
+          if params["assignment_method"] == 'manual'
+            @tagging.confidence_score = 1
+            @tagging.assignment_method = 'manual'
+            authorize @tagging
+            # SideFxTagService.new.before_update(@tag, current_user)
+            if @tagging.save
+              # SideFxTagService.new.after_update(@tag, current_user)
+              render json: WebApi::V1::TaggingSerializer.new(
+                @tagging,
+                params: fastjson_params
+                ).serialized_json, status: :ok
+            else
+              render json: { errors: @tag.errors.details }, status: :unprocessable_entity
+            end
+          else
+            render json: { errors: @tag.errors.details }, status: :unprocessable_entity
           end
         end
 
