@@ -30,6 +30,8 @@ module HasRoles
     end
 
     def include?(other_records_or_ids)
+      return false if other_records_or_ids&.empty? || ids&.empty?
+
       other_ids = self.class.new(other_records_or_ids).ids
 
       (ids & other_ids) == other_ids
