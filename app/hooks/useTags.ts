@@ -7,10 +7,12 @@ export interface IUseTag {
   onSearchChange: (search: string) => void;
 }
 
-export default function useTags() {
+export default function useTags(ideaIdsParam = [] as string[]) {
   const [tags, setTags] = useState<ITag[] | null | undefined>(undefined);
 
-  const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>([]);
+  const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>(
+    ideaIdsParam || []
+  );
 
   const onIdeasChange = useCallback((ideas: string[]) => {
     setIdeaIds([...ideas]);
