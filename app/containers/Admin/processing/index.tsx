@@ -48,10 +48,8 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
-import useTagSuggestions from 'hooks/useTagSuggestion';
 import useTags from 'hooks/useTags';
 import useTaggings from 'hooks/useTaggings';
-import { ITagging } from 'services/taggings';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -218,15 +216,10 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [projectList, setProjectList] = useState<IFilterSelectorValue[]>([]);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
-    //
-    // const {
-    //   tagSuggestions,
-    //   onIdeasChange: onIdeasChangeTagSugs,
-    // } = useTagSuggestions();
-    const { taggings } = useTaggings(); // TODO make use of included data.
+
+    const { taggings } = useTaggings();
     const { tags } = useTags();
 
-    const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
@@ -306,10 +299,8 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitModalKey, ideaList]);
 
     useEffect(() => {
-      if (!processing && selectedProjectIds.length > 0) {
-        setIdeaList(ideas?.list);
-      }
-    }, [ideas, processing]);
+      setIdeaList(ideas?.list);
+    }, [ideas]);
 
     useEffect(() => {
       if (loadingIdeas) {
@@ -345,15 +336,11 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleCloseAutotagView = (e: FormEvent) => {
       e.preventDefault();
       setShowAutotagView(false);
-      // setProcessing(true);
-      // onIdeasChangeTags(selectedRows);
-      // onIdeasChangeTagSugs(selectedRows);
-      // onIdeasChangeTaggings(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !processing) {
+        if (!isNilOrError(ideaList)) {
           const newSelectedRows =
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
@@ -361,7 +348,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           setSelectedRows(newSelectedRows);
         }
       },
-      [ideaList, selectedRows, processing]
+      [ideaList, selectedRows]
     );
 
     const navigate = (direction: 'up' | 'down') => {
@@ -405,14 +392,12 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
-        if (!processing) {
-          const newSelectedRows = includes(selectedRows, selectedItemId)
-            ? selectedRows.filter((id) => id !== selectedItemId)
-            : [...selectedRows, selectedItemId];
-          setSelectedRows(newSelectedRows);
-        }
+        const newSelectedRows = includes(selectedRows, selectedItemId)
+          ? selectedRows.filter((id) => id !== selectedItemId)
+          : [...selectedRows, selectedItemId];
+        setSelectedRows(newSelectedRows);
       },
-      [selectedRows, processing]
+      [selectedRows]
     );
 
     const openPreview = (id: string) => {
@@ -463,7 +448,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                   <Button
                     buttonStyle="admin-dark"
                     disabled={selectedRows.length === 0}
-                    processing={processing}
                     locale={locale}
                     onClick={handleAutoTag}
                   >
@@ -575,7 +559,12 @@ const Processing = memo<Props & InjectedIntlProps>(
       !isNilOrError(locale) &&
       showAutotagView
     ) {
-      return <AutotagView closeView={handleCloseAutotagView} />;
+      return (
+        <AutotagView
+          closeView={handleCloseAutotagView}
+          selectedRows={selectedRows}
+        />
+      );
     } else return null;
   }
 );
