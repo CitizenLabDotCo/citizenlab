@@ -90,7 +90,7 @@ interface State {
 class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   static titleMinLength = 10;
   static titleMaxLength = 72;
-  static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 500;
+  static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
   static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
 
   titleInputElement: HTMLInputElement | null;
@@ -187,7 +187,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         stripHtmlTags(body).length < InitiativeForm.bodyMinLength &&
         body.length > 0
       ) {
-        return { message: messages.descriptionLengthError };
+        return { message: messages.descriptionBodyLengthError };
       } else if (!body || body === '') {
         return { message: messages.descriptionEmptyError };
       }
