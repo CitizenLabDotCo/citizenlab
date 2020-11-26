@@ -205,6 +205,8 @@ module HasRoles
             role_association_records_ids_name = self.role_association_records_ids_name
 
             define_klass_instance_method(:"#{role_name}?") do |records_or_ids = nil|
+              return if send("#{through_role_name}_roles").empty?
+
               ids = RecordsOrIds.new(records_or_ids).ids
               return (ids - send(role_association_records_ids_name)).empty? if ids.present?
 

@@ -16,7 +16,7 @@ module Roles
 
     def associated?
       options.key?(:class) &&
-        roleable_class.ancestors.include?(ActiveRecord::Base) &&
+        roleable_class.ancestors.include?(::ActiveRecord::Base) &&
         foreign_key.present?
     end
 
@@ -25,7 +25,7 @@ module Roles
     end
 
     def through?
-      options.key?(:through) && roleable_class.ancestors.include?(ActiveRecord::Base)
+      options.key?(:through) && roleable_class.ancestors.include?(::ActiveRecord::Base)
     end
 
     def polymorphic_through?

@@ -15,18 +15,57 @@ shared_examples 'has_many_polymorphic_associated_through_roles' do |role_name|
   end
 
   describe "##{role_name}?" do
-    it "returns true if #{role_name} role is present" do
-      subject.send("add_#{role_name}_role", roleable)
+    context 'without passing arguments' do
+      it "returns true if #{role_name} role is present" do
+        subject.send("add_#{role_name}_role", roleable)
 
-      expect(subject.send("#{role_name}?")).to be_truthy
-      expect(subject.roles).to include(role_hash)
+        expect(subject.send("#{role_name}?")).to be_truthy
+        expect(subject.roles).to include(role_hash)
+      end
+
+      it "returns false if #{role_name} role is not present" do
+        subject.send("remove_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?")).to be_falsey
+        expect(subject.roles).not_to include(role_hash)
+      end
     end
 
-    it "returns false if #{role_name} role is not present" do
-      subject.send("remove_#{role_name}_role", roleable)
+    context "when passing a #{role_mapping.association_name}" do
 
-      expect(subject.send("#{role_name}?")).to be_falsey
-      expect(subject.roles).not_to include(role_hash)
+      it "returns true if #{role_name} role is present" do
+        expect(subject.roles).not_to include(role_hash)
+
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", roleable)).to be_truthy
+        expect(subject.roles).to include(role_hash)
+      end
+
+      it "returns false if #{role_name} role is not present" do
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", other_roleable)).to be_falsey
+        expect(subject.roles).to include(role_hash)
+      end
+    end
+
+    context "when passing a #{role_mapping.association_name} id" do
+      it "returns true if #{role_name} role is present" do
+        expect(subject.roles).not_to include(role_hash)
+
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", roleable.id)).to be_truthy
+        expect(subject.roles).to include(role_hash)
+      end
+
+      it "returns false if #{role_name} role is not present" do
+        subject.send("add_#{role_name}_role", roleable)
+
+        expect(subject.send("#{role_name}?", other_roleable.id)).to be_falsey
+        expect(subject.roles).to include(role_hash)
+      end
     end
   end
 
