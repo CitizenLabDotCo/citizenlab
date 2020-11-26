@@ -13,6 +13,7 @@ export interface ITagging {
     idea_id: string;
   };
 }
+export type ITaggingsData = { data: ITagging[] };
 
 export function taggingSuggestionStream(
   streamParams: IStreamParams | null = null
@@ -24,7 +25,7 @@ export function taggingSuggestionStream(
 }
 
 export function taggingStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: ITagging[] }>({
+  return streams.get<ITaggingsData>({
     apiEndpoint: `${API_PATH}/taggings`,
     ...streamParams,
   });
@@ -44,7 +45,7 @@ export async function addTagging(
     }
   );
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/tags`],
+    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
   });
   return !isNilOrError(response) ? response.data : (response as Error);
 }

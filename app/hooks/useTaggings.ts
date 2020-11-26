@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { ITagging, taggingStream } from 'services/taggings';
 import { ITag, tagStream } from 'services/tags';
 import { isNilOrError } from 'utils/helperUtils';
@@ -21,43 +21,34 @@ export default function useTaggings() {
   }, []);
 
   useEffect(() => {
-    const observable = taggingStream({
+    const taggingObservable = taggingStream({
+      queryParameters: {
+        idea_ids: ideaIds,
+      },
+    }).observable;
+    const tagObservable = tagStream({
       queryParameters: {
         idea_ids: ideaIds,
       },
     }).observable;
 
-    const subscription = observable
-      .pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap((taggings) =>
-          tagStream({
-            queryParameters: {
-              idea_ids: ideaIds,
-            },
-          }).observable.pipe(
-            map((tags) => ({
-              taggings,
-              tags,
+    const subscription = combineLatest(
+      taggingObservable,
+      tagObservable
+    ).subscribe(([taggings, tags]) => {
+      setTaggings(
+        isNilOrError(taggings)
+          ? taggings
+          : isNilOrError(tags)
+          ? null
+          : taggings.data.map((tagging) => ({
+              ...tagging,
+              tag: tags?.data?.find(
+                (tag) => tag.id === tagging.attributes.tag_id
+              ),
             }))
-          )
-        )
-      )
-      .subscribe(({ taggings, tags }) => {
-        console.log(tags, taggings);
-        setTaggings(
-          isNilOrError(taggings)
-            ? taggings
-            : isNilOrError(tags)
-            ? null
-            : taggings.data.map((tagging) => ({
-                ...tagging,
-                tag: tags?.data?.find(
-                  (tag) => tag.id === tagging.attributes.tag_id
-                ),
-              }))
-        );
-      });
+      );
+    });
 
     return () => subscription.unsubscribe();
   }, [ideaIds]);
