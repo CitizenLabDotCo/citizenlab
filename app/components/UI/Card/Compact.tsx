@@ -58,7 +58,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 162px;
-  margin-left: 20px;
+  margin-left: 25px;
 `;
 
 const Header = styled.header`
