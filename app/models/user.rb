@@ -4,6 +4,7 @@ class User < ApplicationRecord
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
+  include ProjectFolders::UserDecorator
   include PgSearch
 
   GENDERS = %w(male female unspecified)
@@ -125,7 +126,6 @@ class User < ApplicationRecord
   scope :not_invited, -> {
     where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
-
 
   scope :in_group, -> (group) {
     if group.rules?
