@@ -207,12 +207,12 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "delete_role" do
+  describe "remove_role" do
     it "denies a user from his moderator rights" do
       prj = create(:project)
       mod = create(:moderator, project: prj)
 
-      mod.delete_role 'project_moderator', project_id: prj.id
+      mod.remove_role 'project_moderator', project_id: prj.id
       expect(mod.save).to eq true
       expect(mod.project_moderator? prj.id).to eq false
     end
@@ -221,7 +221,7 @@ RSpec.describe User, type: :model do
       prj = create(:project)
       adm = create(:moderator, project: prj)
 
-      adm.delete_role 'admin'
+      adm.remove_role 'admin'
       expect(adm.save).to eq true
       expect(adm.admin?).to eq false
     end
