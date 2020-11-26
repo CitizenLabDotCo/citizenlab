@@ -14,10 +14,7 @@ module NLP
             }
           }
 
-          render json: @tag_suggestions,
-            each_serializer: ::WebApi::V1::TagSuggestionSerializer,
-            adapter: :json,
-            root: 'data'
+          render json: { data: @tag_suggestions }.to_json
         end
       end
     end
