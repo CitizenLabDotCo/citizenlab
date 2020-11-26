@@ -1825,7 +1825,7 @@
   "app.containers.PasswordReset.passwordError": "Parola dvs. trebuie să conțină minim 8 caractere",
   "app.containers.PasswordReset.passwordLabel": "Parola",
   "app.containers.PasswordReset.passwordPlaceholder": "Parolă Nouă",
-  "app.containers.PasswordReset.resetPassword": "",
+  "app.containers.PasswordReset.requestPasswordReset": "",
   "app.containers.PasswordReset.submitError": "A apărut o eroare. Vă rugăm să încercați din nou mai târziu.",
   "app.containers.PasswordReset.successMessage": "Parola ta a fost actualizată cu succes",
   "app.containers.PasswordReset.title": "Resetează parola",
