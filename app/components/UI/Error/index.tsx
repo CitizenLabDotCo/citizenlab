@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { get, isArray, isEmpty, uniqBy } from 'lodash-es';
+import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import { darken } from 'polished';
@@ -280,7 +280,7 @@ export default class Error extends PureComponent<Props, State> {
                           value: <strong>'{value}'</strong>,
                         };
 
-                        values = payload && { ...payload, ...values };
+                        values = payload ? { ...payload, ...values } : values;
 
                         if (value || row || rows) {
                           return (
