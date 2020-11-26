@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { PublicationStatus } from 'services/projects';
-import { updateProjectFolderMembership } from 'modules/project_folders/services/projectFolders';
+import { updateProjectFolderMembership } from 'modules/project_folders/services/projects';
 
 // resources
 import GetProjectFolder, {
