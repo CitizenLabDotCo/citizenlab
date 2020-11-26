@@ -8,23 +8,23 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'managing admin role' do
-    subject { create(:user) }
+  # describe 'managing admin role' do
+  #   subject { create(:user) }
 
-    include_examples 'has_one_role', 'admin'
-  end
+  #   include_examples 'has_one_role', 'admin'
+  # end
 
-  describe 'managing admin publication moderator roles' do
-    let(:roleable) { create(:project).admin_publication }
+  # describe 'managing admin publication moderator roles' do
+  #   let(:roleable) { create(:project).admin_publication }
 
-    include_examples 'has_many_associated_roles', 'admin_publication_moderator'
-  end
+  #   include_examples 'has_many_associated_roles', 'admin_publication_moderator'
+  # end
 
-  describe 'managing project moderator roles' do
-    let(:roleable) { create(:project) }
+  # describe 'managing project moderator roles' do
+  #   let(:roleable) { create(:project) }
 
-    include_examples 'has_many_polymorphic_associated_through_roles', 'project_moderator'
-  end
+  #   include_examples 'has_many_polymorphic_associated_through_roles', 'project_moderator'
+  # end
 
   # describe 'managing project folder moderator roles' do
   #   let(:roleable) { create(:project) }
