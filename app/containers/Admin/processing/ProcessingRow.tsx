@@ -55,7 +55,7 @@ interface Props {
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
-  tagSuggestions: IAutoTag[] | null | undefined;
+  tagSuggestions?: IAutoTag[] | null | undefined;
   showTagColumn: boolean;
   rowRef?: RefObject<any>;
 }
