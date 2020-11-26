@@ -33,10 +33,6 @@ const configuration: ModuleConfiguration = {
       </RenderOnType>
     ),
   },
-  routes: {
-    citizen: [],
-    admin: [],
-  },
 };
 
 export default configuration;
