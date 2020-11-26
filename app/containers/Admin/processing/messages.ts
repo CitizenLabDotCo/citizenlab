@@ -41,6 +41,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.addExistingTag',
     defaultMessage: 'Add existing tag',
   },
+  tagsToAssign: {
+    id: 'app.containers.Admin.Processing.tagsToAssign',
+    defaultMessage: 'Tags to assign',
+  },
+  tagAssignationExplanation: {
+    id: 'app.containers.Admin.Processing.tagAssignationExplanation',
+    defaultMessage: 'Tags are going to be applied to all matching ideas',
+  },
   addSmartTag: {
     id: 'app.containers.Admin.Processing.addSmartTag',
     defaultMessage: 'Add smart tag',

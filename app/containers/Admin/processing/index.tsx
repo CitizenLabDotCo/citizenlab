@@ -231,7 +231,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
-    const [isAutotagMode, setIsAutotagMode] = useState<boolean>(false);
+    const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
 
     const [previewPostTaggings, setPreviewPostTaggings] = useState<
       ITagging[] | null
@@ -342,16 +342,16 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
-      setIsAutotagMode(true);
+      setShowAutotagView(true);
     };
 
     const handleCloseAutotagView = (e: FormEvent) => {
       e.preventDefault();
-      setIsAutotagMode(false);
-      setProcessing(true);
-      onIdeasChangeTags(selectedRows);
-      onIdeasChangeTagSugs(selectedRows);
-      onIdeasChangeTaggings(selectedRows);
+      setShowAutotagView(false);
+      // setProcessing(true);
+      // onIdeasChangeTags(selectedRows);
+      // onIdeasChangeTagSugs(selectedRows);
+      // onIdeasChangeTaggings(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
@@ -425,7 +425,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const closeSideModal = () => setPreviewPostId(null);
 
-    if (!isNilOrError(projectList) && !isNilOrError(locale) && !isAutotagMode)
+    if (!isNilOrError(projectList) && !isNilOrError(locale) && !showAutotagView)
       return (
         <Container className={className}>
           <CSSTransition
@@ -557,7 +557,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           </CSSTransition>
         </Container>
       );
-    if (!isNilOrError(projectList) && !isNilOrError(locale) && isAutotagMode)
+    if (!isNilOrError(projectList) && !isNilOrError(locale) && showAutotagView)
       return <AutotagView closeView={handleCloseAutotagView} />;
     else return null;
   }

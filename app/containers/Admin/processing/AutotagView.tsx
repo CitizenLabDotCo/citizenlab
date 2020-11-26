@@ -1,7 +1,7 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 
 // components
-import { Button, Icon, Input, Tag } from 'cl2-component-library';
+import { Button, Icon, Input, Spinner, Tag } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import useKeyPress from 'hooks/useKeyPress';
+import { taggingSuggestionStream } from 'services/taggings';
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: start;
-  padding: 5%;
+  padding: 2%;
   flex-direction: column;
   width: 60%;
   height: 100%;
@@ -47,12 +48,34 @@ const Row = styled.div`
   align-items: flex-start;
 `;
 
+const StyledSubtitle = styled.p`
+  font-size: ${fontSizes.small};
+  font-weight: 600;
+`;
+
+const StyledSuggestion = styled.p`
+  font-size: ${fontSizes.base};
+  font-style: italic;
+`;
+
+const StyledInput = styled(Input)`
+  width: 200px;
+`;
+
 const TagList = styled.div`
   margin: auto;
   display: flex;
+  justify-content: flex-start;
   flex-direction: row;
-  flex-wrap: wrap;
   width: 80%;
+`;
+
+const SuggestionList = styled.div`
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  align-items: flex-start;
 `;
 const StyledTag = styled(Tag)`
   margin-bottom: ${fontSizes.xs}px;
@@ -116,13 +139,28 @@ const AutotagView = ({ closeView }: Props) => {
   const addTagInputKeyPress = useKeyPress('Enter');
   const [newTag, setNewTag] = useState('');
   const [selectedTagsList, setSelectedTagsList] = useState<string[] | []>([]);
-  const [isValidTag, setIsValidTag] = useState<boolean>(false);
+  const [suggestions, setSuggestions] = useState<string[] | []>([]);
+  const [isValidTag, setIsValidTag] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'detected' | 'existing'>(
     'detected'
   );
 
   useEffect(() => {
-    if (addTagInputKeyPress) {
+    const suggestions = [
+      'rezarez',
+      'rezj rejzkalre rezarezr',
+      'jkdl fdjsklfd sfjdskqlf jdksql',
+      'jkfl ds jfkdlsq jfkdlsq jfkdlsq',
+      'hjk fds fgdfqdsq',
+      'ghjfkd sfghjdsq gfhj ',
+      'ghj g',
+    ];
+
+    setTimeout(() => setSuggestions(suggestions), 5000);
+  }, []);
+
+  useEffect(() => {
+    if (addTagInputKeyPress && isValidTag) {
       handleAddNewTag();
     }
   }, [addTagInputKeyPress]);
@@ -141,20 +179,43 @@ const AutotagView = ({ closeView }: Props) => {
     setIsValidTag(isTagValid(tag));
   };
 
-  const handleRemoveTagFromSelection = (tag: string) => {
-    setSelectedTagsList([...selectedTagsList]);
+  const handleNewTagFromSuggestion = (event) => {
+    event.preventDefault();
+    console.log(event);
+    // setNewTag(tag);
+    // setIsValidTag(isTagValid(tag));
   };
 
-  const isTagValid = (tag) => {
+  const handleRemoveTagFromSelection = (removedTag: string) => {
+    if (selectedTagsList.length === 1) {
+      setSelectedTagsList([]);
+      return;
+    }
+    let newSelectedTags = selectedTagsList;
+    newSelectedTags.splice(
+      newSelectedTags.findIndex((tag) => removedTag === tag),
+      1
+    );
+    console.log(newSelectedTags);
+
+    setSelectedTagsList([...newSelectedTags]);
+  };
+
+  const isTagValid = (tag: string) => {
     if (tag.length < 2) {
       return false;
     }
 
-    const wordCount = tag.split(' ').filter((n) => {
+    let splitTag = tag;
+    const wordCount = splitTag.split(' ').filter((n) => {
       return n != '';
     }).length;
 
-    return !isNilOrError(wordCount) && [1, 2].includes(wordCount);
+    return (
+      !isNilOrError(wordCount) &&
+      [1, 2].includes(wordCount) &&
+      !selectedTagsList.includes(tag)
+    );
   };
 
   if (!isNilOrError(locale)) {
@@ -163,16 +224,26 @@ const AutotagView = ({ closeView }: Props) => {
         <Left>
           <GoBackButton onClick={closeView} />
           <StyledIcon name={'label'} />
-          <FormattedMessage {...messages.tags} />
-          <FormattedMessage {...messages.tags} />
-          <FormattedMessage {...messages.addNewTag} />
+          <h2>
+            <FormattedMessage {...messages.tagsToAssign} />
+          </h2>
+          <StyledSubtitle>
+            <FormattedMessage {...messages.tagAssignationExplanation} />
+          </StyledSubtitle>
+          <h4>
+            <FormattedMessage {...messages.addTag} />
+          </h4>
           <Row>
-            <Input
+            <StyledInput
               type={'text'}
               value={newTag}
               onChange={handleNewTagInput}
-              error={isValidTag ? '' : 'please use max two words'}
-            ></Input>
+              error={
+                isValidTag
+                  ? ''
+                  : 'please use max two words and do not add duplicates'
+              }
+            ></StyledInput>
             <Button
               locale={locale}
               icon="plus-circle"
@@ -188,8 +259,8 @@ const AutotagView = ({ closeView }: Props) => {
                   text={tag}
                   isAutoTag={false}
                   isSelected={false}
-                  icon={'delete'}
-                  onTagClick={() => handleRemoveTagFromSelection('test')}
+                  icon={'remove'}
+                  onTagClick={() => handleRemoveTagFromSelection(tag)}
                 />
               ))}
           </TagList>
@@ -215,7 +286,33 @@ const AutotagView = ({ closeView }: Props) => {
             </Tab>
           </TabsContainer>
           {activeTab === 'detected' ? (
-            <div>Suggestions</div>
+            <SuggestionList>
+              {suggestions.length > 0 ? (
+                suggestions.map((suggestion) => (
+                  <Button
+                    locale={locale}
+                    icon="plus-circle"
+                    buttonStyle="text"
+                    onClick={handleNewTagFromSuggestion}
+                    text={suggestion}
+                  />
+                  // <StyledSuggestion
+                  //   onClick={handleNewTagInput}
+                  //   value={suggestion}
+                  // >
+                  //   <Icon />
+                  //   {suggestion}
+                  // </StyledSuggestion>
+                ))
+              ) : (
+                <>
+                  <StyledSubtitle>
+                    We're retrieving tag suggestions for the selected ideas
+                  </StyledSubtitle>
+                  <Spinner />
+                </>
+              )}
+            </SuggestionList>
           ) : (
             <TagList>
               <StyledTag
