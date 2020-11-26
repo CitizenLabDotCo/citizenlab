@@ -16,9 +16,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import useKeyPress from 'hooks/useKeyPress';
-import { taggingSuggestionStream } from 'services/taggings';
 import useTagSuggestions from 'hooks/useTagSuggestions';
 import useLocalize from 'hooks/useLocalize';
+import { ITag } from 'services/tags';
+import useTags from 'hooks/useTags';
 
 const Container = styled.div`
   display: flex;
@@ -141,7 +142,10 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   const locale = useLocale();
   const addTagInputKeyPress = useKeyPress('Enter');
   const [newTag, setNewTag] = useState('');
-  const [selectedTagsList, setSelectedTagsList] = useState<string[] | []>([]);
+  const [selectedTagsList, setSelectedTagsList] = useState<ITag[]>([]);
+  const [newTagsList, setNewTagsList] = useState<string[]>([]);
+
+  const { tags } = useTags();
 
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'detected' | 'existing'>(
@@ -159,57 +163,57 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   }, [addTagInputKeyPress]);
 
   const handleAddNewTag = () => {
-    setSelectedTagsList([...selectedTagsList, newTag]);
+    setNewTagsList([...newTagsList, newTag]);
     setNewTag('');
   };
 
-  const handleAddExistingTag = (tag) => {
+  const handleAddExistingTag = (tag: ITag) => () => {
     setSelectedTagsList([...selectedTagsList, tag]);
   };
 
   const handleNewTagInput = (tag: string) => {
     setNewTag(tag);
-    setIsValidTag(isTagValid(tag));
   };
 
-  const handleNewTagFromSuggestion = (event) => {
+  const handleNewTagFromSuggestion = (text: string) => (event) => {
     event.preventDefault();
-    console.log(event);
-    // setNewTag(tag);
-    // setIsValidTag(isTagValid(tag));
+    setNewTag(text);
   };
 
-  const handleRemoveTagFromSelection = (removedTag: string) => {
-    if (selectedTagsList.length === 1) {
-      setSelectedTagsList([]);
-      return;
-    }
-    const newSelectedTags = selectedTagsList;
-    newSelectedTags.splice(
-      newSelectedTags.findIndex((tag) => removedTag === tag),
-      1
+  const handleRemoveTagFromSelection = (removedTagID: string) => {
+    setSelectedTagsList(
+      [...selectedTagsList].splice(
+        selectedTagsList.findIndex((tag) => removedTagID === tag.id),
+        1
+      )
     );
-    console.log(newSelectedTags);
-
-    setSelectedTagsList([...newSelectedTags]);
   };
 
-  const isTagValid = (tag: string) => {
-    if (tag.length < 2) {
-      return false;
+  const handleRemoveNewTag = (removedTag: string) => {
+    setNewTagsList(
+      [...newTagsList].splice(
+        newTagsList.findIndex((tag) => removedTag === tag),
+        1
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (newTag.length < 2) {
+      setIsValidTag(false);
     }
 
-    const splitTag = tag;
+    const splitTag = newTag;
     const wordCount = splitTag.split(' ').filter((n) => {
-      return n != '';
+      return n !== '';
     }).length;
 
-    return (
+    setIsValidTag(
       !isNilOrError(wordCount) &&
-      [1, 2].includes(wordCount) &&
-      !selectedTagsList.includes(tag)
+        [1, 2].includes(wordCount) &&
+        !newTagsList.includes(newTag)
     );
-  };
+  }, [newTag]);
 
   if (!isNilOrError(locale)) {
     return (
@@ -246,16 +250,24 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
             />
           </Row>
           <TagList>
-            {selectedTagsList.length > 0 &&
-              selectedTagsList?.map((tag: string) => (
-                <StyledTag
-                  text={tag}
-                  isAutoTag={false}
-                  isSelected={false}
-                  icon={'remove'}
-                  onTagClick={() => handleRemoveTagFromSelection(tag)}
-                />
-              ))}
+            {selectedTagsList.map((tag) => (
+              <StyledTag
+                text={localize(tag.attributes.title_multiloc)}
+                isAutoTag={false}
+                isSelected={false}
+                icon={'remove'}
+                onTagClick={() => handleRemoveTagFromSelection(tag.id)}
+              />
+            ))}
+            {newTagsList.map((tag) => (
+              <StyledTag
+                text={tag}
+                isAutoTag={false}
+                isSelected={false}
+                icon={'remove'}
+                onTagClick={() => handleRemoveNewTag(tag)}
+              />
+            ))}
           </TagList>
           <TagAssignationButton
             locale={locale}
@@ -286,7 +298,9 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                     locale={locale}
                     icon="plus-circle"
                     buttonStyle="text"
-                    onClick={handleNewTagFromSuggestion}
+                    onClick={handleNewTagFromSuggestion(
+                      localize(suggestion.title_multiloc)
+                    )}
                     text={localize(suggestion.title_multiloc)}
                   />
                   // <StyledSuggestion
@@ -300,7 +314,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
               ) : (
                 <>
                   <StyledSubtitle>
-                    We're retrieving tag tagSuggestions for the selected ideas
+                    <FormattedMessage {...messages.suggestionLoading} />
                   </StyledSubtitle>
                   <Spinner />
                 </>
@@ -308,27 +322,22 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
             </SuggestionList>
           ) : (
             <TagList>
-              <StyledTag
-                text={'tags'}
-                isAutoTag={false}
-                isSelected={false}
-                icon={'plus-circle'}
-                onTagClick={handleAddNewTag}
-              />
-              <StyledTag
-                text={'tags'}
-                isAutoTag={false}
-                isSelected={false}
-                onTagClick={() => handleAddExistingTag('test')}
-                icon={'plus-circle'}
-              />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
+              {tags
+                ?.filter(
+                  (tag) =>
+                    !selectedTagsList?.find(
+                      (selectedTag) => selectedTag.id === tag.id
+                    )
+                )
+                .map((tag) => (
+                  <StyledTag
+                    key={tag.id}
+                    onTagClick={handleAddExistingTag(tag)}
+                    isAutoTag={false}
+                    isSelected={false}
+                    text={localize(tag.attributes.title_multiloc)}
+                  />
+                ))}
             </TagList>
           )}
         </Right>
