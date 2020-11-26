@@ -52,6 +52,10 @@ class User < ApplicationRecord
   has_many :baskets, dependent: :destroy
   has_many :initiative_status_changes, dependent: :nullify
 
+  has_one_role :admin
+  has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
+  has_many_roles :project_moderator, through: :admin_publication_moderator, class: 'Project', source: :publication
+
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
@@ -76,10 +80,6 @@ class User < ApplicationRecord
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate :validate_password_not_common
-
-  has_one_role :admin
-  has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
-  has_many_roles :project_moderator, through: :admin_publication_moderator, class: 'Project', source: :publication
 
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
@@ -117,14 +117,6 @@ class User < ApplicationRecord
 
   scope :normal_user,       -> { where(NORMAL_USER_QUERY_SQL) }
   scope :not_normal_user,   -> { where.not(NORMAL_USER_QUERY_SQL) }
-
-  scope :normal_user, -> {
-    where("roles = '[]'::jsonb")
-  }
-
-  scope :not_normal_user, -> {
-    where.not("roles = '[]'::jsonb")
-  }
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
