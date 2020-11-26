@@ -2,7 +2,8 @@
 
 ## Next release
 
-/
+### Changed
+- Error messages for invitations, logins and password resets are now clearer.
 
 ## 2020-11-26
 
