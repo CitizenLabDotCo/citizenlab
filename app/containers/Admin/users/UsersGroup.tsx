@@ -221,6 +221,7 @@ export class UsersGroup extends React.PureComponent<
 
               <Outlet
                 id="app.containers.Admin.users.UsersGroup.form"
+                initialValues={group.attributes}
                 type={groupEditionModal}
                 onSubmit={this.handleSubmitForm(group.id)}
                 isVerificationEnabled={this.props.isVerificationEnabled}

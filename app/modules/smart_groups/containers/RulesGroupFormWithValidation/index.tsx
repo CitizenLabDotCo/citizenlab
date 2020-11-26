@@ -4,7 +4,15 @@ import { Formik, FormikErrors } from 'formik';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
-const RulesGroupFormWithValidation = ({ onSubmit, isVerificationEnabled }) => {
+const RulesGroupFormWithValidation = ({
+  onSubmit,
+  isVerificationEnabled,
+  initialValues = {
+    title_multiloc: {},
+    rules: [{}],
+    membership_type: 'rules',
+  },
+}) => {
   const renderRulesGroupForm = (props) => <RulesGroupForm {...props} />;
 
   const validate = (values: RulesFormValues) => {
@@ -26,11 +34,7 @@ const RulesGroupFormWithValidation = ({ onSubmit, isVerificationEnabled }) => {
 
   return (
     <Formik
-      initialValues={{
-        title_multiloc: {},
-        rules: [{}],
-        membership_type: 'rules',
-      }}
+      initialValues={initialValues}
       validate={validate}
       render={renderRulesGroupForm}
       onSubmit={onSubmit}
