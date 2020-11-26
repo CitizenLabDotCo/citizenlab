@@ -20,9 +20,15 @@ const ModalHeaderOutlet = ({ type }) => (
   </RenderOnType>
 );
 
-const ModalFormOutlet = ({ type, onSubmit, isVerificationEnabled }) => (
+const ModalFormOutlet = ({
+  type,
+  onSubmit,
+  isVerificationEnabled,
+  initialValues,
+}) => (
   <RenderOnType type={type}>
     <RulesGroupFormWithValidation
+      initialValues={initialValues}
       onSubmit={onSubmit}
       isVerificationEnabled={isVerificationEnabled}
     />
