@@ -6,6 +6,12 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'shoulda/matchers'
+require './engines/roles/spec/support/matchers/have_many_roles_matcher.rb'
+require './engines/roles/spec/support/matchers/have_one_role_matcher.rb'
+require './engines/roles/spec/support/shared_examples/has_one_role.rb'
+require './engines/roles/spec/support/shared_examples/has_many_roles.rb'
+require './engines/roles/spec/support/shared_examples/has_many_associated_roles.rb'
+require './engines/roles/spec/support/shared_examples/has_many_polymorphic_associated_through_roles.rb'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -67,6 +73,8 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ApiHelper
   config.include ApiAuthenticationHelper
+  config.include HaveOneRoleMatcher
+  config.include HaveManyRolesMatcher
 end
 
 ActiveJob::Base.queue_adapter = :test

@@ -49,10 +49,11 @@ module HasRoles
           def define_role_query_method
             role_name   = self.role_name
             foreign_key = self.foreign_key
+
             define_klass_instance_method(:"#{role_name}?") do |records_or_ids = nil|
               return roles_of_type(role_name).any? unless records_or_ids.present?
 
-              roles_of_type(role_name).all? { |role| RecordsOrIds.new(records_or_ids).include?(role[foreign_key.to_s]) }
+              roles_of_type(role_name).any? { |role| RecordsOrIds.new(records_or_ids).include?(role[foreign_key.to_s]) }
             end
           end
 

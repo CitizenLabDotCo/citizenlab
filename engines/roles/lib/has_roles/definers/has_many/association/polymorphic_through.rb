@@ -18,6 +18,7 @@ module HasRoles
           def call
             define_association_ids_method
             define_association_method
+            define_roles_method
             define_add_role_method
             define_remove_role_method
             define_role_query_method
@@ -152,6 +153,36 @@ module HasRoles
           # rubocop:enable Metrics/MethodLength
 
           #
+          # Defines a method that retrieves the source_id of the through association for all roles.
+          #
+          # @example:
+          #
+          #   class User < ApplicationRecord
+          #
+          #     def project_moderator_roles
+          #       admin_publication_moderator_admin_publications.where(publication_type: 'Project')
+          #                                                     .pluck(:publication_id)
+          #     end
+          #   end
+          #
+          # TODO: refactor with polymorphic and through association modules.
+          # rubocop:disable Metrics/AbcSize
+          def define_roles_method
+            through_role_name                     = self.through_role_name
+            polymorphic_source_type               = self.polymorphic_source_type
+            roleable_class                        = self.roleable_class
+            role_through_association_records_name = self.role_through_association_records_name
+            foreign_key                           = self.foreign_key
+
+            define_klass_instance_method(:"#{role_name}_roles") do
+              ids = send(role_through_association_records_name).where(polymorphic_source_type => roleable_class.name)
+                                                               .pluck(:id)
+              send("#{through_role_name}_roles").select { |role| ids.include? role[foreign_key.to_s] }
+            end
+          end
+          # rubocop:enable Metrics/AbcSize
+
+          #
           # Defines a method that returns true if roles of a given role_name exist.
           #
           # The method can alternatively receive n records or ids and check if the associated role
@@ -174,6 +205,8 @@ module HasRoles
             role_association_records_ids_name = self.role_association_records_ids_name
 
             define_klass_instance_method(:"#{role_name}?") do |records_or_ids = nil|
+              return false if send("#{through_role_name}_roles").empty?
+
               ids = RecordsOrIds.new(records_or_ids).ids
               return (ids - send(role_association_records_ids_name)).empty? if ids.present?
 
