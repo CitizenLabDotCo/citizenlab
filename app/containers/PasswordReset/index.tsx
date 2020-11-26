@@ -157,7 +157,7 @@ class PasswordReset extends React.PureComponent<
         let { errors } = error.json;
         const passwordResetLink = (
           <Link to="/password-recovery">
-            <FormattedMessage {...messages.requestPasswordReset} />
+            <FormattedMessage {...messages.requestNewPasswordReset} />
           </Link>
         );
 
