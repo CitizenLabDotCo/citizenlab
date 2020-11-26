@@ -155,14 +155,14 @@ class PasswordReset extends React.PureComponent<
         this.setState({ password: null, processing: false, success: true });
       } catch (error) {
         let { errors } = error.json;
-        const resetPasswordLink = (
+        const passwordResetLink = (
           <Link to="/password-recovery">
-            <FormattedMessage {...messages.resetPassword} />
+            <FormattedMessage {...messages.requestPasswordReset} />
           </Link>
         );
 
         errors = addErrorPayload(errors, 'token', 'invalid', {
-          link: resetPasswordLink,
+          passwordResetLink,
         });
 
         this.setState({
