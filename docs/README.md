@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Added
+- Ability to create new and edit existing idea statuses
+
 ### Changed
 - Error messages for invitations, logins and password resets are now clearer.
 
