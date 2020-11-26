@@ -116,6 +116,7 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
+  payload?: Object;
 }
 
 export interface CLErrors {
