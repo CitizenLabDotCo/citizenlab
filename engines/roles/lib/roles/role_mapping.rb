@@ -16,7 +16,7 @@ module Roles
 
     def associated?
       options.key?(:class) &&
-        roleable_class.ancestors.include?(ActiveRecord::Base) &&
+        roleable_class.ancestors.include?(::ActiveRecord::Base) &&
         foreign_key.present?
     end
 
@@ -25,7 +25,7 @@ module Roles
     end
 
     def through?
-      options.key?(:through) && roleable_class.ancestors.include?(ActiveRecord::Base)
+      options.key?(:through) && roleable_class.ancestors.include?(::ActiveRecord::Base)
     end
 
     def polymorphic_through?
@@ -70,6 +70,15 @@ module Roles
 
     def through_role_name
       options.dig(:through)
+    end
+
+    def find_polymorphic_source(record_or_id)
+      id = record_or_id.is_a?(::ActiveRecord::Base) ? record_or_id.id : record_or_id
+
+      through_roleable_class.find_by(
+        polymorphic_source_type => roleable_class.to_s,
+        polymorphic_source_foreign_key => id
+      )
     end
 
     def through_role_options
