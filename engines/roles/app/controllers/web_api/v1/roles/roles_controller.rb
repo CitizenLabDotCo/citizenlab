@@ -3,7 +3,7 @@ module WebApi::V1::Roles
     before_action :find_roled_resource, except: %i[index]
 
     def index
-      @roled_resources = roled_resource_class.send(role_name)
+      @roled_resources = scoped_resources
       @roled_resources = policy_scope(@roled_resources, policy_scope_class: policy_scope_class) if policy_present?
       render json: serialize_resources(@roled_resources), status: :ok
     end
@@ -33,6 +33,14 @@ module WebApi::V1::Roles
     end
 
     private
+
+    def scoped_resources
+      if params.key?(roled_resource_primary_key)
+        roled_resource_class.send(role_name, params[roled_resource_primary_key])
+      else
+        roled_resource_class.send(role_name)
+      end
+    end
 
     def find_roled_resource
       @roled_resource = roled_resource_class.find(params[:id])
