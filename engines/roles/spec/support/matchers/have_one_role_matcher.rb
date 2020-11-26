@@ -16,11 +16,11 @@ module HaveOneRoleMatcher
     end
 
     def failure_message
-      "shit"
+      'Role methods not present'
     end
 
     def failure_message_when_negated
-      "shit"
+      'Role methods not present'
     end
   end
 
