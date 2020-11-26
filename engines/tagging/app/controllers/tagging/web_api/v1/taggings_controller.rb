@@ -81,30 +81,41 @@ module Tagging
 
           tags = params["tags"]
           tag_ids = params["tag_ids"]
-          @new_tags = tags ? tags.map {|tag, index| { title_multiloc: tag, id: index } } : []
-          @old_tags = tag_ids ? Tag.where(tag_id: tag_ids) : []
-
-          NLP::TaggingSuggestionService.new.suggest(
-            policy_scope(Idea).where(id: params['idea_ids']),
-            @new_tags + policy_scope(Tag).where(id: params['tag_ids']),
-            current_user.locale
-          ).each do |document|
-            idea = Idea.find(document['id'])
-            document['predicted_labels'].each{ |label|
-              begin
-                tag = Tag.find(label['id'])
-              rescue ActiveRecord::RecordNotFound => _
-                Tag.create(title_multiloc: params['tags'][label['id']])
-              end
-              Tagging.create(
-                tag: tag,
-                idea: idea,
-                assignment_method: :automatic,
-                confidence_score: label['confidence']
-              )
-            }
+          @new_tags = []
+          if tags
+            @new_tags = tags.map.with_index do |tag, index|
+              return ({ title_multiloc: tag, id: index })
+            end
           end
-          render json: WebApi::V1::TaggingSerializer.new(Tagging.automatic.all, params: fastjson_params, include: [:tag]).serialized_json, status: :ok
+          @old_tags = tag_ids ? Tag.where(id: tag_ids) : []
+
+          suggestion = NLP::TaggingSuggestionService.new.suggest(
+            policy_scope(Idea).where(id: params['idea_ids']),
+            @new_tags + @old_tags,
+            current_user.locale
+          )
+          if suggestion
+            suggestion.each do |document|
+              idea = Idea.find(document['id'])
+              document['predicted_labels'].each{ |label|
+                begin
+                  tag = Tag.find(label['id'])
+                rescue ActiveRecord::RecordNotFound => _
+                  Tag.create(title_multiloc: tags[label['id']])
+                end
+                Tagging.create(
+                  tag: tag,
+                  idea: idea,
+                  assignment_method: :automatic,
+                  confidence_score: label['confidence']
+                )
+              }
+            end
+
+            render json: WebApi::V1::TaggingSerializer.new(Tagging.automatic.all, params: fastjson_params, include: [:tag]).serialized_json, status: :ok
+          else
+            render json: { errors: ['NO'] }, status: :unprocessable_entity
+          end
         end
 
         private
