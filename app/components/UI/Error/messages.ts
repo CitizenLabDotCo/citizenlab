@@ -21,7 +21,7 @@ export default defineMessages({
   token_invalid: {
     id: 'app.errors.token_invalid',
     defaultMessage:
-      'Password reset links can only be used once and are valid for one hour after being sent. Please request a new password reset {link}.',
+      'Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.',
   },
   title_multiloc_blank: {
     id: 'app.errors.title_multiloc_blank',
