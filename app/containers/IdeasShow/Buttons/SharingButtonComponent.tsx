@@ -19,7 +19,7 @@ const SharingButtonComponent = ({
   return (
     <IdeaCTAButton
       iconName="share-arrow"
-      buttonText={formatMessage(messages.shareIdea)}
+      buttonText={formatMessage(messages.share)}
       onClick={onClick}
       ariaExpanded={ariaExpanded}
     />
