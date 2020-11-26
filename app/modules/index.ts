@@ -6,10 +6,10 @@ import smartGroupsConfiguration from './smart_groups';
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
   {
     configuration: smartGroupsConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
 ]);
