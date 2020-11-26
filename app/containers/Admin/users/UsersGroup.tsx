@@ -14,7 +14,9 @@ import streams from 'utils/streams';
 import UsersHeader from './UsersHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
+import RulesGroupForm, {
+  RulesFormValues,
+} from 'modules/smart_groups/containers/RulesGroupForm';
 import UserManager from './UserManager';
 
 // Events

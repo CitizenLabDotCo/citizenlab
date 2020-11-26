@@ -7,13 +7,13 @@ import { FormikUserFilterConditions } from 'components/admin/UserFilterCondition
 import { SectionField } from 'components/admin/Section';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { FooterContainer, Fill } from './NormalGroupForm';
+import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import Error from 'components/UI/Error';
 import { Label } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../../containers/Admin/users/messages';
 
 // Styling
 import styled from 'styled-components';

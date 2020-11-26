@@ -14,7 +14,9 @@ import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
+import RulesGroupForm, {
+  RulesFormValues,
+} from 'modules/smart_groups/containers/RulesGroupForm';
 
 // Global state
 import {
