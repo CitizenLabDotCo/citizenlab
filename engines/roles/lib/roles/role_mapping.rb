@@ -131,7 +131,7 @@ module Roles
 
     def policy
       self.class.policy_options.dig(klass_config_name, role_name).yield_self do |policy_object|
-        return policy_object if policy_object.ancestors.include? ApplicationPolicy
+        return policy_object if policy_object&.ancestors&.include? ApplicationPolicy
       end
     end
 
