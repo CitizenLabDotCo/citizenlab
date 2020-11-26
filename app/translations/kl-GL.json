@@ -1825,7 +1825,7 @@
   "app.containers.PasswordReset.passwordError": "Kode isissutigisartakkat minnerpaamik 8-nik naqinneqassaaq",
   "app.containers.PasswordReset.passwordLabel": "Kode isissutissaq",
   "app.containers.PasswordReset.passwordPlaceholder": "Kode isissutissaq nutaaq",
-  "app.containers.PasswordReset.resetPassword": "",
+  "app.containers.PasswordReset.requestPasswordReset": "",
   "app.containers.PasswordReset.submitError": "Arlaat iluatsinngitsoorpoq. Ungasinngitsumi misileeqqikkina",
   "app.containers.PasswordReset.successMessage": "Kode isissutigisartakkat ajunngitsumik nutarterneqarpoq",
   "app.containers.PasswordReset.title": "Kode isissutigisartakkat allanngortiguk",
