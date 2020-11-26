@@ -244,7 +244,6 @@ class User < ApplicationRecord
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
 
-
   private
 
   def generate_slug
