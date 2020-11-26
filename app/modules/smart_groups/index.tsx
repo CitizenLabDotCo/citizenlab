@@ -4,15 +4,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import LightningBolt from './components/LightningBolt';
 import SmartGroupType from './components/SmartGroupType';
-
-
-const RenderOnFeatureFlag = ({ children }) => {
-  const isSmartGroupsEnabled = useFeatureFlag('smart_groups');
-  if (isSmartGroupsEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
+import RulesGroupFormWithValidation from './containers/RulesGroupFormWithValidation';
 
 const RenderOnType = ({ type, children }) => {
   if (type === 'rules') {
@@ -30,6 +22,30 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.users.GroupsListPanel.listitem.icon': ({ type }) => (
       <RenderOnType type={type}>
         <LightningBolt />
+      </RenderOnType>
+    ),
+    'app.containers.Admin.users.form': ({
+      type,
+      onSubmit,
+      isVerificationEnabled,
+    }) => (
+      <RenderOnType type={type}>
+        <RulesGroupFormWithValidation
+          onSubmit={onSubmit}
+          isVerificationEnabled={isVerificationEnabled}
+        />
+      </RenderOnType>
+    ),
+    'app.containers.Admin.users.UsersGroup.form': ({
+      type,
+      onSubmit,
+      isVerificationEnabled,
+    }) => (
+      <RenderOnType type={type}>
+        <RulesGroupFormWithValidation
+          onSubmit={onSubmit}
+          isVerificationEnabled={isVerificationEnabled}
+        />
       </RenderOnType>
     ),
   },

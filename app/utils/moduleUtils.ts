@@ -17,7 +17,9 @@ export type OutletId =
   | 'app.components.ProjectAndFolderCards.card'
   | 'app.containers.SiteMap.ProjectsSection.listitem'
   | 'app.containers.Admin.users.GroupsListPanel.listitem.icon'
-  | 'app.containers.Admin.users.GroupCreationStep1.type';
+  | 'app.containers.Admin.users.GroupCreationStep1.type'
+  | 'app.containers.Admin.users.form'
+  | 'app.containers.Admin.users.UsersGroup.form';
 
 export type Outlets = {
   [key in OutletId]?: FunctionComponent<any>;

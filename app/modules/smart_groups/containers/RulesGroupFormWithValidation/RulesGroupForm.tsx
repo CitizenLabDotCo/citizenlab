@@ -13,7 +13,8 @@ import { Label } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../containers/Admin/users/messages';
+import messages from './messages';
+import adminUsersMessages from 'containers/Admin/users/messages';
 
 // Styling
 import styled from 'styled-components';
@@ -46,7 +47,9 @@ export class RulesGroupForm extends React.PureComponent<
               id="group-title-field"
               name="title_multiloc"
               component={FormikInputMultiloc}
-              label={<FormattedMessage {...messages.fieldGroupName} />}
+              label={
+                <FormattedMessage {...adminUsersMessages.fieldGroupName} />
+              }
             />
             {touched.title_multiloc && (
               <Error
