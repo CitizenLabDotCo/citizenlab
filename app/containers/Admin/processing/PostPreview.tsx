@@ -14,6 +14,8 @@ import { ManagerType } from 'components/admin/PostManager';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { ITagging } from 'services/taggings';
+import TagSearch from './TagSearch';
 
 export const Container = styled.div`
   display: flex;
@@ -88,6 +90,7 @@ interface InputProps {
   onClose: () => void;
   postId: string | null;
   handleNavigation: (direction: Direction) => void;
+  taggings: ITagging[] | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -133,6 +136,10 @@ export default class PostPreview extends PureComponent<Props, State> {
   };
 
   render() {
+    const ideaTagIds =
+      this.props.taggings
+        ?.filter((tagging) => tagging.attributes.assignment_method === 'manual')
+        .map((tagging) => tagging.attributes.tag_id) || [];
     return (
       <Container>
         <Navigation>
@@ -161,36 +168,67 @@ export default class PostPreview extends PureComponent<Props, State> {
           </div>
         </Navigation>
 
-        {this.state.postId && <IdeaContent ideaId={this.state.postId} />}
-        <TagSection>
-          <TagSubSection>
-            <FormattedMessage {...messages.addSmartTag} />
-            <TagList>
-              <StyledTag isAutoTag={true} isSelected={false} text="tag one" />
-              <StyledTag isAutoTag={true} isSelected={false} text="tag one" />
-              <StyledTag isAutoTag={true} isSelected={false} text="tag one" />
-              <StyledTag isAutoTag={true} isSelected={false} text="tag one" />
-            </TagList>
-          </TagSubSection>
-          <TagSubSection>
-            <FormattedMessage {...messages.addExistingTag} />
-            <TagList>
-              <StyledTag isAutoTag={false} isSelected={false} text="tag one" />
-              <StyledTag isAutoTag={false} isSelected={false} text="tag one" />
-              <StyledTag isAutoTag={false} isSelected={false} text="tag one" />
-              <StyledTag isAutoTag={false} isSelected={false} text="tag one" />
-            </TagList>
-          </TagSubSection>
-          <TagSubSection>
-            <FormattedMessage {...messages.addNewTag} />
-            <Input
-              type="text"
-              value={this.state.newTag}
-              autoFocus={true}
-              onChange={this.handleTagInput}
-            />
-          </TagSubSection>
-        </TagSection>
+        {this.state.postId && (
+          <>
+            <IdeaContent ideaId={this.state.postId} />
+            <TagSection>
+              <TagSubSection>
+                <FormattedMessage {...messages.addSmartTag} />
+                <TagList>
+                  <StyledTag
+                    isAutoTag={true}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                  <StyledTag
+                    isAutoTag={true}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                  <StyledTag
+                    isAutoTag={true}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                  <StyledTag
+                    isAutoTag={true}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                </TagList>
+              </TagSubSection>
+              <TagSubSection>
+                <FormattedMessage {...messages.addExistingTag} />
+                <TagList>
+                  <StyledTag
+                    isAutoTag={false}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                  <StyledTag
+                    isAutoTag={false}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                  <StyledTag
+                    isAutoTag={false}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                  <StyledTag
+                    isAutoTag={false}
+                    isSelected={false}
+                    text="tag one"
+                  />
+                </TagList>
+              </TagSubSection>
+              <TagSubSection>
+                <FormattedMessage {...messages.addNewTag} />
+                <TagSearch ideaId={this.state.postId} ideaTagIds={ideaTagIds} />
+              </TagSubSection>
+            </TagSection>
+          </>
+        )}
       </Container>
     );
   }
