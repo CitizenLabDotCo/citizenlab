@@ -20,7 +20,6 @@ import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import { ITagging } from 'services/taggings';
 import { IMergedTagging } from 'hooks/useTaggings';
 
 const Container = styled.tr<{ bgColor: string }>`
