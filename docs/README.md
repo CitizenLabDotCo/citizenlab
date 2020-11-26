@@ -4,6 +4,11 @@
 
 /
 
+## 2020-11-26
+
+### Added
+- Some specific copy for Vitry-sur-Seine
+
 ## 2020-11-25
 
 ### Fixed
