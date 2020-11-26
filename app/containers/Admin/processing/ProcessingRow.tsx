@@ -20,7 +20,7 @@ import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import { IAutoTag } from 'hooks/useTags';
+import { IMergedTagging } from 'hooks/useTaggings';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -55,9 +55,8 @@ interface Props {
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
-  tagSuggestions?: IAutoTag[] | null | undefined;
-  showTagColumn: boolean;
   rowRef?: RefObject<any>;
+  taggings: IMergedTagging[];
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
@@ -68,9 +67,8 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     className,
     openPreview,
     highlighted,
-    tagSuggestions,
-    showTagColumn,
     rowRef,
+    taggings,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -109,28 +107,26 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         onClick={handleOnChecked}
         ref={rowRef}
       >
-        {showTagColumn && (
-          <td className="checkbox">
-            <StyledCheckbox checked={selected} onChange={handleOnChecked} />
-          </td>
-        )}
+        <td className="checkbox">
+          <StyledCheckbox checked={selected} onChange={handleOnChecked} />
+        </td>
         <td className="title">
           <ContentTitle onClick={handleClick}>
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        {showTagColumn && (
-          <td className="tags">
-            {tagSuggestions?.map((tag) => (
+        <td className="tags">
+          {taggings.map((tagging) =>
+            tagging.tag ? (
               <StyledTag
-                key={tag.id}
-                text={localize(tag.attributes.title_multiloc)}
-                isAutoTag={true}
+                key={tagging.id}
+                text={localize(tagging.tag.attributes.title_multiloc)}
+                isAutoTag={tagging.attributes.assignment_method === 'automatic'}
                 isSelected={selected}
               />
-            ))}
-          </td>
-        )}
+            ) : null
+          )}
+        </td>
       </Container>
     );
   }
