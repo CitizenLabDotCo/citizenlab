@@ -37,8 +37,8 @@ export default defineMessages({
     id: 'app.containers.PasswordReset.updatePassword',
     defaultMessage: 'Confirm new password',
   },
-  requestPasswordReset: {
-    id: 'app.containers.PasswordReset.requestPasswordReset',
+  requestNewPasswordReset: {
+    id: 'app.containers.PasswordReset.requestNewPasswordReset',
     defaultMessage: 'Request a new password reset',
   },
 });
