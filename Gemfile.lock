@@ -156,7 +156,6 @@ PATH
   remote: engines/roles
   specs:
     roles (0.1.0)
-      pg
       rails (~> 6.0.3, >= 6.0.3.2)
 
 PATH
