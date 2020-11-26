@@ -48,13 +48,27 @@ interface IVoteComponent {
   enabled: boolean | null;
 }
 
-const vote = keyframes`
+const voteKeyframeAnimation = keyframes`
   from {
     transform: scale3d(1, 1, 1);
   }
 
-  50% {
+  40% {
     transform: scale3d(1.25, 1.25, 1.25);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+`;
+
+const voteCompactKeyframeAnimation = keyframes`
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  40% {
+    transform: scale3d(1.5, 1.5, 1.5);
   }
 
   to {
@@ -79,7 +93,6 @@ const VoteIconContainer = styled.div<{
   size: '1' | '2' | '3';
   votingEnabled: boolean | null;
 }>`
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -205,15 +218,22 @@ const Vote = styled.button<IVoteComponent>`
   align-items: center;
   padding: 0;
   margin: 0;
+  cursor: pointer;
   border: none;
 
-${isRtl`
+  ${isRtl`
     flex-direction: row-reverse;
-`}
+  `}
 
-  &.voteClick ${VoteIconContainer} {
+  &:not(.compact).voteClick ${VoteIconContainer} {
     animation: ${css`
-      ${vote} 350ms
+      ${voteKeyframeAnimation} 350ms
+    `};
+  }
+
+  &.compact.voteClick ${VoteIconContainer} {
+    animation: ${css`
+      ${voteCompactKeyframeAnimation} 300ms
     `};
   }
 

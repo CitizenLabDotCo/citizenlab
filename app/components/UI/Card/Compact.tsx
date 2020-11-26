@@ -11,6 +11,7 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  colors,
 } from 'utils/styleUtils';
 
 const Container = styled(Link)`
@@ -25,20 +26,22 @@ const Container = styled(Link)`
 
   &.desktop {
     ${defaultCardHoverStyle};
+    transform: translate(0px, -2px);
   }
 `;
 
-const ImageWrapper = styled.div`
+const ImageWrapper = styled.div<{ hasImage: boolean }>`
   flex: 0 0 162px;
   width: 162px;
   height: 162px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 23px;
   overflow: hidden;
-  object-fit: cover;
-  object-position: center;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px
+    ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -50,7 +53,10 @@ const ImageWrapper = styled.div`
 `;
 
 const Image = styled(LazyImage)`
-  height: 100%;
+  flex: 0 0 162px;
+  width: 162px;
+  height: 162px;
+  object-fit: cover;
 `;
 
 const ContentWrapper = styled.div`
@@ -58,13 +64,12 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 162px;
-  margin-left: 25px;
 `;
 
 const Header = styled.header`
-  overflow: hidden;
+  padding: 0;
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 `;
 
 const Title = styled.h3`
@@ -74,8 +79,10 @@ const Title = styled.h3`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  line-height: 24px;
-  max-height: 72px;
+  line-height: 25px;
+  max-height: 75px;
+  padding: 0;
+  margin: 0;
   overflow: hidden;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -89,6 +96,7 @@ const Body = styled.div`
 interface Props {
   to: string;
   image: string | null;
+  imagePlaceholder: JSX.Element;
   author?: {
     name: string;
     id: string;
@@ -104,6 +112,7 @@ export const Card = ({
   to,
   onClick,
   image,
+  imagePlaceholder,
   title,
   body,
   footer,
@@ -116,11 +125,9 @@ export const Card = ({
       !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
     }`}
   >
-    {image && (
-      <ImageWrapper>
-        <Image src={image} alt="" />
-      </ImageWrapper>
-    )}
+    <ImageWrapper hasImage={!!image}>
+      {image ? <Image src={image} alt="" /> : imagePlaceholder}
+    </ImageWrapper>
 
     <ContentWrapper>
       <Header className="e2e-card-title">

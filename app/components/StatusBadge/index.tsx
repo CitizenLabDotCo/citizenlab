@@ -3,19 +3,18 @@ import { isNilOrError } from 'utils/helperUtils';
 import useIdeaStatus from 'hooks/useIdeaStatus';
 import T from 'components/T';
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import { fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  color: #fff;
+const Container = styled.div<{ color: string }>`
+  color: ${({ color }) => color};
   font-size: ${fontSizes.xs}px;
-  line-height: 16px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 6px 12px;
-  display: inline-block;
-  text-transform: uppercase;
-  text-align: center;
   font-weight: 600;
-  background-color: ${(props: any) => props.color};
+  text-transform: uppercase;
+  padding: 4px 8px;
+  display: inline-block;
+  background: ${({ color }) => transparentize(0.91, color)};
+  border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
 interface Props {

@@ -9,7 +9,7 @@ import { IIdeaData } from 'services/ideas';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const CommentsCount = styled.span`
   color: ${colors.label};
@@ -17,7 +17,9 @@ const CommentsCount = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 28px;
+  margin: 0;
+  margin-left: 28px;
+  margin-right: 25px;
 `;
 
 const CommentIcon = styled(Icon)`
@@ -29,6 +31,18 @@ const CommentIcon = styled(Icon)`
 
 const Footer = styled.footer`
   display: flex;
+`;
+
+const StyledStatusBadge = styled(StatusBadge)`
+  display: block;
+
+  ${media.smallerThan1200px`
+    display: none;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
 `;
 
 interface Props {
@@ -51,7 +65,7 @@ const CompactIdeaCard = memo<Props>(({ idea }) => {
         <CommentIcon name="comments" />
         {idea.attributes.comments_count}
       </CommentsCount>
-      <StatusBadge statusId={ideaStatusId} />
+      <StyledStatusBadge statusId={ideaStatusId} />
     </Footer>
   );
 });

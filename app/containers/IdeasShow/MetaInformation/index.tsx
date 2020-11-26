@@ -12,7 +12,7 @@ import messages from './messages';
 import { fontSizes } from 'cl2-component-library';
 
 // components
-import Status from './Status';
+import StatusBadge from 'components/StatusBadge';
 import Location from './Location';
 import Attachments from './Attachments';
 import Topics from 'components/PostShowComponents/Topics';
@@ -25,6 +25,7 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import useIdeaStatus from 'hooks/useIdeaStatus';
+import useSimilarIdeas from 'hooks/useSimilarIdeas';
 
 // resources
 import GetFeatureFlag, {
@@ -85,11 +86,13 @@ const MetaInformation = ({
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   const ideaStatus = useIdeaStatus({ statusId });
+  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
 
   if (
     !isNilOrError(idea) &&
     !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas)
+    !isNilOrError(ideaCustomFieldsSchemas) &&
+    ideaStatus !== undefined
   ) {
     const topicIds =
       idea.relationships.topics?.data.map((item) => item.id) || [];
@@ -120,14 +123,12 @@ const MetaInformation = ({
           </Header>
           <StyledPostedBy authorId={authorId} ideaId={ideaId} />
         </Item>
-        {!isNilOrError(ideaStatus) && (
-          <Item>
-            <Header>
-              <FormattedMessage {...messages.currentStatus} />
-            </Header>
-            <Status ideaStatus={ideaStatus} />
-          </Item>
-        )}
+        <Item>
+          <Header>
+            <FormattedMessage {...messages.currentStatus} />
+          </Header>
+          <StatusBadge statusId={statusId} />
+        </Item>
         {topicsEnabled && topicIds.length > 0 && (
           <Item>
             <Header>
@@ -156,14 +157,16 @@ const MetaInformation = ({
             <Attachments files={files} />
           </Item>
         )}
-        {similarIdeasEnabled && (
-          <Item>
-            <Header>
-              <FormattedMessage {...messages.similarIdeas} />
-            </Header>
-            <SimilarIdeas ideaId={ideaId} />
-          </Item>
-        )}
+        {similarIdeasEnabled &&
+          !isNilOrError(similarIdeas) &&
+          similarIdeas.length > 0 && (
+            <Item>
+              <Header>
+                <FormattedMessage {...messages.similarIdeas} />
+              </Header>
+              <SimilarIdeas ideaId={ideaId} />
+            </Item>
+          )}
       </Container>
     );
   }

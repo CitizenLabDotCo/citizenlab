@@ -3,10 +3,10 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
 import Card from 'components/UI/Card/Compact';
+import { Icon } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
 import FooterWithVoteControl from './FooterWithVoteControl';
 import FooterWithBudgetControl from './FooterWithBudgetControl';
-import ideaImagePlaceholder from './idea-placeholder.png';
 
 // types
 import { ParticipationMethod } from 'services/participationContexts';
@@ -27,6 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
@@ -36,8 +37,8 @@ const BodyWrapper = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 8px;
-  margin-left: -2px;
-  margin-top: -1px;
+  margin-left: -4px;
+  margin-top: -2px;
 `;
 
 const Body = styled.div`
@@ -57,6 +58,21 @@ const Body = styled.div`
   & strong {
     font-weight: 500;
   }
+`;
+
+const ImagePlaceholderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background: ${transparentize(0.92, colors.label)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImagePlaceholderIcon = styled(Icon)`
+  width: 38px;
+  fill: ${transparentize(0.65, colors.label)};
 `;
 
 const Separator = styled.span`
@@ -136,13 +152,23 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
         image={
-          !isNilOrError(ideaImage)
-            ? ideaImage.attributes.versions.small
-            : ideaImagePlaceholder
+          !isNilOrError(ideaImage) ? ideaImage.attributes.versions.large : null
+        }
+        imagePlaceholder={
+          <ImagePlaceholderContainer>
+            <ImagePlaceholderIcon name="idea" />
+          </ImagePlaceholderContainer>
         }
         body={
           <BodyWrapper>
-            {authorId && <StyledAvatar size="35" userId={authorId} />}
+            {authorId && (
+              <StyledAvatar
+                size="34"
+                userId={authorId}
+                hideIfNoAvatar={true}
+                fillColor={transparentize(0.6, colors.label)}
+              />
+            )}
             <Body>
               <strong>
                 <FormattedRelative

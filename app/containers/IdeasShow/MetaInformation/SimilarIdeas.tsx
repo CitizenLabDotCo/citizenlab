@@ -56,6 +56,7 @@ interface Props {
 
 const SimilarIdeas = memo<Props>(({ className, ideaId }) => {
   const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+
   const onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   };
