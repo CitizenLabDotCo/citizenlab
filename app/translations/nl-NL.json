@@ -433,6 +433,7 @@
   "app.components.admin.PostManager.PostPreview.picks": "Keuzes: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Opslaan",
   "app.components.admin.PostManager.PostPreview.submitError": "Fout",
+  "app.components.admin.PostManager.PostPreview.suggestionLoading": "",
   "app.components.admin.PostManager.PostPreview.voteCounts": "Aantal stemmen:",
   "app.components.admin.PostManager.allPhases": "Alle fases",
   "app.components.admin.PostManager.allProjects": "Alle projecten",
