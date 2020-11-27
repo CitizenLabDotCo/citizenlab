@@ -2034,7 +2034,7 @@
   "app.containers.SpamReport.buttonSave": "Rapporteer",
   "app.containers.SpamReport.buttonSuccess": "Succes",
   "app.containers.SpamReport.inappropriate": "Het is ongepast of aanstootgevend",
-  "app.containers.SpamReport.messageError": "Er is een fout opgetreden bij het verzenden, probeer het a.j.b. opnieuw.",
+  "app.containers.SpamReport.messageError": "Er is een fout opgetreden, probeer het a.j.b. opnieuw.",
   "app.containers.SpamReport.messageSuccess": "Je melding is verstuurd",
   "app.containers.SpamReport.other": "Andere reden",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beschrijving",
