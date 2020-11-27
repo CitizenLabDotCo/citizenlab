@@ -17,17 +17,25 @@ import {
 const Container = styled(Link)`
   width: 100%;
   height: 204px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  margin: 0;
   margin-bottom: 24px;
   cursor: pointer;
-  display: flex;
-  padding: 20px;
-  align-items: center;
   ${defaultCardStyle};
 
   &.desktop {
     ${defaultCardHoverStyle};
     transform: translate(0px, -2px);
   }
+
+  ${media.smallerThanMinTablet`
+    height: auto;
+    min-height: 204px;
+    flex-direction: column;
+    align-items: stretch;
+  `}
 `;
 
 const ImageWrapper = styled.div<{ hasImage: boolean }>`
@@ -48,7 +56,11 @@ const ImageWrapper = styled.div<{ hasImage: boolean }>`
   `}
 
   ${media.smallerThanMinTablet`
-    display: flex;
+      flex: 0 0 162px;
+      width: 100%;
+      height: 162px;
+      display: ${({ hasImage }) => (hasImage ? 'flex' : 'none')};
+      margin-bottom: 10px;
   `}
 `;
 
@@ -57,6 +69,10 @@ const Image = styled(LazyImage)`
   width: 162px;
   height: 162px;
   object-fit: cover;
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+  `}
 `;
 
 const ContentWrapper = styled.div`
@@ -64,12 +80,17 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 162px;
+
+  ${media.smallerThanMinTablet`
+    height: auto;
+    min-height: 140px;
+  `}
 `;
 
 const Header = styled.header`
   padding: 0;
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 `;
 
 const Title = styled.h3`

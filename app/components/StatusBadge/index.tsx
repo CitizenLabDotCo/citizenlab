@@ -11,6 +11,8 @@ const Container = styled.div<{ color: string }>`
   font-size: ${fontSizes.xs}px;
   font-weight: 600;
   text-transform: uppercase;
+  text-align: center;
+  line-height: normal;
   padding: 4px 8px;
   display: inline-block;
   background: ${({ color }) => transparentize(0.91, color)};
