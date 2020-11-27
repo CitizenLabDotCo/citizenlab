@@ -21,6 +21,25 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
+  keyboardShortcuts: {
+    id: 'app.containers.Admin.Processing.keyboardShortcuts',
+    defaultMessage: 'Keyboard Shortcuts',
+  },
+  upAndDownArrow: {
+    id: 'app.containers.Admin.Processing.upAndDownArrow',
+    defaultMessage:
+      'Up and down arrows allow you to highlight previous or next idea in the list',
+  },
+  rightArrow: {
+    id: 'app.containers.Admin.Processing.rightArrow',
+    defaultMessage:
+      'Right arrow opens the side panel where you can add remove tags from ideas',
+  },
+  leftArrow: {
+    id: 'app.containers.Admin.Processing.leftArrow',
+    defaultMessage:
+      'Left arrow closes the side panel and brings you back to the full list',
+  },
   tag: {
     id: 'app.containers.Admin.Processing.tag',
     defaultMessage: 'tag',
