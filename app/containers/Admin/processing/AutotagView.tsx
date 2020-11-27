@@ -127,13 +127,6 @@ const Tab = styled.div`
   }
 `;
 
-const VerticalSeparator = styled.div`
-  height: calc(100% - 4px);
-
-  width: 1px;
-  background-color: ${colors.adminSeparation};
-`;
-
 interface Props {
   closeView: (e?: FormEvent) => void;
   selectedRows: string[];
@@ -150,8 +143,8 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
 
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'detected' | 'existing'>(
-    'detected'
+  const [activeTab, setActiveTab] = useState<'suggestions' | 'existingTags'>(
+    'suggestions'
   );
 
   const localize = useLocalize();
@@ -293,19 +286,19 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
         <Right>
           <TabsContainer>
             <Tab
-              className={activeTab === 'detected' ? 'active' : ''}
-              onClick={() => setActiveTab('detected')}
+              className={activeTab === 'suggestions' ? 'active' : ''}
+              onClick={() => setActiveTab('suggestions')}
             >
               Suggestions
             </Tab>
             <Tab
-              className={activeTab === 'existing' ? 'active' : ''}
-              onClick={() => setActiveTab('existing')}
+              className={activeTab === 'existingTags' ? 'active' : ''}
+              onClick={() => setActiveTab('existingTags')}
             >
               Existing tags
             </Tab>
           </TabsContainer>
-          {activeTab === 'detected' ? (
+          {activeTab === 'suggestions' ? (
             <SuggestionList>
               {tagSuggestions && tagSuggestions?.length > 0 ? (
                 tagSuggestions.map((suggestion) => (
