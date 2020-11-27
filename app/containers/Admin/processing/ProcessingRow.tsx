@@ -57,6 +57,7 @@ interface Props {
   openPreview: (id: string) => void;
   rowRef?: RefObject<any>;
   taggings: IMergedTagging[];
+  showTagColumn: boolean;
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
@@ -69,6 +70,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     highlighted,
     rowRef,
     taggings,
+    showTagColumn,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -110,23 +112,28 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
         </td>
+
         <td className="title">
           <ContentTitle onClick={handleClick}>
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        <td className="tags">
-          {taggings.map((tagging) =>
-            tagging.tag ? (
-              <StyledTag
-                key={tagging.id}
-                text={localize(tagging.tag.attributes.title_multiloc)}
-                isAutoTag={tagging.attributes.assignment_method === 'automatic'}
-                isSelected={selected}
-              />
-            ) : null
-          )}
-        </td>
+        {showTagColumn && (
+          <td className="tags">
+            {taggings.map((tagging) =>
+              tagging.tag ? (
+                <StyledTag
+                  key={tagging.id}
+                  text={localize(tagging.tag.attributes.title_multiloc)}
+                  isAutoTag={
+                    tagging.attributes.assignment_method === 'automatic'
+                  }
+                  isSelected={selected}
+                />
+              ) : null
+            )}
+          </td>
+        )}
       </Container>
     );
   }
