@@ -8,7 +8,18 @@ import { IIdeaData } from 'services/ideas';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+
+const Container = styled.footer`
+  display: flex;
+  align-items: center;
+`;
+
+const Left = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+`;
 
 const CommentsCount = styled.span`
   color: ${colors.label};
@@ -17,8 +28,7 @@ const CommentsCount = styled.span`
   flex-direction: row;
   align-items: center;
   margin: 0;
-  margin-left: 28px;
-  margin-right: 25px;
+  margin-left: 27px;
 
   &.disabled {
     opacity: 0.71;
@@ -32,27 +42,23 @@ const CommentIcon = styled(Icon)`
   margin-right: 8px;
 `;
 
-const Footer = styled.footer`
+const Right = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const StyledStatusBadge = styled(StatusBadge)`
   display: block;
-
-  ${media.smallerThan1200px`
-    display: none;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
+  margin-left: 25px;
 `;
 
 interface Props {
   idea: IIdeaData;
+  hideIdeaStatus?: boolean;
+  className?: string;
 }
 
-const CompactIdeaCard = memo<Props>(({ idea }) => {
+const CompactIdeaCard = memo<Props>(({ idea, hideIdeaStatus, className }) => {
   const ideaStatusId = idea?.relationships?.idea_status?.data.id;
   const isDownVotingEnabled = !!idea?.attributes?.action_descriptor?.voting_idea
     ?.downvoting_enabled;
@@ -64,20 +70,26 @@ const CompactIdeaCard = memo<Props>(({ idea }) => {
   );
 
   return (
-    <Footer>
-      <VoteControl
-        style="compact"
-        ideaId={idea.id}
-        size="1"
-        ariaHidden
-        showDownvote={isDownVotingEnabled}
-      />
-      <CommentsCount className={isCommentingEnabled ? 'enabled' : 'disabled'}>
-        <CommentIcon name="comments" />
-        {idea.attributes.comments_count}
-      </CommentsCount>
-      <StyledStatusBadge statusId={ideaStatusId} />
-    </Footer>
+    <Container className={className || ''}>
+      <Left>
+        <VoteControl
+          style="compact"
+          ideaId={idea.id}
+          size="1"
+          ariaHidden
+          showDownvote={isDownVotingEnabled}
+        />
+        <CommentsCount className={isCommentingEnabled ? 'enabled' : 'disabled'}>
+          <CommentIcon name="comments" />
+          {idea.attributes.comments_count}
+        </CommentsCount>
+      </Left>
+      {!hideIdeaStatus && (
+        <Right>
+          <StyledStatusBadge statusId={ideaStatusId} />
+        </Right>
+      )}
+    </Container>
   );
 });
 

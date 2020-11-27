@@ -21,8 +21,6 @@ const Container = styled(Link)`
   display: flex;
   align-items: center;
   padding: 20px;
-  margin: 0;
-  margin-bottom: 24px;
   cursor: pointer;
   ${defaultCardStyle};
 
@@ -32,7 +30,6 @@ const Container = styled(Link)`
   }
 
   ${media.smallerThanMinTablet`
-    height: auto;
     flex-direction: column;
     align-items: stretch;
   `}
@@ -50,10 +47,6 @@ const ImageWrapper = styled.div<{ hasImage: boolean }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px
     ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const Image = styled(LazyImage)`
@@ -111,6 +104,7 @@ interface Props {
   to: string;
   image: string | null;
   imagePlaceholder: JSX.Element;
+  hideImage?: boolean;
   author?: {
     name: string;
     id: string;
@@ -127,6 +121,7 @@ export const Card = ({
   onClick,
   image,
   imagePlaceholder,
+  hideImage,
   title,
   body,
   footer,
@@ -139,9 +134,11 @@ export const Card = ({
       !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
     }`}
   >
-    <ImageWrapper hasImage={!!image}>
-      {image ? <Image src={image} cover={true} alt="" /> : imagePlaceholder}
-    </ImageWrapper>
+    {!hideImage && (
+      <ImageWrapper hasImage={!!image}>
+        {image ? <Image src={image} cover={true} alt="" /> : imagePlaceholder}
+      </ImageWrapper>
+    )}
 
     <ContentWrapper>
       <Header className="e2e-card-title">

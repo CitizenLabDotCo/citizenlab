@@ -13,7 +13,11 @@ const Container = styled.div<{ color: string }>`
   text-transform: uppercase;
   text-align: center;
   line-height: normal;
-  padding: 4px 8px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  padding: 5px 8px;
   display: inline-block;
   background: ${({ color }) => transparentize(0.91, color)};
   border-radius: ${({ theme }) => theme.borderRadius};
