@@ -715,6 +715,7 @@
   "app.containers.Admin.Processing.proposedBudgetTitle": "Proposed Budget",
   "app.containers.Admin.Processing.tag": "Tag",
   "app.containers.Admin.Processing.tagAssignationExplanation": "Tags are going to be applied to all matching ideas",
+  "app.containers.Admin.Processing.tagValidationErrorMessage": "please use max two words and do not add duplicates",
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.tagsToAssign": "Tags to assign",
   "app.containers.Admin.Processing.title": "title",

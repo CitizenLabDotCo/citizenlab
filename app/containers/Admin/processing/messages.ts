@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.tagAssignationExplanation',
     defaultMessage: 'Tags are going to be applied to all matching ideas',
   },
+  tagValidationErrorMessage: {
+    id: 'app.containers.Admin.Processing.tagValidationErrorMessage',
+    defaultMessage: 'please use max two words and do not add duplicates',
+  },
   addSmartTag: {
     id: 'app.containers.Admin.Processing.addSmartTag',
     defaultMessage: 'Add smart tag',

@@ -32,7 +32,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: start;
-  padding: 2%;
+  padding: 5%;
   flex-direction: column;
   width: 60%;
   height: 100%;
@@ -62,16 +62,22 @@ const StyledSuggestion = styled.p`
   font-style: italic;
 `;
 
+const StyledValidationError = styled.p`
+  &.show {
+    text-decoration: underline;
+  }
+`;
+
 const StyledInput = styled(Input)`
   width: 200px;
 `;
 
 const TagList = styled.div`
-  margin: auto;
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  width: 80%;
+  padding: 12px 0px;
+  margin: 12px auto;
+  display: inline;
+  width: 100%;
+  overflow-y: auto;
 `;
 
 const SuggestionList = styled.div`
@@ -102,7 +108,7 @@ const StyledIcon = styled(Icon)`
   fill: #fff;
 `;
 const TagAssignationButton = styled(Button)`
-  align-self: flex-end;
+  align-self: center;
 `;
 
 const TabsContainer = styled.div`
@@ -233,20 +239,20 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
           <StyledSubtitle>
             <FormattedMessage {...messages.tagAssignationExplanation} />
           </StyledSubtitle>
+
           <h4>
             <FormattedMessage {...messages.addTag} />
           </h4>
+          <StyledValidationError className={`${!isValidTag && 'show'}`}>
+            <FormattedMessage {...messages.tagValidationErrorMessage} />
+          </StyledValidationError>
+
           <Row>
             <StyledInput
               type={'text'}
               value={newTag}
               onChange={handleNewTagInput}
-              error={
-                isValidTag
-                  ? ''
-                  : 'please use max two words and do not add duplicates'
-              }
-            ></StyledInput>
+            />
             <Button
               locale={locale}
               icon="plus-circle"
@@ -344,6 +350,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                     isAutoTag={false}
                     isSelected={false}
                     text={localize(tag.attributes.title_multiloc)}
+                    icon={'plus-circle'}
                   />
                 ))}
             </TagList>
