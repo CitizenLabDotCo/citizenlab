@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { get } from 'lodash-es';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -20,6 +19,10 @@ const CommentsCount = styled.span`
   margin: 0;
   margin-left: 28px;
   margin-right: 25px;
+
+  &.disabled {
+    opacity: 0.71;
+  }
 `;
 
 const CommentIcon = styled(Icon)`
@@ -50,8 +53,16 @@ interface Props {
 }
 
 const CompactIdeaCard = memo<Props>(({ idea }) => {
-  const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
-  const ideaStatusId = get(idea, 'relationships.idea_status.data.id');
+  const ideaStatusId = idea?.relationships?.idea_status?.data.id;
+  const isDownVotingEnabled = !!idea?.attributes?.action_descriptor?.voting_idea
+    ?.downvoting_enabled;
+  const commentingDescriptor =
+    idea?.attributes?.action_descriptor?.commenting_idea;
+  const isCommentingEnabled = !!(
+    commentingDescriptor.enabled ||
+    commentingDescriptor.disabled_reason === 'not_signed_in'
+  );
+
   return (
     <Footer>
       <VoteControl
@@ -59,9 +70,9 @@ const CompactIdeaCard = memo<Props>(({ idea }) => {
         ideaId={idea.id}
         size="1"
         ariaHidden
-        showDownvote={votingDescriptor?.downvoting_enabled}
+        showDownvote={isDownVotingEnabled}
       />
-      <CommentsCount>
+      <CommentsCount className={isCommentingEnabled ? 'enabled' : 'disabled'}>
         <CommentIcon name="comments" />
         {idea.attributes.comments_count}
       </CommentsCount>

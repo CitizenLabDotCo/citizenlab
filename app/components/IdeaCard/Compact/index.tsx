@@ -71,7 +71,7 @@ const ImagePlaceholderContainer = styled.div`
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
-  width: 38px;
+  width: 34px;
   fill: ${transparentize(0.65, colors.label)};
 `;
 
