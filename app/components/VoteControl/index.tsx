@@ -46,6 +46,7 @@ import { lighten } from 'polished';
 interface IVoteComponent {
   active: boolean;
   enabled: boolean | null;
+  compact: boolean;
 }
 
 const voteKeyframeAnimation = keyframes`
@@ -284,12 +285,22 @@ const Upvote = styled(Vote)`
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${(props) =>
-      props.active &&
-      (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
-    &.compact {
-      ${(props) => props.active && props.enabled && `fill: ${colors.clGreen}`}
-    }
+
+    ${({ active, enabled, compact }) => {
+      if (!compact && active && enabled) {
+        return css`
+          fill: #fff;
+        `;
+      }
+
+      if ((compact && active) || (!compact && active && !enabled)) {
+        return css`
+          fill: ${colors.clGreen};
+        `;
+      }
+
+      return;
+    }};
   }
 
   ${VoteCount} {
@@ -314,6 +325,10 @@ const Upvote = styled(Vote)`
 `;
 
 const Downvote = styled(Vote)`
+  &.compact {
+    margin-right: 27px;
+  }
+
   ${VoteIconContainer} {
     ${(props) =>
       props.active &&
@@ -325,11 +340,22 @@ const Downvote = styled(Vote)`
 
   ${VoteIcon} {
     margin-top: 4px;
-    ${(props) =>
-      props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
-    &.compact {
-      ${(props) => props.active && props.enabled && `fill: ${colors.clRed}`}
-    }
+
+    ${({ active, enabled, compact }) => {
+      if (!compact && active && enabled) {
+        return css`
+          fill: #fff;
+        `;
+      }
+
+      if ((compact && active) || (!compact && active && !enabled)) {
+        return css`
+          fill: ${colors.clRed};
+        `;
+      }
+
+      return;
+    }};
   }
 
   ${VoteCount} {
@@ -883,6 +909,7 @@ class VoteControl extends PureComponent<
               style,
             ].join(' ')}
             enabled={upvotingEnabled}
+            compact={style === 'compact'}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer
@@ -922,6 +949,7 @@ class VoteControl extends PureComponent<
                 style,
               ].join(' ')}
               enabled={downvotingEnabled}
+              compact={style === 'compact'}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer

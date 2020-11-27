@@ -28,7 +28,6 @@ const CommentsCount = styled.span`
   flex-direction: row;
   align-items: center;
   margin: 0;
-  margin-left: 27px;
 
   &.disabled {
     opacity: 0.71;

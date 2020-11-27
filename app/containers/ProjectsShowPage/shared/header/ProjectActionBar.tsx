@@ -137,7 +137,7 @@ const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl - 2}px;
   line-height: normal;
-  font-weight: 600;
+  font-weight: 500;
   text-align: left;
   overflow-wrap: break-word;
   word-wrap: break-word;
