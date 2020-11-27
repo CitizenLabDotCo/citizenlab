@@ -50,6 +50,7 @@ import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
 import useTags from 'hooks/useTags';
 import useTaggings from 'hooks/useTaggings';
+import Tippy from '@tippyjs/react';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -88,7 +89,7 @@ const PostPreviewTransitionWrapper = styled.div`
 
 const FilterSectionTransitionWrapper = styled.div`
   &.slide-enter {
-    transform: translateX(-100%);
+    transform: translateX(-400%);
 
     &.slide-enter-active {
       transition: 1000ms;
@@ -101,23 +102,27 @@ const FilterSectionTransitionWrapper = styled.div`
     transform: translateX(0%);
 
     &.slide-exit-active {
-      transform: translateX(-100%);
+      transform: translateX(-400%);
     }
   }
 `;
 
-const FilterSection = styled.div`
-  padding-top: 45px;
-  padding-right: 18px;
-  padding-left: 18px;
+const LeftPanelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 18px;
   position: sticky;
   top: ${stylingConsts.menuHeight}px;
   height: calc(100vh - ${stylingConsts.menuHeight}px);
   max-width: 150px;
-  display: flex;
-  flex-direction: column;
   z-index: 100;
   background-color: #f9f9fa;
+`;
+
+const FilterSection = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledActions = styled.div`
@@ -193,6 +198,15 @@ const InformationBox = styled.div`
   background: ${colors.clBlueDarkBg};
 `;
 
+const KeyboardShortcuts = styled.div`
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: ${colors.clBlueDarkBg};
+  font-size: ${fontSizes.xs}px;
+`;
 interface DataProps {
   ideas: GetIdeasChildProps;
   projects: GetProjectsChildProps;
@@ -436,37 +450,62 @@ const Processing = memo<Props & InjectedIntlProps>(
             }}
           >
             <FilterSectionTransitionWrapper>
-              <FilterSection>
-                <StyledFilterSelector
-                  title={<FormattedMessage {...messages.project} />}
-                  name={'Projects'}
-                  values={projectList}
-                  onChange={handleProjectIdsChange}
-                  multipleSelectionAllowed={true}
-                  selected={selectedProjectIds}
-                />
+              <LeftPanelContainer>
+                <FilterSection>
+                  <StyledFilterSelector
+                    title={<FormattedMessage {...messages.project} />}
+                    name={'Projects'}
+                    values={projectList}
+                    onChange={handleProjectIdsChange}
+                    multipleSelectionAllowed={true}
+                    selected={selectedProjectIds}
+                  />
 
-                <StyledActions>
-                  <Button
-                    buttonStyle="admin-dark"
-                    disabled={selectedRows.length === 0}
-                    locale={locale}
-                    onClick={handleAutoTag}
-                  >
-                    <FormattedMessage {...messages.autotag} />
-                  </Button>
+                  <StyledActions>
+                    <Button
+                      buttonStyle="admin-dark"
+                      disabled={selectedRows.length === 0}
+                      locale={locale}
+                      onClick={handleAutoTag}
+                    >
+                      <FormattedMessage {...messages.autotag} />
+                    </Button>
 
-                  <Button
-                    buttonStyle="admin-dark-outlined"
-                    disabled={selectedRows.length === 0}
-                    processing={exporting}
-                    onClick={handleExportSelectedIdeasAsXlsx}
-                    locale={locale}
-                  >
-                    <FormattedMessage {...messages.export} />
-                  </Button>
-                </StyledActions>
-              </FilterSection>
+                    <Button
+                      buttonStyle="admin-dark-outlined"
+                      disabled={selectedRows.length === 0}
+                      processing={exporting}
+                      onClick={handleExportSelectedIdeasAsXlsx}
+                      locale={locale}
+                    >
+                      <FormattedMessage {...messages.export} />
+                    </Button>
+                  </StyledActions>
+                </FilterSection>
+                <Tippy
+                  disabled={false}
+                  placement="top"
+                  content={
+                    <ul>
+                      <li>
+                        <FormattedMessage {...messages.upAndDownArrow} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages.rightArrow} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages.leftArrow} />
+                      </li>
+                    </ul>
+                  }
+                  theme="light"
+                  hideOnClick={true}
+                >
+                  <KeyboardShortcuts>
+                    <FormattedMessage {...messages.keyboardShortcuts} />
+                  </KeyboardShortcuts>
+                </Tippy>
+              </LeftPanelContainer>
             </FilterSectionTransitionWrapper>
           </CSSTransition>
           {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
