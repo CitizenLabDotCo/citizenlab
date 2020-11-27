@@ -24,28 +24,20 @@ import { addTagging } from 'services/taggings';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
-  width: 80%;
   margin-bottom: 20px;
 `;
 
 const SelectGroupsContainer = styled.div`
-  width: fit-content;
   display: flex;
+  width: 100%;
   flex-direction: row;
-  flex-wrap: wrap;
   align-items: flex-start;
   align-items: center;
   margin-bottom: 30px;
 `;
 
 const StyledAsyncSelectCreatable = styled(AsyncSelectCreatable)`
-  min-width: 300px;
-`;
-
-const AddGroupButton = styled(Button)`
-  flex-grow: 0;
-  flex-shrink: 0;
-  margin-left: 20px;
+  flex-grow: 4;
 `;
 
 interface InputProps {

@@ -32,7 +32,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: start;
-  padding: 2%;
+  padding: 5%;
   flex-direction: column;
   width: 60%;
   height: 100%;
@@ -57,9 +57,10 @@ const StyledSubtitle = styled.p`
   font-weight: 600;
 `;
 
-const StyledSuggestion = styled.p`
-  font-size: ${fontSizes.base};
-  font-style: italic;
+const StyledValidationError = styled.p`
+  &.show {
+    text-decoration: underline;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -67,20 +68,35 @@ const StyledInput = styled(Input)`
 `;
 
 const TagList = styled.div`
-  margin: auto;
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  width: 80%;
+  padding: 12px 0px;
+  margin: 12px auto;
+  display: inline;
+  width: 100%;
+  overflow-y: auto;
+  height: inherit;
 `;
 
 const SuggestionList = styled.div`
-  margin: auto;
+  margin: 5px auto;
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   align-items: flex-start;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10%;
 `;
+
+const ExistingTagList = styled.div`
+  margin: 5px auto;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10%;
+  display: inline;
+  width: 100%;
+  overflow-y: auto;
+`;
+
 const StyledTag = styled(Tag)`
   margin-bottom: ${fontSizes.xs}px;
   margin-right: ${fontSizes.xs}px;
@@ -102,7 +118,7 @@ const StyledIcon = styled(Icon)`
   fill: #fff;
 `;
 const TagAssignationButton = styled(Button)`
-  align-self: flex-end;
+  align-self: center;
 `;
 
 const TabsContainer = styled.div`
@@ -233,20 +249,20 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
           <StyledSubtitle>
             <FormattedMessage {...messages.tagAssignationExplanation} />
           </StyledSubtitle>
+
           <h4>
             <FormattedMessage {...messages.addTag} />
           </h4>
+          <StyledValidationError className={`${!isValidTag && 'show'}`}>
+            <FormattedMessage {...messages.tagValidationErrorMessage} />
+          </StyledValidationError>
+
           <Row>
             <StyledInput
               type={'text'}
               value={newTag}
               onChange={handleNewTagInput}
-              error={
-                isValidTag
-                  ? ''
-                  : 'please use max two words and do not add duplicates'
-              }
-            ></StyledInput>
+            />
             <Button
               locale={locale}
               icon="plus-circle"
@@ -311,13 +327,6 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                     )}
                     text={localize(suggestion.title_multiloc)}
                   />
-                  // <StyledSuggestion
-                  //   onClick={handleNewTagInput}
-                  //   value={suggestion}
-                  // >
-                  //   <Icon />
-                  //   {suggestion}
-                  // </StyledSuggestion>
                 ))
               ) : (
                 <>
@@ -329,7 +338,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
               )}
             </SuggestionList>
           ) : (
-            <TagList>
+            <ExistingTagList>
               {tags
                 ?.filter(
                   (tag) =>
@@ -344,9 +353,10 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                     isAutoTag={false}
                     isSelected={false}
                     text={localize(tag.attributes.title_multiloc)}
+                    icon={'plus-circle'}
                   />
                 ))}
-            </TagList>
+            </ExistingTagList>
           )}
         </Right>
       </Container>
