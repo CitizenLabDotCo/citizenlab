@@ -281,7 +281,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [downArrow, ideaList]);
 
     useEffect(() => {
-      console.log('right arrow');
       if (enterModalKey && !isNilOrError(ideaList) && ideaList.length > 0) {
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
@@ -299,8 +298,11 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitModalKey, ideaList]);
 
     useEffect(() => {
-      setIdeaList(ideas?.list);
-    }, [ideas]);
+      if (selectedProjectIds.length > 0) {
+        setIdeaList(ideas?.list);
+        setLoadingIdeas(false);
+      }
+    }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
       if (loadingIdeas) {
@@ -383,6 +385,7 @@ const Processing = memo<Props & InjectedIntlProps>(
       setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
       if (newProjectIds.length > 0) {
+        debugger;
         onChangeProjects(newProjectIds);
         setLoadingIdeas(true);
       } else {
@@ -470,40 +473,40 @@ const Processing = memo<Props & InjectedIntlProps>(
           {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
             <TableWrapper>
               <StyledTable>
-                {!previewPostId && (
-                  <thead>
-                    <tr>
-                      <th className="checkbox">
-                        <StyledCheckbox
-                          checked={
-                            ideaList.length > 0 &&
-                            selectedRows.length === ideaList?.length
-                          }
-                          indeterminate={
-                            selectedRows.length > 0 &&
-                            selectedRows.length < ideaList.length
-                          }
-                          disabled={ideaList?.length === 0}
-                          onChange={handleOnSelectAll}
-                        />
-                      </th>
+                <thead>
+                  <tr>
+                    <th className="checkbox">
+                      <StyledCheckbox
+                        checked={
+                          ideaList.length > 0 &&
+                          selectedRows.length === ideaList?.length
+                        }
+                        indeterminate={
+                          selectedRows.length > 0 &&
+                          selectedRows.length < ideaList.length
+                        }
+                        disabled={ideaList?.length === 0}
+                        onChange={handleOnSelectAll}
+                      />
+                    </th>
 
-                      <th className="title">
-                        <FormattedMessage
-                          {...messages.items}
-                          values={{
-                            totalCount: ideaList.length,
-                            selectedCount: selectedRows.length,
-                          }}
-                        />
-                      </th>
+                    <th className="title">
+                      <FormattedMessage
+                        {...messages.items}
+                        values={{
+                          totalCount: ideaList.length,
+                          selectedCount: selectedRows.length,
+                        }}
+                      />
+                    </th>
 
+                    {!previewPostId && (
                       <th className="tags">
                         <FormattedMessage {...messages.tags} />
                       </th>
-                    </tr>
-                  </thead>
-                )}
+                    )}
+                  </tr>
+                </thead>
                 {ideaList?.length > 0 && (
                   <tbody>
                     {ideaList?.map((idea) => (
@@ -516,6 +519,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                         onSelect={handleRowOnSelect}
                         openPreview={openPreview}
                         taggings={getIdeaTaggings(idea.id)}
+                        showTagColumn={!previewPostId}
                       />
                     ))}
                   </tbody>
