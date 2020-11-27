@@ -129,6 +129,7 @@ const config = {
         GRAPHQL_PORT: JSON.stringify(process.env.GRAPHQL_PORT),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
+        INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),

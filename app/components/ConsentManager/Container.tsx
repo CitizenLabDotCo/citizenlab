@@ -16,8 +16,6 @@ import messages from './messages';
 import { CategorizedDestinations, IPreferences } from './';
 
 import styled from 'styled-components';
-import { IDestination } from './destinations';
-import { isEqual } from 'lodash-es';
 
 export const ButtonContainer = styled.div`
   width: 100%;
@@ -50,15 +48,6 @@ export default class Container extends PureComponent<Props, State> {
       isDialogOpen: false,
       isCancelling: false,
     };
-    if (!props.isConsentRequired) {
-      const activeDestinations = Object.values(
-        props.categorizedDestinations
-      ).flat() as IDestination[];
-      eventEmitter.emit<IDestination[]>(
-        'initializeTacking',
-        activeDestinations
-      );
-    }
   }
 
   componentDidMount() {
@@ -67,26 +56,6 @@ export default class Container extends PureComponent<Props, State> {
         .observeEvent('openConsentManager')
         .subscribe(this.openDialog),
     ];
-  }
-
-  componentDidUpdate({
-    isConsentRequired: prevIsConsentRequired,
-    categorizedDestinations: prevategorizedDestinations,
-  }) {
-    const { isConsentRequired, categorizedDestinations } = this.props;
-
-    if (
-      isConsentRequired !== prevIsConsentRequired ||
-      !isEqual(prevategorizedDestinations, categorizedDestinations)
-    ) {
-      const activeDestinations = Object.values(
-        categorizedDestinations
-      ).flat() as IDestination[];
-      eventEmitter.emit<IDestination[]>(
-        'initializeTacking',
-        activeDestinations
-      );
-    }
   }
 
   componentWillUnmount() {

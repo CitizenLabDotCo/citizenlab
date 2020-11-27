@@ -1,6 +1,9 @@
 import { authUserStream } from 'services/auth';
-import { events$, initializeFor } from 'utils/analytics';
-import { SATISMETER_WRITE_KEY } from 'containers/App/constants';
+import {
+  bufferUntilInitialized,
+  events$,
+  initializeFor,
+} from 'utils/analytics';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 import {
@@ -8,6 +11,7 @@ import {
   IDestinationConfig,
 } from 'components/ConsentManager/destinations';
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import { currentTenantStream } from 'services/tenant';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -29,10 +33,13 @@ const destinationConfig: IDestinationConfig = {
 registerDestination(destinationConfig);
 
 combineLatest([
+  currentTenantStream().observable,
   authUserStream().observable,
   initializeFor('satismeter'),
-]).subscribe(([user, _]) => {
+]).subscribe(([tenant, user, _]) => {
   (function () {
+    if (isNilOrError(tenant)) return;
+
     window.satismeter =
       window.satismeter ||
       function () {
@@ -45,7 +52,7 @@ combineLatest([
     script.src = 'https://app.satismeter.com/satismeter.js';
     script.onload = () =>
       window.satismeter({
-        writeKey: SATISMETER_WRITE_KEY,
+        writeKey: tenant.data.attributes.settings.satismeter?.write_key,
         ...(!isNilOrError(user)
           ? {
               userId: user.data.id,
@@ -61,6 +68,6 @@ combineLatest([
   })();
 });
 
-events$.subscribe((event) => {
+bufferUntilInitialized('satismeter', events$).subscribe((event) => {
   window.satismeter && window.satismeter('track', { event: event.name });
 });
