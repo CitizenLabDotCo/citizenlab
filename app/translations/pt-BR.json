@@ -1823,7 +1823,7 @@
   "app.containers.PasswordReset.passwordError": "A sua senha deve conter pelo menos 8 caracteres",
   "app.containers.PasswordReset.passwordLabel": "Senha",
   "app.containers.PasswordReset.passwordPlaceholder": "Nova senha",
-  "app.containers.PasswordReset.requestPasswordReset": "",
+  "app.containers.PasswordReset.requestNewPasswordReset": "",
   "app.containers.PasswordReset.submitError": "Ocorreu um erro. Por favor, tente novamente mais tarde.",
   "app.containers.PasswordReset.successMessage": "Sua senha foi alterada com sucesso",
   "app.containers.PasswordReset.title": "Redefinir sua senha",
