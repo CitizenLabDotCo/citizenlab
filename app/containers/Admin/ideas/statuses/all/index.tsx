@@ -190,9 +190,9 @@ const IdeaStatuses = () => {
                           {...messages.deleteButtonTooltipContent}
                           values={{
                             linkToManageTab: (
-                              <Link to="/admin/ideas">
+                              <b>
                                 <FormattedMessage {...messages.manage} />
-                              </Link>
+                              </b>
                             ),
                           }}
                         />
