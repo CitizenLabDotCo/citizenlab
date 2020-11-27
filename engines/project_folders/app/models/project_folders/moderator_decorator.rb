@@ -1,7 +1,8 @@
 module ProjectFolders
-  module RoledDecorator
+  module ModeratorDecorator
     def self.prepended(base)
       base.class_eval do
+
         has_many_roles :project_folder_moderator,
                        through: :admin_publication_moderator,
                        class: 'ProjectFolders::Folder',
@@ -19,4 +20,4 @@ module ProjectFolders
   end
 end
 
-# User.prepend(ProjectFolders::RoledDecorator)
+# User.prepend(ProjectFolders::ModeratorDecorator)

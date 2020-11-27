@@ -1,4 +1,4 @@
-module WebApi::V1::Roles
+module Roles
   class ApplicationController < ::ApplicationController
     skip_after_action :verify_authorized, unless: :policy_present?
     skip_after_action :verify_policy_scoped, unless: :policy_present?

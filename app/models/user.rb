@@ -56,7 +56,7 @@ class User < ApplicationRecord
   has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
   has_many_roles :project_moderator, class: 'Project', foreign_key: 'project_id'
 
-  prepend ProjectFolders::RoledDecorator
+  prepend ProjectFolders::ModeratorDecorator
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
