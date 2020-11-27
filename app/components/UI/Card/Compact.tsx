@@ -60,18 +60,14 @@ const Image = styled(LazyImage)`
   flex: 0 0 162px;
   width: 162px;
   height: 162px;
-  object-fit: cover;
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `}
 `;
 
 const ContentWrapper = styled.div`
-  flex-grow: 1;
+  height: 162px;
+  flex: 0 1 100%;
   display: flex;
   flex-direction: column;
-  height: 162px;
+  align-items: stretch;
 `;
 
 const Header = styled.header`
@@ -144,7 +140,7 @@ export const Card = ({
     }`}
   >
     <ImageWrapper hasImage={!!image}>
-      {image ? <Image src={image} alt="" /> : imagePlaceholder}
+      {image ? <Image src={image} cover={true} alt="" /> : imagePlaceholder}
     </ImageWrapper>
 
     <ContentWrapper>
