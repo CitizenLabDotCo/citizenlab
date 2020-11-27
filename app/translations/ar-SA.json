@@ -1823,6 +1823,7 @@
   "app.containers.PasswordReset.passwordError": "يجب ألّا يقل طول كلمة المرور عن 8 حروف",
   "app.containers.PasswordReset.passwordLabel": "كلمة المرور",
   "app.containers.PasswordReset.passwordPlaceholder": "كلمة المرور الجديدة",
+  "app.containers.PasswordReset.requestNewPasswordReset": "",
   "app.containers.PasswordReset.submitError": "حدث خطأ ما. يُرجى المحاولة مجددًا في وقت لاحق.",
   "app.containers.PasswordReset.successMessage": "تم تحديث كلمة المرور الخاصة بك بنجاح",
   "app.containers.PasswordReset.title": "إعادة تعيين كلمة المرور",

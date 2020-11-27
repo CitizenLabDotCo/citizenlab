@@ -1823,6 +1823,7 @@
   "app.containers.PasswordReset.passwordError": "Tu contraseña debe contener al menos 8 caracteres",
   "app.containers.PasswordReset.passwordLabel": "Contraseña",
   "app.containers.PasswordReset.passwordPlaceholder": "Nueva contraseña",
+  "app.containers.PasswordReset.requestNewPasswordReset": "",
   "app.containers.PasswordReset.submitError": "Algo salió mal. Por favor Inténtalo más tarde.",
   "app.containers.PasswordReset.successMessage": "Tu contraseña ha sido actualizada con éxito",
   "app.containers.PasswordReset.title": "Restablece tu contraseña",
