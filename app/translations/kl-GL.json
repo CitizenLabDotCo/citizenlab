@@ -715,6 +715,7 @@
   "app.containers.Admin.Processing.proposedBudgetTitle": "",
   "app.containers.Admin.Processing.tag": "",
   "app.containers.Admin.Processing.tagAssignationExplanation": "",
+  "app.containers.Admin.Processing.tagValidationErrorMessage": "",
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.tagsToAssign": "",
   "app.containers.Admin.Processing.title": "title",
