@@ -40,8 +40,12 @@ module Roles
       through? ? through_role_options.dig(:foreign_key) : options.dig(:foreign_key)
     end
 
-    def association_name
-      roleable_class.name.underscore.gsub('/', '_')
+    def association_name(namespace: true)
+      if namespace
+        roleable_class.name.underscore.gsub('/', '_')
+      else
+        roleable_class.name.demodulize.underscore.gsub('/', '_')
+      end
     end
 
     def association_records_name

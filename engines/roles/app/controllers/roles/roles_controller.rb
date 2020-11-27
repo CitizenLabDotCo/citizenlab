@@ -8,12 +8,12 @@ module Roles
       render json: serialize_resources(@roled_resources), status: :ok
     end
 
-    def update
-      subscriber&.before_create(@roled_resource, roleable, current_user)
+    def create
+      publish_before_create
       @roled_resource.send(:"add_#{role_name}_role", roleable)
 
       if @roled_resource.save
-        subscriber&.after_create(@roled_resource, roleable, current_user)
+        publish_after_create
         render json: serialize_resources(@roled_resource), status: :ok
       else
         render json: { errors: @roled_resource.errors }, status: :unprocessable_entity
@@ -21,42 +21,15 @@ module Roles
     end
 
     def destroy
-      subscriber&.before_destroy(@roled_resource, roleable, current_user)
+      publish_before_destroy
       @roled_resource.send(:"remove_#{role_name}_role", roleable)
 
       if @roled_resource.save
-        subscriber&.after_destroy(@roled_resource, roleable, current_user)
+        publish_after_destroy
         render json: serialize_resources(@roled_resource), status: :ok
       else
         render json: { errors: @roled_resource.errors }, status: :unprocessable_entity
       end
-    end
-
-    private
-
-    def scoped_resources
-      if params.key?(roled_resource_primary_key)
-        roled_resource_class.send(role_name, params[roled_resource_primary_key])
-      else
-        roled_resource_class.send(role_name)
-      end
-    end
-
-    def find_roled_resource
-      @roled_resource = roled_resource_class.find(params[:id])
-      authorize(@roled_resource, policy_class: policy_class) if policy_present?
-    end
-
-    def role_params
-      params.permit(*role_params_permitted_keys)
-    end
-
-    def roleable_id
-      @roleable_id ||= role_params.dig(config.roleable_primary_key)
-    end
-
-    def roleable
-      @roleable ||= find_roleable(roleable_id)
     end
   end
 end
