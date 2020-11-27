@@ -166,8 +166,16 @@ class PostPreview extends PureComponent<
   };
 
   addTaggingForTag = (tagId: string) => {
-    return this.state.postId
-      ? addTagging(this.state.postId, tagId)
+    const { postId } = this.state;
+    const tagging =
+      this.props.taggings &&
+      this.getAutomaticTaggings(this.props.taggings).find(
+        (tagging) => tagging.attributes.tag_id === tagId
+      );
+    return postId
+      ? tagging
+        ? switchToManual(tagging.id)
+        : addTagging(postId, tagId)
       : new Promise((res) => res());
   };
 
@@ -272,7 +280,9 @@ class PostPreview extends PureComponent<
                 <FormattedMessage {...messages.addNewTag} />
                 <TagSearch
                   filteredOutTagIds={
-                    taggings?.map((tagging) => tagging.tag?.id) || []
+                    manualTaggings?.map(
+                      (tagging) => tagging.attributes.tag_id
+                    ) || []
                   }
                   onAddSelect={this.addTaggingForTag}
                   onAddNew={this.addTaggingCreateTag}
