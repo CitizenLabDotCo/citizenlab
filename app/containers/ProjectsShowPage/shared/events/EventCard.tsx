@@ -203,7 +203,7 @@ const EventMetaItemText = styled.div`
 const EventTitle = styled.h3`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: normal;
   padding: 0;
   margin: 0;
