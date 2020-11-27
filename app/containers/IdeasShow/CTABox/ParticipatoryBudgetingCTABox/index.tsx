@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const StyledBudgetAssignment = styled(BudgetAssignment)``;
 
-export const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule: any = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
