@@ -180,13 +180,8 @@ const IdeasList = styled.div`
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(50% - 24px);
-  margin-left: 12px;
-  margin-right: 12px;
-
-  ${media.smallerThanMaxTablet`
-    width: calc(50% - 24px);
-  `};
+  width: calc(50% - 20px);
+  margin: 10px;
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -369,10 +364,15 @@ class WithoutFiltersSidebar extends PureComponent<
     const showListView =
       !locationEnabled || (locationEnabled && selectedView === 'card');
     const showMapView = locationEnabled && selectedView === 'map';
+    const smallerThanMaxTablet = windowSize
+      ? windowSize <= viewportWidths.largeTablet
+      : false;
     const smallerThanSmallTablet =
       windowSize && windowSize <= viewportWidths.smallTablet;
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.largeTablet;
+    const smallerThan1100px = windowSize && windowSize <= 1100;
+    const smallerThanPhone = windowSize && windowSize <= viewportWidths.phone;
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -445,6 +445,13 @@ class WithoutFiltersSidebar extends PureComponent<
                         participationMethod={participationMethod}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
+                        hideImage={smallerThanMaxTablet}
+                        hideIdeaStatus={
+                          !!(
+                            (biggerThanLargeTablet && smallerThan1100px) ||
+                            smallerThanPhone
+                          )
+                        }
                       />
                     ))}
                   </IdeasList>

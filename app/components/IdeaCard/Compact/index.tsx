@@ -86,6 +86,8 @@ interface Props {
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
+  hideImage?: boolean;
+  hideIdeaStatus?: boolean;
 }
 
 const CompactIdeaCard = memo<Props & InjectedLocalized>(
@@ -96,6 +98,8 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     participationMethod,
     participationContextId,
     participationContextType,
+    hideImage,
+    hideIdeaStatus,
   }) => {
     const idea = useIdea({ ideaId });
 
@@ -120,16 +124,13 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
 
     const authorId = idea.relationships.author.data?.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
-
     // remove html tags from wysiwyg output
     const bodyText = localize(idea.attributes.body_multiloc)
       .replace(/<[^>]*>?/gm, '')
       .trim();
-
     const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
     const commentingDescriptor =
       idea?.attributes?.action_descriptor?.commenting_idea;
-
     const newClassName = [
       className,
       'e2e-idea-card',
@@ -156,9 +157,12 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         }
         imagePlaceholder={
           <ImagePlaceholderContainer>
-            <ImagePlaceholderIcon name="idea" />
+            <ImagePlaceholderIcon
+              name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
+            />
           </ImagePlaceholderContainer>
         }
+        hideImage={hideImage}
         body={
           <BodyWrapper>
             {authorId && (
@@ -190,7 +194,10 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
               participationContextType={participationContextType}
             />
           ) : (
-            <FooterWithVoteControl idea={idea} />
+            <FooterWithVoteControl
+              idea={idea}
+              hideIdeaStatus={hideIdeaStatus}
+            />
           )
         }
       />
