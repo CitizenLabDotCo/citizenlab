@@ -79,4 +79,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.createTag',
     defaultMessage: 'Create a tag',
   },
+  suggestionLoading: {
+    id: 'app.components.admin.PostManager.PostPreview.suggestionLoading',
+    defaultMessage: "We're retrieving suggestions to tag the selected ideas",
+  },
 });

@@ -22,6 +22,8 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { stylingConsts } from 'utils/styleUtils';
+import { IMergedTagging } from 'hooks/useTaggings';
+import { deleteTagging } from 'services/taggings';
 
 const Content = styled.div`
   width: 100%;
@@ -41,6 +43,10 @@ const TagList = styled.div`
   text-align: right;
   width: 100%;
   margin-bottom: 10px;
+  & > {
+    margin: 0px 4px 4px 0px;
+    width: fit-content;
+  }
 `;
 
 const StyledTitle = styled(Title)`
@@ -55,6 +61,7 @@ const BodySectionTitle = styled.h2`
 
 export interface InputProps {
   ideaId: string | null;
+  manualTaggings: IMergedTagging[];
 }
 
 interface DataProps {
@@ -72,8 +79,12 @@ export class IdeaContent extends PureComponent<
     super(props);
   }
 
+  removeTagging = (taggingId) => () => {
+    deleteTagging(taggingId);
+  };
+
   render() {
-    const { idea, localize, tenant, locale } = this.props;
+    const { idea, localize, tenant, locale, manualTaggings } = this.props;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(tenant)) {
       const ideaId = idea.id;
@@ -103,12 +114,22 @@ export class IdeaContent extends PureComponent<
             </>
           )}
 
-          <TagList>
-            <Tag isAutoTag={false} isSelected={false} text="tag one" />
-            <Tag isAutoTag={false} isSelected={false} text="tag one" />
-            <Tag isAutoTag={false} isSelected={false} text="tag one" />
-            <Tag isAutoTag={false} isSelected={false} text="tag one" />
-          </TagList>
+          {manualTaggings.length > 0 && (
+            <TagList>
+              {manualTaggings.map((tagging) =>
+                tagging.tag ? (
+                  <Tag
+                    key={tagging.id}
+                    icon="close"
+                    onTagClick={this.removeTagging(tagging.id)}
+                    isAutoTag={false}
+                    isSelected={false}
+                    text={localize(tagging.tag.attributes.title_multiloc)}
+                  />
+                ) : null
+              )}
+            </TagList>
+          )}
           <StyledBody
             postId={ideaId}
             postType="idea"

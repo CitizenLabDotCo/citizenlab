@@ -433,6 +433,7 @@
   "app.components.admin.PostManager.PostPreview.picks": "الاختيارات: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "حفظ",
   "app.components.admin.PostManager.PostPreview.submitError": "خطأ",
+  "app.components.admin.PostManager.PostPreview.suggestionLoading": "",
   "app.components.admin.PostManager.PostPreview.voteCounts": "عدد الأصوات:",
   "app.components.admin.PostManager.allPhases": "جميع المراحل",
   "app.components.admin.PostManager.allProjects": "جميع المشاريع",
