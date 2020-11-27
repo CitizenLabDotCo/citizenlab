@@ -83,26 +83,21 @@ module Tagging
           tag_ids = params["tag_ids"]
           @new_tags = []
           if tags
-            @new_tags = tags.map.with_index do |tag, index|
-              return ({ title_multiloc: tag, id: index })
-            end
+            @new_tags = tags.map.with_index { |tag, index| { title_multiloc: { current_user.locale => tag
+}, id: index }}
           end
           @old_tags = tag_ids ? Tag.where(id: tag_ids) : []
-
-          suggestion = NLP::TaggingSuggestionService.new.suggest(
+          @suggestion = NLP::TaggingSuggestionService.new.suggest(
             policy_scope(Idea).where(id: params['idea_ids']),
             @new_tags + @old_tags,
             current_user.locale
           )
-          if suggestion
-            suggestion.each do |document|
+          if @suggestion
+            @suggestion.each do |document|
               idea = Idea.find(document['id'])
               document['predicted_labels'].each{ |label|
-                begin
-                  tag = Tag.find(label['id'])
-                rescue ActiveRecord::RecordNotFound => _
-                  Tag.create(title_multiloc: tags[label['id']])
-                end
+                tag = Tag.where(id: label['id']).first
+                tag ||= Tag.create(title_multiloc: @new_tags[label['id'].to_i][:title_multiloc])
                 Tagging.create(
                   tag: tag,
                   idea: idea,
@@ -112,7 +107,11 @@ module Tagging
               }
             end
 
-            render json: WebApi::V1::TaggingSerializer.new(Tagging.automatic.all, params: fastjson_params, include: [:tag]).serialized_json, status: :ok
+            render json: WebApi::V1::TaggingSerializer.new(
+              Tagging.automatic.all,
+              params: fastjson_params,
+              include: [:tag]
+            ).serialized_json, status: :ok
           else
             render json: { errors: ['NO'] }, status: :unprocessable_entity
           end
@@ -128,6 +127,10 @@ module Tagging
         def secure_controller?
           false
         end
+
+        # def parse_tag_parmas_for_generate
+        #
+        # end
       end
     end
   end

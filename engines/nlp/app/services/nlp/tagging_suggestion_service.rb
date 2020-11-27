@@ -29,7 +29,7 @@ module NLP
       tags.map{ |tag|
         {
           text: tag[:title_multiloc][locale],
-          label_id: tag[:id]
+          label_id: tag[:id].to_s
         }
       }.reject{ |doc| doc[:text].blank? }
     end

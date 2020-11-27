@@ -167,8 +167,8 @@ resource "Taggings" do
     example "Generates taggings from tag_ids" do
       response = [
         {
-        "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags.first.id}],
-        "id" => @ideas.first.id,
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags.first.id}],
+          "id" => @ideas.first.id
         }
       ]
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
@@ -180,13 +180,13 @@ resource "Taggings" do
     example "Generates taggings from new tags" do
       response = [
         {
-        "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => 0}],
-        "id" => @ideas.first.id,
-        }
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => 0}],
+          "id" => @ideas.first.id
+          }
       ]
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
-      do_request idea_ids: @ideas.map(&:id), tags: [{ en: 'Lalalal' }, { en: 'chachacha' }]
+      do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha' ]
 
       expect(response_status).to eq 200
     end
