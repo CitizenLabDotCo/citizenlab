@@ -87,6 +87,16 @@ const SuggestionList = styled.div`
   padding: 10%;
 `;
 
+const ExistingTagList = styled.div`
+  margin: 5px auto;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10%;
+  display: inline;
+  width: 100%;
+  overflow-y: auto;
+`;
+
 const StyledTag = styled(Tag)`
   margin-bottom: ${fontSizes.xs}px;
   margin-right: ${fontSizes.xs}px;
@@ -328,7 +338,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
               )}
             </SuggestionList>
           ) : (
-            <TagList>
+            <ExistingTagList>
               {tags
                 ?.filter(
                   (tag) =>
@@ -346,7 +356,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                     icon={'plus-circle'}
                   />
                 ))}
-            </TagList>
+            </ExistingTagList>
           )}
         </Right>
       </Container>
