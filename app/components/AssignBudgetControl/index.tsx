@@ -68,8 +68,8 @@ const BudgetBox = styled.div`
   justify-content: center;
   margin-bottom: 5px;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.separation};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Budget = styled.div`
@@ -78,9 +78,7 @@ const Budget = styled.div`
   font-weight: 500;
 `;
 
-const IdeaCardButton = styled(Button)`
-  margin-right: 12px;
-`;
+const IdeaCardButton = styled(Button)``;
 
 const AssignedContainer = styled.div`
   display: flex;
