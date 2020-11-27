@@ -6,5 +6,6 @@ module Tagging
     belongs_to :tag
 
     accepts_nested_attributes_for :tag
+    validates_uniqueness_of :tag_id, scope: :idea_id
   end
 end
