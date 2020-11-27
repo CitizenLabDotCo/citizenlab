@@ -52,10 +52,6 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     authorize @idea_status
   end
 
-  def secure_controller?
-    false
-  end
-
   def idea_status_params
     params.require(:idea_status).permit(
       :code, :color,
