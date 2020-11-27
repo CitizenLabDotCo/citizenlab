@@ -55,27 +55,13 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.fieldTitle',
     defaultMessage: 'Status Name',
   },
-  fieldTitleTooltip: {
-    id: 'app.containers.admin.ideaStatuses.form.fieldTitleTooltip',
-    defaultMessage: 'How the status will be displayed in different languages',
-  },
   fieldDescription: {
     id: 'app.containers.admin.ideaStatuses.form.fieldDescription',
     defaultMessage: 'Status Description',
   },
-  fieldDescriptionTooltip: {
-    id: 'app.containers.admin.ideaStatuses.form.fieldDescriptionTooltip',
-    defaultMessage:
-      'A short description of the status and what it means for ideas assigned to it.',
-  },
   fieldColor: {
     id: 'app.containers.admin.ideaStatuses.form.fieldColor',
     defaultMessage: 'Color',
-  },
-  fieldColorTooltip: {
-    id: 'app.containers.admin.ideaStatuses.form.fieldColorTooltip',
-    defaultMessage:
-      'The color of the idea status, which helps to recognise different statuses.',
   },
   category: {
     id: 'app.containers.admin.ideaStatuses.form.category',
