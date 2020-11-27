@@ -5,7 +5,7 @@ module EmailCampaigns
     def self.sender_email
       ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     end
-    default from: self.sender_email
+    default from: sender_email
     default reply_to: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     layout 'mailer'
 
