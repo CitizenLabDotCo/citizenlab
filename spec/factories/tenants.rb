@@ -27,8 +27,8 @@ FactoryBot.define do
           "allowed" => true,
           "voting_threshold" => 300,
           "days_limit" => 90,
-          "threshold_reached_message": {"en" => "Threshold reached"},
-          "eligibility_criteria", {"en" => "Eligibility criteria"}
+          "threshold_reached_message" => {"en" => "Threshold reached"},
+          "eligibility_criteria" => {"en" => "Eligibility criteria"}
         }
       }
     }
@@ -61,8 +61,8 @@ FactoryBot.define do
           "allowed" => true,
           "voting_threshold" => 300,
           "days_limit" => 90,
-          "threshold_reached_message": {"en" => "Threshold reached"},
-          "eligibility_criteria", {"en" => "Eligibility criteria"}
+          "threshold_reached_message" => {"en" => "Threshold reached"},
+          "eligibility_criteria" => {"en" => "Eligibility criteria"}
         }
       }
     }
