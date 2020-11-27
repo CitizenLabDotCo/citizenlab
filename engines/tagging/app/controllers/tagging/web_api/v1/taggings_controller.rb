@@ -127,10 +127,6 @@ module Tagging
         def secure_controller?
           false
         end
-
-        # def parse_tag_parmas_for_generate
-        #
-        # end
       end
     end
   end
