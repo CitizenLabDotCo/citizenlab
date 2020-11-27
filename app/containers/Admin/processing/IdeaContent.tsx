@@ -121,7 +121,7 @@ export class IdeaContent extends PureComponent<
                   <Tag
                     key={tagging.id}
                     icon="close"
-                    onIconClick={this.removeTagging(tagging.id)}
+                    onTagClick={this.removeTagging(tagging.id)}
                     isAutoTag={false}
                     isSelected={false}
                     text={localize(tagging.tag.attributes.title_multiloc)}
