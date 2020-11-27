@@ -19,17 +19,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Container from './Container';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import { getConsent, setConsent } from './consent';
+import {
+  getConsent,
+  IConsentCookie,
+  ISavedDestinations,
+  setConsent,
+} from './consent';
+import eventEmitter from 'utils/eventEmitter';
 
 // the format in which the user will make its choices,
 export type IPreferences = Partial<Record<TCategory, boolean>>;
-
-type ISavedDestinations = {
-  [key in IDestination]?: boolean | undefined;
-};
-export interface IConsentCookie extends IPreferences {
-  savedChoices: ISavedDestinations;
-}
 
 // the format in which we'll present the destinations to the user
 export type CategorizedDestinations = Record<TCategory, IDestination[]>;
@@ -47,6 +46,22 @@ interface State {
 }
 
 export class ConsentManager extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+
+    const cookieConsent = getConsent();
+
+    this.state = {
+      cookieConsent,
+      preferences: this.getCurrentPreferences(cookieConsent),
+    };
+
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      cookieConsent?.savedChoices || {}
+    );
+  }
+
   getActiveDestinations(): IDestinationConfig[] {
     const { authUser, tenant } = this.props;
     if (isNilOrError(tenant)) return [];
@@ -68,9 +83,9 @@ export class ConsentManager extends PureComponent<Props, State> {
     return output as CategorizedDestinations;
   }
 
-  getCurrentPreferences(cookieConsent) {
+  getCurrentPreferences(cookieConsent: IConsentCookie | null) {
     const newDestinations = this.getActiveDestinations().filter(
-      (config) => cookieConsent.savedChoices[config.key] === undefined
+      (config) => cookieConsent?.savedChoices[config.key] === undefined
     );
 
     const output = {};
@@ -91,17 +106,6 @@ export class ConsentManager extends PureComponent<Props, State> {
     return output;
   }
 
-  constructor(props) {
-    super(props);
-
-    const cookieConsent = getConsent();
-
-    this.state = {
-      cookieConsent,
-      preferences: this.getCurrentPreferences(cookieConsent),
-    };
-  }
-
   setPreferences = (changedPreference) => {
     this.setState((state) => ({
       ...state,
@@ -119,7 +123,7 @@ export class ConsentManager extends PureComponent<Props, State> {
   saveConsent = () => {
     const { preferences, cookieConsent } = this.state;
 
-    const newChoices = {};
+    const newChoices: ISavedDestinations = {};
     this.getActiveDestinations().forEach((config) => {
       newChoices[config.key] = preferences[config.category];
     });
@@ -131,6 +135,12 @@ export class ConsentManager extends PureComponent<Props, State> {
         ...newChoices,
       },
     });
+
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      newChoices
+    );
+
     this.setState({ cookieConsent: getConsent() });
   };
 

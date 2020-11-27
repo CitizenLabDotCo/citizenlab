@@ -5,6 +5,7 @@ import './google_tag_manager';
 import './intercom';
 import './satismeter';
 import './google_analytics';
+import './segment';
 
 export default loadModules([
   {

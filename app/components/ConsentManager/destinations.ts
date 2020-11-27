@@ -16,7 +16,7 @@ export interface IDestinationConfig {
   /** Destinations are grouped in categories. Under which category should it be listed? */
   category: TCategory;
   /** The name of the feature flag that should be active for the destination to be functional */
-  feature_flag?: string;
+  feature_flag?: keyof ITenantData['attributes']['settings'];
   /** Can the destination be active for the given user? */
   hasPermission?: (user?: IUserData) => boolean;
   /** Name of the destination shown in the UI */

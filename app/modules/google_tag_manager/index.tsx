@@ -6,6 +6,9 @@ import {
 import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { combineLatest } from 'rxjs';
+import { currentTenantStream } from 'services/tenant';
+import { isNilOrError } from 'utils/helperUtils';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -30,7 +33,12 @@ const destinationConfig: IDestinationConfig = {
 
 registerDestination(destinationConfig);
 
-initializeFor('google_tag_manager').subscribe(() => {
+combineLatest([
+  currentTenantStream().observable,
+  initializeFor('google_tag_manager'),
+]).subscribe(([tenant, _]) => {
+  if (isNilOrError(tenant)) return;
+
   (function (w, d, s, l, i) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -40,5 +48,11 @@ initializeFor('google_tag_manager').subscribe(() => {
     j.async = true;
     j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
     f.parentNode?.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', 'GTM-KBM5894');
+  })(
+    window,
+    document,
+    'script',
+    'dataLayer',
+    tenant.data.attributes.settings.google_tag_manager?.container_id
+  );
 });

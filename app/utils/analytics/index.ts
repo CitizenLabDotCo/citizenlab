@@ -1,21 +1,20 @@
 import React from 'react';
-import { Subject, combineLatest } from 'rxjs';
-import { filter, pairwise } from 'rxjs/operators';
-import { mapValues, isFunction, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { currentTenantStream, ITenantData } from 'services/tenant';
-import { authUserStream } from 'services/auth';
-import snippet from '@segment/snippet';
-
+import { Subject, Observable, concat } from 'rxjs';
 import {
-  isAdmin,
-  isSuperAdmin,
-  isProjectModerator,
-} from 'services/permissions/roles';
-import { IUser } from 'services/users';
+  buffer,
+  filter,
+  pairwise,
+  mergeAll,
+  take,
+  distinctUntilChanged,
+} from 'rxjs/operators';
+import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
-import { getConsent } from 'components/ConsentManager/consent';
+
+import { ITenantData } from 'services/tenant';
+
 import { IDestination } from 'components/ConsentManager/destinations';
+import { ISavedDestinations } from 'components/ConsentManager/consent';
 
 export interface IEvent {
   name: string;
@@ -31,131 +30,48 @@ export interface IPageChange {
   };
 }
 
-const tenant$ = currentTenantStream().observable;
-const authUser$ = authUserStream().observable;
 export const events$ = new Subject<IEvent>();
 export const pageChanges$ = new Subject<IPageChange>();
 
-const initializeTacking$ = eventEmitter.observeEvent<IDestination[]>(
-  'initializeTacking'
-);
+const destinationConsentChanged$ = eventEmitter
+  .observeEvent<ISavedDestinations[]>('destinationConsentChanged')
+  .pipe(distinctUntilChanged(isEqual));
 
-/** Stream that emits when the given destination should initialize. Only emits
- * if the user gave consent for this destination. Can emit more then once.
+/** Returns stream that emits when the given destination should initialize. Only
+ * emits if the user gave consent for this destination. Can emit more then once.
  */
 export const initializeFor = (destination: IDestination) => {
-  return initializeTacking$.pipe(
+  return destinationConsentChanged$.pipe(
     filter((event) => {
-      const { savedChoices } = getConsent();
-      return (
-        savedChoices[destination] && event.eventValue.includes(destination)
-      );
+      return event.eventValue[destination];
     })
   );
 };
 
-/** Stream that emits when the given destination should shut itself down.
+/** Returns buffered version of the given stream, that only starts emiting
+ * buffered values one by one when the given destination is initialized */
+export const bufferUntilInitialized = <T>(
+  destination: IDestination,
+  o$: Observable<T>
+): Observable<T> => {
+  return concat(
+    o$.pipe(buffer(initializeFor(destination).pipe(take(1))), mergeAll()),
+    o$
+  );
+};
+
+/** Returns stream that emits when the given destination should shut itself down.
  */
 export const shutdownFor = (destination: IDestination) => {
-  return initializeTacking$.pipe(
+  return destinationConsentChanged$.pipe(
     pairwise(),
     filter(([prevInit, latestInit]) => {
       return (
-        prevInit.eventValue.includes(destination) &&
-        !latestInit.eventValue.includes(destination)
+        prevInit.eventValue[destination] && !latestInit.eventValue[destination]
       );
     })
   );
 };
-
-combineLatest(tenant$, authUser$, events$).subscribe(
-  ([tenant, user, event]) => {
-    if (!isNilOrError(tenant)) {
-      if (isFunction(get(window, 'analytics.track'))) {
-        analytics.track(
-          event.name,
-          {
-            ...tenantInfo(tenant.data),
-            location: window?.location?.pathname,
-            ...event.properties,
-          },
-          { integrations: integrations(user) }
-        );
-      }
-    }
-  }
-);
-
-combineLatest(tenant$, authUser$, pageChanges$).subscribe(
-  ([tenant, user, pageChange]) => {
-    if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
-      analytics.page(
-        '',
-        {
-          path: pageChange.path,
-          url: `https://${tenant.data.attributes.host}${pageChange.path}`,
-          title: null,
-          ...tenantInfo(tenant.data),
-          ...pageChange.properties,
-        },
-        { integrations: integrations(user) }
-      );
-    }
-  }
-);
-
-combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  if (
-    !isNilOrError(tenant) &&
-    isFunction(get(window, 'analytics.identify')) &&
-    isFunction(get(window, 'analytics.group'))
-  ) {
-    if (user) {
-      analytics.identify(
-        user.data.id,
-        {
-          ...tenantInfo(tenant.data),
-          email: user.data.attributes.email,
-          firstName: user.data.attributes.first_name,
-          lastName: user.data.attributes.last_name,
-          createdAt: user.data.attributes.created_at,
-          avatar: user.data.attributes.avatar
-            ? user.data.attributes.avatar.large
-            : null,
-          birthday: user.data.attributes.birthyear,
-          gender: user.data.attributes.gender,
-          locale: user.data.attributes.locale,
-          isSuperAdmin: isSuperAdmin(user),
-          isAdmin: isAdmin(user),
-          isProjectModerator: isProjectModerator(user),
-          highestRole: user.data.attributes.highest_role,
-        },
-        {
-          integrations: integrations(user),
-          Intercom: { hideDefaultLauncher: !isAdmin(user) },
-        } as any
-      );
-      analytics.group(
-        tenant.data.id,
-        {
-          ...tenantInfo(tenant.data),
-          name: tenant.data.attributes.name,
-          website: tenant.data.attributes.settings.core.organization_site,
-          avatar:
-            tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
-          tenantLocales: tenant.data.attributes.settings.core.locales,
-        },
-        { integrations: integrations(user) }
-      );
-    } else {
-      // no user
-      analytics.identify(tenantInfo(tenant.data), {
-        integrations: integrations(user),
-        Intercom: { hideDefaultLauncher: true },
-      } as any);
-    }
-  }
-});
 
 export function tenantInfo(tenant: ITenantData) {
   return {
@@ -167,21 +83,6 @@ export function tenantInfo(tenant: ITenantData) {
     tenantLifecycleStage:
       tenant && tenant.attributes.settings.core.lifecycle_stage,
   };
-}
-
-export function integrations(user: IUser | null) {
-  const output = {
-    Intercom: false,
-    SatisMeter: false,
-  };
-  if (user) {
-    const highestRole = user.data.attributes.highest_role;
-    output['Intercom'] =
-      highestRole === 'admin' || highestRole === 'project_moderator';
-    output['SatisMeter'] =
-      highestRole === 'admin' || highestRole === 'project_moderator';
-  }
-  return output;
 }
 
 export function trackPage(path: string, properties: {} = {}) {
@@ -199,6 +100,7 @@ export function trackEventByName(eventName: string, properties: {} = {}) {
   });
 }
 
+/** @deprecated Use `trackEventByName` instead */
 export function trackEvent(event: IEvent) {
   events$.next({
     properties: event.properties || {},
@@ -206,6 +108,7 @@ export function trackEvent(event: IEvent) {
   });
 }
 
+/** @deprecated Directly call trackEventByName instead */
 export const injectTracks = <P>(events: { [key: string]: IEvent }) => (
   component: React.ComponentClass<P>
 ) => {
@@ -224,18 +127,4 @@ export const injectTracks = <P>(events: { [key: string]: IEvent }) => (
 
     return wrappedComponent;
   };
-};
-
-export const initializeAnalytics = () => {
-  // Initialize segments window.analytics object
-  const contents = snippet.min({
-    host: 'cdn.segment.com',
-    load: false,
-    page: false,
-  });
-
-  // tslint:disable-next-line:no-eval
-  eval(contents);
-
-  trackPage(window.location.pathname);
 };

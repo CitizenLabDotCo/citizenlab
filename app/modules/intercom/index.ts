@@ -2,19 +2,21 @@ import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { currentTenantStream } from 'services/tenant';
 import {
+  bufferUntilInitialized,
   events$,
   initializeFor,
   pageChanges$,
   shutdownFor,
   tenantInfo,
 } from 'utils/analytics';
-import { INTERCOM_APP_ID } from 'containers/App/constants';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+
+export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID;
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -40,6 +42,8 @@ combineLatest([
   authUserStream().observable,
   initializeFor('intercom'),
 ]).subscribe(([tenant, user, _]) => {
+  if (!INTERCOM_APP_ID) return;
+
   (function () {
     const w = window;
     const ic = w.Intercom;
@@ -101,17 +105,18 @@ shutdownFor('intercom').subscribe(() => {
   }
 });
 
-combineLatest([events$, currentTenantStream().observable]).subscribe(
-  ([event, tenant]) => {
-    if (!isNilOrError(tenant) && window.Intercom) {
-      const properties = {
-        ...tenantInfo(tenant.data),
-        ...event.properties,
-      };
-      window.Intercom('trackEvent', event.name, properties);
-    }
+combineLatest([
+  bufferUntilInitialized('intercom', events$),
+  currentTenantStream().observable,
+]).subscribe(([event, tenant]) => {
+  if (!isNilOrError(tenant) && window.Intercom) {
+    const properties = {
+      ...tenantInfo(tenant.data),
+      ...event.properties,
+    };
+    window.Intercom('trackEvent', event.name, properties);
   }
-);
+});
 
 pageChanges$.subscribe((_pageChange) => {
   if (window.Intercom) {

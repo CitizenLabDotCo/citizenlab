@@ -1,9 +1,19 @@
+import {
+  IDestination,
+  TCategory,
+} from 'components/ConsentManager/destinations';
 import { get, set, remove } from 'js-cookie';
-import { IConsentCookie } from '.';
 
 const COOKIE_NAME = 'cl2_consent';
 
-export function getConsent() {
+export type ISavedDestinations = {
+  [key in IDestination]?: boolean | undefined;
+};
+export interface IConsentCookie extends Partial<Record<TCategory, boolean>> {
+  savedChoices: ISavedDestinations;
+}
+
+export function getConsent(): IConsentCookie | null {
   try {
     const json = get(COOKIE_NAME);
     return json ? JSON.parse(json) : null;

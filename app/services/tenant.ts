@@ -82,6 +82,7 @@ export interface ITenantSettings {
     allowed: boolean;
     destinations: string;
     enabled: boolean;
+    container_id: string;
   };
   azure_ad_login?: {
     allowed: boolean;
@@ -157,8 +158,15 @@ export interface ITenantSettings {
   project_management?: TenantFeature;
   idea_assignment?: TenantFeature;
   intercom?: TenantFeature;
-  satismeter?: TenantFeature;
-  google_analytics?: TenantFeature;
+  satismeter?: TenantFeature & {
+    write_key: string;
+  };
+  google_analytics?: TenantFeature & {
+    tracking_id: string;
+  };
+  segment?: TenantFeature & {
+    destinations: string;
+  };
 }
 
 interface TenantMapSettings extends TenantFeature {
