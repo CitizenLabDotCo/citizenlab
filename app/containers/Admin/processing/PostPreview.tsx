@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 // components
 import IdeaContent from './IdeaContent';
-import { Button, Input, Tag } from 'cl2-component-library';
+import { Button, Tag } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -14,8 +14,12 @@ import { ManagerType } from 'components/admin/PostManager';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { ITagging } from 'services/taggings';
+import { addTagging, deleteTagging, switchToManual } from 'services/taggings';
 import TagSearch from './TagSearch';
+import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { ITag } from 'services/tags';
+import { IMergedTagging } from 'hooks/useTaggings';
 
 export const Container = styled.div`
   display: flex;
@@ -89,8 +93,9 @@ interface InputProps {
   type: ManagerType;
   onClose: () => void;
   postId: string | null;
+  taggings: IMergedTagging[] | null;
   handleNavigation: (direction: Direction) => void;
-  taggings: ITagging[] | null;
+  tags: ITag[] | null | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -101,8 +106,8 @@ interface State {
   newTag: string | null;
 }
 
-export default class PostPreview extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
+  constructor(props: Props & InjectedLocalized) {
     super(props);
     this.state = {
       postId: props.postId,
@@ -135,11 +140,36 @@ export default class PostPreview extends PureComponent<Props, State> {
     this.props.handleNavigation(direction);
   };
 
+  getManualTaggings = (taggings: IMergedTagging[]) =>
+    taggings.filter(
+      (tagging) => tagging.attributes.assignment_method === 'manual'
+    );
+  getAutomaticTaggings = (taggings: IMergedTagging[]) =>
+    taggings.filter(
+      (tagging) => tagging.attributes.assignment_method === 'automatic'
+    );
+
+  tagIdea = (tagId) => () => {
+    const postId = this.props.postId;
+    postId && addTagging(postId, tagId);
+  };
+
+  removeTagging = (taggingId) => () => {
+    deleteTagging(taggingId);
+  };
+  switchToManual = (taggingId) => () => {
+    switchToManual(taggingId);
+  };
+
   render() {
-    const ideaTagIds =
-      this.props.taggings
-        ?.filter((tagging) => tagging.attributes.assignment_method === 'manual')
-        .map((tagging) => tagging.attributes.tag_id) || [];
+    const { taggings, localize, tags } = this.props;
+    const manualTaggings = isNilOrError(taggings)
+      ? []
+      : this.getManualTaggings(taggings);
+    const automaticTaggings = isNilOrError(taggings)
+      ? []
+      : this.getAutomaticTaggings(taggings);
+
     return (
       <Container>
         <Navigation>
@@ -170,61 +200,60 @@ export default class PostPreview extends PureComponent<Props, State> {
 
         {this.state.postId && (
           <>
-            <IdeaContent ideaId={this.state.postId} />
+            <IdeaContent
+              ideaId={this.state.postId}
+              manualTaggings={manualTaggings}
+            />
             <TagSection>
-              <TagSubSection>
-                <FormattedMessage {...messages.addSmartTag} />
-                <TagList>
-                  <StyledTag
-                    isAutoTag={true}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                  <StyledTag
-                    isAutoTag={true}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                  <StyledTag
-                    isAutoTag={true}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                  <StyledTag
-                    isAutoTag={true}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                </TagList>
-              </TagSubSection>
-              <TagSubSection>
-                <FormattedMessage {...messages.addExistingTag} />
-                <TagList>
-                  <StyledTag
-                    isAutoTag={false}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                  <StyledTag
-                    isAutoTag={false}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                  <StyledTag
-                    isAutoTag={false}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                  <StyledTag
-                    isAutoTag={false}
-                    isSelected={false}
-                    text="tag one"
-                  />
-                </TagList>
-              </TagSubSection>
+              {automaticTaggings.length > 0 && (
+                <TagSubSection>
+                  <FormattedMessage {...messages.addSmartTag} />
+                  <TagList>
+                    {automaticTaggings.map((tagging) =>
+                      tagging.tag ? (
+                        <StyledTag
+                          key={tagging.id}
+                          icon="close"
+                          onIconClick={this.removeTagging(tagging.id)}
+                          onTagClick={this.switchToManual(tagging.id)}
+                          isAutoTag={true}
+                          isSelected={false}
+                          text={localize(tagging.tag.attributes.title_multiloc)}
+                        />
+                      ) : null
+                    )}
+                  </TagList>
+                </TagSubSection>
+              )}
+              {!isNilOrError(tags) && (
+                <TagSubSection>
+                  <FormattedMessage {...messages.addExistingTag} />
+                  <TagList>
+                    {tags
+                      .filter(
+                        (tag) =>
+                          !taggings?.find(
+                            (tagging) => tagging.attributes.tag_id === tag.id
+                          )
+                      )
+                      .map((tag) => (
+                        <StyledTag
+                          key={tag.id}
+                          onTagClick={this.tagIdea(tag.id)}
+                          isAutoTag={false}
+                          isSelected={false}
+                          text={localize(tag.attributes.title_multiloc)}
+                        />
+                      ))}
+                  </TagList>
+                </TagSubSection>
+              )}
               <TagSubSection>
                 <FormattedMessage {...messages.addNewTag} />
-                <TagSearch ideaId={this.state.postId} ideaTagIds={ideaTagIds} />
+                <TagSearch
+                  ideaId={this.state.postId}
+                  ideaTagIds={manualTaggings.map((tagging) => tagging.tag?.id)}
+                />
               </TagSubSection>
             </TagSection>
           </>
@@ -233,3 +262,5 @@ export default class PostPreview extends PureComponent<Props, State> {
     );
   }
 }
+
+export default injectLocalize(PostPreview);

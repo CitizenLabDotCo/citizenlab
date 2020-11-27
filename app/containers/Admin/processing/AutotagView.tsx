@@ -16,7 +16,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import useKeyPress from 'hooks/useKeyPress';
-import { taggingSuggestionStream } from 'services/taggings';
+import useTagSuggestions from 'hooks/useTagSuggestions';
+import useLocalize from 'hooks/useLocalize';
+import { ITag } from 'services/tags';
+import useTags from 'hooks/useTags';
+import { generateTaggings } from 'services/taggings';
 
 const Container = styled.div`
   display: flex;
@@ -123,41 +127,29 @@ const Tab = styled.div`
   }
 `;
 
-const VerticalSeparator = styled.div`
-  height: calc(100% - 4px);
-
-  width: 1px;
-  background-color: ${colors.adminSeparation};
-`;
-
 interface Props {
-  closeView: (e: FormEvent) => void;
+  closeView: (e?: FormEvent) => void;
+  selectedRows: string[];
 }
 
-const AutotagView = ({ closeView }: Props) => {
+const AutotagView = ({ closeView, selectedRows }: Props) => {
   const locale = useLocale();
   const addTagInputKeyPress = useKeyPress('Enter');
   const [newTag, setNewTag] = useState('');
-  const [selectedTagsList, setSelectedTagsList] = useState<string[] | []>([]);
-  const [suggestions, setSuggestions] = useState<string[] | []>([]);
+  const [selectedTagsList, setSelectedTagsList] = useState<ITag[]>([]);
+  const [newTagsList, setNewTagsList] = useState<string[]>([]);
+
+  const { tags } = useTags();
+
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'detected' | 'existing'>(
-    'detected'
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'suggestions' | 'existingTags'>(
+    'suggestions'
   );
 
-  useEffect(() => {
-    const suggestions = [
-      'rezarez',
-      'rezj rejzkalre rezarezr',
-      'jkdl fdjsklfd sfjdskqlf jdksql',
-      'jkfl ds jfkdlsq jfkdlsq jfkdlsq',
-      'hjk fds fgdfqdsq',
-      'ghjfkd sfghjdsq gfhj ',
-      'ghj g',
-    ];
+  const localize = useLocalize();
 
-    setTimeout(() => setSuggestions(suggestions), 5000);
-  }, []);
+  const { tagSuggestions } = useTagSuggestions(selectedRows);
 
   useEffect(() => {
     if (addTagInputKeyPress && isValidTag) {
@@ -166,56 +158,67 @@ const AutotagView = ({ closeView }: Props) => {
   }, [addTagInputKeyPress]);
 
   const handleAddNewTag = () => {
-    setSelectedTagsList([...selectedTagsList, newTag]);
+    setNewTagsList([...newTagsList, newTag]);
     setNewTag('');
   };
 
-  const handleAddExistingTag = (tag) => {
+  const handleAddExistingTag = (tag: ITag) => () => {
     setSelectedTagsList([...selectedTagsList, tag]);
   };
 
   const handleNewTagInput = (tag: string) => {
     setNewTag(tag);
-    setIsValidTag(isTagValid(tag));
   };
 
-  const handleNewTagFromSuggestion = (event) => {
+  const handleNewTagFromSuggestion = (text: string) => (event) => {
     event.preventDefault();
-    console.log(event);
-    // setNewTag(tag);
-    // setIsValidTag(isTagValid(tag));
+    setNewTag(text);
   };
 
-  const handleRemoveTagFromSelection = (removedTag: string) => {
-    if (selectedTagsList.length === 1) {
-      setSelectedTagsList([]);
-      return;
-    }
-    let newSelectedTags = selectedTagsList;
-    newSelectedTags.splice(
-      newSelectedTags.findIndex((tag) => removedTag === tag),
-      1
+  const handleRemoveTagFromSelection = (removedTagID: string) => {
+    setSelectedTagsList(
+      [...selectedTagsList].splice(
+        selectedTagsList.findIndex((tag) => removedTagID === tag.id),
+        1
+      )
     );
-    console.log(newSelectedTags);
-
-    setSelectedTagsList([...newSelectedTags]);
   };
 
-  const isTagValid = (tag: string) => {
-    if (tag.length < 2) {
-      return false;
+  const handleRemoveNewTag = (removedTag: string) => {
+    setNewTagsList(
+      [...newTagsList].splice(
+        newTagsList.findIndex((tag) => removedTag === tag),
+        1
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (newTag.length < 2) {
+      setIsValidTag(false);
     }
 
-    let splitTag = tag;
+    const splitTag = newTag;
     const wordCount = splitTag.split(' ').filter((n) => {
-      return n != '';
+      return n !== '';
     }).length;
 
-    return (
+    setIsValidTag(
       !isNilOrError(wordCount) &&
-      [1, 2].includes(wordCount) &&
-      !selectedTagsList.includes(tag)
+        [1, 2].includes(wordCount) &&
+        !newTagsList.includes(newTag)
     );
+  }, [newTag]);
+
+  const handleGenerate = () => {
+    setProcessing(true);
+    generateTaggings(
+      selectedRows,
+      selectedTagsList.map((tag) => tag.id),
+      newTagsList
+    )
+      .then(() => closeView())
+      .catch(() => setProcessing(false));
   };
 
   if (!isNilOrError(locale)) {
@@ -253,48 +256,60 @@ const AutotagView = ({ closeView }: Props) => {
             />
           </Row>
           <TagList>
-            {selectedTagsList.length > 0 &&
-              selectedTagsList?.map((tag: string) => (
-                <StyledTag
-                  text={tag}
-                  isAutoTag={false}
-                  isSelected={false}
-                  icon={'remove'}
-                  onTagClick={() => handleRemoveTagFromSelection(tag)}
-                />
-              ))}
+            {selectedTagsList.map((tag) => (
+              <StyledTag
+                text={localize(tag.attributes.title_multiloc)}
+                isAutoTag={false}
+                isSelected={false}
+                icon={'remove'}
+                onTagClick={() => handleRemoveTagFromSelection(tag.id)}
+              />
+            ))}
+            {newTagsList.map((tag) => (
+              <StyledTag
+                text={tag}
+                isAutoTag={false}
+                isSelected={false}
+                icon={'remove'}
+                onTagClick={() => handleRemoveNewTag(tag)}
+              />
+            ))}
           </TagList>
           <TagAssignationButton
             locale={locale}
             text={<FormattedMessage {...messages.automaticallyAssign} />}
             buttonStyle={'admin-dark'}
+            onClick={handleGenerate}
+            processing={processing}
           />
         </Left>
         <Right>
           <TabsContainer>
             <Tab
-              className={activeTab === 'detected' ? 'active' : ''}
-              onClick={() => setActiveTab('detected')}
+              className={activeTab === 'suggestions' ? 'active' : ''}
+              onClick={() => setActiveTab('suggestions')}
             >
               Suggestions
             </Tab>
             <Tab
-              className={activeTab === 'existing' ? 'active' : ''}
-              onClick={() => setActiveTab('existing')}
+              className={activeTab === 'existingTags' ? 'active' : ''}
+              onClick={() => setActiveTab('existingTags')}
             >
               Existing tags
             </Tab>
           </TabsContainer>
-          {activeTab === 'detected' ? (
+          {activeTab === 'suggestions' ? (
             <SuggestionList>
-              {suggestions.length > 0 ? (
-                suggestions.map((suggestion) => (
+              {tagSuggestions && tagSuggestions?.length > 0 ? (
+                tagSuggestions.map((suggestion) => (
                   <Button
                     locale={locale}
                     icon="plus-circle"
                     buttonStyle="text"
-                    onClick={handleNewTagFromSuggestion}
-                    text={suggestion}
+                    onClick={handleNewTagFromSuggestion(
+                      localize(suggestion.title_multiloc)
+                    )}
+                    text={localize(suggestion.title_multiloc)}
                   />
                   // <StyledSuggestion
                   //   onClick={handleNewTagInput}
@@ -307,7 +322,7 @@ const AutotagView = ({ closeView }: Props) => {
               ) : (
                 <>
                   <StyledSubtitle>
-                    We're retrieving tag suggestions for the selected ideas
+                    <FormattedMessage {...messages.suggestionLoading} />
                   </StyledSubtitle>
                   <Spinner />
                 </>
@@ -315,27 +330,22 @@ const AutotagView = ({ closeView }: Props) => {
             </SuggestionList>
           ) : (
             <TagList>
-              <StyledTag
-                text={'tags'}
-                isAutoTag={false}
-                isSelected={false}
-                icon={'plus-circle'}
-                onTagClick={handleAddNewTag}
-              />
-              <StyledTag
-                text={'tags'}
-                isAutoTag={false}
-                isSelected={false}
-                onTagClick={() => handleAddExistingTag('test')}
-                icon={'plus-circle'}
-              />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
-              <StyledTag text={'tags'} isAutoTag={false} isSelected={false} />
+              {tags
+                ?.filter(
+                  (tag) =>
+                    !selectedTagsList?.find(
+                      (selectedTag) => selectedTag.id === tag.id
+                    )
+                )
+                .map((tag) => (
+                  <StyledTag
+                    key={tag.id}
+                    onTagClick={handleAddExistingTag(tag)}
+                    isAutoTag={false}
+                    isSelected={false}
+                    text={localize(tag.attributes.title_multiloc)}
+                  />
+                ))}
             </TagList>
           )}
         </Right>

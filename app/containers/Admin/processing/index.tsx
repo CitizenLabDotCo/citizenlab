@@ -48,10 +48,8 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
-import useTagSuggestions from 'hooks/useTagSuggestion';
 import useTags from 'hooks/useTags';
 import useTaggings from 'hooks/useTaggings';
-import { ITagging } from 'services/taggings';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -219,23 +217,15 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const {
-      tagSuggestions,
-      onIdeasChange: onIdeasChangeTagSugs,
-    } = useTagSuggestions();
-    const { tags, onIdeasChange: onIdeasChangeTags } = useTags();
-    const { taggings, onIdeasChange: onIdeasChangeTaggings } = useTaggings();
+    const { taggings } = useTaggings();
+    const { tags } = useTags();
 
-    const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
 
-    const [previewPostTaggings, setPreviewPostTaggings] = useState<
-      ITagging[] | null
-    >(null);
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
@@ -291,7 +281,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [downArrow, ideaList]);
 
     useEffect(() => {
-      console.log('right arrow');
       if (enterModalKey && !isNilOrError(ideaList) && ideaList.length > 0) {
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
@@ -309,10 +298,11 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitModalKey, ideaList]);
 
     useEffect(() => {
-      if (!processing && selectedProjectIds.length > 0) {
+      if (selectedProjectIds.length > 0) {
         setIdeaList(ideas?.list);
+        setLoadingIdeas(false);
       }
-    }, [ideas, processing]);
+    }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
       if (loadingIdeas) {
@@ -345,18 +335,14 @@ const Processing = memo<Props & InjectedIntlProps>(
       setShowAutotagView(true);
     };
 
-    const handleCloseAutotagView = (e: FormEvent) => {
-      e.preventDefault();
+    const handleCloseAutotagView = (e?: FormEvent) => {
+      e?.preventDefault();
       setShowAutotagView(false);
-      // setProcessing(true);
-      // onIdeasChangeTags(selectedRows);
-      // onIdeasChangeTagSugs(selectedRows);
-      // onIdeasChangeTaggings(selectedRows);
     };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !processing) {
+        if (!isNilOrError(ideaList)) {
           const newSelectedRows =
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
@@ -364,7 +350,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           setSelectedRows(newSelectedRows);
         }
       },
-      [ideaList, selectedRows, processing]
+      [ideaList, selectedRows]
     );
 
     const navigate = (direction: 'up' | 'down') => {
@@ -408,14 +394,12 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
-        if (!processing) {
-          const newSelectedRows = includes(selectedRows, selectedItemId)
-            ? selectedRows.filter((id) => id !== selectedItemId)
-            : [...selectedRows, selectedItemId];
-          setSelectedRows(newSelectedRows);
-        }
+        const newSelectedRows = includes(selectedRows, selectedItemId)
+          ? selectedRows.filter((id) => id !== selectedItemId)
+          : [...selectedRows, selectedItemId];
+        setSelectedRows(newSelectedRows);
       },
-      [selectedRows, processing]
+      [selectedRows]
     );
 
     const openPreview = (id: string) => {
@@ -425,7 +409,19 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const closeSideModal = () => setPreviewPostId(null);
 
-    if (!isNilOrError(projectList) && !isNilOrError(locale) && !showAutotagView)
+    const getIdeaTaggings = useCallback(
+      (id: string | null) =>
+        (!isNilOrError(taggings) &&
+          taggings.filter((tagging) => tagging.attributes.idea_id === id)) ||
+        [],
+      [taggings]
+    );
+
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      !showAutotagView
+    ) {
       return (
         <Container className={className}>
           <CSSTransition
@@ -454,7 +450,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                   <Button
                     buttonStyle="admin-dark"
                     disabled={selectedRows.length === 0}
-                    processing={processing}
                     locale={locale}
                     onClick={handleAutoTag}
                   >
@@ -477,54 +472,57 @@ const Processing = memo<Props & InjectedIntlProps>(
           {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
             <TableWrapper>
               <StyledTable>
-                {!previewPostId && (
-                  <thead>
-                    <tr>
-                      <th className="checkbox">
-                        <StyledCheckbox
-                          checked={
-                            ideaList.length > 0 &&
-                            selectedRows.length === ideaList?.length
-                          }
-                          indeterminate={
-                            selectedRows.length > 0 &&
-                            selectedRows.length < ideaList.length
-                          }
-                          disabled={ideaList?.length === 0}
-                          onChange={handleOnSelectAll}
-                        />
-                      </th>
+                <thead>
+                  <tr>
+                    <th className="checkbox">
+                      <StyledCheckbox
+                        checked={
+                          ideaList.length > 0 &&
+                          selectedRows.length === ideaList?.length
+                        }
+                        indeterminate={
+                          selectedRows.length > 0 &&
+                          selectedRows.length < ideaList.length
+                        }
+                        disabled={ideaList?.length === 0}
+                        onChange={handleOnSelectAll}
+                      />
+                    </th>
 
-                      <th className="title">
-                        <FormattedMessage
-                          {...messages.items}
-                          values={{
-                            totalCount: ideaList.length,
-                            selectedCount: selectedRows.length,
-                          }}
-                        />
-                      </th>
+                    <th className="title">
+                      <FormattedMessage
+                        {...messages.items}
+                        values={{
+                          totalCount: ideaList.length,
+                          selectedCount: selectedRows.length,
+                        }}
+                      />
+                    </th>
 
+                    {!previewPostId && (
                       <th className="tags">
                         <FormattedMessage {...messages.tags} />
                       </th>
-                    </tr>
-                  </thead>
+                    )}
+                  </tr>
+                </thead>
+                {ideaList?.length > 0 && (
+                  <tbody>
+                    {ideaList?.map((idea) => (
+                      <ProcessingRow
+                        key={idea.id}
+                        idea={idea}
+                        selected={includes(selectedRows, idea.id)}
+                        highlighted={idea.id === highlightedId}
+                        rowRef={idea.id === highlightedId ? rowRef : undefined}
+                        onSelect={handleRowOnSelect}
+                        openPreview={openPreview}
+                        taggings={getIdeaTaggings(idea.id)}
+                        showTagColumn={!previewPostId}
+                      />
+                    ))}
+                  </tbody>
                 )}
-                <tbody>
-                  {ideaList.map((idea) => (
-                    <ProcessingRow
-                      key={idea.id}
-                      idea={idea}
-                      selected={includes(selectedRows, idea.id)}
-                      highlighted={idea.id === highlightedId}
-                      rowRef={idea.id === highlightedId ? rowRef : undefined}
-                      showTagColumn={!previewPostId}
-                      onSelect={handleRowOnSelect}
-                      openPreview={openPreview}
-                    />
-                  ))}
-                </tbody>
               </StyledTable>
             </TableWrapper>
           ) : loadingIdeas ? (
@@ -551,15 +549,26 @@ const Processing = memo<Props & InjectedIntlProps>(
                 postId={previewPostId}
                 onClose={closeSideModal}
                 handleNavigation={navigate}
-                taggings={previewPostTaggings}
+                taggings={getIdeaTaggings(previewPostId)}
+                tags={tags}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
         </Container>
       );
-    if (!isNilOrError(projectList) && !isNilOrError(locale) && showAutotagView)
-      return <AutotagView closeView={handleCloseAutotagView} />;
-    else return null;
+    }
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      showAutotagView
+    ) {
+      return (
+        <AutotagView
+          closeView={handleCloseAutotagView}
+          selectedRows={selectedRows}
+        />
+      );
+    } else return null;
   }
 );
 

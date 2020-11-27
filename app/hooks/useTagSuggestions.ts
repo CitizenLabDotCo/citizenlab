@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ITagSuggestion, tagSuggestionsStream } from 'services/tags';
 
-export default function useTagSuggestions() {
+export default function useTagSuggestions(ideaIdsParam: string[]) {
   const [tagSuggestions, setTagSuggestions] = useState<
     ITagSuggestion[] | null | undefined
   >(undefined);
 
-  const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>([]);
+  const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>(
+    ideaIdsParam
+  );
 
   const onIdeasChange = useCallback((ideas: string[]) => {
     setIdeaIds([...ideas]);
