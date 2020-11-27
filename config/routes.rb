@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   mount PublicApi::Engine => "/api", as: 'public_api'
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
@@ -38,8 +37,6 @@ Rails.application.routes.draw do
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
-
-      roles_for :users, skip: %i[admin admin_publication_moderator project_moderator]
 
       resources :ideas,
         concerns: [:votable, :spam_reportable, :post],
