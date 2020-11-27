@@ -57,11 +57,6 @@ const StyledSubtitle = styled.p`
   font-weight: 600;
 `;
 
-const StyledSuggestion = styled.p`
-  font-size: ${fontSizes.base};
-  font-style: italic;
-`;
-
 const StyledValidationError = styled.p`
   &.show {
     text-decoration: underline;
@@ -78,15 +73,20 @@ const TagList = styled.div`
   display: inline;
   width: 100%;
   overflow-y: auto;
+  height: inherit;
 `;
 
 const SuggestionList = styled.div`
-  margin: auto;
+  margin: 5px auto;
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   align-items: flex-start;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10%;
 `;
+
 const StyledTag = styled(Tag)`
   margin-bottom: ${fontSizes.xs}px;
   margin-right: ${fontSizes.xs}px;
@@ -317,13 +317,6 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                     )}
                     text={localize(suggestion.title_multiloc)}
                   />
-                  // <StyledSuggestion
-                  //   onClick={handleNewTagInput}
-                  //   value={suggestion}
-                  // >
-                  //   <Icon />
-                  //   {suggestion}
-                  // </StyledSuggestion>
                 ))
               ) : (
                 <>
