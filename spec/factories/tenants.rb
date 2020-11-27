@@ -21,6 +21,7 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
+          "lifecycle_stage" => "active"
         },
         "initiatives" => {
           "enabled" => true,
@@ -56,6 +57,7 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
+          "lifecycle_stage" => "active"
         },
         "initiatives" => {
           "enabled" => true,
