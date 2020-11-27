@@ -1823,7 +1823,7 @@
   "app.containers.PasswordReset.passwordError": "The password must be at least 8 characters long",
   "app.containers.PasswordReset.passwordLabel": "Password",
   "app.containers.PasswordReset.passwordPlaceholder": "New password",
-  "app.containers.PasswordReset.requestPasswordReset": "Please request a new password reset",
+  "app.containers.PasswordReset.requestNewPasswordReset": "Request a new password reset",
   "app.containers.PasswordReset.submitError": "Something went wrong. Please try again later.",
   "app.containers.PasswordReset.successMessage": "Your password has been successfully updated",
   "app.containers.PasswordReset.title": "Reset your password",
