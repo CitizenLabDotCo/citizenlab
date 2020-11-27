@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module ApiAuthenticationHelper
-  def admin_authentication_header
+  def admin_header_token
     header_token_for create(:admin)
   end
 
-  def user_authentication_header
+  def user_header_token
     header_token_for create(:user)
   end
 
