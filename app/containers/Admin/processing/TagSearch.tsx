@@ -24,28 +24,26 @@ import { addTagging } from 'services/taggings';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
-  width: 80%;
   margin-bottom: 20px;
 `;
 
 const SelectGroupsContainer = styled.div`
-  width: fit-content;
   display: flex;
+  width: 100%;
   flex-direction: row;
-  flex-wrap: wrap;
   align-items: flex-start;
   align-items: center;
   margin-bottom: 30px;
 `;
 
 const StyledAsyncSelect = styled(AsyncSelect)`
-  min-width: 300px;
+  flex-grow: 4;
 `;
 
 const AddGroupButton = styled(Button)`
-  flex-grow: 0;
+  flex-grow: 1;
   flex-shrink: 0;
-  margin-left: 20px;
+  max-width: 36px;
 `;
 
 interface InputProps {
@@ -192,9 +190,9 @@ class TagAdd extends PureComponent<
           />
 
           <AddGroupButton
-            buttonStyle="cl-blue"
+            buttonStyle="text"
             icon="plus-circle"
-            padding="13px 16px"
+            padding="0px 0px"
             onClick={this.handleOnAddTagClick}
             processing={this.state.processing}
           />
