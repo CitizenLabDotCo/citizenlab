@@ -385,7 +385,6 @@ const Processing = memo<Props & InjectedIntlProps>(
       setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
       if (newProjectIds.length > 0) {
-        debugger;
         onChangeProjects(newProjectIds);
         setLoadingIdeas(true);
       } else {
