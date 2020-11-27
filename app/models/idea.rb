@@ -20,6 +20,8 @@ class Idea < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
+  has_many :tag_assignments, dependent: :destroy
+  has_many :tags, through: :tag_assignments
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy

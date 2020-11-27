@@ -18,7 +18,7 @@ class TenantTemplateService
   def apply_template template, validate: true
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
-      model_class = model_name.classify.constantize
+      model_class = get_model_class(model_name)
       fields.each do |attributes|
         model = model_class.new
         image_assignments = {}
@@ -116,9 +116,9 @@ class TenantTemplateService
       @template['models']['topic']                                 = yml_topics
       @template['models']['user']                                  = yml_users
       @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
-      @template['models']['project_folder']                        = yml_project_folders
-      @template['models']['project_folder_image']                  = yml_project_folder_images
-      @template['models']['project_folder_file']                   = yml_project_folder_files
+      @template['models']['project_folders/folder']                = yml_project_folders
+      @template['models']['project_folders/image']                 = yml_project_folder_images
+      @template['models']['project_folders/file']                  = yml_project_folder_files
       @template['models']['project']                               = yml_projects
       @template['models']['project_file']                          = yml_project_files
       @template['models']['project_image']                         = yml_project_images
@@ -280,6 +280,18 @@ class TenantTemplateService
 
 
   private
+
+
+  def get_model_class(model_name)
+    legacy_class_names = {
+        "ProjectFolder" => ProjectFolders::Folder,
+        "ProjectFolderFile" => ProjectFolders::File,
+        "ProjectFolderImage" => ProjectFolders::Image,
+    }
+
+    class_name = model_name.classify
+    legacy_class_names[class_name] || class_name.constantize
+  end
 
   def available_external_templates external_subfolder: 'release'
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
@@ -447,7 +459,7 @@ class TenantTemplateService
   end
 
   def yml_project_folders
-    ProjectFolder.all.map do |f|
+    ProjectFolders::Folder.all.map do |f|
       yml_folder = {
         'title_multiloc'               => f.title_multiloc,
         'description_multiloc'         => f.description_multiloc,
@@ -467,7 +479,7 @@ class TenantTemplateService
   end
 
   def yml_project_folder_images
-    ProjectFolderImage.all.map do |p|
+    ProjectFolders::Image.all.map do |p|
       {
         'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
         'remote_image_url'   => p.image_url,
@@ -479,7 +491,7 @@ class TenantTemplateService
   end
 
   def yml_project_folder_files
-    ProjectFolderFile.all.map do |p|
+    ProjectFolders::File.all.map do |p|
       {
         'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
         'name'               => p.name,
