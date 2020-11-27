@@ -1,5 +1,5 @@
-module WebApi::V1::Roles
-  class RolesController < WebApi::V1::Roles::ApplicationController
+module Roles
+  class RolesController < Roles::ApplicationController
     before_action :find_roled_resource, except: %i[index]
 
     def index
