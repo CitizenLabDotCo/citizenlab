@@ -12,7 +12,7 @@ import { colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { ManagerType } from 'components/admin/PostManager';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { addTagging, deleteTagging, switchToManual } from 'services/taggings';
 import TagSearch from './TagSearch';
@@ -20,6 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { ITag } from 'services/tags';
 import { IMergedTagging } from 'hooks/useTaggings';
+import { InjectedIntlProps } from 'react-intl';
 
 export const Container = styled.div`
   display: flex;
@@ -106,8 +107,11 @@ interface State {
   newTag: string | null;
 }
 
-class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
-  constructor(props: Props & InjectedLocalized) {
+class PostPreview extends PureComponent<
+  Props & InjectedLocalized & InjectedIntlProps,
+  State
+> {
+  constructor(props: Props & InjectedLocalized & InjectedIntlProps) {
     super(props);
     this.state = {
       postId: props.postId,
@@ -159,6 +163,30 @@ class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
   };
   switchToManual = (taggingId) => () => {
     switchToManual(taggingId);
+  };
+
+  addTaggingForTag = (tagId: string) => {
+    const { postId } = this.state;
+    const tagging =
+      this.props.taggings &&
+      this.getAutomaticTaggings(this.props.taggings).find(
+        (tagging) => tagging.attributes.tag_id === tagId
+      );
+    return postId
+      ? tagging
+        ? switchToManual(tagging.id)
+        : addTagging(postId, tagId)
+      : new Promise((res) => res());
+  };
+
+  addTaggingCreateTag = (tagText: string) => {
+    const { locale } = this.props.intl;
+
+    const title_multiloc = {};
+    title_multiloc[locale] = tagText;
+    return this.state.postId
+      ? addTagging(this.state.postId, null, { title_multiloc })
+      : new Promise((res) => res());
   };
 
   render() {
@@ -251,8 +279,13 @@ class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
               <TagSubSection>
                 <FormattedMessage {...messages.addNewTag} />
                 <TagSearch
-                  ideaId={this.state.postId}
-                  ideaTagIds={manualTaggings.map((tagging) => tagging.tag?.id)}
+                  filteredOutTagIds={
+                    manualTaggings?.map(
+                      (tagging) => tagging.attributes.tag_id
+                    ) || []
+                  }
+                  onAddSelect={this.addTaggingForTag}
+                  onAddNew={this.addTaggingCreateTag}
                 />
               </TagSubSection>
             </TagSection>
@@ -263,4 +296,4 @@ class PostPreview extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-export default injectLocalize(PostPreview);
+export default injectIntl(injectLocalize(PostPreview));
