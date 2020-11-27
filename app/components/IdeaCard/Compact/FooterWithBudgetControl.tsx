@@ -29,16 +29,14 @@ const BudgetControl = styled.div`
 `;
 
 const IdeaBudget = styled.span`
-  height: 100%;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  color: ${(props) => props.theme.colorText};
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 16px;
-  background: ${colors.lightGreyishBlue};
-  font-weight: 500;
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  cursor: default;
+  margin-right: 14px;
 `;
 
 const CommentsCount = styled.span`

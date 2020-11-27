@@ -36,15 +36,15 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   width: 100%;
-  padding: 30px;
+  padding: 23px;
   display: flex;
   flex-direction: row;
   ${defaultCardStyle};
+  box-shadow: none;
   border: solid 1px #ccc;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
-    padding: 25px;
   `}
 `;
 
@@ -128,8 +128,8 @@ const EventDate = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: ${transparentize(0.88, colors.label)};
-  border: solid 1px ${colors.label};
+  background: ${transparentize(0.9, colors.label)};
+  border: solid 1px ${transparentize(0.5, colors.label)};
   border-bottom: none;
 `;
 
