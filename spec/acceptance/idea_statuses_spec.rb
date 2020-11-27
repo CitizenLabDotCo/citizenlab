@@ -14,7 +14,7 @@ resource 'IdeaStatuses' do
 
   context 'when signed in as a non-admin user' do
     before do
-      user_authentication_header
+      user_header_token
     end
 
     get 'web_api/v1/idea_statuses' do
@@ -90,7 +90,7 @@ resource 'IdeaStatuses' do
 
   context 'when signed in as an admin' do
     before do
-      admin_authentication_header
+      admin_header_token
     end
 
     get 'web_api/v1/idea_statuses' do
