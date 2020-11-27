@@ -72,7 +72,8 @@ namespace :cl2_back do
         },
         password_login: {
           enabled: true,
-          allowed: true
+          allowed: true,
+          phone: false,
         },
         participatory_budgeting: {
           enabled: true,
