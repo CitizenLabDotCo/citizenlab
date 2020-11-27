@@ -29,9 +29,10 @@ const Container = styled.div`
 `;
 
 const SelectGroupsContainer = styled.div`
-  width: 100%;
+  width: fit-content;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: flex-start;
   align-items: center;
   margin-bottom: 30px;
