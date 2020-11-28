@@ -450,8 +450,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
           "destinations": {
             "type": "string",
             "description": "As more tools can be activated through Segment, here you can specify them using comma separated text, shown in the cookie consent"
@@ -461,7 +461,7 @@
 
       "satismeter": {
         "type": "object",
-        "title": "Intercom Integration",
+        "title": "Satismeter Integration",
         "description":  "Integrates Satismeter polls and data collection to the front-end",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -471,7 +471,7 @@
           "enabled": { "type": "boolean", "default": true},
           "write_key": {
             "type": "string",
-            "description": "The write key the front-end send it's data to.",
+            "description": "The write key the front-end send its data to.",
             "default": "<%= ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY', '')%>"
           }
         }
@@ -503,8 +503,8 @@
         "required": ["allowed", "enabled"],
         "required-settings": ["container_id"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
           "destinations": {
             "type": "string",
             "description": "As more tools can be activated through GTM, here you can specify them using comma separated text, shown in the cookie consent"
