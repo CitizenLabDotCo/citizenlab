@@ -35,8 +35,10 @@ const destinationConfig: IDestinationConfig = {
   key: 'segment',
   category: 'analytics',
   feature_flag: 'segment',
-  name: (tenant) =>
-    `Segment (${tenant.attributes.settings.segment?.destinations})`,
+  name: (tenant) => {
+    const destinations = tenant.attributes.settings.segment?.destinations;
+    return `Segment${destinations ? ` (${destinations})` : ''})`;
+  },
 };
 
 registerDestination(destinationConfig);
@@ -45,6 +47,7 @@ initializeFor('segment').subscribe(() => {
   const code = snippet.min({
     host: 'cdn.segment.com',
     load: true,
+    page: false,
     apiKey: CL_SEGMENT_API_KEY,
   });
 
