@@ -4,10 +4,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
-import {
-  updateProjectFolderMembership,
-  PublicationStatus,
-} from 'services/projects';
+import { PublicationStatus } from 'services/projects';
+import { updateProjectFolderMembership } from 'modules/project_folders/services/projects';
 
 // resources
 import GetProjectFolder, {
@@ -159,41 +157,43 @@ class AdminFoldersProjectsList extends Component<
               className="projects-list e2e-admin-folder-projects-list"
               id="e2e-admin-fodlers-projects-list"
             >
-              {({ itemsList, handleDragRow, handleDropRow }) =>
-                itemsList.map(
-                  (adminPublication: IAdminPublicationContent, index) => {
-                    return (
-                      <SortableRow
-                        key={adminPublication.id}
-                        id={adminPublication.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={index === itemsList.length - 1}
-                      >
-                        <ProjectRow
-                          publication={adminPublication}
-                          actions={[
-                            {
-                              buttonContent: (
-                                <FormattedMessage
-                                  {...messages.removeFromFolder}
-                                />
-                              ),
-                              handler: this.removeProjectFromFolder,
-                              icon: 'remove',
-                              processing: processing.includes(
-                                adminPublication.publicationId
-                              ),
-                            },
-                            'manage',
-                          ]}
-                        />
-                      </SortableRow>
-                    );
-                  }
-                )
-              }
+              {({ itemsList, handleDragRow, handleDropRow }) => (
+                <>
+                  {itemsList.map(
+                    (adminPublication: IAdminPublicationContent, index) => {
+                      return (
+                        <SortableRow
+                          key={adminPublication.id}
+                          id={adminPublication.id}
+                          index={index}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                          lastItem={index === itemsList.length - 1}
+                        >
+                          <ProjectRow
+                            publication={adminPublication}
+                            actions={[
+                              {
+                                buttonContent: (
+                                  <FormattedMessage
+                                    {...messages.removeFromFolder}
+                                  />
+                                ),
+                                handler: this.removeProjectFromFolder,
+                                icon: 'remove',
+                                processing: processing.includes(
+                                  adminPublication.publicationId
+                                ),
+                              },
+                              'manage',
+                            ]}
+                          />
+                        </SortableRow>
+                      );
+                    }
+                  )}
+                </>
+              )}
             </SortableList>
           ) : (
             <FormattedMessage {...messages.emptyFolder} />

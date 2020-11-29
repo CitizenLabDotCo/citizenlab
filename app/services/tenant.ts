@@ -78,12 +78,6 @@ export interface ITenantSettings {
     client_id: string;
     enabled: boolean;
   };
-  google_tag_manager?: {
-    allowed: boolean;
-    destinations: string;
-    enabled: boolean;
-    container_id: string;
-  };
   azure_ad_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -157,6 +151,7 @@ export interface ITenantSettings {
   project_visibility?: TenantFeature;
   project_management?: TenantFeature;
   idea_assignment?: TenantFeature;
+  custom_idea_statuses?: TenantFeature;
   intercom?: TenantFeature;
   satismeter?: TenantFeature & {
     write_key: string;
@@ -166,6 +161,10 @@ export interface ITenantSettings {
   };
   segment?: TenantFeature & {
     destinations: string;
+  };
+  google_tag_manager?: TenantFeature & {
+    destinations: string;
+    container_id: string;
   };
 }
 
