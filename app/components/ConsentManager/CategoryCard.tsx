@@ -90,11 +90,11 @@ const DestinationName = ({
   tenant,
   destination,
 }: {
-  tenant: ITenant;
+  tenant: ITenant | null;
   destination: IDestination;
 }) => {
   const config = getDestinationConfig(destination);
-  if (config?.name) {
+  if (config?.name && tenant) {
     return <>{config.name(tenant.data)}</>;
   } else if (config) {
     return <>{config.key}</>;
@@ -111,7 +111,6 @@ const CategoryCard = ({
   disableUncheck,
 }: Props) => {
   const tenant = useTenant();
-  if (isNilOrError(tenant)) return null;
 
   return (
     <Container className="e2e-category">
@@ -152,7 +151,10 @@ const CategoryCard = ({
               <Fragment key={d}>
                 {index !== 0 && <Separator>•</Separator>}
                 <SSpan>
-                  <DestinationName tenant={tenant} destination={d} />
+                  <DestinationName
+                    tenant={!isNilOrError(tenant) ? tenant : null}
+                    destination={d}
+                  />
                 </SSpan>
               </Fragment>
             ))}

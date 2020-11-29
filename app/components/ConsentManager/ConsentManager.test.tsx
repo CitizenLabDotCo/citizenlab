@@ -20,17 +20,66 @@ jest.mock('./consent', () => ({
 import * as consent from './consent';
 
 import { makeUser } from 'services/__mocks__/users';
-import { DESTINATIONS } from './destinations';
+import { __setMockTenant, getTenantData } from 'services/__mocks__/tenant';
+import {
+  getDestinationConfig,
+  getDestinationConfigs,
+  registerDestination,
+} from './destinations';
+
+registerDestination({
+  key: 'google_analytics',
+  feature_flag: 'google_analytics',
+  category: 'analytics',
+});
+
+registerDestination({
+  key: 'intercom',
+  feature_flag: 'intercom',
+  category: 'functional',
+  hasPermission: (user) => user === admin,
+});
+
+registerDestination({
+  key: 'satismeter',
+  feature_flag: 'satismeter',
+  category: 'analytics',
+  hasPermission: (user) => user === admin,
+});
 
 // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
-const featureFagAllDisabled = DESTINATIONS.map((destination) => [
-  destination,
-  false,
-]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
-const featureFagAllEnabled = DESTINATIONS.map((destination) => [
-  destination,
-  true,
-]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+const savedChoicesAllDisabled = getDestinationConfigs().reduce(
+  (acc, destination) => {
+    return { ...acc, [destination.key]: false };
+  },
+  {}
+);
+const savedChoicesAllEnabled = getDestinationConfigs().reduce(
+  (acc, destination) => {
+    return { ...acc, [destination.key]: true };
+  },
+  {}
+);
+
+const tenantDataAllEnabled = getTenantData({
+  settings: {
+    satismeter: { allowed: true, enabled: true },
+    google_analytics: { allowed: true, enabled: true },
+    segment: { allowed: true, enabled: true },
+    intercom: { allowed: true, enabled: true },
+    google_tag_manager: { allowed: true, enabled: true },
+  },
+});
+
+const tenantDataAllDisabled = getTenantData({
+  settings: {
+    satismeter: { allowed: false, enabled: false },
+    google_analytics: { allowed: false, enabled: false },
+    segment: { allowed: false, enabled: false },
+    intercom: { allowed: false, enabled: false },
+    google_tag_manager: { allowed: false, enabled: false },
+  },
+});
 
 const admin = makeUser({
   roles: [{ type: 'admin' }],
@@ -57,24 +106,18 @@ describe('<ConsentManager />', () => {
   describe('parses tenant setting and user to show active destinations in categories', () => {
     describe('unsingned user', () => {
       it('acts properly when all enabled', () => {
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
         const categorizedDestinations = wrapper.find('Container').props()
           .categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllDisabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
         );
         const categorizedDestinations = wrapper.find('Container').props()
           .categorizedDestinations;
@@ -84,12 +127,9 @@ describe('<ConsentManager />', () => {
 
     describe('admin user', () => {
       it('acts properly when all enabled', () => {
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={admin}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
         const categorizedDestinations = wrapper.find('Container').props()
           .categorizedDestinations;
@@ -97,24 +137,20 @@ describe('<ConsentManager />', () => {
       });
       it('acts properly when all disabled', () => {
         const wrapper = shallow(
-          <ConsentManager
-            authUser={admin}
-            tenant={{}}
-            {...featureFagAllDisabled}
-          />
+          <ConsentManager authUser={admin} tenant={tenantDataAllDisabled} />
         );
         const categorizedDestinations = wrapper.find('Container').props()
           .categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when only satismeter disabled', () => {
+        tenantDataAllEnabled.attributes.settings.satismeter = {
+          allowed: false,
+          enabled: false,
+        };
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={admin}
-            tenant={{}}
-            {...featureFagAllEnabled}
-            satismeter={false}
-          />
+          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
         const categorizedDestinations = wrapper.find('Container').props()
           .categorizedDestinations;
@@ -127,23 +163,20 @@ describe('<ConsentManager />', () => {
         highest_role: 'super_admin',
       }).data;
       it('acts properly when all enabled', () => {
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={superAdmin}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={superAdmin} tenant={tenantDataAllEnabled} />
         );
         const categorizedDestinations = wrapper.find('Container').props()
           .categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
+        __setMockTenant(tenantDataAllDisabled);
         const wrapper = shallow(
           <ConsentManager
             authUser={superAdmin}
-            tenant={{}}
-            {...featureFagAllDisabled}
+            tenant={tenantDataAllDisabled}
           />
         );
         const categorizedDestinations = wrapper.find('Container').props()
@@ -157,12 +190,9 @@ describe('<ConsentManager />', () => {
     describe('no cookie previously', () => {
       describe('all destinations', () => {
         it('initializes preferences object correctly', () => {
+          __setMockTenant(tenantDataAllEnabled);
           const wrapper = shallow(
-            <ConsentManager
-              authUser={null}
-              tenant={{}}
-              {...featureFagAllEnabled}
-            />
+            <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
           const preferences = wrapper.find('Container').props().preferences;
           expect(preferences).toEqual({
@@ -172,12 +202,9 @@ describe('<ConsentManager />', () => {
           });
         });
         it('changes it as required', () => {
+          __setMockTenant(tenantDataAllEnabled);
           const wrapper = shallow(
-            <ConsentManager
-              authUser={null}
-              tenant={{}}
-              {...featureFagAllEnabled}
-            />
+            <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
 
           const setPreferences = wrapper.find('Container').props()
@@ -193,12 +220,9 @@ describe('<ConsentManager />', () => {
           });
         });
         it('consent is required', () => {
+          __setMockTenant(tenantDataAllEnabled);
           const wrapper = shallow(
-            <ConsentManager
-              authUser={null}
-              tenant={{}}
-              {...featureFagAllEnabled}
-            />
+            <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
 
           const isConsentRequired = wrapper.find('Container').props()
@@ -209,12 +233,9 @@ describe('<ConsentManager />', () => {
       });
       describe('no destinations', () => {
         it('initializes preferences object correctly', () => {
+          __setMockTenant(tenantDataAllDisabled);
           const wrapper = shallow(
-            <ConsentManager
-              authUser={null}
-              tenant={{}}
-              {...featureFagAllDisabled}
-            />
+            <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
           );
           const preferences = wrapper.find('Container').props().preferences;
           expect(preferences).toEqual({
@@ -229,24 +250,17 @@ describe('<ConsentManager />', () => {
       it('initializes preferences object correctly', () => {
         // COOkIE mock
         // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
-        const mock_savedChoices = DESTINATIONS.map((destination) => [
-          destination,
-          true,
-        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
         const spy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
             analytics: true,
             advertising: true,
             functional: true,
-            savedChoices: mock_savedChoices,
+            savedChoices: savedChoicesAllEnabled,
           }));
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
         const preferences = wrapper.find('Container').props().preferences;
         expect(preferences).toEqual({
@@ -260,24 +274,17 @@ describe('<ConsentManager />', () => {
       it('consent is not required', () => {
         // COOkIE mock
         // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
-        const mock_savedChoices = DESTINATIONS.map((destination) => [
-          destination,
-          true,
-        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
         const spy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
             analytics: true,
             advertising: true,
             functional: true,
-            savedChoices: mock_savedChoices,
+            savedChoices: savedChoicesAllEnabled,
           }));
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
 
         const isConsentRequired = wrapper.find('Container').props()
@@ -289,9 +296,6 @@ describe('<ConsentManager />', () => {
       });
     });
     describe('previously accepted, new destinations', () => {
-      const mock_savedChoices = DESTINATIONS.filter((e) => e !== 'intercom')
-        .map((destination) => [destination, true])
-        .reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
       it('initializes preferences object correctly', () => {
         // COOkIE mock
         const spy = jest
@@ -300,21 +304,18 @@ describe('<ConsentManager />', () => {
             analytics: true,
             advertising: true,
             functional: true,
-            savedChoices: mock_savedChoices,
+            savedChoices: { ...savedChoicesAllEnabled, intercom: true },
           }));
+        __setMockTenant(tenantDataAllEnabled);
 
         const wrapper = shallow(
-          <ConsentManager
-            authUser={admin}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
         const preferences = wrapper.find('Container').props().preferences;
         expect(preferences).toEqual({
           analytics: true,
           advertising: true,
-          functional: undefined,
+          functional: true,
         });
         spy.mockRestore();
       });
@@ -326,14 +327,11 @@ describe('<ConsentManager />', () => {
             analytics: true,
             advertising: true,
             functional: true,
-            savedChoices: mock_savedChoices,
+            savedChoices: { google_analytics: true },
           }));
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={admin}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
 
         const isConsentRequired = wrapper.find('Container').props()
@@ -346,10 +344,7 @@ describe('<ConsentManager />', () => {
     });
     describe('previously refused', () => {
       it('initializes preferences object correctly', () => {
-        const mock_savedChoices = DESTINATIONS.map((destination) => [
-          destination,
-          false,
-        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+        const mock_savedChoices = savedChoicesAllEnabled;
         const spy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
@@ -358,12 +353,9 @@ describe('<ConsentManager />', () => {
             functional: false,
             savedChoices: mock_savedChoices,
           }));
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
         const preferences = wrapper.find('Container').props().preferences;
         expect(preferences).toEqual({
@@ -376,12 +368,9 @@ describe('<ConsentManager />', () => {
     });
     describe('preference reset', () => {
       it('resets preferences when no previous cookie was set', () => {
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
         const setPreferences = wrapper.find('Container').props().setPreferences;
 
@@ -396,24 +385,17 @@ describe('<ConsentManager />', () => {
         });
       });
       it('resets preferences when previous cookie was set', () => {
-        const mock_savedChoices = DESTINATIONS.map((destination) => [
-          destination,
-          false,
-        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
         const spy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
             analytics: true,
             advertising: true,
             functional: true,
-            savedChoices: mock_savedChoices,
+            savedChoices: savedChoicesAllDisabled,
           }));
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
         const setPreferences = wrapper.find('Container').props().setPreferences;
 
@@ -434,12 +416,21 @@ describe('<ConsentManager />', () => {
   describe('sets the cookie', () => {
     describe('accept', () => {
       it('accepts all when no cookie was set', () => {
+        const tenantAllDestinationsEnabled = getTenantData({
+          settings: {
+            ...getTenantData()['attributes']['settings'],
+            google_analytics: { enabled: true, allowed: true },
+          },
+        });
+
+        console.log('YIIIIHAAA');
+        console.log(tenantAllDestinationsEnabled);
         const setConsentSpy = jest.spyOn(consent, 'setConsent');
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager
             authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
+            tenant={tenantAllDestinationsEnabled}
           />
         );
         wrapper.find('Container').props().accept();
@@ -449,24 +440,18 @@ describe('<ConsentManager />', () => {
       });
       it('sets preferences to true when previous cookie was set without overwriting false values', () => {
         const setConsentSpy = jest.spyOn(consent, 'setConsent');
-        const mock_savedChoices = DESTINATIONS.map((destination) => [
-          destination,
-          true,
-        ]).reduce((a, [k, v]) => ({ ...a, [k]: v }), {});
+
         const getConsentSpy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
             analytics: undefined,
             advertising: false,
             functional: true,
-            savedChoices: mock_savedChoices,
+            savedChoices: savedChoicesAllEnabled,
           }));
+        __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={{}}
-            {...featureFagAllEnabled}
-          />
+          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
         wrapper.find('Container').props().accept();
 
