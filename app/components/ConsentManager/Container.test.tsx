@@ -7,12 +7,6 @@ import 'jest-styled-components';
 
 // component to test
 import Container from './Container';
-import {
-  DESTINATIONS,
-  MARKETING_AND_ANALYTICS_DESTINATIONS,
-  ADVERTISING_DESTINATIONS,
-  FUNCTIONAL_DESTINATIONS,
-} from './destinations';
 
 // mock utilities
 jest.mock('./Banner', () => 'Banner');
@@ -28,22 +22,16 @@ let setPreferences: jest.Mock;
 let resetPreferences: jest.Mock;
 let saveConsent: jest.Mock;
 
-const categorizedDestinations = {
-  analytics: MARKETING_AND_ANALYTICS_DESTINATIONS.filter((destination) =>
-    DESTINATIONS.includes(destination)
-  ),
-  advertising: ADVERTISING_DESTINATIONS.filter((destination) =>
-    DESTINATIONS.includes(destination)
-  ),
-  functional: FUNCTIONAL_DESTINATIONS.filter((destination) =>
-    DESTINATIONS.includes(destination)
-  ),
-};
-
 const initialPreferences = {
   analytics: undefined,
   functional: undefined,
   advertising: undefined,
+};
+
+const categorizedDestinations = {
+  analytics: ['google_analytics'],
+  functional: ['intercom'],
+  advertising: [],
 };
 
 describe('<Container />', () => {
@@ -62,11 +50,7 @@ describe('<Container />', () => {
         saveConsent={saveConsent}
         isConsentRequired={false}
         preferences={initialPreferences}
-        categorizedDestinations={{
-          analytics: [],
-          functional: [],
-          advertising: [],
-        }}
+        categorizedDestinations={categorizedDestinations}
       />
     );
 
@@ -222,8 +206,8 @@ describe('<Container />', () => {
           isConsentRequired={true}
           preferences={{
             analytics: true,
-            functional: null,
-            advertising: null,
+            functional: undefined,
+            advertising: undefined,
           }}
           categorizedDestinations={categorizedDestinations}
         />

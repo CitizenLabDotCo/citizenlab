@@ -48,7 +48,7 @@ export const isDestinationActive = (
     return false;
   }
 
-  if (config?.hasPermission && !config?.hasPermission(user || undefined)) {
+  if (config?.hasPermission && !config.hasPermission(user || undefined)) {
     return false;
   }
 
