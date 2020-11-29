@@ -1,4 +1,4 @@
-const columnsGapDesktop = 100;
+const columnsGapDesktop = 105;
 const rightColumnWidthDesktop = 360;
 const columnsGapTablet = 60;
 const rightColumnWidthTablet = 300;
