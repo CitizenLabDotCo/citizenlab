@@ -15,12 +15,11 @@ import { fontSizes } from 'utils/styleUtils';
 import Status from './Status';
 import Location from './Location';
 import Attachments from './Attachments';
-import Topics from 'components/PostShowComponents/Topics';
+import IdeaTopics from './IdeaTopics';
 import SimilarIdeas from './SimilarIdeas';
 import PostedBy from './PostedBy';
 
 // hooks
-import useIdea from 'hooks/useIdea';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import useIdeaStatus from 'hooks/useIdeaStatus';
@@ -79,19 +78,11 @@ const MetaInformation = ({
   authorId,
   similarIdeasEnabled,
 }: Props) => {
-  const idea = useIdea({ ideaId });
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   const ideaStatus = useIdeaStatus({ statusId });
 
-  if (
-    !isNilOrError(idea) &&
-    !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas)
-  ) {
-    const topicIds =
-      idea.relationships.topics?.data.map((item) => item.id) || [];
-
+  if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
       ideaCustomFieldsSchemas,
@@ -124,12 +115,9 @@ const MetaInformation = ({
             <Status ideaStatus={ideaStatus} />
           </Item>
         )}
-        {topicsEnabled && topicIds.length > 0 && (
+        {topicsEnabled && (
           <Item>
-            <Header>
-              <FormattedMessage {...messages.topics} />
-            </Header>
-            <Topics postType="idea" topicIds={topicIds} />
+            <IdeaTopics ideaId={ideaId} />
           </Item>
         )}
         {locationEnabled && (
