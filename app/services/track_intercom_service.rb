@@ -23,6 +23,9 @@ class TrackIntercomService
         contact.name = user.first_name + " " +  user.last_name
         contact.signed_up_at =  user.registration_completed_at
         contact.custom_attributes = {
+          firstName: user.first_name,
+          lastName: user.last_name,
+          locale: user.locale,
           isAdmin: user.admin?,
           isSuperAdmin: user.super_admin?,
           isProjectModerator: user.project_moderator?,
@@ -38,6 +41,9 @@ class TrackIntercomService
           name: user.first_name + ' ' + user.last_name,
           signed_up_at:  user.registration_completed_at,
           custom_attributes: {
+            firstName: user.first_name,
+            lastName: user.last_name,
+            locale: user.locale,
             isAdmin: user.admin?,
             isSuperAdmin: user.super_admin?,
             isProjectModerator: user.project_moderator?,
