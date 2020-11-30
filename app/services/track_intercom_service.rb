@@ -58,7 +58,6 @@ class TrackIntercomService
   end
 
   def identify_tenant tenant
-    # TODO add necessary properties, remove the rest
     if @intercom
       begin
         company = @intercom.companies.find(id: tenant.id)
