@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { NoContent } from './';
+import { Header } from './';
 
 // styles
 import styled from 'styled-components';
@@ -69,22 +69,25 @@ const SimilarIdeas = memo<Props & InjectedIntlProps>(
 
     if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
       return (
-        <IdeaList className={className}>
-          {similarIdeas.map((similarIdea, index) => (
-            <IdeaListItem key={similarIdea.id}>
-              <IdeaLink
-                to={`/ideas/${similarIdea.attributes.slug}`}
-                onClick={onClickIdeaLink(index)}
-              >
-                <T value={similarIdea.attributes.title_multiloc} />
-              </IdeaLink>
-            </IdeaListItem>
-          ))}
-        </IdeaList>
+        <>
+          <Header>{formatMessage(messages.similarIdeas)}</Header>
+          <IdeaList className={className}>
+            {similarIdeas.map((similarIdea, index) => (
+              <IdeaListItem key={similarIdea.id}>
+                <IdeaLink
+                  to={`/ideas/${similarIdea.attributes.slug}`}
+                  onClick={onClickIdeaLink(index)}
+                >
+                  <T value={similarIdea.attributes.title_multiloc} />
+                </IdeaLink>
+              </IdeaListItem>
+            ))}
+          </IdeaList>
+        </>
       );
     }
 
-    return <NoContent>{formatMessage(messages.noSimilarIdeas)}</NoContent>;
+    return null;
   }
 );
 
