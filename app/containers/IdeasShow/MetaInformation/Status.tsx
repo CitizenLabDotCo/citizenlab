@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from './';
+import { Header, Item } from './';
 import useIdeaStatus from 'hooks/useIdeaStatus';
 
 // i18n
@@ -44,7 +44,7 @@ const Status = ({
     const color = ideaStatus ? ideaStatus.attributes.color : '#bbb';
 
     return (
-      <>
+      <Item>
         <Header>{formatMessage(messages.currentStatus)}</Header>
         <Container
           id="e2e-idea-status-badge"
@@ -53,7 +53,7 @@ const Status = ({
         >
           <T value={ideaStatus.attributes.title_multiloc} />
         </Container>
-      </>
+      </Item>
     );
   }
 

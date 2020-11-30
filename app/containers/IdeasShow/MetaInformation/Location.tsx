@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Icon, colors } from 'cl2-component-library';
 import ModalWithMap from './ModalWithMap';
-import { Header } from './';
+import { Header, Item } from './';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -76,7 +76,7 @@ const Location = memo<Props & InjectedIntlProps>(
 
       if (address && geoPosition) {
         return (
-          <>
+          <Item>
             <Header>{formatMessage(messages.location)}</Header>
             <Container>
               <StyledIcon name="position" ariaHidden />
@@ -91,7 +91,7 @@ const Location = memo<Props & InjectedIntlProps>(
               isOpened={isOpened}
               onCloseModal={closeModal}
             />
-          </>
+          </Item>
         );
       }
     }

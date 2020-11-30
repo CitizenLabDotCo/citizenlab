@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Attachment from './Attachment';
 import useResourceFiles from 'hooks/useResourceFiles';
-import { Header } from './';
+import { Header, Item } from './';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -29,7 +29,7 @@ const Attachments = ({
 
   if (!isNilOrError(files) && files.length > 0) {
     return (
-      <>
+      <Item>
         <Header>{formatMessage(messages.attachments)}</Header>
         <Container className={className}>
           {Array.isArray(files) &&
@@ -41,7 +41,7 @@ const Attachments = ({
               />
             ))}
         </Container>
-      </>
+      </Item>
     );
   }
 
