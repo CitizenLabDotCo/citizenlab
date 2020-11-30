@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "crwdns18136:0crwdne18136:0",
   "app.errors.slug_taken": "crwdns68362:0crwdne68362:0",
   "app.errors.title_multiloc_blank": "crwdns16087:0crwdne16087:0",
-  "app.errors.token_invalid": "crwdns98048:0{link}crwdne98048:0",
+  "app.errors.token_invalid": "crwdns98048:0{passwordResetLink}crwdne98048:0",
   "app.errors.too_common": "crwdns54110:0crwdne54110:0",
   "app.errors.too_long": "crwdns54112:0crwdne54112:0",
   "app.errors.too_short": "crwdns54114:0crwdne54114:0",
