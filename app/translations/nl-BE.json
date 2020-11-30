@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "De beschrijving moet minstens 30 tekens lang zijn",
   "app.components.InitiativeForm.descriptionEmptyError": "Gelieve een beschrijving te geven",
   "app.components.InitiativeForm.descriptionLabel": "Waar gaat je voorstel over?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Beschrijf je voorstel op een heldere manier (min. 500 tekens)",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Beschrijf je voorstel",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Afbeeldingen en bijlagen",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Details",
   "app.components.InitiativeForm.formGeneralSectionTitle": "Waar gaat je voorstel over?",
