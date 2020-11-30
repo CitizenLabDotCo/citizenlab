@@ -177,6 +177,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      custom_idea_statuses: {
+        enabled: true,
+        allowed: true
+      },
       idea_custom_fields: {
         enabled: true,
         allowed: true
