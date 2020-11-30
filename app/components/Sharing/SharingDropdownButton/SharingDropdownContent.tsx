@@ -1,7 +1,7 @@
 import React from 'react';
 import { UtmParams, Medium } from '.';
 import { isNilOrError } from 'utils/helperUtils';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ import { trackEventByName } from 'utils/analytics';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -121,7 +121,7 @@ const SharingDropdownContent = ({
       a.click();
     }
 
-    trackEventByName(tracks.clickShare.name, { network: medium });
+    trackEventByName(tracks.shareButtonClicked.name, { network: medium });
   };
 
   const getUrlWithUtm = (medium: Medium) => {
@@ -150,7 +150,7 @@ const SharingDropdownContent = ({
         url={getUrlWithUtm('facebook')}
         className="sharingButton facebook"
         sharer={true}
-        onClick={trackEventByName(tracks.clickShare.name, {
+        onClick={trackEventByName(tracks.shareButtonClicked.name, {
           network: 'facebook',
         })}
         aria-label={formatMessage(messages.shareOnFacebook)}
@@ -202,7 +202,7 @@ const SharingDropdownContent = ({
           !emailSubject || !emailBody ? 'last' : ''
         }`}
         sharer={true}
-        onClick={trackEventByName(tracks.clickShare.name, {
+        onClick={trackEventByName(tracks.shareButtonClicked.name, {
           network: 'twitter',
         })}
         aria-label={formatMessage(messages.shareOnTwitter)}
