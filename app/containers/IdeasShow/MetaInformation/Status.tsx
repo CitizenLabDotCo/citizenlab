@@ -1,9 +1,11 @@
 import React from 'react';
-
-// services
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { Header } from './';
+import useIdeaStatus from 'hooks/useIdeaStatus';
 
 // i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 import T from 'components/T';
 
 // style
@@ -11,6 +13,7 @@ import styled from 'styled-components';
 
 // utils
 import { fontSizes } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   color: #fff;
@@ -26,18 +29,35 @@ const Container = styled.div`
 `;
 
 interface Props {
-  ideaStatus: IIdeaStatusData;
   className?: string;
+  statusId: string;
 }
 
-const Status = ({ ideaStatus, className }: Props) => {
-  const color = ideaStatus ? ideaStatus.attributes.color : '#bbb';
+const Status = ({
+  className,
+  statusId,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const ideaStatus = useIdeaStatus({ statusId });
 
-  return (
-    <Container id="e2e-idea-status-badge" className={className} color={color}>
-      <T value={ideaStatus.attributes.title_multiloc} />
-    </Container>
-  );
+  if (!isNilOrError(ideaStatus)) {
+    const color = ideaStatus ? ideaStatus.attributes.color : '#bbb';
+
+    return (
+      <>
+        <Header>{formatMessage(messages.currentStatus)}</Header>
+        <Container
+          id="e2e-idea-status-badge"
+          className={className}
+          color={color}
+        >
+          <T value={ideaStatus.attributes.title_multiloc} />
+        </Container>
+      </>
+    );
+  }
+
+  return null;
 };
 
-export default Status;
+export default injectIntl(Status);

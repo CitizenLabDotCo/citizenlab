@@ -22,7 +22,6 @@ import PostedBy from './PostedBy';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import useIdeaStatus from 'hooks/useIdeaStatus';
 
 // resources
 import GetFeatureFlag, {
@@ -80,7 +79,6 @@ const MetaInformation = ({
 }: Props) => {
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
-  const ideaStatus = useIdeaStatus({ statusId });
 
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicsEnabled = isFieldEnabled(
@@ -107,14 +105,9 @@ const MetaInformation = ({
           </Header>
           <StyledPostedBy authorId={authorId} ideaId={ideaId} />
         </Item>
-        {!isNilOrError(ideaStatus) && (
-          <Item>
-            <Header>
-              <FormattedMessage {...messages.currentStatus} />
-            </Header>
-            <Status ideaStatus={ideaStatus} />
-          </Item>
-        )}
+        <Item>
+          <Status statusId={statusId} />
+        </Item>
         {topicsEnabled && (
           <Item>
             <IdeaTopics ideaId={ideaId} />
