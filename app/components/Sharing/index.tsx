@@ -30,3 +30,12 @@ export function getUrlWithUtm(
 
   return resUrl;
 }
+
+export function clickSocialSharingLink(href: string) {
+  // https://stackoverflow.com/a/8944769
+  const a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+}
