@@ -11,23 +11,14 @@ class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
 
     reversible do |dir|
       dir.up do
-        Tenant.all.each do |t|
-          Apartment::Tenant.switch(t.schema_name) do
-            AdminPublication.where(publication_type: 'ProjectFolder')
-                            .update_all(publication_type: 'ProjectFolders::Folder')
-          end
-        end
+        AdminPublication.where(publication_type: 'ProjectFolder')
+                        .update_all(publication_type: 'ProjectFolders::Folder')
       end
 
       dir.down do
-        Tenant.all.each do |t|
-          Apartment::Tenant.switch(t.schema_name) do
-            AdminPublication.where(publication_type: 'ProjectFolders::Folder')
-                            .update_all(publication_type: 'ProjectFolder')
-          end
-        end
+        AdminPublication.where(publication_type: 'ProjectFolders::Folder')
+                        .update_all(publication_type: 'ProjectFolder')
       end
-
     end
   end
 end
