@@ -1,12 +1,7 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import isFieldEnabled from '../isFieldEnabled';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
@@ -22,11 +17,7 @@ import PostedBy from './PostedBy';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   width: 100%;
@@ -55,7 +46,7 @@ export const Header = styled.h3`
   margin-bottom: 12px;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   ideaId: string;
   authorId: string | null;
@@ -63,23 +54,16 @@ interface InputProps {
   statusId: string;
 }
 
-interface DataProps {
-  similarIdeasEnabled: GetFeatureFlagChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const MetaInformation = ({
   className,
   ideaId,
   projectId,
   statusId,
   authorId,
-  similarIdeasEnabled,
 }: Props) => {
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
-
+  const similarIdeasEnabled = useFeatureFlag('similar_ideas');
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -132,17 +116,4 @@ const MetaInformation = ({
   return null;
 };
 
-const Data = adopt({
-  similarIdeasEnabled: <GetFeatureFlag name="similar_ideas" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {({ similarIdeasEnabled }) => (
-      <MetaInformation
-        {...inputProps}
-        similarIdeasEnabled={similarIdeasEnabled}
-      />
-    )}
-  </Data>
-);
+export default MetaInformation;
