@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subject, Observable, concat } from 'rxjs';
+import { Subject, Observable, concat, combineLatest } from 'rxjs';
 import {
   buffer,
   filter,
@@ -7,14 +7,20 @@ import {
   mergeAll,
   take,
   distinctUntilChanged,
+  map,
 } from 'rxjs/operators';
 import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
-import { ITenantData } from 'services/tenant';
+import { ITenantData, currentTenantStream } from 'services/tenant';
 
-import { IDestination } from 'components/ConsentManager/destinations';
+import {
+  getDestinationConfig,
+  IDestination,
+  isDestinationActive,
+} from 'components/ConsentManager/destinations';
 import { ISavedDestinations } from 'components/ConsentManager/consent';
+import { authUserStream } from 'services/auth';
 
 export interface IEvent {
   name: string;
@@ -38,12 +44,21 @@ const destinationConsentChanged$ = eventEmitter
   .pipe(distinctUntilChanged(isEqual));
 
 /** Returns stream that emits when the given destination should initialize. Only
- * emits if the user gave consent for this destination. Can emit more then once.
+ * emits if the given destination is active and the user gave consent. Can emit
+ * more then once.
  */
 export const initializeFor = (destination: IDestination) => {
-  return destinationConsentChanged$.pipe(
-    filter((event) => {
-      return event.eventValue[destination];
+  return combineLatest([
+    destinationConsentChanged$,
+    currentTenantStream().observable,
+    authUserStream().observable,
+  ]).pipe(
+    filter(([consent, tenant, user]) => {
+      const config = getDestinationConfig(destination);
+      return (
+        consent.eventValue[destination] &&
+        (!config || isDestinationActive(config, tenant.data, user?.data))
+      );
     })
   );
 };
@@ -63,12 +78,21 @@ export const bufferUntilInitialized = <T>(
 /** Returns stream that emits when the given destination should shut itself down.
  */
 export const shutdownFor = (destination: IDestination) => {
-  return destinationConsentChanged$.pipe(
-    pairwise(),
-    filter(([prevInit, latestInit]) => {
+  return combineLatest([
+    destinationConsentChanged$,
+    currentTenantStream().observable,
+    authUserStream().observable,
+  ]).pipe(
+    map(([consent, tenant, user]) => {
+      const config = getDestinationConfig(destination);
       return (
-        prevInit.eventValue[destination] && !latestInit.eventValue[destination]
+        consent.eventValue[destination] &&
+        (!config || isDestinationActive(config, tenant.data, user?.data))
       );
+    }),
+    pairwise(),
+    filter(([previousActive, currentActive]) => {
+      return previousActive && !currentActive;
     })
   );
 };

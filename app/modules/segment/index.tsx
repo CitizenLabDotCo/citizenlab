@@ -37,7 +37,7 @@ const destinationConfig: IDestinationConfig = {
   feature_flag: 'segment',
   name: (tenant) => {
     const destinations = tenant.attributes.settings.segment?.destinations;
-    return `Segment${destinations ? ` (${destinations})` : ''})`;
+    return `Segment${destinations ? ` (${destinations})` : ''}`;
   },
 };
 
