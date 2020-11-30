@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.MetaInformation.attachments',
     defaultMessage: 'Attachments',
   },
+  noAttachments: {
+    id: 'app.containers.IdeasShow.MetaInformation.noAttachments',
+    defaultMessage: 'There are no attachments.',
+  },
   similarIdeas: {
     id: 'app.containers.IdeasShow.MetaInformation.similarIdeas',
     defaultMessage: 'Similar ideas',

@@ -21,7 +21,6 @@ import PostedBy from './PostedBy';
 
 // hooks
 import useIdea from 'hooks/useIdea';
-import useResourceFiles from 'hooks/useResourceFiles';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import useIdeaStatus from 'hooks/useIdeaStatus';
@@ -49,7 +48,7 @@ const StyledPostedBy = styled(PostedBy)`
   margin-top: -4px;
 `;
 
-const Header = styled.h3`
+export const Header = styled.h3`
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   color: ${(props) => props.theme.colorText};
@@ -87,7 +86,6 @@ const MetaInformation = ({
   similarIdeasEnabled,
 }: Props) => {
   const idea = useIdea({ ideaId });
-  const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   const ideaStatus = useIdeaStatus({ statusId });
@@ -154,12 +152,9 @@ const MetaInformation = ({
             />
           </Item>
         )}
-        {attachmentsEnabled && !isNilOrError(files) && files.length > 0 && (
+        {attachmentsEnabled && (
           <Item>
-            <Header>
-              <FormattedMessage {...messages.attachments} />
-            </Header>
-            <Attachments files={files} />
+            <Attachments ideaId={ideaId} />
           </Item>
         )}
         {similarIdeasEnabled && (
