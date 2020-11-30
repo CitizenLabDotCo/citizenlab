@@ -2,6 +2,8 @@
 
 ## Next release
 
+/
+
 ### Added
 - Ability to create new and edit existing idea statuses
 
