@@ -2,6 +2,10 @@
 
 ## Next release
 
+/ 
+
+## 2020-11-30
+
 ### Added
 - Ability to create new and edit existing idea statuses
 
