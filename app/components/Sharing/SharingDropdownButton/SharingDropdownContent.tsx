@@ -113,7 +113,7 @@ const SharingDropdownContent = ({
     return getUrlWithUtm(medium, url, utmParams);
   };
 
-  const onClick = (medium: Medium, href?: string) => (
+  const handleClick = (medium: Medium, href?: string) => (
     _event: React.FormEvent
   ) => {
     if (href) {
@@ -133,9 +133,7 @@ const SharingDropdownContent = ({
         url={getUrl('facebook')}
         className="sharingButton facebook"
         sharer={true}
-        onClick={trackEventByName(tracks.shareButtonClicked.name, {
-          network: 'facebook',
-        })}
+        onClick={handleClick('facebook')}
         aria-label={formatMessage(messages.shareOnFacebook)}
       >
         <FacebookIcon ariaHidden name="facebook" />
@@ -146,7 +144,7 @@ const SharingDropdownContent = ({
     const messenger = facebookAppId ? (
       <button
         className="sharingButton messenger"
-        onClick={onClick(
+        onClick={handleClick(
           'messenger',
           `fb-messenger://share/?link=${getUrl(
             'messenger'
@@ -166,7 +164,7 @@ const SharingDropdownContent = ({
     const whatsapp = (
       <button
         className="sharingButton whatsapp"
-        onClick={onClick(
+        onClick={handleClick(
           'whatsapp',
           `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
         )}
@@ -185,9 +183,7 @@ const SharingDropdownContent = ({
           !emailSubject || !emailBody ? 'last' : ''
         }`}
         sharer={true}
-        onClick={trackEventByName(tracks.shareButtonClicked.name, {
-          network: 'twitter',
-        })}
+        onClick={handleClick('twitter')}
         aria-label={formatMessage(messages.shareOnTwitter)}
       >
         <TwitterIcon ariaHidden name="twitter" />
@@ -199,7 +195,7 @@ const SharingDropdownContent = ({
       emailSubject && emailBody ? (
         <button
           className="sharingButton last email"
-          onClick={onClick(
+          onClick={handleClick(
             'email',
             `mailto:?subject=${emailSubject}&body=${emailBody}`
           )}
