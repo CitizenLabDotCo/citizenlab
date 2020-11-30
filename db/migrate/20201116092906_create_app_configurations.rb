@@ -8,5 +8,26 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
       t.jsonb :style, default: {}
       t.timestamps
     end
+
+    reversible do |dir|
+      dir.up { import_from_tenant}
+    end
+  end
+
+  def import_from_tenant
+
+    begin
+      tenant = Tenant.current
+    rescue ActiveRecord::RecordNotFound
+      return
+    end
+
+    AppConfiguration.instance.update!(
+        logo: tenant.logo,
+        header_bg: tenant.header_bg,
+        favicon: tenant.favicon,
+        settings: tenant.settings,
+        style: tenant.style
+    )
   end
 end
