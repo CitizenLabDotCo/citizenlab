@@ -13,7 +13,6 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
-import { initializeAnalytics } from 'utils/analytics';
 import { init } from '@sentry/browser';
 import { isError } from 'util';
 import GetTenant from 'resources/GetTenant';
@@ -53,8 +52,6 @@ const Root = () => {
 };
 
 render(<Root />, document.getElementById('app'));
-
-initializeAnalytics();
 
 if (process.env.SENTRY_DSN) {
   import('@sentry/integrations').then((Integrations) => {
