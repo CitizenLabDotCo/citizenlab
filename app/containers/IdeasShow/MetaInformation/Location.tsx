@@ -1,10 +1,18 @@
 import React, { memo, useState } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
+import useIdea from 'hooks/useIdea';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon, colors } from 'cl2-component-library';
 import ModalWithMap from './ModalWithMap';
+import { Header } from './';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 import { isRtl } from 'utils/styleUtils';
 
@@ -45,39 +53,51 @@ const OpenMapModalButton = styled.button`
 
 export interface Props {
   className?: string;
-  address: string;
-  position: GeoJSON.Point;
   projectId: string;
+  ideaId: string;
 }
 
-const Location = memo<Props>(({ address, position, projectId }) => {
-  const [isOpened, setIsOpened] = useState(false);
+const Location = memo<Props & InjectedIntlProps>(
+  ({ intl: { formatMessage }, projectId, ideaId }) => {
+    const [isOpened, setIsOpened] = useState(false);
+    const idea = useIdea({ ideaId });
 
-  const closeModal = () => {
-    setIsOpened(false);
-  };
+    const closeModal = () => {
+      setIsOpened(false);
+    };
 
-  const openModal = () => {
-    setIsOpened(true);
-  };
+    const openModal = () => {
+      setIsOpened(true);
+    };
 
-  return (
-    <>
-      <Container>
-        <StyledIcon name="position" ariaHidden />
-        <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
-          {address}
-        </OpenMapModalButton>
-      </Container>
-      <ModalWithMap
-        address={address}
-        position={position}
-        projectId={projectId}
-        isOpened={isOpened}
-        onCloseModal={closeModal}
-      />
-    </>
-  );
-});
+    if (!isNilOrError(idea)) {
+      const address = idea.attributes.location_description || null;
+      const geoPosition = idea.attributes.location_point_geojson || null;
 
-export default Location;
+      if (address && geoPosition) {
+        return (
+          <>
+            <Header>{formatMessage(messages.location)}</Header>
+            <Container>
+              <StyledIcon name="position" ariaHidden />
+              <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
+                {address}
+              </OpenMapModalButton>
+            </Container>
+            <ModalWithMap
+              address={address}
+              position={geoPosition}
+              projectId={projectId}
+              isOpened={isOpened}
+              onCloseModal={closeModal}
+            />
+          </>
+        );
+      }
+    }
+
+    return null;
+  }
+);
+
+export default injectIntl(Location);
