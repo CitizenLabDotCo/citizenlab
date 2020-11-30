@@ -25,7 +25,7 @@ import { darken } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getUrlWithUtm, UtmParams, Medium } from './';
+import { getUrlWithUtm, UtmParams, Medium, clickSocialSharingLink } from './';
 
 const Container = styled.div`
   display: flex;
@@ -209,12 +209,7 @@ const SharingButtons = memo(
       _event: React.FormEvent
     ) => {
       if (href) {
-        // https://stackoverflow.com/a/8944769
-        const a = document.createElement('a');
-        a.href = href;
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
+        clickSocialSharingLink(href);
       }
 
       trackClick(medium);

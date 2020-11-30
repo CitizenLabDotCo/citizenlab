@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../tracks';
-import { getUrlWithUtm, UtmParams, Medium } from '../';
+import { getUrlWithUtm, UtmParams, Medium, clickSocialSharingLink } from '../';
 
 // style
 import styled from 'styled-components';
@@ -117,12 +117,7 @@ const SharingDropdownContent = ({
     _event: React.FormEvent
   ) => {
     if (href) {
-      // https://stackoverflow.com/a/8944769
-      const a = document.createElement('a');
-      a.href = href;
-      a.target = '_blank';
-      document.body.appendChild(a);
-      a.click();
+      clickSocialSharingLink(href);
     }
 
     trackEventByName(tracks.shareButtonClicked.name, { network: medium });
