@@ -6,6 +6,7 @@ import { FacebookButton, TwitterButton } from 'react-social';
 // components
 import { Icon } from 'cl2-component-library';
 import Messenger from './Messenger';
+import WhatsApp from './WhatsApp';
 
 // resources
 import useTenant from 'hooks/useTenant';
@@ -228,6 +229,10 @@ const SharingButtons = memo(
       trackClick('messenger');
     };
 
+    const handleWhatsAppClick = () => {
+      trackClick('whatsapp');
+    };
+
     if (!isNilOrError(tenant)) {
       const facebookAppId =
         tenant.data.attributes.settings.facebook_login?.app_id || null;
@@ -264,26 +269,18 @@ const SharingButtons = memo(
         </Messenger>
       );
 
-      const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
-        ' ',
-        getUrl('whatsapp')
-      );
       const whatsapp = (
-        <button
+        <WhatsApp
           className={`sharingButton whatsapp ${layoutClassName}`}
-          onClick={handleClick(
-            'whatsapp',
-            `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
-          )}
-          aria-label={formatMessage(messages.shareViaWhatsApp)}
+          onClick={handleWhatsAppClick}
+          whatsAppMessage={whatsAppMessage}
+          url={getUrl('whatsapp')}
         >
           <StyledIcon ariaHidden name="whatsapp" />
-          {layout === 2 && (
-            <ButtonText aria-hidden>
-              {formatMessage(messages.shareViaWhatsApp)}
-            </ButtonText>
-          )}
-        </button>
+          <ButtonText aria-hidden>
+            {layout === 2 ? formatMessage(messages.shareViaWhatsApp) : ''}
+          </ButtonText>
+        </WhatsApp>
       );
 
       const twitter = (
