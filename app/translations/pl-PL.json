@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "Opis inicjatywy musi składać się z co najmniej 30 znaków",
   "app.components.InitiativeForm.descriptionEmptyError": "Proszę dodaj opis",
   "app.components.InitiativeForm.descriptionLabel": "O czym jest twoja propozycja?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Jasno opisz swoją propozycję (min. 500 znaków)",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Jasno opisz swoją propozycję",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Zdjęcia i załączniki",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Szczegóły",
   "app.components.InitiativeForm.formGeneralSectionTitle": "Jaka jest Twoja propozycja?",
