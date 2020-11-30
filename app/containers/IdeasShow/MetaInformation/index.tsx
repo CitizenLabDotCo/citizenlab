@@ -100,9 +100,6 @@ const MetaInformation = ({
     return (
       <Container className={className}>
         <Item isFirstItem>
-          <Header>
-            <FormattedMessage {...messages.postedBy} />
-          </Header>
           <StyledPostedBy authorId={authorId} ideaId={ideaId} />
         </Item>
         <Item>
