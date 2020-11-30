@@ -13,8 +13,8 @@ class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
       dir.up do
         Tenant.all.each do |t|
           Apartment::Tenant.switch(t.schema_name) do
-            folders = AdminPublication.where(publication_type: 'ProjectFolder')
-            folders.each { |f| f.update_attribute(:publication_type, 'ProjectFolders::Folder') }
+            AdminPublication.where(publication_type: 'ProjectFolder')
+                            .update_all(publication_type: 'ProjectFolders::Folder')
           end
         end
       end
@@ -22,8 +22,8 @@ class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
       dir.down do
         Tenant.all.each do |t|
           Apartment::Tenant.switch(t.schema_name) do
-            folders = AdminPublication.where(publication_type: 'ProjectFolders::Folder')
-            folders.each { |f| f.update_attribute(:publication_type, 'ProjectFolder') }
+            AdminPublication.where(publication_type: 'ProjectFolders::Folder')
+                            .update_all(publication_type: 'ProjectFolder')
           end
         end
       end
