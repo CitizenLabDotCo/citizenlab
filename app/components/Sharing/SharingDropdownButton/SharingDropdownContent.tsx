@@ -12,6 +12,7 @@ import { darken } from 'polished';
 import { FacebookButton, TwitterButton } from 'react-social';
 import { Icon } from 'cl2-component-library';
 import Messenger from '../Messenger';
+import WhatsApp from '../WhatsApp';
 
 // hooks
 import useTenant from 'hooks/useTenant';
@@ -128,14 +129,13 @@ const SharingDropdownContent = ({
     trackEventByName(tracks.shareButtonClicked.name, { network: 'messenger' });
   };
 
+  const whatsAppClick = () => {
+    trackEventByName(tracks.shareButtonClicked.name, { network: 'messenger' });
+  };
+
   if (!isNilOrError(tenant)) {
     const facebookAppId =
       tenant.data.attributes.settings.facebook_login?.app_id;
-    const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
-      ' ',
-      getUrl('whatsapp')
-    );
-    const whatsAppHref = `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`;
     const emailHref =
       emailSubject && emailBody
         ? `mailto:?subject=${emailSubject}&body=${emailBody}`
@@ -167,14 +167,15 @@ const SharingDropdownContent = ({
     );
 
     const whatsapp = (
-      <button
+      <WhatsApp
         className="sharingButton whatsapp"
-        onClick={handleClick('whatsapp', whatsAppHref)}
-        aria-label={formatMessage(messages.shareViaWhatsApp)}
+        onClick={whatsAppClick}
+        url={getUrl('whatsapp')}
+        whatsAppMessage={whatsAppMessage}
       >
         <WhatsAppIcon ariaHidden name="whatsapp" />
         <span aria-hidden>{'WhatsApp'}</span>
-      </button>
+      </WhatsApp>
     );
 
     const twitter = (
