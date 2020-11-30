@@ -36,7 +36,7 @@ module Roles
 
     def find_roled_resource
       @roled_resource = roled_resource
-      authorize(@roled_resource, policy_class: policy_class) if policy_present?
+      authorize([@roled_resource, roleable], policy_class: policy_class) if policy_present?
     end
 
     #
