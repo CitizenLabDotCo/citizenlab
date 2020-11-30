@@ -39,14 +39,67 @@ module Roles
       authorize(@roled_resource, policy_class: policy_class) if policy_present?
     end
 
+    #
+    # Returns the id of the roleable object from the params.
+    #
+    #
+    # Example:
+    #
+    #  /users/project_moderators?project_moderator[project_id]=2&project_moderator[user_id]=5
+    #
+    #  p role_params
+    #  # => <ActionController::Paramaters permitted=true project_id=2 user_id=5>
+    #
     def role_params
       params.require(role_name).permit(*role_params_permitted_keys)
     end
 
+    #
+    # Returns the id of the roleable object from the params.
+    #
+    #
+    # Example:
+    #
+    #  /users/project_moderators?project_moderator[project_id]=2&project_moderator[user_id]=5
+    #
+    #  p role_params
+    #  # => <Project @id=2>
+    #
+    #
     def roleable
-      @roleable ||= find_roleable(roleable_id)
+      id = role_params.dig(role_mapping.roleable_primary_key(namespace: false))
+      @roleable ||= role_mapping.find_roleable(id)
     end
 
+    #
+    # Returns the id of the roleable object from the params.
+    #
+    #
+    # Example (with user_id in params)
+    #
+    #  /users/project_moderators?project_moderator[project_id]=2&project_moderator[user_id]=5
+    #
+    #  p roled_resource
+    #  # => <User @id=5>
+    #
+    #
+    #
+    # Example (with user id as part of url)
+    #
+    #  /users/project_moderators/3?project_moderator[project_id]=2
+    #
+    #  p roled_resource
+    #  # => <User @id=3>
+    #
+    #
+    #
+    # Example (without use id at all)
+    #
+    #  /users/project_moderators?project_moderator[project_id]=2
+    #
+    #  p roled_resource
+    #  # => current_user
+    #
     def roled_resource
       if params.key?(:id)
         roled_resource_class.find_by_id(params[:id])
@@ -57,6 +110,27 @@ module Roles
       end
     end
 
+    #
+    # Returns the id of the roleable object from the params.
+    #
+    #
+    # Example (when a project_id is received in params)
+    #
+    #  /users/project_moderators?project_id=3
+    #
+    #  p scoped_resources
+    #  # => <ActiveRecord::Colection::User> with moderators of project with id = 3
+    #
+    #
+    #
+    # Example (without any params)
+    #
+    #  /users/project_moderators
+    #
+    #  p scoped_resources
+    #  # => <ActiveRecord::Colection::User > with all moderators
+    #
+    #
     def scoped_resources
       if params.key?(role_association_foreign_key)
         roled_resource_class.send(role_name, params[role_association_foreign_key])

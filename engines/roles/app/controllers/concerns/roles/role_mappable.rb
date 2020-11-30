@@ -4,44 +4,102 @@ module Roles
 
     private
 
+    #
+    # Returns the role name for the route
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p role_name
+    #  # => 'project_moderator'
+    #
     def role_name
       @role_name ||= request.path.gsub('/web_api/v1/', '').split('/').second.singularize
     end
 
+    #
+    # Returns the roled resource name.
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p roled_resource_name
+    #  # => 'users'
+    #
     def roled_resource_name
       @roled_resource_name ||= request.path.gsub('/web_api/v1/', '').split('/').first
     end
 
+    #
+    # Returns the roled resource class.
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p roled_resource_class
+    #  # => User
+    #
     def roled_resource_class
       roled_resource_name.singularize.classify.safe_constantize
     end
 
+    #
+    # Returns the the mapping of the role, given the roled_resource_class and role_name.
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p role_mapping
+    #  # => <Roles::RoleMapping @klass=User @role_name="project_moderator">
+    #
     def role_mapping
       @role_mapping ||= Roles::RoleMapping.new(roled_resource_class, role_name)
     end
 
+    #
+    # Returns the name of the roled_resource suffixed by _id
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p roled_resource_primary_key
+    #  # => 'user_id'
+    #
     def roled_resource_primary_key
       role_mapping.roled_resource_primary_key
     end
 
+    #
+    # Returns the name of the foreign_key required to create an associated role
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p role_association_foreign_key
+    #  # => 'project_id'
+    #
     def role_association_foreign_key
       role_mapping.role_association_foreign_key
     end
 
-    def role_association_name
-      role_mapping.association_name
-    end
-
+    #
+    # Returns the param keys permitted for the role.
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  p role_params_permitted_keys
+    #  # => ['user_id', 'project_id']
+    #
     def role_params_permitted_keys
       role_mapping.permitted_params
-    end
-
-    def find_roleable(id)
-      role_mapping.find_roleable(id)
-    end
-
-    def roleable_id
-      @roleable_id ||= role_params.dig(role_mapping.roleable_primary_key(namespace: false))
     end
   end
 end
