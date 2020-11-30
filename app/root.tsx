@@ -56,7 +56,7 @@ render(<Root />, document.getElementById('app'));
 
 initializeAnalytics();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.SENTRY_DSN) {
   import('@sentry/integrations').then((Integrations) => {
     init({
       dsn: process.env.SENTRY_DSN,
