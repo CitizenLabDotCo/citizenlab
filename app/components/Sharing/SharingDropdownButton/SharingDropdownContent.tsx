@@ -126,6 +126,20 @@ const SharingDropdownContent = ({
   if (!isNilOrError(tenant)) {
     const facebookAppId =
       tenant.data.attributes.settings.facebook_login?.app_id;
+    const messengerHref = facebookAppId
+      ? `fb-messenger://share/?link=${getUrl(
+          'messenger'
+        )}&app_id=${facebookAppId}`
+      : null;
+    const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
+      ' ',
+      getUrl('whatsapp')
+    );
+    const whatsAppHref = `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`;
+    const emailHref =
+      emailSubject && emailBody
+        ? `mailto:?subject=${emailSubject}&body=${emailBody}`
+        : null;
 
     const facebook = facebookAppId ? (
       <FacebookButton
@@ -141,15 +155,10 @@ const SharingDropdownContent = ({
       </FacebookButton>
     ) : null;
 
-    const messenger = facebookAppId ? (
+    const messenger = messengerHref ? (
       <button
         className="sharingButton messenger"
-        onClick={handleClick(
-          'messenger',
-          `fb-messenger://share/?link=${getUrl(
-            'messenger'
-          )}&app_id=${facebookAppId}`
-        )}
+        onClick={handleClick('messenger', messengerHref)}
         aria-label={formatMessage(messages.shareViaMessenger)}
       >
         <MessengerIcon ariaHidden name="messenger" />
@@ -157,17 +166,10 @@ const SharingDropdownContent = ({
       </button>
     ) : null;
 
-    const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
-      ' ',
-      getUrl('whatsapp')
-    );
     const whatsapp = (
       <button
         className="sharingButton whatsapp"
-        onClick={handleClick(
-          'whatsapp',
-          `https://api.whatsapp.com/send?phone=&text=${whatsAppSharingText}`
-        )}
+        onClick={handleClick('whatsapp', whatsAppHref)}
         aria-label={formatMessage(messages.shareViaWhatsApp)}
       >
         <WhatsAppIcon ariaHidden name="whatsapp" />
@@ -191,20 +193,16 @@ const SharingDropdownContent = ({
       </TwitterButton>
     );
 
-    const email =
-      emailSubject && emailBody ? (
-        <button
-          className="sharingButton last email"
-          onClick={handleClick(
-            'email',
-            `mailto:?subject=${emailSubject}&body=${emailBody}`
-          )}
-          aria-label={formatMessage(messages.shareByEmail)}
-        >
-          <EmailIcon ariaHidden name="email" />
-          <span aria-hidden>{'Email'}</span>
-        </button>
-      ) : null;
+    const email = emailHref ? (
+      <button
+        className="sharingButton last email"
+        onClick={handleClick('email', emailHref)}
+        aria-label={formatMessage(messages.shareByEmail)}
+      >
+        <EmailIcon ariaHidden name="email" />
+        <span aria-hidden>{'Email'}</span>
+      </button>
+    ) : null;
 
     return (
       <Container id={id || ''} className={className || ''}>
