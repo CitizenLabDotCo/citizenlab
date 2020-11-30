@@ -2,7 +2,29 @@
 
 ## Next release
 
-/
+/ 
+
+## 2020-11-30
+
+### Added
+- Ability to create new and edit existing idea statuses
+
+### Fixed
+- The page no longer refreshes when accepting the cookie policy
+
+### Changed
+- Segment is no longer used to connect other tools, instead following tools are integrated natively
+  - Google Analytics
+  - Google Tag Manager
+  - Intercom
+  - Satismeter
+  - Segment, disabled by default
+- Error messages for invitations, logins and password resets are now clearer.
+
+## 2020-11-26
+
+### Added
+- Some specific copy for Vitry-sur-Seine
 
 ## 2020-11-25
 
