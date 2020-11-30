@@ -346,7 +346,6 @@ module AdminApi
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
           yml_user = service.anonymized_attributes Tenant.settings('core', 'locales'), user: u
-          yml_user.delete 'custom_field_values'
           yml_user
         else
            yml_user = { 
