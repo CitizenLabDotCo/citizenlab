@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "Das Passwort muss mindestens 8 Zeichen lang sein",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
   "app.errors.title_multiloc_blank": "Die Überschrift kann nicht leergelassen werden.",
-  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. Please request a new password reset {link}.",
+  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.",
   "app.errors.too_common": "Ihr Passwort ist zu leicht zu erraten. Bitte wählen Sie ein stärkeres Passwort.",
   "app.errors.too_long": "Das Passwort darf höchstens 72 Zeichen lang sein",
   "app.errors.too_short": "Dein Passwort muss mindestens 8 Zeichen enthalten",
