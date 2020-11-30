@@ -22,7 +22,7 @@ interface Props {
   className?: string;
   lastItem: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
-  dropRow: (itemId: string, toIndex, number) => void;
+  dropRow: (itemId: string, toIndex: number) => void;
 }
 
 type State = {};
