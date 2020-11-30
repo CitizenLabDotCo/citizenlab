@@ -10,18 +10,11 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
     end
 
     reversible do |dir|
-      dir.up { import_from_tenant}
+      dir.up { import_from(tenant) if tenant }
     end
   end
 
-  def import_from_tenant
-
-    begin
-      tenant = Tenant.current
-    rescue ActiveRecord::RecordNotFound
-      return
-    end
-
+  def import_from(tenant)
     AppConfiguration.instance.update!(
         logo: tenant.logo,
         header_bg: tenant.header_bg,
@@ -30,4 +23,11 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
         style: tenant.style
     )
   end
+
+  def tenant
+    Tenant.current
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
 end
+
