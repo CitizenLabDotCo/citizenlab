@@ -191,24 +191,24 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
     setNewTag(text);
   };
 
-  const handleRemoveTagFromSelection = (removedTagID: string) => (event) => {
+  const handleRemoveExistingTagFromSelection = (removedTagID: string) => (
+    event
+  ) => {
     event.preventDefault();
-    setSelectedTagsList(
-      [...selectedTagsList].splice(
-        selectedTagsList.findIndex((tag) => removedTagID === tag.id),
-        1
-      )
+    const tempTagList = [...selectedTagsList];
+    const deletedTagIndex = selectedTagsList.findIndex(
+      (tag) => removedTagID === tag.id
     );
+    tempTagList.splice(deletedTagIndex, 1);
+    setSelectedTagsList(tempTagList);
   };
 
-  const handleRemoveNewTag = (removedTag: string) => (event) => {
+  const handleRemoveNewTagFromSelection = (removedTag: string) => (event) => {
     event.preventDefault();
-    setNewTagsList(
-      [...newTagsList].splice(
-        newTagsList.findIndex((tag) => removedTag === tag),
-        1
-      )
-    );
+    const tempTagList = [...newTagsList];
+    const deletedTagIndex = newTagsList.findIndex((tag) => removedTag === tag);
+    tempTagList.splice(deletedTagIndex, 1);
+    setNewTagsList(tempTagList);
   };
 
   useEffect(() => {
@@ -284,9 +284,9 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                 key={index + localize(tag.attributes.title_multiloc)}
                 text={localize(tag.attributes.title_multiloc)}
                 isAutoTag={false}
-                isSelected={false}
+                isSelected={true}
                 icon={'remove'}
-                onTagClick={handleRemoveTagFromSelection(tag.id)}
+                onTagClick={handleRemoveExistingTagFromSelection(tag.id)}
               />
             ))}
             {newTagsList.map((tag, index) => (
@@ -296,7 +296,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
                 isAutoTag={false}
                 isSelected={false}
                 icon={'remove'}
-                onTagClick={handleRemoveNewTag(tag)}
+                onTagClick={handleRemoveNewTagFromSelection(tag)}
               />
             ))}
           </TagList>
