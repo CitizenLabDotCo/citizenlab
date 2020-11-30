@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "Die Beschreibung muss mindestens 30 Zeichen lang sein",
   "app.components.InitiativeForm.descriptionEmptyError": "Bitte gib eine Beschreibung ein",
   "app.components.InitiativeForm.descriptionLabel": "Worum geht es in deinem Vorschlag?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Beschreibe deinen Vorschlag etwas genauer (min. 500 Zeichen)",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Beschreiben Sie Ihren Vorschlag",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Bilder und Anhänge",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Details",
   "app.components.InitiativeForm.formGeneralSectionTitle": "Was ist dein Vorschlag?",
