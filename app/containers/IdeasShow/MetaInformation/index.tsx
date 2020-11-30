@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // components
 import Status from './Status';
@@ -55,12 +55,6 @@ export const Header = styled.h3`
   padding: 0;
   margin: 0;
   margin-bottom: 12px;
-`;
-
-export const NoContent = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  line-height: normal;
 `;
 
 interface InputProps {
@@ -159,9 +153,6 @@ const MetaInformation = ({
         )}
         {similarIdeasEnabled && (
           <Item>
-            <Header>
-              <FormattedMessage {...messages.similarIdeas} />
-            </Header>
             <SimilarIdeas ideaId={ideaId} />
           </Item>
         )}
