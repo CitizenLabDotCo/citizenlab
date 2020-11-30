@@ -407,6 +407,17 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     };
 
+    const IsThereAnAutotagLeftInTheSelection = () => {
+      return selectedRows.some((ideaID) => {
+        const ideaTagging = getIdeaTaggings(ideaID);
+        const areSomeOfTheIdeaTagsAutomatice = ideaTagging.some(
+          (ideaTagging) =>
+            ideaTagging.attributes.assignment_method === 'automatic'
+        );
+        return areSomeOfTheIdeaTagsAutomatice;
+      });
+    };
+
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
         const newSelectedRows = includes(selectedRows, selectedItemId)
@@ -605,6 +616,7 @@ const Processing = memo<Props & InjectedIntlProps>(
       return (
         <AutotagView
           closeView={handleCloseAutotagView}
+          autoTagLeft={IsThereAnAutotagLeftInTheSelection()}
           selectedRows={selectedRows}
         />
       );

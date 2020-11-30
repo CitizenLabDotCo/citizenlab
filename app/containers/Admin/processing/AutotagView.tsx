@@ -146,9 +146,10 @@ const Tab = styled.div`
 interface Props {
   closeView: (e?: FormEvent) => void;
   selectedRows: string[];
+  autoTagLeft: boolean;
 }
 
-const AutotagView = ({ closeView, selectedRows }: Props) => {
+const AutotagView = ({ closeView, selectedRows, autoTagLeft }: Props) => {
   const locale = useLocale();
   const addTagInputKeyPress = useKeyPress('Enter');
   const [newTag, setNewTag] = useState('');
@@ -158,6 +159,9 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   const { tags } = useTags(selectedRows);
 
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
+  const [isOverwriteConfirmed, setIsOverwriteConfirmed] = useState<boolean>(
+    false
+  );
   const [processing, setProcessing] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'suggestions' | 'existingTags'>(
     'suggestions'
@@ -245,7 +249,24 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   };
 
   if (!isNilOrError(locale)) {
-    return (
+    return autoTagLeft && !isOverwriteConfirmed ? (
+      <Container>
+        <Button
+          locale={locale}
+          icon="plus-circle"
+          buttonStyle="text"
+          onClick={closeView}
+          text={'Cancel'}
+        />
+        <Button
+          locale={locale}
+          icon="plus-circle"
+          buttonStyle="text"
+          onClick={() => setIsOverwriteConfirmed(true)}
+          text={'Overwrite autotags'}
+        />
+      </Container>
+    ) : (
       <Container>
         <Left>
           <GoBackButton onClick={closeView} />
