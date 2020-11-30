@@ -186,7 +186,16 @@ const IdeaStatuses = () => {
                       theme="light"
                       disabled={isDeletable(ideaStatus)}
                       content={
-                        <FormattedMessage {...messages.deleteButtonTooltip} />
+                        <FormattedMessage
+                          {...messages.deleteButtonTooltipContent}
+                          values={{
+                            linkToManageTab: (
+                              <b>
+                                <FormattedMessage {...messages.manage} />
+                              </b>
+                            ),
+                          }}
+                        />
                       }
                       trigger="mouseenter"
                     >
