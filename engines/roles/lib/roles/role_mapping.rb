@@ -109,14 +109,23 @@ module Roles
       :"#{through_role_name}_#{through_association_name}_ids"
     end
 
-    def roleable_primary_key
-      [association_name, 'id'].join('_')
+    def roleable_primary_key(namespace: true)
+      [association_name(namespace: namespace), 'id'].join('_')
     end
 
     def permitted_params
       return [] unless associated?
 
-      [roleable_primary_key]
+      [roleable_primary_key(namespace: false), roled_resource_primary_key]
+    end
+
+    def roled_resource_primary_key
+      [klass_config_name.to_s.singularize, 'id'].join('_')
+    end
+
+    def role_association_foreign_key
+
+      [association_name(namespace: false), 'id'].join('_')
     end
 
     def klass_config_name
@@ -128,12 +137,16 @@ module Roles
     end
 
     def subscriber
+      return unless self.class.subscriber_options
+
       self.class.subscriber_options.dig(klass_config_name, role_name).yield_self do |subcriber_object|
         return subcriber_object if subcriber_valid?(subcriber_object)
       end
     end
 
     def policy
+      return unless self.class.policy_options
+
       self.class.policy_options.dig(klass_config_name, role_name).yield_self do |policy_object|
         return policy_object if policy_object&.ancestors&.include? ApplicationPolicy
       end
