@@ -12,7 +12,7 @@ import messages from './messages';
 
 interface Props {
   className?: string;
-  children: JSX.Element[];
+  children: JSX.Element | JSX.Element[];
   onClick: () => void;
   url: string;
 }
