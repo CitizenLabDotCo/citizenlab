@@ -91,8 +91,6 @@ const MetaInformation = ({
   ) {
     const topicIds =
       idea.relationships.topics?.data.map((item) => item.id) || [];
-    const address = idea.attributes.location_description || null;
-    const geoPosition = idea.attributes.location_point_geojson || null;
 
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -134,16 +132,9 @@ const MetaInformation = ({
             <Topics postType="idea" topicIds={topicIds} />
           </Item>
         )}
-        {locationEnabled && address && geoPosition && (
+        {locationEnabled && (
           <Item>
-            <Header>
-              <FormattedMessage {...messages.location} />
-            </Header>
-            <Location
-              position={geoPosition}
-              address={address}
-              projectId={projectId}
-            />
+            <Location projectId={projectId} ideaId={ideaId} />
           </Item>
         )}
         {attachmentsEnabled && (
