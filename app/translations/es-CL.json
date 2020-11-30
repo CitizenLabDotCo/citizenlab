@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "La descripción debe tener al menos 30 caracteres",
   "app.components.InitiativeForm.descriptionEmptyError": "Por favor proporcione una descripción",
   "app.components.InitiativeForm.descriptionLabel": "¿De qué se trata la propuesta?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Describe claramente tu propuesta (mínimo 500 caracteres)",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Describe claramente tu propuesta",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Imágenes y adjuntos",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Detalles",
   "app.components.InitiativeForm.formGeneralSectionTitle": "¿Cuál es tu propuesta?",
