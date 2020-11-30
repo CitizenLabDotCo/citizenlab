@@ -44,7 +44,7 @@ resource 'Project Folder Moderators' do
           user_header_token
         end
 
-        example_request 'It does not authorize the user' do
+        example_request 'It returns an unauthorized status' do
           expect(status).to eq(401)
         end
       end
@@ -72,14 +72,42 @@ resource 'Project Folder Moderators' do
         end
       end
 
-      context 'when current_user is a project folder moderator' do
-        let(:moderator) {create(:project_folder_moderator, project_folder: create(:project_folder)) }
+      context 'when current_user is a project folder moderator of the given folder' do
+        let(:moderator) { create(:project_folder_moderator, project_folder: project_folder) }
 
         before do
           header_token_for(moderator)
+          expect(moderator.project_folder_moderator?(project_folder)).to be_truthy
+          expect(user.project_folder_moderator?(project_folder)).to be_falsy
         end
 
-        example_request 'It does not authorize the folder moderator' do
+        example_request 'It returns an ok status' do
+          expect(status).to eq(200)
+        end
+
+        example_request 'It allows the creation of a folder moderator' do
+          user.reload
+          json_response       = json_parse(response_body)
+          serializer_mock     = serialize_moderators(moderator, user)
+
+          expect(user.project_folder_moderator?(project_folder)).to be_truthy
+          expect(json_response).to be_present
+          expect(response_body).to eq serializer_mock
+        end
+      end
+
+      context 'when current_user is a project folder moderator but not of the given folder' do
+        let(:another_folder) { create(:project_folder) }
+        let(:moderator) { create(:project_folder_moderator, project_folder: another_folder) }
+
+        before do
+          header_token_for(moderator)
+          expect(moderator.project_folder_moderator?(another_folder)).to be_truthy
+          expect(moderator.project_folder_moderator?(project_folder)).to be_falsy
+          expect(user.project_folder_moderator?(project_folder)).to be_falsy
+        end
+
+        example_request 'It returns an unauthorized status' do
           expect(status).to eq(401)
         end
       end

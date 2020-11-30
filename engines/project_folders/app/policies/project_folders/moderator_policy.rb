@@ -21,12 +21,23 @@ module ProjectFolders
       end
     end
 
+    def initialize(user, args)
+      @user = user
+      @moderator, @moderatable = args
+    end
+
     def create?
-      user.active_and_admin?
+      manage?
     end
 
     def destroy?
-      user.active_and_admin?
+      manage?
+    end
+
+    private
+
+    def manage?
+      user.active_and_admin? || user.project_folder_moderator?(@moderatable)
     end
   end
 end
