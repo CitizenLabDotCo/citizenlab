@@ -7,6 +7,7 @@ import { FacebookButton, TwitterButton } from 'react-social';
 import { Icon } from 'cl2-component-library';
 import Messenger from './Messenger';
 import WhatsApp from './WhatsApp';
+import Email from './Email';
 
 // resources
 import useTenant from 'hooks/useTenant';
@@ -233,6 +234,10 @@ const SharingButtons = memo(
       trackClick('whatsapp');
     };
 
+    const handleEmailClick = () => {
+      trackClick('email');
+    };
+
     if (!isNilOrError(tenant)) {
       const facebookAppId =
         tenant.data.attributes.settings.facebook_login?.app_id || null;
@@ -303,24 +308,17 @@ const SharingButtons = memo(
         </TwitterButton>
       );
 
-      const email =
-        emailSubject && emailBody ? (
-          <button
-            className={`sharingButton last email ${layoutClassName}`}
-            onClick={handleClick(
-              'email',
-              `mailto:?subject=${emailSubject}&body=${emailBody}`
-            )}
-            aria-label={formatMessage(messages.shareByEmail)}
-          >
-            <StyledIcon ariaHidden name="email" />
-            {layout === 2 && (
-              <ButtonText aria-hidden>
-                {formatMessage(messages.shareByEmail)}
-              </ButtonText>
-            )}
-          </button>
-        ) : null;
+      const email = (
+        <Email
+          className={`sharingButton last email ${layoutClassName}`}
+          onClick={handleEmailClick}
+        >
+          <StyledIcon ariaHidden name="email" />
+          <ButtonText aria-hidden>
+            {layout === 2 ? formatMessage(messages.shareByEmail) : ''}
+          </ButtonText>
+        </Email>
+      );
 
       return (
         <Container id={id || ''} className={className || ''}>
