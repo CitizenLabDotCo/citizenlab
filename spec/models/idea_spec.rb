@@ -217,16 +217,5 @@ RSpec.describe Idea, type: :model do
 
   end
 
-  describe "ideas_phases" do
-    let(:project) { create(:project_with_phases) }
-    let(:idea) { create(:idea, project: project) }
-
-    it "are invalid when they contain duplicates" do
-      phase = project.phases.first
-      idea.phases = [phase, phase]
-      expect(idea).to be_invalid
-    end
-  end
-
 
 end
