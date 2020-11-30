@@ -71,8 +71,8 @@ const Location = memo<Props & InjectedIntlProps>(
     };
 
     if (!isNilOrError(idea)) {
-      const address = idea.attributes.location_description || null;
-      const geoPosition = idea.attributes.location_point_geojson || null;
+      const address = idea.attributes.location_description;
+      const geoPosition = idea.attributes.location_point_geojson;
 
       if (address && geoPosition) {
         return (
