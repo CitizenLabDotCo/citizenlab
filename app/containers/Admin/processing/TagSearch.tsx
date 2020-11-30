@@ -9,7 +9,6 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Components
-import Button from 'components/UI/Button';
 import AsyncSelectCreatable from 'react-select/async-creatable';
 
 // Style
@@ -20,7 +19,6 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import { IOption } from 'typings';
 import GetTags, { GetTagsChildProps } from 'resources/GetTags';
 import { ITag, tagStream } from 'services/tags';
-import { addTagging } from 'services/taggings';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
