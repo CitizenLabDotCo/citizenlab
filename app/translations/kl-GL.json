@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "Isumassarsiamik allaaserinninneq minnerpaamik naqinnernik 30-nik imaqassaaq",
   "app.components.InitiativeForm.descriptionEmptyError": "Allaatiginnilaarit ",
   "app.components.InitiativeForm.descriptionLabel": "Innuttaasutut siunnersuutit sumut tunngava?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Innuttaasutut siunnersuutit ersarissumik (minn. 500 naqinnerit) allaaseriuk",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Innuttaasutut siunnersuutit ersarissumik allaaseriuk",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Assit fiilillu kakkiussat",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Immikkuualuttut",
   "app.components.InitiativeForm.formGeneralSectionTitle": "Innuttaasutut siunnersuutit sunaava?",
