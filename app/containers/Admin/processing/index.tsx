@@ -18,6 +18,7 @@ import ProcessingRow from './ProcessingRow';
 import AutotagView from './AutotagView';
 import { Checkbox, fontSizes, Spinner, Button } from 'cl2-component-library';
 import Table from 'components/UI/Table';
+import Modal from 'components/UI/Modal';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -61,6 +62,16 @@ const Container = styled.div`
 
 const StyledSpinner = styled(Spinner)`
   margin: auto;
+`;
+
+const StyledModal = styled(Modal)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const PostPreviewTransitionWrapper = styled.div`
@@ -239,6 +250,9 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
+    const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
+      false
+    );
 
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
@@ -347,7 +361,9 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
-      setShowAutotagView(true);
+      IsThereAnAutotagLeftInTheSelection()
+        ? setConfirmationModalOpen(true)
+        : setShowAutotagView(true);
     };
 
     const handleCloseAutotagView = (e?: FormEvent) => {
@@ -410,11 +426,11 @@ const Processing = memo<Props & InjectedIntlProps>(
     const IsThereAnAutotagLeftInTheSelection = () => {
       return selectedRows.some((ideaID) => {
         const ideaTagging = getIdeaTaggings(ideaID);
-        const areSomeOfTheIdeaTagsAutomatice = ideaTagging.some(
+        const areSomeOfTheIdeaTagsAutomatic = ideaTagging.some(
           (ideaTagging) =>
             ideaTagging.attributes.assignment_method === 'automatic'
         );
-        return areSomeOfTheIdeaTagsAutomatice;
+        return areSomeOfTheIdeaTagsAutomatic;
       });
     };
 
@@ -605,6 +621,36 @@ const Processing = memo<Props & InjectedIntlProps>(
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
+          <StyledModal
+            opened={confirmationModalOpen}
+            close={() => setConfirmationModalOpen(false)}
+          >
+            <h2>
+              This action may overwrite autotags generated previouysly. Are you
+              sure you want to continue ?
+            </h2>
+            <h4>
+              Auto-tagging ideas will overwrite any previously
+              automatically-generated tags. Tags that have been approved or that
+              were manually added will not be overwritten.
+            </h4>
+            <Row>
+              <Button
+                locale={locale}
+                icon="close"
+                buttonStyle="admin-dark-outlined"
+                onClick={() => setConfirmationModalOpen(false)}
+                text={'Cancel'}
+              />
+              <Button
+                locale={locale}
+                icon="chevron-right"
+                buttonStyle="admin-dark"
+                onClick={() => setShowAutotagView(true)}
+                text={'Continue'}
+              />
+            </Row>
+          </StyledModal>
         </Container>
       );
     }
@@ -616,7 +662,6 @@ const Processing = memo<Props & InjectedIntlProps>(
       return (
         <AutotagView
           closeView={handleCloseAutotagView}
-          autoTagLeft={IsThereAnAutotagLeftInTheSelection()}
           selectedRows={selectedRows}
         />
       );
