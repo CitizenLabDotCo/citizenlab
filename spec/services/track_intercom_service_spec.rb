@@ -45,7 +45,10 @@ describe TrackIntercomService do
           isAdmin: true,
           isSuperAdmin: false,
           isProjectModerator: false,
-          highestRole: 'admin'
+          highestRole: 'admin',
+          firstName: user.first_name,
+          lastName: user.last_name,
+          locale: user.locale
         }
       }).and_return(contact)
 
@@ -83,7 +86,10 @@ describe TrackIntercomService do
         isAdmin: true,
         isSuperAdmin: false,
         isProjectModerator: false,
-        highestRole: 'admin'
+        highestRole: 'admin',
+        firstName: user.first_name,
+        lastName: user.last_name,
+        locale: user.locale
       })
 
       expect(contacts_api).to receive(:save).with(contact).and_return(contact)
