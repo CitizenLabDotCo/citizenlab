@@ -52,7 +52,5 @@ export default function useTaggings() {
     return () => subscription.unsubscribe();
   }, [ideaIds]);
 
-  console.log(taggings);
-
   return { taggings, onIdeasChange };
 }
