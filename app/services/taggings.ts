@@ -60,7 +60,7 @@ export async function deleteTagging(taggingId: string) {
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+    apiEndpoint: [`${API_PATH}/tags`],
   });
 
   return response;

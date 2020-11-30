@@ -155,7 +155,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   const [selectedTagsList, setSelectedTagsList] = useState<ITag[]>([]);
   const [newTagsList, setNewTagsList] = useState<string[]>([]);
 
-  const { tags } = useTags();
+  const { tags } = useTags(selectedRows);
 
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
   const [processing, setProcessing] = useState<boolean>(false);

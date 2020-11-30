@@ -232,7 +232,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const { taggings } = useTaggings();
-    const { tags } = useTags();
+    const { tags, onIdeasChange } = useTags(ideaList?.map((idea) => idea.id));
 
     const [exporting, setExporting] = useState<boolean>(false);
 
@@ -319,6 +319,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
+      onIdeasChange(ideaList?.map((idea) => idea.id) || []);
       if (loadingIdeas) {
         setLoadingIdeas(false);
       }
