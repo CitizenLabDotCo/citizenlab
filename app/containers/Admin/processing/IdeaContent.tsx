@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/IdeaProposedBudget';
 import { Tag } from 'cl2-component-library';
 
 // resources
@@ -15,9 +14,8 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -35,28 +33,25 @@ const Content = styled.div`
 `;
 
 const StyledBody = styled(Body)`
-  min-height: calc(100vh - ${stylingConsts.menuHeight}px - 200px);
+  min-height: calc(100vh - ${stylingConsts.menuHeight}px - 20vh);
   overflow-y: auto;
 `;
 
 const TagList = styled.div`
-  text-align: right;
+  margin-bottom: 20px;
+  display: inline;
+  background-color: #f9f9fa;
+  border-radius: ${stylingConsts.borderRadius};
   width: 100%;
-  margin-bottom: 10px;
-  & > {
-    margin: 0px 4px 4px 0px;
+  padding: 12px;
+  & > * {
+    margin: 4px 4px 4px 4px;
     width: fit-content;
   }
 `;
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
-`;
-
-const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.medium}px;
-  font-weight: 400;
-  line-height: 28px;
 `;
 
 export interface InputProps {
@@ -89,31 +84,9 @@ export class IdeaContent extends PureComponent<
     if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(tenant)) {
       const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
-      // AuthorId can be null if user has been deleted
-      const proposedBudget = idea.attributes.proposed_budget;
-      const currency = tenant.attributes.settings.core.currency;
 
       return (
         <Content>
-          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-          {proposedBudget && (
-            <>
-              <BodySectionTitle>
-                <FormattedMessage {...messages.proposedBudgetTitle} />
-              </BodySectionTitle>
-              <IdeaProposedBudget
-                formattedBudget={getFormattedBudget(
-                  locale,
-                  proposedBudget,
-                  currency
-                )}
-              />
-              <BodySectionTitle>
-                <FormattedMessage {...messages.description} />
-              </BodySectionTitle>
-            </>
-          )}
-
           {manualTaggings.length > 0 && (
             <TagList>
               {manualTaggings.map((tagging) =>
@@ -121,7 +94,7 @@ export class IdeaContent extends PureComponent<
                   <Tag
                     key={tagging.id}
                     icon="close"
-                    onIconClick={this.removeTagging(tagging.id)}
+                    onTagClick={this.removeTagging(tagging.id)}
                     isAutoTag={false}
                     isSelected={false}
                     text={localize(tagging.tag.attributes.title_multiloc)}
@@ -130,6 +103,7 @@ export class IdeaContent extends PureComponent<
               )}
             </TagList>
           )}
+          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
           <StyledBody
             postId={ideaId}
             postType="idea"

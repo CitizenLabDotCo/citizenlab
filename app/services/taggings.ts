@@ -15,13 +15,16 @@ export interface ITagging {
 }
 export type ITaggingsData = { data: ITagging[] };
 
-export function taggingSuggestionStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: ITagging[] }>({
-    apiEndpoint: `${API_PATH}/taggings/generate`,
-    ...streamParams,
+export async function generateTaggings(ideaIds, tagIds, tags) {
+  const response = await streams.add(`${API_PATH}/taggings/generate`, {
+    tags,
+    idea_ids: ideaIds,
+    tag_ids: tagIds,
   });
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+  });
+  return response;
 }
 
 export function taggingStream(streamParams: IStreamParams | null = null) {
@@ -71,7 +74,7 @@ export async function switchToManual(taggingId: string) {
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/tags`],
+    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
   });
 
   return response;

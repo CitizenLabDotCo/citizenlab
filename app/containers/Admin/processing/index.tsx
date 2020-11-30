@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useState, useEffect, useRef } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+  FormEvent,
+} from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 import { requestBlob } from 'utils/request';
@@ -8,6 +15,7 @@ import { saveAs } from 'file-saver';
 
 // components
 import ProcessingRow from './ProcessingRow';
+import AutotagView from './AutotagView';
 import { Checkbox, fontSizes, Spinner, Button } from 'cl2-component-library';
 import Table from 'components/UI/Table';
 
@@ -22,7 +30,7 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts, colors } from 'utils/styleUtils';
 
 // typings
 import { adopt } from 'react-adopt';
@@ -40,10 +48,9 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
-import useTagSuggestions from 'hooks/useTagSuggestion';
 import useTags from 'hooks/useTags';
 import useTaggings from 'hooks/useTaggings';
-import { ITagging } from 'services/taggings';
+import Tippy from '@tippyjs/react';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -80,9 +87,9 @@ const PostPreviewTransitionWrapper = styled.div`
   }
 `;
 
-const SidePanelTransitionWrapper = styled.div`
+const FilterSectionTransitionWrapper = styled.div`
   &.slide-enter {
-    transform: translateX(-100%);
+    transform: translateX(-400%);
 
     &.slide-enter-active {
       transition: 1000ms;
@@ -95,28 +102,38 @@ const SidePanelTransitionWrapper = styled.div`
     transform: translateX(0%);
 
     &.slide-exit-active {
-      transform: translateX(-100%);
+      transform: translateX(-400%);
     }
   }
 `;
 
-const SidePanel = styled.div`
-  padding-top: 45px;
-  padding-right: 18px;
-  padding-left: 18px;
+const LeftPanelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 18px;
   position: sticky;
   top: ${stylingConsts.menuHeight}px;
   height: calc(100vh - ${stylingConsts.menuHeight}px);
   max-width: 150px;
+  z-index: 100;
+  background-color: #f9f9fa;
+`;
+
+const FilterSection = styled.div`
   display: flex;
   flex-direction: column;
-  z-index: 100;
-  background-color: #eaeaea;
 `;
 
 const StyledActions = styled.div`
   > * {
     margin-top: 10px;
+  }
+`;
+
+const StyledFilterSelector = styled(FilterSelector)`
+  &:not(:last-child) {
+    margin-right: 0px;
   }
 `;
 
@@ -171,6 +188,25 @@ const StyledCheckbox = styled(Checkbox)`
   margin-top: 0px;
 `;
 
+const InformationBox = styled.div`
+  margin: 24px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 27px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: ${colors.clBlueDarkBg};
+`;
+
+const KeyboardShortcuts = styled.div`
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: ${colors.clBlueDarkBg};
+  font-size: ${fontSizes.xs}px;
+`;
 interface DataProps {
   ideas: GetIdeasChildProps;
   projects: GetProjectsChildProps;
@@ -194,18 +230,16 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [projectList, setProjectList] = useState<IFilterSelectorValue[]>([]);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
-    //
-    // const {
-    //   tagSuggestions,
-    //   onIdeasChange: onIdeasChangeTagSugs,
-    // } = useTagSuggestions();
-    const { taggings } = useTaggings(); // TODO make use of included data.
-    const { tags } = useTags();
 
-    const [processing, setProcessing] = useState<boolean>(false);
+    const { taggings } = useTaggings();
+    const { tags, onIdeasChange } = useTags(ideaList?.map((idea) => idea.id));
+
     const [exporting, setExporting] = useState<boolean>(false);
+
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
+    const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
+
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
@@ -261,7 +295,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [downArrow, ideaList]);
 
     useEffect(() => {
-      if (enterModalKey && ideaList) {
+      if (enterModalKey && !isNilOrError(ideaList) && ideaList.length > 0) {
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
           setPreviewPostId(ideaList[0].id);
@@ -278,12 +312,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitModalKey, ideaList]);
 
     useEffect(() => {
-      if (!processing && selectedProjectIds.length > 0) {
+      if (selectedProjectIds.length > 0) {
         setIdeaList(ideas?.list);
+        setLoadingIdeas(false);
       }
-    }, [ideas, processing]);
+    }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
+      onIdeasChange(ideaList?.map((idea) => idea.id) || []);
       if (loadingIdeas) {
         setLoadingIdeas(false);
       }
@@ -308,19 +344,20 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     };
 
-    // const handleAutoTag = (e: FormEvent) => {
-    //   e.preventDefault();
-    //   trackEventByName(tracks.clickAutotag.name);
-    //
-    //   setProcessing(true);
-    //   onIdeasChangeTags(selectedRows);
-    //   onIdeasChangeTaggings(selectedRows);
-    //   // onIdeasChangeTagSugs(selectedRows);
-    // };
+    const handleAutoTag = (e: FormEvent) => {
+      e.preventDefault();
+      trackEventByName(tracks.clickAutotag.name);
+      setShowAutotagView(true);
+    };
+
+    const handleCloseAutotagView = (e?: FormEvent) => {
+      e?.preventDefault();
+      setShowAutotagView(false);
+    };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !processing) {
+        if (!isNilOrError(ideaList)) {
           const newSelectedRows =
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
@@ -328,7 +365,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           setSelectedRows(newSelectedRows);
         }
       },
-      [ideaList, selectedRows, processing]
+      [ideaList, selectedRows]
     );
 
     const navigate = (direction: 'up' | 'down') => {
@@ -372,20 +409,19 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
-        if (!processing) {
-          const newSelectedRows = includes(selectedRows, selectedItemId)
-            ? selectedRows.filter((id) => id !== selectedItemId)
-            : [...selectedRows, selectedItemId];
-          setSelectedRows(newSelectedRows);
-        }
+        const newSelectedRows = includes(selectedRows, selectedItemId)
+          ? selectedRows.filter((id) => id !== selectedItemId)
+          : [...selectedRows, selectedItemId];
+        setSelectedRows(newSelectedRows);
       },
-      [selectedRows, processing]
+      [selectedRows]
     );
 
     const openPreview = (id: string) => {
       setPreviewPostId(id);
       setHighlightedId(id);
     };
+
     const closeSideModal = () => setPreviewPostId(null);
 
     const getIdeaTaggings = useCallback(
@@ -396,7 +432,11 @@ const Processing = memo<Props & InjectedIntlProps>(
       [taggings]
     );
 
-    if (!isNilOrError(projectList) && !isNilOrError(locale)) {
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      !showAutotagView
+    ) {
       return (
         <Container className={className}>
           <CSSTransition
@@ -410,77 +450,102 @@ const Processing = memo<Props & InjectedIntlProps>(
               exit: 500,
             }}
           >
-            <SidePanelTransitionWrapper>
-              <SidePanel>
-                <FilterSelector
-                  title={<FormattedMessage {...messages.project} />}
-                  name={'Projects'}
-                  values={projectList}
-                  onChange={handleProjectIdsChange}
-                  multipleSelectionAllowed={true}
-                  selected={selectedProjectIds}
-                />
+            <FilterSectionTransitionWrapper>
+              <LeftPanelContainer>
+                <FilterSection>
+                  <StyledFilterSelector
+                    title={<FormattedMessage {...messages.project} />}
+                    name={'Projects'}
+                    values={projectList}
+                    onChange={handleProjectIdsChange}
+                    multipleSelectionAllowed={true}
+                    selected={selectedProjectIds}
+                  />
 
-                <StyledActions>
-                  <Button
-                    buttonStyle="admin-dark"
-                    disabled={selectedRows.length === 0}
-                    processing={processing}
-                    locale={locale}
-                  >
-                    <FormattedMessage {...messages.autotag} />
-                  </Button>
+                  <StyledActions>
+                    <Button
+                      buttonStyle="admin-dark"
+                      disabled={selectedRows.length === 0}
+                      locale={locale}
+                      onClick={handleAutoTag}
+                    >
+                      <FormattedMessage {...messages.autotag} />
+                    </Button>
 
-                  <Button
-                    buttonStyle="admin-dark-outlined"
-                    disabled={selectedRows.length === 0}
-                    processing={exporting}
-                    onClick={handleExportSelectedIdeasAsXlsx}
-                    locale={locale}
-                  >
-                    <FormattedMessage {...messages.export} />
-                  </Button>
-                </StyledActions>
-              </SidePanel>
-            </SidePanelTransitionWrapper>
+                    <Button
+                      buttonStyle="admin-dark-outlined"
+                      disabled={selectedRows.length === 0}
+                      processing={exporting}
+                      onClick={handleExportSelectedIdeasAsXlsx}
+                      locale={locale}
+                    >
+                      <FormattedMessage {...messages.export} />
+                    </Button>
+                  </StyledActions>
+                </FilterSection>
+                <Tippy
+                  disabled={false}
+                  placement="top"
+                  content={
+                    <ul>
+                      <li>
+                        <FormattedMessage {...messages.upAndDownArrow} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages.rightArrow} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages.leftArrow} />
+                      </li>
+                    </ul>
+                  }
+                  theme="light"
+                  hideOnClick={true}
+                >
+                  <KeyboardShortcuts>
+                    <FormattedMessage {...messages.keyboardShortcuts} />
+                  </KeyboardShortcuts>
+                </Tippy>
+              </LeftPanelContainer>
+            </FilterSectionTransitionWrapper>
           </CSSTransition>
-          {!isNilOrError(ideaList) && !loadingIdeas ? (
+          {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
             <TableWrapper>
               <StyledTable>
-                {!previewPostId && (
-                  <thead>
-                    <tr>
-                      <th className="checkbox">
-                        <StyledCheckbox
-                          checked={
-                            ideaList.length > 0 &&
-                            selectedRows.length === ideaList?.length
-                          }
-                          indeterminate={
-                            selectedRows.length > 0 &&
-                            selectedRows.length < ideaList.length
-                          }
-                          disabled={ideaList?.length === 0}
-                          onChange={handleOnSelectAll}
-                        />
-                      </th>
+                <thead>
+                  <tr>
+                    <th className="checkbox">
+                      <StyledCheckbox
+                        checked={
+                          ideaList.length > 0 &&
+                          selectedRows.length === ideaList?.length
+                        }
+                        indeterminate={
+                          selectedRows.length > 0 &&
+                          selectedRows.length < ideaList.length
+                        }
+                        disabled={ideaList?.length === 0}
+                        onChange={handleOnSelectAll}
+                      />
+                    </th>
 
-                      <th className="title">
-                        <FormattedMessage
-                          {...messages.items}
-                          values={{
-                            totalCount: ideaList.length,
-                            selectedCount: selectedRows.length,
-                          }}
-                        />
-                      </th>
+                    <th className="title">
+                      <FormattedMessage
+                        {...messages.items}
+                        values={{
+                          totalCount: ideaList.length,
+                          selectedCount: selectedRows.length,
+                        }}
+                      />
+                    </th>
 
+                    {!previewPostId && (
                       <th className="tags">
                         <FormattedMessage {...messages.tags} />
                       </th>
-                    </tr>
-                  </thead>
-                )}
+                    )}
+                  </tr>
+                </thead>
                 {ideaList?.length > 0 && (
                   <tbody>
                     {ideaList?.map((idea) => (
@@ -493,14 +558,19 @@ const Processing = memo<Props & InjectedIntlProps>(
                         onSelect={handleRowOnSelect}
                         openPreview={openPreview}
                         taggings={getIdeaTaggings(idea.id)}
+                        showTagColumn={!previewPostId}
                       />
                     ))}
                   </tbody>
                 )}
               </StyledTable>
             </TableWrapper>
-          ) : (
+          ) : loadingIdeas ? (
             <StyledSpinner />
+          ) : (
+            <InformationBox>
+              <FormattedMessage {...messages.pleaseSelectAProject} />
+            </InformationBox>
           )}
           <CSSTransition
             in={!!previewPostId}
@@ -527,8 +597,18 @@ const Processing = memo<Props & InjectedIntlProps>(
         </Container>
       );
     }
-
-    return null;
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      showAutotagView
+    ) {
+      return (
+        <AutotagView
+          closeView={handleCloseAutotagView}
+          selectedRows={selectedRows}
+        />
+      );
+    } else return null;
   }
 );
 

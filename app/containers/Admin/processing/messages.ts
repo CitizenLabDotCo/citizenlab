@@ -21,9 +21,36 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
+  keyboardShortcuts: {
+    id: 'app.containers.Admin.Processing.keyboardShortcuts',
+    defaultMessage: 'Keyboard Shortcuts',
+  },
+  upAndDownArrow: {
+    id: 'app.containers.Admin.Processing.upAndDownArrow',
+    defaultMessage:
+      'Up and down arrows allow you to highlight previous or next idea in the list',
+  },
+  rightArrow: {
+    id: 'app.containers.Admin.Processing.rightArrow',
+    defaultMessage:
+      'Right arrow opens the side panel where you can add remove tags from ideas',
+  },
+  leftArrow: {
+    id: 'app.containers.Admin.Processing.leftArrow',
+    defaultMessage:
+      'Left arrow closes the side panel and brings you back to the full list',
+  },
   tag: {
     id: 'app.containers.Admin.Processing.tag',
     defaultMessage: 'tag',
+  },
+  pleaseSelectAProject: {
+    id: 'app.containers.Admin.Processing.pleaseSelectAProject',
+    defaultMessage: 'please select a project',
+  },
+  automaticallyAssign: {
+    id: 'app.containers.Admin.Processing.automaticallyAssign',
+    defaultMessage: 'Automatically assign tags to selected ideas',
   },
   addNewTag: {
     id: 'app.containers.Admin.Processing.addNewTag',
@@ -32,6 +59,18 @@ export default defineMessages({
   addExistingTag: {
     id: 'app.containers.Admin.Processing.addExistingTag',
     defaultMessage: 'Add existing tag',
+  },
+  tagsToAssign: {
+    id: 'app.containers.Admin.Processing.tagsToAssign',
+    defaultMessage: 'Tags to assign',
+  },
+  tagAssignationExplanation: {
+    id: 'app.containers.Admin.Processing.tagAssignationExplanation',
+    defaultMessage: 'Tags are going to be applied to all matching ideas',
+  },
+  tagValidationErrorMessage: {
+    id: 'app.containers.Admin.Processing.tagValidationErrorMessage',
+    defaultMessage: 'please use max two words and do not add duplicates',
   },
   addSmartTag: {
     id: 'app.containers.Admin.Processing.addSmartTag',
@@ -62,5 +101,9 @@ export default defineMessages({
   createTag: {
     id: 'app.components.admin.PostManager.PostPreview.createTag',
     defaultMessage: 'Create a tag',
+  },
+  suggestionLoading: {
+    id: 'app.components.admin.PostManager.PostPreview.suggestionLoading',
+    defaultMessage: "We're retrieving suggestions to tag the selected ideas",
   },
 });

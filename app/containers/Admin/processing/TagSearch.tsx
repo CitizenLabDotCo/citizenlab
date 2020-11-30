@@ -9,8 +9,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Components
-import Button from 'components/UI/Button';
-import AsyncSelect from 'react-select/async';
+import AsyncSelectCreatable from 'react-select/async-creatable';
 
 // Style
 import styled from 'styled-components';
@@ -20,37 +19,31 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import { IOption } from 'typings';
 import GetTags, { GetTagsChildProps } from 'resources/GetTags';
 import { ITag, tagStream } from 'services/tags';
-import { addTagging } from 'services/taggings';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
-  width: 100%;
   margin-bottom: 20px;
 `;
 
 const SelectGroupsContainer = styled.div`
-  width: 100%;
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: flex-start;
   align-items: center;
   margin-bottom: 30px;
 `;
 
-const StyledAsyncSelect = styled(AsyncSelect)`
-  min-width: 300px;
-`;
-
-const AddGroupButton = styled(Button)`
-  flex-grow: 0;
-  flex-shrink: 0;
-  margin-left: 20px;
+const StyledAsyncSelectCreatable = styled(AsyncSelectCreatable)`
+  flex-grow: 4;
 `;
 
 interface InputProps {
-  ideaId: string;
-  ideaTagIds: (string | undefined)[];
+  filteredOutTagIds: (string | undefined)[];
+  onAddSelect: (tagId: string) => Promise<any> | null;
+  onAddNew: (tagText: string) => Promise<any> | null;
 }
+
 interface DataProps {
   tags: GetTagsChildProps;
 }
@@ -78,9 +71,15 @@ class TagAdd extends PureComponent<
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.filteredOutTagIds !== this.props.filteredOutTagIds) {
+      this.loadOptions('', () => {});
+    }
+  }
+
   getOptions = (tags: ITag[]) => {
     return tags
-      .filter((tag) => !this.props.ideaTagIds.includes(tag.id))
+      .filter((tag) => !this.props.filteredOutTagIds.includes(tag.id))
       .map((tag) => ({
         value: tag.id,
         label: this.props.localize(tag.attributes.title_multiloc),
@@ -107,49 +106,18 @@ class TagAdd extends PureComponent<
   };
 
   handleOnChange = async (selection: IOption) => {
-    this.setState({ selection });
+    await this.props.onAddSelect(selection.value);
+    this.setState({ selection: null, processing: false });
   };
 
-  handleOnAddTagClick = async () => {
-    const { selection, searchInput } = this.state;
-    const {
-      intl: { locale },
-    } = this.props;
+  handleOnNewTag = async (searchInput) => {
+    this.setState({ processing: true });
 
-    console.log('click', searchInput, selection);
-    if (selection) {
-      console.log('LALALLA');
-      this.setState({ processing: true });
-
-      try {
-        await addTagging(this.props.ideaId, selection.value);
-        this.setState({ selection: null, processing: false });
-      } catch {
-        this.setState({ selection: null, processing: false });
-      }
-    } else if (searchInput && searchInput.length > 0) {
-      this.setState({ processing: true });
-
-      try {
-        const title_multiloc = {};
-        title_multiloc[locale] = searchInput;
-        console.log();
-        await addTagging(this.props.ideaId, null, { title_multiloc });
-        this.setState({ selection: null, processing: false });
-      } catch {
-        this.setState({ selection: null, processing: false });
-      }
-    }
-  };
-
-  setSearchInput = (inputValue: string, { action }) => {
-    if (!['input-blur', 'menu-close'].includes(action)) {
-      return this.setState(
-        { selection: null, searchInput: inputValue },
-        () => this.state.searchInput
-      );
-    } else {
-      return this.state.searchInput;
+    try {
+      await this.props.onAddNew(searchInput);
+      this.setState({ selection: null, processing: false });
+    } catch {
+      this.setState({ selection: null, processing: false });
     }
   };
 
@@ -160,16 +128,22 @@ class TagAdd extends PureComponent<
     return this.props.intl.formatMessage(messages.createTag);
   };
 
+  formatCreateLabel = (inputValue) => {
+    if (!isNonEmptyString(inputValue)) {
+      return null;
+    }
+    return this.props.intl.formatMessage(messages.createTag);
+  };
+
   render() {
     const { searchInput, selection } = this.state;
     const { formatMessage } = this.props.intl;
-    console.log(searchInput, selection);
 
     const isDropdownIconHidden = !isNonEmptyString(searchInput);
     return (
       <Container>
         <SelectGroupsContainer>
-          <StyledAsyncSelect
+          <StyledAsyncSelectCreatable
             name="search-tag"
             isMulti={false}
             cacheOptions={false} // TOCHECK
@@ -181,21 +155,12 @@ class TagAdd extends PureComponent<
             placeholder={formatMessage(messages.addTag)}
             styles={selectStyles}
             value={selection}
-            noOptionsMessage={this.noOptionsMessage}
-            onInputChange={this.setSearchInput}
+            onCreateOption={this.handleOnNewTag}
             components={
               isDropdownIconHidden && {
                 DropdownIndicator: () => null,
               }
             }
-          />
-
-          <AddGroupButton
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            padding="13px 16px"
-            onClick={this.handleOnAddTagClick}
-            processing={this.state.processing}
           />
         </SelectGroupsContainer>
       </Container>
