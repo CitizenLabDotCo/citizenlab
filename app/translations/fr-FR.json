@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "La description doit comporter au moins 30 caractères",
   "app.components.InitiativeForm.descriptionEmptyError": "Veuillez fournir une description",
   "app.components.InitiativeForm.descriptionLabel": "Quel est le sujet de votre proposition ?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Décrivez clairement votre proposition",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Décrivez votre proposition",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Images et fichier-joints",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Détails du profil",
   "app.components.InitiativeForm.formGeneralSectionTitle": "Quel est votre proposition ?",
