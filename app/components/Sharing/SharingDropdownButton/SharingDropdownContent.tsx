@@ -1,7 +1,7 @@
 import React from 'react';
-import { UtmParams, Medium } from '.';
 import { isNilOrError } from 'utils/helperUtils';
 import tracks from '../tracks';
+import { getUrlWithUtm, UtmParams, Medium } from '../';
 
 // style
 import styled from 'styled-components';
@@ -109,6 +109,10 @@ const SharingDropdownContent = ({
 }: Props & InjectedIntlProps) => {
   const tenant = useTenant();
 
+  const getUrl = (medium: Medium) => {
+    return getUrlWithUtm(medium, url, utmParams);
+  };
+
   const onClick = (medium: Medium, href?: string) => (
     _event: React.FormEvent
   ) => {
@@ -124,22 +128,6 @@ const SharingDropdownContent = ({
     trackEventByName(tracks.shareButtonClicked.name, { network: medium });
   };
 
-  const getUrlWithUtm = (medium: Medium) => {
-    let resUrl = url;
-
-    resUrl += `?utm_source=${encodeURIComponent(
-      utmParams.source
-    )}&utm_campaign=${encodeURIComponent(
-      utmParams.campaign
-    )}&utm_medium=${encodeURIComponent(medium)}`;
-
-    if (utmParams.content) {
-      resUrl += `&utm_content=${encodeURIComponent(utmParams.content)}`;
-    }
-
-    return resUrl;
-  };
-
   if (!isNilOrError(tenant)) {
     const facebookAppId =
       tenant.data.attributes.settings.facebook_login?.app_id;
@@ -147,7 +135,7 @@ const SharingDropdownContent = ({
     const facebook = facebookAppId ? (
       <FacebookButton
         appId={facebookAppId}
-        url={getUrlWithUtm('facebook')}
+        url={getUrl('facebook')}
         className="sharingButton facebook"
         sharer={true}
         onClick={trackEventByName(tracks.shareButtonClicked.name, {
@@ -165,7 +153,7 @@ const SharingDropdownContent = ({
         className="sharingButton messenger"
         onClick={onClick(
           'messenger',
-          `fb-messenger://share/?link=${getUrlWithUtm(
+          `fb-messenger://share/?link=${getUrl(
             'messenger'
           )}&app_id=${facebookAppId}`
         )}
@@ -178,7 +166,7 @@ const SharingDropdownContent = ({
 
     const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
       ' ',
-      getUrlWithUtm('whatsapp')
+      getUrl('whatsapp')
     );
     const whatsapp = (
       <button
@@ -197,7 +185,7 @@ const SharingDropdownContent = ({
     const twitter = (
       <TwitterButton
         message={twitterMessage}
-        url={getUrlWithUtm('twitter')}
+        url={getUrl('twitter')}
         className={`sharingButton twitter ${
           !emailSubject || !emailBody ? 'last' : ''
         }`}

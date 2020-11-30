@@ -25,6 +25,7 @@ import { darken } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getUrlWithUtm, UtmParams, Medium } from './';
 
 const Container = styled.div`
   display: flex;
@@ -169,14 +170,6 @@ const ButtonText = styled.span`
   margin-left: 10px;
 `;
 
-export type UtmParams = {
-  source: string;
-  campaign: string;
-  content?: string;
-};
-
-type Medium = 'facebook' | 'twitter' | 'messenger' | 'whatsapp' | 'email';
-
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder';
   isInModal?: boolean;
@@ -208,20 +201,8 @@ const SharingButtons = memo(
   }: Props & InjectedIntlProps) => {
     const tenant = useTenant();
 
-    const getUrlWithUtm = (medium: string) => {
-      let resUrl = url;
-
-      resUrl += `?utm_source=${encodeURIComponent(
-        utmParams.source
-      )}&utm_campaign=${encodeURIComponent(
-        utmParams.campaign
-      )}&utm_medium=${encodeURIComponent(medium)}`;
-
-      if (utmParams.content) {
-        resUrl += `&utm_content=${encodeURIComponent(utmParams.content)}`;
-      }
-
-      return resUrl;
+    const getUrl = (medium: Medium) => {
+      return getUrlWithUtm(medium, url, utmParams);
     };
 
     const handleClick = (medium: Medium, href?: string) => (
@@ -255,7 +236,7 @@ const SharingButtons = memo(
       const facebook = facebookAppId ? (
         <FacebookButton
           appId={facebookAppId}
-          url={getUrlWithUtm('facebook')}
+          url={getUrl('facebook')}
           className={`sharingButton facebook ${layoutClassName}`}
           sharer={true}
           onClick={handleClick('facebook')}
@@ -275,7 +256,7 @@ const SharingButtons = memo(
           className={`sharingButton messenger ${layoutClassName}`}
           onClick={handleClick(
             'messenger',
-            `fb-messenger://share/?link=${getUrlWithUtm(
+            `fb-messenger://share/?link=${getUrl(
               'messenger'
             )}&app_id=${facebookAppId}`
           )}
@@ -292,7 +273,7 @@ const SharingButtons = memo(
 
       const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
         ' ',
-        getUrlWithUtm('whatsapp')
+        getUrl('whatsapp')
       );
       const whatsapp = (
         <button
@@ -315,7 +296,7 @@ const SharingButtons = memo(
       const twitter = (
         <TwitterButton
           message={twitterMessage}
-          url={getUrlWithUtm('twitter')}
+          url={getUrl('twitter')}
           className={`sharingButton twitter ${
             !emailSubject || !emailBody ? 'last' : ''
           } ${layoutClassName}`}
