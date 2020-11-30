@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "Parola trebuie să fie de cel puțin 8 caractere",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
   "app.errors.title_multiloc_blank": "Titlul nu poate fi gol.",
-  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. Please request a new password reset {link}.",
+  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.",
   "app.errors.too_common": "Este prea ușor de ghicit",
   "app.errors.too_long": "Parola trebuie să aibă cel mult 72 de caractere",
   "app.errors.too_short": "Trebuie să aibă cel mult 8 caractere",
