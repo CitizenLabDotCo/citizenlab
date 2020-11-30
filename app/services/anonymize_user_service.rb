@@ -83,13 +83,13 @@ class AnonymizeUserService
     if user
       user[:custom_field_values].each do |property, value|
         if ['gender', 'education', 'birthyear'].include? property
-          custom_field_values[property] = value # if !(property == 'education' && (value.to_i < 2 || value.to_i > 8))
+          custom_field_values[property] = value
         end
       end
     end
-    custom_field_values['gender'] ||= User::GENDERS.shuffle.first if rand(3) > 0
-    custom_field_values['birthyear'] ||= random_birthyear if rand(3) > 0
-    custom_field_values['education'] ||= (rand(7)+2).to_s if rand(3) > 0
+    custom_field_values['gender'] ||= User::GENDERS.shuffle.first
+    custom_field_values['birthyear'] ||= random_birthyear
+    custom_field_values['education'] ||= (rand(7)+2).to_s
     custom_field_values
   end
 
