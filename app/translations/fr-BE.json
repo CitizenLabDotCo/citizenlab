@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "Le mot de passe doit comporter au moins 8 caractères",
   "app.errors.slug_taken": "Cette URL de projet existe déjà. Merci de modifier le slug du projet.",
   "app.errors.title_multiloc_blank": "Le titre ne peut être vide.",
-  "app.errors.token_invalid": "Les liens de réinitialisation de mot de passe ne peuvent être utilisés qu'une seule fois et sont valables pendant une heure après avoir été envoyés. Merci de solliciter une nouvelle réinitialisation du mot de passe {link}.",
+  "app.errors.token_invalid": "Les liens de réinitialisation de mot de passe ne peuvent être utilisés qu'une seule fois et sont valables pendant une heure après avoir été envoyés. {passwordResetLink}.",
   "app.errors.too_common": "Ce mot de passe est trop simple. Veuillez choisir un mot de passe plus complexe.",
   "app.errors.too_long": "Votre mot de passe peut comporter au maximum 72 caractères.",
   "app.errors.too_short": "Votre mot de passe doit comporter au minimum 8 caractères.",
