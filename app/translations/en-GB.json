@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "The description must be at least 30 characters long",
   "app.components.InitiativeForm.descriptionEmptyError": "Please provide a description",
   "app.components.InitiativeForm.descriptionLabel": "{tenantName, select, stirlingcouncil {What is your petition about?} other {What is your proposal about?}}",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "{tenantName, select, stirlingcouncil {Describe your petition clearly (max. 250 characters)} other {Describe your proposal clearly (min. 500 characters)}}",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "{tenantName, select, stirlingcouncil {Describe your petition clearly} other {Describe your proposal clearly}}",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Images and attachments",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Details",
   "app.components.InitiativeForm.formGeneralSectionTitle": "{tenantName, select, stirlingcouncil {What is your petition?} other {What is your proposal?}}",
