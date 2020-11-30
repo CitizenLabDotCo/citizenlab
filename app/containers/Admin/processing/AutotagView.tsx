@@ -191,7 +191,8 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
     setNewTag(text);
   };
 
-  const handleRemoveTagFromSelection = (removedTagID: string) => {
+  const handleRemoveTagFromSelection = (removedTagID: string) => (event) => {
+    event.preventDefault();
     setSelectedTagsList(
       [...selectedTagsList].splice(
         selectedTagsList.findIndex((tag) => removedTagID === tag.id),
@@ -200,7 +201,8 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
     );
   };
 
-  const handleRemoveNewTag = (removedTag: string) => {
+  const handleRemoveNewTag = (removedTag: string) => (event) => {
+    event.preventDefault();
     setNewTagsList(
       [...newTagsList].splice(
         newTagsList.findIndex((tag) => removedTag === tag),
@@ -225,6 +227,11 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
         !newTagsList.includes(newTag)
     );
   }, [newTag]);
+
+  const handleSetActiveTab = (tab: 'suggestions' | 'existingTags') => (e) => {
+    e.preventDefault();
+    setActiveTab(tab);
+  };
 
   const handleGenerate = () => {
     setProcessing(true);
@@ -272,22 +279,24 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
             />
           </Row>
           <TagList>
-            {selectedTagsList.map((tag) => (
+            {selectedTagsList.map((tag, index) => (
               <StyledTag
+                key={index + localize(tag.attributes.title_multiloc)}
                 text={localize(tag.attributes.title_multiloc)}
                 isAutoTag={false}
                 isSelected={false}
                 icon={'remove'}
-                onTagClick={() => handleRemoveTagFromSelection(tag.id)}
+                onTagClick={handleRemoveTagFromSelection(tag.id)}
               />
             ))}
-            {newTagsList.map((tag) => (
+            {newTagsList.map((tag, index) => (
               <StyledTag
+                key={index + tag}
                 text={tag}
                 isAutoTag={false}
                 isSelected={false}
                 icon={'remove'}
-                onTagClick={() => handleRemoveNewTag(tag)}
+                onTagClick={handleRemoveNewTag(tag)}
               />
             ))}
           </TagList>
@@ -303,13 +312,13 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
           <TabsContainer>
             <Tab
               className={activeTab === 'suggestions' ? 'active' : ''}
-              onClick={() => setActiveTab('suggestions')}
+              onClick={handleSetActiveTab('suggestions')}
             >
               Suggestions
             </Tab>
             <Tab
               className={activeTab === 'existingTags' ? 'active' : ''}
-              onClick={() => setActiveTab('existingTags')}
+              onClick={handleSetActiveTab('existingTags')}
             >
               Existing tags
             </Tab>
@@ -317,8 +326,9 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
           {activeTab === 'suggestions' ? (
             <SuggestionList>
               {tagSuggestions && tagSuggestions?.length > 0 ? (
-                tagSuggestions.map((suggestion) => (
+                tagSuggestions.map((suggestion, index) => (
                   <Button
+                    key={index + localize(suggestion.title_multiloc)}
                     locale={locale}
                     icon="plus-circle"
                     buttonStyle="text"
