@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "Adgangskoden skal være på mindst 8 tegn",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
   "app.errors.title_multiloc_blank": "Titlen skal være udfyldt",
-  "app.errors.token_invalid": "Links til nulstilling af adgangskode kan kun bruges en gang og er gyldige i en time efter afsendelse. Bed om en ny nulstilling af adgangskode {link}.",
+  "app.errors.token_invalid": "Links til nulstilling af adgangskode kan kun bruges en gang og er gyldige i en time efter afsendelse. {passwordResetLink}.",
   "app.errors.too_common": "Det er for nemt at gætte",
   "app.errors.too_long": "Må maximum være 72 karakterer langt",
   "app.errors.too_short": "Adgangskoden skal være på mindst 8 tegn",
