@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from './';
+import { Header, Item } from './';
 import Topics from 'components/PostShowComponents/Topics';
 import useIdea from 'hooks/useIdea';
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,10 +25,10 @@ const IdeaTopics = ({
 
     if (topicIds.length > 0) {
       return (
-        <>
+        <Item>
           <Header>{formatMessage(messages.topics)}</Header>
           <Topics postType="idea" topicIds={topicIds} />
-        </>
+        </Item>
       );
     }
   }

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { Header } from './';
+import { Header, Item } from './';
 
 // styles
 import styled from 'styled-components';
@@ -69,7 +69,7 @@ const SimilarIdeas = memo<Props & InjectedIntlProps>(
 
     if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
       return (
-        <>
+        <Item>
           <Header>{formatMessage(messages.similarIdeas)}</Header>
           <IdeaList className={className}>
             {similarIdeas.map((similarIdea, index) => (
@@ -83,7 +83,7 @@ const SimilarIdeas = memo<Props & InjectedIntlProps>(
               </IdeaListItem>
             ))}
           </IdeaList>
-        </>
+        </Item>
       );
     }
 

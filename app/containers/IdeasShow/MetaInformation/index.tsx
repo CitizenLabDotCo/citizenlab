@@ -25,7 +25,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Item = styled.div<{ isFirstItem?: boolean }>`
+export const Item = styled.div<{ isFirstItem?: boolean }>`
   border-top: ${({ isFirstItem }) =>
     isFirstItem ? `1px solid #e0e0e0` : 'none'};
   border-bottom: 1px solid #e0e0e0;
@@ -83,32 +83,12 @@ const MetaInformation = ({
 
     return (
       <Container className={className}>
-        <Item isFirstItem>
-          <StyledPostedBy authorId={authorId} ideaId={ideaId} />
-        </Item>
-        <Item>
-          <Status statusId={statusId} />
-        </Item>
-        {topicsEnabled && (
-          <Item>
-            <IdeaTopics ideaId={ideaId} />
-          </Item>
-        )}
-        {locationEnabled && (
-          <Item>
-            <Location projectId={projectId} ideaId={ideaId} />
-          </Item>
-        )}
-        {attachmentsEnabled && (
-          <Item>
-            <Attachments ideaId={ideaId} />
-          </Item>
-        )}
-        {similarIdeasEnabled && (
-          <Item>
-            <SimilarIdeas ideaId={ideaId} />
-          </Item>
-        )}
+        <StyledPostedBy authorId={authorId} ideaId={ideaId} />
+        <Status statusId={statusId} />
+        {topicsEnabled && <IdeaTopics ideaId={ideaId} />}
+        {locationEnabled && <Location projectId={projectId} ideaId={ideaId} />}
+        {attachmentsEnabled && <Attachments ideaId={ideaId} />}
+        {similarIdeasEnabled && <SimilarIdeas ideaId={ideaId} />}
       </Container>
     );
   }
