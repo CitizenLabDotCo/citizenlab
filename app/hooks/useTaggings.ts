@@ -3,7 +3,6 @@ import { combineLatest } from 'rxjs';
 import { ITagging, taggingStream } from 'services/taggings';
 import { ITag, tagStream } from 'services/tags';
 import { isNilOrError } from 'utils/helperUtils';
-import shallowCompare from 'utils/shallowCompare';
 
 export interface IMergedTagging extends ITagging {
   tag: ITag | undefined;
