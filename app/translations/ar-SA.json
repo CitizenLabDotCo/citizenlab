@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "يجب ألّا يقل طول كلمة المرور عن 8 حروف",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
   "app.errors.title_multiloc_blank": "لا يمكن أن يكون العنوان فارغًا.",
-  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. Please request a new password reset {link}.",
+  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.",
   "app.errors.too_common": "يمكن تخمين كلمة المرور هذه بسهولة. اختر رجاءً كلمة مرور أقوى.",
   "app.errors.too_long": "يُرجى اختيار كلمة مرور أقصر (لا تتجاوز الـ 72 حرفًا)",
   "app.errors.too_short": "يُرجى اختيار كلمة مرور بطول لا يقل عن 8 أحرف",
