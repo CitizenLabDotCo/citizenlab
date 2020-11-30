@@ -178,7 +178,7 @@
   "app.components.InitiativeForm.descriptionBodyLengthError": "Descrierea trebuie să fie de cel puțin 30 de caractere",
   "app.components.InitiativeForm.descriptionEmptyError": "Vă rugăm să furnizați o descriere",
   "app.components.InitiativeForm.descriptionLabel": "Care este propunerea ta?",
-  "app.components.InitiativeForm.descriptionLabelSubtext": "Descrieți propunerea dumneavoastră în mod clar (min. 500 caractere)",
+  "app.components.InitiativeForm.descriptionLabelSubtext": "Descrieți propunerea dumneavoastră în mod clar",
   "app.components.InitiativeForm.formAttachmentsSectionTitle": "Imagini și atașamente",
   "app.components.InitiativeForm.formDetailsSectionTitle": "Detalii",
   "app.components.InitiativeForm.formGeneralSectionTitle": "Care este propunerea dumneavoastră?",
