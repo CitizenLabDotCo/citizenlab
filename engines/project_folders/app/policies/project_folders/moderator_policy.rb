@@ -13,7 +13,11 @@ module ProjectFolders
 
         moderated_folders = user.moderated_project_folders
 
-        user.project_folder_moderator? ? scope.project_folder_moderator(moderated_folders) : scope.all
+        if user.project_folder_moderator?
+          scope.project_folder_moderator(moderated_folders)
+        else
+          scope.project_folder_moderator
+        end
       end
     end
 
