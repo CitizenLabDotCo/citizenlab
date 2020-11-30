@@ -86,6 +86,10 @@ combineLatest([
             email: user.data.attributes.email,
             user_id: user.data.id,
             name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
+            firstName: user.data.attributes.first_name,
+            lastName: user.data.attributes.last_name,
+            locale: user.data.attributes.locale,
+            ...tenantInfo(tenant.data),
           }
         : {}),
       ...(!isNilOrError(tenant)
@@ -93,6 +97,7 @@ combineLatest([
             company: {
               company_id: tenant.data.id,
               name: tenant.data.attributes.name,
+              ...tenantInfo(tenant.data),
             },
           }
         : {}),
