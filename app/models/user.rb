@@ -205,6 +205,10 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
+  def active_and_admin?
+    active? && admin?
+  end
+
   def normal?
     roles.empty?
   end
