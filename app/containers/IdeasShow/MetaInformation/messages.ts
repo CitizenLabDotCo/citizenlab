@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.MetaInformation.similarIdeas',
     defaultMessage: 'Similar ideas',
   },
+  noSimilarIdeas: {
+    id: 'app.containers.IdeasShow.MetaInformation.noSimilarIdeas',
+    defaultMessage: 'There are no similar ideas.',
+  },
   byUserOnDate: {
     id: 'app.containers.IdeasShow.MetaInformation.byUserOnDate',
     defaultMessage: '{userName} on {date}',
