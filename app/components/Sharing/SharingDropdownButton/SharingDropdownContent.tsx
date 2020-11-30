@@ -1,5 +1,5 @@
 import React from 'react';
-import { UtmParams, Medium } from './';
+import { UtmParams, Medium } from '.';
 import { isNilOrError } from 'utils/helperUtils';
 import tracks from './tracks';
 
@@ -96,7 +96,7 @@ interface Props {
   id?: string;
 }
 
-const DropdownContent = ({
+const SharingDropdownContent = ({
   id,
   url,
   className,
@@ -241,4 +241,4 @@ const DropdownContent = ({
   return null;
 };
 
-export default injectIntl(DropdownContent);
+export default injectIntl(SharingDropdownContent);

@@ -1,6 +1,6 @@
 import React from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-import DropdownContent from './DropdownContent';
+import DropdownContent from './SharingDropdownContent';
 
 export type UtmParams = {
   source: string;
