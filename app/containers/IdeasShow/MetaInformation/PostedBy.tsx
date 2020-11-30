@@ -4,11 +4,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
+import { Header } from './';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps, FormattedDate } from 'react-intl';
 import messages from './messages';
-import { FormattedDate } from 'react-intl';
 
 // hooks
 import useIdea from 'hooks/useIdea';
@@ -44,45 +45,50 @@ export interface Props {
   ideaId: string;
 }
 
-const PostedBy = memo<Props>(({ className, authorId, ideaId }) => {
-  const idea = useIdea({ ideaId });
+const PostedBy = memo<Props & InjectedIntlProps>(
+  ({ className, authorId, ideaId, intl: { formatMessage } }) => {
+    const idea = useIdea({ ideaId });
 
-  if (!isNilOrError(idea)) {
-    const ideaPublishedAtDate = idea.attributes.published_at;
-    const userName = (
-      <UserName
-        userId={authorId}
-        isLinkToProfile={true}
-        underline={true}
-        color={colors.label}
-        fontSize={fontSizes.small}
-      />
-    );
-    const date = (
-      <FormattedDate
-        value={ideaPublishedAtDate}
-        year="numeric"
-        month="long"
-        day="numeric"
-      />
-    );
-
-    return (
-      <Container className={`e2e-idea-author ${className || ''}`}>
-        <StyledAvatar
+    if (!isNilOrError(idea)) {
+      const ideaPublishedAtDate = idea.attributes.published_at;
+      const userName = (
+        <UserName
           userId={authorId}
-          size="30px"
-          isLinkToProfile={!!authorId}
+          isLinkToProfile={true}
+          underline={true}
+          color={colors.label}
+          fontSize={fontSizes.small}
         />
-        <FormattedMessage
-          {...messages.byUserOnDate}
-          values={{ userName, date }}
+      );
+      const date = (
+        <FormattedDate
+          value={ideaPublishedAtDate}
+          year="numeric"
+          month="long"
+          day="numeric"
         />
-      </Container>
-    );
+      );
+
+      return (
+        <>
+          <Header>{formatMessage(messages.postedBy)}</Header>
+          <Container className={`e2e-idea-author ${className || ''}`}>
+            <StyledAvatar
+              userId={authorId}
+              size="30px"
+              isLinkToProfile={!!authorId}
+            />
+            <FormattedMessage
+              {...messages.byUserOnDate}
+              values={{ userName, date }}
+            />
+          </Container>
+        </>
+      );
+    }
+
+    return null;
   }
+);
 
-  return null;
-});
-
-export default PostedBy;
+export default injectIntl(PostedBy);
