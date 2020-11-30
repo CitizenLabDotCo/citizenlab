@@ -19,6 +19,16 @@ module Roles
       role_mapping.policy
     end
 
+    #
+    # Returns the id of the roleable object from the params.
+    #
+    # Example:
+    #
+    #  /users/project_moderators?project_moderator[project_id]=2
+    #
+    #  p policy_namespace
+    #  # => 'Users'
+    #
     def policy_namespace
       roled_resource.classify.pluralize
     end
