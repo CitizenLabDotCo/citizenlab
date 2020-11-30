@@ -21,10 +21,6 @@ module ProjectFolders
       user.active_and_admin?
     end
 
-    def update?
-      user.active_and_admin?
-    end
-
     def destroy?
       user.active_and_admin?
     end
