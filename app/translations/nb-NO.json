@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "Passordet må inneholde minst 8 tegn",
   "app.errors.slug_taken": "Denne prosjekt URL eksisterer allerede. Gjør vennligst prosjekt URLen om til noe annet.",
   "app.errors.title_multiloc_blank": "Tittelen kan ikke være tom.",
-  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. Please request a new password reset {link}.",
+  "app.errors.token_invalid": "Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.",
   "app.errors.too_common": "Passordet ditt er for lett å gjette. Velg et sterkere passord.",
   "app.errors.too_long": "Passordet må maksimalt være 72 tegn",
   "app.errors.too_short": "Må være minst 8 tegn",

@@ -2255,7 +2255,7 @@
   "app.errors.password_too_short": "La contraseña debe tener al menos 8 caracteres",
   "app.errors.slug_taken": "La URL de este proyecto ya existe. Por favor, cambie el slug del proyecto por otro.",
   "app.errors.title_multiloc_blank": "El título no puede estar vacío.",
-  "app.errors.token_invalid": "Los enlaces para restablecer la contraseña sólo pueden usarse una vez y son válidos durante una hora después de ser enviados. Por favor, solicite un nuevo restablecimiento de la contraseña {link}.",
+  "app.errors.token_invalid": "Los enlaces para restablecer la contraseña sólo pueden usarse una vez y son válidos durante una hora después de ser enviados. {passwordResetLink}.",
   "app.errors.too_common": "Esta contraseña es fácil de adivinar. Por favor, elige una contraseña más fuerte.",
   "app.errors.too_long": "La contraseña debe tener al menos 72 caracteres",
   "app.errors.too_short": "La contraseña debe tener al menos 8 caracteres",
