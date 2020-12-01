@@ -96,7 +96,7 @@ const configuration: ModuleConfiguration = {
           },
           {
             path: 'permissions',
-            name: 'admin projects edit folder settings',
+            name: 'admin projects edit folder permissions',
             container: () => import('./admin/containers/permissions'),
           },
         ],
