@@ -65,6 +65,7 @@ function FolderPermissions({
   const {
     moderators,
     isModerator,
+    isNotModerator,
     addModerator,
     deleteModerator,
   } = useProjectFolderModerators(projectFolderId);
@@ -111,36 +112,21 @@ function FolderPermissions({
         .subscribe((response) => {
           setUserOptions(response.data);
           setLoading(false);
-          const options = getOptions(response);
-          setUserOptions(response.data);
-          callback(options);
+          callback(getOptions(response));
         });
     }
   };
 
   const getOptions = (users: IUsers) => {
     if (!isNilOrError(users)) {
-      return users.data
-        .filter((user) => {
-          let userIsNotYetModerator = true;
-          if (!isNilOrError(moderators)) {
-            moderators.data.forEach((moderator) => {
-              if (moderator.id === user.id) {
-                userIsNotYetModerator = false;
-              }
-            });
-          }
-
-          return userIsNotYetModerator;
-        })
-        .map((user) => {
-          return {
-            value: user.id,
-            label: `${userName(user)} (${user.attributes.email})`,
-            email: `${user.attributes.email}`,
-            disabled: isModerator(user),
-          };
-        });
+      return users.data.filter(isNotModerator).map((user) => {
+        return {
+          value: user.id,
+          label: `${userName(user)} (${user.attributes.email})`,
+          email: `${user.attributes.email}`,
+          disabled: isModerator(user),
+        };
+      });
     }
 
     return [];

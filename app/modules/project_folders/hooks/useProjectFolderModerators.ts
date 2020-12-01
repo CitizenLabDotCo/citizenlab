@@ -21,6 +21,17 @@ export default function useProjectFolderImages(
     [moderators]
   );
 
+  const isNotModerator = useCallback(
+    (user: IUserData) => {
+      if (isNilOrError(moderators)) {
+        return true;
+      }
+
+      return !moderators.data.includes(user);
+    },
+    [moderators]
+  );
+
   useEffect(() => {
     const subscription = moderatorsStream(projectFolderId).observable.subscribe(
       (stream_moderators) => {
@@ -31,5 +42,11 @@ export default function useProjectFolderImages(
     return () => subscription?.unsubscribe();
   }, [projectFolderId]);
 
-  return { moderators, isModerator, addModerator, deleteModerator };
+  return {
+    moderators,
+    isModerator,
+    addModerator,
+    deleteModerator,
+    isNotModerator,
+  };
 }
