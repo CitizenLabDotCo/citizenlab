@@ -5,80 +5,86 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+import { PublicationStatus } from 'resources/GetProjects';
+import GetAdminPublications, {
+  GetAdminPublicationsChildProps,
+} from 'resources/GetAdminPublications';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import GetAdminPublication from 'resources/GetAdminPublication';
 
 interface DataProps {
-  projects: GetProjectsChildProps;
+  AdminPublications: GetAdminPublicationsChildProps;
+  isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends DataProps {}
 
-const ModeratorProjectList = memo<Props>(({ projects }) => {
-  if (
-    !isNilOrError(projects) &&
-    projects.projectsList &&
-    projects.projectsList.length > 0
-  ) {
-    const { projectsList } = projects;
+const ModeratorProjectList = memo<Props>(
+  ({ AdminPublications, isProjectFoldersEnabled }) => {
+    const adminPublicationCard = (adminPublication) => {
+      if (adminPublication.publicationType === 'project') {
+        return <ProjectRow publication={adminPublication} />;
+      } else if (
+        adminPublication.publicationType === 'folder' &&
+        isProjectFoldersEnabled
+      ) {
+        return (
+          <Outlet
+            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+            publication={adminPublication}
+          />
+        );
+      }
 
-    if (projectsList && projectsList.length > 0) {
-      return (
-        <>
-          <ListHeader>
-            <HeaderTitle>
-              <FormattedMessage {...messages.existingProjects} />
-            </HeaderTitle>
-          </ListHeader>
+      return null;
+    };
 
-          <List>
-            {projectsList.map((project, index) => {
-              return (
-                <Row
-                  key={index}
-                  id={project.id}
-                  isLastItem={index === projectsList.length - 1}
-                >
-                  <GetAdminPublication
-                    adminPublicationId={
-                      project.relationships.admin_publication?.data?.id || null
-                    }
+    if (
+      !isNilOrError(AdminPublications) &&
+      AdminPublications.list &&
+      AdminPublications.list.length > 0
+    ) {
+      const AdminPublicationsList = AdminPublications.list;
+
+      if (AdminPublicationsList && AdminPublicationsList.length > 0) {
+        return (
+          <>
+            <ListHeader>
+              <HeaderTitle>
+                <FormattedMessage {...messages.existingProjects} />
+              </HeaderTitle>
+            </ListHeader>
+
+            <List>
+              {AdminPublicationsList.map((adminPublication, index) => {
+                return (
+                  <Row
+                    key={index}
+                    id={adminPublication.id}
+                    isLastItem={index === AdminPublicationsList.length - 1}
                   >
-                    {({ adminPublication }) =>
-                      !isNilOrError(adminPublication) ? (
-                        <ProjectRow
-                          publication={{
-                            ...adminPublication,
-                            publicationId: project.id,
-                            publicationType: 'project',
-                          }}
-                        />
-                      ) : null
-                    }
-                  </GetAdminPublication>
-                </Row>
-              );
-            })}
-          </List>
-        </>
-      );
+                    {adminPublicationCard(adminPublication)}
+                  </Row>
+                );
+              })}
+            </List>
+          </>
+        );
+      }
     }
-  }
 
-  return null;
-});
+    return null;
+  }
+);
 
 const publicationStatuses: PublicationStatus[] = [
   'published',
@@ -87,12 +93,13 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 const Data = adopt<DataProps>({
-  projects: (
-    <GetProjects
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
+  AdminPublications: (
+    <GetAdminPublications
+      publicationStatusFilter={publicationStatuses}
+      folderId={null}
     />
   ),
+  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default () => (
