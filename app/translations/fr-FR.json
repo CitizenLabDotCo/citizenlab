@@ -706,6 +706,8 @@
   "app.containers.Admin.Processing.addSmartTag": "",
   "app.containers.Admin.Processing.automaticallyAssign": "",
   "app.containers.Admin.Processing.autotag": "Autotag",
+  "app.containers.Admin.Processing.autotagOverwriteAlert": "",
+  "app.containers.Admin.Processing.autotagOverwriteExplanation": "",
   "app.containers.Admin.Processing.description": "",
   "app.containers.Admin.Processing.escapeKey": "",
   "app.containers.Admin.Processing.export": "Exporter",
