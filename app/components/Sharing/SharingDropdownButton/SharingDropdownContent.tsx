@@ -105,31 +105,15 @@ const SharingDropdownContent = ({
     return getUrlWithUtm(medium, url, utmParams);
   };
 
-  const facebookClick = () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: 'facebook' });
-  };
-
-  const messengerClick = () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: 'messenger' });
-  };
-
-  const whatsAppClick = () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: 'whatsapp' });
-  };
-
-  const twitterClick = () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: 'twitter' });
-  };
-
-  const emailClick = () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: 'email' });
+  const handleClick = (medium: Medium) => () => {
+    trackEventByName(tracks.shareButtonClicked.name, { network: medium });
   };
 
   const facebook = (
     <Facebook
       url={getUrl('facebook')}
       className="sharingButton facebook"
-      onClick={facebookClick}
+      onClick={handleClick('facebook')}
     >
       <FacebookIcon ariaHidden name="facebook" />
       <span aria-hidden>{'Facebook'}</span>
@@ -139,7 +123,7 @@ const SharingDropdownContent = ({
   const messenger = (
     <Messenger
       className="sharingButton messenger"
-      onClick={messengerClick}
+      onClick={handleClick('messenger')}
       url={getUrl('messenger')}
     >
       <MessengerIcon ariaHidden name="messenger" />
@@ -150,7 +134,7 @@ const SharingDropdownContent = ({
   const whatsapp = (
     <WhatsApp
       className="sharingButton whatsapp"
-      onClick={whatsAppClick}
+      onClick={handleClick('whatsapp')}
       url={getUrl('whatsapp')}
       whatsAppMessage={whatsAppMessage}
     >
@@ -166,7 +150,7 @@ const SharingDropdownContent = ({
       className={`sharingButton twitter ${
         !emailSubject || !emailBody ? 'last' : ''
       }`}
-      onClick={twitterClick}
+      onClick={handleClick('twitter')}
     >
       <TwitterIcon ariaHidden name="twitter" />
       <span aria-hidden>{'Twitter'}</span>
@@ -176,7 +160,7 @@ const SharingDropdownContent = ({
   const email = (
     <Email
       className="sharingButton last email"
-      onClick={emailClick}
+      onClick={handleClick('email')}
       emailBody={emailBody}
       emailSubject={emailSubject}
     >
