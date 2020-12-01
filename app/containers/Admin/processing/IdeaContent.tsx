@@ -25,7 +25,7 @@ import { deleteTagging } from 'services/taggings';
 
 const Content = styled.div`
   width: 100%;
-  flex: 5;
+  flex: 8;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -33,12 +33,14 @@ const Content = styled.div`
 `;
 
 const StyledBody = styled(Body)`
-  min-height: calc(100vh - ${stylingConsts.menuHeight}px - 20vh);
+  flex: 6;
   overflow-y: auto;
 `;
 
 const TagList = styled.div`
+  flex: 1;
   margin-bottom: 20px;
+  min-height: 52px;
   display: inline;
   background-color: #f9f9fa;
   border-radius: ${stylingConsts.borderRadius};
@@ -51,6 +53,7 @@ const TagList = styled.div`
 `;
 
 const StyledTitle = styled(Title)`
+  flex: 1;
   margin-bottom: 20px;
 `;
 
@@ -87,9 +90,16 @@ export class IdeaContent extends PureComponent<
 
       return (
         <Content>
-          {manualTaggings.length > 0 && (
-            <TagList>
-              {manualTaggings.map((tagging) =>
+          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+          <StyledBody
+            postId={ideaId}
+            postType="idea"
+            body={localize(idea.attributes.body_multiloc)}
+            locale={locale}
+          />
+          <TagList>
+            {manualTaggings.length > 0 &&
+              manualTaggings.map((tagging) =>
                 tagging.tag ? (
                   <Tag
                     key={tagging.id}
@@ -101,15 +111,7 @@ export class IdeaContent extends PureComponent<
                   />
                 ) : null
               )}
-            </TagList>
-          )}
-          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-          <StyledBody
-            postId={ideaId}
-            postType="idea"
-            body={localize(idea.attributes.body_multiloc)}
-            locale={locale}
-          />
+          </TagList>
         </Content>
       );
     }
