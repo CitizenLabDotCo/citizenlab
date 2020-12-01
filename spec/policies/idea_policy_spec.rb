@@ -4,7 +4,7 @@ describe IdeaPolicy do
   subject { IdeaPolicy.new(user, idea) }
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
-  context "on idea in a public project" do 
+  context "on idea in a public project" do
     let(:project) { create(:continuous_project, with_permissions: true) }
     let!(:idea) { create(:idea, project: project) }
 
@@ -88,7 +88,7 @@ describe IdeaPolicy do
     end
   end
 
-  context "on idea in a private admins project" do 
+  context "on idea in a private admins project" do
     let(:project) { create(:private_admins_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
@@ -239,8 +239,8 @@ describe IdeaPolicy do
 
   context "for a mortal user who owns the idea in a project where posting is not permitted" do
     let!(:user) { create(:user) }
-    let!(:project) { 
-      p = create(:continuous_project, with_permissions: true) 
+    let!(:project) {
+      p = create(:continuous_project, with_permissions: true, posting_enabled: false)
       p.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'admins_moderators')
       p
     }
@@ -248,14 +248,14 @@ describe IdeaPolicy do
 
     it { should     permit(:show) }
     it { should_not permit(:create) }
-    it { should_not permit(:update) }
-    it { should_not permit(:destroy) }
+    it { should     permit(:update) }
+    it { should     permit(:destroy) }
     it "should index the idea"  do
       expect(scope.resolve.size).to eq 1
     end
   end
 
-  context "on idea in a draft project" do 
+  context "on idea in a draft project" do
     let(:project) { create(:project, admin_publication_attributes: {publication_status: 'draft'}, with_permissions: true)}
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
@@ -300,7 +300,7 @@ describe IdeaPolicy do
     end
   end
 
-  context "on idea for a survey project" do 
+  context "on idea for a survey project" do
     let(:project) { create(:continuous_survey_project, with_permissions: true) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
@@ -345,8 +345,8 @@ describe IdeaPolicy do
     end
   end
 
-  context "on idea for a project of which the last phase has ended" do 
-    let(:project) { 
+  context "on idea for a project of which the last phase has ended" do
+    let(:project) {
       pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"}, with_permissions: true)
       current_phase = pj.phases.sort_by(&:start_at).last
       current_phase.destroy!
