@@ -67,7 +67,14 @@ module Roles
     #
     #
     def roleable
-      id = role_params.dig(role_mapping.roleable_primary_key(namespace: false))
+      roleable_primary_key = role_mapping.roleable_primary_key(namespace: false)
+
+      id = if params.key?(roleable_primary_key)
+             params.dig(roleable_primary_key)
+           else
+             role_params.dig(roleable_primary_key)
+           end
+
       @roleable ||= role_mapping.find_roleable(id)
     end
 
