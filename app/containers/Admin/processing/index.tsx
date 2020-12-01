@@ -50,7 +50,7 @@ import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
 import useTags from 'hooks/useTags';
-import useTaggings from 'hooks/useTaggings';
+import useTaggings, { IMergedTagging } from 'hooks/useTaggings';
 import Tippy from '@tippyjs/react';
 
 const Container = styled.div`
@@ -65,13 +65,20 @@ const StyledSpinner = styled(Spinner)`
 `;
 
 const StyledModal = styled(Modal)`
+  margin: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
-const Row = styled.div`
+const ButtonRow = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
+  > * {
+    color: ${colors.adminTextColor};
+    margin-left: 12px;
+  }
 `;
 
 const PostPreviewTransitionWrapper = styled.div`
@@ -359,6 +366,17 @@ const Processing = memo<Props & InjectedIntlProps>(
       setShowAutotagView(false);
     };
 
+    const handleConfirmAutotag = (e?: FormEvent) => {
+      e?.preventDefault();
+      setConfirmationModalOpen(false);
+      setShowAutotagView(true);
+    };
+
+    const handleCloseConfirmationModal = (e?: FormEvent) => {
+      e?.preventDefault();
+      setConfirmationModalOpen(false);
+    };
+
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
         if (!isNilOrError(ideaList)) {
@@ -407,14 +425,16 @@ const Processing = memo<Props & InjectedIntlProps>(
       setLoadingIdeas(true);
     };
 
+    const areSomeOfTheIdeaTagsAutomatic = (ideaTagging: IMergedTagging[]) =>
+      ideaTagging.some(
+        (ideaTagging) =>
+          ideaTagging.attributes.assignment_method === 'automatic'
+      );
+
     const IsThereAnAutotagLeftInTheSelection = () => {
       return selectedRows.some((ideaID) => {
         const ideaTagging = getIdeaTaggings(ideaID);
-        const areSomeOfTheIdeaTagsAutomatic = ideaTagging.some(
-          (ideaTagging) =>
-            ideaTagging.attributes.assignment_method === 'automatic'
-        );
-        return areSomeOfTheIdeaTagsAutomatic;
+        return areSomeOfTheIdeaTagsAutomatic(ideaTagging);
       });
     };
 
@@ -603,33 +623,28 @@ const Processing = memo<Props & InjectedIntlProps>(
           </CSSTransition>
           <StyledModal
             opened={confirmationModalOpen}
-            close={() => setConfirmationModalOpen(false)}
+            close={handleCloseConfirmationModal}
           >
             <h2>
-              This action may overwrite autotags generated previouysly. Are you
-              sure you want to continue ?
+              <FormattedMessage {...messages.autotagOverwriteAlert} />
             </h2>
             <h4>
-              Auto-tagging ideas will overwrite any previously
-              automatically-generated tags. Tags that have been approved or that
-              were manually added will not be overwritten.
+              <FormattedMessage {...messages.autotagOverwriteExplanation} />
             </h4>
-            <Row>
+            <ButtonRow>
               <Button
                 locale={locale}
-                icon="close"
                 buttonStyle="admin-dark-outlined"
-                onClick={() => setConfirmationModalOpen(false)}
+                onClick={handleCloseConfirmationModal}
                 text={'Cancel'}
               />
               <Button
                 locale={locale}
-                icon="chevron-right"
                 buttonStyle="admin-dark"
-                onClick={() => setShowAutotagView(true)}
+                onClick={handleConfirmAutotag}
                 text={'Continue'}
               />
-            </Row>
+            </ButtonRow>
           </StyledModal>
         </Container>
       );

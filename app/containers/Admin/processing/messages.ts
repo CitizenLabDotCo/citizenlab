@@ -40,6 +40,16 @@ export default defineMessages({
     defaultMessage:
       'The "Escape" key closes the side panel and brings you back to the full list',
   },
+  autotagOverwriteAlert: {
+    id: 'app.containers.Admin.Processing.autotagOverwriteAlert',
+    defaultMessage:
+      'This action may overwrite autotags generated previously. Are you sure you want to continue ?',
+  },
+  autotagOverwriteExplanation: {
+    id: 'app.containers.Admin.Processing.autotagOverwriteExplanation',
+    defaultMessage:
+      'Auto-tagging ideas will overwrite any previously automatically-generated tags. Tags that have been approved or that were manually added will not be overwritten.',
+  },
   tag: {
     id: 'app.containers.Admin.Processing.tag',
     defaultMessage: 'tag',
