@@ -19,6 +19,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab',
     defaultMessage: 'Settings',
   },
+  projectFolderPermissionsTab: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectFolderPermissionsTab',
+    defaultMessage: 'Permissions',
+  },
   projectFolderProjectsTab: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab',
     defaultMessage: 'Projects',
