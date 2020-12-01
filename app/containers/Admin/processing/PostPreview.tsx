@@ -77,14 +77,24 @@ const TagSubSection = styled.div`
 `;
 
 export const TagList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+  display: inline-block;
+  margin: 0px 10px 10px 0px;
 `;
 
 const StyledTag = styled(Tag)`
+  height: 24px;
+  font-size: ${fontSizes.xl};
+  font-weight: 500;
   margin: 0px 4px 4px 0px;
   width: fit-content;
+  > * {
+    font-size: ${fontSizes.large}px;
+    align-self: center;
+    line-height: 14px;
+    > * {
+      height: 14px;
+    }
+  }
 `;
 
 interface DataProps {}
@@ -235,7 +245,9 @@ class PostPreview extends PureComponent<
             <TagSection>
               {automaticTaggings.length > 0 && (
                 <TagSubSection>
-                  <FormattedMessage {...messages.addSmartTag} />
+                  <h4>
+                    <FormattedMessage {...messages.addSmartTag} />
+                  </h4>
                   <TagList>
                     {automaticTaggings.map((tagging) =>
                       tagging.tag ? (
@@ -245,7 +257,7 @@ class PostPreview extends PureComponent<
                           onIconClick={this.removeTagging(tagging.id)}
                           onTagClick={this.switchToManual(tagging.id)}
                           isAutoTag={true}
-                          isSelected={false}
+                          isSelected={true}
                           text={localize(tagging.tag.attributes.title_multiloc)}
                         />
                       ) : null
@@ -255,7 +267,9 @@ class PostPreview extends PureComponent<
               )}
               {!isNilOrError(tags) && (
                 <TagSubSection>
-                  <FormattedMessage {...messages.addExistingTag} />
+                  <h4>
+                    <FormattedMessage {...messages.addExistingTag} />
+                  </h4>
                   <TagList>
                     {tags
                       .filter(
@@ -267,9 +281,10 @@ class PostPreview extends PureComponent<
                       .map((tag) => (
                         <StyledTag
                           key={tag.id}
+                          icon="plus-circle"
                           onTagClick={this.tagIdea(tag.id)}
                           isAutoTag={false}
-                          isSelected={false}
+                          isSelected={true}
                           text={localize(tag.attributes.title_multiloc)}
                         />
                       ))}
@@ -277,7 +292,10 @@ class PostPreview extends PureComponent<
                 </TagSubSection>
               )}
               <TagSubSection>
-                <FormattedMessage {...messages.addNewTag} />
+                <h4>
+                  <FormattedMessage {...messages.addNewTag} />
+                </h4>
+
                 <TagSearch
                   filteredOutTagIds={
                     manualTaggings?.map(
