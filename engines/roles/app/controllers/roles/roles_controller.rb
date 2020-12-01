@@ -140,9 +140,9 @@ module Roles
     #
     def scoped_resources
       if params.key?(role_association_foreign_key)
-        roled_resource_class.send(role_name, params[role_association_foreign_key])
+        roled_base_scope.send(role_name, params[role_association_foreign_key])
       else
-        roled_resource_class.send(role_name)
+        roled_base_scope.send(role_name)
       end
     end
   end
