@@ -52,6 +52,7 @@ import { CSSTransition } from 'react-transition-group';
 import useTags from 'hooks/useTags';
 import useTaggings, { IMergedTagging } from 'hooks/useTaggings';
 import Tippy from '@tippyjs/react';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -76,7 +77,6 @@ const ButtonRow = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   > * {
-    color: ${colors.adminTextColor};
     margin-left: 12px;
   }
 `;
@@ -625,26 +625,28 @@ const Processing = memo<Props & InjectedIntlProps>(
             opened={confirmationModalOpen}
             close={handleCloseConfirmationModal}
           >
-            <h2>
-              <FormattedMessage {...messages.autotagOverwriteAlert} />
-            </h2>
-            <h4>
-              <FormattedMessage {...messages.autotagOverwriteExplanation} />
-            </h4>
-            <ButtonRow>
-              <Button
-                locale={locale}
-                buttonStyle="admin-dark-outlined"
-                onClick={handleCloseConfirmationModal}
-                text={'Cancel'}
-              />
-              <Button
-                locale={locale}
-                buttonStyle="admin-dark"
-                onClick={handleConfirmAutotag}
-                text={'Continue'}
-              />
-            </ButtonRow>
+            <QuillEditedContent textColor={colors.adminTextColor}>
+              <h2>
+                <FormattedMessage {...messages.autotagOverwriteAlert} />
+              </h2>
+              <h4>
+                <FormattedMessage {...messages.autotagOverwriteExplanation} />
+              </h4>
+              <ButtonRow>
+                <Button
+                  locale={locale}
+                  buttonStyle="admin-dark-outlined"
+                  onClick={handleCloseConfirmationModal}
+                  text={'Cancel'}
+                />
+                <Button
+                  locale={locale}
+                  buttonStyle="admin-dark"
+                  onClick={handleConfirmAutotag}
+                  text={'Continue'}
+                />
+              </ButtonRow>
+            </QuillEditedContent>
           </StyledModal>
         </Container>
       );
