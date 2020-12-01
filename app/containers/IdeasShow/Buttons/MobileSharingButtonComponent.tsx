@@ -37,7 +37,7 @@ const MobileSharingButtonComponent = ({
       onClick={onClick}
       ariaExpanded={ariaExpanded}
     >
-      {formatMessage(messages.shareIdea)}
+      {formatMessage(messages.share)}
     </Button>
   );
 };

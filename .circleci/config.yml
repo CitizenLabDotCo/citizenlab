@@ -120,7 +120,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
           no_output_timeout: '30m'
       - run:
           command: rm build/*.map
@@ -176,7 +176,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN_PRODUCTION npm run build
           no_output_timeout: '30m'
       - run:
           command: rm build/*.map
@@ -253,6 +253,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - lint:
@@ -260,6 +261,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - build:
@@ -267,6 +269,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - extract_intl:
@@ -274,6 +277,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
       - deploy_demo:

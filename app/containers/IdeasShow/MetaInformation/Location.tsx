@@ -70,6 +70,7 @@ const Location = memo<Props>(({ address, position, projectId }) => {
         </OpenMapModalButton>
       </Container>
       <ModalWithMap
+        address={address}
         position={position}
         projectId={projectId}
         isOpened={isOpened}

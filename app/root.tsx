@@ -13,10 +13,10 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
-import { initializeAnalytics } from 'utils/analytics';
 import { init } from '@sentry/browser';
 import { isError } from 'util';
 import GetTenant from 'resources/GetTenant';
+import OutletsProvider from 'containers/OutletsProvider';
 
 const rootRoute = {
   component: App,
@@ -36,13 +36,15 @@ const Root = () => {
           window.location.href = 'https://www.citizenlab.co/expired-trial';
         }
         return (
-          <LanguageProvider>
-            <Router
-              history={browserHistory}
-              routes={rootRoute}
-              render={applyRouterMiddleware(useScroll())}
-            />
-          </LanguageProvider>
+          <OutletsProvider>
+            <LanguageProvider>
+              <Router
+                history={browserHistory}
+                routes={rootRoute}
+                render={applyRouterMiddleware(useScroll())}
+              />
+            </LanguageProvider>
+          </OutletsProvider>
         );
       }}
     </GetTenant>
@@ -51,9 +53,7 @@ const Root = () => {
 
 render(<Root />, document.getElementById('app'));
 
-initializeAnalytics();
-
-if (process.env.NODE_ENV === 'production') {
+if (process.env.SENTRY_DSN) {
   import('@sentry/integrations').then((Integrations) => {
     init({
       dsn: process.env.SENTRY_DSN,

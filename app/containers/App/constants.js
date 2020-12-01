@@ -9,6 +9,7 @@ exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
 exports.CL_GA_TRACKER_NAME = 'CitizenLab2';
 exports.CL_SEGMENT_API_KEY =
   process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
+exports.INTERCOM_APP_ID = process.env.INTERCOM_APP_ID || 'p4lr69wg';
 exports.API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
@@ -96,11 +97,10 @@ exports.appLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
-  'ar-SA': 'عربى',
   ach: 'Acholi',
+  'ar-SA': 'عربى',
 };
 exports.appGraphqlLocalePairs = {
-  arSa: 'ar-SA',
   en: 'en',
   fr: 'fr',
   de: 'de',
@@ -125,6 +125,7 @@ exports.appGraphqlLocalePairs = {
   huHu: 'hu-HU',
   roRo: 'ro-RO',
   ptBr: 'pt-BR',
+  arSa: 'ar',
 };
 exports.shortenedAppLocalePairs = {
   en: 'English',
@@ -144,8 +145,8 @@ exports.shortenedAppLocalePairs = {
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
-  'ar-SA': 'عربى',
   ach: 'Acholi',
+  'ar-SA': 'عربى',
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
