@@ -1,5 +1,11 @@
-import { IUser, IRole, IProjectModerator } from 'services/users';
+import {
+  IUser,
+  IRole,
+  IProjectModerator,
+  IAdminPublicationModerator,
+} from 'services/users';
 import { IProjectData } from 'services/projects';
+import { IAdminPublicationData } from 'services/adminPublications';
 import { isNilOrError } from 'utils/helperUtils';
 
 const hasRole = (user: IUser, role: IRole['type']) => {
@@ -41,6 +47,25 @@ export const isProjectModerator = (
         user.data.attributes?.roles &&
         user.data.attributes?.roles?.find(
           (r: IProjectModerator) => r.project_id === projectId
+        )
+      ))
+  );
+};
+
+export const isAdminPublicationModerator = (
+  user?: IUser | null,
+  adminPublicationId?: IAdminPublicationData['id'] | null
+) => {
+  return (
+    isModerator(user) &&
+    (!adminPublicationId ||
+      !!(
+        user &&
+        adminPublicationId &&
+        user.data.attributes?.roles &&
+        user.data.attributes?.roles?.find(
+          (r: IAdminPublicationModerator) =>
+            r.admin_publication_id === adminPublicationId
         )
       ))
   );

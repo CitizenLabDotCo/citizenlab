@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
@@ -47,9 +47,11 @@ const ListHeader = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 25px;
+
   &:not(:first-child) {
     margin-top: 70px;
   }
+
   & + & {
     margin-top: 30px;
   }
@@ -88,19 +90,22 @@ class AdminFoldersProjectsList extends Component<
     };
   }
 
+  get projectFolderId() {
+    return !isNilOrError(this.props.projectFolder)
+      ? this.props.projectFolder.id
+      : undefined;
+  }
+
   handleReorder = (itemId, newOrder) => {
     reorderAdminPublication(itemId, newOrder);
   };
 
   addProjectToFolder = (projectId: string) => async () => {
-    const projectFolderId = !isNilOrError(this.props.projectFolder)
-      ? this.props.projectFolder.id
-      : null;
-    if (projectFolderId) {
+    if (this.projectFolderId) {
       this.setState(({ processing }) => ({
         processing: [...processing, projectId],
       }));
-      await updateProjectFolderMembership(projectId, projectFolderId);
+      await updateProjectFolderMembership(projectId, this.projectFolderId);
       this.setState(({ processing }) => ({
         processing: processing.filter((item) => item !== projectId),
       }));
@@ -108,13 +113,10 @@ class AdminFoldersProjectsList extends Component<
   };
 
   removeProjectFromFolder = (projectId: string) => async () => {
-    const projectFolderId = !isNilOrError(this.props.projectFolder)
-      ? this.props.projectFolder.id
-      : undefined;
     this.setState(({ processing }) => ({
       processing: [...processing, projectId],
     }));
-    await updateProjectFolderMembership(projectId, null, projectFolderId);
+    await updateProjectFolderMembership(projectId, null, this.projectFolderId);
     this.setState(({ processing }) => ({
       processing: processing.filter((item) => item !== projectId),
     }));
@@ -130,6 +132,7 @@ class AdminFoldersProjectsList extends Component<
   };
 
   render() {
+    const { projectFolderId } = this;
     const { topLevelProjects, projectsInFolder, authUser } = this.props;
 
     const { processing } = this.state;
@@ -151,7 +154,7 @@ class AdminFoldersProjectsList extends Component<
           )
         : null;
 
-    return (
+    return projectFolderId ? (
       <Container>
         <ListsContainer>
           <ListHeader>
@@ -215,6 +218,7 @@ class AdminFoldersProjectsList extends Component<
           ) : (
             <FormattedMessage {...messages.emptyFolder} />
           )}
+
           {userIsAdmin && (
             <>
               <ListHeader>
@@ -258,7 +262,7 @@ class AdminFoldersProjectsList extends Component<
           )}
         </ListsContainer>
       </Container>
-    );
+    ) : null;
   }
 }
 const AdminFoldersProjectsListWithHocs = withAuthUser(
