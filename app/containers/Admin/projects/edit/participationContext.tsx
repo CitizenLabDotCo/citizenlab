@@ -11,6 +11,7 @@ import {
   IconTooltip,
   Toggle,
   Label,
+  Select,
 } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import {
@@ -129,6 +130,10 @@ const LabelText = styled.div`
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
+`;
+
+const StyledSelect = styled(Select)`
+  max-width: 288px;
 `;
 
 export interface IParticipationContextConfig {
@@ -479,6 +484,10 @@ class ParticipationContext extends PureComponent<
     return isValidated;
   }
 
+  onChangeInputType = () => {
+    console.log('hi');
+  };
+
   render() {
     const {
       tenant,
@@ -545,6 +554,7 @@ class ParticipationContext extends PureComponent<
                   </LabelText>
                 }
               />
+
               <FeatureFlag name="participatory_budgeting">
                 <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
@@ -651,6 +661,36 @@ class ParticipationContext extends PureComponent<
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
             </SectionField>
+
+            {(participation_method === 'budgeting' ||
+              participation_method === 'ideation') && (
+              <SectionField>
+                <SubSectionTitle>
+                  How would you call a contribution to this project?
+                </SubSectionTitle>
+                <StyledSelect
+                  value={{
+                    value: 'idea',
+                    label: 'Idea',
+                  }}
+                  options={[
+                    {
+                      value: 'idea',
+                      label: 'Idea',
+                    },
+                    {
+                      value: 'contribution',
+                      label: 'Contribution',
+                    },
+                  ]}
+                  onChange={this.onChangeInputType}
+                />
+                <Error
+                  text={noBudgetingAmount}
+                  apiErrors={apiErrors && apiErrors.max_budget}
+                />
+              </SectionField>
+            )}
 
             {participation_method === 'budgeting' && (
               <>
