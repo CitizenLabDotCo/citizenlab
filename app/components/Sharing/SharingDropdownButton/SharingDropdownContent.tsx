@@ -13,6 +13,7 @@ import { FacebookButton, TwitterButton } from 'react-social';
 import { Icon } from 'cl2-component-library';
 import Messenger from '../Messenger';
 import WhatsApp from '../WhatsApp';
+import Email from '../Email';
 
 // hooks
 import useTenant from 'hooks/useTenant';
@@ -92,8 +93,8 @@ interface Props {
   url: string;
   twitterMessage: string;
   whatsAppMessage: string;
-  emailSubject?: string;
-  emailBody?: string;
+  emailSubject: string;
+  emailBody: string;
   utmParams: UtmParams;
   id?: string;
 }
@@ -130,16 +131,16 @@ const SharingDropdownContent = ({
   };
 
   const whatsAppClick = () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: 'messenger' });
+    trackEventByName(tracks.shareButtonClicked.name, { network: 'whatsapp' });
+  };
+
+  const emailClick = () => {
+    trackEventByName(tracks.shareButtonClicked.name, { network: 'email' });
   };
 
   if (!isNilOrError(tenant)) {
     const facebookAppId =
       tenant.data.attributes.settings.facebook_login?.app_id;
-    const emailHref =
-      emailSubject && emailBody
-        ? `mailto:?subject=${emailSubject}&body=${emailBody}`
-        : null;
 
     const facebook = facebookAppId ? (
       <FacebookButton
@@ -194,16 +195,17 @@ const SharingDropdownContent = ({
       </TwitterButton>
     );
 
-    const email = emailHref ? (
-      <button
+    const email = (
+      <Email
         className="sharingButton last email"
-        onClick={handleClick('email', emailHref)}
-        aria-label={formatMessage(messages.shareByEmail)}
+        onClick={emailClick}
+        emailBody={emailBody}
+        emailSubject={emailSubject}
       >
         <EmailIcon ariaHidden name="email" />
         <span aria-hidden>{'Email'}</span>
-      </button>
-    ) : null;
+      </Email>
+    );
 
     return (
       <Container id={id || ''} className={className || ''}>
