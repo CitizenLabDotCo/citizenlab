@@ -4,14 +4,14 @@ module ProjectFolders
 
     def before_create(moderator, folder, current_user)
       folder.projects.each do |project|
-        moderator.add_project_folder_moderator_role(project)
+        moderator.add_project_moderator_role(project)
         project_mod_side_fx&.after_create(moderator, project, current_user)
       end
     end
 
     def before_destroy(moderator, folder, current_user)
       folder.projects.each do |project|
-        moderator.remove_project_folder_moderator_role(project)
+        moderator.remove_project_moderator_role(project)
         project_mod_side_fx&.after_destroy(moderator, project, current_user)
       end
     end
