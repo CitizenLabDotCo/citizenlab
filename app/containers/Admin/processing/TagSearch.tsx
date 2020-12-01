@@ -144,6 +144,7 @@ class TagAdd extends PureComponent<
       <Container>
         <SelectGroupsContainer>
           <StyledAsyncSelectCreatable
+            menuPlacement="top"
             name="search-tag"
             isMulti={false}
             cacheOptions={false} // TOCHECK
@@ -156,6 +157,7 @@ class TagAdd extends PureComponent<
             styles={selectStyles}
             value={selection}
             onCreateOption={this.handleOnNewTag}
+            autoFocus={true}
             components={
               isDropdownIconHidden && {
                 DropdownIndicator: () => null,
