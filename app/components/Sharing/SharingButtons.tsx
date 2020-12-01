@@ -201,32 +201,12 @@ const SharingButtons = memo(
       return getUrlWithUtm(medium, url, utmParams);
     };
 
-    const trackClick = (medium: Medium) => {
+    const trackClick = (medium: Medium) => () => {
       const properties = isInModal
         ? { modal: 'true', network: medium }
         : { network: medium };
 
       trackEventByName(tracks.shareButtonClicked.name, properties);
-    };
-
-    const handleMessengerClick = () => {
-      trackClick('messenger');
-    };
-
-    const handleWhatsAppClick = () => {
-      trackClick('whatsapp');
-    };
-
-    const handleEmailClick = () => {
-      trackClick('email');
-    };
-
-    const handleFacebookClick = () => {
-      trackClick('facebook');
-    };
-
-    const handleTwitterClick = () => {
-      trackClick('twitter');
     };
 
     const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
@@ -235,7 +215,7 @@ const SharingButtons = memo(
       <Facebook
         url={getUrl('facebook')}
         className={`sharingButton facebook ${layoutClassName}`}
-        onClick={handleFacebookClick}
+        onClick={trackClick('facebook')}
       >
         <StyledIcon ariaHidden name="facebook" />
         <ButtonText aria-hidden>
@@ -247,7 +227,7 @@ const SharingButtons = memo(
     const messenger = (
       <Messenger
         className={`sharingButton messenger ${layoutClassName}`}
-        onClick={handleMessengerClick}
+        onClick={trackClick('messenger')}
         url={getUrl('messenger')}
       >
         <StyledIcon ariaHidden name="messenger" />
@@ -260,7 +240,7 @@ const SharingButtons = memo(
     const whatsapp = (
       <WhatsApp
         className={`sharingButton whatsapp ${layoutClassName}`}
-        onClick={handleWhatsAppClick}
+        onClick={trackClick('whatsapp')}
         whatsAppMessage={whatsAppMessage}
         url={getUrl('whatsapp')}
       >
@@ -278,7 +258,7 @@ const SharingButtons = memo(
         className={`sharingButton twitter ${
           !emailSubject || !emailBody ? 'last' : ''
         } ${layoutClassName}`}
-        onClick={handleTwitterClick}
+        onClick={trackClick('twitter')}
       >
         <StyledIcon ariaHidden name="twitter" />
         <ButtonText aria-hidden>
@@ -291,7 +271,7 @@ const SharingButtons = memo(
       emailSubject && emailBody ? (
         <Email
           className={`sharingButton last email ${layoutClassName}`}
-          onClick={handleEmailClick}
+          onClick={trackClick('email')}
           emailSubject={emailSubject}
           emailBody={emailBody}
         >
