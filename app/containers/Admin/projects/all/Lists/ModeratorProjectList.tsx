@@ -10,6 +10,7 @@ import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
