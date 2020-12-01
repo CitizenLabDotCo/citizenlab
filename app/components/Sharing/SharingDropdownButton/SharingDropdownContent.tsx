@@ -1,6 +1,6 @@
 import React from 'react';
 import tracks from '../tracks';
-import { getUrlWithUtm, UtmParams, Medium } from '../';
+import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 // style
 import styled from 'styled-components';
@@ -9,11 +9,11 @@ import { darken } from 'polished';
 
 // components
 import { Icon } from 'cl2-component-library';
-import Facebook from '../Facebook';
-import Twitter from '../Twitter';
-import Messenger from '../Messenger';
-import WhatsApp from '../WhatsApp';
-import Email from '../Email';
+import Facebook from '../buttons/Facebook';
+import Twitter from '../buttons/Twitter';
+import Messenger from '../buttons/Messenger';
+import WhatsApp from '../buttons/WhatsApp';
+import Email from '../buttons/Email';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
