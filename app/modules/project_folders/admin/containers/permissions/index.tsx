@@ -15,7 +15,7 @@ import {
 } from 'modules/project_folders/services/moderators';
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
 import { IUsers, IUserData, usersStream } from 'services/users';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -261,10 +261,4 @@ function FolderPermissions({
   );
 }
 
-const ComponentWithHocs = injectIntl(FolderPermissions);
-
-export default (props) => (
-  <GetAuthUser {...props}>
-    {(authUser) => <ComponentWithHocs authUser={authUser} {...props} />}
-  </GetAuthUser>
-);
+export default injectIntl(withAuthUser(FolderPermissions));
