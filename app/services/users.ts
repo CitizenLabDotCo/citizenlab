@@ -9,11 +9,16 @@ export type IProjectModerator = {
   project_id: string;
 };
 
+export type IAdminPublicationModerator = {
+  type: 'admin_publication_moderator';
+  admin_publication_id: string;
+};
+
 type IAdmin = {
   type: 'admin';
 };
 
-export type IRole = IAdmin | IProjectModerator;
+export type IRole = IAdmin | IProjectModerator | IAdminPublicationModerator;
 
 export interface IUserData {
   id: string;
