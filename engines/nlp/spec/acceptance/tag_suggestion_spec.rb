@@ -35,7 +35,7 @@ resource "TagSuggestion" do
 
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.size).to eq 2
+        expect(json_response[:data].size).to eq 2
       end
     end
   end
