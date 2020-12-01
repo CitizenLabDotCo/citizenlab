@@ -1,16 +1,14 @@
 import React, { memo } from 'react';
 
 // libraries
-import { FacebookButton, TwitterButton } from 'react-social';
+import { TwitterButton } from 'react-social';
 
 // components
 import { Icon } from 'cl2-component-library';
+import Facebook from './Facebook';
 import Messenger from './Messenger';
 import WhatsApp from './WhatsApp';
 import Email from './Email';
-
-// resources
-import useTenant from 'hooks/useTenant';
 
 // i18n
 import messages from './messages';
@@ -27,7 +25,6 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { getUrlWithUtm, UtmParams, Medium, clickSocialSharingLink } from './';
 
 const Container = styled.div`
@@ -202,8 +199,6 @@ const SharingButtons = memo(
     utmParams,
     layout,
   }: Props & InjectedIntlProps) => {
-    const tenant = useTenant();
-
     const getUrl = (medium: Medium) => {
       return getUrlWithUtm(medium, url, utmParams);
     };
@@ -238,121 +233,110 @@ const SharingButtons = memo(
       trackClick('email');
     };
 
-    if (!isNilOrError(tenant)) {
-      const facebookAppId =
-        tenant.data.attributes.settings.facebook_login?.app_id || null;
-      const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
+    const handleFacebookClick = () => {
+      trackClick('facebook');
+    };
 
-      const facebook = facebookAppId ? (
-        <FacebookButton
-          appId={facebookAppId}
-          url={getUrl('facebook')}
-          className={`sharingButton facebook ${layoutClassName}`}
-          sharer={true}
-          onClick={handleClick('facebook')}
-          aria-label={formatMessage(messages.shareOnFacebook)}
+    const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
+
+    const facebook = (
+      <Facebook
+        url={getUrl('facebook')}
+        className={`sharingButton facebook ${layoutClassName}`}
+        onClick={handleFacebookClick}
+      >
+        <StyledIcon ariaHidden name="facebook" />
+        <ButtonText aria-hidden>
+          {layout === 2 ? formatMessage(messages.shareOnFacebook) : ''}
+        </ButtonText>
+      </Facebook>
+    );
+
+    const messenger = (
+      <Messenger
+        className={`sharingButton messenger ${layoutClassName}`}
+        onClick={handleMessengerClick}
+        url={getUrl('messenger')}
+      >
+        <StyledIcon ariaHidden name="messenger" />
+        <ButtonText aria-hidden>
+          {layout === 2 ? formatMessage(messages.shareViaMessenger) : ''}
+        </ButtonText>
+      </Messenger>
+    );
+
+    const whatsapp = (
+      <WhatsApp
+        className={`sharingButton whatsapp ${layoutClassName}`}
+        onClick={handleWhatsAppClick}
+        whatsAppMessage={whatsAppMessage}
+        url={getUrl('whatsapp')}
+      >
+        <StyledIcon ariaHidden name="whatsapp" />
+        <ButtonText aria-hidden>
+          {layout === 2 ? formatMessage(messages.shareViaWhatsApp) : ''}
+        </ButtonText>
+      </WhatsApp>
+    );
+
+    const twitter = (
+      <TwitterButton
+        message={twitterMessage}
+        url={getUrl('twitter')}
+        className={`sharingButton twitter ${
+          !emailSubject || !emailBody ? 'last' : ''
+        } ${layoutClassName}`}
+        sharer={true}
+        onClick={handleClick('twitter')}
+        aria-label={formatMessage(messages.shareOnTwitter)}
+      >
+        <StyledIcon ariaHidden name="twitter" />
+        {layout === 2 && (
+          <ButtonText aria-hidden>
+            {formatMessage(messages.shareOnTwitter)}
+          </ButtonText>
+        )}
+      </TwitterButton>
+    );
+
+    const email =
+      emailSubject && emailBody ? (
+        <Email
+          className={`sharingButton last email ${layoutClassName}`}
+          onClick={handleEmailClick}
+          emailSubject={emailSubject}
+          emailBody={emailBody}
         >
-          <StyledIcon ariaHidden name="facebook" />
-          {layout === 2 && (
-            <ButtonText aria-hidden>
-              {formatMessage(messages.shareOnFacebook)}
-            </ButtonText>
-          )}
-        </FacebookButton>
+          <StyledIcon ariaHidden name="email" />
+          <ButtonText aria-hidden>
+            {layout === 2 ? formatMessage(messages.shareByEmail) : ''}
+          </ButtonText>
+        </Email>
       ) : null;
 
-      const messenger = (
-        <Messenger
-          className={`sharingButton messenger ${layoutClassName}`}
-          onClick={handleMessengerClick}
-          url={getUrl('messenger')}
-        >
-          <StyledIcon ariaHidden name="messenger" />
-          <ButtonText aria-hidden>
-            {layout === 2 ? formatMessage(messages.shareViaMessenger) : ''}
-          </ButtonText>
-        </Messenger>
-      );
-
-      const whatsapp = (
-        <WhatsApp
-          className={`sharingButton whatsapp ${layoutClassName}`}
-          onClick={handleWhatsAppClick}
-          whatsAppMessage={whatsAppMessage}
-          url={getUrl('whatsapp')}
-        >
-          <StyledIcon ariaHidden name="whatsapp" />
-          <ButtonText aria-hidden>
-            {layout === 2 ? formatMessage(messages.shareViaWhatsApp) : ''}
-          </ButtonText>
-        </WhatsApp>
-      );
-
-      const twitter = (
-        <TwitterButton
-          message={twitterMessage}
-          url={getUrl('twitter')}
-          className={`sharingButton twitter ${
-            !emailSubject || !emailBody ? 'last' : ''
-          } ${layoutClassName}`}
-          sharer={true}
-          onClick={handleClick('twitter')}
-          aria-label={formatMessage(messages.shareOnTwitter)}
-        >
-          <StyledIcon ariaHidden name="twitter" />
-          {layout === 2 && (
-            <ButtonText aria-hidden>
-              {formatMessage(messages.shareOnTwitter)}
-            </ButtonText>
-          )}
-        </TwitterButton>
-      );
-
-      const email =
-        emailSubject && emailBody ? (
-          <Email
-            className={`sharingButton last email ${layoutClassName}`}
-            onClick={handleEmailClick}
-            emailSubject={emailSubject}
-            emailBody={emailBody}
-          >
-            <StyledIcon ariaHidden name="email" />
-            <ButtonText aria-hidden>
-              {layout === 2 ? formatMessage(messages.shareByEmail) : ''}
-            </ButtonText>
-          </Email>
-        ) : null;
-
-      return (
-        <Container id={id || ''} className={className || ''}>
-          {layout !== 2 && (
-            <Title isInModal={isInModal}>
-              {context === 'idea' && (
-                <FormattedMessage {...messages.shareIdea} />
-              )}
-              {context === 'project' && (
-                <FormattedMessage {...messages.share} />
-              )}
-              {context === 'initiative' && (
-                <FormattedMessage {...messages.shareThisInitiative} />
-              )}
-              {context === 'folder' && (
-                <FormattedMessage {...messages.shareThisFolder} />
-              )}
-            </Title>
-          )}
-          <Buttons className={layoutClassName}>
-            {facebook}
-            {messenger}
-            {whatsapp}
-            {twitter}
-            {email}
-          </Buttons>
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container id={id || ''} className={className || ''}>
+        {layout !== 2 && (
+          <Title isInModal={isInModal}>
+            {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
+            {context === 'project' && <FormattedMessage {...messages.share} />}
+            {context === 'initiative' && (
+              <FormattedMessage {...messages.shareThisInitiative} />
+            )}
+            {context === 'folder' && (
+              <FormattedMessage {...messages.shareThisFolder} />
+            )}
+          </Title>
+        )}
+        <Buttons className={layoutClassName}>
+          {facebook}
+          {messenger}
+          {whatsapp}
+          {twitter}
+          {email}
+        </Buttons>
+      </Container>
+    );
   }
 );
 
