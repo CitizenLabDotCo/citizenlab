@@ -16,7 +16,10 @@ export default function useProjectFolderImages(
 
   const isModerator = useCallback(
     (user: IUserData) => {
-      return !isNilOrError(moderators) && moderators.data.includes(user);
+      return (
+        !isNilOrError(moderators) &&
+        moderators.data.find((mod) => mod.id === user.id)
+      );
     },
     [moderators]
   );

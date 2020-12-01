@@ -12,6 +12,9 @@ import { trackPage } from 'utils/analytics';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProjectFolderModerators, {
+  IGetProjectFolderModerators,
+} from 'modules/project_folders/resources/GetProjectFolderModerators';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,6 +31,7 @@ import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
+
 const ModeratorProjectList = React.lazy(() =>
   import('./Lists/ModeratorProjectList')
 );
@@ -249,6 +253,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  isModerator: <GetProjectFolderModerators />,
 });
 
 export default (inputProps: InputProps) => (
