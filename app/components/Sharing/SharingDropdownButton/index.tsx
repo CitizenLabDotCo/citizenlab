@@ -1,7 +1,7 @@
 import React from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 import DropdownContent from './SharingDropdownContent';
-import { UtmParams } from '../';
+import { UtmParams } from '../utils';
 
 interface Props {
   className?: string;

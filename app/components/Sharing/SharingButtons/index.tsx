@@ -2,20 +2,20 @@ import React, { memo } from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
-import Facebook from './Facebook';
-import Twitter from './Twitter';
-import Messenger from './Messenger';
-import WhatsApp from './WhatsApp';
-import Email from './Email';
+import Facebook from '../buttons/Facebook';
+import Twitter from '../buttons/Twitter';
+import Messenger from '../buttons/Messenger';
+import WhatsApp from '../buttons/WhatsApp';
+import Email from '../buttons/Email';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
@@ -23,7 +23,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // utils
-import { getUrlWithUtm, UtmParams, Medium } from './';
+import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 const Container = styled.div`
   display: flex;
