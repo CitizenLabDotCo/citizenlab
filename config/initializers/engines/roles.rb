@@ -18,5 +18,11 @@ ActiveSupport.on_load(:action_controller) do
         project_folder_moderator: ProjectFolders::ModeratorPolicy
       }
     }
+
+    # c.eager_load = {
+    #   users: {
+    #     project_folder_moderator: %i[unread_notifications]
+    #   }
+    # }
   end
 end

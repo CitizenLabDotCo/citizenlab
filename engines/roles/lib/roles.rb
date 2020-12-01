@@ -17,4 +17,8 @@ module Roles
   def self.policies=(options)
     ::Roles::RoleMapping.add_policy_options(options)
   end
+
+  def self.eager_load=(options)
+    ::Roles::RoleMapping.add_eager_load_options(options)
+  end
 end
