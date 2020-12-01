@@ -302,20 +302,16 @@ const SharingButtons = memo(
         </Email>
       ) : null;
 
+    const titleMessage = {
+      idea: <FormattedMessage {...messages.shareIdea} />,
+      project: <FormattedMessage {...messages.share} />,
+      initiative: <FormattedMessage {...messages.shareThisInitiative} />,
+      folder: <FormattedMessage {...messages.shareThisFolder} />,
+    }[context];
+
     return (
       <Container id={id || ''} className={className || ''}>
-        {layout !== 2 && (
-          <Title isInModal={isInModal}>
-            {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
-            {context === 'project' && <FormattedMessage {...messages.share} />}
-            {context === 'initiative' && (
-              <FormattedMessage {...messages.shareThisInitiative} />
-            )}
-            {context === 'folder' && (
-              <FormattedMessage {...messages.shareThisFolder} />
-            )}
-          </Title>
-        )}
+        {layout !== 2 && <Title isInModal={isInModal}>{titleMessage}</Title>}
         <Buttons className={layoutClassName}>
           {facebook}
           {messenger}
