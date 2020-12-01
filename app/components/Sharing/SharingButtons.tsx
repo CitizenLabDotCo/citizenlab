@@ -1,11 +1,9 @@
 import React, { memo } from 'react';
 
-// libraries
-import { TwitterButton } from 'react-social';
-
 // components
 import { Icon } from 'cl2-component-library';
 import Facebook from './Facebook';
+import Twitter from './Twitter';
 import Messenger from './Messenger';
 import WhatsApp from './WhatsApp';
 import Email from './Email';
@@ -25,7 +23,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // utils
-import { getUrlWithUtm, UtmParams, Medium, clickSocialSharingLink } from './';
+import { getUrlWithUtm, UtmParams, Medium } from './';
 
 const Container = styled.div`
   display: flex;
@@ -203,16 +201,6 @@ const SharingButtons = memo(
       return getUrlWithUtm(medium, url, utmParams);
     };
 
-    const handleClick = (medium: Medium, href?: string) => (
-      _event: React.FormEvent
-    ) => {
-      if (href) {
-        clickSocialSharingLink(href);
-      }
-
-      trackClick(medium);
-    };
-
     const trackClick = (medium: Medium) => {
       const properties = isInModal
         ? { modal: 'true', network: medium }
@@ -235,6 +223,10 @@ const SharingButtons = memo(
 
     const handleFacebookClick = () => {
       trackClick('facebook');
+    };
+
+    const handleTwitterClick = () => {
+      trackClick('twitter');
     };
 
     const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
@@ -280,23 +272,19 @@ const SharingButtons = memo(
     );
 
     const twitter = (
-      <TwitterButton
-        message={twitterMessage}
+      <Twitter
+        twitterMessage={twitterMessage}
         url={getUrl('twitter')}
         className={`sharingButton twitter ${
           !emailSubject || !emailBody ? 'last' : ''
         } ${layoutClassName}`}
-        sharer={true}
-        onClick={handleClick('twitter')}
-        aria-label={formatMessage(messages.shareOnTwitter)}
+        onClick={handleTwitterClick}
       >
         <StyledIcon ariaHidden name="twitter" />
-        {layout === 2 && (
-          <ButtonText aria-hidden>
-            {formatMessage(messages.shareOnTwitter)}
-          </ButtonText>
-        )}
-      </TwitterButton>
+        <ButtonText aria-hidden>
+          {layout === 2 ? formatMessage(messages.shareOnTwitter) : ''}
+        </ButtonText>
+      </Twitter>
     );
 
     const email =
