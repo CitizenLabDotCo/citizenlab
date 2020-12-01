@@ -54,7 +54,14 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    pcs_posting_reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
+    record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
+      (
+        user&.active? &&
+        record.author_id == user.id &&
+        (pcs_posting_reason.nil? || pcs_posting_reason == 'posting_disabled') &&
+        ProjectPolicy.new(user, record.project).show?
+      )
   end
 
   def destroy?
