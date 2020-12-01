@@ -77,6 +77,10 @@ export class AdminProjectFolderEdition extends PureComponent<
           label: formatMessage(messages.projectFolderSettingsTab),
           url: `/admin/projects/folders/${projectFolderId}/settings`,
         },
+        {
+          label: formatMessage(messages.projectFolderPermissionsTab),
+          url: `/admin/projects/folders/${projectFolderId}/permissions`,
+        },
       ],
     };
 
