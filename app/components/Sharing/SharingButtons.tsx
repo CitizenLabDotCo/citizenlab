@@ -308,17 +308,20 @@ const SharingButtons = memo(
         </TwitterButton>
       );
 
-      const email = (
-        <Email
-          className={`sharingButton last email ${layoutClassName}`}
-          onClick={handleEmailClick}
-        >
-          <StyledIcon ariaHidden name="email" />
-          <ButtonText aria-hidden>
-            {layout === 2 ? formatMessage(messages.shareByEmail) : ''}
-          </ButtonText>
-        </Email>
-      );
+      const email =
+        emailSubject && emailBody ? (
+          <Email
+            className={`sharingButton last email ${layoutClassName}`}
+            onClick={handleEmailClick}
+            emailSubject={emailSubject}
+            emailBody={emailBody}
+          >
+            <StyledIcon ariaHidden name="email" />
+            <ButtonText aria-hidden>
+              {layout === 2 ? formatMessage(messages.shareByEmail) : ''}
+            </ButtonText>
+          </Email>
+        ) : null;
 
       return (
         <Container id={id || ''} className={className || ''}>
