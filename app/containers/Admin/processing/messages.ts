@@ -28,17 +28,17 @@ export default defineMessages({
   upAndDownArrow: {
     id: 'app.containers.Admin.Processing.upAndDownArrow',
     defaultMessage:
-      'Up and down arrows allow you to highlight previous or next idea in the list',
+      'Up and down arrows allow you to highlight the previous or next idea in the list',
   },
-  rightArrow: {
-    id: 'app.containers.Admin.Processing.rightArrow',
+  returnKey: {
+    id: 'app.containers.Admin.Processing.returnKey',
     defaultMessage:
-      'Right arrow opens the side panel where you can add remove tags from ideas',
+      'The "Return" key opens the side panel where you can add remove tags from ideas',
   },
-  leftArrow: {
-    id: 'app.containers.Admin.Processing.leftArrow',
+  escapeKey: {
+    id: 'app.containers.Admin.Processing.escapeKey',
     defaultMessage:
-      'Left arrow closes the side panel and brings you back to the full list',
+      'The "Escape" key closes the side panel and brings you back to the full list',
   },
   tag: {
     id: 'app.containers.Admin.Processing.tag',

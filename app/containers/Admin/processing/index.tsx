@@ -259,8 +259,8 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
-    const enterModalKey = useKeyPress('ArrowRight');
-    const exitModalKey = useKeyPress('ArrowLeft');
+    const enterModalKey = useKeyPress('Enter');
+    const exitModalKey = useKeyPress('Escape');
 
     const rowRef = useRef<HTMLDivElement>(null);
 
@@ -519,10 +519,10 @@ const Processing = memo<Props & InjectedIntlProps>(
                         <FormattedMessage {...messages.upAndDownArrow} />
                       </li>
                       <li>
-                        <FormattedMessage {...messages.rightArrow} />
+                        <FormattedMessage {...messages.returnKey} />
                       </li>
                       <li>
-                        <FormattedMessage {...messages.leftArrow} />
+                        <FormattedMessage {...messages.escapeKey} />
                       </li>
                     </ul>
                   }
@@ -675,6 +675,7 @@ const Data = adopt<DataProps, InputProps>({
       <GetProjects
         publicationStatuses={['published', 'archived']}
         filterCanModerate={true}
+        sort="new"
       >
         {render}
       </GetProjects>
