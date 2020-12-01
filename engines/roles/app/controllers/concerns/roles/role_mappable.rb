@@ -101,5 +101,25 @@ module Roles
     def role_params_permitted_keys
       role_mapping.permitted_params
     end
+
+    #
+    # Returns base scope to search roled objects by.
+    #
+    # Example:
+    #
+    #  /users/project_moderators
+    #
+    #  Roles.eager_load = { users: { project_moderators: [:unread_notifications] }}
+    #
+    #  roled_base_scope
+    #  # => User.includes([:unread_notifications])
+    #
+    def roled_base_scope
+      if role_mapping.eager_load
+        roled_resource_class.includes(role_mapping.eager_load)
+      else
+        roled_resource_class
+      end
+    end
   end
 end

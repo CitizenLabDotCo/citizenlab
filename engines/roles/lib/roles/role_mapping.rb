@@ -148,6 +148,14 @@ module Roles
       end
     end
 
+    def eager_load
+      return unless self.class.eager_load_options
+
+      self.class.eager_load_options.dig(klass_config_name, role_name).yield_self do |eager_load|
+        return eager_load if eager_load.is_a?(Array) && eager_load.all? { |element| element.is_a?(Symbol) }
+      end
+    end
+
     def policy
       return unless self.class.policy_options
 
@@ -162,7 +170,7 @@ module Roles
     end
 
     class << self
-      attr_reader :serializer_options, :subscriber_options, :policy_options
+      attr_reader :serializer_options, :subscriber_options, :policy_options, :eager_load_options
 
       def add_serializer_options(serializer_options)
         @serializer_options = serializer_options.with_indifferent_access
@@ -174,6 +182,10 @@ module Roles
 
       def add_policy_options(policy_options)
         @policy_options = policy_options.with_indifferent_access
+      end
+
+      def add_eager_load_options(eager_load_options)
+        @eager_load_options = eager_load_options.with_indifferent_access
       end
     end
   end
