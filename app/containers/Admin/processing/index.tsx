@@ -199,16 +199,6 @@ const StyledCheckbox = styled(Checkbox)`
   margin-top: 0px;
 `;
 
-const InformationBox = styled.div`
-  margin: 24px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  padding: 27px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clBlueDarkBg};
-`;
-
 const KeyboardShortcuts = styled.div`
   height: auto;
   display: flex;
@@ -326,10 +316,8 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitModalKey, ideaList]);
 
     useEffect(() => {
-      if (selectedProjectIds.length > 0) {
-        setIdeaList(ideas?.list);
-        setLoadingIdeas(false);
-      }
+      setIdeaList(ideas?.list);
+      setLoadingIdeas(false);
     }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
@@ -415,12 +403,8 @@ const Processing = memo<Props & InjectedIntlProps>(
       const { onChangeProjects } = ideas as GetIdeasChildProps;
       setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
-      if (newProjectIds.length > 0) {
-        onChangeProjects(newProjectIds);
-        setLoadingIdeas(true);
-      } else {
-        setIdeaList([]);
-      }
+      onChangeProjects(newProjectIds);
+      setLoadingIdeas(true);
     };
 
     const IsThereAnAutotagLeftInTheSelection = () => {
@@ -592,12 +576,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                 )}
               </StyledTable>
             </TableWrapper>
-          ) : loadingIdeas ? (
-            <StyledSpinner />
           ) : (
-            <InformationBox>
-              <FormattedMessage {...messages.pleaseSelectAProject} />
-            </InformationBox>
+            <StyledSpinner />
           )}
           <CSSTransition
             in={!!previewPostId}
