@@ -5,7 +5,6 @@ import { adopt } from 'react-adopt';
 // components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-import { Tag } from 'cl2-component-library';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -20,8 +19,8 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { stylingConsts } from 'utils/styleUtils';
-import { IMergedTagging } from 'hooks/useTaggings';
-import { deleteTagging } from 'services/taggings';
+import { deleteTagging, ITagging } from 'services/taggings';
+import TagWrapper from './TagWrapper';
 
 const Content = styled.div`
   width: 100%;
@@ -56,7 +55,7 @@ const StyledTitle = styled(Title)`
 
 export interface InputProps {
   ideaId: string | null;
-  manualTaggings: IMergedTagging[];
+  manualTaggings: ITagging[];
 }
 
 interface DataProps {
@@ -89,18 +88,14 @@ export class IdeaContent extends PureComponent<
         <Content>
           {manualTaggings.length > 0 && (
             <TagList>
-              {manualTaggings.map((tagging) =>
-                tagging.tag ? (
-                  <Tag
-                    key={tagging.id}
-                    icon="close"
-                    onTagClick={this.removeTagging(tagging.id)}
-                    isAutoTag={false}
-                    isSelected={false}
-                    text={localize(tagging.tag.attributes.title_multiloc)}
-                  />
-                ) : null
-              )}
+              {manualTaggings.map((tagging) => (
+                <TagWrapper
+                  onTagClick={this.removeTagging(tagging.id)}
+                  isAutoTag={false}
+                  isSelected={false}
+                  tagId={tagging.attributes.tag_id}
+                />
+              ))}
             </TagList>
           )}
           <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />

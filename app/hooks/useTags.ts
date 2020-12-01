@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ITag, tagStream } from 'services/tags';
+import { ITag, tagsStream } from 'services/tags';
 
 export interface IUseTag {
   tags: ITag[] | null | Error | undefined;
@@ -25,7 +25,7 @@ export default function useTags(ideaIdsParam = [] as string[]) {
   }, []);
 
   useEffect(() => {
-    const observable = tagStream({
+    const observable = tagsStream({
       queryParameters: {
         search,
         idea_ids: ideaIds,
