@@ -9,10 +9,6 @@ import { IOption } from 'typings';
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // services
-import {
-  addModerator,
-  deleteModerator,
-} from 'modules/project_folders/services/moderators';
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
 import { IUsers, IUserData, usersStream } from 'services/users';
 import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
@@ -66,19 +62,18 @@ function FolderPermissions({
   const { projectFolderId } = params;
   const { formatMessage } = intl;
 
-  const moderators = useProjectFolderModerators(projectFolderId);
+  const {
+    moderators,
+    isModerator,
+    addModerator,
+    deleteModerator,
+  } = useProjectFolderModerators(projectFolderId);
+
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
   const [userOptions, setUserOptions] = useState<IUserData[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
-
-  const isModerator = useCallback(
-    (user: IUserData) => {
-      return !isNilOrError(moderators) && moderators.data.includes(user);
-    },
-    [moderators]
-  );
 
   const handleModeratorInputChange = (value: string) => {
     setSearchInput(value);
@@ -173,7 +168,7 @@ function FolderPermissions({
     return [];
   }, [selectedUserOptions]);
 
-  const userName = (user) => {
+  const userName = (user: IUserData) => {
     return `${user.attributes.first_name} ${user.attributes.last_name}`;
   };
 
