@@ -11,6 +11,8 @@ module ProjectFolders
       def resolve
         if user&.admin?
           scope.all
+        elsif user.project_folder_moderator?
+          user.moderated_project_folders
         else
           scope.left_outer_joins(:admin_publication)
                .where(admin_publications: {publication_status: ['published', 'archived']})
