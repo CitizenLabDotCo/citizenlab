@@ -133,7 +133,11 @@ module Roles
     end
 
     def serializer
-      self.class.serializer_options.dig(klass_config_name)
+      self.class.serializer_options.dig(klass_config_name, :class)
+    end
+
+    def serializer_options
+      self.class.serializer_options.dig(klass_config_name).except(:class)
     end
 
     def subscriber
