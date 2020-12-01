@@ -367,7 +367,7 @@ export default defineMessages({
   },
   sectionWhatInput: {
     id: 'app.containers.Dashboards.ReportsTab.sectionWhatInput',
-    defaultMessage: '"What input did you collect?"',
+    defaultMessage: 'What input did you collect?',
   },
   participantsOverTimeTitle: {
     id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
