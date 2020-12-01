@@ -21,9 +21,6 @@ export async function generateTaggings(ideaIds, tagIds, tags) {
     idea_ids: ideaIds,
     tag_ids: tagIds,
   });
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
-  });
   return response;
 }
 
@@ -48,7 +45,7 @@ export async function addTagging(
     }
   );
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+    apiEndpoint: [`${API_PATH}/tags`],
   });
   return !isNilOrError(response) ? response.data : (response as Error);
 }
@@ -58,11 +55,9 @@ export async function deleteTagging(taggingId: string) {
     `${API_PATH}/taggings/${taggingId}`,
     taggingId
   );
-
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/tags`],
   });
-
   return response;
 }
 
@@ -72,10 +67,6 @@ export async function switchToManual(taggingId: string) {
     taggingId,
     { assignment_method: 'manual' }
   );
-
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
-  });
 
   return response;
 }

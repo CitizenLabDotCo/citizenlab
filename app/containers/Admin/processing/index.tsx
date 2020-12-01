@@ -396,7 +396,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     };
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
-      const { onChangeProjects } = ideas as GetIdeasChildProps;
+      const { onChangeProjects } = ideas;
       setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
       if (newProjectIds.length > 0) {

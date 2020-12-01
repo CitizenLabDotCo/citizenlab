@@ -10,7 +10,7 @@ export interface ITag {
   type: 'tag';
 }
 
-export interface ITagData {
+export interface ITagsData {
   data: ITag[];
 }
 
@@ -27,10 +27,15 @@ export function tagSuggestionsStream(
   });
 }
 
-export function tagStream(streamParams: IStreamParams | null = null) {
-  return streams.get<ITagData>({
+export function tagsStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ITagsData>({
     apiEndpoint: `${API_PATH}/tags`,
     ...streamParams,
+  });
+}
+export function tagStream(tagId: string) {
+  return streams.get<{ data: ITag }>({
+    apiEndpoint: `${API_PATH}/tags/${tagId}`,
   });
 }
 
