@@ -3,6 +3,7 @@ import { isString } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 
 // components
 import { Input, Success } from 'cl2-component-library';
@@ -10,13 +11,16 @@ import Button from 'components/UI/Button';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
+import Error from 'components/UI/Error';
 
 // services
 import { resetPassword } from 'services/auth';
+import { CLError } from 'typings';
+import { addErrorPayload } from 'utils/errorUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -66,6 +70,11 @@ const Form = styled.form`
 
 type Props = {};
 
+interface IApiErrors {
+  token?: CLError[];
+  password?: CLError[];
+}
+
 type State = {
   token: string | null;
   password: string | null;
@@ -73,6 +82,7 @@ type State = {
   submitError: boolean;
   processing: boolean;
   success: boolean;
+  apiErrors: IApiErrors | null;
 };
 
 class PasswordReset extends React.PureComponent<
@@ -92,6 +102,7 @@ class PasswordReset extends React.PureComponent<
       submitError: false,
       processing: false,
       success: false,
+      apiErrors: null,
     };
 
     this.passwordInputElement = null;
@@ -123,6 +134,7 @@ class PasswordReset extends React.PureComponent<
     this.setState({
       passwordError: false,
       submitError: false,
+      apiErrors: null,
       password: value,
     });
   };
@@ -142,7 +154,23 @@ class PasswordReset extends React.PureComponent<
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
       } catch (error) {
-        this.setState({ processing: false, success: false, submitError: true });
+        let { errors } = error.json;
+        const passwordResetLink = (
+          <Link to="/password-recovery">
+            <FormattedMessage {...messages.requestNewPasswordReset} />
+          </Link>
+        );
+
+        errors = addErrorPayload(errors, 'token', 'invalid', {
+          passwordResetLink,
+        });
+
+        this.setState({
+          processing: false,
+          success: false,
+          submitError: true,
+          apiErrors: errors,
+        });
       }
     }
   };
@@ -152,9 +180,9 @@ class PasswordReset extends React.PureComponent<
     const {
       password,
       passwordError,
-      submitError,
       processing,
       success,
+      apiErrors,
     } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
@@ -168,8 +196,6 @@ class PasswordReset extends React.PureComponent<
 
     if (passwordError) {
       errorMessage = formatMessage(messages.passwordError);
-    } else if (submitError) {
-      errorMessage = formatMessage(messages.submitError);
     }
 
     return (
@@ -197,6 +223,14 @@ class PasswordReset extends React.PureComponent<
                 onChange={this.handlePasswordOnChange}
                 setRef={this.handlePasswordInputSetRef}
               />
+              {apiErrors &&
+                Object.keys(apiErrors).map((errorField) => (
+                  <Error
+                    key={errorField}
+                    apiErrors={apiErrors[errorField]}
+                    fieldName={errorField}
+                  />
+                ))}
 
               <StyledButton
                 size="2"

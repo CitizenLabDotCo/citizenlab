@@ -12,13 +12,31 @@ export const LEGAL_PAGES = [
   'accessibility-statement',
 ];
 
+export const LEGAL_PAGES_ALLOWED_TO_EDIT = [
+  'information',
+  'terms-and-conditions',
+  'privacy-policy',
+];
+
 export interface IPageData {
   id: string;
   type: string;
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: string;
+    slug: // to be found in cl2-back: config/tenant_templates/base.yml
+    | 'information'
+      | 'cookie-policy'
+      | 'privacy-policy'
+      | 'terms-and-conditions'
+      | 'accessibility-statement'
+      | 'homepage-info'
+      | 'initiatives'
+      | 'initiatives-success-1'
+      | 'initiatives-success-2'
+      | 'initiatives-success-3'
+      // if a custom page gets added, it can be different than the strings above
+      | string;
     created_at: string;
     updated_at: string;
   };
