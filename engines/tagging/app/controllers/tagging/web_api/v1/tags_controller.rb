@@ -2,7 +2,7 @@ module Tagging
   module WebApi
     module V1
       class TagsController < ApplicationController
-        before_action :set_tag, only: %i[update]
+        before_action :set_tag, only: %i[show update]
 
         def index
           @tags = policy_scope(Tag)
@@ -13,10 +13,15 @@ module Tagging
               ) if params[:idea_ids].present?
 
           @tags = @tags
-                   .page(params.dig(:page, :number))
-                   .per(params.dig(:page, :size))
+                  .uniq
+          render json: WebApi::V1::TagSerializer.new(@tags, params: fastjson_params).serialized_json
+        end
 
-          render json: linked_json(@tags, WebApi::V1::TagSerializer, params: fastjson_params)
+        def show
+          render json:  WebApi::V1::TagSerializer.new(
+            @tag,
+            params: fastjson_params,
+            ).serialized_json
         end
 
         def update
