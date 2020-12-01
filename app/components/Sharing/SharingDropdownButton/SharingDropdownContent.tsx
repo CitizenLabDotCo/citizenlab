@@ -1,6 +1,6 @@
 import React from 'react';
 import tracks from '../tracks';
-import { getUrlWithUtm, UtmParams, Medium, clickSocialSharingLink } from '../';
+import { getUrlWithUtm, UtmParams, Medium } from '../';
 
 // style
 import styled from 'styled-components';
@@ -8,20 +8,15 @@ import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
-import { TwitterButton } from 'react-social';
 import { Icon } from 'cl2-component-library';
 import Facebook from '../Facebook';
+import Twitter from '../Twitter';
 import Messenger from '../Messenger';
 import WhatsApp from '../WhatsApp';
 import Email from '../Email';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -105,20 +100,9 @@ const SharingDropdownContent = ({
   emailSubject,
   twitterMessage,
   whatsAppMessage,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props) => {
   const getUrl = (medium: Medium) => {
     return getUrlWithUtm(medium, url, utmParams);
-  };
-
-  const handleClick = (medium: Medium, href?: string) => (
-    _event: React.FormEvent
-  ) => {
-    if (href) {
-      clickSocialSharingLink(href);
-    }
-
-    trackEventByName(tracks.shareButtonClicked.name, { network: medium });
   };
 
   const facebookClick = () => {
@@ -131,6 +115,10 @@ const SharingDropdownContent = ({
 
   const whatsAppClick = () => {
     trackEventByName(tracks.shareButtonClicked.name, { network: 'whatsapp' });
+  };
+
+  const twitterClick = () => {
+    trackEventByName(tracks.shareButtonClicked.name, { network: 'twitter' });
   };
 
   const emailClick = () => {
@@ -172,19 +160,17 @@ const SharingDropdownContent = ({
   );
 
   const twitter = (
-    <TwitterButton
-      message={twitterMessage}
+    <Twitter
+      twitterMessage={twitterMessage}
       url={getUrl('twitter')}
       className={`sharingButton twitter ${
         !emailSubject || !emailBody ? 'last' : ''
       }`}
-      sharer={true}
-      onClick={handleClick('twitter')}
-      aria-label={formatMessage(messages.shareOnTwitter)}
+      onClick={twitterClick}
     >
       <TwitterIcon ariaHidden name="twitter" />
       <span aria-hidden>{'Twitter'}</span>
-    </TwitterButton>
+    </Twitter>
   );
 
   const email = (
@@ -210,4 +196,4 @@ const SharingDropdownContent = ({
   );
 };
 
-export default injectIntl(SharingDropdownContent);
+export default SharingDropdownContent;
