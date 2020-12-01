@@ -10,8 +10,8 @@ interface Props {
   className?: string;
   onClick: () => void;
   children: JSX.Element | JSX.Element[];
-  emailSubject?: string;
-  emailBody?: string;
+  emailSubject: string;
+  emailBody: string;
 }
 
 const Email = ({
@@ -27,24 +27,17 @@ const Email = ({
     onClick();
   };
 
-  const href =
-    emailSubject && emailBody
-      ? `mailto:?subject=${emailSubject}&body=${emailBody}`
-      : null;
+  const href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
 
-  if (href) {
-    return (
-      <button
-        className={className}
-        onClick={handleClick(href)}
-        aria-label={formatMessage(messages.shareByEmail)}
-      >
-        {children}
-      </button>
-    );
-  }
-
-  return null;
+  return (
+    <button
+      className={className}
+      onClick={handleClick(href)}
+      aria-label={formatMessage(messages.shareByEmail)}
+    >
+      {children}
+    </button>
+  );
 };
 
 export default injectIntl(Email);

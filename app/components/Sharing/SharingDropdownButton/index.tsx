@@ -7,8 +7,8 @@ interface Props {
   className?: string;
   twitterMessage: string;
   whatsAppMessage: string;
-  emailSubject?: string;
-  emailBody?: string;
+  emailSubject: string;
+  emailBody: string;
   utmParams: UtmParams;
   url: string;
   buttonComponent: JSX.Element;
