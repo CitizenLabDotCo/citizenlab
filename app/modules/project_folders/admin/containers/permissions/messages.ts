@@ -4,7 +4,8 @@ export default defineMessages({
   // edit - index
   moderatorsTooltip: {
     id: 'app.containers.AdminPage.FolderPermissions.moderatorsTooltip',
-    defaultMessage: 'Type within the search box to find users by name.',
+    defaultMessage:
+      'Folder Moderators can modify the folder settings and become moderators of all projects included in it.',
   },
   moderatorsSectionTitle: {
     id: 'app.containers.AdminPage.FolderPermissions.moderatorsSectionTitle',
