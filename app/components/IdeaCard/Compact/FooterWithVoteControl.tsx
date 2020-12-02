@@ -78,7 +78,15 @@ const CompactIdeaCard = memo<Props>(({ idea, hideIdeaStatus, className }) => {
           ariaHidden
           showDownvote={isDownVotingEnabled}
         />
-        <CommentsCount className={isCommentingEnabled ? 'enabled' : 'disabled'}>
+
+        <CommentsCount
+          className={[
+            'e2e-ideacard-comment-count',
+            isCommentingEnabled ? 'enabled' : 'disabled',
+          ]
+            .filter((item) => item)
+            .join(' ')}
+        >
           <CommentIcon name="comments" />
           {idea.attributes.comments_count}
         </CommentsCount>
