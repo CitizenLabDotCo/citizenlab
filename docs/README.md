@@ -2,6 +2,8 @@
 
 ## Next release
 
+/
+
 ## 2020-12-01
 
 ### Changed
