@@ -702,10 +702,6 @@ class ParticipationContext extends PureComponent<
                   options={this.getInputTermOptions()}
                   onChange={this.handleInputTermChange}
                 />
-                <Error
-                  text={noBudgetingAmount}
-                  apiErrors={apiErrors && apiErrors.max_budget}
-                />
               </SectionField>
             )}
 
