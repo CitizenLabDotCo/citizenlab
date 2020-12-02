@@ -18,7 +18,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 // Typings
 import { IOption } from 'typings';
 import GetTags, { GetTagsChildProps } from 'resources/GetTags';
-import { ITag, tagStream } from 'services/tags';
+import { ITag, tagsStream } from 'services/tags';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
@@ -31,7 +31,6 @@ const SelectGroupsContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   align-items: center;
-  margin-bottom: 30px;
 `;
 
 const StyledAsyncSelectCreatable = styled(AsyncSelectCreatable)`
@@ -90,7 +89,7 @@ class TagAdd extends PureComponent<
     if (inputValue) {
       this.setState({ loading: true });
 
-      tagStream({
+      tagsStream({
         queryParameters: {
           search: inputValue,
         },

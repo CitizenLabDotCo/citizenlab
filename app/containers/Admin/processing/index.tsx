@@ -37,6 +37,7 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
+import { ITagging } from 'services/taggings';
 
 // hooks & res
 import useKeyPress from '../../../hooks/useKeyPress';
@@ -50,7 +51,7 @@ import useTenant from 'hooks/useTenant';
 import PostPreview from './PostPreview';
 import { CSSTransition } from 'react-transition-group';
 import useTags from 'hooks/useTags';
-import useTaggings, { IMergedTagging } from 'hooks/useTaggings';
+import useTaggings from 'hooks/useTaggings';
 import Tippy from '@tippyjs/react';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -418,14 +419,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     };
 
     const handleProjectIdsChange = (newProjectIds: string[]) => {
-      const { onChangeProjects } = ideas as GetIdeasChildProps;
+      const { onChangeProjects } = ideas;
       setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
       onChangeProjects(newProjectIds);
       setLoadingIdeas(true);
     };
 
-    const areSomeIdeaTagsAutomatic = (ideaTaggings: IMergedTagging[]) =>
+    const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
       ideaTaggings.some(
         (ideaTagging) =>
           ideaTagging.attributes.assignment_method === 'automatic'
