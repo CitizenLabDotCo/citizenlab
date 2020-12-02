@@ -227,17 +227,19 @@ const SharingButtons = memo(
         onClick={trackClick('facebook')}
       >
         {/*
-          For all sharing components, both children are aria-hidden.
+          For all sharing components, the components inside the child wrapper are aria-hidden.
           The reasons are that (1) there's an aria-label for the text in all the components themselves
           so we don't need to rely on the person who uses the component to think of adding text.
           and (2) the icon needs to be hidden by default.
         */}
-        <StyledIcon ariaHidden name="facebook" />
-        <ButtonText aria-hidden>
-          {layout === 'columnLayout'
-            ? formatMessage(messages.shareOnFacebook)
-            : ''}
-        </ButtonText>
+        <>
+          <StyledIcon ariaHidden name="facebook" />
+          {layout === 'columnLayout' && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareOnFacebook)}
+            </ButtonText>
+          )}
+        </>
       </Facebook>
     );
 
@@ -247,12 +249,14 @@ const SharingButtons = memo(
         onClick={trackClick('messenger')}
         url={getUrl('messenger')}
       >
-        <StyledIcon ariaHidden name="messenger" />
-        <ButtonText aria-hidden>
-          {layout === 'columnLayout'
-            ? formatMessage(messages.shareViaMessenger)
-            : ''}
-        </ButtonText>
+        <>
+          <StyledIcon ariaHidden name="messenger" />
+          {layout === 'columnLayout' && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareViaMessenger)}
+            </ButtonText>
+          )}
+        </>
       </Messenger>
     );
 
@@ -263,12 +267,14 @@ const SharingButtons = memo(
         whatsAppMessage={whatsAppMessage}
         url={getUrl('whatsapp')}
       >
-        <StyledIcon ariaHidden name="whatsapp" />
-        <ButtonText aria-hidden>
-          {layout === 'columnLayout'
-            ? formatMessage(messages.shareViaWhatsApp)
-            : ''}
-        </ButtonText>
+        <>
+          <StyledIcon ariaHidden name="whatsapp" />
+          {layout === 'columnLayout' && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareViaWhatsApp)}
+            </ButtonText>
+          )}
+        </>
       </WhatsApp>
     );
 
@@ -281,12 +287,14 @@ const SharingButtons = memo(
         } ${layoutClassName}`}
         onClick={trackClick('twitter')}
       >
-        <StyledIcon ariaHidden name="twitter" />
-        <ButtonText aria-hidden>
-          {layout === 'columnLayout'
-            ? formatMessage(messages.shareOnTwitter)
-            : ''}
-        </ButtonText>
+        <>
+          <StyledIcon ariaHidden name="twitter" />
+          {layout === 'columnLayout' && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareOnTwitter)}
+            </ButtonText>
+          )}
+        </>
       </Twitter>
     );
 
@@ -298,12 +306,14 @@ const SharingButtons = memo(
           emailSubject={emailSubject}
           emailBody={emailBody}
         >
-          <StyledIcon ariaHidden name="email" />
-          <ButtonText aria-hidden>
-            {layout === 'columnLayout'
-              ? formatMessage(messages.shareByEmail)
-              : ''}
-          </ButtonText>
+          <>
+            <StyledIcon ariaHidden name="email" />
+            {layout === 'columnLayout' && (
+              <ButtonText aria-hidden>
+                {formatMessage(messages.shareByEmail)}
+              </ButtonText>
+            )}
+          </>
         </Email>
       ) : null;
 
