@@ -2,14 +2,14 @@ import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
-import { ProjectInput } from 'services/projects';
+import { ProjectInputTerm } from 'services/projects';
 
 type IProjectInputTermMessages = {
-  [key in ProjectInput]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in ProjectInputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
 export const projectInputTermMessages = (
-  projectInputTerm: ProjectInput,
+  projectInputTerm: ProjectInputTerm,
   messages: IProjectInputTermMessages
 ) => {
   return messages[projectInputTerm];
