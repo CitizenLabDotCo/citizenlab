@@ -182,6 +182,14 @@ interface Props {
   layout?: 1 | 2;
 }
 
+{
+  /*
+    This component is not just a grouping of all buttons in the buttons folder.
+    This component applies certain styles to the buttons (see above), so it's
+    an independent component.
+  */
+}
+
 const SharingButtons = memo(
   ({
     context,
