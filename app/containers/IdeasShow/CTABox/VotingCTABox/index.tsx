@@ -22,7 +22,7 @@ const StyledVoting = styled(Voting)`
   margin-bottom: 30px;
 `;
 
-const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
