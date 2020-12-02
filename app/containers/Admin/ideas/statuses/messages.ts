@@ -42,10 +42,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.ideasCount',
     defaultMessage: 'ideas',
   },
-  deleteButtonTooltip: {
-    id: 'app.containers.admin.ideaStatuses.all.deleteButtonTooltip',
+  deleteButtonTooltipContent: {
+    id: 'app.containers.admin.ideaStatuses.all.deleteButtonTooltipContent',
     defaultMessage:
-      'Status currently assigned to a post cannot be deleted. You can remove/change a status from a post in the idea manager.',
+      'Statuses that are currently in use cannot be deleted. You can remove/change statuses in the {linkToManageTab} tab.',
   },
   lockedStatusTooltip: {
     id: 'app.containers.admin.ideaStatuses.all.lockedStatusTooltip',
@@ -55,27 +55,13 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.fieldTitle',
     defaultMessage: 'Status Name',
   },
-  fieldTitleTooltip: {
-    id: 'app.containers.admin.ideaStatuses.form.fieldTitleTooltip',
-    defaultMessage: 'How the status will be displayed in different languages',
-  },
   fieldDescription: {
     id: 'app.containers.admin.ideaStatuses.form.fieldDescription',
     defaultMessage: 'Status Description',
   },
-  fieldDescriptionTooltip: {
-    id: 'app.containers.admin.ideaStatuses.form.fieldDescriptionTooltip',
-    defaultMessage:
-      'A short description of the status and what it means for ideas assigned to it.',
-  },
   fieldColor: {
     id: 'app.containers.admin.ideaStatuses.form.fieldColor',
     defaultMessage: 'Color',
-  },
-  fieldColorTooltip: {
-    id: 'app.containers.admin.ideaStatuses.form.fieldColorTooltip',
-    defaultMessage:
-      'The color of the idea status, which helps to recognise different statuses.',
   },
   category: {
     id: 'app.containers.admin.ideaStatuses.form.category',
