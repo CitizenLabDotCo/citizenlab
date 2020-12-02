@@ -158,6 +158,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   const { tags } = useTags(selectedRows);
 
   const [isValidTag, setIsValidTag] = useState<boolean>(true);
+
   const [processing, setProcessing] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'suggestions' | 'existingTags'>(
     'suggestions'

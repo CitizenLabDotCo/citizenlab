@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
+  cancel: {
+    id: 'app.containers.Admin.Processing.cancel',
+    defaultMessage: 'Cancel',
+  },
+  continue: {
+    id: 'app.containers.Admin.Processing.continue',
+    defaultMessage: 'Continue',
+  },
   keyboardShortcuts: {
     id: 'app.containers.Admin.Processing.keyboardShortcuts',
     defaultMessage: 'Keyboard Shortcuts',
@@ -28,17 +36,27 @@ export default defineMessages({
   upAndDownArrow: {
     id: 'app.containers.Admin.Processing.upAndDownArrow',
     defaultMessage:
-      'Up and down arrows allow you to highlight previous or next idea in the list',
+      'Up and down arrows allow you to highlight the previous or next idea in the list',
   },
-  rightArrow: {
-    id: 'app.containers.Admin.Processing.rightArrow',
+  returnKey: {
+    id: 'app.containers.Admin.Processing.returnKey',
     defaultMessage:
-      'Right arrow opens the side panel where you can add remove tags from ideas',
+      'The "Return" key opens the side panel where you can add remove tags from ideas',
   },
-  leftArrow: {
-    id: 'app.containers.Admin.Processing.leftArrow',
+  escapeKey: {
+    id: 'app.containers.Admin.Processing.escapeKey',
     defaultMessage:
-      'Left arrow closes the side panel and brings you back to the full list',
+      'The "Escape" key closes the side panel and brings you back to the full list',
+  },
+  autotagOverwriteAlert: {
+    id: 'app.containers.Admin.Processing.autotagOverwriteAlert',
+    defaultMessage:
+      'This action may overwrite autotags generated previously. Are you sure you want to continue ?',
+  },
+  autotagOverwriteExplanation: {
+    id: 'app.containers.Admin.Processing.autotagOverwriteExplanation',
+    defaultMessage:
+      'Auto-tagging ideas will overwrite any previously automatically-generated tags. Tags that have been approved or that were manually added will not be overwritten.',
   },
   tag: {
     id: 'app.containers.Admin.Processing.tag',

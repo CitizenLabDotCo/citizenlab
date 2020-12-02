@@ -8,7 +8,7 @@ import useTag from 'hooks/useTag';
 
 type TagProps = React.ComponentProps<typeof Tag>;
 
-interface Props extends Omit<TagProps, 'text' | 'icon'> {
+interface Props extends Omit<TagProps, 'text'> {
   tagId: string;
 }
 
@@ -21,7 +21,6 @@ export default memo<Props>(({ tagId, ...tagProps }) => {
       <Tag
         {...tagProps}
         key={tagId}
-        icon="close"
         text={localize(tag.attributes.title_multiloc)}
       />
     );

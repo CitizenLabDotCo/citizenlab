@@ -18,6 +18,7 @@ import ProcessingRow from './ProcessingRow';
 import AutotagView from './AutotagView';
 import { Checkbox, fontSizes, Spinner, Button } from 'cl2-component-library';
 import Table from 'components/UI/Table';
+import Modal from 'components/UI/Modal';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -36,6 +37,7 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
+import { ITagging } from 'services/taggings';
 
 // hooks & res
 import useKeyPress from '../../../hooks/useKeyPress';
@@ -51,6 +53,7 @@ import { CSSTransition } from 'react-transition-group';
 import useTags from 'hooks/useTags';
 import useTaggings from 'hooks/useTaggings';
 import Tippy from '@tippyjs/react';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -61,6 +64,22 @@ const Container = styled.div`
 
 const StyledSpinner = styled(Spinner)`
   margin: auto;
+`;
+
+const StyledModal = styled(Modal)`
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  > * {
+    margin-left: 12px;
+  }
 `;
 
 const PostPreviewTransitionWrapper = styled.div`
@@ -188,16 +207,6 @@ const StyledCheckbox = styled(Checkbox)`
   margin-top: 0px;
 `;
 
-const InformationBox = styled.div`
-  margin: 24px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  padding: 27px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clBlueDarkBg};
-`;
-
 const KeyboardShortcuts = styled.div`
   height: auto;
   display: flex;
@@ -239,14 +248,17 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
+    const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
+      false
+    );
 
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
-    const enterModalKey = useKeyPress('ArrowRight');
-    const exitModalKey = useKeyPress('ArrowLeft');
+    const enterModalKey = useKeyPress('Enter');
+    const exitModalKey = useKeyPress('Escape');
 
     const rowRef = useRef<HTMLDivElement>(null);
 
@@ -312,10 +324,8 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitModalKey, ideaList]);
 
     useEffect(() => {
-      if (selectedProjectIds.length > 0) {
-        setIdeaList(ideas?.list);
-        setLoadingIdeas(false);
-      }
+      setIdeaList(ideas?.list);
+      setLoadingIdeas(false);
     }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
@@ -347,12 +357,25 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
-      setShowAutotagView(true);
+      isAutotagLeftInSelection()
+        ? setConfirmationModalOpen(true)
+        : setShowAutotagView(true);
     };
 
     const handleCloseAutotagView = (e?: FormEvent) => {
       e?.preventDefault();
       setShowAutotagView(false);
+    };
+
+    const handleConfirmAutotag = (e?: FormEvent) => {
+      e?.preventDefault();
+      setConfirmationModalOpen(false);
+      setShowAutotagView(true);
+    };
+
+    const handleCloseConfirmationModal = (e?: FormEvent) => {
+      e?.preventDefault();
+      setConfirmationModalOpen(false);
     };
 
     const handleOnSelectAll = useCallback(
@@ -399,12 +422,21 @@ const Processing = memo<Props & InjectedIntlProps>(
       const { onChangeProjects } = ideas;
       setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
-      if (newProjectIds.length > 0) {
-        onChangeProjects(newProjectIds);
-        setLoadingIdeas(true);
-      } else {
-        setIdeaList([]);
-      }
+      onChangeProjects(newProjectIds);
+      setLoadingIdeas(true);
+    };
+
+    const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
+      ideaTaggings.some(
+        (ideaTagging) =>
+          ideaTagging.attributes.assignment_method === 'automatic'
+      );
+
+    const isAutotagLeftInSelection = () => {
+      return selectedRows.some((ideaId) => {
+        const ideaTaggings = getIdeaTaggings(ideaId);
+        return areSomeIdeaTagsAutomatic(ideaTaggings);
+      });
     };
 
     const handleRowOnSelect = useCallback(
@@ -492,10 +524,10 @@ const Processing = memo<Props & InjectedIntlProps>(
                         <FormattedMessage {...messages.upAndDownArrow} />
                       </li>
                       <li>
-                        <FormattedMessage {...messages.rightArrow} />
+                        <FormattedMessage {...messages.returnKey} />
                       </li>
                       <li>
-                        <FormattedMessage {...messages.leftArrow} />
+                        <FormattedMessage {...messages.escapeKey} />
                       </li>
                     </ul>
                   }
@@ -565,12 +597,8 @@ const Processing = memo<Props & InjectedIntlProps>(
                 )}
               </StyledTable>
             </TableWrapper>
-          ) : loadingIdeas ? (
-            <StyledSpinner />
           ) : (
-            <InformationBox>
-              <FormattedMessage {...messages.pleaseSelectAProject} />
-            </InformationBox>
+            <StyledSpinner />
           )}
           <CSSTransition
             in={!!previewPostId}
@@ -594,6 +622,33 @@ const Processing = memo<Props & InjectedIntlProps>(
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
+          <StyledModal
+            opened={confirmationModalOpen}
+            close={handleCloseConfirmationModal}
+          >
+            <QuillEditedContent textColor={colors.adminTextColor}>
+              <h2>
+                <FormattedMessage {...messages.autotagOverwriteAlert} />
+              </h2>
+              <h4>
+                <FormattedMessage {...messages.autotagOverwriteExplanation} />
+              </h4>
+              <ButtonRow>
+                <Button
+                  locale={locale}
+                  buttonStyle="admin-dark-outlined"
+                  onClick={handleCloseConfirmationModal}
+                  text={<FormattedMessage {...messages.cancel} />}
+                />
+                <Button
+                  locale={locale}
+                  buttonStyle="admin-dark"
+                  onClick={handleConfirmAutotag}
+                  text={<FormattedMessage {...messages.continue} />}
+                />
+              </ButtonRow>
+            </QuillEditedContent>
+          </StyledModal>
         </Container>
       );
     }
@@ -618,6 +673,7 @@ const Data = adopt<DataProps, InputProps>({
       <GetProjects
         publicationStatuses={['published', 'archived']}
         filterCanModerate={true}
+        sort="new"
       >
         {render}
       </GetProjects>

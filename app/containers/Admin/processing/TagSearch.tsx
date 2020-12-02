@@ -31,7 +31,6 @@ const SelectGroupsContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   align-items: center;
-  margin-bottom: 30px;
 `;
 
 const StyledAsyncSelectCreatable = styled(AsyncSelectCreatable)`
@@ -144,6 +143,7 @@ class TagAdd extends PureComponent<
       <Container>
         <SelectGroupsContainer>
           <StyledAsyncSelectCreatable
+            menuPlacement="top"
             name="search-tag"
             isMulti={false}
             cacheOptions={false} // TOCHECK
@@ -156,6 +156,7 @@ class TagAdd extends PureComponent<
             styles={selectStyles}
             value={selection}
             onCreateOption={this.handleOnNewTag}
+            autoFocus={true}
             components={
               isDropdownIconHidden && {
                 DropdownIndicator: () => null,
