@@ -21,3 +21,5 @@ export type IdeaDefaultSortMethod =
   | null;
 
 export const ideaDefaultSortMethodFallback = 'trending';
+
+export type InputTerm = 'idea' | 'contribution';
