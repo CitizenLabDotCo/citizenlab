@@ -53,7 +53,7 @@ const Buttons = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  &.layout2 {
+  &.columnLayout {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: stretch;
@@ -69,7 +69,7 @@ const Buttons = styled.div`
     cursor: pointer;
     transition: all 100ms ease-out;
 
-    &.layout1 {
+    &.rowLayout {
       margin-right: 5px;
 
       &.last {
@@ -97,7 +97,7 @@ const Buttons = styled.div`
       `}
     }
 
-    &.layout2 {
+    &.columnLayout {
       margin-bottom: 12px;
 
       &.last {
@@ -179,7 +179,7 @@ interface Props {
   emailBody?: string;
   utmParams: UtmParams;
   id?: string;
-  layout?: 1 | 2;
+  layout?: 'rowLayout' | 'columnLayout';
 }
 
 {
@@ -217,7 +217,8 @@ const SharingButtons = memo(
       trackEventByName(tracks.shareButtonClicked.name, properties);
     };
 
-    const layoutClassName = layout === 2 ? 'layout2' : 'layout1';
+    const layoutClassName =
+      layout === 'columnLayout' ? 'columnLayout' : 'rowLayout';
 
     const facebook = (
       <Facebook
@@ -233,7 +234,9 @@ const SharingButtons = memo(
         */}
         <StyledIcon ariaHidden name="facebook" />
         <ButtonText aria-hidden>
-          {layout === 2 ? formatMessage(messages.shareOnFacebook) : ''}
+          {layout === 'columnLayout'
+            ? formatMessage(messages.shareOnFacebook)
+            : ''}
         </ButtonText>
       </Facebook>
     );
@@ -246,7 +249,9 @@ const SharingButtons = memo(
       >
         <StyledIcon ariaHidden name="messenger" />
         <ButtonText aria-hidden>
-          {layout === 2 ? formatMessage(messages.shareViaMessenger) : ''}
+          {layout === 'columnLayout'
+            ? formatMessage(messages.shareViaMessenger)
+            : ''}
         </ButtonText>
       </Messenger>
     );
@@ -260,7 +265,9 @@ const SharingButtons = memo(
       >
         <StyledIcon ariaHidden name="whatsapp" />
         <ButtonText aria-hidden>
-          {layout === 2 ? formatMessage(messages.shareViaWhatsApp) : ''}
+          {layout === 'columnLayout'
+            ? formatMessage(messages.shareViaWhatsApp)
+            : ''}
         </ButtonText>
       </WhatsApp>
     );
@@ -276,7 +283,9 @@ const SharingButtons = memo(
       >
         <StyledIcon ariaHidden name="twitter" />
         <ButtonText aria-hidden>
-          {layout === 2 ? formatMessage(messages.shareOnTwitter) : ''}
+          {layout === 'columnLayout'
+            ? formatMessage(messages.shareOnTwitter)
+            : ''}
         </ButtonText>
       </Twitter>
     );
@@ -291,7 +300,9 @@ const SharingButtons = memo(
         >
           <StyledIcon ariaHidden name="email" />
           <ButtonText aria-hidden>
-            {layout === 2 ? formatMessage(messages.shareByEmail) : ''}
+            {layout === 'columnLayout'
+              ? formatMessage(messages.shareByEmail)
+              : ''}
           </ButtonText>
         </Email>
       ) : null;
