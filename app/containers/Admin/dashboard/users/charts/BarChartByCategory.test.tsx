@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
 jest.mock('services/stats');
+jest.mock('services/tenant');
 import { intl } from 'utils/cl-intl';
 import { BarChartByCategory } from './BarChartByCategory';
 import { chartTheme } from '../..';
