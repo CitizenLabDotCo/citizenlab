@@ -59,7 +59,7 @@ const StyledNavButton = styled(Button)`
 `;
 const TagSection = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight}px - 30px);
-  flex: 2;
+  flex: 3;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -75,20 +75,35 @@ const TagSection = styled.div`
 
 const TagSubSection = styled.div`
   margin: 12px 0px;
-  > * {
-    padding: 6px 0px;
+  &.manualTag {
+    flex: 7;
+  }
+  &.smartTag {
+    flex: 1;
+  }
+  &.tagSearch {
+    flex: 1;
   }
 `;
 
 export const TagList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+  display: inline-block;
+  margin: 0px 10px 10px 0px;
 `;
 
 const StyledTagWrapper = styled(TagWrapper)`
+  height: 24px;
+  font-weight: 500;
   margin: 0px 4px 4px 0px;
   width: fit-content;
+  > * {
+    font-size: ${fontSizes.large}px;
+    align-self: center;
+    line-height: 14px;
+    > * {
+      height: 14px;
+    }
+  }
 `;
 
 interface DataProps {}
@@ -149,10 +164,12 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     taggings.filter(
       (tagging) => tagging.attributes.assignment_method === 'manual'
     );
+
   getAutomaticTaggings = (taggings: ITagging[]) =>
     taggings.filter(
       (tagging) => tagging.attributes.assignment_method === 'automatic'
     );
+
   getUnusedTags = (tags: ITag[], taggings: ITagging[]) => {
     const res = tags.filter(
       (tag) =>
@@ -241,30 +258,37 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
               manualTaggings={manualTaggings}
             />
             <TagSection>
-              {automaticTaggings.length > 0 && (
-                <TagSubSection>
+              <TagSubSection className={'smartTag'}>
+                <h4>
                   <FormattedMessage {...messages.addSmartTag} />
+                </h4>
+                {automaticTaggings.length > 0 && (
                   <TagList>
                     {automaticTaggings.map((tagging) => (
                       <StyledTagWrapper
-                        onIconClick={this.removeTagging(tagging.id)}
+                        key={tagging.id}
                         onTagClick={this.switchToManual(tagging.id)}
+                        icon="plus-circle"
                         isAutoTag={true}
                         isSelected={false}
                         tagId={tagging.attributes.tag_id}
                       />
                     ))}
                   </TagList>
-                </TagSubSection>
-              )}
+                )}
+              </TagSubSection>
               {!isNilOrError(tags) && !isNilOrError(taggings) && (
-                <TagSubSection>
-                  <FormattedMessage {...messages.addExistingTag} />
+                <TagSubSection className={'manualTag'}>
+                  <h4>
+                    <FormattedMessage {...messages.addExistingTag} />
+                  </h4>
                   <TagList>
                     {this.getUnusedTags(tags, taggings).map((tag) => (
                       <StyledTagWrapper
+                        key={tag.id}
                         tagId={tag.id}
                         onTagClick={this.tagIdea(tag.id)}
+                        icon="plus-circle"
                         isAutoTag={false}
                         isSelected={false}
                       />
@@ -272,8 +296,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   </TagList>
                 </TagSubSection>
               )}
-              <TagSubSection>
-                <FormattedMessage {...messages.addNewTag} />
+              <TagSubSection className={'tagSearch'}>
+                <h4>
+                  <FormattedMessage {...messages.addNewTag} />
+                </h4>
+
                 <TagSearch
                   filteredOutTagIds={
                     manualTaggings?.map(
