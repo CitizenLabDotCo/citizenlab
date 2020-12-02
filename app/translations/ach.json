@@ -708,6 +708,8 @@
   "app.containers.Admin.Processing.autotag": "",
   "app.containers.Admin.Processing.autotagOverwriteAlert": "",
   "app.containers.Admin.Processing.autotagOverwriteExplanation": "",
+  "app.containers.Admin.Processing.cancel": "",
+  "app.containers.Admin.Processing.continue": "",
   "app.containers.Admin.Processing.description": "",
   "app.containers.Admin.Processing.escapeKey": "",
   "app.containers.Admin.Processing.export": "",
