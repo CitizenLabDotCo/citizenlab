@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { projectInputTermMessages } from 'utils/i18n';
 
 // components
 import T from 'components/T';
@@ -141,6 +142,7 @@ const StatusFilter = memo<Props>(
       const allPostsCount =
         filterCounts && filterCounts.total ? filterCounts.total : 0;
       const allFilterSelected = !selectedStatusId;
+      // const projectInputTerm = project.attributes.input_term;
 
       return (
         <Container className={`e2e-statuses-filters ${className}`}>
@@ -162,6 +164,12 @@ const StatusFilter = memo<Props>(
               <ScreenReaderOnly>
                 {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
                 {type === 'idea' && (
+                  // <FormattedMessage
+                  //   {...projectInputTermMessages(projectInputTerm, {
+                  //     idea: messages.a11y_numberOfIdeas,
+                  //   })}
+                  //   values={{ ideasCount: allPostsCount }}
+                  // />
                   <FormattedMessage
                     {...messages.a11y_numberOfIdeas}
                     values={{ ideasCount: allPostsCount }}
