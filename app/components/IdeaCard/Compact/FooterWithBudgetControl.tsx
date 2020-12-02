@@ -80,7 +80,7 @@ const CompactIdeaCard = memo<Props>(
 
     return (
       <Footer>
-        <CommentsCount>
+        <CommentsCount className="e2e-ideacard-comment-count">
           <CommentIcon name="comments" />
           {idea.attributes.comments_count}
         </CommentsCount>
