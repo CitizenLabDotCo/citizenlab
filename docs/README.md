@@ -8,7 +8,6 @@
 ## 2020-12-01
 
 ### Changed
-
 - Ideas are now still editable when idea posting is disabled for a project.
 
 ## 2020-11-30
