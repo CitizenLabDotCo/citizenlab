@@ -2,7 +2,8 @@
 
 ## Next release
 
-/ 
+### Fixed
+- The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
 
 ## 2020-11-30
 
