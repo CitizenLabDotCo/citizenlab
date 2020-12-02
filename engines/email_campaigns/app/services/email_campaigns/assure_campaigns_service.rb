@@ -17,9 +17,13 @@ module EmailCampaigns
     end
 
     def remove_deprecated_campaigns
-      supported_campaigns = EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:to_s)
+      supported_campaigns = EmailCampaigns::DeliveryService.new.campaign_types
+      unsupported_ids     = EmailCampaigns::Campaign.where.not(type: supported_campaigns).pluck(:id)
 
-      EmailCampaigns::Campaign.where.not(type: supported_campaigns).delete_all
+      ActiveRecord::Base.transaction do
+        TextImage.where(imageable_type: 'EmailCampaigns::Campaign', imageable_id: unsupported_ids).destroy_all
+        EmailCampaigns::Campaign.where(id: unsupported_ids).delete_all
+      end
     end
   end
 end
