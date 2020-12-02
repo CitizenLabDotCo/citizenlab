@@ -16,5 +16,10 @@ module EmailCampaigns
       end
     end
 
+    def remove_deprecated_campaigns
+      supported_campaigns = EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:to_s)
+
+      EmailCampaigns::Campaign.where.not(type: supported_campaigns).delete_all
+    end
   end
 end
