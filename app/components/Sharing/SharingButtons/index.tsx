@@ -227,7 +227,7 @@ const SharingButtons = memo(
         onClick={trackClick('facebook')}
       >
         {/*
-          For all sharing components, both children are aria-hidden
+          For all sharing components, both children are aria-hidden.
           The reasons are that (1) there's an aria-label for the text in all the components themselves
           so we don't need to rely on the person who uses the component to think of adding text.
           and (2) the icon needs to be hidden by default.
@@ -316,7 +316,9 @@ const SharingButtons = memo(
 
     return (
       <Container id={id || ''} className={className || ''}>
-        {layout !== 2 && <Title isInModal={isInModal}>{titleMessage}</Title>}
+        {layout !== 'columnLayout' && (
+          <Title isInModal={isInModal}>{titleMessage}</Title>
+        )}
         <Buttons className={layoutClassName}>
           {facebook}
           {messenger}

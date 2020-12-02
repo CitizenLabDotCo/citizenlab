@@ -116,7 +116,7 @@ const SharingDropdownContent = ({
       onClick={handleClick('facebook')}
     >
       {/*
-        For all sharing components, both children are aria-hidden
+        For all sharing components, both children are aria-hidden.
         The reasons are that (1) there's an aria-label for the text in all the components themselves
         so we don't need to rely on the person who uses the component to think of adding text.
         and (2) the icon needs to be hidden by default.
