@@ -55,7 +55,7 @@ const StyledNavButton = styled(Button)`
 `;
 const TagSection = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight}px - 30px);
-  flex: 2;
+  flex: 3;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -81,9 +81,8 @@ export const TagList = styled.div`
   margin: 0px 10px 10px 0px;
 `;
 
-const StyledTag = styled(Tag)`
+export const StyledTag = styled(Tag)`
   height: 24px;
-  font-size: ${fontSizes.xl};
   font-weight: 500;
   margin: 0px 4px 4px 0px;
   width: fit-content;

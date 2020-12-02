@@ -356,7 +356,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
       trackEventByName(tracks.clickAutotag.name);
-      IsThereAnAutotagLeftInTheSelection()
+      isAutotagLeftInSelection()
         ? setConfirmationModalOpen(true)
         : setShowAutotagView(true);
     };
@@ -425,16 +425,16 @@ const Processing = memo<Props & InjectedIntlProps>(
       setLoadingIdeas(true);
     };
 
-    const areSomeOfTheIdeaTagsAutomatic = (ideaTagging: IMergedTagging[]) =>
-      ideaTagging.some(
+    const areSomeIdeaTagsAutomatic = (ideaTaggings: IMergedTagging[]) =>
+      ideaTaggings.some(
         (ideaTagging) =>
           ideaTagging.attributes.assignment_method === 'automatic'
       );
 
-    const IsThereAnAutotagLeftInTheSelection = () => {
-      return selectedRows.some((ideaID) => {
-        const ideaTagging = getIdeaTaggings(ideaID);
-        return areSomeOfTheIdeaTagsAutomatic(ideaTagging);
+    const isAutotagLeftInSelection = () => {
+      return selectedRows.some((ideaId) => {
+        const ideaTaggings = getIdeaTaggings(ideaId);
+        return areSomeIdeaTagsAutomatic(ideaTaggings);
       });
     };
 
@@ -637,13 +637,13 @@ const Processing = memo<Props & InjectedIntlProps>(
                   locale={locale}
                   buttonStyle="admin-dark-outlined"
                   onClick={handleCloseConfirmationModal}
-                  text={'Cancel'}
+                  text={<FormattedMessage {...messages.cancel} />}
                 />
                 <Button
                   locale={locale}
                   buttonStyle="admin-dark"
                   onClick={handleConfirmAutotag}
-                  text={'Continue'}
+                  text={<FormattedMessage {...messages.continue} />}
                 />
               </ButtonRow>
             </QuillEditedContent>
