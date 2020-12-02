@@ -217,6 +217,12 @@ const SharingButtons = memo(
         className={`sharingButton facebook ${layoutClassName}`}
         onClick={trackClick('facebook')}
       >
+        {/*
+          For all sharing components, both children are aria-hidden
+          The reasons are that (1) there's an aria-label for the text in all the components themselves
+          so we don't need to rely on the person who uses the component to think of adding text.
+          and (2) the icon needs to be hidden by default.
+        */}
         <StyledIcon ariaHidden name="facebook" />
         <ButtonText aria-hidden>
           {layout === 2 ? formatMessage(messages.shareOnFacebook) : ''}
