@@ -2,7 +2,22 @@
 
 ## Next release
 
-/ 
+/
+
+## 2020-12-02
+
+### Changed
+- By default the last active phase instead of the last phase is now selected when a timeline project has no active phase
+
+### Fixed
+- The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
+- Styling mistakes in the idea page voting and participatory budget boxes.
+- The tooltip shown when hovering over a disabled idea posting button in the project page sticky top bar is no longer partially hidden
+
+## 2020-12-01
+
+### Changed
+- Ideas are now still editable when idea posting is disabled for a project.
 
 ## 2020-11-30
 
@@ -85,7 +100,7 @@
 - The project header image is screen reader friendly.
 - The similar ideas feature doesn't make backend requests anymore when it's not enabled.
 
-### Changed 
+### Changed
 - Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
 
 ## 2020-11-18
@@ -123,7 +138,7 @@
 
 #### Integration of trial management into AdminHQ
 - The lifecycle of the trials created from AdminHQ and from the website has been unified.
-- After 14 days, a trial platform goes to Purgatory (`expired_trial`) and is no longer accessible. Fourteen days later, the expired trial will be removed altogether (at this point, there is no way back). 
+- After 14 days, a trial platform goes to Purgatory (`expired_trial`) and is no longer accessible. Fourteen days later, the expired trial will be removed altogether (at this point, there is no way back).
 - The end date of a trial can be modified in AdminHQ (> Edit tenant > Internal tab).
 
 ## 2020-11-06
@@ -189,7 +204,7 @@
 
 ### Fixed
 - Stretched images in 'avatar bubbles'
-- Input fields where other people can be @mentioned don't grow too wide anymore 
+- Input fields where other people can be @mentioned don't grow too wide anymore
 - Linebar charts overlapping elements in the admin dashboard
 
 ## 2020-10-14
@@ -295,7 +310,7 @@
 
 ### Added
 - Pricing plans in AdminHQ (Pricing plan limitations are not enforced).
-- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.  
+- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.
 
 ### Changed
 - Tidying up the form for creating new tenants in AdminHQ (removing unused features, adding titles and descriptions, reordering features, adding new feature flags, removing fields for non-relevant locales).
