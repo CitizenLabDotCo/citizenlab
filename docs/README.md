@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2020-12-02
+
 ### Changed
 - By default the last active phase instead of the last phase is now selected when a timeline project has no active phase
 
