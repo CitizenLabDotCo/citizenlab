@@ -238,6 +238,10 @@ const Vote = styled.button<IVoteComponent>`
     `};
   }
 
+  &:not(.enabled).compact {
+    pointer-events: none;
+  }
+
   &:not(.enabled) {
     ${VoteIconContainer} {
       width: auto;

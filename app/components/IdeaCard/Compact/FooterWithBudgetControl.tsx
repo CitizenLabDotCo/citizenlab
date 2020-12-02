@@ -73,8 +73,6 @@ const CompactIdeaCard = memo<Props>(
     const projectId = idea?.relationships?.project.data?.id;
     const ideaBudget = idea?.attributes?.budget;
 
-    const clickDisabledAssignBudget = () => {};
-
     const onLabelClick = (event: FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
@@ -103,7 +101,6 @@ const CompactIdeaCard = memo<Props>(
               participationContextId={participationContextId}
               participationContextType={participationContextType}
               openIdea={openIdea}
-              disabledAssignBudgetClick={clickDisabledAssignBudget}
               projectId={projectId}
             />
           </BudgetControl>
