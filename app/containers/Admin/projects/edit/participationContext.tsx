@@ -29,6 +29,7 @@ import {
   SurveyServices,
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
+  InputTerm,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -50,6 +51,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // Typings
 import { CLError } from 'typings';
 import { adopt } from 'react-adopt';
+import { IOption } from 'cl2-component-library/dist/utils/typings';
 
 const Container = styled.div``;
 
@@ -150,6 +152,7 @@ export interface IParticipationContextConfig {
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
+  input_term?: InputTerm | null;
 }
 
 interface DataProps {
@@ -203,6 +206,7 @@ class ParticipationContext extends PureComponent<
       noBudgetingAmount: null,
       poll_anonymous: false,
       ideas_order: ideaDefaultSortMethodFallback,
+      input_term: 'idea',
     };
     this.subscriptions = [];
   }
@@ -282,6 +286,7 @@ class ParticipationContext extends PureComponent<
       survey_service,
       poll_anonymous,
       ideas_order,
+      input_term,
     } = this.state;
     let output: IParticipationContextConfig = {} as any;
 
@@ -298,6 +303,7 @@ class ParticipationContext extends PureComponent<
           voting_enabled,
           presentation_mode,
           ideas_order,
+          input_term,
           voting_method: voting_enabled ? voting_method : null,
           voting_limited_max:
             voting_enabled && voting_method === 'limited'
@@ -330,6 +336,7 @@ class ParticipationContext extends PureComponent<
           commenting_enabled,
           presentation_mode,
           ideas_order,
+          input_term,
         },
         isNil
       ) as IParticipationContextConfig;
@@ -444,6 +451,14 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleInputTermChange = (option: IOption) => {
+    const input_term: InputTerm = option.value;
+
+    this.setState({
+      input_term,
+    });
+  };
+
   togglePollAnonymous = () => {
     this.setState((state) => ({ poll_anonymous: !state.poll_anonymous }));
   };
@@ -483,10 +498,6 @@ class ParticipationContext extends PureComponent<
 
     return isValidated;
   }
-
-  onChangeInputType = () => {
-    console.log('hi');
-  };
 
   render() {
     const {
@@ -683,7 +694,7 @@ class ParticipationContext extends PureComponent<
                       label: 'Contribution',
                     },
                   ]}
-                  onChange={this.onChangeInputType}
+                  onChange={this.handleInputTermChange}
                 />
                 <Error
                   text={noBudgetingAmount}
