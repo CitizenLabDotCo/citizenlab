@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
   },
+  cancel: {
+    id: 'app.containers.Admin.Processing.cancel',
+    defaultMessage: 'Cancel',
+  },
+  continue: {
+    id: 'app.containers.Admin.Processing.continue',
+    defaultMessage: 'Continue',
+  },
   keyboardShortcuts: {
     id: 'app.containers.Admin.Processing.keyboardShortcuts',
     defaultMessage: 'Keyboard Shortcuts',

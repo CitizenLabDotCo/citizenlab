@@ -5,7 +5,8 @@ import { adopt } from 'react-adopt';
 // components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-import { Tag } from 'cl2-component-library';
+// import { Tag } from 'cl2-component-library';
+import { StyledTag } from './PostPreview';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -101,7 +102,7 @@ export class IdeaContent extends PureComponent<
             {manualTaggings.length > 0 &&
               manualTaggings.map((tagging) =>
                 tagging.tag ? (
-                  <Tag
+                  <StyledTag
                     key={tagging.id}
                     icon="close"
                     onTagClick={this.removeTagging(tagging.id)}
