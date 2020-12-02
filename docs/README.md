@@ -2,7 +2,8 @@
 
 ## Next release
 
-/
+### Fixed
+- Styling mistakes in the idea page voting and participatory budget boxes.
 
 ## 2020-12-01
 
