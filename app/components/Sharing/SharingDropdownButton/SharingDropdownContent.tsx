@@ -147,9 +147,7 @@ const SharingDropdownContent = ({
     <Twitter
       twitterMessage={twitterMessage}
       url={getUrl('twitter')}
-      className={`sharingButton twitter ${
-        !emailSubject || !emailBody ? 'last' : ''
-      }`}
+      className={'sharingButton twitter'}
       onClick={handleClick('twitter')}
     >
       <TwitterIcon ariaHidden name="twitter" />
@@ -159,7 +157,7 @@ const SharingDropdownContent = ({
 
   const email = (
     <Email
-      className="sharingButton last email"
+      className="sharingButton email"
       onClick={handleClick('email')}
       emailBody={emailBody}
       emailSubject={emailSubject}
