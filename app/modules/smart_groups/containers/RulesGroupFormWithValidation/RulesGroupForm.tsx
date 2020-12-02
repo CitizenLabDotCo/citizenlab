@@ -9,9 +9,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import Error from 'components/UI/Error';
 import { Label } from 'cl2-component-library';
-
 import { FormikUserFilterConditions } from 'modules/smart_groups/components/UserFilterConditions';
-import { TRule } from 'modules/smart_groups/components/UserFilterConditions/rules';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,6 +25,7 @@ const SSectionField = styled(SectionField)`
 
 // Typings
 import { Multiloc } from 'typings';
+import { TRule } from 'modules/smart_groups/components/UserFilterConditions/rules';
 
 export interface Props {}
 export interface RulesFormValues {
