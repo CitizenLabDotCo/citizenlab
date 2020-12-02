@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
+import { isFinite, isEqual, omitBy, isNil, memoize } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -499,6 +499,21 @@ class ParticipationContext extends PureComponent<
     return isValidated;
   }
 
+  getInputTermOptions = memoize(() => {
+    const inputTerms: InputTerm[] = ['idea', 'contribution'];
+    return inputTerms.map((inputTerm) => {
+      const labelMessage = {
+        idea: messages.ideaTerm,
+        contribution: messages.contributionTerm,
+      }[inputTerm];
+
+      return {
+        value: inputTerm,
+        label: this.props.intl.formatMessage(labelMessage),
+      };
+    });
+  });
+
   render() {
     const {
       tenant,
@@ -684,16 +699,7 @@ class ParticipationContext extends PureComponent<
                     value: 'idea',
                     label: 'Idea',
                   }}
-                  options={[
-                    {
-                      value: 'idea',
-                      label: 'Idea',
-                    },
-                    {
-                      value: 'contribution',
-                      label: 'Contribution',
-                    },
-                  ]}
+                  options={this.getInputTermOptions()}
                   onChange={this.handleInputTermChange}
                 />
                 <Error

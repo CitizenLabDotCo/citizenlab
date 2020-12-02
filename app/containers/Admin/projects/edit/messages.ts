@@ -328,4 +328,12 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
     defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
   },
+  ideaTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
+    defaultMessage: 'Idea',
+  },
+  contributionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
+    defaultMessage: 'Contribution',
+  },
 });
