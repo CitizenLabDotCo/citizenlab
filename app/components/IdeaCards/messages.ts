@@ -1,17 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loadMore: {
-    id: 'app.components.IdeaCards.loadMore',
-    defaultMessage: 'Load more ideas',
-  },
   showMore: {
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
-  },
-  empty: {
-    id: 'app.components.IdeaCards.empty',
-    defaultMessage: 'It looks like there are no ideas yet.',
   },
   noFilteredIdeas: {
     id: 'app.containers.IdeaCards.noFilteredIdeas',
