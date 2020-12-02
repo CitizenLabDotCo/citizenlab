@@ -2,7 +2,7 @@ import React, { memo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import { Checkbox, Tag } from 'cl2-component-library';
+import { Checkbox } from 'cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -20,7 +20,8 @@ import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import { IMergedTagging } from 'hooks/useTaggings';
+import { ITagging } from 'services/taggings';
+import TagWrapper from './TagWrapper';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -32,7 +33,7 @@ const Container = styled.tr<{ bgColor: string }>`
 const StyledCheckbox = styled(Checkbox)`
   margin-top: -4px;
 `;
-const StyledTag = styled(Tag)`
+const StyledTagWrapper = styled(TagWrapper)`
   margin-right: 4px;
 `;
 
@@ -56,7 +57,7 @@ interface Props {
   className?: string;
   openPreview: (id: string) => void;
   rowRef?: RefObject<any>;
-  taggings: IMergedTagging[];
+  taggings: ITagging[];
   showTagColumn: boolean;
 }
 
@@ -108,6 +109,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         bgColor={bgColor()}
         onClick={handleOnChecked}
         ref={rowRef}
+        key={idea.id}
       >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
@@ -120,18 +122,14 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         </td>
         {showTagColumn && (
           <td className="tags">
-            {taggings.map((tagging) =>
-              tagging.tag ? (
-                <StyledTag
-                  key={tagging.id}
-                  text={localize(tagging.tag.attributes.title_multiloc)}
-                  isAutoTag={
-                    tagging.attributes.assignment_method === 'automatic'
-                  }
-                  isSelected={selected}
-                />
-              ) : null
-            )}
+            {taggings.map((tagging) => (
+              <StyledTagWrapper
+                isAutoTag={tagging.attributes.assignment_method === 'automatic'}
+                isSelected={selected}
+                tagId={tagging.attributes.tag_id}
+                key={tagging.attributes.tag_id}
+              />
+            ))}
           </td>
         )}
       </Container>

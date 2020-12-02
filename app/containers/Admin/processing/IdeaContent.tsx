@@ -5,8 +5,7 @@ import { adopt } from 'react-adopt';
 // components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-// import { Tag } from 'cl2-component-library';
-import { StyledTag } from './PostPreview';
+import TagWrapper from './TagWrapper';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -20,9 +19,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
-import { IMergedTagging } from 'hooks/useTaggings';
-import { deleteTagging } from 'services/taggings';
+import { stylingConsts, fontSizes } from 'utils/styleUtils';
+import { deleteTagging, ITagging } from 'services/taggings';
 
 const Content = styled.div`
   width: 100%;
@@ -31,6 +29,21 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const StyledTagWrapper = styled(TagWrapper)`
+  height: 24px;
+  font-weight: 500;
+  margin: 0px 4px 4px 0px;
+  width: fit-content;
+  > * {
+    font-size: ${fontSizes.large}px;
+    align-self: center;
+    line-height: 14px;
+    > * {
+      height: 14px;
+    }
+  }
 `;
 
 const StyledBody = styled(Body)`
@@ -60,7 +73,7 @@ const StyledTitle = styled(Title)`
 
 export interface InputProps {
   ideaId: string | null;
-  manualTaggings: IMergedTagging[];
+  manualTaggings: ITagging[];
 }
 
 interface DataProps {
@@ -100,18 +113,15 @@ export class IdeaContent extends PureComponent<
           />
           <TagList>
             {manualTaggings.length > 0 &&
-              manualTaggings.map((tagging) =>
-                tagging.tag ? (
-                  <StyledTag
-                    key={tagging.id}
-                    icon="close"
-                    onTagClick={this.removeTagging(tagging.id)}
-                    isAutoTag={false}
-                    isSelected={false}
-                    text={localize(tagging.tag.attributes.title_multiloc)}
-                  />
-                ) : null
-              )}
+              manualTaggings.map((tagging) => (
+                <StyledTagWrapper
+                  onTagClick={this.removeTagging(tagging.id)}
+                  isAutoTag={false}
+                  isSelected={false}
+                  icon="close"
+                  tagId={tagging.attributes.tag_id}
+                />
+              ))}
           </TagList>
         </Content>
       );

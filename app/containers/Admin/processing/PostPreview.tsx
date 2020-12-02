@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 // components
 import IdeaContent from './IdeaContent';
-import { Button, Tag } from 'cl2-component-library';
+import { Button } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -14,13 +14,17 @@ import { ManagerType } from 'components/admin/PostManager';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { addTagging, deleteTagging, switchToManual } from 'services/taggings';
+import {
+  addTagging,
+  deleteTagging,
+  switchToManual,
+  ITagging,
+} from 'services/taggings';
 import TagSearch from './TagSearch';
 import { isNilOrError } from 'utils/helperUtils';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { ITag } from 'services/tags';
-import { IMergedTagging } from 'hooks/useTaggings';
 import { InjectedIntlProps } from 'react-intl';
+import TagWrapper from './TagWrapper';
 
 export const Container = styled.div`
   display: flex;
@@ -71,8 +75,14 @@ const TagSection = styled.div`
 
 const TagSubSection = styled.div`
   margin: 12px 0px;
-  > * {
-    padding: 6px 0px;
+  &.manualTag {
+    flex: 7;
+  }
+  &.smartTag {
+    flex: 1;
+  }
+  &.tagSearch {
+    flex: 1;
   }
 `;
 
@@ -81,7 +91,7 @@ export const TagList = styled.div`
   margin: 0px 10px 10px 0px;
 `;
 
-export const StyledTag = styled(Tag)`
+const StyledTagWrapper = styled(TagWrapper)`
   height: 24px;
   font-weight: 500;
   margin: 0px 4px 4px 0px;
@@ -103,7 +113,7 @@ interface InputProps {
   type: ManagerType;
   onClose: () => void;
   postId: string | null;
-  taggings: IMergedTagging[] | null;
+  taggings: ITagging[] | null;
   handleNavigation: (direction: Direction) => void;
   tags: ITag[] | null | undefined;
 }
@@ -116,11 +126,8 @@ interface State {
   newTag: string | null;
 }
 
-class PostPreview extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
-  State
-> {
-  constructor(props: Props & InjectedLocalized & InjectedIntlProps) {
+class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       postId: props.postId,
@@ -153,14 +160,21 @@ class PostPreview extends PureComponent<
     this.props.handleNavigation(direction);
   };
 
-  getManualTaggings = (taggings: IMergedTagging[]) =>
+  getManualTaggings = (taggings: ITagging[]) =>
     taggings.filter(
       (tagging) => tagging.attributes.assignment_method === 'manual'
     );
-  getAutomaticTaggings = (taggings: IMergedTagging[]) =>
+  getAutomaticTaggings = (taggings: ITagging[]) =>
     taggings.filter(
       (tagging) => tagging.attributes.assignment_method === 'automatic'
     );
+  getUnusedTags = (tags: ITag[], taggings: ITagging[]) => {
+    const res = tags.filter(
+      (tag) =>
+        !taggings?.find((tagging) => tagging.attributes.tag_id === tag.id)
+    );
+    return res;
+  };
 
   tagIdea = (tagId) => () => {
     const postId = this.props.postId;
@@ -199,7 +213,7 @@ class PostPreview extends PureComponent<
   };
 
   render() {
-    const { taggings, localize, tags } = this.props;
+    const { taggings, tags } = this.props;
     const manualTaggings = isNilOrError(taggings)
       ? []
       : this.getManualTaggings(taggings);
@@ -242,55 +256,43 @@ class PostPreview extends PureComponent<
               manualTaggings={manualTaggings}
             />
             <TagSection>
-              {automaticTaggings.length > 0 && (
-                <TagSubSection>
-                  <h4>
-                    <FormattedMessage {...messages.addSmartTag} />
-                  </h4>
+              <TagSubSection className={'smartTag'}>
+                <h4>
+                  <FormattedMessage {...messages.addSmartTag} />
+                </h4>
+                {automaticTaggings.length > 0 && (
                   <TagList>
-                    {automaticTaggings.map((tagging) =>
-                      tagging.tag ? (
-                        <StyledTag
-                          key={tagging.id}
-                          icon="close"
-                          onIconClick={this.removeTagging(tagging.id)}
-                          onTagClick={this.switchToManual(tagging.id)}
-                          isAutoTag={true}
-                          isSelected={true}
-                          text={localize(tagging.tag.attributes.title_multiloc)}
-                        />
-                      ) : null
-                    )}
+                    {automaticTaggings.map((tagging) => (
+                      <StyledTagWrapper
+                        onTagClick={this.switchToManual(tagging.id)}
+                        icon="plus-circle"
+                        isAutoTag={true}
+                        isSelected={false}
+                        tagId={tagging.attributes.tag_id}
+                      />
+                    ))}
                   </TagList>
-                </TagSubSection>
-              )}
-              {!isNilOrError(tags) && (
-                <TagSubSection>
+                )}
+              </TagSubSection>
+              {!isNilOrError(tags) && !isNilOrError(taggings) && (
+                <TagSubSection className={'manualTag'}>
                   <h4>
                     <FormattedMessage {...messages.addExistingTag} />
                   </h4>
                   <TagList>
-                    {tags
-                      .filter(
-                        (tag) =>
-                          !taggings?.find(
-                            (tagging) => tagging.attributes.tag_id === tag.id
-                          )
-                      )
-                      .map((tag) => (
-                        <StyledTag
-                          key={tag.id}
-                          icon="plus-circle"
-                          onTagClick={this.tagIdea(tag.id)}
-                          isAutoTag={false}
-                          isSelected={true}
-                          text={localize(tag.attributes.title_multiloc)}
-                        />
-                      ))}
+                    {this.getUnusedTags(tags, taggings).map((tag) => (
+                      <StyledTagWrapper
+                        tagId={tag.id}
+                        onTagClick={this.tagIdea(tag.id)}
+                        icon="plus-circle"
+                        isAutoTag={false}
+                        isSelected={false}
+                      />
+                    ))}
                   </TagList>
                 </TagSubSection>
               )}
-              <TagSubSection>
+              <TagSubSection className={'tagSearch'}>
                 <h4>
                   <FormattedMessage {...messages.addNewTag} />
                 </h4>
@@ -313,4 +315,4 @@ class PostPreview extends PureComponent<
   }
 }
 
-export default injectIntl(injectLocalize(PostPreview));
+export default injectIntl(PostPreview);
