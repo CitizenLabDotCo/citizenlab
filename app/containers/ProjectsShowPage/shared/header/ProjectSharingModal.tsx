@@ -79,7 +79,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                           title,
                         })}
                         utmParams={utmParams}
-                        layout={2}
+                        layout={'columnLayout'}
                       />
                     );
                   }}
