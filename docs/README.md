@@ -4,6 +4,7 @@
 
 ### Fixed
 - The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
+- Styling mistakes in the idea page voting and participatory budget boxes.
 
 ## 2020-12-01
 
