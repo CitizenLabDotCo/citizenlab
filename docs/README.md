@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Changed
+- By default the last active phase instead of the last phase is now selected when a timeline project has no active phase
+
 ### Fixed
 - The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
 - Styling mistakes in the idea page voting and participatory budget boxes.
