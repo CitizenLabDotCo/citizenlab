@@ -115,6 +115,7 @@ export class IdeaContent extends PureComponent<
             {manualTaggings.length > 0 &&
               manualTaggings.map((tagging) => (
                 <StyledTagWrapper
+                  key={tagging.id}
                   onTagClick={this.removeTagging(tagging.id)}
                   isAutoTag={false}
                   isSelected={false}

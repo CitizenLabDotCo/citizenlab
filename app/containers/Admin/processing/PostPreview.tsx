@@ -164,10 +164,12 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     taggings.filter(
       (tagging) => tagging.attributes.assignment_method === 'manual'
     );
+
   getAutomaticTaggings = (taggings: ITagging[]) =>
     taggings.filter(
       (tagging) => tagging.attributes.assignment_method === 'automatic'
     );
+
   getUnusedTags = (tags: ITag[], taggings: ITagging[]) => {
     const res = tags.filter(
       (tag) =>
@@ -264,6 +266,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   <TagList>
                     {automaticTaggings.map((tagging) => (
                       <StyledTagWrapper
+                        key={tagging.id}
                         onTagClick={this.switchToManual(tagging.id)}
                         icon="plus-circle"
                         isAutoTag={true}
@@ -282,6 +285,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   <TagList>
                     {this.getUnusedTags(tags, taggings).map((tag) => (
                       <StyledTagWrapper
+                        key={tag.id}
                         tagId={tag.id}
                         onTagClick={this.tagIdea(tag.id)}
                         icon="plus-circle"
