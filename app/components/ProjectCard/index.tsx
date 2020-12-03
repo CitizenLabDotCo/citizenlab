@@ -622,19 +622,25 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
-        const message = projectInputTermMessages(projectInputTerm, {
-          idea: messages.postYourIdea,
-        });
-        ctaMessage = <FormattedMessage {...message} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...projectInputTermMessages(projectInputTerm, {
+              idea: messages.postYourIdea,
+            })}
+          />
+        );
       } else if (participationMethod === 'ideation' && canVote) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
-        const message = projectInputTermMessages(projectInputTerm, {
-          idea: messages.viewTheIdeas,
-        });
-        ctaMessage = <FormattedMessage {...message} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...projectInputTermMessages(projectInputTerm, {
+              idea: messages.viewTheIdeas,
+            })}
+          />
+        );
       }
 
       const contentHeader = (

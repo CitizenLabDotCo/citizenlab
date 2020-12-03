@@ -88,11 +88,16 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(project)) {
       const projectInputTerm = project.attributes.input_term;
-      const confirmationMessage = projectInputTermMessages(projectInputTerm, {
-        idea: messages.deleteIdeaConfirmation,
-      });
 
-      if (window.confirm(formatMessage(confirmationMessage))) {
+      if (
+        window.confirm(
+          formatMessage(
+            projectInputTermMessages(projectInputTerm, {
+              idea: messages.deleteIdeaConfirmation,
+            })
+          )
+        )
+      ) {
         deleteIdea(ideaId);
         clHistory.goBack();
       }
