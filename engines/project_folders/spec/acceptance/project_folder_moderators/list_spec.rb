@@ -29,7 +29,7 @@ resource 'Project Folder Moderators' do
       create_list(:project_folder_moderator, 3, project_folder: other_project_folder)
     end
 
-    parameter :folder_id, 'The project folder id to filter moderators by'
+    parameter :project_folder_id, 'The project folder id to filter moderators by'
 
     context 'when not passing a folder id' do
       context 'when current_user is a normal user' do
@@ -89,7 +89,7 @@ resource 'Project Folder Moderators' do
     end
 
     context 'when passing a project folder id' do
-      let(:folder_id) { ProjectFolders::Folder.first.id }
+      let(:project_folder_id) { ProjectFolders::Folder.first.id }
 
       context 'when current_user is a normal user' do
         before do
@@ -114,7 +114,7 @@ resource 'Project Folder Moderators' do
 
         example_request 'It returns a serialized json with the filtered project moderators' do
           json_response       = json_parse(response_body)
-          serializer_mock     = serialize_moderators(admin, User.project_folder_moderator(folder_id))
+          serializer_mock     = serialize_moderators(admin, User.project_folder_moderator(project_folder_id))
           data_length         = json_response.dig(:data).length
 
           expect(json_response).to be_present
@@ -123,8 +123,8 @@ resource 'Project Folder Moderators' do
         end
       end
 
-      context 'when current_user is a project folder moderator of the folder with id = folder_id' do
-        let(:moderator)         { User.project_folder_moderator(folder_id).first }
+      context 'when current_user is a project folder moderator of the folder with id = project_folder_id' do
+        let(:moderator)         { User.project_folder_moderator(project_folder_id).first }
         let(:moderated_folders) { moderator.moderated_project_folders }
 
         before do
@@ -137,7 +137,7 @@ resource 'Project Folder Moderators' do
 
         example_request 'It returns a serialized json containing moderators that moderate the users folders' do
           json_response       = json_parse(response_body)
-          serializer_mock     = serialize_moderators(moderator, User.project_folder_moderator(folder_id))
+          serializer_mock     = serialize_moderators(moderator, User.project_folder_moderator(project_folder_id))
           data_length         = json_response.dig(:data).length
 
           expect(json_response).to be_present
@@ -146,8 +146,8 @@ resource 'Project Folder Moderators' do
         end
       end
 
-      context 'when current_user is not project folder moderator of the folder with id = folder_id' do
-        let(:moderator)         { User.not_project_folder_moderator(folder_id).first }
+      context 'when current_user is not project folder moderator of the folder with id = project_folder_id' do
+        let(:moderator)         { User.not_project_folder_moderator(project_folder_id).first }
         let(:moderated_folders) { moderator.moderated_project_folders }
 
         before do

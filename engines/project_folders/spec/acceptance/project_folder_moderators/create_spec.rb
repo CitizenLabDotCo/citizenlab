@@ -22,11 +22,11 @@ resource 'Project Folder Moderators' do
     header 'Content-Type', 'application/json'
 
     with_options scope: :project_folder_moderator do
-      parameter :folder_id, 'The project folder id to filter moderators by', type: :uuid
+      parameter :project_folder_id, 'The project folder id to filter moderators by', type: :uuid
       parameter :user_id, 'The user id of the moderator', type: :uuid
     end
 
-    let(:folder_id) { project_folder.id }
+    let(:project_folder_id) { project_folder.id }
     let(:user_id)   { user.id }
 
     context 'when passing valid params' do
