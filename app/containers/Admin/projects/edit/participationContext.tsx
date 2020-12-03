@@ -28,6 +28,7 @@ import {
   SurveyServices,
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
+  InputTerm,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -141,6 +142,7 @@ export interface IParticipationContextConfig {
   downvoting_enabled?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
+  input_term?: InputTerm | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -198,6 +200,7 @@ class ParticipationContext extends PureComponent<
       noBudgetingAmount: null,
       poll_anonymous: false,
       ideas_order: ideaDefaultSortMethodFallback,
+      input_term: 'idea',
     };
     this.subscriptions = [];
   }
@@ -229,6 +232,7 @@ class ParticipationContext extends PureComponent<
             survey_service,
             poll_anonymous,
             ideas_order,
+            input_term,
           } = data.data.attributes;
 
           this.setState({
@@ -245,6 +249,7 @@ class ParticipationContext extends PureComponent<
             survey_service,
             poll_anonymous,
             ideas_order,
+            input_term,
             loaded: true,
           });
         } else {
@@ -277,6 +282,7 @@ class ParticipationContext extends PureComponent<
       survey_service,
       poll_anonymous,
       ideas_order,
+      input_term,
     } = this.state;
     let output: IParticipationContextConfig = {} as any;
 
@@ -293,6 +299,7 @@ class ParticipationContext extends PureComponent<
           voting_enabled,
           presentation_mode,
           ideas_order,
+          input_term,
           voting_method: voting_enabled ? voting_method : null,
           voting_limited_max:
             voting_enabled && voting_method === 'limited'
@@ -325,6 +332,7 @@ class ParticipationContext extends PureComponent<
           commenting_enabled,
           presentation_mode,
           ideas_order,
+          input_term,
         },
         isNil
       ) as IParticipationContextConfig;
@@ -375,6 +383,11 @@ class ParticipationContext extends PureComponent<
         participation_method === 'ideation' ||
         participation_method === 'budgeting'
           ? ideaDefaultSortMethodFallback
+          : null,
+      input_term:
+        participation_method === 'ideation' ||
+        participation_method === 'budgeting'
+          ? 'idea'
           : null,
       downvoting_enabled: participation_method === 'ideation' ? true : null,
       presentation_mode: participation_method === 'ideation' ? 'card' : null,
