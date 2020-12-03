@@ -9,11 +9,7 @@ import DashboardTabs from './components/DashboardTabs';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // permissions
-import {
-  isAdmin,
-  isProjectModerator,
-  isAdminPublicationModerator,
-} from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // i18n
 import messages from './messages';
@@ -286,10 +282,7 @@ export const DashboardsPage = memo(
             {children}
           </DashboardTabs>
         );
-      } else if (
-        isProjectModerator({ data: authUser }) ||
-        isAdminPublicationModerator({ data: authUser })
-      ) {
+      } else if (isProjectModerator({ data: authUser })) {
         return (
           <DashboardTabs resource={resource} tabs={moderatorTabs}>
             <HelmetIntl

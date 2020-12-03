@@ -51,22 +51,3 @@ export const isProjectModerator = (
       ))
   );
 };
-
-export const isAdminPublicationModerator = (
-  user?: IUser | null,
-  adminPublicationId?: IAdminPublicationData['id'] | null
-) => {
-  return (
-    isModerator(user) &&
-    (!adminPublicationId ||
-      !!(
-        user &&
-        adminPublicationId &&
-        user.data.attributes?.roles &&
-        user.data.attributes?.roles?.find(
-          (r: IAdminPublicationModerator) =>
-            r.admin_publication_id === adminPublicationId
-        )
-      ))
-  );
-};
