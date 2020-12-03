@@ -26,6 +26,7 @@ import { ITag } from 'services/tags';
 import { InjectedIntlProps } from 'react-intl';
 import TagWrapper from './TagWrapper';
 import { trackEventByName } from 'utils/analytics';
+import { getTagValidation } from 'utils/tagUtils';
 
 export const Container = styled.div`
   display: flex;
@@ -107,6 +108,13 @@ const StyledTagWrapper = styled(TagWrapper)`
   }
 `;
 
+const StyledValidationError = styled.p`
+  visibility: hidden;
+  &.show {
+    visibility: visible;
+  }
+`;
+
 interface DataProps {}
 
 type Direction = 'up' | 'down';
@@ -124,6 +132,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   postId: string | null;
   newTag: string | null;
+  isTagValid: boolean;
 }
 
 class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
@@ -132,6 +141,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       postId: props.postId,
       newTag: null,
+      isTagValid: true,
     };
   }
 
@@ -221,8 +231,10 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   addTaggingCreateTag = (tagText: string) => {
-    const { locale } = this.props.intl;
+    const isTagValid = getTagValidation(tagText);
+    this.setState({ isTagValid });
 
+    const { locale } = this.props.intl;
     const title_multiloc = {};
     title_multiloc[locale] = tagText;
 
@@ -230,7 +242,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
       action: 'created and assigned tag',
     });
 
-    return this.state.postId
+    return this.state.postId && isTagValid
       ? addTagging(this.state.postId, null, { title_multiloc })
       : new Promise((res) => res());
   };
@@ -333,6 +345,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   onAddNew={this.addTaggingCreateTag}
                 />
               </TagSubSection>
+              <StyledValidationError
+                className={`${!this.state.isTagValid && 'show'}`}
+              >
+                <FormattedMessage {...messages.tagValidationErrorMessage} />
+              </StyledValidationError>
             </TagSection>
           </>
         )}
