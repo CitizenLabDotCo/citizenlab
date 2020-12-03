@@ -704,7 +704,7 @@ class ParticipationContext extends PureComponent<
               </>
             )}
 
-            {participation_method === 'ideation' && (
+            {participation_method === 'ideation' && input_term && (
               <>
                 <StyledSectionField>
                   <SubSectionTitle>
@@ -817,7 +817,9 @@ class ParticipationContext extends PureComponent<
                           <IconTooltip
                             content={
                               <FormattedMessage
-                                {...messages.downvotingTooltip}
+                                {...inputTermMessages(input_term, {
+                                  idea: messages.downvotingTooltip,
+                                })}
                               />
                             }
                           />
