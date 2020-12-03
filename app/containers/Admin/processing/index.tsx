@@ -256,8 +256,8 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
-    const enterModalKey = useKeyPress('Enter');
-    const exitModalKey = useKeyPress('Escape');
+    const enterTaggingViewKey = useKeyPress('Enter');
+    const exitTaggingViewKey = useKeyPress('Escape');
 
     const rowRef = useRef<HTMLDivElement>(null);
 
@@ -308,7 +308,11 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [downArrow, ideaList]);
 
     useEffect(() => {
-      if (enterModalKey && !isNilOrError(ideaList) && ideaList.length > 0) {
+      if (
+        enterTaggingViewKey &&
+        !isNilOrError(ideaList) &&
+        ideaList.length > 0
+      ) {
         trackEventByName('Keyboard shorcut', { key: 'enter' });
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
@@ -317,14 +321,14 @@ const Processing = memo<Props & InjectedIntlProps>(
           setPreviewPostId(highlightedId);
         }
       }
-    }, [enterModalKey, ideaList]);
+    }, [enterTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      if (exitModalKey && ideaList) {
+      if (exitTaggingViewKey && ideaList) {
         trackEventByName('Keyboard shorcut', { key: 'escape' });
         setPreviewPostId(null);
       }
-    }, [exitModalKey, ideaList]);
+    }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
       setIdeaList(ideas?.list);
