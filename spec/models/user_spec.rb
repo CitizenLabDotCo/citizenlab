@@ -14,13 +14,6 @@ RSpec.describe User, type: :model do
     include_examples 'has_one_role', 'admin'
   end
 
-  describe 'managing admin publication moderator roles' do
-    let(:roleable) { create(:project).admin_publication }
-    let(:other_roleable) { create(:project).admin_publication }
-
-    include_examples 'has_many_associated_roles', 'admin_publication_moderator'
-  end
-
   describe 'managing project moderator roles' do
     let(:roleable) { create(:project) }
     let(:other_roleable) { create(:project) }
