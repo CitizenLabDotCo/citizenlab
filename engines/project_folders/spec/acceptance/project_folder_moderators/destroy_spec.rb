@@ -10,7 +10,7 @@ resource 'Project Folder Moderators' do
 
   describe 'Routes to Roles Controller', type: :routing do
     it 'routes to roles/roles#delete' do
-      expect(delete: 'web_api/v1/project_folder_moderators').to route_to(
+      expect(delete: 'web_api/v1/project_folder_moderators/:id').to route_to(
         controller: 'roles/roles',
         action: 'destroy',
         format: :json

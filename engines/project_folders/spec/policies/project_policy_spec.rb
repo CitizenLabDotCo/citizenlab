@@ -8,7 +8,7 @@ describe ProjectPolicy do
   let!(:project) { create(:project) }
 
   context "for an project folder moderator" do
-    let(:user) { create(:project_folder_moderator) }
+    let(:user) { build(:project_folder_moderator) }
 
     it { should     permit(:show)    }
     it { should     permit(:create)  }
