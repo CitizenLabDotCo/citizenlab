@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProject": "Create a project",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Create a project from a template",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Idea overview",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip": "Puteți seta comanda implicită pentru ca ideile să fie afișate pe pagina principală a proiectului.",
+  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.departments": "Departments",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",

@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip": "",
+  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.departments": "",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "",
   "app.containers.AdminPage.ProjectEdit.disabled": "",

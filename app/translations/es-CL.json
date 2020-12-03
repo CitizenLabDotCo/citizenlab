@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProject": "Crear un proyecto",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Crear un proyecto a partir de una plantilla",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Presentación de las ideas",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip": "Puedes escoger el orden por defecto en el cual se desplegarán en la página principal del proyecto.",
+  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamentos",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Descripción",
   "app.containers.AdminPage.ProjectEdit.disabled": "Desactivado",
