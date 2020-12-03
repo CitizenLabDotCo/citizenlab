@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Gearchiveerd",
   "app.components.ProjectCard.comment": "Reageer",
   "app.components.ProjectCard.finished": "Afgelopen",
-  "app.components.ProjectCard.idea": "idee",
-  "app.components.ProjectCard.ideas": "ideeën",
   "app.components.ProjectCard.learnMore": "Lees meer",
   "app.components.ProjectCard.postYourIdea": "Voeg je idee toe",
   "app.components.ProjectCard.remaining": "{timeRemaining} resterend",

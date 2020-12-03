@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Archiviert",
   "app.components.ProjectCard.comment": "Kommentar",
   "app.components.ProjectCard.finished": "Beendet",
-  "app.components.ProjectCard.idea": "{orgName, select, München {Mangel} other {Idee}}",
-  "app.components.ProjectCard.ideas": "{orgName, select, München {Mängel} other {Ideen}}",
   "app.components.ProjectCard.learnMore": "Mehr erfahren",
   "app.components.ProjectCard.postYourIdea": "Idee hinzufügen",
   "app.components.ProjectCard.remaining": "Noch {timeRemaining}",
