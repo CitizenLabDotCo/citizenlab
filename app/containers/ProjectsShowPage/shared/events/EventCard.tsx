@@ -128,7 +128,7 @@ const EventDate = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: ${transparentize(0.88, colors.label)};
+  background: #fff;
   border: solid 1px ${colors.label};
   border-bottom: none;
 `;
