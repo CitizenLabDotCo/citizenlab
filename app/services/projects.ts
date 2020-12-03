@@ -5,7 +5,7 @@ import {
   SurveyServices,
   ParticipationMethod,
   IdeaDefaultSortMethod,
-  ProjectInputTerm,
+  InputTerm,
 } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
@@ -70,6 +70,7 @@ export interface IProjectData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
+    input_term: InputTerm | null;
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;
@@ -97,7 +98,6 @@ export interface IProjectData {
     ordering: number;
     poll_anonymous?: boolean;
     ideas_order?: IdeaDefaultSortMethod;
-    input_term: ProjectInputTerm;
     action_descriptor: {
       posting_idea: {
         enabled: boolean;
@@ -174,6 +174,7 @@ export interface IUpdatedProjectProperties {
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  input_term?: InputTerm;
   slug?: string;
 }
 
