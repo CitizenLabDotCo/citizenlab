@@ -765,7 +765,9 @@ class ParticipationContext extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...messages.votingMethodTooltip}
+                              {...inputTermMessages(input_term, {
+                                idea: messages.votingMethodTooltip,
+                              })}
                             />
                           }
                         />
