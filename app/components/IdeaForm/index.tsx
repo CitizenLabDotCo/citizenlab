@@ -685,12 +685,11 @@ class IdeaForm extends PureComponent<
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
-            {/* <FormSectionTitle
+            <FormSectionTitle
               message={projectInputTermMessages(projectInputTerm, {
                 idea: messages.formGeneralSectionTitle,
               })}
-            /> */}
-            <FormSectionTitle message={messages.formGeneralSectionTitle} />
+            />
             <FormElement id="e2e-idea-title-input">
               <FormLabel
                 htmlFor="title"
