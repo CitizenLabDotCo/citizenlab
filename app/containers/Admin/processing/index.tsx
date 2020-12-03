@@ -701,7 +701,9 @@ const Data = adopt<DataProps, InputProps>({
         type="paginated"
         pageSize={2000000}
         projectIds={projectIds}
-        cache={true}
+        cache={false}
+        mini={true}
+        sort="new"
       >
         {render}
       </GetIdeas>

@@ -213,11 +213,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
       action: 'selected existing tag from text input',
     });
 
-    return postId
-      ? tagging
-        ? switchToManual(tagging.id)
-        : addTagging(postId, tagId)
-      : new Promise((res) => res());
+    if (postId) {
+      return tagging ? switchToManual(tagging.id) : addTagging(postId, tagId);
+    } else {
+      return new Promise((res) => res());
+    }
   };
 
   addTaggingCreateTag = (tagText: string) => {
