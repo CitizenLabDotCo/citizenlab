@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_092906) do
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "host"
     t.string "logo"
     t.string "header_bg"
     t.string "favicon"
