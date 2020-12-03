@@ -2,9 +2,7 @@ import React, { FormEvent, useState, useEffect } from 'react';
 
 // components
 import { Button, Icon, Input, Spinner, Tag } from 'cl2-component-library';
-
-// hooks
-import useLocale from 'hooks/useLocale';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // styling
 import styled from 'styled-components';
@@ -13,15 +11,22 @@ import { stylingConsts, colors, fontSizes } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import GoBackButton from 'components/UI/GoBackButton';
+
+// hooks
+import useLocale from 'hooks/useLocale';
 import useKeyPress from 'hooks/useKeyPress';
 import useTagSuggestions from 'hooks/useTagSuggestions';
 import useLocalize from 'hooks/useLocalize';
-import { ITag } from 'services/tags';
 import useTags from 'hooks/useTags';
+
+// services and typings
+import { ITag } from 'services/tags';
 import { generateTaggings } from 'services/taggings';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
+import { getTagValidation } from 'utils/tagUtils';
 
 const Container = styled.div`
   display: flex;
@@ -180,7 +185,10 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   }, [addTagInputKeyPress]);
 
   const handleAddNewTag = () => {
-    trackEventByName('Autotag View', { action: 'added new tag' });
+    trackEventByName('Autotag View', {
+      action: 'added new tag',
+      content: newTag,
+    });
     setNewTagsList([...newTagsList, newTag]);
     setNewTag('');
   };
@@ -227,20 +235,8 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
   };
 
   useEffect(() => {
-    if (newTag.length < 2) {
-      setIsValidTag(false);
-    }
-
-    const splitTag = newTag;
-    const wordCount = splitTag.split(' ').filter((n) => {
-      return n !== '';
-    }).length;
-
-    setIsValidTag(
-      !isNilOrError(wordCount) &&
-        [1, 2].includes(wordCount) &&
-        !newTagsList.includes(newTag)
-    );
+    const isTagValid: boolean = getTagValidation(newTag);
+    setIsValidTag(isTagValid && !newTagsList.includes(newTag));
   }, [newTag]);
 
   const handleSetActiveTab = (tab: 'suggestions' | 'existingTags') => (e) => {
