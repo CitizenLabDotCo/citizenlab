@@ -20,6 +20,7 @@ import { IOption } from 'typings';
 import GetTags, { GetTagsChildProps } from 'resources/GetTags';
 import { ITag, tagsStream } from 'services/tags';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { getTagValidation } from 'utils/tagUtils';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -134,6 +135,10 @@ class TagAdd extends PureComponent<
     return this.props.intl.formatMessage(messages.createTag);
   };
 
+  isValidInput = (inputValue) => {
+    return getTagValidation(inputValue);
+  };
+
   render() {
     const { searchInput, selection } = this.state;
     const { formatMessage } = this.props.intl;
@@ -156,6 +161,7 @@ class TagAdd extends PureComponent<
             styles={selectStyles}
             value={selection}
             onCreateOption={this.handleOnNewTag}
+            isValidNewOption={this.isValidInput}
             autoFocus={true}
             components={
               isDropdownIconHidden && {
