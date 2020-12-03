@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Arkiveret",
   "app.components.ProjectCard.comment": "Kommentar",
   "app.components.ProjectCard.finished": "Afsluttet",
-  "app.components.ProjectCard.idea": "{tenantName, select, DeloitteDK {indlæg} other {idé}}",
-  "app.components.ProjectCard.ideas": "{tenantName, select, DeloitteDK {indlæg} other {ideer}}",
   "app.components.ProjectCard.learnMore": "Lær mere ",
   "app.components.ProjectCard.postYourIdea": "{tenantName, select, DeloitteDK {Start et indlæg} other {Start en idé}}",
   "app.components.ProjectCard.remaining": "{timeRemaining} tilbage ",

@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Zarchiwizowany",
   "app.components.ProjectCard.comment": "Skomentuj",
   "app.components.ProjectCard.finished": "Zakończone",
-  "app.components.ProjectCard.idea": "pomysł",
-  "app.components.ProjectCard.ideas": "pomysły",
   "app.components.ProjectCard.learnMore": "Dowiedz się więcej",
   "app.components.ProjectCard.postYourIdea": "Zamieść swój pomysł",
   "app.components.ProjectCard.remaining": "{timeRemaining} pozostało",
