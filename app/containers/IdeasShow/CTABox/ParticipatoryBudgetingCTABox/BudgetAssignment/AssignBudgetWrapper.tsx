@@ -61,6 +61,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
               participationContextId={participationContextId}
               participationContextType={participationContextType}
               budgetingDescriptor={budgetingDescriptor}
+              projectId={projectId}
             />
           </PopContainer>
         )}
