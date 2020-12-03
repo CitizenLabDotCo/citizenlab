@@ -31,7 +31,6 @@ import {
   defaultCardStyle,
   viewportWidths,
 } from 'utils/styleUtils';
-import { transparentize } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
