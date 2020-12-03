@@ -49,6 +49,7 @@ import {
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
+import { projectInputTermMessages } from 'utils/i18n';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -620,7 +621,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
-        ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
+        const projectInputTerm = project.attributes.input_term;
+        const message = projectInputTermMessages(projectInputTerm, {
+          idea: messages.postYourIdea,
+        });
+        ctaMessage = <FormattedMessage {...message} />;
       } else if (participationMethod === 'ideation' && canVote) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'ideation' && canComment) {
