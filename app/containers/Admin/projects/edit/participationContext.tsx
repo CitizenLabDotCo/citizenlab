@@ -41,6 +41,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { inputTermMessages } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -522,6 +523,7 @@ class ParticipationContext extends PureComponent<
       poll_anonymous,
       presentation_mode,
       ideas_order,
+      input_term,
     } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
@@ -892,7 +894,9 @@ class ParticipationContext extends PureComponent<
                     <IconTooltip
                       content={
                         <FormattedMessage
-                          {...messages.defaultIdeaSortingTooltip}
+                          {...inputTermMessages(input_term, {
+                            idea: messages.defaultIdeaSortingTooltip,
+                          })}
                         />
                       }
                     />
