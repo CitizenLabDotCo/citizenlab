@@ -24,13 +24,13 @@ resource 'Project Folder Moderators' do
     parameter :id, 'The user id of the moderator to remove rights from', type: :uuid
 
     with_options scope: :project_folder_moderator do
-      parameter :folder_id, 'The folder id to remove', type: :uuid
+      parameter :project_folder_id, 'The folder id to remove', type: :uuid
     end
 
     let(:id)             { moderator.id }
     let(:moderator)      { create(:project_folder_moderator, project_folder: project_folder) }
     let(:project_folder) { create(:project_folder) }
-    let(:folder_id)      { project_folder.id }
+    let(:project_folder_id)      { project_folder.id }
 
     context 'when passing valid params' do
       let(:project_folder) { create(:project_folder) }
@@ -66,7 +66,7 @@ resource 'Project Folder Moderators' do
         end
       end
 
-      context 'when current_user is a project folder moderator of the given folder_id' do
+      context 'when current_user is a project folder moderator of the given project_folder_id' do
         before do
           header_token_for(moderator)
           expect(moderator.project_folder_moderator?(project_folder)).to be_truthy
@@ -84,7 +84,7 @@ resource 'Project Folder Moderators' do
         end
       end
 
-      context 'when current_user is a project folder moderator but not of the given folder_id' do
+      context 'when current_user is a project folder moderator but not of the given project_folder_id' do
         let(:another_project_folder) { create(:project_folder) }
         let(:another_moderator) { create(:project_folder_moderator, project_folder: another_project_folder) }
 
