@@ -94,7 +94,7 @@ export class IdeaContent extends PureComponent<
 
   removeTagging = (taggingId) => () => {
     trackEventByName('Manual Tagging', {
-      action: 'removed tag from idea',
+      action: 'removed tagging',
     });
     deleteTagging(taggingId);
   };
