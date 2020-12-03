@@ -13,12 +13,14 @@ import SpamReportForm from 'containers/SpamReport';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import { projectInputTermMessages } from 'utils/i18n';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
@@ -44,10 +46,12 @@ interface InputProps {
   idea: IIdeaData;
   hasLeftMargin: boolean;
   className?: string;
+  projectId: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -77,13 +81,21 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   onDeleteIdea = (ideaId: string) => () => {
-    const message = this.props.intl.formatMessage(
-      messages.deleteIdeaConfirmation
-    );
+    const {
+      project,
+      intl: { formatMessage },
+    } = this.props;
 
-    if (window.confirm(message)) {
-      deleteIdea(ideaId);
-      clHistory.goBack();
+    if (!isNilOrError(project)) {
+      const projectInputTerm = project.attributes.input_term;
+      const confirmationMessage = projectInputTermMessages(projectInputTerm, {
+        idea: messages.deleteIdeaConfirmation,
+      });
+
+      if (window.confirm(formatMessage(confirmationMessage))) {
+        deleteIdea(ideaId);
+        clHistory.goBack();
+      }
     }
   };
 
@@ -149,6 +161,7 @@ const IdeaMoreActionsWithHOCs = injectIntl(IdeaMoreActions);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
+  project: ({ projectId }) => <GetProject projectId={projectId} />,
 });
 
 export default (inputProps: InputProps) => (
