@@ -396,6 +396,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               : [];
           trackEventByName('Idea Table', {
             action: 'clicked on "select all ideas" checkbox',
+            context: `${previewPostId ? 'tagging view' : 'filter view'}`,
           });
           setSelectedRows(newSelectedRows);
         }
