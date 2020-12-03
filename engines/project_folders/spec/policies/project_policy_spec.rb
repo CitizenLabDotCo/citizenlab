@@ -7,7 +7,7 @@ describe ProjectPolicy do
 
   let!(:project) { create(:project) }
 
-  context "for an project folder moderator" do
+  context 'for an project folder moderator' do
     let(:user) { build(:project_folder_moderator) }
 
     it { should     permit(:show)    }
@@ -16,12 +16,12 @@ describe ProjectPolicy do
     it { should_not permit(:reorder) }
     it { should_not permit(:destroy) }
 
-    it "should index the project"  do
+    it 'should index the project'  do
       expect(scope.resolve.size).to eq 1
       expect(scope.moderatable.size).to eq 1
     end
 
-    it "should include the user in the users that have access" do
+    it 'should include the user in the users that have access' do
       expect(inverse_scope.resolve).to include(user)
     end
   end
