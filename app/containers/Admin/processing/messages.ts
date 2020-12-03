@@ -51,7 +51,7 @@ export default defineMessages({
   autotagOverwriteAlert: {
     id: 'app.containers.Admin.Processing.autotagOverwriteAlert',
     defaultMessage:
-      'This action may overwrite autotags generated previously. Are you sure you want to continue ?',
+      'This action may overwrite existing tags. Are you sure you want to continue?',
   },
   autotagOverwriteExplanation: {
     id: 'app.containers.Admin.Processing.autotagOverwriteExplanation',
@@ -78,13 +78,22 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.addExistingTag',
     defaultMessage: 'Add existing tag',
   },
+  suggestedTags: {
+    id: 'app.containers.Admin.Processing.suggestedTags',
+    defaultMessage: 'Suggested tags',
+  },
+  existingTags: {
+    id: 'app.containers.Admin.Processing.existingTags',
+    defaultMessage: 'Existing tags',
+  },
   tagsToAssign: {
-    id: 'app.containers.Admin.Processing.tagsToAssign',
-    defaultMessage: 'Tags to assign',
+    id: 'app.containers.Admin.Processing.projectTags',
+    defaultMessage: 'Project tags',
   },
   tagAssignationExplanation: {
     id: 'app.containers.Admin.Processing.tagAssignationExplanation',
-    defaultMessage: 'Tags are going to be applied to all matching ideas',
+    defaultMessage:
+      'Tags you add here will be automatically assigned to relevant ideas based on our natural language processing technology.',
   },
   tagValidationErrorMessage: {
     id: 'app.containers.Admin.Processing.tagValidationErrorMessage',
@@ -93,6 +102,10 @@ export default defineMessages({
   addSmartTag: {
     id: 'app.containers.Admin.Processing.addSmartTag',
     defaultMessage: 'Add smart tag',
+  },
+  approveAutoTags: {
+    id: 'app.containers.Admin.Processing.approveAutoTags',
+    defaultMessage: 'Approve auto-tags',
   },
   items: {
     id: 'app.containers.Admin.Processing.items',

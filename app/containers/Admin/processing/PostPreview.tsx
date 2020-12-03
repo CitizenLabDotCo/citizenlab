@@ -293,7 +293,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
             <TagSection>
               <TagSubSection className={'smartTag'}>
                 <h4>
-                  <FormattedMessage {...messages.addSmartTag} />
+                  <FormattedMessage {...messages.approveAutoTags} />
                 </h4>
                 {automaticTaggings.length > 0 && (
                   <TagList>

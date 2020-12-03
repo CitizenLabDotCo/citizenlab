@@ -327,13 +327,13 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
               className={activeTab === 'suggestions' ? 'active' : ''}
               onClick={handleSetActiveTab('suggestions')}
             >
-              Suggestions
+              <FormattedMessage {...messages.suggestedTags} />
             </Tab>
             <Tab
               className={activeTab === 'existingTags' ? 'active' : ''}
               onClick={handleSetActiveTab('existingTags')}
             >
-              Existing tags
+              <FormattedMessage {...messages.existingTags} />
             </Tab>
           </TabsContainer>
           {activeTab === 'suggestions' ? (
