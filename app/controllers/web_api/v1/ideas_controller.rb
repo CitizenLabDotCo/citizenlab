@@ -1,7 +1,7 @@
 class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers, :filter_counts]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_mini, :index_idea_markers, :filter_counts]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -76,6 +76,62 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
+  end
+
+  def index_mini
+    @ideas = policy_scope(Idea)
+      .left_outer_joins(:idea_trending_info)
+    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
+
+    if params[:sort].present? && !params[:search].present?
+      @ideas = case params[:sort]
+        when "new"
+          @ideas.order_new
+        when "-new"
+          @ideas.order_new(:asc)
+        when "trending"
+          TrendingIdeaService.new.sort_trending @ideas
+        when "-trending"
+          TrendingIdeaService.new.sort_trending(@ideas).reverse
+        when "popular"
+          @ideas.order_popular
+        when "-popular"
+          @ideas.order_popular(:asc)
+        when "author_name"
+          @ideas.order("users.first_name ASC", "users.last_name ASC")
+        when "-author_name"
+          @ideas.order("users.first_name DESC", "users.last_name DESC")
+        when "upvotes_count"
+          @ideas.order(upvotes_count: :asc)
+        when "-upvotes_count"
+          @ideas.order(upvotes_count: :desc)
+        when "downvotes_count"
+          @ideas.order(downvotes_count: :asc)
+        when "-downvotes_count"
+          @ideas.order(downvotes_count: :desc)
+        when "status"
+          @ideas.order_status(:asc)
+        when "-status"
+          @ideas.order_status(:desc)
+        when "baskets_count"
+          @ideas.order(baskets_count: :asc)
+        when "-baskets_count"
+          @ideas.order(baskets_count: :desc)
+        when "random"
+          @ideas.order_random
+        when nil
+          @ideas
+        else
+          raise "Unsupported sort method"
+        end
+    end
+
+    @ideas = @ideas
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: linked_json(@ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
   end
 
   def index_idea_markers
