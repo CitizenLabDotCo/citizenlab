@@ -2,7 +2,10 @@
 
 ## Next release
 
-/
+### Changed
+- Increased color contrast of inactive timeline phases text to meet accesibility standard
+- Increased color contrast of event card left-hand event dates to meet accesibility standard
+- Increased color contrast of List/Map toggle component to meet accesibility standard
 
 ## 2020-12-02
 
