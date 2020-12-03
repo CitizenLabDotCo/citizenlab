@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { ProjectInputTerm } from 'services/participationContexts';
+import { InputTerm } from 'services/participationContexts';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -85,7 +85,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     event.preventDefault();
   };
 
-  reasonToMessage = (projectInputTerm: ProjectInputTerm) => {
+  reasonToMessage = (projectInputTerm: InputTerm) => {
     const { budgetingDescriptor, authUser } = this.props;
 
     if (budgetingDescriptor) {
