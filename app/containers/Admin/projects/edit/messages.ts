@@ -208,7 +208,7 @@ export default defineMessages({
     defaultMessage: 'Ideas displayed by default as:',
   },
   defaultIdeaSorting: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaSortingOrder',
+    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
     defaultMessage: 'Idea sorting order',
   },
   presentationModeTooltip: {
