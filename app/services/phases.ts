@@ -6,6 +6,7 @@ import {
   ParticipationMethod,
   SurveyServices,
   IdeaDefaultSortMethod,
+  InputTerm,
 } from './participationContexts';
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
@@ -18,6 +19,7 @@ export interface IPhaseData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
+    input_term: InputTerm | null;
     start_at: string;
     end_at: string;
     created_at: string;
@@ -62,6 +64,7 @@ export interface IUpdatedPhaseProperties {
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  input_term?: InputTerm | null;
   start_at?: string;
   end_at?: string;
   participation_method?: ParticipationMethod;
