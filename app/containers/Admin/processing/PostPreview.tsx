@@ -25,6 +25,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ITag } from 'services/tags';
 import { InjectedIntlProps } from 'react-intl';
 import TagWrapper from './TagWrapper';
+import { trackEventByName } from 'utils/analytics';
 
 export const Container = styled.div`
   display: flex;
@@ -122,7 +123,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   postId: string | null;
-  opened: boolean;
   newTag: string | null;
 }
 
@@ -131,20 +131,17 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       postId: props.postId,
-      opened: false,
       newTag: null,
     };
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.postId !== this.props.postId && this.props.postId) {
-      this.setState({ opened: true });
       setTimeout(() => this.setState({ postId: this.props.postId }), 200);
     }
   }
 
   onClose = () => {
-    this.setState({ opened: false });
     this.setState({ postId: null });
     this.props.onClose();
   };
@@ -158,6 +155,9 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
   handleNavigationClick = (direction: Direction) => (_event) => {
     _event.preventDefault();
     this.props.handleNavigation(direction);
+    trackEventByName('Manual Tagging', {
+      action: `clicked ${direction} button`,
+    });
   };
 
   getManualTaggings = (taggings: ITagging[]) =>
@@ -184,23 +184,35 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
   tagIdea = (tagId) => () => {
     const postId = this.props.postId;
     postId && addTagging(postId, tagId);
+    trackEventByName('Manual Tagging', {
+      action: 'added existing tag to an idea',
+    });
   };
 
   removeTagging = (taggingId) => () => {
     deleteTagging(taggingId);
+    trackEventByName('Manual Tagging', {
+      action: 'removed tag from an idea',
+    });
   };
 
   switchToManual = (taggingId) => () => {
     switchToManual(taggingId);
+    trackEventByName('Manual Tagging', { action: 'added auto tag to idea' });
   };
 
-  addTaggingForTag = (tagId: string) => {
+  handleSelectExistingFromTagSearch = (tagId: string) => {
     const { postId } = this.state;
     const tagging =
       this.props.taggings &&
       this.getAutomaticTaggings(this.props.taggings).find(
         (tagging) => tagging.attributes.tag_id === tagId
       );
+
+    trackEventByName('Manual Tagging', {
+      action: 'selected existing tag from text input',
+    });
+
     return postId
       ? tagging
         ? switchToManual(tagging.id)
@@ -213,6 +225,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
 
     const title_multiloc = {};
     title_multiloc[locale] = tagText;
+
+    trackEventByName('Manual Tagging', {
+      action: 'created and assigned tag',
+    });
+
     return this.state.postId
       ? addTagging(this.state.postId, null, { title_multiloc })
       : new Promise((res) => res());
@@ -288,7 +305,6 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   </h4>
                   <TagList>
                     {tags.length > 0 &&
-                      taggings.length > 0 &&
                       this.getUnusedTags(tags, taggings).map((tag) => (
                         <StyledTagWrapper
                           key={tag.id}
@@ -313,7 +329,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                       (tagging) => tagging.attributes.tag_id
                     ) || []
                   }
-                  onAddSelect={this.addTaggingForTag}
+                  onAddSelect={this.handleSelectExistingFromTagSearch}
                   onAddNew={this.addTaggingCreateTag}
                 />
               </TagSubSection>

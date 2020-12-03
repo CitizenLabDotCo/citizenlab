@@ -188,8 +188,7 @@ const StyledTable = styled(Table)`
   td {
     text-align: left;
     vertical-align: top;
-    padding-left: 0px;
-    padding-right: 20px;
+    min-width: 100px;
 
     &.checkbox {
       width: 70px;
@@ -296,18 +295,21 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     useEffect(() => {
       if (upArrow) {
+        trackEventByName('Keyboard shorcut', { key: 'up' });
         navigate('up');
       }
     }, [upArrow, ideaList]);
 
     useEffect(() => {
       if (downArrow) {
+        trackEventByName('Keyboard shorcut', { key: 'down' });
         navigate('down');
       }
     }, [downArrow, ideaList]);
 
     useEffect(() => {
       if (enterModalKey && !isNilOrError(ideaList) && ideaList.length > 0) {
+        trackEventByName('Keyboard shorcut', { key: 'enter' });
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
           setPreviewPostId(ideaList[0].id);
@@ -319,7 +321,8 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     useEffect(() => {
       if (exitModalKey && ideaList) {
-        setPreviewPostId('');
+        trackEventByName('Keyboard shorcut', { key: 'escape' });
+        setPreviewPostId(null);
       }
     }, [exitModalKey, ideaList]);
 
@@ -330,6 +333,9 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     useEffect(() => {
       onIdeasChange(ideaList?.map((idea) => idea.id) || []);
+      if (!isNilOrError(ideaList) && ideaList.length > 0) {
+        setHighlightedId(ideaList[0].id);
+      }
       if (loadingIdeas) {
         setLoadingIdeas(false);
       }
@@ -364,17 +370,20 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleCloseAutotagView = (e?: FormEvent) => {
       e?.preventDefault();
+      trackEventByName('Autotag View', { action: 'go back' });
       setShowAutotagView(false);
     };
 
     const handleConfirmAutotag = (e?: FormEvent) => {
       e?.preventDefault();
+      trackEventByName('Autotag Confirmation Modal', { action: 'continue' });
       setConfirmationModalOpen(false);
       setShowAutotagView(true);
     };
 
     const handleCloseConfirmationModal = (e?: FormEvent) => {
       e?.preventDefault();
+      trackEventByName('Autotag Confirmation Modal', { action: 'cancel' });
       setConfirmationModalOpen(false);
     };
 
@@ -385,6 +394,9 @@ const Processing = memo<Props & InjectedIntlProps>(
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
               : [];
+          trackEventByName('Idea Table', {
+            action: 'clicked on "select all ideas" checkbox',
+          });
           setSelectedRows(newSelectedRows);
         }
       },
@@ -424,6 +436,9 @@ const Processing = memo<Props & InjectedIntlProps>(
       setSelectedProjectIds(newProjectIds);
       onChangeProjects(newProjectIds);
       setLoadingIdeas(true);
+      trackEventByName('Filters', {
+        action: 'changed projects',
+      });
     };
 
     const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
