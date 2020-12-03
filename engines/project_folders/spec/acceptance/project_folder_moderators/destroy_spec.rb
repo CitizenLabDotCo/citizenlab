@@ -13,7 +13,8 @@ resource 'Project Folder Moderators' do
       expect(delete: 'web_api/v1/project_folder_moderators/:id').to route_to(
         controller: 'roles/roles',
         action: 'destroy',
-        format: :json
+        format: :json,
+        id: ':id'
       )
     end
   end
