@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Allagaasivimmut inissinneqarpoq",
   "app.components.ProjectCard.comment": "Oqaaseqaat",
   "app.components.ProjectCard.finished": "Naammassereerpoq",
-  "app.components.ProjectCard.idea": "{tenantName, select, DeloitteDK {ilanngussaq} other {isumassarsiaq}}",
-  "app.components.ProjectCard.ideas": "{tenantName, select, DeloitteDK {ilanngussaq} other {isumassarsiat}}",
   "app.components.ProjectCard.learnMore": "Paasisaqarnerugit ",
   "app.components.ProjectCard.postYourIdea": "{tenantName, select, DeloitteDK {Ilanngussamik aallartitsigit} other {Isumassarsiamik aallartitsigit}}",
   "app.components.ProjectCard.remaining": "{timeRemaining} uterit ",

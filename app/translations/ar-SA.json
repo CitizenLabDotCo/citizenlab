@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "مؤرشف",
   "app.components.ProjectCard.comment": "تعليق",
   "app.components.ProjectCard.finished": "مكتمل",
-  "app.components.ProjectCard.idea": "فكرة",
-  "app.components.ProjectCard.ideas": "أفكار",
   "app.components.ProjectCard.learnMore": "حمّل المزيد",
   "app.components.ProjectCard.postYourIdea": "انشر فكرتك",
   "app.components.ProjectCard.remaining": "تبقى {timeRemaining}",

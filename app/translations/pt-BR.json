@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Arquivados",
   "app.components.ProjectCard.comment": "Comentário",
   "app.components.ProjectCard.finished": "Concluído",
-  "app.components.ProjectCard.idea": "idéia",
-  "app.components.ProjectCard.ideas": "ideias",
   "app.components.ProjectCard.learnMore": "Saiba mais",
   "app.components.ProjectCard.postYourIdea": "Procure uma ideia",
   "app.components.ProjectCard.remaining": "{timeRemaining} restante",
