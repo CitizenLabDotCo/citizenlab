@@ -111,7 +111,7 @@ const ViewButtons = memo<Props>(
           aria-selected={showListView}
           onMouseDown={removeFocus}
           onClick={handleOnClick('card')}
-          className={`${showListView && 'active'}`}
+          className={`${showListView ? 'active' : ''}`}
         >
           <FormattedMessage {...messages.list} />
         </ListButton>
@@ -120,7 +120,7 @@ const ViewButtons = memo<Props>(
           aria-selected={showMapView}
           onMouseDown={removeFocus}
           onClick={handleOnClick('map')}
-          className={`${showMapView && 'active'}`}
+          className={`${showMapView ? 'active' : ''}`}
         >
           <FormattedMessage {...messages.map} />
         </MapButton>
