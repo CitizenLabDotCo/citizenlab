@@ -143,7 +143,7 @@ export interface IParticipationContextConfig {
   downvoting_enabled?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
-  input_term?: InputTerm | null;
+  input_term?: InputTerm;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -384,11 +384,6 @@ class ParticipationContext extends PureComponent<
         participation_method === 'ideation' ||
         participation_method === 'budgeting'
           ? ideaDefaultSortMethodFallback
-          : null,
-      input_term:
-        participation_method === 'ideation' ||
-        participation_method === 'budgeting'
-          ? 'idea'
           : null,
       downvoting_enabled: participation_method === 'ideation' ? true : null,
       presentation_mode: participation_method === 'ideation' ? 'card' : null,
