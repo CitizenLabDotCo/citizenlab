@@ -91,6 +91,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         _event.preventDefault();
         trackEventByName('Processing Table Row', {
           action: 'selected one row',
+          context: `${showTagColumn ? 'filter view' : 'tagging view'}`,
         });
         onSelect(idea.id);
       },
