@@ -1,4 +1,7 @@
 import React, { ReactElement, useMemo, memo, useCallback } from 'react';
+import merge from 'deepmerge';
+import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // services
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -8,6 +11,8 @@ import { useProjectFolders } from 'modules/project_folders/hooks';
 
 // components
 import { Select } from 'cl2-component-library';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { IconTooltip } from 'cl2-component-library';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -15,16 +20,23 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption } from 'typings';
+import { IUpdatedProjectProperties } from 'services/projects';
+
+import messages from './messages';
+
+const StyledSectionField = styled(SectionField)`
+  max-width: 100%;
+  margin-bottom: 40px;
+`;
 
 interface Props {
   value: string;
-  onChange: (value: IOption) => void;
-  Wrapper?: (props: any) => ReactElement;
-  Title?: ReactElement;
+  setState: (prevState?: object) => object;
+  project: IUpdatedProjectProperties;
 }
 
 const ProjectFolderSelect = memo<Props & InjectedLocalized>(
-  ({ value, onChange, Wrapper, Title, localize }): ReactElement => {
+  ({ project, setState, localize }): ReactElement => {
     const { projectFolders } = useProjectFolders({});
 
     const hasAdminPublication = (folder: IProjectFolderData): boolean =>
@@ -43,27 +55,36 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized>(
 
     const handleChange = useCallback(
       ({ value }) => {
-        onChange(value);
+        setState((prevState) =>
+          merge(prevState, {
+            projectAttributesDiff: {
+              admin_publication_attributes: { parent_id: value },
+            },
+          })
+        );
       },
-      [onChange]
+      [setState]
     );
 
-    const SelectTag = useMemo(
-      () => (
-        <Select value={value} options={folderOptions} onChange={handleChange} />
-      ),
-      [value, folderOptions, handleChange]
-    );
-
-    if (Wrapper && Title) {
+    if (!isNilOrError(project.admin_publication_attributes)) {
       return (
-        <Wrapper>
-          {Title}
-          {SelectTag}
-        </Wrapper>
+        <StyledSectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.folder} />
+            <IconTooltip
+              content={<FormattedMessage {...messages.folderTooltip} />}
+            />
+            <Select
+              value={project.admin_publication_attributes.parent_id}
+              options={folderOptions}
+              onChange={handleChange}
+            />
+          </SubSectionTitle>
+        </StyledSectionField>
       );
     }
-    return SelectTag;
+
+    return <></>;
   }
 );
 

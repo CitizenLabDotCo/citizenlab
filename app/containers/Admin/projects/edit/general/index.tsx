@@ -8,7 +8,6 @@ import {
 } from 'rxjs/operators';
 import { isEmpty, get, isString } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import merge from 'deepmerge';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -1064,34 +1063,11 @@ class AdminProjectEditGeneral extends PureComponent<
               )}
             </StyledSectionField>
 
-            {!isNilOrError(
-              projectAttributesDiff.admin_publication_attributes
-            ) && (
-              <Outlet
-                id="app.components.AdminPage.projects.form.projectsAndFolders.folderSelect"
-                value={
-                  projectAttributesDiff.admin_publication_attributes.parent_id
-                }
-                onChange={(id: string) => {
-                  this.setState((prevState) =>
-                    merge(prevState, {
-                      projectAttributesDiff: {
-                        admin_publication_attributes: { parent_id: id },
-                      },
-                    })
-                  );
-                }}
-                Wrapper={StyledSectionField}
-                Title={
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.folder} />
-                    <IconTooltip
-                      content={<FormattedMessage {...messages.folderTooltip} />}
-                    />
-                  </SubSectionTitle>
-                }
-              />
-            )}
+            <Outlet
+              id="app.components.AdminPage.projects.form.projectsAndFolders.folderSelect"
+              project={projectAttributesDiff}
+              setState={this.setState}
+            />
 
             <StyledSectionField>
               <SubSectionTitle>
