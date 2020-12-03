@@ -21,6 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { stylingConsts, fontSizes } from 'utils/styleUtils';
 import { deleteTagging, ITagging } from 'services/taggings';
+import { trackEventByName } from 'utils/analytics';
 
 const Content = styled.div`
   width: 100%;
@@ -92,6 +93,9 @@ export class IdeaContent extends PureComponent<
   }
 
   removeTagging = (taggingId) => () => {
+    trackEventByName('Manual Tagging', {
+      action: 'removed tag from idea',
+    });
     deleteTagging(taggingId);
   };
 

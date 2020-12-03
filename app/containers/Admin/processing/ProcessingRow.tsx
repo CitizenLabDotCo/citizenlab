@@ -2,11 +2,12 @@ import React, { memo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import { Checkbox } from 'cl2-component-library';
+import { Checkbox, Tag } from 'cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -15,13 +16,13 @@ import { rgba } from 'polished';
 
 // typings
 import { IIdeaData } from 'services/ideas';
-import { ITopicData } from 'services/topics';
 import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import { ITagging } from 'services/taggings';
 import TagWrapper from './TagWrapper';
+import { trackEventByName } from 'utils/analytics';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -34,6 +35,7 @@ const StyledCheckbox = styled(Checkbox)`
   margin-top: -4px;
 `;
 const StyledTagWrapper = styled(TagWrapper)`
+  cursor: default;
   margin-right: 4px;
 `;
 
@@ -51,8 +53,6 @@ interface Props {
   idea: IIdeaData;
   selected: boolean;
   highlighted: boolean;
-  showTopics?: boolean;
-  topics?: ITopicData[] | undefined | null;
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
@@ -89,6 +89,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     const handleOnChecked = useCallback(
       (_event: React.ChangeEvent | React.MouseEvent) => {
         _event.preventDefault();
+        trackEventByName('Processing Table Row', {
+          action: 'selected one row',
+        });
         onSelect(idea.id);
       },
       [onSelect]
@@ -98,6 +101,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       (_event: React.ChangeEvent | React.MouseEvent) => {
         _event.preventDefault();
         _event.stopPropagation();
+        trackEventByName('Processing Table Row', {
+          action: 'clicked on idea title',
+        });
         openPreview(idea.id);
       },
       [openPreview]
@@ -130,6 +136,15 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 key={tagging.attributes.tag_id}
               />
             ))}
+            {highlighted && taggings.length === 0 && (
+              <Tag
+                isAutoTag={true}
+                isSelected={selected}
+                onTagClick={handleClick}
+                icon={'plus-circle'}
+                text={<FormattedMessage {...messages.addTag} />}
+              />
+            )}
           </td>
         )}
       </Container>

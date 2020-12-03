@@ -21,6 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 import { ITag } from 'services/tags';
 import useTags from 'hooks/useTags';
 import { generateTaggings } from 'services/taggings';
+import { trackEventByName } from 'utils/analytics';
 
 const Container = styled.div`
   display: flex;
@@ -170,16 +171,22 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
 
   useEffect(() => {
     if (addTagInputKeyPress && isValidTag) {
+      trackEventByName('Autotag View', {
+        key: 'Enter',
+        action: 'added new tag',
+      });
       handleAddNewTag();
     }
   }, [addTagInputKeyPress]);
 
   const handleAddNewTag = () => {
+    trackEventByName('Autotag View', { action: 'added new tag' });
     setNewTagsList([...newTagsList, newTag]);
     setNewTag('');
   };
 
   const handleAddExistingTag = (tag: ITag) => () => {
+    trackEventByName('Autotag View', { action: 'added existing tag' });
     setSelectedTagsList([...selectedTagsList, tag]);
   };
 
@@ -189,6 +196,7 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
 
   const handleNewTagFromSuggestion = (text: string) => (event) => {
     event.preventDefault();
+    trackEventByName('Autotag View', { action: 'clicked on add suggestion' });
     setNewTag(text);
   };
 
@@ -196,6 +204,9 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
     event
   ) => {
     event.preventDefault();
+    trackEventByName('Autotag View', {
+      action: 'removed existing tag from selection',
+    });
     const tempTagList = [...selectedTagsList];
     const deletedTagIndex = selectedTagsList.findIndex(
       (tag) => removedTagID === tag.id
@@ -206,6 +217,9 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
 
   const handleRemoveNewTagFromSelection = (removedTag: string) => (event) => {
     event.preventDefault();
+    trackEventByName('Autotag View', {
+      action: 'removed new tag from selection',
+    });
     const tempTagList = [...newTagsList];
     const deletedTagIndex = newTagsList.findIndex((tag) => removedTag === tag);
     tempTagList.splice(deletedTagIndex, 1);
@@ -231,11 +245,13 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
 
   const handleSetActiveTab = (tab: 'suggestions' | 'existingTags') => (e) => {
     e.preventDefault();
+    trackEventByName('Autotag View', { action: `switched to ${tab} tab` });
     setActiveTab(tab);
   };
 
   const handleGenerate = () => {
     setProcessing(true);
+    trackEventByName('Autotag View', { action: 'trigger autotagging' });
     generateTaggings(
       selectedRows,
       selectedTagsList.map((tag) => tag.id),
