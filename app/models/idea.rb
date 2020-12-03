@@ -61,14 +61,6 @@ class Idea < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_some_tags, (Proc.new do |tag_ids|
-    with_dups = joins(:tagging_taggings).where(tagging_taggings: { tag_id: tag_ids } )
-    # Removing duplicate results in this manner,
-    # because .distinct gives SQL errors when
-    # combined with other queries.
-    where(id: with_dups)
-  end)
-
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_ideas)
