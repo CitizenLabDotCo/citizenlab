@@ -171,11 +171,14 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     );
 
   getUnusedTags = (tags: ITag[], taggings: ITagging[]) => {
-    const res = tags.filter(
-      (tag) =>
-        !taggings?.find((tagging) => tagging.attributes.tag_id === tag.id)
-    );
-    return res;
+    const isTagUnused = (taggings: ITagging[], tag: ITag) => {
+      const isTagUsed = taggings?.find(
+        (tagging) => tagging.attributes.tag_id === tag.id
+      );
+      return !isTagUsed;
+    };
+    const unusedTags = tags.filter((tag) => isTagUnused(taggings, tag));
+    return unusedTags;
   };
 
   tagIdea = (tagId) => () => {
@@ -186,6 +189,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
   removeTagging = (taggingId) => () => {
     deleteTagging(taggingId);
   };
+
   switchToManual = (taggingId) => () => {
     switchToManual(taggingId);
   };
@@ -283,16 +287,18 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.addExistingTag} />
                   </h4>
                   <TagList>
-                    {this.getUnusedTags(tags, taggings).map((tag) => (
-                      <StyledTagWrapper
-                        key={tag.id}
-                        tagId={tag.id}
-                        onTagClick={this.tagIdea(tag.id)}
-                        icon="plus-circle"
-                        isAutoTag={false}
-                        isSelected={false}
-                      />
-                    ))}
+                    {tags.length > 0 &&
+                      taggings.length > 0 &&
+                      this.getUnusedTags(tags, taggings).map((tag) => (
+                        <StyledTagWrapper
+                          key={tag.id}
+                          tagId={tag.id}
+                          onTagClick={this.tagIdea(tag.id)}
+                          icon="plus-circle"
+                          isAutoTag={false}
+                          isSelected={false}
+                        />
+                      ))}
                   </TagList>
                 </TagSubSection>
               )}
