@@ -1,4 +1,5 @@
-require 'project_folders/engine'
+require "project_folders/engine"
 
 module ProjectFolders
+  # Your code goes here...
 end
