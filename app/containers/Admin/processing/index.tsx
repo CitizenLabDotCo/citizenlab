@@ -701,7 +701,14 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, projects }) => {
     const projectIds = projects?.projectsList?.map((project) => project.id);
     return (
-      <GetIdeas type="paginated" pageSize={2000000} projectIds={projectIds}>
+      <GetIdeas
+        type="paginated"
+        pageSize={2000000}
+        projectIds={projectIds}
+        cache={false}
+        mini={true}
+        sort="new"
+      >
         {render}
       </GetIdeas>
     );

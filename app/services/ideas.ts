@@ -207,6 +207,12 @@ export function ideasStream(streamParams: IStreamParams | null = null) {
     ...streamParams,
   });
 }
+export function ideasMiniStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeas>({
+    apiEndpoint: `${API_PATH}/ideas/mini`,
+    ...streamParams,
+  });
+}
 
 export function ideasFilterCountsStream(
   streamParams: IStreamParams | null = null
