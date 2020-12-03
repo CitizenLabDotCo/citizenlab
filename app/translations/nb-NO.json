@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Arkivert",
   "app.components.ProjectCard.comment": "Kommenter",
   "app.components.ProjectCard.finished": "Avsluttet",
-  "app.components.ProjectCard.idea": "idé",
-  "app.components.ProjectCard.ideas": "ideer",
   "app.components.ProjectCard.learnMore": "Lær mer",
   "app.components.ProjectCard.postYourIdea": "Publiser din idé",
   "app.components.ProjectCard.remaining": "{timeRemaining} gjenstår",

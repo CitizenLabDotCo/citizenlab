@@ -271,8 +271,6 @@
   "app.components.ProjectCard.archived": "Arhivat",
   "app.components.ProjectCard.comment": "Comentariu",
   "app.components.ProjectCard.finished": "Terminat",
-  "app.components.ProjectCard.idea": "idee",
-  "app.components.ProjectCard.ideas": "idei",
   "app.components.ProjectCard.learnMore": "Aflați mai multe",
   "app.components.ProjectCard.postYourIdea": "Postează ideea ta",
   "app.components.ProjectCard.remaining": "{timeRemaining} rămase",
