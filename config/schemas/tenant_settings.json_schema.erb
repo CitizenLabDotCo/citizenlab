@@ -159,15 +159,6 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
-          },
-          "segment_destinations_blacklist": {
-            "title": "Blacklisting of Segment destinations",
-            "description": "An optional list of segment destinations to disable.",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
-            }
           }
         }
       },
@@ -176,6 +167,18 @@
         "type": "object",
         "title": "Custom Registration Fields",
         "description":  "Allow admin to define custom registration fields.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "custom_idea_statuses": {
+        "type": "object",
+        "title": "Custom Idea Statuses",
+        "description":  "Allows admin to define custom idea statuses.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -437,6 +440,92 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "intercom": {
+        "type": "object",
+        "title": "Intercom Integration",
+        "description":  "Integrates Intercom messenger and data collection",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "segment": {
+        "type": "object",
+        "title": "Segment Integration",
+        "description":  "Integrates segment data collection",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "destinations": {
+            "type": "string",
+            "description": "As more tools can be activated through Segment, here you can specify them using comma separated text, shown in the cookie consent"
+          }
+        }
+      },
+
+      "satismeter": {
+        "type": "object",
+        "title": "Satismeter Integration",
+        "description":  "Integrates Satismeter polls and data collection to the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["write_key"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "write_key": {
+            "type": "string",
+            "description": "The write key the front-end send its data to.",
+            "default": "<%= ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY', '')%>"
+          }
+        }
+      },
+
+      "google_analytics": {
+        "type": "object",
+        "title": "Google Analytics Integration",
+        "description":  "Integrates Google Analytics data collection to the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["tracking_id"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "tracking_id": {
+            "type": "string",
+            "description": "The tracking ID the front-end send it's data to. Format UA-XXXXXXXXX-XX",
+            "pattern": "^(UA|YT|MO)\-[0-9]+\-[0-9]+$",
+            "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
+          }
+        }
+      },
+      "google_tag_manager": {
+        "type": "object",
+        "title": "Google Tag Manager Integration",
+        "description": "Integrates Google Tag Manager with the front-end",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["container_id"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "destinations": {
+            "type": "string",
+            "description": "As more tools can be activated through GTM, here you can specify them using comma separated text, shown in the cookie consent"
+          },
+          "container_id": {
+            "type": "string",
+            "description": "The unique ID of your GTM workspace, format GTM-XXXXXXX",
+            "pattern": "^GTM-[A-Z0-9]{1,7}$",
+            "default": "<%= ENV.fetch('DEFAULT_GTM_CONTAINER_ID', '') %>"
+          }
         }
       },
 
