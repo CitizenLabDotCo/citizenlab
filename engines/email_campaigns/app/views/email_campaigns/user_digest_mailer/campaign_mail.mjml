@@ -121,7 +121,9 @@
                       <mj-text style="font-size: 12px;">
                         <%= formatMessage('commented', values: {
                           authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{top_comment[:author_first_name].upcase}</span>"
-                        }) %>
+                        },
+                        escape_html: false
+                        ) %>
                         <p style="margin: 15px 0 0;">
                           <%= localize(top_comment[:body_multiloc])[0...140] %>
                         </p>
