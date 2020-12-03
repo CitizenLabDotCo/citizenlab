@@ -4,15 +4,15 @@ import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 import { InputTerm } from 'services/participationContexts';
 
-type IProjectInputMessages = {
+type IInputTermMessages = {
   [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
-export const projectInputTypeMessages = (
-  inputTerm: InputTerm,
-  messages: IProjectInputMessages
+export const inputTypeMessages = (
+  inputType: InputTerm,
+  messages: IInputTermMessages
 ) => {
-  return messages[inputTerm];
+  return messages[inputType];
 };
 
 export function getLocalized(
