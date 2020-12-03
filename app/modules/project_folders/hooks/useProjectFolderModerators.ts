@@ -16,10 +16,11 @@ export default function useProjectFolderImages(
 
   const isModerator = useCallback(
     (user: IUserData) => {
-      return (
-        !isNilOrError(moderators) &&
-        moderators.data.find((mod) => mod.id === user.id)
-      );
+      if (isNilOrError(moderators)) {
+        return false;
+      }
+
+      return !!moderators.data.find((mod) => mod.id === user.id);
     },
     [moderators]
   );
@@ -30,15 +31,15 @@ export default function useProjectFolderImages(
         return true;
       }
 
-      return !moderators.data.includes(user);
+      return !moderators.data.find((mod) => mod.id === user.id);
     },
     [moderators]
   );
 
   useEffect(() => {
     const subscription = moderatorsStream(projectFolderId).observable.subscribe(
-      (stream_moderators) => {
-        setModerators(stream_moderators);
+      (streamModerators) => {
+        setModerators(streamModerators);
       }
     );
 

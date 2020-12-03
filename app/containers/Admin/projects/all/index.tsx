@@ -13,7 +13,7 @@ import { trackPage } from 'utils/analytics';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProjectFolderModerators, {
-  IGetProjectFolderModerators,
+  IGetModeratorHook,
 } from 'modules/project_folders/resources/GetProjectFolderModerators';
 
 // localisation
@@ -31,6 +31,7 @@ import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const ModeratorProjectList = React.lazy(() =>
   import('./Lists/ModeratorProjectList')
@@ -80,6 +81,8 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
+  useProjectFolderModerators: IGetModeratorHook;
+  isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -198,7 +201,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, className } = this.props;
+    const { authUser, className, isProjectFoldersEnabled } = this.props;
+
     const userIsAdmin = !isNilOrError(authUser)
       ? isAdmin({ data: authUser })
       : false;
@@ -225,6 +229,18 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </SectionDescription>
 
           {userIsAdmin && <StyledCreateProject />}
+
+          {isProjectFoldersEnabled && (
+            <GetProjectFolderModerators>
+              {({ isModerator }: IGetModeratorHook) =>
+                !isNilOrError(authUser) &&
+                isModerator(authUser) &&
+                !userIsAdmin ? (
+                  <StyledCreateProject />
+                ) : null
+              }
+            </GetProjectFolderModerators>
+          )}
 
           <PageWrapper>
             <ListsContainer>
@@ -253,7 +269,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  isModerator: <GetProjectFolderModerators />,
+  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default (inputProps: InputProps) => (
