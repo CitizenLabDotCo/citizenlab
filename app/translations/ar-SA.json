@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProject": "أنشئ مشروعًا",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "أنشئ مشروعًا من قالب",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "نظرة عامة على الفكرة",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip": "You can set the default order for ideas to be displayed on the main project page.",
+  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.departments": "الأقسام",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "الوصف",
   "app.containers.AdminPage.ProjectEdit.disabled": "تم التعطيل",

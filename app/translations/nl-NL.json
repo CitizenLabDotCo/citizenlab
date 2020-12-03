@@ -1080,7 +1080,7 @@
   "app.containers.AdminPage.ProjectEdit.createAProject": "Maak een project aan",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Maak een project aan met een sjabloon",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Weergave van de ideeën",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip": "Je kan bepalen in welke volgorde de ideeën worden weergegeven op de projectpagina.",
+  "app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.departments": "Departementen",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beschrijving",
   "app.containers.AdminPage.ProjectEdit.disabled": "Uitgeschakeld",
