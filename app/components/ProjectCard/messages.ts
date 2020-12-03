@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  idea: {
-    id: 'app.components.ProjectCard.idea',
-    defaultMessage: 'idea',
-  },
-  ideas: {
-    id: 'app.components.ProjectCard.ideas',
-    defaultMessage: 'ideas',
-  },
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
     defaultMessage:
