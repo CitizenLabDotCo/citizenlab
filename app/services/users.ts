@@ -11,7 +11,7 @@ export type IProjectModerator = {
 
 export type IAdminPublicationModerator = {
   type: 'admin_publication_moderator';
-  admin_publication_id: string;
+  admin_publication_id?: string;
 };
 
 type IAdmin = {

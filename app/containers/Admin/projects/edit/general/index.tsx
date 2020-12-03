@@ -7,6 +7,8 @@ import {
   distinctUntilChanged,
 } from 'rxjs/operators';
 import { isEmpty, get, isString } from 'lodash-es';
+import { adopt } from 'react-adopt';
+import merge from 'deepmerge';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -27,6 +29,8 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import Warning from 'components/UI/Warning';
+import Outlet from 'components/Outlet';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 import Link from 'utils/cl-router/Link';
 
@@ -181,6 +185,7 @@ type Props = {
   params?: {
     projectId: string;
   };
+  isProjectFoldersEnabled: boolean;
 };
 
 interface State {
@@ -206,6 +211,7 @@ interface State {
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
+  projectFolderId?: string | null;
 }
 
 class AdminProjectEditGeneral extends PureComponent<
@@ -218,7 +224,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   constructor(props) {
     super(props);
-    this.state = {
+    let initialState: State = {
       processing: false,
       project: undefined,
       publicationStatus: 'draft',
@@ -226,6 +232,7 @@ class AdminProjectEditGeneral extends PureComponent<
       projectAttributesDiff: {
         admin_publication_attributes: {
           publication_status: 'draft',
+          parent_id: null,
         },
       },
       projectHeaderImage: null,
@@ -246,6 +253,9 @@ class AdminProjectEditGeneral extends PureComponent<
       slug: null,
       showSlugErrorMessage: false,
     };
+
+    this.state = initialState;
+
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
     this.subscriptions = [];
@@ -774,6 +784,7 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant,
       locale,
     } = this.state;
+
     const {
       intl: { formatMessage },
     } = this.props;
@@ -1053,6 +1064,35 @@ class AdminProjectEditGeneral extends PureComponent<
               )}
             </StyledSectionField>
 
+            {!isNilOrError(
+              projectAttributesDiff.admin_publication_attributes
+            ) && (
+              <Outlet
+                id="app.components.AdminPage.projects.form.projectsAndFolders.folderSelect"
+                value={
+                  projectAttributesDiff.admin_publication_attributes.parent_id
+                }
+                onChange={(id: string) => {
+                  this.setState((prevState) =>
+                    merge(prevState, {
+                      projectAttributesDiff: {
+                        admin_publication_attributes: { parent_id: id },
+                      },
+                    })
+                  );
+                }}
+                Wrapper={StyledSectionField}
+                Title={
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.folder} />
+                    <IconTooltip
+                      content={<FormattedMessage {...messages.folderTooltip} />}
+                    />
+                  </SubSectionTitle>
+                }
+              />
+            )}
+
             <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.headerImageLabel} />
@@ -1150,4 +1190,20 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-export default injectIntl(AdminProjectEditGeneral);
+interface DataProps {
+  isProjectFoldersEnabled: boolean;
+}
+
+const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
+
+const Data = adopt<DataProps, Props & InjectedIntlProps>({
+  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
+});
+
+export default (inputProps: Props & InjectedIntlProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => (
+      <AdminProjectEditGeneralWithHocs {...inputProps} {...dataProps} />
+    )}
+  </Data>
+);

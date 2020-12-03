@@ -1,16 +1,23 @@
-import React from 'react';
+import { memo } from 'react';
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
+import { IUsers, IUserData } from 'services/users';
 
-export interface IGetProjectFolderModerators {
-  moderators: IUsers;
+export interface IGetModeratorHook {
+  moderators: IUsers | Error | null | undefined;
+  isModerator: (authUser: IUserData) => boolean;
+  isNotModerator: (authUser: IUserData) => boolean;
 }
 
-type children = (
-  renderProps: IGetProjectFolderModerators
-) => JSX.Element | null;
+type children = (renderProps: IGetModeratorHook) => JSX.Element | null;
 
-export default function GetProjectFolderModerators<Props>(children) {
-  const childProps = useProjectFolderModerators();
-
-  return (children as children)(childProps);
+interface Props {
+  children?: children;
 }
+
+const GetProjectFolderModerators = memo<Props>(({ children }) => {
+  const hook = useProjectFolderModerators();
+
+  return (children as children)(hook);
+});
+
+export default GetProjectFolderModerators;

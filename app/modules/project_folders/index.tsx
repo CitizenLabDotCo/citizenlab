@@ -4,6 +4,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
 import ProjectFolderRow from './admin/components/ProjectFolderRow';
 import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
+import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
 
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
@@ -64,6 +65,13 @@ const configuration: ModuleConfiguration = {
       <RenderOnPublicationType publication={props.adminPublication}>
         <ProjectFolderSiteMap {...props} />
       </RenderOnPublicationType>
+    ),
+    'app.components.AdminPage.projects.form.projectsAndFolders.folderSelect': (
+      props
+    ) => (
+      <RenderOnFeatureFlag>
+        <ProjectFolderSelect {...props} />
+      </RenderOnFeatureFlag>
     ),
   },
   routes: {

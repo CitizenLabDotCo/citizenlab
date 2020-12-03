@@ -170,4 +170,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.resultingURL',
     defaultMessage: 'Resulting project URL',
   },
+  folder: {
+    id: 'app.containers.AdminPage.ProjectEdit.folder',
+    defaultMessage: 'Select a Folder',
+  },
+  folderTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.folder',
+    defaultMessage:
+      'Select one of the options to automatically place this project inside a folder.',
+  },
 });
