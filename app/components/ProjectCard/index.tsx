@@ -567,6 +567,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
+      const projectInputTerm = project.attributes.input_term;
 
       if (isArchived) {
         countdown = (
@@ -621,7 +622,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
-        const projectInputTerm = project.attributes.input_term;
         const message = projectInputTermMessages(projectInputTerm, {
           idea: messages.postYourIdea,
         });
@@ -631,7 +631,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
-        ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
+        const message = projectInputTermMessages(projectInputTerm, {
+          idea: messages.viewTheIdeas,
+        });
+        ctaMessage = <FormattedMessage {...message} />;
       }
 
       const contentHeader = (
