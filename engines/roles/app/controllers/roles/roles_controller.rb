@@ -139,8 +139,10 @@ module Roles
     #
     #
     def scoped_resources
-      if params.key?(role_association_foreign_key)
-        roled_base_scope.send(role_name, params[role_association_foreign_key])
+      roleable_primary_key = role_mapping.roleable_primary_key(namespace: false)
+
+      if params.key?(roleable_primary_key)
+        roled_base_scope.send(role_name, params[roleable_primary_key])
       else
         roled_base_scope.send(role_name)
       end

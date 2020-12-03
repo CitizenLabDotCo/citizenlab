@@ -4,19 +4,13 @@ require 'rspec_api_documentation/dsl'
 resource 'Project Folder Moderators' do
   explanation 'Moderators can manage (e.g. changing phases, ideas) only certain projects.'
 
-  # before :all do
-  #   unless User.roles.key?('project_folder_moderator')
-  #     skip('The User class does not have the project folder moderator role')
-  #   end
-  # end
-
   def serialize_moderators(current_user, *moderators)
     WebApi::V1::UserSerializer.new(moderators.flatten, params: { current_user: current_user }).serialized_json
   end
 
   describe 'Routes to Roles Controller', type: :routing do
     it 'routes to roles/roles#index' do
-      expect(get: 'web_api/v1/users/project_folder_moderators').to route_to(
+      expect(get: 'web_api/v1/project_folder_moderators').to route_to(
         controller: 'roles/roles',
         action: 'index',
         format: :json
@@ -24,7 +18,7 @@ resource 'Project Folder Moderators' do
     end
   end
 
-  get 'web_api/v1/users/project_folder_moderators' do
+  get 'web_api/v1/project_folder_moderators' do
     header 'Content-Type', 'application/json'
 
     let(:project_folder)       { create(:project_folder) }

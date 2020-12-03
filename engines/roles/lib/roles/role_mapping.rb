@@ -110,7 +110,11 @@ module Roles
     end
 
     def roleable_primary_key(namespace: true)
-      [association_name(namespace: namespace), 'id'].join('_')
+      if polymorphic?
+        [association_name(namespace: namespace), 'id'].join('_')
+      else
+        foreign_key
+      end
     end
 
     def permitted_params
@@ -121,11 +125,6 @@ module Roles
 
     def roled_resource_primary_key
       [klass_config_name.to_s.singularize, 'id'].join('_')
-    end
-
-    def role_association_foreign_key
-
-      [association_name(namespace: false), 'id'].join('_')
     end
 
     def klass_config_name
@@ -170,22 +169,47 @@ module Roles
     end
 
     class << self
-      attr_reader :serializer_options, :subscriber_options, :policy_options, :eager_load_options
+      attr_reader :serializer_options, :subscriber_options, :policy_options, :eager_load_options, :route_options
 
       def add_serializer_options(serializer_options)
-        @serializer_options = serializer_options.with_indifferent_access
+        @serializer_options ||= {}
+        @serializer_options = @serializer_options.merge(serializer_options).with_indifferent_access
       end
 
       def add_subscriber_options(subscriber_options)
-        @subscriber_options = subscriber_options.with_indifferent_access
+        @subscriber_options ||= {}
+        @subscriber_options = @subscriber_options.merge(subscriber_options).with_indifferent_access
       end
 
       def add_policy_options(policy_options)
-        @policy_options = policy_options.with_indifferent_access
+        @policy_options ||= {}
+        @policy_options = @policy_options.merge(policy_options).with_indifferent_access
       end
 
       def add_eager_load_options(eager_load_options)
-        @eager_load_options = eager_load_options.with_indifferent_access
+        @eager_load_options ||= {}
+        @eager_load_options = @eager_load_options.merge(eager_load_options).with_indifferent_access
+      end
+
+      def add_routes(route_options)
+        @route_options ||= {}
+        @route_options = @route_options.merge(route_options).with_indifferent_access
+      end
+
+      def resource_for_route(request_path)
+        key = route_config_for(request_path)
+
+        route_options.dig(key, :roled).to_s
+      end
+
+      def role_for_route(request_path)
+        key = route_config_for(request_path)
+
+        route_options.dig(key, :role).to_s.singularize
+      end
+
+      def route_config_for(request_path)
+        route_options.keys.find { |route| request_path.include?(route) }
       end
     end
   end

@@ -17,12 +17,6 @@ class WebApi::V1::ModeratorSerializer < WebApi::V1::BaseSerializer
     object.project_moderator? params[:project_id]
   end
 
-  attribute :is_folder_moderator, if: Proc.new { |object, params|
-    params[:project_id]
-  } do |object, params|
-    object.project_folder_moderator? params[:folder_id]
-  end
-
   def self.view_private_attributes? object, params={}
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end

@@ -15,7 +15,7 @@ module Roles
     #  # => 'project_moderator'
     #
     def role_name
-      @role_name ||= request.path.gsub('/web_api/v1/', '').split('/').second.singularize
+      @role_name ||= Roles::RoleMapping.role_for_route(request.path)
     end
 
     #
@@ -29,7 +29,7 @@ module Roles
     #  # => 'users'
     #
     def roled_resource_name
-      @roled_resource_name ||= request.path.gsub('/web_api/v1/', '').split('/').first
+      @roled_resource_name ||= Roles::RoleMapping.resource_for_route(request.path)
     end
 
     #
@@ -72,20 +72,6 @@ module Roles
     #
     def roled_resource_primary_key
       role_mapping.roled_resource_primary_key
-    end
-
-    #
-    # Returns the name of the foreign_key required to create an associated role
-    #
-    # Example:
-    #
-    #  /users/project_moderators
-    #
-    #  p role_association_foreign_key
-    #  # => 'project_id'
-    #
-    def role_association_foreign_key
-      role_mapping.role_association_foreign_key
     end
 
     #

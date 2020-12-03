@@ -29,13 +29,6 @@ RSpec.describe User, type: :model do
     include_examples 'has_many_associated_roles', 'project_moderator'
   end
 
-  describe 'managing project folder moderator roles' do
-    let(:roleable) { create(:project_folder) }
-    let(:other_roleable) { create(:project_folder) }
-
-    include_examples 'has_many_polymorphic_associated_through_roles', 'project_folder_moderator'
-  end
-
   describe "creating a user" do
     it "generates a slug" do
       u = build(:user)

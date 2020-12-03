@@ -90,9 +90,9 @@ module ProjectFolders
 
     private
 
-    def secure_controller?
-      false
-    end
+    # def secure_controller?
+    #   false
+    # end
 
     def set_project_folder
       @project_folder = Folder.find(params[:id])

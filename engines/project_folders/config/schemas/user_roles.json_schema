@@ -27,6 +27,19 @@
             "type": "string"
           }
         }
+      },
+      {
+        "type": "object",
+        "required": ["type", "project_folder_id"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["project_folder_moderator"]
+          },
+          "project_folder_id": {
+            "type": "string"
+          }
+        }
       }
     ]
   }
