@@ -13,6 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
+import { projectInputTermMessages } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -395,7 +396,11 @@ export class AdminProjectEdition extends PureComponent<
                   buttonStyle="cl-blue"
                   icon="idea"
                   linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                  text={formatMessage(messages.addNewIdea)}
+                  text={formatMessage(
+                    projectInputTermMessages(project.attributes.input_term, {
+                      idea: messages.addNewIdea,
+                    })
+                  )}
                   onClick={this.onNewIdea(pathname)}
                 />
               )}
