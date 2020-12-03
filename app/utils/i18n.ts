@@ -8,7 +8,7 @@ type IInputTermMessages = {
   [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
-export const inputTypeMessages = (
+export const inputTermMessages = (
   inputType: InputTerm,
   messages: IInputTermMessages
 ) => {
