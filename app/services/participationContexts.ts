@@ -21,3 +21,4 @@ export type IdeaDefaultSortMethod =
   | null;
 
 export const ideaDefaultSortMethodFallback = 'trending';
+export type ProjectInputTerm = 'idea';
