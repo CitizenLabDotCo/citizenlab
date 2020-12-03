@@ -2,7 +2,7 @@ import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
-import { ProjectInputTerm } from 'services/projects';
+import { ProjectInputTerm } from 'services/participationContexts';
 
 type IProjectInputTermMessages = {
   [key in ProjectInputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
