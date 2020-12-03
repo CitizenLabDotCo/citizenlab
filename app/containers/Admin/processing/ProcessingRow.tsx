@@ -5,8 +5,8 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 import { Checkbox, Tag } from 'cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
