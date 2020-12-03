@@ -532,7 +532,6 @@ const Processing = memo<Props & InjectedIntlProps>(
                   </StyledActions>
                 </FilterSection>
                 <Tippy
-                  disabled={false}
                   placement="top"
                   content={
                     <ul>
@@ -698,12 +697,7 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, projects }) => {
     const projectIds = projects?.projectsList?.map((project) => project.id);
     return (
-      <GetIdeas
-        type="paginated"
-        pageSize={2000000}
-        projectIds={projectIds}
-        cache={true}
-      >
+      <GetIdeas type="paginated" pageSize={2000000} projectIds={projectIds}>
         {render}
       </GetIdeas>
     );
