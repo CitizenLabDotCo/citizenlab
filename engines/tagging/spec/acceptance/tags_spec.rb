@@ -43,12 +43,10 @@ resource "Tags" do
   end
 
   patch "web_api/v1/tags/:id" do
-    before do
-      @tag = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
-    end
     parameter :title_multiloc, 'The new title', required: true
 
-    let(:id) { @tag.id }
+    let(:tag) { Tagging::Tag.create(title_multiloc: { en: 'Fish' }) }
+    let(:id) { tag.id }
     let(:title_multiloc) { {'en' => "Comedy"} }
 
 
