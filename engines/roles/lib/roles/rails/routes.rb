@@ -5,12 +5,21 @@ module ActionDispatch::Routing
 
       roled_resources.each do |roled_resource|
         roled_resource_roles(roled_resource).each do |role_name|
-          next if should_skip_role?(role_name, options)
-
-          scope path: roled_resource do
-            resources(role_name.to_s.pluralize, controller: '/roles/roles', only: %i[index create destroy])
-          end
+          add_role_routes(role_name, roled_resource, options)
         end
+      end
+    end
+
+    def add_role_routes(role_name, roled_resource, options)
+      return if should_skip_role?(role_name, options)
+
+      path         = options.dig(:path) == '/' ? '' : options.dig(:path)
+      route_prefix = path || roled_resource
+      role         = role_name.to_s.pluralize.to_sym
+
+      scope path: route_prefix do
+        resources(role, controller: '/roles/roles', only: %i[index create destroy])
+        Roles::RoleMapping.add_routes({ "#{route_prefix}/#{role}" => { roled: roled_resource.to_sym, role: role } })
       end
     end
 
