@@ -15,6 +15,9 @@ import {
   IUpdatedIdeaCustomFieldProperties /*Visibility*/,
 } from 'services/ideaCustomFields';
 
+// hooks
+import useProject from 'hooks/useProject';
+
 // components
 import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
 const QuillMutilocWithLocaleSwitcher = lazy(() =>
@@ -26,6 +29,7 @@ import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { inputTermMessages } from 'utils/i18n';
 
 // styling
 import styled from 'styled-components';
@@ -164,6 +168,7 @@ interface Props {
     updatedProperties: IUpdatedIdeaCustomFieldProperties
   ) => void;
   className?: string;
+  projectId: string;
 }
 
 const disablableFields = [
@@ -183,7 +188,9 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
     onCollapseExpand,
     className,
     localize,
+    projectId,
   }) => {
+    const project = useProject({ projectId });
     const canSetEnabled = disablableFields.find(
       (field) => field === ideaCustomField.attributes.key
     );
@@ -238,7 +245,8 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
       onCollapseExpand(ideaCustomField.id);
     }, [ideaCustomField]);
 
-    if (!isNilOrError(ideaCustomField)) {
+    if (!isNilOrError(ideaCustomField) && !isNilOrError(project)) {
+      const projectInputTerm = project.attributes.input_term;
       return (
         <Container className={`${className || ''} ${first ? 'first' : ''}`}>
           <CollapsedContent
@@ -282,11 +290,17 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         ).toLowerCase()}-enabled-toggle-label
                       `}
                       />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage {...messages.enabledTooltip} />
-                        }
-                      />
+                      {projectInputTerm && (
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...inputTermMessages(projectInputTerm, {
+                                idea: messages.enabledTooltip,
+                              })}
+                            />
+                          }
+                        />
+                      )}
                     </ToggleContainer>
                   )}
                   {fieldEnabled && canSetRequired && (
