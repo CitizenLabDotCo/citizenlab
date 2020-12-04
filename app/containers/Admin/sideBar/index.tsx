@@ -200,7 +200,7 @@ class Sidebar extends PureComponent<
           id: 'processing',
           link: '/admin/processing',
           iconName: 'processing',
-          featureName: 'processing',
+          featureName: 'manual_tagging',
           message: 'processing',
           isActive: (pathName) =>
             pathName.startsWith(
