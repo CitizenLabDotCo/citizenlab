@@ -945,10 +945,22 @@
         }
       },
 
-      "processing": {
+      "manual_tagging": {
         "type": "object",
-        "title": "Processing",
-        "description": "Processing allows to automatically analyze text inputs",
+        "title": "Manual Tagging",
+        "description": "Allows to manually analyze text inputs",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+      
+      "automatic_tagging": {
+        "type": "object",
+        "title": "Automatic Tagging",
+        "description": "Allows to automatically analyze text inputs",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1031,7 +1043,8 @@
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
     "enalyzer_surveys": ["surveys"],
-    "surveymonkey_surveys": ["surveys"]
+    "surveymonkey_surveys": ["surveys"],
+    "automatic_tagging": ["manual_tagging"]
   },
   "definitions": {
     "multiloc_string": {
