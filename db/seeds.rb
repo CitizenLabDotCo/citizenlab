@@ -129,6 +129,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       password_login: {
         allowed: true,
         enabled: true,
+        phone: false,
       },
       facebook_login: {
         allowed: true,
@@ -173,6 +174,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         osm_relation_id: 2404021
       },
       user_custom_fields: {
+        enabled: true,
+        allowed: true
+      },
+      custom_idea_statuses: {
         enabled: true,
         allowed: true
       },
@@ -227,6 +232,30 @@ if ['public','example_org'].include? Apartment::Tenant.current
       geographic_dashboard: {
         enabled: true,
         allowed: true
+      },
+      intercom: {
+        enabled: true,
+        allowed: true
+      },
+      segment: {
+        enabled: true,
+        allowed: true
+      },
+      satismeter: {
+        enabled: true,
+        allowed: true,
+        write_key: ENV.fetch("DEFAULT_SATISMETER_WRITE_KEY")
+      },
+      google_analytics: {
+        enabled: true,
+        allowed: true,
+        tracking_id: ENV.fetch("DEFAULT_GA_TRACKING_ID")
+      },
+      google_tag_manager: {
+        enabled: true,
+        allowed: true,
+        destinations: 'InvasiveTracking',
+        container_id: ENV.fetch("DEFAULT_GTM_CONTAINER_ID")
       },
       smart_groups: {
         enabled: true,
@@ -359,6 +388,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         color_main: Faker::Color.hex_color,
         color_secondary: Faker::Color.hex_color,
         color_text: Faker::Color.hex_color,
+        lifecycle_stage: 'active',
       },
       facebook_login: {
         allowed: true,

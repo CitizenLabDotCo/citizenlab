@@ -18,7 +18,7 @@ class SideFxUserService
   end
 
   def after_create user, current_user
-    IdentifyToSegmentJob.perform_later(user)
+    TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
     UpdateMemberCountJob.perform_later
@@ -36,7 +36,7 @@ class SideFxUserService
   end
 
   def after_update user, current_user
-    IdentifyToSegmentJob.perform_later(user)
+    TrackUserJob.perform_later(user)
     LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
     if user.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
@@ -88,7 +88,7 @@ class SideFxUserService
   def gained_roles user
     if user.roles_previously_changed?
       old_roles, new_roles = user.roles_previous_change
-      new_roles - (old_roles || []) 
+      new_roles - (old_roles || [])
     else
       []
     end
