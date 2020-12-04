@@ -514,6 +514,7 @@ class TenantTemplateService
         'remote_header_bg_url'         => p.header_bg_url,
         'visible_to'                   => p.visible_to,
         'ideas_order'                  => p.ideas_order,
+        'input_term'                   => p.input_term,
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
@@ -585,6 +586,7 @@ class TenantTemplateService
         'start_at'               => p.start_at.to_s,
         'end_at'                 => p.end_at.to_s,
         'ideas_order'            => p.ideas_order,
+        'input_term'             => p.input_term,
         'created_at'             => p.created_at.to_s,
         'updated_at'             => p.updated_at.to_s,
         'text_images_attributes' => p.text_images.map{ |ti|
