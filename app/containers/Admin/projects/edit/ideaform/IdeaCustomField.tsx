@@ -276,21 +276,21 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
           >
             <CollapseContainer>
               <CollapseContainerInner>
-                <Toggles>
-                  {canSetEnabled && (
-                    <ToggleContainer>
-                      <StyledToggle
-                        checked={fieldEnabled}
-                        onChange={handleEnabledOnChange}
-                        label={<FormattedMessage {...messages.enabled} />}
-                        labelTextColor={colors.adminTextColor}
-                        className={`
+                {projectInputTerm && (
+                  <Toggles>
+                    {canSetEnabled && (
+                      <ToggleContainer>
+                        <StyledToggle
+                          checked={fieldEnabled}
+                          onChange={handleEnabledOnChange}
+                          label={<FormattedMessage {...messages.enabled} />}
+                          labelTextColor={colors.adminTextColor}
+                          className={`
                         e2e-${localize(
                           ideaCustomField.attributes.title_multiloc
                         ).toLowerCase()}-enabled-toggle-label
                       `}
-                      />
-                      {projectInputTerm && (
+                        />
                         <IconTooltip
                           content={
                             <FormattedMessage
@@ -300,30 +300,34 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                             />
                           }
                         />
-                      )}
-                    </ToggleContainer>
-                  )}
-                  {fieldEnabled && canSetRequired && (
-                    <ToggleContainer>
-                      <StyledToggle
-                        checked={fieldRequired}
-                        onChange={handleRequiredOnChange}
-                        label={<FormattedMessage {...messages.required} />}
-                        labelTextColor={colors.adminTextColor}
-                        className={`
+                      </ToggleContainer>
+                    )}
+                    {fieldEnabled && canSetRequired && (
+                      <ToggleContainer>
+                        <StyledToggle
+                          checked={fieldRequired}
+                          onChange={handleRequiredOnChange}
+                          label={<FormattedMessage {...messages.required} />}
+                          labelTextColor={colors.adminTextColor}
+                          className={`
                         e2e-${localize(
                           ideaCustomField.attributes.title_multiloc
                         ).toLowerCase()}-required-toggle-label
                       `}
-                      />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage {...messages.requiredTooltip} />
-                        }
-                      />
-                    </ToggleContainer>
-                  )}
-                </Toggles>
+                        />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...inputTermMessages(projectInputTerm, {
+                                idea: messages.requiredTooltip,
+                              })}
+                            />
+                          }
+                        />
+                      </ToggleContainer>
+                    )}
+                  </Toggles>
+                )}
 
                 {fieldEnabled && (
                   <Suspense fallback={<Spinner />}>
