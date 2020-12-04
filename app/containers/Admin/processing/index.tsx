@@ -54,6 +54,7 @@ import useTags from 'hooks/useTags';
 import useTaggings from 'hooks/useTaggings';
 import Tippy from '@tippyjs/react';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -346,7 +347,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [ideaList]);
 
     const handleExportSelectedIdeasAsXlsx = async () => {
-      trackEventByName(tracks.clickExportIdeas.name);
+      trackEventByName('Clicked Export Button');
 
       try {
         setExporting(true);
@@ -366,7 +367,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
-      trackEventByName(tracks.clickAutotag.name);
+      trackEventByName('Clicked Autotag Button');
       isAutotagLeftInSelection()
         ? setConfirmationModalOpen(true)
         : setShowAutotagView(true);
@@ -515,14 +516,16 @@ const Processing = memo<Props & InjectedIntlProps>(
                   />
 
                   <StyledActions>
-                    <Button
-                      buttonStyle="admin-dark"
-                      disabled={selectedRows.length === 0}
-                      locale={locale}
-                      onClick={handleAutoTag}
-                    >
-                      <FormattedMessage {...messages.autotag} />
-                    </Button>
+                    <FeatureFlag name="automatic_tagging">
+                      <Button
+                        buttonStyle="admin-dark"
+                        disabled={selectedRows.length === 0}
+                        locale={locale}
+                        onClick={handleAutoTag}
+                      >
+                        <FormattedMessage {...messages.autotag} />
+                      </Button>
+                    </FeatureFlag>
 
                     <Button
                       buttonStyle="admin-dark-outlined"
