@@ -322,6 +322,7 @@ ActiveRecord::Schema.define(version: 2020_11_27_160903) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "description_multiloc", default: {}
+    t.integer "ideas_count", default: 0
   end
 
   create_table "ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
