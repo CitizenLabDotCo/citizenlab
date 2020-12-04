@@ -1,7 +1,7 @@
 module EmailCampaigns
   class Delivery < ApplicationRecord
 
-    belongs_to :campaign, class_name: 'EmailCampaigns::Campaign'
+    belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true
     belongs_to :user
 
     DELIVERY_STATUSES = %w(sent bounced failed accepted delivered opened clicked)
@@ -23,7 +23,7 @@ module EmailCampaigns
     }
 
     def set_delivery_status s
-      self.delivery_status = 
+      self.delivery_status =
         if s == 'bounced' || s == 'failed'
           s
         else
