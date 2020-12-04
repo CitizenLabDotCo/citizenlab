@@ -20,6 +20,6 @@ export type IdeaDefaultSortMethod =
   | '-new'
   | null;
 
-export type InputTerm = 'idea' | null;
+export type InputTerm = 'idea';
 
 export const ideaDefaultSortMethodFallback = 'trending';

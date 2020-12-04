@@ -70,7 +70,7 @@ export interface IProjectData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
-    input_term: InputTerm;
+    input_term: InputTerm | null;
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;
