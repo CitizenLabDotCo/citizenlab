@@ -1,12 +1,13 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import { Checkbox, Tag } from 'cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -15,12 +16,13 @@ import { rgba } from 'polished';
 
 // typings
 import { IIdeaData } from 'services/ideas';
-import { ITopicData } from 'services/topics';
 import { Multiloc } from 'typings';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import { IAutoTag } from 'hooks/useTags';
+import { ITagging } from 'services/taggings';
+import TagWrapper from './TagWrapper';
+import { trackEventByName } from 'utils/analytics';
 
 const Container = styled.tr<{ bgColor: string }>`
   background: ${({ bgColor }) => bgColor};
@@ -32,7 +34,8 @@ const Container = styled.tr<{ bgColor: string }>`
 const StyledCheckbox = styled(Checkbox)`
   margin-top: -4px;
 `;
-const StyledTag = styled(Tag)`
+const StyledTagWrapper = styled(TagWrapper)`
+  cursor: default;
   margin-right: 4px;
 `;
 
@@ -50,12 +53,12 @@ interface Props {
   idea: IIdeaData;
   selected: boolean;
   highlighted: boolean;
-  showTopics?: boolean;
-  topics?: ITopicData[] | undefined | null;
   onSelect: (ideaId: string) => void;
   className?: string;
   openPreview: (id: string) => void;
-  tagSuggestions: IAutoTag[] | null | undefined;
+  rowRef?: RefObject<any>;
+  taggings: ITagging[];
+  showTagColumn: boolean;
 }
 
 const ProcessingRow = memo<Props & InjectedIntlProps>(
@@ -66,7 +69,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     className,
     openPreview,
     highlighted,
-    tagSuggestions,
+    rowRef,
+    taggings,
+    showTagColumn,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -84,6 +89,10 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     const handleOnChecked = useCallback(
       (_event: React.ChangeEvent | React.MouseEvent) => {
         _event.preventDefault();
+        trackEventByName('Processing Table Row', {
+          action: 'selected one row',
+          context: `${showTagColumn ? 'filter view' : 'tagging view'}`,
+        });
         onSelect(idea.id);
       },
       [onSelect]
@@ -93,6 +102,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       (_event: React.ChangeEvent | React.MouseEvent) => {
         _event.preventDefault();
         _event.stopPropagation();
+        trackEventByName('Processing Table Row', {
+          action: 'clicked on idea title',
+        });
         openPreview(idea.id);
       },
       [openPreview]
@@ -103,6 +115,8 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         className={className}
         bgColor={bgColor()}
         onClick={handleOnChecked}
+        ref={rowRef}
+        key={idea.id}
       >
         <td className="checkbox">
           <StyledCheckbox checked={selected} onChange={handleOnChecked} />
@@ -113,16 +127,27 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        <td className="content">
-          {tagSuggestions?.map((tag) => (
-            <StyledTag
-              key={tag.id}
-              text={localize(tag.attributes.title_multiloc)}
-              isAutoTag={true}
-              isSelected={selected}
-            />
-          ))}
-        </td>
+        {showTagColumn && (
+          <td className="tags">
+            {taggings.map((tagging) => (
+              <StyledTagWrapper
+                isAutoTag={tagging.attributes.assignment_method === 'automatic'}
+                isSelected={selected}
+                tagId={tagging.attributes.tag_id}
+                key={tagging.attributes.tag_id}
+              />
+            ))}
+            {highlighted && taggings.length === 0 && (
+              <Tag
+                isAutoTag={true}
+                isSelected={selected}
+                onTagClick={handleClick}
+                icon={'plus-circle'}
+                text={<FormattedMessage {...messages.addTag} />}
+              />
+            )}
+          </td>
+        )}
       </Container>
     );
   }

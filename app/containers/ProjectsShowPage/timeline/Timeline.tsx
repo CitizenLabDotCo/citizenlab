@@ -76,7 +76,7 @@ const phaseBarHeight = '24px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${transparentize(0.25, colors.label)};
+  color: ${darken(0.1, colors.label)};
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   display: flex;
@@ -109,7 +109,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${transparentize(0.25, colors.label)};
+  color: ${darken(0.1, colors.label)};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;

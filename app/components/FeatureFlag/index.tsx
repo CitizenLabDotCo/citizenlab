@@ -3,7 +3,8 @@ import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, ITenant, ITenantData } from 'services/tenant';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   name: string;
@@ -14,6 +15,18 @@ interface Props {
 interface State {
   currentTenant: ITenant | null;
 }
+
+export const isFeatureActive = (
+  feature: string,
+  tenant: ITenantData,
+  options?: { onlyCheckAllowed?: boolean }
+) => {
+  return (
+    get(tenant, `attributes.settings.${feature}.allowed`) === true &&
+    (options?.onlyCheckAllowed ||
+      get(tenant, `attributes.settings.${feature}.enabled`) === true)
+  );
+};
 
 export default class FeatureFlag extends PureComponent<Props, State> {
   public static defaultProps = {
@@ -43,13 +56,11 @@ export default class FeatureFlag extends PureComponent<Props, State> {
   render() {
     const { currentTenant } = this.state;
     const { name, onlyCheckAllowed } = this.props;
+
+    if (isNilOrError(currentTenant)) return null;
+
     const showFeature =
-      !name ||
-      (get(currentTenant, `data.attributes.settings.${name}.allowed`) ===
-        true &&
-        (onlyCheckAllowed ||
-          get(currentTenant, `data.attributes.settings.${name}.enabled`) ===
-            true));
+      !name || isFeatureActive(name, currentTenant.data, { onlyCheckAllowed });
 
     if (this.props.children && showFeature) {
       return <React.Fragment>{this.props.children}</React.Fragment>;

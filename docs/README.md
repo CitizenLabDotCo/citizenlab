@@ -2,9 +2,42 @@
 
 ## Next release
 
+### Changed
+- Increased color contrast of inactive timeline phases text to meet accesibility standard
+- Increased color contrast of event card left-hand event dates to meet accesibility standard
+- Increased color contrast of List/Map toggle component to meet accesibility standard
+
+## 2020-12-02
+
+### Changed
+- By default the last active phase instead of the last phase is now selected when a timeline project has no active phase
+
+### Fixed
+- The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
+- Styling mistakes in the idea page voting and participatory budget boxes.
+- The tooltip shown when hovering over a disabled idea posting button in the project page sticky top bar is no longer partially hidden
+
+## 2020-12-01
+
+### Changed
+- Ideas are now still editable when idea posting is disabled for a project.
+
+## 2020-11-30
+
 ### Added
 - Ability to create new and edit existing idea statuses
+
+### Fixed
+- The page no longer refreshes when accepting the cookie policy
+
+>>>>>>> 3ca472598b5d7117c3a41f6ea93cb11f35eca219
 ### Changed
+- Segment is no longer used to connect other tools, instead following tools are integrated natively
+  - Google Analytics
+  - Google Tag Manager
+  - Intercom
+  - Satismeter
+  - Segment, disabled by default
 - Error messages for invitations, logins and password resets are now clearer.
 
 ## 2020-11-27
