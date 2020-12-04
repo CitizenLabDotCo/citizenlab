@@ -151,3 +151,4 @@ gem 'volunteering', path: 'engines/volunteering'
 gem 'maps', path: 'engines/maps'
 
 gem 'project_folders', path: 'engines/project_folders'
+gem 'tagging', path: 'engines/tagging'
