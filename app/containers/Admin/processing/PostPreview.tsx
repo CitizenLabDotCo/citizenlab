@@ -226,7 +226,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     if (postId) {
       return tagging ? switchToManual(tagging.id) : addTagging(postId, tagId);
     } else {
-      return new Promise((res) => res());
+      return Promise.reject();
     }
   };
 
@@ -244,7 +244,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
 
     return this.state.postId && isTagValid
       ? addTagging(this.state.postId, null, { title_multiloc })
-      : new Promise((res) => res());
+      : Promise.reject();
   };
 
   render() {
