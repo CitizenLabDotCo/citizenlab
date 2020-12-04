@@ -25,6 +25,7 @@ end
 FactoryBot.define do
   factory :project do
     ideas_order { nil }
+    input_term { nil }
     admin_publication_attributes { {} }
     title_multiloc {{
       'en' => 'Renew West Parc',
