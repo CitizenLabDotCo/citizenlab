@@ -7,6 +7,9 @@
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
 - Increased color contrast of List/Map toggle component to meet accesibility standard
 
+### Fixed
+- Emails tab bug fixes related to deprecated emails existing in database.
+
 ## 2020-12-02
 
 ### Changed
@@ -30,7 +33,6 @@
 ### Fixed
 - The page no longer refreshes when accepting the cookie policy
 
->>>>>>> 3ca472598b5d7117c3a41f6ea93cb11f35eca219
 ### Changed
 - Segment is no longer used to connect other tools, instead following tools are integrated natively
   - Google Analytics
