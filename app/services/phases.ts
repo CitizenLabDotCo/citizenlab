@@ -19,7 +19,7 @@ export interface IPhaseData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
-    input_term: InputTerm;
+    input_term: InputTerm | null;
     start_at: string;
     end_at: string;
     created_at: string;
