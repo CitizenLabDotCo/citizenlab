@@ -34,7 +34,11 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        processing: {
+        manual_tagging: {
+          enabled: true,
+          allowed: true
+        },
+        atomatic_tagging: {
           enabled: true,
           allowed: true
         },
