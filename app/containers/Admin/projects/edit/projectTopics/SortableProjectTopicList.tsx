@@ -91,106 +91,112 @@ const SortableProjectTopicList = memo(
       const isLastSelectedTopic = projectTopics.length === 1;
       const projectInputTerm = project.attributes.input_term;
 
-      return (
-        <>
-          {isLastSelectedTopic && projectInputTerm && (
-            <StyledWarning>
-              <FormattedMessage
-                {...inputTermMessages(projectInputTerm, {
-                  idea: messages.fewerThanOneTopicWarning,
-                })}
-                values={{
-                  ideaFormLink: (
-                    <StyledLink to={`/admin/projects/${projectId}/ideaform`}>
-                      <FormattedMessage
-                        {...inputTermMessages(projectInputTerm, {
-                          idea: messages.ideaForm,
-                        })}
-                      />
-                    </StyledLink>
-                  ),
-                }}
-              />
-            </StyledWarning>
-          )}
-          <SortableList
-            items={projectTopics}
-            onReorder={handleReorderTopicProject}
-            className="projects-list e2e-admin-projects-list"
-            id="e2e-admin-published-projects-list"
-            key={projectTopics.length}
-          >
-            {({ itemsList, handleDragRow, handleDropRow }) => (
-              <>
-                {itemsList.map(
-                  (projectTopic: IProjectTopicData, index: number) => (
-                    <SortableRow
-                      id={projectTopic.id}
-                      key={index}
-                      index={index}
-                      moveRow={handleDragRow}
-                      dropRow={handleDropRow}
-                      lastItem={index === projectTopics.length - 1}
-                    >
-                      <RowContent>
-                        <RowContentInner className="expand primary">
-                          <GetTopic
-                            id={projectTopic.relationships.topic.data.id}
-                          >
-                            {(topic) =>
-                              !isNilOrError(topic) ? (
-                                <RowTitle
-                                  value={topic.attributes.title_multiloc}
-                                />
-                              ) : null
-                            }
-                          </GetTopic>
-                        </RowContentInner>
-                      </RowContent>
-                      <Button
-                        onClick={handleProjectTopicDelete(projectTopic.id)}
-                        buttonStyle="text"
-                        icon="delete"
-                        disabled={isLastSelectedTopic}
-                        id="e2e-project-topic-delete-button"
-                      >
-                        <FormattedMessage {...messages.delete} />
-                      </Button>
-                    </SortableRow>
-                  )
-                )}
-              </>
+      if (projectInputTerm) {
+        return (
+          <>
+            {isLastSelectedTopic && (
+              <StyledWarning>
+                <FormattedMessage
+                  {...inputTermMessages(projectInputTerm, {
+                    idea: messages.fewerThanOneTopicWarning,
+                  })}
+                  values={{
+                    ideaFormLink: (
+                      <StyledLink to={`/admin/projects/${projectId}/ideaform`}>
+                        <FormattedMessage
+                          {...inputTermMessages(projectInputTerm, {
+                            idea: messages.ideaForm,
+                          })}
+                        />
+                      </StyledLink>
+                    ),
+                  }}
+                />
+              </StyledWarning>
             )}
-          </SortableList>
-          <Modal
-            opened={showConfirmationModal}
-            close={closeSendConfirmationModal}
-            header={<FormattedMessage {...messages.confirmHeader} />}
-          >
-            <ModalContentContainer>
-              <Content>
-                <FormattedMessage {...messages.topicDeletionWarning} />
-              </Content>
-              <ButtonsWrapper>
-                <Button
-                  buttonStyle="secondary"
-                  onClick={closeSendConfirmationModal}
-                >
-                  <FormattedMessage {...messages.cancel} />
-                </Button>
-                <Button
-                  buttonStyle="delete"
-                  onClick={handleProjectTopicDeletionConfirm}
-                  processing={processingDeletion}
-                  id="e2e-project-topic-delete-confirm-button"
-                >
-                  <FormattedMessage {...messages.delete} />
-                </Button>
-              </ButtonsWrapper>
-            </ModalContentContainer>
-          </Modal>
-        </>
-      );
+            <SortableList
+              items={projectTopics}
+              onReorder={handleReorderTopicProject}
+              className="projects-list e2e-admin-projects-list"
+              id="e2e-admin-published-projects-list"
+              key={projectTopics.length}
+            >
+              {({ itemsList, handleDragRow, handleDropRow }) => (
+                <>
+                  {itemsList.map(
+                    (projectTopic: IProjectTopicData, index: number) => (
+                      <SortableRow
+                        id={projectTopic.id}
+                        key={index}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={index === projectTopics.length - 1}
+                      >
+                        <RowContent>
+                          <RowContentInner className="expand primary">
+                            <GetTopic
+                              id={projectTopic.relationships.topic.data.id}
+                            >
+                              {(topic) =>
+                                !isNilOrError(topic) ? (
+                                  <RowTitle
+                                    value={topic.attributes.title_multiloc}
+                                  />
+                                ) : null
+                              }
+                            </GetTopic>
+                          </RowContentInner>
+                        </RowContent>
+                        <Button
+                          onClick={handleProjectTopicDelete(projectTopic.id)}
+                          buttonStyle="text"
+                          icon="delete"
+                          disabled={isLastSelectedTopic}
+                          id="e2e-project-topic-delete-button"
+                        >
+                          <FormattedMessage {...messages.delete} />
+                        </Button>
+                      </SortableRow>
+                    )
+                  )}
+                </>
+              )}
+            </SortableList>
+            <Modal
+              opened={showConfirmationModal}
+              close={closeSendConfirmationModal}
+              header={<FormattedMessage {...messages.confirmHeader} />}
+            >
+              <ModalContentContainer>
+                <Content>
+                  <FormattedMessage
+                    {...inputTermMessages(projectInputTerm, {
+                      idea: messages.topicDeletionWarning,
+                    })}
+                  />
+                </Content>
+                <ButtonsWrapper>
+                  <Button
+                    buttonStyle="secondary"
+                    onClick={closeSendConfirmationModal}
+                  >
+                    <FormattedMessage {...messages.cancel} />
+                  </Button>
+                  <Button
+                    buttonStyle="delete"
+                    onClick={handleProjectTopicDeletionConfirm}
+                    processing={processingDeletion}
+                    id="e2e-project-topic-delete-confirm-button"
+                  >
+                    <FormattedMessage {...messages.delete} />
+                  </Button>
+                </ButtonsWrapper>
+              </ModalContentContainer>
+            </Modal>
+          </>
+        );
+      }
     }
 
     return null;
