@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // components
-import Sharing from 'components/Sharing';
+import SharingButtons from 'components/Sharing/SharingButtons';
 import { Spinner } from 'cl2-component-library';
 
 // resources
@@ -169,7 +169,7 @@ class SharingModalContent extends PureComponent<
           </Title>
           <Description>{subtitle}</Description>
           <SharingWrapper>
-            <Sharing
+            <SharingButtons
               context={postType}
               isInModal
               url={postUrl}
