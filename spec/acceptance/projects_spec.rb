@@ -351,7 +351,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
           expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
           expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'ideas'
+          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         end
 
         context 'when not admin' do
