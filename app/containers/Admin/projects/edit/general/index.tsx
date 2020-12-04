@@ -6,8 +6,9 @@ import {
   filter as rxFilter,
   distinctUntilChanged,
 } from 'rxjs/operators';
-import { isEmpty, get, isString } from 'lodash-es';
+import { isEmpty, get, isString, set } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import deepMerge from 'deepmerge';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -763,6 +764,15 @@ class AdminProjectEditGeneral extends PureComponent<
     });
   };
 
+  handleUpdateField = (fieldPath: string) => (value: any) => {
+    this.setState((prevState) => {
+      let newState = { ...prevState };
+      set(newState, 'submitState', 'enabled');
+      set(newState, fieldPath, value);
+      return deepMerge(prevState, newState);
+    });
+  };
+
   render() {
     const {
       publicationStatus,
@@ -1065,8 +1075,12 @@ class AdminProjectEditGeneral extends PureComponent<
 
             <Outlet
               id="app.components.AdminPage.projects.form.projectsAndFolders.folderSelect"
-              project={projectAttributesDiff}
-              setState={this.setState}
+              value={
+                projectAttributesDiff?.admin_publication_attributes?.parent_id
+              }
+              onChange={this.handleUpdateField(
+                'projectAttributesDiff.admin_publication_attributes.parent_id'
+              )}
             />
 
             <StyledSectionField>

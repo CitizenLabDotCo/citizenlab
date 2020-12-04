@@ -1,11 +1,5 @@
-import {
-  IUser,
-  IRole,
-  IProjectModerator,
-  IAdminPublicationModerator,
-} from 'services/users';
+import { IUser, IRole, IProjectModerator } from 'services/users';
 import { IProjectData } from 'services/projects';
-import { IAdminPublicationData } from 'services/adminPublications';
 import { isNilOrError } from 'utils/helperUtils';
 
 const hasRole = (user: IUser, role: IRole['type']) => {

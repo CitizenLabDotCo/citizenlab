@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isString, isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import Outlet from 'components/Outlet';
 
 // tracking
 import { trackPage } from 'utils/analytics';
@@ -229,6 +230,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </SectionDescription>
 
           {userIsAdmin && <StyledCreateProject />}
+
+          <Outlet
+            id="app.components.permissions.projectFolderModeratorOnly"
+            children={<StyledCreateProject />}
+          />
 
           {isProjectFoldersEnabled && (
             <GetProjectFolderModerators>
