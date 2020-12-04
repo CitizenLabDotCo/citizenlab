@@ -6,7 +6,7 @@ module EmailCampaigns
 
       after_send :save_delivery
 
-      has_many :deliveries, class_name: 'EmailCampaigns::Delivery', foreign_key: :campaign_id, dependent: :destroy
+      has_many :deliveries, class_name: 'EmailCampaigns::Delivery', foreign_key: :campaign_id, dependent: :nullify
       has_many :recipients, source: :user, through: :deliveries
     end
 
