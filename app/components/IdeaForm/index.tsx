@@ -680,15 +680,14 @@ class IdeaForm extends PureComponent<
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
 
-      const projectInputType = project.attributes.input_type;
+      const projectInputType = project.attributes.input_term;
 
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
               message={inputTermMessages(projectInputType, {
-                idea: messages.ideaFormGeneralSectionTitle,
-                contribution: messages.contributionFormGeneralSectionTitle,
+                idea: messages.formGeneralSectionTitle,
               })}
             />
             <FormElement id="e2e-idea-title-input">
