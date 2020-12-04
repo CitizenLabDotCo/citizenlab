@@ -102,35 +102,38 @@ export class IdeaContent extends PureComponent<
   render() {
     const { idea, localize, tenant, locale, manualTaggings } = this.props;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(tenant)) {
-      const ideaId = idea.id;
-      const ideaTitle = localize(idea.attributes.title_multiloc);
-
-      return (
-        <Content>
-          <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
-          <StyledBody
-            postId={ideaId}
-            postType="idea"
-            body={localize(idea.attributes.body_multiloc)}
-            locale={locale}
-          />
-          <TagList>
-            {manualTaggings.length > 0 &&
-              manualTaggings.map((tagging) => (
-                <StyledTagWrapper
-                  key={tagging.id}
-                  onTagClick={this.removeTagging(tagging.id)}
-                  isAutoTag={false}
-                  isSelected={false}
-                  icon="close"
-                  tagId={tagging.attributes.tag_id}
-                />
-              ))}
-          </TagList>
-        </Content>
-      );
-    }
+    return (
+      <Content>
+        {!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(tenant) && (
+          <>
+            <StyledTitle
+              postId={idea.id}
+              postType="idea"
+              title={localize(idea.attributes.title_multiloc)}
+            />
+            <StyledBody
+              postId={idea.id}
+              postType="idea"
+              body={localize(idea.attributes.body_multiloc)}
+              locale={locale}
+            />
+            <TagList>
+              {manualTaggings.length > 0 &&
+                manualTaggings.map((tagging) => (
+                  <StyledTagWrapper
+                    key={tagging.id}
+                    onTagClick={this.removeTagging(tagging.id)}
+                    isAutoTag={false}
+                    isSelected={false}
+                    icon="close"
+                    tagId={tagging.attributes.tag_id}
+                  />
+                ))}
+            </TagList>
+          </>
+        )}
+      </Content>
+    );
     return null;
   }
 }
