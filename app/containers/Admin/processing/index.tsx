@@ -347,8 +347,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [ideaList]);
 
     const handleExportSelectedIdeasAsXlsx = async () => {
-      trackEventByName('Clicked Export Button');
-
+      trackEventByName('Filter View', { action: 'Clicked Export Button' });
       try {
         setExporting(true);
         const blob = await requestBlob(
@@ -367,7 +366,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
-      trackEventByName('Clicked Autotag Button');
+      trackEventByName('Filter View', { action: 'Clicked Autotag Button' });
       isAutotagLeftInSelection()
         ? setConfirmationModalOpen(true)
         : setShowAutotagView(true);
@@ -442,7 +441,7 @@ const Processing = memo<Props & InjectedIntlProps>(
       setSelectedProjectIds(newProjectIds);
       onChangeProjects(newProjectIds);
       setLoadingIdeas(true);
-      trackEventByName('Filters', {
+      trackEventByName('Filter View', {
         action: 'changed projects',
       });
     };
