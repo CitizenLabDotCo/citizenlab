@@ -276,58 +276,56 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
           >
             <CollapseContainer>
               <CollapseContainerInner>
-                {projectInputTerm && (
-                  <Toggles>
-                    {canSetEnabled && (
-                      <ToggleContainer>
-                        <StyledToggle
-                          checked={fieldEnabled}
-                          onChange={handleEnabledOnChange}
-                          label={<FormattedMessage {...messages.enabled} />}
-                          labelTextColor={colors.adminTextColor}
-                          className={`
+                <Toggles>
+                  {canSetEnabled && (
+                    <ToggleContainer>
+                      <StyledToggle
+                        checked={fieldEnabled}
+                        onChange={handleEnabledOnChange}
+                        label={<FormattedMessage {...messages.enabled} />}
+                        labelTextColor={colors.adminTextColor}
+                        className={`
                         e2e-${localize(
                           ideaCustomField.attributes.title_multiloc
                         ).toLowerCase()}-enabled-toggle-label
                       `}
-                        />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage
-                              {...inputTermMessages(projectInputTerm, {
-                                idea: messages.enabledTooltip,
-                              })}
-                            />
-                          }
-                        />
-                      </ToggleContainer>
-                    )}
-                    {fieldEnabled && canSetRequired && (
-                      <ToggleContainer>
-                        <StyledToggle
-                          checked={fieldRequired}
-                          onChange={handleRequiredOnChange}
-                          label={<FormattedMessage {...messages.required} />}
-                          labelTextColor={colors.adminTextColor}
-                          className={`
+                      />
+                      <IconTooltip
+                        content={
+                          <FormattedMessage
+                            {...inputTermMessages(projectInputTerm, {
+                              idea: messages.enabledTooltip,
+                            })}
+                          />
+                        }
+                      />
+                    </ToggleContainer>
+                  )}
+                  {fieldEnabled && canSetRequired && (
+                    <ToggleContainer>
+                      <StyledToggle
+                        checked={fieldRequired}
+                        onChange={handleRequiredOnChange}
+                        label={<FormattedMessage {...messages.required} />}
+                        labelTextColor={colors.adminTextColor}
+                        className={`
                         e2e-${localize(
                           ideaCustomField.attributes.title_multiloc
                         ).toLowerCase()}-required-toggle-label
                       `}
-                        />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage
-                              {...inputTermMessages(projectInputTerm, {
-                                idea: messages.requiredTooltip,
-                              })}
-                            />
-                          }
-                        />
-                      </ToggleContainer>
-                    )}
-                  </Toggles>
-                )}
+                      />
+                      <IconTooltip
+                        content={
+                          <FormattedMessage
+                            {...inputTermMessages(projectInputTerm, {
+                              idea: messages.requiredTooltip,
+                            })}
+                          />
+                        }
+                      />
+                    </ToggleContainer>
+                  )}
+                </Toggles>
 
                 {fieldEnabled && (
                   <Suspense fallback={<Spinner />}>
