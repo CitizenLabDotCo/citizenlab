@@ -213,7 +213,11 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
             <Header>
               <TitleContainer>
                 <StyledSectionTitle>
-                  <FormattedMessage {...messages.title} />
+                  <FormattedMessage
+                    {...inputTermMessages(projectInputTerm, {
+                      idea: messages.title,
+                    })}
+                  />
                 </StyledSectionTitle>
               </TitleContainer>
               <SectionDescription>
