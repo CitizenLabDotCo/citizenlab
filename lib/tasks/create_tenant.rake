@@ -38,7 +38,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        atomatic_tagging: {
+        automatic_tagging: {
           enabled: true,
           allowed: true
         },
