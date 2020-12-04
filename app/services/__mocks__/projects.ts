@@ -9,6 +9,7 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     description_multiloc: { en: `${id} project description` },
     description_preview_multiloc: { en: `${id} project description preview` },
     slug: `${id}_slug`,
+    input_term: 'idea',
     header_bg: {
       small: `header${id}ImageUrlSmall`,
       medium: `header${id}ImageUrlMedium`,
