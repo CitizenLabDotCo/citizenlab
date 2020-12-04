@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
 import ProjectFolderRow from './admin/components/ProjectFolderRow';
@@ -11,6 +12,10 @@ import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+import { isProjectFolderModerator } from './permissions/roles';
+import { isAdmin } from 'services/permissions/roles';
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'folder') return null;
@@ -24,6 +29,28 @@ const RenderOnFeatureFlag = ({ children }) => (
       return null;
     }}
   </GetFeatureFlag>
+);
+
+const RenderOnProjectFolderModerator = ({ children }) => (
+  <GetAuthUser>
+    {(authUser: GetAuthUserChildProps) =>
+      !isNilOrError(authUser) && isProjectFolderModerator({ data: authUser })
+        ? children
+        : null
+    }
+  </GetAuthUser>
+);
+
+const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => (
+  <GetAuthUser>
+    {(authUser: GetAuthUserChildProps) =>
+      !isNilOrError(authUser) &&
+      (isProjectFolderModerator({ data: authUser }) ||
+        isAdmin({ data: authUser }))
+        ? children
+        : null
+    }
+  </GetAuthUser>
 );
 
 const configuration: ModuleConfiguration = {
@@ -71,6 +98,22 @@ const configuration: ModuleConfiguration = {
     ) => (
       <RenderOnFeatureFlag>
         <ProjectFolderSelect {...props} />
+      </RenderOnFeatureFlag>
+    ),
+    'app.containers.permissions.projectFolderModeratorOnly': ({ children }) => (
+      <RenderOnFeatureFlag>
+        <RenderOnProjectFolderModerator>
+          {children}
+        </RenderOnProjectFolderModerator>
+      </RenderOnFeatureFlag>
+    ),
+    'app.containers.permissions.projectFolderModeratorOrAdminOnly': ({
+      children,
+    }) => (
+      <RenderOnFeatureFlag>
+        <RenderOnProjectFolderModeratorOrAdmin>
+          {children}
+        </RenderOnProjectFolderModeratorOrAdmin>
       </RenderOnFeatureFlag>
     ),
   },

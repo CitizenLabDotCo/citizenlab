@@ -1,5 +1,4 @@
 import React, { ReactElement, useMemo, memo, useCallback } from 'react';
-import merge from 'deepmerge';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -20,7 +19,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption } from 'typings';
-import { IUpdatedProjectProperties } from 'services/projects';
 
 import messages from './messages';
 
@@ -30,13 +28,12 @@ const StyledSectionField = styled(SectionField)`
 `;
 
 interface Props {
-  value: string;
-  setState: (prevState?: object) => object;
-  project: IUpdatedProjectProperties;
+  onChange: (value: string) => void;
+  value: string | null;
 }
 
 const ProjectFolderSelect = memo<Props & InjectedLocalized>(
-  ({ project, setState, localize }): ReactElement => {
+  ({ value, onChange, localize }): ReactElement => {
     const { projectFolders } = useProjectFolders({});
 
     const hasAdminPublication = (folder: IProjectFolderData): boolean =>
@@ -55,36 +52,22 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized>(
 
     const handleChange = useCallback(
       ({ value }) => {
-        setState((prevState) =>
-          merge(prevState, {
-            projectAttributesDiff: {
-              admin_publication_attributes: { parent_id: value },
-            },
-          })
-        );
+        onChange(value);
       },
-      [setState]
+      [onChange]
     );
 
-    if (!isNilOrError(project.admin_publication_attributes)) {
-      return (
-        <StyledSectionField>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.folder} />
-            <IconTooltip
-              content={<FormattedMessage {...messages.folderTooltip} />}
-            />
-            <Select
-              value={project.admin_publication_attributes.parent_id}
-              options={folderOptions}
-              onChange={handleChange}
-            />
-          </SubSectionTitle>
-        </StyledSectionField>
-      );
-    }
-
-    return <></>;
+    return (
+      <StyledSectionField>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.folder} />
+          <IconTooltip
+            content={<FormattedMessage {...messages.folderTooltip} />}
+          />
+        </SubSectionTitle>
+        <Select value={value} options={folderOptions} onChange={handleChange} />
+      </StyledSectionField>
+    );
   }
 );
 

@@ -1,21 +1,26 @@
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
 import { IUser } from 'services/users';
 
-export const isAdminPublicationModerator = (
+export type IProjectFolderModerator = {
+  type: 'project_folder_moderator';
+  project_folder_id: string;
+};
+
+export const isProjectFolderModerator = (
   user?: IUser | null,
-  projectFolderId?: IAdminPublicationData['id'] | null
+  projectFolderId?: IProjectFolderData['id'] | null
 ) => {
   return (
-    isModerator(user) &&
-    (!projectFolderId ||
-      !!(
-        user &&
-        projectFolderId &&
-        user.data.attributes?.roles &&
-        user.data.attributes?.roles?.find(
-          (r: IAdminPublicationModerator) =>
-            r.admin_publication_id === projectFolderId
-        )
-      ))
+    !projectFolderId ||
+    !!(
+      user &&
+      projectFolderId &&
+      user.data.attributes?.roles &&
+      user.data.attributes?.roles?.find(
+        (r: IProjectFolderModerator) =>
+          r.project_folder_id === projectFolderId &&
+          r.type === 'project_folder_moderator'
+      )
+    )
   );
 };
