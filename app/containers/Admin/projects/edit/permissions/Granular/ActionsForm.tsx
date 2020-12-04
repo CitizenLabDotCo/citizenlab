@@ -64,17 +64,15 @@ const ActionsForm = memo(
       if (postType === 'idea' && !isNilOrError(project)) {
         const projectInputTerm = project.attributes.input_term;
 
-        if (projectInputTerm) {
-          return {
-            posting_idea: inputTermMessages(projectInputTerm, {
-              idea: messages.permissionAction_posting_idea,
-            }),
-            voting_idea: messages.permissionAction_voting_idea,
-            commenting_idea: messages.permissionAction_commenting_idea,
-            taking_survey: messages.permissionAction_taking_survey,
-            taking_poll: messages.permissionAction_taking_poll,
-          }[permissionAction];
-        }
+        return {
+          posting_idea: inputTermMessages(projectInputTerm, {
+            idea: messages.permissionAction_posting_idea,
+          }),
+          voting_idea: messages.permissionAction_voting_idea,
+          commenting_idea: messages.permissionAction_commenting_idea,
+          taking_survey: messages.permissionAction_taking_survey,
+          taking_poll: messages.permissionAction_taking_poll,
+        }[permissionAction];
       }
 
       if (postType === 'initiative') {

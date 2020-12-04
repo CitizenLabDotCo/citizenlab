@@ -209,26 +209,24 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
 
       return (
         <Container className={className || ''}>
-          {projectInputTerm && (
-            <Header>
-              <TitleContainer>
-                <StyledSectionTitle>
-                  <FormattedMessage
-                    {...inputTermMessages(projectInputTerm, {
-                      idea: messages.title,
-                    })}
-                  />
-                </StyledSectionTitle>
-              </TitleContainer>
-              <SectionDescription>
+          <Header>
+            <TitleContainer>
+              <StyledSectionTitle>
                 <FormattedMessage
                   {...inputTermMessages(projectInputTerm, {
-                    idea: messages.description,
+                    idea: messages.title,
                   })}
                 />
-              </SectionDescription>
-            </Header>
-          )}
+              </StyledSectionTitle>
+            </TitleContainer>
+            <SectionDescription>
+              <FormattedMessage
+                {...inputTermMessages(projectInputTerm, {
+                  idea: messages.description,
+                })}
+              />
+            </SectionDescription>
+          </Header>
 
           <Content>
             <Section>
