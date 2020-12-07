@@ -154,6 +154,7 @@ const StyledFilterSelector = styled(FilterSelector)`
   &:not(:last-child) {
     margin-right: 0px;
   }
+  margin-bottom: 15px;
 `;
 
 const TableWrapper = styled.div`
@@ -233,7 +234,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const locale = useLocale();
 
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
-      []
+      undefined
     );
     const [projectList, setProjectList] = useState<
       IFilterSelectorValue[] | null
@@ -292,6 +293,7 @@ const Processing = memo<Props & InjectedIntlProps>(
             })),
         ];
         setProjectList(filterSelectorValues);
+        setSelectedProjectIds([projects.projectsList[0].id]);
       }
     }, [projects, tenant, locale]);
 
@@ -333,7 +335,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      setIdeaList(ideas?.list);
+      setIdeaList(ideas?.list || null);
       setLoadingIdeas(false);
     }, [ideas, selectedProjectIds]);
 
@@ -511,7 +513,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                     name={'Projects'}
                     values={projectList}
                     onChange={handleProjectIdsChange}
-                    multipleSelectionAllowed={true}
+                    multipleSelectionAllowed={false}
                     selected={selectedProjectIds}
                   />
 
@@ -620,7 +622,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               </StyledTable>
             </TableWrapper>
           ) : (
-            <StyledSpinner />
+            ideaList === undefined || (loadingIdeas && <StyledSpinner />)
           )}
           <CSSTransition
             in={!!previewPostId}
@@ -702,12 +704,14 @@ const Data = adopt<DataProps, InputProps>({
     );
   },
   ideas: ({ render, projects }) => {
-    const projectIds = projects?.projectsList?.map((project) => project.id);
+    if (isNilOrError(projects)) {
+      return <>{render}</>;
+    }
     return (
       <GetIdeas
         type="paginated"
         pageSize={2000000}
-        projectIds={projectIds}
+        projectIds={[projects?.projectsList?.[0].id || '']}
         cache={false}
         mini={true}
         sort="new"
