@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { moderatorsStream } from 'modules/project_folders/services/moderators';
 import { IUsers, IUserData } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 import {
+  moderatorsStream,
   addModerator,
   deleteModerator,
 } from 'modules/project_folders/services/moderators';

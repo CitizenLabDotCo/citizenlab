@@ -132,7 +132,6 @@ class AdminFoldersProjectsList extends Component<
   };
 
   render() {
-    const { projectFolderId } = this;
     const { topLevelProjects, projectsInFolder, authUser } = this.props;
 
     const { processing } = this.state;
@@ -154,7 +153,7 @@ class AdminFoldersProjectsList extends Component<
           )
         : null;
 
-    return projectFolderId ? (
+    return this.projectFolderId ? (
       <Container>
         <ListsContainer>
           <ListHeader>

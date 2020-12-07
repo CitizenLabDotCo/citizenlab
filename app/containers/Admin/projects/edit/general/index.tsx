@@ -224,7 +224,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   constructor(props) {
     super(props);
-    let initialState: State = {
+    const initialState: State = {
       processing: false,
       project: undefined,
       publicationStatus: 'draft',
@@ -766,7 +766,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   handleUpdateField = (fieldPath: string) => (value: any) => {
     this.setState((prevState) => {
-      let newState = { ...prevState };
+      const newState = { ...prevState };
       set(newState, 'submitState', 'enabled');
       set(newState, fieldPath, value);
       return deepMerge(prevState, newState);
