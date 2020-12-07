@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Text = styled.span`
-  color: ${colors.label};
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 26px;
@@ -24,7 +24,7 @@ const Text = styled.span`
 const DropdownIcon = styled(Icon)`
   width: 10px;
   height: 7px;
-  fill: ${colors.label};
+  fill: ${colors.text};
   margin-left: 4px;
   margin-top: 4px;
   transition: all 100ms ease-out;
@@ -64,6 +64,7 @@ const Container = styled.button`
   &.opened {
     ${Text} {
       color: #000;
+      text-decoration: underline;
     }
 
     ${DropdownIcon} {

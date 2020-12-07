@@ -102,9 +102,9 @@ const AdminPage = memo<Props & WithRouterProps>(
           .init('AdminNoPadding', { enabled: false })
           .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
       ];
-      return subscriptions.forEach((subscription) =>
-        subscription.unsubscribe()
-      );
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
     }, []);
 
     const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
@@ -122,11 +122,16 @@ const AdminPage = memo<Props & WithRouterProps>(
       return null;
     }
 
-    const noPadding = adminNoPadding || pathname.includes('admin/dashboard');
+    const noPadding =
+      adminNoPadding ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
+
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard');
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
