@@ -85,28 +85,28 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     event.preventDefault();
   };
 
-  reasonToMessage = (projectInputTerm: InputTerm) => {
+  reasonToMessage = (inputTerm: InputTerm) => {
     const { budgetingDescriptor, authUser } = this.props;
 
     if (budgetingDescriptor) {
       const { disabled_reason, future_enabled } = budgetingDescriptor;
 
       if (disabled_reason && future_enabled) {
-        return getInputTermMessage(projectInputTerm, {
+        return getInputTermMessage(inputTerm, {
           idea: messages.budgetingDisabledFutureEnabled,
         });
       } else if (authUser && disabled_reason === 'not_verified') {
-        return getInputTermMessage(projectInputTerm, {
+        return getInputTermMessage(inputTerm, {
           idea: messages.budgetingDisabledNotVerified,
         });
       } else if (disabled_reason === 'not_permitted') {
-        return getInputTermMessage(projectInputTerm, {
+        return getInputTermMessage(inputTerm, {
           idea: messages.budgetingDisabledNotPermitted,
         });
       }
     }
 
-    return getInputTermMessage(projectInputTerm, {
+    return getInputTermMessage(inputTerm, {
       idea: messages.budgetingDisabled,
     });
   };
@@ -123,8 +123,8 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     );
 
     if (!isNilOrError(project)) {
-      const projectInputTerm = project.attributes.input_term;
-      const message = this.reasonToMessage(projectInputTerm);
+      const inputTerm = project.attributes.input_term;
+      const message = this.reasonToMessage(inputTerm);
 
       return (
         <Container className="e2e-assign-disabled">
