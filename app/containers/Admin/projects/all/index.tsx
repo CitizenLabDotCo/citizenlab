@@ -13,9 +13,6 @@ import { trackPage } from 'utils/analytics';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProjectFolderModerators, {
-  IGetModeratorHook,
-} from 'modules/project_folders/resources/GetProjectFolderModerators';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -82,7 +79,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  useProjectFolderModerators: IGetModeratorHook;
   isProjectFoldersEnabled: boolean;
 }
 
