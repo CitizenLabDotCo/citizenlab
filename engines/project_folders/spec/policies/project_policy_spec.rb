@@ -7,7 +7,7 @@ describe ProjectPolicy do
 
   let!(:project) { create(:project) }
 
-  ProjectPolicy.prepend MonkeyPatches::ProjectPolicy
+  ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
 
   context 'for an project folder moderator' do
     let(:user) { build(:project_folder_moderator) }
