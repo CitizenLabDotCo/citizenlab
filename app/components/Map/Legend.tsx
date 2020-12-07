@@ -56,10 +56,15 @@ interface Props {
 
 const Legend = memo(({ projectId }: Props) => {
   const mapConfig = useMapConfig({ projectId });
-  const legend = !isNilOrError(mapConfig) && mapConfig.attributes.legend;
   const localize = useLocalize();
 
-  if (legend && legend.length !== 0) {
+  if (
+    !isNilOrError(mapConfig) &&
+    mapConfig.attributes.legend &&
+    mapConfig.attributes.legend.length !== 0
+  ) {
+    const legend = mapConfig.attributes.legend;
+
     return (
       <LegendContainer>
         <LegendItems>
