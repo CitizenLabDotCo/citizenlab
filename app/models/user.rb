@@ -8,7 +8,6 @@ class User < ApplicationRecord
 
   GENDERS = %w(male female unspecified)
   INVITE_STATUSES = %w(pending accepted)
-  NORMAL_USER_QUERY_SQL = 'roles = \'[]\'::jsonb'.freeze
 
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
@@ -51,12 +50,6 @@ class User < ApplicationRecord
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets, dependent: :destroy
   has_many :initiative_status_changes, dependent: :nullify
-
-  has_one_role :admin
-  has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
-  has_many_roles :project_moderator, class: 'Project', foreign_key: 'project_id'
-
-  prepend ProjectFolders::ModeratorDecorator
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
@@ -104,21 +97,46 @@ class User < ApplicationRecord
   validate :validate_email_domain_blacklist
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
-  validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
 
-  scope :order_role, lambda { |direction = :asc|
-    joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
-      .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
-      .reverse_order
-      .group('users.id')
+  scope :order_role, -> (direction=:asc) {
+    joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
+    .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
+    .reverse_order
+    .group('users.id')
   }
 
-  scope :normal_user,       -> { where(NORMAL_USER_QUERY_SQL) }
-  scope :not_normal_user,   -> { where.not(NORMAL_USER_QUERY_SQL) }
+  scope :admin, -> {
+    where("roles @> '[{\"type\":\"admin\"}]'")
+  }
+
+  scope :not_admin, -> {
+    where.not("roles @> '[{\"type\":\"admin\"}]'")
+  }
+
+  scope :project_moderator, -> (project_id=nil) {
+    if project_id
+      where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+    else
+      where("roles @> '[{\"type\":\"project_moderator\"}]'")
+    end
+  }
+
+  scope :not_project_moderator, -> {
+    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
+  }
+
+  scope :normal_user, -> {
+    where("roles = '[]'::jsonb")
+  }
+
+  scope :not_normal_user, -> {
+    where.not("roles = '[]'::jsonb")
+  }
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
@@ -127,6 +145,7 @@ class User < ApplicationRecord
   scope :not_invited, -> {
     where.not(invite_status: 'pending').or(where(invite_status: nil))
   }
+
 
   scope :in_group, -> (group) {
     if group.rules?
@@ -190,11 +209,23 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(" ")
+    [first_name, last_name].compact.join(' ')
+  end
+
+  def admin?
+    roles.any? { |r| r['type'] == 'admin' }
+  end
+
+  def active_and_admin?
+    active? && admin?
   end
 
   def super_admin?
     admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+  end
+
+  def project_moderator? project_id=nil
+    !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
   end
 
   def admin_or_moderator? project_id
@@ -205,25 +236,31 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
-  def active_and_admin?
-    active? && admin?
-  end
-
-  def normal?
-    roles.empty?
-  end
-
   def highest_role
-    if super_admin?                 then :super_admin
-    elsif admin?                    then :admin
-    elsif project_folder_moderator? then :project_folder_moderator
-    elsif project_moderator?        then :project_moderator
-    else                                 :user
+    if super_admin?
+      :super_admin
+    elsif admin?
+      :admin
+    elsif project_moderator?
+      :project_moderator
+    else
+      :user
     end
   end
 
   def moderatable_project_ids
-    project_moderator_project_ids
+    self.roles
+      .select{|role| role['type'] == 'project_moderator'}
+      .map{|role| role['project_id']}.compact
+  end
+
+  def add_role type, options={}
+    self.roles << {"type" => type}.merge(options)
+    self.roles.uniq!
+  end
+
+  def delete_role type, options={}
+    self.roles.delete({"type" => type}.merge(options.stringify_keys))
   end
 
   def authenticate unencrypted_password
@@ -252,6 +289,7 @@ class User < ApplicationRecord
   def group_ids
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
+
 
   private
 
@@ -313,4 +351,7 @@ class User < ApplicationRecord
     end
   end
 
+  def roles_json_schema
+    ROLES_JSON_SCHEMA
+  end
 end

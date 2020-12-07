@@ -1,3 +1,7 @@
+require 'project_folders/monkey_patches'
+require 'project_folders/monkey_patches/project_policy'
+require 'project_folders/monkey_patches/side_fx_project_service'
+
 begin
   require 'factory_bot_rails'
 rescue LoadError
@@ -21,5 +25,11 @@ module ProjectFolders
     end
 
     config.to_prepare(&method(:activate).to_proc)
+
+    ActiveSupport.on_load(:action_controller) do
+      ::User.prepend ProjectFolders::ModeratorDecorator
+      ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
+      ::SideFxProjectService.prepend ProjectFolders::MonkeyPatches::SideFxProjectService
+    end
   end
 end

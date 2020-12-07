@@ -8,34 +8,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'managing admin role' do
-    subject { create(:user) }
-
-    include_examples 'has_one_role', 'admin'
-  end
-
-  describe 'managing admin publication moderator roles' do
-    let(:roleable) { create(:project).admin_publication }
-    let(:other_roleable) { create(:project).admin_publication }
-
-    include_examples 'has_many_associated_roles', 'admin_publication_moderator'
-  end
-
-  describe 'managing project moderator roles' do
-    let(:roleable) { create(:project) }
-    let(:other_roleable) { create(:project) }
-
-    # include_examples 'has_many_associated_roles', 'project_moderator'
-    include_examples 'has_many_associated_roles', 'project_moderator'
-  end
-
-  describe 'managing project folder moderator roles' do
-    let(:roleable) { create(:project_folder) }
-    let(:other_roleable) { create(:project_folder) }
-
-    include_examples 'has_many_polymorphic_associated_through_roles', 'project_folder_moderator'
-  end
-
   describe "creating a user" do
     it "generates a slug" do
       u = build(:user)
@@ -167,8 +139,7 @@ RSpec.describe User, type: :model do
   describe "project_moderator?" do
     it "responds true when the user has the project_moderator role" do
       l = create(:project)
-      u = build(:user)
-      u.add_project_moderator_role l
+      u = build(:user, roles: [{type: "project_moderator", project_id: l.id}])
       expect(u.project_moderator? l.id).to eq true
     end
 
@@ -181,14 +152,12 @@ RSpec.describe User, type: :model do
     it "responds false when the user does not have a project_moderator role for the given project" do
       l1 = create(:project)
       l2 = create(:project)
-      u = build(:user)
-      u.add_project_moderator_role l1
+      u = build(:user, roles: [{type: "project_moderator", project_id: l1.id}])
       expect(u.project_moderator? l2.id).to eq false
     end
 
     it "response true when the user is project_moderator and no project_id is passed" do
-      u = build(:user)
-      u.add_project_moderator_role
+      u = build(:user, roles: [{type: "project_moderator"}])
       expect(u.project_moderator?).to eq true
     end
 
@@ -199,7 +168,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "add_role" do
-    it "gives a user moderator rights for a project" do
+    it "gives a user moderator rights for a project" do 
       usr = create(:user, roles: [])
       prj = create(:project)
       expect(usr.project_moderator? prj.id).to eq false
@@ -211,12 +180,12 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "remove_role" do
+  describe "delete_role" do
     it "denies a user from his moderator rights" do
       prj = create(:project)
       mod = create(:moderator, project: prj)
 
-      mod.remove_role 'project_moderator', project_id: prj.id
+      mod.delete_role 'project_moderator', project_id: prj.id
       expect(mod.save).to eq true
       expect(mod.project_moderator? prj.id).to eq false
     end
@@ -225,7 +194,7 @@ RSpec.describe User, type: :model do
       prj = create(:project)
       adm = create(:moderator, project: prj)
 
-      adm.remove_role 'admin'
+      adm.delete_role 'admin'
       expect(adm.save).to eq true
       expect(adm.admin?).to eq false
     end
@@ -424,7 +393,7 @@ RSpec.describe User, type: :model do
       group = create(:group)
       users = create_list(:user, 3, manual_groups: [group])
       create_list(:user, 2)
-      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id)
+      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id) 
     end
 
     it "gets all users in a rules group" do
