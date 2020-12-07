@@ -1,8 +1,7 @@
 class ModeratorPolicy < ApplicationPolicy
-
-def index?
-  admin_or_moderator?
-end
+  def index?
+    admin_or_moderator?
+  end
 
   def show?
     admin_or_moderator?
@@ -20,7 +19,6 @@ end
     admin_or_moderator?
   end
 
-
   private
 
   def admin_or_moderator?
@@ -28,5 +26,4 @@ end
     # (not just of any project).
     user&.active? && (user.admin? || user.project_moderator?(record.project_id))
   end
-
 end
