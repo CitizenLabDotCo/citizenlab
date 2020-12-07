@@ -208,7 +208,7 @@ export default defineMessages({
     defaultMessage: 'Ideas displayed by default as:',
   },
   defaultIdeaSorting: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaSortingOrder',
+    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
     defaultMessage: 'Idea sorting order',
   },
   presentationModeTooltip: {
@@ -217,7 +217,7 @@ export default defineMessages({
       'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
   },
   defaultIdeaSortingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSortingTooltip',
     defaultMessage:
       'You can set the default order for ideas to be displayed on the main project page.',
   },
