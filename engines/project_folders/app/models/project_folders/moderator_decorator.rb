@@ -2,13 +2,13 @@ module ProjectFolders
   module ModeratorDecorator
     def self.prepended(base)
       base.class_eval do
-        scope :project_folder_moderator, lambda { |project_folder_id = nil|
-          if project_folder_id
-            role_json = JSON.generate([{ type: 'project_folder_moderator', project_folder_id: project_folder_id }])
-            where('roles @> ?', role_json)
-          else
-            where("roles @> '[{\"type\":\"project_moderator\"}]'")
+        scope :project_folder_moderator, lambda { |*project_folder_ids|
+          return where("roles @> '[{\"type\":\"project_moderator\"}]'") if project_folder_ids.empty?
+
+          query = project_folder_ids.map do |id|
+            JSON.generate([{ type: 'project_folder_moderator', project_folder_id: id }])
           end
+          where('roles @> ?', query)
         }
 
         scope :not_project_folder_moderator, lambda {
@@ -45,7 +45,11 @@ module ProjectFolders
       active? && admin_or_folder_moderator?(project_folder_id)
     end
 
-    def moderatable_project_folder_ids
+    def moderated_folders
+      ProjectFolders::Folder.where(id: moderated_folder_ids)
+    end
+
+    def moderated_folder_ids
       roles.select { |role| role['type'] == 'project_folder_moderator' }
            .map { |role| role['project_folder_id'] }
            .compact
