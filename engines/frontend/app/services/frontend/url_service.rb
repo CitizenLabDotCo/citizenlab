@@ -12,7 +12,7 @@ module Frontend
       elsif model_instance.kind_of? Phase
         subroute = 'projects'
         slug = model_instance.project.slug
-      elsif model_instance.kind_of? ProjectFolder
+      elsif model_instance.kind_of? ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug
       elsif model_instance.kind_of? Idea
@@ -102,6 +102,12 @@ module Frontend
     def unsubscribe_url_template tenant, campaign_id
       "#{tenant.base_frontend_uri}/email-settings?unsubscription_token={{unsubscription_token}}&campaign_id=#{campaign_id}"
     end
+
+    def unsubscribe_url tenant, campaign_id, user_id
+      "#{tenant.base_frontend_uri}/email-settings?unsubscription_token=#{EmailCampaigns::UnsubscriptionToken.find_by(user_id: user_id).token}&campaign_id=#{campaign_id}"
+    end
+
+    
 
     def terms_conditions_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/pages/terms-and-conditions"
