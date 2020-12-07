@@ -30,7 +30,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
         disabled_reason: voting_disabled_reason,
         future_enabled: voting_disabled_reason && @participation_context_service.future_voting_idea_enabled_phase(object.project, current_user(params))&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
-      },   
+      },
       comment_voting_idea: {
         enabled: !comment_voting_disabled_reason,
         disabled_reason: comment_voting_disabled_reason,
@@ -71,6 +71,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       params.dig(:vbii, object.id)
     else
        object.votes.where(user_id: current_user(params)&.id).first
-     end
+    end
   end
 end

@@ -165,6 +165,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/tagging
+  specs:
+    tagging (0.1.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/verification
   specs:
     verification (0.1.0)
@@ -392,6 +398,7 @@ GEM
     image_processing (1.9.3)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.13, < 3)
+    intercom (4.1.1)
     ipaddress (0.8.3)
     jmespath (1.4.0)
     json (2.3.1)
@@ -625,7 +632,7 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
-    simple_segment (0.3.0)
+    simple_segment (1.2.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -718,6 +725,7 @@ DEPENDENCIES
   frontend!
   groupdate
   ice_cube!
+  intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
   liquid (~> 4.0)
@@ -766,13 +774,14 @@ DEPENDENCIES
   sentry-raven
   shoulda-matchers (~> 3.1)
   sidekiq (~> 6.1)
-  simple_segment (~> 0.3)
+  simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
   skylight
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
+  tagging!
   verification!
   volunteering!
   webmock (~> 3.4)
