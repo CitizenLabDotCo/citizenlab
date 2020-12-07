@@ -7,9 +7,9 @@ export function moderatorsStream(
   cacheStream?: boolean
 ) {
   return streams.get<IUsers>({
+    cacheStream,
     apiEndpoint: `${API_PATH}/project_folder_moderators`,
     queryParameters: { project_folder_id: projectFolderId },
-    cacheStream,
   });
 }
 
