@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ITag, tagsStream } from 'services/tags';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface IUseTag {
-  tags: ITag[] | null | Error | undefined;
+  tags: ITag[] | null | undefined;
   onIdeasChange: (ideas: string[]) => void;
   onSearchChange: (search: string) => void;
 }
@@ -33,7 +34,7 @@ export default function useTags(ideaIdsParam = [] as string[]) {
     }).observable;
 
     const subscription = observable.subscribe((response) => {
-      setTags(response ? response.data : response);
+      setTags(!isNilOrError(response) ? response.data : null);
     });
 
     return () => subscription.unsubscribe();
