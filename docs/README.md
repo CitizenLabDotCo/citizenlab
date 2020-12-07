@@ -2,7 +2,8 @@
 
 ## Next release
 
-/
+### Changed
+- Idea cards are more compact, while displaying more information. It now shows an image, part of the idea body and the idea status.
 
 ## 2020-11-23
 
