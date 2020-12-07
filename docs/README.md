@@ -44,15 +44,9 @@
 
 ## 2020-11-27
 
-### Added
-
-- Idea statuses are now customizable via API.
-- CRUD API Endpoints for Idea statuses
-
 ### Fixed
 
 - Social authentication with Google when the user has no avatar.
-- Deal with null values in multilocs during sanitization.
 
 ### Changed
 
