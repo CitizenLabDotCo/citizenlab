@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -13,9 +15,13 @@ import {
   IIdeasPageGlobalState,
 } from 'services/globalState';
 
+// resource
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -40,10 +46,17 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-interface Props {
+interface InputProps {
   form?: string;
-  id?: string;
+  elementId?: string;
+  projectId: string;
 }
+
+interface DataProps {
+  project: GetProjectChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface GlobalState {
   submitError: boolean;
@@ -53,7 +66,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-export default class IdeasEditButtonBar extends PureComponent<Props, State> {
+class IdeasEditButtonBar extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
@@ -88,39 +101,69 @@ export default class IdeasEditButtonBar extends PureComponent<Props, State> {
     eventEmitter.emit('IdeaFormSubmitEvent');
   };
 
-  render() {
-    const { processing, fileOrImageError, submitError } = this.state;
-    const { id } = this.props;
-    let { form } = this.props;
-    const submitErrorMessage = submitError ? (
-      <FormattedMessage {...messages.submitError} />
-    ) : fileOrImageError ? (
-      <FormattedMessage {...messages.fileOrImageError} />
-    ) : null;
+  getSubmitErrorMessage = () => {
+    const { fileOrImageError, submitError } = this.state;
+    const { project } = this.props;
 
+    if (submitError) {
+      return <FormattedMessage {...messages.submitError} />;
+    } else if (fileOrImageError && !isNilOrError(project)) {
+      const projectInputTerm = project.attributes.input_term;
+
+      return (
+        <FormattedMessage
+          {...getInputTermMessage(projectInputTerm, {
+            idea: messages.fileOrImageError,
+          })}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  render() {
+    const { processing } = this.state;
+    const { elementId, project } = this.props;
+    let { form } = this.props;
+    const submitErrorMessage = this.getSubmitErrorMessage();
     form = form || '';
 
-    return (
-      <ButtonBar>
-        <ButtonBarInner>
-          <Button
-            id={id}
-            form={form}
-            className="e2e-submit-idea-form"
-            processing={processing}
-            text={<FormattedMessage {...messages.submit} />}
-            onClick={this.handleOnSubmitButtonClick}
-          />
-          {submitErrorMessage && (
-            <Error
-              text={submitErrorMessage}
-              marginTop="0px"
-              showBackground={false}
-              showIcon={true}
+    if (!isNilOrError(project)) {
+      return (
+        <ButtonBar>
+          <ButtonBarInner>
+            <Button
+              id={elementId}
+              form={form}
+              className="e2e-submit-idea-form"
+              processing={processing}
+              text={<FormattedMessage {...messages.submit} />}
+              onClick={this.handleOnSubmitButtonClick}
             />
-          )}
-        </ButtonBarInner>
-      </ButtonBar>
-    );
+            {submitErrorMessage && (
+              <Error
+                text={submitErrorMessage}
+                marginTop="0px"
+                showBackground={false}
+                showIcon={true}
+              />
+            )}
+          </ButtonBarInner>
+        </ButtonBar>
+      );
+    }
+
+    return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId }) => <GetProject projectId={projectId} />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeasEditButtonBar {...inputProps} {...dataProps} />}
+  </Data>
+);

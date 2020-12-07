@@ -344,8 +344,9 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
               <ButtonBarContainer>
                 <IdeasEditButtonBar
-                  id="e2e-idea-edit-save-button"
+                  elementId="e2e-idea-edit-save-button"
                   form="idea-form"
+                  projectId={projectId}
                 />
               </ButtonBarContainer>
             </FormContainer>
