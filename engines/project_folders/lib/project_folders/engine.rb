@@ -1,3 +1,4 @@
+require 'project_folders/monkey_patches'
 require 'project_folders/monkey_patches/project_policy'
 require 'project_folders/monkey_patches/side_fx_project_service'
 

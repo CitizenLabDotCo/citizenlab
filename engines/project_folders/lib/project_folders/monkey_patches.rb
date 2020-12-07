@@ -1,2 +1,4 @@
-module MonkeyPatches
+module ProjectFolders
+  module MonkeyPatches
+  end
 end
