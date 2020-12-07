@@ -21,23 +21,32 @@ module ProjectFolders
       end
     end
 
-    def initialize(user, args)
-      @user = user
-      @moderator, @moderatable = args
+    def index?
+      admin_or_moderator?
+    end
+
+    def show?
+      admin_or_moderator?
     end
 
     def create?
-      manage?
+      admin_or_moderator?
     end
 
     def destroy?
-      manage?
+      admin_or_moderator?
+    end
+
+    def users_search?
+      admin_or_moderator?
     end
 
     private
 
-    def manage?
-      user.active_and_admin? || user.project_folder_moderator?(@moderatable)
+    def admin_or_moderator?
+      # In the case of moderator, the user must be moderator of that project
+      # (not just of any project).
+      user.active_and_admin? || user.project_folder_moderator?(record.project_folder_id)
     end
   end
 end

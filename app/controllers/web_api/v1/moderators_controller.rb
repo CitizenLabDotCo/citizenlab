@@ -44,7 +44,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
   # delete
   def destroy
-    @moderator.remove_role 'project_moderator', project_id: params[:project_id]
+    @moderator.delete_role 'project_moderator', project_id: params[:project_id]
     if @moderator.save
       SideFxModeratorService.new.after_destroy(@moderator, Project.find(params[:project_id]), current_user)
       head :ok
