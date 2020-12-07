@@ -96,7 +96,7 @@ gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
-gem 'simple_segment', '~> 0.3'
+gem 'simple_segment', '~>1.2'
 gem 'okcomputer'
 gem 'sentry-raven'
 gem 'omniauth' # , '~> 1.7.1'
@@ -131,6 +131,12 @@ gem 'bootsnap', require: false
 gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
 gem 'rack-attack', '~> 6'
 
+# mjml-rails cannot find the MJML parser when installed
+# through the emails engine and is therefore specified
+# in the main app.
+gem "mjml-rails", "~> 4.4"
+gem 'intercom', '~> 4.1'
+
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'machine_translations', path: 'engines/machine_translations'
@@ -143,3 +149,6 @@ gem 'polls', path: 'engines/polls'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
 gem 'maps', path: 'engines/maps'
+
+gem 'project_folders', path: 'engines/project_folders'
+gem 'tagging', path: 'engines/tagging'

@@ -119,7 +119,6 @@ class ProjectPolicy < ApplicationPolicy
       :presentation_mode,
       :default_assignee_id,
       :poll_anonymous,
-      :folder_id,
       :ideas_order,
       admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,

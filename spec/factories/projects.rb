@@ -25,19 +25,20 @@ end
 FactoryBot.define do
   factory :project do
     ideas_order { nil }
+    admin_publication_attributes { {} }
     title_multiloc {{
-      "en" => "Renew West Parc",
-      "nl-BE" => "Westpark vernieuwen"
+      'en' => 'Renew West Parc',
+      'nl-BE' => 'Westpark vernieuwen'
     }}
     description_multiloc {{
-      "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
-      "nl-BE" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
+      'en' => '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
+      'nl-BE' => '<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>'
     }}
     description_preview_multiloc {{
-      "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
-      "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
+      'en' => 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
+      'nl-BE' => 'Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.'
     }}
-    sequence(:slug) {|n| "renew-west-parc-#{n}"}
+    sequence(:slug) { |n| "renew-west-parc-#{n}" }
 
     transient do
       with_permissions { false }
@@ -185,7 +186,6 @@ FactoryBot.define do
       end
     end
 
-
     factory :project_xl do
       transient do
         ideas_count { 10 }
@@ -228,7 +228,6 @@ FactoryBot.define do
         end
       end
     end
-
 
     factory :private_admins_project do
       visible_to { :admins }
@@ -295,6 +294,5 @@ FactoryBot.define do
       process_type { 'continuous' }
       participation_method { 'volunteering' }
     end
-
   end
 end

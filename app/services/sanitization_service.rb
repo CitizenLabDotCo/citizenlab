@@ -46,7 +46,7 @@ class SanitizationService
   #
 
   def remove_empty_trailing_tags(html)
-    html.gsub!('&#65279;', '')
+    html&.gsub!('&#65279;', '')
 
     Nokogiri::HTML.fragment(html).yield_self do |doc|
       return html if doc.errors.any?

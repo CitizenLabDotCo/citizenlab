@@ -136,6 +136,12 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/project_folders
+  specs:
+    project_folders (0.1.0)
+      rails (~> 6.0.3, >= 6.0.3.2)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -156,6 +162,12 @@ PATH
       httparty (~> 0.16.2)
       kaminari (~> 1.2)
       pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/tagging
+  specs:
+    tagging (0.1.0)
       rails (~> 6.0.0)
 
 PATH
@@ -386,6 +398,7 @@ GEM
     image_processing (1.9.3)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.13, < 3)
+    intercom (4.1.1)
     ipaddress (0.8.3)
     jmespath (1.4.0)
     json (2.3.1)
@@ -432,6 +445,7 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.1)
+    mjml-rails (4.4.0)
     msgpack (1.3.3)
     multi_json (1.14.1)
     multi_xml (0.6.0)
@@ -618,7 +632,7 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
-    simple_segment (0.3.0)
+    simple_segment (1.2.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -711,6 +725,7 @@ DEPENDENCIES
   frontend!
   groupdate
   ice_cube!
+  intercom (~> 4.1)
   kaminari (~> 1.2)
   knock!
   liquid (~> 4.0)
@@ -719,6 +734,7 @@ DEPENDENCIES
   mailgun-ruby
   maps!
   mini_magick (~> 4.9)
+  mjml-rails (~> 4.4)
   nlp!
   okcomputer
   omniauth
@@ -733,6 +749,7 @@ DEPENDENCIES
   pg_search (~> 2.1.2)
   polls!
   premailer-rails (~> 1.10.3)
+  project_folders!
   pry
   public_api!
   puma
@@ -757,13 +774,14 @@ DEPENDENCIES
   sentry-raven
   shoulda-matchers (~> 3.1)
   sidekiq (~> 6.1)
-  simple_segment (~> 0.3)
+  simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
   skylight
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
+  tagging!
   verification!
   volunteering!
   webmock (~> 3.4)

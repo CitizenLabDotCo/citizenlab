@@ -196,8 +196,8 @@ class ParticipationContextService
         VOTING_DISABLED_REASONS[:not_permitted]
       end
     elsif (
-      user && 
-      context.voting_limited? && 
+      user &&
+      context.voting_limited? &&
       votes_in_context(context, user) >= context.voting_limited_max
       )
       VOTING_DISABLED_REASONS[:voting_limited_max_reached]

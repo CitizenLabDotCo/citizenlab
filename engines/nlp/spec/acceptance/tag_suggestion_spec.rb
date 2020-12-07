@@ -17,23 +17,21 @@ resource "TagSuggestion" do
       @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'})
     end
     parameter :idea_ids, 'The ideas to suggest tags for', required: true
-    parameter :locale, 'The locale', required: true
     let(:idea_ids) { @ideas.map(&:id) }
-    let(:locale) { 'en' }
 
     describe do
 
-      example "generate tags" do
+      example "returns tag suggestions" do
         allow_any_instance_of(NLP::TagSuggestionService).to receive(:suggest).and_return([
-      {
-        "text" => "kaggle",
-        "frequency" => 11
-      },
-      {
-        "text" => "google",
-        "frequency" => 10
-      }])
-     do_request
+        {
+          "text" => "kaggle",
+          "frequency" => 11
+        },
+        {
+          "text" => "google",
+          "frequency" => 10
+        }])
+        do_request
 
         expect(status).to eq 200
         json_response = json_parse(response_body)
