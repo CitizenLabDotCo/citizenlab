@@ -185,7 +185,7 @@ type Props = {
   params?: {
     projectId: string;
   };
-  isProjectFoldersEnabled: boolean;
+  isProjectFoldersEnabled?: boolean;
 };
 
 interface State {
