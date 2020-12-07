@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -135,7 +135,7 @@ export class AdminProjectEdition extends PureComponent<
       },
       {
         label: formatMessage(
-          inputTermMessages(projectInputTerm, {
+          getInputTermMessage(projectInputTerm, {
             idea: messages.ideasTab,
           })
         ),
@@ -155,7 +155,7 @@ export class AdminProjectEdition extends PureComponent<
       },
       {
         label: formatMessage(
-          inputTermMessages(projectInputTerm, {
+          getInputTermMessage(projectInputTerm, {
             idea: messages.ideaFormTab,
           })
         ),
@@ -406,7 +406,7 @@ export class AdminProjectEdition extends PureComponent<
                   icon="idea"
                   linkTo={`/projects/${project.attributes.slug}/ideas/new`}
                   text={formatMessage(
-                    inputTermMessages(project.attributes.input_term, {
+                    getInputTermMessage(project.attributes.input_term, {
                       idea: messages.addNewIdea,
                     })
                   )}

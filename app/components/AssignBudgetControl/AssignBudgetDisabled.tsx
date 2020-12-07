@@ -13,7 +13,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
@@ -92,21 +92,21 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
       const { disabled_reason, future_enabled } = budgetingDescriptor;
 
       if (disabled_reason && future_enabled) {
-        return inputTermMessages(projectInputTerm, {
+        return getInputTermMessage(projectInputTerm, {
           idea: messages.budgetingDisabledFutureEnabled,
         });
       } else if (authUser && disabled_reason === 'not_verified') {
-        return inputTermMessages(projectInputTerm, {
+        return getInputTermMessage(projectInputTerm, {
           idea: messages.budgetingDisabledNotVerified,
         });
       } else if (disabled_reason === 'not_permitted') {
-        return inputTermMessages(projectInputTerm, {
+        return getInputTermMessage(projectInputTerm, {
           idea: messages.budgetingDisabledNotPermitted,
         });
       }
     }
 
-    return inputTermMessages(projectInputTerm, {
+    return getInputTermMessage(projectInputTerm, {
       idea: messages.budgetingDisabled,
     });
   };

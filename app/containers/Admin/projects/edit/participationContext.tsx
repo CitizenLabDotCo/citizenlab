@@ -41,7 +41,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -721,7 +721,7 @@ class ParticipationContext extends PureComponent<
                   <ToggleRow>
                     <ToggleLabel>
                       <FormattedMessage
-                        {...inputTermMessages(input_term, {
+                        {...getInputTermMessage(input_term, {
                           idea: messages.postingEnabled,
                         })}
                       />
@@ -765,7 +765,7 @@ class ParticipationContext extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...inputTermMessages(input_term, {
+                              {...getInputTermMessage(input_term, {
                                 idea: messages.votingMethodTooltip,
                               })}
                             />
@@ -823,7 +823,7 @@ class ParticipationContext extends PureComponent<
                           <IconTooltip
                             content={
                               <FormattedMessage
-                                {...inputTermMessages(input_term, {
+                                {...getInputTermMessage(input_term, {
                                   idea: messages.downvotingTooltip,
                                 })}
                               />
@@ -872,7 +872,7 @@ class ParticipationContext extends PureComponent<
                       <IconTooltip
                         content={
                           <FormattedMessage
-                            {...inputTermMessages(input_term, {
+                            {...getInputTermMessage(input_term, {
                               idea: messages.presentationModeTooltip,
                             })}
                           />
@@ -902,7 +902,7 @@ class ParticipationContext extends PureComponent<
                       <IconTooltip
                         content={
                           <FormattedMessage
-                            {...inputTermMessages(input_term, {
+                            {...getInputTermMessage(input_term, {
                               idea: messages.defaultIdeaSortingTooltip,
                             })}
                           />

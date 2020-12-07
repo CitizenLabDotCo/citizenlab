@@ -13,7 +13,7 @@ import ActionForm from './ActionForm';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -65,7 +65,7 @@ const ActionsForm = memo(
         const projectInputTerm = project.attributes.input_term;
 
         return {
-          posting_idea: inputTermMessages(projectInputTerm, {
+          posting_idea: getInputTermMessage(projectInputTerm, {
             idea: messages.permissionAction_posting_idea,
           }),
           voting_idea: messages.permissionAction_voting_idea,

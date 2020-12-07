@@ -29,7 +29,7 @@ import {
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // styling
 import styled from 'styled-components';
@@ -213,7 +213,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
             <TitleContainer>
               <StyledSectionTitle>
                 <FormattedMessage
-                  {...inputTermMessages(projectInputTerm, {
+                  {...getInputTermMessage(projectInputTerm, {
                     idea: messages.title,
                   })}
                 />
@@ -221,7 +221,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
             </TitleContainer>
             <SectionDescription>
               <FormattedMessage
-                {...inputTermMessages(projectInputTerm, {
+                {...getInputTermMessage(projectInputTerm, {
                   idea: messages.description,
                 })}
               />
