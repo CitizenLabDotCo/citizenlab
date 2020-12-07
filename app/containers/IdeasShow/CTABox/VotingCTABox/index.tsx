@@ -22,6 +22,14 @@ const StyledVoting = styled(Voting)`
   margin-bottom: 30px;
 `;
 
+const ControlWrapperHorizontalRule = styled.hr`
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: ${colors.separation};
+  margin: 20px 0;
+`;
+
 interface Props {
   className?: string;
   ideaId: string;
@@ -40,6 +48,7 @@ const VotingCTABox = ({
         <h2>{formatMessage(messages.a11y_votingCTABox)}</h2>
       </ScreenReaderOnly>
       <StyledVoting ideaId={ideaId} projectId={projectId} />
+      <ControlWrapperHorizontalRule aria-hidden />
       <Buttons ideaId={ideaId} />
     </Container>
   );

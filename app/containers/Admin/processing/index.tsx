@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useState,
   useEffect,
-  Suspense,
+  useRef,
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,11 +14,11 @@ import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';
 
 // components
-import Table from 'components/UI/Table';
 import ProcessingRow from './ProcessingRow';
-import { Checkbox, fontSizes } from 'cl2-component-library';
-import Button from 'components/UI/Button';
-import LazyPostPreview from 'components/admin/PostManager/components/LazyPostPreview';
+import AutotagView from './AutotagView';
+import { Checkbox, fontSizes, Spinner, Button } from 'cl2-component-library';
+import Table from 'components/UI/Table';
+import Modal from 'components/UI/Modal';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -27,16 +27,16 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts, colors } from 'utils/styleUtils';
 
 // typings
 import { adopt } from 'react-adopt';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { IIdeaData } from 'services/ideas';
+import { ITagging } from 'services/taggings';
 
 // hooks & res
 import useKeyPress from '../../../hooks/useKeyPress';
@@ -45,29 +45,103 @@ import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
-import useTagSuggestion from 'hooks/useTags';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
+import PostPreview from './PostPreview';
+import { CSSTransition } from 'react-transition-group';
+import useTags from 'hooks/useTags';
+import useTaggings from 'hooks/useTaggings';
+import Tippy from '@tippyjs/react';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.div`
-  padding-top: 45px;
-  padding-right: 51px;
-  padding-bottom: 0px;
-  padding-left: 24px;
-
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  margin-bottom: 80px;
 `;
 
-const SidePanel = styled.div`
-  position: fixed;
-  height: calc(100vh - ${stylingConsts.menuHeight});
-  max-width: 150px;
+const StyledSpinner = styled(Spinner)`
+  margin: auto;
+`;
+
+const StyledModal = styled(Modal)`
+  margin: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
+`;
+
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  > * {
+    margin-left: 12px;
+  }
+`;
+
+const PostPreviewTransitionWrapper = styled.div`
+  &.slide-enter {
+    transform: translateX(100%);
+    opacity: 0;
+
+    &.slide-enter-active {
+      transition: 1000ms;
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  &.slide-exit {
+    transition: 1000ms;
+    transform: translateX(0%);
+    opacity: 1;
+
+    &.slide-exit-active {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+`;
+
+const FilterSectionTransitionWrapper = styled.div`
+  &.slide-enter {
+    transform: translateX(-400%);
+
+    &.slide-enter-active {
+      transition: 1000ms;
+      transform: translateX(0%);
+    }
+  }
+
+  &.slide-exit {
+    transition: 1000ms;
+    transform: translateX(0%);
+
+    &.slide-exit-active {
+      transform: translateX(-400%);
+    }
+  }
+`;
+
+const LeftPanelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 18px;
+  position: sticky;
+  top: ${stylingConsts.menuHeight}px;
+  height: calc(100vh - ${stylingConsts.menuHeight}px);
+  max-width: 150px;
   z-index: 100;
+  background-color: #f9f9fa;
+`;
+
+const FilterSection = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledActions = styled.div`
@@ -76,12 +150,24 @@ const StyledActions = styled.div`
   }
 `;
 
+const StyledFilterSelector = styled(FilterSelector)`
+  &:not(:last-child) {
+    margin-right: 0px;
+  }
+`;
+
+const TableWrapper = styled.div`
+  flex: 1;
+  max-width: 100%;
+  background: white;
+  overflow-y: auto;
+  padding: 24px;
+`;
+
 const StyledTable = styled(Table)`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-decoration: none;
-  margin-left: 150px;
-  width: calc(100% - 150px);
   tbody tr td {
     padding-top: 12px;
     padding-bottom: 10px;
@@ -102,8 +188,7 @@ const StyledTable = styled(Table)`
   td {
     text-align: left;
     vertical-align: top;
-    padding-left: 0px;
-    padding-right: 20px;
+    min-width: 100px;
 
     &.checkbox {
       width: 70px;
@@ -121,6 +206,15 @@ const StyledCheckbox = styled(Checkbox)`
   margin-top: 0px;
 `;
 
+const KeyboardShortcuts = styled.div`
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: ${colors.clBlueDarkBg};
+  font-size: ${fontSizes.xs}px;
+`;
 interface DataProps {
   ideas: GetIdeasChildProps;
   projects: GetProjectsChildProps;
@@ -145,18 +239,33 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-    const { tagSuggestion, onIdeasChange } = useTagSuggestion();
+    const { taggings } = useTaggings();
+    const { tags, onIdeasChange } = useTags(ideaList?.map((idea) => idea.id));
 
-    const [processing, setProcessing] = useState<boolean>(false);
     const [exporting, setExporting] = useState<boolean>(false);
+
+    const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
+    const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
+    const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
+      false
+    );
+
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
-    const [previewMode, setPreviewMode] = useState<'view' | 'edit'>('view');
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
     const upArrow = useKeyPress('ArrowUp');
     const downArrow = useKeyPress('ArrowDown');
-    const enterModalKey = useKeyPress('ArrowRight');
+    const enterTaggingViewKey = useKeyPress('Enter');
+    const exitTaggingViewKey = useKeyPress('Escape');
+
+    const rowRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (highlightedId && !isNilOrError(rowRef) && rowRef.current) {
+        rowRef.current.scrollIntoView(true);
+      }
+    }, [highlightedId]);
 
     useEffect(() => {
       if (
@@ -185,44 +294,26 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [projects, tenant, locale]);
 
     useEffect(() => {
-      if (upArrow && ideaList) {
-        if (!highlightedId && !previewPostId) {
-          setHighlightedId(ideaList[0].id);
-        } else {
-          const ideaIndex = ideaList.findIndex(
-            (idea) => idea.id === highlightedId
-          );
-          const newIndex =
-            ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
-          setHighlightedId(ideaList[newIndex].id);
-          if (previewPostId) {
-            setPreviewPostId(ideaList[newIndex].id);
-          }
-        }
+      if (upArrow) {
+        trackEventByName('Keyboard shorcut', { key: 'up' });
+        navigate('up');
       }
     }, [upArrow, ideaList]);
 
     useEffect(() => {
-      if (downArrow && ideaList) {
-        if (!highlightedId && !previewPostId) {
-          setHighlightedId(ideaList[0].id);
-        } else {
-          const ideaIndex = ideaList.findIndex(
-            (idea) => idea.id === highlightedId
-          );
-          const newIndex =
-            ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
-          setHighlightedId(ideaList[newIndex].id);
-
-          if (previewPostId) {
-            setPreviewPostId(ideaList[newIndex].id);
-          }
-        }
+      if (downArrow) {
+        trackEventByName('Keyboard shorcut', { key: 'down' });
+        navigate('down');
       }
     }, [downArrow, ideaList]);
 
     useEffect(() => {
-      if (enterModalKey && ideaList) {
+      if (
+        enterTaggingViewKey &&
+        !isNilOrError(ideaList) &&
+        ideaList.length > 0
+      ) {
+        trackEventByName('Keyboard shorcut', { key: 'enter' });
         if (!highlightedId) {
           setHighlightedId(ideaList[0].id);
           setPreviewPostId(ideaList[0].id);
@@ -230,23 +321,32 @@ const Processing = memo<Props & InjectedIntlProps>(
           setPreviewPostId(highlightedId);
         }
       }
-    }, [enterModalKey, ideaList]);
+    }, [enterTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      if (!processing) {
-        setIdeaList(ideas?.list);
+      if (exitTaggingViewKey && ideaList) {
+        trackEventByName('Keyboard shorcut', { key: 'escape' });
+        setPreviewPostId(null);
       }
-    }, [ideas, processing]);
+    }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      if (processing) {
-        setProcessing(false);
+      setIdeaList(ideas?.list);
+      setLoadingIdeas(false);
+    }, [ideas, selectedProjectIds]);
+
+    useEffect(() => {
+      onIdeasChange(ideaList?.map((idea) => idea.id) || []);
+      if (!isNilOrError(ideaList) && ideaList.length > 0) {
+        setHighlightedId(ideaList[0].id);
       }
-    }, [tagSuggestion]);
+      if (loadingIdeas) {
+        setLoadingIdeas(false);
+      }
+    }, [ideaList]);
 
     const handleExportSelectedIdeasAsXlsx = async () => {
-      trackEventByName(tracks.clickExportIdeas.name);
-
+      trackEventByName('Filter View', { action: 'Clicked Export Button' });
       try {
         setExporting(true);
         const blob = await requestBlob(
@@ -265,151 +365,325 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleAutoTag = (e: FormEvent) => {
       e.preventDefault();
-      trackEventByName(tracks.clickAutotag.name);
+      trackEventByName('Filter View', { action: 'Clicked Autotag Button' });
+      isAutotagLeftInSelection()
+        ? setConfirmationModalOpen(true)
+        : setShowAutotagView(true);
+    };
 
-      setProcessing(true);
-      onIdeasChange(selectedRows);
+    const handleCloseAutotagView = (e?: FormEvent) => {
+      e?.preventDefault();
+      trackEventByName('Autotag View', { action: 'go back' });
+      setShowAutotagView(false);
+    };
+
+    const handleConfirmAutotag = (e?: FormEvent) => {
+      e?.preventDefault();
+      trackEventByName('Autotag Confirmation Modal', { action: 'continue' });
+      setConfirmationModalOpen(false);
+      setShowAutotagView(true);
+    };
+
+    const handleCloseConfirmationModal = (e?: FormEvent) => {
+      e?.preventDefault();
+      trackEventByName('Autotag Confirmation Modal', { action: 'cancel' });
+      setConfirmationModalOpen(false);
     };
 
     const handleOnSelectAll = useCallback(
       (_event: React.ChangeEvent) => {
-        if (!isNilOrError(ideaList) && !processing) {
+        if (!isNilOrError(ideaList)) {
           const newSelectedRows =
             selectedRows.length < ideaList.length
               ? ideaList.map((item) => item.id)
               : [];
+          trackEventByName('Idea Table', {
+            action: 'clicked on "select all ideas" checkbox',
+            context: `${previewPostId ? 'tagging view' : 'filter view'}`,
+          });
           setSelectedRows(newSelectedRows);
         }
       },
-      [ideaList, selectedRows, processing]
+      [ideaList, selectedRows]
     );
 
-    const handleProjectIdsChange = (newProjectIds: string[]) => {
-      const { onChangeProjects } = ideas as GetIdeasChildProps;
+    const navigate = (direction: 'up' | 'down') => {
+      if (!isNilOrError(ideaList) && ideaList.length !== 0) {
+        if (!highlightedId && !previewPostId) {
+          setHighlightedId(ideaList[0].id);
+        } else {
+          const ideaIndex = ideaList.findIndex(
+            (idea) => idea.id === highlightedId
+          );
 
+          let newIndex;
+          if (direction === 'down') {
+            newIndex = ideaIndex === ideaList.length - 1 ? 0 : ideaIndex + 1;
+          }
+
+          if (direction === 'up') {
+            newIndex = ideaIndex === 0 ? ideaList.length - 1 : ideaIndex - 1;
+          }
+
+          setHighlightedId(ideaList[newIndex].id);
+
+          if (previewPostId) {
+            setPreviewPostId(ideaList[newIndex].id);
+          }
+        }
+      }
+    };
+
+    const handleProjectIdsChange = (newProjectIds: string[]) => {
+      const { onChangeProjects } = ideas;
+      setSelectedRows([]);
       setSelectedProjectIds(newProjectIds);
-      newProjectIds.length > 0
-        ? onChangeProjects(newProjectIds)
-        : onChangeProjects([...projectList.map((project) => project.value)]);
+      onChangeProjects(newProjectIds);
+      setLoadingIdeas(true);
+      trackEventByName('Filter View', {
+        action: 'changed projects',
+      });
+    };
+
+    const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
+      ideaTaggings.some(
+        (ideaTagging) =>
+          ideaTagging.attributes.assignment_method === 'automatic'
+      );
+
+    const isAutotagLeftInSelection = () => {
+      return selectedRows.some((ideaId) => {
+        const ideaTaggings = getIdeaTaggings(ideaId);
+        return areSomeIdeaTagsAutomatic(ideaTaggings);
+      });
     };
 
     const handleRowOnSelect = useCallback(
       (selectedItemId: string) => {
-        if (!processing) {
-          const newSelectedRows = includes(selectedRows, selectedItemId)
-            ? selectedRows.filter((id) => id !== selectedItemId)
-            : [...selectedRows, selectedItemId];
-          setSelectedRows(newSelectedRows);
-        }
+        const newSelectedRows = includes(selectedRows, selectedItemId)
+          ? selectedRows.filter((id) => id !== selectedItemId)
+          : [...selectedRows, selectedItemId];
+        setSelectedRows(newSelectedRows);
       },
-      [selectedRows, processing]
+      [selectedRows]
     );
 
     const openPreview = (id: string) => {
       setPreviewPostId(id);
       setHighlightedId(id);
     };
-    const closeSideModal = () => setPreviewPostId(null);
-    const switchPreviewMode = () =>
-      setPreviewMode(previewMode === 'edit' ? 'view' : 'edit');
 
-    if (!isNilOrError(ideaList)) {
+    const closeSideModal = () => setPreviewPostId(null);
+
+    const getIdeaTaggings = useCallback(
+      (id: string | null) =>
+        (!isNilOrError(taggings) &&
+          taggings.filter((tagging) => tagging.attributes.idea_id === id)) ||
+        [],
+      [taggings]
+    );
+
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      !showAutotagView
+    ) {
       return (
         <Container className={className}>
-          <SidePanel>
-            <FilterSelector
-              title={<FormattedMessage {...messages.project} />}
-              name={'Projects'}
-              values={projectList}
-              onChange={handleProjectIdsChange}
-              multipleSelectionAllowed={true}
-              selected={selectedProjectIds}
-            />
-
-            <StyledActions>
-              <Button
-                buttonStyle="admin-dark"
-                disabled={selectedRows.length === 0}
-                processing={processing}
-                onClick={handleAutoTag}
-              >
-                <FormattedMessage {...messages.autotag} />
-              </Button>
-
-              <Button
-                buttonStyle="admin-dark-outlined"
-                disabled={selectedRows.length === 0}
-                processing={exporting}
-                onClick={handleExportSelectedIdeasAsXlsx}
-              >
-                <FormattedMessage {...messages.export} />
-              </Button>
-            </StyledActions>
-          </SidePanel>
-          <StyledTable>
-            <thead>
-              <tr>
-                <th className="checkbox">
-                  <StyledCheckbox
-                    checked={
-                      ideaList.length > 0 &&
-                      selectedRows.length === ideaList?.length
-                    }
-                    indeterminate={
-                      selectedRows.length > 0 &&
-                      selectedRows.length < ideaList.length
-                    }
-                    disabled={ideaList?.length === 0}
-                    onChange={handleOnSelectAll}
+          <CSSTransition
+            in={!previewPostId}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            classNames="slide"
+            timeout={{
+              appear: 500,
+              enter: 300,
+              exit: 500,
+            }}
+          >
+            <FilterSectionTransitionWrapper>
+              <LeftPanelContainer>
+                <FilterSection>
+                  <StyledFilterSelector
+                    title={<FormattedMessage {...messages.project} />}
+                    name={'Projects'}
+                    values={projectList}
+                    onChange={handleProjectIdsChange}
+                    multipleSelectionAllowed={true}
+                    selected={selectedProjectIds}
                   />
-                </th>
 
-                <th className="title">
-                  <FormattedMessage
-                    {...messages.items}
-                    values={{
-                      totalCount: ideaList.length,
-                      selectedCount: selectedRows.length,
-                    }}
-                  />
-                </th>
-                <th className="tags">
-                  <FormattedMessage {...messages.tags} />
-                </th>
-              </tr>
-            </thead>
-            {ideaList?.length > 0 && (
-              <tbody>
-                {ideaList?.map((idea) => (
-                  <ProcessingRow
-                    key={idea.id}
-                    idea={idea}
-                    selected={includes(selectedRows, idea.id)}
-                    highlighted={idea.id === highlightedId}
-                    onSelect={handleRowOnSelect}
-                    openPreview={openPreview}
-                    tagSuggestions={tagSuggestion?.filter((tag) =>
-                      tag.idea_ids.includes(idea.id)
+                  <StyledActions>
+                    <FeatureFlag name="automatic_tagging">
+                      <Button
+                        buttonStyle="admin-dark"
+                        disabled={selectedRows.length === 0}
+                        locale={locale}
+                        onClick={handleAutoTag}
+                      >
+                        <FormattedMessage {...messages.autotag} />
+                      </Button>
+                    </FeatureFlag>
+
+                    <Button
+                      buttonStyle="admin-dark-outlined"
+                      disabled={selectedRows.length === 0}
+                      processing={exporting}
+                      onClick={handleExportSelectedIdeasAsXlsx}
+                      locale={locale}
+                    >
+                      <FormattedMessage {...messages.export} />
+                    </Button>
+                  </StyledActions>
+                </FilterSection>
+                <Tippy
+                  placement="top"
+                  content={
+                    <ul>
+                      <li>
+                        <FormattedMessage {...messages.upAndDownArrow} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages.returnKey} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages.escapeKey} />
+                      </li>
+                    </ul>
+                  }
+                  theme="light"
+                  hideOnClick={true}
+                >
+                  <KeyboardShortcuts>
+                    <FormattedMessage {...messages.keyboardShortcuts} />
+                  </KeyboardShortcuts>
+                </Tippy>
+              </LeftPanelContainer>
+            </FilterSectionTransitionWrapper>
+          </CSSTransition>
+          {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
+            <TableWrapper>
+              <StyledTable>
+                <thead>
+                  <tr>
+                    <th className="checkbox">
+                      <StyledCheckbox
+                        checked={
+                          ideaList.length > 0 &&
+                          selectedRows.length === ideaList?.length
+                        }
+                        indeterminate={
+                          selectedRows.length > 0 &&
+                          selectedRows.length < ideaList.length
+                        }
+                        disabled={ideaList?.length === 0}
+                        onChange={handleOnSelectAll}
+                      />
+                    </th>
+
+                    <th className="title">
+                      <FormattedMessage
+                        {...messages.items}
+                        values={{
+                          totalCount: ideaList.length,
+                          selectedCount: selectedRows.length,
+                        }}
+                      />
+                    </th>
+
+                    {!previewPostId && (
+                      <th className="tags">
+                        <FormattedMessage {...messages.tags} />
+                      </th>
                     )}
-                  />
-                ))}
-              </tbody>
-            )}
-          </StyledTable>
-          <Suspense fallback={null}>
-            <LazyPostPreview
-              type={'AllIdeas'}
-              postId={previewPostId}
-              mode={previewMode}
-              onClose={closeSideModal}
-              onSwitchPreviewMode={switchPreviewMode}
-            />
-          </Suspense>
+                  </tr>
+                </thead>
+                {ideaList?.length > 0 && (
+                  <tbody>
+                    {ideaList?.map((idea) => (
+                      <ProcessingRow
+                        key={idea.id}
+                        idea={idea}
+                        selected={includes(selectedRows, idea.id)}
+                        highlighted={idea.id === highlightedId}
+                        rowRef={idea.id === highlightedId ? rowRef : undefined}
+                        onSelect={handleRowOnSelect}
+                        openPreview={openPreview}
+                        taggings={getIdeaTaggings(idea.id)}
+                        showTagColumn={!previewPostId}
+                      />
+                    ))}
+                  </tbody>
+                )}
+              </StyledTable>
+            </TableWrapper>
+          ) : (
+            <StyledSpinner />
+          )}
+          <CSSTransition
+            in={!!previewPostId}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            classNames="slide"
+            timeout={{
+              appear: 500,
+              enter: 300,
+              exit: 500,
+            }}
+          >
+            <PostPreviewTransitionWrapper>
+              <PostPreview
+                type={'AllIdeas'}
+                postId={previewPostId}
+                onClose={closeSideModal}
+                handleNavigation={navigate}
+                taggings={getIdeaTaggings(previewPostId)}
+                tags={tags}
+              />
+            </PostPreviewTransitionWrapper>
+          </CSSTransition>
+          <StyledModal
+            opened={confirmationModalOpen}
+            close={handleCloseConfirmationModal}
+          >
+            <QuillEditedContent textColor={colors.adminTextColor}>
+              <h2>
+                <FormattedMessage {...messages.autotagOverwriteAlert} />
+              </h2>
+              <h4>
+                <FormattedMessage {...messages.autotagOverwriteExplanation} />
+              </h4>
+              <ButtonRow>
+                <Button
+                  locale={locale}
+                  buttonStyle="admin-dark-outlined"
+                  onClick={handleCloseConfirmationModal}
+                  text={<FormattedMessage {...messages.cancel} />}
+                />
+                <Button
+                  locale={locale}
+                  buttonStyle="admin-dark"
+                  onClick={handleConfirmAutotag}
+                  text={<FormattedMessage {...messages.continue} />}
+                />
+              </ButtonRow>
+            </QuillEditedContent>
+          </StyledModal>
         </Container>
       );
     }
-
-    return null;
+    if (
+      !isNilOrError(projectList) &&
+      !isNilOrError(locale) &&
+      showAutotagView
+    ) {
+      return (
+        <AutotagView
+          closeView={handleCloseAutotagView}
+          selectedRows={selectedRows}
+        />
+      );
+    } else return null;
   }
 );
 
@@ -419,6 +693,7 @@ const Data = adopt<DataProps, InputProps>({
       <GetProjects
         publicationStatuses={['published', 'archived']}
         filterCanModerate={true}
+        sort="new"
       >
         {render}
       </GetProjects>
@@ -430,8 +705,10 @@ const Data = adopt<DataProps, InputProps>({
       <GetIdeas
         type="paginated"
         pageSize={2000000}
-        sort="new"
         projectIds={projectIds}
+        cache={false}
+        mini={true}
+        sort="new"
       >
         {render}
       </GetIdeas>

@@ -151,6 +151,21 @@ export interface ITenantSettings {
   project_visibility?: TenantFeature;
   project_management?: TenantFeature;
   idea_assignment?: TenantFeature;
+  custom_idea_statuses?: TenantFeature;
+  intercom?: TenantFeature;
+  satismeter?: TenantFeature & {
+    write_key: string;
+  };
+  google_analytics?: TenantFeature & {
+    tracking_id: string;
+  };
+  segment?: TenantFeature & {
+    destinations: string;
+  };
+  google_tag_manager?: TenantFeature & {
+    destinations: string;
+    container_id: string;
+  };
 }
 
 interface TenantMapSettings extends TenantFeature {

@@ -181,3 +181,25 @@ export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
 
   return null;
 }
+
+export function getLastActivePhase(
+  phases: IPhaseData[] | null | undefined | Error
+) {
+  if (!isNilOrError(phases) && phases.length > 0) {
+    const pastPhases = phases.filter(
+      (phase) =>
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) === 'past'
+    );
+
+    const lastActivePhase = last(
+      sortBy(pastPhases, [(phase) => phase.attributes.end_at])
+    );
+
+    return lastActivePhase || null;
+  }
+
+  return null;
+}
