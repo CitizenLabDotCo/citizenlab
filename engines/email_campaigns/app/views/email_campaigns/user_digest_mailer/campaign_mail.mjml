@@ -116,7 +116,7 @@
             </mj-table>
             <mj-raw><% top_idea[:top_comments].each do |top_comment| %></mj-raw>
                 <mj-table cellpadding="15">
-                  <tr style="background-color:rgba(0, 118, 188, 0.06); text-align: left;">
+                  <tr style="background-color:#0076BC; text-align: left;">
                     <td style="text-align: left; width: 100%" colspan="4">
                       <mj-text style="font-size: 12px;">
                         <%= formatMessage('commented', values: {
