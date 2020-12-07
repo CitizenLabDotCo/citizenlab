@@ -229,23 +229,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </HasPermission>
           </SectionDescription>
 
-          {userIsAdmin && <StyledCreateProject />}
-
-          <Outlet
-            id="app.components.permissions.projectFolderModeratorOnly"
-            children={<StyledCreateProject />}
-          />
-
-          {isProjectFoldersEnabled && (
-            <GetProjectFolderModerators>
-              {({ isModerator }: IGetModeratorHook) =>
-                !isNilOrError(authUser) &&
-                isModerator(authUser) &&
-                !userIsAdmin ? (
-                  <StyledCreateProject />
-                ) : null
-              }
-            </GetProjectFolderModerators>
+          {isProjectFoldersEnabled ? (
+            <Outlet
+              id="app.containers.permissions.projectFolderModeratorOrAdminOnly"
+              children={<StyledCreateProject />}
+            />
+          ) : (
+            userIsAdmin && <StyledCreateProject />
           )}
 
           <PageWrapper>

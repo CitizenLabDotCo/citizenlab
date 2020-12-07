@@ -9,7 +9,7 @@ export function moderatorsStream(
   return streams.get<IUsers>({
     apiEndpoint: `${API_PATH}/project_folder_moderators`,
     queryParameters: { project_folder_id: projectFolderId },
-    cacheStream: cacheStream,
+    cacheStream,
   });
 }
 

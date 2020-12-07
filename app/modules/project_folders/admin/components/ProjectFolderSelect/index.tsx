@@ -9,9 +9,8 @@ import { IProjectFolderData } from 'modules/project_folders/services/projectFold
 import { useProjectFolders } from 'modules/project_folders/hooks';
 
 // components
-import { Select } from 'cl2-component-library';
+import { Select, IconTooltip } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';

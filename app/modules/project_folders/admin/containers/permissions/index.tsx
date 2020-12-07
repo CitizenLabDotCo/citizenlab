@@ -54,11 +54,11 @@ interface Props {
   authUser: GetAuthUserChildProps;
 }
 
-function FolderPermissions({
+const FolderPermissions = ({
   params,
   intl,
   authUser,
-}: Props & WithRouterProps & InjectedIntlProps): ReactElement {
+}: Props & WithRouterProps & InjectedIntlProps): ReactElement => {
   const { projectFolderId } = params;
   const { formatMessage } = intl;
 
@@ -240,6 +240,6 @@ function FolderPermissions({
       </List>
     </Container>
   );
-}
+};
 
 export default injectIntl(withAuthUser(FolderPermissions));
