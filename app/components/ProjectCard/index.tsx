@@ -49,7 +49,7 @@ import {
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -624,7 +624,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'ideation' && canPost) {
         ctaMessage = (
           <FormattedMessage
-            {...inputTermMessages(projectInputTerm, {
+            {...getInputTermMessage(projectInputTerm, {
               idea: messages.postYourIdea,
             })}
           />
@@ -636,7 +636,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'ideation') {
         ctaMessage = (
           <FormattedMessage
-            {...inputTermMessages(projectInputTerm, {
+            {...getInputTermMessage(projectInputTerm, {
               idea: messages.viewTheIdeas,
             })}
           />
@@ -752,7 +752,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
                         {formatMessage(
-                          inputTermMessages(projectInputTerm, {
+                          getInputTermMessage(projectInputTerm, {
                             idea: messages.xIdeas,
                           }),
                           { ideasCount }
