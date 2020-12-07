@@ -29,7 +29,7 @@ definePermissionRule(
 );
 
 export const canModerate = (user: IUser, folder: IProjectFolderData) =>
-  isAdmin(user) || isProjectFolderModerator(user, folder);
+  isAdmin(user) || isProjectFolderModerator(user, folder.id);
 
 definePermissionRule(
   'project_folder',
