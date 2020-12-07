@@ -28,8 +28,8 @@ module ProjectFolders
 
     ActiveSupport.on_load(:action_controller) do
       ::User.prepend ProjectFolders::ModeratorDecorator
-      ::ProjectPolicy.prepend MonkeyPatches::ProjectPolicy
-      ::SideFxProjectService.prepend MonkeyPatches::SideFxProjectService
+      ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
+      ::SideFxProjectService.prepend ProjectFolders::MonkeyPatches::SideFxProjectService
 
       ::Roles.configure do |c|
         c.serializers = {
