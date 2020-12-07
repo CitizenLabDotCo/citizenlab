@@ -724,7 +724,7 @@
   "app.containers.Admin.Processing.suggestedTags": "Suggested tags",
   "app.containers.Admin.Processing.tag": "Tag",
   "app.containers.Admin.Processing.tagAssignationExplanation": "Tags you add here will be automatically assigned to relevant ideas based on our natural language processing technology.",
-  "app.containers.Admin.Processing.tagValidationErrorMessage": "please use max two words and do not add duplicates",
+  "app.containers.Admin.Processing.tagValidationErrorMessage": "Please use max two words and do not add duplicates",
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "title",
   "app.containers.Admin.Processing.upAndDownArrow": "Up and down arrows allow you to highlight previous or next idea in the list",
