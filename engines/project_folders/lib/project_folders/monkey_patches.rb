@@ -1,0 +1,2 @@
+module MonkeyPatches
+end
