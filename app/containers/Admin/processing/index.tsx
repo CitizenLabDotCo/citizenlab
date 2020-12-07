@@ -235,7 +235,9 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [ideaList, setIdeaList] = useState<IIdeaData[] | undefined | null>(
       []
     );
-    const [projectList, setProjectList] = useState<IFilterSelectorValue[]>([]);
+    const [projectList, setProjectList] = useState<
+      IFilterSelectorValue[] | null
+    >(null);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
