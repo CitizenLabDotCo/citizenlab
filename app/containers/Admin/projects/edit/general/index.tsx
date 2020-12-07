@@ -1186,11 +1186,11 @@ interface DataProps {
 
 const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
 
-const Data = adopt<DataProps, Props & InjectedIntlProps>({
+const Data = adopt<DataProps, Props>({
   isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
-export default (inputProps: Props & InjectedIntlProps) => (
+export default (inputProps: Props) => (
   <Data {...inputProps}>
     {(dataProps) => (
       <AdminProjectEditGeneralWithHocs {...inputProps} {...dataProps} />
