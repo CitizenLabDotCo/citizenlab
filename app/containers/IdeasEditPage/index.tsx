@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isString, isEmpty } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
@@ -27,6 +28,7 @@ import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -44,6 +46,8 @@ import styled from 'styled-components';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -89,15 +93,21 @@ const ButtonBarContainer = styled.div`
   border-top: solid 1px #ddd;
 `;
 
-interface Props {
+interface InputProps {
   params: {
     ideaId: string;
   };
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
 }
 
+interface DataProps {
+  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  project: GetProjectChildProps;
+  idea: GetIdeaChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
 interface State {
-  projectId: string | null;
   locale: Locale;
   ideaSlug: string | null;
   titleMultiloc: Multiloc | null;
@@ -117,7 +127,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      projectId: null,
       locale: 'en',
       ideaSlug: null,
       titleMultiloc: null,
@@ -189,7 +198,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
             selectedTopics:
               idea.data.relationships.topics?.data.map((topic) => topic.id) ||
               [],
-            projectId: idea.data.relationships.project.data.id,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
             titleMultiloc: idea.data.attributes.title_multiloc,
@@ -300,10 +308,9 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles } = this.props;
+      const { remoteIdeaFiles, project } = this.props;
       const {
         locale,
-        projectId,
         titleMultiloc,
         descriptionMultiloc,
         selectedTopics,
@@ -318,13 +325,20 @@ class IdeaEditPage extends PureComponent<Props, State> {
           ? descriptionMultiloc[locale] || ''
           : null;
 
-      if (projectId) {
+      if (!isNilOrError(project)) {
+        const projectId = project.id;
+        const projectInputTerm = project.attributes.input_term;
+
         return (
           <Container id="e2e-idea-edit-page">
             <IdeasEditMeta />
             <FormContainer>
               <Title>
-                <FormattedMessage {...messages.formTitle} />
+                <FormattedMessage
+                  {...getInputTermMessage(projectInputTerm, {
+                    idea: messages.formTitle,
+                  })}
+                />
               </Title>
 
               <IdeaForm
@@ -353,17 +367,36 @@ class IdeaEditPage extends PureComponent<Props, State> {
           </Container>
         );
       }
-      return null;
     }
 
     return null;
   }
 }
 
-export default (props: Props) => (
-  <GetResourceFileObjects resourceId={props.params.ideaId} resourceType="idea">
-    {(remoteIdeaFiles) => (
-      <IdeaEditPage {...props} remoteIdeaFiles={remoteIdeaFiles} />
-    )}
-  </GetResourceFileObjects>
+const Data = adopt<DataProps, InputProps>({
+  remoteIdeaFiles: (props) => (
+    <GetResourceFileObjects
+      resourceId={props.params.ideaId}
+      resourceType="idea"
+    >
+      {(remoteIdeaFiles) => (
+        <IdeaEditPage {...props} remoteIdeaFiles={remoteIdeaFiles} />
+      )}
+    </GetResourceFileObjects>
+  ),
+  idea: ({ params: { ideaId }, render }) => (
+    <GetIdea ideaId={ideaId}>{render}</GetIdea>
+  ),
+  project: ({ idea, render }) =>
+    !isNilOrError(idea) ? (
+      <GetProject projectId={idea.relationships.project.data.id}>
+        {render}
+      </GetProject>
+    ) : null,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeaEditPage {...inputProps} {...dataProps} />}
+  </Data>
 );
