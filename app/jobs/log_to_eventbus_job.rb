@@ -2,22 +2,22 @@ class LogToEventbusJob < ApplicationJob
   queue_as :default
 
   def perform activity
-    service = LogToSegmentService.new
+    service = TrackingService.new
 
     event = {
       event: service.activity_event_name(activity),
-      timestamp: activity.acted_at
+      timestamp: activity.acted_at,
+      **service.activity_properties(activity),
+      **service.environment_properties(),
+      item_content: service.activity_item_content(activity)
     }
     event[:user_id] = activity.user_id if activity.user_id
-    service.add_activity_properties event, activity
     begin
       tenant = Tenant.current
-      service.add_tenant_properties event, tenant
+      event = event.merge(service.tenant_properties(tenant))
     rescue  ActiveRecord::RecordNotFound => e
       # Tenant can't be found, so we don't add anything
     end
-    service.add_activity_item_content event, event, activity
-    service.add_environment_properties event
 
     publish_to_rabbit event, activity
   end

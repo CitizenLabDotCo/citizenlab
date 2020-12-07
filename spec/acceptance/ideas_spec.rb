@@ -403,14 +403,15 @@ resource "Ideas" do
     describe do
       before do
         @project = create(:project)
-        @tag1 = Tag.create(title_multiloc: {'en' => 'label'})
-        @tag2 = Tag.create(title_multiloc: {'en' => 'item'})
+        @tag1 = Tagging::Tag.create(title_multiloc: {'en' => 'label'})
+        @tag2 = Tagging::Tag.create(title_multiloc: {'en' => 'item'})
         @selected_ideas = @ideas.select(&:published?).shuffle.take 3
         @selected_ideas.each do |idea|
           idea.update! project: @project
         end
-        @selected_ideas[0].update! tags: [@tag1, @tag2]
-        @selected_ideas[1].update! tags: [@tag1]
+        Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag1, confidence_score: 1)
+        Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag2,  confidence_score: 0.45)
+        Tagging::Tagging.create(idea: @selected_ideas[1], tag: @tag1,  confidence_score: 1)
       end
       let(:project) { @project.id }
 
@@ -422,7 +423,7 @@ resource "Ideas" do
         expect(labels).to match_array([1,1,0])
         item_col = worksheet.map {|col| col.cells[3].value}
         _, *items = item_col
-        expect(items).to match_array([1,0,0])
+        expect(items).to match_array([0, 0, 0.45])
         expect(worksheet.count).to eq (@selected_ideas.size + 1)
       end
     end
