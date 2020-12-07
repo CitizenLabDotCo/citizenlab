@@ -5,7 +5,7 @@ module ProjectFolders
         super
         return unless user.admin?
 
-        user.add_project_moderator_role(project)
+        user.add_role('project_moderator', project_id: project.id)
         user.save
       end
     end
