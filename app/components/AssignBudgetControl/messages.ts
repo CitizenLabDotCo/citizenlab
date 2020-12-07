@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.undo',
     defaultMessage: 'Undo',
   },
-  seeIdea: {
-    id: 'app.components.AssignBudgetControl.seeIdea',
-    defaultMessage: 'See idea',
-  },
   assigned: {
     id: 'app.components.AssignBudgetControl.assigned',
     defaultMessage: 'Assigned',

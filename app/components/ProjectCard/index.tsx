@@ -49,6 +49,7 @@ import {
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
+import { getInputTermMessage } from 'utils/i18n';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -566,6 +567,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
+      const projectInputTerm = project.attributes.input_term;
 
       if (isArchived) {
         countdown = (
@@ -620,13 +622,25 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
-        ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...getInputTermMessage(projectInputTerm, {
+              idea: messages.postYourIdea,
+            })}
+          />
+        );
       } else if (participationMethod === 'ideation' && canVote) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
-        ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...getInputTermMessage(projectInputTerm, {
+              idea: messages.viewTheIdeas,
+            })}
+          />
+        );
       }
 
       const contentHeader = (
@@ -737,7 +751,12 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                       <MetaItemIcon ariaHidden name="idea" />
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
-                        {formatMessage(messages.xIdeas, { ideasCount })}
+                        {formatMessage(
+                          getInputTermMessage(projectInputTerm, {
+                            idea: messages.xIdeas,
+                          }),
+                          { ideasCount }
+                        )}
                       </ScreenReaderOnly>
                     </MetaItem>
                   )}

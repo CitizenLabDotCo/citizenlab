@@ -50,7 +50,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // typings
 import { IOption, UploadFile, Locale } from 'typings';
@@ -680,13 +680,13 @@ class IdeaForm extends PureComponent<
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
 
-      const projectInputType = project.attributes.input_term;
+      const projectInputTerm = project.attributes.input_term;
 
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={inputTermMessages(projectInputType, {
+              message={getInputTermMessage(projectInputTerm, {
                 idea: messages.formGeneralSectionTitle,
               })}
             />
