@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // components
 import Button from 'components/UI/Button';
@@ -96,14 +96,14 @@ const SortableProjectTopicList = memo(
           {isLastSelectedTopic && (
             <StyledWarning>
               <FormattedMessage
-                {...inputTermMessages(projectInputTerm, {
+                {...getInputTermMessage(projectInputTerm, {
                   idea: messages.fewerThanOneTopicWarning,
                 })}
                 values={{
                   ideaFormLink: (
                     <StyledLink to={`/admin/projects/${projectId}/ideaform`}>
                       <FormattedMessage
-                        {...inputTermMessages(projectInputTerm, {
+                        {...getInputTermMessage(projectInputTerm, {
                           idea: messages.ideaForm,
                         })}
                       />
@@ -170,7 +170,7 @@ const SortableProjectTopicList = memo(
             <ModalContentContainer>
               <Content>
                 <FormattedMessage
-                  {...inputTermMessages(projectInputTerm, {
+                  {...getInputTermMessage(projectInputTerm, {
                     idea: messages.topicDeletionWarning,
                   })}
                 />

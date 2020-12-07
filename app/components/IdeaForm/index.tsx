@@ -50,7 +50,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // typings
 import { IOption, UploadFile, Locale } from 'typings';
@@ -686,7 +686,7 @@ class IdeaForm extends PureComponent<
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={inputTermMessages(projectInputTerm, {
+              message={getInputTermMessage(projectInputTerm, {
                 idea: messages.formGeneralSectionTitle,
               })}
             />

@@ -29,7 +29,7 @@ import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // styling
 import styled from 'styled-components';
@@ -293,7 +293,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                       <IconTooltip
                         content={
                           <FormattedMessage
-                            {...inputTermMessages(projectInputTerm, {
+                            {...getInputTermMessage(projectInputTerm, {
                               idea: messages.enabledTooltip,
                             })}
                           />
@@ -317,7 +317,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                       <IconTooltip
                         content={
                           <FormattedMessage
-                            {...inputTermMessages(projectInputTerm, {
+                            {...getInputTermMessage(projectInputTerm, {
                               idea: messages.requiredTooltip,
                             })}
                           />

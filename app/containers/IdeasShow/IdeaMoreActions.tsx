@@ -20,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { inputTermMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
@@ -92,7 +92,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
       if (
         window.confirm(
           formatMessage(
-            inputTermMessages(projectInputTerm, {
+            getInputTermMessage(projectInputTerm, {
               idea: messages.deleteIdeaConfirmation,
             })
           )
