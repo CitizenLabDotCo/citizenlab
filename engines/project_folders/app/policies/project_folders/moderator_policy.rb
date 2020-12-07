@@ -14,7 +14,7 @@ module ProjectFolders
         moderated_folders = user.moderated_project_folders
 
         if user.project_folder_moderator?
-          scope.project_folder_moderator(moderated_folders)
+          scope.project_folder_moderator(moderated_folders.pluck(:id))
         else
           scope.project_folder_moderator
         end
