@@ -14,7 +14,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 import { Spinner } from 'cl2-component-library';
-import Sharing from 'components/Sharing';
+import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
@@ -286,7 +286,7 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const SharingMobile = styled(Sharing)`
+const SharingButtonsMobile = styled(SharingButtons)`
   padding: 0;
   margin: 0;
   margin-top: 40px;
@@ -626,7 +626,7 @@ export class InitiativesShow extends PureComponent<
                 </div>
 
                 {isNotDesktop && (
-                  <SharingMobile
+                  <SharingButtonsMobile
                     context="initiative"
                     url={initiativeUrl}
                     twitterMessage={formatMessage(messages.twitterMessage, {
@@ -664,7 +664,7 @@ export class InitiativesShow extends PureComponent<
                       id="e2e-initiative-vote-control"
                     />
                     <SharingWrapper>
-                      <Sharing
+                      <SharingButtons
                         id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
