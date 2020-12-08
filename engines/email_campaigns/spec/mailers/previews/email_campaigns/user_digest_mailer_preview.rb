@@ -145,14 +145,14 @@ module EmailCampaigns
               },
               url: "http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten-1",
               published_at: "2019-09-09T13:04:49Z",
-              author_name: "Sebi The Great",
+              author_name: "Sebi Hoorens",
               upvotes_count: 1,
               comments_count: 0,
               images: [
                 {
                   ordering: nil,
                   versions: {
-                    small: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/small_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg",
+                    small: "https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg",
                     medium: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/medium_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg",
                     large: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/large_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg",
                     fb: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/fb_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg"
@@ -174,14 +174,14 @@ module EmailCampaigns
               },
               url: "http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten",
               published_at: "2019-09-09T12:50:44Z",
-              author_name: "Sebi The Great",
+              author_name: "Sebi Hoorens",
               upvotes_count: 5,
               comments_count: 2,
               images: [
                 {
                   ordering: nil,
                   versions: {
-                    small: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/small_14330b58-2421-474b-9f67-a9031d5505cf.jpeg",
+                    small: "https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg",
                     medium: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/medium_14330b58-2421-474b-9f67-a9031d5505cf.jpeg",
                     large: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/large_14330b58-2421-474b-9f67-a9031d5505cf.jpeg",
                     fb: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/fb_14330b58-2421-474b-9f67-a9031d5505cf.jpeg"
@@ -205,7 +205,7 @@ module EmailCampaigns
               },
               url: "http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten",
               published_at: "2019-09-09T12:50:44Z",
-              author_name: "Sebi The Great",
+              author_name: "Sebi Hoorens",
               upvotes_count: 5,
               comments_count: 2,
               threshold_reached_at: "2019-09-09T14:15:46Z",
@@ -213,7 +213,7 @@ module EmailCampaigns
                 {
                   ordering: nil,
                   versions: {
-                    small: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/small_14330b58-2421-474b-9f67-a9031d5505cf.jpeg",
+                    small: "https://res.cloudinary.com/citizenlabco/image/upload/v1607443075/small_7d3bb3ca-32eb-4ba1-9de6-3bc738e4bad6_qhh6up.jpg",
                     medium: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/medium_14330b58-2421-474b-9f67-a9031d5505cf.jpeg",
                     large: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/large_14330b58-2421-474b-9f67-a9031d5505cf.jpeg",
                     fb: "http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/fb_14330b58-2421-474b-9f67-a9031d5505cf.jpeg"
