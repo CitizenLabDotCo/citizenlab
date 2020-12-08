@@ -203,3 +203,35 @@ export function getLastActivePhase(
 
   return null;
 }
+
+export function getPhaseInputTerm(phases: IPhaseData[]) {
+  const currentPhase = getCurrentPhase(phases);
+  const firstPhase = getFirstPhase(phases);
+  const lastPhase = getLastPhase(phases);
+  const lastActivePhase = getLastActivePhase(phases);
+  let selectedPhase: IPhaseData | null = null;
+  if (currentPhase) {
+    selectedPhase = currentPhase;
+  } else if (
+    firstPhase &&
+    pastPresentOrFuture([
+      firstPhase.attributes.start_at,
+      firstPhase.attributes.end_at,
+    ]) === 'future'
+  ) {
+    selectedPhase = firstPhase;
+  } else if (
+    lastActivePhase &&
+    lastPhase &&
+    pastPresentOrFuture([
+      lastPhase.attributes.start_at,
+      lastPhase.attributes.end_at,
+    ]) === 'future'
+  ) {
+    selectedPhase = lastActivePhase;
+  } else {
+    selectedPhase = lastPhase;
+  }
+
+  return selectedPhase?.attributes?.input_term;
+}
