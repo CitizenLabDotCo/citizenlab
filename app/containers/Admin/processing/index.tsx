@@ -692,7 +692,7 @@ const Processing = memo<Props & InjectedIntlProps>(
       return (
         <AutotagView
           closeView={handleCloseAutotagView}
-          selectedProjectIds={selectedProjectIds}
+          selectedRows={selectedRows}
         />
       );
     } else return null;
