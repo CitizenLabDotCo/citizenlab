@@ -116,8 +116,6 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       );
     }, [taggings]);
 
-    console.log('zolg');
-
     return (
       <Container
         className={className}
