@@ -46,7 +46,7 @@ class SanitizationService
   #
 
   def remove_empty_trailing_tags(html)
-    html&.gsub!('&#65279;', '')
+    remove_hidden_spaces(html)
 
     Nokogiri::HTML.fragment(html).yield_self do |doc|
       return html if doc.errors.any?
@@ -87,8 +87,16 @@ class SanitizationService
   end
 
   def content_present?(node)
-    (node&.text&.present? || node&.name == 'img') ||
-      node&.css('*')&.any? { |n| content_present?(n) }
+    node&.text&.present? || node&.name == 'img' || node&.css('img')&.any?
+  end
+
+  def remove_hidden_spaces(html)
+    %w[&#65279; &nbsp;].each do |hidden_space|
+      html.gsub!(Nokogiri::HTML(hidden_space).text, ' ')
+    end
+    # %w[\n].each do |like_break|
+    #   html.gsub!(Nokogiri::HTML(like_break).text, '')
+    # end
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber
