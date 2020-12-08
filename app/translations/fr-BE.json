@@ -721,7 +721,7 @@
   "app.containers.Admin.Processing.projectTags": "Étiquettes du projet",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Budget proposé",
   "app.containers.Admin.Processing.returnKey": "La touche \"Retour\" ouvre le panneau latéral où vous pouvez attribuer et retirer les étiquettes aux idées",
-  "app.containers.Admin.Processing.selectProject": "Select project",
+  "app.containers.Admin.Processing.selectProject": "Sélectionnez un projet",
   "app.containers.Admin.Processing.suggestedTags": "Étiquettes suggérées",
   "app.containers.Admin.Processing.tag": "Étiquette",
   "app.containers.Admin.Processing.tagAssignationExplanation": "Les étiquettes que vous ajoutez ici seront automatiquement attribuées aux idées pertinentes à l'aide de notre technologie de traitement automatique du langage naturel (TAL). ",
