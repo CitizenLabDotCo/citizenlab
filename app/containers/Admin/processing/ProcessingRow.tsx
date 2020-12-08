@@ -61,6 +61,8 @@ interface Props {
   showTagColumn: boolean;
 }
 
+const addTagMessage = <FormattedMessage {...messages.addTag} />;
+
 const ProcessingRow = memo<Props & InjectedIntlProps>(
   ({
     idea,
@@ -77,6 +79,8 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       idea.attributes.title_multiloc,
       (value) => isNil(value) || isEmpty(value)
     ) as Multiloc;
+
+    console.log(showTagColumn);
 
     const localize = useLocalize();
 
@@ -149,7 +153,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 isSelected={selected}
                 onTagClick={handleClick}
                 icon={'plus-circle'}
-                text={<FormattedMessage {...messages.addTag} />}
+                text={addTagMessage}
               />
             )}
           </td>
