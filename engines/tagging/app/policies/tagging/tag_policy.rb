@@ -1,4 +1,4 @@
-module NLP
+module Tagging
   class TagPolicy < ApplicationPolicy
     class Scope
       attr_reader :user, :scope
@@ -8,22 +8,27 @@ module NLP
         @scope = scope
       end
 
-
       def resolve
-        scope
+        if user&.active? && user&.admin?
+          scope.all
+        else
+          scope.none
+        end
       end
-    end
-
-    def create?
-      user&.active? && user.admin?
     end
 
     def show?
       user&.active? && user.admin?
     end
 
-    def generate_tags?
+    def update?
       user&.active? && user.admin?
+    end
+
+    def permitted_attributes
+      [
+        title_multiloc: CL2_SUPPORTED_LOCALES
+      ]
     end
   end
 end
