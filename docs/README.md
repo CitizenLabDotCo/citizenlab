@@ -7,6 +7,9 @@
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
 - Increased color contrast of List/Map toggle component to meet accesibility standard
 
+### Fixed
+- Emails tab bug fixes related to deprecated emails existing in database.
+
 ## 2020-12-02
 
 ### Changed
@@ -38,6 +41,16 @@
   - Satismeter
   - Segment, disabled by default
 - Error messages for invitations, logins and password resets are now clearer.
+
+## 2020-11-27
+
+### Fixed
+
+- Social authentication with Google when the user has no avatar.
+
+### Changed
+
+- Random user demographics on project copy.
 
 ## 2020-11-26
 
