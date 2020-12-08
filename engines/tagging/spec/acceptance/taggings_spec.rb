@@ -152,13 +152,15 @@ resource "Taggings" do
   end
 
   post "web_api/v1/taggings/generate" do
-    parameter :idea_ids, "The ideas to tag", required: true
+    parameter :idea_ids, "The ideas to tag", required: false
+    parameter :projects, "The project containing the ideas to tag", required: false
     parameter :tag_ids, "The id of the tags to assign", required: false
     parameter :tags, "The content to create a tag and assign it", required: false
 
 
     before do
-      @ideas = create_list(:idea, 2)
+      @project = create(:project_with_current_phase, with_permissions: true)
+      @ideas = create_list(:idea, 2, project: @project)
       Tagging::Tag.create(title_multiloc: {'en' => 'label', 'fr-BE' => 'label'})
       Tagging::Tag.create(title_multiloc: {'en' => 'item'})
       @tags = Tagging::Tag.all()
@@ -187,6 +189,20 @@ resource "Taggings" do
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
       do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha' ]
+
+      expect(response_status).to eq 200
+    end
+
+    example "Generates taggings with project filter" do
+      response = [
+        {
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => 0}],
+          "id" => @ideas.first.id
+          }
+      ]
+      allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
+
+      do_request projects: @project.id, tags: [ 'Lalalal' ,  'chachacha' ]
 
       expect(response_status).to eq 200
     end
