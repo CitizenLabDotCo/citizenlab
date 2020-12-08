@@ -51,8 +51,8 @@ class SanitizationService
     Nokogiri::HTML.fragment(html).yield_self do |doc|
       return html if doc.errors.any?
 
-      while (last_node = last_structure_node(doc))
-        last_node.text.empty? ? last_node.remove : break
+      while (node = last_structure_node(doc))
+        content_present?(node) ? break : node.remove
       end
 
       doc.to_s
@@ -84,6 +84,11 @@ class SanitizationService
   def last_structure_node(doc)
     css_selector = EDITOR_STRUCTURE_TAGS.map { |tag| "#{tag}:last-child" }.join(', ')
     doc.at_css(css_selector)
+  end
+
+  def content_present?(node)
+    (node&.text&.present? || node&.name == 'img') ||
+      node&.css('*')&.any? { |n| content_present?(n) }
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber
