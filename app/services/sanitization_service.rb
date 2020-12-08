@@ -52,7 +52,7 @@ class SanitizationService
       return html if doc.errors.any?
 
       while (node = last_structure_node(doc))
-        content_present?(node) ? break : node.remove
+        with_content?(node) ? break : node.remove
       end
 
       doc.to_s
@@ -71,10 +71,10 @@ class SanitizationService
 
   def html_with_content?(text_or_html)
     html = Nokogiri::HTML.fragment(text_or_html)
-    html.text.present? || !!%w[img iframe].any? { |tag| html.at tag }
+    with_content?(html)
   end
 
-  private
+  # private
 
   #
   #
@@ -86,17 +86,14 @@ class SanitizationService
     doc.at_css(css_selector)
   end
 
-  def content_present?(node)
-    node&.text&.present? || node&.name == 'img' || node&.css('img')&.any?
+  def with_content?(node)
+    node.text.present? || %w[img iframe].any? { |tag| node.at tag }
   end
 
   def remove_hidden_spaces(html)
     %w[&#65279; &nbsp;].each do |hidden_space|
       html.gsub!(Nokogiri::HTML(hidden_space).text, ' ')
     end
-    # %w[\n].each do |like_break|
-    #   html.gsub!(Nokogiri::HTML(like_break).text, '')
-    # end
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber
