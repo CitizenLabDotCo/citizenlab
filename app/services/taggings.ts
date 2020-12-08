@@ -15,11 +15,12 @@ export interface ITagging {
 }
 export type ITaggingsData = { data: ITagging[] };
 
-export async function generateTaggings(ideaIds, tagIds, tags) {
+export async function generateTaggings(ideaIds, tagIds, tags, projectIds) {
   const response = await streams.add(`${API_PATH}/taggings/generate`, {
     tags,
     idea_ids: ideaIds,
     tag_ids: tagIds,
+    projects: projectIds,
   });
   return response;
 }

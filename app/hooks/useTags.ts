@@ -8,18 +8,26 @@ export interface IUseTag {
   onSearchChange: (search: string) => void;
 }
 
-export default function useTags(ideaIdsParam = [] as string[]) {
+export default function useTags(
+  ideaIdsParam = null as string[] | null,
+  projectIdsParam = null as string[] | null
+) {
   const [tags, setTags] = useState<ITag[] | null | undefined>(undefined);
 
-  const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>(
-    ideaIdsParam || []
+  const [ideaIds, setIdeaIds] = useState<string[] | null>(ideaIdsParam);
+  const [projectIds, setProjectIds] = useState<string[] | null>(
+    projectIdsParam
   );
 
   const onIdeasChange = useCallback((ideas: string[]) => {
     setIdeaIds([...ideas]);
   }, []);
 
-  const [search, setSearch] = useState<string | null | undefined>();
+  const onProjectsChange = useCallback((ideas: string[]) => {
+    setProjectIds([...ideas]);
+  }, []);
+
+  const [search, setSearch] = useState<string | null>();
 
   const onSearchChange = useCallback((search: string) => {
     setSearch(search);
@@ -30,6 +38,7 @@ export default function useTags(ideaIdsParam = [] as string[]) {
       queryParameters: {
         search,
         idea_ids: ideaIds,
+        projects: projectIds,
       },
     }).observable;
 
@@ -40,5 +49,5 @@ export default function useTags(ideaIdsParam = [] as string[]) {
     return () => subscription.unsubscribe();
   }, [ideaIds, search]);
 
-  return { tags, onIdeasChange, onSearchChange };
+  return { tags, onIdeasChange, onProjectsChange, onSearchChange };
 }
