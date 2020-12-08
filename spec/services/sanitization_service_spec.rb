@@ -265,6 +265,27 @@ describe SanitizationService do
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
     end
+
+    # it 'doesn\'t ruin existing db entries' do
+    #   path = Rails.root.join('tmp/query_result_2020-12-08T14_32_13.378958Z.json')
+    #   json = JSON.parse(File.open(path).read)
+    #   changed_entries = []
+
+    #   json.each do |entry|
+    #     entry.keys.each do |field|
+    #       value = JSON.parse(entry[field])
+    #       value.keys.each do |locale|
+    #         html = Nokogiri::HTML.fragment(value[locale]).to_s
+    #         output = service.remove_empty_trailing_tags(html)
+    #         next unless service.with_content?(Nokogiri::HTML.fragment(html.gsub(output, '')))
+
+    #         # expect(output).to eq html
+    #         changed_entries << [html, output] unless html == output
+    #       end
+    #     end
+    #   end
+    #   byebug
+    # end
   end
 
   describe "linkify" do
