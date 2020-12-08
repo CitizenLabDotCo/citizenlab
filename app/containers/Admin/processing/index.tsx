@@ -247,8 +247,6 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const { taggings } = useTaggings();
 
-    console.log(taggings);
-
     const { tags, onIdeasChange } = useTags(
       !isNilOrError(paginatedIdeas.list) && paginatedIdeas.list.length > 0
         ? paginatedIdeas.list.map((idea) => idea.id)
