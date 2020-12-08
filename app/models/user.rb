@@ -254,13 +254,13 @@ class User < ApplicationRecord
       .map{|role| role['project_id']}.compact
   end
 
-  def add_role type, options={}
-    self.roles << {"type" => type}.merge(options)
-    self.roles.uniq!
+  def add_role(type, options = {})
+    roles << { 'type' => type.to_s }.merge(options.stringify_keys)
+    roles.uniq!
   end
 
-  def delete_role type, options={}
-    self.roles.delete({"type" => type}.merge(options.stringify_keys))
+  def delete_role(type, options = {})
+    roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
   end
 
   def authenticate unencrypted_password
