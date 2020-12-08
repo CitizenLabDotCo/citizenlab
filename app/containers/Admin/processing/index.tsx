@@ -227,7 +227,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const projectMessage = <FormattedMessage {...messages.project} />;
+const projectMessage = <FormattedMessage {...messages.selectProject} />;
 const cancelMessage = <FormattedMessage {...messages.cancel} />;
 const continueMessage = <FormattedMessage {...messages.continue} />;
 const Processing = memo<Props & InjectedIntlProps>(
@@ -296,7 +296,7 @@ const Processing = memo<Props & InjectedIntlProps>(
             })),
         ];
         setProjectList(filterSelectorValues);
-        setSelectedProjectIds([projects.projectsList[0].id]);
+
         onProjectsChange([projects.projectsList[0].id]);
       }
     }, [projects, tenant, locale]);
