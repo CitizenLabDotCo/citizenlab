@@ -195,10 +195,6 @@ models:
       body_multiloc: pages.homepage_info_body
       slug: homepage-info
     - &6
-      title_multiloc: pages.accessibility-statement_title
-      body_multiloc: pages.accessibility-statement_body
-      slug: accessibility-statement
-    - &7
       title_multiloc: pages.initiatives_title
       body_multiloc: pages.initiatives_body
       slug: initiatives
@@ -224,7 +220,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
           text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
-    - &8
+    - &7
       title_multiloc: pages.initiatives_success_1_title
       body_multiloc: pages.initiatives_success_1_body
       slug: initiatives-success-1
@@ -250,7 +246,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
           text_reference: 01dc0a2d-2f07-431e-ada1-c89b7ba92d6e
-    - &9
+    - &8
       title_multiloc: pages.initiatives_success_2_title
       body_multiloc: pages.initiatives_success_2_body
       slug: initiatives-success-2
@@ -276,7 +272,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
           text_reference: 2260522d-5c87-40a4-b6f4-1b8f80fbce1c
-    - &10
+    - &9
       title_multiloc: pages.initiatives_success_3_title
       body_multiloc: pages.initiatives_success_3_body
       slug: initiatives-success-3

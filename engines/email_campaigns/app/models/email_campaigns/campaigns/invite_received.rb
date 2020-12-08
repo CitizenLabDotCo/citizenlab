@@ -9,6 +9,10 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
 
+    def mailer_class
+      InviteReceivedMailer
+    end
+
     def activity_triggers
       {'Invite' => {'created' => true}}
     end

@@ -29,7 +29,7 @@ RSpec.describe EmailCampaigns::WelcomeMailer, type: :mailer do
       expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name')['en'])
     end
 
-    it 'assigns @confirmation_url' do
+    it 'assigns home url' do
       expect(mail.body.encoded)
         .to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
     end
