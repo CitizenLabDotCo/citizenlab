@@ -151,10 +151,15 @@ const Tab = styled.div`
 
 interface Props {
   closeView: (e?: FormEvent) => void;
-  selectedRows: string[];
+  selectedRows?: string[];
+  selectedProjectIds?: string[];
 }
 
-const AutotagView = ({ closeView, selectedRows }: Props) => {
+const AutotagView = ({
+  closeView,
+  selectedRows,
+  selectedProjectIds,
+}: Props) => {
   const locale = useLocale();
   const addTagInputKeyPress = useKeyPress('Enter');
   const [newTag, setNewTag] = useState('');
@@ -172,7 +177,10 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
 
   const localize = useLocalize();
 
-  const { tagSuggestions } = useTagSuggestions(selectedRows);
+  const { tagSuggestions } = useTagSuggestions(
+    selectedRows || null,
+    selectedProjectIds
+  );
 
   useEffect(() => {
     if (addTagInputKeyPress && isValidTag) {
@@ -251,7 +259,8 @@ const AutotagView = ({ closeView, selectedRows }: Props) => {
     generateTaggings(
       selectedRows,
       selectedTagsList.map((tag) => tag.id),
-      newTagsList
+      newTagsList,
+      selectedProjectIds
     )
       .then(() => closeView())
       .catch(() => setProcessing(false));

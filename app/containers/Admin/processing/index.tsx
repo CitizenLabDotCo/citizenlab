@@ -227,6 +227,9 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
+const projectMessage = <FormattedMessage {...messages.selectProject} />;
+const cancelMessage = <FormattedMessage {...messages.cancel} />;
+const continueMessage = <FormattedMessage {...messages.continue} />;
 const Processing = memo<Props & InjectedIntlProps>(
   ({ className, ideas, projects }) => {
     const localize = useLocalize();
@@ -243,7 +246,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const { taggings } = useTaggings();
-    const { tags, onIdeasChange } = useTags(ideaList?.map((idea) => idea.id));
+    const { tags, onProjectsChange } = useTags();
 
     const [exporting, setExporting] = useState<boolean>(false);
 
@@ -266,7 +269,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     useEffect(() => {
       if (highlightedId && !isNilOrError(rowRef) && rowRef.current) {
-        rowRef.current.scrollIntoView(true);
+        rowRef.current.scrollIntoView(false);
       }
     }, [highlightedId]);
 
@@ -293,7 +296,8 @@ const Processing = memo<Props & InjectedIntlProps>(
             })),
         ];
         setProjectList(filterSelectorValues);
-        setSelectedProjectIds([projects.projectsList[0].id]);
+
+        onProjectsChange([projects.projectsList[0].id]);
       }
     }, [projects, tenant, locale]);
 
@@ -335,12 +339,13 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      setIdeaList(ideas?.list || null);
+      if (!isNilOrError(ideas.list) && ideas.list.length > 0) {
+        setIdeaList(ideas.list);
+      }
       setLoadingIdeas(false);
-    }, [ideas, selectedProjectIds]);
+    }, [ideas]);
 
     useEffect(() => {
-      onIdeasChange(ideaList?.map((idea) => idea.id) || []);
       if (!isNilOrError(ideaList) && ideaList.length > 0) {
         setHighlightedId(ideaList[0].id);
       }
@@ -438,16 +443,19 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     };
 
-    const handleProjectIdsChange = (newProjectIds: string[]) => {
-      const { onChangeProjects } = ideas;
-      setSelectedRows([]);
-      setSelectedProjectIds(newProjectIds);
-      onChangeProjects(newProjectIds);
-      setLoadingIdeas(true);
-      trackEventByName('Filter View', {
-        action: 'changed projects',
-      });
-    };
+    const handleProjectIdsChange = useCallback(
+      (newProjectIds: string[]) => {
+        const { onChangeProjects } = ideas;
+        setSelectedRows([]);
+        setSelectedProjectIds(newProjectIds);
+        onChangeProjects(newProjectIds);
+        setLoadingIdeas(true);
+        trackEventByName('Filter View', {
+          action: 'changed projects',
+        });
+      },
+      [ideas]
+    );
 
     const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
       ideaTaggings.some(
@@ -462,30 +470,29 @@ const Processing = memo<Props & InjectedIntlProps>(
       });
     };
 
-    const handleRowOnSelect = useCallback(
-      (selectedItemId: string) => {
+    const handleRowOnSelect = useCallback((selectedItemId: string) => {
+      setSelectedRows((selectedRows) => {
         const newSelectedRows = includes(selectedRows, selectedItemId)
           ? selectedRows.filter((id) => id !== selectedItemId)
-          : [...selectedRows, selectedItemId];
-        setSelectedRows(newSelectedRows);
-      },
-      [selectedRows]
-    );
+          : selectedRows.concat(selectedItemId);
+        return newSelectedRows;
+      });
+    }, []);
 
-    const openPreview = (id: string) => {
+    const openPreview = useCallback((id: string) => {
       setPreviewPostId(id);
       setHighlightedId(id);
-    };
+    }, []);
 
     const closeSideModal = () => setPreviewPostId(null);
 
-    const getIdeaTaggings = useCallback(
-      (id: string | null) =>
-        (!isNilOrError(taggings) &&
-          taggings.filter((tagging) => tagging.attributes.idea_id === id)) ||
-        [],
-      [taggings]
-    );
+    const getIdeaTaggings = (id: string | null) => {
+      if (!isNilOrError(taggings)) {
+        return taggings.filter((tagging) => tagging.attributes.idea_id === id);
+      }
+
+      return [];
+    };
 
     if (
       !isNilOrError(projectList) &&
@@ -509,7 +516,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               <LeftPanelContainer>
                 <FilterSection>
                   <StyledFilterSelector
-                    title={<FormattedMessage {...messages.project} />}
+                    title={projectMessage}
                     name={'Projects'}
                     values={projectList}
                     onChange={handleProjectIdsChange}
@@ -565,7 +572,10 @@ const Processing = memo<Props & InjectedIntlProps>(
               </LeftPanelContainer>
             </FilterSectionTransitionWrapper>
           </CSSTransition>
-          {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
+          {!isNilOrError(ideaList) &&
+          !loadingIdeas &&
+          ideaList.length > 0 &&
+          !isNilOrError(taggings) ? (
             <TableWrapper>
               <StyledTable>
                 <thead>
@@ -602,23 +612,21 @@ const Processing = memo<Props & InjectedIntlProps>(
                     )}
                   </tr>
                 </thead>
-                {ideaList?.length > 0 && (
-                  <tbody>
-                    {ideaList?.map((idea) => (
-                      <ProcessingRow
-                        key={idea.id}
-                        idea={idea}
-                        selected={includes(selectedRows, idea.id)}
-                        highlighted={idea.id === highlightedId}
-                        rowRef={idea.id === highlightedId ? rowRef : undefined}
-                        onSelect={handleRowOnSelect}
-                        openPreview={openPreview}
-                        taggings={getIdeaTaggings(idea.id)}
-                        showTagColumn={!previewPostId}
-                      />
-                    ))}
-                  </tbody>
-                )}
+                <tbody>
+                  {ideaList.map((idea) => (
+                    <ProcessingRow
+                      key={idea.id}
+                      idea={idea}
+                      selected={includes(selectedRows, idea.id)}
+                      highlighted={idea.id === highlightedId}
+                      rowRef={idea.id === highlightedId ? rowRef : undefined}
+                      onSelect={handleRowOnSelect}
+                      openPreview={openPreview}
+                      taggings={taggings}
+                      showTagColumn={!previewPostId}
+                    />
+                  ))}
+                </tbody>
               </StyledTable>
             </TableWrapper>
           ) : (
@@ -662,13 +670,13 @@ const Processing = memo<Props & InjectedIntlProps>(
                   locale={locale}
                   buttonStyle="admin-dark-outlined"
                   onClick={handleCloseConfirmationModal}
-                  text={<FormattedMessage {...messages.cancel} />}
+                  text={cancelMessage}
                 />
                 <Button
                   locale={locale}
                   buttonStyle="admin-dark"
                   onClick={handleConfirmAutotag}
-                  text={<FormattedMessage {...messages.continue} />}
+                  text={continueMessage}
                 />
               </ButtonRow>
             </QuillEditedContent>
@@ -681,6 +689,14 @@ const Processing = memo<Props & InjectedIntlProps>(
       !isNilOrError(locale) &&
       showAutotagView
     ) {
+      if (selectedRows.length > 500) {
+        return (
+          <AutotagView
+            closeView={handleCloseAutotagView}
+            selectedProjectIds={selectedProjectIds}
+          />
+        );
+      }
       return (
         <AutotagView
           closeView={handleCloseAutotagView}
@@ -710,7 +726,7 @@ const Data = adopt<DataProps, InputProps>({
     return (
       <GetIdeas
         type="paginated"
-        pageSize={2000000}
+        pageSize={200000}
         projectIds={[projects?.projectsList?.[0].id || '']}
         cache={false}
         mini={true}
