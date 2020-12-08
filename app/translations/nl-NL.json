@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Bewerk je idee. Voeg nieuwe en verander oude informatie toe om het nog beter te maken.",
   "app.containers.IdeasEditPage.metaTitle": "Bewerk je idee voor {projectName} | {orgName}",
   "app.containers.IdeasEditPage.save": "Opslaan",
-  "app.containers.IdeasEditPage.submit": "Plaats je idee",
+  "app.containers.IdeasEditPage.submit": "Sla je wijzigingen op",
   "app.containers.IdeasEditPage.submitError": "We konden je wijzigingen niet opslaan. Probeer later opnieuw of contacteer support@citizenlab.co.",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "Alle ideeën gepost in {orgName}",
   "app.containers.IdeasIndexPage.loadMore": "Laad meer ideeën...",
