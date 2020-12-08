@@ -4,11 +4,12 @@ import { adopt } from 'react-adopt';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { InputTerm } from 'services/participationContexts';
+import { InputTerm, getInputTerm } from 'services/participationContexts';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,7 +26,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   color: ${colors.label};
@@ -59,6 +59,7 @@ interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -112,7 +113,12 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   };
 
   render() {
-    const { budgetingDescriptor, project } = this.props;
+    const {
+      budgetingDescriptor,
+      project,
+      phases,
+      participationContextType,
+    } = this.props;
     const enabledFromDate = budgetingDescriptor?.future_enabled
       ? moment(budgetingDescriptor.future_enabled).format('LL')
       : null;
@@ -121,9 +127,9 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
         <FormattedMessage {...messages.verificationLinkText} />
       </StyledButton>
     );
+    const inputTerm = getInputTerm(participationContextType, project, phases);
 
-    if (!isNilOrError(project)) {
-      const inputTerm = project.attributes.input_term;
+    if (inputTerm) {
       const message = this.reasonToMessage(inputTerm);
 
       return (
@@ -143,6 +149,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId }) => <GetProject projectId={projectId} />,
+  phases: ({ projectId }) => <GetPhases projectId={projectId} />,
 });
 
 export default (inputProps: InputProps) => (
