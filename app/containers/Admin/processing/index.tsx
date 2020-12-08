@@ -217,7 +217,7 @@ const KeyboardShortcuts = styled.div`
   font-size: ${fontSizes.xs}px;
 `;
 interface DataProps {
-  ideas: GetIdeasChildProps;
+  paginatedIdeas: GetIdeasChildProps;
   projects: GetProjectsChildProps;
 }
 
@@ -227,8 +227,11 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
+const projectMessage = <FormattedMessage {...messages.project} />;
+const cancelMessage = <FormattedMessage {...messages.cancel} />;
+const continueMessage = <FormattedMessage {...messages.continue} />;
 const Processing = memo<Props & InjectedIntlProps>(
-  ({ className, ideas, projects }) => {
+  ({ className, paginatedIdeas, projects }) => {
     const localize = useLocalize();
     const tenant = useTenant();
     const locale = useLocale();
@@ -243,7 +246,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const { taggings } = useTaggings();
-    const { tags, onIdeasChange } = useTags(ideaList?.map((idea) => idea.id));
+
+    console.log(taggings);
+
+    const { tags, onIdeasChange } = useTags(
+      !isNilOrError(paginatedIdeas.list) && paginatedIdeas.list.length > 0
+        ? paginatedIdeas.list.map((idea) => idea.id)
+        : []
+    );
 
     const [exporting, setExporting] = useState<boolean>(false);
 
@@ -266,7 +276,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     useEffect(() => {
       if (highlightedId && !isNilOrError(rowRef) && rowRef.current) {
-        rowRef.current.scrollIntoView(true);
+        rowRef.current.scrollIntoView(false);
       }
     }, [highlightedId]);
 
@@ -335,9 +345,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      setIdeaList(ideas?.list || null);
+      if (
+        !isNilOrError(paginatedIdeas.list) &&
+        paginatedIdeas.list.length > 0
+      ) {
+        setIdeaList(paginatedIdeas.list);
+      }
       setLoadingIdeas(false);
-    }, [ideas, selectedProjectIds]);
+    }, [paginatedIdeas]);
 
     useEffect(() => {
       onIdeasChange(ideaList?.map((idea) => idea.id) || []);
@@ -440,7 +455,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleProjectIdsChange = useCallback(
       (newProjectIds: string[]) => {
-        const { onChangeProjects } = ideas;
+        const { onChangeProjects } = paginatedIdeas;
         setSelectedRows([]);
         setSelectedProjectIds(newProjectIds);
         onChangeProjects(newProjectIds);
@@ -449,7 +464,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           action: 'changed projects',
         });
       },
-      [ideas]
+      [paginatedIdeas]
     );
 
     const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
@@ -511,7 +526,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               <LeftPanelContainer>
                 <FilterSection>
                   <StyledFilterSelector
-                    title={<FormattedMessage {...messages.project} />}
+                    title={projectMessage}
                     name={'Projects'}
                     values={projectList}
                     onChange={handleProjectIdsChange}
@@ -567,7 +582,10 @@ const Processing = memo<Props & InjectedIntlProps>(
               </LeftPanelContainer>
             </FilterSectionTransitionWrapper>
           </CSSTransition>
-          {!isNilOrError(ideaList) && !loadingIdeas && ideaList.length > 0 ? (
+          {!isNilOrError(ideaList) &&
+          !loadingIdeas &&
+          ideaList.length > 0 &&
+          !isNilOrError(taggings) ? (
             <TableWrapper>
               <StyledTable>
                 <thead>
@@ -604,23 +622,21 @@ const Processing = memo<Props & InjectedIntlProps>(
                     )}
                   </tr>
                 </thead>
-                {ideaList?.length > 0 && (
-                  <tbody>
-                    {ideaList?.map((idea) => (
-                      <ProcessingRow
-                        key={idea.id}
-                        idea={idea}
-                        selected={includes(selectedRows, idea.id)}
-                        highlighted={idea.id === highlightedId}
-                        rowRef={idea.id === highlightedId ? rowRef : undefined}
-                        onSelect={handleRowOnSelect}
-                        openPreview={openPreview}
-                        taggings={!isNilOrError(taggings) ? taggings : []}
-                        showTagColumn={!previewPostId}
-                      />
-                    ))}
-                  </tbody>
-                )}
+                <tbody>
+                  {ideaList.map((idea) => (
+                    <ProcessingRow
+                      key={idea.id}
+                      idea={idea}
+                      selected={includes(selectedRows, idea.id)}
+                      highlighted={idea.id === highlightedId}
+                      rowRef={idea.id === highlightedId ? rowRef : undefined}
+                      onSelect={handleRowOnSelect}
+                      openPreview={openPreview}
+                      taggings={taggings}
+                      showTagColumn={!previewPostId}
+                    />
+                  ))}
+                </tbody>
               </StyledTable>
             </TableWrapper>
           ) : (
@@ -664,13 +680,13 @@ const Processing = memo<Props & InjectedIntlProps>(
                   locale={locale}
                   buttonStyle="admin-dark-outlined"
                   onClick={handleCloseConfirmationModal}
-                  text={<FormattedMessage {...messages.cancel} />}
+                  text={cancelMessage}
                 />
                 <Button
                   locale={locale}
                   buttonStyle="admin-dark"
                   onClick={handleConfirmAutotag}
-                  text={<FormattedMessage {...messages.continue} />}
+                  text={continueMessage}
                 />
               </ButtonRow>
             </QuillEditedContent>
@@ -705,14 +721,14 @@ const Data = adopt<DataProps, InputProps>({
       </GetProjects>
     );
   },
-  ideas: ({ render, projects }) => {
+  paginatedIdeas: ({ render, projects }) => {
     if (isNilOrError(projects)) {
       return <>{render}</>;
     }
     return (
       <GetIdeas
         type="paginated"
-        pageSize={2000000}
+        pageSize={200000}
         projectIds={[projects?.projectsList?.[0].id || '']}
         cache={false}
         mini={true}
