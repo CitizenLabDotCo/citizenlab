@@ -107,7 +107,9 @@ module Frontend
       "#{tenant.base_frontend_uri}/email-settings?unsubscription_token=#{EmailCampaigns::UnsubscriptionToken.find_by(user_id: user_id).token}&campaign_id=#{campaign_id}"
     end
 
-    
+    def idea_edit_url(tenant, idea_id)
+      "#{tenant.base_frontend_uri}/ideas/edit/#{idea_id}"
+    end
 
     def terms_conditions_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/pages/terms-and-conditions"
