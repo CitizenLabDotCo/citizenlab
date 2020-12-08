@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Bearbeite deine Idee. Füge neue Informationen hinzu und nehme Änderungen vor, um sie noch besser zu machen.",
   "app.containers.IdeasEditPage.metaTitle": "Bearbeite deine Idee. {ProjektName} | {OrgName}",
   "app.containers.IdeasEditPage.save": "Speichern",
-  "app.containers.IdeasEditPage.submit": "Idee einreichen",
+  "app.containers.IdeasEditPage.submit": "Änderungen speichern",
   "app.containers.IdeasEditPage.submitError": "Deine Änderungen konnten nicht gespeichert werden. Versuche es später noch einmal oder kontaktiere support@citizenlab.co.",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "Alle Ideen veröffentlicht in {orgName}",
   "app.containers.IdeasIndexPage.loadMore": "{orgName, select, München {Mehr Mängelmeldungen anzeigen} other {Mehr Ideen anzeigen...}}",
