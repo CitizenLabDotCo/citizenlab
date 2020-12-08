@@ -721,6 +721,7 @@
   "app.containers.Admin.Processing.projectTags": "Tagi projektu",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Proponowany budżet",
   "app.containers.Admin.Processing.returnKey": "Klawisz \"Backspace\" otwiera panel boczny, na którym można dodawać i usuwać tagi z pomysłów.",
+  "app.containers.Admin.Processing.selectProject": "Select project",
   "app.containers.Admin.Processing.suggestedTags": "Sugerowane tagi",
   "app.containers.Admin.Processing.tag": "Tag",
   "app.containers.Admin.Processing.tagAssignationExplanation": "Tagi, które tutaj dodasz, zostaną automatycznie przypisane do odpowiednich pomysłów w oparciu o naszą technologię sztucznej inteligencji - NLP (natural Language Processing).",
