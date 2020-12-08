@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Editează ideea ta. Poți să modifici informațiile vechi pentru a o face mai atractivă.",
   "app.containers.IdeasEditPage.metaTitle": "Editează ideea ta {projectName} | {orgName}",
   "app.containers.IdeasEditPage.save": "Salvați",
-  "app.containers.IdeasEditPage.submit": "Trimite ideea",
+  "app.containers.IdeasEditPage.submit": "Submit idea",
   "app.containers.IdeasEditPage.submitError": "Nu am putut salva modificările. Încercați din nou, mai târziu, sau contactați support@citizenlab.co.",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "Toate ideile postate pe platforma {orgName}",
   "app.containers.IdeasIndexPage.loadMore": "Încarcă mai mult...",
