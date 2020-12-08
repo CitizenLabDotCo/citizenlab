@@ -1,4 +1,4 @@
-import React, { memo, useCallback, RefObject } from 'react';
+import React, { memo, useMemo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
@@ -110,6 +110,14 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [openPreview]
     );
 
+    const ideaTaggins = useMemo(() => {
+      return taggings.filter(
+        (tagging) => tagging.attributes.idea_id === idea.id
+      );
+    }, [taggings]);
+
+    console.log('zolg');
+
     return (
       <Container
         className={className}
@@ -127,9 +135,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        {showTagColumn && (
+        {showTagColumn && ideaTaggins && (
           <td className="tags">
-            {taggings.map((tagging) => (
+            {ideaTaggins.map((tagging) => (
               <StyledTagWrapper
                 isAutoTag={tagging.attributes.assignment_method === 'automatic'}
                 isSelected={selected}
@@ -137,7 +145,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 key={tagging.attributes.tag_id}
               />
             ))}
-            {highlighted && taggings.length === 0 && (
+            {highlighted && ideaTaggins.length === 0 && (
               <Tag
                 isAutoTag={true}
                 isSelected={selected}

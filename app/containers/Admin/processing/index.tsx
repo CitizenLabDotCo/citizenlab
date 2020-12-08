@@ -438,16 +438,19 @@ const Processing = memo<Props & InjectedIntlProps>(
       }
     };
 
-    const handleProjectIdsChange = (newProjectIds: string[]) => {
-      const { onChangeProjects } = ideas;
-      setSelectedRows([]);
-      setSelectedProjectIds(newProjectIds);
-      onChangeProjects(newProjectIds);
-      setLoadingIdeas(true);
-      trackEventByName('Filter View', {
-        action: 'changed projects',
-      });
-    };
+    const handleProjectIdsChange = useCallback(
+      (newProjectIds: string[]) => {
+        const { onChangeProjects } = ideas;
+        setSelectedRows([]);
+        setSelectedProjectIds(newProjectIds);
+        onChangeProjects(newProjectIds);
+        setLoadingIdeas(true);
+        trackEventByName('Filter View', {
+          action: 'changed projects',
+        });
+      },
+      [ideas]
+    );
 
     const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
       ideaTaggings.some(
@@ -462,30 +465,29 @@ const Processing = memo<Props & InjectedIntlProps>(
       });
     };
 
-    const handleRowOnSelect = useCallback(
-      (selectedItemId: string) => {
+    const handleRowOnSelect = useCallback((selectedItemId: string) => {
+      setSelectedRows((selectedRows) => {
         const newSelectedRows = includes(selectedRows, selectedItemId)
           ? selectedRows.filter((id) => id !== selectedItemId)
-          : [...selectedRows, selectedItemId];
-        setSelectedRows(newSelectedRows);
-      },
-      [selectedRows]
-    );
+          : selectedRows.concat(selectedItemId);
+        return newSelectedRows;
+      });
+    }, []);
 
-    const openPreview = (id: string) => {
+    const openPreview = useCallback((id: string) => {
       setPreviewPostId(id);
       setHighlightedId(id);
-    };
+    }, []);
 
     const closeSideModal = () => setPreviewPostId(null);
 
-    const getIdeaTaggings = useCallback(
-      (id: string | null) =>
-        (!isNilOrError(taggings) &&
-          taggings.filter((tagging) => tagging.attributes.idea_id === id)) ||
-        [],
-      [taggings]
-    );
+    const getIdeaTaggings = (id: string | null) => {
+      if (!isNilOrError(taggings)) {
+        return taggings.filter((tagging) => tagging.attributes.idea_id === id);
+      }
+
+      return [];
+    };
 
     if (
       !isNilOrError(projectList) &&
@@ -613,7 +615,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                         rowRef={idea.id === highlightedId ? rowRef : undefined}
                         onSelect={handleRowOnSelect}
                         openPreview={openPreview}
-                        taggings={getIdeaTaggings(idea.id)}
+                        taggings={!isNilOrError(taggings) ? taggings : []}
                         showTagColumn={!previewPostId}
                       />
                     ))}
