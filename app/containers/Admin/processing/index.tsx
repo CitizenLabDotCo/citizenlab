@@ -217,7 +217,7 @@ const KeyboardShortcuts = styled.div`
   font-size: ${fontSizes.xs}px;
 `;
 interface DataProps {
-  paginatedIdeas: GetIdeasChildProps;
+  ideas: GetIdeasChildProps;
   projects: GetProjectsChildProps;
 }
 
@@ -231,7 +231,7 @@ const projectMessage = <FormattedMessage {...messages.project} />;
 const cancelMessage = <FormattedMessage {...messages.cancel} />;
 const continueMessage = <FormattedMessage {...messages.continue} />;
 const Processing = memo<Props & InjectedIntlProps>(
-  ({ className, paginatedIdeas, projects }) => {
+  ({ className, ideas, projects }) => {
     const localize = useLocalize();
     const tenant = useTenant();
     const locale = useLocale();
@@ -246,12 +246,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const { taggings } = useTaggings();
-
-    const { tags, onIdeasChange } = useTags(
-      !isNilOrError(paginatedIdeas.list) && paginatedIdeas.list.length > 0
-        ? paginatedIdeas.list.map((idea) => idea.id)
-        : []
-    );
+    const { tags, onProjectsChange } = useTags();
 
     const [exporting, setExporting] = useState<boolean>(false);
 
@@ -302,6 +297,7 @@ const Processing = memo<Props & InjectedIntlProps>(
         ];
         setProjectList(filterSelectorValues);
         setSelectedProjectIds([projects.projectsList[0].id]);
+        onProjectsChange([projects.projectsList[0].id]);
       }
     }, [projects, tenant, locale]);
 
@@ -343,17 +339,13 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
-      if (
-        !isNilOrError(paginatedIdeas.list) &&
-        paginatedIdeas.list.length > 0
-      ) {
-        setIdeaList(paginatedIdeas.list);
+      if (!isNilOrError(ideas.list) && ideas.list.length > 0) {
+        setIdeaList(ideas.list);
       }
       setLoadingIdeas(false);
-    }, [paginatedIdeas]);
+    }, [ideas]);
 
     useEffect(() => {
-      onIdeasChange(ideaList?.map((idea) => idea.id) || []);
       if (!isNilOrError(ideaList) && ideaList.length > 0) {
         setHighlightedId(ideaList[0].id);
       }
@@ -453,7 +445,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const handleProjectIdsChange = useCallback(
       (newProjectIds: string[]) => {
-        const { onChangeProjects } = paginatedIdeas;
+        const { onChangeProjects } = ideas;
         setSelectedRows([]);
         setSelectedProjectIds(newProjectIds);
         onChangeProjects(newProjectIds);
@@ -462,7 +454,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           action: 'changed projects',
         });
       },
-      [paginatedIdeas]
+      [ideas]
     );
 
     const areSomeIdeaTagsAutomatic = (ideaTaggings: ITagging[]) =>
@@ -697,10 +689,18 @@ const Processing = memo<Props & InjectedIntlProps>(
       !isNilOrError(locale) &&
       showAutotagView
     ) {
+      if (selectedRows.length > 500) {
+        return (
+          <AutotagView
+            closeView={handleCloseAutotagView}
+            selectedProjectIds={selectedProjectIds}
+          />
+        );
+      }
       return (
         <AutotagView
           closeView={handleCloseAutotagView}
-          selectedRows={selectedRows}
+          selectedProjectIds={selectedProjectIds}
         />
       );
     } else return null;
@@ -719,7 +719,7 @@ const Data = adopt<DataProps, InputProps>({
       </GetProjects>
     );
   },
-  paginatedIdeas: ({ render, projects }) => {
+  ideas: ({ render, projects }) => {
     if (isNilOrError(projects)) {
       return <>{render}</>;
     }
