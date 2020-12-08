@@ -431,7 +431,7 @@
   "app.components.admin.PostManager.PostPreview.picks": "Picks: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Save",
   "app.components.admin.PostManager.PostPreview.submitError": "Error",
-  "app.components.admin.PostManager.PostPreview.suggestionLoading": "We're retrieving suggestions to tag the selected ideas",
+  "app.components.admin.PostManager.PostPreview.suggestionLoading": "Estamos recuperando sugestões para taguear as idéias selecionadas",
   "app.components.admin.PostManager.PostPreview.voteCounts": "Vote counts:",
   "app.components.admin.PostManager.allPhases": "All phases",
   "app.components.admin.PostManager.allProjects": "All projects",
