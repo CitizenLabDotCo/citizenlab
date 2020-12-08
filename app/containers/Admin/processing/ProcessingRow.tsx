@@ -110,7 +110,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [openPreview]
     );
 
-    const ideaTaggins = useMemo(() => {
+    const ideaTaggings = useMemo(() => {
       return taggings.filter(
         (tagging) => tagging.attributes.idea_id === idea.id
       );
@@ -133,9 +133,9 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
             {localize(contentTitle)}
           </ContentTitle>
         </td>
-        {showTagColumn && ideaTaggins && (
+        {showTagColumn && ideaTaggings && (
           <td className="tags">
-            {ideaTaggins.map((tagging) => (
+            {ideaTaggings.map((tagging) => (
               <StyledTagWrapper
                 isAutoTag={tagging.attributes.assignment_method === 'automatic'}
                 isSelected={selected}
@@ -143,7 +143,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 key={tagging.attributes.tag_id}
               />
             ))}
-            {highlighted && ideaTaggins.length === 0 && (
+            {highlighted && ideaTaggings.length === 0 && (
               <Tag
                 isAutoTag={true}
                 isSelected={selected}
