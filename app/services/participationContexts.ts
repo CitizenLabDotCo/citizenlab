@@ -33,11 +33,11 @@ export function getInputTerm(
   phases: IPhaseData[] | undefined | null | Error
 ) {
   return {
-    project: !isNilOrError(project) ? getProjectInputTerm(project) : null,
+    project: !isNilOrError(project) ? getProjectInputTerm(project) : 'idea',
     phase:
       !isNilOrError(phases) && phases.length > 0
         ? getPhaseInputTerm(phases)
-        : null,
+        : 'idea',
   }[participationContextType];
 }
 
