@@ -20,6 +20,16 @@ namespace :email_campaigns do
     end
   end
 
+  desc 'Removes campaigns with a type that no longer exists in `EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES`'
+  task remove_deprecated: :environment do |_t, _args|
+    service = EmailCampaigns::AssureCampaignsService.new
+    Tenant.find_each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        service.remove_deprecated_campaigns
+      end
+    end
+  end
+
   desc "Given a list of email addresses, remove these users' consent from all consentable campaigns"
   task :remove_consents, [:emails_url] => [:environment] do |t, args|
 

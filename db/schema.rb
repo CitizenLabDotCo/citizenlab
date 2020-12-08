@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_02_093045) do
+ActiveRecord::Schema.define(version: 2020_11_30_161115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -359,6 +359,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
     t.uuid "phase_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
   end
@@ -832,17 +833,19 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
-  create_table "tag_assignments", id: :serial, force: :cascade do |t|
+  create_table "tagging_taggings", id: :serial, force: :cascade do |t|
     t.integer "assignment_method", default: 0
     t.uuid "idea_id"
     t.uuid "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["idea_id"], name: "index_tag_assignments_on_idea_id"
-    t.index ["tag_id"], name: "index_tag_assignments_on_tag_id"
+    t.float "confidence_score"
+    t.index ["idea_id", "tag_id"], name: "index_tagging_taggings_on_idea_id_and_tag_id", unique: true
+    t.index ["idea_id"], name: "index_tagging_taggings_on_idea_id"
+    t.index ["tag_id"], name: "index_tagging_taggings_on_tag_id"
   end
 
-  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "tagging_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1027,8 +1030,8 @@ ActiveRecord::Schema.define(version: 2020_11_02_093045) do
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
-  add_foreign_key "tag_assignments", "ideas"
-  add_foreign_key "tag_assignments", "tags"
+  add_foreign_key "tagging_taggings", "ideas"
+  add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 
