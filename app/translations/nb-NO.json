@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Rediger ideen din. Legg til ny informasjon eller rediger teksten du allerede har lagt inn for å gjøre den enda bedre.",
   "app.containers.IdeasEditPage.metaTitle": "Rediger din ide til {projectName} | {orgName}",
   "app.containers.IdeasEditPage.save": "Lagre",
-  "app.containers.IdeasEditPage.submit": "Send inn ide",
+  "app.containers.IdeasEditPage.submit": "Lagre endringer",
   "app.containers.IdeasEditPage.submitError": "Vi kunne ikke lagre endringene dine. Prøv igjen senere eller kontakt support@citizenlab.co.",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "Alle ideer publisert i {orgName}",
   "app.containers.IdeasIndexPage.loadMore": "Last inn mer...",
