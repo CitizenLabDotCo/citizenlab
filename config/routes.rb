@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
   mount Maps::Engine => "", as: 'maps'
+  mount Tagging::Engine => "", as: 'tagging'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -47,6 +48,7 @@ Rails.application.routes.draw do
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :as_xlsx_with_tags, on: :collection, action: 'index_with_tags_xlsx'
+        get :mini, on: :collection, action: 'index_mini'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
@@ -68,7 +70,7 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses, only: [:index, :show]
+      resources :idea_statuses
       resources :initiative_statuses, only: [:index, :show]
 
       # auth
