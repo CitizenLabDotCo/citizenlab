@@ -718,6 +718,7 @@
   "app.containers.Admin.Processing.keyboardShortcuts": "Keyboard Shortcuts",
   "app.containers.Admin.Processing.pleaseSelectAProject": "Please Select A Project",
   "app.containers.Admin.Processing.project": "Project",
+  "app.containers.Admin.Processing.selectProject": "Select project",
   "app.containers.Admin.Processing.projectTags": "Project tags",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Proposed Budget",
   "app.containers.Admin.Processing.returnKey": "The Return Key opens the side panel where you can add and remove tags from ideas",
