@@ -243,7 +243,7 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const { taggings } = useTaggings();
-    const { tags, onIdeasChange } = useTags(ideaList?.map((idea) => idea.id));
+    const { tags, onProjectsChange } = useTags();
 
     const [exporting, setExporting] = useState<boolean>(false);
 
@@ -294,6 +294,7 @@ const Processing = memo<Props & InjectedIntlProps>(
         ];
         setProjectList(filterSelectorValues);
         setSelectedProjectIds([projects.projectsList[0].id]);
+        onProjectsChange([projects.projectsList[0].id]);
       }
     }, [projects, tenant, locale]);
 
@@ -340,7 +341,6 @@ const Processing = memo<Props & InjectedIntlProps>(
     }, [ideas, selectedProjectIds]);
 
     useEffect(() => {
-      onIdeasChange(ideaList?.map((idea) => idea.id) || []);
       if (!isNilOrError(ideaList) && ideaList.length > 0) {
         setHighlightedId(ideaList[0].id);
       }
@@ -681,10 +681,18 @@ const Processing = memo<Props & InjectedIntlProps>(
       !isNilOrError(locale) &&
       showAutotagView
     ) {
+      if (selectedRows.length > 500) {
+        return (
+          <AutotagView
+            closeView={handleCloseAutotagView}
+            selectedProjectIds={selectedProjectIds}
+          />
+        );
+      }
       return (
         <AutotagView
           closeView={handleCloseAutotagView}
-          selectedRows={selectedRows}
+          selectedProjectIds={selectedProjectIds}
         />
       );
     } else return null;
