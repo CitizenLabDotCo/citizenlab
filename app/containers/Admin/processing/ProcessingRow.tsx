@@ -80,8 +80,6 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       (value) => isNil(value) || isEmpty(value)
     ) as Multiloc;
 
-    console.log(showTagColumn);
-
     const localize = useLocalize();
 
     const bgColor = () => {
