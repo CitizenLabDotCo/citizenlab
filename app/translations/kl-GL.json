@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Isumassarsiat aaqqissuuguk. Pitsanngorsarniarlugu paasissutissanik nutaanik ilanngussigit nutaannginnerillu allanngortikkit",
   "app.containers.IdeasEditPage.metaTitle": "Isumassarsiat uunga aaqqissuuguk {projectName} | {orgName}",
   "app.containers.IdeasEditPage.save": "Toqqoruk",
-  "app.containers.IdeasEditPage.submit": "Isumassarsiaq nassiutiguk",
+  "app.containers.IdeasEditPage.submit": "Submit idea",
   "app.containers.IdeasEditPage.submitError": "Isumassarsiatit toqqorsinnaanngilagut. Kingusinnerusukkut misileeqqigit imaluunniit support@citizenlab.co attavigiuk",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "Isumassarsiat tamarmik immiunneqarput uunga  {orgName}",
   "app.containers.IdeasIndexPage.loadMore": "Arlallit immiutikkit…",
