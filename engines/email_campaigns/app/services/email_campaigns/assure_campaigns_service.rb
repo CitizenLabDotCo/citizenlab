@@ -25,11 +25,12 @@ module EmailCampaigns
       EmailCampaigns::Campaign.class_eval { self.inheritance_column = :_type_disabled }
 
       ActiveRecord::Base.transaction do
-        # these have to be deleted manually since EmailCampaigns::Campaign
+        # These have to be deleted manually since EmailCampaigns::Campaign
         # does not have Trackable and RecipientConfigurable included.
-        EmailCampaigns::CampaignGroup.where(id: unsupported_ids).destroy_all
+
+        EmailCampaigns::CampaignsGroup.where(campaign_id: unsupported_ids).destroy_all
         EmailCampaigns::Delivery.where(campaign_id: unsupported_ids).destroy_all
-        EmailCampaigns::Campaign.where(campaign_id: unsupported_ids).destroy_all
+        EmailCampaigns::Campaign.where(id: unsupported_ids).destroy_all
       end
 
       # Make everything back to normal
