@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Edit your idea. Add new and change old information to make it even better.",
   "app.containers.IdeasEditPage.metaTitle": "Edit your idea for {projectName} | {orgName}",
   "app.containers.IdeasEditPage.save": "Save",
-  "app.containers.IdeasEditPage.submit": "Submit idea",
+  "app.containers.IdeasEditPage.submit": "Save changes",
   "app.containers.IdeasEditPage.submitError": "We weren't able to save your changes. Try again later or contact support@citizenlab.co.",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "All ideas posted in {orgName}",
   "app.containers.IdeasIndexPage.loadMore": "Load more...",
