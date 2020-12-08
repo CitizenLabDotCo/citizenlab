@@ -203,6 +203,65 @@
       </mj-column>
     </mj-section>
 
+    <!-- Proposals that reached threshold -->
+    <mj-section padding="0 25px 30px">
+      <mj-column>
+        <mj-text>
+          <h2>
+            <% if @command[:event_payload][:succesful_initiatives].present? %>
+              <%= formatMessage('title_successful_proposals') %>
+            <% end %>
+          </h2>
+          <p>
+            <% if @command[:event_payload][:succesful_initiatives].present? %>
+              <%= formatMessage('successful_proposals_text') %>
+            <% end %>
+          </p>
+        </mj-text>
+
+        <mj-raw><% @command[:event_payload][:succesful_initiatives].each do |succesful_initiative| %></mj-raw>
+          <mj-table cellpadding="15" padding-top="20px">
+              <% @diff_days = ((Time.now - Time.parse(succesful_initiative[:published_at])) / 1.day) %>
+
+              <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
+                <td style="width: 80px;">
+                  <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+                    <img width="96px" src="<%= succesful_initiative[:images].first[:versions][:small] %>">
+                  </span>
+                </td>
+                <td width="200" style="text-align: left;">
+                  <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative[:url] %>">
+                    <%= localize(succesful_initiative[:title_multiloc])[0...80] %>
+                  </a>
+                  <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
+                    <% if @diff_days < 1 %>
+                      <%= formatMessage('today_by_author', values: {author: succesful_initiative[:author_name]}) %>
+                    <%  elsif @diff_days < 2 %>
+                      <%= formatMessage('yesterday_by_author', values: {author: succesful_initiative[:author_name]}) %>
+                    <%  else %>
+                      <%= formatMessage('x_days_ago_by_author',  values: {x: @diff_days.round, author: succesful_initiative[:author_name]}) %>
+                    <% end %>
+                  </span>
+                </td>
+                <td style="width: 40px;">
+                  <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+                    <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
+                  </span>
+                  <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative[:upvotes_count] %></span>
+                </td>
+                <td style="width: 40px">
+                  <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
+                    <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
+                  </span>
+                  <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative[:comments_count] %></span>
+                </td>
+              </tr>
+            <mj-text>&nbsp;</mj-text>
+          </mj-table>
+        <mj-raw><% end %></mj-raw>
+      </mj-column>
+    </mj-section>
+
     <!-- CTA button -->
     <%= render partial: "application/cta_button", locals: {
       href: @url_service.home_url(tenant: @tenant, locale: @locale),
