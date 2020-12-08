@@ -91,9 +91,8 @@ class SanitizationService
   end
 
   def remove_hidden_spaces(html)
-    %w[&#65279; &nbsp;].each do |hidden_space|
-      html.gsub!(Nokogiri::HTML(hidden_space).text, ' ')
-    end
+    html.gsub!('&nbsp;', ' ')
+    html.gsub!('&#65279;', '')
     html
   end
 
