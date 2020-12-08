@@ -271,6 +271,26 @@ describe SanitizationService do
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
     end
+
+    it 'doesn\'t delete trailing iframes wrapped in p' do
+      html = <<~HTML
+        <p>qweqweqweqwe</p>
+        "
+        <p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe></p>
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
+
+    it 'doesn\'t delete trailing iframes' do
+      html = <<~HTML
+        <p>qweqweqweqwe</p>
+        "
+        <iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
   end
 
   describe "linkify" do
