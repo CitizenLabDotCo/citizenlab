@@ -89,7 +89,7 @@
     
     <mj-raw><% @command[:event_payload][:top_ideas].each do |top_idea| %></mj-raw>
       <mj-wrapper padding="0px 25px 20px">   
-        <mj-section border="1px solid #eaeaea" padding="0px 25px 20px">
+        <mj-section border="1px solid #eaeaea" padding="0px 25px 0px">
           <mj-column>
             <mj-text>
               <a style="font-size: 14px; font-weight: 500; color: #000; text-decoration: none;" href="<%= top_idea[:url] %>">
@@ -122,7 +122,7 @@
             </mj-table>
             <mj-raw><% top_idea[:top_comments].each do |top_comment| %></mj-raw>
                 <mj-table cellpadding="15" padding-top="20px">
-                  <tr style="background-color:#EBF4FA; text-align: left;">
+                  <tr style="background-color:#F3F7FB; text-align: left;">
                     <td style="text-align: left; width: 100%" colspan="4">
                       <mj-text style="font-size: 12px;">
                         <%= formatMessage('commented', values: {
