@@ -118,7 +118,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       return taggings.filter(
         (tagging) => tagging.attributes.idea_id === idea.id
       );
-    }, [taggings]);
+    }, [taggings, idea]);
 
     return (
       <Container
