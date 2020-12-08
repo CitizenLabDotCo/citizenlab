@@ -1659,7 +1659,7 @@
   "app.containers.IdeasEditPage.metaDescription": "Rediger din idé. Tilføj nye og ændr gamle oplysninger for at gøre den endnu bedre.",
   "app.containers.IdeasEditPage.metaTitle": "Rediger din idé til {projectName} | {orgName}",
   "app.containers.IdeasEditPage.save": "Gem",
-  "app.containers.IdeasEditPage.submit": "Indsend idé",
+  "app.containers.IdeasEditPage.submit": "Gem ændringer",
   "app.containers.IdeasEditPage.submitError": "Vi kunne ikke gemme dine ændringer. Prøv igen senere eller kontakt support@citizenlab.co.",
   "app.containers.IdeasIndexPage.invisibleIdeasListTitle": "Alle ideer lagt ud i {orgName}\n",
   "app.containers.IdeasIndexPage.loadMore": "Indlæs flere...",
