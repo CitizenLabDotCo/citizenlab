@@ -721,6 +721,7 @@
   "app.containers.Admin.Processing.projectTags": "Etiquetas del proyecto",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Presupuesto del proyecto",
   "app.containers.Admin.Processing.returnKey": "La tecla enter o return abre el panel lateral donde se pueden añadir y quitar etiquetas de las ideas",
+  "app.containers.Admin.Processing.selectProject": "Select project",
   "app.containers.Admin.Processing.suggestedTags": "Etiquetas sugeridas",
   "app.containers.Admin.Processing.tag": "Etiqueta",
   "app.containers.Admin.Processing.tagAssignationExplanation": "Las etiquetas que añada aquí se asignarán automáticamente a las ideas relevantes basadas en nuestra tecnología de procesamiento de lenguaje natural.",
