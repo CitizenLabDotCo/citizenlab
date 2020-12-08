@@ -8,10 +8,12 @@ module Tagging
           @tags = policy_scope(Tag)
 
           @tags = @tags.search_by_all(params[:search]) if params[:search].present?
-          @tags = @tags.left_outer_joins(:ideas).where(
-              ideas: {id: params[:idea_ids]}
-              ) if params[:idea_ids].present?
 
+          @ideas = policy_scope(Idea)
+          @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
+          @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
+
+          @tags = @tags.left_outer_joins(:ideas).where({ ideas: {id: @ideas.map(&:id)} }) if params[:projects].present? || params[:idea_ids].present?
           @tags = @tags
                   .uniq
           render json: WebApi::V1::TagSerializer.new(@tags, params: fastjson_params).serialized_json
