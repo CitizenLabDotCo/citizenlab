@@ -182,7 +182,7 @@ export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
   return null;
 }
 
-export function getLastActivePhase(
+export function getLastPastActivePhase(
   phases: IPhaseData[] | null | undefined | Error
 ) {
   if (!isNilOrError(phases) && phases.length > 0) {
@@ -194,11 +194,11 @@ export function getLastActivePhase(
         ]) === 'past'
     );
 
-    const lastActivePhase = last(
+    const lastPastActivePhase = last(
       sortBy(pastPhases, [(phase) => phase.attributes.end_at])
     );
 
-    return lastActivePhase || null;
+    return lastPastActivePhase || null;
   }
 
   return null;
@@ -208,7 +208,7 @@ export function getPhaseInputTerm(phases: IPhaseData[]) {
   const currentPhase = getCurrentPhase(phases);
   const firstPhase = getFirstPhase(phases);
   const lastPhase = getLastPhase(phases);
-  const lastActivePhase = getLastActivePhase(phases);
+  const lastPastActivePhase = getLastPastActivePhase(phases);
   let selectedPhase: IPhaseData | null = null;
   if (currentPhase) {
     selectedPhase = currentPhase;
@@ -221,17 +221,17 @@ export function getPhaseInputTerm(phases: IPhaseData[]) {
   ) {
     selectedPhase = firstPhase;
   } else if (
-    lastActivePhase &&
+    lastPastActivePhase &&
     lastPhase &&
     pastPresentOrFuture([
       lastPhase.attributes.start_at,
       lastPhase.attributes.end_at,
     ]) === 'future'
   ) {
-    selectedPhase = lastActivePhase;
+    selectedPhase = lastPastActivePhase;
   } else {
     selectedPhase = lastPhase;
   }
 
-  return selectedPhase?.attributes?.input_term;
+  return selectedPhase.attributes.input_term;
 }
