@@ -97,6 +97,9 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  def moderators
+    User.project_moderator(id)
+  end
 
   def continuous?
     self.process_type == 'continuous'

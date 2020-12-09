@@ -13,20 +13,6 @@ module ProjectFolders
     # project.
     # - its +project_saved+ should return if the save operation has been successful
     # (only for +:after+ callbacks).
-
-    def self.included(base)
-      base.class_eval do
-        set_callback :save_project, :after, :set_folder!
-      end
-    end
-
-    def set_folder!
-      return unless project_saved
-      return unless params.require(:project).key? :folder_id
-      folder_id = params.dig(:project, :folder_id)
-      project.set_folder!(folder_id)
-    end
-
   end
 end
 
