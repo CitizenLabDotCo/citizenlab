@@ -204,14 +204,14 @@ export function getLastPastActivePhase(
   return null;
 }
 
-export function getPhaseInputTerm(phases: IPhaseData[]) {
+function getLatestRelevantPhase(phases: IPhaseData[]) {
   const currentPhase = getCurrentPhase(phases);
   const firstPhase = getFirstPhase(phases);
   const lastPhase = getLastPhase(phases);
   const lastPastActivePhase = getLastPastActivePhase(phases);
-  let selectedPhase: IPhaseData | null = null;
+
   if (currentPhase) {
-    selectedPhase = currentPhase;
+    return currentPhase;
   } else if (
     firstPhase &&
     pastPresentOrFuture([
@@ -219,7 +219,7 @@ export function getPhaseInputTerm(phases: IPhaseData[]) {
       firstPhase.attributes.end_at,
     ]) === 'future'
   ) {
-    selectedPhase = firstPhase;
+    return firstPhase;
   } else if (
     lastPastActivePhase &&
     lastPhase &&
@@ -228,10 +228,17 @@ export function getPhaseInputTerm(phases: IPhaseData[]) {
       lastPhase.attributes.end_at,
     ]) === 'future'
   ) {
-    selectedPhase = lastPastActivePhase;
+    return lastPastActivePhase;
   } else {
-    selectedPhase = lastPhase;
+    return lastPhase;
   }
+}
 
-  return selectedPhase.attributes.input_term;
+export function getPhaseInputTerm(phases: IPhaseData[]) {
+  // In practice, this fallback will never be needed.
+  // This function will only get called when phases.length > 0,
+  // so getLatestRelevantPhase will never return null, but the
+  // functions that are used internally by getLatestRelevantPhase
+  // can in theory return null. Hence the fallback || 'idea' for typing purposes.
+  return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
 }

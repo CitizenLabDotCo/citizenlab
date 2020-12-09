@@ -33,7 +33,12 @@ export function getInputTerm(
   phases: IPhaseData[] | undefined | null | Error
 ) {
   return {
+    // To make sure copy depending on an input_term doesn't break,
+    // we have a fallback to idea here.
     project: !isNilOrError(project) ? getProjectInputTerm(project) : 'idea',
+    // (2020/12/9): When a new timeline project is created, phases will initially
+    // be []. To make sure we don't break copy that depends on an input_term,
+    // we have the fallback to idea here in that case.
     phase:
       !isNilOrError(phases) && phases.length > 0
         ? getPhaseInputTerm(phases)
