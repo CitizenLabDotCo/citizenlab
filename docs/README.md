@@ -9,6 +9,7 @@
 
 ### Fixed
 - Emails tab bug fixes related to deprecated emails existing in database.
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
 
 ## 2020-12-02
 
