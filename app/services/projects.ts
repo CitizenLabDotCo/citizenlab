@@ -299,5 +299,5 @@ export function getProjectIdeasUrl(project: IProjectData) {
 }
 
 export function getProjectInputTerm(project: IProjectData) {
-  return project?.attributes?.input_term;
+  return project.attributes.input_term;
 }
