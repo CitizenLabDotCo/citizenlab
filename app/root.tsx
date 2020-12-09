@@ -14,10 +14,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
 import { init } from '@sentry/browser';
-import useTenant from 'hooks/useTenant';
-import useLocale from 'hooks/useLocale';
 import OutletsProvider from 'containers/OutletsProvider';
-import { isNilOrError } from 'utils/helperUtils';
 
 const rootRoute = {
   component: App,
@@ -25,31 +22,17 @@ const rootRoute = {
 };
 
 const Root = () => {
-  const tenant = useTenant();
-  const locale = useLocale();
-  const wasUrl = 'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
-
-  if (!isNilOrError(tenant) && !isNilOrError(locale)) {
-    const wasUrlRequest = window.location.pathname === `/${locale}/was`;
-
-    if (wasUrl && wasUrlRequest) {
-      window.location.replace(wasUrl);
-    }
-
-    return (
-      <OutletsProvider>
-        <LanguageProvider>
-          <Router
-            history={browserHistory}
-            routes={rootRoute}
-            render={applyRouterMiddleware(useScroll())}
-          />
-        </LanguageProvider>
-      </OutletsProvider>
-    );
-  }
-
-  return null;
+  return (
+    <OutletsProvider>
+      <LanguageProvider>
+        <Router
+          history={browserHistory}
+          routes={rootRoute}
+          render={applyRouterMiddleware(useScroll())}
+        />
+      </LanguageProvider>
+    </OutletsProvider>
+  );
 };
 
 render(<Root />, document.getElementById('app'));
