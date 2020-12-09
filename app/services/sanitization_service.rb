@@ -74,7 +74,7 @@ class SanitizationService
     with_content?(html)
   end
 
-  # private
+  private
 
   #
   #
