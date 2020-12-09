@@ -25,7 +25,7 @@ import {
   getCurrentPhase,
   getFirstPhase,
   getLastPhase,
-  getLastPastActivePhase,
+  getLastPastPhase,
 } from 'services/phases';
 
 // events
@@ -106,7 +106,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         const currentPhase = getCurrentPhase(phases);
         const firstPhase = getFirstPhase(phases);
         const lastPhase = getLastPhase(phases);
-        const lastActivePhase = getLastPastActivePhase(phases);
+        const lastPastPhase = getLastPastPhase(phases);
 
         // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
         // then remove the param so that when the user navigates to other phases there is no mismatch
@@ -130,14 +130,14 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         ) {
           selectPhase(firstPhase);
         } else if (
-          lastActivePhase &&
+          lastPastPhase &&
           lastPhase &&
           pastPresentOrFuture([
             lastPhase.attributes.start_at,
             lastPhase.attributes.end_at,
           ]) === 'future'
         ) {
-          selectPhase(lastActivePhase);
+          selectPhase(lastPastPhase);
         } else {
           selectPhase(lastPhase || null);
         }
