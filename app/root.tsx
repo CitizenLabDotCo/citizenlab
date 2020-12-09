@@ -36,12 +36,6 @@ const Root = () => {
       window.location.replace(wasUrl);
     }
 
-    if (
-      tenant.data.attributes.settings.core.lifecycle_stage === 'expired_trial'
-    ) {
-      window.location.href = 'https://www.citizenlab.co/expired-trial';
-    }
-
     return (
       <OutletsProvider>
         <LanguageProvider>
