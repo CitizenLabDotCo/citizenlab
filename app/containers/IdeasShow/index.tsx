@@ -569,11 +569,14 @@ export class IdeasShow extends PureComponent<
                 projectId={projectId}
                 insideModal={insideModal}
               />
-              <StyledIdeaMoreActions
-                idea={idea}
-                hasLeftMargin={true}
-                projectId={projectId}
-              />
+              {participationContextType && (
+                <StyledIdeaMoreActions
+                  idea={idea}
+                  hasLeftMargin={true}
+                  projectId={projectId}
+                  participationContextType={participationContextType}
+                />
+              )}
             </TopBar>
 
             <Content id="e2e-idea-show-page-content">
@@ -586,11 +589,14 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
-                  <MobileIdeaMoreActions
-                    idea={idea}
-                    hasLeftMargin={true}
-                    projectId={projectId}
-                  />
+                  {participationContextType && (
+                    <MobileIdeaMoreActions
+                      idea={idea}
+                      hasLeftMargin={true}
+                      projectId={projectId}
+                      participationContextType={participationContextType}
+                    />
+                  )}
                 </IdeaHeader>
 
                 {ideaImageLarge && (
