@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
+import { IParticipationContextType } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,6 +15,7 @@ import SpamReportForm from 'containers/SpamReport';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,6 +26,7 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
+import { getInputTerm } from 'services/participationContexts';
 
 // styling
 import styled from 'styled-components';
@@ -47,11 +50,13 @@ interface InputProps {
   hasLeftMargin: boolean;
   className?: string;
   projectId: string;
+  participationContextType: IParticipationContextType;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -84,23 +89,23 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
     const {
       project,
       intl: { formatMessage },
+      participationContextType,
+      phases,
     } = this.props;
 
-    if (!isNilOrError(project)) {
-      const projectInputTerm = project.attributes.input_term;
+    const inputTerm = getInputTerm(participationContextType, project, phases);
 
-      if (
-        window.confirm(
-          formatMessage(
-            getInputTermMessage(projectInputTerm, {
-              idea: messages.deleteIdeaConfirmation,
-            })
-          )
+    if (
+      window.confirm(
+        formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.deleteIdeaConfirmation,
+          })
         )
-      ) {
-        deleteIdea(ideaId);
-        clHistory.goBack();
-      }
+      )
+    ) {
+      deleteIdea(ideaId);
+      clHistory.goBack();
     }
   };
 
@@ -167,6 +172,7 @@ const IdeaMoreActionsWithHOCs = injectIntl(IdeaMoreActions);
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId }) => <GetProject projectId={projectId} />,
+  phases: ({ projectId }) => <GetPhases projectId={projectId} />,
 });
 
 export default (inputProps: InputProps) => (
