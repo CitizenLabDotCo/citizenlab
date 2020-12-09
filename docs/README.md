@@ -11,6 +11,10 @@
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
 - Increased color contrast of List/Map toggle component to meet accesibility standard
 
+### Added
+- Ability to tag ideas manually and automatically.
+
+
 ## 2020-12-02
 
 ### Changed
