@@ -26,9 +26,13 @@ module ProjectFolders
 
     config.to_prepare(&method(:activate).to_proc)
 
+    config.after_initialize do
+      ::User.prepend(ProjectFolders::ModeratorDecorator)
+    end
+
     ActiveSupport.on_load(:action_controller) do
-      ::User.prepend ProjectFolders::ModeratorDecorator
       ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
+      ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
       ::SideFxProjectService.prepend ProjectFolders::MonkeyPatches::SideFxProjectService
     end
   end
