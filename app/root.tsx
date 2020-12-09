@@ -14,9 +14,10 @@ import LanguageProvider from 'containers/LanguageProvider';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
 import { init } from '@sentry/browser';
-import { isError } from 'util';
-import GetTenant from 'resources/GetTenant';
+import useTenant from 'hooks/useTenant';
+import useLocale from 'hooks/useLocale';
 import OutletsProvider from 'containers/OutletsProvider';
+import { isNilOrError } from 'utils/helperUtils';
 
 const rootRoute = {
   component: App,
@@ -24,31 +25,37 @@ const rootRoute = {
 };
 
 const Root = () => {
-  return (
-    <GetTenant>
-      {(tenant) => {
-        if (isError(tenant) && tenant.message === 'Not Found') {
-          window.location.href = 'https://www.citizenlab.co/gone';
-        } else if (
-          !isError(tenant) &&
-          tenant?.attributes.settings.core.lifecycle_stage === 'expired_trial'
-        ) {
-          window.location.href = 'https://www.citizenlab.co/expired-trial';
-        }
-        return (
-          <OutletsProvider>
-            <LanguageProvider>
-              <Router
-                history={browserHistory}
-                routes={rootRoute}
-                render={applyRouterMiddleware(useScroll())}
-              />
-            </LanguageProvider>
-          </OutletsProvider>
-        );
-      }}
-    </GetTenant>
-  );
+  const tenant = useTenant();
+  const locale = useLocale();
+  const wasUrl = 'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
+
+  if (!isNilOrError(tenant) && !isNilOrError(locale)) {
+    const wasUrlRequest = window.location.pathname === `/${locale}/was`;
+
+    if (wasUrl && wasUrlRequest) {
+      window.location.replace(wasUrl);
+    }
+
+    if (
+      tenant.data.attributes.settings.core.lifecycle_stage === 'expired_trial'
+    ) {
+      window.location.href = 'https://www.citizenlab.co/expired-trial';
+    }
+
+    return (
+      <OutletsProvider>
+        <LanguageProvider>
+          <Router
+            history={browserHistory}
+            routes={rootRoute}
+            render={applyRouterMiddleware(useScroll())}
+          />
+        </LanguageProvider>
+      </OutletsProvider>
+    );
+  }
+
+  return null;
 };
 
 render(<Root />, document.getElementById('app'));
