@@ -40,8 +40,19 @@ interface Routes {
 }
 
 export interface ModuleConfiguration {
+  routes?: Routes;
+  outlets?: Outlets;
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication?: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication?: () => void;
+}
+
+export interface LoadedModules {
   routes: Routes;
-  outlets: Outlets;
+  outlets: MergedOutlets;
+  beforeMountApplication: () => void;
+  afterMountApplication: () => void;
 }
 
 type Modules = {
@@ -85,7 +96,9 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-export const loadModules = (modules: Modules) => {
+type LifeCycleMethod = 'beforeMountApplication' | 'afterMountApplication';
+
+export const loadModules = (modules: Modules): LoadedModules => {
   const enabledModuleConfigurations = modules
     .filter((module) => module.enabled)
     .map((module) => module.configuration);
@@ -104,11 +117,19 @@ export const loadModules = (modules: Modules) => {
       castArray(objValue).concat(castArray(srcValue))
   );
 
+  const callLifeCycleMethods = (lifeCycleMethod: LifeCycleMethod) => () => {
+    enabledModuleConfigurations.forEach((module: ModuleConfiguration) =>
+      module?.[lifeCycleMethod]?.()
+    );
+  };
+
   return {
     outlets: mergedOutlets,
     routes: {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
     },
+    beforeMountApplication: callLifeCycleMethods('beforeMountApplication'),
+    afterMountApplication: callLifeCycleMethods('afterMountApplication'),
   };
 };
