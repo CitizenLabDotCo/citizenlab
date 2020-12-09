@@ -4,7 +4,11 @@
 
 /
 
-## 2020-12-07
+## 2020-12-08
+
+### Fixed
+- Issues with password reset and invitation emails
+- No more idea duplicates showing up on idea overview pages
 
 ### Changed
 - Increased color contrast of inactive timeline phases text to meet accesibility standard
@@ -12,7 +16,7 @@
 - Increased color contrast of List/Map toggle component to meet accesibility standard
 
 ### Added
-- Ability to tag ideas manually and automatically.
+- Ability to tag ideas manually and automatically in the admin.
 
 
 ## 2020-12-02
