@@ -18,7 +18,6 @@
 ### Added
 - Ability to tag ideas manually and automatically in the admin.
 
-
 ## 2020-12-02
 
 ### Changed
