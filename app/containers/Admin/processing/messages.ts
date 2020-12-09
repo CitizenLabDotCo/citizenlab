@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Processing.project',
     defaultMessage: 'Project',
   },
+  selectProject: {
+    id: 'app.containers.Admin.Processing.selectProject',
+    defaultMessage: 'Select project',
+  },
   autotag: {
     id: 'app.containers.Admin.Processing.autotag',
     defaultMessage: 'Autotag',
