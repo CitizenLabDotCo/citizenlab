@@ -544,6 +544,7 @@ class ParticipationContext extends PureComponent<
       poll_anonymous,
       presentation_mode,
       ideas_order,
+      input_term,
     } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
@@ -695,10 +696,7 @@ class ParticipationContext extends PureComponent<
                   How would you call a contribution to this project?
                 </SubSectionTitle>
                 <StyledSelect
-                  value={{
-                    value: 'idea',
-                    label: 'Idea',
-                  }}
+                  value={input_term}
                   options={this.getInputTermOptions()}
                   onChange={this.handleInputTermChange}
                 />
