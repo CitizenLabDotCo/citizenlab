@@ -14,10 +14,15 @@ resource "Tags" do
 
   get 'web_api/v1/tags' do
     before do
+      @project = create(:project_with_current_phase, with_permissions: true)
+
+      @ideas = create_list(:idea, 5, project: @project)
+
       Tagging::Tag.create(title_multiloc: { en: 'Fish' })
       Tagging::Tag.create(title_multiloc: { en: 'Sea Lion' })
       Tagging::Tag.create(title_multiloc: { en: 'Dolphin' })
-      Tagging::Tag.create(title_multiloc: { en: 'Shark' })
+      @tagging = Tagging::Tag.create(title_multiloc: { en: 'Shark' })
+      Tagging::Tagging.create(idea_id: @ideas[2].id, tag_id: @tagging.id, assignment_method: 'automatic')
     end
 
     with_options scope: :page do
@@ -39,6 +44,23 @@ resource "Tags" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq t1.id
+    end
+
+    example 'Get tags with idea ids' do
+      @idea_ids = [@ideas[2].id]
+
+      do_request idea_ids: @idea_ids
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq @tagging.id
+    end
+    example 'Get tags with idea ids' do
+      @projects = [@project.id]
+
+      do_request projects: @projects
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq @tagging.id
     end
   end
 
