@@ -1,7 +1,7 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { uniq, has } from 'lodash-es';
+import { uniq, has, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -18,6 +18,7 @@ import GlobalStyle from 'global-styles';
 import {
   appLocalesMomentPairs,
   ADMIN_TEMPLATES_GRAPHQL_PATH,
+  locales,
 } from 'containers/App/constants';
 
 // graphql
@@ -161,7 +162,24 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
+    const redirectIfWas = (pathname: string) => {
+      const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+
+      if (
+        urlSegments.length === 2 &&
+        includes(locales, urlSegments[0]) &&
+        urlSegments[1] === 'was'
+      ) {
+        window.location.href =
+          'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
+      }
+    };
+
+    redirectIfWas(this.props.location.pathname);
+
     this.unlisten = clHistory.listenBefore((newLocation) => {
+      redirectIfWas(newLocation.pathname);
+
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
         'sign-up',
