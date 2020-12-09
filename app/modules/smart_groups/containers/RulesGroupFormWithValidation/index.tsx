@@ -3,6 +3,17 @@ import React from 'react';
 import { Formik, FormikErrors } from 'formik';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 import { isEmpty, values as getValues, every } from 'lodash-es';
+import { MembershipType } from 'services/groups';
+
+interface Props {
+  onSubmit: () => void;
+  isVerificationEnabled: boolean;
+  initialValues: {
+    title_multiloc: {};
+    rules: {}[];
+    membership_type: MembershipType;
+  };
+}
 
 const RulesGroupFormWithValidation = ({
   onSubmit,
@@ -12,7 +23,7 @@ const RulesGroupFormWithValidation = ({
     rules: [{}],
     membership_type: 'rules',
   },
-}) => {
+}: Props) => {
   const renderRulesGroupForm = (props) => <RulesGroupForm {...props} />;
 
   const validate = (values: RulesFormValues) => {

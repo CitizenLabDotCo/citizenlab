@@ -72,12 +72,15 @@ const LearnMoreLink = styled.a`
   }
 `;
 
-interface Props {
+export interface SmartGroupTypeProps {
   formattedLink: string;
   onClick: (type: MembershipType) => () => any;
 }
 
-const SmartGroupType: FC<Props> = ({ formattedLink, onClick }) => {
+const SmartGroupType: FC<SmartGroupTypeProps> = ({
+  formattedLink,
+  onClick,
+}) => {
   const isSmartGroupsEnabled = useFeatureFlag('smart_groups');
 
   return (
