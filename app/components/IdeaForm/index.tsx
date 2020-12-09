@@ -40,6 +40,7 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -60,6 +61,7 @@ import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
+import { getInputTerm } from 'services/participationContexts';
 
 const Form = styled.form`
   width: 100%;
@@ -116,6 +118,7 @@ interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   topics: GetTopicsChildProps;
   project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -615,7 +618,7 @@ class IdeaForm extends PureComponent<
 
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled, topics, project } = this.props;
+    const { projectId, pbEnabled, topics, project, phases } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -679,14 +682,15 @@ class IdeaForm extends PureComponent<
       const filteredTopics = topics.filter(
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
+      const processType = project.attributes.process_type;
 
-      const projectInputTerm = project.attributes.input_term;
+      const inputTerm = getInputTerm(processType, project, phases);
 
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={getInputTermMessage(projectInputTerm, {
+              message={getInputTermMessage(inputTerm, {
                 idea: messages.formGeneralSectionTitle,
               })}
             />
@@ -944,6 +948,7 @@ class IdeaForm extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   project: ({ projectId }) => <GetProject projectId={projectId} />,
+  phases: ({ projectId }) => <GetPhases projectId={projectId} />,
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
   },
