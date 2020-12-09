@@ -75,11 +75,6 @@ interface Props {
   onClick: (type: string) => () => any;
 }
 
-// step1TypeNameSmart
-// step1TypeDescriptionSmart
-// step1LearnMoreGroups
-// step1CreateButtonSmart
-
 const SmartGroupType: FC<Props> = ({ formattedLink, onClick }) => {
   const isSmartGroupsEnabled = useFeatureFlag('smart_groups');
 
