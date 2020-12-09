@@ -19,6 +19,8 @@ import {
   GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
 
+import { MembershipType } from 'services/groups';
+
 const GroupType = styled(BaseGroupType)`
   background: ${colors.background};
 `;
@@ -72,7 +74,7 @@ const LearnMoreLink = styled.a`
 
 interface Props {
   formattedLink: string;
-  onClick: (type: string) => () => any;
+  onClick: (type: MembershipType) => () => any;
 }
 
 const SmartGroupType: FC<Props> = ({ formattedLink, onClick }) => {
