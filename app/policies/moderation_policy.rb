@@ -10,6 +10,8 @@ class ModerationPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
+      elsif user
+        scope.where(project_id: Pundit.policy_scope(user, Project))
       else
         scope.none
       end
