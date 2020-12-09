@@ -7,11 +7,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'managing project_folder folder moderator roles' do
-    let(:roleable) { create(:project_folder_folder) }
-    let(:other_roleable) { create(:project_folder_folder) }
-  end
-
   describe "roles" do
     it "is valid without roles" do
       u = build(:user, roles: [])
@@ -24,7 +19,7 @@ RSpec.describe User, type: :model do
     end
 
     it "is valid when the user is a project_folder moderator" do
-      project = create(:project)
+      project_folder = create(:project_folder)
       u = build(:user, roles: [{type: "project_folder_moderator", project_folder_id: project_folder.id}])
       expect(u).to be_valid
     end
