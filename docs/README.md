@@ -9,6 +9,7 @@
 ### Fixed
 - Issues with password reset and invitation emails
 - No more idea duplicates showing up on idea overview pages
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
 
 ### Changed
 - Increased color contrast of inactive timeline phases text to meet accesibility standard
@@ -49,6 +50,16 @@
   - Satismeter
   - Segment, disabled by default
 - Error messages for invitations, logins and password resets are now clearer.
+
+## 2020-11-27
+
+### Fixed
+
+- Social authentication with Google when the user has no avatar.
+
+### Changed
+
+- Random user demographics on project copy.
 
 ## 2020-11-26
 
