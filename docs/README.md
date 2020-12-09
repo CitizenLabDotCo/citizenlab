@@ -2,14 +2,22 @@
 
 ## Next release
 
+/
+
+## 2020-12-08
+
+### Fixed
+- Issues with password reset and invitation emails
+- No more idea duplicates showing up on idea overview pages
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
+
 ### Changed
 - Increased color contrast of inactive timeline phases text to meet accesibility standard
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
 - Increased color contrast of List/Map toggle component to meet accesibility standard
 
-### Fixed
-- Emails tab bug fixes related to deprecated emails existing in database.
-- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
+### Added
+- Ability to tag ideas manually and automatically in the admin.
 
 ## 2020-12-02
 
