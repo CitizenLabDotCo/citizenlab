@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Subscription } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { IUserData } from 'services/users';
@@ -46,4 +46,12 @@ export default class GetAuthUser extends React.Component<Props, State> {
     const { authUser } = this.state;
     return (children as children)(authUser);
   }
+}
+
+export function withAuthUser(Component: React.ComponentType<any | string>) {
+  return (props: any): ReactElement => (
+    <GetAuthUser {...props}>
+      {(authUser) => <Component authUser={authUser} {...props} />}
+    </GetAuthUser>
+  );
 }
