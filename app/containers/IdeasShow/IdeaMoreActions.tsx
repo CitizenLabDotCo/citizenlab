@@ -14,19 +14,15 @@ import SpamReportForm from 'containers/SpamReport';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { getInputTermMessage } from 'utils/i18n';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
-import { getInputTerm } from 'services/participationContexts';
 
 // styling
 import styled from 'styled-components';
@@ -49,14 +45,11 @@ interface InputProps {
   idea: IIdeaData;
   hasLeftMargin: boolean;
   className?: string;
-  projectId: string;
   participationContextType: IParticipationContextType;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -87,23 +80,15 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
 
   onDeleteIdea = (ideaId: string) => () => {
     const {
-      project,
       intl: { formatMessage },
       participationContextType,
-      phases,
     } = this.props;
+    const deleteConfirmationMessage = {
+      project: messages.deletePostConfirmation,
+      phase: messages.deletePostInTimelineConfirmation,
+    }[participationContextType];
 
-    const inputTerm = getInputTerm(participationContextType, project, phases);
-
-    if (
-      window.confirm(
-        formatMessage(
-          getInputTermMessage(inputTerm, {
-            idea: messages.deleteIdeaConfirmation,
-          })
-        )
-      )
-    ) {
+    if (window.confirm(formatMessage(deleteConfirmationMessage))) {
       deleteIdea(ideaId);
       clHistory.goBack();
     }
@@ -171,8 +156,6 @@ const IdeaMoreActionsWithHOCs = injectIntl(IdeaMoreActions);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId }) => <GetProject projectId={projectId} />,
-  phases: ({ projectId }) => <GetPhases projectId={projectId} />,
 });
 
 export default (inputProps: InputProps) => (
