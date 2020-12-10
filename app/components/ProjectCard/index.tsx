@@ -567,7 +567,12 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
-      const projectInputTerm = project.attributes.input_term;
+      const processType = project.attributes.process_type;
+      const inputTerm = getInputTerm(
+        processType === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
 
       if (isArchived) {
         countdown = (
@@ -624,7 +629,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'ideation' && canPost) {
         ctaMessage = (
           <FormattedMessage
-            {...getInputTermMessage(projectInputTerm, {
+            {...getInputTermMessage(inputTerm, {
               idea: messages.postYourIdea,
             })}
           />
@@ -636,7 +641,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       } else if (participationMethod === 'ideation') {
         ctaMessage = (
           <FormattedMessage
-            {...getInputTermMessage(projectInputTerm, {
+            {...getInputTermMessage(inputTerm, {
               idea: messages.viewTheIdeas,
             })}
           />
@@ -752,7 +757,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
                         {formatMessage(
-                          getInputTermMessage(projectInputTerm, {
+                          getInputTermMessage(inputTerm, {
                             idea: messages.xIdeas,
                           }),
                           { ideasCount }
@@ -787,6 +792,9 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
+  phases: ({ projectId, render }) => {
+    <GetPhases project={projectId}>{render}</GetPhases>;
+  },
   projectImages: ({ projectId, render }) => (
     <GetProjectImages projectId={projectId}>{render}</GetProjectImages>
   ),
