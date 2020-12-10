@@ -1,26 +1,14 @@
 import React from 'react';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
-import DropdownContent from './DropdownContent';
-
-export type UtmParams = {
-  source: string;
-  campaign: string;
-  content?: string;
-};
-
-export type Medium =
-  | 'facebook'
-  | 'twitter'
-  | 'messenger'
-  | 'whatsapp'
-  | 'email';
+import DropdownContent from './SharingDropdownContent';
+import { UtmParams } from '../utils';
 
 interface Props {
   className?: string;
   twitterMessage: string;
   whatsAppMessage: string;
-  emailSubject?: string;
-  emailBody?: string;
+  emailSubject: string;
+  emailBody: string;
   utmParams: UtmParams;
   url: string;
   buttonComponent: JSX.Element;

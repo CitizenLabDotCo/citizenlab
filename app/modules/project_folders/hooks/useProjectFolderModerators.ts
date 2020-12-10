@@ -1,22 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
-import { moderatorsStream } from 'modules/project_folders/services/moderators';
 import { IUsers, IUserData } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 import {
+  moderatorsStream,
   addModerator,
   deleteModerator,
 } from 'modules/project_folders/services/moderators';
 
-export default function useProjectFolderImages(
-  projectFolderId?: string | undefined
-) {
+export default function useProjectFolderImages(projectFolderId: string) {
   const [moderators, setModerators] = useState<
     IUsers | undefined | null | Error
   >(undefined);
 
   const isModerator = useCallback(
     (user: IUserData) => {
-      return !isNilOrError(moderators) && moderators.data.includes(user);
+      if (isNilOrError(moderators)) {
+        return false;
+      }
+
+      return !!moderators.data.find((mod) => mod.id === user.id);
     },
     [moderators]
   );
@@ -27,15 +29,15 @@ export default function useProjectFolderImages(
         return true;
       }
 
-      return !moderators.data.includes(user);
+      return !moderators.data.find((mod) => mod.id === user.id);
     },
     [moderators]
   );
 
   useEffect(() => {
     const subscription = moderatorsStream(projectFolderId).observable.subscribe(
-      (stream_moderators) => {
-        setModerators(stream_moderators);
+      (streamModerators) => {
+        setModerators(streamModerators);
       }
     );
 

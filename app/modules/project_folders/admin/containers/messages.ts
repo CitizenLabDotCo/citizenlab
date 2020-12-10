@@ -139,4 +139,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.archivedStatus',
     defaultMessage: 'Archived',
   },
+  createProject: {
+    id: 'app.containers.AdminPage.FoldersEdit.createProject',
+    defaultMessage: 'Create Project',
+  },
 });
