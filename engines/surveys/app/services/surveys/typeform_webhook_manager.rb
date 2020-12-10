@@ -74,7 +74,7 @@ module Surveys
     def webhook_url(participation_context, tenant = nil)
       tenant ||= Tenant.current
       url_params = {pc_id: participation_context.id, pc_type: participation_context.class.name}
-      "https://#{tenant.base_backend_uri}/hooks/typeform_events?#{url_params.to_query}"
+      "https://#{tenant.host}/hooks/typeform_events?#{url_params.to_query}" # MT_TODO use the base_backend_uri
     end
   end
 end
