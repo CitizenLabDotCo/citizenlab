@@ -25,7 +25,7 @@ export type MergedOutlets = {
   [key in OutletId]?: FunctionComponent<any>[];
 };
 
-interface RouteConfiguration {
+export interface RouteConfiguration {
   path?: string;
   name: string;
   container: () => Promise<any>;
