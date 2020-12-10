@@ -470,18 +470,27 @@ nl:
       subject: 'De status van je initiatief werd gewijzigd'
       preheader: 'De status van je initiatief werd gewijzigd'
     user_digest:
-      commented: '%{authorFirstName} schreef:'
-      subject: 'Wekelijkse update van het participatieplatform van %{organizationName}'
-      preheader: 'Dit gebeurde er vorige week op het platform'
-      title_your_weekly_report: 'Ontdek wat er vorige week is gebeurd'
-      text_introduction: 'We stelden een lijst samen van ideeën die de afgelopen week voor veel activiteit zorgden op het platform. Klik op een idee en neem deel aan het gesprek.'
-      cta_go_to_the_platform: 'Ga naar het platform'
-      title_no_activity_past_week: 'Geen activiteit de afgelopen week'
-      title_initiatives_past_week: 'Initiatieven gestart in de afgelopen week'
-      title_successful_initiatives_past_week: 'initiatieven die de afgelopen week het nodige aantal stemmen haalden'
-      today_by_author: 'Vandaag door %{author}'
-      yesterday_by_author: 'Gisteren door %{author}'
-      x_days_ago_by_author: '%{x} dagen geleden door %{author}'
+      subject: "Your activity on the participation platform of %{organizationName}"
+      commented: "%{authorFirstName} schreef:"
+      preheader: "Dit gebeurde er vorige week op het platform"
+      title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "Ga naar het platform"
+      title_no_activity_past_week: "Geen activiteit de afgelopen week"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "Vandaag door %{author}"
+      yesterday_by_author: "Gisteren door %{author}"
+      x_days_ago_by_author: "%{x} dagen geleden door %{author}"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'door %{authorName}'
       cta_process_initiative: 'Zet de volgende stappen met dit initiatief'
