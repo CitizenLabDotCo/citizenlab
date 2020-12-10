@@ -14,13 +14,15 @@ module ProjectFolders
 
     def self.included(base)
       base.class_eval do
-        set_callback :save_project, :before, :set_folder!
+        set_callback :save_project, :before, :set_folder
       end
     end
 
-    def set_folder!
+    def set_folder
       folder_id = params.dig(:project, :folder_id)
-      parent_id = AdminPublication.find_by!(publication_type: 'ProjectFolders::Folder', publication_id: folder_id)&.id
+      parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: folder_id)&.id
+      raise ActiveRecord::RecordNotFound if folder_id.present? && parent_id.nil?
+
       @project.build_admin_publication unless @project.admin_publication
       @project.admin_publication.assign_attributes(parent_id: parent_id)
     end
