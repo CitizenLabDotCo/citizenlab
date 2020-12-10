@@ -116,7 +116,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     const hasAction = isFunction(metaData?.action);
     const requiresVerification = !!metaData?.verification;
     const authUserIsVerified =
-      !isNilOrError(authUser) && authUser.data.attributes.verified;
+      !isNilOrError(authUser) && authUser.attributes.verified;
 
     if (hasAction && (!requiresVerification || authUserIsVerified)) {
       metaData?.action?.();
