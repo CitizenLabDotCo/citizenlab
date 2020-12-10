@@ -8,8 +8,8 @@
             <%=
               formatMessage('preheader', values: {
                 organizationName: localize(@tenant.settings.dig('core','organization_name')),
-                firstName: @command[:recipient][:first_name],
-                ideaTitle: localize(@command[:event_payload][:post_title_multiloc])
+                firstName: @command.dig(:recipient).first_name,
+                ideaTitle: localize(@command.dig('event_payload', 'post_title_multiloc'))
               })
             %>
           </span>
@@ -28,7 +28,7 @@
             <%= formatMessage('main_header') %>
           </h1>
 
-          <% if @tenant[:name] == "leuven" %>
+          <% if @tenant.name == "leuven" %>
             <p style="margin-bottom: 20px;">
               Bedankt om je idee te delen. We houden je verder op de hoogte van de volgende stappen binnen dit project.
             </p>
@@ -36,7 +36,7 @@
             <p>
               <%=
                 formatMessage("message_next_steps", values: {
-                  firstName: @command[:recipient][:first_name],
+                  firstName: @command.dig(:recipient).first_name,
                   organizationName: localize(@tenant.settings.dig('core','organization_name')),
                 })
               %>
@@ -70,7 +70,7 @@
           </tr>
 
           <!-- (Conditional) Action item 1: Add an idea image -->
-          <% if @command[:event_payload][:post_images].empty? || @command[:event_payload][:post_images][0].versions.medium == nil %>
+          <% if @command.dig(:event_payload, :post_images).empty? || !@command.dig(:event_payload, :post_images).first.versions.medium %>
             <tr>
               <td style="width:22px; padding-bottom:15px">
                 <img style="vertical-align: middle;"
@@ -80,7 +80,7 @@
               <td style="padding-left: 10px; padding-bottom:15px">
                 <%=
                   formatMessage('action_add_image', values: {
-                    addImageLink: "<a href=\"#{@url_service.idea_edit_url(@tenant, @command[:event_payload][:post_id])}\" style=\"text-decoration: underline;\">#{formatMessage('add_image')}</a>"
+                    addImageLink: "<a href=\"#{@url_service.idea_edit_url(@tenant, @command.dig(:event_payload, :post_id))}\" style=\"text-decoration: underline;\">#{formatMessage('add_image')}</a>"
                   }, escape_html: false)
                 %>
               </td>
@@ -101,7 +101,7 @@
             <td style="padding-left: 10px; padding-bottom:15px">
               <%=
                 formatMessage('action_share_fb', values: {
-                  fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape @command[:event_payload][:post_url]}\" style=\"text-decoration: underline;\">Facebook</a>"
+                  fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape @command.dig(:event_payload, :post_url)}\" style=\"text-decoration: underline;\">Facebook</a>"
                 }, escape_html: false)
               %>
             </td>
@@ -122,7 +122,7 @@
             <td style="padding-left: 10px; padding-bottom:15px;">
               <%=
                 formatMessage('action_share_twitter', values: {
-                  twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape @command[:event_payload][:post_url]}\" style=\"text-decoration: underline;\">Twitter</a>"
+                  twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape @command.dig(:event_payload, :post_url)}\" style=\"text-decoration: underline;\">Twitter</a>"
                 }, escape_html: false)
               %>
             </td>
@@ -166,7 +166,7 @@
             <td style="padding-left: 10px; padding-bottom:15px;">
               <%=
                 formatMessage('action_share_link', values: {
-                  link: "<a href=\"#{@command[:event_payload][:post_url]}\" style=\"text-decoration: underline;\">#{formatMessage('link')}</a>"
+                  link: "<a href=\"#{@command.dig(:event_payload, :post_url)}\" style=\"text-decoration: underline;\">#{formatMessage('link')}</a>"
                 }, escape_html: false)
               %>
             </td>
@@ -183,7 +183,7 @@
 
     <!-- CTA button -->
     <%= render partial: "application/cta_button", locals: {
-      href: @command[:event_payload][:post_url],
+      href: @command.dig(:event_payload, :post_url),
       message: formatMessage('cta_view_idea')
     } %>
 
