@@ -94,21 +94,21 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
 
       if (disabled_reason && future_enabled) {
         return getInputTermMessage(inputTerm, {
-          idea: messages.budgetingDisabledFutureEnabled,
+          idea: messages.budgetingFutureEnabled,
         });
       } else if (authUser && disabled_reason === 'not_verified') {
         return getInputTermMessage(inputTerm, {
-          idea: messages.budgetingDisabledNotVerified,
+          idea: messages.budgetingNotVerified,
         });
       } else if (disabled_reason === 'not_permitted') {
         return getInputTermMessage(inputTerm, {
-          idea: messages.budgetingDisabledNotPermitted,
+          idea: messages.budgetingNotPermitted,
         });
       }
     }
 
     return getInputTermMessage(inputTerm, {
-      idea: messages.budgetingDisabled,
+      idea: messages.budgetingNotPossible,
     });
   };
 
@@ -122,9 +122,9 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     const enabledFromDate = budgetingDescriptor?.future_enabled
       ? moment(budgetingDescriptor.future_enabled).format('LL')
       : null;
-    const verificationLink = (
+    const verifyAccountLink = (
       <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
-        <FormattedMessage {...messages.verificationLinkText} />
+        <FormattedMessage {...messages.verifyAccountLinkText} />
       </StyledButton>
     );
     const inputTerm = getInputTerm(participationContextType, project, phases);
@@ -136,7 +136,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
         <Container className="e2e-assign-disabled">
           <FormattedMessage
             {...message}
-            values={{ enabledFromDate, verificationLink }}
+            values={{ enabledFromDate, verifyAccountLink }}
           />
         </Container>
       );
