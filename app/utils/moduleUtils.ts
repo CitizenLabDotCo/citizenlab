@@ -14,7 +14,10 @@ export type OutletId =
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.title'
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.row'
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.actions'
+  | 'app.components.AdminPage.projects.form.projectsAndFolders.folderSelect'
   | 'app.components.ProjectAndFolderCards.card'
+  | 'app.containers.permissions.projectFolderModeratorOnly'
+  | 'app.containers.permissions.projectFolderModeratorOrAdminOnly'
   | 'app.containers.SiteMap.ProjectsSection.listitem';
 
 export type Outlets = {

@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isString, isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import Outlet from 'components/Outlet';
 
 // tracking
 import { trackPage } from 'utils/analytics';
@@ -28,6 +29,8 @@ import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
+
 const ModeratorProjectList = React.lazy(() =>
   import('./Lists/ModeratorProjectList')
 );
@@ -76,6 +79,7 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
+  isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -194,7 +198,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, className } = this.props;
+    const { authUser, className, isProjectFoldersEnabled } = this.props;
+
     const userIsAdmin = !isNilOrError(authUser)
       ? isAdmin({ data: authUser })
       : false;
@@ -220,7 +225,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </HasPermission>
           </SectionDescription>
 
-          {userIsAdmin && <StyledCreateProject />}
+          {isProjectFoldersEnabled ? (
+            <Outlet
+              id="app.containers.permissions.projectFolderModeratorOrAdminOnly"
+              children={<StyledCreateProject />}
+            />
+          ) : (
+            userIsAdmin && <StyledCreateProject />
+          )}
 
           <PageWrapper>
             <ListsContainer>
@@ -249,6 +261,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default (inputProps: InputProps) => (

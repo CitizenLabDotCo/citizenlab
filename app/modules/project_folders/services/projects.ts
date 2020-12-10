@@ -5,6 +5,20 @@ import { API_PATH } from 'containers/App/constants';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
+declare module 'services/projects' {
+  export interface IUpdatedProjectProperties {
+    folder_id?: string;
+  }
+
+  export interface IProjectFormState {
+    folder_id?: string;
+  }
+
+  export interface IProjectAttributes {
+    folder_id?: string;
+  }
+}
+
 export async function updateProjectFolderMembership(
   projectId: string,
   newProjectFolderId: string | null,
