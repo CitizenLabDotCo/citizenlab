@@ -88,6 +88,7 @@ export const Step2Button = styled(Button)``;
 // Typings
 import { IGroupData } from 'services/groups';
 import Outlet from 'components/Outlet';
+import { MembershipType } from 'resources/GetGroups';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
@@ -97,9 +98,7 @@ const GroupCreationStep1 = memo(
   ({ intl, onOpenStep2 }: Props & InjectedIntlProps) => {
     const formattedLink = intl.formatMessage(messages.readMoreLink);
 
-    const createStep2Handler = (
-      groupType: IGroupData['attributes']['membership_type']
-    ) => () => {
+    const createStep2Handler = (groupType: MembershipType) => () => {
       onOpenStep2(groupType);
     };
 
