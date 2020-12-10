@@ -1,9 +1,7 @@
 import React, { ReactElement, useMemo, memo, useCallback } from 'react';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// services
-import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import { useProjectFolders } from 'modules/project_folders/hooks';
@@ -31,22 +29,30 @@ interface Props {
   value: string | null;
 }
 
-const ProjectFolderSelect = memo<Props & InjectedLocalized>(
-  ({ value, onChange, localize }): ReactElement => {
-    const { projectFolders } = useProjectFolders({});
+const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
+  ({ value, onChange, localize, intl: { formatMessage } }): ReactElement => {
+    const { projectFolders } = useProjectFolders();
 
-    const hasAdminPublication = (folder: IProjectFolderData): boolean =>
-      !isNilOrError(folder.relationships.admin_publication?.data);
+    const noFolderOption = useMemo<IOption>(
+      () => ({
+        value: '',
+        label: formatMessage(messages.noFolder),
+      }),
+      []
+    );
 
     const folderOptions = useMemo<IOption[]>(
       () =>
-        projectFolders.filter(hasAdminPublication).map((folder) => ({
-          value: isNilOrError(folder.relationships.admin_publication.data)
-            ? ''
-            : folder.relationships.admin_publication.data.id,
+        projectFolders.map((folder) => ({
+          value: isNilOrError(folder) ? '' : folder.id,
           label: localize(folder.attributes.title_multiloc),
         })),
       [projectFolders]
+    );
+
+    const allOptions = useMemo<IOption[]>(
+      () => [noFolderOption, ...folderOptions],
+      [folderOptions, noFolderOption]
     );
 
     const handleChange = useCallback(
@@ -64,10 +70,10 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized>(
             content={<FormattedMessage {...messages.folderTooltip} />}
           />
         </SubSectionTitle>
-        <Select value={value} options={folderOptions} onChange={handleChange} />
+        <Select value={value} options={allOptions} onChange={handleChange} />
       </StyledSectionField>
     );
   }
 );
 
-export default localize(ProjectFolderSelect);
+export default localize(injectIntl(ProjectFolderSelect));

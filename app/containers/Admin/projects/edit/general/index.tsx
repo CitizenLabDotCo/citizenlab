@@ -17,7 +17,7 @@ import Error from 'components/UI/Error';
 import { Radio, IconTooltip, Input } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
   SectionField,
@@ -46,10 +46,10 @@ import messages from './messages';
 // services
 import {
   IUpdatedProjectProperties,
-  IProject,
   projectByIdStream,
   addProject,
   updateProject,
+  IProjectFormState,
 } from 'services/projects';
 import {
   projectFilesStream,
@@ -61,9 +61,9 @@ import {
   addProjectImage,
   deleteProjectImage,
 } from 'services/projectImages';
-import { areasStream, IAreaData } from 'services/areas';
+import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
 
 // utils
@@ -74,7 +74,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
+import { IOption, Locale, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
@@ -188,35 +188,9 @@ type Props = {
   isProjectFoldersEnabled?: boolean;
 };
 
-interface State {
-  processing: boolean;
-  project: IProject | null | undefined;
-  publicationStatus: 'draft' | 'published' | 'archived';
-  projectType: 'continuous' | 'timeline';
-  projectAttributesDiff: IUpdatedProjectProperties;
-  projectHeaderImage: UploadFile[] | null;
-  presentationMode: 'map' | 'card';
-  projectImages: UploadFile[];
-  projectImagesToRemove: UploadFile[];
-  projectFiles: UploadFile[];
-  projectFilesToRemove: UploadFile[];
-  noTitleError: Multiloc | null;
-  apiErrors: { [fieldName: string]: CLError[] };
-  saved: boolean;
-  areas: IAreaData[];
-  areaType: 'all' | 'selection';
-  locale: Locale;
-  currentTenant: ITenant | null;
-  areasOptions: IOption[];
-  submitState: ISubmitState;
-  slug: string | null;
-  showSlugErrorMessage: boolean;
-  projectFolderId?: string | null;
-}
-
 class AdminProjectEditGeneral extends PureComponent<
   Props & InjectedIntlProps,
-  State
+  IProjectFormState
 > {
   projectId$: BehaviorSubject<string | null>;
   processing$: BehaviorSubject<boolean>;
@@ -224,7 +198,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
   constructor(props) {
     super(props);
-    const initialState: State = {
+    const initialState: IProjectFormState = {
       processing: false,
       project: undefined,
       publicationStatus: 'draft',
@@ -232,7 +206,6 @@ class AdminProjectEditGeneral extends PureComponent<
       projectAttributesDiff: {
         admin_publication_attributes: {
           publication_status: 'draft',
-          parent_id: null,
         },
       },
       projectHeaderImage: null,
@@ -300,7 +273,8 @@ class AdminProjectEditGeneral extends PureComponent<
             }));
             const slug = project ? project.data.attributes.slug : null;
 
-            return {
+            const newState: IProjectFormState = {
+              ...state,
               locale,
               currentTenant,
               project,
@@ -319,6 +293,12 @@ class AdminProjectEditGeneral extends PureComponent<
                 },
               },
             };
+
+            if (project && this.props.isProjectFoldersEnabled) {
+              newState.folder_id = project.data.attributes.folder_id;
+            }
+
+            return newState;
           });
         }
       ),
@@ -1075,11 +1055,9 @@ class AdminProjectEditGeneral extends PureComponent<
 
             <Outlet
               id="app.components.AdminPage.projects.form.projectsAndFolders.folderSelect"
-              value={
-                projectAttributesDiff?.admin_publication_attributes?.parent_id
-              }
+              value={projectAttrs.folder_id || ''}
               onChange={this.handleUpdateField(
-                'projectAttributesDiff.admin_publication_attributes.parent_id'
+                'projectAttributesDiff.folder_id'
               )}
             />
 

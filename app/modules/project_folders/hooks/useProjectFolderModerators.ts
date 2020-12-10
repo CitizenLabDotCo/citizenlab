@@ -7,9 +7,7 @@ import {
   deleteModerator,
 } from 'modules/project_folders/services/moderators';
 
-export default function useProjectFolderImages(
-  projectFolderId?: string | undefined
-) {
+export default function useProjectFolderImages(projectFolderId: string) {
   const [moderators, setModerators] = useState<
     IUsers | undefined | null | Error
   >(undefined);
