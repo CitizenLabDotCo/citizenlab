@@ -45,18 +45,20 @@ module Surveys
       end
     end
 
+    # MT_TODO to be removed
     def switch_tenant
-      tenant_id = params[:tenant_id]
-      if tenant_id
-        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
-          yield
-        end
+      return yield if Tenant.current
+
+      ActiveSupport::Deprecation.warn("Typeform webhook targeting the cluster instead of the tenant host: #{request.original_url}")
+      if (tenant_id = params[:tenant_id])
+        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) { yield }
       else
         head :not_acceptable
       end
-    rescue Apartment::TenantNotFound => e
+
+    rescue Apartment::TenantNotFound
       head :not_acceptable
-    rescue ActiveRecord::RecordNotFound => e
+    rescue ActiveRecord::RecordNotFound
       head :not_acceptable
     end
 
