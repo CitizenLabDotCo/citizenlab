@@ -253,12 +253,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   render() {
-    const { authUser, project } = this.props;
+    const { project } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(project)) {
-      const processType = project.attributes.process_type;
-      const pcType = processType === 'continuous' ? 'project' : 'phase';
-
+    if (!isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
@@ -266,7 +263,6 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
             <NewIdeaForm
               onSubmit={this.handleOnIdeaSubmit}
               projectId={project.id}
-              pcType={pcType}
             />
           </PageContainer>
           <ButtonBarContainer>

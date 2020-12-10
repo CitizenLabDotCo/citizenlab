@@ -573,7 +573,6 @@ export class IdeasShow extends PureComponent<
                 <StyledIdeaMoreActions
                   idea={idea}
                   hasLeftMargin={true}
-                  projectId={projectId}
                   participationContextType={participationContextType}
                 />
               )}
@@ -593,7 +592,6 @@ export class IdeasShow extends PureComponent<
                     <MobileIdeaMoreActions
                       idea={idea}
                       hasLeftMargin={true}
-                      projectId={projectId}
                       participationContextType={participationContextType}
                     />
                   )}

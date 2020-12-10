@@ -373,7 +373,6 @@ class IdeaCard extends PureComponent<
                         budgetingDescriptor={budgetingDescriptor}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
-                        projectId={projectId}
                       />
                     </DisabledWrapper>
                   </BottomBounceUp>

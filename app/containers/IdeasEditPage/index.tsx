@@ -340,7 +340,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
-                pcType={}
               />
 
               <ButtonBarContainer>
