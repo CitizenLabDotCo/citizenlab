@@ -470,18 +470,27 @@ ar:
       subject: 'تغيرت حالة مُقترحك'
       preheader: 'تغيرت حالة مُقترحك'
     user_digest:
-      commented: 'علّق %{authorFirstName}:'
-      subject: 'تحديث أسبوعي يتعلق بمنصة المشاركة الخاصة بـ %{organizationName}'
-      preheader: 'نظرة عامة أسبوعية على %{organizationName}'
-      title_your_weekly_report: 'تعرف على ما حصل في الأسبوع الماضي'
-      text_introduction: 'قمنا بإعداد قائمة بالأفكار التي حظيت بأكبر قدر من الاهتمام على منصة المشاركة خلال الأسبوع الماضي. انقر فوق أي منها للانضمام إلى المحادثة.'
-      cta_go_to_the_platform: 'اذهب إلى المنصة'
-      title_no_activity_past_week: 'لا يوجد نشاط في الأسبوع الماضي'
-      title_initiatives_past_week: 'المُقترحات التي بدأت في الأسبوع الماضي'
-      title_successful_initiatives_past_week: 'المُقترحات التي وصلت إلى الحد المطلوب الأسبوع الماضي'
-      today_by_author: 'اليوم بواسطة %{author}'
-      yesterday_by_author: 'الأمس بواسطة %{author}'
-      x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
+      subject: "Your activity on the participation platform of %{organizationName}"
+      commented: "علّق %{authorFirstName}:"
+      preheader: "نظرة عامة أسبوعية على %{organizationName}"
+      title_your_weekly_report: "تعرف على ما حصل في الأسبوع الماضي"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "اذهب إلى المنصة"
+      title_no_activity_past_week: "لا يوجد نشاط في الأسبوع الماضي"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "اليوم بواسطة %{author}"
+      yesterday_by_author: "الأمس بواسطة %{author}"
+      x_days_ago_by_author: "قبل %{x} يوم بواسطة %{author}"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'بواسطة %{authorName}'
       cta_process_initiative: 'خذ هذه المبادرة إلى الخطوات التالية'

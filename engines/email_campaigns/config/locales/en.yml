@@ -470,8 +470,8 @@ en:
       subject: 'The status of your proposal has changed'
       preheader: 'The status of your proposal has changed'
     user_digest:
-      commented: "%{authorFirstName} commented:"
       subject: "Your activity on the participation platform of %{organizationName}"
+      commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
       title_your_weekly_report: "Discover what happened last week"
       intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."

@@ -470,18 +470,27 @@ kl:
       subject: 'Innuttaasunut siunnersuutivit killiffia allanngortinneqarpoq'
       preheader: 'Innuttaasunut siunnersuutivit killiffia allanngortinneqarpoq'
     user_digest:
-      commented: '%{authorFirstName} oqaaseqaateqarpoq:'
-      subject: '%{organizationName}mut peqataanermi platformimi sapaatip akunnikkaartumik paasissutissat kingullit ilanngullugit takussutissaq'
-      preheader: 'Sapaatip akunnikkaartumik %{organizationName}mut nalunaarsuutit'
-      title_your_weekly_report: 'Sapaatip akunnerani kingullermi susoqarsimanersoq paasiniaruk'
-      text_introduction: 'Peqataanermi platformimi sapaatip akunnerani kingullermi isumassarsiat soqutigineqarnerpaat ataatsimut allattorpavut. Oqaloqatigiinnermut ilanngunniarlutit tooruk.'
-      cta_go_to_the_platform: 'Platformi pulaaruk'
-      title_no_activity_past_week: 'Sapaatip akunnerani kingullermi suliaqanngilaq'
-      title_initiatives_past_week: 'Suliniutit sapaatip akunnerani kingullermi aallartinneqartut'
-      title_successful_initiatives_past_week: 'Suliniutit sapaatip akunnerani kingullermi taasisoqarnissaanut killissamik anguneqartut'
-      today_by_author: 'Ullumi %{author}-mit'
-      yesterday_by_author: 'Ippassaq %{author}-mit'
-      x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
+      subject: "Your activity on the participation platform of %{organizationName}"
+      commented: "%{authorFirstName} oqaaseqaateqarpoq:"
+      preheader: "Sapaatip akunnikkaartumik %{organizationName}mut nalunaarsuutit"
+      title_your_weekly_report: "Sapaatip akunnerani kingullermi susoqarsimanersoq paasiniaruk"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "Platformi pulaaruk"
+      title_no_activity_past_week: "Sapaatip akunnerani kingullermi suliaqanngilaq"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "Ullumi %{author}-mit"
+      yesterday_by_author: "Ippassaq %{author}-mit"
+      x_days_ago_by_author: "Ullut %{x} matuma siorna %{author}-mit"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'uannga %{authorName}'
       cta_process_initiative: 'Suliniut una tullianut ingerlateqqiguk'
