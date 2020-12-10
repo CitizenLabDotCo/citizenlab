@@ -103,7 +103,7 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-type LifeCycleMethod = 'beforeMountApplication' | 'afterMountApplication';
+type LifecycleMethod = 'beforeMountApplication' | 'afterMountApplication';
 
 export const loadModules = (modules: Modules): LoadedModules => {
   const enabledModuleConfigurations = modules
@@ -124,9 +124,9 @@ export const loadModules = (modules: Modules): LoadedModules => {
       castArray(objValue).concat(castArray(srcValue))
   );
 
-  const callLifeCycleMethods = (lifeCycleMethod: LifeCycleMethod) => () => {
+  const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
     enabledModuleConfigurations.forEach((module: ModuleConfiguration) =>
-      module?.[lifeCycleMethod]?.()
+      module?.[lifecycleMethod]?.()
     );
   };
 
@@ -136,7 +136,7 @@ export const loadModules = (modules: Modules): LoadedModules => {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
     },
-    beforeMountApplication: callLifeCycleMethods('beforeMountApplication'),
-    afterMountApplication: callLifeCycleMethods('afterMountApplication'),
+    beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
+    afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
 };
