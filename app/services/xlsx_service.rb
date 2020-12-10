@@ -180,9 +180,10 @@ class XlsxService
     end
 
     if with_tags
-      Tag.all.each { |tag|
+      Tagging::Tag.joins(:taggings).where({tagging_taggings: {idea_id: ideas.map(&:id)}}).each { |tag|
         columns.insert(3,{header: @@multiloc_service.t(tag.title_multiloc), f: -> (i) {
-          i.tag_ids.include?(tag.id.freeze) ? '1' : '0'
+          tagging = Tagging::Tagging.where(tag_id: tag.id, idea_id: i.id)
+          !tagging.empty? ? tagging.first.confidence_score : '0'
           }})
       }
     end

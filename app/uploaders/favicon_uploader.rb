@@ -1,7 +1,9 @@
-class FaviconUploader < CarrierWave::Uploader::Base
-  include BaseImageUploader
-  include CarrierWave::MiniMagick
+class FaviconUploader < BaseImageUploader
 
+  def store_dir
+    "uploads/#{Tenant.current.id}/favicon/#{model.id}"
+  end
+  
   version :large do
     process resize_to_fit: [152,152]
     process convert: :png
@@ -15,10 +17,6 @@ class FaviconUploader < CarrierWave::Uploader::Base
   version :small do
     process resize_to_fit: [16,16]
     process convert: :png
-  end
-
-  def store_dir
-    "uploads/#{Tenant.current.id}/favicon/#{model.id}"
   end
 
   def extension_whitelist
