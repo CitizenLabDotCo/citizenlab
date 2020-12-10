@@ -500,8 +500,8 @@ const ProjectCard = memo(
     if (!isNilOrError(project)) {
       const postingPermission = getIdeaPostingRules({
         project,
-        phase,
-        authUser,
+        phase: !isNilOrError(phase) ? phase : null,
+        authUser: !isNilOrError(authUser) ? authUser : null,
       });
       const participationMethod = !isNilOrError(phase)
         ? phase.attributes.participation_method
