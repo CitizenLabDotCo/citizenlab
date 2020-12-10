@@ -1,6 +1,7 @@
 import { loadModules } from 'utils/moduleUtils';
 
 import projectFoldersConfiguration from './project_folders';
+import smartGroupsConfiguration from './smart_groups';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -11,26 +12,30 @@ import segmentConfiguration from './segment';
 export default loadModules([
   {
     configuration: projectFoldersConfiguration,
-    enabled: true,
+    isEnabled: true,
+  },
+  {
+    configuration: smartGroupsConfiguration,
+    isEnabled: true,
   },
   {
     configuration: googleTagManagerConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
   {
     configuration: googleAnalyticsConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
   {
     configuration: intercomConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
   {
     configuration: satismeterConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
   {
     configuration: segmentConfiguration,
-    enabled: true,
+    isEnabled: true,
   },
 ]);
