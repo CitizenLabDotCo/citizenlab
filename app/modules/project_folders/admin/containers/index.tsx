@@ -4,6 +4,9 @@ import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
+// Services
+import { isAdmin } from 'services/permissions/roles';
+
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -22,6 +25,7 @@ import messages from './messages';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
 } from 'modules/project_folders/resources/GetProjectFolder';
+import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';
@@ -40,6 +44,7 @@ export interface InputProps {}
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface State {}
@@ -55,6 +60,7 @@ export class AdminProjectFolderEdition extends PureComponent<
   };
 
   render() {
+    const { authUser } = this.props;
     const { projectFolderId } = this.props.params;
     const {
       intl: { formatMessage },
@@ -62,7 +68,7 @@ export class AdminProjectFolderEdition extends PureComponent<
       projectFolder,
       children,
     } = this.props;
-    const tabbedProps = {
+    let tabbedProps = {
       resource: {
         title: !isNilOrError(projectFolder)
           ? localize(projectFolder.attributes.title_multiloc)
@@ -77,12 +83,18 @@ export class AdminProjectFolderEdition extends PureComponent<
           label: formatMessage(messages.projectFolderSettingsTab),
           url: `/admin/projects/folders/${projectFolderId}/settings`,
         },
-        {
-          label: formatMessage(messages.projectFolderPermissionsTab),
-          url: `/admin/projects/folders/${projectFolderId}/permissions`,
-        },
       ],
     };
+
+    if (authUser && isAdmin({ data: authUser })) {
+      tabbedProps = {
+        ...tabbedProps,
+        tabs: tabbedProps.tabs.concat({
+          label: formatMessage(messages.projectFolderPermissionsTab),
+          url: `/admin/projects/folders/${projectFolderId}/permissions`,
+        }),
+      };
+    }
 
     return (
       <>
@@ -105,8 +117,12 @@ export class AdminProjectFolderEdition extends PureComponent<
   }
 }
 
-const AdminProjectFolderEditionWithHoCs = withRouter(
-  injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectFolderEdition))
+const AdminProjectFolderEditionWithHoCs = withAuthUser(
+  withRouter(
+    injectIntl<Props & WithRouterProps>(
+      injectLocalize(AdminProjectFolderEdition)
+    )
+  )
 );
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({

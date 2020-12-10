@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ImageZoom from 'react-medium-image-zoom';
-import Sharing from 'components/Sharing';
+import SharingButtons from 'components/Sharing/SharingButtons';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // services
@@ -171,7 +171,7 @@ const ProjectFolderInfo = ({
           <T value={projectFolder.attributes.title_multiloc} maxLength={50}>
             {(title) => {
               return (
-                <Sharing
+                <SharingButtons
                   context="folder"
                   url={folderUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, {

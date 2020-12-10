@@ -13,7 +13,11 @@ type IAdmin = {
   type: 'admin';
 };
 
-export type IRole = IAdmin | IProjectModerator;
+type IMiscRole = {
+  type: string;
+};
+
+export type IRole = IAdmin | IProjectModerator | IMiscRole;
 
 export interface IUserData {
   id: string;

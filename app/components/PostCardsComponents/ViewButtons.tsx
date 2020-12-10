@@ -44,7 +44,7 @@ const ViewButton = styled.button`
   }
 
   > span {
-    color: ${colors.label};
+    color: ${colors.text};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
