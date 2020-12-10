@@ -148,6 +148,6 @@ export default () => ({
         delay: 500,
       }),
     },
-    moduleConfiguration.routes.admin,
+    ...moduleConfiguration.routes.admin,
   ],
 });
