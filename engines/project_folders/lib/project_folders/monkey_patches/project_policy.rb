@@ -18,7 +18,7 @@ module ProjectFolders
       end
 
       def create?
-        super || user.moderates_parent_folder?(record)
+        super || user&.moderates_parent_folder?(record)
       end
     end
   end
