@@ -21,6 +21,7 @@ module ProjectFolders
     def set_folder
       folder_id = params.dig(:project, :folder_id)
       parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: folder_id)&.id
+      @project.build_admin_publication unless @project.admin_publication
       @project.admin_publication.assign_attributes(parent_id: parent_id)
     end
   end
