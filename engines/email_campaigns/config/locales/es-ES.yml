@@ -472,7 +472,7 @@ es:
     user_digest:
       subject: "Actualización semanal de la plataforma de participación de %{organizationName}"
       commented: "%{authorFirstName} comentó:"
-      preheader: "Reporte semanal de%{organizationName}"
+      preheader: "Reporte semanal de %{organizationName}"
       title_your_weekly_report: "Descubre lo que pasó la semana pasada"
       intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
       cta_go_to_the_platform: "Ir a la plataforma"
