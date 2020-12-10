@@ -470,18 +470,27 @@ pt:
       subject: 'O status da sua proposta mudou'
       preheader: 'O status da sua proposta mudou'
     user_digest:
-      commented: '%{authorFirstName} comentado:'
-      subject: 'Actualização semanal de %{organizationName}plataforma de participação da'
-      preheader: 'Visão geral da semana de %{organizationName}'
-      title_your_weekly_report: 'Descubra o que aconteceu na semana passada'
-      text_introduction: 'Compusemos uma lista de idéias que tiveram mais tração durante a última semana na plataforma de participação. Clique em qualquer uma delas para participar da conversa.'
-      cta_go_to_the_platform: 'Ir para a plataforma'
-      title_no_activity_past_week: 'Nenhuma atividade na última semana'
-      title_initiatives_past_week: 'Propostas iniciadas na semana passada'
-      title_successful_initiatives_past_week: 'propostas que alcançaram o limite de votos na última semana'
-      today_by_author: 'Hoje por %{author}'
-      yesterday_by_author: 'Ontem por %{author}'
-      x_days_ago_by_author: '%{x} dias atrás por %{author}'
+      subject: "Actualização semanal de %{organizationName}plataforma de participação da"
+      commented: "%{authorFirstName} comentado:"
+      preheader: "Visão geral da semana de %{organizationName}"
+      title_your_weekly_report: "Descubra o que aconteceu na semana passada"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "Ir para a plataforma"
+      title_no_activity_past_week: "Nenhuma atividade na última semana"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "Hoje por %{author}"
+      yesterday_by_author: "Ontem por %{author}"
+      x_days_ago_by_author: "%{x} dias atrás por %{author}"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'por %{authorName}'
       cta_process_initiative: 'Leve esta iniciativa para os próximos passos'
