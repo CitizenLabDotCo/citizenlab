@@ -12,10 +12,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  authUser: IUserData | undefined | null;
+  authUser: GetAuthUserChildProps;
 }
 
-export type GetAuthUserChildProps = IUserData | undefined | null;
+export type GetAuthUserChildProps = Error | IUserData | undefined | null;
 
 export default class GetAuthUser extends React.Component<Props, State> {
   private subscriptions: Subscription[];
