@@ -28,6 +28,10 @@ export type IdeaDefaultSortMethod =
 export type InputTerm = 'idea';
 
 export function getInputTerm(
+  // pcType was chosen over the similar project's process_type so
+  // the getInputTerm can easily be used
+  // (without having to do isNilOrError checks for project)
+
   pcType: IParticipationContextType,
   project: IProjectData | undefined | null | Error,
   phases: IPhaseData[] | undefined | null | Error
