@@ -45,9 +45,9 @@ kl:
       "welcome": Nalunaarsorneqareerpat
       "admin_digest": Aqutsisut takussutissartaat sapaatip akunnikkaartoq
       "moderator_digest": Suliniummik ingerlatsisut takussutissartaat sapaatip akunnikkaartoq
-      "assignee_digest": Sapaatip akunnikkaartumik isumassarsiat tunniunneqarsimasut takussutissartaat 
-      "user_digest": Sapaatip akunneranut takussutissaq 
-      "your_proposed_initiatives_digest": Sapaatip akunnikkaartumik innuttaasutut siunnersuusiannut takussutissaq 
+      "assignee_digest": Sapaatip akunnikkaartumik isumassarsiat tunniunneqarsimasut takussutissartaat
+      "user_digest": Sapaatip akunneranut takussutissaq
+      "your_proposed_initiatives_digest": Sapaatip akunnikkaartumik innuttaasutut siunnersuusiannut takussutissaq
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
