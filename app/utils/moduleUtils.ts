@@ -15,7 +15,14 @@ export type OutletId =
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.row'
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.actions'
   | 'app.components.ProjectAndFolderCards.card'
-  | 'app.containers.SiteMap.ProjectsSection.listitem';
+  | 'app.containers.SiteMap.ProjectsSection.listitem'
+  | 'app.containers.Admin.users.GroupsListPanel.listitem.icon'
+  | 'app.containers.Admin.users.GroupCreationStep1.type'
+  | 'app.containers.Admin.users.form'
+  | 'app.containers.Admin.users.header'
+  | 'app.containers.Admin.users.UsersGroup.form'
+  | 'app.containers.Admin.users.UsersGroup.header'
+  | 'app.containers.Admin.users.UsersHeader.icon';
 
 export type Outlets = {
   [key in OutletId]?: FunctionComponent<any>;
@@ -40,13 +47,13 @@ interface Routes {
 }
 
 export interface ModuleConfiguration {
-  routes: Routes;
-  outlets: Outlets;
+  routes?: Routes;
+  outlets?: Outlets;
 }
 
 type Modules = {
   configuration: ModuleConfiguration;
-  enabled: boolean;
+  isEnabled: boolean;
 }[];
 
 export const RouteTypes = {
@@ -87,7 +94,7 @@ const parseModuleRoutes = (
 
 export const loadModules = (modules: Modules) => {
   const enabledModuleConfigurations = modules
-    .filter((module) => module.enabled)
+    .filter((module) => module.isEnabled)
     .map((module) => module.configuration);
 
   const mergedRoutes: Routes = mergeWith(
