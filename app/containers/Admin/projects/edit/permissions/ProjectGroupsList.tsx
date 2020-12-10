@@ -65,7 +65,7 @@ interface IProjectGroup {
   group_id: string;
   group_project_id: string;
   title: string;
-  membership_count: number | undefined;
+  membership_count: number;
 }
 
 interface Props {
