@@ -2,12 +2,8 @@ module Surveys
   class Hooks::TypeformEventsController < SurveysController
 
     CONSTANTIZER = {
-      'Project' => {
-        pc_class: Project
-      },
-      'Phase' => {
-        pc_class: Phase
-      }
+      'Project' => { pc_class: Project },
+      'Phase' => { pc_class: Phase }
     }
 
     skip_after_action :verify_policy_scoped
@@ -40,9 +36,7 @@ module Surveys
       payload_body = request.body.read
       hash = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), ENV.fetch('SECRET_TOKEN_TYPEFORM'), payload_body)
       actual_signature = 'sha256=' + Base64.strict_encode64(hash)
-      unless Rack::Utils.secure_compare(actual_signature, received_signature)
-        head :not_acceptable
-      end
+      head :not_acceptable unless Rack::Utils.secure_compare(actual_signature, received_signature)
     end
 
     # MT_TODO to be removed
