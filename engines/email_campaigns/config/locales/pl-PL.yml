@@ -98,7 +98,7 @@ pl:
       "user_digest": Przegląd tygodniowy - wszyscy użytkownicy
       "your_proposed_initiatives_digest": Tygodniowy przegląd własnych propozycji - wszyscy użytkownicy
     footer:
-      "link_privacy_policy": "Privacy Policy"
+      "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"
       "link_unsubscribe": "Wypisz mnie z subskrypcji"
       "powered_by": "Wspierane przez"
@@ -470,7 +470,7 @@ pl:
       subject: 'Status Twojej propozycji uległ zmianie'
       preheader: 'Status Twojej propozycji uległ zmianie'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "Tygodniowa aktualizacja platformy uczestnictwa %{organizationName}"
       commented: "%{authorFirstName} skomentował:"
       preheader: "Tygodniowy przegląd %{organizationName}"
       title_your_weekly_report: "Dowiedz się, co wydarzyło się w zeszłym tygodniu"

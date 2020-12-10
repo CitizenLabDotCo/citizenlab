@@ -470,7 +470,7 @@ ar:
       subject: 'تغيرت حالة مُقترحك'
       preheader: 'تغيرت حالة مُقترحك'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "تحديث أسبوعي يتعلق بمنصة المشاركة الخاصة بـ %{organizationName}"
       commented: "علّق %{authorFirstName}:"
       preheader: "نظرة عامة أسبوعية على %{organizationName}"
       title_your_weekly_report: "تعرف على ما حصل في الأسبوع الماضي"

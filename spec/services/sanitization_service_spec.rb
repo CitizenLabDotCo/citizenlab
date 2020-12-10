@@ -162,55 +162,55 @@ describe SanitizationService do
     end
   end
 
-  describe "remove_empty_trailing_tags" do
-    it "only removes one of the tags div, p, h2, h3, ol and ul" do
+  describe 'remove_empty_trailing_tags' do
+    it 'only removes one of the tags div, p, h2, h3, ol and ul' do
       expect(service.class::EDITOR_STRUCTURE_TAGS).to match_array %w[div p h2 h3 ol ul]
     end
 
-    it "doesn't modify invalid html" do
-      input = "<p Not</p>really <h1>valid</div>"
+    it 'doesn\'t modify invalid html' do
+      input = '<p Not</p>really <h1>valid</div>'
       output = service.remove_empty_trailing_tags(input)
       expect(output).to eq input
     end
 
-    it "deletes empty structure tag at the end" do
-      html = "<h1>Nice</h1><p></p>"
+    it 'deletes empty structure tag at the end' do
+      html = '<h1>Nice</h1><p></p>'
       output = service.remove_empty_trailing_tags(html)
-      expect(output).to eq "<h1>Nice</h1>"
+      expect(output).to eq '<h1>Nice</h1>'
     end
 
-    it "deletes structure tag that only contain line breaks at the end" do
-      html = "<h1>Nice</h1><h2><br></h2>"
+    it 'deletes structure tag that only contain line breaks at the end' do
+      html = '<h1>Nice</h1><h2><br></h2>'
       output = service.remove_empty_trailing_tags(html)
-      expect(output).to eq "<h1>Nice</h1>"
+      expect(output).to eq '<h1>Nice</h1>'
     end
 
-    it "deletes empty structure tags at the end" do
-      html = "<h1>Nice</h1><p></p><ol></ol>"
+    it 'deletes empty structure tags at the end' do
+      html = '<h1>Nice</h1><p></p><ol></ol>'
       output = service.remove_empty_trailing_tags(html)
-      expect(output).to eq "<h1>Nice</h1>"
+      expect(output).to eq '<h1>Nice</h1>'
     end
 
-    it "deletes empty structure tags that only contain line breaks at the end" do
-      html = "<h1>Nice</h1><p><br></p><h3></h3>"
+    it 'deletes empty structure tags that only contain line breaks at the end' do
+      html = '<h1>Nice</h1><p><br></p><h3></h3>'
       output = service.remove_empty_trailing_tags(html)
-      expect(output).to eq "<h1>Nice</h1>"
+      expect(output).to eq '<h1>Nice</h1>'
     end
 
-    it "doesn't delete empty structure tags in between" do
-      html = "<p>Great</p><p></p><p>Really</p>"
-      output = service.remove_empty_trailing_tags(html)
-      expect(output).to eq html
-    end
-
-    it "doesn't delete empty structure tags at the start" do
-      html = "<p></p><h1>Nice</h1>"
+    it 'doesn\'t delete empty structure tags in between' do
+      html = '<p>Great</p><p></p><p>Really</p>'
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
     end
 
-    it "doesn't delete non-empty structure tags at the end" do
-      html = "<h1>Nice</h1><p>Well<br>done</p>"
+    it 'doesn\'t delete empty structure tags at the start' do
+      html = '<p></p><h1>Nice</h1>'
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
+
+    it 'doesn\'t delete non-empty structure tags at the end' do
+      html = '<h1>Nice</h1><p>Well<br>done</p>'
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq html
     end
@@ -221,7 +221,13 @@ describe SanitizationService do
       expect(output).to eq '<p>Nice</p>'
     end
 
-    it "deletes empty spaces in nested empty tags if they're last" do
+    it 'replaces non-breaking spaces in the html' do
+      html = '<p>Nice&nbsp;</p>'
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq '<p>Nice </p>'
+    end
+
+    it 'deletes empty spaces in nested empty tags if they\'re last' do
       html = '<p>Nice</p><p><br></p><p>Well done</p><p><br></p><h3><strong>&#65279;</strong></h3>'
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq '<p>Nice</p><p><br></p><p>Well done</p>'
@@ -231,6 +237,59 @@ describe SanitizationService do
       html = '<p>Nice</p><p><br></p><p>Well done</p><p><br></p><h3><strong>&#65279;</strong></h3><p>Well done</p>'
       output = service.remove_empty_trailing_tags(html)
       expect(output).to eq '<p>Nice</p><p><br></p><p>Well done</p><p><br></p><h3><strong></strong></h3><p>Well done</p>'
+    end
+
+    it 'doesn\'t delete images in the last line of content' do
+      html = <<~HTML
+        <p>
+          Testing
+        </p>
+        <p>
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP">
+        </p>
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
+
+    it 'doesn\'t delete trailing images' do
+      html = <<~HTML
+        <p>
+          Testing
+        </p>
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP">
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
+
+    it 'doesn\'t delete trailing images with complex base64 strings' do
+      html = <<~HTML
+        <p>qweqweqweqwe</p>
+        <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAACRCAYAAAChUiFgAAABQmlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSCwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAw8DOIMjAySCXmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsgsbcHrjJlvIy94HY3bt6yRLQpTPQrgSkktTgbSf4A4JbmgqISBgTEByFYuLykAsVuAbJEioKOA7BkgdjqEvQbEToKwD4DVhAQ5A9lXgGyB5IzEFCD7CZCtk4Qkno7EhtoLdkOAh4+CkYlxmDkBx5IKSlIrSkC0c35BZVFmekaJgiMwhFIVPPOS9XQUjAyMDBgYQOENUf35BjgcGcU4EGIpTxkYjHOBghoIsSwBBobd3xgYBLcixNQfAr00l4HhQEBBYlEi3AGM31iK04yNIGzu7QwMrNP+//8czsDArsnA8Pf6//+/t////3cZAwPzLaDebwCKpl7ZLwfKCwAAAFZlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA5KGAAcAAAASAAAARKACAAQAAAABAAABSKADAAQAAAABAAAAkQAAAABBU0NJSQAAAFNjcmVlbnNob3RTua7jAAAB1mlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczpleGlmPSJodHRwOi8vbnMuYWRvYmUuY29tL2V4aWYvMS4wLyI+CiAgICAgICAgIDxleGlmOlBpeGVsWERpbWVuc2lvbj4zMjg8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICAgICA8ZXhpZjpVc2VyQ29tbWVudD5TY3JlZW5zaG90PC9leGlmOlVzZXJDb21tZW50PgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+MTQ1PC9leGlmOlBpeGVsWURpbWVuc2lvbj4KICAgICAgPC9yZGY6RGVzY3JpcHRpb24+CiAgIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cgbzcd8AAAR2SURBVHgB7dSxDcAwDAQxx7so+2+YAG6N24AqvySEe96ZbzkCBAgQuAT2tRgIECBA4AgIpEcgQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAj+cJAKROCvwtAAAAABJRU5ErkJggg=="></p>
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
+
+    it 'doesn\'t delete trailing iframes wrapped in p' do
+      html = <<~HTML
+        <p>qweqweqweqwe</p>
+        "
+        <p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe></p>
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
+    end
+
+    it 'doesn\'t delete trailing iframes' do
+      html = <<~HTML
+        <p>qweqweqweqwe</p>
+        "
+        <iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>
+      HTML
+      output = service.remove_empty_trailing_tags(html)
+      expect(output).to eq html
     end
   end
 

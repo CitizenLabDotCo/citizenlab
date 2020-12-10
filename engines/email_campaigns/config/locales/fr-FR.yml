@@ -470,7 +470,7 @@ fr:
       subject: 'Le statut de votre proposition a été modifié'
       preheader: 'Le statut de votre proposition a été modifié'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "Mise à jour hebdomadaire de la plate-forme de participation de %{organizationName}"
       commented: "%{authorFirstName} a commenté :"
       preheader: "Aperçu hebdomadaire de %{organizationName}"
       title_your_weekly_report: "Découvrez ce qui s'est passé la semaine dernière"
