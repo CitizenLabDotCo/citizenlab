@@ -1,7 +1,7 @@
 nb:
   email_campaigns:
     campaign_type_description:
-      "manual": Offisielle beskjed 
+      "manual": Offisielle beskjed
       "admin_rights_received": Administratorrettigheter mottatt
       "comment_deleted_by_admin": Sletting  av min kommentar
       "comment_marked_as_spam": Kommenter spamrapport
@@ -21,8 +21,8 @@ nb:
       "new_comment_for_admin": Ny kommentar i et prosjekt jeg moderer
       "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommentert
       "new_comment_on_commented_initiative": Ny kommentar på et forslag jeg har kommentert
-      "new_comment_on_voted_idea": Ny kommentar på en idé jeg stemte på 
-      "new_comment_on_voted_initiative": Ny kommentar på et forslag jeg stemte på 
+      "new_comment_on_voted_idea": Ny kommentar på en idé jeg stemte på
+      "new_comment_on_voted_initiative": Ny kommentar på et forslag jeg stemte på
       "new_idea_for_admin": Ny idé i et prosjekt jeg modererer
       "new_initiative_for_admin": Nytt forslag
       "official_feedback_on_commented_idea": Oppdatering på en idé jeg kommenterte
