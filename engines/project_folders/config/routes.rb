@@ -12,6 +12,6 @@ ProjectFolders::Engine.routes.draw do
   end
 end
 
-Rails.application.routes.append do
+Rails.application.routes.draw do
   mount ProjectFolders::Engine => ''
 end
