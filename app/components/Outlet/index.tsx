@@ -1,13 +1,14 @@
 import React from 'react';
 import useOutlet from 'hooks/useOutlet';
-import { OutletId } from 'utils/moduleUtils';
+import { OutletsPropertyMap } from 'utils/moduleUtils';
 
-interface OutletProps {
-  id: OutletId;
-  [key: string]: any;
-}
+type CustomPropsMap = {
+  [P in keyof OutletsPropertyMap]: { id: P } & OutletsPropertyMap[P];
+};
 
-const Outlet = ({ id, ...props }: OutletProps) => {
+type Props = CustomPropsMap[keyof CustomPropsMap];
+
+const Outlet = ({ id, ...props }: Props) => {
   const components = useOutlet(id);
   if (!components) return null;
 
