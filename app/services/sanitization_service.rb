@@ -91,8 +91,8 @@ class SanitizationService
   end
 
   def remove_hidden_spaces(html)
-    html.gsub!('&nbsp;', ' ')
-    html.gsub!('&#65279;', '')
+    html&.gsub!('&nbsp;', ' ')
+    html&.gsub!('&#65279;', '')
     html
   end
 
