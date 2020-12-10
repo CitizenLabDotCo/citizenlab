@@ -35,6 +35,7 @@ import GetInitiativesCount, {
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
+  z-index: 10;
   flex: 0 0 auto;
   width: 210px;
 
@@ -199,7 +200,7 @@ class Sidebar extends PureComponent<
           id: 'processing',
           link: '/admin/processing',
           iconName: 'processing',
-          featureName: 'processing',
+          featureName: 'manual_tagging',
           message: 'processing',
           isActive: (pathName) =>
             pathName.startsWith(

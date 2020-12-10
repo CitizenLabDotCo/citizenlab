@@ -11,25 +11,25 @@ import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { isProjectFolderModerator } from './permissions/roles';
 import { isAdmin } from 'services/permissions/roles';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ children }) => (
-  <GetFeatureFlag name="project_folders">
-    {(isFeatureFlagEnabled) => {
-      if (isFeatureFlagEnabled) return <>{children}</>;
-      return null;
-    }}
-  </GetFeatureFlag>
-);
+const RenderOnFeatureFlag = ({ children }) => {
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
+  if (isProjectFoldersEnabled) {
+    return <>{children}</>;
+  }
+  return null;
+};
 
 const RenderOnProjectFolderModerator = ({ children }) => (
   <GetAuthUser>
