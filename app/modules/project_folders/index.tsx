@@ -9,21 +9,20 @@ import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ children }) => (
-  <GetFeatureFlag name="project_folders">
-    {(isFeatureFlagEnabled) => {
-      if (isFeatureFlagEnabled) return <>{children}</>;
-      return null;
-    }}
-  </GetFeatureFlag>
-);
+const RenderOnFeatureFlag = ({ children }) => {
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
+  if (isProjectFoldersEnabled) {
+    return <>{children}</>;
+  }
+  return null;
+};
 
 const configuration: ModuleConfiguration = {
   outlets: {
