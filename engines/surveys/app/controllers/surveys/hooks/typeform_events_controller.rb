@@ -43,8 +43,8 @@ module Surveys
     def switch_tenant
       return yield if Tenant.current
 
-      ActiveSupport::Deprecation.warn("Typeform webhook targeting the cluster instead of the tenant host: #{request.original_url}")
       if (tenant_id = params[:tenant_id])
+        ActiveSupport::Deprecation.warn("Typeform webhook targeting the cluster instead of the tenant host: #{request.original_url}")
         Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) { yield }
       else
         head :not_acceptable
