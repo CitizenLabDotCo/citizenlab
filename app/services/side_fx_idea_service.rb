@@ -56,6 +56,10 @@ class SideFxIdeaService
   end
 
   def before_destroy idea, user
+    begin
+     Tagging::Tagging.find(idea_id: idea.id).destroy_all
+   rescue ActiveRecord::RecordNotFound => _
+   end
   end
 
   def after_destroy frozen_idea, user

@@ -4,10 +4,20 @@ module ProjectFolders::ProjectDecorator
       after_validation :assign_moderators_from_folder, if: :folder
       after_validation :remove_moderators_from_folder, if: :folder
     end
+  end
 
-    def folder
-      admin_publication.parent&.publication
-    end
+  def folder
+    admin_publication.parent&.publication
+  end
+
+  def set_folder!(folder_id)
+    parent = if folder_id.present?
+                AdminPublication.find_by!(publication_id: folder_id, publication_type: ProjectFolders::Folder.name)
+              else
+                nil
+              end
+    AdminPublication.where(publication: self).first.update!(parent_id: parent&.id)
+    reload
   end
 
   def assign_moderators_from_folder

@@ -8,3 +8,5 @@ MIME::Types.add(
     type.add_extensions 'exe'
   end
 )
+
+Mime::Type.register "text/html", :mjml

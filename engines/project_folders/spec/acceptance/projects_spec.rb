@@ -103,18 +103,21 @@ resource 'Projects' do
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
       end
+
       with_options scope: [:project, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
-        parameter :parent_id, "The parent publication id, usually used to assign a project to a folder.", required: false
       end
+
       ValidationErrorHelper.new.error_fields(self, Project)
 
       describe do
+
         before do
           create(:topic, code: 'nature', ordering: 0)
           create(:topic, code: 'safety', ordering: 2)
           create(:topic, code: 'mobility', ordering: 1)
         end
+
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
@@ -134,6 +137,7 @@ resource 'Projects' do
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
         end
       end
+    end
   end
 end
 

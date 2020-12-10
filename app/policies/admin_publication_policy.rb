@@ -8,8 +8,8 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
 
     def resolve
-      ApplicationRecord
-          .all_polymorphic_types(:publication) # List of publication classes
+      AdminPublication
+          .publication_types
           .map { |klass| scope.where(publication: Pundit.policy_scope(user, klass)) } # scope per publication type
           .reduce(&:or) # joining partial scopes
     end
