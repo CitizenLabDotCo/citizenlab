@@ -54,12 +54,7 @@ import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
 // typings
-import {
-  IOption,
-  UploadFile,
-  Locale,
-  IParticipationContextType,
-} from 'typings';
+import { IOption, UploadFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -117,7 +112,6 @@ interface InputProps {
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
-  pcType: IParticipationContextType;
 }
 
 interface DataProps {
@@ -624,14 +618,7 @@ class IdeaForm extends PureComponent<
 
   render() {
     const className = this.props['className'];
-    const {
-      projectId,
-      pbEnabled,
-      topics,
-      project,
-      phases,
-      pcType,
-    } = this.props;
+    const { projectId, pbEnabled, topics, project, phases } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -695,7 +682,11 @@ class IdeaForm extends PureComponent<
       const filteredTopics = topics.filter(
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
-      const inputTerm = getInputTerm(pcType, project, phases);
+      const inputTerm = getInputTerm(
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
 
       return (
         <Form id="idea-form" className={className}>
