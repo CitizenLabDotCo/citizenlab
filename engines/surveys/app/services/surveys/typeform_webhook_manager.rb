@@ -71,5 +71,12 @@ module Surveys
       "http://#{ENV.fetch('CLUSTER_HOST')}/hooks/typeform_events?#{url_params.to_query}"
     end
 
+    # @param [ParticipationContext] participation_context
+    # @param [Tenant] tenant
+    def webhook_url(participation_context, tenant=nil)
+      tenant ||= Tenant.current
+      url_params = {pc_id: participation_context.id, pc_type: participation_context.class.name}
+      "https://#{tenant.base_backend_uri}/hooks/typeform_events?#{url_params.to_query}"
+    end
   end
 end
