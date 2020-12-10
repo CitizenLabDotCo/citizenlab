@@ -12,12 +12,15 @@ type children = (renderProps: IGetModeratorHook) => JSX.Element | null;
 
 interface Props {
   children?: children;
+  projectFolderId: string;
 }
 
-const GetProjectFolderModerators = memo<Props>(({ children }) => {
-  const hook = useProjectFolderModerators();
+const GetProjectFolderModerators = memo<Props>(
+  ({ projectFolderId, children }) => {
+    const hook = useProjectFolderModerators(projectFolderId);
 
-  return (children as children)(hook);
-});
+    return (children as children)(hook);
+  }
+);
 
 export default GetProjectFolderModerators;

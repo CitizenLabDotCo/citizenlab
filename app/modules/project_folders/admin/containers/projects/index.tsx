@@ -122,15 +122,6 @@ class AdminFoldersProjectsList extends Component<
     }));
   };
 
-  ProjectListRowComponent = (rowProps) => {
-    const { authUser } = this.props;
-    return authUser && isAdmin({ data: authUser }) ? (
-      <SortableRow {...rowProps} />
-    ) : (
-      <Row {...rowProps} />
-    );
-  };
-
   render() {
     const { topLevelProjects, projectsInFolder, authUser } = this.props;
 
@@ -170,14 +161,14 @@ class AdminFoldersProjectsList extends Component<
               items={inFolderFinalList}
               onReorder={this.handleReorder}
               className="projects-list e2e-admin-folder-projects-list"
-              id="e2e-admin-fodlers-projects-list"
+              id="e2e-admin-folders-projects-list"
             >
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 <>
                   {itemsList.map(
                     (adminPublication: IAdminPublicationContent, index) => {
                       return (
-                        <this.ProjectListRowComponent
+                        <SortableRow
                           key={adminPublication.id}
                           id={adminPublication.id}
                           index={index}
@@ -207,7 +198,7 @@ class AdminFoldersProjectsList extends Component<
                                 : ['manage']
                             }
                           />
-                        </this.ProjectListRowComponent>
+                        </SortableRow>
                       );
                     }
                   )}
