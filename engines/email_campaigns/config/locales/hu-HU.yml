@@ -470,7 +470,7 @@ hu:
       subject: 'The status of your proposal has changed'
       preheader: 'The status of your proposal has changed'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "Weekly update of %{organizationName}'s participation platform"
       commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
       title_your_weekly_report: "Discover what happened last week"
