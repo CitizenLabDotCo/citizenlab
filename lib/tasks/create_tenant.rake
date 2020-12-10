@@ -34,7 +34,11 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        processing: {
+        manual_tagging: {
+          enabled: true,
+          allowed: true
+        },
+        automatic_tagging: {
           enabled: true,
           allowed: true
         },
@@ -76,7 +80,8 @@ namespace :cl2_back do
         },
         password_login: {
           enabled: true,
-          allowed: true
+          allowed: true,
+          phone: false,
         },
         participatory_budgeting: {
           enabled: true,
@@ -89,6 +94,26 @@ namespace :cl2_back do
         geographic_dashboard: {
           enabled: true,
           allowed: true
+        },
+        intercom: {
+          enabled: true,
+          allowed: true
+        },
+        segment: {
+          enabled: true,
+          allowed: true
+        },
+        satismeter: {
+          enabled: true,
+          allowed: true
+        },
+        google_analytics: {
+          enabled: true,
+          allowed: true
+        },
+        google_tag_manager: {
+          enabled: false,
+          allowed: false
         },
         surveys: {
           enabled: true,

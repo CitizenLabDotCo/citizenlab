@@ -1,6 +1,8 @@
-class LogoUploader < CarrierWave::Uploader::Base
-  include BaseImageUploader
-  include CarrierWave::MiniMagick
+class LogoUploader < BaseImageUploader
+  
+  def store_dir
+    "uploads/#{Tenant.current.id}/logo/#{model.id}"
+  end
 
   version :small do
     process resize_to_limit: [nil,40]
@@ -12,16 +14,6 @@ class LogoUploader < CarrierWave::Uploader::Base
 
   version :large do
     process resize_to_limit: [nil,160]
-  end
-
-  def store_dir
-    "uploads/#{Tenant.current.id}/logo/#{model.id}"
-  end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  def extension_whitelist
-    %w(jpg jpeg gif png)
   end
 
 end
