@@ -20,7 +20,7 @@ interface State {
   phase: IPhaseData | undefined | null;
 }
 
-export type GetPhaseChildProps = IPhaseData | undefined | null;
+export type GetPhaseChildProps = Error | IPhaseData | undefined | null;
 
 export default class GetPhase extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
