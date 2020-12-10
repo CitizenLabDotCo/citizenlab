@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import { Formik, FormikErrors } from 'formik';
-import { isEmpty, values as getValues, every } from 'lodash-es';
+import { Formik } from 'formik';
 
 // Resources
 import GetFeatureFlag, {
@@ -14,7 +13,6 @@ import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 
 // Global state
 import {
@@ -61,9 +59,10 @@ import { IGroupData, addGroup } from 'services/groups';
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import Outlet from 'components/Outlet';
 
 export interface Props {
-  verificationActive: GetFeatureFlagChildProps;
+  isVerificationEnabled: GetFeatureFlagChildProps;
 }
 
 export interface State {
@@ -104,14 +103,8 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ groupCreationModal: groupType });
   };
 
-  renderForm = (type: 'normal' | 'rules') => (props) => {
-    if (type === 'normal') return <NormalGroupForm {...props} />;
-    if (type === 'rules') return <RulesGroupForm {...props} />;
-    return null;
-  };
-
   handleSubmitForm = (
-    values: NormalFormValues | RulesFormValues,
+    values: NormalFormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
     addGroup({ ...values })
@@ -129,40 +122,28 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
       });
   };
 
-  validateRulesWithFeatureFlag = (values: RulesFormValues) => {
-    const errors: FormikErrors<RulesFormValues> = {};
+  renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
+  renderModalHeader = () => {
+    const { groupCreationModal } = this.state;
+    if (groupCreationModal === 'step1') {
+      return <FormattedMessage {...messages.modalHeaderStep1} />;
     }
-
-    if (
-      !this.props.verificationActive &&
-      values.rules.find((rule) => rule.ruleType === 'verified')
-    ) {
-      errors.rules = 'verificationDisabled' as any;
+    if (groupCreationModal === 'manual') {
+      return <FormattedMessage {...messages.modalHeaderStep1} />;
     }
-
-    return errors;
+    return (
+      <Outlet
+        id="app.containers.Admin.users.header"
+        type={groupCreationModal}
+      />
+    );
   };
 
   render() {
     if (!this.props.location) return null;
 
     const { groupCreationModal } = this.state;
-
-    let ModalHeader;
-    switch (groupCreationModal) {
-      case 'step1':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderStep1} />;
-        break;
-      case 'manual':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
-        break;
-      case 'rules':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
-        break;
-    }
 
     return (
       <>
@@ -180,7 +161,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
         </Wrapper>
 
         <Modal
-          header={ModalHeader}
+          header={this.renderModalHeader()}
           opened={groupCreationModal !== false}
           close={this.closeGroupCreationModal}
         >
@@ -193,23 +174,17 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
               <Formik
                 initialValues={{ title_multiloc: {} }}
                 validate={NormalGroupForm.validate}
-                render={this.renderForm('normal')}
+                render={this.renderNormalGroupForm}
                 onSubmit={this.handleSubmitForm}
               />
             )}
 
-            {groupCreationModal === 'rules' && (
-              <Formik
-                initialValues={{
-                  title_multiloc: {},
-                  rules: [{}],
-                  membership_type: 'rules',
-                }}
-                validate={this.validateRulesWithFeatureFlag}
-                render={this.renderForm('rules')}
-                onSubmit={this.handleSubmitForm}
-              />
-            )}
+            <Outlet
+              id="app.containers.Admin.users.form"
+              type={groupCreationModal}
+              onSubmit={this.handleSubmitForm}
+              isVerificationEnabled={this.props.isVerificationEnabled}
+            />
           </>
         </Modal>
       </>
@@ -221,8 +196,11 @@ const UsersPageWithHocs = withRouter<Props>(UsersPage);
 
 export default (props) => (
   <GetFeatureFlag name="verification">
-    {(verificationActive) => (
-      <UsersPageWithHocs {...props} verificationActive={verificationActive} />
+    {(isVerificationEnabled) => (
+      <UsersPageWithHocs
+        {...props}
+        isVerificationEnabled={isVerificationEnabled}
+      />
     )}
   </GetFeatureFlag>
 );

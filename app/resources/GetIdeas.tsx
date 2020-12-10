@@ -18,7 +18,12 @@ import {
   mergeScan,
   switchMap,
 } from 'rxjs/operators';
-import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
+import {
+  ideasStream,
+  IIdeaData,
+  IdeaPublicationStatus,
+  ideasMiniStream,
+} from 'services/ideas';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import {
   getPageNumberFromUrl,
@@ -74,6 +79,9 @@ export interface InputProps {
   cache?: boolean;
   assignee?: string;
   feedbackNeeded?: boolean;
+  // prop mini Gets stripped down ideas containing only title, should never be cached,
+  // and is not tested in all scenarios, but improves performance drastically.
+  mini?: boolean;
 }
 
 export interface IQueryParameters {
@@ -237,7 +245,9 @@ export default class GetIdeas extends React.Component<Props, State> {
                   loadingMore: isLoadingMore,
                 });
 
-                return ideasStream({ queryParameters }).observable.pipe(
+                const stream = this.props.mini ? ideasMiniStream : ideasStream;
+
+                return stream({ queryParameters }).observable.pipe(
                   map((ideas) => {
                     const cacheStream = isBoolean(this.props.cache)
                       ? this.props.cache
@@ -286,7 +296,9 @@ export default class GetIdeas extends React.Component<Props, State> {
               queryParameters['page[number]'] =
                 newPageNumber !== oldPageNumber ? newPageNumber : 1;
 
-              return ideasStream({
+              const stream = this.props.mini ? ideasMiniStream : ideasStream;
+
+              return stream({
                 queryParameters,
                 cacheStream,
               }).observable.pipe(map((ideas) => ({ queryParameters, ideas })));

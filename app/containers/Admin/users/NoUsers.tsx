@@ -7,6 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Icon } from 'cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import { MembershipType } from 'services/groups';
 
 const NoUsersPage = styled.div`
   display: flex;
@@ -40,11 +41,11 @@ const SFormattedMessage = styled.div`
 `;
 
 interface Props {
-  smartGroup?: boolean;
+  groupType?: MembershipType;
   noSuchSearchResult?: boolean;
 }
 
-const NoUsers = memo(({ smartGroup, noSuchSearchResult }: Props) => {
+const NoUsers = memo(({ groupType, noSuchSearchResult }: Props) => {
   if (noSuchSearchResult) {
     return (
       <NoUsersPage>
@@ -58,7 +59,7 @@ const NoUsers = memo(({ smartGroup, noSuchSearchResult }: Props) => {
     <NoUsersPage>
       <Icon name="blankPage" />
       <FormattedMessage {...messages.emptyGroup} />
-      {!smartGroup && (
+      {groupType === 'manual' && (
         <SFormattedMessage>
           <FormattedMessage
             {...messages.goToAllUsers}
