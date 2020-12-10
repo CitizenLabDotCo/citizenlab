@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { UploadFile } from 'typings';
+import { UploadFile, IParticipationContextType } from 'typings';
 
 // style
 import { media, fontSizes } from 'utils/styleUtils';
@@ -61,6 +61,7 @@ const Title = styled.h1`
 interface Props {
   onSubmit: () => void;
   projectId: string;
+  pcType: IParticipationContextType;
 }
 
 interface GlobalState {
@@ -174,7 +175,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       position,
       imageFile,
     } = this.state;
-    const { projectId } = this.props;
+    const { projectId, pcType } = this.props;
 
     return (
       <Container id="e2e-new-idea-form">
@@ -192,6 +193,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           address={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
+          pcType={pcType}
         />
       </Container>
     );
