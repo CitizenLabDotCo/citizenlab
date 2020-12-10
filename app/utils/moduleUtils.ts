@@ -32,7 +32,7 @@ export type MergedOutlets = {
   [key in OutletId]?: FunctionComponent<any>[];
 };
 
-interface RouteConfiguration {
+export interface RouteConfiguration {
   path?: string;
   name: string;
   container: () => Promise<any>;
@@ -49,6 +49,17 @@ interface Routes {
 export interface ModuleConfiguration {
   routes?: Routes;
   outlets?: Outlets;
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication?: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication?: () => void;
+}
+
+export interface LoadedModules {
+  routes: Routes;
+  outlets: MergedOutlets;
+  beforeMountApplication: () => void;
+  afterMountApplication: () => void;
 }
 
 type Modules = {
@@ -92,7 +103,9 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-export const loadModules = (modules: Modules) => {
+type LifecycleMethod = 'beforeMountApplication' | 'afterMountApplication';
+
+export const loadModules = (modules: Modules): LoadedModules => {
   const enabledModuleConfigurations = modules
     .filter((module) => module.isEnabled)
     .map((module) => module.configuration);
@@ -111,11 +124,19 @@ export const loadModules = (modules: Modules) => {
       castArray(objValue).concat(castArray(srcValue))
   );
 
+  const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
+    enabledModuleConfigurations.forEach((module: ModuleConfiguration) =>
+      module?.[lifecycleMethod]?.()
+    );
+  };
+
   return {
     outlets: mergedOutlets,
     routes: {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
     },
+    beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
+    afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
 };
