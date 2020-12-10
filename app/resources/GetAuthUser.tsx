@@ -15,7 +15,7 @@ interface State {
   authUser: GetAuthUserChildProps;
 }
 
-export type GetAuthUserChildProps = Error | IUserData | undefined | null;
+export type GetAuthUserChildProps = IUserData | undefined | null;
 
 export default class GetAuthUser extends React.Component<Props, State> {
   private subscriptions: Subscription[];
