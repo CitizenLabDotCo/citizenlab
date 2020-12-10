@@ -470,7 +470,7 @@ ro:
       subject: 'Statusul propunerii dvs. s-a schimbat'
       preheader: 'Statusul propunerii dvs. s-a schimbat'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "Actualizarea săptămânală a platformei de participare a %{organizationName}"
       commented: "%{authorFirstName} a comentat:"
       preheader: "Prezentare săptămânală a %{organizationName}"
       title_your_weekly_report: "Descoperiți ce s-a întâmplat săptămâna trecută"

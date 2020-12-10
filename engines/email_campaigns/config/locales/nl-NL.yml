@@ -470,7 +470,7 @@ nl:
       subject: 'De status van je initiatief werd gewijzigd'
       preheader: 'De status van je initiatief werd gewijzigd'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
       preheader: "Dit gebeurde er vorige week op het platform"
       title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
