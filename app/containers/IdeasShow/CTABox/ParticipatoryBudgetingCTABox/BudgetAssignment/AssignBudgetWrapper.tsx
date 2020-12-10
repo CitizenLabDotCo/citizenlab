@@ -49,7 +49,6 @@ const AssignBudgetWrapper = memo(
               participationContextId={participationContextId}
               participationContextType={participationContextType}
               budgetingDescriptor={budgetingDescriptor}
-              projectId={projectId}
             />
           </PopContainer>
         )}
