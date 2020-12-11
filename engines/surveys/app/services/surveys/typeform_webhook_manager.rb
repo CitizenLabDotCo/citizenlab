@@ -44,7 +44,7 @@ module Surveys
       @tf_api.create_or_update_webhook(
           form_id: embed_url_to_form_id(form_url),
           tag: participation_context.id,
-          url: tenant_to_webhook_url(Tenant.current, participation_context),
+          url: webhook_url(participation_context),
           secret: @secret
       )
     end
@@ -59,15 +59,6 @@ module Surveys
     # Extracts the form_id from the Typeform form url.
     def embed_url_to_form_id(embed_url)
       embed_url.split('/').last
-    end
-
-    def tenant_to_webhook_url(tenant, pc)
-      url_params = {
-          tenant_id: tenant.id,
-          pc_id: pc.id,
-          pc_type: pc.class.name
-      }
-      "http://#{ENV.fetch('CLUSTER_HOST')}/hooks/typeform_events?#{url_params.to_query}"
     end
 
     # @param [ParticipationContext] participation_context
