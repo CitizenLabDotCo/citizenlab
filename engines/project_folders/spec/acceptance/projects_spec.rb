@@ -103,6 +103,7 @@ resource 'Projects' do
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
       end
+<<<<<<< HEAD
       with_options scope: [:project, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
         parameter :parent_id, "The parent publication id, usually used to assign a project to a folder.", required: false
@@ -110,11 +111,26 @@ resource 'Projects' do
       ValidationErrorHelper.new.error_fields(self, Project)
 
       describe do
+=======
+
+      with_options scope: [:project, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      end
+
+      ValidationErrorHelper.new.error_fields(self, Project)
+
+      describe do
+
+>>>>>>> f30d5eb3002ab526b690a9f25cf6634955e00d1a
         before do
           create(:topic, code: 'nature', ordering: 0)
           create(:topic, code: 'safety', ordering: 2)
           create(:topic, code: 'mobility', ordering: 1)
         end
+<<<<<<< HEAD
+=======
+
+>>>>>>> f30d5eb3002ab526b690a9f25cf6634955e00d1a
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }

@@ -85,7 +85,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
     end
-    authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
 
     if save_project
@@ -131,5 +130,4 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @project = Project.find params[:id]
     authorize @project
   end
-
 end
