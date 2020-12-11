@@ -9,14 +9,13 @@ module ProjectFolders
       end
 
       def resolve
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action' if user.normal?
-
-        moderated_folders = user.moderated_project_folders
-
         if user.project_folder_moderator?
+          moderated_folders = user.moderated_project_folders
           scope.project_folder_moderator(moderated_folders.pluck(:id))
-        else
+        elsif user.active_and_admin?
           scope.project_folder_moderator
+        else
+          raise Pundit::NotAuthorizedError, 'not allowed to view this action'
         end
       end
     end
