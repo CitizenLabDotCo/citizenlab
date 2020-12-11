@@ -8,8 +8,7 @@ module ActionDispatch::Routing
           next if should_skip_role?(role_name, options)
 
           scope path: roled_resource do
-            params = { roled: roled_resource_class(roled_resource).name, role_name: role_name }
-            resources(role_name.to_s.pluralize, controller: '/roles/roles', only: %i[index update destroy], **params)
+            resources(role_name.to_s.pluralize, controller: '/roles/roles', only: %i[index create destroy])
           end
         end
       end

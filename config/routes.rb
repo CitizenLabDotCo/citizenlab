@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
+      roles_for :users, only: %i[project_folder_moderator]
 
       concern :votable do
         resources :votes, except: [:update], shallow: true do
