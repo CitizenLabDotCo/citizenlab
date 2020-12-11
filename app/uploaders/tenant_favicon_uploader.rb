@@ -1,7 +1,4 @@
-class TenantFaviconUploader < CarrierWave::Uploader::Base
-  include BaseImageUploader
-  include CarrierWave::MiniMagick
-
+class TenantFaviconUploader < BaseImageUploader
 
   def store_dir
     tenant = model # instead of Tenant.current (like in the base uploader)  bc the uploader can be used in a context
