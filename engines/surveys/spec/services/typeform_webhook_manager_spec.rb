@@ -100,7 +100,7 @@ describe Surveys::TypeformWebhookManager do
       create_list(:continuous_survey_project, 2)
       create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/Lr57Iz')
       expect(tf_api).to receive(:delete_webhook).exactly(3).times
-      service.delete_all_webhooks(Tenant.current)
+      service.delete_all_webhooks
     end
   end
 
