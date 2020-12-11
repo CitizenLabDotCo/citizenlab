@@ -39,7 +39,7 @@ module Surveys
 
     private
 
-    # Creates or deletes a Typeform webhook
+    # Creates or updates a Typeform webhook
     def save_webhook(form_url, participation_context)
       @tf_api.create_or_update_webhook(
           form_id: embed_url_to_form_id(form_url),
