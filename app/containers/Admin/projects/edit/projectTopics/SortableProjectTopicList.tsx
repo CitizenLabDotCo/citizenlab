@@ -6,7 +6,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // components
 import Button from 'components/UI/Button';
@@ -33,7 +32,6 @@ import {
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
-import useProject from 'hooks/useProject';
 
 // resources
 import GetTopic from 'resources/GetTopic';
@@ -52,7 +50,6 @@ const SortableProjectTopicList = memo(
       string | null
     >(null);
     const projectTopics = useProjectTopics({ projectId });
-    const project = useProject({ projectId });
 
     const handleProjectTopicDelete = (projectTopicId: string) => (
       event: FormEvent
@@ -83,30 +80,19 @@ const SortableProjectTopicList = memo(
       setProjectTopicIdToDelete(null);
     };
 
-    if (
-      !isNilOrError(project) &&
-      !isNilOrError(projectTopics) &&
-      projectTopics.length > 0
-    ) {
+    if (!isNilOrError(projectTopics) && projectTopics.length > 0) {
       const isLastSelectedTopic = projectTopics.length === 1;
-      const projectInputTerm = project.attributes.input_term;
 
       return (
         <>
           {isLastSelectedTopic && (
             <StyledWarning>
               <FormattedMessage
-                {...getInputTermMessage(projectInputTerm, {
-                  idea: messages.fewerThanOneTopicWarning,
-                })}
+                {...messages.lastTopicWarning}
                 values={{
                   ideaFormLink: (
                     <StyledLink to={`/admin/projects/${projectId}/ideaform`}>
-                      <FormattedMessage
-                        {...getInputTermMessage(projectInputTerm, {
-                          idea: messages.ideaForm,
-                        })}
-                      />
+                      <FormattedMessage {...messages.inputForm} />
                     </StyledLink>
                   ),
                 }}
@@ -169,11 +155,7 @@ const SortableProjectTopicList = memo(
           >
             <ModalContentContainer>
               <Content>
-                <FormattedMessage
-                  {...getInputTermMessage(projectInputTerm, {
-                    idea: messages.topicDeletionWarning,
-                  })}
-                />
+                <FormattedMessage {...messages.generalTopicDeletionWarning} />
               </Content>
               <ButtonsWrapper>
                 <Button
