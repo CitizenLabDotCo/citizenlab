@@ -1,12 +1,8 @@
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import {
-  globalState,
-  IAdminFullWidth,
-  IAdminNoPadding,
-  IGlobalStateService,
-} from 'services/globalState';
+import { globalState } from 'services/globalState';
+import { isAdmin, isModerator } from 'services/permissions/roles';
+import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import Sidebar from './sideBar/';
@@ -14,6 +10,7 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // utils
+import clHistory from 'utils/cl-router/history';
 import { endsWith } from 'utils/helperUtils';
 
 // stlying
@@ -86,70 +83,67 @@ const RightColumn = styled.div`
 
 type Props = {
   className?: string;
+  children: React.ReactNode;
 };
 
-type State = {
-  adminFullWidth: boolean;
-  adminNoPadding: boolean;
-};
+const AdminPage = memo<Props & WithRouterProps>(
+  ({ className, children, location: { pathname } }) => {
+    const authUser = useAuthUser();
 
-class AdminPage extends PureComponent<Props & WithRouterProps, State> {
-  FullWidth: IGlobalStateService<IAdminFullWidth>;
-  NoPadding: IGlobalStateService<IAdminNoPadding>;
-  subscriptions: Subscription[];
+    const [adminFullWidth, setAdminFullWidth] = useState(false);
+    const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      adminFullWidth: false,
-      adminNoPadding: false,
-    };
-    this.FullWidth = globalState.init('AdminFullWidth', { enabled: false });
-    this.NoPadding = globalState.init('AdminNoPadding', { enabled: false });
-  }
+    useEffect(() => {
+      const subscriptions = [
+        globalState
+          .init('AdminFullWidth', { enabled: false })
+          .observable.subscribe(({ enabled }) => setAdminFullWidth(enabled)),
+        globalState
+          .init('AdminNoPadding', { enabled: false })
+          .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
+      ];
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
+    }, []);
 
-  componentDidMount() {
-    const FullWidth$ = this.FullWidth.observable;
-    const NoPadding$ = this.NoPadding.observable;
+    const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
 
-    this.subscriptions = [
-      FullWidth$.subscribe(({ enabled }) =>
-        this.setState({ adminFullWidth: enabled })
-      ),
-      NoPadding$.subscribe(({ enabled }) =>
-        this.setState({ adminNoPadding: enabled })
-      ),
-    ];
-  }
+    useEffect(() => {
+      if (
+        authUser === null ||
+        (authUser !== undefined && !userCanViewAdmin(authUser))
+      ) {
+        clHistory.push('/');
+      }
+    }, [authUser]);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+    if (!userCanViewAdmin(authUser)) {
+      return null;
+    }
 
-  render() {
-    const {
-      children,
-      className,
-      location: { pathname },
-    } = this.props;
+    const noPadding =
+      adminNoPadding ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
 
-    const adminNoPadding =
-      this.state.adminNoPadding || pathname.includes('admin/dashboard');
-    const adminFullWidth =
-      this.state.adminFullWidth === true ||
+    const fullWidth =
+      adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard');
-    const adminWhiteBg =
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
+    const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard');
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
 
     return (
       <>
-        <Container className={`${className} ${adminWhiteBg ? 'whiteBg' : ''}`}>
+        <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn
-            className={`${adminFullWidth && 'fullWidth'} ${
-              adminNoPadding && 'noPadding'
+            className={`${fullWidth && 'fullWidth'} ${
+              noPadding && 'noPadding'
             }`}
           >
             {children}
@@ -158,6 +152,6 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
       </>
     );
   }
-}
+);
 
 export default withRouter<Props>(AdminPage);

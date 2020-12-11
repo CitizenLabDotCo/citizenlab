@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
-import { DragSource, DropTarget } from 'react-dnd';
+import { DragSource, DropTarget } from 'react-dnd-cjs';
 import { Row } from 'components/admin/ResourceList';
 import { Icon } from 'semantic-ui-react';
 
@@ -22,7 +22,7 @@ interface Props {
   className?: string;
   lastItem: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
-  dropRow: (itemId: string, toIndex, number) => void;
+  dropRow: (itemId: string, toIndex: number) => void;
 }
 
 type State = {};

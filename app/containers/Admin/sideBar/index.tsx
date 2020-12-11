@@ -35,6 +35,7 @@ import GetInitiativesCount, {
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
+  z-index: 10;
   flex: 0 0 auto;
   width: 210px;
 
@@ -193,6 +194,19 @@ class Sidebar extends PureComponent<
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
               }/admin/projects`
+            ),
+        },
+        {
+          id: 'processing',
+          link: '/admin/processing',
+          iconName: 'processing',
+          featureName: 'manual_tagging',
+          message: 'processing',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/processing`
             ),
         },
         {

@@ -2,7 +2,11 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { ParticipationMethod, SurveyServices } from './participationContexts';
+import {
+  ParticipationMethod,
+  SurveyServices,
+  IdeaDefaultSortMethod,
+} from './participationContexts';
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
 
@@ -31,6 +35,7 @@ export interface IPhaseData {
     survey_embed_url?: string;
     poll_anonymous?: boolean;
     ideas_count: number;
+    ideas_order?: IdeaDefaultSortMethod;
   };
   relationships: {
     permissions: {
@@ -71,6 +76,7 @@ export interface IUpdatedPhaseProperties {
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
+  ideas_order?: IdeaDefaultSortMethod;
 }
 
 export function phasesStream(
@@ -168,6 +174,28 @@ export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
     );
 
     return lastPhase || null;
+  }
+
+  return null;
+}
+
+export function getLastActivePhase(
+  phases: IPhaseData[] | null | undefined | Error
+) {
+  if (!isNilOrError(phases) && phases.length > 0) {
+    const pastPhases = phases.filter(
+      (phase) =>
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) === 'past'
+    );
+
+    const lastActivePhase = last(
+      sortBy(pastPhases, [(phase) => phase.attributes.end_at])
+    );
+
+    return lastActivePhase || null;
   }
 
   return null;

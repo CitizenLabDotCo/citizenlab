@@ -48,7 +48,9 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes, isRtl } from 'utils/styleUtils';
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
+import ProjectsListItem from './components/ProjectsListItem';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
@@ -278,25 +280,6 @@ const ProjectsList = styled.div`
   ${isRtl`
     text-align: right;
   `}
-`;
-
-const ProjectsListItem = styled(Link)`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
-  text-decoration: none;
-  padding: 10px;
-  margin-bottom: 4px;
-  background: transparent;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-
-  &:hover,
-  &:focus {
-    color: #000;
-    background: ${colors.clDropdownHoverBackground};
-    text-decoration: none;
-  }
 `;
 
 const ProjectsListFooter = styled(Link)`
@@ -681,18 +664,23 @@ class Navbar extends PureComponent<
                           <ProjectsList>
                             {adminPublications.list.map(
                               (item: IAdminPublicationContent) => (
-                                <ProjectsListItem
-                                  key={item.publicationId}
-                                  to={`/${
-                                    item.publicationType === 'project'
-                                      ? 'projects'
-                                      : 'folders'
-                                  }/${item.attributes.publication_slug}`}
-                                >
-                                  {localize(
-                                    item.attributes.publication_title_multiloc
+                                <React.Fragment key={item.publicationId}>
+                                  {item.publicationType === 'project' && (
+                                    <ProjectsListItem
+                                      to={`/projects/${item.attributes.publication_slug}`}
+                                    >
+                                      {localize(
+                                        item.attributes
+                                          .publication_title_multiloc
+                                      )}
+                                    </ProjectsListItem>
                                   )}
-                                </ProjectsListItem>
+                                  <Outlet
+                                    id="app.containers.Navbar.projectlist.item"
+                                    publication={item}
+                                    localize={localize}
+                                  />
+                                </React.Fragment>
                               )
                             )}
                           </ProjectsList>

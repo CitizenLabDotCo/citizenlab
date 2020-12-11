@@ -140,11 +140,13 @@ describe('Idea voting permissions', () => {
 
       // success check
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
+      cy.wait(2000);
       cy.get(
         '#e2e-signup-success-container .e2e-signup-success-close-button'
       ).click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
+      cy.wait(2000);
       cy.get('.e2e-ideacard-upvote-button')
         .first()
         .should('have.class', 'active');

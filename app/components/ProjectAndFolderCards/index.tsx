@@ -7,7 +7,6 @@ import { stringify } from 'qs';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import ProjectFolderCard from 'components/ProjectFolderCard';
 import SelectAreas from './SelectAreas';
 import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
@@ -55,6 +54,7 @@ import { rgba } from 'polished';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -444,19 +444,19 @@ class ProjectAndFolderCards extends PureComponent<
 
                 return (
                   <React.Fragment key={index}>
-                    {projectOrFolderType === 'project' ? (
+                    {projectOrFolderType === 'project' && (
                       <ProjectCard
                         projectId={projectOrFolderId}
                         size={size}
                         layout={layout}
                       />
-                    ) : (
-                      <ProjectFolderCard
-                        publication={item}
-                        size={size}
-                        layout={layout}
-                      />
                     )}
+                    <Outlet
+                      id="app.components.ProjectAndFolderCards.card"
+                      publication={item}
+                      size={size}
+                      layout={layout}
+                    />
                   </React.Fragment>
                 );
               })}
@@ -498,7 +498,9 @@ class ProjectAndFolderCards extends PureComponent<
                 bgColor={rgba(theme.colorText, 0.08)}
                 bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
-                className="e2e-project-cards-show-more-button"
+                className={`e2e-project-cards-show-more-button ${
+                  loadingMore ? 'loading' : ''
+                }`}
               />
             )}
           </Footer>

@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Modal from 'components/UI/Modal';
-import Sharing from 'components/Sharing';
+import SharingButtons from 'components/Sharing/SharingButtons';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -66,7 +66,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                 <T value={project.attributes.title_multiloc} maxLength={50}>
                   {(title) => {
                     return (
-                      <Sharing
+                      <SharingButtons
                         context="project"
                         url={projectUrl}
                         whatsAppMessage={formatMessage(
@@ -79,7 +79,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                           title,
                         })}
                         utmParams={utmParams}
-                        layout={2}
+                        layout={'columnLayout'}
                       />
                     );
                   }}
