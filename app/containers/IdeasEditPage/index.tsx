@@ -373,29 +373,27 @@ class IdeaEditPage extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  remoteIdeaFiles: (props) => (
-    <GetResourceFileObjects
-      resourceId={props.params.ideaId}
-      resourceType="idea"
-    >
-      {(remoteIdeaFiles) => (
-        <IdeaEditPage {...props} remoteIdeaFiles={remoteIdeaFiles} />
-      )}
+  remoteIdeaFiles: ({ params: { ideaId }, render }) => (
+    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+      {render}
     </GetResourceFileObjects>
   ),
-  idea: ({ params: { ideaId }, render }) => (
-    <GetIdea ideaId={ideaId}>{render}</GetIdea>
-  ),
-  project: ({ idea, render }) =>
-    !isNilOrError(idea) ? (
+  idea: ({ params: { ideaId }, render }) => {
+    return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
+  },
+  project: ({ idea, render }) => {
+    return !isNilOrError(idea) ? (
       <GetProject projectId={idea.relationships.project.data.id}>
         {render}
       </GetProject>
-    ) : null,
+    ) : null;
+  },
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaEditPage {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <IdeaEditPage {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};
