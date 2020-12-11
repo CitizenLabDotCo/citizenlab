@@ -98,7 +98,7 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
   end
 
   def parse_tenant_name request
-    if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events" || request.path == "/hooks/typeform_events"
+    if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events"
       nil
     else
       if Rails.env.development? || Rails.env.staging?
