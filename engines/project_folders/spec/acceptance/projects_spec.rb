@@ -134,8 +134,107 @@ resource 'Projects' do
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
         end
       end
+    end
+
+    patch "web_api/v1/projects/:id" do
+      before do
+        @project = create(:project, process_type: 'continuous')
+      end
+      with_options scope: :project do
+        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
+        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
+        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
+        parameter :slug, "The unique slug of the project"
+        parameter :header_bg, "Base64 encoded header image"
+        parameter :area_ids, "Array of ids of the associated areas"
+        parameter :topic_ids, "Array of ids of the associated topics"
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
+        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
+        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
+        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
+        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project?", required: false
+        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project.", required: false
+        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
+        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
+        parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
+        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
+        parameter :ideas_order, 'The default order of ideas.'
+      end
+      with_options scope: [:project, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
+      end
+      ValidationErrorHelper.new.error_fields(self, Project)
+
+      let(:id) { @project.id }
+      let(:title_multiloc) { {"en" => "Changed title" } }
+      let(:description_multiloc) { {"en" => "Changed body" } }
+      let(:description_preview_multiloc) { @project.description_preview_multiloc }
+      let(:slug) { "changed-title" }
+      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:visible_to) { 'groups' }
+      let(:presentation_mode) { 'card' }
+      let(:publication_status) { 'archived' }
+      let(:default_assignee_id) { create(:admin).id }
+      let(:ideas_order) { 'new' }
+
+      example "Update a project" do
+        old_publcation_ids = AdminPublication.ids
+        do_request
+
+        expect(response_status).to eq 200
+        # admin publications should not be replaced, but rather should be updated
+        expect(AdminPublication.ids).to match_array old_publcation_ids
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
+        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
+        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
+        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
+        expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+      end
+
+      example "Add a project to a folder" do
+        folder = create(:project_folder)
+        do_request(project: {folder_id: folder.id})
+        json_response = json_parse(response_body)
+        # expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+        expect(Project.find(json_response.dig(:data,:id)).folder.id).to eq folder.id
+        # Projects moved into folders are added to the top
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+      end
+
+      example "Remove a project from a folder" do
+        folder = create(:project_folder, projects: [@project])
+        do_request(project: {folder_id: nil})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq nil
+        # Projects moved out of folders are added to the top
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+      end
+
+      example "[error] Put a project in a non-existing folder" do
+        do_request(project: {folder_id: 'dinosaur'})
+        expect(response_status).to eq 404
+      end
+    end
   end
 end
+
+def encode_image_as_base64(filename)
+  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
+end
+
 
   #   get "web_api/v1/projects/:id" do
   #     let(:id) { @projects.first.id }
