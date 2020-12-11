@@ -1,0 +1,70 @@
+module ProjectFolders
+  class WebApi::V1::ModeratorsController < ApplicationController
+    before_action :do_authorize, except: [:index]
+    before_action :set_moderator, only: [:show, :destroy]
+
+    skip_after_action :verify_authorized, only: [:users_search]
+    skip_after_action :verify_policy_scoped, only: [:index]
+
+    class Moderator < OpenStruct
+      def self.policy_class
+        ProjectFolders::ModeratorPolicy
+      end
+    end
+
+    def index
+      authorize Moderator.new({ user_id: nil, project_folder_id: params[:project_folder_id] })
+      @moderators = User.project_folder_moderator(params[:project_folder_id])
+                        .page(params.dig(:page, :number))
+                        .per(params.dig(:page, :size))
+
+      render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: fastjson_params)
+    end
+
+    def show
+      render json: ::WebApi::V1::UserSerializer.new(@moderator, params: fastjson_params).serialized_json
+    end
+
+    # insert
+    def create
+      @user = User.find create_moderator_params[:user_id]
+      @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
+      if @user.save
+        SideFxModeratorService.new.after_create(@user, ProjectFolders::Folder.find(params[:project_folder_id]), current_user)
+        render json: ::WebApi::V1::UserSerializer.new(
+          @user,
+          params: fastjson_params
+          ).serialized_json, status: :created
+      else
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+      end
+    end
+
+    # delete
+    def destroy
+      @moderator.delete_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
+      if @moderator.save
+        SideFxModeratorService.new.after_destroy(@moderator, ProjectFolders::Folder.find(params[:project_folder_id]), current_user)
+        head :ok
+      else
+        head 500
+      end
+    end
+
+    private
+
+    def set_moderator
+      @moderator = User.find params[:id]
+    end
+
+    def create_moderator_params
+      params.require(:project_folder_moderator).permit(
+        :user_id
+      )
+    end
+
+    def do_authorize
+      authorize Moderator.new({user_id: params[:id], project_folder_id: params[:project_folder_id]})
+    end
+  end
+end
