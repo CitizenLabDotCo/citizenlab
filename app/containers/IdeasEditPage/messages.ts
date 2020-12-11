@@ -17,10 +17,10 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.submit',
     defaultMessage: 'Submit idea',
   },
-  fileOrImageError: {
-    id: 'app.containers.IdeasEditPage.fileOrImageError',
+  fileUploadError: {
+    id: 'app.containers.IdeasEditPage.fileUploadError',
     defaultMessage:
-      'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
+      'One or more files failed to upload. Please check the file size and format and try again.',
   },
   metaTitle: {
     id: 'app.containers.IdeasEditPage.metaTitle',
