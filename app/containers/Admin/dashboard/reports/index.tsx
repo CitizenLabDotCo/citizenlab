@@ -62,7 +62,6 @@ const ReportTab = memo(({ projects }: DataProps) => {
 
   return !selectedProject ? (
     <>
-      ‚
       <SectionTitle>
         <FormattedMessage {...messages.selectAProject} />
       </SectionTitle>

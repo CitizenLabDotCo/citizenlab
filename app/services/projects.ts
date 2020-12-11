@@ -1,7 +1,11 @@
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { SurveyServices, ParticipationMethod } from './participationContexts';
+import {
+  SurveyServices,
+  ParticipationMethod,
+  IdeaDefaultSortMethod,
+} from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -91,6 +95,7 @@ export interface IProjectData {
     survey_embed_url?: string;
     ordering: number;
     poll_anonymous?: boolean;
+    ideas_order?: IdeaDefaultSortMethod;
     action_descriptor: {
       posting_idea: {
         enabled: boolean;
@@ -166,6 +171,7 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
+  ideas_order?: IdeaDefaultSortMethod;
   slug?: string;
 }
 
@@ -287,25 +293,4 @@ export function getProjectIdeasUrl(project: IProjectData) {
   }
 
   return projectUrl;
-}
-
-export async function updateProjectFolderMembership(
-  projectId: string,
-  newProjectFolderId: string | null,
-  oldProjectFolderId?: string
-) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: { folder_id: newProjectFolderId } }
-  );
-
-  await streams.fetchAllWith({
-    dataId: [newProjectFolderId, oldProjectFolderId].filter(
-      (item) => item
-    ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
-  });
-
-  return response;
 }

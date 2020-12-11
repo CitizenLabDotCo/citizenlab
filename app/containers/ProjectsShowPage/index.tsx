@@ -23,9 +23,6 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -89,16 +86,6 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
     isUndefined(phases) ||
     isUndefined(events);
 
-  const upcomingEvents = !isNilOrError(events)
-    ? events.filter((event) => {
-        const eventTime = pastPresentOrFuture([
-          event.attributes.start_at,
-          event.attributes.end_at,
-        ]);
-        return eventTime === 'present' || eventTime === 'future';
-      })
-    : [];
-
   let content: JSX.Element | null = null;
 
   if (loading) {
@@ -128,10 +115,11 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
     );
   }
 
+  const bgColor =
+    !isNilOrError(events) && events.length > 0 ? '#fff' : colors.background;
+
   return (
-    <Container
-      background={upcomingEvents.length > 0 ? '#fff' : colors.background}
-    >
+    <Container background={bgColor}>
       {!isNilOrError(project) && <ProjectHelmet project={project} />}
       {content}
     </Container>

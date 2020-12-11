@@ -136,18 +136,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderManual',
     defaultMessage: 'Define a group name',
   },
-  modalHeaderRules: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderRules',
-    defaultMessage: 'Define your smart group settings',
-  },
   fieldGroupName: {
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
-  },
-  rulesExplanation: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.rulesExplanation',
-    defaultMessage:
-      'Users matching all of the following conditions will be automatically added to the group:',
   },
   select: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
@@ -195,23 +186,5 @@ export default defineMessages({
   exportSelectedUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
     defaultMessage: 'Export selected users',
-  },
-  rulesError: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.rulesError',
-    defaultMessage: 'Some conditions are incomplete',
-  },
-  verificationDisabled: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.verificationDisabled',
-    defaultMessage:
-      'Verification is disabled for your platform, remove the verification rule or contact support.',
-  },
-  smartGroupsAvailability: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability',
-    defaultMessage:
-      'Smart groups are available on the Standard and Premium plans.',
-  },
-  learnMorePlans: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.learnMorePlans',
-    defaultMessage: 'Learn more about our plans',
   },
 });

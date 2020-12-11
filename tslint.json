@@ -46,7 +46,8 @@
     ],
     "no-vanilla-formatted-messages": true,
     "no-vanilla-routing": true,
-    "no-vanilla-lodash": true
+    "no-vanilla-lodash": true,
+    "no-module-references": true
   },
   "rulesDirectory": ["internals/lint/tslint-plugin-cl-custom"]
 }

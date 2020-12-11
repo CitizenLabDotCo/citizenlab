@@ -9,6 +9,11 @@ declare global {
   }
   interface Window {
     googleMaps?: boolean;
+    Intercom?: any;
+    intercomSettings: any;
+    attachEvent?: any;
+    satismeter?: any;
+    dataLayer?: any[];
   }
 }
 
@@ -116,6 +121,7 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
+  payload?: Object;
 }
 
 export interface CLErrors {

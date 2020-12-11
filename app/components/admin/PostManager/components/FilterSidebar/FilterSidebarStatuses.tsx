@@ -1,13 +1,15 @@
 import React from 'react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
 interface Props {
-  statuses?: IIdeaStatusData[] | null;
+  statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;
   selectedStatus?: string | null;
   onChangeStatusFilter?: (status: string | null) => void;
 }
@@ -26,26 +28,33 @@ class FilterSidebarStatuses extends React.PureComponent<Props> {
   };
 
   render() {
-    return (
-      <Menu secondary={true} vertical={true} fluid={true}>
-        <Menu.Item
-          onClick={this.clearFilter}
-          active={!this.props.selectedStatus}
-        >
-          <FormattedMessage {...messages.allStatuses} />
-        </Menu.Item>
-        <Divider />
-        {this.props.statuses &&
-          this.props.statuses.map((status) => (
-            <FilterSidebarStatusesItem
-              key={status.id}
-              status={status}
-              active={!!this.isActive(status.id)}
-              onClick={this.handleItemClick(status.id)}
-            />
-          ))}
-      </Menu>
-    );
+    const { statuses } = this.props;
+
+    if (!isNilOrError(statuses)) {
+      return (
+        <Menu secondary={true} vertical={true} fluid={true}>
+          <Menu.Item
+            onClick={this.clearFilter}
+            active={!this.props.selectedStatus}
+          >
+            <FormattedMessage {...messages.allStatuses} />
+          </Menu.Item>
+          <Divider />
+          {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
+            (status) => (
+              <FilterSidebarStatusesItem
+                key={status.id}
+                status={status}
+                active={!!this.isActive(status.id)}
+                onClick={this.handleItemClick(status.id)}
+              />
+            )
+          )}
+        </Menu>
+      );
+    }
+
+    return null;
   }
 }
 

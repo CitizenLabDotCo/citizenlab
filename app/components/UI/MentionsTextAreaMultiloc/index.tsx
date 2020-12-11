@@ -93,6 +93,7 @@ class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
       ariaLabel,
       className,
       tenantLocales,
+      name,
     } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
