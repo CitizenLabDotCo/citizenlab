@@ -1737,7 +1737,6 @@
   "app.containers.InitiativesIndexPage.metaDescription": "Explorer et soutenir les propositions menées par {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Toutes les propositions • {orgName}",
   "app.containers.InitiativesIndexPage.postingDisabledExplanation": "La soumission de nouvelles propositions est actuellement suspendue. N'hésitez pas à consulter, commenter et apporter votre soutien aux propositions existantes !",
-  "app.containers.InitiativesIndexPage.readMore": "Vous pouvez en savoir plus sur la procédure ici.",
   "app.containers.InitiativesIndexPage.startInitiative": "Postez votre proposition",
   "app.containers.InitiativesIndexPage.success": "succès",
   "app.containers.InitiativesIndexPage.successStoryTitle": "Propositions citoyennes inspirantes",
