@@ -15,16 +15,42 @@ module ProjectFolders
     def self.included(base)
       base.class_eval do
         set_callback :save_project, :before, :set_folder
+        set_callback :save_project, :after, :add_new_folder_moderators
+        set_callback :save_project, :after, :remove_old_folder_moderators
       end
     end
 
     def set_folder
+      return unless params.require(:project).key?(:folder_id)
+
       folder_id = params.dig(:project, :folder_id)
       parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: folder_id)&.id
       raise ActiveRecord::RecordNotFound if folder_id.present? && parent_id.nil?
 
       @project.build_admin_publication unless @project.admin_publication
       @project.admin_publication.assign_attributes(parent_id: parent_id)
+    end
+
+    def add_new_folder_moderators
+      return unless  params.require(:project).key?(:folder_id)
+
+      User.project_folder_moderator(@project.folder&.id).each do |moderator|
+        next if moderator.moderatable_project_ids.include?(@project.id)
+
+        moderator.add_role('project_moderator', project_id: @project.id)
+        moderator.save
+      end
+    end
+
+    def remove_old_folder_moderators
+      return unless params.require(:project).key?(:folder_id)
+
+      User.not_project_folder_moderator(@project.folder&.id).each do |moderator|
+        next unless moderator.moderatable_project_ids.include?(@project.id)
+
+        moderator.delete_role('project_moderator', project_id: @project.id)
+        moderator.save
+      end
     end
   end
 end
