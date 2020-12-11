@@ -1,6 +1,6 @@
 nl:
   symbols:
-    outside: somewhere else
+    outside: ergens anders
   idea_statuses:
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
@@ -164,8 +164,8 @@ nl:
     custom_field_select:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} is niet %{value}"
-      is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the follow values: %{value}"
+      is_one_of: "%{property} heeft een van de volgende waarden: %{value}"
+      not_is_one_of: "%{property} heeft geen van de volgende waarden: %{value}"
     custom_field_text:
       is: "%{property} is %{value}"
       not_is: "%{property} is niet %{value}"

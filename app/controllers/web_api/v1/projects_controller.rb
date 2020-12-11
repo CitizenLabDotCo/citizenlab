@@ -3,7 +3,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   skip_after_action :verify_policy_scoped, only: [:index]
 
   define_callbacks :save_project
-  attr_reader :project, :project_saved
 
   def index
     params["moderator"] = current_user if params[:filter_can_moderate]
@@ -63,7 +62,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     SideFxProjectService.new.before_create(@project, current_user)
 
     authorize @project
-    saved = ActiveRecord::Base.transaction { save_project }
+    saved = ActiveRecord::Base.transaction { save_project(@project) }
 
     if saved
       SideFxProjectService.new.after_create(@project, current_user)
@@ -91,7 +90,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
 
-    saved = ActiveRecord::Base.transaction { save_project }
+    saved = ActiveRecord::Base.transaction { save_project(@project) }
 
     if saved
       SideFxProjectService.new.after_update(@project, current_user)
@@ -118,10 +117,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   private
 
-  def save_project
-    run_callbacks :save_project do
-      @project_saved = @project.save
-    end
+  def save_project(project)
+    result = run_callbacks(:save_project) do
+      saved = project.save
+      [saved, project]  # We include the project bc the result of the block can
+    end                 # be used by :around callbacks. But there is no point
+    result[0]           # to include it in the value returned by the method.
   end
 
   def secure_controller?

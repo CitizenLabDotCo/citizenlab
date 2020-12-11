@@ -73,10 +73,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :mention_in_comment_campaign, class: EmailCampaigns::Campaigns::MentionInComment do
-    enabled { true }
-  end
-
   factory :mention_in_official_feedback_campaign, class: EmailCampaigns::Campaigns::MentionInOfficialFeedback do
     enabled { true }
   end

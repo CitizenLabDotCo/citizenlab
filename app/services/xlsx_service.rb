@@ -146,7 +146,7 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_ideas_xlsx ideas, view_private_attributes: false
+  def generate_ideas_xlsx ideas, view_private_attributes: false, with_tags: false
     columns = [
       {header: 'id',                   f: -> (i) { i.id },                                        skip_sanitization: true},
       {header: 'title',                f: -> (i) { @@multiloc_service.t(i.title_multiloc) }},
@@ -177,6 +177,15 @@ class XlsxService
       columns.select! do |c|
         !%w(author_email assignee_email).include?(c[:header])
       end
+    end
+
+    if with_tags
+      Tagging::Tag.joins(:taggings).where({tagging_taggings: {idea_id: ideas.map(&:id)}}).each { |tag|
+        columns.insert(3,{header: @@multiloc_service.t(tag.title_multiloc), f: -> (i) {
+          tagging = Tagging::Tagging.where(tag_id: tag.id, idea_id: i.id)
+          !tagging.empty? ? tagging.first.confidence_score : '0'
+          }})
+      }
     end
     generate_xlsx 'Ideas', columns, ideas
   end
