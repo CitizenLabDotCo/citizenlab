@@ -1,3 +1,6 @@
+require 'project_folders/monkey_patches/project_policy'
+require 'project_folders/monkey_patches/side_fx_project_service'
+
 begin
   require 'factory_bot_rails'
 rescue LoadError
@@ -21,5 +24,32 @@ module ProjectFolders
     end
 
     config.to_prepare(&method(:activate).to_proc)
+
+    ActiveSupport.on_load(:action_controller) do
+      ::User.prepend ProjectFolders::ModeratorDecorator
+      ::ProjectPolicy.prepend MonkeyPatches::ProjectPolicy
+      ::SideFxProjectService.prepend MonkeyPatches::SideFxProjectService
+
+      ::Roles.configure do |c|
+        c.serializers = {
+          users: {
+            class: ::WebApi::V1::UserSerializer,
+            includes: %i[unread_notifications]
+          }
+        }
+
+        c.subscribers = {
+          users: {
+            project_folder_moderator: ::ProjectFolders::SideFxModeratorService.new
+          }
+        }
+
+        c.policies = {
+          users: {
+            project_folder_moderator: ::ProjectFolders::ModeratorPolicy
+          }
+        }
+      end
+    end
   end
 end
