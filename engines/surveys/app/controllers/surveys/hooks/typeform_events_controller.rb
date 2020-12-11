@@ -10,7 +10,6 @@ module Surveys
     skip_after_action :verify_authorized
 
     before_action :verify_signature, only: [:create]
-    around_action :switch_tenant
 
     def create
       @participation_context = secure_constantize(:pc_class).find params[:pc_id]
@@ -37,23 +36,6 @@ module Surveys
       hash = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), ENV.fetch('SECRET_TOKEN_TYPEFORM'), payload_body)
       actual_signature = 'sha256=' + Base64.strict_encode64(hash)
       head :not_acceptable unless Rack::Utils.secure_compare(actual_signature, received_signature)
-    end
-
-    # MT_TODO to be removed
-    def switch_tenant
-      return yield if Tenant.current
-
-      if (tenant_id = params[:tenant_id])
-        ActiveSupport::Deprecation.warn("Typeform webhook targeting the cluster instead of the tenant host: #{request.original_url}")
-        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) { yield }
-      else
-        head :not_acceptable
-      end
-
-    rescue Apartment::TenantNotFound
-      head :not_acceptable
-    rescue ActiveRecord::RecordNotFound
-      head :not_acceptable
     end
 
     def secure_constantize key
