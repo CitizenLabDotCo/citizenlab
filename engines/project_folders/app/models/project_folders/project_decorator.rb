@@ -1,6 +1,6 @@
 module ProjectFolders::ProjectDecorator
   def folder
-    admin_publication.parent&.publication
+    admin_publication&.parent&.publication
   end
 end
 
