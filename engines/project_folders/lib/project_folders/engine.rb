@@ -1,8 +1,5 @@
 require 'project_folders/monkey_patches'
-<<<<<<< HEAD
-=======
 require 'project_folders/monkey_patches/admin_publication_policy'
->>>>>>> f30d5eb3002ab526b690a9f25cf6634955e00d1a
 require 'project_folders/monkey_patches/project_policy'
 require 'project_folders/monkey_patches/project_serializer'
 
@@ -36,10 +33,7 @@ module ProjectFolders
 
     ActiveSupport.on_load(:action_controller) do
       ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
-<<<<<<< HEAD
-=======
       ::AdminPublicationPolicy.prepend ProjectFolders::MonkeyPatches::AdminPublicationPolicy
->>>>>>> f30d5eb3002ab526b690a9f25cf6634955e00d1a
       ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
       ::WebApi::V1::ProjectSerializer.prepend ProjectFolders::MonkeyPatches::ProjectSerializer
     end
