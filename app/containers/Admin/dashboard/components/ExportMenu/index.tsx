@@ -167,7 +167,7 @@ const ExportMenu: React.SFC<ExportMenuProps & InjectedIntlProps> = ({
                 padding="0"
                 fontSize={`${fontSizes.small}px`}
               >
-                <FormattedMessage {...messages.downloadSvg} />
+                <FormattedMessage {...messages.downloadAsImage} />
               </Button>
             )}
             {xlsxEndpoint && (
