@@ -220,11 +220,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
               </StyledSectionTitle>
             </TitleContainer>
             <SectionDescription>
-              <FormattedMessage
-                {...getInputTermMessage(projectInputTerm, {
-                  idea: messages.description,
-                })}
-              />
+              <FormattedMessage {...messages.postDescription} />
             </SectionDescription>
           </Header>
 
@@ -251,7 +247,6 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
                     ideaCustomField={ideaCustomField}
                     onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
                     onChange={handleIdeaCustomFieldOnChange}
-                    projectId={projectId}
                   />
                 );
               })}
