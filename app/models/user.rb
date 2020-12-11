@@ -254,6 +254,10 @@ class User < ApplicationRecord
       .map{|role| role['project_id']}.compact
   end
 
+  def moderatable_projects
+    Project.where(id: moderatable_project_ids)
+  end
+
   def add_role(type, options = {})
     roles << { 'type' => type.to_s }.merge(options.stringify_keys)
     roles.uniq!
