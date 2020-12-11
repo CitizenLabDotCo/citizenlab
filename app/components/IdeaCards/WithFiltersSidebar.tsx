@@ -574,7 +574,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         <ScreenReaderOnly aria-live="polite">
           {ideasFilterCounts && (
             <FormattedMessage
-              {...messages.a11y_totalIdeas}
+              {...messages.a11y_totalItems}
               values={{ ideasCount: ideasFilterCounts.total }}
             />
           )}
