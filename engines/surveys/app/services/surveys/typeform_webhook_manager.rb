@@ -3,7 +3,7 @@ module Surveys
   class TypeformWebhookManager
 
     def initialize(tf_api = nil)
-      @tf_api ||= Typeform::Api.new(Tenant.settings('typeform_surveys', 'user_token'))
+      @tf_api = tf_api || Typeform::Api.new(Tenant.settings('typeform_surveys', 'user_token'))
       @secret = ENV.fetch("SECRET_TOKEN_TYPEFORM") # used to verify that requests are coming from Typeform.
     end
 
