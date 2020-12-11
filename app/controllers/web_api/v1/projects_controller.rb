@@ -62,9 +62,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @project = Project.new(project_params)
     SideFxProjectService.new.before_create(@project, current_user)
 
-    saved = ActiveRecord::Base.transaction { save_project(@project) }
-
-    if saved
+    if save_project
       SideFxProjectService.new.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -89,9 +87,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
     SideFxProjectService.new.before_update(@project, current_user)
 
-    saved = ActiveRecord::Base.transaction { save_project(@project) }
-
-    if saved
+    if save_project
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -105,9 +101,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def destroy
     SideFxProjectService.new.before_destroy(@project, current_user)
-    project = @project.destroy
-    if project.destroyed?
-      SideFxProjectService.new.after_destroy(project, current_user)
+    if @project.destroy
+      SideFxProjectService.new.after_destroy(@project, current_user)
       head :ok
     else
       head 500
@@ -116,13 +111,15 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   private
 
-  def save_project(project)
-    result = run_callbacks(:save_project) do
-      authorize @project
-      saved = project.save
-      [saved, project]  # We include the project bc the result of the block can
-    end                 # be used by :around callbacks. But there is no point
-    result[0]           # to include it in the value returned by the method.
+  def save_project
+    ActiveRecord::Base.transaction do
+      run_callbacks(:save_project) do
+        # authorize is placed within the block so we can prepare
+        # the @project to be authorized from a callback.
+        authorize @project
+        @project.save
+      end
+    end
   end
 
   def secure_controller?

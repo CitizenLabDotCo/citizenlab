@@ -2,7 +2,6 @@ require 'project_folders/monkey_patches'
 require 'project_folders/monkey_patches/admin_publication_policy'
 require 'project_folders/monkey_patches/project_policy'
 require 'project_folders/monkey_patches/project_serializer'
-require 'project_folders/monkey_patches/side_fx_project_service'
 
 begin
   require 'factory_bot_rails'
@@ -36,7 +35,6 @@ module ProjectFolders
       ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
       ::AdminPublicationPolicy.prepend ProjectFolders::MonkeyPatches::AdminPublicationPolicy
       ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
-      ::SideFxProjectService.prepend ProjectFolders::MonkeyPatches::SideFxProjectService
       ::WebApi::V1::ProjectSerializer.prepend ProjectFolders::MonkeyPatches::ProjectSerializer
     end
   end

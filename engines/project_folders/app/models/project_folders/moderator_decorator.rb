@@ -3,16 +3,23 @@ module ProjectFolders
     def self.prepended(base)
       base.class_eval do
         scope :project_folder_moderator, lambda { |*project_folder_ids|
-          return where("roles @> '[{\"type\":\"project_moderator\"}]'") if project_folder_ids.empty?
+          return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 
           query = project_folder_ids.map do |id|
-            JSON.generate([{ type: 'project_folder_moderator', project_folder_id: id }])
+            { type: 'project_folder_moderator', project_folder_id: id }
           end
-          where('roles @> ?', query)
+
+          where('roles @> ?', JSON.generate(query))
         }
 
-        scope :not_project_folder_moderator, lambda {
-          where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
+        scope :not_project_folder_moderator, lambda { |*project_folder_ids|
+          return where.not("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
+
+          query = project_folder_ids.map do |id|
+            { type: 'project_folder_moderator', project_folder_id: id }
+          end
+
+          where.not('roles @> ?', JSON.generate(query))
         }
       end
     end
