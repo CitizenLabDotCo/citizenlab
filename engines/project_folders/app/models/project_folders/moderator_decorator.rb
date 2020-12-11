@@ -37,24 +37,29 @@ module ProjectFolders
       end
     end
 
-    def admin_or_folder_moderator?(project_folder_id)
+    def admin_or_folder_moderator?(project_folder_id = nil)
       admin? || (project_folder_id && project_folder_moderator?(project_folder_id))
     end
 
-    def active_admin_or_folder_moderator?(project_folder_id)
+    def active_admin_or_folder_moderator?(project_folder_id = nil)
       active? && admin_or_folder_moderator?(project_folder_id)
     end
 
-    def moderated_folders
-      ProjectFolders::Folder.where(id: moderated_folder_ids)
+    def moderated_project_folders
+      ProjectFolders::Folder.where(id: moderated_project_folder_ids)
     end
 
-    def moderated_folder_ids
+    def moderated_project_folder_ids
       roles.select { |role| role['type'] == 'project_folder_moderator' }
            .map { |role| role['project_folder_id'] }
            .compact
     end
+
+    def moderates_parent_folder?(project)
+      project&.admin_publication&.parent&.publication &&
+        user.project_folder_moderator?(project.admin_publication.parent.publication.id)
+    end
   end
 end
 
-User.prepend(ProjectFolders::ModeratorDecorator)
+# User.prepend(ProjectFolders::ModeratorDecorator)

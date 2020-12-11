@@ -10,6 +10,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)
                                                  .where(publication_type: Project.name)
+
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
     # AdminPublicationsFilteringService is also making a request on projects).
     # But could not find a way to eager-load the polymorphic type in the publication
