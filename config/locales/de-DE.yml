@@ -1,6 +1,6 @@
 de:
   symbols:
-    outside: somewhere else
+    outside: anderswo
   idea_statuses:
     proposed: vorgeschlagen
     proposed_description: Diese Idee wurde der Stadtverwaltung vorgestellt
@@ -186,8 +186,8 @@ de:
     custom_field_select:
       has_value: "%{property} ist %{value}"
       not_has_value: "%{property} ist nicht %{value}"
-      is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the following values: %{value}"
+      is_one_of: "%{property} hat einen der folgenden Werte: %{value}"
+      not_is_one_of: "%{property} hat keinen der folgenden Werte: %{value}"
     custom_field_text:
       is: "%{property} ist %{value}"
       not_is: "%{property} ist nicht %{value}"
