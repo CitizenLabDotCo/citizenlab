@@ -386,6 +386,74 @@ resource "Ideas" do
     end
   end
 
+  get "web_api/v1/ideas/as_xlsx_with_tags" do
+    parameter :project, 'Filter by project', required: false
+    parameter :ideas, 'Filter by a given list of idea ids', required: false
+
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
+    example_request "XLSX export" do
+      expect(status).to eq 200
+    end
+
+    describe do
+      before do
+        @project = create(:project)
+        @tag1 = Tagging::Tag.create(title_multiloc: {'en' => 'label'})
+        @tag2 = Tagging::Tag.create(title_multiloc: {'en' => 'item'})
+        @selected_ideas = @ideas.select(&:published?).shuffle.take 3
+        @selected_ideas.each do |idea|
+          idea.update! project: @project
+        end
+        Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag1, confidence_score: 1)
+        Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag2,  confidence_score: 0.45)
+        Tagging::Tagging.create(idea: @selected_ideas[1], tag: @tag1,  confidence_score: 1)
+      end
+      let(:project) { @project.id }
+
+      example_request 'XLSX export by project' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        label_col = worksheet.map {|col| col.cells[4].value}
+        _, *labels = label_col
+        expect(labels).to match_array([1,1,0])
+        item_col = worksheet.map {|col| col.cells[3].value}
+        _, *items = item_col
+        expect(items).to match_array([0, 0, 0.45])
+        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
+    end
+
+    describe do
+      before do
+        @selected_ideas = @ideas.select(&:published?).shuffle.take 2
+      end
+      let(:ideas) { @selected_ideas.map(&:id) }
+
+      example_request 'XLSX export by idea ids' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
+    end
+
+    describe do
+      before do
+        @user = create(:user)
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      example_request '[error] XLSX export by a normal user', document: false do
+        expect(status).to eq 401
+      end
+    end
+  end
+
 
   get "web_api/v1/ideas/filter_counts" do
     before do
@@ -564,6 +632,25 @@ resource "Ideas" do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+      end
+    end
+
+    describe 'For projects without ideas_order' do
+      let(:project) { create(:continuous_project, with_permissions: true) }
+
+      before do
+        project.update_attribute(:ideas_order, nil)
+      end
+
+      example_request "Creates an idea", document: false do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(project.reload.ideas_count).to eq 1
       end
     end
 
