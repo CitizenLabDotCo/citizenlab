@@ -5,7 +5,7 @@ FactoryBot.define do
       project_folder_id { nil }
     end
 
-    before :build do |moderator, evaluator|
+    after :build do |moderator, evaluator|
       moderator.add_project_folder_moderator_role(evaluator.project_folder || evaluator.project_folder_id)
     end
   end
