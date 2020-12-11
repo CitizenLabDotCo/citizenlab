@@ -1,6 +1,8 @@
-class AppHeaderBgUploader < CarrierWave::Uploader::Base
-  include BaseImageUploader
-  include CarrierWave::MiniMagick
+class AppHeaderBgUploader < BaseImageUploader
+
+  def store_dir
+    "uploads/#{Tenant.current.id}/header-background/#{model.id}"
+  end
 
   version :large do
     process safe_resize_to_fill_for_gif: [1440,480]
@@ -12,16 +14,6 @@ class AppHeaderBgUploader < CarrierWave::Uploader::Base
 
   version :small do
     process safe_resize_to_fill_for_gif: [520,250]
-  end
-
-  def store_dir
-    "uploads/#{Tenant.current.id}/header-background/#{model.id}"
-  end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  def extension_whitelist
-    %w(jpg jpeg gif png)
   end
 
 end
