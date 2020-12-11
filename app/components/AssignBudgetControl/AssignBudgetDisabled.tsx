@@ -4,16 +4,13 @@ import { adopt } from 'react-adopt';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { InputTerm } from 'services/participationContexts';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
@@ -25,7 +22,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   color: ${colors.label};
@@ -53,12 +49,10 @@ interface InputProps {
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
   participationContextId: string;
   participationContextType: IParticipationContextType;
-  projectId: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -85,64 +79,49 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     event.preventDefault();
   };
 
-  reasonToMessage = (projectInputTerm: InputTerm) => {
+  reasonToMessage = () => {
     const { budgetingDescriptor, authUser } = this.props;
 
     if (budgetingDescriptor) {
       const { disabled_reason, future_enabled } = budgetingDescriptor;
 
       if (disabled_reason && future_enabled) {
-        return getInputTermMessage(projectInputTerm, {
-          idea: messages.budgetingDisabledFutureEnabled,
-        });
+        return messages.budgetingFutureEnabled;
       } else if (authUser && disabled_reason === 'not_verified') {
-        return getInputTermMessage(projectInputTerm, {
-          idea: messages.budgetingDisabledNotVerified,
-        });
+        return messages.budgetingNotVerified;
       } else if (disabled_reason === 'not_permitted') {
-        return getInputTermMessage(projectInputTerm, {
-          idea: messages.budgetingDisabledNotPermitted,
-        });
+        return messages.budgetingNotPermitted;
       }
     }
 
-    return getInputTermMessage(projectInputTerm, {
-      idea: messages.budgetingDisabled,
-    });
+    return messages.budgetingNotPossible;
   };
 
   render() {
-    const { budgetingDescriptor, project } = this.props;
+    const { budgetingDescriptor } = this.props;
     const enabledFromDate = budgetingDescriptor?.future_enabled
       ? moment(budgetingDescriptor.future_enabled).format('LL')
       : null;
-    const verificationLink = (
+    const verifyAccountLink = (
       <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
-        <FormattedMessage {...messages.verificationLinkText} />
+        <FormattedMessage {...messages.verifyAccountLinkText} />
       </StyledButton>
     );
+    const message = this.reasonToMessage();
 
-    if (!isNilOrError(project)) {
-      const projectInputTerm = project.attributes.input_term;
-      const message = this.reasonToMessage(projectInputTerm);
-
-      return (
-        <Container className="e2e-assign-disabled">
-          <FormattedMessage
-            {...message}
-            values={{ enabledFromDate, verificationLink }}
-          />
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container className="e2e-assign-disabled">
+        <FormattedMessage
+          {...message}
+          values={{ enabledFromDate, verifyAccountLink }}
+        />
+      </Container>
+    );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId }) => <GetProject projectId={projectId} />,
 });
 
 export default (inputProps: InputProps) => (

@@ -36,7 +36,7 @@ const Component = ({
       ? {
           source: 'share_idea',
           campaign: 'share_content',
-          content: authUser.data.id,
+          content: authUser.id,
         }
       : {
           source: 'share_idea',
