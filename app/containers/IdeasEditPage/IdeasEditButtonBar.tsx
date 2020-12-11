@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -15,13 +13,9 @@ import {
   IIdeasPageGlobalState,
 } from 'services/globalState';
 
-// resource
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -46,17 +40,10 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   form?: string;
   elementId?: string;
-  projectId: string;
 }
-
-interface DataProps {
-  project: GetProjectChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 interface GlobalState {
   submitError: boolean;
@@ -66,7 +53,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-class IdeasEditButtonBar extends PureComponent<Props, State> {
+export default class IdeasEditButtonBar extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
@@ -103,20 +90,11 @@ class IdeasEditButtonBar extends PureComponent<Props, State> {
 
   getSubmitErrorMessage = () => {
     const { fileOrImageError, submitError } = this.state;
-    const { project } = this.props;
 
     if (submitError) {
       return <FormattedMessage {...messages.submitError} />;
-    } else if (fileOrImageError && !isNilOrError(project)) {
-      const projectInputTerm = project.attributes.input_term;
-
-      return (
-        <FormattedMessage
-          {...getInputTermMessage(projectInputTerm, {
-            idea: messages.fileOrImageError,
-          })}
-        />
-      );
+    } else if (fileOrImageError) {
+      return <FormattedMessage {...messages.fileUploadError} />;
     }
 
     return null;
@@ -124,46 +102,32 @@ class IdeasEditButtonBar extends PureComponent<Props, State> {
 
   render() {
     const { processing } = this.state;
-    const { elementId, project } = this.props;
+    const { elementId } = this.props;
     let { form } = this.props;
     const submitErrorMessage = this.getSubmitErrorMessage();
     form = form || '';
 
-    if (!isNilOrError(project)) {
-      return (
-        <ButtonBar>
-          <ButtonBarInner>
-            <Button
-              id={elementId}
-              form={form}
-              className="e2e-submit-idea-form"
-              processing={processing}
-              text={<FormattedMessage {...messages.submit} />}
-              onClick={this.handleOnSubmitButtonClick}
+    return (
+      <ButtonBar>
+        <ButtonBarInner>
+          <Button
+            id={elementId}
+            form={form}
+            className="e2e-submit-idea-form"
+            processing={processing}
+            text={<FormattedMessage {...messages.submit} />}
+            onClick={this.handleOnSubmitButtonClick}
+          />
+          {submitErrorMessage && (
+            <Error
+              text={submitErrorMessage}
+              marginTop="0px"
+              showBackground={false}
+              showIcon={true}
             />
-            {submitErrorMessage && (
-              <Error
-                text={submitErrorMessage}
-                marginTop="0px"
-                showBackground={false}
-                showIcon={true}
-              />
-            )}
-          </ButtonBarInner>
-        </ButtonBar>
-      );
-    }
-
-    return null;
+          )}
+        </ButtonBarInner>
+      </ButtonBar>
+    );
   }
 }
-
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId }) => <GetProject projectId={projectId} />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasEditButtonBar {...inputProps} {...dataProps} />}
-  </Data>
-);
