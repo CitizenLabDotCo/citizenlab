@@ -30,7 +30,7 @@ module Surveys
       delete_webhook(url, pc_id) if pm == 'survey' && service == 'typeform' && url
     end
 
-    def tenant_to_be_destroyed(tenant)
+    def delete_all_webhooks(tenant)
       [Project.is_participation_context, Phase].each do |klass|
         klass.where(participation_method: 'survey', survey_service: 'typeform')
              .each { |pc| delete_webhook(pc.survey_embed_url, pc.id) }
