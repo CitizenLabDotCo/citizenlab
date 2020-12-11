@@ -53,10 +53,7 @@ class User < ApplicationRecord
   has_many :initiative_status_changes, dependent: :nullify
 
   has_one_role :admin
-  has_many_roles :admin_publication_moderator, class: 'AdminPublication', foreign_key: 'admin_publication_id'
   has_many_roles :project_moderator, class: 'Project', foreign_key: 'project_id'
-
-  prepend ProjectFolders::ModeratorDecorator
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
@@ -103,8 +100,9 @@ class User < ApplicationRecord
   EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
   validate :validate_email_domain_blacklist
 
-  ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
-  validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
+  # this way it can be overriden by a decorator
+
+  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -216,10 +214,13 @@ class User < ApplicationRecord
   def highest_role
     if super_admin?                 then :super_admin
     elsif admin?                    then :admin
-    elsif project_folder_moderator? then :project_folder_moderator
     elsif project_moderator?        then :project_moderator
     else                                 :user
     end
+  end
+
+  def roles_json_schema
+    Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   end
 
   def moderatable_project_ids

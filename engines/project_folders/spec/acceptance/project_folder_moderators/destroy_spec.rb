@@ -4,27 +4,21 @@ require 'rspec_api_documentation/dsl'
 resource 'Project Folder Moderators' do
   explanation 'Moderators can manage (e.g. changing phases, ideas) only certain projects.'
 
-  # before :all do
-  #   unless User.roles.key?('project_folder_moderator')
-  #     skip('The User class does not have the project folder moderator role')
-  #   end
-  # end
-
   def serialize_moderators(current_user, *moderators)
     WebApi::V1::UserSerializer.new(moderators, params: { current_user: current_user }).serialized_json
   end
 
   describe 'Routes to Roles Controller', type: :routing do
-    it 'routes to roles/roles#create' do
-      expect(post: 'web_api/v1/users/project_folder_moderators').to route_to(
+    it 'routes to roles/roles#delete' do
+      expect(delete: 'web_api/v1/project_folder_moderators').to route_to(
         controller: 'roles/roles',
-        action: 'create',
+        action: 'destroy',
         format: :json
       )
     end
   end
 
-  delete 'web_api/v1/users/project_folder_moderators/:id' do
+  delete 'web_api/v1/project_folder_moderators/:id' do
     header 'Content-Type', 'application/json'
 
     parameter :id, 'The user id of the moderator to remove rights from', type: :uuid
@@ -60,7 +54,7 @@ resource 'Project Folder Moderators' do
           expect(moderator.project_folder_moderator?(project_folder)).to be_truthy
         end
 
-        example_request 'It allows the creation of a folder moderator' do
+        example_request 'It allows the deletion of a folder moderator' do
           moderator.reload
           json_response       = json_parse(response_body)
           serializer_mock     = serialize_moderators(admin, moderator)
@@ -78,7 +72,7 @@ resource 'Project Folder Moderators' do
           expect(moderator.project_folder_moderator?(project_folder)).to be_truthy
         end
 
-        example_request 'It allows the creation of a folder moderator' do
+        example_request 'It allows the deletion of a folder moderator' do
           moderator.reload
           json_response       = json_parse(response_body)
           serializer_mock     = serialize_moderators(moderator, moderator)
