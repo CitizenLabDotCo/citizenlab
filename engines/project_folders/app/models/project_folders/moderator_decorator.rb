@@ -63,12 +63,7 @@ module ProjectFolders
     end
 
     def moderates_parent_folder?(project)
-<<<<<<< HEAD
-      project&.admin_publication&.parent&.publication &&
-        user.project_folder_moderator?(project.admin_publication.parent.publication.id)
-=======
       project.folder && project_folder_moderator?(project.folder.id)
->>>>>>> f30d5eb3002ab526b690a9f25cf6634955e00d1a
     end
   end
 end
