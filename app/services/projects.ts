@@ -297,3 +297,7 @@ export function getProjectIdeasUrl(project: IProjectData) {
 
   return projectUrl;
 }
+
+export function getProjectInputTerm(project: IProjectData) {
+  return project.attributes.input_term;
+}

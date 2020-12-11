@@ -182,7 +182,7 @@ export function getLastPhase(phases: IPhaseData[] | null | undefined | Error) {
   return null;
 }
 
-export function getLastActivePhase(
+export function getLastPastPhase(
   phases: IPhaseData[] | null | undefined | Error
 ) {
   if (!isNilOrError(phases) && phases.length > 0) {
@@ -194,12 +194,51 @@ export function getLastActivePhase(
         ]) === 'past'
     );
 
-    const lastActivePhase = last(
+    const lastPastActivePhase = last(
       sortBy(pastPhases, [(phase) => phase.attributes.end_at])
     );
 
-    return lastActivePhase || null;
+    return lastPastActivePhase || null;
   }
 
   return null;
+}
+
+function getLatestRelevantPhase(phases: IPhaseData[]) {
+  const currentPhase = getCurrentPhase(phases);
+  const firstPhase = getFirstPhase(phases);
+  const lastPhase = getLastPhase(phases);
+  const lastPastPhase = getLastPastPhase(phases);
+
+  if (currentPhase) {
+    return currentPhase;
+  } else if (
+    firstPhase &&
+    pastPresentOrFuture([
+      firstPhase.attributes.start_at,
+      firstPhase.attributes.end_at,
+    ]) === 'future'
+  ) {
+    return firstPhase;
+  } else if (
+    lastPastPhase &&
+    lastPhase &&
+    pastPresentOrFuture([
+      lastPhase.attributes.start_at,
+      lastPhase.attributes.end_at,
+    ]) === 'future'
+  ) {
+    return lastPastPhase;
+  } else {
+    return lastPhase;
+  }
+}
+
+export function getPhaseInputTerm(phases: IPhaseData[]) {
+  // In practice, this fallback will never be needed.
+  // This function will only get called when phases.length > 0,
+  // so getLatestRelevantPhase will never return null, but the
+  // functions that are used internally by getLatestRelevantPhase
+  // can in theory return null. Hence the fallback || 'idea' for typing purposes.
+  return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
 }
