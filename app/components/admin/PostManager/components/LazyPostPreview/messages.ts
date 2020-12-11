@@ -9,9 +9,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.delete',
     defaultMessage: 'Delete',
   },
-  deleteIdeaConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deleteIdeaConfirmation',
-    defaultMessage: 'Are you sure you want to delete this idea?',
+  deletePostConfirmation: {
+    id: 'app.components.admin.PostManager.PostPreview.deletePostConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this post? This action cannot be undone.',
   },
   deleteInitiativeConfirmation: {
     id:
@@ -46,10 +47,6 @@ export default defineMessages({
   noOne: {
     id: 'app.components.admin.PostManager.PostPreview.noOne',
     defaultMessage: 'Unassigned',
-  },
-  formTitle: {
-    id: 'app.components.admin.PostManager.PostPreview.formTitle',
-    defaultMessage: 'Editing idea',
   },
   save: {
     id: 'app.components.admin.PostManager.PostPreview.save',
