@@ -1,6 +1,6 @@
 require 'project_folders/monkey_patches'
 require 'project_folders/monkey_patches/project_policy'
-require 'project_folders/monkey_patches/side_fx_project_service'
+require 'project_folders/monkey_patches/project_serializer'
 
 begin
   require 'factory_bot_rails'
@@ -33,7 +33,7 @@ module ProjectFolders
     ActiveSupport.on_load(:action_controller) do
       ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
       ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
-      ::SideFxProjectService.prepend ProjectFolders::MonkeyPatches::SideFxProjectService
+      ::WebApi::V1::ProjectSerializer.prepend ProjectFolders::MonkeyPatches::ProjectSerializer
     end
   end
 end
