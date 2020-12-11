@@ -470,18 +470,27 @@ en-CA:
       subject: 'The status of your initiative has changed'
       preheader: 'The status of your initiative has changed'
     user_digest:
-      commented: '%{authorFirstName} commented:'
-      subject: 'Weekly update of %{organizationName}''s participation platform'
-      preheader: 'Weekly overview of %{organizationName}'
-      title_your_weekly_report: 'Discover what happened last week'
-      text_introduction: 'We composed a list of ideas that had most traction over the last week on the participation platform. Click any of them to join the conversation.'
-      cta_go_to_the_platform: 'Go to the platform'
-      title_no_activity_past_week: 'No activity in the past week'
-      title_initiatives_past_week: 'Initiatives started in the past week'
-      title_successful_initiatives_past_week: 'initiatives that reached the threshold in the past week'
-      today_by_author: 'Today by %{author}'
-      yesterday_by_author: 'Yesterday by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
+      subject: "Your activity on the participation platform of %{organizationName}"
+      commented: "%{authorFirstName} commented:"
+      preheader: "Weekly overview of %{organizationName}"
+      title_your_weekly_report: "Discover what happened last week"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "Go to the platform"
+      title_no_activity_past_week: "No activity in the past week"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "Today by %{author}"
+      yesterday_by_author: "Yesterday by %{author}"
+      x_days_ago_by_author: "%{x} days ago by %{author}"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'by %{authorName}'
       cta_process_initiative: 'Take this initiative to the next steps'
@@ -494,7 +503,7 @@ en-CA:
       action_comment: '%{textComment} on existing ideas'
       action_published_idea: 'Published idea'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends now on %{fbLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Add an image'
@@ -517,7 +526,7 @@ en-CA:
       action_add_image: '%{addImageLink} to increase visibility'
       action_published_idea: 'Published idea'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends now on %{fbLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Add an image'
