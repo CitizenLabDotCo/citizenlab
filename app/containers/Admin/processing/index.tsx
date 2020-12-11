@@ -727,7 +727,7 @@ const Data = adopt<DataProps, InputProps>({
       <GetIdeas
         type="paginated"
         pageSize={200000}
-        projectIds={[projects?.projectsList?.[0].id || '']}
+        projectIds={[projects?.projectsList?.[0]?.id || '']}
         cache={false}
         mini={true}
         sort="new"

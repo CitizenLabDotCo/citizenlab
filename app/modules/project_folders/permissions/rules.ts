@@ -2,7 +2,32 @@ import { IProjectFolderData } from './../services/projectFolders';
 import { definePermissionRule } from 'services/permissions/permissions';
 import { isProjectFolderModerator } from './roles';
 import { isAdmin } from 'services/permissions/roles';
+import {
+  canAccessRoute,
+  isAdminRoute,
+  MODERATOR_ROUTES,
+} from 'services/permissions/rules/routePermissions';
+import { IRouteItem } from 'services/permissions/permissions';
 import { IUser } from 'services/users';
+import { ITenantData } from 'services/tenant';
+
+export const canModerate = (user: IUser, folder: IProjectFolderData) =>
+  isAdmin(user) || isProjectFolderModerator(user, folder.id);
+
+const canAccessRouteExtended = (
+  item: IRouteItem,
+  user: IUser | null,
+  tenant: ITenantData
+) => {
+  return (
+    canAccessRoute(item, user, tenant) ||
+    (isAdminRoute(item) &&
+      isProjectFolderModerator(user) &&
+      MODERATOR_ROUTES.includes(item.path))
+  );
+};
+
+definePermissionRule('route', 'access', canAccessRouteExtended);
 
 definePermissionRule(
   'project_folder',
@@ -27,9 +52,6 @@ definePermissionRule(
     return isAdmin(user);
   }
 );
-
-export const canModerate = (user: IUser, folder: IProjectFolderData) =>
-  isAdmin(user) || isProjectFolderModerator(user, folder.id);
 
 definePermissionRule(
   'project_folder',

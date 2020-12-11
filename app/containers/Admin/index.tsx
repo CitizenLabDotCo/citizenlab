@@ -1,8 +1,11 @@
 import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState } from 'services/globalState';
-import { isAdmin, isModerator } from 'services/permissions/roles';
+
+// permissions
 import useAuthUser from 'hooks/useAuthUser';
+import { hasPermission } from 'services/permissions';
+import HasPermission from 'components/HasPermission';
 
 // components
 import Sidebar from './sideBar/';
@@ -107,18 +110,22 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
+    const userCanViewAdmin = () =>
+      hasPermission({
+        action: 'access',
+        item: { type: 'route', path: '/admin' },
+      });
 
     useEffect(() => {
       if (
         authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin(authUser))
+        (authUser !== undefined && !userCanViewAdmin())
       ) {
         clHistory.push('/');
       }
     }, [authUser]);
 
-    if (!userCanViewAdmin(authUser)) {
+    if (!userCanViewAdmin()) {
       return null;
     }
 
@@ -138,7 +145,10 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/processing');
 
     return (
-      <>
+      <HasPermission
+        item={{ type: 'route', path: '/admin/dashboard' }}
+        action="access"
+      >
         <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn
@@ -149,7 +159,7 @@ const AdminPage = memo<Props & WithRouterProps>(
             {children}
           </RightColumn>
         </Container>
-      </>
+      </HasPermission>
     );
   }
 );

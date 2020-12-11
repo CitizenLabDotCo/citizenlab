@@ -271,7 +271,11 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
   const projectId = response.data.id;
   await streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [
+      `${API_PATH}/projects`,
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/users/me`,
+    ],
   });
   return response;
 }
@@ -287,7 +291,11 @@ export async function updateProject(
   );
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [
+      `${API_PATH}/projects`,
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/users/me`,
+    ],
   });
 
   // TODO: clear partial cache
