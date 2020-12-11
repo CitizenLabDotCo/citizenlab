@@ -3,9 +3,8 @@
  * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
  */
 
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { isNumber } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -13,8 +12,8 @@ import { Icon } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
+// hooks
+import useUser from 'hooks/useUser';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -37,7 +36,6 @@ export const Container = styled.div<{ size: number }>`
 
 export const AvatarImage = styled.img<{
   size: number;
-  padding: number | undefined;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number | undefined;
@@ -46,7 +44,7 @@ export const AvatarImage = styled.img<{
   flex: 0 0 ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
-  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
+  padding: 3px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -70,7 +68,6 @@ const AvatarIcon = styled(Icon)<{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
-  padding: number | undefined;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number | undefined;
@@ -80,7 +77,7 @@ const AvatarIcon = styled(Icon)<{
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   fill: ${({ fillColor }) => fillColor || ''};
-  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
+  padding: 3px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -113,14 +110,12 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
   border: solid 2px #fff;
 `;
 
-interface InputProps {
+interface Props {
   userId: string | null;
   size: string;
   badgeSize?: string;
   isLinkToProfile?: boolean;
-  hasHoverEffect?: boolean;
   hideIfNoAvatar?: boolean | undefined;
-  padding?: string;
   fillColor?: string;
   fillHoverColor?: string;
   borderThickness?: string;
@@ -132,62 +127,47 @@ interface InputProps {
   verified?: boolean | null;
 }
 
-interface DataProps {
-  user: GetUserChildProps;
-}
+const Avatar = memo(
+  ({
+    hideIfNoAvatar,
+    isLinkToProfile,
+    fillColor,
+    fillHoverColor,
+    borderColor,
+    borderHoverColor,
+    bgColor,
+    moderator,
+    className,
+    verified,
+    userId,
+  }: Props & InjectedIntlProps) => {
+    // static defaultProps = {
+    //   padding: '3px',
+    //   fillColor: lighten(0.2, colors.label),
+    //   fillHoverColor: colors.label,
+    //   borderThickness: '1px',
+    //   borderColor: 'transparent',
+    //   borderHoverColor: colors.label,
+    //   bgColor: 'transparent',
+    // };
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
-  static defaultProps = {
-    hasHoverEffect: false,
-    padding: '3px',
-    fillColor: lighten(0.2, colors.label),
-    fillHoverColor: colors.label,
-    borderThickness: '1px',
-    borderColor: 'transparent',
-    borderHoverColor: colors.label,
-    bgColor: 'transparent',
-  };
-
-  render() {
-    const {
-      hideIfNoAvatar,
-      user,
-      isLinkToProfile,
-      fillColor,
-      fillHoverColor,
-      borderColor,
-      borderHoverColor,
-      bgColor,
-      moderator,
-      className,
-      verified,
-    } = this.props;
+    const user = useUser({ userId });
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       const profileLink = `/profile/${user.attributes.slug}`;
       // In dev mode, user.attributes.slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const size = parseInt(this.props.size, 10);
-      const padding = parseInt(this.props.padding as string, 10);
-      const borderThickness = parseInt(
-        this.props.borderThickness as string,
-        10
-      );
-      const hasHoverEffect = !!(
-        (isLinkToProfile && hasValidProfileLink) ||
-        this.props.hasHoverEffect
-      );
+      const size = parseInt(size, 10);
+      const padding = '3px';
+      const borderThickness = parseInt(borderThickness as string, 10);
+      const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSize = size > 160 ? 'large' : 'medium';
       const avatarSrc =
         user.attributes.avatar && user.attributes.avatar[imageSize];
       const containerSize = size + padding * 2 + borderThickness * 2;
-      const badgeSize = this.props.badgeSize
-        ? parseInt(this.props.badgeSize, 10)
+      const badgeSize = badgeSize
+        ? parseInt(badgeSize, 10)
         : size / (size < 40 ? 1.8 : 2.3);
 
       const AvatarComponent = (
@@ -200,7 +180,6 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               src={avatarSrc}
               alt=""
               size={containerSize}
-              padding={padding}
               borderThickness={borderThickness}
               borderColor={borderColor}
               borderHoverColor={
@@ -215,7 +194,6 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               size={containerSize}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
-              padding={padding}
               borderThickness={borderThickness}
               borderColor={borderColor}
               borderHoverColor={
@@ -254,18 +232,6 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
     return null;
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
-});
-
-const AvatarWithHoc = injectIntl<Props>(Avatar);
-
-const WrappedAvatar = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AvatarWithHoc {...inputProps} {...dataProps} />}
-  </Data>
 );
 
-export default WrappedAvatar;
+export default injectIntl(Avatar);
