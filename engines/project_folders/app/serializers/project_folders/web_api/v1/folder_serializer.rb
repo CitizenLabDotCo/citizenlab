@@ -18,5 +18,6 @@ module ProjectFolders
     has_one :admin_publication, serializer: ::WebApi::V1::AdminPublicationSerializer
 
     has_many :images, serializer: ::WebApi::V1::ImageSerializer
+
   end
 end

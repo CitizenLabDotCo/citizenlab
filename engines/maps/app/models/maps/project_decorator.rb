@@ -4,4 +4,5 @@ module Maps::ProjectDecorator
   included do
     has_one :map_config, class_name: 'Maps::MapConfig', dependent: :destroy
   end
+
 end

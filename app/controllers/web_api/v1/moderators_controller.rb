@@ -2,7 +2,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
   before_action :do_authorize, except: [:index]
   before_action :set_moderator, only: [:show, :destroy]
-
+  
   skip_after_action :verify_authorized, only: [:users_search]
   skip_after_action :verify_policy_scoped, only: [:index]
 
@@ -34,7 +34,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
     if @user.save
       SideFxModeratorService.new.after_create(@user, Project.find(params[:project_id]), current_user)
       render json: WebApi::V1::UserSerializer.new(
-        @user,
+        @user, 
         params: fastjson_params
         ).serialized_json, status: :created
     else
