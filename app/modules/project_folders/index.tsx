@@ -17,7 +17,6 @@ import { isProjectFolderModerator } from './permissions/roles';
 import { isAdmin } from 'services/permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
@@ -54,6 +53,9 @@ const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => (
 );
 
 const configuration: ModuleConfiguration = {
+  afterMountApplication: () => {
+    import('./permissions/rules');
+  },
   outlets: {
     'app.containers.Navbar.projectlist.item': (props) => {
       const { localize, publication } = props;
