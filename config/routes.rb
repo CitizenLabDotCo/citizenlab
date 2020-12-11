@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount PublicApi::Engine => "/api", as: 'public_api'
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
+
       concern :votable do
         resources :votes, except: [:update], shallow: true do
           post :up, on: :collection
@@ -73,6 +75,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+
 
       scope :users do
         resources :custom_fields, controller: 'user_custom_fields' do
