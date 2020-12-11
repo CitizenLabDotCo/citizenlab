@@ -96,12 +96,12 @@ resource "Invites" do
       end
 
       describe do
-        before do
+        before do 
           @user = create(:user)
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
-
+        
         example_request '[error] XLSX export by a normal user', document: false do
           expect(status).to eq 401
         end
@@ -138,7 +138,7 @@ resource "Invites" do
           expect(Invite.all.map{|i| i.invitee.email}).to match_array emails
           expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match_array [group_ids]
           expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
-          expect(Invite.all.all? { |i| i.invitee.project_moderator?(project.id) }).to be true
+          expect(Invite.all.map{|i| i.invitee.project_moderator?(project.id)}.uniq).to eq [true]
           expect(Invite.all.map{|i| i.invitee.locale}.uniq).to eq [locale]
         end
       end
