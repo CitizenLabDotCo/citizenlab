@@ -1,19 +1,8 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // components
 import { Helmet } from 'react-helmet';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
-import GetProjectFolder, {
-  GetProjectFolderChildProps,
-} from 'modules/project_folders/resources/GetProjectFolder';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -27,21 +16,23 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-interface InputProps {
+// hooks
+import useTenantLocales from 'hooks/useTenantLocales';
+import useAuthUser from 'hooks/useAuthUser';
+import useLocale from 'hooks/useLocale';
+import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
+
+interface Props {
   projectFolderSlug: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
-  projectFolder: GetProjectFolderChildProps;
-  authUser: GetAuthUserChildProps;
-}
+const ProjectFolderShowPageMeta = memo(
+  ({ projectFolderSlug, intl }: Props & InjectedIntlProps) => {
+    const locale = useLocale();
+    const tenantLocales = useTenantLocales();
+    const projectFolder = useProjectFolder({ projectFolderSlug });
+    const authUser = useAuthUser();
 
-interface Props extends InputProps, DataProps {}
-
-const Meta: React.SFC<Props & InjectedIntlProps> = memo(
-  ({ locale, tenantLocales, projectFolder, authUser, intl }) => {
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenantLocales) &&
@@ -72,7 +63,8 @@ const Meta: React.SFC<Props & InjectedIntlProps> = memo(
         <Helmet>
           <title>
             {`${
-              authUser && authUser.attributes.unread_notifications
+              !isNilOrError(authUser) &&
+              authUser.attributes.unread_notifications
                 ? `(${authUser.attributes.unread_notifications}) `
                 : ''
             }
@@ -103,21 +95,4 @@ const Meta: React.SFC<Props & InjectedIntlProps> = memo(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
-  projectFolder: ({ projectFolderSlug, render }) => (
-    <GetProjectFolder projectFolderSlug={projectFolderSlug}>
-      {render}
-    </GetProjectFolder>
-  ),
-  authUser: <GetAuthUser />,
-});
-
-const MetaWithHoc = injectIntl<Props>(Meta);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <MetaWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(ProjectFolderShowPageMeta);
