@@ -34,10 +34,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.picks',
     defaultMessage: 'Picks: {picksNumber}',
   },
-  basketsCountTooltip: {
-    id: 'app.components.admin.PostManager.PostPreview.basketsCountTooltip',
+  pbItemCountTooltip: {
+    id: 'app.components.admin.PostManager.PostPreview.pbItemCountTooltip',
     defaultMessage:
-      'The number of users that added this idea to their participatory budget',
+      "The number of times this has been included in other participants' participatory budgets",
   },
   cancelEdit: {
     id: 'app.components.admin.PostManager.PostPreview.cancelEdit',

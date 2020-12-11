@@ -148,10 +148,10 @@ export default defineMessages({
     defaultMessage:
       'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
   },
-  basketsCountTooltip: {
-    id: 'app.components.admin.PostManager.basketsCountTooltip',
+  pbItemCountTooltip: {
+    id: 'app.components.admin.PostManager.pbItemCountTooltip',
     defaultMessage:
-      'The number of users that added this idea to their participatory budget',
+      "The number of times this has been included in other participants' participatory budgets",
   },
   exportIdeas: {
     id: 'app.components.admin.PostManager.exportIdeas',
