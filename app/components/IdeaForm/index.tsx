@@ -949,8 +949,12 @@ class IdeaForm extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
-  project: ({ projectId }) => <GetProject projectId={projectId} />,
-  phases: ({ projectId }) => <GetPhases projectId={projectId} />,
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phases: ({ projectId, render }) => (
+    <GetPhases projectId={projectId}>{render}</GetPhases>
+  ),
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
   },
