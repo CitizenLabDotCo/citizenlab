@@ -360,7 +360,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
                 <IdeasEditButtonBar
                   elementId="e2e-idea-edit-save-button"
                   form="idea-form"
-                  projectId={projectId}
                 />
               </ButtonBarContainer>
             </FormContainer>
