@@ -544,12 +544,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasIdeas = !isNilOrError(list) && list.length > 0;
     const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
-    const smallerThanBigTablet = !!(
-      windowSize && windowSize <= viewportWidths.largeTablet
-    );
-    const biggerThanSmallTablet = !!(
-      windowSize && windowSize >= viewportWidths.smallTablet
-    );
     const biggerThanLargeTablet = !!(
       windowSize && windowSize >= viewportWidths.largeTablet
     );
