@@ -457,10 +457,8 @@ class WithoutFiltersSidebar extends PureComponent<
                         }
                         hideImagePlaceholder={smallerThanBigTablet}
                         hideIdeaStatus={
-                          !!(
-                            (biggerThanLargeTablet && smallerThan1100px) ||
-                            smallerThanPhone
-                          )
+                          (biggerThanLargeTablet && smallerThan1100px) ||
+                          smallerThanPhone
                         }
                       />
                     ))}
