@@ -154,12 +154,6 @@ export const Card = ({
       !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
     }`}
   >
-    {/* {(!hideImagePlaceholder || (hideImagePlaceholder && image)) && (
-      <ImageWrapper hasImage={!!image}>
-        {image ? <Image src={image} cover={true} alt="" /> : imagePlaceholder}
-      </ImageWrapper>
-    )} */}
-
     {!hideImage && image && (
       <ImageWrapper hasImage={!!image}>
         <Image src={image} cover={true} alt="" />
