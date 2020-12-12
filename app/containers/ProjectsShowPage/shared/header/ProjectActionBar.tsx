@@ -38,7 +38,6 @@ const Container = styled.div`
   opacity: 0;
   pointer-events: none;
   will-change: opacity;
-  overflow: hidden;
 
   &.visible {
     opacity: 100;

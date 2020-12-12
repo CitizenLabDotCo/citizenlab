@@ -31,7 +31,6 @@ import {
   defaultCardStyle,
   viewportWidths,
 } from 'utils/styleUtils';
-import { transparentize } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
@@ -128,8 +127,8 @@ const EventDate = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: ${transparentize(0.9, colors.label)};
-  border: solid 1px ${transparentize(0.5, colors.label)};
+  background: #fff;
+  border: solid 1px ${colors.label};
   border-bottom: none;
 `;
 

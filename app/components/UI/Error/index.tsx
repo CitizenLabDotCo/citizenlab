@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { get, isArray, isEmpty, uniqBy } from 'lodash-es';
+import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import { darken } from 'polished';
@@ -198,7 +198,6 @@ export default class Error extends PureComponent<Props, State> {
       apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
         ? uniqBy(apiErrors, 'error')
         : undefined;
-
     return (
       <CSSTransition
         classNames="error"
@@ -268,9 +267,20 @@ export default class Error extends PureComponent<Props, State> {
 
                       if (errorMessage) {
                         // Variables for inside messages.js
-                        const value = get(error, 'value', null);
-                        const row = get(error, 'row', null);
-                        const rows = get(error, 'rows', null);
+                        const payload = error?.payload ?? null;
+                        const value = error?.value ?? null;
+                        const row = error?.row ?? null;
+                        const rows = error?.rows ?? null;
+
+                        let values = {
+                          row: <strong>{row}</strong>,
+                          rows: rows ? (
+                            <strong>{rows.join(', ')}</strong>
+                          ) : null,
+                          value: <strong>'{value}'</strong>,
+                        };
+
+                        values = payload ? { ...payload, ...values } : values;
 
                         if (value || row || rows) {
                           return (
@@ -278,16 +288,10 @@ export default class Error extends PureComponent<Props, State> {
                               {dedupApiErrors.length > 1 && (
                                 <Bullet aria-hidden>•</Bullet>
                               )}
+
                               <FormattedMessage
                                 {...errorMessage}
-                                values={{
-                                  row: <strong>{row}</strong>,
-                                  rows: rows ? (
-                                    <strong>{rows.join(', ')}</strong>
-                                  ) : null,
-                                  value: <strong>'{value}'</strong>,
-                                  ideasCount: (error as CLError).ideas_count, // again with union types...
-                                }}
+                                values={values}
                               />
                             </ErrorListItem>
                           );

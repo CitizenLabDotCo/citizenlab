@@ -5,6 +5,78 @@
 ### Changed
 - Idea cards are more compact, while displaying more information. It now shows an image, part of the idea body and the idea status.
 
+## 2020-12-08
+
+### Fixed
+- Issues with password reset and invitation emails
+- No more idea duplicates showing up on idea overview pages
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
+
+### Changed
+- Increased color contrast of inactive timeline phases text to meet accesibility standard
+- Increased color contrast of event card left-hand event dates to meet accesibility standard
+- Increased color contrast of List/Map toggle component to meet accesibility standard
+
+### Added
+- Ability to tag ideas manually and automatically in the admin.
+
+## 2020-12-02
+
+### Changed
+- By default the last active phase instead of the last phase is now selected when a timeline project has no active phase
+
+### Fixed
+- The empty white popup box won't pop up anymore after clicking the map view in non-ideation phases.
+- Styling mistakes in the idea page voting and participatory budget boxes.
+- The tooltip shown when hovering over a disabled idea posting button in the project page sticky top bar is no longer partially hidden
+
+## 2020-12-01
+
+### Changed
+- Ideas are now still editable when idea posting is disabled for a project.
+
+## 2020-11-30
+
+### Added
+- Ability to create new and edit existing idea statuses
+
+### Fixed
+- The page no longer refreshes when accepting the cookie policy
+
+### Changed
+- Segment is no longer used to connect other tools, instead following tools are integrated natively
+  - Google Analytics
+  - Google Tag Manager
+  - Intercom
+  - Satismeter
+  - Segment, disabled by default
+- Error messages for invitations, logins and password resets are now clearer.
+
+## 2020-11-27
+
+### Fixed
+
+- Social authentication with Google when the user has no avatar.
+
+### Changed
+
+- Random user demographics on project copy.
+
+## 2020-11-26
+
+### Added
+- Some specific copy for Vitry-sur-Seine
+
+## 2020-11-25
+
+### Fixed
+- Sections with extra padding or funky widths in Admin were returned to normal
+- Added missing copy from previous release
+- Copy improvements in French
+
+### Changed
+- Proposal and idea descriptions now require 30 characters instead of the previous 500
+
 ## 2020-11-23
 
 ### Added
@@ -54,13 +126,8 @@
 - The project header image is screen reader friendly.
 - The similar ideas feature doesn't make backend requests anymore when it's not enabled.
 
-### Changed 
+### Changed
 - Areas are requested with a max. of 500 now, so more areas are visible in e.g. the admin dashboard.
-
-## 2020-11-20
-
-### Changed 
-- Refactoring of the feature 'project folders' in the backend in preparation for the open-sourcing.
 
 ## 2020-11-18
 
@@ -97,7 +164,7 @@
 
 #### Integration of trial management into AdminHQ
 - The lifecycle of the trials created from AdminHQ and from the website has been unified.
-- After 14 days, a trial platform goes to Purgatory (`expired_trial`) and is no longer accessible. Fourteen days later, the expired trial will be removed altogether (at this point, there is no way back). 
+- After 14 days, a trial platform goes to Purgatory (`expired_trial`) and is no longer accessible. Fourteen days later, the expired trial will be removed altogether (at this point, there is no way back).
 - The end date of a trial can be modified in AdminHQ (> Edit tenant > Internal tab).
 
 ## 2020-11-06
@@ -163,7 +230,7 @@
 
 ### Fixed
 - Stretched images in 'avatar bubbles'
-- Input fields where other people can be @mentioned don't grow too wide anymore 
+- Input fields where other people can be @mentioned don't grow too wide anymore
 - Linebar charts overlapping elements in the admin dashboard
 
 ## 2020-10-14
@@ -269,7 +336,7 @@
 
 ### Added
 - Pricing plans in AdminHQ (Pricing plan limitations are not enforced).
-- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.  
+- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.
 
 ### Changed
 - Tidying up the form for creating new tenants in AdminHQ (removing unused features, adding titles and descriptions, reordering features, adding new feature flags, removing fields for non-relevant locales).

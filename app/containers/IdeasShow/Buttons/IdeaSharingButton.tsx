@@ -1,5 +1,5 @@
 import React from 'react';
-import SharingDropdownButton from 'components/SharingDropdownButton';
+import SharingDropdownButton from 'components/Sharing/SharingDropdownButton';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
