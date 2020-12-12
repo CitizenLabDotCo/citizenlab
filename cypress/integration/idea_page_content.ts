@@ -69,12 +69,13 @@ describe('Idea Page', () => {
         .then((idea) => {
           ideaId = idea.body.data.id;
           cy.visit(`/ideas/${ideaTitle}`);
+          cy.get('#e2e-idea-show');
           cy.get('#e2e-idea-show-page-content');
-          cy.wait(1000);
         });
     });
 
     it('has a correct initial idea status', () => {
+      cy.get('#e2e-idea-status-badge');
       cy.get('#e2e-idea-status-badge').contains('proposed');
     });
 
@@ -120,13 +121,13 @@ describe('Idea Page', () => {
         })
         .then((idea) => {
           ideaId = idea.body.data.id;
+          cy.visit(`/ideas/${ideaTitle}`);
+          cy.get('#e2e-idea-show');
+          cy.get('#e2e-idea-show-page-content');
         });
     });
 
     it('displays the location on the idea page and the map pops up', () => {
-      cy.visit(`/ideas/${ideaTitle}`);
-      cy.get('#e2e-idea-show');
-      cy.get('#e2e-idea-show-page-content');
       cy.get('#e2e-map-popup:visible').click();
       cy.get('#e2e-map');
     });
