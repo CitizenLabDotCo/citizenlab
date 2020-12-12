@@ -7,7 +7,7 @@ import isFieldEnabled from '../isFieldEnabled';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import StatusBadge from 'components/StatusBadge';
+import Status from './Status';
 import Location from './Location';
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
@@ -84,7 +84,7 @@ const MetaInformation = ({
     return (
       <Container className={className}>
         <StyledPostedBy authorId={authorId} ideaId={ideaId} />
-        <StatusBadge statusId={statusId} />
+        <Status statusId={statusId} />
         {topicsEnabled && <IdeaTopics ideaId={ideaId} />}
         {locationEnabled && <Location projectId={projectId} ideaId={ideaId} />}
         {attachmentsEnabled && <Attachments ideaId={ideaId} />}

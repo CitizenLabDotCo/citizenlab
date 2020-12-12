@@ -1,58 +1,33 @@
 import React from 'react';
 import { Header, Item } from './';
+
+// hooks
 import useIdeaStatus from 'hooks/useIdeaStatus';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-import T from 'components/T';
+// components
+import StatusBadge from 'components/StatusBadge';
 
-// style
-import styled from 'styled-components';
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-const Container = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.xs}px;
-  line-height: 16px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 6px 12px;
-  display: inline-block;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  background-color: ${(props: any) => props.color};
-`;
-
 interface Props {
-  className?: string;
   statusId: string;
 }
 
-const Status = ({
-  className,
-  statusId,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const Status = ({ statusId }: Props) => {
   const ideaStatus = useIdeaStatus({ statusId });
 
   if (!isNilOrError(ideaStatus)) {
-    const color = ideaStatus ? ideaStatus.attributes.color : '#bbb';
-
     return (
       <Item>
-        <Header>{formatMessage(messages.currentStatus)}</Header>
-        <Container
-          id="e2e-idea-status-badge"
-          className={className}
-          color={color}
-        >
-          <T value={ideaStatus.attributes.title_multiloc} />
-        </Container>
+        <Header>
+          <FormattedMessage {...messages.currentStatus} />
+        </Header>
+        <StatusBadge id="e2e-idea-status-badge" statusId={statusId} />
       </Item>
     );
   }
@@ -60,4 +35,4 @@ const Status = ({
   return null;
 };
 
-export default injectIntl(Status);
+export default Status;
