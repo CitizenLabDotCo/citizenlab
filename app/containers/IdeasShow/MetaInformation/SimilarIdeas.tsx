@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { Header, Item } from './';
 
 // styles
 import styled from 'styled-components';
@@ -16,6 +17,11 @@ import tracks from '../tracks';
 
 // hooks
 import useSimilarIdeas from 'hooks/useSimilarIdeas';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 const IdeaList = styled.ul`
   margin: 0;
@@ -54,31 +60,35 @@ interface Props {
   ideaId: string;
 }
 
-const SimilarIdeas = memo<Props>(({ className, ideaId }) => {
-  const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+const SimilarIdeas = memo<Props & InjectedIntlProps>(
+  ({ className, ideaId, intl: { formatMessage } }) => {
+    const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+    const onClickIdeaLink = (index: number) => () => {
+      trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
+    };
 
-  const onClickIdeaLink = (index: number) => () => {
-    trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
-  };
+    if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
+      return (
+        <Item>
+          <Header>{formatMessage(messages.similarIdeas)}</Header>
+          <IdeaList className={className}>
+            {similarIdeas.map((similarIdea, index) => (
+              <IdeaListItem key={similarIdea.id}>
+                <IdeaLink
+                  to={`/ideas/${similarIdea.attributes.slug}`}
+                  onClick={onClickIdeaLink(index)}
+                >
+                  <T value={similarIdea.attributes.title_multiloc} />
+                </IdeaLink>
+              </IdeaListItem>
+            ))}
+          </IdeaList>
+        </Item>
+      );
+    }
 
-  if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
-    return (
-      <IdeaList className={className}>
-        {similarIdeas.map((similarIdea, index) => (
-          <IdeaListItem key={similarIdea.id}>
-            <IdeaLink
-              to={`/ideas/${similarIdea.attributes.slug}`}
-              onClick={onClickIdeaLink(index)}
-            >
-              <T value={similarIdea.attributes.title_multiloc} />
-            </IdeaLink>
-          </IdeaListItem>
-        ))}
-      </IdeaList>
-    );
+    return null;
   }
+);
 
-  return null;
-});
-
-export default SimilarIdeas;
+export default injectIntl(SimilarIdeas);

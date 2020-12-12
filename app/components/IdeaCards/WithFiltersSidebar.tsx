@@ -544,10 +544,19 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasIdeas = !isNilOrError(list) && list.length > 0;
     const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
-    const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
-    const smallerThan1440px = windowSize && windowSize <= 1440;
-    const smallerThanPhone = windowSize && windowSize <= viewportWidths.phone;
+    const smallerThanBigTablet = !!(
+      windowSize && windowSize <= viewportWidths.largeTablet
+    );
+    const biggerThanSmallTablet = !!(
+      windowSize && windowSize >= viewportWidths.smallTablet
+    );
+    const biggerThanLargeTablet = !!(
+      windowSize && windowSize >= viewportWidths.largeTablet
+    );
+    const smallerThan1440px = !!(windowSize && windowSize <= 1440);
+    const smallerThanPhone = !!(
+      windowSize && windowSize <= viewportWidths.phone
+    );
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
     const filtersActive =
       selectedIdeaFilters.search ||
@@ -719,7 +728,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                         participationMethod={participationMethod}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
-                        hideImage={!!smallerThan1440px}
+                        hideImage={biggerThanLargeTablet && smallerThan1440px}
+                        hideImagePlaceholder={smallerThan1440px}
                         hideIdeaStatus={
                           !!(
                             (biggerThanLargeTablet && smallerThan1440px) ||

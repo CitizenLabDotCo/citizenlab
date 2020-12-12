@@ -96,7 +96,7 @@ const AssignedContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;

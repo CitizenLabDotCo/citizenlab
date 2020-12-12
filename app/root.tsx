@@ -1,6 +1,6 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
@@ -13,11 +13,11 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
-import { initializeAnalytics } from 'utils/analytics';
 import { init } from '@sentry/browser';
 import { isError } from 'util';
 import GetTenant from 'resources/GetTenant';
 import OutletsProvider from 'containers/OutletsProvider';
+import modules from 'modules';
 
 const rootRoute = {
   component: App,
@@ -25,6 +25,10 @@ const rootRoute = {
 };
 
 const Root = () => {
+  useEffect(() => {
+    modules.afterMountApplication();
+  }, []);
+
   return (
     <GetTenant>
       {(tenant) => {
@@ -52,11 +56,17 @@ const Root = () => {
   );
 };
 
-render(<Root />, document.getElementById('app'));
+const mountApplication = () => {
+  try {
+    modules.beforeMountApplication();
+  } finally {
+    render(<Root />, document.getElementById('app'));
+  }
+};
 
-initializeAnalytics();
+mountApplication();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.SENTRY_DSN) {
   import('@sentry/integrations').then((Integrations) => {
     init({
       dsn: process.env.SENTRY_DSN,

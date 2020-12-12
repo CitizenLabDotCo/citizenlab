@@ -87,6 +87,7 @@ interface Props {
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
   hideImage?: boolean;
+  hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
 }
 
@@ -99,6 +100,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     participationContextId,
     participationContextType,
     hideImage,
+    hideImagePlaceholder,
     hideIdeaStatus,
   }) => {
     const idea = useIdea({ ideaId });
@@ -163,6 +165,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
           </ImagePlaceholderContainer>
         }
         hideImage={hideImage}
+        hideImagePlaceholder={hideImagePlaceholder}
         body={
           <BodyWrapper>
             {authorId && (

@@ -15,12 +15,15 @@ import {
   fontSizes,
 } from 'utils/styleUtils';
 
+const cardPadding = '17px';
+const cardInnerHeight = '162px';
+
 const Container = styled(Link)`
   width: 100%;
-  height: 204px;
+  min-height: calc(162px + ${cardPadding} + ${cardPadding});
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: ${cardPadding};
   cursor: pointer;
   ${defaultCardStyle};
 
@@ -36,9 +39,9 @@ const Container = styled(Link)`
 `;
 
 const ImageWrapper = styled.div<{ hasImage: boolean }>`
-  flex: 0 0 162px;
-  width: 162px;
-  height: 162px;
+  flex: 0 0 ${cardInnerHeight};
+  width: ${cardInnerHeight};
+  height: ${cardInnerHeight};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,20 +50,35 @@ const ImageWrapper = styled.div<{ hasImage: boolean }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px
     ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 100%;
+    width: 100%;
+    height: ${cardInnerHeight};
+    margin-bottom: 18px;
+  `}
 `;
 
 const Image = styled(LazyImage)`
-  flex: 0 0 162px;
-  width: 162px;
-  height: 162px;
+  flex: 0 0 ${cardInnerHeight};
+  width: ${cardInnerHeight};
+  height: ${cardInnerHeight};
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 100%;
+    width: 100%;
+    height: ${cardInnerHeight};
+  `}
 `;
 
 const ContentWrapper = styled.div`
-  height: 162px;
+  min-height: ${cardInnerHeight};
   flex: 0 1 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-top: 2px;
+  padding-bottom: 2px;
 `;
 
 const Header = styled.header`
@@ -105,6 +123,7 @@ interface Props {
   image: string | null;
   imagePlaceholder: JSX.Element;
   hideImage?: boolean;
+  hideImagePlaceholder?: boolean;
   author?: {
     name: string;
     id: string;
@@ -122,6 +141,7 @@ export const Card = ({
   image,
   imagePlaceholder,
   hideImage,
+  hideImagePlaceholder,
   title,
   body,
   footer,
@@ -134,10 +154,20 @@ export const Card = ({
       !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
     }`}
   >
-    {!hideImage && (
+    {/* {(!hideImagePlaceholder || (hideImagePlaceholder && image)) && (
       <ImageWrapper hasImage={!!image}>
         {image ? <Image src={image} cover={true} alt="" /> : imagePlaceholder}
       </ImageWrapper>
+    )} */}
+
+    {!hideImage && image && (
+      <ImageWrapper hasImage={!!image}>
+        <Image src={image} cover={true} alt="" />
+      </ImageWrapper>
+    )}
+
+    {!hideImagePlaceholder && !image && (
+      <ImageWrapper hasImage={!!image}>{imagePlaceholder}</ImageWrapper>
     )}
 
     <ContentWrapper>

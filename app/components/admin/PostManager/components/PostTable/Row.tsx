@@ -54,7 +54,7 @@ type Props = {
   type: ManagerType;
   post: IIdeaData | IInitiativeData;
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[];
+  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   onUnselect: () => void;

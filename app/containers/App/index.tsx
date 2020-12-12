@@ -177,6 +177,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }));
       trackPage(newLocation.pathname);
     });
+    trackPage(location.pathname);
 
     smoothscroll.polyfill();
 
