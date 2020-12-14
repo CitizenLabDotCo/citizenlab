@@ -5,14 +5,15 @@ export default defineMessages({
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
   },
-  noFilteredIdeas: {
-    id: 'app.containers.IdeaCards.noFilteredIdeas',
-    defaultMessage: 'No ideas found',
-  },
-  tryOtherFilter: {
-    id: 'app.containers.IdeaCards.tryOtherFilter',
+  noFilteredResults: {
+    id: 'app.containers.IdeaCards.noFilteredResults',
     defaultMessage:
-      "Try adjusting your search or filter to find what you're looking for",
+      'No results found. Please try a different filter or search term.',
+  },
+  tryDifferentFilters: {
+    id: 'app.containers.IdeaCards.tryDifferentFilters',
+    defaultMessage:
+      'No results found. Please try a different filter or search term.',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
@@ -62,18 +63,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.list',
     defaultMessage: 'List',
   },
-  searchPlaceholder: {
-    id: 'app.containers.IdeaCards.searchPlaceholder',
-    defaultMessage: 'Search for an idea',
-  },
-  searchAriaLabel: {
-    id: 'app.containers.IdeaCards.searchAriaLabel',
-    defaultMessage: 'Search for an idea',
-  },
-  xIdeas: {
-    id: 'app.containers.IdeaCards.xIdeas',
+  xResults: {
+    id: 'app.containers.IdeaCards.xResults',
     defaultMessage:
-      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+      '{ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
   all: {
     id: 'app.containers.IdeaCards.all',
@@ -83,14 +76,14 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
   },
-  showIdeas: {
-    id: 'app.containers.IdeaCards.showIdeas',
-    defaultMessage: 'Show ideas',
+  showResults: {
+    id: 'app.containers.IdeaCards.showResults',
+    defaultMessage: 'Show results',
   },
-  showXIdeas: {
-    id: 'app.containers.IdeaCards.showXIdeas',
+  showXResults: {
+    id: 'app.containers.IdeaCards.showXResults',
     defaultMessage:
-      'Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+      'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
