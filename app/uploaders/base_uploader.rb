@@ -1,10 +1,7 @@
-module BaseFileUploader
-  extend ActiveSupport::Concern
+class BaseUploader < CarrierWave::Uploader::Base
 
-  included do
-    if !Rails.env.test? && !Rails.env.development?
-      storage :fog
-    end
+  if !Rails.env.test? && !Rails.env.development?
+    storage :fog
   end
 
   def store_dir
@@ -22,19 +19,13 @@ module BaseFileUploader
         if model.kind_of? Tenant
           model.base_backend_uri
 
-        # Nope, so let's fall back to default carrierwave behavior (s3 bucket
-        # in production)
+          # Nope, so let's fall back to default carrierwave behavior (s3 bucket
+          # in production)
         else
           super
         end
       end
     end
-  end
-
-  def fog_attributes
-    # Deleting consecutive whitespaces in filename because of
-    # https://github.com/fog/fog-aws/issues/160
-    {"Content-Disposition" => "attachment; filename=\"#{model.name.strip.gsub(/\s+/, ' ')}\""}
   end
 
 end
