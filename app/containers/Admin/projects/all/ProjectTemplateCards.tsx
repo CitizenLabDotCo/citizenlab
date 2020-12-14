@@ -121,7 +121,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
     const graphqlTenantLocales = useGraphqlTenantLocales();
     const tenant = useTenant();
 
-    console.log({ tenant });
     const locales = !isNilOrError(tenant)
       ? tenant.data.attributes.settings.core.locales
       : null;
