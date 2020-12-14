@@ -1,44 +1,36 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, {
-  GetTenantLocalesChildProps,
-} from 'resources/GetTenantLocales';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useTenantLocales from 'hooks/useTenantLocales';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-interface InputProps {}
-
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+interface Props {}
 
 const IdeasNewMeta = React.memo<Props & InjectedIntlProps>(
-  ({ intl, authUser, tenantLocales }) => {
-    const { formatMessage } = intl;
+  ({ intl: { formatMessage } }) => {
     const ideasIndexTitle = formatMessage(messages.metaTitle);
     const ideasIndexDescription = formatMessage(messages.metaDescription);
+    const tenantLocales = useTenantLocales();
+    const authUser = useAuthUser();
 
     return (
       <Helmet>
         <title>
           {`
           ${
-            authUser && authUser.attributes.unread_notifications
+            !isNilOrError(authUser) && authUser.attributes.unread_notifications
               ? `(${authUser.attributes.unread_notifications}) `
               : ''
           }
@@ -56,15 +48,4 @@ const IdeasNewMeta = React.memo<Props & InjectedIntlProps>(
   }
 );
 
-const IdeasNewMetaWithHoc = injectIntl<Props>(IdeasNewMeta);
-
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <IdeasNewMetaWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default injectIntl(IdeasNewMeta);
