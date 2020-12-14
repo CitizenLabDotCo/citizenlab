@@ -425,8 +425,6 @@
   "app.components.admin.PostManager.allStatuses": "All statuses",
   "app.components.admin.PostManager.allTopics": "All topics",
   "app.components.admin.PostManager.anyAssignment": "Any assignment",
-  "app.components.admin.PostManager.anyFeedbackStatusIdeas": "All ideas",
-  "app.components.admin.PostManager.anyFeedbackStatusInitiatives": "{tenantName, select, stirlingcouncil {All petitions} other {All proposals}}",
   "app.components.admin.PostManager.assignedTo": "{assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Assigned to me",
   "app.components.admin.PostManager.assignee": "Assignee",

@@ -425,8 +425,6 @@
   "app.components.admin.PostManager.allStatuses": "",
   "app.components.admin.PostManager.allTopics": "",
   "app.components.admin.PostManager.anyAssignment": "",
-  "app.components.admin.PostManager.anyFeedbackStatusIdeas": "",
-  "app.components.admin.PostManager.anyFeedbackStatusInitiatives": "",
   "app.components.admin.PostManager.assignedTo": "",
   "app.components.admin.PostManager.assignedToMe": "",
   "app.components.admin.PostManager.assignee": "",
