@@ -24,11 +24,7 @@ module ProjectFolders
       return unless params.require(:project).key?(:folder_id)
 
       folder_id = params.dig(:project, :folder_id)
-      parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: folder_id)&.id
-      raise ActiveRecord::RecordNotFound if folder_id.present? && parent_id.nil?
-
-      @project.build_admin_publication unless @project.admin_publication
-      @project.admin_publication.assign_attributes(parent_id: parent_id)
+      @project.folder_id = folder_id
     end
 
     def add_new_folder_moderators
