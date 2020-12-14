@@ -13,22 +13,21 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.submitError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  submit: {
-    id: 'app.containers.IdeasEditPage.submit',
-    defaultMessage: 'Submit idea',
+  editedPostSave: {
+    id: 'app.containers.IdeasEditPage.editedPostSave',
+    defaultMessage: 'Save',
   },
   fileUploadError: {
     id: 'app.containers.IdeasEditPage.fileUploadError',
     defaultMessage:
       'One or more files failed to upload. Please check the file size and format and try again.',
   },
-  metaTitle: {
-    id: 'app.containers.IdeasEditPage.metaTitle',
-    defaultMessage: 'Edit your idea for {projectName} | {orgName}',
+  ideasEditMetaTitle: {
+    id: 'app.containers.IdeasEditPage.ideasEditMetaTitle',
+    defaultMessage: 'Edit {postTitle} | {projectName}',
   },
-  metaDescription: {
-    id: 'app.containers.IdeasEditPage.metaDescription',
-    defaultMessage:
-      'Edit your idea. Add new and change old information to make it even better.',
+  ideasEditMetaDescription: {
+    id: 'app.containers.IdeasEditPage.ideasEditMetaDescription',
+    defaultMessage: 'Edit your post. Add new and change old information.',
   },
 });

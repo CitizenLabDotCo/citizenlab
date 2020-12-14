@@ -115,7 +115,7 @@ export default class IdeasEditButtonBar extends PureComponent<Props, State> {
             form={form}
             className="e2e-submit-idea-form"
             processing={processing}
-            text={<FormattedMessage {...messages.submit} />}
+            text={<FormattedMessage {...messages.editedPostSave} />}
             onClick={this.handleOnSubmitButtonClick}
           />
           {submitErrorMessage && (

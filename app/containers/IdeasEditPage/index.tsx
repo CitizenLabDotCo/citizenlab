@@ -308,7 +308,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, project } = this.props;
+      const { remoteIdeaFiles, project, idea } = this.props;
       const {
         locale,
         titleMultiloc,
@@ -325,13 +325,14 @@ class IdeaEditPage extends PureComponent<Props, State> {
           ? descriptionMultiloc[locale] || ''
           : null;
 
-      if (!isNilOrError(project)) {
+      if (!isNilOrError(project) && !isNilOrError(idea)) {
         const projectId = project.id;
         const projectInputTerm = project.attributes.input_term;
+        const ideaId = idea.id;
 
         return (
           <Container id="e2e-idea-edit-page">
-            <IdeasEditMeta />
+            <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
             <FormContainer>
               <Title>
                 <FormattedMessage
