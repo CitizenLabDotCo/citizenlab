@@ -425,8 +425,6 @@
   "app.components.admin.PostManager.allStatuses": "Wszystkie statusy",
   "app.components.admin.PostManager.allTopics": "Wszystkie tematy",
   "app.components.admin.PostManager.anyAssignment": "Wszystkie",
-  "app.components.admin.PostManager.anyFeedbackStatusIdeas": "Wszystkie pomysły",
-  "app.components.admin.PostManager.anyFeedbackStatusInitiatives": "Wszystkie propozycje",
   "app.components.admin.PostManager.assignedTo": "{assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Przydzielony do mnie",
   "app.components.admin.PostManager.assignee": "Moderator",

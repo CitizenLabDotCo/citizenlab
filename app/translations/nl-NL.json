@@ -425,8 +425,6 @@
   "app.components.admin.PostManager.allStatuses": "Alle statussen",
   "app.components.admin.PostManager.allTopics": "Alle thema's",
   "app.components.admin.PostManager.anyAssignment": "Alle toewijzingen",
-  "app.components.admin.PostManager.anyFeedbackStatusIdeas": "Alle ideeën",
-  "app.components.admin.PostManager.anyFeedbackStatusInitiatives": "Alle initiatieven",
   "app.components.admin.PostManager.assignedTo": "{assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Toegewezen aan mij",
   "app.components.admin.PostManager.assignee": "Toegewezen aan",
