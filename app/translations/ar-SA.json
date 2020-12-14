@@ -425,8 +425,6 @@
   "app.components.admin.PostManager.allStatuses": "جميع الحالات",
   "app.components.admin.PostManager.allTopics": "جميع الموضوعات",
   "app.components.admin.PostManager.anyAssignment": "أي مهمة",
-  "app.components.admin.PostManager.anyFeedbackStatusIdeas": "جميع الأفكار",
-  "app.components.admin.PostManager.anyFeedbackStatusInitiatives": "جميع المُقترحات",
   "app.components.admin.PostManager.assignedTo": "{assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "معيّن إلي",
   "app.components.admin.PostManager.assignee": "المعيّن إليه",
