@@ -24,7 +24,6 @@ export default function useTags(
   }, []);
 
   const onProjectsChange = useCallback((projects: string[]) => {
-    console.log(projects);
     setProjectIds([...projects]);
   }, []);
 
@@ -38,16 +37,14 @@ export default function useTags(
     const observable = tagsStream({
       queryParameters: {
         search,
-        ...(ideaIds ? { idea_ids: ideaIds } : {}),
-        ...(projectIds ? { projects: projectIds } : {}),
+        ...(ideaIds?.length && ideaIds?.length > 0
+          ? { idea_ids: ideaIds }
+          : {}),
+        ...(projectIds?.length && projectIds?.length > 0
+          ? { projects: projectIds }
+          : {}),
       },
     }).observable;
-
-    console.log({
-      search,
-      ...(ideaIds ? { idea_ids: ideaIds } : {}),
-      ...(projectIds ? { projects: projectIds } : {}),
-    });
 
     const subscription = observable.subscribe((response) => {
       setTags(!isNilOrError(response) ? response.data : null);
