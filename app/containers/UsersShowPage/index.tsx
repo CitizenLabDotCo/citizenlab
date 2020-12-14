@@ -98,7 +98,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
           <Helmet>
             <meta name="prerender-status-code" content="404" />
           </Helmet>
-          <p>{formatMessage(messages.userNotFound)}</p>
+          <p>{formatMessage(messages.user404NotFound)}</p>
           <Button
             linkTo={previousPathName || '/'}
             text={formatMessage(messages.goBackToPreviousPage)}
