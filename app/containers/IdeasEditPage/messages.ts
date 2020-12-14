@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  formTitle: {
-    id: 'app.containers.IdeasEditPage.formTitle',
-    defaultMessage: 'Edit idea',
+  postEditFormTitle: {
+    id: 'app.containers.IdeasEditPage.postEditFormTitle',
+    defaultMessage: 'Edit {postTitle}',
   },
   save: {
     id: 'app.containers.IdeasEditPage.save',
