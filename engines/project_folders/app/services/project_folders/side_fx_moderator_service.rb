@@ -2,10 +2,9 @@ module ProjectFolders
   class SideFxModeratorService
     include SideFxHelper
 
-    def before_create(moderator, folder, current_user)
+    def before_create(moderator, folder, _current_user)
       folder.projects.each do |project|
         moderator.add_role('project_moderator', project_id: project.id)
-        project_mod_side_fx&.after_create(moderator, project, current_user)
       end
     end
 
