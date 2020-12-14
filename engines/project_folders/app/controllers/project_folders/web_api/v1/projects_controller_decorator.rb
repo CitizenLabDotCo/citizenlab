@@ -23,12 +23,11 @@ module ProjectFolders
     def set_folder
       return unless params.require(:project).key?(:folder_id)
 
-      folder_id = params.dig(:project, :folder_id)
-      @project.folder_id = folder_id
+      @project.folder_id = params.dig(:project, :folder_id)
     end
 
     def add_new_folder_moderators
-      return unless  params.require(:project).key?(:folder_id)
+      return unless params.require(:project).key?(:folder_id)
 
       User.project_folder_moderator(@project.folder&.id).each do |moderator|
         next if moderator.moderatable_project_ids.include?(@project.id)
