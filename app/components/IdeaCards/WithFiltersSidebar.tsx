@@ -527,8 +527,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   filterMessage = (<FormattedMessage {...messages.filter} />);
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
   render() {
     const {
@@ -637,13 +635,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                           newIdeasFilterCounts &&
                           isNumber(newIdeasFilterCounts.total) ? (
                             <FormattedMessage
-                              {...messages.showXIdeas}
+                              {...messages.showXResults}
                               values={{
                                 ideasCount: newIdeasFilterCounts.total,
                               }}
                             />
                           ) : (
-                            <FormattedMessage {...messages.showIdeas} />
+                            <FormattedMessage {...messages.showResults} />
                           );
 
                         return (
@@ -684,11 +682,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.selectView}
                   />
                 )}
-
                 {!isNilOrError(ideasFilterCounts) && (
                   <IdeasCount>
                     <FormattedMessage
-                      {...messages.xIdeas}
+                      {...messages.xResults}
                       values={{ ideasCount: ideasFilterCounts.total }}
                     />
                   </IdeasCount>
@@ -755,10 +752,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                       <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
                         <EmptyMessageMainLine>
-                          <FormattedMessage {...messages.noFilteredIdeas} />
+                          <FormattedMessage {...messages.noFilteredResults} />
                         </EmptyMessageMainLine>
                         <EmptyMessageSubLine>
-                          <FormattedMessage {...messages.tryOtherFilter} />
+                          <FormattedMessage {...messages.tryDifferentFilters} />
                         </EmptyMessageSubLine>
                       </EmptyMessage>
                     </EmptyContainerInner>
