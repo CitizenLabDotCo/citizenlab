@@ -1,7 +1,4 @@
-class FaviconUploader < CarrierWave::Uploader::Base
-  include BaseImageUploader
-  include CarrierWave::MiniMagick
-
+class FaviconUploader < BaseImageUploader
 
   def store_dir
     tenant = model
