@@ -54,7 +54,8 @@ resource "Tags" do
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq @tagging.id
     end
-    example 'Get tags with idea ids' do
+
+    example 'Get tags with project ids' do
       @projects = [@project.id]
 
       do_request projects: @projects
