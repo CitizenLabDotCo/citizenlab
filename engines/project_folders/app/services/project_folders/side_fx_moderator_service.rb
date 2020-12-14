@@ -11,7 +11,6 @@ module ProjectFolders
     def before_destroy(moderator, folder, current_user)
       folder.projects.each do |project|
         moderator.delete_role('project_moderator', project_id: project.id)
-        project_mod_side_fx&.after_destroy(moderator, project, current_user)
       end
     end
 
