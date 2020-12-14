@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Added
+- Activity feed access for project managers
+
 ### Changed
 - Increased color contrast of inactive timeline phases text to meet accesibility standard
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
