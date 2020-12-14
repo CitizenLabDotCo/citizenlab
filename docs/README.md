@@ -5,6 +5,10 @@
 ### Fixed
 - When creating a project from template, only templates that are supported by the tenant's locale will show up
 
+### Added
+- Activity feed access for project managers
+
+
 ## 2020-12-08
 
 ### Fixed
