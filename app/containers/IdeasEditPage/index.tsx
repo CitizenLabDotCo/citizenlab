@@ -24,11 +24,13 @@ import {
 } from 'services/ideaImages';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -48,6 +50,7 @@ import GetResourceFileObjects, {
 } from 'resources/GetResourceFileObjects';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -93,10 +96,6 @@ const ButtonBarContainer = styled.div`
   border-top: solid 1px #ddd;
 `;
 
-const StyledPostTitle = styled.span`
-  color: ${({ theme }) => theme.colorText};
-`;
-
 interface InputProps {
   params: {
     ideaId: string;
@@ -107,6 +106,7 @@ interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
   project: GetProjectChildProps;
   idea: GetIdeaChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -312,7 +312,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, project, idea, localize } = this.props;
+      const { remoteIdeaFiles, project, idea, phases } = this.props;
       const {
         locale,
         titleMultiloc,
@@ -332,10 +332,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       if (!isNilOrError(project) && !isNilOrError(idea)) {
         const projectId = project.id;
         const ideaId = idea.id;
-        const postTitle = (
-          <StyledPostTitle>
-            {localize(idea.attributes.title_multiloc)}
-          </StyledPostTitle>
+        const inputTerm = getInputTerm(
+          project.attributes.process_type === 'continuous'
+            ? 'project'
+            : 'phase',
+          project,
+          phases
         );
 
         return (
@@ -344,10 +346,9 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
             <FormContainer>
               <Title>
                 <FormattedMessage
-                  {...messages.postEditFormTitle}
-                  values={{
-                    postTitle,
-                  }}
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.formTitle,
+                  })}
                 />
               </Title>
 
@@ -396,6 +397,11 @@ const Data = adopt<DataProps, InputProps>({
       <GetProject projectId={idea.relationships.project.data.id}>
         {render}
       </GetProject>
+    ) : null;
+  },
+  phases: ({ project, render }) => {
+    return !isNilOrError(project) ? (
+      <GetPhases projectId={project.id}>{render}</GetPhases>
     ) : null;
   },
 });
