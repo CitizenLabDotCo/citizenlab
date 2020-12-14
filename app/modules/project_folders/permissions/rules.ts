@@ -21,6 +21,11 @@ const canAccessRouteExtended = (
   user: IUser | null,
   tenant: ITenantData
 ) => {
+  console.log({
+    item: item.path,
+    isAdminRoute: isAdminRoute(item),
+    isFolderModerator: isProjectFolderModerator(user),
+  });
   return (
     canAccessRoute(item, user, tenant) ||
     (isAdminRoute(item) &&
