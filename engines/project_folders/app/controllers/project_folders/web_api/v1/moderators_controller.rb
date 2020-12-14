@@ -42,9 +42,11 @@ module ProjectFolders
 
     # delete
     def destroy
+      @folder = ProjectFolders::Folder.find(params[:project_folder_id])
+      SideFxModeratorService.new.before_destroy(@moderator, @folder, current_user)
       @moderator.delete_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
       if @moderator.save
-        SideFxModeratorService.new.after_destroy(@moderator, ProjectFolders::Folder.find(params[:project_folder_id]), current_user)
+        SideFxModeratorService.new.after_destroy(@moderator, @folder, current_user)
         head :ok
       else
         head 500
