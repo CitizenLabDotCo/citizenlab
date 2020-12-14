@@ -10,7 +10,7 @@ resource 'ProjectFolder' do
     @projects = ['published','published','draft','published','archived','archived','published']
       .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
     @folders = [
-      create(:project_folder, projects: @projects.take(3)), 
+      create(:project_folder, projects: @projects.take(3)),
       create(:project_folder, projects: [@projects.last])
     ]
   end
@@ -122,7 +122,7 @@ resource 'ProjectFolder' do
       example "Update a folder" do
         old_publcation_ids = AdminPublication.ids
         do_request
-        
+
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
@@ -136,6 +136,7 @@ resource 'ProjectFolder' do
     delete "web_api/v1/project_folders/:id" do
       let(:project_folder) { @folders.first }
       let!(:id) { project_folder.id }
+      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
 
       example "Delete a folder" do
         old_count = ProjectFolders::Folder.count
@@ -144,13 +145,12 @@ resource 'ProjectFolder' do
         do_request
 
         expect(response_status).to eq 200
-        expect{ProjectFolders::Folder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(ProjectFolders::Folder.count).to eq (old_count - 1)
-        expect(AdminPublication.count).to eq (old_publications_count - 4)
-        expect(Project.count).to eq (old_project_count - 3)
+        expect { ProjectFolders::Folder.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(ProjectFolders::Folder.count).to eq(old_count - 1)
+        expect(AdminPublication.count).to eq(old_publications_count - 4)
+        expect(Project.count).to eq(old_project_count - 3)
+        expect(User.project_folder_moderator(id).count).to eq 0
       end
     end
-
   end
-
 end
