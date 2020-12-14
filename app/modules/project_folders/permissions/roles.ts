@@ -10,17 +10,18 @@ export const isProjectFolderModerator = (
   user?: IUser | null,
   projectFolderId?: IProjectFolderData['id'] | null
 ) => {
-  return (
-    !projectFolderId ||
-    !!(
-      user &&
-      projectFolderId &&
-      user.data.attributes?.roles &&
-      user.data.attributes?.roles?.find(
-        (r: IProjectFolderModerator) =>
+  return !!(
+    user &&
+    user.data.attributes?.roles &&
+    user.data.attributes?.roles?.find((r: IProjectFolderModerator) => {
+      if (projectFolderId) {
+        return (
           r.project_folder_id === projectFolderId &&
           r.type === 'project_folder_moderator'
-      )
-    )
+        );
+      }
+
+      return r.type === 'project_folder_moderator';
+    })
   );
 };
