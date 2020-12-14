@@ -145,8 +145,9 @@ resource 'Moderators' do
         child_projects.each do |project|
           project.folder = project_folder
           project.save
-          create(:moderator, project: project)
+          user.add_role('project_moderator', project_id: project.id)
         end
+        user.save
 
         expect(user.reload.moderatable_project_ids).to match_array child_projects.pluck(:id)
       end
