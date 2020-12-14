@@ -88,14 +88,22 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
     eventEmitter.emit('IdeaFormSubmitEvent');
   };
 
+  getSubmitErrorMessage = () => {
+    const { fileOrImageError, submitError } = this.state;
+
+    if (submitError) {
+      return <FormattedMessage {...messages.submitError} />;
+    } else if (fileOrImageError) {
+      return <FormattedMessage {...messages.fileUploadError} />;
+    }
+
+    return null;
+  };
+
   render() {
-    const { processing, fileOrImageError, submitError } = this.state;
+    const { processing } = this.state;
     let { form } = this.props;
-    const submitErrorMessage = submitError ? (
-      <FormattedMessage {...messages.submitError} />
-    ) : fileOrImageError ? (
-      <FormattedMessage {...messages.fileOrImageError} />
-    ) : null;
+    const submitErrorMessage = this.getSubmitErrorMessage();
 
     form = form || '';
 

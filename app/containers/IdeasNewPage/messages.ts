@@ -29,10 +29,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
   },
-  fileOrImageError: {
-    id: 'app.containers.IdeasNewPage.fileOrImageError',
+  fileUploadError: {
+    id: 'app.containers.IdeasNewPage.fileUploadError',
     defaultMessage:
-      'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
+      'A file failed to upload. Please check the file size and format and try again.',
   },
   metaTitle: {
     id: 'app.containers.IdeasNewPage.metaTitle',
