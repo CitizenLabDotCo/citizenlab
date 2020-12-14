@@ -99,16 +99,25 @@ resource 'Moderators' do
       let(:moderator) { create(:project_folder_moderator, project_folder: project_folder) }
       let(:project_folder) { create(:project_folder) }
       let(:project_folder_id) { project_folder.id }
-      let(:user_id) { create(:user).id }
+      let(:user) { create(:user) }
+      let(:user_id) { user.id }
+      let!(:child_projects) { create_list(:project, 3) }
 
       before do
         header_token_for(moderator)
+
+        child_projects.each do |project|
+          project.folder = project_folder
+          project.save
+          create(:moderator, project: project)
+        end
       end
 
       example_request 'Add a moderator role' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user_id
+        expect(user.reload.moderatable_project_ids).to match_array child_projects.pluck(:id)
       end
     end
   end

@@ -27,14 +27,14 @@ module ProjectFolders
 
     # insert
     def create
-      @user = User.find create_moderator_params[:user_id]
+      @user = User.find(create_moderator_params[:user_id])
+      @folder = ProjectFolders::Folder.find(params[:project_folder_id])
+      SideFxModeratorService.new.before_create(@user, @folder, current_user)
       @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
       if @user.save
-        SideFxModeratorService.new.after_create(@user, ProjectFolders::Folder.find(params[:project_folder_id]), current_user)
-        render json: ::WebApi::V1::UserSerializer.new(
-          @user,
-          params: fastjson_params
-          ).serialized_json, status: :created
+        serialized_data =  ::WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+        SideFxModeratorService.new.after_create(@user, @folder, current_user)
+        render json: serialized_data, status: :created
       else
         render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
