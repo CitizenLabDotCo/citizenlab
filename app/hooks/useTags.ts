@@ -23,8 +23,9 @@ export default function useTags(
     setIdeaIds([...ideas]);
   }, []);
 
-  const onProjectsChange = useCallback((ideas: string[]) => {
-    setProjectIds([...ideas]);
+  const onProjectsChange = useCallback((projects: string[]) => {
+    console.log(projects);
+    setProjectIds([...projects]);
   }, []);
 
   const [search, setSearch] = useState<string | null>();
@@ -37,17 +38,23 @@ export default function useTags(
     const observable = tagsStream({
       queryParameters: {
         search,
-        idea_ids: ideaIds,
-        projects: projectIds,
+        ...(ideaIds ? { idea_ids: ideaIds } : {}),
+        ...(projectIds ? { projects: projectIds } : {}),
       },
     }).observable;
+
+    console.log({
+      search,
+      ...(ideaIds ? { idea_ids: ideaIds } : {}),
+      ...(projectIds ? { projects: projectIds } : {}),
+    });
 
     const subscription = observable.subscribe((response) => {
       setTags(!isNilOrError(response) ? response.data : null);
     });
 
     return () => subscription.unsubscribe();
-  }, [ideaIds, search]);
+  }, [ideaIds, search, projectIds]);
 
   return { tags, onIdeasChange, onProjectsChange, onSearchChange };
 }
