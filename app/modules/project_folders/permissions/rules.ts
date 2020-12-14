@@ -1,5 +1,8 @@
 import { IProjectFolderData } from './../services/projectFolders';
-import { definePermissionRule } from 'services/permissions/permissions';
+import {
+  definePermissionRule,
+  IRouteItem,
+} from 'services/permissions/permissions';
 import { isProjectFolderModerator } from './roles';
 import { isAdmin } from 'services/permissions/roles';
 import {
@@ -7,7 +10,6 @@ import {
   isAdminRoute,
   MODERATOR_ROUTES,
 } from 'services/permissions/rules/routePermissions';
-import { IRouteItem } from 'services/permissions/permissions';
 import { IUser } from 'services/users';
 import { ITenantData } from 'services/tenant';
 
