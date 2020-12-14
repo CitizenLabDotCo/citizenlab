@@ -2,7 +2,8 @@
 
 ## Next release
 
-/
+### Added
+- Activity feed access for project managers
 
 ## 2020-12-08
 
