@@ -28,7 +28,7 @@ import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -72,7 +72,7 @@ const FormContainer = styled.main`
 
 const Title = styled.h1`
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${colors.label};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
@@ -91,6 +91,10 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
+`;
+
+const StyledPostTitle = styled.span`
+  color: ${({ theme }) => theme.colorText};
 `;
 
 interface InputProps {
@@ -121,7 +125,7 @@ interface State {
   loaded: boolean;
 }
 
-class IdeaEditPage extends PureComponent<Props, State> {
+class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -308,7 +312,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, project, idea } = this.props;
+      const { remoteIdeaFiles, project, idea, localize } = this.props;
       const {
         locale,
         titleMultiloc,
@@ -327,8 +331,12 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
       if (!isNilOrError(project) && !isNilOrError(idea)) {
         const projectId = project.id;
-        const projectInputTerm = project.attributes.input_term;
         const ideaId = idea.id;
+        const postTitle = (
+          <StyledPostTitle>
+            {localize(idea.attributes.title_multiloc)}
+          </StyledPostTitle>
+        );
 
         return (
           <Container id="e2e-idea-edit-page">
@@ -336,9 +344,10 @@ class IdeaEditPage extends PureComponent<Props, State> {
             <FormContainer>
               <Title>
                 <FormattedMessage
-                  {...getInputTermMessage(projectInputTerm, {
-                    idea: messages.formTitle,
-                  })}
+                  {...messages.postEditFormTitle}
+                  values={{
+                    postTitle,
+                  }}
                 />
               </Title>
 
@@ -390,11 +399,12 @@ const Data = adopt<DataProps, InputProps>({
     ) : null;
   },
 });
+const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
 
 export default (inputProps: InputProps) => {
   return (
     <Data {...inputProps}>
-      {(dataProps) => <IdeaEditPage {...inputProps} {...dataProps} />}
+      {(dataProps) => <IdeaEditPageWithHOCs {...inputProps} {...dataProps} />}
     </Data>
   );
 };
