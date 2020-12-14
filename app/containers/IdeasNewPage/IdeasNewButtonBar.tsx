@@ -115,7 +115,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
             id="e2e-idea-new-submit-button"
             className="e2e-submit-idea-form"
             processing={processing}
-            text={<FormattedMessage {...messages.submit} />}
+            text={<FormattedMessage {...messages.submitNewIdea} />}
             onClick={this.handleOnSubmitButtonClick}
           />
           {submitErrorMessage && (

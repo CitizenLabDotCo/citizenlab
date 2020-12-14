@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.ideaFormTitle',
     defaultMessage: 'Add new idea',
   },
-  submit: {
-    id: 'app.containers.IdeasNewPage.submit',
-    defaultMessage: 'Submit idea',
+  submitNewIdea: {
+    id: 'app.containers.IdeasNewPage.submitNewIdea',
+    defaultMessage: 'Submit',
   },
   submitError: {
     id: 'app.containers.IdeasNewPage.submitError',
@@ -34,13 +34,13 @@ export default defineMessages({
     defaultMessage:
       'A file failed to upload. Please check the file size and format and try again.',
   },
-  metaTitle: {
-    id: 'app.containers.IdeasNewPage.metaTitle',
-    defaultMessage: 'Add a new idea for {projectName} | {orgName}',
+  ideaNewMetaTitle: {
+    id: 'app.containers.IdeasNewPage.ideaNewMetaTitle',
+    defaultMessage: 'Add new idea | {projectName}',
   },
-  metaDescription: {
-    id: 'app.containers.IdeasNewPage.metaDescription',
+  ideaNewMetaDescription: {
+    id: 'app.containers.IdeasNewPage.ideaNewMetaDescription',
     defaultMessage:
-      "Add a new idea for {projectName} and have a say in this project's outcome",
+      "Post a submission and join the conversation at {orgName}'s participation platform.",
   },
 });
