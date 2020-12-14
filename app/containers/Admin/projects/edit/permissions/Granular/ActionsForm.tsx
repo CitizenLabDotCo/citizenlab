@@ -66,21 +66,20 @@ const ActionsForm = memo(
 
         return {
           posting_idea: getInputTermMessage(projectInputTerm, {
-            idea: messages.permissionAction_posting_idea,
+            idea: messages.permissionAction_post_idea,
           }),
-          voting_idea: messages.permissionAction_voting_idea,
-          commenting_idea: messages.permissionAction_commenting_idea,
-          taking_survey: messages.permissionAction_taking_survey,
-          taking_poll: messages.permissionAction_taking_poll,
+          voting_idea: messages.permissionAction_vote_ideas,
+          commenting_idea: messages.permissionAction_comment_ideas,
+          taking_survey: messages.permissionAction_take_survey,
+          taking_poll: messages.permissionAction_take_poll,
         }[permissionAction];
       }
 
       if (postType === 'initiative') {
         return {
-          voting_initiative: messages.permissionAction_voting_initiative,
-          commenting_initiative:
-            messages.permissionAction_commenting_initiative,
-          posting_initiative: messages.permissionAction_posting_initiative,
+          voting_initiative: messages.permissionAction_vote_proposals,
+          commenting_initiative: messages.permissionAction_comment_proposals,
+          posting_initiative: messages.permissionAction_post_idea,
         }[permissionAction];
       }
     };
