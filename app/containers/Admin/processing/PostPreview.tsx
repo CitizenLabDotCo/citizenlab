@@ -125,6 +125,7 @@ interface InputProps {
   taggings: ITagging[] | null;
   handleNavigation: (direction: Direction) => void;
   tags: ITag[] | null | undefined;
+  preventNavigation: (isNavigationPrevented: boolean) => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -343,6 +344,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   }
                   onAddSelect={this.handleSelectExistingFromTagSearch}
                   onAddNew={this.addTaggingCreateTag}
+                  preventNavigation={this.props.preventNavigation}
                 />
               </TagSubSection>
               <StyledValidationError
