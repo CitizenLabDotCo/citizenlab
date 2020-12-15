@@ -449,6 +449,7 @@ const Processing = memo<Props & InjectedIntlProps>(
         setSelectedRows([]);
         setSelectedProjectIds(newProjectIds);
         onChangeProjects(newProjectIds);
+        onProjectsChange(newProjectIds);
         setLoadingIdeas(true);
         trackEventByName('Filter View', {
           action: 'changed projects',
