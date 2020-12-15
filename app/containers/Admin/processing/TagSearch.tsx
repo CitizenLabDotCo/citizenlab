@@ -22,9 +22,7 @@ import { ITag, tagsStream } from 'services/tags';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { getTagValidation } from 'utils/tagUtils';
 
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
+const Container = styled.div``;
 
 const SelectGroupsContainer = styled.div`
   display: flex;
@@ -42,6 +40,7 @@ interface InputProps {
   filteredOutTagIds: (string | undefined)[];
   onAddSelect: (tagId: string) => Promise<any> | null;
   onAddNew: (tagText: string) => Promise<any> | null;
+  onType: (isValidInput: boolean) => void;
 }
 
 interface DataProps {
@@ -112,7 +111,6 @@ class TagAdd extends PureComponent<
 
   handleOnNewTag = async (searchInput) => {
     this.setState({ processing: true });
-
     try {
       await this.props.onAddNew(searchInput);
       this.setState({ selection: null, processing: false });
@@ -136,7 +134,9 @@ class TagAdd extends PureComponent<
   };
 
   isValidInput = (inputValue) => {
-    return getTagValidation(inputValue);
+    const isValidInput = getTagValidation(inputValue);
+    this.props.onType(isValidInput);
+    return isValidInput;
   };
 
   render() {
