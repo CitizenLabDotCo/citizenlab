@@ -38,7 +38,7 @@ const RenderOnProjectFolderModerator = ({ children }) => {
     return null;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => {
@@ -51,7 +51,7 @@ const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => {
     return null;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 const configuration: ModuleConfiguration = {
