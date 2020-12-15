@@ -29,15 +29,15 @@ module ProjectFolders
     end
 
     def create?
-      user&.active? && user.admin?
+      user&.active_and_admin?
     end
 
     def update?
-      user&.active? && user.admin?
+      user&.active_and_admin? || user&.project_folder_moderator?(record.id)
     end
 
     def destroy?
-      user&.active? && user.admin?
+      user&.active_and_admin?
     end
   end
 end

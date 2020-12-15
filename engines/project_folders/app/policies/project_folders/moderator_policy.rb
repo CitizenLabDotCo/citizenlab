@@ -29,15 +29,11 @@ module ProjectFolders
     end
 
     def create?
-      admin_or_moderator?
+      user.active_and_admin?
     end
 
     def destroy?
-      admin_or_moderator?
-    end
-
-    def users_search?
-      admin_or_moderator?
+      create?
     end
 
     private
