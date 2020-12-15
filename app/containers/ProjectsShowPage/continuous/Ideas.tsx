@@ -17,6 +17,7 @@ import useWindowSize from 'hooks/useWindowSize';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -49,6 +50,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       (participationMethod === 'budgeting' ||
         participationMethod === 'ideation')
     );
+    const inputTerm = project.attributes.input_term;
 
     if (showIdeas) {
       const smallerThanBigTablet = windowSize?.windowWidth
@@ -74,7 +76,11 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 />
               )}
               <StyledProjectPageSectionTitle>
-                <FormattedMessage {...messages.ideas} />
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                  })}
+                />
               </StyledProjectPageSectionTitle>
               <IdeaCards
                 type="load-more"
