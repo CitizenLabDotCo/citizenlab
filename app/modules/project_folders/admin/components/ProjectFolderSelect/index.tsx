@@ -33,13 +33,10 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
   ({ value, onChange, localize, intl: { formatMessage } }): ReactElement => {
     const { projectFolders } = useProjectFolders();
 
-    const noFolderOption = useMemo<IOption>(
-      () => ({
-        value: '',
-        label: formatMessage(messages.noFolder),
-      }),
-      []
-    );
+    const noFolderOption = {
+      value: '',
+      label: formatMessage(messages.noFolder),
+    };
 
     const folderOptions = useMemo<IOption[]>(
       () =>

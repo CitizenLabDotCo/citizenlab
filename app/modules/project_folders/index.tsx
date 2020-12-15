@@ -1,4 +1,4 @@
-import React, { Children, memo } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 

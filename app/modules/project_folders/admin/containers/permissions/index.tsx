@@ -85,8 +85,8 @@ const FolderPermissions = ({
     selectedUserOptions.forEach(({ value: userId }) =>
       addModerator(projectFolderId, userId)
     );
-    setSelectedUserOptions([]);
     setProcessing(false);
+    setSelectedUserOptions([]);
   }, [selectedUserOptions]);
 
   const handleDeleteModeratorClick = (
