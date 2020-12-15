@@ -59,7 +59,7 @@ module EmailCampaigns
         'last_name' => user.last_name,
         'locale' => user.locale,
         'email' => user.email,
-        'unsubscription_token' => EmailCampaigns::UnsubscriptionToken.find_by(user_id: user.id).token
+        'unsubscription_token' => EmailCampaigns::UnsubscriptionToken.find_by(user_id: user.id)&.token
       }
     end
 
