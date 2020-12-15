@@ -470,18 +470,27 @@ fr-BE:
       subject: 'Le statut de votre initiative a été modifié'
       preheader: 'Le statut de votre initiative a été modifié'
     user_digest:
-      commented: '%{authorFirstName} a commenté :'
-      subject: 'Mise à jour hebdomadaire de la plate-forme de participation de %{organizationName}'
-      preheader: 'Aperçu hebdomadaire de %{organizationName}'
-      title_your_weekly_report: 'Découvrez ce qui s''est passé la semaine dernière'
-      text_introduction: 'Nous avons composé une liste des idées qui ont connu le plus d''activité la semaine dernière sur la plateforme de participation. Cliquez sur l''une d''entre elles pour rejoindre la conversation.'
-      cta_go_to_the_platform: 'Voir la plateforme'
-      title_no_activity_past_week: 'Pas d''activité la semaine passée'
-      title_initiatives_past_week: 'Initiatives lancées au cours de la semaine dernière'
-      title_successful_initiatives_past_week: 'initiatives qui ont atteint le nombre de voix requis au cours de la semaine dernière'
-      today_by_author: 'Aujourd''hui par %{author}'
-      yesterday_by_author: 'Hier par %{author}'
-      x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
+      subject: "Mise à jour hebdomadaire de la plate-forme de participation de %{organizationName}"
+      commented: "%{authorFirstName} a commenté :"
+      preheader: "Aperçu hebdomadaire de %{organizationName}"
+      title_your_weekly_report: "Découvrez ce qui s'est passé la semaine dernière"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "Voir la plateforme"
+      title_no_activity_past_week: "Pas d'activité la semaine passée"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "Aujourd'hui par %{author}"
+      yesterday_by_author: "Hier par %{author}"
+      x_days_ago_by_author: "Il y a %{x} jours par %{author}"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'par %{authorName}'
       cta_process_initiative: 'Passez cette initiative à l''étape suivante'
