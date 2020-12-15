@@ -36,7 +36,7 @@ export const Container = styled.div`
   align-items: flex-start;
   height: calc(100vh - ${stylingConsts.menuHeight}px);
   width: 60vw;
-  padding: 15px;
+  padding: 15px 0px 15px 15px;
   border-left: 1px solid ${colors.adminSeparation};
   > * {
     padding: 0 15px;
@@ -61,13 +61,14 @@ const StyledNavButton = styled(Button)`
 `;
 const TagSection = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight}px - 30px);
+  overflow-y: auto;
   flex: 3;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   position: sticky;
-  top: ${stylingConsts.menuHeight};
-  align-self: flex-end;
+  top: ${stylingConsts.menuHeight}px;
+  align-self: space-between;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
@@ -78,7 +79,9 @@ const TagSection = styled.div`
 const TagSubSection = styled.div`
   margin: 12px 0px;
   &.manualTag {
-    flex: 7;
+    flex: 2 7 auto;
+    max-height: auto;
+    overflow-y: auto;
   }
   &.smartTag {
     flex: 1;
@@ -91,6 +94,7 @@ const TagSubSection = styled.div`
 export const TagList = styled.div`
   display: inline-block;
   margin: 0px 10px 10px 0px;
+  max-height: auto;
 `;
 
 const StyledTagWrapper = styled(TagWrapper)`
@@ -247,6 +251,10 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
       : Promise.reject();
   };
 
+  validateTag = (isTagValid: boolean) => {
+    this.setState({ isTagValid });
+  };
+
   render() {
     const { taggings, tags } = this.props;
     const manualTaggings = isNilOrError(taggings)
@@ -343,6 +351,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                   }
                   onAddSelect={this.handleSelectExistingFromTagSearch}
                   onAddNew={this.addTaggingCreateTag}
+                  onType={this.validateTag}
                 />
               </TagSubSection>
               <StyledValidationError
