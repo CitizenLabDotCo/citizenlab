@@ -11,7 +11,6 @@ import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { isProjectFolderModerator } from './permissions/roles';
 import { isAdmin } from 'services/permissions/roles';
