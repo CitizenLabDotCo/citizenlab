@@ -18,7 +18,12 @@ export const MODERATOR_ROUTES = [
   '/admin/workshops',
   '/admin/processing',
   '/admin/dashboard',
+  '/admin/moderation',
 ];
+
+export const isModeratorRoute = (item: IRouteItem) => {
+  return MODERATOR_ROUTES.includes(item.path);
+};
 
 export const isModeratedProjectRoute = (
   item: IRouteItem,
@@ -56,7 +61,7 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (isModerator(user) && MODERATOR_ROUTES.includes(item.path)) {
+    if (isModerator(user) && isModeratorRoute(item)) {
       return true;
     }
 
