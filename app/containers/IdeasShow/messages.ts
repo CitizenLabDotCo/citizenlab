@@ -1,35 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  idea: {
-    id: 'app.containers.IdeasShow.idea',
-    defaultMessage: 'Idea',
-  },
-  invisibleTitleContent: {
-    id: 'app.containers.IdeasShow.invisibleTitleContent',
-    defaultMessage: 'Main idea content',
-  },
-  metaTitle: {
-    id: 'app.containers.IdeasShow.metaTitle',
-    defaultMessage: 'Idea: {ideaTitle}',
-  },
-  metaOgTitle: {
-    id: 'app.containers.IdeasShow.metaOgTitle',
-    defaultMessage: 'Support this idea: {ideaTitle}',
-  },
-  ideaOgDescription: {
-    id: 'app.containers.IdeasShow.ideaOgDescription',
-    defaultMessage:
-      'What do you think of this idea? Join the discussion and vote to make your voice heard.',
-  },
-  shareTitle: {
-    id: 'app.containers.IdeasShow.shareTitle',
-    defaultMessage: 'Congratulations, your idea was successfully posted!',
+  sharingModalTitle: {
+    id: 'app.containers.IdeasShow.sharingModalTitle',
+    defaultMessage: 'Thanks for submitting your idea!',
   },
   shareSubtitle: {
     id: 'app.containers.IdeasShow.shareSubtitle',
-    defaultMessage:
-      'Share your idea to reach more people, receive more votes and have more impact.',
+    defaultMessage: 'Reach more people and make your voice heard.',
   },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
