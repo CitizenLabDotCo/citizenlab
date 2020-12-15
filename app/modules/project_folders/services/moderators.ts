@@ -40,7 +40,6 @@ export async function addModerator(
 ) {
   const response = await streams.add(indexPath(projectFolderId), {
     project_folder_moderator: {
-      project_folder_id: projectFolderId,
       user_id: moderatorId,
     },
   });
