@@ -81,7 +81,7 @@ module Tagging
 
           tags = params["tags"]
           tag_ids = params["tag_ids"]
-          @new_tags = tags.map { |tag| Tag.create({ title_multiloc: { current_user.locale => tag }}) }
+          @new_tags = tags ? tags.map { |tag| Tag.create({ title_multiloc: { current_user.locale => tag }}) } : []
           @old_tags = tag_ids ? Tag.where(id: tag_ids) : []
 
           @ideas = policy_scope(Idea)
