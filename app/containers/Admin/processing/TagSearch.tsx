@@ -99,7 +99,6 @@ class TagAdd extends PureComponent<
         .observable.pipe(first())
         .subscribe((response) => {
           const options = this.getOptions(response.data);
-          this.props.preventNavigation(options?.length > 0);
           this.setState({ loading: false });
 
           callback(options);
@@ -110,7 +109,6 @@ class TagAdd extends PureComponent<
   handleOnChange = async (selection: IOption) => {
     await this.props.onAddSelect(selection.value);
     this.setState({ selection: null, processing: false });
-    this.props.preventNavigation(false);
   };
 
   handleOnNewTag = async (searchInput) => {
@@ -139,6 +137,11 @@ class TagAdd extends PureComponent<
   };
 
   isValidInput = (inputValue) => {
+    if (!inputValue) {
+      this.props.preventNavigation(false);
+    } else {
+      this.props.preventNavigation(true);
+    }
     return getTagValidation(inputValue);
   };
 
