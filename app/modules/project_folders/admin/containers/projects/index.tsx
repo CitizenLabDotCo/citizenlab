@@ -147,6 +147,7 @@ class AdminFoldersProjectsList extends Component<
     if (!this.projectFolderId) {
       return null;
     }
+
     return (
       <Container>
         <ListsContainer>
@@ -222,8 +223,8 @@ class AdminFoldersProjectsList extends Component<
 
               {otherProjects ? (
                 <List>
-                  {otherProjects.map((adminPublication, index: number) => {
-                    return (
+                  <>
+                    {otherProjects.map((adminPublication, index: number) => (
                       <Row
                         id={adminPublication.id}
                         isLastItem={index === otherProjects.length - 1}
@@ -245,8 +246,8 @@ class AdminFoldersProjectsList extends Component<
                           ]}
                         />
                       </Row>
-                    );
-                  })}
+                    ))}
+                  </>
                 </List>
               ) : (
                 <FormattedMessage {...messages.noProjectsToAdd} />
