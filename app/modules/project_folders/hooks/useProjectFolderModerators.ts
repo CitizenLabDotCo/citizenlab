@@ -7,7 +7,7 @@ import {
   deleteModerator,
 } from 'modules/project_folders/services/moderators';
 
-export default function useProjectFolderImages(projectFolderId: string) {
+export default function useProjectFolderModerators(projectFolderId: string) {
   const [moderators, setModerators] = useState<
     IUsers | undefined | null | Error
   >(undefined);
@@ -18,7 +18,7 @@ export default function useProjectFolderImages(projectFolderId: string) {
         return false;
       }
 
-      return !!moderators.data.find((mod) => mod.id === user.id);
+      return moderators.data.some((mod) => mod.id === user.id);
     },
     [moderators]
   );
@@ -29,7 +29,7 @@ export default function useProjectFolderImages(projectFolderId: string) {
         return true;
       }
 
-      return !moderators.data.find((mod) => mod.id === user.id);
+      return !moderators.data.some((mod) => mod.id === user.id);
     },
     [moderators]
   );

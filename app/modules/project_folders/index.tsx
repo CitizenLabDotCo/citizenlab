@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children, memo } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,6 +16,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isProjectFolderModerator } from './permissions/roles';
 import { isAdmin } from 'services/permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'hooks/useAuthUser';
 
 const RenderOnPublicationType = ({ publication, children }) => {
   if (publication.publicationType !== 'folder') return null;
@@ -30,27 +31,28 @@ const RenderOnFeatureFlag = ({ children }) => {
   return null;
 };
 
-const RenderOnProjectFolderModerator = ({ children }) => (
-  <GetAuthUser>
-    {(authUser: GetAuthUserChildProps) =>
-      !isNilOrError(authUser) && isProjectFolderModerator({ data: authUser })
-        ? children
-        : null
-    }
-  </GetAuthUser>
-);
+const RenderOnProjectFolderModerator = ({ children }) => {
+  const authUser = useAuthUser();
 
-const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => (
-  <GetAuthUser>
-    {(authUser: GetAuthUserChildProps) =>
-      !isNilOrError(authUser) &&
-      (isProjectFolderModerator({ data: authUser }) ||
-        isAdmin({ data: authUser }))
-        ? children
-        : null
-    }
-  </GetAuthUser>
-);
+  if (isNilOrError(authUser) || !isProjectFolderModerator(authUser)) {
+    return null;
+  }
+
+  return children;
+};
+
+const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => {
+  const authUser = useAuthUser();
+
+  if (
+    isNilOrError(authUser) ||
+    !(isProjectFolderModerator(authUser) || isAdmin(authUser))
+  ) {
+    return null;
+  }
+
+  return children;
+};
 
 const configuration: ModuleConfiguration = {
   afterMountApplication: () => {

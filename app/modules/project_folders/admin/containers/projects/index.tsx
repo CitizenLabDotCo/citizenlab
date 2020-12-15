@@ -144,7 +144,10 @@ class AdminFoldersProjectsList extends Component<
           )
         : null;
 
-    return this.projectFolderId ? (
+    if (!this.projectFolderId) {
+      return null;
+    }
+    return (
       <Container>
         <ListsContainer>
           <ListHeader>
@@ -218,7 +221,7 @@ class AdminFoldersProjectsList extends Component<
               </ListHeader>
 
               {otherProjects ? (
-                <List key={`JUST_LIST${otherProjects.length}`}>
+                <List>
                   {otherProjects.map((adminPublication, index: number) => {
                     return (
                       <Row
@@ -252,7 +255,7 @@ class AdminFoldersProjectsList extends Component<
           )}
         </ListsContainer>
       </Container>
-    ) : null;
+    );
   }
 }
 const AdminFoldersProjectsListWithHocs = withAuthUser(

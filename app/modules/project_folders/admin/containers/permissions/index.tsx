@@ -11,7 +11,7 @@ import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 // services
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
 import { IUsers, IUserData, usersStream } from 'services/users';
-import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -50,17 +50,13 @@ const UserSelectButton = styled(Button)`
   margin-left: 12px;
 `;
 
-interface Props {
-  authUser: GetAuthUserChildProps;
-}
-
 const FolderPermissions = ({
   params,
   intl,
-  authUser,
-}: Props & WithRouterProps & InjectedIntlProps): ReactElement => {
+}: WithRouterProps & InjectedIntlProps): ReactElement => {
   const { projectFolderId } = params;
   const { formatMessage } = intl;
+  const authUser = useAuthUser();
 
   const {
     moderators,
@@ -89,6 +85,7 @@ const FolderPermissions = ({
     selectedUserOptions.forEach(({ value: userId }) =>
       addModerator(projectFolderId, userId)
     );
+    setSelectedUserOptions([]);
     setProcessing(false);
   }, [selectedUserOptions]);
 
@@ -117,9 +114,17 @@ const FolderPermissions = ({
     }
   };
 
+  const isNotModeratorOrAuthUser = (user: IUserData) => {
+    if (!isNilOrError(authUser)) {
+      return isNotModerator(user) && user.id !== authUser.data.id;
+    }
+
+    return isNotModerator(user);
+  };
+
   const getOptions = (users: IUsers) => {
     if (!isNilOrError(users)) {
-      return users.data.filter(isNotModerator).map((user) => {
+      return users.data.filter(isNotModeratorOrAuthUser).map((user) => {
         return {
           value: user.id,
           label: `${userName(user)} (${user.attributes.email})`,
@@ -132,13 +137,13 @@ const FolderPermissions = ({
     return [];
   };
 
-  const noOptionsMessage = useCallback(() => {
+  const noOptionsMessage = () => {
     if (isNonEmptyString(searchInput)) {
       return formatMessage(messages.noOptions);
     }
 
     return formatMessage(messages.typeUserName);
-  }, [searchInput]);
+  };
 
   const isDropdownIconHidden = useMemo(() => !isNonEmptyString(searchInput), [
     searchInput,
@@ -218,7 +223,7 @@ const FolderPermissions = ({
             moderators.data.map((moderator, index) => (
               <Row
                 key={moderator.id}
-                isLastItem={index === selectedUsers.length - 1}
+                isLastItem={index === moderators.data.length - 1}
               >
                 <Avatar userId={moderator.id} size="30px" />
                 <p className="expand">{userName(moderator)}</p>
@@ -230,7 +235,9 @@ const FolderPermissions = ({
                   )}
                   buttonStyle="text"
                   icon="delete"
-                  disabled={authUser.id === moderator.id}
+                  disabled={
+                    !isNilOrError(authUser) && authUser.data.id === moderator.id
+                  }
                 >
                   <FormattedMessage {...messages.deleteModeratorLabel} />
                 </Button>
@@ -242,4 +249,4 @@ const FolderPermissions = ({
   );
 };
 
-export default injectIntl(withAuthUser(FolderPermissions));
+export default injectIntl(FolderPermissions);
