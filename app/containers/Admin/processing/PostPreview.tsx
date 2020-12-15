@@ -68,7 +68,7 @@ const TagSection = styled.div`
   flex-direction: column;
   position: sticky;
   top: ${stylingConsts.menuHeight}px;
-  align-self: space-between;
+  align-items: space-between;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
