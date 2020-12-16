@@ -58,6 +58,7 @@ resource 'Projects' do
         projects = Project.left_outer_joins(:admin_publication)
                           .where(admin_publications: { publication_status: %w[published archived] })
                           .where(projects: { visible_to: 'public' })
+                          .or(projects_within_folder)
 
         expect(ids).to match_array projects.pluck(:id)
       end
