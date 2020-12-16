@@ -45,30 +45,6 @@ export default defineMessages({
     id: 'app.containers.Projects.metaTitle',
     defaultMessage: 'Project: {projectTitle}',
   },
-  navInformation: {
-    id: 'app.containers.Projects.navInformation',
-    defaultMessage: 'Information',
-  },
-  navIdeas: {
-    id: 'app.containers.Projects.navIdeas',
-    defaultMessage: 'Ideas',
-  },
-  navProcess: {
-    id: 'app.containers.Projects.navProcess',
-    defaultMessage: 'Process',
-  },
-  navPoll: {
-    id: 'app.containers.Projects.navPoll',
-    defaultMessage: 'Poll',
-  },
-  navVolunteering: {
-    id: 'app.containers.Projects.navVolunteering',
-    defaultMessage: 'Volunteering',
-  },
-  navEvents: {
-    id: 'app.containers.Projects.navEvents',
-    defaultMessage: 'Events',
-  },
   pastEvents: {
     id: 'app.containers.Projects.pastEvents',
     defaultMessage: 'Past events',
