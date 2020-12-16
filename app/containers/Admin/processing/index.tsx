@@ -490,7 +490,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const closeSideModal = () => setPreviewPostId(null);
 
-    const preventNavigation = (isNavigationPrevented: boolean) => {
+    const handlePreventNavigation = (isNavigationPrevented: boolean) => {
       setIsNavigationPrevented(isNavigationPrevented);
     };
 
@@ -659,7 +659,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 handleNavigation={navigate}
                 taggings={getIdeaTaggings(previewPostId)}
                 tags={tags}
-                preventNavigation={preventNavigation}
+                handlePreventNavigation={handlePreventNavigation}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>

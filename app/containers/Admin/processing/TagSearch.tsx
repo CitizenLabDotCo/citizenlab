@@ -42,7 +42,7 @@ interface InputProps {
   filteredOutTagIds: (string | undefined)[];
   onAddSelect: (tagId: string) => Promise<any> | null;
   onAddNew: (tagText: string) => Promise<any> | null;
-  preventNavigation: (isNavigationPrevented: boolean) => void;
+  handlePreventNavigation: (isNavigationPrevented: boolean) => void;
 }
 
 interface DataProps {
@@ -138,9 +138,9 @@ class TagAdd extends PureComponent<
 
   isValidInput = (inputValue) => {
     if (!inputValue) {
-      this.props.preventNavigation(false);
+      this.props.handlePreventNavigation(false);
     } else {
-      this.props.preventNavigation(true);
+      this.props.handlePreventNavigation(true);
     }
     return getTagValidation(inputValue);
   };
