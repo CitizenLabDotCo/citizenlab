@@ -427,7 +427,7 @@
   "app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation": "Are you sure you want to delete this proposal?",
   "app.components.admin.PostManager.PostPreview.edit": "Edit",
   "app.components.admin.PostManager.PostPreview.formTitle": "Editing idea",
-  "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "This project doesn't seem to contain any ideas.",
+  "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "This project doesn't contain any ideas.",
   "app.components.admin.PostManager.PostPreview.noOne": "Unassigned",
   "app.components.admin.PostManager.PostPreview.pickProject": "Please select a project to start with.",
   "app.components.admin.PostManager.PostPreview.picks": "Picks: {picksNumber}",
