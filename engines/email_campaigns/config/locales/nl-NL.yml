@@ -487,9 +487,9 @@ nl:
       trending_ideas: "Trending ideas"
       trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
       no_notifications: "No notifications"
-      one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
+      one_notification: "1 melding"
+      multiple_notifications: "%{notifCount} meldingen"
+      no_unread_notifications: "It's time to generate some new activity! Visit the platform to discover what’s happening."
       unread_notifications: "You have new notifications! Visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'door %{authorName}'
