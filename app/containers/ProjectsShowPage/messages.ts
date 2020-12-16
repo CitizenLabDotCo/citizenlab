@@ -138,9 +138,10 @@ export default defineMessages({
     defaultMessage:
       'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
   },
-  twitterMessage: {
-    id: 'app.containers.Projects.twitterMessage',
-    defaultMessage: '{title}: Share your ideas on',
+  projectTwitterMessage: {
+    id: 'app.containers.Projects.projectTwitterMessage',
+    defaultMessage:
+      'Make your voice heard! Participate in {projectName} | {orgName}',
   },
   whatsAppMessage: {
     id: 'app.containers.Projects.whatsAppMessage',
