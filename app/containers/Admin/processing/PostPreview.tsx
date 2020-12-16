@@ -86,9 +86,6 @@ const TagSubSection = styled.div`
   &.smartTag {
     flex: 1;
   }
-  &.tagSearch {
-    flex: 1;
-  }
 `;
 
 export const TagList = styled.div`
@@ -129,6 +126,7 @@ interface InputProps {
   taggings: ITagging[] | null;
   handleNavigation: (direction: Direction) => void;
   tags: ITag[] | null | undefined;
+  handlePreventNavigation: (isNavigationPrevented: boolean) => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -260,6 +258,13 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     const manualTaggings = isNilOrError(taggings)
       ? []
       : this.getManualTaggings(taggings);
+
+    const manualTags = manualTaggings
+      .map(
+        (tagging) =>
+          tags && tags.find((tag) => tag.id === tagging.attributes.tag_id)
+      )
+      .filter((el) => el) as ITag[];
     const automaticTaggings = isNilOrError(taggings)
       ? []
       : this.getAutomaticTaggings(taggings);
@@ -344,14 +349,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                 </h4>
 
                 <TagSearch
-                  filteredOutTagIds={
-                    manualTaggings?.map(
-                      (tagging) => tagging.attributes.tag_id
-                    ) || []
-                  }
+                  filteredOutTags={manualTags}
                   onAddSelect={this.handleSelectExistingFromTagSearch}
                   onAddNew={this.addTaggingCreateTag}
                   onType={this.validateTag}
+                  handlePreventNavigation={this.props.handlePreventNavigation}
                 />
               </TagSubSection>
               <StyledValidationError
