@@ -67,7 +67,6 @@ const FolderPermissions = ({
   } = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
-  const [userOptions, setUserOptions] = useState<IUserData[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -107,7 +106,6 @@ const FolderPermissions = ({
       })
         .observable.pipe(first())
         .subscribe((response) => {
-          setUserOptions(response.data);
           setLoading(false);
           callback(getOptions(response));
         });
