@@ -13,7 +13,7 @@ module Tagging
           scope.all
         elsif user&.active? && user.project_moderator?
           projects = Project.where(id: user.moderatable_project_ids)
-          idea_ids = Ideas.where(project: projects)
+          idea_ids = Idea.where(project: projects)
 
           scope.where(idea_id: idea_ids)
         else
