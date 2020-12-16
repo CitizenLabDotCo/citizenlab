@@ -224,9 +224,9 @@ export default defineMessages({
     id: 'app.containers.Projects.budget',
     defaultMessage: '{amount} budget',
   },
-  noIdeasYet: {
-    id: 'app.containers.Projects.noIdeasYet',
-    defaultMessage: 'No ideas yet',
+  nothingPosted: {
+    id: 'app.containers.Projects.nothingPosted',
+    defaultMessage: 'Nothing posted yet',
   },
   xPhases: {
     id: 'app.containers.Projects.xPhases',

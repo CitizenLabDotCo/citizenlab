@@ -281,7 +281,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         )}
                     </ListItemButton>
                   ) : (
-                    <FormattedMessage {...messages.noIdeasYet} />
+                    <FormattedMessage {...messages.nothingPosted} />
                   )}
                 </ListItem>
               )}
