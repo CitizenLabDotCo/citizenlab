@@ -334,7 +334,7 @@ export class IdeaContent extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...messages.basketsCountTooltip}
+                              {...messages.pbItemCountTooltip}
                             />
                           }
                         />
