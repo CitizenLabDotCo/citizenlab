@@ -56,7 +56,7 @@ resource 'Projects' do
         json_response = json_parse(response_body)
         ids = json_response[:data].map { |project| project[:id] }
 
-        expect(ids).to match_array projects_within_folder.pluck(:id)
+        expect(ids).to match_array Project.pluck(:id)
       end
     end
 
