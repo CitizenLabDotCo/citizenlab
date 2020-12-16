@@ -105,18 +105,18 @@ interface Props extends InputProps, DataProps {}
 const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
   const authUser = useAuthUser();
 
+  const [folderOpen, setFolderOpen] = useState(false);
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+  const [folderDeletionError, setFolderDeletionError] = useState<string>('');
+
+  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
+
   if (!isNilOrError(authUser)) {
     const hasProjects =
       !isNilOrError(adminPublications) &&
       !!adminPublications.list?.length &&
       adminPublications.list.length > 0;
     const userCanDeletePublication = isAdmin({ data: authUser });
-
-    const [folderOpen, setFolderOpen] = useState(false);
-    const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-    const [folderDeletionError, setFolderDeletionError] = useState<string>('');
-
-    const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
     return (
       <Container>
