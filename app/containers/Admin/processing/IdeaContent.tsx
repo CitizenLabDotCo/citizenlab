@@ -53,6 +53,7 @@ const StyledBody = styled(Body)`
 `;
 
 const TagList = styled.div`
+  overflow-y: auto;
   flex: 1;
   margin-bottom: 20px;
   min-height: 52px;
