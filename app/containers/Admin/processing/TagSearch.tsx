@@ -39,6 +39,7 @@ interface Props {
   filteredOutTags: ITag[];
   onAddSelect: (tagId: string) => Promise<any> | null;
   onAddNew: (tagText: string) => Promise<any> | null;
+  onType: (isValidInput: boolean) => void;
   handlePreventNavigation: (isNavigationPrevented: boolean) => void;
 }
 
@@ -46,6 +47,7 @@ const TagSearch = memo(
   ({
     filteredOutTags,
     handlePreventNavigation,
+    onType,
     onAddSelect,
     onAddNew,
     intl,
@@ -126,17 +128,18 @@ const TagSearch = memo(
     };
 
     const isValidInput = (inputValue) => {
+      const isValidInput =
+        getTagValidation(inputValue) &&
+        !filteredOutTags.some(
+          (outTag) => localize(outTag.attributes.title_multiloc) === inputValue
+        );
       if (!inputValue) {
         handlePreventNavigation(false);
       } else {
         handlePreventNavigation(true);
       }
-      return (
-        getTagValidation(inputValue) &&
-        !filteredOutTags.some(
-          (outTag) => localize(outTag.attributes.title_multiloc) === inputValue
-        )
-      );
+      onType(isValidInput);
+      return isValidInput;
     };
 
     const isDropdownIconHidden = !isNonEmptyString(searchInput);
