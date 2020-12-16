@@ -55,7 +55,9 @@ resource 'Projects' do
 
         json_response = json_parse(response_body)
         ids = json_response[:data].map { |project| project[:id] }
-        projects = Project.left_outer_joins(:admin_publication).where(admin_publications: { publication_status: %w[published archived] })
+        projects = Project.left_outer_joins(:admin_publication)
+                          .where(admin_publications: { publication_status: %w[published archived] })
+                          .where(projects: { visible_to: 'public' })
 
         expect(ids).to match_array projects.pluck(:id)
       end
