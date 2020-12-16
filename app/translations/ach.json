@@ -412,6 +412,7 @@
   "app.components.admin.PostManager.PostPreview.delete": "",
   "app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation": "",
   "app.components.admin.PostManager.PostPreview.deletePostConfirmation": "",
+  "app.components.admin.PostManager.PostPreview.deletePostInTimelineConfirmation": "",
   "app.components.admin.PostManager.PostPreview.edit": "",
   "app.components.admin.PostManager.PostPreview.noOne": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "",
