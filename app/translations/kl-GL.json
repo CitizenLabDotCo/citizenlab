@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "Missingersuutit katillugit",
   "app.containers.Projects.upcomingEvents": "Siunissami pisussat",
   "app.containers.Projects.whatsAppMessage": "{projectName} | from the participation platform of {orgName}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}} in den nuværende fase",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# idea} other {# ideas}} in the final phase",
