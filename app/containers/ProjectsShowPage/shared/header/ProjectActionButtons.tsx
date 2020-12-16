@@ -14,6 +14,7 @@ import usePhases from 'hooks/usePhases';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getInputTerm } from 'services/participationContexts';
 
 // components
 import Button from 'components/UI/Button';
@@ -25,6 +26,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -160,6 +162,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           currentPhase.attributes.end_at,
         ]) === 'past'
       : false;
+    const inputTerm = getInputTerm(
+      project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+      project,
+      phases
+    );
 
     return (
       <Container className={className || ''}>
@@ -192,6 +199,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               fontWeight="500"
             >
               <FormattedMessage {...messages.seeTheIdeas} />
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.seeTheIdeas,
+                })}
+              />
             </SeeIdeasButton>
           )}
         {process_type === 'continuous' &&

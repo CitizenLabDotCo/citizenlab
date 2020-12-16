@@ -260,4 +260,8 @@ export default defineMessages({
     id: 'app.containers.Projects.xEvents',
     defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',
   },
+  seeTheIdeas: {
+    id: 'app.containers.Projects.seeTheIdeas',
+    defaultMessage: 'See the ideas',
+  },
 });
