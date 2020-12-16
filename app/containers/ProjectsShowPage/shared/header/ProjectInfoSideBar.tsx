@@ -32,6 +32,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -261,21 +262,38 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     >
                       {projectType === 'continuous' && (
                         <FormattedMessage
-                          {...messages.xIdeas}
+                          {...getInputTermMessage(
+                            project.attributes.input_term,
+                            {
+                              idea: messages.xIdeas,
+                            }
+                          )}
                           values={{ ideasCount }}
                         />
                       )}
-                      {currentPhaseParticipationMethod === 'ideation' &&
+                      {!isNilOrError(currentPhase) &&
+                        currentPhaseParticipationMethod === 'ideation' &&
                         !hasProjectEnded && (
                           <FormattedMessage
-                            {...messages.xIdeasInCurrentPhase}
+                            {...getInputTermMessage(
+                              currentPhase.attributes.input_term,
+                              {
+                                idea: messages.xIdeasInCurrentPhase,
+                              }
+                            )}
                             values={{ ideasCount }}
                           />
                         )}
-                      {currentPhaseParticipationMethod === 'ideation' &&
+                      {!isNilOrError(currentPhase) &&
+                        currentPhaseParticipationMethod === 'ideation' &&
                         hasProjectEnded && (
                           <FormattedMessage
-                            {...messages.xIdeasInFinalPhase}
+                            {...getInputTermMessage(
+                              currentPhase.attributes.input_term,
+                              {
+                                idea: messages.xIdeasInFinalPhase,
+                              }
+                            )}
                             values={{ ideasCount }}
                           />
                         )}
