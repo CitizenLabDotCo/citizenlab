@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "Samlet budget",
   "app.containers.Projects.upcomingEvents": "Kommende begivenheder",
   "app.containers.Projects.whatsAppMessage": "{projectName} | fra borgerinddragelsesplatformen hos {orgName}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}} in den nuværende fase",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, no {# idéer} one {# idé} other {# idéer}} i den afsluttende fase",
