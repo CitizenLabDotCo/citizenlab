@@ -21,7 +21,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // resources
@@ -57,7 +57,7 @@ const MenuInner = styled.nav`
   position: fixed;
   top: 0;
   bottom: 0;
-  padding-top: 119px;
+  padding-top: ${stylingConsts.menuHeight + 10}px;
   background: ${colors.adminMenuBackground};
 
   ${media.smallerThan1200px`

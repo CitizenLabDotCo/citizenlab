@@ -261,11 +261,21 @@ const Processing = memo<Props & InjectedIntlProps>(
       });
     };
 
-    if (projectList === undefined || locale === undefined || tags === undefined)
+    if (
+      projectList === undefined ||
+      locale === undefined ||
+      tags === undefined
+    ) {
       return <StyledSpinner />;
+    }
 
-    if (isNilOrError(projectList) || isNilOrError(locale) || isNilOrError(tags))
+    if (
+      isNilOrError(projectList) ||
+      isNilOrError(locale) ||
+      isNilOrError(tags)
+    ) {
       return null;
+    }
 
     if (!showAutotagView) {
       return (
