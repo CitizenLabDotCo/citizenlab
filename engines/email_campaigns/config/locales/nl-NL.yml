@@ -490,7 +490,7 @@ nl:
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
       no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
-      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
+      unread_notifications: "You have new notifications! Visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       by_author: 'door %{authorName}'
       cta_process_initiative: 'Zet de volgende stappen met dit initiatief'
