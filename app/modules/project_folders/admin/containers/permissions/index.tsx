@@ -149,16 +149,6 @@ const FolderPermissions = ({
     searchInput,
   ]);
 
-  const selectedUsers = useMemo(() => {
-    if (!isNilOrError(userOptions) && !isNilOrError(selectedUserOptions)) {
-      return selectedUserOptions.map(({ value }) =>
-        userOptions.find((moderator) => value === moderator.id)
-      );
-    }
-
-    return [];
-  }, [selectedUserOptions]);
-
   const userName = (user: IUserData) => {
     return `${user.attributes.first_name} ${user.attributes.last_name}`;
   };
