@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "Totaalbedrag",
   "app.containers.Projects.upcomingEvents": "Aankomende activiteiten",
   "app.containers.Projects.whatsAppMessage": "{projectName} | van het participatieplatform van {orgName}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# ideeën} one {# idee} other {# ideeën}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# ideeën} one {# idee} other {# ideeën}} in de huidige fase",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# idee} other {# ideeën}} in de laatste fase",

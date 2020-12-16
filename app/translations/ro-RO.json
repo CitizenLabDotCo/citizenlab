@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "Buget total",
   "app.containers.Projects.upcomingEvents": "Evenimente viitoare",
   "app.containers.Projects.whatsAppMessage": "{projectName} de pe platforma de participare a {orgName}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}} în faza curentă",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, no {# idei} one {# idee} other {# idei}} în faza finală",

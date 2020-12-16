@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "إجمالي الميزانية",
   "app.containers.Projects.upcomingEvents": "الأحداث القادمة",
   "app.containers.Projects.whatsAppMessage": "{اسم المشروع} | من منصة المشاركة لـ {اسم المنظمة}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# فكرة} other {# أفكار}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# فكرة} other {# من الأفكار}} في المرحلة الحالية",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# فكرة} other {# من الأفكار}} في المرحلة النهائية",
