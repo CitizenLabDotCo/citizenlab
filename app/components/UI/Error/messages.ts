@@ -174,7 +174,7 @@ export default defineMessages({
   cannot_contain_ideas: {
     id: 'app.errors.cannot_contain_ideas',
     defaultMessage:
-      "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
+      'The participation method you selected does not support this type of input. Please edit your selection and try again.',
   },
   error: {
     id: 'app.errors.error',
