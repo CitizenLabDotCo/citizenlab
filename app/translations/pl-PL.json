@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "Budżet całkowity",
   "app.containers.Projects.upcomingEvents": "Nadchodzące wydarzenia",
   "app.containers.Projects.whatsAppMessage": "{projectName} | z platformy partycypacyjnej {orgName}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# pomysł} few {# pomysły} many {# pomysłów} other {# pomysły}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# pomysł} few {# pomysły} many {# pomysłów} other {# pomysły}} na obecnym etapie",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# idea} other {# ideas}} in the final phase",

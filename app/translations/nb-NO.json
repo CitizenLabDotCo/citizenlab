@@ -1904,6 +1904,7 @@
   "app.containers.Projects.totalBudget": "Totalbudsjett",
   "app.containers.Projects.upcomingEvents": "Kommende hendelser",
   "app.containers.Projects.whatsAppMessage": "{projectName} | fra involveringsplattformen av {orgName}",
+  "app.containers.Projects.xEvents": "",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}",
   "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} I nåværende fase",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, no {# ideer} one {# idé} other {# ideer}} i den avsluttende fasen",
