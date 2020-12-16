@@ -14,6 +14,12 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to delete this post? This action cannot be undone.',
   },
+  deletePostInTimelineConfirmation: {
+    id:
+      'app.components.admin.PostManager.PostPreview.deletePostInTimelineConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this post? The post will be deleted from all project phases and cannot be recovered.',
+  },
   deleteInitiativeConfirmation: {
     id:
       'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
