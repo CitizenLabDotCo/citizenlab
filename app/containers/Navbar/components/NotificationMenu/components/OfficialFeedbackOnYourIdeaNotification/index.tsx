@@ -62,6 +62,8 @@ const OfficialFeedbackOnYourIdeaNotification = memo<Props>((props) => {
       </NotificationWrapper>
     );
   }
+
+  return null;
 });
 
 export default OfficialFeedbackOnYourIdeaNotification;
