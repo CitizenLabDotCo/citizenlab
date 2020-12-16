@@ -256,4 +256,8 @@ export default defineMessages({
     id: 'app.containers.Projects.endsAt',
     defaultMessage: 'Ends at',
   },
+  xEvents: {
+    id: 'app.containers.Projects.xEvents',
+    defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',
+  },
 });
