@@ -21,9 +21,7 @@ import { ITag, tagsStream } from 'services/tags';
 import { getTagValidation } from 'utils/tagUtils';
 import useLocalize from 'hooks/useLocalize';
 
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
+const Container = styled.div``;
 
 const SelectGroupsContainer = styled.div`
   display: flex;
@@ -41,11 +39,13 @@ interface Props {
   filteredOutTags: ITag[];
   onAddSelect: (tagId: string) => Promise<any> | null;
   onAddNew: (tagText: string) => Promise<any> | null;
+  handlePreventNavigation: (isNavigationPrevented: boolean) => void;
 }
 
 const TagSearch = memo(
   ({
     filteredOutTags,
+    handlePreventNavigation,
     onAddSelect,
     onAddNew,
     intl,
@@ -126,6 +126,11 @@ const TagSearch = memo(
     };
 
     const isValidInput = (inputValue) => {
+      if (!inputValue) {
+        handlePreventNavigation(false);
+      } else {
+        handlePreventNavigation(true);
+      }
       return (
         getTagValidation(inputValue) &&
         !filteredOutTags.some(

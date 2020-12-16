@@ -249,6 +249,9 @@ const Processing = memo<Props & InjectedIntlProps>(
     const { tags, onProjectsChange } = useTags();
 
     const [exporting, setExporting] = useState<boolean>(false);
+    const [isNavigationPrevented, setIsNavigationPrevented] = useState<boolean>(
+      false
+    );
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);
@@ -304,14 +307,14 @@ const Processing = memo<Props & InjectedIntlProps>(
     useEffect(() => {
       if (upArrow) {
         trackEventByName('Keyboard shorcut', { key: 'up' });
-        navigate('up');
+        !isNavigationPrevented && navigate('up');
       }
     }, [upArrow, ideaList]);
 
     useEffect(() => {
       if (downArrow) {
         trackEventByName('Keyboard shorcut', { key: 'down' });
-        navigate('down');
+        !isNavigationPrevented && navigate('down');
       }
     }, [downArrow, ideaList]);
 
@@ -487,6 +490,10 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const closeSideModal = () => setPreviewPostId(null);
 
+    const handlePreventNavigation = (isNavigationPrevented: boolean) => {
+      setIsNavigationPrevented(isNavigationPrevented);
+    };
+
     const getIdeaTaggings = (id: string | null) => {
       if (!isNilOrError(taggings)) {
         return taggings.filter((tagging) => tagging.attributes.idea_id === id);
@@ -652,6 +659,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                 handleNavigation={navigate}
                 taggings={getIdeaTaggings(previewPostId)}
                 tags={tags}
+                handlePreventNavigation={handlePreventNavigation}
               />
             </PostPreviewTransitionWrapper>
           </CSSTransition>
