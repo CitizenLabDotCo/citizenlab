@@ -1,9 +1,11 @@
 import React from 'react';
 import { IProjectData } from 'services/projects';
 import Link from 'utils/cl-router/Link';
-// intl
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 interface InputProps {
   project: IProjectData;
@@ -17,7 +19,11 @@ const ContinuousProject = ({ project }: Props) => (
       project.attributes.participation_method === 'budgeting') && (
       <li>
         <Link to={`/projects/${project.attributes.slug}/ideas`}>
-          <FormattedMessage {...messages.projectIdeas} />
+          <FormattedMessage
+            {...getInputTermMessage(project.attributes.input_term, {
+              idea: messages.projectIdeas,
+            })}
+          />
         </Link>
       </li>
     )}
