@@ -87,7 +87,7 @@ export default ({
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
             <Popup
-              content={<FormattedMessage {...messages.basketsCountTooltip} />}
+              content={<FormattedMessage {...messages.pbItemCountTooltip} />}
               trigger={
                 <button>
                   <InfoIcon name="info3" />
