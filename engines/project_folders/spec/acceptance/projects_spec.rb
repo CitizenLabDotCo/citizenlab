@@ -13,7 +13,7 @@ resource 'Projects' do
     let!(:project_folder) { create(:project_folder) }
     let!(:user) { create(:project_folder_moderator, project_folder: project_folder) }
     let!(:projects_within_folder) do
-      publication_statuses.map do |status|
+      projects = publication_statuses.map do |status|
         create(
           :project,
           admin_publication_attributes: {
@@ -22,10 +22,11 @@ resource 'Projects' do
           }
         )
       end
+      Project.includes(:admin_publication).where(projects: { id: projects.pluck(:id) })
     end
 
     let!(:projects_outside_of_folder) do
-      publication_statuses.map do |status|
+      projects = publication_statuses.map do |status|
         create(
           :project,
           admin_publication_attributes: {
@@ -33,6 +34,7 @@ resource 'Projects' do
           }
         )
       end
+      Project.includes(:admin_publication).where(projects: { id: projects.pluck(:id) })
     end
 
     let(:publication_statuses) { AdminPublication::PUBLICATION_STATUSES }
@@ -55,10 +57,10 @@ resource 'Projects' do
 
         json_response = json_parse(response_body)
         ids = json_response[:data].map { |project| project[:id] }
-        projects = Project.left_outer_joins(:admin_publication)
+        projects = Project.includes(:admin_publication)
                           .where(admin_publications: { publication_status: %w[published archived] })
                           .where(projects: { visible_to: 'public' })
-                          .or(Project.where(id: projects_within_folder.pluck(:id)))
+                          .or(projects_within_folder)
 
         expect(ids).to match_array projects.pluck(:id)
       end
