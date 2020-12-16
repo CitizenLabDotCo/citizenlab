@@ -45,25 +45,9 @@ export default defineMessages({
     id: 'app.containers.Projects.metaTitle',
     defaultMessage: 'Project: {projectTitle}',
   },
-  pastEvents: {
-    id: 'app.containers.Projects.pastEvents',
-    defaultMessage: 'Past events',
-  },
-  noPastEvents: {
-    id: 'app.containers.Projects.noPastEvents',
-    defaultMessage: 'There are no past events',
-  },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',
     defaultMessage: 'Upcoming events',
-  },
-  noUpcomingEvents: {
-    id: 'app.containers.Projects.noUpcomingEvents',
-    defaultMessage: 'There are no upcoming events at this time',
-  },
-  allEvents: {
-    id: 'app.containers.Projects.allEvents',
-    defaultMessage: 'All events',
   },
   location: {
     id: 'app.containers.Projects.location',
@@ -76,18 +60,6 @@ export default defineMessages({
   endedOn: {
     id: 'app.containers.Projects.endedOn',
     defaultMessage: 'Ended on {date}',
-  },
-  endsOn: {
-    id: 'app.containers.Projects.endsOn',
-    defaultMessage: 'Ends on {date}',
-  },
-  startsOn: {
-    id: 'app.containers.Projects.startsOn',
-    defaultMessage: 'Starts on {date}',
-  },
-  startedOn: {
-    id: 'app.containers.Projects.startedOn',
-    defaultMessage: 'Started on {date}',
   },
   previousPhase: {
     id: 'app.containers.Projects.previousPhase',
@@ -166,10 +138,6 @@ export default defineMessages({
     defaultMessage:
       'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
   },
-  a11y_projectNav: {
-    id: 'app.containers.Projects.a11y_projectNav',
-    defaultMessage: 'Project navigation',
-  },
   twitterMessage: {
     id: 'app.containers.Projects.twitterMessage',
     defaultMessage: '{title}: Share your ideas on',
@@ -178,10 +146,6 @@ export default defineMessages({
     id: 'app.containers.Projects.whatsAppMessage',
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
-  },
-  aboutThisProject: {
-    id: 'app.containers.Projects.aboutThisProject',
-    defaultMessage: 'About this project',
   },
   about: {
     id: 'app.containers.Projects.about',
@@ -243,22 +207,9 @@ export default defineMessages({
     defaultMessage:
       '{upcomingEventsCount, plural, no {# upcoming events} one {# upcoming event} other {# upcoming events}}',
   },
-  xEvents: {
-    id: 'app.containers.Projects.xEvents',
-    defaultMessage:
-      '{eventsCount, plural, no {# events} one {# event} other {# events}}',
-  },
   allocateBudget: {
     id: 'app.containers.Projects.allocateBudget',
     defaultMessage: 'Allocate your budget',
-  },
-  seeTheIdeas: {
-    id: 'app.containers.Projects.seeTheIdeas',
-    defaultMessage: 'See the ideas',
-  },
-  postYourIdea: {
-    id: 'app.containers.Projects.postYourIdea',
-    defaultMessage: 'Post your idea',
   },
   takeTheSurvey: {
     id: 'app.containers.Projects.takeTheSurvey',
@@ -295,14 +246,6 @@ export default defineMessages({
   seeLess: {
     id: 'app.containers.Projects.seeLess',
     defaultMessage: 'See less',
-  },
-  phaseEnded: {
-    id: 'app.containers.Projects.phaseEnded',
-    defaultMessage: 'This phase has ended',
-  },
-  phaseNotStartedYet: {
-    id: 'app.containers.Projects.phaseNotStartedYet',
-    defaultMessage: `This phase hasn't started yet`,
   },
   startsAt: {
     id: 'app.containers.Projects.startsAt',
