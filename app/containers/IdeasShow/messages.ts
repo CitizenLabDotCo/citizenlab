@@ -88,14 +88,13 @@ export default defineMessages({
     defaultMessage:
       '{ideaTitle} | from the participation platform of {orgName}',
   },
-  emailSharingSubject: {
-    id: 'app.containers.IdeasShow.emailSharingSubject',
+  ideaEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.ideaEmailSharingSubject',
     defaultMessage: 'Support my idea: {ideaTitle}.',
   },
-  emailSharingBody: {
-    id: 'app.containers.IdeasShow.emailSharingBody',
-    defaultMessage:
-      'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
+  ideaEmailSharingBody: {
+    id: 'app.containers.IdeasShow.ideaEmailSharingBody',
+    defaultMessage: "Support my idea '{ideaTitle}' at {ideaUrl}!",
   },
   share: {
     id: 'app.containers.IdeasShow.share',
