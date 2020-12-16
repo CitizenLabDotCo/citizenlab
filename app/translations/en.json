@@ -2222,7 +2222,6 @@
   "app.errors.avatar_carrierwave_processing_error": "Could not process avatar.",
   "app.errors.avatar_extension_blacklist_error": "The file extension of the avatar image is not allowed. Allowed extensions are: jpg, jpeg, gif and png.",
   "app.errors.avatar_extension_whitelist_error": "The file extension of the avatar image is not allowed. Allowed extensions are: jpg, jpeg, gif and png.",
-  "app.errors.cannot_contain_ideas": "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
   "app.errors.email_already_active": "The email address {value} found in row {row} already belongs to a registered participant",
   "app.errors.email_already_invited": "The email address {value} found in row {row} was already invited",
