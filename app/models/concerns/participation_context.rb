@@ -17,7 +17,7 @@ module ParticipationContext
   PRESENTATION_MODES    = %w[card map].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
-  INPUT_TERMS           = %w[idea].freeze
+  INPUT_TERMS           = %w[idea question contribution project issue option].freeze
 
   # rubocop:disable Metrics/BlockLength
   included do
@@ -49,7 +49,7 @@ module ParticipationContext
                   numericality: { only_integer: true, greater_than: 0 },
                   if: %i[ideation? voting_limited?]
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
-        validates :input_term, inclusion: { in: INPUT_TERMS }, allow_nil: true
+        validates :input_term, inclusion: { in: INPUT_TERMS }
 
         before_validation :set_ideas_order
         before_validation :set_input_term
