@@ -1,6 +1,5 @@
 module EmailCampaigns
   module CampaignHelper
-
     def formatMessage key, fragment: nil, escape_html: true, values: {}
       group = fragment || @campaign.class.name.demodulize.underscore
       msg = t("email_campaigns.#{group}.#{key}", values)
@@ -14,6 +13,5 @@ module EmailCampaigns
     def localize multiloc
       @multiloc_service.t multiloc, @user
     end
-
   end
 end

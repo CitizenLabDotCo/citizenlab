@@ -40,7 +40,6 @@ module EmailCampaigns
           }
         end
       end
-
     end
 
     private
@@ -62,6 +61,5 @@ module EmailCampaigns
         'unsubscription_token' => EmailCampaigns::UnsubscriptionToken.find_by(user_id: user.id)&.token
       }
     end
-
   end
 end
