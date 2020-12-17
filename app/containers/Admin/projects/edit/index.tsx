@@ -13,7 +13,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -121,7 +120,6 @@ export class AdminProjectEdition extends PureComponent<
     } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
-    const projectInputTerm = project.attributes.input_term;
     let tabs: TabProps[] = [
       {
         label: formatMessage(messages.generalTab),
@@ -134,11 +132,7 @@ export class AdminProjectEdition extends PureComponent<
         name: 'description',
       },
       {
-        label: formatMessage(
-          getInputTermMessage(projectInputTerm, {
-            idea: messages.ideasTab,
-          })
-        ),
+        label: formatMessage(messages.ideasTab),
         url: `${baseTabsUrl}/ideas`,
         name: 'ideas',
       },
@@ -154,11 +148,7 @@ export class AdminProjectEdition extends PureComponent<
         name: 'survey-results',
       },
       {
-        label: formatMessage(
-          getInputTermMessage(projectInputTerm, {
-            idea: messages.ideaFormTab,
-          })
-        ),
+        label: formatMessage(messages.ideaFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
         name: 'ideaform',
@@ -405,11 +395,7 @@ export class AdminProjectEdition extends PureComponent<
                   buttonStyle="cl-blue"
                   icon="idea"
                   linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                  text={formatMessage(
-                    getInputTermMessage(project.attributes.input_term, {
-                      idea: messages.addNewIdea,
-                    })
-                  )}
+                  text={formatMessage(messages.addNewIdea)}
                   onClick={this.onNewIdea(pathname)}
                 />
               )}
