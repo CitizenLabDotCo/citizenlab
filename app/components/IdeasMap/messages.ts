@@ -1,14 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  seeIdea: {
-    id: 'app.components.IdeasMap.seeIdea',
-    defaultMessage: 'See the full idea',
+  ideaOnMapReadMore: {
+    id: 'app.components.IdeasMap.ideaOnMapReadMore',
+    defaultMessage: 'Read more',
   },
-  noIdeasWithLocation: {
-    id: 'app.components.IdeasMap.noIdeasWithLocation',
+  nothingOnMapWarning: {
+    id: 'app.components.IdeasMap.nothingOnMapWarning',
     defaultMessage:
-      "The ideas in this project don't have any location information.",
+      'Nothing to be seen here here! There might be more to see in the list view.',
   },
   postingHereImpossible: {
     id: 'app.components.IdeasMap.postingHereImpossible',
@@ -40,9 +40,9 @@ export default defineMessages({
     id: 'app.components.IdeasMap.postingNotActivePhase',
     defaultMessage: "You can't post ideas in a past or future phase.",
   },
-  mapTitle: {
-    id: 'app.components.IdeasMap.mapTitle',
-    defaultMessage: 'Map with overview of ideas based on location',
+  a11y_mapTitle: {
+    id: 'app.components.IdeasMap.a11y_mapTitle',
+    defaultMessage: 'Map overview',
   },
   or: {
     id: 'app.components.IdeasMap.or',

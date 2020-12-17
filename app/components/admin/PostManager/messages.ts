@@ -5,17 +5,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.header',
     defaultMessage: 'Ideas',
   },
-  anyFeedbackStatusIdeas: {
-    id: 'app.components.admin.PostManager.anyFeedbackStatusIdeas',
-    defaultMessage: 'All ideas',
-  },
-  anyFeedbackStatusInitiatives: {
-    id: 'app.components.admin.PostManager.anyFeedbackStatusInitiatives',
-    defaultMessage: 'All initiatives',
-  },
-  needFeedback: {
-    id: 'app.components.admin.PostManager.needFeedback',
-    defaultMessage: 'Need Feedback',
+  needFeedbackToggle: {
+    id: 'app.components.admin.PostManager.needFeedbackToggle',
+    defaultMessage: 'Only show posts that need feedback',
   },
   anyAssignment: {
     id: 'app.components.admin.PostManager.anyAssignment',
@@ -148,22 +140,22 @@ export default defineMessages({
     defaultMessage:
       'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
   },
-  basketsCountTooltip: {
-    id: 'app.components.admin.PostManager.basketsCountTooltip',
+  pbItemCountTooltip: {
+    id: 'app.components.admin.PostManager.pbItemCountTooltip',
     defaultMessage:
-      'The number of users that added this idea to their participatory budget',
+      "The number of times this has been included in other participants' participatory budgets",
   },
-  exportIdeas: {
-    id: 'app.components.admin.PostManager.exportIdeas',
-    defaultMessage: 'Export all ideas (.xslx)',
+  exportAllSubmissions: {
+    id: 'app.components.admin.PostManager.exportAllSubmissions',
+    defaultMessage: 'Export all submissions (.xslx)',
   },
-  exportIdeasProjects: {
-    id: 'app.components.admin.PostManager.exportIdeasProjects',
-    defaultMessage: 'Export ideas for this project (.xslx)',
+  exportSubmissionsProjects: {
+    id: 'app.components.admin.PostManager.exportSubmissionsProjects',
+    defaultMessage: 'Export submissions for this project (.xslx)',
   },
-  exportSelectedIdeas: {
-    id: 'app.components.admin.PostManager.exportSelectedIdeas',
-    defaultMessage: 'Export selected ideas (.xslx)',
+  exportSelectedSubmissions: {
+    id: 'app.components.admin.PostManager.exportSelectedSubmissions',
+    defaultMessage: 'Export selected submissions (.xslx)',
   },
   exportIdeasComments: {
     id: 'app.components.admin.PostManager.exportIdeasComments',
@@ -173,9 +165,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportIdeasCommentsProjects',
     defaultMessage: 'Export comments for this project (.xslx)',
   },
-  exportSelectedIdeasComments: {
-    id: 'app.components.admin.PostManager.exportSelectedIdeasComments',
-    defaultMessage: 'Export comments for selected ideas (.xslx)',
+  exportSelectedSubmissionsComments: {
+    id: 'app.components.admin.PostManager.exportSelectedSubmissionsComments',
+    defaultMessage: 'Export comments for selected submissions (.xslx)',
   },
   exportInitiatives: {
     id: 'app.components.admin.PostManager.exportInitiatives',

@@ -183,7 +183,7 @@ export class IdeaContent extends PureComponent<
   handleClickDelete = () => {
     const { idea, closePreview } = this.props;
     const message = this.props.intl.formatMessage(
-      messages.deleteIdeaConfirmation
+      messages.deletePostConfirmation
     );
 
     if (!isNilOrError(idea)) {
@@ -334,7 +334,7 @@ export class IdeaContent extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...messages.basketsCountTooltip}
+                              {...messages.pbItemCountTooltip}
                             />
                           }
                         />
