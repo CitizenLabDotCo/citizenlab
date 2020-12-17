@@ -131,7 +131,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingNotPermitted;
     } else if (authUser && disabled_reason === 'not_verified') {
-      return messages.votingDisabledNotVerified;
+      return messages.votingNotVerified;
     } else {
       return messages.votingNotEnabled;
     }
