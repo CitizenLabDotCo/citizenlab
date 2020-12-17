@@ -1692,7 +1692,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Buget propus",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "De ce dorești să raportezi acest lucru ca spam?",
   "app.containers.IdeasShow.share": "Distribuie",
-  "app.containers.IdeasShow.shareSubtitle": "Adună cât mai multă susținere și fă-ți vocea auzită.",
+  "app.containers.IdeasShow.sharingModalSubtitle": "",
   "app.containers.IdeasShow.sharingModalTitle": "",
   "app.containers.IdeasShow.twitterMessage": "Votează pentru {ideaTitle} pe",
   "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | de pe platforma de participare a {orgName}",

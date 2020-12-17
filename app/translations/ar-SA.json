@@ -1692,7 +1692,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "الميزانية المُقترحة",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "لماذا تريد الإبلاغ عن هذا على أنه مزعج؟",
   "app.containers.IdeasShow.share": "مشاركة",
-  "app.containers.IdeasShow.shareSubtitle": "تواصل مع المزيد من الأشخاص واجعل صوتك مسموعًا.",
+  "app.containers.IdeasShow.sharingModalSubtitle": "",
   "app.containers.IdeasShow.sharingModalTitle": "",
   "app.containers.IdeasShow.twitterMessage": "صوّت لـ {ideaTitle} على",
   "app.containers.IdeasShow.whatsAppMessage": "{عنوان الفكرة} | من منصة المشاركة لـ {اسم المنظمة}",
