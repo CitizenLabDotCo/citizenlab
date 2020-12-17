@@ -39,7 +39,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
       ? {
           source: 'share_project',
           campaign: 'share_content',
-          content: authUser.data.id,
+          content: authUser.id,
         }
       : {
           source: 'share_project',

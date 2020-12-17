@@ -12,7 +12,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  authUser: IUserData | undefined | null;
+  authUser: GetAuthUserChildProps;
 }
 
 export type GetAuthUserChildProps = IUserData | undefined | null;
