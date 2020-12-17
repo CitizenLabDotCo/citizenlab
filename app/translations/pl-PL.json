@@ -466,7 +466,7 @@
   "app.components.admin.PostManager.multiDragAndDropHelpInitiatives": "Przeciągnij i upuść propozycje na pozycję powyżej, aby przypisać je wszystkie jednocześnie.",
   "app.components.admin.PostManager.multipleIdeas": "Ilość pomysłów: {ideaCount}",
   "app.components.admin.PostManager.multipleInitiatives": "Ilość propozycji: {initiativesCount}",
-  "app.components.admin.PostManager.needFeedback": "Wymaga informacji zwrotnej",
+  "app.components.admin.PostManager.needFeedbackToggle": "",
   "app.components.admin.PostManager.newFeedbackMode": "Napisz nową aktualizację, aby wyjaśnić tę zmianę",
   "app.components.admin.PostManager.noIdeasHere": "Nie ma pomysłów, które pasują do użytych filtrów",
   "app.components.admin.PostManager.noInitiativesHere": "Brak propozycji pasujących do użytych filtrów",
