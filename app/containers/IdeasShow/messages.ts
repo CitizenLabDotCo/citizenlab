@@ -5,8 +5,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.sharingModalTitle',
     defaultMessage: 'Thanks for submitting your idea!',
   },
-  shareSubtitle: {
-    id: 'app.containers.IdeasShow.shareSubtitle',
+  sharingModalSubtitle: {
+    id: 'app.containers.IdeasShow.sharingModalSubtitle',
     defaultMessage: 'Reach more people and make your voice heard.',
   },
   deletedUser: {

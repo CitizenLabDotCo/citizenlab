@@ -747,7 +747,7 @@ export class IdeasShow extends PureComponent<
                       idea: messages.sharingModalTitle,
                     })
                   )}
-                  subtitle={formatMessage(messages.shareSubtitle)}
+                  subtitle={formatMessage(messages.sharingModalSubtitle)}
                 />
               )}
             </Modal>
