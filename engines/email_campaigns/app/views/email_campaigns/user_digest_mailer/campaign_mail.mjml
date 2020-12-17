@@ -1,5 +1,5 @@
 <mjml>
-  <%= render partial: "application/header" %>
+  <%= render partial: 'application/header' %>
   <mj-body background-color="#FFFFFF">
 
     <!-- Preheader -->
@@ -7,13 +7,13 @@
       <mj-column>
         <mj-text>
           <span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-            <%= formatMessage('preheader', values: {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
+            <%= formatMessage('preheader', values: { organizationName: organization_name }) %>
           </span>
         </mj-text>
       </mj-column>
     </mj-section>
 
-    <%= render partial: "application/logo_medium_top" %>
+    <%= render partial: 'application/logo_medium_top' %>
 
     <!-- Main header -->
     <mj-section padding="25px 25px 20px">
@@ -23,15 +23,14 @@
             <%= formatMessage('title_your_weekly_report') %>
           </h1>
           <p>
-            <%= formatMessage('intro_text', 
-            values: {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
+            <%= formatMessage('intro_text', values: { organizationName: organization_name }) %>
           </p>
         </mj-text>
       </mj-column>
     </mj-section>
 
     <!-- Notifications -->
-    <mj-section 
+    <mj-section
       padding="0 25px 40px"
       background-color="#fff"
       border-radius="5px"
@@ -40,27 +39,27 @@
       <mj-column border="1px solid #eaeaea" padding="30px 25px" background-color="#fff" border-radius="5px">
         <mj-text padding-bottom="20px">
           <h2>
-            <% if @command[:event_payload][:notifications_count] == 0 %>
+            <% if event_payload[:notifications_count] == 0 %>
               <%= formatMessage('no_notifications') %>
-            <% elsif @command[:event_payload][:notifications_count] == 1 %>
+            <% elsif event_payload[:notifications_count] == 1 %>
               <%= formatMessage('one_notification') %>
-            <% elsif @command[:event_payload][:notifications_count] > 1 %>
-              <%= formatMessage('multiple_notifications', values: {notifCount: @command[:event_payload][:notifications_count]}) %>
+            <% elsif event_payload[:notifications_count] > 1 %>
+              <%= formatMessage('multiple_notifications', values: { notifCount: event_payload[:notifications_count] }) %>
             <% end %>
           </h2>
           <p style="margin-top: 10px;">
-            <% if @command[:event_payload][:notifications_count] == 0 %>
+            <% if event_payload[:notifications_count] == 0 %>
               <%= formatMessage('no_unread_notifications') %>
-            <% elsif @command[:event_payload][:notifications_count] > 0 %>
+            <% elsif event_payload[:notifications_count] > 0 %>
               <%= formatMessage('unread_notifications') %>
             <% end %>
           </p>
         </mj-text>
-        <mj-button 
+        <mj-button
           color="#fff"
-          background-color="#044D6C" 
+          background-color="#044D6C"
           border-radius="5px"
-          href="<%= @url_service.home_url(tenant: @tenant, locale: @locale) %>"
+          href="<%= url_service.home_url(tenant: @tenant, locale: @locale) %>"
           align="left"
         >
           <%= formatMessage('cta_go_to_the_platform') %>
@@ -73,22 +72,22 @@
       <mj-column>
         <mj-text padding="0 25px">
           <h2>
-            <% if @command[:event_payload][:top_ideas].present? %>
+            <% if event_payload[:top_ideas].present? %>
               <%= formatMessage('trending_ideas') %>
             <% end %>
           </h2>
           <p>
-            <% if @command[:event_payload][:top_ideas].present? %>
+            <% if event_payload[:top_ideas].present? %>
               <%= formatMessage("trending_ideas_text") %>
             <% end %>
           </p>
         </mj-text>
       </mj-column>
     </mj-section>
-      
-    
-    <mj-raw><% @command[:event_payload][:top_ideas].each do |top_idea| %></mj-raw>
-      <mj-wrapper padding="0px 25px 20px">   
+
+
+    <mj-raw><% event_payload[:top_ideas].each do |top_idea| %></mj-raw>
+      <mj-wrapper padding="0px 25px 20px">
         <mj-section border="1px solid #eaeaea" padding="0px 25px 0px">
           <mj-column>
             <mj-text>
@@ -96,7 +95,7 @@
                 <h3 style="margin-bottom: 10px">
                   <%= localize(top_idea[:title_multiloc])[0...80] %>
                 </h3>
-              </a>                   
+              </a>
             </mj-text>
             <mj-table width="200px">
               <tr>
@@ -125,10 +124,11 @@
                   <tr style="background-color:#F3F7FB; text-align: left;">
                     <td style="text-align: left; width: 100%" colspan="4">
                       <mj-text style="font-size: 12px;">
-                        <%= formatMessage('commented', values: {
-                          authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{top_comment[:author_first_name]}</span>"
-                        },
-                        escape_html: false
+                        <%= formatMessage('commented',
+                              values: {
+                                authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{top_comment[:author_first_name]}</span>"
+                              },
+                              escape_html: false
                         ) %>
                         <p style="margin: 15px 0 0;">
                           <%= localize(top_comment[:body_multiloc])[0...140] %>
@@ -141,7 +141,7 @@
             <mj-text>&nbsp;</mj-text>
           </mj-column>
         </mj-section>
-      </mj-wrapper> 
+      </mj-wrapper>
     <mj-raw><% end %></mj-raw>
 
     <!-- New initiatives -->
@@ -149,18 +149,18 @@
       <mj-column>
         <mj-text>
           <h2>
-            <% if @command[:event_payload][:new_initiatives].present? %>
+            <% if event_payload[:new_initiatives].present? %>
               <%= formatMessage('title_proposals') %>
             <% end %>
           </h2>
           <p>
-            <%  if @command[:event_payload][:new_initiatives].present? %>
+            <%  if event_payload[:new_initiatives].present? %>
               <%= formatMessage('proposals_started_text') %>
             <% end %>
           </p>
         </mj-text>
 
-        <mj-raw><% @command[:event_payload][:new_initiatives].each do |new_initiative| %></mj-raw>
+        <mj-raw><% event_payload[:new_initiatives].each do |new_initiative| %></mj-raw>
           <mj-table cellpadding="15" padding-top="20px">
               <% @diff_days = ((Time.now - Time.parse(new_initiative[:published_at])) / 1.day) %>
 
@@ -208,18 +208,18 @@
       <mj-column>
         <mj-text>
           <h2>
-            <% if @command[:event_payload][:succesful_initiatives].present? %>
+            <% if event_payload[:succesful_initiatives].present? %>
               <%= formatMessage('title_successful_proposals') %>
             <% end %>
           </h2>
           <p>
-            <% if @command[:event_payload][:succesful_initiatives].present? %>
+            <% if event_payload[:succesful_initiatives].present? %>
               <%= formatMessage('successful_proposals_text') %>
             <% end %>
           </p>
         </mj-text>
 
-        <mj-raw><% @command[:event_payload][:succesful_initiatives].each do |succesful_initiative| %></mj-raw>
+        <mj-raw><% event_payload[:succesful_initiatives].each do |succesful_initiative| %></mj-raw>
           <mj-table cellpadding="15" padding-top="20px">
               <% @diff_days = ((Time.now - Time.parse(succesful_initiative[:published_at])) / 1.day) %>
 
@@ -263,12 +263,13 @@
     </mj-section>
 
     <!-- CTA button -->
-    <%= render partial: "application/cta_button", locals: {
-      href: @url_service.home_url(tenant: @tenant, locale: @locale),
-      message: formatMessage('cta_go_to_the_platform')
-    } %>
+    <%= render partial: 'application/cta_button',
+               locals: {
+                 href: url_service.home_url(tenant: @tenant, locale: @locale),
+                 message: formatMessage('cta_go_to_the_platform')
+               } %>
 
-    <%= render partial: "application/footer" %>
+    <%= render partial: 'application/footer' %>
 
   </mj-body>
 </mjml>
