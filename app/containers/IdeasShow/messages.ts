@@ -55,9 +55,15 @@ export default defineMessages({
     id: 'app.components.IdeasShow.deletePost',
     defaultMessage: 'Delete',
   },
-  deleteIdeaConfirmation: {
-    id: 'app.components.IdeasShow.deleteIdeaConfirmation',
-    defaultMessage: 'Are you sure you want to delete this idea?',
+  deletePostConfirmation: {
+    id: 'app.components.IdeasShow.deletePostConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this post? This action cannot be undone.',
+  },
+  deletePostInTimelineConfirmation: {
+    id: 'app.components.IdeasShow.deletePostInTimelineConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this post? The post will be deleted from all project phases and cannot be recovered.',
   },
   goBack: {
     id: 'app.components.IdeasShow.goBack',

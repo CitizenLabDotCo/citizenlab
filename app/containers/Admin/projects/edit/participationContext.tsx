@@ -765,9 +765,7 @@ class ParticipationContext extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...getInputTermMessage(input_term, {
-                                idea: messages.votingMethodTooltip,
-                              })}
+                              {...messages.votingMaximumTooltip}
                             />
                           }
                         />
@@ -823,9 +821,7 @@ class ParticipationContext extends PureComponent<
                           <IconTooltip
                             content={
                               <FormattedMessage
-                                {...getInputTermMessage(input_term, {
-                                  idea: messages.downvotingTooltip,
-                                })}
+                                {...messages.disableDownvotingTooltip}
                               />
                             }
                           />
@@ -871,11 +867,7 @@ class ParticipationContext extends PureComponent<
                       <FormattedMessage {...messages.defaultDisplay} />
                       <IconTooltip
                         content={
-                          <FormattedMessage
-                            {...getInputTermMessage(input_term, {
-                              idea: messages.presentationModeTooltip,
-                            })}
-                          />
+                          <FormattedMessage {...messages.viewModeTooltip} />
                         }
                       />
                     </SubSectionTitle>
@@ -902,9 +894,7 @@ class ParticipationContext extends PureComponent<
                       <IconTooltip
                         content={
                           <FormattedMessage
-                            {...getInputTermMessage(input_term, {
-                              idea: messages.defaultIdeaSortingTooltip,
-                            })}
+                            {...messages.defaultPostSortingTooltip}
                           />
                         }
                       />

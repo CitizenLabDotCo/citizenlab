@@ -151,10 +151,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     return height;
   };
 
-  noIdeasWithLocationMessage = (
-    <FormattedMessage {...messages.noIdeasWithLocation} />
-  );
-
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const {
@@ -167,11 +163,13 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     return (
       <Container className={className}>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
-          <StyledWarning text={this.noIdeasWithLocationMessage} />
+          <StyledWarning
+            text={<FormattedMessage {...messages.nothingOnMapWarning} />}
+          />
         )}
 
         <ScreenReaderOnly>
-          <FormattedMessage {...messages.mapTitle} />
+          <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
         <Map
