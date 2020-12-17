@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.header',
     defaultMessage: 'Ideas',
   },
-  needFeedback: {
-    id: 'app.components.admin.PostManager.needFeedback',
-    defaultMessage: 'Need Feedback',
+  needFeedbackToggle: {
+    id: 'app.components.admin.PostManager.needFeedbackToggle',
+    defaultMessage: 'Only show posts that need feedback',
   },
   anyAssignment: {
     id: 'app.components.admin.PostManager.anyAssignment',
