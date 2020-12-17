@@ -9,7 +9,7 @@ jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
 import { makeUser } from 'services/__mocks__/users';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
-import { getMockProject } from 'services/__mocks__/projects';
+import { getProject } from 'services/__mocks__/projects';
 import { mockPhasePollData } from 'services/__mocks__/phases';
 
 import { Poll } from './';
@@ -74,7 +74,7 @@ describe('<Poll/>', () => {
       expect(wrapper.type()).toBe(null);
     });
     it('renders null when pollQuestions is null', () => {
-      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <Poll
           type="phase"
@@ -122,7 +122,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <Poll
           type="phase"
@@ -142,7 +142,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <Poll
           type="phase"
@@ -162,7 +162,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = getProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <Poll
           type="phase"
@@ -184,11 +184,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject(
-        'projectId',
-        'continuous',
-        'poll'
-      );
+      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
       const mockProject = {
         ...mockProjectGeneric,
         attributes: { action_descriptor: { taking_poll: { enabled: true } } },
@@ -220,11 +216,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject(
-        'projectId',
-        'continuous',
-        'poll'
-      );
+      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
       const mockProject = {
         ...mockProjectGeneric,
         attributes: { action_descriptor: { taking_poll: { enabled: true } } },
@@ -250,11 +242,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject(
-        'projectId',
-        'continuous',
-        'poll'
-      );
+      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
       const mockProject = {
         ...mockProjectGeneric,
         attributes: {
@@ -288,11 +276,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject(
-        'projectId',
-        'continuous',
-        'poll'
-      );
+      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
       const mockProject = {
         ...mockProjectGeneric,
         attributes: { action_descriptor: { taking_poll: { enabled: true } } },
@@ -329,11 +313,7 @@ describe('<Poll/>', () => {
         'What is on the menu for dinner tonight?',
         "What's your favourite ice cream flavor?",
       ].map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject(
-        'projectId',
-        'continuous',
-        'poll'
-      );
+      const mockProjectGeneric = getProject('projectId', 'continuous', 'poll');
       const mockProject = {
         ...mockProjectGeneric,
         attributes: {
