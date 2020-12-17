@@ -109,9 +109,11 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     <GetProject projectSlug={params.slug}>{render}</GetProject>
   ),
   phases: ({ project, render }) => {
-    return !isNilOrError(project) ? (
-      <GetPhases projectId={project.id}>{render}</GetPhases>
-    ) : null;
+    return (
+      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+        {render}
+      </GetPhases>
+    );
   },
 });
 
