@@ -62,6 +62,10 @@ class InvitesService
     @custom_field_schema = CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
   end
 
+  def generate_token
+    ([*('a'..'z'),*('0'..'9')]).sample(9).join
+  end
+
   def bulk_create_xlsx file, default_params={}, inviter=nil
 
     map_rows = []
