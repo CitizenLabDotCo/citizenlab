@@ -290,10 +290,10 @@ export default defineMessages({
     defaultMessage:
       'This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.',
   },
-  startLoadingMessage: {
-    id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
+  automaticLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.automaticLoadingMessage',
     defaultMessage:
-      'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
+      'Automatic location detection underway. Please wait until the processing is complete.',
   },
   thenLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',
