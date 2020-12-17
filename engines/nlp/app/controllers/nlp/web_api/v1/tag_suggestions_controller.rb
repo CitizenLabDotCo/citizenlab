@@ -6,7 +6,12 @@ module NLP
 
         def index
           locale = current_user.locale
-          @tag_suggestions = TagSuggestionService.new.suggest(policy_scope(Idea).where(id: params['idea_ids']), locale).map { |e|
+
+          @ideas = policy_scope(Idea)
+          @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
+          @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
+
+          @tag_suggestions = TagSuggestionService.new.suggest(@ideas, locale).map { |e|
             {
               title_multiloc: {
                 locale => e["text"]
