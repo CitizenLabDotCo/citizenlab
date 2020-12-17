@@ -238,8 +238,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       segment: {
-        enabled: true,
-        allowed: true
+        enabled: false,
+        allowed: false
       },
       satismeter: {
         enabled: true,
@@ -262,6 +262,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       surveys: {
+        enabled: true,
+        allowed: true
+      },
+      project_management: {
         enabled: true,
         allowed: true
       },

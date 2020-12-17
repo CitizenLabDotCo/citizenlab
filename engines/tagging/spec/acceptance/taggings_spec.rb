@@ -160,52 +160,64 @@ resource "Taggings" do
 
     before do
       @project = create(:project_with_current_phase, with_permissions: true)
-      @ideas = create_list(:idea, 2, project: @project)
+      @ideas = create_list(:idea, 5, project: @project)
       Tagging::Tag.create(title_multiloc: {'en' => 'label', 'fr-BE' => 'label'})
       Tagging::Tag.create(title_multiloc: {'en' => 'item'})
+      Tagging::Tag.create(title_multiloc: {'en' => 'another tag'})
       @tags = Tagging::Tag.all()
     end
 
     example "Generates taggings from tag_ids" do
       response = [
         {
-          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags.first.id}],
-          "id" => @ideas.first.id
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags[0].id}],
+          "id" => @ideas[0].id
+        },
+        {
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => @tags[0].id}, {"confidence" => 0.599170446395874, "id" => @tags[1].id}],
+          "id" => @ideas[1].id
         }
       ]
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
       do_request idea_ids: @ideas.map(&:id), tag_ids: @tags.map(&:id)
       expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].map { |el|  el[:attributes][:tag_id] }).to match_array [@tags[0].id, @tags[0].id, @tags[1].id]
     end
 
     example "Generates taggings from new tags" do
       response = [
         {
-          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => 0}],
-          "id" => @ideas.first.id
-          }
-      ]
-      allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
-
-      do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha' ]
-
-      expect(response_status).to eq 200
-    end
-
-    example "Generates taggings with project filter" do
-      response = [
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" =>  @tags[0].id}],
+          "id" => @ideas[0].id
+        },
         {
-          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" => 0}],
-          "id" => @ideas.first.id
-          }
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" =>  @tags[0].id}, {"confidence" => 0.599170446395874, "id" =>  @tags[1].id}],
+          "id" => @ideas[1].id
+        },
+        {
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" =>  @tags[0].id}, {"confidence" => 0.599170446395874, "id" =>  @tags[1].id}],
+          "id" => @ideas[3].id
+        },
+        {
+          "predicted_labels" => [{"confidence" => 0.599170446395874, "id" =>  @tags[2].id}],
+          "id" => @ideas[2].id
+        }
       ]
       allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
-      do_request projects: @project.id, tags: [ 'Lalalal' ,  'chachacha' ]
+      do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha', 'lilila', 'leela', 'lou' ]
 
       expect(response_status).to eq 200
+      expect(Tagging::Tag.all.length).to eq 8
+      json_response = json_parse(response_body)
+      tag_ids = json_response[:data].map { |el| el[:attributes][:tag_id] }
+      idea_ids = json_response[:data].map { |el| el[:attributes][:idea_id] }
+      expect(tag_ids.map { |el| tag_ids.count(el)}).to match_array [2, 2, 3, 3, 3, 1]
+      expect(idea_ids.uniq).to match_array @ideas[0,4].map(&:id)
     end
+
   end
 
 end
