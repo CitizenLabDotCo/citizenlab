@@ -31,8 +31,8 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingNotPermitted',
     defaultMessage: 'Voting is only enabled for certain groups',
   },
-  votingDisabledNotVerified: {
-    id: 'app.components.VoteControl.votingDisabledNotVerified',
+  votingNotVerified: {
+    id: 'app.components.VoteControl.votingNotVerified',
     defaultMessage: '{linkToVerification} in order to vote.',
   },
   linkToVerificationText: {
