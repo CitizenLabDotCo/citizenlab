@@ -124,11 +124,11 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
                     handler: this.openSpamModal,
                   },
                   {
-                    label: <FormattedMessage {...messages.editIdea} />,
+                    label: <FormattedMessage {...messages.editPost} />,
                     handler: this.onEditIdea,
                   },
                   {
-                    label: <FormattedMessage {...messages.deleteIdea} />,
+                    label: <FormattedMessage {...messages.deletePost} />,
                     handler: this.onDeleteIdea(idea.id),
                   },
                 ]}
