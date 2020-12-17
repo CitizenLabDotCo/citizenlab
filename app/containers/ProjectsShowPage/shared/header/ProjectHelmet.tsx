@@ -62,9 +62,8 @@ const ProjectHelmet = memo<Props & InjectedIntlProps>(({ project, intl }) => {
       <Helmet>
         <title>
           {`${
-            !isNilOrError(authUser) &&
-            authUser.data.attributes.unread_notifications
-              ? `(${authUser.data.attributes.unread_notifications}) `
+            !isNilOrError(authUser) && authUser.attributes.unread_notifications
+              ? `(${authUser.attributes.unread_notifications}) `
               : ''
           }
             ${metaTitle}`}

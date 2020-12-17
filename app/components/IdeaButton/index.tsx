@@ -134,12 +134,12 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
     } = {
-      notPermitted: messages.postingNotPermitted,
-      postingDisabled: messages.postingHereImpossible,
-      projectInactive: messages.postingProjectInactive,
-      futureEnabled: messages.postingHereNotYetPossible,
-      notActivePhase: messages.postingNotActivePhase,
-      maybeNotPermitted: messages.postingMaybeNotPermitted,
+      notPermitted: messages.postingNoPermission,
+      postingDisabled: messages.postingDisabled,
+      projectInactive: messages.postingInactive,
+      futureEnabled: messages.postingNotYetPossible,
+      notActivePhase: messages.postingInNonActivePhases,
+      maybeNotPermitted: messages.postingMayNotBePermitted,
     };
 
     const { show, enabled, disabledReason, action } = getIdeaPostingRules({
