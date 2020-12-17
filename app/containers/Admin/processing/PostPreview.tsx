@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Tippy from '@tippyjs/react';
 
 // components
 import IdeaContent from './IdeaContent';
@@ -279,22 +280,41 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
             iconSize={'8px'}
             buttonStyle={'admin-dark-outlined'}
           />
-          <div>
-            <StyledNavButton
-              iconSize={'8px'}
-              locale={'en'}
-              icon={'chevron-up'}
-              buttonStyle={'admin-dark-outlined'}
-              onClick={this.handleNavigationClick('up')}
-            />
-            <StyledNavButton
-              iconSize={'8px'}
-              locale={'en'}
-              icon={'chevron-down'}
-              buttonStyle={'admin-dark-outlined'}
-              onClick={this.handleNavigationClick('down')}
-            />
-          </div>
+          <Tippy
+            placement="top"
+            content={
+              <ul>
+                <li>
+                  <FormattedMessage {...messages.upAndDownArrow} />
+                </li>
+                <li>
+                  <FormattedMessage {...messages.returnKey} />
+                </li>
+                <li>
+                  <FormattedMessage {...messages.escapeKey} />
+                </li>
+              </ul>
+            }
+            theme="light"
+            hideOnClick={true}
+          >
+            <div>
+              <StyledNavButton
+                iconSize={'8px'}
+                locale={'en'}
+                icon={'chevron-up'}
+                buttonStyle={'admin-dark-outlined'}
+                onClick={this.handleNavigationClick('up')}
+              />
+              <StyledNavButton
+                iconSize={'8px'}
+                locale={'en'}
+                icon={'chevron-down'}
+                buttonStyle={'admin-dark-outlined'}
+                onClick={this.handleNavigationClick('down')}
+              />
+            </div>
+          </Tippy>
         </Navigation>
 
         {this.state.postId && (
