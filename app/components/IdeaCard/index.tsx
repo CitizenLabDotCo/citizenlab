@@ -424,19 +424,22 @@ const Data = adopt<DataProps, InputProps>({
     <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
   ),
   project: ({ idea, render }) => {
-    return !isNilOrError(idea) ? (
-      <GetProject projectId={idea.relationships.project.data.id}>
+    return (
+      <GetProject
+        projectId={
+          !isNilOrError(idea) ? idea.relationships.project.data.id : null
+        }
+      >
         {render}
       </GetProject>
-    ) : null;
+    );
   },
   phases: ({ project, render }) => {
-    if (!isNilOrError(project)) {
-      const projectId = project.id;
-      return <GetPhases projectId={projectId}>{render}</GetPhases>;
-    }
-
-    return null;
+    return (
+      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+        {render}
+      </GetPhases>
+    );
   },
 });
 
