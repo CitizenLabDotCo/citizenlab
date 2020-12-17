@@ -427,7 +427,7 @@
   "app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation": "Czy na pewno usunąć tą propozycję?",
   "app.components.admin.PostManager.PostPreview.edit": "Edycja",
   "app.components.admin.PostManager.PostPreview.formTitle": "Edytowanie pomysłu",
-  "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "This project doesn't seem to contain any ideas.",
+  "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "This project doesn't contain any ideas.",
   "app.components.admin.PostManager.PostPreview.noOne": "Nieprzypisany",
   "app.components.admin.PostManager.PostPreview.pickProject": "Please select a project to start with.",
   "app.components.admin.PostManager.PostPreview.picks": "Wybrane: {picksNumber}",
