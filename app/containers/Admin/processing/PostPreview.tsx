@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Tippy from '@tippyjs/react';
 
 // components
 import IdeaContent from './IdeaContent';
@@ -36,7 +37,7 @@ export const Container = styled.div`
   align-items: flex-start;
   height: calc(100vh - ${stylingConsts.menuHeight}px);
   width: 60vw;
-  padding: 15px;
+  padding: 15px 0px 15px 15px;
   border-left: 1px solid ${colors.adminSeparation};
   > * {
     padding: 0 15px;
@@ -61,13 +62,14 @@ const StyledNavButton = styled(Button)`
 `;
 const TagSection = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight}px - 30px);
+  overflow-y: auto;
   flex: 3;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   position: sticky;
-  top: ${stylingConsts.menuHeight};
-  align-self: flex-end;
+  top: ${stylingConsts.menuHeight}px;
+  align-items: space-between;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
@@ -78,12 +80,11 @@ const TagSection = styled.div`
 const TagSubSection = styled.div`
   margin: 12px 0px;
   &.manualTag {
-    flex: 7;
+    flex: 2 7 auto;
+    max-height: auto;
+    overflow-y: auto;
   }
   &.smartTag {
-    flex: 1;
-  }
-  &.tagSearch {
     flex: 1;
   }
 `;
@@ -91,6 +92,7 @@ const TagSubSection = styled.div`
 export const TagList = styled.div`
   display: inline-block;
   margin: 0px 10px 10px 0px;
+  max-height: auto;
 `;
 
 const StyledTagWrapper = styled(TagWrapper)`
@@ -125,6 +127,7 @@ interface InputProps {
   taggings: ITagging[] | null;
   handleNavigation: (direction: Direction) => void;
   tags: ITag[] | null | undefined;
+  handlePreventNavigation: (isNavigationPrevented: boolean) => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -247,11 +250,22 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
       : Promise.reject();
   };
 
+  validateTag = (isTagValid: boolean) => {
+    this.setState({ isTagValid });
+  };
+
   render() {
     const { taggings, tags } = this.props;
     const manualTaggings = isNilOrError(taggings)
       ? []
       : this.getManualTaggings(taggings);
+
+    const manualTags = manualTaggings
+      .map(
+        (tagging) =>
+          tags && tags.find((tag) => tag.id === tagging.attributes.tag_id)
+      )
+      .filter((el) => el) as ITag[];
     const automaticTaggings = isNilOrError(taggings)
       ? []
       : this.getAutomaticTaggings(taggings);
@@ -266,22 +280,41 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
             iconSize={'8px'}
             buttonStyle={'admin-dark-outlined'}
           />
-          <div>
-            <StyledNavButton
-              iconSize={'8px'}
-              locale={'en'}
-              icon={'chevron-up'}
-              buttonStyle={'admin-dark-outlined'}
-              onClick={this.handleNavigationClick('up')}
-            />
-            <StyledNavButton
-              iconSize={'8px'}
-              locale={'en'}
-              icon={'chevron-down'}
-              buttonStyle={'admin-dark-outlined'}
-              onClick={this.handleNavigationClick('down')}
-            />
-          </div>
+          <Tippy
+            placement="top"
+            content={
+              <ul>
+                <li>
+                  <FormattedMessage {...messages.upAndDownArrow} />
+                </li>
+                <li>
+                  <FormattedMessage {...messages.returnKey} />
+                </li>
+                <li>
+                  <FormattedMessage {...messages.escapeKey} />
+                </li>
+              </ul>
+            }
+            theme="light"
+            hideOnClick={true}
+          >
+            <div>
+              <StyledNavButton
+                iconSize={'8px'}
+                locale={'en'}
+                icon={'chevron-up'}
+                buttonStyle={'admin-dark-outlined'}
+                onClick={this.handleNavigationClick('up')}
+              />
+              <StyledNavButton
+                iconSize={'8px'}
+                locale={'en'}
+                icon={'chevron-down'}
+                buttonStyle={'admin-dark-outlined'}
+                onClick={this.handleNavigationClick('down')}
+              />
+            </div>
+          </Tippy>
         </Navigation>
 
         {this.state.postId && (
@@ -336,13 +369,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                 </h4>
 
                 <TagSearch
-                  filteredOutTagIds={
-                    manualTaggings?.map(
-                      (tagging) => tagging.attributes.tag_id
-                    ) || []
-                  }
+                  filteredOutTags={manualTags}
                   onAddSelect={this.handleSelectExistingFromTagSearch}
                   onAddNew={this.addTaggingCreateTag}
+                  onType={this.validateTag}
+                  handlePreventNavigation={this.props.handlePreventNavigation}
                 />
               </TagSubSection>
               <StyledValidationError

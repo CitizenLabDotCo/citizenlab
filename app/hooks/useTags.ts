@@ -1,24 +1,33 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ITag, tagsStream } from 'services/tags';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface IUseTag {
-  tags: ITag[] | null | Error | undefined;
+  tags: ITag[] | null | undefined;
   onIdeasChange: (ideas: string[]) => void;
   onSearchChange: (search: string) => void;
 }
 
-export default function useTags(ideaIdsParam = [] as string[]) {
+export default function useTags(
+  ideaIdsParam = null as string[] | null,
+  projectIdsParam = null as string[] | null
+) {
   const [tags, setTags] = useState<ITag[] | null | undefined>(undefined);
 
-  const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>(
-    ideaIdsParam || []
+  const [ideaIds, setIdeaIds] = useState<string[] | null>(ideaIdsParam);
+  const [projectIds, setProjectIds] = useState<string[] | null>(
+    projectIdsParam
   );
 
   const onIdeasChange = useCallback((ideas: string[]) => {
     setIdeaIds([...ideas]);
   }, []);
 
-  const [search, setSearch] = useState<string | null | undefined>();
+  const onProjectsChange = useCallback((projects: string[]) => {
+    setProjectIds([...projects]);
+  }, []);
+
+  const [search, setSearch] = useState<string | null>();
 
   const onSearchChange = useCallback((search: string) => {
     setSearch(search);
@@ -28,16 +37,21 @@ export default function useTags(ideaIdsParam = [] as string[]) {
     const observable = tagsStream({
       queryParameters: {
         search,
-        idea_ids: ideaIds,
+        ...(ideaIds?.length && ideaIds?.length > 0
+          ? { idea_ids: ideaIds }
+          : {}),
+        ...(projectIds?.length && projectIds?.length > 0
+          ? { projects: projectIds }
+          : {}),
       },
     }).observable;
 
     const subscription = observable.subscribe((response) => {
-      setTags(response ? response.data : response);
+      setTags(!isNilOrError(response) ? response.data : null);
     });
 
     return () => subscription.unsubscribe();
-  }, [ideaIds, search]);
+  }, [ideaIds, search, projectIds]);
 
-  return { tags, onIdeasChange, onSearchChange };
+  return { tags, onIdeasChange, onProjectsChange, onSearchChange };
 }

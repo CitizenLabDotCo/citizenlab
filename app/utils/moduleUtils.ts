@@ -15,7 +15,14 @@ export type OutletId =
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.row'
   | 'app.containers.AdminPage.projects.all.projectsAndFolders.actions'
   | 'app.components.ProjectAndFolderCards.card'
-  | 'app.containers.SiteMap.ProjectsSection.listitem';
+  | 'app.containers.SiteMap.ProjectsSection.listitem'
+  | 'app.containers.Admin.users.GroupsListPanel.listitem.icon'
+  | 'app.containers.Admin.users.GroupCreationStep1.type'
+  | 'app.containers.Admin.users.form'
+  | 'app.containers.Admin.users.header'
+  | 'app.containers.Admin.users.UsersGroup.form'
+  | 'app.containers.Admin.users.UsersGroup.header'
+  | 'app.containers.Admin.users.UsersHeader.icon';
 
 export type Outlets = {
   [key in OutletId]?: FunctionComponent<any>;
@@ -25,7 +32,7 @@ export type MergedOutlets = {
   [key in OutletId]?: FunctionComponent<any>[];
 };
 
-interface RouteConfiguration {
+export interface RouteConfiguration {
   path?: string;
   name: string;
   container: () => Promise<any>;
@@ -40,13 +47,24 @@ interface Routes {
 }
 
 export interface ModuleConfiguration {
+  routes?: Routes;
+  outlets?: Outlets;
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication?: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication?: () => void;
+}
+
+export interface LoadedModules {
   routes: Routes;
-  outlets: Outlets;
+  outlets: MergedOutlets;
+  beforeMountApplication: () => void;
+  afterMountApplication: () => void;
 }
 
 type Modules = {
   configuration: ModuleConfiguration;
-  enabled: boolean;
+  isEnabled: boolean;
 }[];
 
 export const RouteTypes = {
@@ -85,9 +103,11 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-export const loadModules = (modules: Modules) => {
+type LifecycleMethod = 'beforeMountApplication' | 'afterMountApplication';
+
+export const loadModules = (modules: Modules): LoadedModules => {
   const enabledModuleConfigurations = modules
-    .filter((module) => module.enabled)
+    .filter((module) => module.isEnabled)
     .map((module) => module.configuration);
 
   const mergedRoutes: Routes = mergeWith(
@@ -104,11 +124,19 @@ export const loadModules = (modules: Modules) => {
       castArray(objValue).concat(castArray(srcValue))
   );
 
+  const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
+    enabledModuleConfigurations.forEach((module: ModuleConfiguration) =>
+      module?.[lifecycleMethod]?.()
+    );
+  };
+
   return {
     outlets: mergedOutlets,
     routes: {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
     },
+    beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
+    afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
 };
