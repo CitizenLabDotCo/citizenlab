@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Akiligassat suliarikkit",
   "app.containers.Projects.metaTitle": "Suliniut • {projectTitle}",
   "app.containers.Projects.myExpenses": "Mine udgifter",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Immersuilluni apersuineq",
   "app.containers.Projects.nextPhase": "Næste fase",
   "app.containers.Projects.noExpenses": "Suli akiligassaqanngilatit",
