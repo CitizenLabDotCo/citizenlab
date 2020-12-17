@@ -68,45 +68,45 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'What can different users do?',
   },
-  permissionAction_commenting_idea: {
+  permissionAction_comment_ideas: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_commenting_idea',
-    defaultMessage: 'Commenting',
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_ideas',
+    defaultMessage: 'Comment on ideas',
   },
-  permissionAction_voting_idea: {
+  permissionAction_vote_ideas: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_voting_idea',
-    defaultMessage: 'Voting',
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_ideas',
+    defaultMessage: 'Vote on ideas',
   },
-  permissionAction_posting_idea: {
+  permissionAction_post_idea: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_posting_idea',
-    defaultMessage: 'Posting ideas',
+      'app.containers.AdminPage.groups.permissions.permissionAction_post_idea',
+    defaultMessage: 'Post an idea',
   },
-  permissionAction_commenting_initiative: {
+  permissionAction_comment_proposals: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_commenting_initiative',
-    defaultMessage: 'Commenting',
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposal',
+    defaultMessage: 'Comment on proposals',
   },
-  permissionAction_voting_initiative: {
+  permissionAction_vote_proposals: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_voting_initiative',
-    defaultMessage: 'Voting',
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposal',
+    defaultMessage: 'Vote on proposals',
   },
-  permissionAction_posting_initiative: {
+  permissionAction_post_proposal: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_posting_initiative',
-    defaultMessage: 'Posting initiatives',
+      'app.containers.AdminPage.groups.permissions.permissionAction_post_proposal',
+    defaultMessage: 'Post a proposal',
   },
-  permissionAction_taking_survey: {
+  permissionAction_take_survey: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
-    defaultMessage: 'Taking the survey',
+      'app.containers.AdminPage.groups.permissions.permissionAction_take_survey',
+    defaultMessage: 'Take the survey',
   },
-  permissionAction_taking_poll: {
+  permissionAction_take_poll: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_taking_poll',
-    defaultMessage: 'Taking the poll',
+      'app.containers.AdminPage.groups.permissions.permissionAction_take_poll',
+    defaultMessage: 'Take the poll',
   },
   permissionAction_budgeting: {
     id:
