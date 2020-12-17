@@ -259,9 +259,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  outsideArea: {
-    id: 'app.containers.AdminPage.DashboardPage.outsideArea',
-    defaultMessage: 'Somewhere else',
+  otherArea: {
+    id: 'app.containers.AdminPage.DashboardPage.otherArea',
+    defaultMessage: 'Other',
   },
   top10activeUsersDescription: {
     id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
@@ -285,10 +285,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  mapHelperText: {
-    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+  mapInfoText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapInfoText',
     defaultMessage:
-      'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+      'This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.',
   },
   startLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
