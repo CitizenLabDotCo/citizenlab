@@ -1692,7 +1692,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Missingersuusiaq",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Sooq una spamisut nalunaarutiginiarpiuk",
   "app.containers.IdeasShow.share": "Siammarteruk",
-  "app.containers.IdeasShow.shareSubtitle": "Amerlanerit anngukkit tusaaneqarlutillu",
+  "app.containers.IdeasShow.sharingModalSubtitle": "",
   "app.containers.IdeasShow.sharingModalTitle": "",
   "app.containers.IdeasShow.twitterMessage": "{tenantName, select, DeloitteDK {Isumarnik ikkussigit {ideaTitle}} other {Uani {postTitle} toqqaagit}}",
   "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | from the participation platform of {orgName}",

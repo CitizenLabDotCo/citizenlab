@@ -1692,7 +1692,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Budget proposé",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Pourquoi voulez vous signaler cet élément comme spam ?",
   "app.containers.IdeasShow.share": "Partager",
-  "app.containers.IdeasShow.shareSubtitle": "Donnez à cette idée l'écho qu'elle mérite en informant vos amis.",
+  "app.containers.IdeasShow.sharingModalSubtitle": "",
   "app.containers.IdeasShow.sharingModalTitle": "",
   "app.containers.IdeasShow.twitterMessage": "Votez pour {ideaTitle} sur",
   "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | de la plateforme de participation de {orgName}",

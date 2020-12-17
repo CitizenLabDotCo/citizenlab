@@ -1692,7 +1692,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Foreslått budsjett",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Hvorfor ønsker du å rapportere dette som spam?",
   "app.containers.IdeasShow.share": "Del",
-  "app.containers.IdeasShow.shareSubtitle": "Bli hørt og nå ut til flere",
+  "app.containers.IdeasShow.sharingModalSubtitle": "",
   "app.containers.IdeasShow.sharingModalTitle": "",
   "app.containers.IdeasShow.twitterMessage": "Stem på {ideaTitle} på",
   "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | fra involveringsplattformen av {orgName}",

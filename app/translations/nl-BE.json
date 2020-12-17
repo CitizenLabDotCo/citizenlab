@@ -1692,7 +1692,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Budget",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Waarom wil je dit als spam markeren?",
   "app.containers.IdeasShow.share": "Delen",
-  "app.containers.IdeasShow.shareSubtitle": "Bereik meer mensen en laat je stem horen.",
+  "app.containers.IdeasShow.sharingModalSubtitle": "",
   "app.containers.IdeasShow.sharingModalTitle": "",
   "app.containers.IdeasShow.twitterMessage": "Stem voor {ideaTitle} op",
   "app.containers.IdeasShow.whatsAppMessage": "{ideaTitle} | van het participatieplatform van {orgName}",
