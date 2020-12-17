@@ -263,10 +263,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.otherArea',
     defaultMessage: 'Other',
   },
-  top10activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
+  mostActiveUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersDescription',
     defaultMessage:
-      'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.',
+      'The ranking is based on the number of posts (5 points per post), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
