@@ -14,7 +14,7 @@
 ### Added
 - Admin activity feed access for project managers
 - Added empty state to processing list when no project is selected
-- Keyboard shortcut tooltip on navigation buttons on the Admin Processing page
+- Keyboard shortcut tooltip for navigation buttons of the Admin Processing page
 
 ### Changed
 - Reduced spacing in sidebar menu, allowing for more items to be displayed
