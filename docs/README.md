@@ -2,13 +2,39 @@
 
 ## Next release
 
+### Fixed
+- When creating a project from template, only templates that are supported by the tenant's locale will show up
+- Processing : fixed "existing tags" layout
+- Processing : made feature unreachable when browsing to the url and not logged in
+- Processing : fixed project title overflowing the selection dropdown
+- Processing : only show relevant tags in the existing tags list
+- Processing : fixed keyboard shortcut overlap when creating an new tag
+
+### Added
+- Activity feed access for project managers
+- Added empty state to processing list when no project is selected
+- Processing : improved validation upon tag creation
+- Processing : added access for moderators to the projects they manage- Processing : improved validation upon tag creation
+- Processing : improved validation upon tag creation
+- Processing : keyboard shortcut tooltip on navigation buttons
+### Changed
+- Reduced spacing in sidebar menu, allowing for more items to be displayed
+- Processing : is now using admin text color for idea title and body
+
+## 2020-12-08
+
+### Fixed
+- Issues with password reset and invitation emails
+- No more idea duplicates showing up on idea overview pages
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
+
 ### Changed
 - Increased color contrast of inactive timeline phases text to meet accesibility standard
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
 - Increased color contrast of List/Map toggle component to meet accesibility standard
 
-### Fixed
-- Emails tab bug fixes related to deprecated emails existing in database.
+### Added
+- Ability to tag ideas manually and automatically in the admin.
 
 ## 2020-12-02
 

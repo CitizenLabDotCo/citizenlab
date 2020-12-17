@@ -11,6 +11,9 @@ import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 const Text = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -44,6 +47,7 @@ const Container = styled.button`
   padding: 0;
   margin: 0;
   position: relative;
+  width: 100%;
 
   ${isRtl`
     flex-direction: row-reverse;

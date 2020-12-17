@@ -9,6 +9,7 @@ import messages from './messages';
 import { combineLatest } from 'rxjs';
 import { currentTenantStream } from 'services/tenant';
 import { isNilOrError } from 'utils/helperUtils';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -31,28 +32,34 @@ const destinationConfig: IDestinationConfig = {
   ),
 };
 
-registerDestination(destinationConfig);
+const configuration: ModuleConfiguration = {
+  beforeMountApplication: () => {
+    combineLatest([
+      currentTenantStream().observable,
+      initializeFor('google_tag_manager'),
+    ]).subscribe(([tenant, _]) => {
+      if (isNilOrError(tenant)) return;
 
-combineLatest([
-  currentTenantStream().observable,
-  initializeFor('google_tag_manager'),
-]).subscribe(([tenant, _]) => {
-  if (isNilOrError(tenant)) return;
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        const f = d.getElementsByTagName(s)[0];
+        const j = d.createElement(s) as HTMLScriptElement;
+        const dl = l !== 'dataLayer' ? `&l=${l}` : '';
+        j.async = true;
+        j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
+        f.parentNode?.insertBefore(j, f);
+      })(
+        window,
+        document,
+        'script',
+        'dataLayer',
+        tenant.data.attributes.settings.google_tag_manager?.container_id
+      );
+    });
 
-  (function (w, d, s, l, i) {
-    w[l] = w[l] || [];
-    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-    const f = d.getElementsByTagName(s)[0];
-    const j = d.createElement(s) as HTMLScriptElement;
-    const dl = l !== 'dataLayer' ? `&l=${l}` : '';
-    j.async = true;
-    j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
-    f.parentNode?.insertBefore(j, f);
-  })(
-    window,
-    document,
-    'script',
-    'dataLayer',
-    tenant.data.attributes.settings.google_tag_manager?.container_id
-  );
-});
+    registerDestination(destinationConfig);
+  },
+};
+
+export default configuration;

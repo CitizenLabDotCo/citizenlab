@@ -25,7 +25,7 @@ import messages from '../messages';
 // services
 import { reorderAdminPublication } from 'services/adminPublications';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledListHeader = styled(ListHeader)`
   margin-bottom: 30px;
@@ -37,7 +37,6 @@ const Spacer = styled.div`
 
 interface DataProps {
   AdminPublications: GetAdminPublicationsChildProps;
-  isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends DataProps {}
@@ -46,72 +45,71 @@ function handleReorderAdminPublication(itemId, newOrder) {
   reorderAdminPublication(itemId, newOrder);
 }
 
-const AdminProjectList = memo<Props>(
-  ({ AdminPublications, isProjectFoldersEnabled }) => {
-    const AdminPublicationsList = AdminPublications.list;
+const AdminProjectList = memo<Props>(({ AdminPublications }) => {
+  const AdminPublicationsList = AdminPublications.list;
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
-    if (
-      !isNilOrError(AdminPublicationsList) &&
-      AdminPublicationsList.length > 0
-    ) {
-      return (
-        <>
-          <StyledListHeader>
-            <HeaderTitle>
-              {!isProjectFoldersEnabled && (
-                <FormattedMessage {...messages.existingProjects} />
-              )}
-              <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.title" />
-            </HeaderTitle>
-            <Spacer />
-            <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
-          </StyledListHeader>
-          <SortableList
-            items={AdminPublicationsList}
-            onReorder={handleReorderAdminPublication}
-            className="projects-list e2e-admin-projects-list"
-            id="e2e-admin-published-projects-list"
-            key={AdminPublicationsList.length}
-          >
-            {({ itemsList, handleDragRow, handleDropRow }) => {
-              return (
-                <>
-                  {itemsList.map(
-                    (item: IAdminPublicationContent, index: number) => {
-                      return (
-                        <SortableRow
-                          key={item.id}
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={index === AdminPublicationsList.length - 1}
-                        >
-                          {item.publicationType === 'project' && (
-                            <ProjectRow
-                              actions={['delete', 'manage']}
-                              publication={item}
-                            />
-                          )}
-                          <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+  if (
+    !isNilOrError(AdminPublicationsList) &&
+    AdminPublicationsList.length > 0
+  ) {
+    return (
+      <>
+        <StyledListHeader>
+          <HeaderTitle>
+            {!isProjectFoldersEnabled && (
+              <FormattedMessage {...messages.existingProjects} />
+            )}
+            <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.title" />
+          </HeaderTitle>
+          <Spacer />
+          <Outlet id="app.containers.AdminPage.projects.all.projectsAndFolders.actions" />
+        </StyledListHeader>
+        <SortableList
+          items={AdminPublicationsList}
+          onReorder={handleReorderAdminPublication}
+          className="projects-list e2e-admin-projects-list"
+          id="e2e-admin-published-projects-list"
+          key={AdminPublicationsList.length}
+        >
+          {({ itemsList, handleDragRow, handleDropRow }) => {
+            return (
+              <>
+                {itemsList.map(
+                  (item: IAdminPublicationContent, index: number) => {
+                    return (
+                      <SortableRow
+                        key={item.id}
+                        id={item.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={index === AdminPublicationsList.length - 1}
+                      >
+                        {item.publicationType === 'project' && (
+                          <ProjectRow
+                            actions={['delete', 'manage']}
                             publication={item}
                           />
-                        </SortableRow>
-                      );
-                    }
-                  )}
-                </>
-              );
-            }}
-          </SortableList>
-        </>
-      );
-    }
-
-    return null;
+                        )}
+                        <Outlet
+                          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                          publication={item}
+                        />
+                      </SortableRow>
+                    );
+                  }
+                )}
+              </>
+            );
+          }}
+        </SortableList>
+      </>
+    );
   }
-);
+
+  return null;
+});
 
 const Data = adopt<DataProps>({
   AdminPublications: (
@@ -120,7 +118,6 @@ const Data = adopt<DataProps>({
       folderId={null}
     />
   ),
-  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default () => (

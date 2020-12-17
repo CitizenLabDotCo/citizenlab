@@ -26,9 +26,9 @@ export default defineMessages({
     defaultMessage:
       'Optional text shown under the field name on the signup form.',
   },
-  fieldRequired: {
+  isFieldRequired: {
     id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
+      'app.containers.AdminPage.SettingsPage.CustomSignupFields.isFieldRequired',
     defaultMessage: 'Make answering this field required?',
   },
   fieldType_text: {

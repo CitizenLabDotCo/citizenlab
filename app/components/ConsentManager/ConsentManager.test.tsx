@@ -423,8 +423,6 @@ describe('<ConsentManager />', () => {
           },
         });
 
-        console.log('YIIIIHAAA');
-        console.log(tenantAllDestinationsEnabled);
         const setConsentSpy = jest.spyOn(consent, 'setConsent');
         __setMockTenant(tenantDataAllEnabled);
         const wrapper = shallow(
