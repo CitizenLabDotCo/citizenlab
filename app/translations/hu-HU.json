@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Manage expenses",
   "app.containers.Projects.metaTitle": "Project  • {projectTitle}",
   "app.containers.Projects.myExpenses": "My expenses",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Survey",
   "app.containers.Projects.nextPhase": "Next phase",
   "app.containers.Projects.noExpenses": "You don't have any expenses yet",
