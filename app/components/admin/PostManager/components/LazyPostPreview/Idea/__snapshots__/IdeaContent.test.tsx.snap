@@ -93,8 +93,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
             <IconTooltip
               content={
                 <FormattedMessage
-                  defaultMessage="The number of users that added this idea to their participatory budget"
-                  id="app.components.admin.PostManager.PostPreview.basketsCountTooltip"
+                  defaultMessage="The number of times this has been included in other participants' participatory budgets"
+                  id="app.components.admin.PostManager.PostPreview.pbItemCountTooltip"
                 />
               }
             />
