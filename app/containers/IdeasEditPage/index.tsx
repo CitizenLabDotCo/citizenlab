@@ -393,16 +393,22 @@ const Data = adopt<DataProps, InputProps>({
     return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
   },
   project: ({ idea, render }) => {
-    return !isNilOrError(idea) ? (
-      <GetProject projectId={idea.relationships.project.data.id}>
+    return (
+      <GetProject
+        projectId={
+          !isNilOrError(idea) ? idea.relationships.project.data.id : null
+        }
+      >
         {render}
       </GetProject>
-    ) : null;
+    );
   },
   phases: ({ project, render }) => {
-    return !isNilOrError(project) ? (
-      <GetPhases projectId={project.id}>{render}</GetPhases>
-    ) : null;
+    return (
+      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+        {render}
+      </GetPhases>
+    );
   },
 });
 const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
