@@ -20,10 +20,12 @@ import { Multiloc } from 'typings';
 export interface Props {}
 export interface NormalFormValues {
   title_multiloc: Multiloc;
+  membership_type: MembershipType;
 }
 
 // Style
 import styled from 'styled-components';
+import { MembershipType } from 'services/groups';
 
 export const Fill = styled.div`
   padding-top: 40px;

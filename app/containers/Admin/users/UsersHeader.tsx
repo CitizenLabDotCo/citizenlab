@@ -91,10 +91,12 @@ const UsersHeader = memo(
     if (title) {
       return (
         <OnlyRow>
-          <Outlet
-            id="app.containers.Admin.users.UsersHeader.icon"
-            type={groupType}
-          />
+          {groupType && (
+            <Outlet
+              id="app.containers.Admin.users.UsersHeader.icon"
+              type={groupType}
+            />
+          )}
           <TextAndButtons>
             <T as="h1" value={title} />
             <Buttons>
