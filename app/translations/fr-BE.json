@@ -466,7 +466,7 @@
   "app.components.admin.PostManager.multiDragAndDropHelpInitiatives": "Glissez les propositions sur un éléments pour les assignez toutes en une fois.",
   "app.components.admin.PostManager.multipleIdeas": "{ideaCount} idées",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} propositions",
-  "app.components.admin.PostManager.needFeedback": "Besoin de commentaires",
+  "app.components.admin.PostManager.needFeedbackToggle": "",
   "app.components.admin.PostManager.newFeedbackMode": "Écrivez une nouvelle mise à jour pour expliquer ce changement",
   "app.components.admin.PostManager.noIdeasHere": "Il n'y a pas d'idées qui correspondent aux filtres actifs",
   "app.components.admin.PostManager.noInitiativesHere": "Aucunes propositions ne correspondent aux filtres actuels",
