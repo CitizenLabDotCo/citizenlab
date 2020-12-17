@@ -6,12 +6,14 @@ import { isEmpty } from 'lodash-es';
 // hooks
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
 import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 // services
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
 } from 'services/ideaCustomFields';
+import { getInputTerm } from 'services/participationContexts';
 
 // components
 import Button from 'components/UI/Button';
@@ -103,6 +105,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
 
     const ideaCustomFields = useIdeaCustomFields({ projectId });
     const project = useProject({ projectId });
+    const phases = usePhases(projectId);
 
     const allExpanded = Object.getOwnPropertyNames(collapsed).every(
       (key) => collapsed[key] === false
@@ -205,7 +208,11 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
     }, [changes, ideaCustomFields]);
 
     if (!isNilOrError(ideaCustomFields) && !isNilOrError(project)) {
-      const projectInputTerm = project.attributes.input_term;
+      const inputTerm = getInputTerm(
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
 
       return (
         <Container className={className || ''}>
@@ -213,7 +220,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
             <TitleContainer>
               <StyledSectionTitle>
                 <FormattedMessage
-                  {...getInputTermMessage(projectInputTerm, {
+                  {...getInputTermMessage(inputTerm, {
                     idea: messages.title,
                   })}
                 />
