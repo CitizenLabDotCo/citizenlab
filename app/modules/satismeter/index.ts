@@ -12,6 +12,7 @@ import {
 } from 'components/ConsentManager/destinations';
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 import { currentTenantStream } from 'services/tenant';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -30,44 +31,50 @@ const destinationConfig: IDestinationConfig = {
   name: () => 'Satismeter',
 };
 
-registerDestination(destinationConfig);
+const configuration: ModuleConfiguration = {
+  beforeMountApplication: () => {
+    combineLatest([
+      currentTenantStream().observable,
+      authUserStream().observable,
+      initializeFor('satismeter'),
+    ]).subscribe(([tenant, user, _]) => {
+      (function () {
+        if (isNilOrError(tenant)) return;
 
-combineLatest([
-  currentTenantStream().observable,
-  authUserStream().observable,
-  initializeFor('satismeter'),
-]).subscribe(([tenant, user, _]) => {
-  (function () {
-    if (isNilOrError(tenant)) return;
+        window.satismeter =
+          window.satismeter ||
+          function () {
+            (window.satismeter.q = window.satismeter.q || []).push(arguments);
+          };
+        window.satismeter.l = new Date();
+        const script = document.createElement('script');
+        const parent = document.getElementsByTagName('script')[0].parentNode;
+        script.async = true;
+        script.src = 'https://app.satismeter.com/satismeter.js';
+        script.onload = () =>
+          window.satismeter({
+            writeKey: tenant.data.attributes.settings.satismeter?.write_key,
+            ...(!isNilOrError(user)
+              ? {
+                  userId: user.data.id,
+                  traits: {
+                    name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
+                    email: user.data.attributes.email,
+                    createdAt: user.data.attributes.created_at,
+                  },
+                }
+              : {}),
+          });
+        parent?.appendChild(script);
+      })();
+    });
 
-    window.satismeter =
-      window.satismeter ||
-      function () {
-        (window.satismeter.q = window.satismeter.q || []).push(arguments);
-      };
-    window.satismeter.l = new Date();
-    const script = document.createElement('script');
-    const parent = document.getElementsByTagName('script')[0].parentNode;
-    script.async = true;
-    script.src = 'https://app.satismeter.com/satismeter.js';
-    script.onload = () =>
-      window.satismeter({
-        writeKey: tenant.data.attributes.settings.satismeter?.write_key,
-        ...(!isNilOrError(user)
-          ? {
-              userId: user.data.id,
-              traits: {
-                name: `${user.data.attributes.first_name} + ${user.data.attributes.last_name}`,
-                email: user.data.attributes.email,
-                createdAt: user.data.attributes.created_at,
-              },
-            }
-          : {}),
-      });
-    parent?.appendChild(script);
-  })();
-});
+    bufferUntilInitialized('satismeter', events$).subscribe((event) => {
+      window.satismeter && window.satismeter('track', { event: event.name });
+    });
 
-bufferUntilInitialized('satismeter', events$).subscribe((event) => {
-  window.satismeter && window.satismeter('track', { event: event.name });
-});
+    registerDestination(destinationConfig);
+  },
+};
+
+export default configuration;

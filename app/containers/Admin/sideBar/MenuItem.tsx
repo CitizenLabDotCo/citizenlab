@@ -44,8 +44,6 @@ const MenuItemLink = styled(Link)`
   justify-content: space-between;
   padding-left: 5px;
   padding-right: 15px;
-  padding-bottom: 1px;
-  margin-bottom: 8px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
   transition: background-color 80ms ease-out;
