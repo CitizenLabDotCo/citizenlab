@@ -8,20 +8,13 @@
 
 ### Fixed
 - When creating a project from template, only templates that are supported by the tenant's locale will show up
-- Processing : fixed "existing tags" layout
-- Processing : made feature unreachable when browsing to the url and not logged in
-- Processing : fixed project title overflowing the selection dropdown
-- Processing : only show relevant tags in the existing tags list
-- Processing : fixed keyboard shortcut overlap when creating an new tag
+- Processing : Fixed several layout, interaction and data issues in the manual tagging feature, making it ready for external use.
+- Processing : Fixed project managers access.
 
 ### Added
 - Activity feed access for project managers
 - Added empty state to processing list when no project is selected
-- Processing : improved validation upon tag creation
-- Processing : added access for moderators to the projects they manage
-- Processing : improved validation upon tag creation
-- Processing : improved validation upon tag creation
-- Processing : keyboard shortcut tooltip on navigation buttons
+- Processing : Keyboard shortcut tooltip on navigation buttons
 
 ### Changed
 - Reduced spacing in sidebar menu, allowing for more items to be displayed
