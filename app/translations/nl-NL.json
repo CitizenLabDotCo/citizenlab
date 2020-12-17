@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Beheer uitgaven",
   "app.containers.Projects.metaTitle": "Project  • {projectTitle}",
   "app.containers.Projects.myExpenses": "Mijn uitgaven",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Enquête",
   "app.containers.Projects.nextPhase": "Volgende fase",
   "app.containers.Projects.noExpenses": "Je hebt nog geen uitgaven",

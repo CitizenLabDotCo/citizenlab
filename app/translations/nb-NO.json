@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Administrer utgifter",
   "app.containers.Projects.metaTitle": "Prosjekt  • {projectTitle}",
   "app.containers.Projects.myExpenses": "Mine utgifter",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Undersøkelse",
   "app.containers.Projects.nextPhase": "Neste fase",
   "app.containers.Projects.noExpenses": "Du har ingen utgifter ennå",

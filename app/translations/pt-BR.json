@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Administrar as despesas",
   "app.containers.Projects.metaTitle": "Projeto • {projectTitle}",
   "app.containers.Projects.myExpenses": "Minhas despesas",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Salvar alterações",
   "app.containers.Projects.nextPhase": "Próxima fase",
   "app.containers.Projects.noExpenses": "Você ainda não tem nenhuma despesa",

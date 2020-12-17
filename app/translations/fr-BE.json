@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Gérer les dépenses",
   "app.containers.Projects.metaTitle": "Projet  • {projectTitle}",
   "app.containers.Projects.myExpenses": "Mes dépenses",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Enquête",
   "app.containers.Projects.nextPhase": "Phase suivante",
   "app.containers.Projects.noExpenses": "Vous n’avez pas encore de dépenses",

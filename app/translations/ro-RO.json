@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Gestionaţi cheltuielile",
   "app.containers.Projects.metaTitle": "Proiect • {projectTitle}",
   "app.containers.Projects.myExpenses": "Cheltuielile mele",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Chestionar",
   "app.containers.Projects.nextPhase": "Faza următoare",
   "app.containers.Projects.noExpenses": "Nu aveți încă cheltuieli",

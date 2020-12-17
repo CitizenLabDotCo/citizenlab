@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "Administrer udgifter ",
   "app.containers.Projects.metaTitle": "{tenantName, select, DeloitteDK {Verdensmål • {projectTitle}} other {Projekt • {projectTitle}}}",
   "app.containers.Projects.myExpenses": "Mine udgifter",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "Spørgeundersøgelse",
   "app.containers.Projects.nextPhase": "Næste fase",
   "app.containers.Projects.noExpenses": "Du har ingen udgifter endnu",

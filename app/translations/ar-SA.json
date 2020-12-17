@@ -1878,6 +1878,7 @@
   "app.containers.Projects.manageBudget": "إدارة النفقات",
   "app.containers.Projects.metaTitle": "المشروع • {projectTitle}",
   "app.containers.Projects.myExpenses": "نفقاتي",
+  "app.containers.Projects.navPoll": "",
   "app.containers.Projects.navSurvey": "الاستبيان",
   "app.containers.Projects.nextPhase": "المرحلة التالية",
   "app.containers.Projects.noExpenses": "ليس لديك أي نفقات بعد",
