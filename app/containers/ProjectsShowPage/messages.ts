@@ -73,6 +73,10 @@ export default defineMessages({
     id: 'app.containers.Projects.currentPhase',
     defaultMessage: 'Current phase',
   },
+  navPoll: {
+    id: 'app.containers.Projects.navPoll',
+    defaultMessage: 'Poll',
+  },
   navSurvey: {
     id: 'app.containers.Projects.navSurvey',
     defaultMessage: 'Survey',
