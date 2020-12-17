@@ -12,7 +12,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectCard from './ProjectCard';
+import ProjectCard from './ProjectSelectionCard';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
 import { Spinner } from 'cl2-component-library';
