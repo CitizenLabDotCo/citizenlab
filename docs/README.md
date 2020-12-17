@@ -14,10 +14,13 @@
 - Activity feed access for project managers
 - Added empty state to processing list when no project is selected
 - Processing : improved validation upon tag creation
-- Processing : added access for moderators to the projects they manage
-
+- Processing : added access for moderators to the projects they manage- Processing : improved validation upon tag creation
+- Processing : improved validation upon tag creation
+- Processing : keyboard shortcut tooltip on navigation buttons
 ### Changed
 - Reduced spacing in sidebar menu, allowing for more items to be displayed
+- Processing : is now using admin text color for idea title and body
+
 ## 2020-12-08
 
 ### Fixed
