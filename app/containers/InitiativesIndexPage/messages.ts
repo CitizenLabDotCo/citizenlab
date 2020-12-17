@@ -26,9 +26,9 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.headerPostingProposalDisabled',
     defaultMessage: 'Explore citizen proposals for {styledOrgName}',
   },
-  readMore: {
-    id: 'app.containers.InitiativesIndexPage.readMore',
-    defaultMessage: 'Read more about initiatives.',
+  learnMoreAboutProposals: {
+    id: 'app.containers.InitiativesIndexPage.learnMoreAboutProposals',
+    defaultMessage: 'Learn more about how proposals work.',
   },
   explanationTitle: {
     id: 'app.containers.InitiativesIndexPage.explanationTitle',
