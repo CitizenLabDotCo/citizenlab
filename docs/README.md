@@ -8,17 +8,17 @@
 
 ### Fixed
 - When creating a project from template, only templates that are supported by the tenant's locale will show up
-- Processing : Fixed several layout, interaction and data issues in the manual tagging feature, making it ready for external use.
-- Processing : Fixed project managers access.
+- Fixed several layout, interaction and data issues in the manual tagging feature of the Admin Processing page, making it ready for external use.
+- Fixed project managers access of the Admin Processing page.
 
 ### Added
 - Activity feed access for project managers
 - Added empty state to processing list when no project is selected
-- Processing : Keyboard shortcut tooltip on navigation buttons
+- Keyboard shortcut tooltip on navigation buttons on the Admin Processing page
 
 ### Changed
 - Reduced spacing in sidebar menu, allowing for more items to be displayed
-- Processing : is now using admin text color for idea title and body
+- Style changes on the Admin Processing page
 
 ## 2020-12-08
 
