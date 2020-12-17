@@ -52,21 +52,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.DashboardPage.ideas',
-    defaultMessage: 'Ideas',
+  posts: {
+    id: 'app.containers.AdminPage.DashboardPage.posts ',
+    defaultMessage: 'Posts',
   },
   votes: {
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
-  ideaVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
-    defaultMessage: 'Votes on ideas',
-  },
-  fiveIdeasWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes',
-    defaultMessage: '5 Ideas With Most Votes',
+  fivePostsWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fivePostsWithMostVotes',
+    defaultMessage: 'Top 5 posts by votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -151,26 +147,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
-  activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+  activeParticipantsDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.activeParticipantsDescription',
     defaultMessage:
-      'The number of users that either voted, commented or posted an idea on a given day.',
+      'The number of participants that posted, voted or commented.',
   },
-  ideasByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas',
-  },
-  ideasByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByStatusTitle',
-    defaultMessage: 'Ideas By Status',
+  postsByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.postsByStatusTitle',
+    defaultMessage: 'Post by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
-  },
-  ideaVotesByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle',
-    defaultMessage: 'Votes on ideas',
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
