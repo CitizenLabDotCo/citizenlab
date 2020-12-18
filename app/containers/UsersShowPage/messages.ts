@@ -14,9 +14,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.invisibleTitleUserComments',
     defaultMessage: 'All the comments posted by this user',
   },
-  invisibleTitleIdeasList: {
-    id: 'app.containers.UsersShowPage.invisibleTitleIdeasList',
-    defaultMessage: 'All the ideas posted by this user',
+  invisibleTitlePostsList: {
+    id: 'app.containers.UsersShowPage.invisibleTitlePostsList',
+    defaultMessage: 'All posts submitted by this participant',
   },
   postsWithCount: {
     id: 'app.containers.UsersShowPage.postsWithCount',
