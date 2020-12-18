@@ -918,6 +918,7 @@
   "app.containers.AdminPage.DashboardPage.participationPerTopic": "Participation per topic",
   "app.containers.AdminPage.DashboardPage.perPeriod": "Per {period}",
   "app.containers.AdminPage.DashboardPage.posts": "Posts",
+  "app.containers.AdminPage.DashboardPage.postsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.previous30Days": "Previous 30 days",
   "app.containers.AdminPage.DashboardPage.previous90Days": "Previous 90 days",
   "app.containers.AdminPage.DashboardPage.previousWeek": "Previous week",
