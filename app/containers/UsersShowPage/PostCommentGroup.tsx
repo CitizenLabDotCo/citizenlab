@@ -172,7 +172,7 @@ export class PostCommentGroup extends PureComponent<Props> {
         <Container>
           <ScreenReaderOnly>
             {postType === 'idea' ? (
-              <FormattedMessage {...messages.a11y_ideaPostedIn} />
+              <FormattedMessage {...messages.a11y_postCommentPostedIn} />
             ) : (
               <FormattedMessage {...messages.a11y_initiativePostedIn} />
             )}
