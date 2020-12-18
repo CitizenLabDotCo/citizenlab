@@ -144,10 +144,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
   },
-  moderatorsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsTooltip',
+  projectManagerTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectManagerTooltip',
     defaultMessage:
-      'Moderators can edit the project, manage its ideas and email people who participated. You can {moderationInfoCenterLink} to find more information on moderation rights.',
+      'Project managers can edit projects, manage posts and email participants. You can {moderationInfoCenterLink} to find more information about the rights assigned to project managers.',
   },
   moderationInfoCenterLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText',
@@ -158,18 +158,18 @@ export default defineMessages({
     defaultMessage:
       'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
-  ideaAssignmentSectionTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',
-    defaultMessage: 'Who is responsible for processing the ideas?',
+  postAssignmentSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.postAssignmentSectionTitle',
+    defaultMessage: 'Who is responsible for processing the posts?',
   },
-  ideaAssignmentTooltipText: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltipText',
+  postAssignmentTooltipText: {
+    id: 'app.containers.AdminPage.ProjectEdit.postAssignmentTooltipText',
     defaultMessage:
-      'The person responsible for the ideas will get all new ideas in this project assigned to him/her. The assignee can always be changed manually in the {ideaManagerLink}.',
+      'All new posts in this project will be assigned to this person. The assignee can be changed in the {ideaManagerLink}.',
   },
-  ideaManagerLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaManagerLinkText',
-    defaultMessage: 'idea manager',
+  postManagerLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.postManagerLinkText',
+    defaultMessage: 'post manager',
   },
   unassigned: {
     id: 'app.containers.AdminPage.ProjectEdit.unassigned',
