@@ -29,8 +29,8 @@ const IdeasPage = memo(
       'custom_idea_statuses'
     );
     const resource = {
-      title: formatMessage(messages.pageTitle),
-      subtitle: formatMessage(messages.pageSubtitle),
+      title: formatMessage(messages.postManagerPageTitle),
+      subtitle: formatMessage(messages.postManagerPageSubtitle),
     };
 
     const getTabs = () => {
