@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe LogToEventbusJob, type: :job do
+RSpec.describe PublishActivityToRabbitJob, type: :job do
   
-  subject(:job) { LogToEventbusJob.new }
+  subject(:job) { PublishActivityToRabbitJob.new }
 
   describe '#perform' do
 
