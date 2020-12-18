@@ -4,9 +4,8 @@ import {
   SectionHeader,
   SectionTitle,
   SectionContent,
-  Article,
-  IconWrapper,
 } from './';
+import AdminGuideArticle from './AdminGuideArticle';
 import { Icon } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
@@ -39,12 +38,6 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     });
   };
 
-  const handleClickInteralTrack = (article: EngageArticle) => () => {
-    trackEventByName(tracks.internalLink.name, {
-      extra: { article, section: 'engage' },
-    });
-  };
-
   return (
     <SectionWrapper>
       <SectionHeader>
@@ -62,7 +55,7 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </a>
       </SectionHeader>
       <SectionContent>
-        {articles.map((article) => {
+        {articles.map((article, i) => {
           const linkMessages: EngageMessages = {
             invitations_colleagues: messages.engageArticle1Link,
             invitations_target_audience: messages.engageArticle2Link,
@@ -78,24 +71,19 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             invitations_target_audience: messages.engageArticle2Description,
             manual_emailing: messages.engageArticle3Description,
           };
+          const linkMessage = linkMessages[article];
+          const titleMessage = titleMessages[article];
+          const descriptionMessage = descriptionMessages[article];
 
           return (
-            <Article
-              to={formatMessage(linkMessages[article])}
-              key={article}
-              onClick={handleClickInteralTrack(article)}
-            >
-              <div>
-                <FormattedMessage tagName="h3" {...titleMessages[article]} />
-                <FormattedMessage
-                  tagName="p"
-                  {...descriptionMessages[article]}
-                />
-              </div>
-              <IconWrapper>
-                <Icon name="arrowLeft" />
-              </IconWrapper>
-            </Article>
+            <AdminGuideArticle
+              key={`engageArticle${i}`}
+              article={article}
+              section="engage"
+              linkMessage={linkMessage}
+              titleMessage={titleMessage}
+              descriptionMessage={descriptionMessage}
+            />
           );
         })}
       </SectionContent>
