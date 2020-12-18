@@ -19,7 +19,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
 orbs:
-  rubocop: hanachin/rubocop@x.y.z
+  rubocop: hanachin/rubocop@0.0.6
 
 commands:
   wait-for-postgres:
