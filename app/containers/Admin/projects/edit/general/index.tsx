@@ -744,7 +744,7 @@ class AdminProjectEditGeneral extends PureComponent<
     });
   };
 
-  handleUpdateField = (fieldPath: string) => (value: any) => {
+  handleUpdateField = (fieldPath: string, value: any) => {
     this.setState((prevState) => {
       const newState = { ...prevState };
       set(newState, 'submitState', 'enabled');
@@ -1054,11 +1054,9 @@ class AdminProjectEditGeneral extends PureComponent<
             </StyledSectionField>
 
             <Outlet
-              id="app.components.AdminPage.projects.form.projectsAndFolders.folderSelect"
-              value={projectAttrs.folder_id || ''}
-              onChange={this.handleUpdateField(
-                'projectAttributesDiff.folder_id'
-              )}
+              id="app.components.AdminPage.projects.form.additionalInputs.inputs"
+              projectAttrs={projectAttrs}
+              onChange={this.handleUpdateField}
             />
 
             <StyledSectionField>

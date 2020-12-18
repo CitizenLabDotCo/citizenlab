@@ -5,6 +5,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import { useProjectFolders } from 'modules/project_folders/hooks';
+import useAuthUser from 'hooks/useAuthUser';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import { Select, IconTooltip } from 'cl2-component-library';
@@ -16,6 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption } from 'typings';
+import { IUpdatedProjectProperties } from 'services/projects';
 
 import messages from './messages';
 
@@ -25,13 +28,19 @@ const StyledSectionField = styled(SectionField)`
 `;
 
 interface Props {
-  onChange: (value: string) => void;
-  value: string | null;
+  onChange: (fieldPath: string, value: any) => void;
+  projectAttrs: IUpdatedProjectProperties;
 }
 
 const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
-  ({ value, onChange, localize, intl: { formatMessage } }): ReactElement => {
+  ({
+    projectAttrs,
+    onChange,
+    localize,
+    intl: { formatMessage },
+  }): ReactElement => {
     const { projectFolders } = useProjectFolders();
+    const authUser = useAuthUser();
 
     const noFolderOption = {
       value: '',
@@ -47,14 +56,25 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
       [projectFolders]
     );
 
-    const allOptions = useMemo<IOption[]>(
-      () => [noFolderOption, ...folderOptions],
-      [folderOptions, noFolderOption]
-    );
+    const allOptions = useMemo<IOption[]>(() => {
+      if (isAdmin(authUser)) {
+        return [noFolderOption, ...folderOptions];
+      }
+
+      return folderOptions;
+    }, [folderOptions, noFolderOption, authUser]);
+
+    const defaultValue = useMemo<string>(() => {
+      if (isAdmin(authUser) || !folderOptions[0]) {
+        return '';
+      }
+
+      return folderOptions[0].value;
+    }, [folderOptions, noFolderOption, authUser]);
 
     const handleChange = useCallback(
       ({ value }) => {
-        onChange(value);
+        onChange('projectAttributesDiff.folder_id', value);
       },
       [onChange]
     );
@@ -63,11 +83,16 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
       <StyledSectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.folder} />
+          {isAdmin(authUser) && <FormattedMessage {...messages.optional} />}
           <IconTooltip
             content={<FormattedMessage {...messages.folderTooltip} />}
           />
         </SubSectionTitle>
-        <Select value={value} options={allOptions} onChange={handleChange} />
+        <Select
+          value={projectAttrs.folder_id || defaultValue}
+          options={allOptions}
+          onChange={handleChange}
+        />
       </StyledSectionField>
     );
   }

@@ -9,11 +9,11 @@ import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
 
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
+import CreateProject from 'containers/Admin/projects/all/CreateProject';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 
 import { isProjectFolderModerator } from './permissions/roles';
-import { isAdmin } from 'services/permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -34,19 +34,6 @@ const RenderOnProjectFolderModerator = ({ children }) => {
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser) || !isProjectFolderModerator(authUser)) {
-    return null;
-  }
-
-  return <>{children}</>;
-};
-
-const RenderOnProjectFolderModeratorOrAdmin = ({ children }) => {
-  const authUser = useAuthUser();
-
-  if (
-    isNilOrError(authUser) ||
-    !(isProjectFolderModerator(authUser) || isAdmin(authUser))
-  ) {
     return null;
   }
 
@@ -96,27 +83,18 @@ const configuration: ModuleConfiguration = {
         <ProjectFolderSiteMap {...props} />
       </RenderOnPublicationType>
     ),
-    'app.components.AdminPage.projects.form.projectsAndFolders.folderSelect': (
+    'app.components.AdminPage.projects.form.additionalInputs.inputs': (
       props
     ) => (
       <RenderOnFeatureFlag>
         <ProjectFolderSelect {...props} />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.permissions.projectFolderModeratorOnly': ({ children }) => (
+    'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
       <RenderOnFeatureFlag>
         <RenderOnProjectFolderModerator>
-          {children}
+          <CreateProject />
         </RenderOnProjectFolderModerator>
-      </RenderOnFeatureFlag>
-    ),
-    'app.containers.permissions.projectFolderModeratorOrAdminOnly': ({
-      children,
-    }) => (
-      <RenderOnFeatureFlag>
-        <RenderOnProjectFolderModeratorOrAdmin>
-          {children}
-        </RenderOnProjectFolderModeratorOrAdmin>
       </RenderOnFeatureFlag>
     ),
   },

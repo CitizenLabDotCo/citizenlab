@@ -155,7 +155,6 @@ class AdminFoldersProjectsList extends Component<
             <StyledHeaderTitle>
               <FormattedMessage {...messages.projectsAlreadyAdded} />
             </StyledHeaderTitle>
-
             <Spacer />
           </ListHeader>
 
@@ -210,7 +209,7 @@ class AdminFoldersProjectsList extends Component<
               )}
             </SortableList>
           ) : (
-            <FormattedMessage {...messages.emptyFolder} />
+            <FormattedMessage {...messages.folderEmptyGoBackToAdd} />
           )}
 
           {userIsAdmin && (
