@@ -32,10 +32,6 @@ commands:
               sleep 1
             done
             echo Failed waiting for Postgres && exit 1
-  run-rubocop:
-    description: Run rubocop
-    steps:
-    - run: bundle exec ./bin/rubocop
 
 jobs:
 
@@ -53,6 +49,20 @@ jobs:
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/cl2-back:$CIRCLE_SHA1
+
+  rubocop:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    parallelism: 4
+    environment:
+      RAILS_ENV: test
+    steps:
+      - checkout:
+          path: /tmp/cl2-back
+      - run: bundle exec ./bin/rubocop
 
   test:
     resource_class: small
@@ -188,15 +198,6 @@ jobs:
           name: Check for inconsistent data
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake checks:invalid_data"
           no_output_timeout: 60m
-
-  rubocop:
-    description: Checkout code and run rubocop
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    steps:
-    - checkout
-    - run-rubocop
 
 
 workflows:
