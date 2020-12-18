@@ -60,7 +60,6 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
-      - checkout
       - run: bundle exec ./bin/rubocop
 
   test:
