@@ -19,28 +19,31 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-type DecideArticle = 'ideas' | 'dashboard';
-const articles: DecideArticle[] = ['ideas', 'dashboard'];
+type EngageArticle = 'invitations' | 'manual_emailing';
+const articles: EngageArticle[] = ['invitations', 'manual_emailing'];
+type EngageMessages = {
+  [key in EngageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
+};
 
-const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleClickExternalTrack = () => {
     trackEventByName(tracks.externalLink.name, {
-      extra: { section: 'decide' },
+      extra: { section: 'engage' },
     });
   };
 
-  const handleClickInteralTrack = (article: 'ideas' | 'dashboard') => () => {
+  const handleClickInteralTrack = (article: EngageArticle) => () => {
     trackEventByName(tracks.internalLink.name, {
-      extra: { article, section: 'decide' },
+      extra: { article, section: 'engage' },
     });
   };
 
   return (
     <SectionWrapper>
       <SectionHeader>
-        <SectionTitle color={colors.clRed}>
-          <Icon name={'decide'} />
-          <FormattedMessage tagName="h2" {...messages.decideSectionTitle} />
+        <SectionTitle color={colors.adminOrangeIcons}>
+          <Icon name={'engage'} />
+          <FormattedMessage tagName="h2" {...messages.engageSectionTitle} />
         </SectionTitle>
         {/*tslint:disable-next-line*/}
         <a
@@ -53,40 +56,41 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </SectionHeader>
       <SectionContent>
         {articles.map((article) => {
-          <Article
-            to={formatMessage(
-              {
-                ideas: messages.decideArticle1Link,
-                dashboard: messages.decideArticle2Link,
-              }[article]
-            )}
-            key={article}
-            onClick={handleClickInteralTrack(article)}
-          >
-            <div>
-              <FormattedMessage
-                tagName="h3"
-                {...{
-                  ideas: messages.decideArticle1Title,
-                  dashboard: messages.decideArticle2Title,
-                }[article]}
-              />
-              <FormattedMessage
-                tagName="p"
-                {...{
-                  ideas: messages.decideArticle1Description,
-                  dashboard: messages.decideArticle2Description,
-                }[article]}
-              />
-            </div>
-            <IconWrapper>
-              <Icon name="arrowLeft" />
-            </IconWrapper>
-          </Article>;
+          const linkMessages: EngageMessages = {
+            invitations: messages.engageArticle1Link,
+            manual_emailing: messages.engageArticle2Link,
+          };
+          const titleMessages: EngageMessages = {
+            invitations: messages.engageArticle1Title,
+            manual_emailing: messages.engageArticle2Title,
+          };
+          const descriptionMessages: EngageMessages = {
+            invitations: messages.engageArticle1Description,
+            manual_emailing: messages.engageArticle2Description,
+          };
+
+          return (
+            <Article
+              to={formatMessage(linkMessages[article])}
+              key={article}
+              onClick={handleClickInteralTrack(article)}
+            >
+              <div>
+                <FormattedMessage tagName="h3" {...titleMessages[article]} />
+                <FormattedMessage
+                  tagName="p"
+                  {...descriptionMessages[article]}
+                />
+              </div>
+              <IconWrapper>
+                <Icon name="arrowLeft" />
+              </IconWrapper>
+            </Article>
+          );
         })}
       </SectionContent>
     </SectionWrapper>
   );
 };
 
-export default injectIntl(DecideSection);
+export default injectIntl(EngageSection);
