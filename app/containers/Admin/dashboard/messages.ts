@@ -154,7 +154,7 @@ export default defineMessages({
   },
   postsByStatusTitle: {
     id: 'app.containers.AdminPage.DashboardPage.postsByStatusTitle',
-    defaultMessage: 'Post by status',
+    defaultMessage: 'Posts by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
