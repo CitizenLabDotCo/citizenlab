@@ -4,9 +4,9 @@ import {
   SectionHeader,
   SectionTitle,
   SectionContent,
-  Article,
-  IconWrapper,
+  TManageArticle,
 } from './';
+import AdminGuideArticle from './AdminGuideArticle';
 import { Icon } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
@@ -19,22 +19,15 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-type ManageArticle = 'projects' | 'users';
-const articles: ManageArticle[] = ['projects', 'users'];
+const articles: TManageArticle[] = ['projects', 'users'];
 type ManageMessages = {
-  [key in ManageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in TManageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
 const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleClickExternalTrack = () => {
     trackEventByName(tracks.externalLink.name, {
       extra: { section: 'manage' },
-    });
-  };
-
-  const handleClickInteralTrack = (article: ManageArticle) => () => {
-    trackEventByName(tracks.internalLink.name, {
-      extra: { article, section: 'manage' },
     });
   };
 
@@ -68,24 +61,19 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             projects: messages.manageArticle1Description,
             users: messages.manageArticle2Description,
           };
+          const linkMessage = linkMessages[article];
+          const titleMessage = titleMessages[article];
+          const descriptionMessage = descriptionMessages[article];
 
           return (
-            <Article
-              to={formatMessage(linkMessages[article])}
-              key={article}
-              onClick={handleClickInteralTrack(article)}
-            >
-              <div>
-                <FormattedMessage tagName="h3" {...titleMessages[article]} />
-                <FormattedMessage
-                  tagName="p"
-                  {...descriptionMessages[article]}
-                />
-              </div>
-              <IconWrapper>
-                <Icon name="arrowLeft" />
-              </IconWrapper>
-            </Article>
+            <AdminGuideArticle
+              key={`engageArticle${i}`}
+              article={article}
+              section="engage"
+              linkMessage={linkMessage}
+              titleMessage={titleMessage}
+              descriptionMessage={descriptionMessage}
+            />
           );
         })}
       </SectionContent>
