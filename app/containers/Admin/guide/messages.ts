@@ -151,18 +151,6 @@ export default defineMessages({
     defaultMessage:
       'Create groups to be able to contact specific groups or define permissions per group.',
   },
-  manageArticle3Link: {
-    id: 'containers.Admin.onboarding.manageArticle3Link',
-    defaultMessage: '/unused',
-  },
-  manageArticle3Title: {
-    id: 'containers.Admin.onboarding.manageArticle3Title',
-    defaultMessage: 'Not yet used',
-  },
-  manageArticle3Description: {
-    id: 'containers.Admin.onboarding.manageArticle3Description',
-    defaultMessage: 'Not yet used',
-  },
   // Decide section
   decideSectionTitle: {
     id: 'containers.Admin.onboarding.decideSectionTitle',
@@ -198,17 +186,5 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle2Description',
     defaultMessage:
       'Get immediate and easy-to-grasp analytics, and monitor closely what’s happening on the platform.',
-  },
-  decideArticle3Link: {
-    id: 'containers.Admin.onboarding.decideArticle3Link',
-    defaultMessage: '/unused',
-  },
-  decideArticle3Title: {
-    id: 'containers.Admin.onboarding.decideArticle3Title',
-    defaultMessage: 'Not yet used',
-  },
-  decideArticle3Description: {
-    id: 'containers.Admin.onboarding.decideArticle3Description',
-    defaultMessage: 'Not yet used',
   },
 });
