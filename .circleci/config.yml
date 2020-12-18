@@ -18,6 +18,9 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+  ruby:
+    docker:
+    - image: rubylang/ruby:latest
 
 commands:
   wait-for-postgres:
@@ -202,8 +205,7 @@ jobs:
   rubocop:
     description: Checkout code and run rubocop
     executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      name: ruby
     steps:
     - checkout
     - install-rubocop
