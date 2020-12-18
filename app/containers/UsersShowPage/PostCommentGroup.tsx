@@ -187,7 +187,7 @@ export class PostCommentGroup extends PureComponent<Props> {
             </PostLinkLeft>
             <PostLinkRight>
               {postType === 'idea' ? (
-                <FormattedMessage {...messages.seeIdea} />
+                <FormattedMessage {...messages.seePost} />
               ) : (
                 <FormattedMessage {...messages.seeInitiative} />
               )}

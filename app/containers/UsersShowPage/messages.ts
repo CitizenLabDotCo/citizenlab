@@ -42,9 +42,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.noCommentsForUser',
     defaultMessage: 'This user has not posted any comment yet.',
   },
-  seeIdea: {
-    id: 'app.containers.UsersShowPage.seeIdea',
-    defaultMessage: 'See idea',
+  seePost: {
+    id: 'app.containers.UsersShowPage.seePost',
+    defaultMessage: 'See post',
   },
   seeInitiative: {
     id: 'app.containers.UsersShowPage.seeInitiative',
