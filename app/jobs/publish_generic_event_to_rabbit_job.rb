@@ -4,7 +4,7 @@ class PublishGenericEventToRabbitJob < ApplicationJob
   def perform(event, routing_key)
     return unless BUNNY_CON
     event = add_tenant_properties(event)
-    publish_to_rabbitmq(event, routing_key)
+    publish_to_rabbitmq(BUNNY_CON, event, routing_key)
   end
 
   private
@@ -17,8 +17,11 @@ class PublishGenericEventToRabbitJob < ApplicationJob
     # Tenant can't be found, so we don't add anything
   end
 
-  def publish_to_rabbitmq(event, routing_key)
-    BUNNY_CON.create_channel.tap do |channel|
+  # @param [Bunny] bunny RabbitMQ client
+  # @param [#to_json] event
+  # @param [String] routing_key
+  def publish_to_rabbitmq(bunny, event, routing_key)
+    bunny.create_channel.tap do |channel|
       exchange = channel.topic('cl2back')
       exchange.publish(
         event.to_json,
