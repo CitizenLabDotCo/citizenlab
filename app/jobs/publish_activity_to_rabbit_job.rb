@@ -1,4 +1,4 @@
-class LogToEventbusJob < ApplicationJob
+class PublishActivityToRabbitJob < ApplicationJob
   queue_as :default
 
   def perform(activity)
