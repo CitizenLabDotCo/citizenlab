@@ -21,6 +21,9 @@ import messages from './messages';
 
 type DecideArticle = 'ideas' | 'dashboard';
 const articles: DecideArticle[] = ['ideas', 'dashboard'];
+type DecideMessages = {
+  [key in DecideArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
+};
 
 const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleClickExternalTrack = () => {
@@ -29,7 +32,7 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     });
   };
 
-  const handleClickInteralTrack = (article: 'ideas' | 'dashboard') => () => {
+  const handleClickInteralTrack = (article: DecideArticle) => () => {
     trackEventByName(tracks.internalLink.name, {
       extra: { article, section: 'decide' },
     });
@@ -53,36 +56,37 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </SectionHeader>
       <SectionContent>
         {articles.map((article) => {
-          <Article
-            to={formatMessage(
-              {
-                ideas: messages.decideArticle1Link,
-                dashboard: messages.decideArticle2Link,
-              }[article]
-            )}
-            key={article}
-            onClick={handleClickInteralTrack(article)}
-          >
-            <div>
-              <FormattedMessage
-                tagName="h3"
-                {...{
-                  ideas: messages.decideArticle1Title,
-                  dashboard: messages.decideArticle2Title,
-                }[article]}
-              />
-              <FormattedMessage
-                tagName="p"
-                {...{
-                  ideas: messages.decideArticle1Description,
-                  dashboard: messages.decideArticle2Description,
-                }[article]}
-              />
-            </div>
-            <IconWrapper>
-              <Icon name="arrowLeft" />
-            </IconWrapper>
-          </Article>;
+          const linkMessages: DecideMessages = {
+            ideas: messages.decideArticle1Link,
+            dashboard: messages.decideArticle2Link,
+          };
+          const titleMessages: DecideMessages = {
+            ideas: messages.decideArticle1Title,
+            dashboard: messages.decideArticle2Title,
+          };
+          const descriptionMessages: DecideMessages = {
+            ideas: messages.decideArticle1Description,
+            dashboard: messages.decideArticle2Description,
+          };
+
+          return (
+            <Article
+              to={formatMessage(linkMessages[article])}
+              key={article}
+              onClick={handleClickInteralTrack(article)}
+            >
+              <div>
+                <FormattedMessage tagName="h3" {...titleMessages[article]} />
+                <FormattedMessage
+                  tagName="p"
+                  {...descriptionMessages[article]}
+                />
+              </div>
+              <IconWrapper>
+                <Icon name="arrowLeft" />
+              </IconWrapper>
+            </Article>
+          );
         })}
       </SectionContent>
     </SectionWrapper>
