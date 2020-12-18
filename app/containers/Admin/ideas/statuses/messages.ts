@@ -29,18 +29,14 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses',
     defaultMessage: 'Statuses',
   },
-  subtitleIdeaStatuses: {
-    id: 'app.containers.admin.ideaStatuses.all.subtitleIdeaStatuses',
+  subtitlePostStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.subtitlePostStatuses',
     defaultMessage:
-      "Here you can add, edit and delete the statuses that are available for administrators and project managers. The status is publicly visible and helps participants know what's happening with their input. You can add a status to ideas in the {linkToManageTab} tab.",
+      "Here you can add, edit and delete the statuses that can be assigned to posts. The status is publicly visible and helps participants know what's happening with their input. You can add a status to posts in the {linkToManageTab} tab.",
   },
   manage: {
     id: 'app.containers.admin.ideaStatuses.all.manage',
     defaultMessage: 'Manage',
-  },
-  ideasCount: {
-    id: 'app.containers.admin.ideaStatuses.all.ideasCount',
-    defaultMessage: 'ideas',
   },
   statusDeleteButtonTooltip: {
     id: 'app.containers.admin.ideaStatuses.all.statusDeleteButtonTooltip',
