@@ -43,7 +43,7 @@ commands:
   run-rubocop:
     description: Run rubocop
     steps:
-    - run: bundle exec bin/rubocop
+    - run: bundle exec ./bin/rubocop
 
 jobs:
 
