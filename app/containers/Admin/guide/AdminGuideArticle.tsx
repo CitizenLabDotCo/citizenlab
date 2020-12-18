@@ -43,12 +43,18 @@ const Article = styled(Link)`
 interface Props {
   article: TAdminGuideArticle;
   section: TAdminGuideSection;
+  linkMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  titleMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  descriptionMessage: ReactIntl.FormattedMessage.MessageDescriptor;
 }
 
 const AdminGuideArticle = ({
   intl: { formatMessage },
   article,
   section,
+  linkMessage,
+  titleMessage,
+  descriptionMessage,
 }: Props & InjectedIntlProps) => {
   const handleClickInteralTrack = () => {
     trackEventByName(tracks.internalLink.name, {
@@ -56,14 +62,10 @@ const AdminGuideArticle = ({
     });
   };
   return (
-    <Article
-      to={formatMessage(linkMessages[article])}
-      key={article}
-      onClick={handleClickInteralTrack}
-    >
+    <Article to={formatMessage(linkMessage)} onClick={handleClickInteralTrack}>
       <div>
-        <FormattedMessage tagName="h3" {...titleMessages[article]} />
-        <FormattedMessage tagName="p" {...descriptionMessages[article]} />
+        <FormattedMessage tagName="h3" {...titleMessage} />
+        <FormattedMessage tagName="p" {...descriptionMessage} />
       </div>
       <IconWrapper>
         <Icon name="arrowLeft" />
