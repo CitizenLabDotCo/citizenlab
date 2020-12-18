@@ -33,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.workshops',
     defaultMessage: 'Workshops',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.SideBar.ideas',
-    defaultMessage: 'Ideas',
+  posts: {
+    id: 'app.containers.AdminPage.SideBar.posts',
+    defaultMessage: 'Posts',
   },
   settings: {
     id: 'app.containers.AdminPage.SideBar.settings',
