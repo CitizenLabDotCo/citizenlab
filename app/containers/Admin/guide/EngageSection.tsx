@@ -4,6 +4,7 @@ import {
   SectionHeader,
   SectionTitle,
   SectionContent,
+  TEngageArticle,
 } from './';
 import AdminGuideArticle from './AdminGuideArticle';
 import { Icon } from 'cl2-component-library';
@@ -18,17 +19,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-type EngageArticle =
-  | 'invitations_colleagues'
-  | 'invitations_target_audience'
-  | 'manual_emailing';
-const articles: EngageArticle[] = [
+const articles: TEngageArticle[] = [
   'invitations_colleagues',
   'invitations_target_audience',
   'manual_emailing',
 ];
 type EngageMessages = {
-  [key in EngageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in TEngageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
 const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
