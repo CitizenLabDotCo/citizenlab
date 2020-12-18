@@ -67,5 +67,3 @@ module ProjectFolders
     end
   end
 end
-
-# User.prepend(ProjectFolders::ModeratorDecorator)

@@ -9,10 +9,10 @@ module ProjectFolders
       end
 
       def resolve
-        if user.project_folder_moderator?
+        if user&.project_folder_moderator?
           moderated_folders = user.moderated_project_folders
           scope.project_folder_moderator(moderated_folders.pluck(:id))
-        elsif user.active_and_admin?
+        elsif user&.active? && user&.admin?
           scope.project_folder_moderator
         else
           raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -29,7 +29,7 @@ module ProjectFolders
     end
 
     def create?
-      user.active_and_admin?
+      user&.active? && user&.admin?
     end
 
     def destroy?
@@ -41,7 +41,9 @@ module ProjectFolders
     def admin_or_moderator?
       # In the case of moderator, the user must be moderator of that project
       # (not just of any project).
-      user.active_and_admin? || user.project_folder_moderator?(record.project_folder_id)
+      return unless user&.active?
+
+      user.admin? || user.project_folder_moderator?(record.project_folder_id)
     end
   end
 end

@@ -216,10 +216,6 @@ class User < ApplicationRecord
     roles.any? { |r| r['type'] == 'admin' }
   end
 
-  def active_and_admin?
-    active? && admin?
-  end
-
   def super_admin?
     admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
   end
