@@ -42,13 +42,8 @@ commands:
         command: gem install rubocop rubocop-performance rubocop-rails rubocop-rspec rubocop-i18n rubocop-sequel rubocop-thread_safety rubocop-require_tools
   run-rubocop:
     description: Run rubocop
-    parameters:
-      options:
-        default: --parallel --config .rubocop.yml
-        description: CLI options
-        type: string
     steps:
-    - run: git diff-tree -r --no-commit-id --name-only master@\{u\} HEAD | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop --force-exclusion --format simple
+    - run: git diff-tree -r --no-commit-id --name-only master@\{u\} HEAD | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop --force-exclusion --format simple --parallel --config .rubocop.yml
 
 jobs:
 
