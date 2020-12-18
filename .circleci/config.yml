@@ -37,7 +37,6 @@ commands:
     steps:
     - run:
         command: gem install rubocop rubocop-performance rubocop-rails rubocop-rspec rubocop-i18n rubocop-sequel rubocop-thread_safety rubocop-require_tools
-        name: Install rubocop << parameters.version >>
   run-rubocop:
     description: Run rubocop
     parameters:
