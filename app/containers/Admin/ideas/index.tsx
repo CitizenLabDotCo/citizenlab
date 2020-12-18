@@ -55,8 +55,8 @@ const IdeasPage = memo(
     return (
       <TabbedResource resource={resource} tabs={getTabs()}>
         <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
+          title={messages.postManagerMetaTitle}
+          description={messages.postManagerMetaDescription}
         />
         {children}
       </TabbedResource>
