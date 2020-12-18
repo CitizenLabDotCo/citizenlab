@@ -112,12 +112,16 @@ export const IconWrapper = styled.div`
   justify-content: center;
 `;
 
-type SectionKey = 'setup' | 'engage' | 'manage' | 'decide';
-type SetupArticle = 'projects' | 'user_custom_fields' | 'widgets';
-type EngageArticle = 'invitations' | 'manual_emailing';
-type ManageArticle = 'projects' | 'users';
-type DecideArticle = 'ideas' | 'dashboard';
-type Article = SetupArticle | EngageArticle | ManageArticle | DecideArticle;
+export type TAdminGuideSection = 'setup' | 'engage' | 'manage' | 'decide';
+type TSetupArticle = 'projects' | 'user_custom_fields' | 'widgets';
+type TEngageArticle = 'invitations' | 'manual_emailing';
+type TManageArticle = 'projects' | 'users';
+type TDecideArticle = 'ideas' | 'dashboard';
+export type TAdminGuideArticle =
+  | TSetupArticle
+  | TEngageArticle
+  | TManageArticle
+  | TDecideArticle;
 
 export const Onboarding = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
