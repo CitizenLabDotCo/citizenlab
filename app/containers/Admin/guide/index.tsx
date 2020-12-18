@@ -114,7 +114,10 @@ export const IconWrapper = styled.div`
 
 export type TAdminGuideSection = 'setup' | 'engage' | 'manage' | 'decide';
 type TSetupArticle = 'projects' | 'user_custom_fields' | 'widgets';
-type TEngageArticle = 'invitations' | 'manual_emailing';
+type TEngageArticle =
+  | 'invitations_colleagues'
+  | 'invitations_target_audience'
+  | 'manual_emailing';
 type TManageArticle = 'projects' | 'users';
 type TDecideArticle = 'ideas' | 'dashboard';
 export type TAdminGuideArticle =
