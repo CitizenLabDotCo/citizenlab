@@ -461,7 +461,7 @@ class WidgetForm extends PureComponent<
 
             <SectionField>
               <Label>
-                <FormattedMessage {...messages.fieldLimit} />
+                <FormattedMessage {...messages.fieldPostsLimit} />
               </Label>
               <Field name="limit" component={FormikInput} type="number" />
               {touched.limit && (
