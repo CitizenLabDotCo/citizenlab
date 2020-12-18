@@ -58,6 +58,7 @@ jobs:
     parallelism: 4
     environment:
       RAILS_ENV: test
+      image-tag: $CIRCLE_SHA1
     steps:
       - checkout:
           path: /tmp/cl2-back
