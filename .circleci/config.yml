@@ -18,6 +18,8 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+orbs:
+  rubocop: hanachin/rubocop@x.y.z
 
 commands:
   wait-for-postgres:
@@ -196,6 +198,12 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+      - rubocop/rubocop:
+          options: '--config ./.rubocop.yml --format simple'
+          after-install-rubocop:
+            - run: gem install rubocop-performance
+            - rubocop/install-cop-from-git:
+                url: 'https://github.com/agileware-jp/rubocop-no_keyword_args.git'
       - test:
           context: docker-hub-access
           requires:
