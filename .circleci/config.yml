@@ -60,6 +60,8 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - checkout:
+          path: /tmp/cl2-back
       - run: bundle exec ./bin/rubocop
 
   test:
