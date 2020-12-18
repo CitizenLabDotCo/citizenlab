@@ -57,11 +57,7 @@ RSpec.describe LogActivityJob, type: :job do
     it "enqueues a PublishActivityToRabbitJob when bunny is initialized" do
       idea = create(:idea)
       user = create(:user)
-      if BUNNY_CON
-        expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(PublishActivityToRabbitJob)
-      else
-        expect{job.perform(idea, "created", user, Time.now)}.not_to have_enqueued_job(PublishActivityToRabbitJob)
-      end
+      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(PublishActivityToRabbitJob)
     end
 
     it "enqueues a TrackEventJob when Analytics is initialized" do

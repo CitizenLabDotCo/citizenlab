@@ -2,6 +2,7 @@ class PublishGenericEventToRabbitJob < ApplicationJob
   queue_as :default
 
   def perform(event, routing_key)
+    return unless BUNNY_CON
     event = add_tenant_properties(event)
 
     with_channel do |channel|
