@@ -54,8 +54,8 @@ const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(
       );
       const pageMetaDescription = formatMessage(
         method === 'signin'
-          ? messages.signInMetaDescription
-          : messages.signUpMetaDescription
+          ? messages.signInPageMetaDescription
+          : messages.signUpPageMetaDescription
       );
 
       return (
