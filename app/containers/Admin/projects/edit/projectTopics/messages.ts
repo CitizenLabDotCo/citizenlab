@@ -42,10 +42,10 @@ export default defineMessages({
     defaultMessage:
       'If you would like to add additional project topics, you can do so in the {topicManagerLink}.',
   },
-  pageDescription: {
-    id: 'app.containers.AdminPage.Topics.pageDescription',
+  projectTopicsPageDescription: {
+    id: 'app.containers.AdminPage.Topics.projectTopicsPageDescription',
     defaultMessage:
-      'You can add and delete the topics that are available for Idea Collection projects here. Topics are selected by users to categorize their ideas.',
+      'You can add and delete the topics that can be assigned to posts in this project.',
   },
   topicManager: {
     id: 'app.containers.AdminPage.Topics.topicManager',
