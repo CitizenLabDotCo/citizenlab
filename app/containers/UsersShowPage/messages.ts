@@ -71,10 +71,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.metaTitle',
     defaultMessage: 'Profile page of {firstName} {lastName} | CitizenLab',
   },
-  metaDescription: {
-    id: 'app.containers.UsersShowPage.metaDescription',
+  userShowPageMetaDescription: {
+    id: 'app.containers.UsersShowPage.userShowPageMetaDescription',
     defaultMessage:
-      'This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.',
+      'This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here is an overview of all of their posts.',
   },
   a11y_ideaPostedIn: {
     id: 'app.containers.UsersShowPage.a11y_ideaPostedIn',
