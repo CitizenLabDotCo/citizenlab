@@ -15,7 +15,7 @@ class RubocopRunner
   end
 
   def self.check_committed_changes
-    system("git diff-tree -r --no-commit-id --name-only master@\{u\} HEAD | xargs ls -1 2>/dev/null | xargs rubocop --force-exclusion --format simple --parallel --config .rubocop.yml #{ARGV.join(' ')}")
+    system("git diff-tree -r --no-commit-id --name-only master@\{u\} HEAD | xargs ls -1 2>/dev/null | xargs rubocop --force-exclusion --format simple --parallel #{ARGV.join(' ')}")
   end
 end
 
