@@ -39,7 +39,7 @@ commands:
     description: Install rubocop
     steps:
     - run:
-        command: gem install rubocop rubocop-performance rubocop-rails rubocop-rspec rubocop-i18n rubocop-sequel rubocop-thread_safety rubocop-require_tools
+        command: gem install bundler rubocop rubocop-performance rubocop-rails rubocop-rspec rubocop-i18n rubocop-sequel rubocop-thread_safety rubocop-require_tools
   run-rubocop:
     description: Run rubocop
     steps:
