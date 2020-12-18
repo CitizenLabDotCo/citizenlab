@@ -76,9 +76,9 @@ export default defineMessages({
     defaultMessage:
       'This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here is an overview of all of their posts.',
   },
-  a11y_ideaPostedIn: {
-    id: 'app.containers.UsersShowPage.a11y_ideaPostedIn',
-    defaultMessage: 'Idea in which this comment was posted: ',
+  a11y_postCommentPostedIn: {
+    id: 'app.containers.UsersShowPage.a11y_postCommentPostedIn',
+    defaultMessage: 'Post in which this comment was posted: ',
   },
   a11y_initiativePostedIn: {
     id: 'app.containers.UsersShowPage.a11y_initiativePostedIn',
