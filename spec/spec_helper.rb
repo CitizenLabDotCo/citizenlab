@@ -144,8 +144,6 @@ RSpec.configure do |config|
     # Create the default tenant for our tests
     # Tenant.create!(name: 'test-tenant', host: 'example_org')
     FactoryBot::create(:test_tenant)
-
-    sh 'rubocop --format simple || true'
   end
 
   config.before(:each) do
