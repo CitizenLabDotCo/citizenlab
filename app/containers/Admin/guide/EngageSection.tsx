@@ -19,8 +19,15 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-type EngageArticle = 'invitations' | 'manual_emailing';
-const articles: EngageArticle[] = ['invitations', 'manual_emailing'];
+type EngageArticle =
+  | 'invitations_colleagues'
+  | 'invitations_target_audience'
+  | 'manual_emailing';
+const articles: EngageArticle[] = [
+  'invitations_colleagues',
+  'invitations_target_audience',
+  'manual_emailing',
+];
 type EngageMessages = {
   [key in EngageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
@@ -57,16 +64,19 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       <SectionContent>
         {articles.map((article) => {
           const linkMessages: EngageMessages = {
-            invitations: messages.engageArticle1Link,
-            manual_emailing: messages.engageArticle2Link,
+            invitations_colleagues: messages.engageArticle1Link,
+            invitations_target_audience: messages.engageArticle2Link,
+            manual_emailing: messages.engageArticle3Link,
           };
           const titleMessages: EngageMessages = {
-            invitations: messages.engageArticle1Title,
-            manual_emailing: messages.engageArticle2Title,
+            invitations_colleagues: messages.engageArticle1Title,
+            invitations_target_audience: messages.engageArticle2Title,
+            manual_emailing: messages.engageArticle3Title,
           };
           const descriptionMessages: EngageMessages = {
-            invitations: messages.engageArticle1Description,
-            manual_emailing: messages.engageArticle2Description,
+            invitations_colleagues: messages.engageArticle1Description,
+            invitations_target_audience: messages.engageArticle2Description,
+            manual_emailing: messages.engageArticle3Description,
           };
 
           return (
