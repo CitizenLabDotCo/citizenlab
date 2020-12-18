@@ -88,7 +88,9 @@ const MetaInformation = ({
         {topicsEnabled && <IdeaTopics ideaId={ideaId} />}
         {locationEnabled && <Location projectId={projectId} ideaId={ideaId} />}
         {attachmentsEnabled && <Attachments ideaId={ideaId} />}
-        {similarIdeasEnabled && <SimilarIdeas ideaId={ideaId} />}
+        {similarIdeasEnabled && (
+          <SimilarIdeas ideaId={ideaId} projectId={projectId} />
+        )}
       </Container>
     );
   }
