@@ -48,7 +48,7 @@ commands:
         description: CLI options
         type: string
     steps:
-    - run: git fetch && git diff-tree -r --no-commit-id --name-only master@\{u\} HEAD | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop --force-exclusion --format simple
+    - run: git diff-tree -r --no-commit-id --name-only master@\{u\} HEAD | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs rubocop --force-exclusion --format simple
 
 jobs:
 
