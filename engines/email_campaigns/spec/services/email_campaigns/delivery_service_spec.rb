@@ -32,7 +32,7 @@ describe EmailCampaigns::DeliveryService do
     it "enqueues an external event job" do
       travel_to campaign.ic_schedule.start_time do
         expect{service.send_on_schedule(Time.now)}
-          .to have_enqueued_job(PublishRawEventToRabbitJob)
+          .to have_enqueued_job(PublishGenericEventToRabbitJob)
           .exactly(1).times
       end
     end
@@ -71,7 +71,7 @@ describe EmailCampaigns::DeliveryService do
 
     it "enqueues an external event job" do
       expect{service.send_on_activity(activity)}
-        .to have_enqueued_job(PublishRawEventToRabbitJob)
+        .to have_enqueued_job(PublishGenericEventToRabbitJob)
         .exactly(1).times
     end
 
@@ -96,7 +96,7 @@ describe EmailCampaigns::DeliveryService do
       it "delays enqueueing a job because the command specifies a delay" do
         travel_to Time.now do
           expect{service.send_on_activity(activity)}
-            .to have_enqueued_job(PublishRawEventToRabbitJob)
+            .to have_enqueued_job(PublishGenericEventToRabbitJob)
             .exactly(1).times
             .at(Time.now + 8.hours)
         end
