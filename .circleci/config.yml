@@ -201,9 +201,7 @@ workflows:
       - rubocop/rubocop:
           options: '--config ./.rubocop.yml --format simple'
           after-install-rubocop:
-            - run: gem install rubocop-performance
-            - rubocop/install-cop-from-git:
-                url: 'https://github.com/agileware-jp/rubocop-no_keyword_args.git'
+            - run: gem install rubocop-performance rubocop-rails rubocop-rspec
       - test:
           context: docker-hub-access
           requires:
