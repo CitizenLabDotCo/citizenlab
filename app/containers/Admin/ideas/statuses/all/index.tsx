@@ -151,9 +151,31 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
-            <DummyButton buttonStyle="text" disabled={true} icon="delete">
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </DummyButton>
+            <Tippy
+              placement="top"
+              theme="light"
+              disabled={false}
+              content={
+                <FormattedMessage
+                  {...messages.defaultStatusDeleteButtonTooltip}
+                  values={{
+                    linkToManageTab: (
+                      <b>
+                        <FormattedMessage {...messages.manage} />
+                      </b>
+                    ),
+                  }}
+                />
+              }
+              trigger="mouseenter"
+            >
+              <div>
+                <DummyButton buttonStyle="text" disabled={true} icon="delete">
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </DummyButton>
+              </div>
+            </Tippy>
+
             <Button
               linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
               buttonStyle="secondary"

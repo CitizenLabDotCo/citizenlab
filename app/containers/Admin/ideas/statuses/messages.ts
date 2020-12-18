@@ -47,6 +47,11 @@ export default defineMessages({
     defaultMessage:
       'Statuses that are currently in use cannot be deleted. You can remove/change statuses in the {linkToManageTab} tab.',
   },
+  defaultStatusDeleteButtonTooltip: {
+    id:
+      'app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip',
+    defaultMessage: 'The default status can not be deleted.',
+  },
   lockedStatusTooltip: {
     id: 'app.containers.admin.ideaStatuses.all.lockedStatusTooltip',
     defaultMessage: 'This status cannot be deleted or moved.',
