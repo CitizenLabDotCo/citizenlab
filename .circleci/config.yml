@@ -217,7 +217,9 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-      - rubocop
+      - rubocop:
+          requires:
+            - build-docker-image
       - test:
           context: docker-hub-access
           requires:
