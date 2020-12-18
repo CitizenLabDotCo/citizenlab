@@ -63,7 +63,7 @@ jobs:
       - checkout:
           path: /tmp/cl2-back
       - run: |
-          bundle exec ./bin/rubocop
+          bundle exec bin/rubocop
 
   test:
     resource_class: small
