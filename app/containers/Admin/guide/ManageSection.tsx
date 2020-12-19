@@ -5,6 +5,7 @@ import {
   SectionTitle,
   SectionContent,
   TManageArticle,
+  renderArticle,
 } from './';
 import AdminGuideArticle from './AdminGuideArticle';
 import { Icon } from 'cl2-component-library';
@@ -18,6 +19,8 @@ import tracks from './tracks';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+//
 
 const articles: TManageArticle[] = ['projects', 'users'];
 type ManageMessages = {
@@ -48,7 +51,7 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </a>
       </SectionHeader>
       <SectionContent>
-        {articles.map((article) => {
+        {articles.map((article, i) => {
           const linkMessages: ManageMessages = {
             projects: messages.manageArticle1Link,
             users: messages.manageArticle2Link,
@@ -64,17 +67,18 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const linkMessage = linkMessages[article];
           const titleMessage = titleMessages[article];
           const descriptionMessage = descriptionMessages[article];
-
-          return (
+          const adminGuideArticle = (
             <AdminGuideArticle
-              key={`engageArticle${i}`}
+              key={`manageArticle${i}`}
               article={article}
-              section="engage"
+              section="manage"
               linkMessage={linkMessage}
               titleMessage={titleMessage}
               descriptionMessage={descriptionMessage}
             />
           );
+
+          return renderArticle(article, i, adminGuideArticle);
         })}
       </SectionContent>
     </SectionWrapper>

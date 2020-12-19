@@ -5,6 +5,7 @@ import {
   SectionTitle,
   SectionContent,
   TEngageArticle,
+  renderArticle,
 } from './';
 import AdminGuideArticle from './AdminGuideArticle';
 import { Icon } from 'cl2-component-library';
@@ -71,8 +72,7 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const linkMessage = linkMessages[article];
           const titleMessage = titleMessages[article];
           const descriptionMessage = descriptionMessages[article];
-
-          return (
+          const adminGuideArticle = (
             <AdminGuideArticle
               key={`engageArticle${i}`}
               article={article}
@@ -82,6 +82,8 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               descriptionMessage={descriptionMessage}
             />
           );
+
+          return renderArticle(article, i, adminGuideArticle);
         })}
       </SectionContent>
     </SectionWrapper>

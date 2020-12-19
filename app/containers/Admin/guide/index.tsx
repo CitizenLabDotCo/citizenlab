@@ -126,28 +126,28 @@ export type TAdminGuideArticle =
   | TManageArticle
   | TDecideArticle;
 
+export const renderArticle = (
+  article: TAdminGuideArticle,
+  index: number,
+  articleComponent: JSX.Element
+) => {
+  if (
+    article === 'widgets' ||
+    article === 'user_custom_fields' ||
+    article === 'manual_emailing'
+  ) {
+    return (
+      <FeatureFlag name={article} key={index}>
+        {articleComponent}
+      </FeatureFlag>
+    );
+  } else {
+    return articleComponent;
+  }
+};
+
 export const Onboarding = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
-
-  const renderFlags = (
-    section: SectionKey,
-    index: number,
-    article: Article
-  ) => {
-    if (
-      article === 'widgets' ||
-      article === 'user_custom_fields' ||
-      article === 'manual_emailing'
-    ) {
-      return (
-        <FeatureFlag name={article} key={index}>
-          {renderArticle(section, index)}
-        </FeatureFlag>
-      );
-    } else {
-      return renderArticle(section, index);
-    }
-  };
 
   return (
     <>
