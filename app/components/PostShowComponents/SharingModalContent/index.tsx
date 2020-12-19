@@ -174,11 +174,15 @@ class SharingModalContent extends PureComponent<
         phases
       );
 
-      emailSharingSubject = messages.ideaEmailSharingSubject;
+      emailSharingSubject = getInputTermMessage(inputTerm, {
+        idea: messages.ideaEmailSharingSubject,
+      });
       emailSharingBody = getInputTermMessage(inputTerm, {
         idea: messages.emailSharingBody,
       });
-      whatsAppMessage = messages.whatsAppMessageIdea;
+      whatsAppMessage = getInputTermMessage(inputTerm, {
+        idea: messages.ideaWhatsAppMessage,
+      });
     }
 
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
