@@ -55,7 +55,7 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             dashboard: messages.decideArticle2Link,
           };
           const titleMessages: DecideMessages = {
-            ideas: messages.decideArticle1Title,
+            ideas: messages.manageThePosts,
             dashboard: messages.decideArticle2Title,
           };
           const descriptionMessages: DecideMessages = {

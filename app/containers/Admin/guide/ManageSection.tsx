@@ -61,7 +61,7 @@ const ManageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             users: messages.manageArticle2Title,
           };
           const descriptionMessages: ManageMessages = {
-            projects: messages.manageArticle1Description,
+            projects: messages.giveFeedback,
             users: messages.manageArticle2Description,
           };
           const linkMessage = linkMessages[article];

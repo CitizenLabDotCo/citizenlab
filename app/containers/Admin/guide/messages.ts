@@ -133,10 +133,10 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.manageArticle1Title',
     defaultMessage: 'Moderate inside your projects',
   },
-  manageArticle1Description: {
-    id: 'containers.Admin.onboarding.manageArticle1Description',
+  giveFeedback: {
+    id: 'containers.Admin.onboarding.giveFeedback',
     defaultMessage:
-      'Don’t make your audience wait for your feedback. Interact with them regularly. Leave a comment, send them an email. Reach out to them individually or to a group per age, area, or project that they participated in.',
+      'Give feedback by adding or changing the status or providing an update.',
   },
   manageArticle2Link: {
     id: 'containers.Admin.onboarding.manageArticle2Link',
@@ -165,9 +165,9 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle1Link',
     defaultMessage: '/admin/ideas',
   },
-  decideArticle1Title: {
-    id: 'containers.Admin.onboarding.decideArticle1Title',
-    defaultMessage: 'Manage the ideas',
+  manageThePosts: {
+    id: 'containers.Admin.onboarding.manageThePosts',
+    defaultMessage: 'Manage the posts',
   },
   decideArticle1Description: {
     id: 'containers.Admin.onboarding.decideArticle1Description',
