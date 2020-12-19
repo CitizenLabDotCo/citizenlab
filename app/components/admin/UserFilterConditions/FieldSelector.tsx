@@ -3,7 +3,7 @@ import { keys } from 'lodash-es';
 import { Select } from 'cl2-component-library';
 
 import { IOption } from 'typings';
-import { TRule, ruleTypeConstraints } from './rules';
+import { TRule, TStaticRuleType, ruleTypeConstraints } from './rules';
 import GetCustomFields, {
   GetUserCustomFieldsChildProps,
 } from 'resources/GetUserCustomFields';
@@ -33,16 +33,33 @@ class FieldSelector extends React.PureComponent<
   State
 > {
   generateOptions = (): IOption[] => {
-    const { localize } = this.props;
+    const {
+      localize,
+      intl: { formatMessage },
+    } = this.props;
+    const labelMessages: {
+      [key in TStaticRuleType]: ReactIntl.FormattedMessage.MessageDescriptor;
+    } = {
+      email: messages.field_email,
+      lives_in: messages.field_lives_in,
+      registration_completed_at: messages.field_registration_completed_at,
+      role: messages.field_role,
+      participated_in_project: messages.field_participated_in_project,
+      participated_in_topic: messages.field_participated_in_topic,
+      participated_in_idea_status: messages.field_participated_in_idea_status,
+      verified: messages.field_verified,
+    };
 
     const staticOptions = keys(ruleTypeConstraints)
       .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
-      .map((ruleType) => ({
-        value: this.descriptorToOptionValue({
-          ruleType: ruleType as TRule['ruleType'],
-        }),
-        label: this.props.intl.formatMessage(messages[`field_${ruleType}`]),
-      }));
+      .map((ruleType) => {
+        return {
+          value: this.descriptorToOptionValue({
+            ruleType: ruleType as TRule['ruleType'],
+          }),
+          label: formatMessage(labelMessages[ruleType]),
+        };
+      });
     const customFieldOptions = (this.props.customFields || [])
       .filter((customField) => customField.attributes.code !== 'domicile')
       .map((customField) => ({
@@ -99,7 +116,7 @@ class FieldSelector extends React.PureComponent<
 
 const FieldSelectorWithHocs = injectIntl(localize(FieldSelector));
 
-export default (inputProps) => (
+export default (inputProps: Props) => (
   <GetCustomFields>
     {(customFields) => (
       <FieldSelectorWithHocs {...inputProps} customFields={customFields} />

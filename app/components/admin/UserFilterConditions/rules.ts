@@ -23,6 +23,17 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 /**
  * Schema for validating the rules used in smart groups
  */
+
+export type TStaticRuleType =
+  | 'email'
+  | 'lives_in'
+  | 'registration_completed_at'
+  | 'role'
+  | 'participated_in_project'
+  | 'participated_in_topic'
+  | 'participated_in_idea_status'
+  | 'verified';
+
 export type TRule =
   | {
       ruleType?: 'custom_field_text';
