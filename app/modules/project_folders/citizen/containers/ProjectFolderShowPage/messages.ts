@@ -1,14 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  twitterMessage: {
-    id: 'app.containers.ProjectFolderShowPage.twitterMessage',
-    defaultMessage: '{title}',
+  projectFolderTwitterMessage: {
+    id: 'app.containers.ProjectFolderShowPage.projectFolderTwitterMessage',
+    defaultMessage: '{title} | {orgName}',
   },
-  whatsAppMessage: {
-    id: 'app.containers.ProjectFolderShowPage.whatsAppMessage',
-    defaultMessage:
-      '{projectFolderName} | from the participation platform of {orgName}',
+  projectFolderWhatsAppMessage: {
+    id: 'app.containers.ProjectFolderShowPage.projectFolderWhatsAppMessage',
+    defaultMessage: '{title} | {orgName}',
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
