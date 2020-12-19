@@ -32,7 +32,7 @@ const SelectType = memo(({ onChange, selectedTypes }: Props) => {
           value: 'Comment',
         },
         {
-          text: <FormattedMessage {...messages.idea} />,
+          text: <FormattedMessage {...messages.post} />,
           value: 'Idea',
         },
         {

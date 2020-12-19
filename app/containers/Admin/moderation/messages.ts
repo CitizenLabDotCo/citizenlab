@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.project',
     defaultMessage: 'Project',
   },
-  idea: {
-    id: 'app.containers.Admin.Moderation.idea',
-    defaultMessage: 'Idea',
+  post: {
+    id: 'app.containers.Admin.Moderation.post',
+    defaultMessage: 'Post',
   },
   initiative: {
     id: 'app.containers.Admin.Moderation.initiative',
