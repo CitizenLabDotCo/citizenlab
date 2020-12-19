@@ -4,9 +4,9 @@ import {
   SectionHeader,
   SectionTitle,
   SectionContent,
-  Article,
-  IconWrapper,
+  renderArticle,
 } from './';
+import AdminGuideArticle from './AdminGuideArticle';
 import { Icon } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
@@ -32,12 +32,6 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     });
   };
 
-  const handleClickInteralTrack = (article: DecideArticle) => () => {
-    trackEventByName(tracks.internalLink.name, {
-      extra: { article, section: 'decide' },
-    });
-  };
-
   return (
     <SectionWrapper>
       <SectionHeader>
@@ -55,7 +49,7 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </a>
       </SectionHeader>
       <SectionContent>
-        {articles.map((article) => {
+        {articles.map((article, i) => {
           const linkMessages: DecideMessages = {
             ideas: messages.decideArticle1Link,
             dashboard: messages.decideArticle2Link,
@@ -68,25 +62,21 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             ideas: messages.decideArticle1Description,
             dashboard: messages.decideArticle2Description,
           };
-
-          return (
-            <Article
-              to={formatMessage(linkMessages[article])}
-              key={article}
-              onClick={handleClickInteralTrack(article)}
-            >
-              <div>
-                <FormattedMessage tagName="h3" {...titleMessages[article]} />
-                <FormattedMessage
-                  tagName="p"
-                  {...descriptionMessages[article]}
-                />
-              </div>
-              <IconWrapper>
-                <Icon name="arrowLeft" />
-              </IconWrapper>
-            </Article>
+          const linkMessage = linkMessages[article];
+          const titleMessage = titleMessages[article];
+          const descriptionMessage = descriptionMessages[article];
+          const adminGuideArticle = (
+            <AdminGuideArticle
+              key={`decideArticle${i}`}
+              article={article}
+              section="decide"
+              linkMessage={linkMessage}
+              titleMessage={titleMessage}
+              descriptionMessage={descriptionMessage}
+            />
           );
+
+          return renderArticle(article, i, adminGuideArticle);
         })}
       </SectionContent>
     </SectionWrapper>

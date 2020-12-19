@@ -4,9 +4,10 @@ import {
   SectionHeader,
   SectionTitle,
   SectionContent,
-  Article,
-  IconWrapper,
+  renderArticle,
 } from './';
+import AdminGuideArticle from './AdminGuideArticle';
+
 import { Icon } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
@@ -32,12 +33,6 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     });
   };
 
-  const handleClickInteralTrack = (article: SetupArticle) => () => {
-    trackEventByName(tracks.internalLink.name, {
-      extra: { article, section: 'setup' },
-    });
-  };
-
   return (
     <SectionWrapper>
       <SectionHeader>
@@ -55,7 +50,7 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </a>
       </SectionHeader>
       <SectionContent>
-        {articles.map((article) => {
+        {articles.map((article, i) => {
           const linkMessages: SetupMessages = {
             projects: messages.setupArticle1Link,
             user_custom_fields: messages.setupArticle2Link,
@@ -71,25 +66,21 @@ const SetupSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             user_custom_fields: messages.setupArticle2Description,
             widgets: messages.setupArticle3Description,
           };
-
-          return (
-            <Article
-              to={formatMessage(linkMessages[article])}
-              key={article}
-              onClick={handleClickInteralTrack(article)}
-            >
-              <div>
-                <FormattedMessage tagName="h3" {...titleMessages[article]} />
-                <FormattedMessage
-                  tagName="p"
-                  {...descriptionMessages[article]}
-                />
-              </div>
-              <IconWrapper>
-                <Icon name="arrowLeft" />
-              </IconWrapper>
-            </Article>
+          const linkMessage = linkMessages[article];
+          const titleMessage = titleMessages[article];
+          const descriptionMessage = descriptionMessages[article];
+          const adminGuideArticle = (
+            <AdminGuideArticle
+              key={`setupArticle${i}`}
+              article={article}
+              section="setup"
+              linkMessage={linkMessage}
+              titleMessage={titleMessage}
+              descriptionMessage={descriptionMessage}
+            />
           );
+
+          return renderArticle(article, i, adminGuideArticle);
         })}
       </SectionContent>
     </SectionWrapper>
