@@ -15,11 +15,9 @@ export default defineMessages({
       'app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject',
     defaultMessage: 'Support my initiative: {postTitle}.',
   },
-  ideaEmailSharingBody: {
-    id:
-      'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
-    defaultMessage:
-      'What do you think of this idea? Vote on it and share the discussion at {postUrl} to make your voice heard!',
+  emailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.emailSharingBody',
+    defaultMessage: 'Support my idea {ideaTitle} at {ideaUrl}!',
   },
   initiativeEmailSharingBody: {
     id:

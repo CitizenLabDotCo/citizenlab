@@ -13,10 +13,11 @@ import {
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
+export type PostType = 'idea' | 'initiative';
 interface InputProps {
   id?: string | null;
   slug?: string | null;
-  type: 'idea' | 'initiative';
+  type: PostType;
   resetOnChange?: boolean;
 }
 
