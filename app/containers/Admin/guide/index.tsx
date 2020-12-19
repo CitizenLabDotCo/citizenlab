@@ -146,7 +146,7 @@ export const renderArticle = (
   }
 };
 
-export const Onboarding = (props: InjectedIntlProps) => {
+export const AdminGuide = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   return (
@@ -174,4 +174,4 @@ export const Onboarding = (props: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(Onboarding);
+export default injectIntl(AdminGuide);
