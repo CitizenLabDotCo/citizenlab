@@ -203,16 +203,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.disabled',
     defaultMessage: 'Disabled',
   },
-  defaultDisplay: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
-    defaultMessage: 'Ideas displayed by default as:',
+  postsDefaultDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.postsDefaultDisplay',
+    defaultMessage: 'Posts default display',
   },
   defaultIdeaSorting: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
     defaultMessage: 'Idea sorting order',
   },
-  viewModeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.viewModeTooltip',
+  postsDefaultDisplayTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.postsDefaultDisplayTooltip',
     defaultMessage:
       'Choose the default view for your project: cards in a grid view or pins on a map. Participants can manually switch between the two views.',
   },

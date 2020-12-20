@@ -864,10 +864,12 @@ class ParticipationContext extends PureComponent<
                 <>
                   <SectionField>
                     <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultDisplay} />
+                      <FormattedMessage {...messages.postsDefaultDisplay} />
                       <IconTooltip
                         content={
-                          <FormattedMessage {...messages.viewModeTooltip} />
+                          <FormattedMessage
+                            {...messages.postsDefaultDisplayTooltip}
+                          />
                         }
                       />
                     </SubSectionTitle>
