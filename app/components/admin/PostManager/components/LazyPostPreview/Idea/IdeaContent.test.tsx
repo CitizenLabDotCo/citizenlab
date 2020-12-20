@@ -5,6 +5,7 @@ import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 import { getTenantData } from 'services/__mocks__/tenant';
 import { getLocale } from 'services/__mocks__/locale';
+import { getProject } from 'services/__mocks__/projects';
 
 jest.mock('containers/IdeasShow/PostedBy', () => 'PostedBy');
 jest.mock(
@@ -67,16 +68,17 @@ describe('<IdeaContent />', () => {
 
   it('renders correctly when ideaId is not defined', () => {
     const intl = getDummyIntlObject();
+    const project = getProject();
     const wrapper = shallow(
       <IdeaContent
         ideaId={null}
         closePreview={closePreview}
         handleClickEdit={handleClickEdit}
+        project={project}
         idea={null}
         ideaImages={null}
         ideaFiles={null}
         tenant={null}
-        project={null}
         locale={null}
         postOfficialFeedbackPermission={undefined}
         intl={intl}
@@ -92,6 +94,7 @@ describe('<IdeaContent />', () => {
     const idea = getIdea(ideaId);
     const locale = getLocale();
     const tenant = getTenantData();
+    const project = getProject();
     const intl = getDummyIntlObject();
     const wrapper = shallow(
       <IdeaContent
@@ -101,9 +104,9 @@ describe('<IdeaContent />', () => {
         idea={idea}
         tenant={tenant}
         locale={locale}
+        project={project}
         ideaImages={null}
         ideaFiles={null}
-        project={null}
         postOfficialFeedbackPermission={undefined}
         intl={intl}
         {...localizeProps}

@@ -13,7 +13,7 @@ import {
   mockPhaseSurveyGoogleFormData,
   mockPhaseInformationData,
 } from 'services/__mocks__/phases.ts';
-import { getMockProject } from 'services/__mocks__/projects.ts';
+import { getProject } from 'services/__mocks__/projects.ts';
 import { shallowWithIntl } from 'utils/testUtils/withIntl';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { WithRouterProps } from 'react-router';
@@ -39,7 +39,7 @@ describe('<AdminProjectEdition />', () => {
     const typeform_enabled = true;
     const granularPermissionsEnabled = true;
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousInformation',
       'continuous',
       'information'
@@ -71,7 +71,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousTypeform',
       'continuous',
       'survey',
@@ -104,7 +104,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousGoogleForm',
       'continuous',
       'survey',
@@ -137,7 +137,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousTypeform',
       'continuous',
       'survey',
@@ -170,7 +170,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousTypeform',
       'continuous',
       'survey',
@@ -202,7 +202,7 @@ describe('<AdminProjectEdition />', () => {
     const typeform_enabled = true;
     const granularPermissionsEnabled = true;
 
-    const project = getMockProject('timelineInformation', 'timeline');
+    const project = getProject('timelineInformation', 'timeline');
     const phases = [mockPhaseInformationData];
     const routerProps = getRouterProps('timelineInformation');
     // weirdly enough, project without ideation still have an ideas tab
@@ -231,7 +231,7 @@ describe('<AdminProjectEdition />', () => {
     const typeform_enabled = true;
     const granularPermissionsEnabled = true;
 
-    const project = getMockProject('timelineIdeation', 'timeline');
+    const project = getProject('timelineIdeation', 'timeline');
     const phases = [
       mockPhaseInformationData,
       mockPhaseIdeationData,
@@ -262,7 +262,7 @@ describe('<AdminProjectEdition />', () => {
     const typeform_enabled = true;
     const granularPermissionsEnabled = true;
 
-    const project = getMockProject('timelineIdeation', 'timeline');
+    const project = getProject('timelineIdeation', 'timeline');
     const phases = [mockPhaseInformationData, mockPhaseSurveyTypeformData];
     const routerProps = getRouterProps('timelineIdeation');
 
@@ -290,7 +290,7 @@ describe('<AdminProjectEdition />', () => {
     const typeform_enabled = true;
     const granularPermissionsEnabled = true;
 
-    const project = getMockProject('timelineIdeation', 'timeline');
+    const project = getProject('timelineIdeation', 'timeline');
     const phases = [mockPhaseInformationData, mockPhaseSurveyGoogleFormData];
     const routerProps = getRouterProps('timelineIdeation');
 
@@ -319,7 +319,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousInformation',
       'continuous',
       'information'
@@ -351,11 +351,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
-      'continuousIdeation',
-      'continuous',
-      'ideation'
-    );
+    const project = getProject('continuousIdeation', 'continuous', 'ideation');
     const routerProps = getRouterProps('continuousIdeation', 'ideas');
 
     // passing in mock data to replace the HoCs
@@ -383,7 +379,7 @@ describe('<AdminProjectEdition />', () => {
     const granularPermissionsEnabled = true;
 
     const phases = [];
-    const project = getMockProject(
+    const project = getProject(
       'continuousInformation',
       'continuous',
       'information'
