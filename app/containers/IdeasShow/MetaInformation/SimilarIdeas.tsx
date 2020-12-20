@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Header, Item } from './';
+import { getInputTerm } from 'services/participationContexts';
 
 // styles
 import styled from 'styled-components';
@@ -17,11 +18,14 @@ import tracks from '../tracks';
 
 // hooks
 import useSimilarIdeas from 'hooks/useSimilarIdeas';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 const IdeaList = styled.ul`
   margin: 0;
@@ -58,19 +62,39 @@ const IdeaLink = styled(Link)`
 interface Props {
   className?: string;
   ideaId: string;
+  projectId: string;
 }
 
 const SimilarIdeas = memo<Props & InjectedIntlProps>(
-  ({ className, ideaId, intl: { formatMessage } }) => {
+  ({ className, ideaId, intl: { formatMessage }, projectId }) => {
     const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
     const onClickIdeaLink = (index: number) => () => {
       trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
     };
 
-    if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
+    if (
+      !isNilOrError(similarIdeas) &&
+      similarIdeas.length > 0 &&
+      !isNilOrError(project)
+    ) {
+      const inputTerm = getInputTerm(
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
+
       return (
         <Item>
           <Header>{formatMessage(messages.similarIdeas)}</Header>
+          <Header>
+            {formatMessage(
+              getInputTermMessage(inputTerm, {
+                idea: messages.similarIdeas,
+              })
+            )}
+          </Header>
           <IdeaList className={className}>
             {similarIdeas.map((similarIdea, index) => (
               <IdeaListItem key={similarIdea.id}>
