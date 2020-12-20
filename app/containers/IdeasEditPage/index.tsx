@@ -348,6 +348,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 <FormattedMessage
                   {...getInputTermMessage(inputTerm, {
                     idea: messages.formTitle,
+                    option: messages.optionFormTitle,
+                    project: messages.projectFormTitle,
+                    question: messages.questionFormTitle,
+                    issue: messages.issueFormTitle,
+                    contribution: messages.contributionFormTitle,
                   })}
                 />
               </Title>
