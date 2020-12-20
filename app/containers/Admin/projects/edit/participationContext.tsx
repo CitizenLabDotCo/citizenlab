@@ -30,6 +30,7 @@ import {
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
   InputTerm,
+  INPUT_TERMS,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -154,7 +155,6 @@ export interface IParticipationContextConfig {
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
-  input_term?: InputTerm | null;
 }
 
 interface DataProps {
@@ -504,12 +504,18 @@ class ParticipationContext extends PureComponent<
   }
 
   getInputTermOptions = memoize(() => {
-    const inputTerms: InputTerm[] = ['idea', 'contribution'];
-    return inputTerms.map((inputTerm) => {
-      const labelMessage = {
+    return INPUT_TERMS.map((inputTerm: InputTerm) => {
+      const labelMessages: {
+        [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+      } = {
         idea: messages.ideaTerm,
         contribution: messages.contributionTerm,
-      }[inputTerm];
+        question: messages.questionTerm,
+        option: messages.optionTerm,
+        issue: messages.issueTerm,
+        project: messages.projectTerm,
+      };
+      const labelMessage = labelMessages[inputTerm];
 
       return {
         value: inputTerm,
@@ -765,11 +771,11 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      <FormattedMessage
+                      {/* <FormattedMessage
                         {...getInputTermMessage(input_term, {
                           idea: messages.postingEnabled,
                         })}
-                      />
+                      /> */}
                     </ToggleLabel>
                     <Toggle
                       checked={posting_enabled as boolean}
