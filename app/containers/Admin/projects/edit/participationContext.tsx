@@ -777,11 +777,16 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      {/* <FormattedMessage
+                      <FormattedMessage
                         {...getInputTermMessage(input_term, {
                           idea: messages.postingEnabled,
+                          contribution: messages.contributionPostingEnabled,
+                          option: messages.optionPostingEnabled,
+                          issue: messages.issuePostingEnabled,
+                          question: messages.questionPostingEnabled,
+                          project: messages.projectPostingEnabled,
                         })}
-                      /> */}
+                      />
                     </ToggleLabel>
                     <Toggle
                       checked={posting_enabled as boolean}
