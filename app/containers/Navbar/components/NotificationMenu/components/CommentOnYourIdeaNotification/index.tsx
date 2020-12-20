@@ -53,9 +53,14 @@ const CommentOnYourIdeaNotification = memo<Props>((props) => {
         isRead={!!notification.attributes.read_at}
       >
         <FormattedMessage
-          {...getInputTermMessage(inputTerm, {
-            idea: messages.userCommentedOnYourIdea,
-          })}
+          // {...getInputTermMessage(inputTerm, {
+          //   idea: messages.userCommentedOnYourIdea,
+          //   option: messages.userCommentedOnYourOption,
+          //   project: messages.userCommentedOnYourProject,
+          //   question: messages.userCommentedOnYourQuestion,
+          //   issue: messages.userCommentedOnYourIssue,
+          //   contribution: messages.userCommentedOnYourContribution,
+          // })}
           values={{
             name: deletedUser ? (
               <DeletedUser>
