@@ -22,6 +22,11 @@ const ContinuousProject = ({ project }: Props) => (
           <FormattedMessage
             {...getInputTermMessage(project.attributes.input_term, {
               idea: messages.projectIdeas,
+              option: messages.options,
+              project: messages.projects,
+              question: messages.questions,
+              issue: messages.issues,
+              contribution: messages.contributions,
             })}
           />
         </Link>
