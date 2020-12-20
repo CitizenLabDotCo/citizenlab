@@ -318,7 +318,7 @@ const SharingButtons = memo(
       ) : null;
 
     const titleMessage = {
-      idea: <FormattedMessage {...messages.shareIdea} />,
+      idea: <FormattedMessage {...messages.share} />,
       project: <FormattedMessage {...messages.share} />,
       initiative: <FormattedMessage {...messages.shareThisInitiative} />,
       folder: <FormattedMessage {...messages.shareThisFolder} />,
