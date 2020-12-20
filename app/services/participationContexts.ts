@@ -25,7 +25,13 @@ export type IdeaDefaultSortMethod =
   | '-new'
   | null;
 
-export type InputTerm = 'idea';
+export type InputTerm =
+  | 'idea'
+  | 'option'
+  | 'project'
+  | 'question'
+  | 'issue'
+  | 'contribution';
 
 export function getInputTerm(
   pcType: IParticipationContextType,
@@ -47,5 +53,3 @@ export function getInputTerm(
 }
 
 export const ideaDefaultSortMethodFallback = 'trending';
-
-export type InputTerm = 'idea' | 'contribution';
