@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import {
   userCustomFieldsStream,
   IUserCustomFieldData,
+  IUserCustomFieldInputType,
 } from 'services/userCustomFields';
 
-type IInputType = 'select' | 'multiselect' | 'checkbox' | 'number';
-
 interface Props {
-  inputTypes?: IInputType[];
+  inputTypes?: IUserCustomFieldInputType[];
   cache?: boolean;
 }
 

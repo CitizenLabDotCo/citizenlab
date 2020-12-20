@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 export const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
 
-export type IInputType =
+export type IUserCustomFieldInputType =
   | 'text'
   | 'number'
   | 'multiline_text'
@@ -20,7 +20,7 @@ export interface IUserCustomFieldData {
     key: string;
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
-    input_type: IInputType;
+    input_type: IUserCustomFieldInputType;
     required: boolean;
     code: string | null;
     enabled: boolean;
