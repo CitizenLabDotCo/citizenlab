@@ -79,6 +79,11 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 <FormattedMessage
                   {...getInputTermMessage(inputTerm, {
                     idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
                   })}
                 />
               </StyledProjectPageSectionTitle>

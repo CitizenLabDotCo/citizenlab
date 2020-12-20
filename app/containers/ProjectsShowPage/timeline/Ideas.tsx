@@ -59,6 +59,11 @@ class IdeasContainer extends PureComponent<Props, State> {
               <FormattedMessage
                 {...getInputTermMessage(inputTerm, {
                   idea: messages.ideas,
+                  option: messages.options,
+                  project: messages.projects,
+                  question: messages.questions,
+                  issue: messages.issues,
+                  contribution: messages.contributions,
                 })}
               />
             </StyledProjectPageSectionTitle>

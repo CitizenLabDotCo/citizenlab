@@ -228,6 +228,26 @@ export default defineMessages({
     id: 'app.containers.Projects.ideas',
     defaultMessage: 'Ideas',
   },
+  contributions: {
+    id: 'app.containers.Projects.contributions',
+    defaultMessage: 'Contributions',
+  },
+  issues: {
+    id: 'app.containers.Projects.issues',
+    defaultMessage: 'Issues',
+  },
+  options: {
+    id: 'app.containers.Projects.options',
+    defaultMessage: 'Options',
+  },
+  questions: {
+    id: 'app.containers.Projects.questions',
+    defaultMessage: 'Questions',
+  },
+  projects: {
+    id: 'app.containers.Projects.projects',
+    defaultMessage: 'Projects',
+  },
   survey: {
     id: 'app.containers.Projects.survey',
     defaultMessage: 'Survey',
