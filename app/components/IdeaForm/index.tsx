@@ -694,6 +694,11 @@ class IdeaForm extends PureComponent<
             <FormSectionTitle
               message={getInputTermMessage(inputTerm, {
                 idea: messages.formGeneralSectionTitle,
+                option: messages.optionFormGeneralSectionTitle,
+                project: messages.projectFormGeneralSectionTitle,
+                question: messages.questionFormGeneralSectionTitle,
+                issue: messages.issueFormGeneralSectionTitle,
+                contribution: messages.contributionFormGeneralSectionTitle,
               })}
             />
             <FormElement id="e2e-idea-title-input">

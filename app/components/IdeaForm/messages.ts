@@ -73,6 +73,26 @@ export default defineMessages({
     id: 'app.components.IdeaForm.formGeneralSectionTitle',
     defaultMessage: 'What is your idea?',
   },
+  optionFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.optionFormGeneralSectionTitle',
+    defaultMessage: 'What is your option?',
+  },
+  projectFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.projectFormGeneralSectionTitle',
+    defaultMessage: 'What is your project?',
+  },
+  questionFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.questionFormGeneralSectionTitle',
+    defaultMessage: 'What is your question?',
+  },
+  issueFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.issueFormGeneralSectionTitle',
+    defaultMessage: 'What is your issue?',
+  },
+  contributionFormGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.contributionFormGeneralSectionTitle',
+    defaultMessage: 'What is your contribution?',
+  },
   formDetailsSectionTitle: {
     id: 'app.components.IdeaForm.formDetailsSectionTitle',
     defaultMessage: 'Details',
