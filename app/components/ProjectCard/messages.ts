@@ -6,6 +6,31 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
+  xOptions: {
+    id: 'app.components.ProjectCard.xOptions',
+    defaultMessage:
+      '{ideasCount, plural, no {# options} one {# option} other {# options}}',
+  },
+  xContributions: {
+    id: 'app.components.ProjectCard.xContributions',
+    defaultMessage:
+      '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}}',
+  },
+  xProjects: {
+    id: 'app.components.ProjectCard.xProjects',
+    defaultMessage:
+      '{ideasCount, plural, no {# projects} one {# project} other {# projects}}',
+  },
+  xIssues: {
+    id: 'app.components.ProjectCard.xIssues',
+    defaultMessage:
+      '{ideasCount, plural, no {# issues} one {# issue} other {# issues}}',
+  },
+  xQuestions: {
+    id: 'app.components.ProjectCard.xQuestions',
+    defaultMessage:
+      '{ideasCount, plural, no {# questions} one {# question} other {# questions}}',
+  },
   xComments: {
     id: 'app.components.ProjectCard.xComments',
     defaultMessage:
