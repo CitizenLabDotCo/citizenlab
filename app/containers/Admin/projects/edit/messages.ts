@@ -131,6 +131,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
     defaultMessage: 'Posting ideas',
   },
+  contributionPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.contributionPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  optionPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.optionPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  issuePostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.issuePostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  questionPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.questionPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  projectPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
   commentingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.commentingEnabled',
     defaultMessage: 'Commenting',
