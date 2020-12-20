@@ -1,15 +1,20 @@
 import React from 'react';
-import SharingDropdownButton from 'components/SharingDropdownButton';
+import SharingDropdownButton from 'components/Sharing/SharingDropdownButton';
 import { isNilOrError } from 'utils/helperUtils';
+import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import { getInputTermMessage } from 'utils/i18n';
 
+// hooks
 import useIdea from 'hooks/useIdea';
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 interface Props {
   className?: string;
@@ -24,19 +29,29 @@ const Component = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const idea = useIdea({ ideaId });
+  const projectId = !isNilOrError(idea)
+    ? idea.relationships.project.data.id
+    : null;
+  const project = useProject({ projectId });
+  const phases = usePhases(projectId);
   const authUser = useAuthUser();
   const localize = useLocalize();
 
-  if (!isNilOrError(idea)) {
+  if (!isNilOrError(idea) && !isNilOrError(project)) {
     const ideaUrl = location.href;
     const titleMultiloc = idea.attributes.title_multiloc;
     const ideaTitle = localize(titleMultiloc);
+    const inputTerm = getInputTerm(
+      project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+      project,
+      phases
+    );
 
     const utmParams = !isNilOrError(authUser)
       ? {
           source: 'share_idea',
           campaign: 'share_content',
-          content: authUser.data.id,
+          content: authUser.id,
         }
       : {
           source: 'share_idea',
@@ -53,13 +68,23 @@ const Component = ({
         twitterMessage={formatMessage(messages.twitterMessage, {
           ideaTitle,
         })}
-        emailSubject={formatMessage(messages.emailSharingSubject, {
-          ideaTitle,
-        })}
-        emailBody={formatMessage(messages.emailSharingBody, {
-          ideaUrl,
-          ideaTitle,
-        })}
+        emailSubject={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaEmailSharingSubject,
+          }),
+          {
+            ideaTitle,
+          }
+        )}
+        emailBody={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaEmailSharingBody,
+          }),
+          {
+            ideaUrl,
+            ideaTitle,
+          }
+        )}
         utmParams={utmParams}
         buttonComponent={buttonComponent}
       />

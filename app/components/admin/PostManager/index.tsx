@@ -93,6 +93,10 @@ const StyledInput = styled(Input)`
   width: 100%;
 `;
 
+const StyledAssigneeFilter = styled(AssigneeFilter)`
+  margin-right: 20px;
+`;
+
 export type ManagerType =
   | 'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
   | 'ProjectIdeas' // should come with projectId
@@ -331,7 +335,7 @@ export class PostManager extends React.PureComponent<Props, State> {
       return (
         <>
           <TopActionBar>
-            <AssigneeFilter
+            <StyledAssigneeFilter
               assignee={selectedAssignee}
               projectId={type === 'ProjectIdeas' ? projectId : null}
               handleAssigneeFilterChange={onChangeAssignee}

@@ -40,6 +40,7 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -50,7 +51,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { projectInputTypeMessages } from 'utils/i18n';
+import { getInputTermMessage } from 'utils/i18n';
 
 // typings
 import { IOption, UploadFile, Locale } from 'typings';
@@ -60,6 +61,7 @@ import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
+import { getInputTerm } from 'services/participationContexts';
 
 const Form = styled.form`
   width: 100%;
@@ -116,6 +118,7 @@ interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   topics: GetTopicsChildProps;
   project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -615,7 +618,7 @@ class IdeaForm extends PureComponent<
 
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled, topics, project } = this.props;
+    const { projectId, pbEnabled, topics, project, phases } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -679,16 +682,18 @@ class IdeaForm extends PureComponent<
       const filteredTopics = topics.filter(
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
-
-      const projectInputType = project.attributes.input_type;
+      const inputTerm = getInputTerm(
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
 
       return (
         <Form id="idea-form" className={className}>
           <StyledFormSection>
             <FormSectionTitle
-              message={projectInputTypeMessages(projectInputType, {
-                idea: messages.ideaFormGeneralSectionTitle,
-                contribution: messages.contributionFormGeneralSectionTitle,
+              message={getInputTermMessage(inputTerm, {
+                idea: messages.formGeneralSectionTitle,
               })}
             />
             <FormElement id="e2e-idea-title-input">
@@ -944,7 +949,12 @@ class IdeaForm extends PureComponent<
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
-  project: ({ projectId }) => <GetProject projectId={projectId} />,
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phases: ({ projectId, render }) => (
+    <GetPhases projectId={projectId}>{render}</GetPhases>
+  ),
   topics: ({ projectId, render }) => {
     return <GetTopics projectId={projectId}>{render}</GetTopics>;
   },

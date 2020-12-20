@@ -9,37 +9,32 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.undo',
     defaultMessage: 'Undo',
   },
-  seeIdea: {
-    id: 'app.components.AssignBudgetControl.seeIdea',
-    defaultMessage: 'See idea',
-  },
   assigned: {
     id: 'app.components.AssignBudgetControl.assigned',
     defaultMessage: 'Assigned',
   },
-  budgetingDisabled: {
-    id: 'app.components.VoteControl.budgetingDisabled',
+  budgetingNotPossible: {
+    id: 'app.components.VoteControl.budgetingNotPossible',
     defaultMessage:
-      'Sorry. Assigning budget to this idea is no longer possible.',
+      'Making changes to your budget is not possible at this time.',
   },
-  budgetingDisabledFutureEnabled: {
-    id: 'app.components.VoteControl.budgetingDisabledFutureEnabled',
+  budgetingFutureEnabled: {
+    id: 'app.components.VoteControl.budgetingFutureEnabled',
     defaultMessage:
-      'Sorry. Assigning budget to this idea is currently not yet possible. It will be enabled starting from {enabledFromDate}.',
+      'You can allocate your budget starting from {enabledFromDate}.',
   },
-  budgetingDisabledNotPermitted: {
-    id: 'app.components.VoteControl.budgetingDisabledNotPermitted',
+  budgetingNotPermitted: {
+    id: 'app.components.VoteControl.budgetingNotPermitted',
     defaultMessage:
-      "Sorry. You don't have the permission to assign budget to this idea.",
+      'Participatory budgeting is only enabled for certain groups.',
   },
-  budgetingDisabledNotVerified: {
-    id: 'app.components.VoteControl.budgetingDisabledNotVerified',
-    defaultMessage:
-      'You have to verify your account to assign budget to this idea. {verificationLink}',
+  budgetingNotVerified: {
+    id: 'app.components.VoteControl.budgetingNotVerified',
+    defaultMessage: 'Please {verifyAccountLink} to continue.',
   },
-  verificationLinkText: {
-    id: 'app.components.AssignBudgetControl.verificationLinkText',
-    defaultMessage: 'Verify your account now.',
+  verifyAccountLinkText: {
+    id: 'app.components.AssignBudgetControl.verifyAccountLinkText',
+    defaultMessage: 'verify your account',
   },
   a11y_price: {
     id: 'app.components.AssignBudgetControl.a11y_price',

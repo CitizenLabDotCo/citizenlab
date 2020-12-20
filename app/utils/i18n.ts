@@ -2,17 +2,17 @@ import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
-import { ProjectInput } from 'services/projects';
+import { InputTerm } from 'services/participationContexts';
 
-type IProjectInputMessages = {
-  [key in ProjectInput]: ReactIntl.FormattedMessage.MessageDescriptor;
+type IInputTermMessages = {
+  [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
-export const projectInputTypeMessages = (
-  projectInputType: ProjectInput,
-  messages: IProjectInputMessages
+export const getInputTermMessage = (
+  inputType: InputTerm,
+  messages: IInputTermMessages
 ) => {
-  return messages[projectInputType];
+  return messages[inputType];
 };
 
 export function getLocalized(

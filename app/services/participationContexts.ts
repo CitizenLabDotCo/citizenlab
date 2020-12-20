@@ -1,3 +1,8 @@
+import { isNilOrError } from 'utils/helperUtils';
+import { getProjectInputTerm, IProjectData } from 'services/projects';
+import { getPhaseInputTerm, IPhaseData } from 'services/phases';
+import { IParticipationContextType } from 'typings';
+
 export type SurveyServices =
   | 'typeform'
   | 'survey_monkey'
@@ -19,6 +24,27 @@ export type IdeaDefaultSortMethod =
   | 'new'
   | '-new'
   | null;
+
+export type InputTerm = 'idea';
+
+export function getInputTerm(
+  pcType: IParticipationContextType,
+  project: IProjectData | undefined | null | Error,
+  phases: IPhaseData[] | undefined | null | Error
+) {
+  return {
+    // To make sure copy depending on an input_term doesn't break,
+    // we have a fallback to idea here.
+    project: !isNilOrError(project) ? getProjectInputTerm(project) : 'idea',
+    // (2020/12/9): When a new timeline project is created, phases will initially
+    // be []. To make sure we don't break copy that depends on an input_term,
+    // we have the fallback to idea here in that case.
+    phase:
+      !isNilOrError(phases) && phases.length > 0
+        ? getPhaseInputTerm(phases)
+        : 'idea',
+  }[pcType];
+}
 
 export const ideaDefaultSortMethodFallback = 'trending';
 

@@ -18,6 +18,11 @@ export default defineMessages({
     defaultMessage:
       'This field should be unique. Another instance with the same value already exists.',
   },
+  token_invalid: {
+    id: 'app.errors.token_invalid',
+    defaultMessage:
+      'Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.',
+  },
   title_multiloc_blank: {
     id: 'app.errors.title_multiloc_blank',
     defaultMessage: 'The title cannot be empty.',
@@ -30,6 +35,14 @@ export default defineMessages({
     id: 'app.errors.email_taken_by_invite',
     defaultMessage:
       'An invitation has already been sent to {value}. Please check your mailbox. Chances are it landed in your spam folder. If you can’t find the invitation, leave us a message at support@citizenlab.co and we’ll make sure you get access.',
+  },
+  email_invalid: {
+    id: 'app.errors.email_invalid',
+    defaultMessage: 'Please use a valid email address.',
+  },
+  email_domain_blacklisted: {
+    id: 'app.errors.email_domain_blacklisted',
+    defaultMessage: 'Please use a different email domain to register.',
   },
   locale_blank: {
     id: 'app.errors.locale_blank',
@@ -161,7 +174,7 @@ export default defineMessages({
   cannot_contain_ideas: {
     id: 'app.errors.cannot_contain_ideas',
     defaultMessage:
-      "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
+      'The participation method you selected does not support this type of input. Please edit your selection and try again.',
   },
   error: {
     id: 'app.errors.error',
@@ -171,5 +184,27 @@ export default defineMessages({
     id: 'app.errors.slug_taken',
     defaultMessage:
       'This project URL already exists. Please change the project slug to something else.',
+  },
+  avatar_extension_whitelist_error: {
+    id: 'app.errors.avatar_extension_whitelist_error',
+    defaultMessage:
+      'The file extension of the avatar image is not allowed. Allowed extensions are: jpg, jpeg, gif and png.',
+  },
+  avatar_extension_blacklist_error: {
+    id: 'app.errors.avatar_extension_blacklist_error',
+    defaultMessage:
+      'The file extension of the avatar image is not allowed. Allowed extensions are: jpg, jpeg, gif and png.',
+  },
+  avatar_carrierwave_processing_error: {
+    id: 'app.errors.avatar_carrierwave_processing_error',
+    defaultMessage: 'Could not process avatar.',
+  },
+  avatar_carrierwave_integrity_error: {
+    id: 'app.errors.avatar_carrierwave_integrity_error',
+    defaultMessage: 'Avatar file is not of an allowed type.',
+  },
+  avatar_carrierwave_download_error: {
+    id: 'app.errors.avatar_carrierwave_download_error',
+    defaultMessage: 'Could not download avatar file.',
   },
 });

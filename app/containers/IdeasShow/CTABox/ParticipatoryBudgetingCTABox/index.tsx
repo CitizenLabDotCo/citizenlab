@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const StyledBudgetAssignment = styled(BudgetAssignment)``;
 
-export const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
@@ -50,7 +50,7 @@ const ParticipatoryBudgetingCTABox = (props: Props & InjectedIntlProps) => {
   return (
     <Container className={className}>
       <ScreenReaderOnly>
-        <h2>{formatMessage(messages.a11y_PBCTABox)}</h2>
+        <h2>{formatMessage(messages.a11y_ParticipatoryBudgeting)}</h2>
       </ScreenReaderOnly>
       <StyledBudgetAssignment {...props} />
       <ControlWrapperHorizontalRule aria-hidden />

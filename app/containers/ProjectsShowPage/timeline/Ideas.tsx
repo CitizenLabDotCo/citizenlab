@@ -12,6 +12,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -43,6 +44,7 @@ class IdeasContainer extends PureComponent<Props, State> {
 
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
+      const inputTerm = phase.attributes.input_term;
 
       if (
         participationMethod === 'ideation' ||
@@ -54,7 +56,11 @@ class IdeasContainer extends PureComponent<Props, State> {
             className={`e2e-timeline-project-idea-cards ${className || ''}`}
           >
             <StyledProjectPageSectionTitle>
-              <FormattedMessage {...messages.ideas} />
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.ideas,
+                })}
+              />
             </StyledProjectPageSectionTitle>
             <IdeaCards
               className={participationMethod}
@@ -67,7 +73,9 @@ class IdeasContainer extends PureComponent<Props, State> {
               participationMethod={participationMethod}
               participationContextId={phase.id}
               participationContextType="phase"
-              invisibleTitleMessage={messages.invisibleTitleIdeasListPhase}
+              invisibleTitleMessage={getInputTermMessage(inputTerm, {
+                idea: messages.invisibleTitlePhase,
+              })}
             />
           </Container>
         );

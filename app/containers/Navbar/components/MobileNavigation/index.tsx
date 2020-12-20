@@ -24,7 +24,7 @@ const Container = styled.nav`
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
-  z-index: 1005;
+  z-index: 1004;
 
   ${isRtl`
     flex-direction: row-reverse;

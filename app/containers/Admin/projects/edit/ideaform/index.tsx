@@ -5,12 +5,15 @@ import { isEmpty } from 'lodash-es';
 
 // hooks
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 // services
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
 } from 'services/ideaCustomFields';
+import { getInputTerm } from 'services/participationContexts';
 
 // components
 import Button from 'components/UI/Button';
@@ -28,6 +31,7 @@ import {
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import { getInputTermMessage } from 'utils/i18n';
 
 // styling
 import styled from 'styled-components';
@@ -100,6 +104,8 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
     const [error, setError] = useState(false);
 
     const ideaCustomFields = useIdeaCustomFields({ projectId });
+    const project = useProject({ projectId });
+    const phases = usePhases(projectId);
 
     const allExpanded = Object.getOwnPropertyNames(collapsed).every(
       (key) => collapsed[key] === false
@@ -201,17 +207,27 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
       }
     }, [changes, ideaCustomFields]);
 
-    if (!isNilOrError(ideaCustomFields)) {
+    if (!isNilOrError(ideaCustomFields) && !isNilOrError(project)) {
+      const inputTerm = getInputTerm(
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
+
       return (
         <Container className={className || ''}>
           <Header>
             <TitleContainer>
               <StyledSectionTitle>
-                <FormattedMessage {...messages.title} />
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.title,
+                  })}
+                />
               </StyledSectionTitle>
             </TitleContainer>
             <SectionDescription>
-              <FormattedMessage {...messages.description} />
+              <FormattedMessage {...messages.postDescription} />
             </SectionDescription>
           </Header>
 
