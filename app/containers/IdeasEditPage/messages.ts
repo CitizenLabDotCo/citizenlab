@@ -5,6 +5,26 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.formTitle',
     defaultMessage: 'Edit idea',
   },
+  optionFormTitle: {
+    id: 'app.containers.IdeasEditPage.optionFormTitle',
+    defaultMessage: 'Edit option',
+  },
+  projectFormTitle: {
+    id: 'app.containers.IdeasEditPage.projectFormTitle',
+    defaultMessage: 'Edit project',
+  },
+  questionFormTitle: {
+    id: 'app.containers.IdeasEditPage.questionFormTitle',
+    defaultMessage: 'Edit question',
+  },
+  issueFormTitle: {
+    id: 'app.containers.IdeasEditPage.issueFormTitle',
+    defaultMessage: 'Edit issue',
+  },
+  contributionFormTitle: {
+    id: 'app.containers.IdeasEditPage.contributionFormTitle',
+    defaultMessage: 'Edit contribution',
+  },
   save: {
     id: 'app.containers.IdeasEditPage.save',
     defaultMessage: 'Save',
