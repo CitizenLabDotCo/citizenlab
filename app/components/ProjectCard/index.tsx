@@ -752,6 +752,11 @@ const ProjectCard = memo(
                         {formatMessage(
                           getInputTermMessage(inputTerm, {
                             idea: messages.xIdeas,
+                            option: messages.xOptions,
+                            contribution: messages.xContributions,
+                            project: messages.xProjects,
+                            issue: messages.xIssues,
+                            question: messages.xQuestions,
                           }),
                           { ideasCount }
                         )}
