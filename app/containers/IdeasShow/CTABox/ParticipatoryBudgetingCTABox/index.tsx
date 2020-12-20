@@ -50,7 +50,7 @@ const ParticipatoryBudgetingCTABox = (props: Props & InjectedIntlProps) => {
   return (
     <Container className={className}>
       <ScreenReaderOnly>
-        <h2>{formatMessage(messages.a11y_PBCTABox)}</h2>
+        <h2>{formatMessage(messages.a11y_ParticipatoryBudgeting)}</h2>
       </ScreenReaderOnly>
       <StyledBudgetAssignment {...props} />
       <ControlWrapperHorizontalRule aria-hidden />

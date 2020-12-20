@@ -1,7 +1,7 @@
 import { ProcessType } from 'services/projects';
 import { ParticipationMethod, SurveyServices } from 'services/participationContexts';
 
-export const getMockProject = (id: string, processType: ProcessType, participationMethod?: ParticipationMethod, surveyService?: SurveyServices) => ({
+export const getProject = (id: string, processType: ProcessType, participationMethod?: ParticipationMethod, surveyService?: SurveyServices) => ({
   id,
   type: 'projects',
   attributes: {
