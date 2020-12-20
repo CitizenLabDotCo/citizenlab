@@ -559,6 +559,8 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "C",
   "app.components.admin.pagination.back": "Vorige",
   "app.components.admin.pagination.next": "Volgende",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "",
+  "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "",
   "app.components.sendFeedback": "Je feedback over het platform",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/AWSAgY?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Het voorziene bedrag is te groot",
