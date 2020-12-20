@@ -19,7 +19,7 @@ interface Props {
   notification: IOfficialFeedbackOnCommentedIdeaNotificationData;
 }
 
-const OfficialFeedbackOnCommentedIdeaNotification = memo<Props>(
+const OfficialFeedbackOnCommentedIdeaNotification = memo(
   ({ notification }: Props) => {
     const idea = useIdea({ ideaSlug: notification.attributes.post_slug });
     const projectId = !isNilOrError(idea)
