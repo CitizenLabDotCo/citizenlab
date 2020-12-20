@@ -266,6 +266,11 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                             project.attributes.input_term,
                             {
                               idea: messages.xIdeas,
+                              option: messages.xOptions,
+                              project: messages.xProjects,
+                              question: messages.xQuestions,
+                              issue: messages.xIssues,
+                              contribution: messages.xContributions,
                             }
                           )}
                           values={{ ideasCount }}
@@ -279,6 +284,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                               currentPhase.attributes.input_term,
                               {
                                 idea: messages.xIdeasInCurrentPhase,
+                                option: messages.xOptionsInCurrentPhase,
+                                project: messages.xProjectsInCurrentPhase,
+                                question: messages.xQuestionsInCurrentPhase,
+                                issue: messages.xIssuesInCurrentPhase,
+                                contribution:
+                                  messages.xContributionsInCurrentPhase,
                               }
                             )}
                             values={{ ideasCount }}
@@ -292,6 +303,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                               currentPhase.attributes.input_term,
                               {
                                 idea: messages.xIdeasInFinalPhase,
+                                option: messages.xOptionsInFinalPhase,
+                                project: messages.xProjectsInFinalPhase,
+                                question: messages.xQuestionsInFinalPhase,
+                                issue: messages.xIssuesInFinalPhase,
+                                contribution:
+                                  messages.xContributionsInFinalPhase,
                               }
                             )}
                             values={{ ideasCount }}
