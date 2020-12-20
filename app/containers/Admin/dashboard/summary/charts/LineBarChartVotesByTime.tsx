@@ -281,7 +281,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages.ideaVotesByTimeTitle} />
+              <FormattedMessage {...messages.votes} />
               <GraphCardFigureContainer>
                 <GraphCardFigure>{totalNumber}</GraphCardFigure>
                 <GraphCardFigureChange className={typeOfChange}>
@@ -294,7 +294,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
               <ExportMenu
                 svgNode={this.currentChart}
                 xlsxEndpoint={votesByTimeXlsxEndpoint}
-                name={formatMessage(messages.ideaVotesByTimeTitle)}
+                name={formatMessage(messages.votes)}
                 {...this.props}
               />
             )}

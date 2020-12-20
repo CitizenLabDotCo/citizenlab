@@ -109,11 +109,11 @@ const IdeaMoreActions = memo(
                     handler: openSpamModal,
                   },
                   {
-                    label: <FormattedMessage {...messages.editIdea} />,
+                    label: <FormattedMessage {...messages.editPost} />,
                     handler: onEditIdea,
                   },
                   {
-                    label: <FormattedMessage {...messages.deleteIdea} />,
+                    label: <FormattedMessage {...messages.deletePost} />,
                     handler: onDeleteIdea(ideaId, processType),
                   },
                 ]}

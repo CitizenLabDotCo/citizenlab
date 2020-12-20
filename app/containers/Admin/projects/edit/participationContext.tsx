@@ -587,10 +587,12 @@ class ParticipationContext extends PureComponent<
                 label={
                   <LabelText>
                     <span className="header">
-                      <FormattedMessage {...messages.ideation} />
+                      <FormattedMessage {...messages.ideationAndFeedback} />
                     </span>
                     <span className="description">
-                      <FormattedMessage {...messages.ideationDescription} />
+                      <FormattedMessage
+                        {...messages.ideationAndFeedbackDescription}
+                      />
                     </span>
                   </LabelText>
                 }
@@ -611,9 +613,7 @@ class ParticipationContext extends PureComponent<
                         />
                       </span>
                       <span className="description">
-                        <FormattedMessage
-                          {...messages.participatoryBudgetingDescription}
-                        />
+                        <FormattedMessage {...messages.pbDescription} />
                       </span>
                     </LabelText>
                   }
