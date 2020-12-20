@@ -37,7 +37,9 @@ import eventEmitter from 'utils/eventEmitter';
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -160,11 +162,12 @@ export interface IParticipationContextConfig {
 interface DataProps {
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
-  surveys_enabled: boolean | null;
-  typeform_enabled: boolean | null;
-  google_forms_enabled: boolean | null;
-  enalyzer_enabled: boolean | null;
-  survey_monkey_enabled: boolean | null;
+  surveys_enabled: GetFeatureFlagChildProps;
+  typeform_enabled: GetFeatureFlagChildProps;
+  google_forms_enabled: GetFeatureFlagChildProps;
+  enalyzer_enabled: GetFeatureFlagChildProps;
+  survey_monkey_enabled: GetFeatureFlagChildProps;
+  isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
 
 interface InputProps {
@@ -535,6 +538,7 @@ class ParticipationContext extends PureComponent<
       survey_monkey_enabled,
       google_forms_enabled,
       intl: { formatMessage },
+      isCustomInputTermEnabled,
     } = this.props;
     const className = this.props['className'];
     const {
@@ -700,18 +704,20 @@ class ParticipationContext extends PureComponent<
             </SectionField>
 
             {(participation_method === 'budgeting' ||
-              participation_method === 'ideation') && (
-              <SectionField>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.inputTermLabel} />
-                </SubSectionTitle>
-                <StyledSelect
-                  value={input_term}
-                  options={this.getInputTermOptions()}
-                  onChange={this.handleInputTermChange}
-                />
-              </SectionField>
-            )}
+              participation_method === 'ideation') &&
+              isCustomInputTermEnabled &&
+              (locale === 'en' || locale === 'en-GB' || locale === 'en-CA') && (
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.inputTermLabel} />
+                  </SubSectionTitle>
+                  <StyledSelect
+                    value={input_term}
+                    options={this.getInputTermOptions()}
+                    onChange={this.handleInputTermChange}
+                  />
+                </SectionField>
+              )}
 
             {participation_method === 'budgeting' && (
               <>
@@ -1091,6 +1097,7 @@ const Data = adopt<DataProps, {}>({
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
+  // isCustomInputTermEnabled: <GetFeatureFlag name="input_term" />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
 });
