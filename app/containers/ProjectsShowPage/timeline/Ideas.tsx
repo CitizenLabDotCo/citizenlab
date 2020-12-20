@@ -78,9 +78,7 @@ class IdeasContainer extends PureComponent<Props, State> {
               participationMethod={participationMethod}
               participationContextId={phase.id}
               participationContextType="phase"
-              invisibleTitleMessage={getInputTermMessage(inputTerm, {
-                idea: messages.invisibleTitlePhase,
-              })}
+              invisibleTitleMessage={messages.a11y_titlePostsPhase}
             />
           </Container>
         );
