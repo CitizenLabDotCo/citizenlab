@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState } from 'services/globalState';
 import { isAdmin, isModerator } from 'services/permissions/roles';
+import { IUserData } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
@@ -11,7 +12,7 @@ import { colors, media } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { endsWith } from 'utils/helperUtils';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -102,38 +103,41 @@ const AdminPage = memo<Props & WithRouterProps>(
           .init('AdminNoPadding', { enabled: false })
           .observable.subscribe(({ enabled }) => setAdminNoPadding(enabled)),
       ];
-      return subscriptions.forEach((subscription) =>
-        subscription.unsubscribe()
-      );
+      return () => {
+        subscriptions.forEach((subscription) => subscription.unsubscribe());
+      };
     }, []);
-
-    const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
 
     useEffect(() => {
       if (
         authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin(authUser))
+        (!isNilOrError(authUser) && !userCanViewAdmin(authUser))
       ) {
         clHistory.push('/');
       }
     }, [authUser]);
 
-    if (!userCanViewAdmin(authUser)) {
-      return null;
-    }
+    const userCanViewAdmin = (user: IUserData) => {
+      return isAdmin({ data: user }) || isModerator({ data: user });
+    };
 
-    const noPadding = adminNoPadding || pathname.includes('admin/dashboard');
+    const noPadding =
+      adminNoPadding ||
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
+
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/dashboard');
+      pathname.includes('admin/dashboard') ||
+      pathname.includes('admin/processing');
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/processing');
 
-    return (
-      <>
+    if (!isNilOrError(authUser) && userCanViewAdmin(authUser)) {
+      return (
         <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn
@@ -144,8 +148,10 @@ const AdminPage = memo<Props & WithRouterProps>(
             {children}
           </RightColumn>
         </Container>
-      </>
-    );
+      );
+    }
+
+    return null;
   }
 );
 

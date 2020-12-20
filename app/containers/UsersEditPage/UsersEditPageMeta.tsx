@@ -66,8 +66,8 @@ const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(
           <title>
             {`
             ${
-              authUser && authUser.data.attributes.unread_notifications
-                ? `(${authUser.data.attributes.unread_notifications}) `
+              authUser && authUser.attributes.unread_notifications
+                ? `(${authUser.attributes.unread_notifications}) `
                 : ''
             }
             ${usersEditPageIndexTitle}`}

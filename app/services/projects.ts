@@ -5,6 +5,7 @@ import {
   SurveyServices,
   ParticipationMethod,
   IdeaDefaultSortMethod,
+  InputTerm,
 } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
@@ -13,7 +14,6 @@ type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
-export type ProjectInput = 'idea' | 'contribution';
 
 // keys in project.attributes.action_descriptor
 export type IProjectAction =
@@ -70,7 +70,7 @@ export interface IProjectData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
-    input_type: ProjectInput;
+    input_term: InputTerm;
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;
@@ -174,6 +174,7 @@ export interface IUpdatedProjectProperties {
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  input_term?: InputTerm;
   slug?: string;
 }
 
@@ -297,23 +298,6 @@ export function getProjectIdeasUrl(project: IProjectData) {
   return projectUrl;
 }
 
-export async function updateProjectFolderMembership(
-  projectId: string,
-  newProjectFolderId: string | null,
-  oldProjectFolderId?: string
-) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: { folder_id: newProjectFolderId } }
-  );
-
-  await streams.fetchAllWith({
-    dataId: [newProjectFolderId, oldProjectFolderId].filter(
-      (item) => item
-    ) as string[],
-    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
-  });
-
-  return response;
+export function getProjectInputTerm(project: IProjectData) {
+  return project.attributes.input_term;
 }

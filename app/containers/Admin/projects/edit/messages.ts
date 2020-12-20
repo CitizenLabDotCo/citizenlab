@@ -143,10 +143,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
     defaultMessage: 'Voting method',
   },
-  votingMethodTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethodTooltip',
+  votingMaximumTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingMaximumTooltip',
     defaultMessage:
-      'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
+      'You can set the maximum number of times that a participant can vote.',
   },
   votingLimit: {
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
@@ -156,10 +156,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvoting',
     defaultMessage: 'Downvoting',
   },
-  downvotingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingTooltip',
+  disableDownvotingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',
     defaultMessage:
-      "By disabling, people can only upvote an idea. As a consequence, you'll have less information on what people think about that idea.",
+      'This will disable downvoting, but upvoting will still be enabled. You can disable voting completely in the Actions section of this tab.',
   },
   downvotingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
@@ -208,18 +208,18 @@ export default defineMessages({
     defaultMessage: 'Ideas displayed by default as:',
   },
   defaultIdeaSorting: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaSortingOrder',
+    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
     defaultMessage: 'Idea sorting order',
   },
-  presentationModeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
+  viewModeTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.viewModeTooltip',
     defaultMessage:
-      'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
+      'Choose the default view for your project: cards in a grid view or pins on a map. Participants can manually switch between the two views.',
   },
-  defaultIdeaSortingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSortTooltip',
+  defaultPostSortingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip',
     defaultMessage:
-      'You can set the default order for ideas to be displayed on the main project page.',
+      'You can set the default order for posts to be displayed on the main project page.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',

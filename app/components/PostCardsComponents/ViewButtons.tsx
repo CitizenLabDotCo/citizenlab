@@ -44,7 +44,7 @@ const ViewButton = styled.button`
   }
 
   > span {
-    color: ${colors.label};
+    color: ${colors.text};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
@@ -111,7 +111,7 @@ const ViewButtons = memo<Props>(
           aria-selected={showListView}
           onMouseDown={removeFocus}
           onClick={handleOnClick('card')}
-          className={`${showListView && 'active'}`}
+          className={`${showListView ? 'active' : ''}`}
         >
           <FormattedMessage {...messages.list} />
         </ListButton>
@@ -120,7 +120,7 @@ const ViewButtons = memo<Props>(
           aria-selected={showMapView}
           onMouseDown={removeFocus}
           onClick={handleOnClick('map')}
-          className={`${showMapView && 'active'}`}
+          className={`${showMapView ? 'active' : ''}`}
         >
           <FormattedMessage {...messages.map} />
         </MapButton>

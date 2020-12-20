@@ -25,6 +25,28 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     </Button>
   </Top>
   <Content>
+    <IdeaContent__BelongsToProject>
+      <FormattedMessage
+        defaultMessage="Posted in {projectLink}"
+        id="app.containers.IdeasShow.postedIn"
+        values={
+          Object {
+            "projectLink": <IdeaContent__ProjectLink
+              className="e2e-project-link"
+              to="/projects/undefined_slug"
+            >
+              <T
+                value={
+                  Object {
+                    "en": "undefined project Title",
+                  }
+                }
+              />
+            </IdeaContent__ProjectLink>,
+          }
+        }
+      />
+    </IdeaContent__BelongsToProject>
     <IdeaContent__StyledTitle
       postId="myIdeasiD"
       postType="idea"
@@ -93,8 +115,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
             <IconTooltip
               content={
                 <FormattedMessage
-                  defaultMessage="The number of users that added this idea to their participatory budget"
-                  id="app.components.admin.PostManager.PostPreview.basketsCountTooltip"
+                  defaultMessage="The number of times this has been included in other participants' participatory budgets"
+                  id="app.components.admin.PostManager.PostPreview.pbItemCountTooltip"
                 />
               }
             />

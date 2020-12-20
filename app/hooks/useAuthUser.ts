@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { authUserStream } from 'services/auth';
-import { IUser } from 'services/users';
+import { IUserData } from 'services/users';
 
 export default function useAuthUser() {
-  const [authUser, setAuthUser] = useState<IUser | undefined | null | Error>(
-    undefined
-  );
+  const [authUser, setAuthUser] = useState<
+    IUserData | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
     const subscription = authUserStream().observable.subscribe(
       (currentAuthUser) => {
-        setAuthUser(currentAuthUser);
+        setAuthUser(currentAuthUser?.data);
       }
     );
 
