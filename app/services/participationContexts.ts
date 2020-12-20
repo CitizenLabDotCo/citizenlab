@@ -25,6 +25,14 @@ export type IdeaDefaultSortMethod =
   | '-new'
   | null;
 
+export const INPUT_TERMS = [
+  'idea',
+  'option',
+  'project',
+  'question',
+  'issue',
+  'contribution',
+];
 export type InputTerm =
   | 'idea'
   | 'option'
