@@ -559,6 +559,8 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "C",
   "app.components.admin.pagination.back": "السابق",
   "app.components.admin.pagination.next": "التالي",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "",
+  "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "",
   "app.components.sendFeedback": "ملاحظاتك حول المنصة",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "الميزانية المذكورة كبيرة جدًا",
