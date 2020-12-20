@@ -559,6 +559,8 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "",
   "app.components.admin.pagination.back": "",
   "app.components.admin.pagination.next": "",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "",
+  "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "",
   "app.components.sendFeedback": "",
   "app.components.sendFeedbackLink": "",
   "app.container.IdeaForm.budgetIsTooBig": "",
