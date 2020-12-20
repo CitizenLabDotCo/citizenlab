@@ -332,8 +332,28 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
     defaultMessage: 'Idea',
   },
+  projectTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectTerm',
+    defaultMessage: 'Project',
+  },
+  questionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.questionTerm',
+    defaultMessage: 'Question',
+  },
+  optionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionTerm',
+    defaultMessage: 'Option',
+  },
+  issueTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm',
+    defaultMessage: 'Issue',
+  },
   contributionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
     defaultMessage: 'Contribution',
+  },
+  inputTermLabel: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermLabel',
+    defaultMessage: 'How should a post in this project be called?',
   },
 });

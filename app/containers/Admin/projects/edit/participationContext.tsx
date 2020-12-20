@@ -697,7 +697,7 @@ class ParticipationContext extends PureComponent<
               participation_method === 'ideation') && (
               <SectionField>
                 <SubSectionTitle>
-                  How would you call a contribution to this project?
+                  <FormattedMessage {...messages.inputTermLabel} />
                 </SubSectionTitle>
                 <StyledSelect
                   value={input_term}
@@ -904,73 +904,68 @@ class ParticipationContext extends PureComponent<
             )}
 
             {(participation_method === 'ideation' ||
-              participation_method === 'budgeting') &&
-              input_term && (
-                <>
-                  <SectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultDisplay} />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage {...messages.viewModeTooltip} />
-                        }
-                      />
-                    </SubSectionTitle>
-                    {['card', 'map'].map((key) => (
-                      <Radio
-                        key={key}
-                        onChange={this.handleIdeasDisplayChange}
-                        currentValue={presentation_mode}
-                        value={key}
-                        name="presentation_mode"
-                        id={`presentation_mode-${key}`}
-                        label={
-                          <FormattedMessage {...messages[`${key}Display`]} />
-                        }
-                      />
-                    ))}
-                    <Error
-                      apiErrors={apiErrors && apiErrors.presentation_mode}
+              participation_method === 'budgeting') && (
+              <>
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.defaultDisplay} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.viewModeTooltip} />
+                      }
                     />
-                  </SectionField>
-                  <SectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultIdeaSorting} />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage
-                            {...messages.defaultPostSortingTooltip}
-                          />
-                        }
-                      />
-                    </SubSectionTitle>
-                    {[
-                      { key: 'trending', value: 'trending' },
-                      { key: 'random', value: 'random' },
-                      { key: 'popular', value: 'popular' },
-                      { key: 'newest', value: 'new' },
-                      { key: 'oldest', value: '-new' },
-                    ].map(({ key, value }) => (
-                      <Radio
-                        key={key}
-                        onChange={this.handleIdeaDefaultSortMethodChange}
-                        currentValue={ideas_order}
-                        value={value}
-                        name="IdeaDefaultSortMethod"
-                        id={`ideas_order-${key}`}
-                        label={
-                          <FormattedMessage
-                            {...messages[`${key}SortingMethod`]}
-                          />
-                        }
-                      />
-                    ))}
-                    <Error
-                      apiErrors={apiErrors && apiErrors.presentation_mode}
+                  </SubSectionTitle>
+                  {['card', 'map'].map((key) => (
+                    <Radio
+                      key={key}
+                      onChange={this.handleIdeasDisplayChange}
+                      currentValue={presentation_mode}
+                      value={key}
+                      name="presentation_mode"
+                      id={`presentation_mode-${key}`}
+                      label={
+                        <FormattedMessage {...messages[`${key}Display`]} />
+                      }
                     />
-                  </SectionField>
-                </>
-              )}
+                  ))}
+                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+                </SectionField>
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.defaultIdeaSorting} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.defaultPostSortingTooltip}
+                        />
+                      }
+                    />
+                  </SubSectionTitle>
+                  {[
+                    { key: 'trending', value: 'trending' },
+                    { key: 'random', value: 'random' },
+                    { key: 'popular', value: 'popular' },
+                    { key: 'newest', value: 'new' },
+                    { key: 'oldest', value: '-new' },
+                  ].map(({ key, value }) => (
+                    <Radio
+                      key={key}
+                      onChange={this.handleIdeaDefaultSortMethodChange}
+                      currentValue={ideas_order}
+                      value={value}
+                      name="IdeaDefaultSortMethod"
+                      id={`ideas_order-${key}`}
+                      label={
+                        <FormattedMessage
+                          {...messages[`${key}SortingMethod`]}
+                        />
+                      }
+                    />
+                  ))}
+                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+                </SectionField>
+              </>
+            )}
 
             {participation_method === 'poll' && (
               <>
