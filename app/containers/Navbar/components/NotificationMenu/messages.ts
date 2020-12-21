@@ -107,28 +107,100 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.deletedUser',
     defaultMessage: 'Deleted user',
   },
-  officialFeedbackOnYourIdea: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea',
-    defaultMessage: '{officialName} gave an official update on {idea}',
-  },
-  officialFeedbackOnYourInitiative: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnYourInitiative',
-    defaultMessage: '{officialName} gave an official update on {initiative}',
+  officialFeedbackOnYourIdea2: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea2',
+    defaultMessage: '{officialName} gave an official update on your idea',
   },
   officialFeedbackOnVotedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIdea',
     defaultMessage:
       '{officialName} gave an official update on an idea you voted for',
   },
-  officialFeedbackOnVotedInitiative: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedInitiative',
-    defaultMessage:
-      '{officialName} gave an official update on an initiative you voted for',
-  },
   officialFeedbackOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
     defaultMessage:
       '{officialName} gave an official update on an idea you commented on',
+  },
+  officialFeedbackOnYourProject: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourProject',
+    defaultMessage: '{officialName} gave an official update on your project',
+  },
+  officialFeedbackOnVotedProject: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedProject',
+    defaultMessage:
+      '{officialName} gave an official update on a project you voted for',
+  },
+  officialFeedbackOnCommentedProject: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedProject',
+    defaultMessage:
+      '{officialName} gave an official update on a project you commented on',
+  },
+  officialFeedbackOnYourOption: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourOption',
+    defaultMessage: '{officialName} gave an official update on your option',
+  },
+  officialFeedbackOnVotedOption: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedOption',
+    defaultMessage:
+      '{officialName} gave an official update on an option you voted for',
+  },
+  officialFeedbackOnCommentedOption: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedOption',
+    defaultMessage:
+      '{officialName} gave an official update on an option you commented on',
+  },
+  officialFeedbackOnYourIssue: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourIssue',
+    defaultMessage: '{officialName} gave an official update on your issue',
+  },
+  officialFeedbackOnVotedIssue: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIssue',
+    defaultMessage:
+      '{officialName} gave an official update on an issue you voted for',
+  },
+  officialFeedbackOnCommentedIssue: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIssue',
+    defaultMessage:
+      '{officialName} gave an official update on an issue you commented on',
+  },
+  officialFeedbackOnYourQuestion: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourQuestion',
+    defaultMessage: '{officialName} gave an official update on your question',
+  },
+  officialFeedbackOnVotedQuestion: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedQuestion',
+    defaultMessage:
+      '{officialName} gave an official update on a question you voted for',
+  },
+  officialFeedbackOnCommentedQuestion: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedQuestion',
+    defaultMessage:
+      '{officialName} gave an official update on a question you commented on',
+  },
+  officialFeedbackOnYourContribution: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourContribution',
+    defaultMessage:
+      '{officialName} gave an official update on your contribution',
+  },
+  officialFeedbackOnVotedContribution: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedContribution',
+    defaultMessage:
+      '{officialName} gave an official update on a contribution you voted for',
+  },
+  officialFeedbackOnCommentedContribution: {
+    id:
+      'app.containers.NotificationMenu.officialFeedbackOnCommentedContribution',
+    defaultMessage:
+      '{officialName} gave an official update on a contribution you commented on',
+  },
+  officialFeedbackOnYourInitiative: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourInitiative',
+    defaultMessage: '{officialName} gave an official update on {initiative}',
+  },
+  officialFeedbackOnVotedInitiative: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedInitiative',
+    defaultMessage:
+      '{officialName} gave an official update on an initiative you voted for',
   },
   officialFeedbackOnCommentedInitiative: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedInitiative',
