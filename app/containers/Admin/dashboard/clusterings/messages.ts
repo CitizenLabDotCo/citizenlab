@@ -26,10 +26,10 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.domicile',
     defaultMessage: 'Domicile',
   },
-  relativeImportancePostTooltip: {
-    id: 'app.containers.Admin.clusterViewer.relativeImportancePostTooltip',
+  relativeImportanceInputTooltip: {
+    id: 'app.containers.Admin.clusterViewer.relativeImportanceInputTooltip',
     defaultMessage:
-      'This percentage illustrates the relative importance of this post across different user groups. It is calculated by dividing the votes that this post received by all votes cast.',
+      'This percentage allows comparing the importance of these inputs per user segment, regardless of differences in segment size. It is calculated by dividing the number of votes of this user segment linked to the selected inputs by the total number of votes of this group.',
   },
   addClusteringButton: {
     id: 'app.containers.Admin.clusterViewer.addClusteringButton',
