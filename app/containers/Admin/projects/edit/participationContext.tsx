@@ -715,7 +715,7 @@ class ParticipationContext extends PureComponent<
               // (locale === 'en' || locale === 'en-GB' || locale === 'en-CA') && (
               <SectionField>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.inputTermLabel} />
+                  <FormattedMessage {...messages.inputTermSelectLabel} />
                 </SubSectionTitle>
                 <StyledSelect
                   value={input_term}
