@@ -257,7 +257,6 @@
   "app.components.PostComponents.OfficialFeedback.updateMessageSuccess": "Your update was published successfully!",
   "app.components.PostComponents.SharingModalContent.emailSharingBody": "Support my idea {ideaTitle} at {ideaUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubject": "Support my idea: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Support my idea: {ideaTitle}.",
   "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "What do you think of this proposal? Vote on it and share the discussion at {postUrl} to make your voice heard!",
   "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Support my proposal: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Vote for {postTitle} on",

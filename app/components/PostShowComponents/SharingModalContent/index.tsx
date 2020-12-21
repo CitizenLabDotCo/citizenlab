@@ -183,7 +183,12 @@ class SharingModalContent extends PureComponent<
         contribution: messages.contributionEmailSharingSubject,
       });
       emailSharingBody = getInputTermMessage(inputTerm, {
-        idea: messages.emailSharingBody,
+        idea: messages.ideaEmailSharingBody,
+        option: messages.optionEmailSharingBody,
+        project: messages.projectEmailSharingBody,
+        question: messages.questionEmailSharingBody,
+        issue: messages.issueEmailSharingBody,
+        contribution: messages.contributionEmailSharingBody,
       });
       whatsAppMessage = getInputTermMessage(inputTerm, {
         idea: messages.ideaWhatsAppMessage,
@@ -251,11 +256,6 @@ class SharingModalContent extends PureComponent<
               emailBody={formatMessage(emailSharingBody, {
                 postTitle,
                 postUrl,
-                // used {ideaTitle} in the idea specific copy so if we decide to split these components,
-                // we don't need to do translations again, but can just change the values.
-                // the values above are for initiative emails
-                ideaUrl: postTitle,
-                ideaTitle: postTitle,
               })}
               utmParams={{
                 source: `share_${postType}`,
