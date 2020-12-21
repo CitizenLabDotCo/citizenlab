@@ -533,7 +533,7 @@
   "app.components.admin.UserFilterConditions.addCondition": "أضِف شرطًا",
   "app.components.admin.UserFilterConditions.field_email": "البريد الإلكتروني",
   "app.components.admin.UserFilterConditions.field_lives_in": "يعيش في",
-  "app.components.admin.UserFilterConditions.field_participated_in_idea_status": "",
+  "app.components.admin.UserFilterConditions.field_participated_in_post_status": "",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "ساهم في المشروع",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "",
   "app.components.admin.UserFilterConditions.field_registration_completed_at": "تاريخ التسجيل",
