@@ -1,22 +1,22 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  helmetTitle: {
-    id: 'app.containers.admin.ideas.all.helmetTitle',
-    defaultMessage: 'Admin ideas page',
+  postManagerMetaTitle: {
+    id: 'app.containers.admin.ideas.all.postManagerMetaTitle',
+    defaultMessage: 'Post manager | Participation platform of {orgName}',
   },
-  helmetDescription: {
-    id: 'app.containers.admin.ideas.all.helmetDescription',
-    defaultMessage: 'Admin ideas page',
+  postManagerMetaDescription: {
+    id: 'app.containers.admin.ideas.all.postManagerMetaDescription',
+    defaultMessage: 'Manage posts and their statuses.',
   },
-  pageTitle: {
-    id: 'app.containers.admin.ideas.all.pageTitle',
-    defaultMessage: 'Ideas',
+  postManagerPageTitle: {
+    id: 'app.containers.admin.ideas.all.postManagerPageTitle',
+    defaultMessage: 'Posts',
   },
-  pageSubtitle: {
-    id: 'app.containers.admin.ideas.all.pageSubtitle',
+  postManagerPageSubtitle: {
+    id: 'app.containers.admin.ideas.all.postManagerPageSubtitle',
     defaultMessage:
-      'Give feedback on ideas, add topics to them or bring them from one project to ancustom.',
+      'Give feedback, add topics and move posts from one project to another',
   },
   tabManage: {
     id: 'app.containers.admin.ideas.all.tabManage',
