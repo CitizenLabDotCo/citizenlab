@@ -1752,7 +1752,6 @@
   "app.containers.IdeasShow.currentStatus": "Current status",
   "app.containers.IdeasShow.deletedUser": "unknown author",
   "app.containers.IdeasShow.ideaEmailSharingBody": "Support my idea '{ideaTitle}' at {ideaUrl}!",
-  "app.containers.IdeasShow.ideaEmailSharingSubject": "Support my idea: {ideaTitle}.",
   "app.containers.IdeasShow.postedIn": "Posted in {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Why do you want to report this as spam?",

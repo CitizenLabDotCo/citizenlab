@@ -38,9 +38,9 @@ const Component = ({
   const localize = useLocalize();
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const ideaUrl = location.href;
+    const postUrl = location.href;
     const titleMultiloc = idea.attributes.title_multiloc;
-    const ideaTitle = localize(titleMultiloc);
+    const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
       project.attributes.process_type === 'continuous' ? 'project' : 'phase',
       project,
@@ -61,28 +61,38 @@ const Component = ({
     return (
       <SharingDropdownButton
         className={className}
-        url={ideaUrl}
+        url={postUrl}
         whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-          ideaTitle,
+          postTitle,
         })}
         twitterMessage={formatMessage(messages.twitterMessage, {
-          ideaTitle,
+          postTitle,
         })}
         emailSubject={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaEmailSharingSubject,
+            option: messages.optionEmailSharingSubject,
+            project: messages.projectEmailSharingSubject,
+            question: messages.questionEmailSharingSubject,
+            issue: messages.issueEmailSharingSubject,
+            contribution: messages.contributionEmailSharingSubject,
           }),
           {
-            ideaTitle,
+            postTitle,
           }
         )}
         emailBody={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaEmailSharingBody,
+            option: messages.optionEmailSharingBody,
+            project: messages.projectEmailSharingBody,
+            question: messages.questionEmailSharingBody,
+            issue: messages.issueEmailSharingBody,
+            contribution: messages.contributionEmailSharingBody,
           }),
           {
-            ideaUrl,
-            ideaTitle,
+            postUrl,
+            postTitle,
           }
         )}
         utmParams={utmParams}
