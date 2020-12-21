@@ -23,6 +23,8 @@ const PredicateSelector = memo(
     onChange,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
+    const getMessage = () => {};
+
     const generateOptions = (): IOption[] => {
       if (ruleType) {
         return keys(ruleTypeConstraints[ruleType]).map((predicate) => {
