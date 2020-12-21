@@ -931,11 +931,11 @@ class ParticipationContext extends PureComponent<
               <>
                 <SectionField>
                   <SubSectionTitle>
-                    <FormattedMessage {...messages.postsDefaultDisplay} />
+                    <FormattedMessage {...messages.inputsDefaultView} />
                     <IconTooltip
                       content={
                         <FormattedMessage
-                          {...messages.postsDefaultDisplayTooltip}
+                          {...messages.inputsDefaultViewTooltip}
                         />
                       }
                     />
