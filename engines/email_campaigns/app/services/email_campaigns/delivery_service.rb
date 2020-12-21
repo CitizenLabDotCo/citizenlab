@@ -1,11 +1,11 @@
 module EmailCampaigns
   class DeliveryService
 
-    CAMPAIGN_CLASSES = [   
+    CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
       Campaigns::AssigneeDigest,
-      Campaigns::CommentDeletedByAdmin,   
+      Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
       Campaigns::CommentOnYourIdea,
@@ -19,7 +19,7 @@ module EmailCampaigns
       Campaigns::InitiativePublished,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
-      Campaigns::Manual,      
+      Campaigns::Manual,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
       Campaigns::NewCommentForAdmin,
@@ -111,7 +111,7 @@ module EmailCampaigns
     def apply_send_pipeline campaign_candidates, options={}
       campaign_candidates
         .select{|campaign| campaign.run_before_send_hooks(options)}
-        .flat_map do |campaign| 
+        .flat_map do |campaign|
           recipients = campaign.apply_recipient_filters(options)
           recipients.zip([campaign].cycle)
         end
@@ -178,6 +178,5 @@ module EmailCampaigns
     def send_command_internal campaign, command
       campaign.mailer_class.campaign_mail(campaign, command).deliver_later
     end
-
   end
 end
