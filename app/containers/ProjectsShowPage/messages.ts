@@ -363,4 +363,24 @@ export default defineMessages({
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',
   },
+  seeTheOptions: {
+    id: 'app.containers.Projects.seeTheOptions',
+    defaultMessage: 'See the options',
+  },
+  seeTheProjects: {
+    id: 'app.containers.Projects.seeTheProjects',
+    defaultMessage: 'See the projects',
+  },
+  seeTheQuestions: {
+    id: 'app.containers.Projects.seeTheQuestions',
+    defaultMessage: 'See the questions',
+  },
+  seeTheIssues: {
+    id: 'app.containers.Projects.seeTheIssues',
+    defaultMessage: 'See the issues',
+  },
+  seeTheContributions: {
+    id: 'app.containers.Projects.seeTheContributions',
+    defaultMessage: 'See the contributions',
+  },
 });

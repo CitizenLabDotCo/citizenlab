@@ -202,6 +202,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               <FormattedMessage
                 {...getInputTermMessage(inputTerm, {
                   idea: messages.seeTheIdeas,
+                  option: messages.seeTheOptions,
+                  project: messages.seeTheProjects,
+                  question: messages.seeTheQuestions,
+                  issue: messages.seeTheIssues,
+                  contribution: messages.seeTheContributions,
                 })}
               />
             </SeeIdeasButton>
