@@ -10,6 +10,31 @@ export default defineMessages({
       'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubject',
     defaultMessage: 'Support my idea: {postTitle}.',
   },
+  optionEmailSharingSubject: {
+    id:
+      'app.components.PostComponents.SharingModalContent.optionEmailSharingSubject',
+    defaultMessage: 'Support this option: {postTitle}.',
+  },
+  issueEmailSharingSubject: {
+    id:
+      'app.components.PostComponents.SharingModalContent.issueEmailSharingSubject',
+    defaultMessage: 'I just posted an issue: {postTitle}.',
+  },
+  questionEmailSharingSubject: {
+    id:
+      'app.components.PostComponents.SharingModalContent.questionEmailSharingSubject',
+    defaultMessage: 'Join the discussion: {postTitle}.',
+  },
+  contributionEmailSharingSubject: {
+    id:
+      'app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject',
+    defaultMessage: 'Support my contribution: {postTitle}.',
+  },
+  projectEmailSharingSubject: {
+    id:
+      'app.components.PostComponents.SharingModalContent.projectEmailSharingSubject',
+    defaultMessage: 'Support my project: {postTitle}.',
+  },
   initiativeEmailSharingSubject: {
     id:
       'app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject',
