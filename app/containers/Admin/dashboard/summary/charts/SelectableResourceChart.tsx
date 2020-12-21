@@ -142,7 +142,13 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
     } = this.props;
     const selectedResourceName =
       currentSelectedResource &&
-      formatMessage(messages[currentSelectedResource]);
+      formatMessage(
+        {
+          ideas: messages.posts,
+          comments: messages.comments,
+          votes: messages.votes,
+        }[currentSelectedResource]
+      );
     const { convertedSerie, selectedCount, selectedName } = convertSerie(serie);
     const unitName =
       currentFilter && serie

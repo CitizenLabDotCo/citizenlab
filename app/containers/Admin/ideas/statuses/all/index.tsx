@@ -119,7 +119,7 @@ const IdeaStatuses = () => {
         </SectionTitle>
         <SectionDescription>
           <FormattedMessage
-            {...messages.subtitleIdeaStatuses}
+            {...messages.subtitlePostStatuses}
             values={{
               linkToManageTab: (
                 <Link to="/admin/ideas">
@@ -151,9 +151,24 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
-            <DummyButton buttonStyle="text" disabled={true} icon="delete">
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </DummyButton>
+            <Tippy
+              placement="top"
+              theme="light"
+              disabled={false}
+              content={
+                <FormattedMessage
+                  {...messages.defaultStatusDeleteButtonTooltip}
+                />
+              }
+              trigger="mouseenter"
+            >
+              <div>
+                <DummyButton buttonStyle="text" disabled={true} icon="delete">
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </DummyButton>
+              </div>
+            </Tippy>
+
             <Button
               linkTo={`/admin/ideas/statuses/${defaultStatus.id}`}
               buttonStyle="secondary"
@@ -187,9 +202,9 @@ const IdeaStatuses = () => {
                       disabled={isDeletable(ideaStatus)}
                       content={
                         <FormattedMessage
-                          {...messages.deleteButtonTooltipContent}
+                          {...messages.statusDeleteButtonTooltip}
                           values={{
-                            linkToManageTab: (
+                            manageTab: (
                               <b>
                                 <FormattedMessage {...messages.manage} />
                               </b>

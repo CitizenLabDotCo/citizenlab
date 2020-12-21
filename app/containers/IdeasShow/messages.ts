@@ -46,13 +46,13 @@ export default defineMessages({
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
   },
-  editIdea: {
-    id: 'app.components.IdeasShow.editIdea',
-    defaultMessage: 'Edit idea',
+  editPost: {
+    id: 'app.components.IdeasShow.editPost',
+    defaultMessage: 'Edit',
   },
-  deleteIdea: {
-    id: 'app.components.IdeasShow.deleteIdea',
-    defaultMessage: 'Delete idea',
+  deletePost: {
+    id: 'app.components.IdeasShow.deletePost',
+    defaultMessage: 'Delete',
   },
   deletePostConfirmation: {
     id: 'app.components.IdeasShow.deletePostConfirmation',

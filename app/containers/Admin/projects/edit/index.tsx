@@ -2,6 +2,10 @@
 import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs';
+import eventEmitter from 'utils/eventEmitter';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -13,6 +17,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -21,16 +26,17 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
+
+// resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+
+// services
+import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
-import { Subscription } from 'rxjs';
-import eventEmitter from 'utils/eventEmitter';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -132,7 +138,7 @@ export class AdminProjectEdition extends PureComponent<
         name: 'description',
       },
       {
-        label: formatMessage(messages.ideasTab),
+        label: formatMessage(messages.postsTab),
         url: `${baseTabsUrl}/ideas`,
         name: 'ideas',
       },
@@ -148,7 +154,7 @@ export class AdminProjectEdition extends PureComponent<
         name: 'survey-results',
       },
       {
-        label: formatMessage(messages.ideaFormTab),
+        label: formatMessage(messages.inputFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
         name: 'ideaform',
@@ -357,9 +363,9 @@ export class AdminProjectEdition extends PureComponent<
   };
 
   render() {
-    const { projectId } = this.props.params;
     const {
       project,
+      phases,
       intl: { formatMessage },
       localize,
       children,
@@ -376,30 +382,35 @@ export class AdminProjectEdition extends PureComponent<
           : formatMessage(messages.newProject),
       },
       // TODO: optimization would be to use useMemo for tabs, as they get recalculated on every click
-      tabs:
-        projectId && !isNilOrError(project)
-          ? this.getTabs(projectId, project)
-          : [],
+      tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
 
-    return (
-      <>
-        <TopContainer>
-          <GoBackButton onClick={this.goBack} />
-          <ActionsContainer>
-            {!isNilOrError(project) &&
-              tabbedProps.tabs.findIndex((tab) => tab.name === 'ideas') !==
-                -1 && (
+    if (!isNilOrError(project)) {
+      const inputTerm = getInputTerm(
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project,
+        phases
+      );
+
+      return (
+        <>
+          <TopContainer>
+            <GoBackButton onClick={this.goBack} />
+            <ActionsContainer>
+              {tabbedProps.tabs.some((tab) => tab.name === 'ideas') && (
                 <Button
                   id="e2e-new-idea"
                   buttonStyle="cl-blue"
                   icon="idea"
                   linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                  text={formatMessage(messages.addNewIdea)}
+                  text={formatMessage(
+                    getInputTermMessage(inputTerm, {
+                      idea: messages.addNewIdea,
+                    })
+                  )}
                   onClick={this.onNewIdea(pathname)}
                 />
               )}
-            {!isNilOrError(project) && (
               <Button
                 buttonStyle="cl-blue"
                 icon="eye"
@@ -408,14 +419,16 @@ export class AdminProjectEdition extends PureComponent<
               >
                 <FormattedMessage {...messages.viewPublicProject} />
               </Button>
-            )}
-          </ActionsContainer>
-        </TopContainer>
-        <TabbedResource {...tabbedProps}>
-          {childrenWithExtraProps}
-        </TabbedResource>
-      </>
-    );
+            </ActionsContainer>
+          </TopContainer>
+          <TabbedResource {...tabbedProps}>
+            {childrenWithExtraProps}
+          </TabbedResource>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 
