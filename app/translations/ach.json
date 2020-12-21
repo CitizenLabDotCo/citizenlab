@@ -1092,8 +1092,6 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "",
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSorting": "",
-  "app.containers.AdminPage.ProjectEdit.defaultDisplay": "",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "",
   "app.containers.AdminPage.ProjectEdit.departments": "",

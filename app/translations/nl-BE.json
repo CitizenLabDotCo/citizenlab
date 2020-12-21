@@ -1092,8 +1092,6 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Zonder een tijdslijn",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Maak een project aan",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Maak een project aan met een sjabloon",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSorting": "",
-  "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Weergave van de ideeën",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "",
   "app.containers.AdminPage.ProjectEdit.departments": "Departementen",

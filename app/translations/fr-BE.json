@@ -1092,8 +1092,6 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Sans une ligne de temps",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Créer un projet",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Créer un projet à partir d'un modèle",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSorting": "",
-  "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Affichage des idées",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "",
   "app.containers.AdminPage.ProjectEdit.departments": "Départements",
