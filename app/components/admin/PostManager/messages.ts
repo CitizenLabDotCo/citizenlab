@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.components.admin.PostManager.header',
-    defaultMessage: 'Ideas',
+  postManagerHeader: {
+    id: 'app.components.admin.PostManager.postManagerHeader',
+    defaultMessage: 'Posts',
   },
   needFeedbackToggle: {
     id: 'app.components.admin.PostManager.needFeedbackToggle',
@@ -21,17 +21,17 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.delete',
     defaultMessage: 'Delete',
   },
-  deleteAllSelectedIdeas: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedIdeas',
-    defaultMessage: 'Delete {count} selected ideas',
+  deleteAllSelectedPosts: {
+    id: 'app.components.admin.PostManager.deleteAllSelectedPosts',
+    defaultMessage: 'Delete {count} posts',
   },
-  deleteIdeaConfirmation: {
-    id: 'app.components.admin.PostManager.deleteIdeaConfirmation',
-    defaultMessage: 'Are you sure you want to delete this idea?',
+  deletePostConfirmation: {
+    id: 'app.components.admin.PostManager.deletePostConfirmation',
+    defaultMessage: 'Are you sure you want to delete this post?',
   },
-  deleteIdeasConfirmation: {
-    id: 'app.components.admin.PostManager.deleteIdeasConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} ideas?',
+  deletePostsConfirmation: {
+    id: 'app.components.admin.PostManager.deletePostsConfirmation',
+    defaultMessage: 'Are you sure you want to delete {count} posts?',
   },
   deleteAllSelectedInitiatives: {
     id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
@@ -94,51 +94,40 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
     defaultMessage: 'Picks',
   },
-  multiDragAndDropHelpIdeas: {
-    id: 'app.components.admin.PostManager.multiDragAndDropHelpIdeas',
-    defaultMessage:
-      'Drag and drop the ideas on an item above to assign them all at once.',
-  },
-  multiDragAndDropHelpInitiatives: {
-    id: 'app.components.admin.PostManager.multiDragAndDropHelpInitiatives',
-    defaultMessage:
-      'Drag and drop the initiatives on an item above to assign them all at once.',
-  },
   timelineTab: {
     id: 'app.components.admin.PostManager.timelineTab',
     defaultMessage: 'Timeline',
   },
-  timelineTabTooltip: {
-    id: 'app.components.admin.PostManager.timelineTabTooltip',
+  timelineTabTooltipContent: {
+    id: 'app.components.admin.PostManager.timelineTabTooltipContent',
     defaultMessage:
-      'Drag and drop selected ideas to the phase you want to add them to. By doing so, they will also remain in the current phase(s).',
+      'Drag and drop posts to copy them to different project phases.',
   },
   topicsTab: {
     id: 'app.components.admin.PostManager.topicsTab',
     defaultMessage: 'Topics',
   },
-  topicsTabTooltip: {
-    id: 'app.components.admin.PostManager.topicsTabTooltip',
-    defaultMessage:
-      'Drag and drop selected ideas to the topic you want to assign them to. An idea can have any number of topics.',
+  topicsTabTooltipContent: {
+    id: 'app.components.admin.PostManager.topicsTabTooltipContent',
+    defaultMessage: 'Add topics to a post using drag and drop.',
   },
   projectsTab: {
     id: 'app.components.admin.PostManager.projectsTab',
     defaultMessage: 'Projects',
   },
-  projectsTabTooltip: {
-    id: 'app.components.admin.PostManager.projectsTabTooltip',
+  projectsTabTooltipContent: {
+    id: 'app.components.admin.PostManager.projectsTabTooltipContent',
     defaultMessage:
-      'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
+      'You can drag and drop posts to move them from one project to another. Note that for timeline projects, you will still need to add the post to a specific phase.',
   },
   statusesTab: {
     id: 'app.components.admin.PostManager.statusesTab',
     defaultMessage: 'Status',
   },
-  statusesTabTooltip: {
-    id: 'app.components.admin.PostManager.statusesTabTooltip',
+  statusesTabTooltipContent: {
+    id: 'app.components.admin.PostManager.statusesTabTooltipContent',
     defaultMessage:
-      'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
+      'Change the status of a post using drag and drop. The original author and other contributors will receive a notification of the changed status.',
   },
   pbItemCountTooltip: {
     id: 'app.components.admin.PostManager.pbItemCountTooltip',
@@ -197,17 +186,17 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exports',
     defaultMessage: 'Exports',
   },
-  noIdeasHere: {
-    id: 'app.components.admin.PostManager.noIdeasHere',
-    defaultMessage: 'No ideas match the current filters',
+  noPostsHere: {
+    id: 'app.components.admin.PostManager.noPostsHere',
+    defaultMessage: 'The filters you have selected do not return any results',
   },
   noInitiativesHere: {
     id: 'app.components.admin.PostManager.noInitiativesHere',
     defaultMessage: 'No initiatives match the current filters',
   },
-  resetFiltersDescription: {
-    id: 'app.components.admin.PostManager.resetFiltersDescription',
-    defaultMessage: 'Reset the filters to see all ideas.',
+  resetPostFiltersDescription: {
+    id: 'app.components.admin.PostManager.resetPostFiltersDescription',
+    defaultMessage: 'Reset the filters to see all posts.',
   },
   resetFiltersButton: {
     id: 'app.components.admin.PostManager.resetFiltersButton',
@@ -229,13 +218,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.allPhases',
     defaultMessage: 'All phases',
   },
-  oneIdea: {
-    id: 'app.components.admin.PostManager.oneIdea',
-    defaultMessage: '1 idea',
+  onePost: {
+    id: 'app.components.admin.PostManager.onePost',
+    defaultMessage: '1 post',
   },
-  multipleIdeas: {
-    id: 'app.components.admin.PostManager.multipleIdeas',
-    defaultMessage: '{ideaCount} ideas',
+  multiplePosts: {
+    id: 'app.components.admin.PostManager.multiplePosts',
+    defaultMessage: '{ideaCount} posts',
   },
   oneInitiative: {
     id: 'app.components.admin.PostManager.oneInitiative',
@@ -291,9 +280,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.automatic',
     defaultMessage: '(automatic)',
   },
-  ideas: {
-    id: 'app.components.admin.PostManager.ideas',
-    defaultMessage: 'ideas',
+  posts: {
+    id: 'app.components.admin.PostManager.posts',
+    defaultMessage: 'posts',
   },
   initiatives: {
     id: 'app.components.admin.PostManager.initiatives',

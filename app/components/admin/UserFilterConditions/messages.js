@@ -28,12 +28,13 @@ export default defineMessages({
     defaultMessage: 'Contributed to project',
   },
   field_participated_in_topic: {
-    id: 'app.components.admin.UserFilterConditions.field_topic',
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_topic',
     defaultMessage: 'Contributed to topic',
   },
-  field_participated_in_idea_status: {
-    id: 'app.components.admin.UserFilterConditions.field_idea_status',
-    defaultMessage: 'Contributed to idea(s) with status',
+  field_participated_in_post_status: {
+    id:
+      'app.components.admin.UserFilterConditions.field_participated_in_post_status',
+    defaultMessage: 'Interacted with a post with status',
   },
   field_verified: {
     id: 'app.components.admin.UserFilterConditions.field_verified',

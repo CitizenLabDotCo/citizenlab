@@ -104,7 +104,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State> {
           </SectionTitle>
           <SectionDescription>
             <FormattedMessage
-              {...messages.topicManagerDescription}
+              {...messages.descriptionTopicManager}
               values={{
                 adminProjectsLink: (
                   <StyledLink to="/admin/projects/">
@@ -159,7 +159,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State> {
             <ModalContentContainer>
               <Content>
                 <FormattedMessage
-                  {...messages.topicDeletionConfirmationMessage}
+                  {...messages.deleteTopicConfirmationMessage}
                 />
               </Content>
               <ButtonsWrapper>

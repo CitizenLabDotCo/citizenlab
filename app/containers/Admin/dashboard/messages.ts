@@ -381,9 +381,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
     defaultMessage: 'No phase created for this project',
   },
-  ideation: {
-    id: 'app.containers.AdminPage.ReportsTab.ideation',
-    defaultMessage: 'ideation',
+  ideationAndFeedback: {
+    id: 'app.containers.AdminPage.ReportsTab.ideationAndFeedback',
+    defaultMessage: 'ideation and feedback',
   },
   information: {
     id: 'app.containers.AdminPage.ReportsTab.information',

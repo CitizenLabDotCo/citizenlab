@@ -71,7 +71,7 @@ class IdeaCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
                     textAnchor="middle"
                     alignmentBaseline="central"
                   >
-                    {intl.formatMessage(messages.idea)}
+                    {intl.formatMessage(messages.title)}
                   </tspan>
                   <tspan
                     x={width / 2}
