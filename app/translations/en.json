@@ -268,7 +268,6 @@
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "I just posted an issue: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.optionEmailSharingBody": "Support my proposed option '{postTitle}' at {postUrl}!",
   "app.components.PostComponents.SharingModalContent.optionEmailSharingSubject": "Support my proposed option: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.optionWhatsAppMessage": "Support my proposed option: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.projectEmailSharingBody": "Support my project '{postTitle}' at {postUrl}!",
   "app.components.PostComponents.SharingModalContent.projectEmailSharingSubject": "Support my project: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.projectWhatsAppMessage": "Support my project: {postTitle}.",
