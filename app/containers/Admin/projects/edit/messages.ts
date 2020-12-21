@@ -392,8 +392,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
     defaultMessage: 'Contribution',
   },
-  inputTermLabel: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermLabel',
-    defaultMessage: 'How should a post in this project be called?',
+  inputTermSelectLabel: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
+    defaultMessage: 'What should an input be called?',
   },
 });
