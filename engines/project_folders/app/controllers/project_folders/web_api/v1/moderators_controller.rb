@@ -1,6 +1,6 @@
 module ProjectFolders
   class WebApi::V1::ModeratorsController < ApplicationController
-    before_action :do_authorize, except: [:index]
+    before_action :do_authorize
     before_action :set_moderator, only: [:show, :destroy]
 
     skip_after_action :verify_authorized, only: [:users_search]
@@ -13,7 +13,6 @@ module ProjectFolders
     end
 
     def index
-      authorize Moderator.new({ user_id: nil, project_folder_id: params[:project_folder_id] })
       @moderators = User.project_folder_moderator(params[:project_folder_id])
                         .page(params.dig(:page, :number))
                         .per(params.dig(:page, :size))
@@ -66,7 +65,7 @@ module ProjectFolders
     end
 
     def do_authorize
-      authorize Moderator.new({user_id: params[:id], project_folder_id: params[:project_folder_id]})
+      authorize Moderator.new(project_folder_id: params[:project_folder_id])
     end
   end
 end
