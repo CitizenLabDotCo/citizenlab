@@ -397,8 +397,7 @@ export class AdminProjectEdition extends PureComponent<
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
-              {tabbedProps.tabs.findIndex((tab) => tab.name === 'ideas') !==
-                -1 && (
+              {tabbedProps.tabs.some((tab) => tab.name === 'ideas') && (
                 <Button
                   id="e2e-new-idea"
                   buttonStyle="cl-blue"
