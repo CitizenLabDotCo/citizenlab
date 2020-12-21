@@ -158,13 +158,6 @@ const IdeaStatuses = () => {
               content={
                 <FormattedMessage
                   {...messages.defaultStatusDeleteButtonTooltip}
-                  values={{
-                    linkToManageTab: (
-                      <b>
-                        <FormattedMessage {...messages.manage} />
-                      </b>
-                    ),
-                  }}
                 />
               }
               trigger="mouseenter"
