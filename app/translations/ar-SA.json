@@ -778,7 +778,7 @@
   "app.containers.Admin.clusterViewer.numVotes": "عدد الأصوات",
   "app.containers.Admin.clusterViewer.project": "المشروع",
   "app.containers.Admin.clusterViewer.relative": "ذو صلة",
-  "app.containers.Admin.clusterViewer.relativeImportancePostTooltip": "",
+  "app.containers.Admin.clusterViewer.relativeImportanceInputTooltip": "",
   "app.containers.Admin.clusterViewer.shiftLegend": "أضِف إلى المجموعة المختارة",
   "app.containers.Admin.clusterViewer.thenLevel": "وبعد ذلك بحسب {level}",
   "app.containers.Admin.clusterViewer.title": "",
