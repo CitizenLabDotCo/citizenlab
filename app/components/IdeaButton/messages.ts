@@ -5,25 +5,25 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.submitYourIdea',
     defaultMessage: 'Submit your idea',
   },
-  submitYourOption: {
-    id: 'app.containers.IdeaButton.submitYourOption',
-    defaultMessage: 'Submit your option',
+  addAnOption: {
+    id: 'app.containers.IdeaButton.addAnOption',
+    defaultMessage: 'Add an option',
   },
-  submitYourProject: {
-    id: 'app.containers.IdeaButton.submitYourProject',
-    defaultMessage: 'Submit your project',
+  addAProject: {
+    id: 'app.containers.IdeaButton.addAProject',
+    defaultMessage: 'Add a project',
   },
-  submitYourQuestion: {
-    id: 'app.containers.IdeaButton.submitYourQuestion',
-    defaultMessage: 'Submit your question',
+  addAQuestion: {
+    id: 'app.containers.IdeaButton.addAQuestion',
+    defaultMessage: 'Add a question',
   },
-  submitYourIssue: {
-    id: 'app.containers.IdeaButton.submitYourIssue',
-    defaultMessage: 'Submit your issue',
+  submitAnIssue: {
+    id: 'app.containers.IdeaButton.submitAnIssue',
+    defaultMessage: 'Submit an issue',
   },
-  submitYourContribution: {
-    id: 'app.containers.IdeaButton.submitYourContribution',
-    defaultMessage: 'Submit your contribution',
+  addAContribution: {
+    id: 'app.containers.IdeaButton.addAContribution',
+    defaultMessage: 'Add a contribution',
   },
   postingDisabled: {
     id: 'app.containers.IdeaButton.postingDisabled',
