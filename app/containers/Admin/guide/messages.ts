@@ -133,10 +133,10 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.manageArticle1Title',
     defaultMessage: 'Moderate inside your projects',
   },
-  manageArticle1Description: {
-    id: 'containers.Admin.onboarding.manageArticle1Description',
+  giveFeedback: {
+    id: 'containers.Admin.onboarding.giveFeedback',
     defaultMessage:
-      'Don’t make your audience wait for your feedback. Interact with them regularly. Leave a comment, send them an email. Reach out to them individually or to a group per age, area, or project that they participated in.',
+      'Give feedback by adding or changing the status or providing an update.',
   },
   manageArticle2Link: {
     id: 'containers.Admin.onboarding.manageArticle2Link',
@@ -150,18 +150,6 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.manageArticle2Description',
     defaultMessage:
       'Create groups to be able to contact specific groups or define permissions per group.',
-  },
-  manageArticle3Link: {
-    id: 'containers.Admin.onboarding.manageArticle3Link',
-    defaultMessage: '/unused',
-  },
-  manageArticle3Title: {
-    id: 'containers.Admin.onboarding.manageArticle3Title',
-    defaultMessage: 'Not yet used',
-  },
-  manageArticle3Description: {
-    id: 'containers.Admin.onboarding.manageArticle3Description',
-    defaultMessage: 'Not yet used',
   },
   // Decide section
   decideSectionTitle: {
@@ -177,9 +165,9 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle1Link',
     defaultMessage: '/admin/ideas',
   },
-  decideArticle1Title: {
-    id: 'containers.Admin.onboarding.decideArticle1Title',
-    defaultMessage: 'Manage the ideas',
+  manageThePosts: {
+    id: 'containers.Admin.onboarding.manageThePosts',
+    defaultMessage: 'Manage the posts',
   },
   decideArticle1Description: {
     id: 'containers.Admin.onboarding.decideArticle1Description',
@@ -198,17 +186,5 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle2Description',
     defaultMessage:
       'Get immediate and easy-to-grasp analytics, and monitor closely what’s happening on the platform.',
-  },
-  decideArticle3Link: {
-    id: 'containers.Admin.onboarding.decideArticle3Link',
-    defaultMessage: '/unused',
-  },
-  decideArticle3Title: {
-    id: 'containers.Admin.onboarding.decideArticle3Title',
-    defaultMessage: 'Not yet used',
-  },
-  decideArticle3Description: {
-    id: 'containers.Admin.onboarding.decideArticle3Description',
-    defaultMessage: 'Not yet used',
   },
 });

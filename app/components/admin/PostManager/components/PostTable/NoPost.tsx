@@ -85,11 +85,11 @@ export default (props: Props) => (
       {props.type === 'Initiatives' ? (
         <FormattedMessage {...messages.noInitiativesHere} />
       ) : (
-        <FormattedMessage {...messages.noIdeasHere} />
+        <FormattedMessage {...messages.noPostsHere} />
       )}
     </NoPostHeader>
     <NoPostDescription>
-      <FormattedMessage {...messages.resetFiltersDescription} />
+      <FormattedMessage {...messages.resetPostFiltersDescription} />
     </NoPostDescription>
     <Button buttonStyle="cl-blue" onClick={props.handleSeeAll}>
       <FormattedMessage {...messages.resetFiltersButton} />

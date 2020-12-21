@@ -63,10 +63,10 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
       projectsTab: messages.projectsTab,
     }[messageKey];
     const tooltipMessage = {
-      statusesTab: messages.statusesTabTooltip,
-      timelineTab: messages.timelineTabTooltip,
-      topicsTab: messages.topicsTabTooltip,
-      projectsTab: messages.projectsTabTooltip,
+      statusesTab: messages.statusesTabTooltipContent,
+      timelineTab: messages.timelineTabTooltipContent,
+      topicsTab: messages.topicsTabTooltipContent,
+      projectsTab: messages.projectsTabTooltipContent,
     }[messageKey];
     const title = this.props.intl.formatMessage(titleMessage);
     const active = this.props.activeFilterMenu === key;

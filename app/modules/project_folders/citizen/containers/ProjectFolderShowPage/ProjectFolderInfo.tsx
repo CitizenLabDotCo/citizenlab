@@ -174,12 +174,18 @@ const ProjectFolderInfo = ({
                 <SharingButtons
                   context="folder"
                   url={folderUrl}
-                  twitterMessage={formatMessage(messages.twitterMessage, {
-                    title,
-                  })}
-                  whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                    projectFolderName: title,
-                  })}
+                  twitterMessage={formatMessage(
+                    messages.projectFolderTwitterMessage,
+                    {
+                      title,
+                    }
+                  )}
+                  whatsAppMessage={formatMessage(
+                    messages.projectFolderWhatsAppMessage,
+                    {
+                      title,
+                    }
+                  )}
                   utmParams={utmParams}
                 />
               );

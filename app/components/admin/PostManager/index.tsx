@@ -37,15 +37,11 @@ import InfoSidebar from './components/InfoSidebar';
 import ExportMenu from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
 import InitiativesCount from './components/InitiativesCount';
-import { Input, Message } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import LazyPostPreview from './components/LazyPostPreview';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
@@ -212,11 +208,6 @@ export class PostManager extends React.PureComponent<Props, State> {
   };
   // End filtering hanlders
 
-  // Selection management
-  isSelectionMultiple = () => {
-    return this.state.selection.size > 1;
-  };
-
   resetSelection = () => {
     this.setState({ selection: new Set() });
   };
@@ -321,12 +312,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       selectedStatus,
     } = this.getNonSharedParams();
 
-    const multipleIdeasSelected = this.isSelectionMultiple();
-    const showDragAndDropInfoMessage =
-      this.props.type === 'AllIdeas' ||
-      this.props.type === 'ProjectIdeas' ||
-      (this.props.type === 'Initiatives' && activeFilterMenu === 'topics');
-
     if (!isNilOrError(topics)) {
       const filteredTopics = topics.filter(
         (topic) => !isNilOrError(topic)
@@ -411,24 +396,6 @@ export class PostManager extends React.PureComponent<Props, State> {
                   onChangeStatusFilter={onChangeStatus}
                   onChangeProjectFilter={this.onChangeProjects}
                 />
-                {multipleIdeasSelected && showDragAndDropInfoMessage && (
-                  <Message
-                    info={true}
-                    attached="bottom"
-                    icon="info"
-                    content={
-                      type === 'AllIdeas' || type === 'ProjectIdeas' ? (
-                        <FormattedMessage
-                          {...messages.multiDragAndDropHelpIdeas}
-                        />
-                      ) : (
-                        <FormattedMessage
-                          {...messages.multiDragAndDropHelpInitiatives}
-                        />
-                      )
-                    }
-                  />
-                )}
               </Sticky>
             </LeftColumn>
             <MiddleColumn>

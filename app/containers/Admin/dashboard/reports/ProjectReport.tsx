@@ -162,6 +162,16 @@ const ProjectReport = memo(
     ) as ParticipationMethod[];
 
     const projectTitle = localize(project.attributes.title_multiloc);
+    const participationMethodMessages: {
+      [key in ParticipationMethod]: ReactIntl.FormattedMessage.MessageDescriptor;
+    } = {
+      ideation: messages.ideationAndFeedback,
+      information: messages.information,
+      survey: messages.survey,
+      budgeting: messages.budgeting,
+      poll: messages.poll,
+      volunteering: messages.volunteering,
+    };
 
     return (
       <>
@@ -194,7 +204,9 @@ const ProjectReport = memo(
                         />
                       </p>
                       <FormattedMessage
-                        {...messages[phase.attributes.participation_method]}
+                        {...participationMethodMessages[
+                          phase.attributes.participation_method
+                        ]}
                       />
                       <div>{localize(phase.attributes.title_multiloc)}</div>
                     </Phase>

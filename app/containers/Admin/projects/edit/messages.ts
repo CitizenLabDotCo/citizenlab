@@ -203,16 +203,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.disabled',
     defaultMessage: 'Disabled',
   },
-  defaultDisplay: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
-    defaultMessage: 'Ideas displayed by default as:',
+  postsDefaultDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.postsDefaultDisplay',
+    defaultMessage: 'Posts default display',
   },
   defaultSorting: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultSorting',
     defaultMessage: 'Sorting',
   },
-  viewModeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.viewModeTooltip',
+  postsDefaultDisplayTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.postsDefaultDisplayTooltip',
     defaultMessage:
       'Choose the default view for your project: cards in a grid view or pins on a map. Participants can manually switch between the two views.',
   },
@@ -306,14 +306,14 @@ export default defineMessages({
       'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
-  titleIdeas: {
-    id: 'app.components.admin.PostManager.titleIdeas',
-    defaultMessage: 'Manage idea',
+  titlePosts: {
+    id: 'app.components.admin.PostManager.titlePosts',
+    defaultMessage: 'Post manager',
   },
-  subtitleIdeas: {
-    id: 'app.components.admin.PostManager.subtitleIdeas',
+  subtitlePosts: {
+    id: 'app.components.admin.PostManager.subtitlePosts',
     defaultMessage:
-      'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
+      'Give feedback, assign topics or copy posts to the next project phase.',
   },
   hiddenFieldsTip: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip',
