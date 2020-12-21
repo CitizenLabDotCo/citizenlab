@@ -533,7 +533,7 @@
   "app.components.admin.UserFilterConditions.addCondition": "Añadir una condición",
   "app.components.admin.UserFilterConditions.field_email": "Correo electrónico",
   "app.components.admin.UserFilterConditions.field_lives_in": "Vive en",
-  "app.components.admin.UserFilterConditions.field_participated_in_idea_status": "",
+  "app.components.admin.UserFilterConditions.field_participated_in_post_status": "",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Participó en el proyecto",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "",
   "app.components.admin.UserFilterConditions.field_registration_completed_at": "Fecha de registro",

@@ -31,9 +31,9 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_participated_in_topic',
     defaultMessage: 'Contributed to topic',
   },
-  field_participated_in_idea_status: {
+  field_participated_in_post_status: {
     id:
-      'app.components.admin.UserFilterConditions.field_participated_in_idea_status',
+      'app.components.admin.UserFilterConditions.field_participated_in_post_status',
     defaultMessage: 'Interacted with a post with status',
   },
   field_verified: {
