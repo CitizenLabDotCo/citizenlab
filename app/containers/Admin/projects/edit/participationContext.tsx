@@ -1097,7 +1097,7 @@ const Data = adopt<DataProps, {}>({
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
-  // isCustomInputTermEnabled: <GetFeatureFlag name="input_term" />,
+  isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
 });
