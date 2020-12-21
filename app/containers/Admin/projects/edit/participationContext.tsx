@@ -569,7 +569,7 @@ class ParticipationContext extends PureComponent<
           <StyledSection>
             <SectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.participationMethod} />
+                <FormattedMessage {...messages.participationMethodTitle} />
                 <IconTooltip
                   content={
                     <FormattedMessage
@@ -587,11 +587,11 @@ class ParticipationContext extends PureComponent<
                 label={
                   <LabelText>
                     <span className="header">
-                      <FormattedMessage {...messages.ideationAndFeedback} />
+                      <FormattedMessage {...messages.inputAndFeedback} />
                     </span>
                     <span className="description">
                       <FormattedMessage
-                        {...messages.ideationAndFeedbackDescription}
+                        {...messages.inputAndFeedbackDescription}
                       />
                     </span>
                   </LabelText>
@@ -609,11 +609,13 @@ class ParticipationContext extends PureComponent<
                     <LabelText>
                       <span className="header">
                         <FormattedMessage
-                          {...messages.participatoryBudgeting}
+                          {...messages.conductParticipatoryBudgeting}
                         />
                       </span>
                       <span className="description">
-                        <FormattedMessage {...messages.pbDescription} />
+                        <FormattedMessage
+                          {...messages.conductParticipatoryBudgetingDescription}
+                        />
                       </span>
                     </LabelText>
                   }
@@ -629,10 +631,10 @@ class ParticipationContext extends PureComponent<
                   label={
                     <LabelText>
                       <span className="header">
-                        <FormattedMessage {...messages.poll} />
+                        <FormattedMessage {...messages.createPoll} />
                       </span>
                       <span className="description">
-                        <FormattedMessage {...messages.pollDescription} />
+                        <FormattedMessage {...messages.createPollDescription} />
                       </span>
                     </LabelText>
                   }
@@ -648,11 +650,11 @@ class ParticipationContext extends PureComponent<
                   label={
                     <LabelText>
                       <span className="header">
-                        <FormattedMessage {...messages.volunteering} />
+                        <FormattedMessage {...messages.findVolunteers} />
                       </span>
                       <span className="description">
                         <FormattedMessage
-                          {...messages.volunteeringDescription}
+                          {...messages.findVolunteersDescription}
                         />
                       </span>
                     </LabelText>
@@ -674,10 +676,12 @@ class ParticipationContext extends PureComponent<
                     label={
                       <LabelText>
                         <span className="header">
-                          <FormattedMessage {...messages.survey} />
+                          <FormattedMessage {...messages.createSurvey} />
                         </span>
                         <span className="description">
-                          <FormattedMessage {...messages.surveyDescription} />
+                          <FormattedMessage
+                            {...messages.createSurveyDescription}
+                          />
                         </span>
                       </LabelText>
                     }
@@ -692,10 +696,12 @@ class ParticipationContext extends PureComponent<
                 label={
                   <LabelText>
                     <span className="header">
-                      <FormattedMessage {...messages.information} />
+                      <FormattedMessage {...messages.shareInformation} />
                     </span>
                     <span className="description">
-                      <FormattedMessage {...messages.informationDescription} />
+                      <FormattedMessage
+                        {...messages.shareInformationDescription}
+                      />
                     </span>
                   </LabelText>
                 }
