@@ -169,10 +169,10 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.manageThePosts',
     defaultMessage: 'Manage the posts',
   },
-  decideArticle1Description: {
-    id: 'containers.Admin.onboarding.decideArticle1Description',
+  decideArticle1Description2: {
+    id: 'containers.Admin.onboarding.decideArticle1Description2',
     defaultMessage:
-      'Add topics to ideas or change the idea status. Mark ideas as spam if they are offending. The author is notified when you change the status or comment on his/her idea.',
+      'Add topics to inputs, move inputs from one phase to another, change their status or mark them as spam.',
   },
   decideArticle2Link: {
     id: 'containers.Admin.onboarding.decideArticle2Link',
