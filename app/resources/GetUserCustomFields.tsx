@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import {
   userCustomFieldsStream,
   IUserCustomFieldData,
-  IInputType,
+  IUserCustomFieldInputType,
 } from 'services/userCustomFields';
 import { isBoolean } from 'lodash-es';
 
@@ -15,7 +15,7 @@ type children = (
 
 interface Props extends InputProps {
   children?: children;
-  inputTypes?: IInputType[];
+  inputTypes?: IUserCustomFieldInputType[];
   cache?: boolean;
 }
 
