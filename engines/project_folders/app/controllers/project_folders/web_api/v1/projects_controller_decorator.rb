@@ -40,7 +40,7 @@ module ProjectFolders
     def remove_old_folder_moderators
       return unless params.require(:project).key?(:folder_id)
 
-      User.not_project_folder_moderator(@project.folder&.id).each do |moderator|
+      User.project_folder_moderator(@project.folder&.id).each do |moderator|
         next unless moderator.moderatable_project_ids.include?(@project.id)
 
         moderator.delete_role('project_moderator', project_id: @project.id)
