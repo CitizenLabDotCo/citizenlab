@@ -41,29 +41,26 @@ export default defineMessages({
     id: 'app.containers.Comments.cancelCommentEdit',
     defaultMessage: 'Cancel',
   },
-  commentingDisabledProjectInactive: {
-    id: 'app.components.Comments.commentingDisabledProjectInactive',
+  commentingDisabledInactiveProject: {
+    id: 'app.components.Comments.commentingDisabledInactiveProject',
     defaultMessage:
-      "Commenting on this idea is not possible because '{projectName}' is currently not active.",
+      'Commenting is not possible because this project is currently not active.',
   },
-  commentingDisabledInContext: {
-    id: 'app.components.Comments.commentingDisabledInContext',
-    defaultMessage:
-      "Commenting on ideas in '{projectName}' is currently disabled.",
+  commentingDisabledProject: {
+    id: 'app.components.Comments.commentingDisabledProject',
+    defaultMessage: 'Commenting in this project is currently disabled.',
   },
-  commentingDisabledIdeaNotInCurrentPhase: {
-    id: 'app.components.Comments.commentingDisabledIdeaNotInCurrentPhase',
-    defaultMessage:
-      "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
+  commentingDisabledInCurrentPhase: {
+    id: 'app.components.Comments.commentingDisabledInCurrentPhase',
+    defaultMessage: 'Commenting is not possible in the current phase.',
   },
-  commentingDisabledNotVerified: {
-    id: 'app.components.Comments.commentingDisabledNotVerified',
-    defaultMessage:
-      'Commenting on this idea requires verification of your account. {verificationLink}',
+  commentingDisabledUnverified: {
+    id: 'app.components.Comments.commentingDisabledUnverified',
+    defaultMessage: '{verifyIdentityLink} to comment.',
   },
-  commentingNotPermitted: {
-    id: 'app.components.Comments.commentingNotPermitted',
-    defaultMessage: 'Commenting on this idea is currently not allowed',
+  commentingNotAllowed: {
+    id: 'app.components.Comments.commentingNotAllowed',
+    defaultMessage: 'Commenting is currently not allowed.',
   },
   commentingMaybeNotPermitted: {
     id: 'app.components.Comments.commentingMaybeNotPermitted',
@@ -105,9 +102,9 @@ export default defineMessages({
     id: 'app.containers.Comments.signUpLinkText',
     defaultMessage: 'sign up',
   },
-  verificationLinkText: {
-    id: 'app.containers.Comments.verificationLinkText',
-    defaultMessage: 'Verify your account now.',
+  verifyIdentityLinkText: {
+    id: 'app.containers.Comments.verifyIdentityLinkText',
+    defaultMessage: 'Verify your identity',
   },
   adminCommentDeletionCancelButton: {
     id: 'app.containers.Comments.adminCommentDeletionCancelButton',
