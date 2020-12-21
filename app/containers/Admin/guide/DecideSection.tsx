@@ -59,7 +59,7 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             dashboard: messages.decideArticle2Title,
           };
           const descriptionMessages: DecideMessages = {
-            ideas: messages.decideArticle1Description,
+            ideas: messages.decideArticle1Description2,
             dashboard: messages.decideArticle2Description,
           };
           const linkMessage = linkMessages[article];
