@@ -706,7 +706,7 @@ class Navbar extends PureComponent<
                   >
                     <NavigationItemBorder />
                     <NavigationItemText>
-                      <FormattedMessage {...messages.pageIdeas} />
+                      <FormattedMessage {...messages.pagePosts} />
                     </NavigationItemText>
                   </NavigationItem>
                 </FeatureFlag>
