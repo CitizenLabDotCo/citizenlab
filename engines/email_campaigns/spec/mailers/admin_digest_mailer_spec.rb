@@ -1,37 +1,63 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
-  describe 'AdminDigest' do
-    before do
-      EmailCampaigns::Campaigns::AdminDigest.create!
-      @recipient = create(:admin, locale: 'en')
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: @recipient.id)
-    end
+  describe 'campaign_mail' do
+    let!(:recipient) { create(:admin, locale: 'en') }
+    let!(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
+    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    let!(:top_ideas) { create_list(:idea, 3) }
+    let!(:new_initiatives) { create_list(:initiative, 3) }
+    let!(:succesful_initiatives) { create_list(:initiative, 2) }
 
     let(:command) do
       {
-        recipient: @recipient,
+        recipient: recipient,
         event_payload: {
-          statistics: @statistics,
-          top_project_ideas: @top_project_ideas,
-          new_initiatives: @new_initiatives,
-          succesful_initiatives: @succesful_initiatives
+          statistics: {
+            activities: {
+              new_ideas: { increase: 1 },
+              new_initiatives: { increase: 1 },
+              new_votes: { increase: 1 },
+              new_comments: { increase: 1 },
+              total_ideas: 1,
+              total_initiatives: 2,
+              total_users: 3
+            },
+            users: {
+              new_visitors: { increase: 1 },
+              new_users: { increase: 1 },
+              active_users: { increase: 1 }
+            }
+          },
+          top_project_ideas: {
+            project: { url: 'some_fake_url' },
+            current_phase: nil,
+            top_ideas: top_ideas.map { |idea| campaign.serialize_idea(idea) }
+          },
+          new_initiatives: new_initiatives.map { |initiative| campaign.serialize_initiative(initiative) },
+          succesful_initiatives: succesful_initiatives.map { |initiative| campaign.serialize_initiative(initiative) }
         },
         tracked_content: {
-          idea_ids: @idea_ids,
-          initiative_ids: @initiative_ids
+          idea_ids: [],
+          initiative_ids: []
         }
       }
     end
 
-    let(:mail) { described_class.campaign_mail(EmailCampaigns::Campaigns::AdminDigest.first, command).deliver_now }
+
+    before do
+      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
+    end
+
+    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Your activity on')
+      expect(mail.subject).to start_with('Your weekly admin report')
     end
 
     it 'renders the receiver email' do
-      expect(mail.to).to eq([@recipient.email])
+      expect(mail.to).to include(recipient.email)
     end
 
     it 'renders the sender email' do
@@ -39,7 +65,15 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name')['en'])
+      expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name', 'en'))
+    end
+
+    it 'shows all ideas' do
+      expect(mail_document.css('.idea').length).to eq 3
+    end
+
+    it 'shows all initiatives' do
+      expect(mail_document.css('.initiative').length).to eq 5
     end
 
     it 'assigns home url' do

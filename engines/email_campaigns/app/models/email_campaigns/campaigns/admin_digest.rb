@@ -28,6 +28,10 @@ module EmailCampaigns
       end
     end
 
+    def mailer_class
+      AdminDigestMailer
+    end
+
     def self.consentable_roles
       ['admin']
     end
@@ -162,6 +166,10 @@ module EmailCampaigns
       published_ideas_activity.dig(idea.id, :total)
     end
 
+    def idea_activity(idea, key)
+      published_ideas_activity.dig(idea.id, key)
+    end
+
     def new_initiatives(time:)
       @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
                                      .order(published_at: :desc)
@@ -194,6 +202,8 @@ module EmailCampaigns
       end
     end
 
+    public
+
     def serialize_project(project)
       {
         id: project.id,
@@ -220,11 +230,11 @@ module EmailCampaigns
         published_at: idea.published_at.iso8601,
         author_name: idea.author_name,
         upvotes_count: idea.upvotes_count,
-        upvotes_increment: activity_counts.dig(idea.id, :upvotes),
+        upvotes_increment: idea_activity(idea, :upvotes),
         downvotes_count: idea.downvotes_count,
-        downvotes_increment: activity_counts.dig(idea.id, :downvotes),
+        downvotes_increment: idea_activity(idea, :downvotes),
         comments_count: idea.comments_count,
-        comments_increment: activity_counts.dig(idea.id, :comments)
+        comments_increment: idea_activity(idea, :comments)
       }
     end
 
@@ -233,11 +243,11 @@ module EmailCampaigns
         id: initiative.id,
         title_multiloc: initiative.title_multiloc,
         url: Frontend::UrlService.new.model_to_url(initiative),
-        published_at: initiative.published_at.iso8601,
+        published_at: initiative.published_at&.iso8601,
         author_name: initiative.author_name,
         upvotes_count: initiative.upvotes_count,
         comments_count: initiative.comments_count,
-        threshold_reached_at: initiative.threshold_reached_at.iso8601,
+        threshold_reached_at: initiative.threshold_reached_at&.iso8601,
         images: initiative.initiative_images.map(&:serialize_image),
         header_bg: { versions: version_urls(initiative.header_bg) }
       }
