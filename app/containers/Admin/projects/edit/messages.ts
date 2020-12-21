@@ -50,6 +50,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  addNewProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
+    defaultMessage: 'Add a project',
+  },
+  addNewIssue: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewIssue',
+    defaultMessage: 'Add an issue',
+  },
+  addNewQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewQuestion',
+    defaultMessage: 'Add a question',
+  },
+  addNewOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewOption',
+    defaultMessage: 'Add an option',
+  },
+  addNewContribution: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewContribution',
+    defaultMessage: 'Add a contribution',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
