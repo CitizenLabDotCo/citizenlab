@@ -777,7 +777,7 @@
   "app.containers.Admin.clusterViewer.numVotes": "Liczba głosów",
   "app.containers.Admin.clusterViewer.project": "Projekt",
   "app.containers.Admin.clusterViewer.relative": "Względne",
-  "app.containers.Admin.clusterViewer.relativeImportancePostTooltip": "",
+  "app.containers.Admin.clusterViewer.relativeImportanceInputTooltip": "",
   "app.containers.Admin.clusterViewer.shiftLegend": "Dodaj do wyboru",
   "app.containers.Admin.clusterViewer.thenLevel": "a potem przez {level}",
   "app.containers.Admin.clusterViewer.title": "",
