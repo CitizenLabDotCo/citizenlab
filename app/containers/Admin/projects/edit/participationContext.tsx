@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual, omitBy, isNil, memoize } from 'lodash-es';
+import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -506,7 +506,7 @@ class ParticipationContext extends PureComponent<
     return isValidated;
   }
 
-  getInputTermOptions = memoize(() => {
+  getInputTermOptions = () => {
     return INPUT_TERMS.map((inputTerm: InputTerm) => {
       const labelMessages: {
         [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
@@ -525,7 +525,7 @@ class ParticipationContext extends PureComponent<
         label: this.props.intl.formatMessage(labelMessage),
       };
     });
-  });
+  };
 
   render() {
     const {
