@@ -26,26 +26,26 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
     defaultMessage: '{name} commented on your idea',
   },
-  // userCommentedOnYourOption: {
-  //   id: 'app.containers.NotificationMenu.userCommentedOnYourOption',
-  //   defaultMessage: '{name} commented on your option',
-  // },
-  // userCommentedOnYourProject: {
-  //   id: 'app.containers.NotificationMenu.userCommentedOnYourProject',
-  //   defaultMessage: '{name} commented on your project',
-  // },
-  // userCommentedOnYourQuestion: {
-  //   id: 'app.containers.NotificationMenu.userCommentedOnYourQuestion',
-  //   defaultMessage: '{name} commented on your question',
-  // },
-  // userCommentedOnYourIssue: {
-  //   id: 'app.containers.NotificationMenu.userCommentedOnYourIssue',
-  //   defaultMessage: '{name} commented on your issue',
-  // },
-  // userCommentedOnYourContribution: {
-  //   id: 'app.containers.NotificationMenu.userCommentedOnYourContribution',
-  //   defaultMessage: '{name} commented on your contribution',
-  // },
+  userCommentedOnYourOption: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourOption',
+    defaultMessage: '{name} commented on your option',
+  },
+  userCommentedOnYourProject: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourProject',
+    defaultMessage: '{name} commented on your project',
+  },
+  userCommentedOnYourQuestion: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourQuestion',
+    defaultMessage: '{name} commented on your question',
+  },
+  userCommentedOnYourIssue: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourIssue',
+    defaultMessage: '{name} commented on your issue',
+  },
+  userCommentedOnYourContribution: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourContribution',
+    defaultMessage: '{name} commented on your contribution',
+  },
   userCommentedOnYourInitiative: {
     id: 'app.containers.NotificationMenu.userCommentedOnYourInitiative',
     defaultMessage: '{name} commented on your initiative',
