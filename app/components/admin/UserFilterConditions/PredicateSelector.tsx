@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { keys } from 'lodash-es';
 
 import { TRule, ruleTypeConstraints } from './rules';
@@ -16,46 +16,41 @@ type Props = {
   onChange: (predicate: TRule['predicate']) => void;
 };
 
-type State = {};
+const PredicateSelector = memo(
+  ({
+    ruleType,
+    predicate,
+    onChange,
+    intl: { formatMessage },
+  }: Props & InjectedIntlProps) => {
+    const generateOptions = (): IOption[] => {
+      if (ruleType) {
+        return keys(ruleTypeConstraints[ruleType]).map((predicate) => {
+          const message =
+            messages[`predicate_${ruleType}_${predicate}`] ||
+            messages[`predicate_${predicate}`];
+          return {
+            value: predicate,
+            label: formatMessage(message),
+          };
+        });
+      } else {
+        return [];
+      }
+    };
 
-class PredicateSelector extends React.PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const {
-      ruleType,
-      intl: { formatMessage },
-    } = this.props;
-    if (ruleType) {
-      return keys(ruleTypeConstraints[ruleType]).map((predicate) => {
-        const message =
-          messages[`predicate_${ruleType}_${predicate}`] ||
-          messages[`predicate_${predicate}`];
-        return {
-          value: predicate,
-          label: formatMessage(message),
-        };
-      });
-    } else {
-      return [];
-    }
-  };
+    const handleOnChange = (option: IOption) => {
+      onChange(option.value);
+    };
 
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
-  };
-
-  render() {
-    const { predicate } = this.props;
     return (
       <Select
         value={predicate}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
+        options={generateOptions()}
+        onChange={handleOnChange}
       />
     );
   }
-}
+);
 
 export default injectIntl(PredicateSelector);
