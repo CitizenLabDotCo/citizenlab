@@ -144,7 +144,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
-
     service.before_create(@idea, current_user)
 
     authorize @idea
