@@ -13,7 +13,7 @@ export default defineMessages({
   optionEmailSharingSubject: {
     id:
       'app.components.PostComponents.SharingModalContent.optionEmailSharingSubject',
-    defaultMessage: 'Support this option: {postTitle}.',
+    defaultMessage: 'Support my proposed option: {postTitle}.',
   },
   issueEmailSharingSubject: {
     id:
@@ -80,6 +80,31 @@ export default defineMessages({
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',
     defaultMessage: 'Support my idea: {postTitle}.',
+  },
+  optionWhatsAppMessage: {
+    id:
+      'app.components.PostComponents.SharingModalContent.optionWhatsAppMessage',
+    defaultMessage: 'Support my proposed option: {postTitle}.',
+  },
+  questionWhatsAppMessage: {
+    id:
+      'app.components.PostComponents.SharingModalContent.questionWhatsAppMessage',
+    defaultMessage: 'Join the discussion: {postTitle}.',
+  },
+  contributionWhatsAppMessage: {
+    id:
+      'app.components.PostComponents.SharingModalContent.contributionWhatsAppMessage',
+    defaultMessage: 'Support my contribution: {postTitle}.',
+  },
+  projectWhatsAppMessage: {
+    id:
+      'app.components.PostComponents.SharingModalContent.projectWhatsAppMessage',
+    defaultMessage: 'Support my project: {postTitle}.',
+  },
+  issueWhatsAppMessage: {
+    id:
+      'app.components.PostComponents.SharingModalContent.issueWhatsAppMessage',
+    defaultMessage: 'I just posted an issue: {postTitle}.',
   },
   whatsAppMessageProposal: {
     id:

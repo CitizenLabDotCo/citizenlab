@@ -192,6 +192,11 @@ class SharingModalContent extends PureComponent<
       });
       whatsAppMessage = getInputTermMessage(inputTerm, {
         idea: messages.ideaWhatsAppMessage,
+        option: messages.optionWhatsAppMessage,
+        project: messages.projectWhatsAppMessage,
+        question: messages.questionWhatsAppMessage,
+        issue: messages.issueWhatsAppMessage,
+        contribution: messages.contributionWhatsAppMessage,
       });
     }
 
