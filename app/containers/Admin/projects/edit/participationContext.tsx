@@ -11,6 +11,7 @@ import {
   IconTooltip,
   Toggle,
   Label,
+  Select,
 } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import {
@@ -29,13 +30,16 @@ import {
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
   InputTerm,
+  INPUT_TERMS,
 } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -51,6 +55,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // Typings
 import { CLError } from 'typings';
 import { adopt } from 'react-adopt';
+import { IOption } from 'cl2-component-library/dist/utils/typings';
 
 const Container = styled.div``;
 
@@ -133,6 +138,10 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
 `;
 
+const StyledSelect = styled(Select)`
+  max-width: 288px;
+`;
+
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
@@ -153,11 +162,12 @@ export interface IParticipationContextConfig {
 interface DataProps {
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
-  surveys_enabled: boolean | null;
-  typeform_enabled: boolean | null;
-  google_forms_enabled: boolean | null;
-  enalyzer_enabled: boolean | null;
-  survey_monkey_enabled: boolean | null;
+  surveys_enabled: GetFeatureFlagChildProps;
+  typeform_enabled: GetFeatureFlagChildProps;
+  google_forms_enabled: GetFeatureFlagChildProps;
+  enalyzer_enabled: GetFeatureFlagChildProps;
+  survey_monkey_enabled: GetFeatureFlagChildProps;
+  isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
 
 interface InputProps {
@@ -448,6 +458,14 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleInputTermChange = (option: IOption) => {
+    const input_term: InputTerm = option.value;
+
+    this.setState({
+      input_term,
+    });
+  };
+
   togglePollAnonymous = () => {
     this.setState((state) => ({ poll_anonymous: !state.poll_anonymous }));
   };
@@ -488,6 +506,27 @@ class ParticipationContext extends PureComponent<
     return isValidated;
   }
 
+  getInputTermOptions = () => {
+    return INPUT_TERMS.map((inputTerm: InputTerm) => {
+      const labelMessages: {
+        [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+      } = {
+        idea: messages.ideaTerm,
+        contribution: messages.contributionTerm,
+        question: messages.questionTerm,
+        option: messages.optionTerm,
+        issue: messages.issueTerm,
+        project: messages.projectTerm,
+      };
+      const labelMessage = labelMessages[inputTerm];
+
+      return {
+        value: inputTerm,
+        label: this.props.intl.formatMessage(labelMessage),
+      };
+    });
+  };
+
   render() {
     const {
       tenant,
@@ -499,6 +538,7 @@ class ParticipationContext extends PureComponent<
       survey_monkey_enabled,
       google_forms_enabled,
       intl: { formatMessage },
+      isCustomInputTermEnabled,
     } = this.props;
     const className = this.props['className'];
     const {
@@ -557,6 +597,7 @@ class ParticipationContext extends PureComponent<
                   </LabelText>
                 }
               />
+
               <FeatureFlag name="participatory_budgeting">
                 <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
@@ -661,6 +702,22 @@ class ParticipationContext extends PureComponent<
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
             </SectionField>
+
+            {(participation_method === 'budgeting' ||
+              participation_method === 'ideation') &&
+              isCustomInputTermEnabled &&
+              (locale === 'en' || locale === 'en-GB' || locale === 'en-CA') && (
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.inputTermLabel} />
+                  </SubSectionTitle>
+                  <StyledSelect
+                    value={input_term}
+                    options={this.getInputTermOptions()}
+                    onChange={this.handleInputTermChange}
+                  />
+                </SectionField>
+              )}
 
             {participation_method === 'budgeting' && (
               <>
@@ -859,73 +916,68 @@ class ParticipationContext extends PureComponent<
             )}
 
             {(participation_method === 'ideation' ||
-              participation_method === 'budgeting') &&
-              input_term && (
-                <>
-                  <SectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultDisplay} />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage {...messages.viewModeTooltip} />
-                        }
-                      />
-                    </SubSectionTitle>
-                    {['card', 'map'].map((key) => (
-                      <Radio
-                        key={key}
-                        onChange={this.handleIdeasDisplayChange}
-                        currentValue={presentation_mode}
-                        value={key}
-                        name="presentation_mode"
-                        id={`presentation_mode-${key}`}
-                        label={
-                          <FormattedMessage {...messages[`${key}Display`]} />
-                        }
-                      />
-                    ))}
-                    <Error
-                      apiErrors={apiErrors && apiErrors.presentation_mode}
+              participation_method === 'budgeting') && (
+              <>
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.defaultDisplay} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.viewModeTooltip} />
+                      }
                     />
-                  </SectionField>
-                  <SectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultSorting} />
-                      <IconTooltip
-                        content={
-                          <FormattedMessage
-                            {...messages.defaultPostSortingTooltip}
-                          />
-                        }
-                      />
-                    </SubSectionTitle>
-                    {[
-                      { key: 'trending', value: 'trending' },
-                      { key: 'random', value: 'random' },
-                      { key: 'popular', value: 'popular' },
-                      { key: 'newest', value: 'new' },
-                      { key: 'oldest', value: '-new' },
-                    ].map(({ key, value }) => (
-                      <Radio
-                        key={key}
-                        onChange={this.handleIdeaDefaultSortMethodChange}
-                        currentValue={ideas_order}
-                        value={value}
-                        name="IdeaDefaultSortMethod"
-                        id={`ideas_order-${key}`}
-                        label={
-                          <FormattedMessage
-                            {...messages[`${key}SortingMethod`]}
-                          />
-                        }
-                      />
-                    ))}
-                    <Error
-                      apiErrors={apiErrors && apiErrors.presentation_mode}
+                  </SubSectionTitle>
+                  {['card', 'map'].map((key) => (
+                    <Radio
+                      key={key}
+                      onChange={this.handleIdeasDisplayChange}
+                      currentValue={presentation_mode}
+                      value={key}
+                      name="presentation_mode"
+                      id={`presentation_mode-${key}`}
+                      label={
+                        <FormattedMessage {...messages[`${key}Display`]} />
+                      }
                     />
-                  </SectionField>
-                </>
-              )}
+                  ))}
+                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+                </SectionField>
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.defaultIdeaSorting} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.defaultPostSortingTooltip}
+                        />
+                      }
+                    />
+                  </SubSectionTitle>
+                  {[
+                    { key: 'trending', value: 'trending' },
+                    { key: 'random', value: 'random' },
+                    { key: 'popular', value: 'popular' },
+                    { key: 'newest', value: 'new' },
+                    { key: 'oldest', value: '-new' },
+                  ].map(({ key, value }) => (
+                    <Radio
+                      key={key}
+                      onChange={this.handleIdeaDefaultSortMethodChange}
+                      currentValue={ideas_order}
+                      value={value}
+                      name="IdeaDefaultSortMethod"
+                      id={`ideas_order-${key}`}
+                      label={
+                        <FormattedMessage
+                          {...messages[`${key}SortingMethod`]}
+                        />
+                      }
+                    />
+                  ))}
+                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+                </SectionField>
+              </>
+            )}
 
             {participation_method === 'poll' && (
               <>
@@ -1045,6 +1097,7 @@ const Data = adopt<DataProps, {}>({
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
   survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
+  isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
 });
