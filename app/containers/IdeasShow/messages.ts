@@ -90,11 +90,52 @@ export default defineMessages({
   },
   ideaEmailSharingSubject: {
     id: 'app.containers.IdeasShow.ideaEmailSharingSubject',
-    defaultMessage: 'Support my idea: {ideaTitle}.',
+    defaultMessage: 'Support this idea: {postTitle}.',
   },
   ideaEmailSharingBody: {
     id: 'app.containers.IdeasShow.ideaEmailSharingBody',
-    defaultMessage: "Support my idea '{ideaTitle}' at {ideaUrl}!",
+    defaultMessage: "Support this idea '{postTitle}' at {postUrl}!",
+  },
+  optionEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.optionEmailSharingSubject',
+    defaultMessage: 'Support this option: {postTitle}.',
+  },
+  optionEmailSharingBody: {
+    id: 'app.containers.IdeasShow.optionEmailSharingBody',
+    defaultMessage: "Support this option '{postTitle}' at {postUrl}!",
+  },
+  contributionEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.contributionEmailSharingSubject',
+    defaultMessage: 'Support this contribution: {postTitle}.',
+  },
+  contributionEmailSharingBody: {
+    id: 'app.containers.IdeasShow.contributionEmailSharingBody',
+    defaultMessage: "Support this contribution '{postTitle}' at {postUrl}!",
+  },
+  questionEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.questionEmailSharingSubject',
+    defaultMessage: 'Join the discussion about this question: {postTitle}.',
+  },
+  questionEmailSharingBody: {
+    id: 'app.containers.IdeasShow.questionEmailSharingBody',
+    defaultMessage:
+      "Join the discussion about this question '{postTitle}' at {postUrl}!",
+  },
+  issueEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.issueEmailSharingSubject',
+    defaultMessage: 'Support this issue: {postTitle}.',
+  },
+  issueEmailSharingBody: {
+    id: 'app.containers.IdeasShow.issueEmailSharingBody',
+    defaultMessage: "Support this issue '{postTitle}' at {postUrl}!",
+  },
+  projectEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.projectEmailSharingSubject',
+    defaultMessage: 'Support this project: {postTitle}.',
+  },
+  projectEmailSharingBody: {
+    id: 'app.containers.IdeasShow.projectEmailSharingBody',
+    defaultMessage: "Support this project '{postTitle}' at {postUrl}!",
   },
   share: {
     id: 'app.containers.IdeasShow.share',
