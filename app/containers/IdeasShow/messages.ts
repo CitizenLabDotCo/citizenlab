@@ -79,18 +79,57 @@ export default defineMessages({
     id: 'app.components.IdeasShow.bodyTitle',
     defaultMessage: 'Description',
   },
-  twitterMessage: {
-    id: 'app.containers.IdeasShow.twitterMessage',
-    defaultMessage: 'Vote for {ideaTitle} on',
+  ideaTwitterMessage: {
+    id: 'app.containers.IdeasShow.ideaTwitterMessage',
+    defaultMessage: 'Support this idea: {postTitle}',
   },
-  whatsAppMessage: {
-    id: 'app.containers.IdeasShow.whatsAppMessage',
-    defaultMessage:
-      '{ideaTitle} | from the participation platform of {orgName}',
+  optionTwitterMessage: {
+    id: 'app.containers.IdeasShow.optionTwitterMessage',
+    defaultMessage: 'Support this option: {postTitle}',
+  },
+  issueTwitterMessage: {
+    id: 'app.containers.IdeasShow.issueTwitterMessage',
+    defaultMessage: 'Support this issue: {postTitle}',
+  },
+  projectTwitterMessage: {
+    id: 'app.containers.IdeasShow.projectTwitterMessage',
+    defaultMessage: 'Support this project: {postTitle}',
+  },
+  questionTwitterMessage: {
+    id: 'app.containers.IdeasShow.questionTwitterMessage',
+    defaultMessage: 'Join the discussion: {postTitle}',
+  },
+  contributionTwitterMessage: {
+    id: 'app.containers.IdeasShow.contributionTwitterMessage',
+    defaultMessage: 'Support this contribution: {postTitle}',
+  },
+  ideaWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
+    defaultMessage: 'Support this idea: {postTitle}',
+  },
+  optionWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.optionWhatsAppMessage',
+    defaultMessage: 'Support this option: {postTitle}',
+  },
+  contributionWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.contributionWhatsAppMessage',
+    defaultMessage: 'Support this contribution: {postTitle}',
+  },
+  projectWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.projectWhatsAppMessage',
+    defaultMessage: 'Support this project: {postTitle}',
+  },
+  questionWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.questionWhatsAppMessage',
+    defaultMessage: 'Join the discussion: {postTitle}',
+  },
+  issueWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.ideasWhatsAppMessage',
+    defaultMessage: 'Support this issue: {postTitle}',
   },
   ideaEmailSharingSubject: {
     id: 'app.containers.IdeasShow.ideaEmailSharingSubject',
-    defaultMessage: 'Support this idea: {postTitle}.',
+    defaultMessage: 'Support this idea: {postTitle}',
   },
   ideaEmailSharingBody: {
     id: 'app.containers.IdeasShow.ideaEmailSharingBody',
@@ -98,7 +137,7 @@ export default defineMessages({
   },
   optionEmailSharingSubject: {
     id: 'app.containers.IdeasShow.optionEmailSharingSubject',
-    defaultMessage: 'Support this option: {postTitle}.',
+    defaultMessage: 'Support this option: {postTitle}',
   },
   optionEmailSharingBody: {
     id: 'app.containers.IdeasShow.optionEmailSharingBody',
@@ -106,7 +145,7 @@ export default defineMessages({
   },
   contributionEmailSharingSubject: {
     id: 'app.containers.IdeasShow.contributionEmailSharingSubject',
-    defaultMessage: 'Support this contribution: {postTitle}.',
+    defaultMessage: 'Support this contribution: {postTitle}',
   },
   contributionEmailSharingBody: {
     id: 'app.containers.IdeasShow.contributionEmailSharingBody',
@@ -114,7 +153,7 @@ export default defineMessages({
   },
   questionEmailSharingSubject: {
     id: 'app.containers.IdeasShow.questionEmailSharingSubject',
-    defaultMessage: 'Join the discussion about this question: {postTitle}.',
+    defaultMessage: 'Join the discussion: {postTitle}',
   },
   questionEmailSharingBody: {
     id: 'app.containers.IdeasShow.questionEmailSharingBody',
@@ -123,7 +162,7 @@ export default defineMessages({
   },
   issueEmailSharingSubject: {
     id: 'app.containers.IdeasShow.issueEmailSharingSubject',
-    defaultMessage: 'Support this issue: {postTitle}.',
+    defaultMessage: 'Support this issue: {postTitle}',
   },
   issueEmailSharingBody: {
     id: 'app.containers.IdeasShow.issueEmailSharingBody',
@@ -131,7 +170,7 @@ export default defineMessages({
   },
   projectEmailSharingSubject: {
     id: 'app.containers.IdeasShow.projectEmailSharingSubject',
-    defaultMessage: 'Support this project: {postTitle}.',
+    defaultMessage: 'Support this project: {postTitle}',
   },
   projectEmailSharingBody: {
     id: 'app.containers.IdeasShow.projectEmailSharingBody',

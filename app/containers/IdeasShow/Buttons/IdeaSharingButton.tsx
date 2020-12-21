@@ -62,12 +62,32 @@ const Component = ({
       <SharingDropdownButton
         className={className}
         url={postUrl}
-        whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-          postTitle,
-        })}
-        twitterMessage={formatMessage(messages.twitterMessage, {
-          postTitle,
-        })}
+        whatsAppMessage={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaWhatsAppMessage,
+            option: messages.optionWhatsAppMessage,
+            project: messages.projectWhatsAppMessage,
+            question: messages.questionWhatsAppMessage,
+            issue: messages.issueWhatsAppMessage,
+            contribution: messages.contributionWhatsAppMessage,
+          }),
+          {
+            postTitle,
+          }
+        )}
+        twitterMessage={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaTwitterMessage,
+            option: messages.optionTwitterMessage,
+            project: messages.projectTwitterMessage,
+            question: messages.questionTwitterMessage,
+            issue: messages.issueTwitterMessage,
+            contribution: messages.contributionTwitterMessage,
+          }),
+          {
+            postTitle,
+          }
+        )}
         emailSubject={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaEmailSharingSubject,
