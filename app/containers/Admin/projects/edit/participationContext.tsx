@@ -704,20 +704,20 @@ class ParticipationContext extends PureComponent<
             </SectionField>
 
             {(participation_method === 'budgeting' ||
-              participation_method === 'ideation') &&
-              isCustomInputTermEnabled &&
-              (locale === 'en' || locale === 'en-GB' || locale === 'en-CA') && (
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.inputTermLabel} />
-                  </SubSectionTitle>
-                  <StyledSelect
-                    value={input_term}
-                    options={this.getInputTermOptions()}
-                    onChange={this.handleInputTermChange}
-                  />
-                </SectionField>
-              )}
+              participation_method === 'ideation') && (
+              // isCustomInputTermEnabled &&
+              // (locale === 'en' || locale === 'en-GB' || locale === 'en-CA') && (
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.inputTermLabel} />
+                </SubSectionTitle>
+                <StyledSelect
+                  value={input_term}
+                  options={this.getInputTermOptions()}
+                  onChange={this.handleInputTermChange}
+                />
+              </SectionField>
+            )}
 
             {participation_method === 'budgeting' && (
               <>
