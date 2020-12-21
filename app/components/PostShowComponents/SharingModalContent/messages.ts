@@ -84,7 +84,7 @@ export default defineMessages({
   optionWhatsAppMessage: {
     id:
       'app.components.PostComponents.SharingModalContent.optionWhatsAppMessage',
-    defaultMessage: 'Support my proposed option: {postTitle}.',
+    defaultMessage: 'Support my option: {postTitle}.',
   },
   questionWhatsAppMessage: {
     id:
