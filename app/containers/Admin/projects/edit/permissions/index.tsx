@@ -399,19 +399,19 @@ class ProjectPermissions extends PureComponent<
                 <SubSection>
                   <SubSectionTitle>
                     <FormattedMessage
-                      {...messages.ideaAssignmentSectionTitle}
+                      {...messages.postAssignmentSectionTitle}
                     />
                     <IconTooltip
                       content={
                         <FormattedMessage
-                          {...messages.ideaAssignmentTooltipText}
+                          {...messages.postAssignmentTooltipText}
                           values={{
                             ideaManagerLink: (
                               <StyledLink
                                 to={`/admin/projects/${projectId}/ideas`}
                               >
                                 <FormattedMessage
-                                  {...messages.ideaManagerLinkText}
+                                  {...messages.postManagerLinkText}
                                 />
                               </StyledLink>
                             ),

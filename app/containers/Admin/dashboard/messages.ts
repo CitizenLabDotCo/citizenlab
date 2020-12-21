@@ -52,21 +52,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.DashboardPage.ideas',
-    defaultMessage: 'Ideas',
+  posts: {
+    id: 'app.containers.AdminPage.DashboardPage.posts ',
+    defaultMessage: 'Posts',
   },
   votes: {
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
-  ideaVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
-    defaultMessage: 'Votes on ideas',
-  },
-  fiveIdeasWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes',
-    defaultMessage: '5 Ideas With Most Votes',
+  fivePostsWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fivePostsWithMostVotes',
+    defaultMessage: 'Top 5 posts by votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -151,26 +147,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
-  activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+  activeParticipantsDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.activeParticipantsDescription',
     defaultMessage:
-      'The number of users that either voted, commented or posted an idea on a given day.',
+      'The number of participants that posted, voted or commented.',
   },
-  ideasByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas',
-  },
-  ideasByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByStatusTitle',
-    defaultMessage: 'Ideas By Status',
+  postsByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.postsByStatusTitle',
+    defaultMessage: 'Posts by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
-  },
-  ideaVotesByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle',
-    defaultMessage: 'Votes on ideas',
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
@@ -271,14 +259,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  outsideArea: {
-    id: 'app.containers.AdminPage.DashboardPage.outsideArea',
-    defaultMessage: 'Somewhere else',
+  otherArea: {
+    id: 'app.containers.AdminPage.DashboardPage.otherArea',
+    defaultMessage: 'Other',
   },
-  top10activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
+  mostActiveUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersDescription',
     defaultMessage:
-      'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.',
+      'The ranking is based on the number of posts (5 points per post), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -297,15 +285,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  mapHelperText: {
-    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+  mapInfoText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapInfoText',
     defaultMessage:
-      'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+      'This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.',
   },
-  startLoadingMessage: {
-    id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
+  automaticLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.automaticLoadingMessage',
     defaultMessage:
-      'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
+      'Automatic location detection underway. Please wait until the processing is complete.',
   },
   thenLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',

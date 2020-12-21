@@ -10,13 +10,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
-  ideasTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
-    defaultMessage: 'Ideas',
+  postsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.postsTab',
+    defaultMessage: 'Posts',
   },
-  ideaFormTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaFormTab',
-    defaultMessage: 'Idea form',
+  inputFormTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
+    defaultMessage: 'Input form',
   },
   volunteeringTab: {
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
@@ -80,13 +80,14 @@ export default defineMessages({
     defaultMessage:
       'Users can only read the information you provide, they cannot participate actively.',
   },
-  ideation: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideation',
-    defaultMessage: 'Ideation',
+  ideationAndFeedback: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideationAndFeedback',
+    defaultMessage: 'Ideation and feedback',
   },
-  ideationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideationDescription',
-    defaultMessage: 'Users can post ideas, comment on other ideas and/or vote.',
+  ideationAndFeedbackDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideationAndFeedbackDescription',
+    defaultMessage:
+      'Create or crowdsource inputs that participants can vote and comment on. Supports idea collection, options analysis, question and answers, issue identification and more.',
   },
   survey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey',
@@ -101,11 +102,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
     defaultMessage: 'Participatory Budgeting',
   },
-  participatoryBudgetingDescription: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
+  pbDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.pbDescription',
     defaultMessage:
-      'Users can select ideas until their selection reaches a predefined budget threshold.',
+      'Participants are assigned a budget that allocate towards different projects.',
   },
   poll: {
     id: 'app.containers.AdminPage.ProjectEdit.poll',
@@ -207,9 +207,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.postsDefaultDisplay',
     defaultMessage: 'Posts default display',
   },
-  defaultIdeaSorting: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultIdeaSorting',
-    defaultMessage: 'Idea sorting order',
+  defaultSorting: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultSorting',
+    defaultMessage: 'Sorting',
   },
   postsDefaultDisplayTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.postsDefaultDisplayTooltip',
