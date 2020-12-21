@@ -25,7 +25,21 @@ export type IdeaDefaultSortMethod =
   | '-new'
   | null;
 
-export type InputTerm = 'idea';
+export const INPUT_TERMS = [
+  'idea',
+  'option',
+  'project',
+  'question',
+  'issue',
+  'contribution',
+];
+export type InputTerm =
+  | 'idea'
+  | 'option'
+  | 'project'
+  | 'question'
+  | 'issue'
+  | 'contribution';
 
 export function getInputTerm(
   pcType: IParticipationContextType,

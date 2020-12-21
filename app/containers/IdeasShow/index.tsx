@@ -745,6 +745,11 @@ export class IdeasShow extends PureComponent<
                   title={formatMessage(
                     getInputTermMessage(inputTerm, {
                       idea: messages.sharingModalTitle,
+                      option: messages.optionSharingModalTitle,
+                      project: messages.projectSharingModalTitle,
+                      question: messages.questionSharingModalTitle,
+                      issue: messages.issueSharingModalTitle,
+                      contribution: messages.contributionSharingModalTitle,
                     })
                   )}
                   subtitle={formatMessage(messages.sharingModalSubtitle)}
