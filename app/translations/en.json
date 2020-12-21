@@ -1092,8 +1092,6 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "Without a timeline",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Create a project",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Create a project from a template",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSorting": "Idea sorting order",
-  "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Idea overview",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "You can set the default order for posts to be displayed on the main project page.",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Departments",

@@ -1092,8 +1092,6 @@
   "app.containers.AdminPage.ProjectEdit.continuous": "دون جدول زمني",
   "app.containers.AdminPage.ProjectEdit.createAProject": "أنشئ مشروعًا",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "أنشئ مشروعًا من قالب",
-  "app.containers.AdminPage.ProjectEdit.defaultIdeaSorting": "",
-  "app.containers.AdminPage.ProjectEdit.defaultDisplay": "نظرة عامة على الفكرة",
   "app.containers.AdminPage.ProjectEdit.defaultPostSortingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "",
   "app.containers.AdminPage.ProjectEdit.departments": "الأقسام",
