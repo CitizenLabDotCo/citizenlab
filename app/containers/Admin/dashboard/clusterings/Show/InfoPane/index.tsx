@@ -243,7 +243,7 @@ class InfoPane extends PureComponent<Props, State> {
                       <IconTooltip
                         content={
                           <FormattedMessage
-                            {...messages.relativeImportancePostTooltip}
+                            {...messages.relativeImportanceInputTooltip}
                           />
                         }
                       />
