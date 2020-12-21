@@ -46,7 +46,12 @@ const OfficialFeedbackOnYourIdeaNotification = memo<Props>((props) => {
       >
         <FormattedMessage
           {...getInputTermMessage(inputTerm, {
-            idea: messages.officialFeedbackOnYourIdea,
+            idea: messages.officialFeedbackOnYourIdea2,
+            option: messages.officialFeedbackOnYourOption,
+            project: messages.officialFeedbackOnYourProject,
+            question: messages.officialFeedbackOnYourQuestion,
+            issue: messages.officialFeedbackOnYourIssue,
+            contribution: messages.officialFeedbackOnYourContribution,
           })}
           values={{
             officialName: (
