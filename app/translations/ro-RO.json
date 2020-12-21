@@ -1759,7 +1759,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Statusul curent",
   "app.containers.IdeasShow.MetaInformation.location": "Locație",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Postat de",
-  "app.containers.IdeasShow.MetaInformation.similarIdeas": "Idei similare",
+  "app.containers.IdeasShow.MetaInformation.similarPosts": "",
   "app.containers.IdeasShow.MetaInformation.topics": "Subiecte",
   "app.containers.IdeasShow.a11y_ParticipatoryBudgeting": "",
   "app.containers.IdeasShow.a11y_voting": "",
