@@ -1759,7 +1759,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Current status",
   "app.containers.IdeasShow.MetaInformation.location": "Location",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Posted by",
-  "app.containers.IdeasShow.MetaInformation.similarIdeas": "Similar ideas",
+  "app.containers.IdeasShow.MetaInformation.similarPosts": "Similar posts",
   "app.containers.IdeasShow.MetaInformation.topics": "Topics",
   "app.containers.IdeasShow.a11y_ParticipatoryBudgeting": "Participatory budget assignment",
   "app.containers.IdeasShow.a11y_voting": "Voting",

@@ -1759,7 +1759,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Statut actuel",
   "app.containers.IdeasShow.MetaInformation.location": "Lieu",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publié par",
-  "app.containers.IdeasShow.MetaInformation.similarIdeas": "Idées similaires",
+  "app.containers.IdeasShow.MetaInformation.similarPosts": "",
   "app.containers.IdeasShow.MetaInformation.topics": "Thèmes",
   "app.containers.IdeasShow.a11y_ParticipatoryBudgeting": "",
   "app.containers.IdeasShow.a11y_voting": "",

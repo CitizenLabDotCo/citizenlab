@@ -1759,7 +1759,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Nåværende status",
   "app.containers.IdeasShow.MetaInformation.location": "Sted",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publisert av",
-  "app.containers.IdeasShow.MetaInformation.similarIdeas": "Lignende ideer",
+  "app.containers.IdeasShow.MetaInformation.similarPosts": "",
   "app.containers.IdeasShow.MetaInformation.topics": "Emner",
   "app.containers.IdeasShow.a11y_ParticipatoryBudgeting": "",
   "app.containers.IdeasShow.a11y_voting": "",

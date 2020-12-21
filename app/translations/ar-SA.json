@@ -1759,7 +1759,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "الحالة الحالية",
   "app.containers.IdeasShow.MetaInformation.location": "الموقع",
   "app.containers.IdeasShow.MetaInformation.postedBy": "تم النشر بواسطة",
-  "app.containers.IdeasShow.MetaInformation.similarIdeas": "أفكار مشابهة",
+  "app.containers.IdeasShow.MetaInformation.similarPosts": "",
   "app.containers.IdeasShow.MetaInformation.topics": "الموضوعات",
   "app.containers.IdeasShow.a11y_ParticipatoryBudgeting": "",
   "app.containers.IdeasShow.a11y_voting": "",

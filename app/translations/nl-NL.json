@@ -1759,7 +1759,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Huidige status",
   "app.containers.IdeasShow.MetaInformation.location": "Locatie",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Geplaatst door",
-  "app.containers.IdeasShow.MetaInformation.similarIdeas": "Vergelijkbare ideeën",
+  "app.containers.IdeasShow.MetaInformation.similarPosts": "",
   "app.containers.IdeasShow.MetaInformation.topics": "{tenantName, select, gent {Wijk} other {Thema's}}",
   "app.containers.IdeasShow.a11y_ParticipatoryBudgeting": "",
   "app.containers.IdeasShow.a11y_voting": "",
