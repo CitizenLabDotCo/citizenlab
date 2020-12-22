@@ -39,8 +39,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer, type: :mailer do
     end
 
     it 'assigns home url' do
-      expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
     end
   end
 end
