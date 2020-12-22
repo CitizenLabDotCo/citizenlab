@@ -147,7 +147,7 @@ const ParticipationPerTopic = (props: Props) => {
               </Column>
               <Column>
                 <ParticipationType>
-                  <FormattedMessage {...messages.posts} />
+                  <FormattedMessage {...messages.inputs} />
                 </ParticipationType>
                 {ideasByTopic.serie &&
                   ideasByTopic.serie.map((topic, index) => (
