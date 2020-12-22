@@ -12,8 +12,7 @@ module EmailCampaigns
             reply_to: DEFAULT_SENDER
 
     before_action do
-      @command  = params[:command]
-      @campaign = params[:campaign]
+      @command, @campaign = params.values_at(:command, :campaign)
     end
 
     def campaign_mail
