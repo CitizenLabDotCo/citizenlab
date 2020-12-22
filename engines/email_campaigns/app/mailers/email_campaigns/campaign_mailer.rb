@@ -4,7 +4,7 @@ module EmailCampaigns
     layout false
 
     def campaign_mail
-      command, campaign = params.values_at(:command, :command)
+      command, campaign = params.values_at(:command, :campaign)
       recipient = command[:recipient]
       multiloc_service = MultilocService.new
       frontend_service = Frontend::UrlService.new
