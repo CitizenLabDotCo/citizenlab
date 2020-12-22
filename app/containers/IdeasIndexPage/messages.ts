@@ -19,7 +19,7 @@ export default defineMessages({
   },
   inputsIndexMetaTitle: {
     id: 'app.containers.IdeasIndexPage.inputsIndexMetaTitle',
-    defaultMessage: 'All Ideas • {orgName}',
+    defaultMessage: 'All inputs | {orgName}',
   },
   inputsIndexMetaDescription: {
     id: 'app.containers.IdeasIndexPage.inputsIndexMetaDescription',
