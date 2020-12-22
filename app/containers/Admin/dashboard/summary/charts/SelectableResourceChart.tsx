@@ -144,7 +144,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
       currentSelectedResource &&
       formatMessage(
         {
-          ideas: messages.posts,
+          ideas: messages.inputs,
           comments: messages.comments,
           votes: messages.votes,
         }[currentSelectedResource]

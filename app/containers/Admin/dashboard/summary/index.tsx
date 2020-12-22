@@ -128,7 +128,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     };
 
     this.resourceOptions = [
-      { value: 'ideas', label: formatMessage(messages.posts) },
+      { value: 'ideas', label: formatMessage(messages.inputs) },
       { value: 'comments', label: formatMessage(messages.comments) },
       { value: 'votes', label: formatMessage(messages.votes) },
     ];
@@ -374,7 +374,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               {...this.state}
             />
             <LineBarChart
-              graphTitle={formatMessage(messages.posts)}
+              graphTitle={formatMessage(messages.inputs)}
               graphUnit="ideas"
               graphUnitMessageKey="ideas"
               startAt={startAt}
