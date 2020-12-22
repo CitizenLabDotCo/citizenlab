@@ -346,14 +346,14 @@ export default defineMessages({
       'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
-  titlePosts: {
-    id: 'app.components.admin.PostManager.titlePosts',
-    defaultMessage: 'Post manager',
+  titleInputManager: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager',
+    defaultMessage: 'Input manager',
   },
-  subtitlePosts: {
-    id: 'app.components.admin.PostManager.subtitlePosts',
+  subtitleInputManager: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
-      'Give feedback, assign topics or copy posts to the next project phase.',
+      'Give feedback, assign topics or copy inputs to the next project phase.',
   },
   hiddenFieldsTip: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip',
