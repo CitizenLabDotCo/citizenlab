@@ -57,7 +57,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
     end
 
     it 'renders the receiver email' do
-      expect(mail.to).to include(recipient.email)
+      expect(mail.to).to eq([recipient.email])
     end
 
     it 'renders the sender email' do

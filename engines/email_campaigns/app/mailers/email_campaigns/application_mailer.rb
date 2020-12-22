@@ -31,7 +31,7 @@ module EmailCampaigns
 
     helper_method :organization_name, :event_payload, :tenant, :recipient_name, :recipient, :locale, :user,
                   :url_service, :multiloc_service, :subject, :organization_name, :loc, :event_payload, :command,
-                  :event_payload_count, :localize_for_recipient, :campaign, :tenant_home_url,
+                  :count_from_event_payload, :localize_for_recipient, :campaign, :tenant_home_url,
                   :header, :header_message, :preheader
 
     delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, to: :url_service
@@ -114,7 +114,7 @@ module EmailCampaigns
       command.deep_symbolize_keys.dig(*dig_keys)
     end
 
-    def event_payload_count(*dig_keys)
+    def count_from_event_payload(*dig_keys)
       event_payload(*dig_keys).yield_self do |count|
         case count
         when Array   then count.length

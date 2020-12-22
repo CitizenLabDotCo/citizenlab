@@ -8,7 +8,7 @@ module EmailCampaigns
       I18n.t('email_campaigns.admin_digest.subject', time: Time.now)
     end
 
-    helper_method :top_ideas, :new_initiatives, :successfull_initiatives, :change_ideas, :change_users, :published_days_diff
+    helper_method :top_ideas, :new_initiatives, :successfull_initiatives, :published_days_diff
 
     private
 
@@ -31,18 +31,6 @@ module EmailCampaigns
 
     def successfull_initiatives
       event_payload(:succesful_initiatives)
-    end
-
-    def change_ideas
-      activity_statistics_change_for(:new_ideas)
-    end
-
-    def change_comments
-      activity_statistics_change_for(:new_comments)
-    end
-
-    def change_users
-      activity_statistics_change_for(:new_users)
     end
 
     def activity_statistics_change_for(payload_key)

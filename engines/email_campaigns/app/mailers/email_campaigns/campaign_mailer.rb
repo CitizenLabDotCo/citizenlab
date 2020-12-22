@@ -1,7 +1,7 @@
 module EmailCampaigns
   class CampaignMailer < ActionMailer::Base
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
-
+    layout false
 
     def campaign_mail
       command, campaign = params.values_at(:command, :command)
