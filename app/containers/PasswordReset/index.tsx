@@ -75,6 +75,8 @@ interface IApiErrors {
   password?: CLError[];
 }
 
+type ApiErrorFieldName = keyof IApiErrors;
+
 type State = {
   token: string | null;
   password: string | null;
@@ -224,7 +226,7 @@ class PasswordReset extends React.PureComponent<
                 setRef={this.handlePasswordInputSetRef}
               />
               {apiErrors &&
-                Object.keys(apiErrors).map((errorField) => (
+                Object.keys(apiErrors).map((errorField: ApiErrorFieldName) => (
                   <Error
                     key={errorField}
                     apiErrors={apiErrors[errorField]}
