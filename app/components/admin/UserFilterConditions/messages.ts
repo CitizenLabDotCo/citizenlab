@@ -31,10 +31,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_participated_in_topic',
     defaultMessage: 'Contributed to topic',
   },
-  field_participated_in_post_status: {
+  field_participated_in_input_status: {
     id:
-      'app.components.admin.UserFilterConditions.field_participated_in_post_status',
-    defaultMessage: 'Interacted with a post with status',
+      'app.components.admin.UserFilterConditions.field_participated_in_input_status',
+    defaultMessage: 'Interacted with an input with status',
   },
   field_verified: {
     id: 'app.components.admin.UserFilterConditions.field_verified',
