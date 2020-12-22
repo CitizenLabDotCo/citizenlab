@@ -128,7 +128,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     };
 
     this.resourceOptions = [
-      { value: 'ideas', label: formatMessage(messages.posts) },
+      { value: 'ideas', label: formatMessage(messages.inputs) },
       { value: 'comments', label: formatMessage(messages.comments) },
       { value: 'votes', label: formatMessage(messages.votes) },
     ];
@@ -319,7 +319,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       intl: { formatMessage },
     } = this.props;
 
-    const infoMessage = formatMessage(messages.activeParticipantsDescription);
+    const infoMessage = formatMessage(
+      messages.numberOfActiveParticipantsDescription
+    );
 
     if (projects && !isNilOrError(projectsList)) {
       return (
@@ -372,7 +374,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               {...this.state}
             />
             <LineBarChart
-              graphTitle={formatMessage(messages.posts)}
+              graphTitle={formatMessage(messages.inputs)}
               graphUnit="ideas"
               graphUnitMessageKey="ideas"
               startAt={startAt}

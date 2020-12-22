@@ -81,7 +81,7 @@ export class IdeasByStatusChart extends React.PureComponent<
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
-    const unitName = formatMessage(messages.posts);
+    const unitName = formatMessage(messages.inputs);
 
     const CustomizedLabel = (props) => {
       const { x, y, value } = props;
@@ -107,11 +107,11 @@ export class IdeasByStatusChart extends React.PureComponent<
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages.postsByStatusTitle} />
+              <FormattedMessage {...messages.inputsByStatusTitle} />
             </GraphCardTitle>
             {!noData && (
               <ExportMenu
-                name={formatMessage(messages.postsByStatusTitle)}
+                name={formatMessage(messages.inputsByStatusTitle)}
                 svgNode={this.currentChart}
                 xlsxEndpoint={ideasByStatusXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}

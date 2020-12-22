@@ -20,8 +20,8 @@ exports[`<FeedbackToggle /> renders correctly checked for initiatives 1`] = `
     onClick={[Function]}
   >
     <FormattedMessage
-      defaultMessage="Only show posts that need feedback"
-      id="app.components.admin.PostManager.needFeedbackToggle"
+      defaultMessage="Only show inputs that need feedback"
+      id="app.components.admin.PostManager.inputsNeedFeedbackToggle"
     />
     <CountBadge
       count={6}
@@ -50,8 +50,8 @@ exports[`<FeedbackToggle /> renders correctly unchecked for ideas 1`] = `
     onClick={[Function]}
   >
     <FormattedMessage
-      defaultMessage="Only show posts that need feedback"
-      id="app.components.admin.PostManager.needFeedbackToggle"
+      defaultMessage="Only show inputs that need feedback"
+      id="app.components.admin.PostManager.inputsNeedFeedbackToggle"
     />
     <CountBadge
       count={6}

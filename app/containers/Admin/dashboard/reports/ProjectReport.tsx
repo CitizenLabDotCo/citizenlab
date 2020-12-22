@@ -267,7 +267,7 @@ const ProjectReport = memo(
             <GraphsContainer>
               <>
                 <LineBarChart
-                  graphTitle={formatMessage(messages.posts)}
+                  graphTitle={formatMessage(messages.inputs)}
                   graphUnit="ideas"
                   graphUnitMessageKey="ideas"
                   startAt={startAt}
@@ -314,7 +314,7 @@ const ProjectReport = memo(
                 <HorizontalBarChartWithoutStream
                   serie={mostVotedIdeasSerie}
                   graphTitleString={formatMessage(
-                    messages.fivePostsWithMostVotes
+                    messages.fiveInputsWithMostVotes
                   )}
                   graphUnit="votes"
                   className="dynamicHeight"

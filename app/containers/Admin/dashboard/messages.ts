@@ -52,17 +52,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
-  posts: {
-    id: 'app.containers.AdminPage.DashboardPage.posts ',
-    defaultMessage: 'Posts',
+  inputs: {
+    id: 'app.containers.AdminPage.DashboardPage.inputs ',
+    defaultMessage: 'Inputs',
   },
   votes: {
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
-  fivePostsWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fivePostsWithMostVotes',
-    defaultMessage: 'Top 5 posts by votes',
+  fiveInputsWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes',
+    defaultMessage: 'Top 5 inputs by votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -147,14 +147,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
-  activeParticipantsDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeParticipantsDescription',
+  numberOfActiveParticipantsDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription',
     defaultMessage:
-      'The number of participants that posted, voted or commented.',
+      'The number of participants that posted inputs, voted or commented.',
   },
-  postsByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.postsByStatusTitle',
-    defaultMessage: 'Posts by status',
+  inputsByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle',
+    defaultMessage: 'Inputs by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
@@ -263,10 +264,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.otherArea',
     defaultMessage: 'Other',
   },
-  mostActiveUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersDescription',
+  mostActiveUsersRankingDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription',
     defaultMessage:
-      'The ranking is based on the number of posts (5 points per post), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
+      'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -285,10 +287,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  mapInfoText: {
-    id: 'app.containers.AdminPage.DashboardPage.mapInfoText',
+  mapExplanationText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapExplanationText',
     defaultMessage:
-      'This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.',
+      'This map automatically detects locations from the title and description of the input. The location data may not be accurate; inputs where no locational data is detected are not displayed.',
   },
   automaticLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.automaticLoadingMessage',

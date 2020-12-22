@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  postManagerHeader: {
-    id: 'app.components.admin.PostManager.postManagerHeader',
-    defaultMessage: 'Posts',
+  inputManagerHeader: {
+    id: 'app.components.admin.PostManager.inputManagerHeader',
+    defaultMessage: 'Inputs',
   },
-  needFeedbackToggle: {
-    id: 'app.components.admin.PostManager.needFeedbackToggle',
-    defaultMessage: 'Only show posts that need feedback',
+  inputsNeedFeedbackToggle: {
+    id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
+    defaultMessage: 'Only show inputs that need feedback',
   },
   anyAssignment: {
     id: 'app.components.admin.PostManager.anyAssignment',
@@ -21,17 +21,17 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.delete',
     defaultMessage: 'Delete',
   },
-  deleteAllSelectedPosts: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedPosts',
-    defaultMessage: 'Delete {count} posts',
+  deleteAllSelectedInputs: {
+    id: 'app.components.admin.PostManager.deleteAllSelectedInputs',
+    defaultMessage: 'Delete {count} inputs',
   },
-  deletePostConfirmation: {
-    id: 'app.components.admin.PostManager.deletePostConfirmation',
-    defaultMessage: 'Are you sure you want to delete this post?',
+  deleteInputConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInputConfirmation',
+    defaultMessage: 'Are you sure you want to delete this input?',
   },
-  deletePostsConfirmation: {
-    id: 'app.components.admin.PostManager.deletePostsConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} posts?',
+  deleteInputsConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInputsConfirmation',
+    defaultMessage: 'Are you sure you want to delete {count} inputs?',
   },
   deleteAllSelectedInitiatives: {
     id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
@@ -98,18 +98,18 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.timelineTab',
     defaultMessage: 'Timeline',
   },
-  timelineTabTooltipContent: {
-    id: 'app.components.admin.PostManager.timelineTabTooltipContent',
+  timelineTabTooltipText: {
+    id: 'app.components.admin.PostManager.timelineTabTooltipText',
     defaultMessage:
-      'Drag and drop posts to copy them to different project phases.',
+      'Drag and drop inputs to copy them to different project phases.',
   },
   topicsTab: {
     id: 'app.components.admin.PostManager.topicsTab',
     defaultMessage: 'Topics',
   },
-  topicsTabTooltipContent: {
-    id: 'app.components.admin.PostManager.topicsTabTooltipContent',
-    defaultMessage: 'Add topics to a post using drag and drop.',
+  topicsTabTooltipText: {
+    id: 'app.components.admin.PostManager.topicsTabTooltipText',
+    defaultMessage: 'Add topics to an input using drag and drop.',
   },
   projectsTab: {
     id: 'app.components.admin.PostManager.projectsTab',
@@ -186,17 +186,17 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exports',
     defaultMessage: 'Exports',
   },
-  noPostsHere: {
-    id: 'app.components.admin.PostManager.noPostsHere',
+  noInputsHere: {
+    id: 'app.components.admin.PostManager.noInputsHere',
     defaultMessage: 'The filters you have selected do not return any results',
   },
   noInitiativesHere: {
     id: 'app.components.admin.PostManager.noInitiativesHere',
     defaultMessage: 'No initiatives match the current filters',
   },
-  resetPostFiltersDescription: {
-    id: 'app.components.admin.PostManager.resetPostFiltersDescription',
-    defaultMessage: 'Reset the filters to see all posts.',
+  resetInputFiltersDescription: {
+    id: 'app.components.admin.PostManager.resetInputFiltersDescription',
+    defaultMessage: 'Reset the filters to see all inputs.',
   },
   resetFiltersButton: {
     id: 'app.components.admin.PostManager.resetFiltersButton',
@@ -218,13 +218,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.allPhases',
     defaultMessage: 'All phases',
   },
-  onePost: {
-    id: 'app.components.admin.PostManager.onePost',
-    defaultMessage: '1 post',
+  oneInput: {
+    id: 'app.components.admin.InputManager.onePost',
+    defaultMessage: '1 input',
   },
-  multiplePosts: {
-    id: 'app.components.admin.PostManager.multiplePosts',
-    defaultMessage: '{ideaCount} posts',
+  multipleInputs: {
+    id: 'app.components.admin.PostManager.multipleInputs',
+    defaultMessage: '{ideaCount} inputs',
   },
   oneInitiative: {
     id: 'app.components.admin.PostManager.oneInitiative',
@@ -280,9 +280,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.automatic',
     defaultMessage: '(automatic)',
   },
-  posts: {
-    id: 'app.components.admin.PostManager.posts',
-    defaultMessage: 'posts',
+  inputs: {
+    id: 'app.components.admin.PostManager.inputs',
+    defaultMessage: 'inputs',
   },
   initiatives: {
     id: 'app.components.admin.PostManager.initiatives',
