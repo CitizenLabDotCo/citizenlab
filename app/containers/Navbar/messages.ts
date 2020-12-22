@@ -38,9 +38,9 @@ export default defineMessages({
     id: 'app.containers.app.navbar.admin',
     defaultMessage: 'Admin',
   },
-  pagePosts: {
-    id: 'app.containers.app.navbar.pagePosts',
-    defaultMessage: 'Posts',
+  pageInputs: {
+    id: 'app.containers.app.navbar.pageInputs',
+    defaultMessage: 'Inputs',
   },
   pageInitiatives: {
     id: 'app.containers.app.navbar.pageInitiatives',
@@ -66,9 +66,9 @@ export default defineMessages({
     id: 'app.containers.app.navbar.mobilePageHome',
     defaultMessage: 'Home',
   },
-  mobilePagePosts: {
-    id: 'app.containers.app.navbar.mobilePagePosts',
-    defaultMessage: 'Posts',
+  mobilePageInputs: {
+    id: 'app.containers.app.navbar.mobilePageInputs',
+    defaultMessage: 'Inputs',
   },
   mobilePageInitiatives: {
     id: 'app.containers.app.navbar.mobilePageInitiatives',
