@@ -783,16 +783,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      <FormattedMessage
-                        {...getInputTermMessage(input_term, {
-                          idea: messages.postingEnabled,
-                          contribution: messages.contributionPostingEnabled,
-                          option: messages.optionPostingEnabled,
-                          issue: messages.issuePostingEnabled,
-                          question: messages.questionPostingEnabled,
-                          project: messages.projectPostingEnabled,
-                        })}
-                      />
+                      <FormattedMessage {...messages.inputPostingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={posting_enabled as boolean}
@@ -803,7 +794,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      <FormattedMessage {...messages.commentingEnabled} />
+                      <FormattedMessage {...messages.inputCommentingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={commenting_enabled as boolean}
@@ -816,7 +807,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow className="last">
                     <ToggleLabel>
-                      <FormattedMessage {...messages.votingEnabled} />
+                      <FormattedMessage {...messages.inputVotingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={voting_enabled as boolean}

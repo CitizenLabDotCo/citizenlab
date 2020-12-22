@@ -147,37 +147,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
     defaultMessage: 'Amount per citizen, in {currency}',
   },
-  postingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
-    defaultMessage: 'Submitting ideas',
+  inputPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
+    defaultMessage: 'Submitting inputs',
   },
-  contributionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.contributionPostingEnabled',
-    defaultMessage: 'Adding contributions',
+  inputCommentingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
+    defaultMessage: 'Commenting on inputs',
   },
-  optionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.optionPostingEnabled',
-    defaultMessage: 'Adding options',
-  },
-  issuePostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.issuePostingEnabled',
-    defaultMessage: 'Submitting issues',
-  },
-  questionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.questionPostingEnabled',
-    defaultMessage: 'Adding questions',
-  },
-  projectPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectPostingEnabled',
-    defaultMessage: 'Adding projects',
-  },
-  commentingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.commentingEnabled',
-    defaultMessage: 'Commenting',
-  },
-  votingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingEnabled',
-    defaultMessage: 'Voting',
+  inputVotingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
+    defaultMessage: 'Voting on inputs',
   },
   votingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
