@@ -124,7 +124,7 @@ module EmailCampaigns
         {
           project: serialize_project(project),
           current_phase: phase ? serialize_phase(phase) : nil,
-          top_ideas: top_ideas_grouped_by_project[project_id].map(&method(:serialize_idea))
+          top_ideas: top_ideas_grouped_by_project[project.id].map(&method(:serialize_idea))
         }
       end
     end
