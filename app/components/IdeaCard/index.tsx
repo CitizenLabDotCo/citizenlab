@@ -256,6 +256,11 @@ class IdeaCard extends PureComponent<
           {formatMessage(
             getInputTermMessage(inputTerm, {
               idea: messages.a11y_ideaTitle,
+              option: messages.a11y_optionTitle,
+              project: messages.a11y_projectTitle,
+              question: messages.a11y_questionTitle,
+              issue: messages.a11y_issueTitle,
+              contribution: messages.a11y_contributionTitle,
             })
           )}
         </ScreenReaderOnly>

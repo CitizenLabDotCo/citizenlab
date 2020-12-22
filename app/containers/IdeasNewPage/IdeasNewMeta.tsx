@@ -63,6 +63,11 @@ const IdeasNewMeta = React.memo<Props>(
       const ideasIndexTitle = formatMessage(
         getInputTermMessage(inputTerm, {
           idea: messages.ideaNewMetaTitle,
+          option: messages.optionMetaTitle,
+          project: messages.projectMetaTitle,
+          question: messages.questionMetaTitle,
+          issue: messages.issueMetaTitle,
+          contribution: messages.contributionMetaTitle,
         }),
         { projectName }
       );

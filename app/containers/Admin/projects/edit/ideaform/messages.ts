@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.title',
-    defaultMessage: 'Idea form',
+  inputForm: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.inputForm',
+    defaultMessage: 'Input form',
   },
   postDescription: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.postDescription',

@@ -359,7 +359,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             <FormattedMessage {...messages.pageTitle} />
           </StyledPageTitle>
           <StyledIconTooltip
-            content={<FormattedMessage {...messages.helpTooltipText} />}
+            content={
+              <FormattedMessage {...messages.moderationHelpTooltipText} />
+            }
             iconSize="20px"
             placement="right"
           />

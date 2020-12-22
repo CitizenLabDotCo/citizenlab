@@ -50,6 +50,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  addNewProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
+    defaultMessage: 'Add a project',
+  },
+  addNewIssue: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewIssue',
+    defaultMessage: 'Add an issue',
+  },
+  addNewQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewQuestion',
+    defaultMessage: 'Add a question',
+  },
+  addNewOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewOption',
+    defaultMessage: 'Add an option',
+  },
+  addNewContribution: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewContribution',
+    defaultMessage: 'Add a contribution',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
@@ -129,6 +149,26 @@ export default defineMessages({
   },
   postingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  contributionPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.contributionPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  optionPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.optionPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  issuePostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.issuePostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  questionPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.questionPostingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  projectPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectPostingEnabled',
     defaultMessage: 'Posting ideas',
   },
   commentingEnabled: {

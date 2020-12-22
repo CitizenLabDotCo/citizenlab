@@ -26,6 +26,26 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
     defaultMessage: '{name} commented on your idea',
   },
+  userCommentedOnYourOption: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourOption',
+    defaultMessage: '{name} commented on your option',
+  },
+  userCommentedOnYourProject: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourProject',
+    defaultMessage: '{name} commented on your project',
+  },
+  userCommentedOnYourQuestion: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourQuestion',
+    defaultMessage: '{name} commented on your question',
+  },
+  userCommentedOnYourIssue: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourIssue',
+    defaultMessage: '{name} commented on your issue',
+  },
+  userCommentedOnYourContribution: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourContribution',
+    defaultMessage: '{name} commented on your contribution',
+  },
   userCommentedOnYourInitiative: {
     id: 'app.containers.NotificationMenu.userCommentedOnYourInitiative',
     defaultMessage: '{name} commented on your initiative',
@@ -50,23 +70,70 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
     defaultMessage: "'{ideaTitle}' status has changed to {status}",
   },
-  statusChangedOfYourInitiative: {
-    id: 'app.containers.NotificationMenu.statusChangedOfYourInitiative',
-    defaultMessage: "'{initiativeTitle}' status has changed to {status}",
-  },
   statusChangeOnVotedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
     defaultMessage: 'The status of an idea you voted for changed to {status}',
-  },
-  statusChangeOnVotedInitiative: {
-    id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',
-    defaultMessage:
-      'The status of an initiative you voted for changed to {status}',
   },
   statusChangeOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedIdea',
     defaultMessage:
       'The status of an idea you commented on changed to {status}',
+  },
+  statusChangeOnVotedProject: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedProject',
+    defaultMessage: 'The status of a project you voted for changed to {status}',
+  },
+  statusChangeOnCommentedProject: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedProject',
+    defaultMessage:
+      'The status of a project you commented on changed to {status}',
+  },
+  statusChangeOnVotedOption: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedOption',
+    defaultMessage: 'The status of an option you voted for changed to {status}',
+  },
+  statusChangeOnCommentedOption: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedOption',
+    defaultMessage:
+      'The status of an option you commented on changed to {status}',
+  },
+  statusChangeOnVotedIssue: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedIssue',
+    defaultMessage: 'The status of an issue you voted for changed to {status}',
+  },
+  statusChangeOnCommentedIssue: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedIssue',
+    defaultMessage:
+      'The status of an issue you commented on changed to {status}',
+  },
+  statusChangeOnVotedQuestion: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedQuestion',
+    defaultMessage:
+      'The status of a question you voted for changed to {status}',
+  },
+  statusChangeOnCommentedQuestion: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedQuestion',
+    defaultMessage:
+      'The status of a question you commented on changed to {status}',
+  },
+  statusChangeOnVotedContribution: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedContribution',
+    defaultMessage:
+      'The status of a contribution you voted for changed to {status}',
+  },
+  statusChangeOnCommentedContribution: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedContribution',
+    defaultMessage:
+      'The status of a contribution you commented on changed to {status}',
+  },
+  statusChangedOfYourInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangedOfYourInitiative',
+    defaultMessage: "'{initiativeTitle}' status has changed to {status}",
+  },
+  statusChangeOnVotedInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',
+    defaultMessage:
+      'The status of an initiative you voted for changed to {status}',
   },
   statusChangeOnCommentedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedInitiative',

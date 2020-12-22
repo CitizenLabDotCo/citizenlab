@@ -406,6 +406,11 @@ export class AdminProjectEdition extends PureComponent<
                   text={formatMessage(
                     getInputTermMessage(inputTerm, {
                       idea: messages.addNewIdea,
+                      option: messages.addNewOption,
+                      project: messages.addNewProject,
+                      question: messages.addNewQuestion,
+                      issue: messages.addNewIssue,
+                      contribution: messages.addNewContribution,
                     })
                   )}
                   onClick={this.onNewIdea(pathname)}

@@ -40,6 +40,11 @@ const StatusChangeOnVotedIdeaNotification = memo<Props>((props) => {
         <FormattedMessage
           {...getInputTermMessage(inputTerm, {
             idea: messages.statusChangeOnVotedIdea,
+            option: messages.statusChangeOnVotedOption,
+            project: messages.statusChangeOnVotedProject,
+            question: messages.statusChangeOnVotedQuestion,
+            issue: messages.statusChangeOnVotedIssue,
+            contribution: messages.statusChangeOnVotedContribution,
           })}
           values={{
             status: (

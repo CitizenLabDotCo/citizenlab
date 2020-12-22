@@ -613,7 +613,12 @@ const ProjectCard = memo(
         ctaMessage = (
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
-              idea: messages.postYourIdea,
+              idea: messages.submitYourIdea,
+              option: messages.submitYourOption,
+              project: messages.submitYourProject,
+              question: messages.submitYourQuestion,
+              issue: messages.submitYourQuestion,
+              contribution: messages.submitYourContribution,
             })}
           />
         );
@@ -626,6 +631,11 @@ const ProjectCard = memo(
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.viewTheIdeas,
+              option: messages.viewTheOptions,
+              project: messages.viewTheProjects,
+              question: messages.viewTheQuestions,
+              issue: messages.viewTheIssues,
+              contribution: messages.viewTheContributions,
             })}
           />
         );
@@ -742,6 +752,11 @@ const ProjectCard = memo(
                         {formatMessage(
                           getInputTermMessage(inputTerm, {
                             idea: messages.xIdeas,
+                            option: messages.xOptions,
+                            contribution: messages.xContributions,
+                            project: messages.xProjects,
+                            issue: messages.xIssues,
+                            question: messages.xQuestions,
                           }),
                           { ideasCount }
                         )}
