@@ -62,7 +62,7 @@
         <mj-text>
           <a style="font-size: 14px; font-weight: 500; color: #000; text-decoration: none;" href="<%= top_idea[:url] %>">
             <h3 style="margin-bottom: 10px">
-              <%= localize(top_idea[:title_multiloc])[0...80] %>
+              <%= localize_for_recipient(top_idea[:title_multiloc]).first(80) %>
             </h3>
           </a>
         </mj-text>
@@ -100,7 +100,7 @@
                           escape_html: false
                     ) %>
                     <p style="margin: 15px 0 0;">
-                      <%= localize(top_comment[:body_multiloc])[0...140] %>
+                      <%= localize_for_recipient(top_comment[:body_multiloc]).first(140) %>
                     </p>
                   </mj-text>
                 </td>
@@ -141,7 +141,7 @@
             </td>
             <td width="200" style="text-align: left;">
               <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= new_initiative[:url] %>">
-                <%= localize(new_initiative[:title_multiloc])[0...80] %>
+                <%= localize_for_recipient(new_initiative[:title_multiloc]).first(80) %>
               </a>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
@@ -200,7 +200,7 @@
             </td>
             <td width="200" style="text-align: left;">
               <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative[:url] %>">
-                <%= localize(succesful_initiative[:title_multiloc])[0...80] %>
+                <%= localize_for_recipient(succesful_initiative[:title_multiloc]).first(80) %>
               </a>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>

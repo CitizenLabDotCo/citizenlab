@@ -1,7 +1,7 @@
 <mj-wrapper background-color="#F6F6F6" full-width="full-width" padding="40px 0 0">
   <%= render 'statistics' %>
-  <%= render 'top-ideas' %>
-  <%= render 'new-initiatives' unless new_initiatives.empty? %>
-  <%= render 'successful-initiatives' unless successfull_initiatives.empty? %>
+  <%= render 'email_campaigns/projects/top-projects' %>
+  <%= render 'email_campaigns/initiatives/new-initiatives' unless new_initiatives.empty? %>
+  <%= render 'email_campaigns/initiatives/successful-initiatives' unless successfull_initiatives.empty? %>
   <%= render partial: 'application/cta_button', locals: { href: tenant_home_url, message: format_message('cta_go_to_the_platform') } %>
 </mj-wrapper>

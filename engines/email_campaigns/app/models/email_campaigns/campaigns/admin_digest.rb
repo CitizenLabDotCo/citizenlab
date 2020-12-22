@@ -40,25 +40,30 @@ module EmailCampaigns
       'admin'
     end
 
-    def generate_commands(recipient:, time: nil)
-      time ||= Time.now
-      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].map { |idea_h| idea_h[:id] } }
-      @initiative_ids ||= (@new_initiatives + @succesful_initiatives).map { |d| d[:id] }.compact
+    def generate_commands(recipient:, time: Time.now)
       [{
         event_payload: {
           statistics: statistics,
-          top_project_ideas: top_project_ideas,
+          top_ideas: top_project_ideas,
           new_initiatives: new_initiatives(time: time),
           succesful_initiatives: succesful_initiatives(time: time)
         },
         tracked_content: {
-          idea_ids: @idea_ids,
-          initiative_ids: @initiative_ids
+          idea_ids: idea_ids(time: time),
+          initiative_ids: initiative_ids(time: time)
         }
       }]
     end
 
     private
+
+    def initiative_ids(time:)
+      @initiative_ids ||= (new_initiatives(time: time) + succesful_initiatives(time: time)).map { |d| d[:id] }.compact
+    end
+
+    def idea_ids(time:)
+      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].map { |idea_h| idea_h[:id] } }
+    end
 
     def user_filter_admin_only(users_scope, _options = {})
       users_scope.admin
@@ -137,7 +142,7 @@ module EmailCampaigns
     end
 
     def top_ideas
-      @top_ideas ||= new_ideas.concat(active_ideas).uniq_by(&:id)
+      @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id)
     end
 
     def active_ideas
@@ -170,13 +175,14 @@ module EmailCampaigns
       published_ideas_activity.dig(idea.id, key)
     end
 
-    def new_initiatives(time:)
+    def new_initiatives(time: Time.zone.today)
       @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
                                      .order(published_at: :desc)
                                      .includes(:initiative_images)
+                                     .map(&method(:serialize_initiative))
     end
 
-    def succesful_initiatives(time:)
+    def succesful_initiatives(time: Time.zone.today)
       @succesful_initiatives ||= Initiative
                                  .published
                                  .joins(initiative_status_changes: :initiative_status)
@@ -184,6 +190,7 @@ module EmailCampaigns
                                  .where(initiative_statuses: { code: 'threshold_reached' })
                                  .where('initiative_status_changes.created_at > ?', time - 1.week)
                                  .feedback_needed
+                                 .map(&method(:serialize_initiative))
     end
 
     def ideas_activity_counts(ideas)

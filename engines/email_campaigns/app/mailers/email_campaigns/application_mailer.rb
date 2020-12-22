@@ -129,6 +129,7 @@ module EmailCampaigns
     end
 
     def localize_for_recipient(multiloc_or_string_key)
+      return '' unless multiloc_or_string_key
       return multiloc_service.t(multiloc_or_string_key, recipient) if multiloc_or_string_key.is_a?(Hash)
 
       multiloc = event_payload(multiloc_or_string_key.split('.'))
