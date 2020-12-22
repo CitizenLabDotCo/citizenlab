@@ -106,7 +106,7 @@ class Rule extends PureComponent<Props, State> {
           />
         </SelectorCell>
         <SelectorCell>
-          {rule.ruleType && rule.predicate && (
+          {rule.ruleType && (
             <Fragment key={rule.ruleType}>
               {showLabels && (
                 <FormattedMessage {...messages.rulesFormLabelPredicate} />
