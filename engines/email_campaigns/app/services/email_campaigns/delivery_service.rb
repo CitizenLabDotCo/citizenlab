@@ -96,7 +96,7 @@ module EmailCampaigns
       ).first&.merge({ recipient: recipient })
 
       if command
-        mail = campaign.mailer_class.campaign_mail(campaign, command)
+        mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
         mail.parts[1].body.to_s
       else
         nil
