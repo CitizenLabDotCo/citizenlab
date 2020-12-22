@@ -319,7 +319,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       intl: { formatMessage },
     } = this.props;
 
-    const infoMessage = formatMessage(messages.activeParticipantsDescription);
+    const infoMessage = formatMessage(
+      messages.numberOfActiveParticipantsDescription
+    );
 
     if (projects && !isNilOrError(projectsList)) {
       return (
