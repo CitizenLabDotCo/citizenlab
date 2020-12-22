@@ -29,7 +29,6 @@
   "app.components.Comments.commentingDisabledUnverified": "",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Ikke alle brugere har tilladelse til at kommentere. Brug venligst {signInLink} for at se om du har tilladelse.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Du har ikke rettigheder til at kommentere.",
-  "app.components.Comments.commentingInititativeDisabledNotVerified": "At kommentere på denne borgerforslag kræver bekræftelse af din konto. {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "Ikke alle har tilladelse til at kommentere. Brug venligst {signInLink} for at se om du har tilladelse.",
   "app.components.Comments.commentingNotAllowed": "",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",

@@ -29,7 +29,6 @@
   "app.components.Comments.commentingDisabledUnverified": "",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Nie wszyscy użytkownicy mogą komentować. Proszę {signUpLink} lub {signInLink}, aby sprawdzić, czy spełniasz wymagania.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Nie masz prawa do komentowania.",
-  "app.components.Comments.commentingInititativeDisabledNotVerified": "Komentowanie tego wniosku wymaga weryfikacji konta. {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "Nie każdy ma prawo do komentowania. Proszę {signInLink}, aby sprawdzić, czy spełniasz wymagania.",
   "app.components.Comments.commentingNotAllowed": "",
   "app.components.Comments.invisibleTitleComments": "Komentarze",

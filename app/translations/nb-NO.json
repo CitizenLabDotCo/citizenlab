@@ -29,7 +29,6 @@
   "app.components.Comments.commentingDisabledUnverified": "",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Det er ikke alle brukere som kan kommentere. Vennligst {signUpLink} ellers {signInLink} for å se om du har mulighet til å kommentere.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Du kan ikke kommentere.",
-  "app.components.Comments.commentingInititativeDisabledNotVerified": "For å kunne kommentere dette forslag må du bekrefte kontoen din. {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "Ikke alle har adgang til å kommentere. Du kan {signInLink} for å se om du har adgang.",
   "app.components.Comments.commentingNotAllowed": "",
   "app.components.Comments.invisibleTitleComments": "Kommentarer",
