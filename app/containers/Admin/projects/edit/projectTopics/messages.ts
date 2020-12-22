@@ -42,10 +42,10 @@ export default defineMessages({
     defaultMessage:
       'If you would like to add additional project topics, you can do so in the {topicManagerLink}.',
   },
-  projectTopicsPageDescription: {
-    id: 'app.containers.AdminPage.Topics.projectTopicsPageDescription',
+  projectTopicsDescription: {
+    id: 'app.containers.AdminPage.Topics.projectTopicsDescription',
     defaultMessage:
-      'You can add and delete the topics that can be assigned to posts in this project.',
+      'You can add and delete the topics that can be assigned to inputs in this project.',
   },
   topicManager: {
     id: 'app.containers.AdminPage.Topics.topicManager',

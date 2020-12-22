@@ -25,7 +25,7 @@ const ProjectTopics = memo(() => {
         <FormattedMessage {...messages.titleDescription} />
       </SectionTitle>
       <SectionDescription>
-        <FormattedMessage {...messages.projectTopicsPageDescription} />
+        <FormattedMessage {...messages.projectTopicsDescription} />
         <span>
           <HasPermission
             item={{ type: 'route', path: '/admin/settings/topics' }}
