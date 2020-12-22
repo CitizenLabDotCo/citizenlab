@@ -38,8 +38,7 @@ RSpec.describe EmailCampaigns::PasswordResetMailer, type: :mailer do
     end
 
     it 'assigns reset password url' do
-      expect(mail.body.encoded)
-        .to include(command[:event_payload][:password_reset_url])
+      expect(mail.body.encoded).to include(command[:event_payload][:password_reset_url])
     end
   end
 end
