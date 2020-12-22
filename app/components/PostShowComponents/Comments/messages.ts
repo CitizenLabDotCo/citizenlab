@@ -71,11 +71,6 @@ export default defineMessages({
     id: 'app.containers.Comments.signInToComment',
     defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
   },
-  commentingInititativeDisabledNotVerified: {
-    id: 'app.components.Comments.commentingInititativeDisabledNotVerified',
-    defaultMessage:
-      'Commenting on this proposal requires verification of your account. {verificationLink}',
-  },
   commentingInitiativeNotPermitted: {
     id: 'app.components.Comments.commentingInitiativeNotPermitted',
     defaultMessage: "You don't have the rights to comment.",
