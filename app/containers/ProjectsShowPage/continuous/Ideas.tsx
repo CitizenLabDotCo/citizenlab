@@ -96,7 +96,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 showViewToggle={true}
                 defaultSortingMethod={project.attributes.ideas_order || null}
                 defaultView={project.attributes.presentation_mode || null}
-                invisibleTitleMessage={messages.a11y_titlePosts}
+                invisibleTitleMessage={messages.a11y_titleInputs}
               />
             </SectionContainer>
           </StyledContentContainer>
