@@ -10,9 +10,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
-  postsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.postsTab',
-    defaultMessage: 'Posts',
+  inputsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputsTab',
+    defaultMessage: 'Inputs',
   },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
