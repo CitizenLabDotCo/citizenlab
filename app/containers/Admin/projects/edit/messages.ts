@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'Description',
   },
   inputManagerTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputsTab',
+    id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
     defaultMessage: 'Input manager',
   },
   inputFormTab: {
