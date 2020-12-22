@@ -60,9 +60,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
-  fivePostsWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fivePostsWithMostVotes',
-    defaultMessage: 'Top 5 posts by votes',
+  fiveInputsWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes',
+    defaultMessage: 'Top 5 inputs by votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -147,10 +147,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
-  activeParticipantsDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeParticipantsDescription',
+  numberOfActiveParticipantsDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription',
     defaultMessage:
-      'The number of participants that posted, voted or commented.',
+      'The number of participants that posted inputs, voted or commented.',
   },
   postsByStatusTitle: {
     id: 'app.containers.AdminPage.DashboardPage.postsByStatusTitle',
