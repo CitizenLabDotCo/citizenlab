@@ -52,9 +52,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
-  posts: {
-    id: 'app.containers.AdminPage.DashboardPage.posts ',
-    defaultMessage: 'Posts',
+  inputs: {
+    id: 'app.containers.AdminPage.DashboardPage.inputs ',
+    defaultMessage: 'Inputs',
   },
   votes: {
     id: 'app.containers.AdminPage.DashboardPage.votes',
@@ -153,9 +153,9 @@ export default defineMessages({
     defaultMessage:
       'The number of participants that posted inputs, voted or commented.',
   },
-  postsByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.postsByStatusTitle',
-    defaultMessage: 'Posts by status',
+  inputsByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle',
+    defaultMessage: 'Inputs by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
