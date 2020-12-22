@@ -38,10 +38,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.manage',
     defaultMessage: 'Manage',
   },
-  statusDeleteButtonTooltip: {
-    id: 'app.containers.admin.ideaStatuses.all.statusDeleteButtonTooltip',
+  inputStatusDeleteButtonTooltip: {
+    id: 'app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip',
     defaultMessage:
-      'Statuses currently assigned to a post cannot be deleted. You can remove/change the status from existing posts in the {manageTab} tab.',
+      'Statuses currently assigned to an input cannot be deleted. You can remove/change the status from existing inputs in the {manageTab} tab.',
   },
   defaultStatusDeleteButtonTooltip: {
     id:
