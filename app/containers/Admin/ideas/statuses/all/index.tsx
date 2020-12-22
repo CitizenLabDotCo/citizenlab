@@ -202,7 +202,7 @@ const IdeaStatuses = () => {
                       disabled={isDeletable(ideaStatus)}
                       content={
                         <FormattedMessage
-                          {...messages.statusDeleteButtonTooltip}
+                          {...messages.inputStatusDeleteButtonTooltip}
                           values={{
                             manageTab: (
                               <b>
