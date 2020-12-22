@@ -144,7 +144,7 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
           <i />
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
-          <FormattedMessage {...messages.needFeedbackToggle} />
+          <FormattedMessage {...messages.inputsNeedFeedbackToggle} />
           {!isNilOrError(feedbackNeededCount.count) && (
             <CountBadge count={feedbackNeededCount.count} />
           )}
