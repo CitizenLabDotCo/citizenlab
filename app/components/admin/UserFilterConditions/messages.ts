@@ -194,13 +194,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_commented_in',
     defaultMessage: "didn't comment",
   },
-  predicate_voted_idea_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_voted_idea_in',
-    defaultMessage: 'voted on idea',
+  predicate_voted_input_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_input_in',
+    defaultMessage: 'voted on input',
   },
-  predicate_not_voted_idea_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_idea_in',
-    defaultMessage: "didn't vote on idea",
+  predicate_not_voted_input_in: {
+    id:
+      'app.components.admin.UserFilterConditions.predicate_not_voted_input_in',
+    defaultMessage: "didn't vote on input",
   },
   predicate_voted_comment_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_voted_comment_in',
