@@ -44,7 +44,7 @@ module EmailCampaigns
       [{
         event_payload: {
           statistics: statistics,
-          top_ideas: top_project_ideas,
+          top_project_ideas: top_project_ideas,
           new_initiatives: new_initiatives(time: time),
           succesful_initiatives: succesful_initiatives(time: time)
         },
