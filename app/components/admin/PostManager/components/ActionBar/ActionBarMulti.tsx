@@ -22,7 +22,7 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
       intl: { formatMessage },
     } = this.props;
 
-    const message = formatMessage(messages.deletePostsConfirmation, {
+    const message = formatMessage(messages.deleteInputsConfirmation, {
       count: selection.size,
     });
 
@@ -66,7 +66,7 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
         >
           <Icon name="trash" />
           <FormattedMessage
-            {...messages.deleteAllSelectedPosts}
+            {...messages.deleteAllSelectedInputs}
             values={{ count: selection.size }}
           />
         </Button>
