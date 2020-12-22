@@ -152,7 +152,9 @@ class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
     }
     return (
       <div>
-        <StyledWarning text={<FormattedMessage {...messages.mapInfoText} />} />
+        <StyledWarning
+          text={<FormattedMessage {...messages.mapExplanationText} />}
+        />
         <MapWrapper>
           <StyledMap
             points={this.getPoints(ideas)}

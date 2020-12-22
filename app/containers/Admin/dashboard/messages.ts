@@ -286,10 +286,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  mapInfoText: {
-    id: 'app.containers.AdminPage.DashboardPage.mapInfoText',
+  mapExplanationText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapExplanationText',
     defaultMessage:
-      'This map automatically detects locations from the title and description of the post. The location data may not be accurate; posts where no locational data is detected are not displayed.',
+      'This map automatically detects locations from the title and description of the input. The location data may not be accurate; inputs where no locational data is detected are not displayed.',
   },
   automaticLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.automaticLoadingMessage',
