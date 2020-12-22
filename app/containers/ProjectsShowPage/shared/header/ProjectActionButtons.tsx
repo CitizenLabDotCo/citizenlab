@@ -198,10 +198,14 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               onClick={scrollTo('project-ideas')}
               fontWeight="500"
             >
-              <FormattedMessage {...messages.seeTheIdeas} />
               <FormattedMessage
                 {...getInputTermMessage(inputTerm, {
                   idea: messages.seeTheIdeas,
+                  option: messages.seeTheOptions,
+                  project: messages.seeTheProjects,
+                  question: messages.seeTheQuestions,
+                  issue: messages.seeTheIssues,
+                  contribution: messages.seeTheContributions,
                 })}
               />
             </SeeIdeasButton>

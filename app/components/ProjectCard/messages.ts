@@ -6,6 +6,31 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
+  xOptions: {
+    id: 'app.components.ProjectCard.xOptions',
+    defaultMessage:
+      '{ideasCount, plural, no {# options} one {# option} other {# options}}',
+  },
+  xContributions: {
+    id: 'app.components.ProjectCard.xContributions',
+    defaultMessage:
+      '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}}',
+  },
+  xProjects: {
+    id: 'app.components.ProjectCard.xProjects',
+    defaultMessage:
+      '{ideasCount, plural, no {# projects} one {# project} other {# projects}}',
+  },
+  xIssues: {
+    id: 'app.components.ProjectCard.xIssues',
+    defaultMessage:
+      '{ideasCount, plural, no {# issues} one {# issue} other {# issues}}',
+  },
+  xQuestions: {
+    id: 'app.components.ProjectCard.xQuestions',
+    defaultMessage:
+      '{ideasCount, plural, no {# questions} one {# question} other {# questions}}',
+  },
   xComments: {
     id: 'app.components.ProjectCard.xComments',
     defaultMessage:
@@ -39,9 +64,29 @@ export default defineMessages({
     id: 'app.components.ProjectCard.takeThePoll',
     defaultMessage: 'Take the poll',
   },
-  postYourIdea: {
-    id: 'app.components.ProjectCard.postYourIdea',
-    defaultMessage: 'Post your idea',
+  submitYourIdea: {
+    id: 'app.components.ProjectCard.submitYourIdea',
+    defaultMessage: 'Submit your idea',
+  },
+  submitYourOption: {
+    id: 'app.components.ProjectCard.submitYourOption',
+    defaultMessage: 'Submit your option',
+  },
+  submitYourProject: {
+    id: 'app.components.ProjectCard.submitYourProject',
+    defaultMessage: 'Submit your project',
+  },
+  submitYourQuestion: {
+    id: 'app.components.ProjectCard.submitYourQuestion',
+    defaultMessage: 'Submit your question',
+  },
+  submitYourIssue: {
+    id: 'app.components.ProjectCard.submitYourIssue',
+    defaultMessage: 'Submit your issue',
+  },
+  submitYourContribution: {
+    id: 'app.components.ProjectCard.submitYourContribution',
+    defaultMessage: 'Submit your contribution',
   },
   vote: {
     id: 'app.components.ProjectCard.vote',
@@ -54,6 +99,26 @@ export default defineMessages({
   viewTheIdeas: {
     id: 'app.components.ProjectCard.viewTheIdeas',
     defaultMessage: 'View the ideas',
+  },
+  viewTheOptions: {
+    id: 'app.components.ProjectCard.viewTheOptions',
+    defaultMessage: 'View the options',
+  },
+  viewTheProjects: {
+    id: 'app.components.ProjectCard.viewTheProjects',
+    defaultMessage: 'View the projects',
+  },
+  viewTheQuestions: {
+    id: 'app.components.ProjectCard.viewTheQuestions',
+    defaultMessage: 'View the questions',
+  },
+  viewTheIssues: {
+    id: 'app.components.ProjectCard.viewTheIssues',
+    defaultMessage: 'View the issues',
+  },
+  viewTheContributions: {
+    id: 'app.components.ProjectCard.viewTheContributions',
+    defaultMessage: 'View the contributions',
   },
   a11y_projectTitle: {
     id: 'app.components.ProjectCard.a11y_projectTitle',

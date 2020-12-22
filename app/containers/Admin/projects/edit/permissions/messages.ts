@@ -73,15 +73,90 @@ export default defineMessages({
       'app.containers.AdminPage.groups.permissions.permissionAction_comment_ideas',
     defaultMessage: 'Comment on ideas',
   },
+  permissionAction_comment_projects: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_projects',
+    defaultMessage: 'Comment on projects',
+  },
+  permissionAction_comment_contributions: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_contributions',
+    defaultMessage: 'Comment on contributions',
+  },
+  permissionAction_comment_options: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_options',
+    defaultMessage: 'Comment on options',
+  },
+  permissionAction_comment_questions: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_questions',
+    defaultMessage: 'Comment on questions',
+  },
+  permissionAction_comment_issues: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_comment_issues',
+    defaultMessage: 'Comment on issues',
+  },
   permissionAction_vote_ideas: {
     id:
       'app.containers.AdminPage.groups.permissions.permissionAction_vote_ideas',
     defaultMessage: 'Vote on ideas',
   },
-  permissionAction_post_idea: {
+  permissionAction_vote_projects: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_post_idea',
-    defaultMessage: 'Post an idea',
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_projects',
+    defaultMessage: 'Vote on projects',
+  },
+  permissionAction_vote_contributions: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_contributions',
+    defaultMessage: 'Vote on contributions',
+  },
+  permissionAction_vote_options: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_options',
+    defaultMessage: 'Vote on options',
+  },
+  permissionAction_vote_questions: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_questions',
+    defaultMessage: 'Vote on questions',
+  },
+  permissionAction_vote_issues: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_vote_issues',
+    defaultMessage: 'Vote on issues',
+  },
+  permissionAction_submit_idea: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_submit_idea',
+    defaultMessage: 'Submit your idea',
+  },
+  permissionAction_submit_project: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_submit_project',
+    defaultMessage: 'Submit your project',
+  },
+  permissionAction_submit_contribution: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_submit_contribution',
+    defaultMessage: 'Submit your contribution',
+  },
+  permissionAction_submit_option: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_submit_option',
+    defaultMessage: 'Submit your option',
+  },
+  permissionAction_submit_question: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_submit_question',
+    defaultMessage: 'Submit your question',
+  },
+  permissionAction_submit_issue: {
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_submit_issue',
+    defaultMessage: 'Submit your issue',
   },
   permissionAction_comment_proposals: {
     id:

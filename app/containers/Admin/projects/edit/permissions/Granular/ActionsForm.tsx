@@ -77,13 +77,28 @@ const ActionsForm = memo(
 
         return {
           posting_idea: getInputTermMessage(inputTerm, {
-            idea: messages.permissionAction_post_idea,
+            idea: messages.permissionAction_submit_idea,
+            project: messages.permissionAction_submit_project,
+            contribution: messages.permissionAction_submit_contribution,
+            issue: messages.permissionAction_submit_issue,
+            question: messages.permissionAction_submit_question,
+            option: messages.permissionAction_submit_option,
           }),
           voting_idea: getInputTermMessage(inputTerm, {
             idea: messages.permissionAction_vote_ideas,
+            project: messages.permissionAction_vote_projects,
+            contribution: messages.permissionAction_vote_contributions,
+            issue: messages.permissionAction_vote_issues,
+            question: messages.permissionAction_vote_questions,
+            option: messages.permissionAction_vote_options,
           }),
           commenting_idea: getInputTermMessage(inputTerm, {
             idea: messages.permissionAction_comment_ideas,
+            project: messages.permissionAction_comment_projects,
+            contribution: messages.permissionAction_comment_contributions,
+            issue: messages.permissionAction_comment_issues,
+            question: messages.permissionAction_comment_questions,
+            option: messages.permissionAction_comment_options,
           }),
           taking_survey: messages.permissionAction_take_survey,
           taking_poll: messages.permissionAction_take_poll,
@@ -94,7 +109,7 @@ const ActionsForm = memo(
         return {
           voting_initiative: messages.permissionAction_vote_proposals,
           commenting_initiative: messages.permissionAction_comment_proposals,
-          posting_initiative: messages.permissionAction_post_idea,
+          posting_initiative: messages.permissionAction_post_proposal,
         }[permissionAction];
       }
     };

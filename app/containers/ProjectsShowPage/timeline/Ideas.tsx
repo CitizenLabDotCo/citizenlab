@@ -59,6 +59,11 @@ class IdeasContainer extends PureComponent<Props, State> {
               <FormattedMessage
                 {...getInputTermMessage(inputTerm, {
                   idea: messages.ideas,
+                  option: messages.options,
+                  project: messages.projects,
+                  question: messages.questions,
+                  issue: messages.issues,
+                  contribution: messages.contributions,
                 })}
               />
             </StyledProjectPageSectionTitle>
@@ -73,9 +78,7 @@ class IdeasContainer extends PureComponent<Props, State> {
               participationMethod={participationMethod}
               participationContextId={phase.id}
               participationContextType="phase"
-              invisibleTitleMessage={getInputTermMessage(inputTerm, {
-                idea: messages.invisibleTitlePhase,
-              })}
+              invisibleTitleMessage={messages.a11y_titleInputsPhase}
             />
           </Container>
         );

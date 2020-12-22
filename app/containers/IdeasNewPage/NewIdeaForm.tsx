@@ -204,6 +204,11 @@ class NewIdeaForm extends PureComponent<Props, State> {
             <FormattedMessage
               {...getInputTermMessage(inputTerm, {
                 idea: messages.ideaFormTitle,
+                option: messages.optionFormTitle,
+                project: messages.projectFormTitle,
+                question: messages.questionFormTitle,
+                issue: messages.issueFormTitle,
+                contribution: messages.contributionFormTitle,
               })}
             />
           </Title>
