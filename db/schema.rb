@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_134337) do
-  
+
+ActiveRecord::Schema.define(version: 2020_12_17_170635) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -835,7 +836,7 @@ ActiveRecord::Schema.define(version: 2020_12_04_134337) do
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
-  create_table "tagging_taggings", id: :serial, force: :cascade do |t|
+  create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "assignment_method", default: 0
     t.uuid "idea_id"
     t.uuid "tag_id"

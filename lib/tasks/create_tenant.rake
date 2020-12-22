@@ -15,7 +15,7 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en-GB','nl-BE', 'fr-BE'],
+          locales: ['en','en-GB','nl-BE', 'fr-BE'],
           organization_type: 'medium_city',
           organization_name: {
             "en-GB" => 'Wonderville',
