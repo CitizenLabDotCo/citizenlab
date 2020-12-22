@@ -169,7 +169,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
               <NavigationIcon ariaHidden name="idea2" />
             </NavigationIconWrapper>
             <NavigationLabel>
-              <FormattedMessage {...messages.mobilePagePosts} />
+              <FormattedMessage {...messages.mobilePageInputs} />
             </NavigationLabel>
           </NavigationItem>
         </FeatureFlag>
