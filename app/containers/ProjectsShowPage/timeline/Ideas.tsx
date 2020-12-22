@@ -78,7 +78,7 @@ class IdeasContainer extends PureComponent<Props, State> {
               participationMethod={participationMethod}
               participationContextId={phase.id}
               participationContextType="phase"
-              invisibleTitleMessage={messages.a11y_titlePostsPhase}
+              invisibleTitleMessage={messages.a11y_titleInputsPhase}
             />
           </Container>
         );

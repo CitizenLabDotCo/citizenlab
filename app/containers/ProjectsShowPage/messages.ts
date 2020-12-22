@@ -13,13 +13,13 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
-  a11y_titlePosts: {
-    id: 'app.containers.Projects.a11y_titlePosts',
-    defaultMessage: 'All posts submitted to this project',
+  a11y_titleInputs: {
+    id: 'app.containers.Projects.a11y_titleInputs',
+    defaultMessage: 'All inputs submitted to this project',
   },
-  a11y_titlePostsPhase: {
-    id: 'app.containers.Projects.a11y_titlePostsPhase',
-    defaultMessage: 'All posts submitted to this phase',
+  a11y_titleInputsPhase: {
+    id: 'app.containers.Projects.a11y_titleInputsPhase',
+    defaultMessage: 'All inputs submitted to this phase',
   },
   invisibleTitleSurvey: {
     id: 'app.containers.Projects.invisibleTitleSurvey',
