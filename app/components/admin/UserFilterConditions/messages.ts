@@ -178,13 +178,13 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_in',
     defaultMessage: "didn't contribute",
   },
-  predicate_posted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_posted_in',
-    defaultMessage: 'posted',
+  predicate_posted_input: {
+    id: 'app.components.admin.UserFilterConditions.predicate_posted_input',
+    defaultMessage: 'posted an input',
   },
-  predicate_not_posted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_posted_in',
-    defaultMessage: "didn't post",
+  predicate_not_posted_input: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_posted_input',
+    defaultMessage: "didn't post an input",
   },
   predicate_commented_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_commented_in',

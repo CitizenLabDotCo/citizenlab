@@ -67,11 +67,11 @@ const PredicateSelector = memo(
         predicate_not_is_project_moderator:
           messages.predicate_not_is_project_moderator,
         predicate_not_is_verified: messages.predicate_not_is_verified,
-        predicate_not_posted_in: messages.predicate_not_posted_in,
+        predicate_not_posted_in: messages.predicate_not_posted_input,
         predicate_not_volunteered_in: messages.predicate_not_volunteered_in,
         predicate_not_voted_comment_in: messages.predicate_not_voted_comment_in,
         predicate_not_voted_idea_in: messages.predicate_not_voted_input_in,
-        predicate_posted_in: messages.predicate_posted_in,
+        predicate_posted_in: messages.predicate_posted_input,
         predicate_volunteered_in: messages.predicate_volunteered_in,
         predicate_voted_comment_in: messages.predicate_voted_comment_in,
         predicate_voted_idea_in: messages.predicate_voted_input_in,
