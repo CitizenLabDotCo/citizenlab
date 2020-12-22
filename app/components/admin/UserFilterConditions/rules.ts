@@ -41,6 +41,52 @@ export type TCustomRuleType =
   | 'custom_field_date'
   | 'custom_field_number';
 
+export type TCustomPredicate =
+  | TCustomFieldSelectPredicate
+  | TCustomFieldCheckboxPredicate
+  | TCustomFieldDatePredicate
+  | TCustomFieldTextPredicate
+  | TCustomFieldNumberPredicate;
+
+type TCustomFieldTextPredicate =
+  | 'is'
+  | 'not_is'
+  | 'contains'
+  | 'not_contains'
+  | 'begins_with'
+  | 'not_begins_with'
+  | 'ends_on'
+  | 'not_ends_on'
+  | 'is_empty'
+  | 'not_is_empty';
+
+type TCustomFieldSelectPredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_one_of'
+  | 'not_is_one_of'
+  | 'has_value'
+  | 'not_has_value';
+
+type TCustomFieldCheckboxPredicate = 'is_checked' | 'not_is_checked';
+
+type TCustomFieldDatePredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_before'
+  | 'is_exactly'
+  | 'is_after';
+
+type TCustomFieldNumberPredicate =
+  | 'is_equal'
+  | 'not_is_equal'
+  | 'is_larger_than'
+  | 'is_larger_than_or_equal'
+  | 'is_smaller_than'
+  | 'is_smaller_than_or_equal'
+  | 'is_empty'
+  | 'not_is_empty';
+
 export type TRule =
   | {
       ruleType?: 'custom_field_text';
