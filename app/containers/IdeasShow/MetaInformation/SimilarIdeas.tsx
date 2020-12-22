@@ -70,7 +70,7 @@ const SimilarIdeas = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
       return (
         <Item>
-          <Header>{formatMessage(messages.similarPosts)}</Header>
+          <Header>{formatMessage(messages.similarInputs)}</Header>
           <IdeaList className={className}>
             {similarIdeas.map((similarIdea, index) => (
               <IdeaListItem key={similarIdea.id}>
