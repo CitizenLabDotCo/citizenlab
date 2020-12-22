@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { keys } from 'lodash-es';
 
-import { TRule, ruleTypeConstraints } from './rules';
+import { ruleTypeConstraints, TPredicate, TRuleType } from './rules';
 import { IOption } from 'typings';
 
 import { Select } from 'cl2-component-library';
@@ -11,19 +11,19 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
-  ruleType: TRule['ruleType'];
-  predicate: TRule['predicate'];
-  onChange: (predicate: TRule['predicate']) => void;
+  ruleType: TRuleType;
+  selectedPredicate: TPredicate;
+  onChange: (predicate: TPredicate) => void;
 };
 
 const PredicateSelector = memo(
   ({
     ruleType,
-    predicate,
+    selectedPredicate,
     onChange,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const getMessage = (predicateSelector: string) => {
+    const getMessage = (predicate: TPredicate) => {
       const predicateMessages = {
         predicate_begins_with: messages.predicate_begins_with,
         predicate_budgeted_in: messages.predicate_budgeted_in,
@@ -77,16 +77,14 @@ const PredicateSelector = memo(
         predicate_voted_idea_in: messages.predicate_voted_input_in,
       };
 
-      return (
-        predicateMessages[`predicate_${ruleType}_${predicateSelector}`] ||
-        predicateMessages[`predicate_${predicateSelector}`]
-      );
+      return predicateMessages[`predicate_${predicate}`];
     };
 
     const generateOptions = (): IOption[] => {
       if (ruleType) {
-        return keys(ruleTypeConstraints[ruleType]).map((predicateSelector) => {
-          const message = getMessage(predicateSelector);
+        const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]);
+        return ruleTypePredicates.map((predicate) => {
+          const message = getMessage(predicate as TPredicate);
           return {
             value: predicate,
             label: formatMessage(message),
@@ -103,7 +101,7 @@ const PredicateSelector = memo(
 
     return (
       <Select
-        value={predicate}
+        value={selectedPredicate}
         options={generateOptions()}
         onChange={handleOnChange}
       />
