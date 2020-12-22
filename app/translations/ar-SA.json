@@ -29,7 +29,6 @@
   "app.components.Comments.commentingDisabledUnverified": "",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "يُرجى {signUpLink} أو {signInLink} للتعليق.",
   "app.components.Comments.commentingInitiativeNotPermitted": "ميزة التعليق معطّلة حاليًا.",
-  "app.components.Comments.commentingInititativeDisabledNotVerified": "يتطلب التعليق على هذا المُقترح التحقق من حسابك. {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "لا يُسمح للجميع بالتعليق. يُرجى {signInLink} لتعرف إن كنت تمتثل للشروط أم لا.",
   "app.components.Comments.commentingNotAllowed": "",
   "app.components.Comments.invisibleTitleComments": "التعليقات",

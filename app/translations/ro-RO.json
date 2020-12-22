@@ -29,7 +29,6 @@
   "app.components.Comments.commentingDisabledUnverified": "",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Vă rugăm să {signUpLink} sau {signInLink} pentru a comenta.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Comentariile sunt dezactivate momentan.",
-  "app.components.Comments.commentingInititativeDisabledNotVerified": "Pentru a comenta această propunere este necesară verificarea contului tău {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "Este posibil sa nu aveți acces la secțiunea de comentarii. Vă rugăm să accesați {signInLink} pentru a vedea dacă respectați criteriile.",
   "app.components.Comments.commentingNotAllowed": "",
   "app.components.Comments.invisibleTitleComments": "Comentarii",

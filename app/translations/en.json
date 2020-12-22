@@ -29,7 +29,6 @@
   "app.components.Comments.commentingDisabledUnverified": "{verifyIdentityLink} to comment.",
   "app.components.Comments.commentingInitiativeMaybeNotPermitted": "Please {signUpLink} or {signInLink} to comment.",
   "app.components.Comments.commentingInitiativeNotPermitted": "Commenting is currently disabled.",
-  "app.components.Comments.commentingInititativeDisabledNotVerified": "Commenting on this proposal requires verification of your account. {verificationLink}",
   "app.components.Comments.commentingMaybeNotPermitted": "Not everyone is allowed to comment. Please {signInLink} to see whether you comply.",
   "app.components.Comments.commentingNotAllowed": "Commenting is currently not allowed.",
   "app.components.Comments.invisibleTitleComments": "Comments",
