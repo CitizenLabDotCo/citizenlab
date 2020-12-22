@@ -29,10 +29,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses',
     defaultMessage: 'Statuses',
   },
-  subtitlePostStatuses: {
-    id: 'app.containers.admin.ideaStatuses.all.subtitlePostStatuses',
+  subtitleInputStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.subtitleInputStatuses',
     defaultMessage:
-      "Here you can add, edit and delete the statuses that can be assigned to posts. The status is publicly visible and helps participants know what's happening with their input. You can add a status to posts in the {linkToManageTab} tab.",
+      "Here you can add, edit and delete the statuses that can be assigned to inputs. The status is publicly visible and helps participants know what's happening with their input. You can add a status to inputs in the {linkToManageTab} tab.",
   },
   manage: {
     id: 'app.containers.admin.ideaStatuses.all.manage',
