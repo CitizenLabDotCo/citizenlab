@@ -33,12 +33,6 @@ module EmailCampaigns
       event_payload(:succesful_initiatives)
     end
 
-    def activity_statistics_change_for(payload_key)
-      payload = event_payload(:statistics, :activities, payload_key)
-
-      (payload.dig(:increase) / payload.dig(:past_increase) - 1 * 100).round
-    end
-
     def published_days_diff(serialized_idea)
       (Time.zone.today - serialized_idea.dig(:published_at).to_date).to_i
     end
