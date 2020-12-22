@@ -76,8 +76,8 @@ const IdeaMoreActions = memo(
 
     const onDeleteIdea = (ideaId: string, processType: ProcessType) => () => {
       const deleteConfirmationMessage = {
-        continuous: messages.deletePostConfirmation,
-        timeline: messages.deletePostInTimelineConfirmation,
+        continuous: messages.deleteInputConfirmation,
+        timeline: messages.deleteInputInTimelineConfirmation,
       }[processType];
 
       if (window.confirm(formatMessage(deleteConfirmationMessage))) {
