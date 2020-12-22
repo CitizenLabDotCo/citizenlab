@@ -113,7 +113,7 @@ class Rule extends PureComponent<Props, State> {
               )}
               <PredicateSelector
                 ruleType={rule.ruleType}
-                predicate={rule.predicate}
+                selectedPredicate={rule.predicate}
                 onChange={this.handleChangePredicate}
               />
             </Fragment>

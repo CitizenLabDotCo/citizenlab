@@ -321,11 +321,11 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
                 <FormattedMessage
                   {...getInputTermMessage(inputTerm, {
                     idea: messages.submitYourIdea,
-                    option: messages.submitYourOption,
-                    project: messages.submitYourProject,
-                    question: messages.submitYourQuestion,
-                    issue: messages.submitYourIssue,
-                    contribution: messages.submitYourContribution,
+                    option: messages.addAnOption,
+                    project: messages.addAProject,
+                    question: messages.addAQuestion,
+                    issue: messages.submitAnIssue,
+                    contribution: messages.addAContribution,
                   })}
                 />
               </Button>
