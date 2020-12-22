@@ -119,7 +119,7 @@ const IdeaStatuses = () => {
         </SectionTitle>
         <SectionDescription>
           <FormattedMessage
-            {...messages.subtitlePostStatuses}
+            {...messages.subtitleInputStatuses}
             values={{
               linkToManageTab: (
                 <Link to="/admin/ideas">
