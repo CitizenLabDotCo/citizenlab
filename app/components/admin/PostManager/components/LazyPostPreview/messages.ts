@@ -9,16 +9,16 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.delete',
     defaultMessage: 'Delete',
   },
-  deletePostConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deletePostConfirmation',
+  deleteInputConfirmation: {
+    id: 'app.components.admin.PostManager.PostPreview.deleteInputConfirmation',
     defaultMessage:
-      'Are you sure you want to delete this post? This action cannot be undone.',
+      'Are you sure you want to delete this input? This action cannot be undone.',
   },
-  deletePostInTimelineConfirmation: {
+  deleteInputInTimelineConfirmation: {
     id:
-      'app.components.admin.PostManager.PostPreview.deletePostInTimelineConfirmation',
+      'app.components.admin.PostManager.PostPreview.deleteInputInTimelineConfirmation',
     defaultMessage:
-      'Are you sure you want to delete this post? The post will be deleted from all project phases and cannot be recovered.',
+      'Are you sure you want to delete this input? The input will be deleted from all project phases and cannot be recovered.',
   },
   deleteInitiativeConfirmation: {
     id:
