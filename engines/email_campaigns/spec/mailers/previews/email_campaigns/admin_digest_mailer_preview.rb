@@ -24,13 +24,13 @@ module EmailCampaigns
               active_users: { increase: 1 }
             }
           },
-          top_project_ideas: {
-            project: {
-              url: 'some_fake_url'
-            },
-            current_phase: nil,
-            top_ideas: [campaign.serialize_idea(idea)]
-          },
+          top_project_ideas: [
+            {
+              project: { url: 'some_fake_url', title_multiloc: { 'en' => 'project title' } },
+              current_phase: nil,
+              top_ideas: [campaign.serialize_idea(idea)]
+            }
+          ],
           new_initiatives: [campaign.serialize_initiative(initiative)],
           succesful_initiatives: [campaign.serialize_initiative(initiative)]
         },

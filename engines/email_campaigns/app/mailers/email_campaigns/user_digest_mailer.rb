@@ -1,5 +1,7 @@
 module EmailCampaigns
   class UserDigestMailer < ApplicationMailer
+    include ::EmailCampaigns::DigestableMailer
+
     protected
 
     def subject

@@ -110,21 +110,17 @@ module EmailCampaigns
     # * activity: Activity object which activity happened
     def apply_send_pipeline campaign_candidates, options={}
       campaign_candidates
-        .select{|campaign| campaign.run_before_send_hooks(options)}
+        .select do |campaign|
+          campaign.run_before_send_hooks(options)
+        end
         .flat_map do |campaign|
           recipients = campaign.apply_recipient_filters(options)
           recipients.zip([campaign].cycle)
         end
         .flat_map do |(recipient, campaign)|
-          campaign.generate_commands(
-            recipient: recipient,
-            **options
-          ).map do |command|
-            command.merge({
-              recipient: recipient,
-            })
-          end
-          .zip([campaign].cycle)
+          campaign.generate_commands(recipient: recipient, **options)
+                  .map { |command| command.merge(recipient: recipient) }
+                  .zip([campaign].cycle)
         end
         .each do |(command, campaign)|
           process_command(campaign, command)
@@ -151,15 +147,15 @@ module EmailCampaigns
     # This method is triggered when the given sending command should be sent
     # out through the event bus
     def send_command_external campaign, command
-      segment_event = {
-        event: "#{campaign.class.campaign_name} email command",
-        user_id: command[:recipient].id,
-        timestamp: Time.now.iso8601,
-        properties: {
-          source: 'cl2-back',
-          payload: command[:event_payload]
-        }
-      }
+      # segment_event = {
+      #   event: "#{campaign.class.campaign_name} email command",
+      #   user_id: command[:recipient].id,
+      #   timestamp: Time.now.iso8601,
+      #   properties: {
+      #     source: 'cl2-back',
+      #     payload: command[:event_payload]
+      #   }
+      # }
       rabbit_event = {
         event: "#{campaign.class.campaign_name} email command",
         timestamp: Time.now.iso8601,
