@@ -59,17 +59,17 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.titleClusterInformation',
     defaultMessage: 'Clustering information',
   },
-  titlePostFilters: {
-    id: 'app.containers.Admin.clusterViewer.titlePostFilters',
-    defaultMessage: 'Post filters',
+  titleInputFilters: {
+    id: 'app.containers.Admin.clusterViewer.titleInputFilters',
+    defaultMessage: 'Input filters',
   },
   fieldAttributes: {
     id: 'app.containers.Admin.clusterViewer.fieldAttributes',
     defaultMessage: 'What attributes would you like to use to create clusters?',
   },
-  fieldDropEmptyCluster: {
-    id: 'app.containers.Admin.clusterViewer.fieldDropEmptyCluster',
-    defaultMessage: 'Exclude empty clusters (no posts)',
+  fieldExcludeEmptyCluster: {
+    id: 'app.containers.Admin.clusterViewer.fieldExcludeEmptyCluster',
+    defaultMessage: 'Exclude empty clusters (no inputs)',
   },
   fieldProjects: {
     id: 'app.containers.Admin.clusterViewer.fieldProjects',
@@ -127,9 +127,9 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.keywords',
     defaultMessage: 'Keywords',
   },
-  clusterContainsSelectedPosts: {
-    id: 'app.containers.Admin.clusterViewer.clusterContainsSelectedPosts',
-    defaultMessage: 'Selected posts',
+  clusterContainsSelectedInputs: {
+    id: 'app.containers.Admin.clusterViewer.clusterContainsSelectedInputs',
+    defaultMessage: 'Selected inputs',
   },
   title: {
     id: 'app.containers.Admin.clusterViewer.title',

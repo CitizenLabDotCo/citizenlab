@@ -99,14 +99,16 @@ class ClusteringForm extends PureComponent<
             <Field
               name="drop_empty"
               component={FormikToggle}
-              label={<FormattedMessage {...messages.fieldDropEmptyCluster} />}
+              label={
+                <FormattedMessage {...messages.fieldExcludeEmptyCluster} />
+              }
             />
           </SectionField>
         </Section>
 
         <Section>
           <SectionTitle>
-            <FormattedMessage {...messages.titlePostFilters} />
+            <FormattedMessage {...messages.titleInputFilters} />
           </SectionTitle>
 
           <SectionField>
