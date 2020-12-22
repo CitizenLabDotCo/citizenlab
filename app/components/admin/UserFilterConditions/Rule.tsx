@@ -106,14 +106,14 @@ class Rule extends PureComponent<Props, State> {
           />
         </SelectorCell>
         <SelectorCell>
-          {rule.ruleType && (
+          {rule.ruleType && rule.predicate && (
             <Fragment key={rule.ruleType}>
               {showLabels && (
                 <FormattedMessage {...messages.rulesFormLabelPredicate} />
               )}
               <PredicateSelector
                 ruleType={rule.ruleType}
-                predicate={rule.predicate}
+                selectedPredicate={rule.predicate}
                 onChange={this.handleChangePredicate}
               />
             </Fragment>

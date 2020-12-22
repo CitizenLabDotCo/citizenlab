@@ -52,7 +52,8 @@ type TStaticPredicate =
   | TRegistrationCompletedPredicate
   | TParticipatedInProjectPredicate
   | TParticipatedInTopicPredicate
-  | TParticipatedInStatusPredicate;
+  | TParticipatedInStatusPredicate
+  | TVerifiedPredicate;
 
 type TRolePredicate =
   | 'is_admin'
@@ -126,6 +127,8 @@ type TParticipatedInStatusPredicate =
   | 'not_voted_idea_in'
   | 'voted_comment_in'
   | 'not_voted_comment_in';
+
+type TVerifiedPredicate = 'is_verified' | 'not_is_verified';
 
 type TCustomPredicate =
   | TCustomFieldSelectPredicate
