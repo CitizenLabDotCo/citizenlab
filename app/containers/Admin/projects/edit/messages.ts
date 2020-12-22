@@ -10,9 +10,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
-  inputsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputsTab',
-    defaultMessage: 'Inputs',
+  inputManagerTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
+    defaultMessage: 'Input manager',
   },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
@@ -147,37 +147,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
     defaultMessage: 'Amount per citizen, in {currency}',
   },
-  postingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
-    defaultMessage: 'Posting ideas',
+  inputPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
+    defaultMessage: 'Submitting inputs',
   },
-  contributionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.contributionPostingEnabled',
-    defaultMessage: 'Posting ideas',
+  inputCommentingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
+    defaultMessage: 'Commenting on inputs',
   },
-  optionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.optionPostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  issuePostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.issuePostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  questionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.questionPostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  projectPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectPostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  commentingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.commentingEnabled',
-    defaultMessage: 'Commenting',
-  },
-  votingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingEnabled',
-    defaultMessage: 'Voting',
+  inputVotingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
+    defaultMessage: 'Voting on inputs',
   },
   votingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethod',

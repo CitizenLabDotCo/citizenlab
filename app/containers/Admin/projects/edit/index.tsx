@@ -138,7 +138,7 @@ export class AdminProjectEdition extends PureComponent<
         name: 'description',
       },
       {
-        label: formatMessage(messages.inputsTab),
+        label: formatMessage(messages.inputManagerTab),
         url: `${baseTabsUrl}/ideas`,
         name: 'ideas',
       },
