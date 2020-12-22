@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2020_12_17_170635) do
 
   # These are extensions that must be enabled in order to support this database
@@ -659,6 +660,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.boolean "downvoting_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
+    t.string "input_term", default: "idea"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -780,6 +782,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
+    t.string "input_term", default: "idea"
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
