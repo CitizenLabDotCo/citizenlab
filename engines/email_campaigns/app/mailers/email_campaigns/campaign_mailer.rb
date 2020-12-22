@@ -2,7 +2,9 @@ module EmailCampaigns
   class CampaignMailer < ActionMailer::Base
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
 
-    def campaign_mail campaign, command
+
+    def campaign_mail
+      command, campaign = params.values_at(:command, :command)
       recipient = command[:recipient]
       multiloc_service = MultilocService.new
       frontend_service = Frontend::UrlService.new
