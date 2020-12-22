@@ -130,7 +130,7 @@ interface DefaultProps {
 
 interface Props extends DefaultProps {
   text?: string | JSX.Element | null;
-  fieldName?: string | undefined;
+  fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
 }
@@ -138,6 +138,45 @@ interface Props extends DefaultProps {
 interface State {
   mounted: boolean;
 }
+
+type TFieldName =
+  | 'title_multiloc'
+  | 'sender'
+  | 'group_ids'
+  | 'reply_to'
+  | 'subject_multiloc'
+  | 'body_multiloc'
+  | 'description_multiloc'
+  | 'description_preview_multiloc'
+  | 'required'
+  | 'input_type'
+  | 'slug'
+  | 'file'
+  | 'token'
+  | 'password'
+  | 'buttonText'
+  | 'showFooter'
+  | 'showLogo'
+  | 'showHeader'
+  | 'relativeLink'
+  | 'font'
+  | 'accentColor'
+  | 'textColor'
+  | 'siteBgColor'
+  | 'bgColor'
+  | 'fontSize'
+  | 'headerText'
+  | 'headerSubText'
+  | 'password'
+  | 'password'
+  | 'limit'
+  | 'width'
+  | 'height'
+  | 'homepage-info'
+  | 'first_name'
+  | 'last_name'
+  | 'email'
+  | 'first_name';
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
@@ -164,7 +203,7 @@ export default class Error extends PureComponent<Props, State> {
     this.setState({ mounted: false });
   }
 
-  findMessage = (fieldName: string | undefined, error: string) => {
+  findMessage = (fieldName: TFieldName | undefined, error: string) => {
     if (fieldName && messages[`${fieldName}_${error}`]) {
       return messages[`${fieldName}_${error}`] as Message;
     }
