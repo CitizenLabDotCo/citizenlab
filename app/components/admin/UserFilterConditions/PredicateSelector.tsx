@@ -12,7 +12,7 @@ import messages from './messages';
 
 type Props = {
   ruleType: TRuleType;
-  selectedPredicate: TPredicate;
+  selectedPredicate?: TPredicate;
   onChange: (predicate: TPredicate) => void;
 };
 
