@@ -131,7 +131,6 @@ interface DefaultProps {
 interface Props extends DefaultProps {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
-  errors?: string[];
   apiErrors?: (CLError | IInviteError)[] | null;
   message?: IMessageInfo['message'];
   id?: string;
@@ -182,7 +181,6 @@ export default class Error extends PureComponent<Props, State> {
     const { mounted } = this.state;
     const {
       text,
-      errors,
       apiErrors,
       fieldName,
       marginTop,
@@ -201,7 +199,7 @@ export default class Error extends PureComponent<Props, State> {
     return (
       <CSSTransition
         classNames="error"
-        in={!!(mounted && (text || errors || apiErrors || message))}
+        in={!!(mounted && (text || apiErrors || message))}
         timeout={timeout}
         mounOnEnter={true}
         unmountOnExit={true}
@@ -230,22 +228,6 @@ export default class Error extends PureComponent<Props, State> {
             <ErrorMessageText>
               {text && <p>{text}</p>}
 
-              {errors &&
-                isArray(errors) &&
-                !isEmpty(errors) &&
-                errors.map((error) => {
-                  const errorMessage = this.findMessage(fieldName, error);
-
-                  if (errorMessage) {
-                    return (
-                      <p key={error}>
-                        <FormattedMessage {...errorMessage} />
-                      </p>
-                    );
-                  }
-
-                  return null;
-                })}
               {message && (
                 <p>
                   <FormattedMessage {...message} />
