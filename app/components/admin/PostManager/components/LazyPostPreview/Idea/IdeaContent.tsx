@@ -188,8 +188,8 @@ export class IdeaContent extends PureComponent<
       intl: { formatMessage },
     } = this.props;
     const deleteConfirmationMessage = {
-      continuous: messages.deletePostConfirmation,
-      timeline: messages.deletePostInTimelineConfirmation,
+      continuous: messages.deleteInputConfirmation,
+      timeline: messages.deleteInputInTimelineConfirmation,
     }[processType];
 
     if (!isNilOrError(idea)) {

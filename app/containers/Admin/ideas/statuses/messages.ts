@@ -29,19 +29,19 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses',
     defaultMessage: 'Statuses',
   },
-  subtitlePostStatuses: {
-    id: 'app.containers.admin.ideaStatuses.all.subtitlePostStatuses',
+  subtitleInputStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.subtitleInputStatuses',
     defaultMessage:
-      "Here you can add, edit and delete the statuses that can be assigned to posts. The status is publicly visible and helps participants know what's happening with their input. You can add a status to posts in the {linkToManageTab} tab.",
+      "Here you can add, edit and delete the statuses that can be assigned to inputs. The status is publicly visible and helps participants know what's happening with their input. You can add a status to inputs in the {linkToManageTab} tab.",
   },
   manage: {
     id: 'app.containers.admin.ideaStatuses.all.manage',
     defaultMessage: 'Manage',
   },
-  statusDeleteButtonTooltip: {
-    id: 'app.containers.admin.ideaStatuses.all.statusDeleteButtonTooltip',
+  inputStatusDeleteButtonTooltip: {
+    id: 'app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip',
     defaultMessage:
-      'Statuses currently assigned to a post cannot be deleted. You can remove/change the status from existing posts in the {manageTab} tab.',
+      'Statuses currently assigned to an input cannot be deleted. You can remove/change the status from existing inputs in the {manageTab} tab.',
   },
   defaultStatusDeleteButtonTooltip: {
     id:

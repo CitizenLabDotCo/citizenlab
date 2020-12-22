@@ -56,7 +56,8 @@ const FieldSelector = memo(
         role: messages.field_role,
         participated_in_project: messages.field_participated_in_project,
         participated_in_topic: messages.field_participated_in_topic,
-        participated_in_idea_status: messages.field_participated_in_post_status,
+        participated_in_idea_status:
+          messages.field_participated_in_input_status,
         verified: messages.field_verified,
       };
       const staticOptions = keys(ruleTypeConstraints)

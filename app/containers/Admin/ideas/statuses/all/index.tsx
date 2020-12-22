@@ -119,7 +119,7 @@ const IdeaStatuses = () => {
         </SectionTitle>
         <SectionDescription>
           <FormattedMessage
-            {...messages.subtitlePostStatuses}
+            {...messages.subtitleInputStatuses}
             values={{
               linkToManageTab: (
                 <Link to="/admin/ideas">
@@ -202,7 +202,7 @@ const IdeaStatuses = () => {
                       disabled={isDeletable(ideaStatus)}
                       content={
                         <FormattedMessage
-                          {...messages.statusDeleteButtonTooltip}
+                          {...messages.inputStatusDeleteButtonTooltip}
                           values={{
                             manageTab: (
                               <b>
