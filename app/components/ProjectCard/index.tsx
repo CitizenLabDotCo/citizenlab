@@ -614,11 +614,11 @@ const ProjectCard = memo(
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.submitYourIdea,
-              option: messages.submitYourOption,
-              project: messages.submitYourProject,
-              question: messages.submitYourQuestion,
-              issue: messages.submitYourQuestion,
-              contribution: messages.submitYourContribution,
+              option: messages.seeTheOptions,
+              project: messages.seeTheProjects,
+              question: messages.joinDiscussion,
+              issue: messages.submitAnIssue,
+              contribution: messages.contributeYourInput,
             })}
           />
         );
