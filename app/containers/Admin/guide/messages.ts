@@ -165,9 +165,9 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.decideArticle1Link',
     defaultMessage: '/admin/ideas',
   },
-  manageThePosts: {
-    id: 'containers.Admin.onboarding.manageThePosts',
-    defaultMessage: 'Manage the posts',
+  manageInputs: {
+    id: 'containers.Admin.onboarding.manageInputs',
+    defaultMessage: 'Manage the inputs',
   },
   decideArticle1Description2: {
     id: 'containers.Admin.onboarding.decideArticle1Description2',
