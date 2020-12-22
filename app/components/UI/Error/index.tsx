@@ -3,7 +3,7 @@ import { Icon } from 'cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
-import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
 import { CLError, Message } from 'typings';
 import { IInviteError } from 'services/invites';
@@ -132,7 +132,6 @@ interface Props extends DefaultProps {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
-  message?: IMessageInfo['message'];
   id?: string;
 }
 
@@ -189,7 +188,6 @@ export default class Error extends PureComponent<Props, State> {
       showBackground,
       className,
       animate,
-      message,
       id,
     } = this.props;
     const dedupApiErrors =
@@ -199,7 +197,7 @@ export default class Error extends PureComponent<Props, State> {
     return (
       <CSSTransition
         classNames="error"
-        in={!!(mounted && (text || apiErrors || message))}
+        in={!!(mounted && (text || apiErrors))}
         timeout={timeout}
         mounOnEnter={true}
         unmountOnExit={true}
@@ -227,13 +225,6 @@ export default class Error extends PureComponent<Props, State> {
 
             <ErrorMessageText>
               {text && <p>{text}</p>}
-
-              {message && (
-                <p>
-                  <FormattedMessage {...message} />
-                </p>
-              )}
-
               {dedupApiErrors &&
                 isArray(dedupApiErrors) &&
                 !isEmpty(dedupApiErrors) && (
