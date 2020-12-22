@@ -24,6 +24,8 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
  * Schema for validating the rules used in smart groups
  */
 
+export type TRuleType = TStaticRuleType | TCustomRuleType;
+
 export type TStaticRuleType =
   | 'email'
   | 'lives_in'
@@ -41,7 +43,91 @@ export type TCustomRuleType =
   | 'custom_field_date'
   | 'custom_field_number';
 
-export type TCustomPredicate =
+export type TPredicate = TStaticPredicate | TCustomPredicate;
+
+type TStaticPredicate =
+  | TRolePredicate
+  | TEmailPredicate
+  | TResidencePredicate
+  | TRegistrationCompletedPredicate
+  | TParticipatedInProjectPredicate
+  | TParticipatedInTopicPredicate
+  | TParticipatedInStatusPredicate;
+
+type TRolePredicate =
+  | 'is_admin'
+  | 'not_is_admin'
+  | 'is_project_moderator'
+  | 'not_is_project_moderator'
+  | 'is_normal_user'
+  | 'not_is_normal_user';
+
+type TEmailPredicate =
+  | 'is'
+  | 'not_is'
+  | 'contains'
+  | 'not_contains'
+  | 'begins_with'
+  | 'not_begins_with'
+  | 'ends_on'
+  | 'not_ends_on';
+
+type TResidencePredicate =
+  | 'has_value'
+  | 'not_has_value'
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_one_of'
+  | 'not_is_one_of';
+
+type TRegistrationCompletedPredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_before'
+  | 'is_exactly'
+  | 'is_after';
+
+type TParticipatedInProjectPredicate =
+  | 'in'
+  | 'not_in'
+  | 'posted_in'
+  | 'not_posted_in'
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'voted_idea_in'
+  | 'not_voted_idea_in'
+  | 'voted_comment_in'
+  | 'not_voted_comment_in'
+  | 'budgeted_in'
+  | 'not_budgeted_in'
+  | 'volunteered_in'
+  | 'not_volunteered_in';
+
+type TParticipatedInTopicPredicate =
+  | 'in'
+  | 'not_in'
+  | 'posted_in'
+  | 'not_posted_in'
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'voted_idea_in'
+  | 'not_voted_idea_in'
+  | 'voted_comment_in'
+  | 'not_voted_comment_in';
+
+type TParticipatedInStatusPredicate =
+  | 'in'
+  | 'not_in'
+  | 'posted_in'
+  | 'not_posted_in'
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'voted_idea_in'
+  | 'not_voted_idea_in'
+  | 'voted_comment_in'
+  | 'not_voted_comment_in';
+
+type TCustomPredicate =
   | TCustomFieldSelectPredicate
   | TCustomFieldCheckboxPredicate
   | TCustomFieldDatePredicate
