@@ -1,23 +1,21 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import Header from './Header';
+import ProjectFolderHeader from './ProjectFolderHeader';
+import ProjectFolderDescription from './ProjectFolderDescription';
+import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
-import ProjectFolderInfo from './ProjectFolderInfo';
 import ContentContainer from 'components/ContentContainer';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProjectFolder, {
-  GetProjectFolderChildProps,
-} from 'modules/project_folders/resources/GetProjectFolder';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useTenant from 'hooks/useTenant';
+import useProjectFolder from 'hooks/useProjectFolder';
 
 // i18n
 import messages from './messages';
@@ -26,7 +24,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -34,7 +31,7 @@ const Container = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
-  background: ${colors.background};
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -57,21 +54,29 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Content = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+const StyledContentContainer = styled(ContentContainer)`
+  border: solid 1px red;
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  flex: 1 1 auto;
-  padding-top: 20px;
-  padding-bottom: 100px;
+const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
+  flex: 1;
+  margin-bottom: 30px;
+`;
 
-  ${media.smallerThanMinTablet`
-    padding-top: 30px;
-  `}
+const Content = styled.div`
+  display: flex;
+`;
+
+const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
+  flex: 1;
+`;
+
+const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
+  flex: 0 0 894px;
+  width: 894px;
+  padding: 20px;
+  background: ${colors.background};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const NotFoundWrapper = styled.div`
@@ -85,91 +90,52 @@ const NotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-export interface InputProps {}
+const ProjectFolderShowPage = memo<WithRouterProps>(({ params: { slug } }) => {
+  const locale = useLocale();
+  const tenant = useTenant();
+  const projectFolder = useProjectFolder({ projectFolderSlug: slug });
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
-  projectFolder: GetProjectFolderChildProps;
-}
+  const folderNotFound = isError(projectFolder);
+  const loading =
+    isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder);
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  hasEvents: boolean;
-  loaded: boolean;
-}
-
-class ProjectFolderShowPage extends PureComponent<
-  Props & WithRouterProps,
-  State
-> {
-  render() {
-    const { locale, tenant, projectFolder } = this.props;
-    const { slug } = this.props.params;
-    const folderNotFound = isError(projectFolder);
-    const loading =
-      isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder);
-
-    return (
-      <>
-        <ProjectFolderShowPageMeta projectFolderSlug={slug} />
-        <Container
-          className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
-        >
-          {folderNotFound ? (
-            <NotFoundWrapper>
-              <p>
-                <FormattedMessage {...messages.noFolderFoundHere} />
-              </p>
-              <Button
-                linkTo="/projects"
-                text={<FormattedMessage {...messages.goBackToList} />}
-                icon="arrow-back"
+  return (
+    <>
+      <ProjectFolderShowPageMeta projectFolderSlug={slug} />
+      <Container
+        className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
+      >
+        {folderNotFound ? (
+          <NotFoundWrapper>
+            <p>
+              <FormattedMessage {...messages.noFolderFoundHere} />
+            </p>
+            <Button
+              linkTo="/projects"
+              text={<FormattedMessage {...messages.goBackToList} />}
+              icon="arrow-back"
+            />
+          </NotFoundWrapper>
+        ) : loading ? (
+          <Loading>
+            <Spinner />
+          </Loading>
+        ) : !isNilOrError(projectFolder) ? (
+          <StyledContentContainer maxWidth={1774}>
+            <StyledProjectFolderHeader projectFolderId={projectFolder.id} />
+            <Content>
+              <StyledProjectFolderDescription
+                projectFolderId={projectFolder.id}
               />
-            </NotFoundWrapper>
-          ) : loading ? (
-            <Loading>
-              <Spinner />
-            </Loading>
-          ) : !isNilOrError(projectFolder) ? (
-            <>
-              <Header projectFolderId={projectFolder.id} />
-              <Content>
-                <StyledContentContainer mode="page">
-                  <ProjectFolderInfo projectFolderId={projectFolder.id} />
-                  <ProjectAndFolderCards
-                    pageSize={50}
-                    publicationStatusFilter={['published', 'archived']}
-                    showTitle={false}
-                    layout="twocolumns"
-                    folderId={projectFolder.id}
-                  />
-                </StyledContentContainer>
-              </Content>
-            </>
-          ) : null}
-        </Container>
-      </>
-    );
-  }
-}
-
-// TODO: add vertical padding to ContentContainer
-// TODO: Meta
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locale: <GetLocale />,
-  tenant: <GetTenant />,
-  projectFolder: ({ params, render }) => (
-    <GetProjectFolder projectFolderSlug={params.slug}>
-      {render}
-    </GetProjectFolder>
-  ),
+              <StyledProjectFolderProjectCards
+                projectFolderId={projectFolder.id}
+              />
+            </Content>
+          </StyledContentContainer>
+        ) : null}
+      </Container>
+    </>
+  );
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectFolderShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter(ProjectFolderShowPage);
