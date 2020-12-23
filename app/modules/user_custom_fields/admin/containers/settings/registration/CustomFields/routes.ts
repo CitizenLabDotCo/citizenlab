@@ -3,7 +3,7 @@ import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   component: Loadable({
-    loader: () => import('./'),
+    loader: () => import('.'),
     loading: LoadableLoadingAdmin,
     delay: 500,
   }),

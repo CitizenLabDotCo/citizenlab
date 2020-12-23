@@ -80,7 +80,7 @@ export type OutletId = keyof Outlets;
 
 export interface RouteConfiguration {
   path?: string;
-  name: string;
+  name?: string;
   container: () => Promise<any>;
   type?: string;
   indexRoute?: RouteConfiguration;
@@ -88,8 +88,8 @@ export interface RouteConfiguration {
 }
 
 interface Routes {
-  citizen: RouteConfiguration[];
-  admin: RouteConfiguration[];
+  citizen?: RouteConfiguration[];
+  admin?: RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
