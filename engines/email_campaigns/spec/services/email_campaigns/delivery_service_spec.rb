@@ -110,9 +110,8 @@ describe EmailCampaigns::DeliveryService do
 
     it "launches deliver_later on an ActionMailer" do
       message_delivery = instance_double(ActionMailer::MessageDelivery)
-      expect(EmailCampaigns::CampaignMailer)
+      expect(EmailCampaigns::CampaignMailer.with(campaign: campaign, command: anything))
         .to receive(:campaign_mail)
-        .with(campaign, anything)
         .and_return(message_delivery)
         .exactly(User.count).times
       expect(message_delivery)
@@ -120,7 +119,6 @@ describe EmailCampaigns::DeliveryService do
         .exactly(User.count).times
 
       service.send_now(campaign)
-
     end
 
     it "creates deliveries for a Trackable campaign" do
