@@ -29,10 +29,10 @@ describe EmailCampaigns::DeliveryService do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
 
-    it "enqueues an external event job" do
+    it "enqueues an internal delivery job" do
       travel_to campaign.ic_schedule.start_time do
         expect{service.send_on_schedule(Time.now)}
-          .to have_enqueued_job(PublishRawEventToRabbitJob)
+          .to have_enqueued_job(ActionMailer::MailDeliveryJob)
           .exactly(1).times
       end
     end
@@ -47,7 +47,7 @@ describe EmailCampaigns::DeliveryService do
     it "creates deliveries for a trackable campaign" do
       travel_to campaign.ic_schedule.start_time do
         service.send_on_schedule(Time.now)
-        expect(EmailCampaigns::Delivery.first).to have_attributes({
+        expect(campaign.deliveries.first).to have_attributes({
           campaign_id: campaign.id,
           user_id: admin.id,
           delivery_status: 'sent'
@@ -59,7 +59,7 @@ describe EmailCampaigns::DeliveryService do
   describe "send_on_activity" do
     let!(:campaign) { create(:comment_on_your_comment_campaign) }
     let(:notification) { create(:comment_on_your_comment) }
-    let(:activity) { 
+    let(:activity) {
       Activity.create(
         item: notification,
         item_type: notification.class.name,
@@ -83,7 +83,7 @@ describe EmailCampaigns::DeliveryService do
     context "on project_phase_upcoming notification" do
       let!(:campaign) { create(:project_phase_upcoming_campaign) }
       let(:notification) { create(:project_phase_upcoming) }
-      let(:activity) { 
+      let(:activity) {
         Activity.create(
           item: notification,
           item_type: notification.class.name,
@@ -162,7 +162,7 @@ describe EmailCampaigns::DeliveryService do
       ConsentableDisableableCampaignB.create!(enabled: false)
       ConsentableDisableableCampaignB.create!(enabled: true)
       stub_const(
-        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES", 
+        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES",
         [NonConsentableCampaign, ConsentableDisableableCampaignA, ConsentableDisableableCampaignB, ConsentableCampaign]
       )
       user = create(:user)
