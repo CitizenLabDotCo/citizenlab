@@ -108,24 +108,38 @@ module EmailCampaigns
     # Takes options, either
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
-    def apply_send_pipeline campaign_candidates, options={}
-      campaign_candidates
-        .select do |campaign|
-          campaign.run_before_send_hooks(options)
-        end
-        .flat_map do |campaign|
-          recipients = campaign.apply_recipient_filters(options)
-          recipients.zip([campaign].cycle)
-        end
-        .flat_map do |(recipient, campaign)|
-          campaign.generate_commands(recipient: recipient, **options)
-                  .map { |command| command.merge(recipient: recipient) }
-                  .zip([campaign].cycle)
-        end
-        .each do |(command, campaign)|
-          process_command(campaign, command)
-          campaign.run_after_send_hooks(command)
-        end
+    def apply_send_pipeline(campaign_candidates, options = {})
+      valid_campaigns           = filter_valid_campaigns_before_send(campaign_candidates, options)
+      campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
+      campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
+
+      process_send_campaigns(campaigns_with_command)
+    end
+
+    def filter_valid_campaigns_before_send(campaigns, options)
+      campaigns.select { |campaign| campaign.run_before_send_hooks(options) }
+    end
+
+    def assign_campaigns_recipients(campaigns, options)
+      campaigns.flat_map do |campaign|
+        recipients = campaign.apply_recipient_filters(options)
+        recipients.zip([campaign].cycle)
+      end
+    end
+
+    def assign_campaigns_command(campaigns_with_recipients, options)
+      campaigns_with_recipients.flat_map do |(recipient, campaign)|
+        campaign.generate_commands(recipient: recipient, **options)
+                .map { |command| command.merge(recipient: recipient) }
+                .zip([campaign].cycle)
+      end
+    end
+
+    def process_send_campaigns(campaigns_with_command)
+      campaigns_with_command.each do |(command, campaign)|
+        process_command(campaign, command)
+        campaign.run_after_send_hooks(command)
+      end
     end
 
     # A command can have the following structure:

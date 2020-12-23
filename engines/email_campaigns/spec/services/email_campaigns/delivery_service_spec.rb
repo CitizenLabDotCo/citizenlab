@@ -108,20 +108,12 @@ describe EmailCampaigns::DeliveryService do
     let!(:campaign) { create(:manual_campaign) }
     let!(:users) { create_list(:user, 3) }
 
+    it 'created a different command for each recipient' do
+      expect(service.send_now(campaign).length).to eq User.count
+    end
+
     it "launches deliver_later on an ActionMailer" do
-      message_delivery = instance_double(ActionMailer::MessageDelivery)
-      mail = instance_double(Mail::Message)
-      expect(EmailCampaigns::CampaignMailer.with(campaign: campaign, command: { recipient: users }))
-        .to receive(:campaign_mail)
-        .and_return(mail)
-
-      # expect(mail)
-      #   .to receive(:deliver_later)
-      #   .and_return(message_delivery)
-      #   .exactly(User.count).times
-
-      # service.send_now(campaign)
-
+      expect { service.send_now(campaign) }.to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(User.count).times
     end
 
     it "creates deliveries for a Trackable campaign" do
