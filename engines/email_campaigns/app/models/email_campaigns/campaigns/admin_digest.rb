@@ -81,7 +81,7 @@ module EmailCampaigns
         statistics.dig(:users, :new_visitors, :increase),
         statistics.dig(:users, :new_users, :increase),
         statistics.dig(:users, :active_users, :increase)
-      ].none?(&:zero?)
+      ].any?(&:positive?)
     end
 
     def statistics

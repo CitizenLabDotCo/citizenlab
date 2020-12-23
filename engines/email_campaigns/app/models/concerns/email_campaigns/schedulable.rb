@@ -35,6 +35,5 @@ module EmailCampaigns
       ics.start_time = ics.start_time.in_time_zone(Tenant.settings('core','timezone'))
       self.ic_schedule = ics
     end
-
   end
 end
