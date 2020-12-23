@@ -105,10 +105,7 @@ describe('Initiative new page', () => {
     // verify redirect to the newly created initiative page
     cy.get('#e2e-initiative-show', { timeout: 200000 });
 
-    cy.location('pathname').should(
-      'eq',
-      `/en-GB/initiatives/${initiativeTitle}`
-    );
+    cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
 
     // verify the content of the newly created initiative page
     cy.get('#e2e-initiative-show')
