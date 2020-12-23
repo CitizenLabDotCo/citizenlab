@@ -81,11 +81,7 @@ module Tagging
 
           tags = params["tags"]
           tag_ids = params["tag_ids"]
-          @new_tags = []
-          if tags
-            @new_tags = tags.map.with_index { |tag, index|
-              { title_multiloc: { current_user.locale => tag }, id: index }}
-          end
+          @new_tags = tags ? tags.map { |tag| Tag.create({ title_multiloc: { current_user.locale => tag }}) } : []
           @old_tags = tag_ids ? Tag.where(id: tag_ids) : []
 
           @ideas = policy_scope(Idea)
@@ -101,8 +97,7 @@ module Tagging
             @suggestion.each do |document|
               idea = @ideas.find(document['id'])
               document['predicted_labels'].each{ |label|
-                tag = Tag.where(id: label['id']).first
-                tag ||= Tag.create(title_multiloc: @new_tags[label['id'].to_i][:title_multiloc])
+                tag = Tag.find(label['id'])
                 Tagging.create(
                   tag: tag,
                   idea: idea,

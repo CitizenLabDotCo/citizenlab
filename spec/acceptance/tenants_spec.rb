@@ -45,7 +45,7 @@ resource "Tenants" do
   end
 
   patch "web_api/v1/tenants/:id" do
-    with_options scope: :tenant do   
+    with_options scope: :tenant do
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
       parameter :favicon, "Base64 encoded favicon"
@@ -127,7 +127,7 @@ resource "Tenants" do
           }
         }
       }
-      
+
       example "[error] Updating the tenant with unsupported settings fails", document: false do
         do_request
         expect(response_status).to eq 422
@@ -167,7 +167,7 @@ resource "Tenants" do
     end
   end
 
-    
+
   private
 
   def base64_encoded_image filename, mime
