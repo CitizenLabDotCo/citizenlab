@@ -15,10 +15,10 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en','en-GB','nl-BE', 'fr-BE'],
+          locales: ['en','nl-BE', 'fr-BE'],
           organization_type: 'medium_city',
           organization_name: {
-            "en-GB" => 'Wonderville',
+            "en" => 'Wonderville',
             "nl-BE" => 'Mirakelgem',
           },
           timezone: "Brussels",
