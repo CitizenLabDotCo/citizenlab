@@ -8,8 +8,11 @@ import Observer from '@researchgate/react-intersection-observer';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Image = styled.img<{ fadeInDuration: number | undefined }>`
-  background: ${colors.placeholderBg};
+const Image = styled.img<{
+  fadeInDuration: number | undefined;
+  placeholderBg?: string;
+}>`
+  background: ${(props) => props.placeholderBg};
 
   &.fadeIn {
     transition: opacity ${(props) => props.fadeInDuration || 150}ms ease-out;
@@ -28,6 +31,7 @@ interface Props {
   cover?: boolean;
   fadeIn?: boolean;
   fadeInDuration?: number;
+  placeholderBg?: string;
   className?: string;
 }
 
@@ -40,6 +44,7 @@ export default class LazyImage extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
     fadeIn: true,
+    placeholderBg: colors.placeholderBg,
   };
 
   constructor(props) {
@@ -72,6 +77,7 @@ export default class LazyImage extends PureComponent<Props, State> {
       cover,
       fadeIn,
       fadeInDuration,
+      placeholderBg,
       className,
     } = this.props;
     const { visible, loaded } = this.state;
@@ -97,6 +103,7 @@ export default class LazyImage extends PureComponent<Props, State> {
             role={role}
             style={style}
             fadeInDuration={fadeInDuration}
+            placeholderBg={placeholderBg}
             className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${
               fadeIn ? 'fadeIn' : ''
             } ${className}`}
