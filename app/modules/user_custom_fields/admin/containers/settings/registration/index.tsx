@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import AllCustomFields from './CustomFields/All';
-import messages from '../messages';
+import messages from '../../../../../../containers/Admin/settings/messages';
 import {
   Section,
   SectionTitle,

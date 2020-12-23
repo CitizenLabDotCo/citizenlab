@@ -1,6 +1,7 @@
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import topicsRoutes from './topics/routes';
+import moduleConfiguration from 'modules';
 
 export default () => ({
   path: 'settings',
@@ -39,13 +40,7 @@ export default () => ({
         loading: () => null,
       }),
     },
-    {
-      path: 'registration',
-      component: Loadable({
-        loader: () => import('containers/Admin/settings/registration'),
-        loading: () => null,
-      }),
-    },
+    ...moduleConfiguration.routes['admin.settings'],
     topicsRoutes(),
     {
       path: 'widgets',

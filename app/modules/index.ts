@@ -2,6 +2,7 @@ import { loadModules } from 'utils/moduleUtils';
 
 import projectFoldersConfiguration from './project_folders';
 import smartGroupsConfiguration from './smart_groups';
+import userCustomFieldsConfiguration from './user_custom_fields';
 
 import googleTagManagerConfiguration from './google_tag_manager';
 import googleAnalyticsConfiguration from './google_analytics';
@@ -16,6 +17,10 @@ export default loadModules([
   },
   {
     configuration: smartGroupsConfiguration,
+    isEnabled: true,
+  },
+  {
+    configuration: userCustomFieldsConfiguration,
     isEnabled: true,
   },
   {
