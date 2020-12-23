@@ -88,8 +88,9 @@ export interface RouteConfiguration {
 }
 
 interface Routes {
-  citizen?: RouteConfiguration[];
-  admin?: RouteConfiguration[];
+  citizen: RouteConfiguration[];
+  admin: RouteConfiguration[];
+  'admin.settings': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -101,11 +102,22 @@ export interface ParsedModuleConfiguration {
   afterMountApplication: () => void;
 }
 
-type OptionalKeys<T> = {
-  [P in keyof T]?: T[P];
+type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? RecursivePartial<U>[]
+    : T[P] extends object
+    ? RecursivePartial<T[P]>
+    : T[P];
 };
 
-export type ModuleConfiguration = OptionalKeys<ParsedModuleConfiguration>;
+export type ModuleConfiguration = RecursivePartial<
+  ParsedModuleConfiguration
+> & {
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication?: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication?: () => void;
+};
 
 type Modules = {
   configuration: ModuleConfiguration;
@@ -180,6 +192,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     routes: {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
+      'admin.settings': parseModuleRoutes(
+        mergedRoutes['admin.settings'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
