@@ -16,7 +16,7 @@ import { completeRegistration } from 'services/users';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
-} from 'resources/GetUserCustomFieldsSchema';
+} from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

@@ -9,7 +9,7 @@ import request from 'utils/request';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
-import CustomFields from 'components/SignUpIn/SignUp/CustomFields';
+import CustomFields from 'modules/user_custom_fields/citizen/components/CustomFields';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -25,7 +25,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
-} from 'resources/GetUserCustomFieldsSchema';
+} from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';

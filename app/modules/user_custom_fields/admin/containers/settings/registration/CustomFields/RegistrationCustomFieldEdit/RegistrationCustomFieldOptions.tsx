@@ -10,7 +10,7 @@ import {
 } from 'services/userCustomFieldOptions';
 
 // hooks
-import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'modules/user_custom_fields/hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // components

@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomFieldOption from 'hooks/useUserCustomFieldOption';
+import useUserCustomFieldOption from 'modules/user_custom_fields/hooks/useUserCustomFieldOption';
 
 // services
 import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
