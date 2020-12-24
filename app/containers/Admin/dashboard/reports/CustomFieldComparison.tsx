@@ -28,7 +28,7 @@ import {
   GraphCardInner,
 } from '..';
 
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
 import { Subscription, combineLatest } from 'rxjs';
 import {
   IUsersByRegistrationField,

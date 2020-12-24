@@ -7,7 +7,7 @@ import { TRule, ruleTypeConstraints } from './rules';
 import GetCustomFields, {
   GetUserCustomFieldsChildProps,
 } from 'modules/user_custom_fields/resources/GetUserCustomFields';
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

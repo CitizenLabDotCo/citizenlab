@@ -27,7 +27,7 @@ import {
   reorderCustomFieldForUsers,
   isBuiltInField,
   isHiddenField,
-} from 'services/userCustomFields';
+} from 'modules/user_custom_fields/services/userCustomFields';
 
 // resources
 import GetUserCustomFields, {

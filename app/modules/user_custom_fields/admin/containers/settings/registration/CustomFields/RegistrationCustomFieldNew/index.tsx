@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { addCustomFieldForUsers } from 'services/userCustomFields';
+import { addCustomFieldForUsers } from 'modules/user_custom_fields/services/userCustomFields';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 

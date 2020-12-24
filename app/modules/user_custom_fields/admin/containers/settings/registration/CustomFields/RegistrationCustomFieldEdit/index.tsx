@@ -13,7 +13,7 @@ import {
   IUserCustomFieldData,
   isBuiltInField,
   IInputType,
-} from 'services/userCustomFields';
+} from 'modules/user_custom_fields/services/userCustomFields';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

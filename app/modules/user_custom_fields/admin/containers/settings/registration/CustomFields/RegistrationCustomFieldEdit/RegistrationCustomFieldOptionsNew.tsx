@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { addUserCustomFieldOption } from 'services/userCustomFieldOptions';
+import { addUserCustomFieldOption } from 'modules/user_custom_fields/services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
