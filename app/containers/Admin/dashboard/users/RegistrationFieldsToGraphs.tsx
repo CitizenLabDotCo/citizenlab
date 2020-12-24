@@ -5,7 +5,7 @@ import { map } from 'lodash-es';
 // resources
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
+} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services

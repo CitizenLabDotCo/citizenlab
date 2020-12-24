@@ -13,7 +13,7 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
+} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeStream,

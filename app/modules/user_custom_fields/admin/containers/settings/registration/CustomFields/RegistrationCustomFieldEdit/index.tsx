@@ -21,7 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
-import useUserCustomField from 'hooks/useUserCustomField';
+import useUserCustomField from 'modules/user_custom_fields/hooks/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
 
 const StyledGoBackButton = styled(GoBackButton)`

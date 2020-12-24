@@ -32,7 +32,7 @@ import {
 // resources
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
+} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 
 // styling
 import { colors } from 'utils/styleUtils';
