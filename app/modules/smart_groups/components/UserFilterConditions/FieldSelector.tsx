@@ -6,7 +6,7 @@ import { IOption } from 'typings';
 import { TRule, ruleTypeConstraints } from './rules';
 import GetCustomFields, {
   GetUserCustomFieldsChildProps,
-} from 'resources/GetUserCustomFields';
+} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 import { IUserCustomFieldData } from 'services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
