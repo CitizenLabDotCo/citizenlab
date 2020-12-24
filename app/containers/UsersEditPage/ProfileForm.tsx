@@ -8,7 +8,7 @@ import streams from 'utils/streams';
 import { updateUser, mapUserToDiff } from 'services/users';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
-} from 'resources/GetUserCustomFieldsSchema';
+} from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
 import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
@@ -28,7 +28,7 @@ import {
   FormLabel,
   FormSectionTitle,
 } from 'components/UI/FormComponents';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'modules/user_custom_fields/citizen/components/UserCustomFieldsForm';
 import { Input, IconTooltip, Select } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
