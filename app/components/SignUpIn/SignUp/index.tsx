@@ -97,6 +97,7 @@ interface State {
   userId: string | null;
   error: string | null;
   headerHeight: string;
+  stepConfiguration: Object;
 }
 
 class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
@@ -104,12 +105,43 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
+
+    const {
+      tenant,
+      intl: { formatMessage },
+    } = props;
+
     this.state = {
       steps: [],
       activeStep: undefined,
       userId: null,
       error: null,
       headerHeight: '100px',
+      stepConfiguration: {
+        'custom-fields': {
+          stepName: formatMessage(messages.completeYourProfile),
+          helperText: isNilOrError(tenant)
+            ? null
+            : tenant.attributes.settings.core.custom_fields_signup_helper_text,
+        },
+        verification: {
+          stepName: formatMessage(messages.verifyYourIdentity),
+          onCompleted: this.handleVerificationCompleted,
+        },
+        'auth-providers': {
+          stepName: formatMessage(messages.createYourAccount),
+          helperText: isNilOrError(tenant)
+            ? null
+            : tenant.attributes.settings.core.signup_helper_text,
+        },
+        'password-signup': {
+          stepName: formatMessage(messages.createYourAccount),
+          helperText: isNilOrError(tenant)
+            ? null
+            : tenant.attributes.settings.core.signup_helper_text,
+          onCompleted: this.handlePasswordSignupCompleted,
+        },
+      },
     };
   }
 
@@ -161,7 +193,6 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     const {
       metaData,
-      customFieldsSchema,
       intl: { formatMessage },
     } = this.props;
     const { activeStep } = this.state;
@@ -190,28 +221,32 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       steps.push('verification');
     }
 
-    if (
-      !isNilOrError(customFieldsSchema) &&
-      customFieldsSchema.hasCustomFields
-    ) {
-      steps.push('custom-fields');
-    }
+    // TODO: SELF REGISTER STEP FROM OUTLET
+
+    // if (
+    //   !isNilOrError(customFieldsSchema) &&
+    //   customFieldsSchema.hasCustomFields
+    // ) {
+    //   steps.push('custom-fields');
+    // }
 
     if (steps.length !== this.state.steps.length) {
       this.setState({ steps });
     }
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    const { customFieldsSchema } = this.props;
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    // const { customFieldsSchema } = this.props;
 
-    if (
-      isNilOrError(prevProps.customFieldsSchema) &&
-      !isNilOrError(customFieldsSchema) &&
-      customFieldsSchema.hasCustomFields
-    ) {
-      this.setState(({ steps }) => ({ steps: [...steps, 'custom-fields'] }));
-    }
+    // TODO: SELF REGISTER STEP FROM OUTLET
+
+    // if (
+    //   isNilOrError(prevProps.customFieldsSchema) &&
+    //   !isNilOrError(customFieldsSchema) &&
+    //   customFieldsSchema.hasCustomFields
+    // ) {
+    //   this.setState(({ steps }) => ({ steps: [...steps, 'custom-fields'] }));
+    // }
 
     if (this.state.activeStep !== prevState.activeStep) {
       signUpActiveStepChange(this.state.activeStep);
@@ -273,6 +308,12 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ activeStep: 'auth-providers' });
   };
 
+  handleCompleted = (data?: string) => {
+    const { activeStep, stepConfiguration } = this.state;
+    if (activeStep) stepConfiguration?.[activeStep]?.handleComplete?.(data);
+    this.goToNextStep();
+  };
+
   handlePasswordSignupCompleted = (userId: string) => {
     this.setState({ userId });
     this.goToNextStep();
@@ -293,10 +334,6 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({
       error: this.props.intl.formatMessage(messages.somethingWentWrongText),
     });
-  };
-
-  handleCustomFieldsCompleted = () => {
-    this.goToNextStep();
   };
 
   handleSuccessOnClose = () => {
@@ -321,35 +358,21 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    const { activeStep, error, steps, headerHeight } = this.state;
     const {
-      tenant,
-      metaData,
-      windowHeight,
-      className,
-      intl: { formatMessage },
-    } = this.props;
-    let helperText: Multiloc | null | undefined | Error = null;
-    let stepName: string | null = null;
+      activeStep,
+      error,
+      steps,
+      headerHeight,
+      stepConfiguration,
+    } = this.state;
+    const { metaData, windowHeight, className } = this.props;
 
     if (activeStep) {
       const totalStepsCount = steps.length;
       const activeStepNumber =
         indexOf(steps, activeStep) > -1 ? indexOf(steps, activeStep) + 1 : 1;
 
-      if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
-        stepName = formatMessage(messages.createYourAccount);
-        helperText = isNilOrError(tenant)
-          ? null
-          : tenant.attributes.settings.core.signup_helper_text;
-      } else if (activeStep === 'verification') {
-        stepName = formatMessage(messages.verifyYourIdentity);
-      } else if (activeStep === 'custom-fields') {
-        stepName = formatMessage(messages.completeYourProfile);
-        helperText = isNilOrError(tenant)
-          ? null
-          : tenant.attributes.settings.core.custom_fields_signup_helper_text;
-      }
+      const { stepName = '', helperText = '' } = stepConfiguration[activeStep];
 
       const showStepsCount = !!(
         !error &&
@@ -411,20 +434,15 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
               <Error text={error} animate={false} marginBottom="30px" />
             ) : (
               <>
-                {[
-                  'auth-providers',
-                  'password-signup',
-                  'custom-fields',
-                ].includes(activeStep) &&
-                  !isEmpty(helperText) && (
-                    <SignUpHelperText
-                      textColor={this.props.theme.colorText}
-                      fontSize="base"
-                      fontWeight={300}
-                    >
-                      <T value={helperText} supportHtml />
-                    </SignUpHelperText>
-                  )}
+                {!isEmpty(helperText) && (
+                  <SignUpHelperText
+                    textColor={this.props.theme.colorText}
+                    fontSize="base"
+                    fontWeight={300}
+                  >
+                    <T value={helperText} supportHtml />
+                  </SignUpHelperText>
+                )}
 
                 {activeStep === 'auth-providers' && (
                   <AuthProviders
@@ -438,7 +456,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                   <PasswordSignup
                     metaData={metaData}
                     hasNextStep={steps.length > 1}
-                    onCompleted={this.handlePasswordSignupCompleted}
+                    onCompleted={this.handleCompleted}
                     onGoToSignIn={this.props.onGoToSignIn}
                     onGoBack={this.handleGoBackToSignUpOptions}
                   />
@@ -451,7 +469,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                     inModal={!!metaData.inModal}
                     showHeader={false}
                     skippable={true}
-                    onComplete={this.handleVerificationCompleted}
+                    onComplete={this.handleCompleted}
                     onSkipped={this.handleVerificationSkipped}
                     onError={this.handleVerificationError}
                   />
@@ -460,7 +478,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 <Outlet
                   id="app.components.SignUpIn.SignUp.step"
                   step={activeStep}
-                  onCompleted={this.handleCustomFieldsCompleted}
+                  onCompleted={this.handleCompleted}
                 />
 
                 {activeStep === 'success' && (
