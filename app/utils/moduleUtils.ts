@@ -66,6 +66,12 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
+  'app.containers.Admin.dashboard.users.graphs': {
+    startAt?: string | null;
+    endAt: string | null;
+    currentGroupFilter?: string;
+    currentGroupFilterLabel?: string;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

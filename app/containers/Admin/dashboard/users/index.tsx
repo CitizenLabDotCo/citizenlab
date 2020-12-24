@@ -12,8 +12,8 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import ChartFilters from '../components/ChartFilters';
 import { GraphsContainer, ControlBar, chartTheme } from '../';
 import TimeControl from '../components/TimeControl';
-import RegistrationFieldsToGraphs from 'modules/user_custom_fields/admin/components/RegistrationFieldsToGraphs';
 import MostActiveUsersList from './charts/MostActiveUsersList';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -134,7 +134,8 @@ export class UsersDashboard extends PureComponent<
         />
 
         <GraphsContainer>
-          <RegistrationFieldsToGraphs
+          <Outlet
+            id="app.containers.Admin.dashboard.users.graphs"
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
