@@ -4,8 +4,8 @@ import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
-import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
-import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
+import CustomFieldOptionValueSelector from '../../../user_custom_fields/admin/components/CustomFieldOptionValueSelector';
+import CustomFieldOptionValuesSelector from '../../../user_custom_fields/admin/components/CustomFieldOptionValuesSelector';
 import TopicValueSelector from './ValueSelector/TopicValueSelector';
 import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 
