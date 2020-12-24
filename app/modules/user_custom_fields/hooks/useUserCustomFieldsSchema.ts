@@ -6,7 +6,7 @@ import {
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
 import { isEmpty, get } from 'lodash-es';
-import { hasCustomFields } from 'utils/customFields';
+import { hasCustomFields } from 'modules/user_custom_fields/utils/customFields';
 
 export type UserCustomFieldsSchema =
   | UserCustomFieldsInfos
