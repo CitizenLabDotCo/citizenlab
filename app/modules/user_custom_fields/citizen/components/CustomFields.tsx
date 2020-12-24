@@ -7,7 +7,7 @@ import { isObject } from 'lodash-es';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Spinner } from 'cl2-component-library';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'modules/user_custom_fields/citizen/components/UserCustomFieldsForm';
 
 // services
 import { completeRegistration } from 'services/users';
@@ -21,7 +21,7 @@ import GetUserCustomFieldsSchema, {
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../../../components/SignUpIn/SignUp/messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
