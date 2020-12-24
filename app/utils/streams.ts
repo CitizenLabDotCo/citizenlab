@@ -28,7 +28,7 @@ import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
-import { userCustomFieldsSchemaApiEndpoint } from 'services/userCustomFields';
+import { userCustomFieldsSchemaApiEndpoint } from 'modules/user_custom_fields/services/userCustomFields';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';

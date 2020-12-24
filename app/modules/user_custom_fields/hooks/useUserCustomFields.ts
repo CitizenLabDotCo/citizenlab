@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   userCustomFieldsStream,
   IUserCustomFieldData,
-} from 'services/userCustomFields';
+} from 'modules/user_custom_fields/services/userCustomFields';
 
 type IInputType = 'select' | 'multiselect' | 'checkbox' | 'number';
 

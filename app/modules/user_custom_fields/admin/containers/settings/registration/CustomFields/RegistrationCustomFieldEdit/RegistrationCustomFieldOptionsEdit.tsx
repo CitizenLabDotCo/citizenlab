@@ -14,7 +14,7 @@ import messages from '../messages';
 import useUserCustomFieldOption from 'modules/user_custom_fields/hooks/useUserCustomFieldOption';
 
 // services
-import { updateUserCustomFieldOption } from 'services/userCustomFieldOptions';
+import { updateUserCustomFieldOption } from 'modules/user_custom_fields/services/userCustomFieldOptions';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';

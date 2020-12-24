@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IUserCustomFieldData } from 'services/userCustomFields';
+import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
 import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
   deleteUserCustomFieldOption,
-} from 'services/userCustomFieldOptions';
+} from 'modules/user_custom_fields/services/userCustomFieldOptions';
 
 // hooks
 import useUserCustomFieldOptions from 'modules/user_custom_fields/hooks/useUserCustomFieldOptions';
