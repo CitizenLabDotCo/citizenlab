@@ -1,6 +1,7 @@
 import { TSignUpSteps } from 'components/SignUpIn/SignUp';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
 import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 
@@ -30,6 +31,7 @@ const configuration: ModuleConfiguration = {
         <CustomFieldsStep {...props} />
       </RenderOnStep>
     ),
+    'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
   },
 };
 

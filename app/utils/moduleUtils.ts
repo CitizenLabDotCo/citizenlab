@@ -8,11 +8,14 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 import { mergeWith, castArray } from 'lodash-es';
+import { GetUserCustomFieldsChildProps } from 'modules/user_custom_fields/resources/GetUserCustomFields';
 
 import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { ParticipationMethod } from 'services/participationContexts';
+import { IProjectData } from 'services/projects';
 import { FormikSubmitHandler, Multiloc } from 'typings';
 
 type Localize = (
@@ -76,6 +79,13 @@ export type OutletsPropertyMap = {
   'app.components.SignUpIn.SignUp.step': {
     step: TSignUpSteps;
     onCompleted: () => void;
+  };
+  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
+    startAt: string;
+    endAt: string;
+    fields: GetUserCustomFieldsChildProps;
+    participationMethods: ParticipationMethod[];
+    project: IProjectData;
   };
 };
 
