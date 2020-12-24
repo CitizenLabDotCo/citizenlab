@@ -9,7 +9,6 @@ import request from 'utils/request';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
-import CustomFields from 'modules/user_custom_fields/citizen/components/CustomFields';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -23,6 +22,8 @@ import ReactResizeDetector from 'react-resize-detector';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+
+import CustomFields from 'modules/user_custom_fields/citizen/components/CustomFields';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
