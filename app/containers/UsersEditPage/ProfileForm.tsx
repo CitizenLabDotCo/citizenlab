@@ -43,10 +43,10 @@ import styled from 'styled-components';
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-import UserCustomFieldsForm from 'modules/user_custom_fields/citizen/components/UserCustomFieldsForm';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
+import Outlet from 'components/Outlet';
 
 // Types
 interface InputProps {}
@@ -393,13 +393,13 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
         </form>
 
-        {hasCustomFields && (
-          <UserCustomFieldsForm
-            formData={customFieldsValues}
-            onChange={handleCustomFieldsFormOnChange}
-            onSubmit={handleCustomFieldsFormOnSubmit}
-          />
-        )}
+        <Outlet
+          id="app.containers.UserEditPage.ProfileForm.forms"
+          hasCustomFields={hasCustomFields}
+          formData={customFieldsValues}
+          onChange={handleCustomFieldsFormOnChange}
+          onSubmit={handleCustomFieldsFormOnSubmit}
+        />
 
         <SubmitWrapper
           status={getStatus()}

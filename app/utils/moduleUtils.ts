@@ -87,6 +87,12 @@ export type OutletsPropertyMap = {
     participationMethods: ParticipationMethod[];
     project: IProjectData;
   };
+  'app.containers.UserEditPage.ProfileForm.forms': {
+    hasCustomFields: boolean;
+    formData: any;
+    onChange: (formData: any) => void;
+    onSubmit: (formData: any) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
