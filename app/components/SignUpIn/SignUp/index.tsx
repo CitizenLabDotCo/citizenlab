@@ -267,6 +267,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       this.modalContentRef.scrollTop = 0;
     }
 
+    // TODO: deterimine order via configuration
     if (activeStep === 'auth-providers') {
       this.setState({ activeStep: 'password-signup' });
     } else if (
