@@ -12,7 +12,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import ChartFilters from '../components/ChartFilters';
 import { GraphsContainer, ControlBar, chartTheme } from '../';
 import TimeControl from '../components/TimeControl';
-import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
+import RegistrationFieldsToGraphs from 'modules/user_custom_fields/admin/components/RegistrationFieldsToGraphs';
 import MostActiveUsersList from './charts/MostActiveUsersList';
 
 // i18n

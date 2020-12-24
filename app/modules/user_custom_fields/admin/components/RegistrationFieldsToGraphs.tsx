@@ -3,9 +3,6 @@ import React, { PureComponent } from 'react';
 import { map } from 'lodash-es';
 
 // resources
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -19,14 +16,18 @@ import {
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
-import messages from '../messages';
+import messages from '../../../../containers/Admin/dashboard/messages';
 
 // components
-import BarChartByCategory from './charts/BarChartByCategory';
-import PieChartByCategory from './charts/PieChartByCategory';
-import AreaChart from './charts/AreaChart';
-import GenderChart from './charts/GenderChart';
-import AgeChart from './charts/AgeChart';
+import BarChartByCategory from '../../../../containers/Admin/dashboard/users/charts/BarChartByCategory';
+import PieChartByCategory from '../../../../containers/Admin/dashboard/users/charts/PieChartByCategory';
+import AreaChart from '../../../../containers/Admin/dashboard/users/charts/AreaChart';
+import GenderChart from '../../../../containers/Admin/dashboard/users/charts/GenderChart';
+import AgeChart from '../../../../containers/Admin/dashboard/users/charts/AgeChart';
+
+import GetUserCustomFields, {
+  GetUserCustomFieldsChildProps,
+} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 
 interface InputProps {
   currentGroupFilter: string | undefined;
