@@ -18,12 +18,12 @@ import {
   StyledModalContentContainer,
 } from 'components/SignUpIn/styles';
 import ReactResizeDetector from 'react-resize-detector';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
-import CustomFields from 'modules/user_custom_fields/citizen/components/CustomFields';
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
@@ -457,11 +457,11 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                   />
                 )}
 
-                {activeStep === 'custom-fields' && (
-                  <CustomFields
-                    onCompleted={this.handleCustomFieldsCompleted}
-                  />
-                )}
+                <Outlet
+                  id="app.components.SignUpIn.SignUp.step"
+                  step={activeStep}
+                  onCompleted={this.handleCustomFieldsCompleted}
+                />
 
                 {activeStep === 'success' && (
                   <Success onClose={this.handleSuccessOnClose} />

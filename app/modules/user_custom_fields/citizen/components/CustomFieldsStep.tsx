@@ -99,7 +99,7 @@ type State = {
   apiErrors: CLErrorsJSON | null;
 };
 
-class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
+class CustomFieldsStep extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -208,7 +208,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const CustomFieldsWithHoC = injectIntl<Props>(CustomFields);
+const CustomFieldsWithHoC = injectIntl<Props>(CustomFieldsStep);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
