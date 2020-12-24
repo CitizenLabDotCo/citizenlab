@@ -4,6 +4,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
 import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
+import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
 
 type RenderOnStepProps = {
   step: TSignUpSteps;
@@ -32,6 +33,13 @@ const configuration: ModuleConfiguration = {
       </RenderOnStep>
     ),
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
+    'app.containers.UserEditPage.ProfileForm.forms': ({
+      hasCustomFields,
+      ...props
+    }) => {
+      if (hasCustomFields) return <UserCustomFieldsForm {...props} />;
+      return null;
+    },
   },
 };
 
