@@ -11,9 +11,6 @@ import messages from '../messages';
 import { IResolution, GraphsContainer } from '..';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFields';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeStream,
@@ -42,7 +39,11 @@ import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
 
-import CustomFieldComparison from 'modules/user_custom_fields/admin/containers/dashboard/reports/CustomFieldComparison';
+import GetUserCustomFields, {
+  GetUserCustomFieldsChildProps,
+} from 'modules/user_custom_fields/resources/GetUserCustomFields';
+
+import Outlet from 'components/Outlet';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -226,24 +227,14 @@ const ProjectReport = memo(
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
-              {participationMethods !== ['information'] &&
-                startAt &&
-                endAt &&
-                !isNilOrError(customFields) &&
-                customFields.map(
-                  (customField) =>
-                    // only show enabled fields, only supported number field is birthyear.
-                    customField.attributes.enabled &&
-                    (customField.attributes.input_type === 'number'
-                      ? customField.attributes.code === 'birthyear'
-                      : true) && (
-                      <CustomFieldComparison
-                        customField={customField}
-                        currentProject={project.id}
-                        key={customField.id}
-                      />
-                    )
-                )}
+              <Outlet
+                id="app.containers.Admin.dashboard.reports.ProjectReport.graphs"
+                fields={customFields}
+                startAt={startAt}
+                endAt={endAt}
+                participationMethods={participationMethods}
+                project={project}
+              />
             </GraphsContainer>
           </Section>
         )}

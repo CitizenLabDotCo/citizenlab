@@ -5,13 +5,13 @@ import { isEmpty, map, range, forOwn, get } from 'lodash-es';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../../../../../containers/Admin/dashboard/messages';
+import messages from '../../../../containers/Admin/dashboard/messages';
 
 // styling
 import { withTheme } from 'styled-components';
 
 // components
-import ExportMenu from '../../../../../../containers/Admin/dashboard/components/ExportMenu';
+import ExportMenu from '../../../../containers/Admin/dashboard/components/ExportMenu';
 import {
   BarChart,
   Bar,
@@ -26,7 +26,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from '../../../../../../containers/Admin/dashboard';
+} from '../../../../containers/Admin/dashboard';
 
 import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
 import { Subscription, combineLatest } from 'rxjs';
@@ -353,8 +353,39 @@ export class CustomFieldsComparison extends React.PureComponent<
   }
 }
 
-export default injectLocalize<Props>(
+const WrappedCustomFieldComparison = injectLocalize<Props>(
   injectIntl<Props & InjectedLocalized>(
     withTheme(CustomFieldsComparison as any) as any
   )
 );
+
+const CustomFieldGraphs = ({
+  participationMethods,
+  startAt,
+  endAt,
+  fields,
+  project,
+}) => {
+  return (
+    participationMethods !== ['information'] &&
+    startAt &&
+    endAt &&
+    !isNilOrError(fields) &&
+    fields.map(
+      (customField) =>
+        // only show enabled fields, only supported number field is birthyear.
+        customField.attributes.enabled &&
+        (customField.attributes.input_type === 'number'
+          ? customField.attributes.code === 'birthyear'
+          : true) && (
+          <WrappedCustomFieldComparison
+            customField={customField}
+            currentProject={project.id}
+            key={customField.id}
+          />
+        )
+    )
+  );
+};
+
+export default CustomFieldGraphs;
