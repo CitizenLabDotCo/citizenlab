@@ -40,8 +40,9 @@ import IdeasByStatusChart from '../components/IdeasByStatusChart';
 import ParticipationPerTopic from './charts/ParticipationPerTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
-import CustomFieldComparison from '../../../../modules/user_custom_fields/admin/containers/dashboard/reports/CustomFieldComparison';
 import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
+
+import CustomFieldComparison from 'modules/user_custom_fields/admin/containers/dashboard/reports/CustomFieldComparison';
 
 const Section = styled.div`
   margin-bottom: 20px;
