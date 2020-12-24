@@ -1,4 +1,5 @@
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -8,6 +9,9 @@ const configuration: ModuleConfiguration = {
         container: () => import('./admin/containers/settings/registration'),
       },
     ],
+  },
+  outlets: {
+    'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
   },
 };
 
