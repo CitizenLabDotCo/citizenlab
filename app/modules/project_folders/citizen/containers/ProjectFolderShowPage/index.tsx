@@ -16,6 +16,7 @@ import ContentContainer from 'components/ContentContainer';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import useProjectFolder from 'hooks/useProjectFolder';
+import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 
 // i18n
 import messages from './messages';
@@ -23,12 +24,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+import { maxPageWidth } from './styles';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+
+// typings
+import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
 
 const Container = styled.main`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -38,12 +45,6 @@ const Container = styled.main`
     props
   ) => props.theme.mobileTopBarHeight}px);
     background: ${colors.background};
-  `}
-
-  ${media.biggerThanMinTablet`
-    &.loaded {
-      min-height: 900px;
-    }
   `}
 `;
 
@@ -55,7 +56,7 @@ const Loading = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  border: solid 1px red;
+  margin-top: 30px;
 `;
 
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
@@ -72,9 +73,10 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 `;
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
-  flex: 0 0 894px;
-  width: 894px;
+  flex: 0 0 800px;
+  width: 800px;
   padding: 20px;
+  margin-left: 50px;
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
@@ -90,18 +92,26 @@ const NotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-const ProjectFolderShowPage = memo<WithRouterProps>(({ params: { slug } }) => {
+const ProjectFolderShowPage = memo<{
+  projectFolder: IProjectFolderData;
+}>(({ projectFolder }) => {
   const locale = useLocale();
   const tenant = useTenant();
-  const projectFolder = useProjectFolder({ projectFolderSlug: slug });
+  const adminPublication = useAdminPublicationPrefetchProjects({
+    folderId: projectFolder.id,
+    publicationStatusFilter: ['published', 'archived'],
+  });
 
   const folderNotFound = isError(projectFolder);
   const loading =
-    isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder);
+    isUndefined(locale) ||
+    isUndefined(tenant) ||
+    isUndefined(projectFolder) ||
+    isUndefined(adminPublication?.list);
 
   return (
     <>
-      <ProjectFolderShowPageMeta projectFolderSlug={slug} />
+      <ProjectFolderShowPageMeta projectFolder={projectFolder} />
       <Container
         className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
       >
@@ -121,15 +131,11 @@ const ProjectFolderShowPage = memo<WithRouterProps>(({ params: { slug } }) => {
             <Spinner />
           </Loading>
         ) : !isNilOrError(projectFolder) ? (
-          <StyledContentContainer maxWidth={1774}>
-            <StyledProjectFolderHeader projectFolderId={projectFolder.id} />
+          <StyledContentContainer maxWidth={maxPageWidth}>
+            <StyledProjectFolderHeader projectFolder={projectFolder} />
             <Content>
-              <StyledProjectFolderDescription
-                projectFolderId={projectFolder.id}
-              />
-              <StyledProjectFolderProjectCards
-                projectFolderId={projectFolder.id}
-              />
+              <StyledProjectFolderDescription projectFolder={projectFolder} />
+              <StyledProjectFolderProjectCards list={adminPublication.list} />
             </Content>
           </StyledContentContainer>
         ) : null}
@@ -138,4 +144,16 @@ const ProjectFolderShowPage = memo<WithRouterProps>(({ params: { slug } }) => {
   );
 });
 
-export default withRouter(ProjectFolderShowPage);
+const ProjectFolderShowPageWrapper = memo<WithRouterProps>(
+  ({ params: { slug } }) => {
+    const projectFolder = useProjectFolder({ projectFolderSlug: slug });
+
+    if (!isNilOrError(projectFolder)) {
+      return <ProjectFolderShowPage projectFolder={projectFolder} />;
+    }
+
+    return null;
+  }
+);
+
+export default withRouter(ProjectFolderShowPageWrapper);

@@ -8,7 +8,6 @@ import { Helmet } from 'react-helmet';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 import useTenantLocales from 'hooks/useTenantLocales';
-import useProjectFolder from 'hooks/useProjectFolder';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -22,15 +21,17 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// typings
+import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
+
 interface Props {
-  projectFolderSlug: string;
+  projectFolder: IProjectFolderData;
 }
 
-const Meta = memo<Props & InjectedIntlProps>(({ projectFolderSlug, intl }) => {
+const Meta = memo<Props & InjectedIntlProps>(({ projectFolder, intl }) => {
   const locale = useLocale();
   const tenantLocales = useTenantLocales();
   const authUser = useAuthUser();
-  const projectFolder = useProjectFolder({ projectFolderSlug });
 
   if (
     !isNilOrError(locale) &&

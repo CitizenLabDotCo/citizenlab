@@ -18,7 +18,9 @@ const FullPageContainer: any = styled.div`
   // 260px is the width of the admin sidebar
   left: ${(props: Props) => (props.admin ? '260px' : '0')};
   width: ${(props: Props) => (props.admin ? 'calc(100% - 260px)' : '100%')};
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   justify-content: center;
   align-items: center;

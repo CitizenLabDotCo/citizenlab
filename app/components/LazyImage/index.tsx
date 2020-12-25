@@ -5,23 +5,38 @@ import React, { PureComponent } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 
 // Stylings
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Image = styled.img<{
+  cover: boolean;
+  fadeIn: boolean;
   fadeInDuration: number | undefined;
   placeholderBg?: string;
+  loaded: boolean;
 }>`
   background: ${(props) => props.placeholderBg};
 
-  &.fadeIn {
-    transition: opacity ${(props) => props.fadeInDuration || 150}ms ease-out;
-    opacity: 0;
+  ${(props) =>
+    props.cover &&
+    css`
+      object-fit: cover;
+      object-position: center center;
+    `}
 
-    &.loaded {
-      opacity: 1;
-    }
-  }
+  ${(props) =>
+    props.fadeIn &&
+    css`
+      transition: opacity ${props.fadeInDuration || 150}ms ease-out;
+      opacity: ${props.loaded ? 1 : 0};
+    `};
+`;
+
+const Fallback = styled.div<{ src: string | undefined }>`
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${({ src }) => src});
 `;
 
 interface Props {
@@ -32,6 +47,7 @@ interface Props {
   fadeIn?: boolean;
   fadeInDuration?: number;
   placeholderBg?: string;
+  isLazy?: boolean;
   className?: string;
 }
 
@@ -45,12 +61,13 @@ export default class LazyImage extends PureComponent<Props, State> {
     alt: '',
     fadeIn: true,
     placeholderBg: colors.placeholderBg,
+    isLazy: true,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      visible: false,
+      visible: props.isLazy ? false : true,
       loaded: false,
     };
   }
@@ -80,37 +97,33 @@ export default class LazyImage extends PureComponent<Props, State> {
       placeholderBg,
       className,
     } = this.props;
+    const { isLazy } = this.props;
     const { visible, loaded } = this.state;
+    const image = !!(cover && !CSS?.supports('object-fit: cover')) ? (
+      <Fallback src={visible ? src : undefined} className={className} />
+    ) : (
+      <Image
+        src={visible ? src : undefined}
+        alt={alt}
+        role={role}
+        cover={!!cover}
+        fadeIn={!!fadeIn}
+        fadeInDuration={fadeInDuration}
+        placeholderBg={placeholderBg}
+        loaded={loaded}
+        onLoad={this.handleImageLoaded}
+        className={className || ''}
+      />
+    );
 
-    if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
-      // Legacy browsers, no lazy-loading for you!
-      return (
-        <div
-          className={className}
-          style={{ background: `center / cover no-repeat url("${src}")` }}
-        />
-      );
-    } else {
-      const style = cover
-        ? ({ objectFit: 'cover', objectPosition: 'center' } as any)
-        : undefined;
-
+    if (isLazy) {
       return (
         <Observer rootMargin="200px" onChange={this.handleIntersection}>
-          <Image
-            src={visible ? src : undefined}
-            alt={alt}
-            role={role}
-            style={style}
-            fadeInDuration={fadeInDuration}
-            placeholderBg={placeholderBg}
-            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${
-              fadeIn ? 'fadeIn' : ''
-            } ${className}`}
-            onLoad={this.handleImageLoaded}
-          />
+          {image}
         </Observer>
       );
     }
+
+    return image;
   }
 }
