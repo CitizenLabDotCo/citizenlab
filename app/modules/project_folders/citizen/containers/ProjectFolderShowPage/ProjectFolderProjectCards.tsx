@@ -1,8 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
-import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -10,6 +6,9 @@ import ProjectCard from 'components/ProjectCard';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+
+// typins
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const Container = styled.div`
   display: flex;
@@ -32,24 +31,17 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
 `;
 
 const ProjectFolderProjectCards = memo<{
-  projectFolderId: string;
+  list: IAdminPublicationContent[] | undefined | null;
   className?: string;
-}>(({ projectFolderId, className }) => {
-  const adminPublication = useAdminPublicationPrefetchProjects({
-    folderId: projectFolderId,
-    publicationStatusFilter: ['published', 'archived'],
-  });
+}>(({ list, className }) => {
+  const filteredList = list?.filter(
+    (item) => item.publicationType === 'project'
+  );
 
-  const list = !isNilOrError(adminPublication)
-    ? adminPublication?.list?.filter(
-        (item) => item.publicationType === 'project'
-      )
-    : null;
-
-  if (list && list.length > 0) {
+  if (filteredList && filteredList?.length > 0) {
     return (
       <Container className={className || ''}>
-        {list.map((item, index) => (
+        {filteredList.map((item, index) => (
           <StyledProjectCard
             key={item.publicationId}
             projectId={item.publicationId}

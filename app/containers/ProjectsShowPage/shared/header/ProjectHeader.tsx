@@ -104,7 +104,9 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
               <HeaderImage
                 src={projectHeaderImageLargeUrl}
                 cover={true}
-                placeholderBg="#fff"
+                fadeIn={false}
+                isLazy={false}
+                placeholderBg="transparent"
                 alt=""
               />
             )}

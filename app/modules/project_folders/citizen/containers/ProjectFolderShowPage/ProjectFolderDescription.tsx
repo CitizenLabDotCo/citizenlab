@@ -6,7 +6,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // services
-import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
 import useProjectFolderFiles from 'modules/project_folders/hooks/useProjectFolderFiles';
 
 // i18n
@@ -16,21 +15,22 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled, { useTheme } from 'styled-components';
-// import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// typings
+import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
 
 const Container = styled.div``;
 
 const Description = styled.div``;
 
 interface Props {
-  projectFolderId: string;
+  projectFolder: IProjectFolderData;
   className?: string;
 }
 
-const ProjectFolderInfo = memo<Props>(({ projectFolderId, className }) => {
-  const projectFolder = useProjectFolder({ projectFolderId });
-  const projectFolderFiles = useProjectFolderFiles(projectFolderId);
+const ProjectFolderInfo = memo<Props>(({ projectFolder, className }) => {
+  const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
   const theme: any = useTheme();
 
   if (!isNilOrError(projectFolder)) {

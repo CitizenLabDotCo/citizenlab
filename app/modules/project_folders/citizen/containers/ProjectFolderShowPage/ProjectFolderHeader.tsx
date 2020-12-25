@@ -1,15 +1,14 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import LazyImage from 'components/LazyImage';
 
-// hooks
-import useProjectFolder from 'hooks/useProjectFolder';
-
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+
+// typings
+import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
 
 const Container = styled.div``;
 
@@ -25,23 +24,20 @@ const HeaderImage = styled(LazyImage)`
 `;
 
 interface Props {
-  projectFolderId: string;
+  projectFolder: IProjectFolderData;
   className?: string;
 }
 
-const ProjectFolderHeader = memo<Props>(({ projectFolderId, className }) => {
-  const projectFolder = useProjectFolder({ projectFolderId });
-
-  if (
-    !isNilOrError(projectFolder) &&
-    projectFolder.attributes?.header_bg?.large
-  ) {
+const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
+  if (projectFolder.attributes?.header_bg?.large) {
     return (
       <Container className={`${className || ''} e2e-header-folder`}>
         <HeaderImage
           src={projectFolder.attributes?.header_bg.large}
           cover={true}
-          placeholderBg="#fff"
+          fadeIn={false}
+          isLazy={false}
+          placeholderBg="transparent"
           alt=""
         />
       </Container>
