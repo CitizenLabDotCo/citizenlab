@@ -255,7 +255,7 @@ module EmailCampaigns
         upvotes_count: initiative.upvotes_count,
         comments_count: initiative.comments_count,
         threshold_reached_at: initiative.threshold_reached_at&.iso8601,
-        images: initiative.initiative_images.map(&:serialize_image),
+        images: initiative.initiative_images.map(&method(:serialize_image)),
         header_bg: { versions: version_urls(initiative.header_bg) }
       }
     end
