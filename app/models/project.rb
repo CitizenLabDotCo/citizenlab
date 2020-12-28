@@ -58,7 +58,6 @@ class Project < ApplicationRecord
   before_validation :strip_title
   before_validation :set_admin_publication
 
-
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     subquery = Project.unscoped.all

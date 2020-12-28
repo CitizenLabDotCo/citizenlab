@@ -127,7 +127,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def set_project
-    @project = Project.find params[:id]
+    @project = Project.find(params[:id])
     authorize @project
   end
 end
