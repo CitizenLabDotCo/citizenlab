@@ -19,8 +19,8 @@ module ProjectFolders::ProjectDecorator
   # rubocop:disable Metrics/CyclomaticComplexity
   def folder_id=(id)
     parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
-    return unless folder&.admin_publication&.id != parent_id
     raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
+    return unless folder&.admin_publication&.id != parent_id
 
     build_admin_publication unless admin_publication
     folder_will_change!
