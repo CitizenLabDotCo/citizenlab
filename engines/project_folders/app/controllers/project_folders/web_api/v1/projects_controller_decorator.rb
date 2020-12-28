@@ -15,8 +15,6 @@ module ProjectFolders
     def self.included(base)
       base.class_eval do
         set_callback :save_project, :before, :set_folder
-        set_callback :save_project, :after, :add_new_folder_moderators
-        set_callback :save_project, :after, :remove_old_folder_moderators
       end
     end
 
@@ -24,28 +22,6 @@ module ProjectFolders
       return unless params.require(:project).key?(:folder_id)
 
       @project.folder_id = params.dig(:project, :folder_id)
-    end
-
-    def add_new_folder_moderators
-      return unless params.require(:project).key?(:folder_id)
-
-      User.project_folder_moderator(@project.folder&.id).each do |moderator|
-        next if moderator.moderatable_project_ids.include?(@project.id)
-
-        moderator.add_role('project_moderator', project_id: @project.id)
-        moderator.save
-      end
-    end
-
-    def remove_old_folder_moderators
-      return unless params.require(:project).key?(:folder_id)
-
-      User.project_folder_moderator(@project.folder&.id).each do |moderator|
-        next unless moderator.moderatable_project_ids.include?(@project.id)
-
-        moderator.delete_role('project_moderator', project_id: @project.id)
-        moderator.save
-      end
     end
   end
 end

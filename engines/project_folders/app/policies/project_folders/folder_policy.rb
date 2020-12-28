@@ -35,6 +35,8 @@ module ProjectFolders
     end
 
     def update?
+      return unless user&.active?
+
       create? || user&.project_folder_moderator?(record.id)
     end
 
