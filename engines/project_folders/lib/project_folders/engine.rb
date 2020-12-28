@@ -1,7 +1,7 @@
-require 'project_folders/monkey_patches'
-require 'project_folders/monkey_patches/admin_publication_policy'
-require 'project_folders/monkey_patches/project_policy'
-require 'project_folders/monkey_patches/project_serializer'
+# require 'project_folders/monkey_patches'
+# require 'project_folders/monkey_patches/admin_publication_policy'
+# require 'project_folders/monkey_patches/project_policy'
+# require 'project_folders/monkey_patches/project_serializer'
 
 begin
   require 'factory_bot_rails'

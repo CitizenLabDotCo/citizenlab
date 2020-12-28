@@ -1,9 +1,8 @@
 require 'project_folders/engine'
-require 'project_folders/monkey_patches'
 
 module ProjectFolders
   # Your code goes here...
   extend ActiveSupport::Autoload
 
-  autoload :MonkeyPatches
+  autoload :MonkeyPatches, 'project_folders/monkey_patches'
 end
