@@ -12,7 +12,7 @@ module ProjectFolders
         if user&.admin?
           scope.all
         elsif user&.project_folder_moderator?
-          published_folders.or(scope.where(id: user.moderated_project_folder_ids))
+          published_folders.or(scope.left_outer_joins(:admin_publication).where(id: user.moderated_project_folder_ids))
         else
           published_folders
         end
