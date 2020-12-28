@@ -13,6 +13,7 @@ class WebApi::V1::TenantsController < ApplicationController
     params[:logo] = tenant_params[:logo] if tenant_params[:logo]
     params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
     params[:favicon] = tenant_params[:favicon] if tenant_params[:favicon]
+    byebug
     @tenant.assign_attributes params
     # setting the header image, logo or favicon attributes to nil will not remove the images
     if tenant_params.keys.include?('header_bg') && tenant_params['header_bg'] == nil
