@@ -32,11 +32,5 @@ module ProjectFolders
         Time.now.to_i
       )
     end
-
-    private
-
-    def project_mod_side_fx
-      @project_mod_side_fx ||= ::SideFxModeratorService.new
-    end
   end
 end
