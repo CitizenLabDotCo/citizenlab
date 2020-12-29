@@ -3,28 +3,31 @@ module EmailCampaigns
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     layout false
 
-    helper_method :tenant_home_url, :tenant, :locale, :recipient
-
-    attr_reader :command, :campaign
+    attr_reader :command, :campaign, :recipient, :tenant
 
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
     end
 
     def campaign_mail
+      @recipient = command[:recipient]
+      multiloc_service = MultilocService.new
+      frontend_service = Frontend::UrlService.new
+      @tenant = Tenant.current
+
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
       template = Liquid::Template.parse(body_html_with_liquid)
       @body_html = template.render(liquid_params(recipient))
       @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
 
-      url = url_service.unsubscribe_url_template(tenant, campaign.id)
+      url = frontend_service.unsubscribe_url_template(tenant, campaign.id)
       url_template = Liquid::Template.parse(url)
       @unsubscribe_url = url_template.render(liquid_params(recipient))
 
       @tenant_logo_url = tenant.logo.versions[:medium].url
-      @terms_conditions_url = url_service.terms_conditions_url(tenant: tenant)
-      @privacy_policy_url = url_service.privacy_policy_url(tenant: tenant)
-      @host_url = url_service.home_url(tenant: tenant)
+      @terms_conditions_url = frontend_service.terms_conditions_url(tenant: tenant)
+      @privacy_policy_url = frontend_service.privacy_policy_url(tenant: tenant)
+      @host_url = frontend_service.home_url(tenant: tenant)
       @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
 
       I18n.with_locale(recipient.locale) do
@@ -48,28 +51,6 @@ module EmailCampaigns
 
     private
 
-    def url_service
-      @url_service ||= Frontend::UrlService.new
-    end
-
-    def multiloc_service
-      @multiloc_service ||= MultilocService.new
-    end
-
-    def tenant
-      @tenant ||= Tenant.current
-    end
-
-    def recipient
-      @recipient ||= command[:recipient]
-    end
-
-    alias user recipient
-
-    def locale
-      @locale ||= recipient.locale
-    end
-
     def from_name sender_type, author, recipient
       if sender_type == 'author'
         "#{author.first_name} #{author.last_name}"
@@ -89,7 +70,7 @@ module EmailCampaigns
     end
 
     def tenant_home_url
-      home_url(tenant: tenant, locale: locale)
+      home_url(tenant: tenant, locale: recipient.locale)
     end
   end
 end
