@@ -1,7 +1,9 @@
 <mj-section padding="20px 25px 0">
   <mj-column>
     <mj-raw>
-      <a href="<%= home_url(tenant: tenant, locale: locale) %>"><img src="<%= tenant.logo.versions[:medium].url %>" alt="Organization logo" /></a>
+      <%= link_to tenant_home_url do %>
+        <%= image_tag tenant.logo.versions[:medium].url, alt: 'Organization logo' %>
+      <% end %>
     </mj-raw>
   </mj-column>
 </mj-section>
