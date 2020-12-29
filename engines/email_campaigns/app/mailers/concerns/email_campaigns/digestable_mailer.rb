@@ -24,8 +24,10 @@ module EmailCampaigns
       event_payload(:succesful_initiatives)
     end
 
-    def published_days_diff(serialized_idea)
-      (Time.zone.today - serialized_idea.dig(:published_at).to_date).to_i
+    def published_days_diff(serialized_resource)
+      return unless serialized_resource.key?(:published_at)
+
+      (Time.zone.today - serialized_resource[:published_at].to_date).to_i
     end
   end
 end
