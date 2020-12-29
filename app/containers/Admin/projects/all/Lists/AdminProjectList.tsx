@@ -78,25 +78,27 @@ const AdminProjectList = memo<Props>(({ AdminPublications }) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <SortableRow
-                        key={item.id}
-                        id={item.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={index === AdminPublicationsList.length - 1}
-                      >
-                        {item.publicationType === 'project' && (
-                          <ProjectRow
-                            actions={['delete', 'manage']}
+                      <>
+                        <SortableRow
+                          key={item.id}
+                          id={item.id}
+                          index={index}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                          lastItem={index === AdminPublicationsList.length - 1}
+                        >
+                          {item.publicationType === 'project' && (
+                            <ProjectRow
+                              actions={['delete', 'manage']}
+                              publication={item}
+                            />
+                          )}
+                          <Outlet
+                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
                             publication={item}
                           />
-                        )}
-                        <Outlet
-                          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
-                          publication={item}
-                        />
-                      </SortableRow>
+                        </SortableRow>
+                      </>
                     );
                   }
                 )}
