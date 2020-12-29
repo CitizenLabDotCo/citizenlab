@@ -1,7 +1,5 @@
 module EmailCampaigns
   class CampaignMailer < ActionMailer::Base
-    include MailerWithCommandAndCampaign
-
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     layout false
 
