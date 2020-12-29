@@ -13,7 +13,7 @@ const DragHandle = styled.div`
 `;
 
 // TODO: type checking doesn't work for this component
-interface Props {
+export interface Props {
   connectDragSource: any;
   connectDropTarget: any;
   isDragging: boolean;
@@ -34,16 +34,25 @@ class SortableRow extends React.Component<Props, State> {
       connectDragSource,
       isDragging,
       lastItem,
+      className,
+      children,
     } = this.props;
     const opacity = isDragging ? 0 : 1;
+
+    console.log(children);
+
+    if (!children) {
+      return null;
+    }
+
     return connectDropTarget(
       connectDragSource(
-        <div style={{ opacity }} className={this.props.className}>
+        <div style={{ opacity }} className={className}>
           <Row isLastItem={lastItem}>
             <DragHandle>
               <Icon name="sort" />
             </DragHandle>
-            {this.props.children}
+            {children}
           </Row>
         </div>
       )

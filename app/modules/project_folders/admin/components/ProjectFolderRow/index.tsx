@@ -23,6 +23,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
+import { isProjectFolderModerator } from '../../../permissions/roles';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -117,6 +118,10 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   return (
     <Container>
       <FolderRowContent
@@ -155,7 +160,10 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
             linkTo={`/admin/projects/folders/${publication.publicationId}`}
             buttonStyle="secondary"
             icon="edit"
-            disabled={isBeingDeleted}
+            disabled={
+              isBeingDeleted ||
+              !isProjectFolderModerator(authUser, publication.publicationId)
+            }
           >
             <FormattedMessage {...messages.manageButtonLabel} />
           </RowButton>

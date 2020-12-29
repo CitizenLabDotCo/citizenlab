@@ -17,7 +17,15 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 
-const RenderOnPublicationType = ({ publication, children }) => {
+interface RenderOnPublicationTypeProps {
+  publication?: any;
+  children?: any;
+}
+
+const RenderOnPublicationType = ({
+  publication,
+  children,
+}: RenderOnPublicationTypeProps) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
 };
@@ -30,9 +38,10 @@ const RenderOnFeatureFlag = ({ children }) => {
   return null;
 };
 
-const RenderOnProjectFolderModerator = ({ children }) => {
+const RenderOnProjectFolderModerator = ({
+  children,
+}: RenderOnPublicationTypeProps) => {
   const authUser = useAuthUser();
-
   if (isNilOrError(authUser) || !isProjectFolderModerator(authUser)) {
     return null;
   }
@@ -70,7 +79,9 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
       <RenderOnPublicationType publication={props.publication}>
-        <ProjectFolderRow {...props} />
+        <RenderOnProjectFolderModerator publication={props.publication}>
+          <ProjectFolderRow {...props} />
+        </RenderOnProjectFolderModerator>
       </RenderOnPublicationType>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (
