@@ -1,14 +1,24 @@
-// Libraries
 import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
-// Components
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 
-// Localisation
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { PreviousPathnameContext } from 'context';
+
+// i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -20,17 +30,9 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { adopt } from 'react-adopt';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+
+// typings
 import { IProjectData } from 'services/projects';
-import { Subscription } from 'rxjs';
-import eventEmitter from 'utils/eventEmitter';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -54,9 +56,6 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-export type SetBackButtonUrl = string | null;
-export const setBackButtonUrlEventName = 'setBackButtonUrl';
-
 export interface InputProps {}
 
 interface DataProps {
@@ -69,10 +68,12 @@ interface DataProps {
   granularPermissionsEnabled: GetFeatureFlagChildProps;
   projectManagementEnabled: GetFeatureFlagChildProps;
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
+  previousPathName: string | null;
 }
 
 interface State {
-  backButtonUrl: string | null;
+  aboveProjectPageUrl: string | null;
+  goBackUrl: string | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -81,28 +82,51 @@ export class AdminProjectEdition extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps & ITracks,
   State
 > {
-  subscriptions: Subscription[];
-
   constructor(props) {
     super(props);
     this.state = {
-      backButtonUrl: null,
+      aboveProjectPageUrl: null,
+      goBackUrl: null,
     };
-    this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.subscriptions = [
-      eventEmitter
-        .observeEvent<SetBackButtonUrl>(setBackButtonUrlEventName)
-        .subscribe(({ eventValue: backButtonUrl }) => {
-          this.setState({ backButtonUrl });
-        }),
-    ];
+    const { previousPathName } = this.props;
+    const urlSegments = previousPathName?.replace(/^\/+/g, '').split('/');
+
+    if (urlSegments?.[1] === 'admin' && urlSegments?.[2] === 'projects') {
+      this.setState({
+        aboveProjectPageUrl: previousPathName,
+        goBackUrl: previousPathName,
+      });
+    }
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  componentDidUpdate(
+    prevProps: Props &
+      InjectedIntlProps &
+      InjectedLocalized &
+      WithRouterProps &
+      ITracks
+  ) {
+    const newPathname = this.props.location.pathname;
+    const prevPathname = prevProps.location.pathname;
+
+    if (
+      newPathname.length > prevPathname.length &&
+      newPathname.startsWith(prevPathname)
+    ) {
+      this.setState({ goBackUrl: prevPathname });
+    }
+
+    if (
+      newPathname.length < prevPathname.length &&
+      prevPathname.startsWith(newPathname)
+    ) {
+      this.setState(({ aboveProjectPageUrl }) => ({
+        goBackUrl: aboveProjectPageUrl,
+      }));
+    }
   }
 
   getTabs = (projectId: string, project: IProjectData) => {
@@ -328,26 +352,8 @@ export class AdminProjectEdition extends PureComponent<
   };
 
   goBack = () => {
-    const { backButtonUrl } = this.state;
-    if (backButtonUrl) {
-      clHistory.push(backButtonUrl);
-    } else {
-      // Automated fallback where we simply drop the last url segment
-      const currentPath = location.pathname;
-      const lastUrlSegment = currentPath.substr(
-        currentPath.lastIndexOf('/') + 1
-      );
-      const newPath = currentPath
-        .replace(lastUrlSegment, '')
-        .replace(/\/$/, '');
-      const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
-
-      if (newLastUrlSegment === this.props.params.projectId) {
-        clHistory.push('/admin/projects');
-      } else {
-        clHistory.push(newPath);
-      }
-    }
+    console.log(this.state.goBackUrl || '/admin/projects');
+    clHistory.push(this.state.goBackUrl || '/admin/projects');
   };
 
   onNewIdea = (pathname: string) => (_event) => {
@@ -436,6 +442,11 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
   project: ({ params, render }) => (
     <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
+  previousPathName: ({ render }) => (
+    <PreviousPathnameContext.Consumer>
+      {render as any}
+    </PreviousPathnameContext.Consumer>
   ),
 });
 

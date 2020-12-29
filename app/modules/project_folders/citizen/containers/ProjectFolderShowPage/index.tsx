@@ -26,6 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -44,7 +45,6 @@ const Container = styled.main`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
-    background: ${colors.background};
   `}
 `;
 
@@ -56,7 +56,8 @@ const Loading = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 30px;
+  margin-top: 25px;
+  margin-bottom: 100px;
 `;
 
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
@@ -66,19 +67,43 @@ const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
 
 const Content = styled.div`
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    align-items: stretch;
+  `};
 `;
 
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 30px;
+  `};
 `;
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
-  flex: 0 0 800px;
-  width: 800px;
-  padding: 20px;
-  margin-left: 50px;
+  flex: 0 0 790px;
+  width: 790px;
+  padding: 25px;
+  margin-left: 80px;
+  margin-top: 4px;
   background: ${colors.background};
+  background: ${darken(0.05, colors.background)};
   border-radius: ${(props: any) => props.theme.borderRadius};
+
+  ${media.smallerThan1200px`
+    flex: 0 0 500px;
+    width: 500px;
+  `};
+
+  ${media.smallerThanMaxTablet`
+    flex: 1;
+    width: 100%;
+    margin: 0;
+  `};
 `;
 
 const NotFoundWrapper = styled.div`

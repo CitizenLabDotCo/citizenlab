@@ -224,7 +224,7 @@ const ContentHeader = styled.div`
     &.large {
       margin-bottom: 0px;
       padding-bottom: ${ContentHeaderBottomMargin}px;
-      border-bottom: solid 1px #e8e8e8;
+      border-bottom: solid 1px #e0e0e0;
     }
   }
 
@@ -264,7 +264,7 @@ const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 `;
 
 const ProgressBar = styled.div`
@@ -295,19 +295,12 @@ const ProjectLabel = styled.div`
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
-  transition: all 200ms ease;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colorSecondary)};
-    background: ${({ theme }) => rgba(theme.colorSecondary, 0.15)};
-  }
 `;
 
 const ContentBody = styled.div`
@@ -356,16 +349,16 @@ const ProjectDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
-  height: 53px;
+  height: 45px;
   flex-shrink: 0;
   flex-grow: 0;
-  flex-basis: 53px;
+  flex-basis: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 16px;
   margin-top: 30px;
-  border-top: solid 1px #e8e8e8;
+  border-top: solid 1px #e0e0e0;
 
   &.hidden {
     border: none;

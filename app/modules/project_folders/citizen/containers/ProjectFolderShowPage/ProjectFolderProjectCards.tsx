@@ -22,11 +22,13 @@ const Container = styled.div`
 const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   flex-grow: 0;
   width: calc(100% * (1 / 2) - 10px);
+  margin: 0px;
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThan1200px`
     width: 100%;
     margin: 0;
+    margin-bottom: 20px;
   `};
 `;
 
