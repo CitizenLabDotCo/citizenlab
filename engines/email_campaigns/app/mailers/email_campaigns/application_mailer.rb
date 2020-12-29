@@ -17,9 +17,9 @@ module EmailCampaigns
 
     def campaign_mail
       I18n.with_locale(locale) do
-        message = mail(default_config, &:mjml)
-        message.mailgun_headers = mailgun_headers if ActionMailer::Base.delivery_method == :mailgun
-        message
+        mail(default_config, &:mjml).tap do |message|
+          message.mailgun_headers = mailgun_headers if ActionMailer::Base.delivery_method == :mailgun
+        end
       end
     end
 
@@ -128,11 +128,11 @@ module EmailCampaigns
       %("#{name}" <#{email}>)
     end
 
-    def localize_for_recipient(multiloc_or_string_key)
-      return '' unless multiloc_or_string_key
-      return multiloc_service.t(multiloc_or_string_key, recipient) if multiloc_or_string_key.is_a?(Hash)
+    def localize_for_recipient(multiloc_or_dig_key)
+      return '' unless multiloc_or_dig_key
+      return multiloc_service.t(multiloc_or_dig_key, recipient) if multiloc_or_dig_key.is_a?(Hash)
 
-      multiloc = event_payload(multiloc_or_string_key.split('.'))
+      multiloc = event_payload(multiloc_or_dig_key.split('.'))
       multiloc_service.t(multiloc, recipient)
     end
 
