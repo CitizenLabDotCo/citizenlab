@@ -29,7 +29,8 @@ module ProjectFolders
         moderator,
         'project_folder_moderation_rights_removed',
         current_user,
-        Time.now.to_i
+        Time.now.to_i,
+        payload: { folder_id: folder.id }
       )
     end
   end
