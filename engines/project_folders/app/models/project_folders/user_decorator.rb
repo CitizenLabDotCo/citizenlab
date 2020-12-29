@@ -1,5 +1,5 @@
 module ProjectFolders
-  module ModeratorDecorator
+  module UserDecorator
     def self.prepended(base)
       base.class_eval do
         scope :project_folder_moderator, lambda { |*project_folder_ids|
