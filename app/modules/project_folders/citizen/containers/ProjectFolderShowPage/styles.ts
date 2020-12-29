@@ -1,1 +1,1 @@
-export const maxPageWidth = 1366;
+export const maxPageWidth = 1480;

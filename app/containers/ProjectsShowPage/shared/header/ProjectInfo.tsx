@@ -98,8 +98,11 @@ const ProjectTitle = styled.h1`
     text-align: right;
   `}
 
+  ${media.smallerThan1280px`
+    font-size: ${fontSizes.xxl}px;
+  `}
+
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
     margin-bottom: 20px;
   `}
 `;

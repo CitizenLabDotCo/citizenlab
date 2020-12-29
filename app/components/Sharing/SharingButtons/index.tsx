@@ -98,7 +98,7 @@ const Buttons = styled.div`
     }
 
     &.columnLayout {
-      margin-bottom: 12px;
+      margin-bottom: 15px;
 
       &.last {
         margin-bottom: 0px;

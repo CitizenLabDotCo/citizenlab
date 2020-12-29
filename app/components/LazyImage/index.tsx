@@ -8,7 +8,7 @@ import Observer from '@researchgate/react-intersection-observer';
 import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Image = styled.img<{
+const ImageElement = styled.img<{
   cover: boolean;
   fadeIn: boolean;
   fadeInDuration: number | undefined;
@@ -27,7 +27,7 @@ const Image = styled.img<{
   ${(props) =>
     props.fadeIn &&
     css`
-      transition: opacity ${props.fadeInDuration || 150}ms ease-out;
+      transition: opacity ${props.fadeInDuration || 130}ms ease-out;
       opacity: ${props.loaded ? 1 : 0};
     `};
 `;
@@ -102,7 +102,7 @@ export default class LazyImage extends PureComponent<Props, State> {
     const image = !!(cover && !CSS?.supports('object-fit: cover')) ? (
       <Fallback src={visible ? src : undefined} className={className} />
     ) : (
-      <Image
+      <ImageElement
         src={visible ? src : undefined}
         alt={alt}
         role={role}
