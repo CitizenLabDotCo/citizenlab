@@ -17,14 +17,14 @@ module EmailCampaigns
       @body_html = template.render(liquid_params(recipient))
       @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
 
-      url = frontend_service.unsubscribe_url_template(tenant, campaign.id)
+      url = url_service.unsubscribe_url_template(tenant, campaign.id)
       url_template = Liquid::Template.parse(url)
       @unsubscribe_url = url_template.render(liquid_params(recipient))
 
       @tenant_logo_url = tenant.logo.versions[:medium].url
-      @terms_conditions_url = frontend_service.terms_conditions_url(tenant: tenant)
-      @privacy_policy_url = frontend_service.privacy_policy_url(tenant: tenant)
-      @host_url = frontend_service.home_url(tenant: tenant)
+      @terms_conditions_url = url_service.terms_conditions_url(tenant: tenant)
+      @privacy_policy_url = url_service.privacy_policy_url(tenant: tenant)
+      @host_url = url_service.home_url(tenant: tenant)
       @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
 
       I18n.with_locale(recipient.locale) do
