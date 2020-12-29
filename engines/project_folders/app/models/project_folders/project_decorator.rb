@@ -9,7 +9,7 @@ module ProjectFolders::ProjectDecorator
   end
 
   def folder
-    admin_publication.parent&.publication
+    admin_publication&.parent&.publication
   end
 
   def saved_change_to_folder?

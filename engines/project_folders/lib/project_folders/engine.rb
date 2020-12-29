@@ -31,7 +31,7 @@ module ProjectFolders
     config.to_prepare(&method(:activate).to_proc)
 
     config.after_initialize do
-      ::User.prepend(ProjectFolders::ModeratorDecorator)
+      ::User.prepend(ProjectFolders::UserDecorator)
     end
 
     ActiveSupport.on_load(:action_controller) do
