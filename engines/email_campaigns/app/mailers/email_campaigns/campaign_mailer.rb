@@ -1,15 +1,19 @@
 module EmailCampaigns
   class CampaignMailer < ActionMailer::Base
+    include MailerWithCommandAndCampaign
+
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     layout false
 
-    def campaign_mail
-      command, campaign = params.values_at(:command, :campaign)
-      recipient = command[:recipient]
-      multiloc_service = MultilocService.new
-      frontend_service = Frontend::UrlService.new
-      tenant = Tenant.current
+    helper_method :tenant_home_url, :tenant, :locale, :recipient
 
+    attr_reader :command, :campaign
+
+    before_action do
+      @command, @campaign = params.values_at(:command, :campaign)
+    end
+
+    def campaign_mail
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
       template = Liquid::Template.parse(body_html_with_liquid)
       @body_html = template.render(liquid_params(recipient))
@@ -46,6 +50,28 @@ module EmailCampaigns
 
     private
 
+    def url_service
+      @url_service ||= Frontend::UrlService.new
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
+    end
+
+    def tenant
+      @tenant ||= Tenant.current
+    end
+
+    def recipient
+      @recipient ||= command[:recipient]
+    end
+
+    alias user recipient
+
+    def locale
+      @locale ||= recipient.locale
+    end
+
     def from_name sender_type, author, recipient
       if sender_type == 'author'
         "#{author.first_name} #{author.last_name}"
@@ -62,6 +88,10 @@ module EmailCampaigns
         'email' => user.email,
         'unsubscription_token' => EmailCampaigns::UnsubscriptionToken.find_by(user_id: user.id)&.token
       }
+    end
+
+    def tenant_home_url
+      home_url(tenant: tenant, locale: locale)
     end
   end
 end

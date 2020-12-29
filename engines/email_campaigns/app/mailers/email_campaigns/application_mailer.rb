@@ -80,7 +80,7 @@ module EmailCampaigns
     end
 
     def recipient
-      @recipient ||= @command.dig(:recipient)
+      @recipient ||= command[:recipient]
     end
 
     alias user recipient
