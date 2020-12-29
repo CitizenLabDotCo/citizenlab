@@ -24,7 +24,7 @@ module ProjectFolders
       )
     end
 
-    def after_destroy(moderator, _folder, current_user)
+    def after_destroy(moderator, folder, current_user)
       LogActivityJob.perform_later(
         moderator,
         'project_folder_moderation_rights_removed',
