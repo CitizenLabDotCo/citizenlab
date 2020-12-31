@@ -17,6 +17,7 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import messages from './messages';
@@ -25,8 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import { media, fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -39,6 +39,7 @@ const Container = styled.main`
   );
   display: flex;
   flex-direction: column;
+  padding-top: 30px;
   background: #fff;
 
   ${media.smallerThanMaxTablet`
@@ -55,20 +56,20 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 25px;
-  margin-bottom: 100px;
-`;
-
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   flex: 1;
   margin-bottom: 30px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 20px;
+  `};
 `;
 
 const Content = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  margin-bottom: 100px;
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -80,7 +81,7 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
   ${media.smallerThanMaxTablet`
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   `};
 `;
 
@@ -91,7 +92,7 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   margin-left: 80px;
   margin-top: 4px;
   background: ${colors.background};
-  background: ${darken(0.05, colors.background)};
+  background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${media.smallerThan1200px`
@@ -103,6 +104,8 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
     flex: 1;
     width: 100%;
     margin: 0;
+    padding: 0;
+    border-radius: 0;
   `};
 `;
 
@@ -117,6 +120,12 @@ const NotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
+const CardsWrapper = styled.div`
+  padding-top: 40px;
+  padding-bottom: 60px;
+  background: ${colors.background};
+`;
+
 const ProjectFolderShowPage = memo<{
   projectFolder: IProjectFolderData;
 }>(({ projectFolder }) => {
@@ -126,7 +135,11 @@ const ProjectFolderShowPage = memo<{
     folderId: projectFolder.id,
     publicationStatusFilter: ['published', 'archived'],
   });
+  const { windowWidth } = useWindowSize();
 
+  const smallerThanLargeTablet = windowWidth
+    ? windowWidth <= viewportWidths.largeTablet
+    : false;
   const folderNotFound = isError(projectFolder);
   const loading =
     isUndefined(locale) ||
@@ -156,13 +169,37 @@ const ProjectFolderShowPage = memo<{
             <Spinner />
           </Loading>
         ) : !isNilOrError(projectFolder) ? (
-          <StyledContentContainer maxWidth={maxPageWidth}>
-            <StyledProjectFolderHeader projectFolder={projectFolder} />
-            <Content>
-              <StyledProjectFolderDescription projectFolder={projectFolder} />
-              <StyledProjectFolderProjectCards list={adminPublication.list} />
-            </Content>
-          </StyledContentContainer>
+          <>
+            {!smallerThanLargeTablet ? (
+              <ContentContainer maxWidth={maxPageWidth}>
+                <StyledProjectFolderHeader projectFolder={projectFolder} />
+                <Content>
+                  <StyledProjectFolderDescription
+                    projectFolder={projectFolder}
+                  />
+                  <StyledProjectFolderProjectCards
+                    list={adminPublication.list}
+                  />
+                </Content>
+              </ContentContainer>
+            ) : (
+              <>
+                <ContentContainer maxWidth={maxPageWidth}>
+                  <StyledProjectFolderHeader projectFolder={projectFolder} />
+                  <StyledProjectFolderDescription
+                    projectFolder={projectFolder}
+                  />
+                </ContentContainer>
+                <CardsWrapper>
+                  <ContentContainer maxWidth={maxPageWidth}>
+                    <StyledProjectFolderProjectCards
+                      list={adminPublication.list}
+                    />
+                  </ContentContainer>
+                </CardsWrapper>
+              </>
+            )}
+          </>
         ) : null}
       </Container>
     </>

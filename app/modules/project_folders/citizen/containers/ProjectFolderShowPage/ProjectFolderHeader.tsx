@@ -34,6 +34,10 @@ const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   position: absolute;
   bottom: 10px;
   right: 26px;
+
+  ${media.smallerThanMaxTablet`
+    right: 10px;
+  `};
 `;
 
 interface Props {
