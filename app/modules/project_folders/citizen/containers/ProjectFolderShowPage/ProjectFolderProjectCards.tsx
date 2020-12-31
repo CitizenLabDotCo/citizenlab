@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { isEmpty } from 'lodash-es';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -40,6 +41,10 @@ const ProjectFolderProjectCards = memo<{
     (item) => item.publicationType === 'project'
   );
 
+  const hasNoDescriptionPreviews = filteredList?.every((item) =>
+    isEmpty(item.attributes.publication_description_preview_multiloc)
+  );
+
   if (filteredList && filteredList?.length > 0) {
     return (
       <Container className={className || ''}>
@@ -49,6 +54,7 @@ const ProjectFolderProjectCards = memo<{
             projectId={item.publicationId}
             size="small"
             isEven={index % 2 !== 1}
+            hideDescriptionPreview={hasNoDescriptionPreviews}
           />
         ))}
       </Container>

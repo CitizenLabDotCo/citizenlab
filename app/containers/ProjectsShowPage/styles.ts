@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { fontSizes, media, isRtl } from 'utils/styleUtils';
 
 export const SectionContainer = styled.div`
-  padding-top: 70px;
+  padding-top: 60px;
   padding-bottom: 80px;
 
   ${media.smallerThanMinTablet`

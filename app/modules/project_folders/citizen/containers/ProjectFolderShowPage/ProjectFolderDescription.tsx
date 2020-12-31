@@ -50,6 +50,7 @@ const Title = styled.h1`
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl}px;
+    margin-bottom: 20px;
   `}
 `;
 

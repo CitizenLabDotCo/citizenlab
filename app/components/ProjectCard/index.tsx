@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
@@ -18,13 +17,11 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import { getProjectUrl } from 'services/projects';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectImages, {
-  GetProjectImagesChildProps,
-} from 'resources/GetProjectImages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import useProjectImages from 'hooks/useProjectImages';
+import usePhase from 'hooks/usePhase';
 
 // i18n
 import T from 'components/T';
@@ -38,7 +35,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   media,
   colors,
@@ -50,9 +47,12 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 
-const Container = styled(Link)`
+// typings
+import { IProjectData } from 'services/projects';
+
+const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
-  min-height: 560px;
+  min-height: ${(props) => (props.hideDescriptionPreview ? '527px' : '560px')};
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -445,72 +445,60 @@ export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
   layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
+  hideDescriptionPreview?: boolean;
   className?: string;
 }
 
-interface DataProps {
-  project: GetProjectChildProps;
-  projectImages: GetProjectImagesChildProps;
-  authUser: GetAuthUserChildProps;
-  phase: GetPhaseChildProps;
+interface Props extends InputProps, InjectedIntlProps {
+  project: IProjectData;
 }
 
-interface Props extends InputProps, DataProps {
-  theme?: any;
-}
+const ProjectCard = memo<Props>(
+  ({
+    projectId,
+    project,
+    size,
+    layout,
+    hideDescriptionPreview,
+    className,
+    intl: { formatMessage },
+  }) => {
+    const authUser = useAuthUser();
+    const projectImages = useProjectImages({ projectId });
+    const phase = usePhase(
+      project.relationships?.current_phase?.data?.id || null
+    );
+    const theme: any = useTheme();
 
-interface State {
-  visible: boolean;
-}
+    const [visible, setVisible] = useState(false);
 
-class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: false,
+    const handleIntersection = (
+      event: IntersectionObserverEntry,
+      unobserve: () => void
+    ) => {
+      if (event.isIntersecting) {
+        setVisible(true);
+        unobserve();
+      }
     };
-  }
 
-  handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  };
+    const handleProjectCardOnClick = (projectId: string) => () => {
+      trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+    };
 
-  handleProjectCardOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
-  };
+    const handleCTAOnClick = (projectId: string) => () => {
+      trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+    };
 
-  handleCTAOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
-  };
-
-  handleProjectTitleOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
-  };
-
-  render() {
-    const { visible } = this.state;
-    const {
-      authUser,
-      project,
-      phase,
-      size,
-      projectImages,
-      intl: { formatMessage },
-      layout,
-      className,
-    } = this.props;
+    const handleProjectTitleOnClick = (projectId: string) => () => {
+      trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+    };
 
     if (!isNilOrError(project)) {
       const postingPermission = getIdeaPostingRules({
         project,
-        phase,
-        authUser,
+        phase: !isNilOrError(phase) ? phase : null,
+        authUser: !isNilOrError(authUser) ? authUser.data : null,
       });
       const participationMethod = !isNilOrError(phase)
         ? phase.attributes.participation_method
@@ -592,7 +580,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 values={{ timeRemaining }}
               />
             </TimeRemaining>
-            <Observer onChange={this.handleIntersection}>
+            <Observer onChange={handleIntersection}>
               <ProgressBar aria-hidden>
                 <ProgressBarOverlay
                   progress={progress}
@@ -639,7 +627,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
             >
               <ProjectLabel
-                onClick={this.handleCTAOnClick(project.id)}
+                onClick={handleCTAOnClick(project.id)}
                 className="e2e-project-card-cta"
               >
                 {ctaMessage}
@@ -671,7 +659,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
           } e2e-project-card e2e-admin-publication-card`}
           to={projectUrl}
-          onClick={this.handleProjectCardOnClick(project.id)}
+          hideDescriptionPreview={hideDescriptionPreview}
+          onClick={handleProjectCardOnClick(project.id)}
         >
           {screenReaderContent}
           {size !== 'large' && contentHeader}
@@ -690,24 +679,26 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
-                onClick={this.handleProjectTitleOnClick(project.id)}
+                onClick={handleProjectTitleOnClick(project.id)}
               >
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
-              <T value={project.attributes.description_preview_multiloc}>
-                {(description) => {
-                  if (!isEmpty(description)) {
-                    return (
-                      <ProjectDescription className="e2e-project-card-project-description-preview">
-                        {description}
-                      </ProjectDescription>
-                    );
-                  }
+              {!hideDescriptionPreview && (
+                <T value={project.attributes.description_preview_multiloc}>
+                  {(description) => {
+                    if (!isEmpty(description)) {
+                      return (
+                        <ProjectDescription className="e2e-project-card-project-description-preview">
+                          {description}
+                        </ProjectDescription>
+                      );
+                    }
 
-                  return null;
-                }}
-              </T>
+                    return null;
+                  }}
+                </T>
+              )}
             </ContentBody>
 
             <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
@@ -716,7 +707,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={this.props.theme.colorMain}
+                    userCountBgColor={theme.colorMain}
                     avatarIds={avatarIds}
                     userCount={project.attributes.participants_count}
                   />
@@ -754,30 +745,30 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
     return null;
   }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  projectImages: ({ projectId, render }) => (
-    <GetProjectImages projectId={projectId}>{render}</GetProjectImages>
-  ),
-  phase: ({ project, render }) => (
-    <GetPhase id={get(project, 'relationships.current_phase.data.id')}>
-      {render}
-    </GetPhase>
-  ),
-});
-
-const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => {
-      const props = { ...inputProps, ...dataProps };
-      return <ProjectCardWithHoC {...props} />;
-    }}
-  </Data>
 );
+
+const ProjectCardWrapper = memo<InputProps & InjectedIntlProps>(
+  ({ projectId, size, layout, hideDescriptionPreview, className, intl }) => {
+    const project = useProject({ projectId });
+
+    if (!isNilOrError(project)) {
+      return (
+        <ProjectCard
+          projectId={projectId}
+          project={project}
+          size={size}
+          layout={layout}
+          hideDescriptionPreview={hideDescriptionPreview}
+          intl={intl}
+          className={className}
+        />
+      );
+    }
+
+    return null;
+  }
+);
+
+const ProjectCardWrapperWithHoC = injectIntl(ProjectCardWrapper);
+
+export default ProjectCardWrapperWithHoC;
