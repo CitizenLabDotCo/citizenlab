@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informații despre acest proiect",
   "app.containers.ProjectFolderShowPage.metaTitle": "Proiect: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Conectați-vă pentru a vizualiza acest folder.} other {Nu există niciun folder aici.}}",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Vă mulțumim că ați răspuns la acest sondaj de tip poll!",
   "app.containers.Projects.PollForm.logInLinkText": "Autentificare",

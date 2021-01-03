@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "",
   "app.containers.ProjectFolderShowPage.metaTitle": "",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "",
   "app.containers.Projects.PollForm.logInLinkText": "",

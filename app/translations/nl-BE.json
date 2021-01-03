@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informatie over dit project",
   "app.containers.ProjectFolderShowPage.metaTitle": "Project: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Er is hier geen map.",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Bedankt voor het beantwoorden van deze peiling!",
   "app.containers.Projects.PollForm.logInLinkText": "inloggen",
