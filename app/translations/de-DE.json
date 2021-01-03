@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informationen zu diesem Projekt",
   "app.containers.ProjectFolderShowPage.metaTitle": "Projekt: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Es gibt hier kein Ordner.",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Vielen Dank für deine Teilnahme an dieser Umfrage!",
   "app.containers.Projects.PollForm.logInLinkText": "melden Sie sich bitte zuerst auf der Plattform an",

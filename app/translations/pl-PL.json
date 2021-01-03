@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informacje na temat tego projektu",
   "app.containers.ProjectFolderShowPage.metaTitle": "Projekt: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Zaloguj się, aby zobaczyć folder.} other {Nie ma tutaj żadnego folderu.}}",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Dziękuję za udział w badaniu!",
   "app.containers.Projects.PollForm.logInLinkText": "zaloguj się",
