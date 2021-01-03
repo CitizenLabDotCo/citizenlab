@@ -137,7 +137,6 @@ const FolderImage = styled(LazyImage)`
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 const FolderContent = styled.div`
