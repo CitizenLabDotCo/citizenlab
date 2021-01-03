@@ -122,7 +122,7 @@ const NotFoundWrapper = styled.div`
 
 const CardsWrapper = styled.div`
   padding-top: 40px;
-  padding-bottom: 60px;
+  padding-bottom: 40px;
   background: ${colors.background};
 `;
 

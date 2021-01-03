@@ -112,7 +112,6 @@ const SuccessImage = styled(LazyImage)`
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 interface InputProps {

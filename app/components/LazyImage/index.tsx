@@ -99,9 +99,8 @@ export default class LazyImage extends PureComponent<Props, State> {
     } = this.props;
     const { isLazy } = this.props;
     const { visible, loaded } = this.state;
-    const image = !!(cover && !CSS?.supports('object-fit: cover')) ? (
-      <Fallback src={visible ? src : undefined} className={className} />
-    ) : (
+
+    let image = (
       <ImageElement
         src={visible ? src : undefined}
         alt={alt}
@@ -115,6 +114,10 @@ export default class LazyImage extends PureComponent<Props, State> {
         className={className || ''}
       />
     );
+
+    if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
+      image = <Fallback src={src} className={className} />;
+    }
 
     if (isLazy) {
       return (

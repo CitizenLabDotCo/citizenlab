@@ -22,4 +22,12 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.share',
     defaultMessage: 'Share',
   },
+  readMore: {
+    id: 'app.containers.ProjectFolderShowPage.readMore',
+    defaultMessage: 'Read more',
+  },
+  seeLess: {
+    id: 'app.containers.ProjectFolderShowPage.seeLess',
+    defaultMessage: 'See less',
+  },
 });

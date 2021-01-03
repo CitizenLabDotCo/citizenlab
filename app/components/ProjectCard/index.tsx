@@ -52,13 +52,17 @@ import { IProjectData } from 'services/projects';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
-  min-height: ${(props) => (props.hideDescriptionPreview ? '527px' : '560px')};
+  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
   position: relative;
   cursor: pointer;
   ${defaultCardStyle};
+
+  &.hideDescriptionPreview {
+    min-height: 527px;
+  }
 
   &.large {
     width: 100%;
@@ -159,7 +163,6 @@ const ProjectImage = styled(LazyImage)`
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 const ProjectContent = styled.div`
@@ -653,13 +656,19 @@ const ProjectCard = memo<Props>(
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${
-            isArchived ? 'archived' : ''
-          } ${
-            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-          } e2e-project-card e2e-admin-publication-card`}
+          className={[
+            className || '',
+            layout,
+            size,
+            'e2e-project-card',
+            'e2e-admin-publication-card',
+            isArchived ? 'archived' : '',
+            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile',
+            hideDescriptionPreview ? 'hideDescriptionPreview' : '',
+          ]
+            .filter((item) => item)
+            .join(' ')}
           to={projectUrl}
-          hideDescriptionPreview={hideDescriptionPreview}
           onClick={handleProjectCardOnClick(project.id)}
         >
           {screenReaderContent}

@@ -352,7 +352,6 @@ export class AdminProjectEdition extends PureComponent<
   };
 
   goBack = () => {
-    console.log(this.state.goBackUrl || '/admin/projects');
     clHistory.push(this.state.goBackUrl || '/admin/projects');
   };
 
