@@ -653,7 +653,7 @@ class ParticipationContext extends PureComponent<
                       </span>
                       <span className="description">
                         <FormattedMessage
-                          {...messages.findVolunteersDescription}
+                          {...messages.findVolunteersDescriptionText}
                         />
                       </span>
                     </LabelText>
