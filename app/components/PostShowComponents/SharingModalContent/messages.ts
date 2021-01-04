@@ -64,7 +64,7 @@ export default defineMessages({
     id:
       'app.components.PostComponents.SharingModalContent.questionEmailSharingBody',
     defaultMessage:
-      "Join the discussion about my question '{postTitle}' at {postUrl}!",
+      "Join the discussion about this question '{postTitle}' at {postUrl}!",
   },
   projectEmailSharingBody: {
     id:
