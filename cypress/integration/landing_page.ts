@@ -69,7 +69,7 @@ describe('Landing page - signed in', () => {
       '#e2e-singed-in-header-complete-profile .e2e-singed-in-header-accept-btn a'
     )
       .should('have.attr', 'href')
-      .and('include', '/en-GB/profile/edit');
+      .and('include', '/en/profile/edit');
 
     // shows the "custom CTA" header when skipping the "complete your profile" header
     cy.get('#e2e-singed-in-header-complete-profile')
