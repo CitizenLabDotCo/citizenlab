@@ -68,13 +68,13 @@ export default defineMessages({
     id: 'app.components.ProjectCard.submitYourIdea',
     defaultMessage: 'Submit your idea',
   },
-  seeTheOptions: {
-    id: 'app.components.ProjectCard.seeTheOptions',
-    defaultMessage: 'See the options',
+  addYourOption: {
+    id: 'app.components.ProjectCard.addYourOption',
+    defaultMessage: 'Add your option',
   },
-  seeTheProjects: {
-    id: 'app.components.ProjectCard.seeTheProjects',
-    defaultMessage: 'See the projects',
+  submitYourProject: {
+    id: 'app.components.ProjectCard.submitYourProject',
+    defaultMessage: 'Submit your project',
   },
   joinDiscussion: {
     id: 'app.components.ProjectCard.joinDiscussion',
