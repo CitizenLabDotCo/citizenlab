@@ -1166,7 +1166,7 @@
   "app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip": "Deze afbeelding wordt bovenaan de projectpagina weergegeven. De optimale afmetingen zijn 952x240.",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "dit artikel",
-  "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Collect input and feedback",
+  "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Verzamel input en feedback",
   "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription": "Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentSectionTitle": "Who is responsible for processing the inputs?",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText": "All new inputs in this project will be assigned to this person. The assignee can be changed in the {ideaManagerLink}.",
