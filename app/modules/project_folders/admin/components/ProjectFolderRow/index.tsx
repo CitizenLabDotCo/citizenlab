@@ -122,6 +122,8 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
     return null;
   }
 
+  console.log(publication);
+
   return (
     <Container>
       <FolderRowContent
@@ -162,7 +164,8 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
             icon="edit"
             disabled={
               isBeingDeleted ||
-              !isProjectFolderModerator(authUser, publication.publicationId)
+              (!isAdmin(authUser) &&
+                !isProjectFolderModerator(authUser, publication.publicationId))
             }
           >
             <FormattedMessage {...messages.manageButtonLabel} />
