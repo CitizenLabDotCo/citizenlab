@@ -38,7 +38,7 @@ namespace :surveys do
     logger = Logger.new(STDOUT)
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        logger.info({ message: "processing tenant", tenant_id: tenant.id }.to_json)
+        logger.info({ message: "processing tenant", tenant_id: tenant.id, tenant_host: tenant.host }.to_json)
         Surveys::TypeformWebhookManager.new.update_all_webhooks
       end
     end
