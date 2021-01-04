@@ -186,9 +186,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exports',
     defaultMessage: 'Exports',
   },
-  noInputsHere: {
-    id: 'app.components.admin.PostManager.noInputsHere',
-    defaultMessage: 'The filters you have selected do not return any results',
+  noFilteredResults: {
+    id: 'app.components.admin.PostManager.noFilteredResults',
+    defaultMessage: 'The filters you selected did not return any results',
   },
   noInitiativesHere: {
     id: 'app.components.admin.PostManager.noInitiativesHere',
