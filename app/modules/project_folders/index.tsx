@@ -60,10 +60,11 @@ const RenderOnProjectFolderModerator = ({
     (!isProjectFolderModerator(authUser) &&
       !isAdmin(authUser) &&
       !isNilOrError(publication) &&
-      publication.publicationType == 'folder' &&
+      publication.publicationType === 'folder' &&
       !isProjectFolderModerator(authUser, publication.publicationId))
-  )
+  ) {
     return null;
+  }
 
   return <>{children}</>;
 };
