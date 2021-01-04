@@ -2253,7 +2253,7 @@
   "app.containers.UsersShowPage.metaTitle": "Profielpagina van {firstName} {lastName} | CitizenLab",
   "app.containers.UsersShowPage.noCommentsForUser": "Deze persoon heeft nog geen reacties geplaatst.",
   "app.containers.UsersShowPage.noCommentsForYou": "Er zijn hier nog geen reacties.",
-  "app.containers.UsersShowPage.postsWithCount": "Posts ({ideasCount})",
+  "app.containers.UsersShowPage.postsWithCount": "Bijdragen ({ideasCount})",
   "app.containers.UsersShowPage.seeInitiative": "Toon dit initiatief",
   "app.containers.UsersShowPage.seePost": "Zie bijdrage",
   "app.containers.UsersShowPage.tryAgain": "Er ging iets fout, probeer het later opnieuw.",
