@@ -10,7 +10,7 @@ describe('Admin: delete project', () => {
   it('deletes a published project', () => {
     cy.apiCreateProject(generateProject({})).then((project) => {
       const projectTitleToDelete =
-        project.body.data.attributes.title_multiloc['en-GB'];
+        project.body.data.attributes.title_multiloc['en'];
       const projectIdToDelete = project.body.data.id;
 
       cy.route2({
@@ -34,7 +34,7 @@ describe('Admin: delete project', () => {
   it('deletes a published project folder', () => {
     cy.apiCreateFolder(generateProjectFolder({})).then((project) => {
       const folderTitleToDelete =
-        project.body.data.attributes.title_multiloc['en-GB'];
+        project.body.data.attributes.title_multiloc['en'];
       const folderIdToDelete = project.body.data.id;
       cy.log(folderTitleToDelete);
       cy.route2({

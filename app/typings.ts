@@ -88,6 +88,7 @@ export interface Message {
 import { Messages } from 'react-intl';
 import { IProjectAction } from 'services/projects';
 import { IIdeaAction } from 'services/ideas';
+import { FormikActions } from 'formik';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
@@ -166,3 +167,8 @@ export type ITopicSingleValue = {
 export type IParticipationByTopic = ITopicSingleValue[];
 
 export type IGraphFormat = IGraphPoint[];
+
+export type FormikSubmitHandler<V> = (
+  values: V,
+  actions: FormikActions<V>
+) => void;

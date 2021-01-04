@@ -2,12 +2,23 @@
 
 ## Next release
 
+/
+
+## 2020-12-17
+
 ### Fixed
-- When creating a project from template, only templates that are supported by the tenant's locale will show up
+- When creating a project from a template, only templates that are supported by the tenant's locale will show up
+- Fixed several layout, interaction and data issues in the manual tagging feature of the Admin Processing page, making it ready for external use.
+- Fixed project managers access of the Admin Processing page.
 
 ### Added
-- Activity feed access for project managers
+- Admin activity feed access for project managers
+- Added empty state to processing list when no project is selected
+- Keyboard shortcut tooltip for navigation buttons of the Admin Processing page
 
+### Changed
+- Reduced spacing in sidebar menu, allowing for more items to be displayed
+- Style changes on the Admin Processing page
 
 ## 2020-12-08
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,11 +16,17 @@ import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 import { isProjectFolderModerator } from './permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
-interface RenderOnPublicationTypeProps {
-  publication?: any;
-  children?: any;
-}
+type RenderOnPublicationTypeProps = {
+  publication: IAdminPublicationContent;
+  children: ReactNode;
+};
+
+type RenderOnProjectFolderModeratorProps = {
+  publication?: IAdminPublicationContent;
+  children: ReactNode;
+};
 
 const RenderOnPublicationType = ({
   publication,
@@ -30,7 +36,11 @@ const RenderOnPublicationType = ({
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ children }) => {
+type RenderOnFeatureFlagProps = {
+  children: ReactNode;
+};
+
+const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
   if (isProjectFoldersEnabled) {
     return <>{children}</>;
@@ -40,11 +50,18 @@ const RenderOnFeatureFlag = ({ children }) => {
 
 const RenderOnProjectFolderModerator = ({
   children,
-}: RenderOnPublicationTypeProps) => {
+  publication,
+}: RenderOnProjectFolderModeratorProps) => {
   const authUser = useAuthUser();
-  if (isNilOrError(authUser) || !isProjectFolderModerator(authUser)) {
+
+  if (
+    isNilOrError(authUser) ||
+    !isProjectFolderModerator(authUser) ||
+    (!isNilOrError(publication) &&
+      publication.publicationType == 'folder' &&
+      !isProjectFolderModerator(authUser, publication.publicationId))
+  )
     return null;
-  }
 
   return <>{children}</>;
 };
@@ -94,11 +111,12 @@ const configuration: ModuleConfiguration = {
         <ProjectFolderSiteMap {...props} />
       </RenderOnPublicationType>
     ),
-    'app.components.AdminPage.projects.form.additionalInputs.inputs': (
-      props
-    ) => (
+    'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
+      onChange,
+      projectAttrs,
+    }) => (
       <RenderOnFeatureFlag>
-        <ProjectFolderSelect {...props} />
+        <ProjectFolderSelect onChange={onChange} projectAttrs={projectAttrs} />
       </RenderOnFeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
