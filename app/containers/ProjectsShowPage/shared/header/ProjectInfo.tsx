@@ -37,7 +37,7 @@ import {
 } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const desktopCollapsedDescriptionMaxHeight = 400;
+const desktopCollapsedDescriptionMaxHeight = 380;
 const mobileCollapsedDescriptionMaxHeight = 180;
 
 const Container = styled.div`

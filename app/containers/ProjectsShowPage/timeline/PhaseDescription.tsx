@@ -45,11 +45,11 @@ const Container = styled.div`
   `}
 `;
 
-const Header = styled.div`
+const Header = styled.div<{ hasContent: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => (props.hasContent ? '30px' : '0px')};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -83,37 +83,36 @@ const PhaseDescription = memo<Props & InjectedLocalized>(
     const content = localize(phase?.attributes?.description_multiloc);
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
+    const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
-    if (!contentIsEmpty || !isEmpty(phaseFiles)) {
-      return (
-        <Container className={`e2e-phase-description ${className || ''}`}>
-          <Header>
-            <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
-            {!smallerThanSmallTablet && (
-              <PhaseNavigation projectId={projectId} />
+    return (
+      <Container className={`e2e-phase-description ${className || ''}`}>
+        <Header hasContent={hasContent}>
+          <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
+          {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
+        </Header>
+        <ScreenReaderOnly>
+          <FormattedMessage
+            tagName="h3"
+            {...messages.invisibleTitlePhaseAbout}
+          />
+        </ScreenReaderOnly>
+        {hasContent && (
+          <>
+            <QuillEditedContent fontSize="base" textColor={theme.colorText}>
+              <T
+                value={phase?.attributes?.description_multiloc}
+                supportHtml={true}
+              />
+            </QuillEditedContent>
+
+            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
+              <StyledFileAttachments files={phaseFiles} />
             )}
-          </Header>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h3"
-              {...messages.invisibleTitlePhaseAbout}
-            />
-          </ScreenReaderOnly>
-          <QuillEditedContent fontSize="base" textColor={theme.colorText}>
-            <T
-              value={phase?.attributes?.description_multiloc}
-              supportHtml={true}
-            />
-          </QuillEditedContent>
-
-          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
-            <StyledFileAttachments files={phaseFiles} />
-          )}
-        </Container>
-      );
-    }
-
-    return null;
+          </>
+        )}
+      </Container>
+    );
   }
 );
 

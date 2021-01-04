@@ -73,6 +73,10 @@ const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
 
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-bottom: 50px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -177,7 +181,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   phaseId={selectedPhaseId}
                 />
                 {isPBPhase && (
-                  <PBExpenses
+                  <StyledPBExpenses
                     participationContextId={selectedPhaseId}
                     participationContextType="phase"
                     viewMode={smallerThanSmallTablet ? 'column' : 'row'}
