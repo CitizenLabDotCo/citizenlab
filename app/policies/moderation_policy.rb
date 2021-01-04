@@ -8,8 +8,11 @@ class ModerationPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user&.admin?
+      if user&.active? && user.admin?
         scope.all
+      elsif user&.active? && user.project_moderator?
+        projects = Project.where(id: user.moderatable_project_ids)
+        scope.where(project_id: projects)
       else
         scope.none
       end
@@ -17,6 +20,6 @@ class ModerationPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && user.admin?
+   user&.active? && (user.admin? || user.project_moderator?(record.project_id))
   end
 end

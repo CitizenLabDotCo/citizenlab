@@ -36,6 +36,10 @@ module EmailCampaigns
       'scheduled'
     end
 
+    def mailer_class
+      UserDigestMailer
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       @tenant = Tenant.current
