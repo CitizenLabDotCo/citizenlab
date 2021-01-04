@@ -675,7 +675,7 @@ class ParticipationContext extends PureComponent<
                     label={
                       <LabelText>
                         <span className="header">
-                          <FormattedMessage {...messages.createSurvey} />
+                          <FormattedMessage {...messages.createSurveyText} />
                         </span>
                         <span className="description">
                           <FormattedMessage
