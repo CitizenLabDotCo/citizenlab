@@ -27,12 +27,14 @@ const StyledSectionField = styled(SectionField)`
   margin-bottom: 40px;
 `;
 
-interface Props {
+export interface IProjectFolderSelectProps {
   onChange: (fieldPath: string, value: any) => void;
   projectAttrs: IUpdatedProjectProperties;
 }
 
-const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
+const ProjectFolderSelect = memo<
+  InjectedLocalized & InjectedIntlProps & IProjectFolderSelectProps
+>(
   ({
     projectAttrs,
     onChange,
@@ -98,4 +100,6 @@ const ProjectFolderSelect = memo<Props & InjectedLocalized & InjectedIntlProps>(
   }
 );
 
-export default localize(injectIntl(ProjectFolderSelect));
+export default localize<IProjectFolderSelectProps>(
+  injectIntl(ProjectFolderSelect)
+);
