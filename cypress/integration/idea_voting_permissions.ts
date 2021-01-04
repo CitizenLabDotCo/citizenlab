@@ -10,7 +10,7 @@ describe('Idea voting permissions', () => {
 
       // try to vote while not signed in
       cy.visit('projects/verified-ideation');
-      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation');
+      cy.location('pathname').should('eq', '/en/projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
