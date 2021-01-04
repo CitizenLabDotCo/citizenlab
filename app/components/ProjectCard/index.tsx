@@ -14,7 +14,7 @@ import LazyImage from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { getProjectUrl } from 'services/projects';
+import { getProjectUrl, IProjectData } from 'services/projects';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // hooks
@@ -46,9 +46,6 @@ import {
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
-
-// typings
-import { IProjectData } from 'services/projects';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);

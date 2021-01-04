@@ -15,7 +15,7 @@ import ContentContainer from 'components/ContentContainer';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
-import useProjectFolder from 'hooks/useProjectFolder';
+import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
 import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 import useWindowSize from 'hooks/useWindowSize';
 
