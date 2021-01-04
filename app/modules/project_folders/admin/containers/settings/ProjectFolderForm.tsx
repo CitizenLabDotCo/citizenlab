@@ -21,13 +21,17 @@ import useTenantLocales from 'hooks/useTenantLocales';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-import { SectionField, Section } from 'components/admin/Section';
+import {
+  SectionField,
+  Section,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio, Label } from 'cl2-component-library';
+import { IconTooltip, Radio } from 'cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
@@ -382,14 +386,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     <form onSubmit={onSubmit}>
       <Section>
         <SectionField>
-          <Label>
+          <SubSectionTitle>
             <FormattedMessage {...messages.statusLabel} />
             <IconTooltip
               content={
                 <FormattedMessage {...messages.publicationStatusTooltip} />
               }
             />
-          </Label>
+          </SubSectionTitle>
           <Radio
             onChange={getHandler(setPublicationStatus)}
             currentValue={publicationStatus}
@@ -452,9 +456,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
 
         <SectionField key={'header_bg'}>
-          <Label>
+          <SubSectionTitle>
             <FormattedMessage {...messages.headerImageInputLabel} />
-          </Label>
+          </SubSectionTitle>
           <ImagesDropzone
             acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
             maxNumberOfImages={1}
@@ -468,29 +472,36 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
 
         <SectionField>
-          <Label>
-            <FormattedMessage {...messages.projectFolderImagesInputLabel} />
-          </Label>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.projectFolderCardImageLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.projectFolderCardImageLabelTooltip}
+                />
+              }
+            />
+          </SubSectionTitle>
           <ImagesDropzone
             images={projectFolderImages}
-            imagePreviewRatio={1}
-            maxImagePreviewWidth="160px"
+            imagePreviewRatio={960 / 1440}
+            maxImagePreviewWidth="240px"
             acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
             maxImageFileSize={5000000}
-            maxNumberOfImages={5}
+            maxNumberOfImages={1}
             onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
           />
         </SectionField>
         <SectionField>
-          <Label>
+          <SubSectionTitle>
             <FormattedMessage {...messages.fileUploadLabel} />
             <IconTooltip
               content={
                 <FormattedMessage {...messages.fileUploadLabelTooltip} />
               }
             />
-          </Label>
+          </SubSectionTitle>
           <FileUploader
             onFileAdd={handleProjectFolderFileOnAdd}
             onFileRemove={handleProjectFolderFileOnRemove}

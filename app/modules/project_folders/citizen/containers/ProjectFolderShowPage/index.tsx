@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -13,6 +14,7 @@ import { Spinner } from 'cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 
 // hooks
+import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
@@ -26,7 +28,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import {
+  media,
+  fontSizes,
+  colors,
+  viewportWidths,
+  isRtl,
+} from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -54,6 +62,15 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const EditButton = styled(Button)`
+  display: table;
+  margin: 0 0 10px auto;
+
+  ${isRtl`
+    margin: 0 0 auto 10px;
+  `}
 `;
 
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
@@ -129,6 +146,7 @@ const CardsWrapper = styled.div`
 const ProjectFolderShowPage = memo<{
   projectFolder: IProjectFolderData;
 }>(({ projectFolder }) => {
+  const authUser = useAuthUser();
   const locale = useLocale();
   const tenant = useTenant();
   const adminPublication = useAdminPublicationPrefetchProjects({
@@ -146,6 +164,9 @@ const ProjectFolderShowPage = memo<{
     isUndefined(tenant) ||
     isUndefined(projectFolder) ||
     isUndefined(adminPublication?.list);
+
+  const userCanEditProject =
+    !isNilOrError(authUser) && canModerate(projectFolder.id, authUser);
 
   return (
     <>
@@ -168,10 +189,20 @@ const ProjectFolderShowPage = memo<{
           <Loading>
             <Spinner />
           </Loading>
-        ) : !isNilOrError(projectFolder) ? (
+        ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
           <>
             {!smallerThanLargeTablet ? (
               <ContentContainer maxWidth={maxPageWidth}>
+                {userCanEditProject && (
+                  <EditButton
+                    icon="edit"
+                    linkTo={`/admin/projects/folders/${projectFolder.id}`}
+                    buttonStyle="secondary"
+                    padding="5px 8px"
+                  >
+                    <FormattedMessage {...messages.editFolder} />
+                  </EditButton>
+                )}
                 <StyledProjectFolderHeader projectFolder={projectFolder} />
                 <Content>
                   <StyledProjectFolderDescription

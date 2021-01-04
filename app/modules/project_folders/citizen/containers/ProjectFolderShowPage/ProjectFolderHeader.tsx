@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 
 // components
 import LazyImage from 'components/LazyImage';
-import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
 
 // style
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   align-items: stretch;
-  position: relative;
 
   ${media.smallerThanMinTablet`
     height: 160px;
@@ -28,16 +26,6 @@ const Container = styled.div`
 const HeaderImage = styled(LazyImage)`
   flex: 1;
   width: 100%;
-`;
-
-const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
-  position: absolute;
-  bottom: 10px;
-  right: 26px;
-
-  ${media.smallerThanMaxTablet`
-    right: 10px;
-  `};
 `;
 
 interface Props {
@@ -57,7 +45,6 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
           placeholderBg="transparent"
           alt=""
         />
-        <StyledProjectFolderShareButton projectFolder={projectFolder} />
       </Container>
     );
   }

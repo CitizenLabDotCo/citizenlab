@@ -44,9 +44,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
-  projectFolderImagesInputLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.projectFolderImagesInputLabel',
-    defaultMessage: 'Folder images',
+  projectFolderCardImageLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
+    defaultMessage: 'Folder card image',
+  },
+  projectFolderCardImageLabelTooltip: {
+    id:
+      'app.containers.AdminPage.ProjectEdit.projectFolderCardImageLabelTooltip',
+    defaultMessage:
+      'This image will be shown on the folder card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.',
   },
   save: {
     id: 'app.containers.AdminPage.FoldersEdit.save',
