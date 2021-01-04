@@ -60,6 +60,7 @@ module Surveys
           message: "Failed to save typeform webhook",
           form_url: form_url,
           participation_context_id: participation_context.id,
+          participation_context_class: participation_context.class,
           response: response.parsed_response
       }.to_json) unless response.success?
       response
