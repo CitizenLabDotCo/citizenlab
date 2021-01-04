@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Select a Folder',
   },
   optional: {
-    id: 'app.containers.AdminPage.ProjectEdit.folder',
+    id: 'app.containers.AdminPage.ProjectEdit.optional',
     defaultMessage: '(optional)',
   },
   folderTooltip: {
