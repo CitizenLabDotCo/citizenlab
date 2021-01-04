@@ -64,7 +64,7 @@ const Buttons = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 12px;
+    padding: 11px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;

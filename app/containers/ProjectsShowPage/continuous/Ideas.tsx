@@ -32,6 +32,10 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   margin-bottom: 20px;
 `;
 
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-bottom: 50px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -67,7 +71,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
           <StyledContentContainer id="project-ideas">
             <SectionContainer>
               {isPBProject && (
-                <PBExpenses
+                <StyledPBExpenses
                   participationContextId={projectId}
                   participationContextType="project"
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}

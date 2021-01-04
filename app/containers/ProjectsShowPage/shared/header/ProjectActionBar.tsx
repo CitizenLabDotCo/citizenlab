@@ -224,6 +224,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                     <StyledIdeaButton
                       projectId={project.id}
                       participationContextType="project"
+                      icon="plus-circle"
                       fontWeight="500"
                       width={!smallerThanLargeTablet ? '300px' : undefined}
                     />
@@ -244,6 +245,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
                     projectId={project.id}
                     phaseId={currentPhase?.id}
                     participationContextType="phase"
+                    icon="plus-circle"
                     fontWeight="500"
                     width={!smallerThanLargeTablet ? '300px' : undefined}
                   />
