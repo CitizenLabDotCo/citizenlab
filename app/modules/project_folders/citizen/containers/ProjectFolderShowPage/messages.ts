@@ -30,4 +30,8 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.seeLess',
     defaultMessage: 'See less',
   },
+  editFolder: {
+    id: 'app.containers.ProjectFolderShowPage.editFolder',
+    defaultMessage: 'Edit folder',
+  },
 });

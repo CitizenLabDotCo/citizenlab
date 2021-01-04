@@ -12,6 +12,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
+import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
 
 // services
 import useProjectFolderFiles from 'modules/project_folders/hooks/useProjectFolderFiles';
@@ -70,6 +71,11 @@ const Title = styled.h1`
     font-size: ${fontSizes.xxxl}px;
     margin-bottom: 20px;
   `}
+`;
+
+const ShareButtonWrapper = styled.div`
+  display: flex;
+  margin-bottom: 25px;
 `;
 
 const Description = styled.div<{ maxHeight: number }>`
@@ -167,6 +173,15 @@ const ProjectFolderInfo = memo<Props>(({ projectFolder, className }) => {
         <Title>
           <T value={projectFolder.attributes.title_multiloc} />
         </Title>
+        <ShareButtonWrapper>
+          <ProjectFolderShareButton
+            projectFolder={projectFolder}
+            buttonStyle="text"
+            textDecoration="underline"
+            textDecorationHover="underline"
+            padding="0"
+          />
+        </ShareButtonWrapper>
         <Description
           className={expanded ? 'expanded' : ''}
           maxHeight={collapsedDescriptionMaxHeight}
