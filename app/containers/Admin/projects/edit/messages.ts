@@ -120,11 +120,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgeting',
     defaultMessage: 'Conduct participatory budgeting',
   },
-  conductParticipatoryBudgetingDescription: {
+  conductParticipatoryBudgetingDescriptionText: {
     id:
-      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescription',
+      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
-      'Assign a budget to projects and ask participants to determine which projects they would choose within a pre-defined total budget.',
+      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
   createPoll: {
     id: 'app.containers.AdminPage.ProjectEdit.createPoll',
