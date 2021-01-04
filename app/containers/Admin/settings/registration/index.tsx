@@ -20,7 +20,7 @@ class SettingsRegistrationTab extends PureComponent<Props, State> {
           <FormattedMessage {...messages.titleRegistration} />
         </SectionTitle>
         <SectionDescription>
-          <FormattedMessage {...messages.subtitleRegistrationFields} />
+          <FormattedMessage {...messages.subtitleRegistration} />
         </SectionDescription>
         <AllCustomFields />
       </Section>

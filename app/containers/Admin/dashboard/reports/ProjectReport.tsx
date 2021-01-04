@@ -262,7 +262,7 @@ const ProjectReport = memo(
         {participationMethods.includes('ideation') && startAt && endAt && (
           <Section>
             <SectionTitle>
-              <FormattedMessage {...messages.sectionWhat} />
+              <FormattedMessage {...messages.sectionWhatInput} />
             </SectionTitle>
             <GraphsContainer>
               <>
