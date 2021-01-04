@@ -149,7 +149,7 @@ describe('Idea form settings', () => {
 
             // find topics error on idea form page and check we stay on the idea form page
             cy.get('#e2e-new-idea-topics-error');
-            cy.location('pathname').should('eq', `/en-GB/ideas/edit/${ideaId}`);
+            cy.location('pathname').should('eq', `/en/ideas/edit/${ideaId}`);
           });
         });
       });
@@ -178,7 +178,7 @@ describe('Idea form settings', () => {
           cy.get('#e2e-new-idea-topics-error');
           cy.location('pathname').should(
             'eq',
-            `/en-GB/projects/${projectSlug}/ideas/new`
+            `/en/projects/${projectSlug}/ideas/new`
           );
         });
       });
