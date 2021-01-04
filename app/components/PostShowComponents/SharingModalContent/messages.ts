@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.twitterMessage',
     defaultMessage: 'Vote for {postTitle} on',
   },
-  ideaEmailSharingSubject: {
+  ideaEmailSharingSubjectText: {
     id:
-      'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubject',
-    defaultMessage: 'Support my idea: {postTitle}.',
+      'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText',
+    defaultMessage: 'Support my idea: {postTitle}',
   },
   optionEmailSharingSubject: {
     id:

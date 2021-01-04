@@ -175,7 +175,7 @@ class SharingModalContent extends PureComponent<
       );
 
       emailSharingSubject = getInputTermMessage(inputTerm, {
-        idea: messages.ideaEmailSharingSubject,
+        idea: messages.ideaEmailSharingSubjectText,
         option: messages.optionEmailSharingSubject,
         project: messages.projectEmailSharingSubject,
         question: messages.questionEmailSharingSubject,
