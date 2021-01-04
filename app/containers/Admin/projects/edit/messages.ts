@@ -116,9 +116,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage: 'Embed a Typeform, Google Form or Enalyzer survey.',
   },
-  conductParticipatoryBudgeting: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgeting',
-    defaultMessage: 'Conduct participatory budgeting',
+  conductParticipatoryBudgetingText: {
+    id:
+      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
+    defaultMessage: 'Conduct a budget allocation exercise',
   },
   conductParticipatoryBudgetingDescriptionText: {
     id:
