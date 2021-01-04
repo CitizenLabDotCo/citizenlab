@@ -186,7 +186,7 @@ class SharingModalContent extends PureComponent<
         idea: messages.ideaEmailSharingBody,
         option: messages.optionEmailSharingBody,
         project: messages.projectEmailSharingBody,
-        question: messages.questionEmailSharingBody,
+        question: messages.questionEmailSharingModalContentBody,
         issue: messages.issueEmailSharingBody,
         contribution: messages.contributionEmailSharingBody,
       });

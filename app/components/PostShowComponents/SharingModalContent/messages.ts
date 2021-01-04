@@ -60,9 +60,9 @@ export default defineMessages({
       'app.components.PostComponents.SharingModalContent.contributionEmailSharingBody',
     defaultMessage: "Support my contribution '{postTitle}' at {postUrl}!",
   },
-  questionEmailSharingBody: {
+  questionEmailSharingModalContentBody: {
     id:
-      'app.components.PostComponents.SharingModalContent.questionEmailSharingBody',
+      'app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody',
     defaultMessage:
       "Join the discussion about this question '{postTitle}' at {postUrl}!",
   },
