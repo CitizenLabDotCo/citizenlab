@@ -257,7 +257,7 @@
   "app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject": "Support my contribution: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.contributionWhatsAppMessage": "Support my contribution: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Support my idea '{postTitle}' at {postUrl}!",
-  "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Support my idea: {postTitle}",
+  "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Steun mijn idee: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Steun mijn idee: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Wat denk je van dit initiatief? Breng je stem uit en neem deel aan de discussie op {postUrl} om je stem te laten horen!",
   "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Steun mijn initiatief: {postTitle}.",
