@@ -126,7 +126,7 @@ class VotingDisabled extends PureComponent<Props, State> {
       return messages.votingDisabledMaxReached;
     } else if (disabled_reason === 'idea_not_in_current_phase') {
       return future_enabled
-        ? messages.votingDisabledPhaseNotStarted
+        ? messages.votingDisabledFutureEnabled
         : messages.votingDisabledPhaseOver;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingNotPermitted;
