@@ -551,11 +551,7 @@ const ProjectCard = memo(
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
       const processType = project.attributes.process_type;
-      const inputTerm = getInputTerm(
-        processType === 'continuous' ? 'project' : 'phase',
-        project,
-        phases
-      );
+      const inputTerm = getInputTerm(processType, project, phases);
 
       if (isArchived) {
         countdown = (
