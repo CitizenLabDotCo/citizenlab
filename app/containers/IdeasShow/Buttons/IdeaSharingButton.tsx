@@ -42,7 +42,7 @@ const Component = ({
     const titleMultiloc = idea.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
-      project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+      project.attributes.process_type,
       project,
       phases
     );

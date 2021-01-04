@@ -1,7 +1,10 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { getProjectInputTerm, IProjectData } from 'services/projects';
+import {
+  getProjectInputTerm,
+  IProjectData,
+  ProcessType,
+} from 'services/projects';
 import { getPhaseInputTerm, IPhaseData } from 'services/phases';
-import { IParticipationContextType } from 'typings';
 
 export type SurveyServices =
   | 'typeform'
@@ -42,7 +45,7 @@ export type InputTerm =
   | 'contribution';
 
 export function getInputTerm(
-  pcType: IParticipationContextType,
+  processType: ProcessType,
   project: IProjectData | undefined | null | Error,
   phases: IPhaseData[] | undefined | null | Error
 ) {
@@ -57,7 +60,7 @@ export function getInputTerm(
       !isNilOrError(phases) && phases.length > 0
         ? getPhaseInputTerm(phases)
         : 'idea',
-  }[pcType];
+  }[processType];
 }
 
 export const ideaDefaultSortMethodFallback = 'trending';
