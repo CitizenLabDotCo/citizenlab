@@ -138,10 +138,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.findVolunteers',
     defaultMessage: 'Find volunteers',
   },
-  findVolunteersDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescription',
-    defaultMessage:
-      'Ask participants to volunteer for different projects and causes.',
+  findVolunteersDescriptionText: {
+    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText',
+    defaultMessage: 'Ask participants to volunteer for activities and causes.',
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
