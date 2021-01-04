@@ -613,7 +613,7 @@ class ParticipationContext extends PureComponent<
                       </span>
                       <span className="description">
                         <FormattedMessage
-                          {...messages.conductParticipatoryBudgetingDescription}
+                          {...messages.conductParticipatoryBudgetingDescriptionText}
                         />
                       </span>
                     </LabelText>
