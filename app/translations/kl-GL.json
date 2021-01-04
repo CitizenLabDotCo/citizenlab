@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Suliniut una pillugu paasissutissat",
   "app.containers.ProjectFolderShowPage.metaTitle": "Suliniut: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Uani quppersagaqanngilaq",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Taasineq una akigakku qujanaq!",
   "app.containers.Projects.PollForm.logInLinkText": "Iserneq",

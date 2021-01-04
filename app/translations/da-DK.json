@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Oplysninger om dette projekt",
   "app.containers.ProjectFolderShowPage.metaTitle": "Projekt: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Der er ingen mappe her.",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Tak for at du besvarede denne afstemning!",
   "app.containers.Projects.PollForm.logInLinkText": "logge ind",
