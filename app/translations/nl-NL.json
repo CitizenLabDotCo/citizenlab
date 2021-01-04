@@ -308,7 +308,7 @@
   "app.components.ProjectCard.xIssues": "{ideasCount, plural, no {# issues} one {# issue} other {# issues}}",
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, no {# options} one {# option} other {# options}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, no {# projects} one {# project} other {# projects}}",
-  "app.components.ProjectCard.xQuestions": "{ideasCount, plural, no {# questions} one {# question} other {# questions}}",
+  "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# vraag} other {# vragen}}",
   "app.components.ProjectFolderCards.noProjectYet": "Er is nog geen project",
   "app.components.ProjectFolderCards.showMore": "Toon meer",
   "app.components.ProjectFolderCards.stayTuned": "Blijf in de buurt, er wordt binnenkort een project toegevoegd.",
