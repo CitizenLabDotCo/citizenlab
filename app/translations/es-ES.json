@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Información sobre este proyecto",
   "app.containers.ProjectFolderShowPage.metaTitle": "Proyecto: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "No hay carpetas aquí.",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "Gracias por responder la consulta!",
   "app.containers.Projects.PollForm.logInLinkText": "conectarte",

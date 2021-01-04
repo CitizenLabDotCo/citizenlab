@@ -1861,6 +1861,8 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informations sur ce projet",
   "app.containers.ProjectFolderShowPage.metaTitle": "Projet : {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "Aucun dossier n'est disponible ici.",
+  "app.containers.ProjectFolderShowPage.readMore": "",
+  "app.containers.ProjectFolderShowPage.seeLess": "",
   "app.containers.ProjectFolderShowPage.share": "",
   "app.containers.Projects.PollForm.formCompleted": "{tenantName, select, vitrysurseine {Merci d'avoir répondu à cette enquête !} other {Merci d'avoir répondu à ce sondage !}}",
   "app.containers.Projects.PollForm.logInLinkText": "vous connecter",
