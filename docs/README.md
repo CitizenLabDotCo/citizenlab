@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Changed
+- Project folder page redesign
+- Project folders now have a single folder card image instead of 5 folder images in the admin settings
 
 ## 2020-12-17
 
