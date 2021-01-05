@@ -639,27 +639,6 @@ class ParticipationContext extends PureComponent<
                   }
                 />
               </FeatureFlag>
-              <FeatureFlag name="volunteering">
-                <StyledRadio
-                  onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="volunteering"
-                  name="participationmethod"
-                  id={'participationmethod-volunteering'}
-                  label={
-                    <LabelText>
-                      <span className="header">
-                        <FormattedMessage {...messages.findVolunteers} />
-                      </span>
-                      <span className="description">
-                        <FormattedMessage
-                          {...messages.findVolunteersDescriptionText}
-                        />
-                      </span>
-                    </LabelText>
-                  }
-                />
-              </FeatureFlag>
 
               {surveys_enabled &&
                 (google_forms_enabled ||
@@ -686,6 +665,29 @@ class ParticipationContext extends PureComponent<
                     }
                   />
                 )}
+
+              <FeatureFlag name="volunteering">
+                <StyledRadio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participation_method}
+                  value="volunteering"
+                  name="participationmethod"
+                  id={'participationmethod-volunteering'}
+                  label={
+                    <LabelText>
+                      <span className="header">
+                        <FormattedMessage {...messages.findVolunteers} />
+                      </span>
+                      <span className="description">
+                        <FormattedMessage
+                          {...messages.findVolunteersDescriptionText}
+                        />
+                      </span>
+                    </LabelText>
+                  }
+                />
+              </FeatureFlag>
+
               <Radio
                 onChange={this.handleParticipationMethodOnChange}
                 currentValue={participation_method}
