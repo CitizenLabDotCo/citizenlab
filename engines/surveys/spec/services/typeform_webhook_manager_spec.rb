@@ -105,4 +105,28 @@ describe Surveys::TypeformWebhookManager do
     end
   end
 
+  describe "embed_url_to_form_id" do
+
+    it "parses simple url correctly" do
+      form_id = service.send(:embed_url_to_form_id, "https://citizenlabco.typeform.com/to/abcdef")
+      expect(form_id).to eq("abcdef")
+    end
+
+    it "parses url with trailing '?' correctly" do
+      form_id = service.send(:embed_url_to_form_id, "https://citizenlabco.typeform.com/to/abcdef?")
+      expect(form_id).to eq("abcdef")
+    end
+
+    it "parses url with query parameters correctly" do
+      form_id = service.send(:embed_url_to_form_id, "https://citizenlabco.typeform.com/to/abcdef?name=xxxxx&sexe=xxxxx")
+      expect(form_id).to eq("abcdef")
+    end
+
+    it "parses url with a fragment correctly" do
+      form_id = service.send(:embed_url_to_form_id, "https://citizenlabco.typeform.com/to/abcdef#name=xxxxx&sexe=xxxxx")
+      expect(form_id).to eq("abcdef")
+    end
+
+  end
+
 end
