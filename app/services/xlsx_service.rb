@@ -223,21 +223,17 @@ class XlsxService
 
   def generate_idea_comments_xlsx comments, view_private_attributes: false
     columns = [
-      {header: 'id',            f: -> (c) { c.id },            skip_sanitization: true},
-      {header: 'idea',          f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
-      {header: 'body',          f: -> (c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) }},
-      {header: 'upvotes_count', f: -> (c) { c.upvotes_count }, skip_sanitization: true},
-      {header: 'author_name',   f: -> (c) { c.author_name }},
-      {header: 'author_email',  f: -> (c) { c.author&.email }},
-      {header: 'created_at',    f: -> (c) { c.created_at },    skip_sanitization: true},
-      {header: 'parent',        f: -> (c) { c.parent_id },     skip_sanitization: true},
-      {header: 'project',       f: -> (c) { @@multiloc_service.t(c&.idea&.project&.title_multiloc) }}
+      { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
+      { header: 'input',         f: ->(c) { @@multiloc_service.t(c&.post&.title_multiloc) } },
+      { header: 'body',          f: ->(c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
+      { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
+      { header: 'author_name',   f: ->(c) { c.author_name } },
+      { header: 'author_email',  f: ->(c) { c.author&.email } },
+      { header: 'created_at',    f: ->(c) { c.created_at }, skip_sanitization: true },
+      { header: 'parent',        f: ->(c) { c.parent_id }, skip_sanitization: true },
+      { header: 'project',       f: ->(c) { @@multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    if !view_private_attributes
-      columns.select! do |c|
-        !%w(author_email).include?(c[:header])
-      end
-    end
+    columns.reject! { |c| %w[author_email].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
 
