@@ -6,7 +6,7 @@ module EmailCampaigns
       I18n.t('email_campaigns.invite_received.subject', organizationName: organization_name)
     end
 
-    def header
+    def header_title
       format_message('invitation_header')
     end
 

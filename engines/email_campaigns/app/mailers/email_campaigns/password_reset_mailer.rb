@@ -6,7 +6,7 @@ module EmailCampaigns
       I18n.t('email_campaigns.password_reset.subject', organizationName: organization_name)
     end
 
-    def header
+    def header_title
       false
     end
   end

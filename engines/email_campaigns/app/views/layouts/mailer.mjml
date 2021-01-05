@@ -3,7 +3,7 @@
   <%= render partial: 'application/head' %>
 
   <mj-body background-color="#FFFFFF">
-    <%= render partial: 'application/header' if header %>
+    <%= render partial: 'application/header' if show_header? %>
     <%= yield %>
     <%= render partial: 'application/footer' %>
   </mj-body>

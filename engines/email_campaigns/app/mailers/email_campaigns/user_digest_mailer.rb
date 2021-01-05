@@ -6,7 +6,7 @@ module EmailCampaigns
       I18n.t('email_campaigns.user_digest.subject', organizationName: organization_name)
     end
 
-    def header
+    def header_title
       format_message('title_your_weekly_report')
     end
 

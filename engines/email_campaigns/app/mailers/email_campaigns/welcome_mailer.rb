@@ -8,7 +8,7 @@ module EmailCampaigns
 
     private
 
-    def header
+    def header_title
       format_message('main_header')
     end
 

@@ -8,7 +8,7 @@ module EmailCampaigns
       I18n.t('email_campaigns.admin_digest.subject', time: Time.now)
     end
 
-    def header
+    def header_title
       format_message('title_your_weekly_report', values: { firstName: recipient_first_name })
     end
 
