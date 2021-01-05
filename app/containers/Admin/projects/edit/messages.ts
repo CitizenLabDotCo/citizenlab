@@ -83,8 +83,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage',
     defaultMessage: 'Not a valid amount',
   },
-  participationMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitle',
+  participationMethodTitleText: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
     defaultMessage: 'What do you want to do?',
   },
   participationMethodTooltip: {
