@@ -1,6 +1,6 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { tap, first } from 'rxjs/operators';
+import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
 import { uniq, has, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -62,14 +62,9 @@ const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 import HasPermission from 'components/HasPermission';
 
 // services
-import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
-import {
-  authUserStream,
-  signOut,
-  signOutAndDeleteAccountPart2,
-} from 'services/auth';
-import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
+import { signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
+import { ITenant, ITenantStyle } from 'services/tenant';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -82,6 +77,11 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import { SSOParams } from 'services/singleSignOn';
 import { Locale } from 'typings';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
   display: flex;
@@ -113,7 +113,15 @@ export interface IOpenPostPageModalEvent {
   type: 'idea' | 'initiative';
 }
 
-type Props = {};
+interface InputProps {}
+
+interface DataProps {
+  tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
+  locale: GetLocaleChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
   previousPathname: string | null;
@@ -158,32 +166,33 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const authUser$ = authUserStream().observable;
-    const locale$ = localeStream().observable;
-    const tenant$ = currentTenantStream().observable;
+    const { tenant, authUser, locale } = this.props;
 
-    const isCustomRedirect = (pathname: string) => {
+    const handlePotentialCustomRedirect = (pathname: string) => {
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
-      const redirects = tenant.attributes.settings.redirects;
-      const { enabled, allowed, rules } = redirects;
 
-      if (enabled && allowed) {
-        rules.forEach((rule) => {
-          if (
-            urlSegments.length === 2 &&
-            includes(locales, urlSegments[0]) &&
-            urlSegments[1] === rule.path
-          ) {
-            window.location.href = rule.target;
-          }
-        });
+      if (!isNilOrError(tenant)) {
+        const redirects = tenant.attributes.settings.redirects;
+        const { enabled, allowed, rules } = redirects;
+
+        if (enabled && allowed) {
+          rules.forEach((rule) => {
+            if (
+              urlSegments.length === 2 &&
+              includes(locales, urlSegments[0]) &&
+              urlSegments[1] === rule.path
+            ) {
+              window.location.href = rule.target;
+            }
+          });
+        }
       }
     };
 
-    isCustomRedirect(this.props.location.pathname);
+    handlePotentialCustomRedirect(this.props.location.pathname);
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      isCustomRedirect(newLocation.pathname);
+      handlePotentialCustomRedirect(newLocation.pathname);
 
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
@@ -204,55 +213,44 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     smoothscroll.polyfill();
 
-    this.subscriptions = [
-      combineLatest(
-        authUser$.pipe(
-          tap((authUser) => {
-            if (isNilOrError(authUser)) {
-              signOut();
-            } else {
-              configureScope((scope) => {
-                scope.setUser({
-                  id: authUser.data.id,
-                });
-              });
-            }
-          })
-        ),
-        locale$,
-        tenant$.pipe(
-          tap((tenant) => {
-            moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
+    if (!isNilOrError(tenant)) {
+      moment.tz.setDefault(tenant.attributes.settings.core.timezone);
+      uniq(
+        tenant.attributes.settings.core.locales
+          .filter((locale) => locale !== 'en' && locale !== 'ach')
+          .map((locale) => appLocalesMomentPairs[locale])
+      ).forEach((locale) => require(`moment/locale/${locale}.js`));
 
-            uniq(
-              tenant.data.attributes.settings.core.locales
-                .filter((locale) => locale !== 'en' && locale !== 'ach')
-                .map((locale) => appLocalesMomentPairs[locale])
-            ).forEach((locale) => require(`moment/locale/${locale}.js`));
-          })
-        )
-      ).subscribe(([authUser, locale, tenant]) => {
-        const momentLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momentLoc);
-        this.setState({ tenant, authUser, locale });
-      }),
-
-      tenant$.pipe(first()).subscribe((tenant) => {
-        if (
-          tenant.data.attributes.style &&
-          tenant.data.attributes.style.customFontAdobeId
-        ) {
-          import('webfontloader').then((WebfontLoader) => {
-            WebfontLoader.load({
-              typekit: {
-                id: (tenant.data.attributes.style as ITenantStyle)
-                  .customFontAdobeId,
-              },
-            });
+      if (
+        tenant.attributes.style &&
+        tenant.attributes.style.customFontAdobeId
+      ) {
+        import('webfontloader').then((WebfontLoader) => {
+          WebfontLoader.load({
+            typekit: {
+              id: (tenant.attributes.style as ITenantStyle).customFontAdobeId,
+            },
           });
-        }
-      }),
+        });
+      }
+    }
 
+    if (!isNilOrError(locale)) {
+      const momentLoc = appLocalesMomentPairs[locale] || 'en';
+      moment.locale(momentLoc);
+    }
+
+    if (!isNilOrError(authUser)) {
+      configureScope((scope) => {
+        scope.setUser({
+          id: authUser.id,
+        });
+      });
+    } else {
+      signOut();
+    }
+
+    this.subscriptions = [
       eventEmitter
         .observeEvent<IOpenPostPageModalEvent>('cardClick')
         .subscribe(({ eventValue: { id, slug, type } }) => {
@@ -584,8 +582,14 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
 });
 
-export default (props: Props) => (
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+});
+
+export default () => (
   <ApolloProvider client={client}>
-    <AppWithHoC {...props} />
+    <Data>{(dataProps) => <AppWithHoC {...dataProps} />}</Data>
   </ApolloProvider>
 );
