@@ -109,7 +109,6 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
   render() {
     const { children } = this.props;
 
-    // if (children) {
     if (this.state.hasError) {
       return (
         <Container>
@@ -128,9 +127,6 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
     }
 
     return children;
-    // }
-
-    // return null;
   }
 }
 
