@@ -1196,7 +1196,7 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "crwdns105320:0crwdne105320:0",
   "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "crwdns105324:0crwdne105324:0",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "crwdns105326:0crwdne105326:0",
-  "app.containers.AdminPage.ProjectEdit.participationMethodTitle": "crwdns105328:0crwdne105328:0",
+  "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "crwdns112752:0crwdne112752:0",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "crwdns105330:0crwdne105330:0",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "crwdns105332:0crwdne105332:0",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "crwdns105334:0crwdne105334:0",
