@@ -74,13 +74,13 @@ export default class ExportIdeasButton extends React.PureComponent<
         fontSize={`${fontSizes.small}px`}
       >
         {exportType === 'all' && (
-          <FormattedMessage {...messages.exportAllSubmissions} />
+          <FormattedMessage {...messages.exportAllInputs} />
         )}
         {exportType === 'project' && (
-          <FormattedMessage {...messages.exportSubmissionsProjects} />
+          <FormattedMessage {...messages.exportInputsProjects} />
         )}
         {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedSubmissions} />
+          <FormattedMessage {...messages.exportSelectedInputs} />
         )}
       </Button>
     );

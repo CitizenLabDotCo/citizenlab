@@ -85,7 +85,7 @@ export default defineMessages({
   },
   participationMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitle',
-    defaultMessage: 'What do you want to do in this phase?',
+    defaultMessage: 'What do you want to do?',
   },
   participationMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
