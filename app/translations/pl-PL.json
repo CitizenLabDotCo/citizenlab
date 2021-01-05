@@ -92,7 +92,7 @@
   "app.components.FileUploader.incorrect_extension": "{fileName} nie jest obsługiwany przez nasz system, nie zostanie wgrany.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Wybrane statusy filtrów: wszystkie",
   "app.components.FilterBoxes.a11y_numberOfInitiatives": "{initiativeCount, plural, one {# propozycja} few {# propozycje} many {# propozycji} other {# propozycje}}",
-  "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, no {# inputs} one {# input} other {# inputs}}",
+  "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# wkład} few {# wkłady} many {# wkładów} other {# wkłady}}",
   "app.components.FilterBoxes.a11y_removeFilter": "Usuń filtr",
   "app.components.FilterBoxes.a11y_selectedFilter": "Wybrane statusy filtrów: {filter}",
   "app.components.FilterBoxes.a11y_selectedTopicFilters": "Wybrano: {numberOfSelectedTopics, plural, =0 {zero filtrów tematu} one {jeden filtr tematu} few {# filtry tematu} many {# filtrów tematu} other {# filtry tematu}}. {selectedTopicNames}",
