@@ -125,8 +125,8 @@ interface Props extends InputProps, DataProps {}
 
 type State = {
   previousPathname: string | null;
-  tenant: ITenant | null;
-  authUser: IUser | null | undefined;
+  // tenant: ITenant | null;
+  // authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
@@ -137,7 +137,7 @@ type State = {
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
-  locale: Locale | null;
+  // locale: Locale | null;
 };
 
 class App extends PureComponent<Props & WithRouterProps, State> {
@@ -148,8 +148,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     super(props);
     this.state = {
       previousPathname: null,
-      tenant: null,
-      authUser: undefined,
+      // tenant: null,
+      // authUser: undefined,
       modalId: null,
       modalSlug: null,
       modalType: null,
@@ -160,7 +160,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
-      locale: null,
+      // locale: null,
     };
     this.subscriptions = [];
   }
@@ -283,11 +283,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    const {
-      authUser,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
+    const { signUpInModalMounted, verificationModalMounted } = this.state;
+    const { authUser } = this.props;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
@@ -301,17 +298,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         isInvitation) ||
       (!prevState.signUpInModalMounted &&
         signUpInModalMounted &&
-        !isNilOrError(authUser)) ||
-      (prevState.authUser === undefined &&
-        !isNilOrError(authUser) &&
-        signUpInModalMounted)
+        !isNilOrError(authUser))
     ) {
       const urlSearchParams = (parse(search, {
         ignoreQueryPrefix: true,
       }) as any) as SSOParams;
       const token = urlSearchParams?.['token'] as string | undefined;
-      const shouldComplete = !authUser?.data?.attributes
-        ?.registration_completed_at;
+      const shouldComplete = !authUser?.attributes?.registration_completed_at;
 
       // see services/singleSignOn.ts
       const {
@@ -330,7 +323,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       if (sso_response || shouldComplete || isInvitation) {
         const shouldVerify =
-          !authUser?.data?.attributes?.verified && sso_verification;
+          !authUser?.attributes?.verified && sso_verification;
 
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
@@ -369,7 +362,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     if (
       !isNilOrError(authUser) &&
       verificationModalMounted &&
-      (prevState.authUser === undefined || !prevState.verificationModalMounted)
+      !prevState.verificationModalMounted
     ) {
       const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
 
@@ -438,10 +431,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   };
 
   render() {
-    const { location, children } = this.props;
+    const { location, children, tenant, locale } = this.props;
     const {
       previousPathname,
-      tenant,
       modalId,
       modalSlug,
       modalType,
@@ -458,7 +450,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isSignInPage = isPage('sign_in', location.pathname);
     const isSignUpPage = isPage('sign_up', location.pathname);
-    const theme = getTheme(tenant);
     const showFooter =
       !isAdminPage &&
       !isIdeaFormPage &&
@@ -467,98 +458,104 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       !isInitiativeEditPage;
     const showShortFeedback = !isSignInPage && !isSignUpPage;
 
-    return (
-      <>
-        {tenant && visible && (
-          <PreviousPathnameContext.Provider value={previousPathname}>
-            <ThemeProvider
-              theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
-            >
-              <LiveAnnouncer>
-                <GlobalStyle />
+    if (!isNilOrError(tenant)) {
+      const theme = getTheme({ data: tenant });
 
-                <Container>
-                  <Meta />
+      return (
+        <>
+          {visible && (
+            <PreviousPathnameContext.Provider value={previousPathname}>
+              <ThemeProvider
+                theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
+              >
+                <LiveAnnouncer>
+                  <GlobalStyle />
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <PostPageFullscreenModal
-                        type={modalType}
-                        postId={modalId}
-                        slug={modalSlug}
-                        close={this.closePostPageModal}
-                        navbarRef={navbarRef}
-                        mobileNavbarRef={mobileNavbarRef}
+                  <Container>
+                    <Meta />
+
+                    <ErrorBoundary>
+                      <Suspense fallback={null}>
+                        <PostPageFullscreenModal
+                          type={modalType}
+                          postId={modalId}
+                          slug={modalSlug}
+                          close={this.closePostPageModal}
+                          navbarRef={navbarRef}
+                          mobileNavbarRef={mobileNavbarRef}
+                        />
+                      </Suspense>
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <LoadableModal
+                        opened={userDeletedModalOpened}
+                        close={this.closeUserDeletedModal}
+                      >
+                        <LoadableUserDeleted
+                          userActuallyDeleted={userActuallyDeleted}
+                        />
+                      </LoadableModal>
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <Suspense fallback={null}>
+                        <SignUpInModal onMounted={this.singUpInModalMounted} />
+                      </Suspense>
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <Suspense fallback={null}>
+                        <VerificationModal
+                          onMounted={this.verificationModalMounted}
+                        />
+                      </Suspense>
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <div id="modal-portal" />
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <div id="topbar-portal" />
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <ConsentManager />
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <Navbar
+                        setRef={this.setNavbarRef}
+                        setMobileNavigationRef={this.setMobileNavigationRef}
                       />
-                    </Suspense>
-                  </ErrorBoundary>
+                    </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <LoadableModal
-                      opened={userDeletedModalOpened}
-                      close={this.closeUserDeletedModal}
-                    >
-                      <LoadableUserDeleted
-                        userActuallyDeleted={userActuallyDeleted}
-                      />
-                    </LoadableModal>
-                  </ErrorBoundary>
+                    <InnerContainer>
+                      <HasPermission
+                        item={{ type: 'route', path: location.pathname }}
+                        action="access"
+                      >
+                        <ErrorBoundary>{children}</ErrorBoundary>
+                        <HasPermission.No>
+                          <ForbiddenRoute />
+                        </HasPermission.No>
+                      </HasPermission>
+                    </InnerContainer>
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <SignUpInModal onMounted={this.singUpInModalMounted} />
-                    </Suspense>
-                  </ErrorBoundary>
+                    {showFooter && (
+                      <PlatformFooter showShortFeedback={showShortFeedback} />
+                    )}
+                  </Container>
+                </LiveAnnouncer>
+              </ThemeProvider>
+            </PreviousPathnameContext.Provider>
+          )}
+        </>
+      );
+    }
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <VerificationModal
-                        onMounted={this.verificationModalMounted}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <div id="modal-portal" />
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <div id="topbar-portal" />
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <ConsentManager />
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <Navbar
-                      setRef={this.setNavbarRef}
-                      setMobileNavigationRef={this.setMobileNavigationRef}
-                    />
-                  </ErrorBoundary>
-
-                  <InnerContainer>
-                    <HasPermission
-                      item={{ type: 'route', path: location.pathname }}
-                      action="access"
-                    >
-                      <ErrorBoundary>{children}</ErrorBoundary>
-                      <HasPermission.No>
-                        <ForbiddenRoute />
-                      </HasPermission.No>
-                    </HasPermission>
-                  </InnerContainer>
-
-                  {showFooter && (
-                    <PlatformFooter showShortFeedback={showShortFeedback} />
-                  )}
-                </Container>
-              </LiveAnnouncer>
-            </ThemeProvider>
-          </PreviousPathnameContext.Provider>
-        )}
-      </>
-    );
+    return null;
   }
 }
 
