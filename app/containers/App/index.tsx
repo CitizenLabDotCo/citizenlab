@@ -171,9 +171,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const handlePotentialCustomRedirect = (pathname: string) => {
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
-      if (!isNilOrError(tenant)) {
-        const redirects = tenant.attributes.settings.redirects;
-        const { enabled, allowed, rules } = redirects;
+      if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
+        const {
+          enabled,
+          allowed,
+          rules,
+        } = tenant.attributes.settings.redirects;
 
         if (enabled && allowed) {
           rules.forEach((rule) => {
