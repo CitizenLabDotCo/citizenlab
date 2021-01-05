@@ -1,8 +1,6 @@
 module EmailCampaigns
   class UserDigestMailer < ApplicationMailer
-    include ::EmailCampaigns::DigestableMailer
-
-    protected
+    private
 
     def subject
       I18n.t('email_campaigns.user_digest.subject', organizationName: organization_name)

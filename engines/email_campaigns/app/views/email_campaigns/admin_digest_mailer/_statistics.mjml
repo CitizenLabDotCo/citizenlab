@@ -1,7 +1,7 @@
 <mj-section background-color="#FFFFFF" padding="25px" border="1px solid #EAEAEA" border-radius="5px">
   <mj-column>
     <mj-text font-size="28px" align="center" font-weight="700">
-      <%= count_from_event_payload(:statistics, :users, :new_users, :increase) %>
+      <%= count_from(event.statistics.users.new_users.increase) %>
       <img
         alt="User icon"
         width="29px"
@@ -15,7 +15,7 @@
 
   <mj-column>
     <mj-text font-size="28px" align="center" font-weight="700">
-      <%= count_from_event_payload(:statistics, :activities, :new_ideas, :increase) %>
+      <%= count_from(event.statistics.activities.new_ideas.increase) %>
       <img
         alt="Idea icon"
         width="24px"
@@ -29,7 +29,7 @@
 
   <mj-column>
     <mj-text font-size="28px" align="center" font-weight="700">
-      <%= count_from_event_payload(:statistics, :activities, :new_comments, :increase) %>
+      <%= count_from(event.statistics.activities.new_comments.increase) %>
       <img
         alt="Comment icon"
         width="26px"

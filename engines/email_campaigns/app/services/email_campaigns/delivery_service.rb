@@ -161,15 +161,6 @@ module EmailCampaigns
     # This method is triggered when the given sending command should be sent
     # out through the event bus
     def send_command_external campaign, command
-      # segment_event = {
-      #   event: "#{campaign.class.campaign_name} email command",
-      #   user_id: command[:recipient].id,
-      #   timestamp: Time.now.iso8601,
-      #   properties: {
-      #     source: 'cl2-back',
-      #     payload: command[:event_payload]
-      #   }
-      # }
       rabbit_event = {
         event: "#{campaign.class.campaign_name} email command",
         timestamp: Time.now.iso8601,

@@ -8,7 +8,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
 
     let!(:top_ideas) { create_list(:idea, 3) }
     let!(:new_initiatives) { create_list(:initiative, 3) }
-    let!(:succesful_initiatives) { create_list(:initiative, 2) }
+    let!(:successful_initiatives) { create_list(:initiative, 2) }
 
     let(:command) do
       {
@@ -38,7 +38,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
             }
           ],
           new_initiatives: new_initiatives.map { |initiative| campaign.serialize_initiative(initiative) },
-          succesful_initiatives: succesful_initiatives.map { |initiative| campaign.serialize_initiative(initiative) }
+          successful_initiatives: successful_initiatives.map { |initiative| campaign.serialize_initiative(initiative) }
         },
         tracked_content: {
           idea_ids: [],
