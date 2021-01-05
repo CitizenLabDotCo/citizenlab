@@ -1,6 +1,7 @@
 class XlsxService
 
   include HtmlToPlainText
+  extend HtmlToPlainText
 
   @@multiloc_service = MultilocService.new
 
@@ -224,7 +225,7 @@ class XlsxService
   IDEA_COMMENTS_XLSX_COLUMNS = [
     { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
     { header: 'input',         f: ->(c) { @@multiloc_service.t(c&.post&.title_multiloc) } },
-    { header: 'body',          f: ->(c) { HtmlToPlainText.convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
+    { header: 'body',          f: ->(c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
     { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
     { header: 'author_name',   f: ->(c) { c.author_name } },
     { header: 'author_email',  f: ->(c) { c.author&.email } },
