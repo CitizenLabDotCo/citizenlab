@@ -44,15 +44,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
+  projectFolderHeaderImageLabelTooltip: {
+    id:
+      'app.containers.AdminPage.ProjectEdit.projectFolderHeaderImageLabelTooltip',
+    defaultMessage:
+      'This is the image displayed in the header on the folder page. The ideal dimensions for this image are a width between 1480 and 1280 pixels, and a height of 250 pixels.',
+  },
   projectFolderCardImageLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
     defaultMessage: 'Folder card image',
   },
-  projectFolderCardImageLabelTooltip: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.projectFolderCardImageLabelTooltip',
+  projectFolderCardImageTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip',
     defaultMessage:
-      'This image will be shown on the folder card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.',
+      'This is the image displayed in the folder card. The ideal dimensions for this image are a width of 1440 pixels and a height between 1440 and 720 pixels.',
   },
   save: {
     id: 'app.containers.AdminPage.FoldersEdit.save',
