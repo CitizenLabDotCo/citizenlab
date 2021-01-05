@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :phase do
     project
     ideas_order { nil }
+    input_term { nil }
     title_multiloc {{
       "en" => "Idea phase",
       "nl-BE" => "Ideeën fase"

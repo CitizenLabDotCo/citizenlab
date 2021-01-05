@@ -47,7 +47,7 @@ class SideFxTenantService
 
   def before_destroy tenant, current_user
     Apartment::Tenant.switch(tenant.schema_name) do
-      Surveys::TypeformWebhookManager.new.tenant_to_be_destroyed(tenant)
+      Surveys::TypeformWebhookManager.new.delete_all_webhooks
     end
   end
 

@@ -15,10 +15,10 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en-GB','nl-BE', 'fr-BE'],
+          locales: ['en','nl-BE', 'fr-BE'],
           organization_type: 'medium_city',
           organization_name: {
-            "en-GB" => 'Wonderville',
+            "en" => 'Wonderville',
             "nl-BE" => 'Mirakelgem',
           },
           timezone: "Brussels",
@@ -49,6 +49,10 @@ namespace :cl2_back do
         custom_idea_statuses: {
           enabled: true,
           allowed: true
+        },
+        idea_custom_copy: {
+          enabled: false,
+          allowed: false
         },
         idea_custom_fields: {
           enabled: true,
