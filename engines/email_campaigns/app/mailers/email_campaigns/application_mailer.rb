@@ -3,7 +3,6 @@ module EmailCampaigns
     include CampaignHelper
 
     NotImplementedError = Class.new(StandardError)
-    EventProperty = Class.new(OpenStruct)
 
     add_template_helper CampaignHelper
 
@@ -42,14 +41,14 @@ module EmailCampaigns
                   :loc, :localize_for_recipient, :recipient_first_name
 
     helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :tenant_home_url,
-                  :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?
+                  :logo_url, :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :tenant_settings
 
     private
 
-    def to_event_properties(obj)
+    def to_deep_struct(obj)
       case obj
-      when Hash  then EventProperty.new(obj.transform_values(&method(:to_event_properties)))
-      when Array then obj.map(&method(:to_event_properties))
+      when Hash  then OpenStruct.new(obj.transform_values(&method(:to_deep_struct)))
+      when Array then obj.map(&method(:to_deep_struct))
       else            obj
       end
     end
@@ -114,24 +113,12 @@ module EmailCampaigns
       @locale ||= recipient.locale
     end
 
-    def url_service
-      @url_service ||= Frontend::UrlService.new
-    end
-
-    def multiloc_service
-      @multiloc_service ||= MultilocService.new
-    end
-
     def subject
       raise NotImplementedError
     end
 
-    def organization_name
-      @organization_name ||= localize_for_recipient(tenant.settings.dig('core', 'organization_name'))
-    end
-
     def event
-      @event ||= to_event_properties(command[:event_payload])
+      @event ||= to_deep_struct(command[:event_payload])
     end
 
     def count_from(value)
@@ -146,23 +133,43 @@ module EmailCampaigns
       %("#{name}" <#{email}>)
     end
 
+    def url_service
+      @url_service ||= Frontend::UrlService.new
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
+    end
+
     def localize_for_recipient(multiloc_or_struct)
       multiloc = case multiloc_or_struct
-                 when Hash          then multiloc_or_struct
-                 when EventProperty then multiloc_or_struct.to_h.stringify_keys
+                 when Hash       then multiloc_or_struct
+                 when OpenStruct then multiloc_or_struct.to_h.stringify_keys
                  end
 
       multiloc_service.t(multiloc, recipient) if multiloc
     end
 
-    def tenant_home_url
-      home_url(tenant: tenant, locale: locale)
+    def tenant_settings
+      @tenant_settings ||= to_deep_struct(tenant.settings)
     end
 
-    def days_since_publishing(serialized_resource)
-      return unless serialized_resource.respond_to?(:published_at)
+    def organization_name
+      @organization_name ||= localize_for_recipient(tenant_settings.core.organization_name)
+    end
 
-      (Time.zone.today - serialized_resource.published_at.to_date).to_i
+    def tenant_home_url
+      @tenant_home_url ||= home_url(tenant: tenant, locale: locale)
+    end
+
+    def logo_url
+      @logo_url ||= tenant.logo.versions[:medium].url || ''
+    end
+
+    def days_since_publishing(resource)
+      return unless resource.respond_to?(:published_at)
+
+      (Time.zone.today - resource.published_at.to_date).to_i
     end
   end
 end
