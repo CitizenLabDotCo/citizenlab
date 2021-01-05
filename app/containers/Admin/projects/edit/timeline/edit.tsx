@@ -38,7 +38,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import ParticipationContext, {
   IParticipationContextConfig,
-} from '../participationContext';
+} from '../ParticipationContext';
 import FileUploader from 'components/UI/FileUploader';
 
 // i18n

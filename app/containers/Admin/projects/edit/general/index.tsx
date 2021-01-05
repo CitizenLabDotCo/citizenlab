@@ -25,7 +25,7 @@ import {
 } from 'components/admin/Section';
 import ParticipationContext, {
   IParticipationContextConfig,
-} from '../participationContext';
+} from '../ParticipationContext';
 import Warning from 'components/UI/Warning';
 
 import Link from 'utils/cl-router/Link';
