@@ -258,7 +258,7 @@
   "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Apoya mi propuesta: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Vota por {postTitle} en",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageIdea": "Acabo de publicar una idea para {orgName}: {postTitle}",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "I just posted a proposal for {orgName}: {postTitle}",
+  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Acabo de publicar una propuesta para {orgName}: {postTitle}",
   "app.components.PostComponents.a11y_commentsCount": "{commentsCount, plural, one {# comment} other {# comments}}",
   "app.components.PostComponents.a11y_numberOfParticipantsIdea": "{numberOfContributors, plural, one {# contributor} other {# contributors}}",
   "app.components.PostComponents.changeLogEntryIdea": "{changeType, select, changed_status {{userName} has actualizado el estatus de esta idea} published {{userName} creaste una idea} changed_title {{userName} actualizaste el título de esta idea} changed_body {{userName} actualizaste la descripción de esta idea}}",
