@@ -1,7 +1,6 @@
 class XlsxService
 
   include HtmlToPlainText
-  extend HtmlToPlainText
 
   @@multiloc_service = MultilocService.new
 
@@ -222,28 +221,24 @@ class XlsxService
     generate_xlsx 'Initiatives', columns, initiatives
   end
 
-  IDEA_COMMENTS_XLSX_COLUMNS = [
-    { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-    { header: 'input',         f: ->(c) { @@multiloc_service.t(c&.post&.title_multiloc) } },
-    { header: 'body',          f: ->(c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
-    { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
-    { header: 'author_name',   f: ->(c) { c.author_name } },
-    { header: 'author_email',  f: ->(c) { c.author&.email } },
-    { header: 'created_at',    f: ->(c) { c.created_at }, skip_sanitization: true },
-    { header: 'parent',        f: ->(c) { c.parent_id }, skip_sanitization: true },
-    { header: 'project',       f: ->(c) { @@multiloc_service.t(c&.idea&.project&.title_multiloc) } }
-  ].freeze
-
-  def generate_idea_comments_xlsx(comments, view_private_attributes: false)
-    private_attributes = %w[author_email].freeze
-
-    columns = if view_private_attributes
-                IDEA_COMMENTS_XLSX_COLUMNS
-              else
-                IDEA_COMMENTS_XLSX_COLUMNS.reject { |c| private_attributes.include?(c[:header]) }
-              end
-
-    generate_xlsx('Comments', columns, comments)
+  def generate_idea_comments_xlsx comments, view_private_attributes: false
+    columns = [
+      {header: 'id',            f: -> (c) { c.id },            skip_sanitization: true},
+      {header: 'input',         f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
+      {header: 'body',          f: -> (c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) }},
+      {header: 'upvotes_count', f: -> (c) { c.upvotes_count }, skip_sanitization: true},
+      {header: 'author_name',   f: -> (c) { c.author_name }},
+      {header: 'author_email',  f: -> (c) { c.author&.email }},
+      {header: 'created_at',    f: -> (c) { c.created_at },    skip_sanitization: true},
+      {header: 'parent',        f: -> (c) { c.parent_id },     skip_sanitization: true},
+      {header: 'project',       f: -> (c) { @@multiloc_service.t(c&.idea&.project&.title_multiloc) }}
+    ]
+    if !view_private_attributes
+      columns.select! do |c|
+        !%w(author_email).include?(c[:header])
+      end
+    end
+    generate_xlsx 'Comments', columns, comments
   end
 
   def generate_initiative_comments_xlsx comments, view_private_attributes: false
