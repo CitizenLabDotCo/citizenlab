@@ -162,23 +162,28 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
-    const redirectIfWas = (pathname: string) => {
+    const isCustomRedirect = (pathname: string) => {
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+      const redirects = tenant.attributes.settings.redirects;
+      const { enabled, allowed, rules } = redirects;
 
-      if (
-        urlSegments.length === 2 &&
-        includes(locales, urlSegments[0]) &&
-        urlSegments[1] === 'was'
-      ) {
-        window.location.href =
-          'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
+      if (enabled && allowed) {
+        rules.forEach((rule) => {
+          if (
+            urlSegments.length === 2 &&
+            includes(locales, urlSegments[0]) &&
+            urlSegments[1] === rule.path
+          ) {
+            window.location.href = rule.target;
+          }
+        });
       }
     };
 
-    redirectIfWas(this.props.location.pathname);
+    isCustomRedirect(this.props.location.pathname);
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      redirectIfWas(newLocation.pathname);
+      isCustomRedirect(newLocation.pathname);
 
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
