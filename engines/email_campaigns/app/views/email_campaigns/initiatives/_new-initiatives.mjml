@@ -6,7 +6,7 @@
       </h3>
     </mj-text>
 
-    <mj-raw><% new_initiatives.each do |serialized_initiative| %></mj-raw>
+    <mj-raw><% event.new_initiatives.each do |serialized_initiative| %></mj-raw>
       <%= render 'email_campaigns/initiatives/initiative', serialized_initiative: serialized_initiative %>
     <mj-raw><% end %></mj-raw>
   </mj-column>

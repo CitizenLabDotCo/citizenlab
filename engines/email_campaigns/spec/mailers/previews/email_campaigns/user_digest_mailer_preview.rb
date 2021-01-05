@@ -197,7 +197,7 @@ module EmailCampaigns
               }
             }
           ],
-          succesful_initiatives: [
+          successful_initiatives: [
             {
               id: "61bdec68-222e-47b2-8933-6d0ca61410eb",
               title_multiloc: {

@@ -2,9 +2,7 @@
 
 module EmailCampaigns
   class AdminDigestMailer < ApplicationMailer
-    include ::EmailCampaigns::DigestableMailer
-
-    protected
+    private
 
     def subject
       I18n.t('email_campaigns.admin_digest.subject', time: Time.now)

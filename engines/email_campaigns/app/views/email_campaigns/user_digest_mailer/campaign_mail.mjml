@@ -8,18 +8,18 @@
   <mj-column border="1px solid #eaeaea" padding="30px 25px" background-color="#fff" border-radius="5px">
     <mj-text padding-bottom="20px">
       <h2>
-        <% if event_payload[:notifications_count] == 0 %>
+        <% if event.notifications_count == 0 %>
           <%= format_message('no_notifications') %>
-        <% elsif event_payload[:notifications_count] == 1 %>
+        <% elsif event.notifications_count == 1 %>
           <%= format_message('one_notification') %>
-        <% elsif event_payload[:notifications_count] > 1 %>
-          <%= format_message('multiple_notifications', values: { notifCount: event_payload[:notifications_count] }) %>
+        <% elsif event.notifications_count > 1 %>
+          <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
         <% end %>
       </h2>
       <p style="margin-top: 10px;">
-        <% if event_payload[:notifications_count] == 0 %>
+        <% if event.notifications_count == 0 %>
           <%= format_message('no_unread_notifications') %>
-        <% elsif event_payload[:notifications_count] > 0 %>
+        <% elsif event.notifications_count > 0 %>
           <%= format_message('unread_notifications') %>
         <% end %>
       </p>
@@ -41,12 +41,12 @@
   <mj-column>
     <mj-text padding="0 25px">
       <h2>
-        <% if event_payload[:top_ideas].present? %>
+        <% if event.top_ideas.present? %>
           <%= format_message('trending_ideas') %>
         <% end %>
       </h2>
       <p>
-        <% if event_payload[:top_ideas].present? %>
+        <% if event.top_ideas.present? %>
           <%= format_message("trending_ideas_text") %>
         <% end %>
       </p>
@@ -55,14 +55,14 @@
 </mj-section>
 
 
-<mj-raw><% event_payload[:top_ideas].each do |top_idea| %></mj-raw>
+<mj-raw><% event.top_ideas.each do |top_idea| %></mj-raw>
   <mj-wrapper padding="0px 25px 20px">
     <mj-section border="1px solid #eaeaea" padding="0px 25px 0px">
       <mj-column>
         <mj-text>
-          <a style="font-size: 14px; font-weight: 500; color: #000; text-decoration: none;" href="<%= top_idea[:url] %>">
+          <a style="font-size: 14px; font-weight: 500; color: #000; text-decoration: none;" href="<%= top_idea.url %>">
             <h3 style="margin-bottom: 10px">
-              <%= localize_for_recipient(top_idea[:title_multiloc]).first(80) %>
+              <%= localize_for_recipient(top_idea.title_multiloc).first(80) %>
             </h3>
           </a>
         </mj-text>
@@ -72,35 +72,35 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= top_idea[:upvotes_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.upvotes_count %></span>
             </td>
             <td>
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_down_dydzme.png" alt="Thumbs down">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= top_idea[:downvotes_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.downvotes_count %></span>
             </td>
             <td>
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= top_idea[:comments_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.comments_count %></span>
             </td>
           </tr>
         </mj-table>
-        <mj-raw><% top_idea[:top_comments].each do |top_comment| %></mj-raw>
+        <mj-raw><% top_idea.top_comments.each do |top_comment| %></mj-raw>
             <mj-table cellpadding="15" padding-top="20px">
               <tr style="background-color:#F3F7FB; text-align: left;">
                 <td style="text-align: left; width: 100%" colspan="4">
                   <mj-text style="font-size: 12px;">
                     <%= format_message('commented',
                           values: {
-                            authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{top_comment[:author_first_name]}</span>"
+                            authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{top_comment.author_first_name}</span>"
                           },
                           escape_html: false
                     ) %>
                     <p style="margin: 15px 0 0;">
-                      <%= localize_for_recipient(top_comment[:body_multiloc]).first(140) %>
+                      <%= localize_for_recipient(top_comment.body_multiloc).first(140) %>
                     </p>
                   </mj-text>
                 </td>
@@ -118,38 +118,38 @@
   <mj-column>
     <mj-text>
       <h2>
-        <% if event_payload[:new_initiatives].present? %>
+        <% if event.new_initiatives.present? %>
           <%= format_message('title_proposals') %>
         <% end %>
       </h2>
       <p>
-        <%  if event_payload[:new_initiatives].present? %>
+        <%  if event.new_initiatives.present? %>
           <%= format_message('proposals_started_text') %>
         <% end %>
       </p>
     </mj-text>
 
-    <mj-raw><% event_payload[:new_initiatives].each do |new_initiative| %></mj-raw>
+    <mj-raw><% event.new_initiatives.each do |new_initiative| %></mj-raw>
       <mj-table cellpadding="15" padding-top="20px">
-          <% @diff_days = ((Time.now - Time.parse(new_initiative[:published_at])) / 1.day) %>
+          <% @diff_days = ((Time.now - Time.parse(new_initiative.published_at)) / 1.day) %>
 
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= new_initiative[:images].first[:versions][:small] %>">
+                <img width="96px" src="<%= new_initiative.images.first[:versions][:small] %>">
               </span>
             </td>
             <td width="200" style="text-align: left;">
-              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= new_initiative[:url] %>">
-                <%= localize_for_recipient(new_initiative[:title_multiloc]).first(80) %>
+              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= new_initiative.url %>">
+                <%= localize_for_recipient(new_initiative.title_multiloc).first(80) %>
               </a>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
-                  <%= format_message('today_by_author', values: {author: new_initiative[:author_name]}) %>
+                  <%= format_message('today_by_author', values: {author: new_initiative.author_name}) %>
                 <% elsif @diff_days < 2 %>
-                  <%= format_message('yesterday_by_author', values: {author: new_initiative[:author_name]}) %>
+                  <%= format_message('yesterday_by_author', values: {author: new_initiative.author_name}) %>
                 <% else %>
-                  <%= format_message('x_days_ago_by_author', values: {x: @diff_days.round, author: new_initiative[:author_name]}) %>
+                  <%= format_message('x_days_ago_by_author', values: {x: @diff_days.round, author: new_initiative.author_name}) %>
                 <% end %>
               </span>
             </td>
@@ -157,13 +157,13 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative[:upvotes_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative.upvotes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative[:comments_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative.comments_count %></span>
             </td>
           </tr>
         <mj-text>&nbsp;</mj-text>
@@ -177,38 +177,38 @@
   <mj-column>
     <mj-text>
       <h2>
-        <% if event_payload[:succesful_initiatives].present? %>
+        <% if event.successful_initiatives.present? %>
           <%= format_message('title_successful_proposals') %>
         <% end %>
       </h2>
       <p>
-        <% if event_payload[:succesful_initiatives].present? %>
+        <% if event.successful_initiatives.present? %>
           <%= format_message('successful_proposals_text') %>
         <% end %>
       </p>
     </mj-text>
 
-    <mj-raw><% event_payload[:succesful_initiatives].each do |succesful_initiative| %></mj-raw>
+    <mj-raw><% event.successful_initiatives.each do |succesful_initiative| %></mj-raw>
       <mj-table cellpadding="15" padding-top="20px">
-          <% @diff_days = ((Time.now - Time.parse(succesful_initiative[:published_at])) / 1.day) %>
+          <% @diff_days = ((Time.now - Time.parse(succesful_initiative.published_at)) / 1.day) %>
 
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= succesful_initiative[:images].first[:versions][:small] %>">
+                <img width="96px" src="<%= succesful_initiative.images.first[:versions][:small] %>">
               </span>
             </td>
             <td width="200" style="text-align: left;">
-              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative[:url] %>">
-                <%= localize_for_recipient(succesful_initiative[:title_multiloc]).first(80) %>
+              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative.url %>">
+                <%= localize_for_recipient(succesful_initiative.title_multiloc).first(80) %>
               </a>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
-                  <%= format_message('today_by_author', values: {author: succesful_initiative[:author_name]}) %>
+                  <%= format_message('today_by_author', values: {author: succesful_initiative.author_name}) %>
                 <%  elsif @diff_days < 2 %>
-                  <%= format_message('yesterday_by_author', values: {author: succesful_initiative[:author_name]}) %>
+                  <%= format_message('yesterday_by_author', values: {author: succesful_initiative.author_name}) %>
                 <%  else %>
-                  <%= format_message('x_days_ago_by_author',  values: {x: @diff_days.round, author: succesful_initiative[:author_name]}) %>
+                  <%= format_message('x_days_ago_by_author',  values: {x: @diff_days.round, author: succesful_initiative.author_name}) %>
                 <% end %>
               </span>
             </td>
@@ -216,13 +216,13 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/thumb_up_tmxhbw.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative[:upvotes_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative.upvotes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="http://res.cloudinary.com/citizenlabco/image/upload/v1530712393/comment_srfoec.png" alt="Comment">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative[:comments_count] %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative.comments_count %></span>
             </td>
           </tr>
         <mj-text>&nbsp;</mj-text>

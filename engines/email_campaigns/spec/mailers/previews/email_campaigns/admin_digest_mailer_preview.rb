@@ -32,7 +32,7 @@ module EmailCampaigns
             }
           ],
           new_initiatives: [campaign.serialize_initiative(initiative)],
-          succesful_initiatives: [campaign.serialize_initiative(initiative)]
+          successful_initiatives: [campaign.serialize_initiative(initiative)]
         },
         tracked_content: {
           idea_ids: [],

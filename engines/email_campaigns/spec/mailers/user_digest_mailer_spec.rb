@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer, type: :mailer do
           top_ideas: [],
           discover_projects: [],
           new_initiatives: [],
-          succesful_initiatives: []
+          successful_initiatives: []
         }
       }
     end

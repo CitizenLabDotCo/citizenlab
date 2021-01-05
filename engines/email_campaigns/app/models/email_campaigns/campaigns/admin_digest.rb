@@ -46,7 +46,7 @@ module EmailCampaigns
           statistics: statistics,
           top_project_ideas: top_project_ideas,
           new_initiatives: new_initiatives(time: time),
-          succesful_initiatives: succesful_initiatives(time: time)
+          successful_initiatives: successful_initiatives(time: time)
         },
         tracked_content: {
           idea_ids: idea_ids(time: time),
@@ -58,7 +58,7 @@ module EmailCampaigns
     private
 
     def initiative_ids(time:)
-      @initiative_ids ||= (new_initiatives(time: time) + succesful_initiatives(time: time)).map { |d| d[:id] }.compact
+      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).map { |d| d[:id] }.compact
     end
 
     def idea_ids(time:)
@@ -182,8 +182,8 @@ module EmailCampaigns
                                      .map(&method(:serialize_initiative))
     end
 
-    def succesful_initiatives(time: Time.zone.today)
-      @succesful_initiatives ||= Initiative
+    def successful_initiatives(time: Time.zone.today)
+      @successful_initiatives ||= Initiative
                                  .published
                                  .joins(initiative_status_changes: :initiative_status)
                                  .includes(:initiative_images)

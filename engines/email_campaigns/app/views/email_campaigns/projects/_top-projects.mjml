@@ -2,7 +2,7 @@
   <mj-column>
     <mj-text>
       <h2 style="padding: 20px 0">
-        <% if top_project_ideas.empty? %>
+        <% if event.top_project_ideas.empty? %>
           <%= format_message('title_no_activity_past_week') %>
         <% else %>
           <%= format_message('title_activity_past_week') %>
@@ -10,7 +10,7 @@
       </h2>
     </mj-text>
 
-    <% top_project_ideas.each do |serialized_project_ideas| %>
+    <% event.top_project_ideas.each do |serialized_project_ideas| %>
       <%= render 'email_campaigns/projects/project-ideas', serialized_project_ideas: serialized_project_ideas %>
     <% end %>
   </mj-column>
