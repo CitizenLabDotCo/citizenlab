@@ -13,7 +13,8 @@ def call_pcc pc, service, from, to
 end
 
 describe Surveys::TypeformWebhookManager do
-  let(:tf_api) { instance_double(Surveys::Typeform::Api) }
+  let(:api_response) { instance_double(HTTParty::Response, 'success?': true)}
+  let(:tf_api) { instance_double(Surveys::Typeform::Api, create_or_update_webhook: api_response) }
   let(:service) { Surveys::TypeformWebhookManager.new(tf_api) }
 
   describe "participation_context_changed" do
@@ -94,13 +95,13 @@ describe Surveys::TypeformWebhookManager do
     end
   end
 
-  describe "tenant_to_be_destroyed" do
+  describe "delete_all_webhooks" do
     it "deletes all typeform survey webhooks" do
       create(:project_with_phases)
       create_list(:continuous_survey_project, 2)
       create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/Lr57Iz')
       expect(tf_api).to receive(:delete_webhook).exactly(3).times
-      service.tenant_to_be_destroyed(Tenant.current)
+      service.delete_all_webhooks
     end
   end
 

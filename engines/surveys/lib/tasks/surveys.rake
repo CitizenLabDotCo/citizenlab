@@ -32,4 +32,15 @@ namespace :surveys do
       end
     end
   end
+
+  desc "Update all webhooks for Typeform surveys"
+  task :update_typeform_webhooks => [:environment] do
+
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        Rails.logger.info("processing tenant", tenant_id: tenant.id, tenant_host: tenant.host)
+        Surveys::TypeformWebhookManager.new.update_all_webhooks
+      end
+    end
+  end
 end
