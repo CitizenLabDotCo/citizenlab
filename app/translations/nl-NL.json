@@ -1196,7 +1196,7 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Alleen zichtbaar voor beheerders",
   "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Toegangsrechten",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Participatieniveaus",
-  "app.containers.AdminPage.ProjectEdit.participationMethodTitle": "",
+  "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Bepaal hoe gebruikers kunnen deelnemen.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Toegangsrechten",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Acties",

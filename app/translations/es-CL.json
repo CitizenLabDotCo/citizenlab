@@ -1196,7 +1196,7 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Solamente administradores pueden ver",
   "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Permisos de acceso",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Método de participación",
-  "app.containers.AdminPage.ProjectEdit.participationMethodTitle": "",
+  "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Elegir cómo los usuarios pueden participar.",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Derechos de acceso",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Acciones",

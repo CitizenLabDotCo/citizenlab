@@ -1196,7 +1196,7 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "",
   "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "",
-  "app.containers.AdminPage.ProjectEdit.participationMethodTitle": "",
+  "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "",
