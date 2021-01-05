@@ -54,6 +54,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       ? projectFolder.relationships.admin_publication.data?.id || null
       : null
   );
+
   useEffect(() => {
     (async function iife() {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
@@ -62,9 +63,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setShortDescriptionMultiloc(
           projectFolder.attributes.description_preview_multiloc
         );
-        if (!isNilOrError(adminPublication)) {
-          setPublicationStatus(adminPublication.attributes.publication_status);
-        }
+
         if (projectFolder.attributes?.header_bg?.large) {
           const headerFile = await convertUrlToUploadFile(
             projectFolder.attributes?.header_bg?.large,
@@ -73,41 +72,53 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           );
           setHeaderBg(headerFile);
         }
-        if (!isNilOrError(projectFolderImagesRemote)) {
-          const imagePromises = projectFolderImagesRemote.data.map((img) =>
-            img.attributes.versions.large
-              ? convertUrlToUploadFile(
-                  img.attributes.versions.large,
-                  img.id,
-                  null
-                )
-              : new Promise<null>((resolve) => resolve(null))
-          );
-          const images = await Promise.all(imagePromises);
-          images.filter((img) => img);
-          setProjectFolderImages(images as UploadFile[]);
-        }
-        if (!isNilOrError(projectFolderFilesRemote)) {
-          const filePromises = projectFolderFilesRemote.data.map((file) =>
-            convertUrlToUploadFile(
-              file.attributes.file.url,
-              file.id,
-              file.attributes.name
-            )
-          );
-          const files = await Promise.all(filePromises);
-          files.filter((file) => file);
-          setProjectFolderFiles(files as UploadFile[]);
-        }
       }
     })();
-  }, [
-    projectFolder,
-    projectFolderImagesRemote,
-    projectFolderFilesRemote,
-    mode,
-    adminPublication,
-  ]);
+  }, [mode, projectFolder]);
+
+  useEffect(() => {
+    (async function iife() {
+      if (mode === 'edit' && !isNilOrError(adminPublication)) {
+        setPublicationStatus(adminPublication.attributes.publication_status);
+      }
+    })();
+  }, [mode, adminPublication]);
+
+  useEffect(() => {
+    (async function iife() {
+      if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
+        const imagePromises = projectFolderImagesRemote.data.map((img) =>
+          img.attributes.versions.large
+            ? convertUrlToUploadFile(
+                img.attributes.versions.large,
+                img.id,
+                null
+              )
+            : new Promise<null>((resolve) => resolve(null))
+        );
+        const images = await Promise.all(imagePromises);
+        images.filter((img) => img);
+        setProjectFolderImages(images as UploadFile[]);
+      }
+    })();
+  }, [mode, projectFolderImagesRemote]);
+
+  useEffect(() => {
+    (async function iife() {
+      if (mode === 'edit' && !isNilOrError(projectFolderFilesRemote)) {
+        const filePromises = projectFolderFilesRemote.data.map((file) =>
+          convertUrlToUploadFile(
+            file.attributes.file.url,
+            file.id,
+            file.attributes.name
+          )
+        );
+        const files = await Promise.all(filePromises);
+        files.filter((file) => file);
+        setProjectFolderFiles(files as UploadFile[]);
+      }
+    })();
+  }, [mode, projectFolderFilesRemote]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
@@ -163,17 +174,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const handleProjectFolderImageOnRemove = useCallback(
     (imageToRemove: UploadFile) => {
       setStatus('enabled');
+
       if (imageToRemove.remote && imageToRemove.id) {
-        setProjectFolderImagesToRemove((previous) => [
-          ...previous,
-          imageToRemove.id as string,
-        ]);
+        setProjectFolderImagesToRemove((previous) => {
+          return [...previous, imageToRemove.id as string];
+        });
       }
-      setProjectFolderImages((projectFolderImages) =>
-        projectFolderImages.filter(
+
+      setProjectFolderImages((previous) => {
+        return previous.filter(
           (image) => image.base64 !== imageToRemove.base64
-        )
-      );
+        );
+      });
     },
     []
   );
@@ -199,10 +211,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           fileToRemove.id as string,
         ]);
       }
-      setProjectFolderImages((projectFolderImages) =>
-        projectFolderImages.filter(
-          (image) => image.base64 !== fileToRemove.base64
-        )
+      setProjectFolderFiles((previous) =>
+        previous.filter((item) => item.id !== fileToRemove.id)
       );
     },
     []

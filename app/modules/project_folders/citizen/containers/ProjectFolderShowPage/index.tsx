@@ -196,7 +196,7 @@ const ProjectFolderShowPage = memo<{
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
-                    linkTo={`/admin/projects/folders/${projectFolder.id}`}
+                    linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
                     buttonStyle="secondary"
                     padding="5px 8px"
                   >
