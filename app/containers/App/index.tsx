@@ -80,6 +80,9 @@ import { SSOParams } from 'services/singleSignOn';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 const Container = styled.div`
   display: flex;
@@ -117,6 +120,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
+  redirectsEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -158,19 +162,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { tenant, authUser, locale } = this.props;
+    const { tenant, authUser, locale, redirectsEnabled } = this.props;
 
     const handlePotentialCustomRedirect = (pathname: string) => {
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
       if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
-        const {
-          enabled,
-          allowed,
-          rules,
-        } = tenant.attributes.settings.redirects;
+        const { rules } = tenant.attributes.settings.redirects;
 
-        if (enabled && allowed) {
+        if (redirectsEnabled) {
           rules.forEach((rule) => {
             if (
               urlSegments.length === 2 &&
@@ -578,6 +578,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  redirectsEnabled: <GetFeatureFlag name="redirects" />,
 });
 
 export default (inputProps: InputProps) => (
