@@ -174,7 +174,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               id="e2e-project-allocate-budget-button"
               buttonStyle="primary"
               onClick={scrollTo('project-ideas')}
-              icon="moneybag"
               fontWeight="500"
             >
               <FormattedMessage {...messages.allocateBudget} />
@@ -190,7 +189,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               id="e2e-project-see-ideas-button"
               buttonStyle="secondary"
               onClick={scrollTo('project-ideas')}
-              icon="idea-filled"
               fontWeight="500"
             >
               <FormattedMessage {...messages.seeTheIdeas} />
@@ -203,7 +201,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               id="project-ideabutton"
               projectId={project.id}
               participationContextType="project"
-              icon="plus-circle"
               fontWeight="500"
             />
           )}
@@ -214,7 +211,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               projectId={project.id}
               phaseId={currentPhase.id}
               participationContextType="phase"
-              icon="plus-circle"
               fontWeight="500"
             />
           )}
@@ -226,7 +222,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             <Button
               buttonStyle="primary"
               onClick={scrollTo('project-survey')}
-              icon="survey"
               fontWeight="500"
             >
               <FormattedMessage {...messages.takeTheSurvey} />
@@ -239,7 +234,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             <Button
               buttonStyle="primary"
               onClick={scrollTo('project-poll')}
-              icon="survey"
               fontWeight="500"
             >
               <FormattedMessage {...messages.takeThePoll} />
