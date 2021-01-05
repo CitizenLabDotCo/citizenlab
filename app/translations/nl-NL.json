@@ -1735,7 +1735,7 @@
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Ontdek de burgervoorstellen van {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Ontdek de initiatieven",
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Alle initiatieven die plaatsvinden in {orgName}",
-  "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Lees meer over hoe initiatieven werken.",
+  "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Lees meer over hoe voorstellen werken.",
   "app.containers.InitiativesIndexPage.metaDescription": "Ontdek en steun de initiatieven in {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Alle initiatieven • {orgName}",
   "app.containers.InitiativesIndexPage.postingDisabledExplanation": "Momenteel kunnen geen nieuwe voorstellen worden ingediend. Lees gerust vroegere voorstellen, schrijf een reactie of breng je stem uit!",
