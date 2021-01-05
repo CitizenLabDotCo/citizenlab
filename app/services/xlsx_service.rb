@@ -222,15 +222,15 @@ class XlsxService
   end
 
   IDEA_COMMENTS_XLSX_COLUMNS = [
-    { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-    { header: 'input',         f: ->(c) { @@multiloc_service.t(c&.post&.title_multiloc) } },
-    { header: 'body',          f: ->(c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
-    { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
-    { header: 'author_name',   f: ->(c) { c.author_name } },
-    { header: 'author_email',  f: ->(c) { c.author&.email } },
-    { header: 'created_at',    f: ->(c) { c.created_at }, skip_sanitization: true },
-    { header: 'parent',        f: ->(c) { c.parent_id }, skip_sanitization: true },
-    { header: 'project',       f: ->(c) { @@multiloc_service.t(c&.idea&.project&.title_multiloc) } }
+    { header: 'id',            f: proc { |c| c.id }, skip_sanitization: true },
+    { header: 'input',         f: proc { |c| @@multiloc_service.t(c&.post&.title_multiloc) } },
+    { header: 'body',          f: proc { |c| convert_to_text(@@multiloc_service.t(c.body_multiloc)) } },
+    { header: 'upvotes_count', f: proc { |c| c.upvotes_count }, skip_sanitization: true },
+    { header: 'author_name',   f: proc { |c| c.author_name } },
+    { header: 'author_email',  f: proc { |c| c.author&.email } },
+    { header: 'created_at',    f: proc { |c| c.created_at }, skip_sanitization: true },
+    { header: 'parent',        f: proc { |c| c.parent_id }, skip_sanitization: true },
+    { header: 'project',       f: proc { |c| @@multiloc_service.t(c&.idea&.project&.title_multiloc) } }
   ].freeze
 
   def generate_idea_comments_xlsx(comments, view_private_attributes: false)
