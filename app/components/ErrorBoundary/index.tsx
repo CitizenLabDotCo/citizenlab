@@ -28,11 +28,15 @@ const StyledButton = styled.button`
   }
 `;
 
+interface InputProps {
+  children: React.ReactNode;
+}
+
 interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends InputProps, DataProps {}
 
 type State = {
   hasError: boolean;
@@ -101,30 +105,39 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <Container>
-          <FormattedMessage
-            {...messages.genericErrorWithForm}
-            values={{
-              openForm: (
-                <StyledButton onClick={this.openDialog}>
-                  <FormattedMessage {...messages.openFormText} />
-                </StyledButton>
-              ),
-            }}
-          />
-        </Container>
-      );
+    const { children } = this.props;
+
+    if (children) {
+      if (this.state.hasError) {
+        return (
+          <Container>
+            <FormattedMessage
+              {...messages.genericErrorWithForm}
+              values={{
+                openForm: (
+                  <StyledButton onClick={this.openDialog}>
+                    <FormattedMessage {...messages.openFormText} />
+                  </StyledButton>
+                ),
+              }}
+            />
+          </Container>
+        );
+      }
+
+      return children;
     }
-    return this.props.children;
+
+    return null;
   }
 }
 
 const ErrorBoundaryWithIntl = injectIntl(ErrorBoundary);
 
-export default (props) => (
+export default (inputProps: InputProps) => (
   <GetAuthUser>
-    {(authUser) => <ErrorBoundaryWithIntl authUser={authUser} {...props} />}
+    {(authUser) => {
+      return <ErrorBoundaryWithIntl authUser={authUser} {...inputProps} />;
+    }}
   </GetAuthUser>
 );
