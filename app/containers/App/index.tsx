@@ -551,12 +551,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const AppWithHoC = withRouter(App);
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  redirectsEnabled: <GetFeatureFlag name="redirects" />,
+});
 
+// Apollo
 const cache = new InMemoryCache();
-
 const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
-
 const authLink = new ApolloLink((operation, forward) => {
   const jwt = getJwt();
 
@@ -568,18 +572,12 @@ const authLink = new ApolloLink((operation, forward) => {
 
   return forward(operation);
 });
-
 const client = new ApolloClient({
   cache,
   link: authLink.concat(httpLink),
 });
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
-  locale: <GetLocale />,
-  authUser: <GetAuthUser />,
-  redirectsEnabled: <GetFeatureFlag name="redirects" />,
-});
+const AppWithHoC = withRouter(App);
 
 export default (inputProps: InputProps) => (
   <ApolloProvider client={client}>
