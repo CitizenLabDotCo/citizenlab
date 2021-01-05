@@ -468,14 +468,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         <SectionField key={'header_bg'}>
           <SubSectionTitle>
             <FormattedMessage {...messages.headerImageInputLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.projectFolderHeaderImageLabelTooltip}
+                />
+              }
+            />
           </SubSectionTitle>
           <ImagesDropzone
             acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
             maxNumberOfImages={1}
             maxImageFileSize={5000000}
             images={headerBg ? [headerBg] : null}
-            imagePreviewRatio={120 / 480}
-            maxImagePreviewWidth="500px"
+            imagePreviewRatio={250 / 1380}
             onAdd={handleHeaderBgOnAdd}
             onRemove={handleHeaderBgOnRemove}
           />
@@ -486,9 +492,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             <FormattedMessage {...messages.projectFolderCardImageLabel} />
             <IconTooltip
               content={
-                <FormattedMessage
-                  {...messages.projectFolderCardImageLabelTooltip}
-                />
+                <FormattedMessage {...messages.projectFolderCardImageTooltip} />
               }
             />
           </SubSectionTitle>
