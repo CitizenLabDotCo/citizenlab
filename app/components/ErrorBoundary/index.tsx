@@ -48,10 +48,12 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
     this.state = { hasError: false };
   }
 
-  componentDidCatch(error, errorInfo) {
-    // Display fallback UI
-    this.setState({ hasError: true });
+  static getDerivedStateFromError(_error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
 
+  componentDidCatch(error, errorInfo) {
     // Report to Sentry
     withScope((scope) => {
       Object.keys(errorInfo).forEach((key) => {
@@ -107,28 +109,28 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
   render() {
     const { children } = this.props;
 
-    if (children) {
-      if (this.state.hasError) {
-        return (
-          <Container>
-            <FormattedMessage
-              {...messages.genericErrorWithForm}
-              values={{
-                openForm: (
-                  <StyledButton onClick={this.openDialog}>
-                    <FormattedMessage {...messages.openFormText} />
-                  </StyledButton>
-                ),
-              }}
-            />
-          </Container>
-        );
-      }
-
-      return children;
+    // if (children) {
+    if (this.state.hasError) {
+      return (
+        <Container>
+          <FormattedMessage
+            {...messages.genericErrorWithForm}
+            values={{
+              openForm: (
+                <StyledButton onClick={this.openDialog}>
+                  <FormattedMessage {...messages.openFormText} />
+                </StyledButton>
+              ),
+            }}
+          />
+        </Container>
+      );
     }
 
-    return null;
+    return children;
+    // }
+
+    // return null;
   }
 }
 
