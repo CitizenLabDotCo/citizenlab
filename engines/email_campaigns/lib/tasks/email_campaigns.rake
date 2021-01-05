@@ -84,17 +84,4 @@ namespace :email_campaigns do
     end
     logs.each{|l| Rails.logger.info l}
   end
-
-  desc "Update all admin digest schedules"
-  task :update_admin_digest_schedules => :environment do |t, args|
-    Tenant.find_each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
-        camp = EmailCampaigns::Campaigns::AdminDigest.first
-        Rails.logger.info "No user digest campaign found for #{tenant.host}" && next unless camp
-
-        camp.ic_schedule = camp.class.default_schedule
-        Rails.logger.warn "Failed to update campaign for #{tenant.host}" && next unless camp.save
-      end
-    end
-  end
 end
