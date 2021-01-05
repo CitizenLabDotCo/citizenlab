@@ -167,15 +167,13 @@ type TFieldName =
   | 'fontSize'
   | 'headerText'
   | 'headerSubText'
-  | 'password'
   | 'limit'
   | 'width'
   | 'height'
   | 'homepage-info'
   | 'first_name'
   | 'last_name'
-  | 'email'
-  | 'first_name';
+  | 'email';
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
