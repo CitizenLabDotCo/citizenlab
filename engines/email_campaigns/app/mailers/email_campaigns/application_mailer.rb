@@ -163,7 +163,9 @@ module EmailCampaigns
     end
 
     def logo_url
-      @logo_url ||= tenant.logo.versions[:medium].url || ''
+      @logo_url ||= tenant.logo.versions.yield_self do |versions|
+        versions[:medium].url || versions[:small].url || versions[:large].url || ''
+      end
     end
 
     def days_since_publishing(resource)
