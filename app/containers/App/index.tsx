@@ -588,8 +588,8 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-export default () => (
+export default (inputProps: InputProps) => (
   <ApolloProvider client={client}>
-    <Data>{(dataProps) => <AppWithHoC {...dataProps} />}</Data>
+    <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
   </ApolloProvider>
 );
