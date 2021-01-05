@@ -568,7 +568,7 @@ class ParticipationContext extends PureComponent<
           <StyledSection>
             <SectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.participationMethodTitle} />
+                <FormattedMessage {...messages.participationMethodTitleText} />
                 <IconTooltip
                   content={
                     <FormattedMessage
