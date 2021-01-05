@@ -51,7 +51,7 @@ export default class ExportIdeasButton extends React.PureComponent<
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         queryParametersObject
       );
-      saveAs(blob, 'ideas-export.xlsx');
+      saveAs(blob, 'inputs-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
       reportError(error);
