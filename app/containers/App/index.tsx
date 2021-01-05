@@ -62,9 +62,8 @@ const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 import HasPermission from 'components/HasPermission';
 
 // services
-import { IUser } from 'services/users';
 import { signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
-import { ITenant, ITenantStyle } from 'services/tenant';
+import { ITenantStyle } from 'services/tenant';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -76,7 +75,6 @@ import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import { SSOParams } from 'services/singleSignOn';
-import { Locale } from 'typings';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -125,8 +123,6 @@ interface Props extends InputProps, DataProps {}
 
 type State = {
   previousPathname: string | null;
-  // tenant: ITenant | null;
-  // authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
@@ -137,7 +133,6 @@ type State = {
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
-  // locale: Locale | null;
 };
 
 class App extends PureComponent<Props & WithRouterProps, State> {
@@ -148,8 +143,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     super(props);
     this.state = {
       previousPathname: null,
-      // tenant: null,
-      // authUser: undefined,
       modalId: null,
       modalSlug: null,
       modalType: null,
@@ -160,7 +153,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null,
-      // locale: null,
     };
     this.subscriptions = [];
   }
