@@ -1,3 +1,5 @@
+require 'uri'
+
 module Surveys
 
   class TypeformWebhookManager
@@ -74,7 +76,8 @@ module Surveys
 
     # Extracts the form_id from the Typeform form url.
     def embed_url_to_form_id(embed_url)
-      embed_url.split('/').last
+      uri = URI(embed_url)
+      uri.path.split('/').last
     end
 
     # @param [ParticipationContext] participation_context
