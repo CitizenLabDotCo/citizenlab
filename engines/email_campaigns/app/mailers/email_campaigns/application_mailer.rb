@@ -33,8 +33,8 @@ module EmailCampaigns
     delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, to: :url_service
     delegate :first_name, to: :recipient, prefix: true
 
-    helper_method :command, :campaign, :event, :header, :header_message, :preheader, :subject, :tenant,
-                  :user, :recipient, :locale, :count_from, :days_since_publishing
+    helper_method :command, :campaign, :event, :header_title, :header_message, :show_header?, :preheader, :subject,
+                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing
 
     helper_method :organization_name, :recipient_name,
                   :url_service, :multiloc_service, :organization_name,
@@ -53,12 +53,16 @@ module EmailCampaigns
       end
     end
 
-    def header
+    def header_title
       format_message('header', values: { firstName: recipient_first_name })
     end
 
     def header_message
       format_message('header_message')
+    end
+
+    def show_header?
+      header_title.present?
     end
 
     def preheader
