@@ -18,9 +18,10 @@ import GetResourceFiles, {
 import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/ProjectsShowPage/messages';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -74,8 +75,16 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const PhaseDescription = memo<Props & InjectedLocalized>(
-  ({ projectId, phaseId, phase, phaseFiles, className, localize }) => {
+const PhaseDescription = memo<Props & InjectedLocalized & InjectedIntlProps>(
+  ({
+    projectId,
+    phaseId,
+    phase,
+    phaseFiles,
+    className,
+    localize,
+    intl: { formatMessage },
+  }) => {
     const theme: any = useTheme();
     const { windowWidth } = useWindowSize();
 
@@ -92,10 +101,7 @@ const PhaseDescription = memo<Props & InjectedLocalized>(
           {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
         </Header>
         <ScreenReaderOnly>
-          <FormattedMessage
-            tagName="h3"
-            {...messages.invisibleTitlePhaseAbout}
-          />
+          <h3>{formatMessage(messages.invisibleTitleIdeasList)}</h3>
         </ScreenReaderOnly>
         {hasContent && (
           <>
@@ -116,7 +122,7 @@ const PhaseDescription = memo<Props & InjectedLocalized>(
   }
 );
 
-const PhaseDescriptionWithHoC = injectLocalize(PhaseDescription);
+const PhaseDescriptionWithHoC = injectIntl(injectLocalize(PhaseDescription));
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,

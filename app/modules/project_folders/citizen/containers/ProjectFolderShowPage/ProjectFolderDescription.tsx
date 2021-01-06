@@ -12,7 +12,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
-// import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
 
 // services
 import useProjectFolderFiles from 'modules/project_folders/hooks/useProjectFolderFiles';
@@ -21,7 +20,8 @@ import useWindowSize from 'hooks/useWindowSize';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -71,17 +71,6 @@ const Title = styled.h1`
     margin-bottom: 20px;
   `}
 `;
-
-// const ShareButtonWrapper = styled.div`
-//   display: flex;
-//   margin-top: 20px;
-//   margin-bottom: 20px;
-//   padding-top: 12px;
-//   padding-bottom: 12px;
-//   border-top: solid 1px #ccc;
-//   border-bottom: solid 1px #ccc;
-//   display: none;
-// `;
 
 const Description = styled.div<{ maxHeight: number }>`
   position: relative;
@@ -134,89 +123,99 @@ interface Props {
   className?: string;
 }
 
-const ProjectFolderInfo = memo<Props>(({ projectFolder, className }) => {
-  const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
-  const { windowWidth } = useWindowSize();
-  const theme: any = useTheme();
+const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
+  ({ projectFolder, className, intl: { formatMessage } }) => {
+    const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
+    const { windowWidth } = useWindowSize();
+    const theme: any = useTheme();
 
-  const [expanded, setExpanded] = useState(false);
-  const [descriptionHeight, setDescriptionHeight] = useState<number | null>(
-    null
-  );
+    const [expanded, setExpanded] = useState(false);
+    const [descriptionHeight, setDescriptionHeight] = useState<number | null>(
+      null
+    );
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
-  const collapsedDescriptionMaxHeight = smallerThanLargeTablet
-    ? mobileCollapsedDescriptionMaxHeight
-    : desktopCollapsedDescriptionMaxHeight;
+    const collapsedDescriptionMaxHeight = smallerThanLargeTablet
+      ? mobileCollapsedDescriptionMaxHeight
+      : desktopCollapsedDescriptionMaxHeight;
 
-  useEffect(() => {
-    setExpanded(false);
-  }, [projectFolder, descriptionHeight]);
+    useEffect(() => {
+      setExpanded(false);
+    }, [projectFolder, descriptionHeight]);
 
-  const toggleExpandCollapse = useCallback(
-    (event: FormEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      setExpanded((expanded) => !expanded);
-    },
-    []
-  );
+    const toggleExpandCollapse = useCallback(
+      (event: FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        setExpanded((expanded) => !expanded);
+      },
+      []
+    );
 
-  const onResize = (_width, height) => {
-    setDescriptionHeight(height);
-  };
+    const onResize = (_width, height) => {
+      setDescriptionHeight(height);
+    };
 
-  if (!isNilOrError(projectFolder)) {
-    return (
-      <Container className={className || ''}>
-        <ScreenReaderOnly>
-          <FormattedMessage
-            tagName="h2"
-            {...messages.invisibleTitleMainContent}
-          />
-        </ScreenReaderOnly>
-        <Title>
-          <T value={projectFolder.attributes.title_multiloc} />
-        </Title>
-        {/* <ShareButtonWrapper>
-          <ProjectFolderShareButton
-            projectFolder={projectFolder}
-            buttonStyle="text"
-            textDecoration="underline"
-            textDecorationHover="underline"
-            padding="0"
-          />
-        </ShareButtonWrapper> */}
-        <Description
-          className={expanded ? 'expanded' : ''}
-          maxHeight={collapsedDescriptionMaxHeight}
-        >
-          <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-            <div>
-              <QuillEditedContent
-                textColor={theme.colorText}
-                fontSize="medium"
-                className="e2e-folder-description"
-              >
-                <T
-                  value={projectFolder.attributes.description_multiloc}
-                  supportHtml={true}
-                />
-              </QuillEditedContent>
-              {!isNilOrError(projectFolderFiles) &&
-                projectFolderFiles &&
-                projectFolderFiles.data.length > 0 && (
-                  <FileAttachments files={projectFolderFiles.data} />
-                )}
-            </div>
-          </ReactResizeDetector>
-          {descriptionHeight &&
-            descriptionHeight > collapsedDescriptionMaxHeight &&
-            !expanded && (
-              <ReadMoreOuterWrapper>
-                <ReadMoreInnerWrapper>
-                  <ReadMoreButton
-                    id="e2e-project-description-read-more-button"
+    if (!isNilOrError(projectFolder)) {
+      return (
+        <Container className={className || ''}>
+          <ScreenReaderOnly>
+            <h2>{formatMessage(messages.invisibleTitleMainContent)}</h2>
+          </ScreenReaderOnly>
+          <Title>
+            <T value={projectFolder.attributes.title_multiloc} />
+          </Title>
+          <Description
+            className={expanded ? 'expanded' : ''}
+            maxHeight={collapsedDescriptionMaxHeight}
+          >
+            <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
+              <div>
+                <QuillEditedContent
+                  textColor={theme.colorText}
+                  fontSize="medium"
+                  className="e2e-folder-description"
+                >
+                  <T
+                    value={projectFolder.attributes.description_multiloc}
+                    supportHtml={true}
+                  />
+                </QuillEditedContent>
+                {!isNilOrError(projectFolderFiles) &&
+                  projectFolderFiles &&
+                  projectFolderFiles.data.length > 0 && (
+                    <FileAttachments files={projectFolderFiles.data} />
+                  )}
+              </div>
+            </ReactResizeDetector>
+            {descriptionHeight &&
+              descriptionHeight > collapsedDescriptionMaxHeight &&
+              !expanded && (
+                <ReadMoreOuterWrapper>
+                  <ReadMoreInnerWrapper>
+                    <ReadMoreButton
+                      id="e2e-project-description-read-more-button"
+                      buttonStyle="text"
+                      onClick={toggleExpandCollapse}
+                      textDecoration="underline"
+                      textDecorationHover="underline"
+                      textColor={colors.label}
+                      textHoverColor={theme.colorText}
+                      fontWeight="500"
+                      fontSize={`${fontSizes.medium}px`}
+                      padding="0"
+                    >
+                      <FormattedMessage {...messages.readMore} />
+                    </ReadMoreButton>
+                  </ReadMoreInnerWrapper>
+                </ReadMoreOuterWrapper>
+              )}
+            {descriptionHeight &&
+              descriptionHeight > collapsedDescriptionMaxHeight &&
+              expanded && (
+                <CollapseButtonWrapper>
+                  <CollapseButton
+                    id="e2e-project-description-see-less-button"
                     buttonStyle="text"
                     onClick={toggleExpandCollapse}
                     textDecoration="underline"
@@ -227,37 +226,17 @@ const ProjectFolderInfo = memo<Props>(({ projectFolder, className }) => {
                     fontSize={`${fontSizes.medium}px`}
                     padding="0"
                   >
-                    <FormattedMessage {...messages.readMore} />
-                  </ReadMoreButton>
-                </ReadMoreInnerWrapper>
-              </ReadMoreOuterWrapper>
-            )}
-          {descriptionHeight &&
-            descriptionHeight > collapsedDescriptionMaxHeight &&
-            expanded && (
-              <CollapseButtonWrapper>
-                <CollapseButton
-                  id="e2e-project-description-see-less-button"
-                  buttonStyle="text"
-                  onClick={toggleExpandCollapse}
-                  textDecoration="underline"
-                  textDecorationHover="underline"
-                  textColor={colors.label}
-                  textHoverColor={theme.colorText}
-                  fontWeight="500"
-                  fontSize={`${fontSizes.medium}px`}
-                  padding="0"
-                >
-                  <FormattedMessage {...messages.seeLess} />
-                </CollapseButton>
-              </CollapseButtonWrapper>
-            )}
-        </Description>
-      </Container>
-    );
-  }
+                    <FormattedMessage {...messages.seeLess} />
+                  </CollapseButton>
+                </CollapseButtonWrapper>
+              )}
+          </Description>
+        </Container>
+      );
+    }
 
-  return null;
-});
+    return null;
+  }
+);
 
 export default ProjectFolderInfo;
