@@ -10,7 +10,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
@@ -164,7 +164,7 @@ const ProjectImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const ProjectImage = styled(LazyImage)`
+const ProjectImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;

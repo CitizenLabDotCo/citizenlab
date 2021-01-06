@@ -7,7 +7,7 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import { Button } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -45,7 +45,7 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const HeaderImage = styled(LazyImage)`
+const HeaderImage = styled(Image)`
   width: 100%;
   height: 240px;
   margin-bottom: 30px;
