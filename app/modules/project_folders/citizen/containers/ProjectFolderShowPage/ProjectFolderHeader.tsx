@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
 
 // style
@@ -20,7 +20,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const HeaderImage = styled(LazyImage)`
+const HeaderImage = styled(Image)`
   flex: 1;
   width: 100%;
 `;

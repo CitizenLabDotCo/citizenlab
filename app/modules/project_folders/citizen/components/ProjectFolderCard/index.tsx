@@ -8,7 +8,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 
 // i18n
 import T from 'components/T';
@@ -141,7 +141,7 @@ const FolderImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const FolderImage = styled(LazyImage)`
+const FolderImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;

@@ -56,7 +56,7 @@ interface State {
   loaded: boolean;
 }
 
-export default class LazyImage extends PureComponent<Props, State> {
+export default class Image extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
     fadeIn: true,
