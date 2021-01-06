@@ -162,7 +162,7 @@ const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
           <ScreenReaderOnly>
             <h2>{formatMessage(messages.invisibleTitleMainContent)}</h2>
           </ScreenReaderOnly>
-          <Title>
+          <Title id="e2e-folder-title">
             <T value={projectFolder.attributes.title_multiloc} />
           </Title>
           <Description

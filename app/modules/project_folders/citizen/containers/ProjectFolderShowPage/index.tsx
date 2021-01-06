@@ -183,9 +183,7 @@ const ProjectFolderShowPage = memo<{
   return (
     <>
       <ProjectFolderShowPageMeta projectFolder={projectFolder} />
-      <Container
-        className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
-      >
+      <Container id="e2e-folder-page">
         {folderNotFound ? (
           <NotFoundWrapper>
             <p>
