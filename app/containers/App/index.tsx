@@ -162,8 +162,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { tenant, authUser, locale } = this.props;
-
     this.handlePotentialCustomRedirect(this.props.location.pathname);
     this.subscriptions = getSubscriptions();
     this.unlisten = getUnlisten();
@@ -176,12 +174,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     smoothscroll.polyfill();
 
     function setTimeZone() {
+      const { tenant } = this.props;
       if (!isNilOrError(tenant)) {
         moment.tz.setDefault(tenant.attributes.settings.core.timezone);
       }
     }
 
     function loadCustomFont() {
+      const { tenant } = this.props;
+
       if (!isNilOrError(tenant)) {
         if (
           tenant.attributes.style &&
@@ -199,6 +200,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function loadMomentFilesForTenantLocales() {
+      const { tenant } = this.props;
+
       if (!isNilOrError(tenant)) {
         uniq(
           tenant.attributes.settings.core.locales
@@ -209,6 +212,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function setMomentLocales() {
+      const { locale } = this.props;
+
       if (!isNilOrError(locale)) {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
@@ -216,6 +221,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function handleSentryScope() {
+      const { authUser } = this.props;
+
       if (!isNilOrError(authUser)) {
         configureScope((scope) => {
           scope.setUser({
