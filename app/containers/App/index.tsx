@@ -162,98 +162,18 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { tenant, authUser, locale, redirectsEnabled } = this.props;
+    const { tenant, authUser, locale } = this.props;
 
-    handlePotentialCustomRedirect(this.props.location.pathname);
-
-    this.unlisten = clHistory.listenBefore((newLocation) => {
-      handlePotentialCustomRedirect(newLocation.pathname);
-
-      const newPreviousPathname = location.pathname;
-      const pathsToIgnore = [
-        'sign-up',
-        'sign-in',
-        'complete-signup',
-        'invite',
-        'authentication-error',
-      ];
-      this.setState((state) => ({
-        previousPathname: !endsWith(newPreviousPathname, pathsToIgnore)
-          ? newPreviousPathname
-          : state.previousPathname,
-      }));
-      trackPage(newLocation.pathname);
-    });
-    trackPage(location.pathname);
-
-    smoothscroll.polyfill();
-
+    this.handlePotentialCustomRedirect(this.props.location.pathname);
+    this.subscriptions = getSubscriptions();
+    this.unlisten = getUnlisten();
     setTimeZone();
     loadCustomFont();
     loadMomentFilesForTenantLocales();
-
-    if (!isNilOrError(locale)) {
-      const momentLoc = appLocalesMomentPairs[locale] || 'en';
-      moment.locale(momentLoc);
-    }
-
-    if (!isNilOrError(authUser)) {
-      configureScope((scope) => {
-        scope.setUser({
-          id: authUser.id,
-        });
-      });
-    } else {
-      signOut();
-    }
-
-    this.subscriptions = [
-      eventEmitter
-        .observeEvent<IOpenPostPageModalEvent>('cardClick')
-        .subscribe(({ eventValue: { id, slug, type } }) => {
-          this.openPostPageModal(id, slug, type);
-        }),
-
-      eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-        this.closePostPageModal();
-      }),
-
-      eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
-        signOutAndDeleteAccountPart2().then((success) => {
-          if (success) {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: true,
-            });
-          } else {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: false,
-            });
-          }
-        });
-      }),
-    ];
-
-    function handlePotentialCustomRedirect(pathname: string) {
-      const urlSegments = pathname.replace(/^\/+/g, '').split('/');
-
-      if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
-        const { rules } = tenant.attributes.settings.redirects;
-
-        if (redirectsEnabled) {
-          rules.forEach((rule) => {
-            if (
-              urlSegments.length === 2 &&
-              includes(locales, urlSegments[0]) &&
-              urlSegments[1] === rule.path
-            ) {
-              window.location.href = rule.target;
-            }
-          });
-        }
-      }
-    }
+    setMomentLocales();
+    handleSentryScope();
+    trackPage(location.pathname);
+    smoothscroll.polyfill();
 
     function setTimeZone() {
       if (!isNilOrError(tenant)) {
@@ -286,6 +206,74 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             .map((locale) => appLocalesMomentPairs[locale])
         ).forEach((locale) => require(`moment/locale/${locale}.js`));
       }
+    }
+
+    function setMomentLocales() {
+      if (!isNilOrError(locale)) {
+        const momentLoc = appLocalesMomentPairs[locale] || 'en';
+        moment.locale(momentLoc);
+      }
+    }
+
+    function handleSentryScope() {
+      if (!isNilOrError(authUser)) {
+        configureScope((scope) => {
+          scope.setUser({
+            id: authUser.id,
+          });
+        });
+      } else {
+        signOut();
+      }
+    }
+
+    function getSubscriptions() {
+      return [
+        eventEmitter
+          .observeEvent<IOpenPostPageModalEvent>('cardClick')
+          .subscribe(({ eventValue: { id, slug, type } }) => {
+            this.openPostPageModal(id, slug, type);
+          }),
+        eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
+          this.closePostPageModal();
+        }),
+        eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
+          signOutAndDeleteAccountPart2().then((success) => {
+            if (success) {
+              this.setState({
+                userDeletedModalOpened: true,
+                userActuallyDeleted: true,
+              });
+            } else {
+              this.setState({
+                userDeletedModalOpened: true,
+                userActuallyDeleted: false,
+              });
+            }
+          });
+        }),
+      ];
+    }
+
+    function getUnlisten() {
+      return clHistory.listenBefore((newLocation) => {
+        this.handlePotentialCustomRedirect(newLocation.pathname);
+
+        const newPreviousPathname = location.pathname;
+        const pathsToIgnore = [
+          'sign-up',
+          'sign-in',
+          'complete-signup',
+          'invite',
+          'authentication-error',
+        ];
+        this.setState((state) => ({
+          previousPathname: !endsWith(newPreviousPathname, pathsToIgnore)
+            ? newPreviousPathname
+            : state.previousPathname,
+        }));
+        trackPage(newLocation.pathname);
+      });
     }
   }
 
@@ -395,6 +383,27 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  handlePotentialCustomRedirect(pathname: string) {
+    const { tenant, redirectsEnabled } = this.props;
+    const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+
+    if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
+      const { rules } = tenant.attributes.settings.redirects;
+
+      if (redirectsEnabled) {
+        rules.forEach((rule) => {
+          if (
+            urlSegments.length === 2 &&
+            includes(locales, urlSegments[0]) &&
+            urlSegments[1] === rule.path
+          ) {
+            window.location.href = rule.target;
+          }
+        });
+      }
+    }
   }
 
   openPostPageModal = (
