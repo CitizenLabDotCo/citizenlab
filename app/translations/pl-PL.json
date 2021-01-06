@@ -726,7 +726,7 @@
   "app.containers.Admin.Processing.selectProject": "Wybierz projekt",
   "app.containers.Admin.Processing.suggestedTags": "Sugerowane tagi",
   "app.containers.Admin.Processing.tag": "Tag",
-  "app.containers.Admin.Processing.tagAssignationExplanation": "Tagi, które tutaj dodasz, zostaną automatycznie przypisane do odpowiednich pomysłów w oparciu o naszą technologię sztucznej inteligencji - NLP (natural Language Processing).",
+  "app.containers.Admin.Processing.tagAssignationExplanation": "Tagi, które tutaj dodasz, zostaną automatycznie przypisane do odpowiednich pomysłów w oparciu o naszą technologię sztucznej inteligencji - NLP (Natural Language Processing).",
   "app.containers.Admin.Processing.tagValidationErrorMessage": "Proszę użyć maksymalnie dwóch słów bez powtórzeń",
   "app.containers.Admin.Processing.tags": "tagi",
   "app.containers.Admin.Processing.title": "tytuł",
