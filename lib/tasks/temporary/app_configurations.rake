@@ -6,11 +6,13 @@ namespace :app_configurations do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         AppConfiguration.instance.update!(
+            host: tenant.host,
             logo: tenant.logo,
             header_bg: tenant.header_bg,
             favicon: tenant.favicon,
             settings: tenant.settings,
-            style: tenant.style
+            style: tenant.style,
+            created_at: tenant.created_at
         )
       rescue => e
         Rails.logger.error("failed", tenant: tenant.id, error: e.full_message)
