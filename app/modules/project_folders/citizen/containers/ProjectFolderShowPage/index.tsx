@@ -28,13 +28,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import {
-  media,
-  fontSizes,
-  colors,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
+import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -64,21 +58,29 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const EditButton = styled(Button)`
-  display: table;
-  margin: 0 0 10px auto;
+const ButtonBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+`;
 
-  ${isRtl`
-    margin: 0 0 auto 10px;
-  `}
+const EditButton = styled(Button)`
+  margin-left: 30px;
 `;
 
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   flex: 1;
+  height: 250px;
   margin-bottom: 30px;
 
   ${media.smallerThanMaxTablet`
+    height: 200px;
     margin-bottom: 20px;
+  `};
+
+  ${media.smallerThanMinTablet`
+    height: 140px;
   `};
 `;
 
@@ -97,25 +99,36 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
+  ${media.biggerThanMaxTablet`
+    align-self: flex-start;
+    position: sticky;
+    top: 100px;
+  `};
+
   ${media.smallerThanMaxTablet`
     margin-bottom: 40px;
   `};
 `;
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
-  flex: 0 0 790px;
-  width: 790px;
+  flex: 0 0 800px;
+  width: 800px;
   padding: 25px;
-  margin-left: 80px;
+  padding-bottom: 5px;
+  margin-left: 70px;
   margin-top: 4px;
-  background: ${colors.background};
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
-  ${media.smallerThan1200px`
+  &.onlyOneCard {
     flex: 0 0 500px;
     width: 500px;
-  `};
+  }
+
+  @media (max-width: 1285px) {
+    flex: 0 0 500px;
+    width: 500px;
+  }
 
   ${media.smallerThanMaxTablet`
     flex: 1;
@@ -194,14 +207,16 @@ const ProjectFolderShowPage = memo<{
             {!smallerThanLargeTablet ? (
               <ContentContainer maxWidth={maxPageWidth}>
                 {userCanEditProject && (
-                  <EditButton
-                    icon="edit"
-                    linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                    buttonStyle="secondary"
-                    padding="5px 8px"
-                  >
-                    <FormattedMessage {...messages.editFolder} />
-                  </EditButton>
+                  <ButtonBar>
+                    <EditButton
+                      icon="edit"
+                      linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                      buttonStyle="secondary"
+                      padding="5px 8px"
+                    >
+                      <FormattedMessage {...messages.editFolder} />
+                    </EditButton>
+                  </ButtonBar>
                 )}
                 <StyledProjectFolderHeader projectFolder={projectFolder} />
                 <Content>
@@ -210,6 +225,13 @@ const ProjectFolderShowPage = memo<{
                   />
                   <StyledProjectFolderProjectCards
                     list={adminPublication.list}
+                    className={
+                      adminPublication.list?.filter(
+                        (item) => item.publicationType === 'project'
+                      )?.length === 1
+                        ? 'onlyOneCard'
+                        : ''
+                    }
                   />
                 </Content>
               </ContentContainer>

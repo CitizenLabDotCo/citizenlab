@@ -12,7 +12,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
-import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
+// import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
 
 // services
 import useProjectFolderFiles from 'modules/project_folders/hooks/useProjectFolderFiles';
@@ -68,15 +68,20 @@ const Title = styled.h1`
   `}
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
     margin-bottom: 20px;
   `}
 `;
 
-const ShareButtonWrapper = styled.div`
-  display: flex;
-  margin-bottom: 25px;
-`;
+// const ShareButtonWrapper = styled.div`
+//   display: flex;
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+//   padding-top: 12px;
+//   padding-bottom: 12px;
+//   border-top: solid 1px #ccc;
+//   border-bottom: solid 1px #ccc;
+//   display: none;
+// `;
 
 const Description = styled.div<{ maxHeight: number }>`
   position: relative;
@@ -173,7 +178,7 @@ const ProjectFolderInfo = memo<Props>(({ projectFolder, className }) => {
         <Title>
           <T value={projectFolder.attributes.title_multiloc} />
         </Title>
-        <ShareButtonWrapper>
+        {/* <ShareButtonWrapper>
           <ProjectFolderShareButton
             projectFolder={projectFolder}
             buttonStyle="text"
@@ -181,7 +186,7 @@ const ProjectFolderInfo = memo<Props>(({ projectFolder, className }) => {
             textDecorationHover="underline"
             padding="0"
           />
-        </ShareButtonWrapper>
+        </ShareButtonWrapper> */}
         <Description
           className={expanded ? 'expanded' : ''}
           maxHeight={collapsedDescriptionMaxHeight}
