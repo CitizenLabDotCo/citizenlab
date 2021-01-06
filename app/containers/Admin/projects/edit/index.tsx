@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getUrlSegments } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -71,10 +71,7 @@ interface DataProps {
   previousPathName: string | null;
 }
 
-// Note: projectParentPageUrl can be either the url of a folder to whoch the project belongs,
-// or the projects overview page if the project does not belong to a folder
 interface State {
-  projectParentPageUrl: string | null;
   goBackUrl: string | null;
 }
 
@@ -87,48 +84,14 @@ export class AdminProjectEdition extends PureComponent<
   constructor(props) {
     super(props);
     this.state = {
-      projectParentPageUrl: null,
       goBackUrl: null,
     };
   }
 
   componentDidMount() {
-    const { previousPathName } = this.props;
-    const urlSegments = previousPathName?.replace(/^\/+/g, '').split('/');
-
-    if (urlSegments?.[1] === 'admin' && urlSegments?.[2] === 'projects') {
-      this.setState({
-        projectParentPageUrl: previousPathName,
-        goBackUrl: previousPathName,
-      });
-    }
-  }
-
-  componentDidUpdate(
-    prevProps: Props &
-      InjectedIntlProps &
-      InjectedLocalized &
-      WithRouterProps &
-      ITracks
-  ) {
-    const newPathname = this.props.location.pathname;
-    const prevPathname = prevProps.location.pathname;
-
-    if (
-      newPathname.length > prevPathname.length &&
-      newPathname.startsWith(prevPathname)
-    ) {
-      this.setState({ goBackUrl: prevPathname });
-    }
-
-    if (
-      newPathname.length < prevPathname.length &&
-      prevPathname.startsWith(newPathname)
-    ) {
-      this.setState(({ projectParentPageUrl: aboveProjectPageUrl }) => ({
-        goBackUrl: aboveProjectPageUrl,
-      }));
-    }
+    this.setState({
+      goBackUrl: this.props.previousPathName,
+    });
   }
 
   getTabs = (projectId: string, project: IProjectData) => {
