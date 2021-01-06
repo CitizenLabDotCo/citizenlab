@@ -18,12 +18,6 @@ export default {
   signUpVerificationStepFailed: 'Sign up - verification step failed',
   signUpVerificationStepSkipped: 'Sign up - verification step skipped',
 
-  signUpCustomFieldsStepEntered: 'Sign up - custom fields step entered',
-  signUpCustomFieldsStepExited: 'Sign up - custom fields step exited',
-  signUpCustomFieldsStepCompleted: 'Sign up - custom fields step completed',
-  signUpCustomFieldsStepSkipped: 'Sign up - custom fields step skipped',
-  signUpCustomFieldsStepFailed: 'Sign up - custom fields step failed',
-
   signInFlowEntered: 'Sign in flow entered',
   signInFlowExited: 'Sign in flow exited',
   signInFlowCompleted: 'Sign in flow completed',
