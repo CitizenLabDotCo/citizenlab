@@ -5,7 +5,7 @@ module EmailCampaigns
     private
 
     def subject
-      I18n.t('email_campaigns.admin_digest.subject', time: Time.now)
+      I18n.t('email_campaigns.admin_digest.subject', time: I18n.l(Time.zone.today, format: :long))
     end
 
     def header_title
