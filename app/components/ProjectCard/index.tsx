@@ -49,17 +49,12 @@ import { rgba, darken } from 'polished';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
-  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
   position: relative;
   cursor: pointer;
   ${defaultCardStyle};
-
-  &.hideDescriptionPreview {
-    min-height: 527px;
-  }
 
   &.large {
     width: 100%;
@@ -89,6 +84,12 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   }
 
   &.small {
+    min-height: 540px;
+
+    &.hideDescriptionPreview {
+      min-height: 490px;
+    }
+
     &.threecolumns {
       ${media.smallerThanMaxTablet`
         width: calc(50% - 13px);
@@ -105,10 +106,14 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     `}
   }
 
-  &.small,
   &.medium {
     padding-top: 20px;
     padding-bottom: 30px;
+  }
+
+  &.small {
+    padding-top: 18px;
+    padding-bottom: 25px;
   }
 
   &.desktop {
@@ -138,6 +143,11 @@ const ProjectImageContainer = styled.div`
     flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
+  }
+
+  &.small {
+    height: 224px;
+    flex-basis: 224px;
   }
 `;
 

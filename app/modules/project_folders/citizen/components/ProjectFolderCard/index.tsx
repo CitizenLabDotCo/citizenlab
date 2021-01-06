@@ -34,7 +34,6 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
-  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -66,6 +65,8 @@ const Container = styled(Link)`
   }
 
   &.small {
+    min-height: 540px;
+
     &.threecolumns {
       ${media.smallerThanMaxTablet`
         width: calc(50% - 13px);
@@ -82,10 +83,14 @@ const Container = styled(Link)`
     `}
   }
 
-  &.small,
   &.medium {
     padding-top: 20px;
     padding-bottom: 30px;
+  }
+
+  &.small {
+    padding-top: 18px;
+    padding-bottom: 25px;
   }
 
   &.desktop {
@@ -115,6 +120,11 @@ const FolderImageContainer = styled.div`
     flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
+  }
+
+  &.small {
+    height: 224px;
+    flex-basis: 224px;
   }
 `;
 
@@ -195,7 +205,8 @@ const ContentHeader = styled.div<{ hasLabel: boolean }>`
   }
 
   &.small {
-    padding: 0 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 
     ${media.smallerThanMinTablet`
       padding-left: 20px;

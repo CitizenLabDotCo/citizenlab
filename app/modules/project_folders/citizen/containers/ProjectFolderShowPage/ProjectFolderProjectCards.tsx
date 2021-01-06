@@ -25,12 +25,18 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   width: calc(100% * (1 / 2) - 10px);
   margin: 0px;
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
+  margin-bottom: 20px;
 
-  ${media.smallerThan1200px`
+  &.onlyOneCard {
+    width: 100%;
+    margin-right: 0px;
+  }
+
+  @media (max-width: 1285px) {
     width: 100%;
     margin: 0;
     margin-bottom: 20px;
-  `};
+  }
 `;
 
 const ProjectFolderProjectCards = memo<{
@@ -55,6 +61,7 @@ const ProjectFolderProjectCards = memo<{
             size="small"
             isEven={index % 2 !== 1}
             hideDescriptionPreview={hasNoDescriptionPreviews}
+            className={filteredList.length === 1 ? 'onlyOneCard' : ''}
           />
         ))}
       </Container>
