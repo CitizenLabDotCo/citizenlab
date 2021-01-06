@@ -51,7 +51,6 @@ import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: 100%;
