@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { isNilOrError, getUrlSegments } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
