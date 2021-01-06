@@ -22,7 +22,8 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
         header_bg: tenant.header_bg,
         favicon: tenant.favicon,
         settings: tenant.settings,
-        style: tenant.style
+        style: tenant.style,
+        created_at: tenant.created_at
     )
   end
 
