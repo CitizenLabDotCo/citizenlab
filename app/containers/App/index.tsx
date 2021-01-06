@@ -164,26 +164,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentDidMount() {
     const { tenant, authUser, locale, redirectsEnabled } = this.props;
 
-    const handlePotentialCustomRedirect = (pathname: string) => {
-      const urlSegments = pathname.replace(/^\/+/g, '').split('/');
-
-      if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
-        const { rules } = tenant.attributes.settings.redirects;
-
-        if (redirectsEnabled) {
-          rules.forEach((rule) => {
-            if (
-              urlSegments.length === 2 &&
-              includes(locales, urlSegments[0]) &&
-              urlSegments[1] === rule.path
-            ) {
-              window.location.href = rule.target;
-            }
-          });
-        }
-      }
-    };
-
     handlePotentialCustomRedirect(this.props.location.pathname);
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
@@ -208,27 +188,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     smoothscroll.polyfill();
 
-    if (!isNilOrError(tenant)) {
-      moment.tz.setDefault(tenant.attributes.settings.core.timezone);
-      uniq(
-        tenant.attributes.settings.core.locales
-          .filter((locale) => locale !== 'en' && locale !== 'ach')
-          .map((locale) => appLocalesMomentPairs[locale])
-      ).forEach((locale) => require(`moment/locale/${locale}.js`));
-
-      if (
-        tenant.attributes.style &&
-        tenant.attributes.style.customFontAdobeId
-      ) {
-        import('webfontloader').then((WebfontLoader) => {
-          WebfontLoader.load({
-            typekit: {
-              id: (tenant.attributes.style as ITenantStyle).customFontAdobeId,
-            },
-          });
-        });
-      }
-    }
+    setTimeZone();
+    loadCustomFont();
+    loadMomentFilesForTenantLocales();
 
     if (!isNilOrError(locale)) {
       const momentLoc = appLocalesMomentPairs[locale] || 'en';
@@ -272,6 +234,59 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         });
       }),
     ];
+
+    function handlePotentialCustomRedirect(pathname: string) {
+      const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+
+      if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
+        const { rules } = tenant.attributes.settings.redirects;
+
+        if (redirectsEnabled) {
+          rules.forEach((rule) => {
+            if (
+              urlSegments.length === 2 &&
+              includes(locales, urlSegments[0]) &&
+              urlSegments[1] === rule.path
+            ) {
+              window.location.href = rule.target;
+            }
+          });
+        }
+      }
+    }
+
+    function setTimeZone() {
+      if (!isNilOrError(tenant)) {
+        moment.tz.setDefault(tenant.attributes.settings.core.timezone);
+      }
+    }
+
+    function loadCustomFont() {
+      if (!isNilOrError(tenant)) {
+        if (
+          tenant.attributes.style &&
+          tenant.attributes.style.customFontAdobeId
+        ) {
+          import('webfontloader').then((WebfontLoader) => {
+            WebfontLoader.load({
+              typekit: {
+                id: (tenant.attributes.style as ITenantStyle).customFontAdobeId,
+              },
+            });
+          });
+        }
+      }
+    }
+
+    function loadMomentFilesForTenantLocales() {
+      if (!isNilOrError(tenant)) {
+        uniq(
+          tenant.attributes.settings.core.locales
+            .filter((locale) => locale !== 'en' && locale !== 'ach')
+            .map((locale) => appLocalesMomentPairs[locale])
+        ).forEach((locale) => require(`moment/locale/${locale}.js`));
+      }
+    }
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
