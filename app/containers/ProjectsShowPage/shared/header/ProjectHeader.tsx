@@ -102,6 +102,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
             )}
             {projectHeaderImageLargeUrl && (
               <HeaderImage
+                id="e2e-project-header-image"
                 src={projectHeaderImageLargeUrl}
                 cover={true}
                 fadeIn={false}
