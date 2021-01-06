@@ -29,7 +29,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/SignUpIn/tracks';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
