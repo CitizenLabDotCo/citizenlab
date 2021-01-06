@@ -13,7 +13,7 @@
 <mj-section padding="30px 25px">
   <mj-column>
     <mj-text>
-      <h1><%= header %></h1>
+      <h1><%= header_title %></h1>
       <p><%= header_message %></p>
     </mj-text>
   </mj-column>
