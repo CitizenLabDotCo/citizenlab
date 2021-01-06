@@ -278,104 +278,115 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    const { signUpInModalMounted, verificationModalMounted } = this.state;
-    const { authUser } = this.props;
-    const { pathname, search } = this.props.location;
-    const isAuthError = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, '/invite');
+    handleSignUpInModal();
+    handleVerificationModal();
 
-    if (
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        isAuthError) ||
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        isInvitation) ||
-      (!prevState.signUpInModalMounted &&
-        signUpInModalMounted &&
-        !isNilOrError(authUser))
-    ) {
-      const urlSearchParams = (parse(search, {
-        ignoreQueryPrefix: true,
-      }) as any) as SSOParams;
-      const token = urlSearchParams?.['token'] as string | undefined;
-      const shouldComplete = !authUser?.attributes?.registration_completed_at;
+    function handleSignUpInModal() {
+      const { signUpInModalMounted } = this.state;
+      const { authUser } = this.props;
+      const { pathname, search } = this.props.location;
+      const isAuthError = endsWith(pathname, 'authentication-error');
+      const isInvitation = endsWith(pathname, '/invite');
 
-      // see services/singleSignOn.ts
-      const {
-        sso_response,
-        sso_flow,
-        sso_pathname,
-        sso_verification,
-        sso_verification_action,
-        sso_verification_id,
-        sso_verification_type,
-      } = urlSearchParams;
+      if (
+        (!prevState.signUpInModalMounted &&
+          signUpInModalMounted &&
+          isAuthError) ||
+        (!prevState.signUpInModalMounted &&
+          signUpInModalMounted &&
+          isInvitation) ||
+        (!prevState.signUpInModalMounted &&
+          signUpInModalMounted &&
+          !isNilOrError(authUser))
+      ) {
+        const urlSearchParams = (parse(search, {
+          ignoreQueryPrefix: true,
+        }) as any) as SSOParams;
+        const token = urlSearchParams?.['token'] as string | undefined;
+        const shouldComplete = !authUser?.attributes?.registration_completed_at;
 
-      if (isAuthError || isInvitation) {
-        window.history.replaceState(null, '', '/');
-      }
+        // see services/singleSignOn.ts
+        const {
+          sso_response,
+          sso_flow,
+          sso_pathname,
+          sso_verification,
+          sso_verification_action,
+          sso_verification_id,
+          sso_verification_type,
+        } = urlSearchParams;
 
-      if (sso_response || shouldComplete || isInvitation) {
-        const shouldVerify =
-          !authUser?.attributes?.verified && sso_verification;
-
-        if (!isAuthError && sso_pathname) {
-          clHistory.replace(sso_pathname);
+        if (isAuthError || isInvitation) {
+          window.history.replaceState(null, '', '/');
         }
 
-        if (
-          !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
-          (isAuthError ||
-            (isInvitation && shouldComplete) ||
-            shouldVerify ||
-            shouldComplete)
-        ) {
-          openSignUpInModal({
-            isInvitation,
-            token,
-            flow: isAuthError && sso_flow ? sso_flow : 'signup',
-            error: isAuthError,
-            verification: !!sso_verification,
-            verificationContext: !!(
-              sso_verification &&
-              sso_verification_action &&
-              sso_verification_id &&
-              sso_verification_type
-            )
-              ? {
-                  action: sso_verification_action as any,
-                  id: sso_verification_id as any,
-                  type: sso_verification_type as any,
-                }
-              : undefined,
-          });
+        if (sso_response || shouldComplete || isInvitation) {
+          const shouldVerify =
+            !authUser?.attributes?.verified && sso_verification;
+
+          if (!isAuthError && sso_pathname) {
+            clHistory.replace(sso_pathname);
+          }
+
+          if (
+            !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
+            (isAuthError ||
+              (isInvitation && shouldComplete) ||
+              shouldVerify ||
+              shouldComplete)
+          ) {
+            openSignUpInModal({
+              isInvitation,
+              token,
+              flow: isAuthError && sso_flow ? sso_flow : 'signup',
+              error: isAuthError,
+              verification: !!sso_verification,
+              verificationContext: !!(
+                sso_verification &&
+                sso_verification_action &&
+                sso_verification_id &&
+                sso_verification_type
+              )
+                ? {
+                    action: sso_verification_action as any,
+                    id: sso_verification_id as any,
+                    type: sso_verification_type as any,
+                  }
+                : undefined,
+            });
+          }
         }
       }
     }
 
-    if (
-      !isNilOrError(authUser) &&
-      verificationModalMounted &&
-      !prevState.verificationModalMounted
-    ) {
-      const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
-
-      if (has(urlSearchParams, 'verification_success')) {
-        window.history.replaceState(null, '', window.location.pathname);
-        openVerificationModal({ step: 'success' });
-      }
+    function handleVerificationModal() {
+      const { verificationModalMounted } = this.state;
+      const { authUser } = this.props;
+      const { search } = this.props.location;
 
       if (
-        has(urlSearchParams, 'verification_error') &&
-        urlSearchParams.verification_error === 'true'
+        !isNilOrError(authUser) &&
+        verificationModalMounted &&
+        !prevState.verificationModalMounted
       ) {
-        window.history.replaceState(null, '', window.location.pathname);
-        openVerificationModal({
-          step: 'error',
-          error: this.props.location.query?.error || null,
-          context: null,
-        });
+        const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
+
+        if (has(urlSearchParams, 'verification_success')) {
+          window.history.replaceState(null, '', window.location.pathname);
+          openVerificationModal({ step: 'success' });
+        }
+
+        if (
+          has(urlSearchParams, 'verification_error') &&
+          urlSearchParams.verification_error === 'true'
+        ) {
+          window.history.replaceState(null, '', window.location.pathname);
+          openVerificationModal({
+            step: 'error',
+            error: this.props.location.query?.error || null,
+            context: null,
+          });
+        }
       }
     }
   }
