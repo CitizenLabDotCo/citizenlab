@@ -239,4 +239,4 @@ const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default ProjectFolderInfo;
+export default injectIntl(ProjectFolderInfo);
