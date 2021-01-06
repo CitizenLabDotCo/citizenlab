@@ -163,7 +163,7 @@ class XlsxService
       {header: 'project',              f: -> (i) { @@multiloc_service.t(i&.project&.title_multiloc) }},
       {header: 'topics',               f: -> (i) { i.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(',') }},
       {header: 'areas',                f: -> (i) { i.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',') }},
-      {header: 'idea_status',          f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
+      {header: 'status',               f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
       {header: 'assignee',             f: -> (i) { i.assignee&.full_name }},
       {header: 'assignee_email',       f: -> (i) { i.assignee&.email }},
       {header: 'latitude',             f: -> (i) { i.location_point&.coordinates&.last },         skip_sanitization: true},
