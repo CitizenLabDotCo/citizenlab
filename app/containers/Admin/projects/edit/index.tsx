@@ -71,8 +71,10 @@ interface DataProps {
   previousPathName: string | null;
 }
 
+// Note: projectParentPageUrl can be either the url of a folder to whoch the project belongs,
+// or the projects overview page if the project does not belong to a folder
 interface State {
-  aboveProjectPageUrl: string | null;
+  projectParentPageUrl: string | null;
   goBackUrl: string | null;
 }
 
@@ -85,7 +87,7 @@ export class AdminProjectEdition extends PureComponent<
   constructor(props) {
     super(props);
     this.state = {
-      aboveProjectPageUrl: null,
+      projectParentPageUrl: null,
       goBackUrl: null,
     };
   }
@@ -96,7 +98,7 @@ export class AdminProjectEdition extends PureComponent<
 
     if (urlSegments?.[1] === 'admin' && urlSegments?.[2] === 'projects') {
       this.setState({
-        aboveProjectPageUrl: previousPathName,
+        projectParentPageUrl: previousPathName,
         goBackUrl: previousPathName,
       });
     }
@@ -123,7 +125,7 @@ export class AdminProjectEdition extends PureComponent<
       newPathname.length < prevPathname.length &&
       prevPathname.startsWith(newPathname)
     ) {
-      this.setState(({ aboveProjectPageUrl }) => ({
+      this.setState(({ projectParentPageUrl: aboveProjectPageUrl }) => ({
         goBackUrl: aboveProjectPageUrl,
       }));
     }

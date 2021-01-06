@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -178,8 +178,7 @@ const ProjectFolderShowPage = memo<{
     isUndefined(projectFolder) ||
     isUndefined(adminPublication?.list);
 
-  const userCanEditProject =
-    !isNilOrError(authUser) && canModerate(projectFolder.id, authUser);
+  const userCanEditProject = isAdmin(authUser);
 
   return (
     <>
