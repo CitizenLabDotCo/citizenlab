@@ -76,6 +76,7 @@ resource "Phases" do
         parameter :end_at, "The end date of the phase", required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
+        parameter :input_term, 'The input term for something.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -156,6 +157,8 @@ resource "Phases" do
           expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
           expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
+          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         end
       end
 
