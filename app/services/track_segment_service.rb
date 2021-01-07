@@ -1,5 +1,9 @@
 class TrackSegmentService
 
+  def initialize
+    @tracking_service = TrackingService.new
+  end
+
   def identify_user(user, tenant)
     traits = {
       id: user.id,
@@ -46,15 +50,34 @@ class TrackSegmentService
   end
 
   def track_activity(activity)
-    service = TrackingService.new
+    event = event_from_activity(activity)
+    track(event)
+  end
+
+  def track(event)
+    event[:properties].merge!(TrackingService.new.tenant_properties(Tenant.current)) if Tenant.current
+    Analytics.track(event)
+  end
+
+  def integrations(user)
+    {
+        All: true,
+        Intercom: [:admin, :project_moderator].include?(user.highest_role),
+        SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
+    }
+  end
+
+  private
+
+  def event_from_activity(activity)
     event = {
-        event: service.activity_event_name(activity),
+        event: @tracking_service.activity_event_name(activity),
         timestamp: activity.acted_at,
         properties: {
             source: 'cl2-back',
-            **service.activity_properties(activity),
-            **service.environment_properties,
-            item_content: service.activity_item_content(activity)
+            **@tracking_service.activity_properties(activity),
+            **@tracking_service.environment_properties,
+            item_content: @tracking_service.activity_item_content(activity)
         }
     }
 
@@ -65,15 +88,6 @@ class TrackSegmentService
       event[:anonymous_id] = SecureRandom.base64
     end
 
-    event[:properties].merge!(service.tenant_properties(Tenant.current)) if Tenant.current
-    Analytics.track(event)
-  end
-
-  def integrations(user)
-    {
-        All: true,
-        Intercom: [:admin, :project_moderator].include?(user.highest_role),
-        SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
-    }
+    event
   end
 end
