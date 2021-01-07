@@ -112,7 +112,9 @@ docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2
 
 ## Using Customized Tenants for Development
 
-Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
+In order to have more fake data in your localhost tenant, set the `SEED_SIZE` environment variable in `.env` to `small`, `medium`, `large` or `empty`. Defaults to medium. Then, run `rake db:reset`.
+
+If you would like to access another tenant than the `localhost` tenant, created through e.d. cl2-admin, you can set the `OVERRIDE_HOST` environment variable in `.env` prior to starting the container. This makes cl2-back believe that all requests are coming from that tenants host, letting you access the tenant at localhost:3000 through cl2-front.
 
 NOTE: Watch out that you don't accidently commit these changes!
 
