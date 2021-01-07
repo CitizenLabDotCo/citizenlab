@@ -60,7 +60,7 @@ resource "Tenants" do
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: [:tenant, :settings, feature]
         feature_descriptor["properties"].each do |setting, setting_descriptor|
-          next if ["enabled", "allowed"].include?(setting) || setting_descriptor.dig('$ref') == '#/definitions/multiloc_string'
+          next if ["enabled", "allowed"].include?(setting)
 
           parameter setting, "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}", scope: [:tenant, :settings, feature]
         end
