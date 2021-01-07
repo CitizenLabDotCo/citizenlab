@@ -87,7 +87,7 @@ describe TrackSegmentService do
           }
         })
       end
-      service.identify_user(user, tenant)
+      service.identify_user(user)
     end
   end
 
