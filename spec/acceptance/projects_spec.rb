@@ -262,6 +262,7 @@ resource "Projects" do
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
         parameter :ideas_order, 'The default order of ideas.'
+        parameter :input_term, 'The input term for posts.'
       end
       with_options scope: [:project, :admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
@@ -349,6 +350,8 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
           expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
+          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         end
 
         context 'when not admin' do
@@ -462,6 +465,8 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
         expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
         expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
+        expect(json_response.dig(:data,:attributes,:input_term)).to be_present
+        expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
