@@ -19,7 +19,7 @@ class TrackSegmentService
       isAdmin: user.admin?,
       isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role,
-      **TrackingService.new.tenant_properties(tenant)
+      **@tracking_service.tenant_properties(tenant)
     }
     if tenant
       traits[:timezone] = tenant.settings.dig('core', 'timezone')
@@ -40,7 +40,7 @@ class TrackSegmentService
         avatar: tenant&.logo&.medium&.url,
         createdAt: tenant.created_at,
         tenantLocales: tenant.settings.dig('core', 'locales'),
-        **TrackingService.new.tenant_properties(tenant)
+        **@tracking_service.tenant_properties(tenant)
     }
 
     tenant && Analytics.group(
@@ -57,7 +57,7 @@ class TrackSegmentService
   end
 
   def track(event)
-    event[:properties].merge!(TrackingService.new.tenant_properties(Tenant.current)) if Tenant.current
+    event[:properties].merge!(@tracking_service.tenant_properties(Tenant.current)) if Tenant.current
     Analytics.track(event)
   end
 
