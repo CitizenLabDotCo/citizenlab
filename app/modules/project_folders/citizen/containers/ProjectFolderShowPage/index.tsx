@@ -29,6 +29,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
 import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -88,7 +89,7 @@ const Content = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 100px;
+  margin-bottom: 110px;
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -98,12 +99,6 @@ const Content = styled.div`
 
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
-
-  ${media.biggerThanMaxTablet`
-    align-self: flex-start;
-    position: sticky;
-    top: 100px;
-  `};
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 40px;
@@ -117,12 +112,16 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   padding-bottom: 5px;
   margin-left: 70px;
   margin-top: 4px;
-  background: ${colors.background};
+  background: ${darken(0.025, colors.background)};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.onlyOneCard {
     flex: 0 0 500px;
     width: 500px;
+  }
+
+  @media (min-width: 1400px) {
+    margin-left: 80px;
   }
 
   @media (max-width: 1285px) {
