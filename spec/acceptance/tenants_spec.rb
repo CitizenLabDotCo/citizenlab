@@ -59,10 +59,10 @@ resource "Tenants" do
       Tenant.settings_json_schema["properties"].each do |feature, feature_descriptor|
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: [:tenant, :settings, feature]
-        feature_descriptor["properties"].each do |setting, setting_descriptor|
-          next if ["enabled", "allowed"].include?(setting)
+        feature_descriptor['properties'].each do |setting, setting_descriptor|
+          next if %w[enabled allowed].include?(setting)
 
-          parameter setting, "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}", scope: [:tenant, :settings, feature]
+          parameter setting, "#{setting_descriptor['description']}. Type: #{setting_descriptor['type']}", scope: [:tenant, :settings, feature]
         end
       end
       Tenant.style_json_schema["properties"].each do |style, style_descriptor|
@@ -75,17 +75,13 @@ resource "Tenants" do
     let(:logo) { base64_encoded_image("logo.png", "image/png") }
     let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg") }
     let(:favicon) { base64_encoded_image("favicon.png", "image/png") }
-    let(:settings) {
+    let(:organization_name) do
       {
-        "core" => {
-          "organization_name" => {
-            "en" => "TestTown",
-            "nl-BE" => "TestTowm",
-            "fr-FR" => "TestTown"
-          }
-        }
+        'en' => 'TestTown',
+        'nl-BE' => 'TestTowm',
+        'fr-FR' => 'TestTown'
       }
-    }
+    end
     let(:style) {
       {
         "signedOutHeaderOverlayColor" => "#3467eb",
