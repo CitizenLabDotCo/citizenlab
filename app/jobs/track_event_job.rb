@@ -14,7 +14,7 @@ class TrackEventJob < ApplicationJob
         end
         if tenant.has_feature?('segment')
           segment_service = TrackSegmentService.new()
-          segment_service.track(activity, tenant)
+          segment_service.track_activity(activity)
         end
       end
     rescue ActiveRecord::RecordNotFound => e

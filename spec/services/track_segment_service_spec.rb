@@ -143,7 +143,7 @@ describe TrackSegmentService do
         expect(event.dig(:integrations, :Intercom)).to be false
         expect(event.dig(:integrations, :SatisMeter)).to be false
       end
-      service.track(activity, Tenant.current)
+      service.track_activity(activity)
     end
 
     it "generates an event with the desired content for activities about notifications" do
@@ -162,7 +162,7 @@ describe TrackSegmentService do
         expect(event.dig(:properties, :item_type)).to eq('Notifications::CommentOnYourComment')
         expect(event.dig(:properties, :cl2_cluster)).to eq 'local'
       end
-      service.track(activity, Tenant.current)
+      service.track_activity(activity)
     end
   end
 end

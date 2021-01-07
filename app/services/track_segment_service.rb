@@ -45,7 +45,7 @@ class TrackSegmentService
     )
   end
 
-  def track(activity, tenant)
+  def track_activity(activity)
     service = TrackingService.new
     event = {
         event: service.activity_event_name(activity),
@@ -67,7 +67,7 @@ class TrackSegmentService
       event[:anonymous_id] = SecureRandom.base64
     end
 
-    event[:properties].merge!(service.tenant_properties(tenant))
+    event[:properties].merge!(service.tenant_properties(Tenant.current)) if Tenant.current
     Analytics.track(event)
   end
 
