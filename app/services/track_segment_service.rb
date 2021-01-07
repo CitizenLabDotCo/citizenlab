@@ -67,13 +67,7 @@ class TrackSegmentService
       event[:anonymous_id] = SecureRandom.base64
     end
 
-    if tenant
-      event[:properties] = {
-          **event[:properties],
-          **service.tenant_properties(tenant)
-      }
-    end
-
+    event[:properties].merge!(service.tenant_properties(tenant))
     Analytics.track(event)
   end
 
