@@ -33,7 +33,6 @@ describe EmailCampaigns::DeliveryService do
       travel_to campaign.ic_schedule.start_time do
         expect{service.send_on_schedule(Time.now)}
           .to have_enqueued_job(ActionMailer::MailDeliveryJob)
-          .and have_enqueued_job(PublishGenericEventToRabbitJob)
           .exactly(1).times
       end
     end
