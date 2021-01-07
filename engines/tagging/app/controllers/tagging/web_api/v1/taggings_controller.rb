@@ -8,8 +8,8 @@ module Tagging
         def index
           @taggings = policy_scope(Tagging)
 
-          @taggings = @taggings.where(idea_id: params["idea_ids"]) if params["idea_ids"]
-          @taggings = @taggings.where(assignment_method: params["assignment_method"]) if params["assignment_method"]
+          @taggings = @taggings.where(idea_id: params['idea_ids']) if params['idea_ids']
+          @taggings = @taggings.where(assignment_method: params['assignment_method']) if params['assignment_method']
 
           render json: WebApi::V1::TaggingSerializer.new(
             @taggings,
@@ -23,7 +23,7 @@ module Tagging
             @tagging,
             params: fastjson_params,
             include: [:tag]
-            ).serialized_json
+          ).serialized_json
         end
 
         def create
@@ -39,14 +39,14 @@ module Tagging
               @tagging,
               params: fastjson_params,
               include: [:tag]
-              ).serialized_json, status: :created
+            ).serialized_json, status: :created
           else
             render json: { errors: @tagging.errors.details }, status: :unprocessable_entity
           end
         end
 
         def update
-          if params["assignment_method"] == 'manual'
+          if params['assignment_method'] == 'manual'
             @tagging.confidence_score = 1
             @tagging.assignment_method = 'manual'
             authorize @tagging
@@ -56,7 +56,7 @@ module Tagging
               render json: WebApi::V1::TaggingSerializer.new(
                 @tagging,
                 params: fastjson_params
-                ).serialized_json, status: :ok
+              ).serialized_json, status: :ok
             else
               render json: { errors: @tag.errors.details }, status: :unprocessable_entity
             end
@@ -79,39 +79,30 @@ module Tagging
         def generate
           Tagging.automatic.destroy_all
 
-          tags = params["tags"]
-          tag_ids = params["tag_ids"]
-          @new_tags = tags ? tags.map { |tag| Tag.create({ title_multiloc: { current_user.locale => tag }}) } : []
+          tags = params['tags']
+          tag_ids = params['tag_ids']
+          @new_tags = tags ? tags.map { |tag| Tag.create(title_multiloc: { current_user.locale => tag }) } : []
           @old_tags = tag_ids ? Tag.where(id: tag_ids) : []
 
           @ideas = policy_scope(Idea)
           @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
           @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
 
-          @suggestion = NLP::TaggingSuggestionService.new.suggest(
+          @res = NLP::TaggingSuggestionService.new.suggest(
             @ideas,
             @new_tags + @old_tags,
             current_user.locale
           )
-          if @suggestion
-            @suggestion.each do |document|
-              idea = @ideas.find(document['id'])
-              document['predicted_labels'].each{ |label|
-                tag = Tag.find(label['id'])
-                Tagging.create(
-                  tag: tag,
-                  idea: idea,
-                  assignment_method: :automatic,
-                  confidence_score: label['confidence']
-                )
-              }
+
+          if @res
+            @ideas.each do |i|
+              Tagging.create(
+                idea: i,
+                assignment_method: :pending
+              )
             end
 
-            render json: WebApi::V1::TaggingSerializer.new(
-              Tagging.automatic.all,
-              params: fastjson_params,
-              include: [:tag]
-            ).serialized_json, status: :ok
+            render json: { task_id: @res['task_id'] }, status: :ok
           else
             render json: { errors: ['NO'] }, status: :unprocessable_entity
           end
