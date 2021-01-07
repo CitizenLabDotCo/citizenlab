@@ -72,7 +72,7 @@ const EditButton = styled(Button)`
 
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   flex: 1;
-  height: 250px;
+  height: 240px;
   margin-bottom: 30px;
 
   ${media.smallerThanMaxTablet`
