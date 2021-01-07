@@ -60,9 +60,7 @@ class TrackSegmentService
 
     if activity.user_id
       event[:user_id] = activity.user_id
-      if activity.user
-        event[:integrations] = integrations(activity.user)
-      end
+      event[:integrations] = integrations(activity.user) if activity.user
     else
       event[:anonymous_id] = SecureRandom.base64
     end
