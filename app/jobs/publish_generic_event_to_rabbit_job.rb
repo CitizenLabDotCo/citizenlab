@@ -13,7 +13,6 @@ class PublishGenericEventToRabbitJob < ApplicationJob
     tenant_properties = TrackingService.new.tenant_properties(Tenant.current)
     event.merge(tenant_properties)
   rescue ActiveRecord::RecordNotFound
-    # TODO Shouldn't we at least log something?
     # Tenant can't be found, so we don't add anything
   end
 
