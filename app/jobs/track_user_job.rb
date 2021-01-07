@@ -14,7 +14,7 @@ class TrackUserJob < ApplicationJob
         end
         if tenant.has_feature?('segment')
           segment_service = TrackSegmentService.new()
-          segment_service.identify_user(user, tenant)
+          segment_service.identify_user(user)
         end
       end
     rescue ActiveRecord::RecordNotFound => e

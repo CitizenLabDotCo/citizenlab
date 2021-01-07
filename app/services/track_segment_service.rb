@@ -4,8 +4,10 @@ class TrackSegmentService
     @tracking_service = TrackingService.new
   end
 
-  def identify_user(user, tenant)
+  def identify_user(user)
     return unless Analytics
+    tenant = Tenant.current
+
     traits = {
       id: user.id,
       email: user.email,
