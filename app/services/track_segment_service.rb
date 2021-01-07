@@ -5,6 +5,7 @@ class TrackSegmentService
   end
 
   def identify_user(user, tenant)
+    return unless Analytics
     traits = {
       id: user.id,
       email: user.email,
@@ -24,7 +25,7 @@ class TrackSegmentService
       traits[:timezone] = tenant.settings.dig('core', 'timezone')
     end
 
-    Analytics && Analytics.identify(
+    Analytics.identify(
       user_id: user.id,
       traits: traits,
       integrations: integrations(user)
@@ -32,6 +33,7 @@ class TrackSegmentService
   end
 
   def identify_tenant(user, tenant)
+    return unless Analytics
     traits = {
         name: tenant.name,
         website: "https://#{tenant.host}",
@@ -41,7 +43,7 @@ class TrackSegmentService
         **TrackingService.new.tenant_properties(tenant)
     }
 
-    Analytics && tenant && Analytics.group(
+    tenant && Analytics.group(
         user_id: user.id,
         group_id: tenant.id,
         traits: traits,
