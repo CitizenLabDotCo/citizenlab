@@ -169,7 +169,7 @@ module EmailCampaigns
         payload: command[:event_payload]
       }
 
-      PublishRawEventToRabbitJob
+      PublishGenericEventToRabbitJob
         .set(wait: command[:delay] || 0)
         .perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
     end
