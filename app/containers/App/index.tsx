@@ -162,6 +162,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    const { tenant, locale, authUser } = this.props;
     this.handlePotentialCustomRedirect(this.props.location.pathname);
     this.subscriptions = getSubscriptions();
     this.unlisten = getUnlisten();
@@ -174,15 +175,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     smoothscroll.polyfill();
 
     function setTimeZone() {
-      const { tenant } = this.props;
       if (!isNilOrError(tenant)) {
         moment.tz.setDefault(tenant.attributes.settings.core.timezone);
       }
     }
 
     function loadCustomFont() {
-      const { tenant } = this.props;
-
       if (!isNilOrError(tenant)) {
         if (
           tenant.attributes.style &&
@@ -200,8 +198,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function loadMomentFilesForTenantLocales() {
-      const { tenant } = this.props;
-
       if (!isNilOrError(tenant)) {
         uniq(
           tenant.attributes.settings.core.locales
@@ -212,8 +208,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function setMomentLocales() {
-      const { locale } = this.props;
-
       if (!isNilOrError(locale)) {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
@@ -221,8 +215,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function handleSentryScope() {
-      const { authUser } = this.props;
-
       if (!isNilOrError(authUser)) {
         configureScope((scope) => {
           scope.setUser({
@@ -285,13 +277,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
+    const { signUpInModalMounted } = this.state;
+    const { authUser } = this.props;
+    const { pathname, search } = this.props.location;
+    const { verificationModalMounted } = this.state;
+
     handleSignUpInModal();
     handleVerificationModal();
 
     function handleSignUpInModal() {
-      const { signUpInModalMounted } = this.state;
-      const { authUser } = this.props;
-      const { pathname, search } = this.props.location;
       const isAuthError = endsWith(pathname, 'authentication-error');
       const isInvitation = endsWith(pathname, '/invite');
 
@@ -367,10 +361,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     function handleVerificationModal() {
-      const { verificationModalMounted } = this.state;
-      const { authUser } = this.props;
-      const { search } = this.props.location;
-
       if (
         !isNilOrError(authUser) &&
         verificationModalMounted &&
