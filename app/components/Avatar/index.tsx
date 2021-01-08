@@ -122,26 +122,19 @@ interface Props {
   bgColor?: string;
   className?: string;
   moderator?: boolean | null;
-  verified?: boolean | null;
+  addVerificationBadge?: boolean | null;
   padding?: number;
 }
 
 const Avatar = memo(
   ({
     isLinkToProfile,
-    borderColor,
-    bgColor,
     moderator,
     className,
-    verified,
+    addVerificationBadge,
     userId,
     ...props
   }: Props & InjectedIntlProps) => {
-    // static defaultProps = {
-    //   borderColor: 'transparent',
-    //   bgColor: 'transparent',
-    // };
-
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {
@@ -161,6 +154,8 @@ const Avatar = memo(
       const badgeSize = size / (size < 40 ? 1.8 : 2.3);
       const fillColor = props.fillColor || lighten(0.2, colors.label);
       const borderHoverColor = colors.label;
+      const borderColor = props.borderColor || 'transparent';
+      const bgColor = props.bgColor || 'transparent';
 
       const AvatarComponent = (
         <Container aria-hidden className={className} size={containerSize}>
@@ -205,7 +200,7 @@ const Avatar = memo(
             />
           )}
 
-          {user.attributes.verified && verified && (
+          {user.attributes.verified && addVerificationBadge && (
             <FeatureFlag name="verification">
               <BadgeIcon
                 name="checkmark-full"

@@ -51,7 +51,7 @@ const User = ({ userId, isVerified }: Props) => {
         userId={userId}
         size="30px"
         fillColor={theme?.navbarTextColor || colors.label}
-        verified
+        addVerificationBadge
       />
     </>
   );
