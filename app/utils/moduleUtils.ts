@@ -1,4 +1,8 @@
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
+import {
+  TSignUpStepConfigurationObject,
+  TSignUpSteps,
+} from 'components/SignUpIn/SignUp';
+
 import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
@@ -77,6 +81,10 @@ export type OutletsPropertyMap = {
     currentGroupFilterLabel?: string;
   };
   'app.components.SignUpIn.SignUp.step': {
+    onData: (data: {
+      key: TSignUpSteps;
+      configuration: TSignUpStepConfigurationObject;
+    }) => void;
     step: TSignUpSteps;
     onCompleted: () => void;
   };
