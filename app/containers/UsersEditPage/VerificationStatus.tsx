@@ -140,7 +140,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
             <StyledAvatar
               userId={authUser.data.id}
               size="52px"
-              verified
+              addVerificationBadge
               aria-hidden
             />
             <Content>
