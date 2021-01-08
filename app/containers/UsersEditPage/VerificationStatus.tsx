@@ -165,7 +165,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 userId={authUser?.data?.id}
                 size="52px"
                 bgColor="transparent"
-                padding="0px"
+                padding={0}
                 borderThickness="2px"
                 borderColor="#fff"
               />

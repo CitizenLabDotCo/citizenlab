@@ -36,6 +36,7 @@ export const Container = styled.div<{ size: number }>`
 
 export const AvatarImage = styled.img<{
   size: number;
+  padding?: string;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number | undefined;
@@ -44,7 +45,7 @@ export const AvatarImage = styled.img<{
   flex: 0 0 ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
-  padding: 3px;
+  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -68,6 +69,7 @@ const AvatarIcon = styled(Icon)<{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
+  padding?: string;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number | undefined;
@@ -77,7 +79,7 @@ const AvatarIcon = styled(Icon)<{
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   fill: ${({ fillColor }) => fillColor || ''};
-  padding: 3px;
+  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -113,11 +115,8 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
 interface Props {
   userId: string | null;
   size: string;
-  badgeSize?: string;
   isLinkToProfile?: boolean;
-  hideIfNoAvatar?: boolean | undefined;
   fillColor?: string;
-  fillHoverColor?: string;
   borderThickness?: string;
   borderColor?: string;
   borderHoverColor?: string;
@@ -125,14 +124,12 @@ interface Props {
   className?: string;
   moderator?: boolean | null;
   verified?: boolean | null;
+  padding?: number;
 }
 
 const Avatar = memo(
   ({
-    hideIfNoAvatar,
     isLinkToProfile,
-    fillColor,
-    fillHoverColor,
     borderColor,
     borderHoverColor,
     bgColor,
@@ -140,12 +137,10 @@ const Avatar = memo(
     className,
     verified,
     userId,
+    ...props
   }: Props & InjectedIntlProps) => {
     // static defaultProps = {
     //   padding: '3px',
-    //   fillColor: lighten(0.2, colors.label),
-    //   fillHoverColor: colors.label,
-    //   borderThickness: '1px',
     //   borderColor: 'transparent',
     //   borderHoverColor: colors.label,
     //   bgColor: 'transparent',
@@ -153,22 +148,22 @@ const Avatar = memo(
 
     const user = useUser({ userId });
 
-    if (!isNilOrError(user) && hideIfNoAvatar !== true) {
+    if (!isNilOrError(user)) {
       const profileLink = `/profile/${user.attributes.slug}`;
       // In dev mode, user.attributes.slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const size = parseInt(size, 10);
-      const padding = '3px';
-      const borderThickness = parseInt(borderThickness as string, 10);
+      const size = parseInt(props.size, 10);
+      const padding = props.padding ? `${props.padding}px` : '3px';
+      const borderThickness = parseInt(props.borderThickness || '1px', 10);
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSize = size > 160 ? 'large' : 'medium';
       const avatarSrc =
         user.attributes.avatar && user.attributes.avatar[imageSize];
-      const containerSize = size + padding * 2 + borderThickness * 2;
-      const badgeSize = badgeSize
-        ? parseInt(badgeSize, 10)
-        : size / (size < 40 ? 1.8 : 2.3);
+      const containerSize =
+        size + (props.padding ? props.padding * 2 : 0) + borderThickness * 2;
+      const badgeSize = size / (size < 40 ? 1.8 : 2.3);
+      const fillColor = props.fillColor || lighten(0.2, colors.label);
 
       const AvatarComponent = (
         <Container aria-hidden className={className} size={containerSize}>
@@ -186,6 +181,7 @@ const Avatar = memo(
                 moderator ? colors.clRedError : borderHoverColor
               }
               bgColor={bgColor}
+              padding={padding}
             />
           ) : (
             <AvatarIcon
@@ -193,13 +189,14 @@ const Avatar = memo(
               name="user"
               size={containerSize}
               fillColor={fillColor}
-              fillHoverColor={fillHoverColor}
+              fillHoverColor={colors.label}
               borderThickness={borderThickness}
               borderColor={borderColor}
               borderHoverColor={
                 moderator ? colors.clRedError : borderHoverColor
               }
               bgColor={bgColor}
+              padding={padding}
             />
           )}
 
