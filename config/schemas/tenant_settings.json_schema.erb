@@ -1029,6 +1029,30 @@
         }
       },
 
+      "redirects": {
+        "type": "object",
+        "title": "URL redirection rules",
+        "description":  "Define redirection rules on certain targets",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["path", "target"],
+              "additionalProperties": false,
+              "properties": {
+                "path": {"type": "string", "description": "The path on which the redirect should trigger, e.g. /someproject"},
+                "target": {"type": "string", "description": "The URL where the path should redirected to, e.g. https://google.com"}
+              }
+            }
+          }
+        }
+      },
+
       "fragments": {
         "type": "object",
         "title": "Fragments",
