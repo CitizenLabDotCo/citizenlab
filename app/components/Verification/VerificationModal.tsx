@@ -127,7 +127,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
     closeVerificationModal();
   }, []);
 
-  const onComplete = useCallback(() => {
+  const onCompleted = useCallback(() => {
     setActiveStep('success');
     setContext(null);
   }, []);
@@ -152,7 +152,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
             inModal={true}
             showHeader={true}
             initialActiveStep={activeStep}
-            onComplete={onComplete}
+            onCompleted={onCompleted}
             onError={onError}
           />
         )}
