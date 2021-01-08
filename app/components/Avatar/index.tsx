@@ -36,7 +36,7 @@ export const Container = styled.div<{ size: number }>`
 
 export const AvatarImage = styled.img<{
   size: number;
-  padding?: string;
+  padding: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number | undefined;
@@ -45,7 +45,7 @@ export const AvatarImage = styled.img<{
   flex: 0 0 ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
-  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
+  padding: ${({ padding }) => padding}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -69,7 +69,7 @@ const AvatarIcon = styled(Icon)<{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
-  padding?: string;
+  padding: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
   borderThickness: number | undefined;
@@ -79,7 +79,7 @@ const AvatarIcon = styled(Icon)<{
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   fill: ${({ fillColor }) => fillColor || ''};
-  padding: ${({ padding }) => (isNumber(padding) ? padding : 3)}px;
+  padding: ${({ padding }) => padding}px;
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
@@ -144,7 +144,7 @@ const Avatar = memo(
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
       const size = parseInt(props.avatarSize, 10);
-      const padding = props.avatarPadding ? `${props.avatarPadding}px` : '3px';
+      const padding = props.avatarPadding || 3;
       const borderThickness = parseInt(
         props.avatarBorderThickness || '1px',
         10
@@ -152,10 +152,7 @@ const Avatar = memo(
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSize = size > 160 ? 'large' : 'medium';
       const avatarSrc = avatar && avatar[imageSize];
-      const containerSize =
-        size +
-        (props.avatarPadding ? props.avatarPadding * 2 : 0) +
-        borderThickness * 2;
+      const containerSize = size + padding + borderThickness * 2;
       const badgeSize = size / (size < 40 ? 1.8 : 2.3);
       const fillColor = props.avatarFillColor || lighten(0.2, colors.label);
       const borderHoverColor = colors.label;
