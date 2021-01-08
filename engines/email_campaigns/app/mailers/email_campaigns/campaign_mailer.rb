@@ -1,12 +1,19 @@
 module EmailCampaigns
   class CampaignMailer < ActionMailer::Base
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
+    layout false
 
-    def campaign_mail campaign, command
-      recipient = command[:recipient]
+    attr_reader :command, :campaign, :recipient, :tenant
+
+    before_action do
+      @command, @campaign = params.values_at(:command, :campaign)
+    end
+
+    def campaign_mail
+      @recipient = command[:recipient]
       multiloc_service = MultilocService.new
       frontend_service = Frontend::UrlService.new
-      tenant = Tenant.current
+      @tenant = Tenant.current
 
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
       template = Liquid::Template.parse(body_html_with_liquid)
@@ -40,7 +47,6 @@ module EmailCampaigns
           }
         end
       end
-
     end
 
     private
@@ -63,5 +69,8 @@ module EmailCampaigns
       }
     end
 
+    def tenant_home_url
+      home_url(tenant: tenant, locale: recipient.locale)
+    end
   end
 end
