@@ -167,10 +167,10 @@ class Author extends PureComponent<Props, State> {
           {showAvatar && (
             <StyledAvatar
               userId={authorId}
-              size={size}
+              avatarSize={size}
               isLinkToProfile={isLinkToProfile}
               moderator={authorCanModerate}
-              bgColor={avatarBadgeBgColor}
+              avatarBgColor={avatarBadgeBgColor}
             />
           )}
 

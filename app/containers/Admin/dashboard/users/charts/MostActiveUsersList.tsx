@@ -238,7 +238,7 @@ class MostActiveUsersList extends PureComponent<
                 return (
                   <UserListItem key={itemId}>
                     <User>
-                      <UserImage size="28px" userId={userId} />
+                      <UserImage avatarSize="28px" userId={userId} />
                       <GetUser id={userId}>
                         {(user) => {
                           const firstName: string = get(
