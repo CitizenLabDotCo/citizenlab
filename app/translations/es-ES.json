@@ -1859,7 +1859,7 @@
   "app.containers.ProjectCards.areasTitle": "Filtrar por área",
   "app.containers.ProjectFolderCards.allProjects": "Todos los proyectos",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} está trabajando actualmente en",
-  "app.containers.ProjectFolderShowPage.editFolder": "Edit folder",
+  "app.containers.ProjectFolderShowPage.editFolder": "Editar la carpeta",
   "app.containers.ProjectFolderShowPage.goBackToList": "Volver a la lista",
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Información sobre este proyecto",
   "app.containers.ProjectFolderShowPage.metaTitle": "Proyecto: {title}",
