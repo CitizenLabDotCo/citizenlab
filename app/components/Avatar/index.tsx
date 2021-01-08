@@ -119,7 +119,6 @@ interface Props {
   fillColor?: string;
   borderThickness?: string;
   borderColor?: string;
-  borderHoverColor?: string;
   bgColor?: string;
   className?: string;
   moderator?: boolean | null;
@@ -131,7 +130,6 @@ const Avatar = memo(
   ({
     isLinkToProfile,
     borderColor,
-    borderHoverColor,
     bgColor,
     moderator,
     className,
@@ -140,9 +138,7 @@ const Avatar = memo(
     ...props
   }: Props & InjectedIntlProps) => {
     // static defaultProps = {
-    //   padding: '3px',
     //   borderColor: 'transparent',
-    //   borderHoverColor: colors.label,
     //   bgColor: 'transparent',
     // };
 
@@ -164,6 +160,7 @@ const Avatar = memo(
         size + (props.padding ? props.padding * 2 : 0) + borderThickness * 2;
       const badgeSize = size / (size < 40 ? 1.8 : 2.3);
       const fillColor = props.fillColor || lighten(0.2, colors.label);
+      const borderHoverColor = colors.label;
 
       const AvatarComponent = (
         <Container aria-hidden className={className} size={containerSize}>
