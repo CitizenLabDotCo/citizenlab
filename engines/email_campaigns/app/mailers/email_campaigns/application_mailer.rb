@@ -73,7 +73,7 @@ module EmailCampaigns
       {
         subject: subject,
         from: email_address_with_name(self.class.sender_email, organization_name),
-        to: email_address_with_name(recipient.email, recipient_name)
+        to: recipient.email
       }
     end
 
