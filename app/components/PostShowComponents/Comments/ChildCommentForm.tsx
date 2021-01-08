@@ -315,7 +315,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={`${className || ''} e2e-childcomment-form`}>
           <StyledAvatar
             userId={authUser?.id}
-            size="30px"
+            avatarSize="30px"
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />

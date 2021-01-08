@@ -114,16 +114,16 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
 
 interface Props {
   userId: string | null;
-  size: string;
+  avatarSize: string;
   isLinkToProfile?: boolean;
-  fillColor?: string;
-  borderThickness?: string;
-  borderColor?: string;
-  bgColor?: string;
+  avatarFillColor?: string;
+  avatarBorderThickness?: string;
+  avatarBorderColor?: string;
+  avatarBgColor?: string;
   className?: string;
   moderator?: boolean | null;
   addVerificationBadge?: boolean | null;
-  padding?: number;
+  avatarPadding?: number;
 }
 
 const Avatar = memo(
@@ -143,19 +143,24 @@ const Avatar = memo(
       // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const size = parseInt(props.size, 10);
-      const padding = props.padding ? `${props.padding}px` : '3px';
-      const borderThickness = parseInt(props.borderThickness || '1px', 10);
+      const size = parseInt(props.avatarSize, 10);
+      const padding = props.avatarPadding ? `${props.avatarPadding}px` : '3px';
+      const borderThickness = parseInt(
+        props.avatarBorderThickness || '1px',
+        10
+      );
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSize = size > 160 ? 'large' : 'medium';
       const avatarSrc = avatar && avatar[imageSize];
       const containerSize =
-        size + (props.padding ? props.padding * 2 : 0) + borderThickness * 2;
+        size +
+        (props.avatarPadding ? props.avatarPadding * 2 : 0) +
+        borderThickness * 2;
       const badgeSize = size / (size < 40 ? 1.8 : 2.3);
-      const fillColor = props.fillColor || lighten(0.2, colors.label);
+      const fillColor = props.avatarFillColor || lighten(0.2, colors.label);
       const borderHoverColor = colors.label;
-      const borderColor = props.borderColor || 'transparent';
-      const bgColor = props.bgColor || 'transparent';
+      const borderColor = props.avatarBorderColor || 'transparent';
+      const bgColor = props.avatarBgColor || 'transparent';
 
       const AvatarComponent = (
         <Container aria-hidden className={className} size={containerSize}>

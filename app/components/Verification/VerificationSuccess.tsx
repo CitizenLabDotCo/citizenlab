@@ -77,7 +77,7 @@ export default memo<Props>(({ onClose, className }) => {
           <img src={illustration} alt="" role="presentation" />
           <StyledAvatar
             userId={authUser.data.id}
-            size="96px"
+            avatarSize="96px"
             addVerificationBadge
           />
         </ImageAvatarContainer>
