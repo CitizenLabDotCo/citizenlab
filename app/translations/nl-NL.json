@@ -2372,7 +2372,7 @@
   "app.errors.avatar_carrierwave_processing_error": "We konden de profielafbeelding niet verwerken.",
   "app.errors.avatar_extension_blacklist_error": "Het bestandsformaat van de profielbeelding is niet toegestaan. Toegestane formaten zijn: jpg, jpeg, gif en png.",
   "app.errors.avatar_extension_whitelist_error": "Het bestandsformaat van de profielbeelding is niet toegestaan. Toegestane formaten zijn: jpg, jpeg, gif en png.",
-  "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één idee} other {zijn {ideasCount} ideeën}} in deze fase en de participatiemethode die je koos ondersteunt het plaatsen van input niet. Gelieve daarom {ideasCount, plural, one {het idee} other {de ideeën}} eerst uit deze fase te verwijderen en opnieuw te proberen.",
+  "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één input} other {zijn {ideasCount} inputs}} in deze fase en de participatiemethode die je koos ondersteunt het plaatsen van input niet. Gelieve daarom {ideasCount, plural, one {de input} other {de inputs}} eerst uit deze fase te verwijderen en opnieuw te proberen.",
   "app.errors.cant_change_after_first_response": "Dit kan niet meer worden gewijzigd omdat er al mensen deelnamen",
   "app.errors.email_already_active": "Het e-mailadres {value} in rij {row} behoort tot een geregistreerde gebruiker\n\n",
   "app.errors.email_already_invited": "Het e-mailadres {value} in rij {row} kreeg eerder al een uitnodiging",
