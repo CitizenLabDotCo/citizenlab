@@ -138,8 +138,9 @@ const Avatar = memo(
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {
-      const profileLink = `/profile/${user.attributes.slug}`;
-      // In dev mode, user.attributes.slug is sometimes undefined,
+      const { slug, avatar, verified } = user.attributes;
+      const profileLink = `/profile/${slug}`;
+      // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
       const size = parseInt(props.size, 10);
@@ -147,8 +148,7 @@ const Avatar = memo(
       const borderThickness = parseInt(props.borderThickness || '1px', 10);
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSize = size > 160 ? 'large' : 'medium';
-      const avatarSrc =
-        user.attributes.avatar && user.attributes.avatar[imageSize];
+      const avatarSrc = avatar && avatar[imageSize];
       const containerSize =
         size + (props.padding ? props.padding * 2 : 0) + borderThickness * 2;
       const badgeSize = size / (size < 40 ? 1.8 : 2.3);
@@ -200,7 +200,7 @@ const Avatar = memo(
             />
           )}
 
-          {user.attributes.verified && addVerificationBadge && (
+          {verified && addVerificationBadge && (
             <FeatureFlag name="verification">
               <BadgeIcon
                 name="checkmark-full"
