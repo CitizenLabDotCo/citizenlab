@@ -1,0 +1,43 @@
+<mj-section background-color="#FFFFFF" padding="25px" border="1px solid #EAEAEA" border-radius="5px">
+  <mj-column>
+    <mj-text font-size="28px" align="center" font-weight="700">
+      <%= count_from(event.statistics.users.new_users.increase) %>
+      <img
+        alt="User icon"
+        width="29px"
+        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/users-icon_w9vccy.png"
+      />
+    </mj-text>
+    <mj-text font-size="16px" align="center">
+      <%= format_message('new_users') %>
+    </mj-text>
+  </mj-column>
+
+  <mj-column>
+    <mj-text font-size="28px" align="center" font-weight="700">
+      <%= count_from(event.statistics.activities.new_ideas.increase) %>
+      <img
+        alt="Idea icon"
+        width="24px"
+        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/idea-icon_zfjmco.png"
+      />
+    </mj-text>
+    <mj-text font-size="16px" align="center">
+      <%= format_message('new_ideas') %>
+    </mj-text>
+  </mj-column>
+
+  <mj-column>
+    <mj-text font-size="28px" align="center" font-weight="700">
+      <%= count_from(event.statistics.activities.new_comments.increase) %>
+      <img
+        alt="Comment icon"
+        width="26px"
+        src="http://res.cloudinary.com/citizenlabco/image/upload/v1527512109/comment-icon_ouanbm.png"
+      />
+    </mj-text>
+    <mj-text font-size="16px" align="center">
+      <%= format_message('new_comments') %>
+    </mj-text>
+  </mj-column>
+</mj-section>
