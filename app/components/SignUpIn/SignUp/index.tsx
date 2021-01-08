@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { isEmpty, cloneDeep, indexOf } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
+import { indexOf } from 'lodash-es';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
@@ -20,16 +19,12 @@ import {
 import ReactResizeDetector from 'react-resize-detector';
 import Outlet from 'components/Outlet';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-
 import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
 
 // utils
-import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
 // events
@@ -51,6 +46,12 @@ import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
+import { Multiloc } from 'typings';
+import useTenant from 'hooks/useTenant';
+import useAuthUser from 'hooks/useAuthUser';
+
+import { IUser } from 'services/users';
+import { ITenant } from 'services/tenant';
 
 const Container = styled.div`
   width: 100%;
@@ -69,6 +70,22 @@ export type TSignUpSteps =
   | 'custom-fields'
   | 'success';
 
+export type TSignUpStepConfigurationObject = {
+  position: number;
+  stepName?: string;
+  helperText?: (tenant: ITenant | undefined) => Multiloc | null | undefined;
+  onCompleted?: () => void;
+  onSkipped?: () => void;
+  onError?: () => void;
+  onSelected?: (data: unknown) => void;
+  isEnabled: (metaData: ISignUpInMetaData) => boolean;
+  isActive: (authUser: IUser | undefined) => boolean;
+};
+
+export type TSignUpStepConfiguration = {
+  [key in TSignUpSteps]?: TSignUpStepConfigurationObject;
+};
+
 export interface InputProps {
   metaData: ISignUpInMetaData;
   windowHeight: number;
@@ -78,8 +95,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
   customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
@@ -87,417 +102,320 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {
-  steps: (
-    | 'create-account'
-    | Extract<TSignUpSteps, 'verification' | 'custom-fields'>
-  )[];
-  activeStep: TSignUpSteps | null | undefined;
-  userId: string | null;
-  error: string | null;
-  headerHeight: string;
-  stepConfiguration: Object;
-}
+//   componentWillUnmount() {
+//     trackEventByName(tracks.signUpFlowExited);
+//     signUpActiveStepChange(undefined);
+//   }
 
-class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
-  modalContentRef: HTMLDivElement | null = null;
+const SignUp: FC<Props & InjectedIntlProps> = memo(
+  ({
+    intl: { formatMessage },
+    metaData,
+    onSignUpCompleted,
+    onGoToSignIn,
+    className,
+    theme,
+    windowHeight,
+  }) => {
+    const authUser = useAuthUser();
+    const tenant = useTenant();
 
-  constructor(props) {
-    super(props);
+    const modalContentRef = useRef<HTMLDivElement>(null);
 
-    const {
-      tenant,
-      intl: { formatMessage },
-    } = props;
-
-    this.state = {
-      steps: [],
-      activeStep: undefined,
-      userId: null,
-      error: null,
-      headerHeight: '100px',
-      stepConfiguration: {
-        'custom-fields': {
-          stepName: formatMessage(messages.completeYourProfile),
-          helperText: isNilOrError(tenant)
-            ? null
-            : tenant.attributes.settings.core.custom_fields_signup_helper_text,
+    const [configuration, setConfiguration] = useState<
+      TSignUpStepConfiguration
+    >({
+      'auth-providers': {
+        position: 1,
+        stepName: formatMessage(messages.createYourAccount),
+        helperText: (tenant) =>
+          tenant?.attributes?.settings?.core?.signup_helper_text,
+        onSelected: (selectedAuthProvider: AuthProvider) => {
+          if (selectedAuthProvider === 'email') {
+            goToNextStep();
+          } else {
+            handleOnSSOClick(selectedAuthProvider, metaData);
+          }
         },
-        verification: {
-          stepName: formatMessage(messages.verifyYourIdentity),
-          onCompleted: this.handleVerificationCompleted,
-        },
-        'auth-providers': {
-          stepName: formatMessage(messages.createYourAccount),
-          helperText: isNilOrError(tenant)
-            ? null
-            : tenant.attributes.settings.core.signup_helper_text,
-        },
-        'password-signup': {
-          stepName: formatMessage(messages.createYourAccount),
-          helperText: isNilOrError(tenant)
-            ? null
-            : tenant.attributes.settings.core.signup_helper_text,
-          onCompleted: this.handlePasswordSignupCompleted,
-        },
+        isEnabled: (metaData) => !metaData?.isInvitation,
+        isActive: (authUser) => !authUser,
       },
-    };
-  }
-
-  static getDerivedStateFromProps(
-    props: Props & InjectedIntlProps,
-    state: State
-  ) {
-    const { activeStep } = state;
-    const {
-      authUser,
-      onSignUpCompleted,
-      metaData,
-      intl: { formatMessage },
-    } = props;
-    let nextActiveStep = activeStep;
-
-    if (activeStep === undefined && !isUndefinedOrError(authUser)) {
-      nextActiveStep = null;
-
-      if (authUser === null) {
-        // not logged in
-        nextActiveStep = metaData.isInvitation
-          ? 'password-signup'
-          : 'auth-providers';
-      } else if (!authUser.attributes.verified && metaData.verification) {
-        // logged in but not verified and verification required
-        nextActiveStep = 'verification';
-      } else if (!authUser.attributes.registration_completed_at) {
-        // logged in but not yet completed custom fields and custom fields enabled
-        nextActiveStep = 'custom-fields';
-      } else if (
-        authUser.attributes.registration_completed_at &&
-        props.metaData.inModal
-      ) {
-        nextActiveStep = 'success';
-      } else {
-        onSignUpCompleted();
-      }
-    }
-
-    return {
-      activeStep: nextActiveStep,
-      error: metaData.error
-        ? formatMessage(messages.somethingWentWrongText)
-        : state.error,
-    };
-  }
-
-  componentDidMount() {
-    const {
-      metaData,
-      intl: { formatMessage },
-    } = this.props;
-    const { activeStep } = this.state;
-    const steps = cloneDeep(this.state.steps);
-
-    trackEventByName(tracks.signUpFlowEntered);
-
-    if (metaData?.token) {
-      request(
-        `${API_PATH}/users/by_invite/${metaData.token}`,
-        null,
-        { method: 'GET' },
-        null
-      ).catch(() => {
-        this.setState({ error: formatMessage(messages.invitationError) });
-      });
-    }
-
-    signUpActiveStepChange(this.state.activeStep);
-
-    if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
-      steps.push('create-account');
-    }
-
-    if (metaData.verification) {
-      steps.push('verification');
-    }
-
-    // TODO: SELF REGISTER STEP FROM OUTLET
-
-    // if (
-    //   !isNilOrError(customFieldsSchema) &&
-    //   customFieldsSchema.hasCustomFields
-    // ) {
-    //   steps.push('custom-fields');
-    // }
-
-    if (steps.length !== this.state.steps.length) {
-      this.setState({ steps });
-    }
-  }
-
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    // const { customFieldsSchema } = this.props;
-
-    // TODO: SELF REGISTER STEP FROM OUTLET
-
-    // if (
-    //   isNilOrError(prevProps.customFieldsSchema) &&
-    //   !isNilOrError(customFieldsSchema) &&
-    //   customFieldsSchema.hasCustomFields
-    // ) {
-    //   this.setState(({ steps }) => ({ steps: [...steps, 'custom-fields'] }));
-    // }
-
-    if (this.state.activeStep !== prevState.activeStep) {
-      signUpActiveStepChange(this.state.activeStep);
-    }
-  }
-
-  componentWillUnmount() {
-    trackEventByName(tracks.signUpFlowExited);
-    signUpActiveStepChange(undefined);
-  }
-
-  goToNextStep = () => {
-    const { activeStep } = this.state;
-    const { authUser, metaData } = this.props;
-    const hasVerificationStep = metaData?.verification;
-
-    if (this.modalContentRef) {
-      this.modalContentRef.scrollTop = 0;
-    }
-
-    // TODO: deterimine order via configuration
-    if (activeStep === 'auth-providers') {
-      this.setState({ activeStep: 'password-signup' });
-    } else if (
-      activeStep === 'password-signup' &&
-      !isNilOrError(authUser) &&
-      !authUser.attributes.verified &&
-      hasVerificationStep
-    ) {
-      this.setState({ activeStep: 'verification' });
-    } else if (
-      !isNilOrError(authUser) &&
-      !authUser.attributes.registration_completed_at
-    ) {
-      this.setState({ activeStep: 'custom-fields' });
-    } else if (
-      !isNilOrError(authUser) &&
-      authUser.attributes.registration_completed_at &&
-      this.props.metaData.inModal
-    ) {
-      this.setState({ activeStep: 'success' });
-    } else {
-      this.onSignUpCompleted();
-    }
-  };
-
-  handleOnAuthProviderSelected = (selectedAuthProvider: AuthProvider) => {
-    if (selectedAuthProvider === 'email') {
-      this.goToNextStep();
-    } else {
-      handleOnSSOClick(selectedAuthProvider, this.props.metaData);
-    }
-  };
-
-  handleGoToSignInFlow = () => {
-    this.props.onGoToSignIn();
-  };
-
-  handleGoBackToSignUpOptions = () => {
-    this.setState({ activeStep: 'auth-providers' });
-  };
-
-  handleCompleted = (data?: string) => {
-    const { activeStep, stepConfiguration } = this.state;
-    if (activeStep) stepConfiguration?.[activeStep]?.handleComplete?.(data);
-    this.goToNextStep();
-  };
-
-  handlePasswordSignupCompleted = (userId: string) => {
-    this.setState({ userId });
-    this.goToNextStep();
-  };
-
-  handleVerificationCompleted = () => {
-    trackEventByName(tracks.signUpVerificationStepCompleted);
-    this.goToNextStep();
-  };
-
-  handleVerificationSkipped = () => {
-    trackEventByName(tracks.signUpVerificationStepSkipped);
-    this.goToNextStep();
-  };
-
-  handleVerificationError = () => {
-    trackEventByName(tracks.signUpVerificationStepFailed);
-    this.setState({
-      error: this.props.intl.formatMessage(messages.somethingWentWrongText),
+      'password-signup': {
+        position: 2,
+        stepName: formatMessage(messages.createYourAccount),
+        helperText: (tenant) =>
+          tenant?.attributes?.settings?.core?.signup_helper_text,
+        isEnabled: () => true,
+        isActive: (authUser) => !authUser,
+      },
+      verification: {
+        position: 3,
+        stepName: formatMessage(messages.verifyYourIdentity),
+        onSkipped: () => trackEventByName(tracks.signUpVerificationStepSkipped),
+        onError: () => trackEventByName(tracks.signUpVerificationStepFailed),
+        onCompleted: () =>
+          trackEventByName(tracks.signUpVerificationStepCompleted),
+        isEnabled: (metaData) => !!metaData?.verification,
+        isActive: (authUser) => !authUser?.attributes?.verified,
+      },
+      'custom-fields': {
+        position: 4,
+        stepName: formatMessage(messages.completeYourProfile),
+        helperText: (tenant) =>
+          tenant?.attributes?.settings?.core.custom_fields_signup_helper_text,
+        // isEnabled: ({ customFieldsSchema }) => {
+        //   return (
+        //     !isNilOrError(customFieldsSchema) &&
+        //     customFieldsSchema.hasCustomFields
+        //   );
+        // },
+        isEnabled: () => true,
+        isActive: (authUser) => !authUser?.attributes.registration_completed_at,
+      },
+      success: {
+        position: 5,
+        isEnabled: (metaData) => !!metaData?.inModal,
+        isActive: (authUser) =>
+          !!authUser?.attributes?.registration_completed_at,
+      },
     });
-  };
 
-  handleSuccessOnClose = () => {
-    this.onSignUpCompleted();
-  };
+    const enabledSteps = useMemo<TSignUpSteps[]>(
+      () =>
+        Object.entries(configuration)
+          .reduce(
+            (
+              acc,
+              [key, configuration]: [
+                TSignUpSteps,
+                TSignUpStepConfigurationObject
+              ]
+            ) => {
+              if (!configuration.isEnabled(metaData)) return acc;
+              return [...acc, { id: key, position: configuration.position }];
+            },
+            []
+          )
+          .sort((a, b) => a.position - b.position)
+          .map(({ id }) => id),
+      [configuration, metaData]
+    );
 
-  onSignUpCompleted = () => {
-    trackEventByName(tracks.signUpFlowCompleted);
-    this.props.onSignUpCompleted();
-  };
+    const [error, setError] = useState<string>();
+    const [activeStep, setActiveStep] = useState<TSignUpSteps>(enabledSteps[0]);
+    const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
-  goToSignIn = () => {
-    clHistory.push('/sign-in');
-  };
+    const activeStepConfiguration = useMemo<
+      TSignUpStepConfigurationObject | undefined
+    >(() => configuration?.[activeStep], [activeStep, configuration]);
 
-  onResize = (_width, height) => {
-    this.setState({ headerHeight: `${Math.round(height) + 2}px` });
-  };
+    const getNextStep = () => {
+      const step = enabledSteps[indexOf(enabledSteps, activeStep) + 1];
+      if (!step) return undefined;
+      const isActive = configuration?.[step]?.isActive?.(
+        !isNilOrError(authUser) ? authUser.data : undefined
+      );
+      return isActive ? step : undefined;
+    };
 
-  setRef = (element: HTMLDivElement) => {
-    this.modalContentRef = element;
-  };
+    const goToNextStep = () => {
+      if (modalContentRef?.current) {
+        modalContentRef.current.scrollTop = 0;
+      }
 
-  render() {
-    const {
+      const nextStep = getNextStep();
+      if (!nextStep) {
+        handleFlowCompleted();
+        return;
+      }
+      setActiveStep(nextStep);
+    };
+
+    const onResize = (_width, height) =>
+      setHeaderHeight(`${Math.round(height) + 2}px`);
+
+    const handleStepCompleted = () => {
+      configuration?.[activeStep]?.onCompleted?.();
+      goToNextStep();
+    };
+
+    const handleStepSkipped = () => {
+      configuration?.[activeStep]?.onSkipped?.();
+      goToNextStep();
+    };
+
+    const handleStepError = () => {
+      configuration?.[activeStep]?.onError?.();
+      setError(formatMessage(messages.somethingWentWrongText));
+    };
+
+    const handleSelectedInStep = (data: unknown) => {
+      configuration?.[activeStep]?.onSelected?.(data);
+    };
+
+    const handleFlowCompleted = () => {
+      trackEventByName(tracks.signUpFlowCompleted);
+      onSignUpCompleted();
+    };
+
+    useEffect(() => {
+      trackEventByName(tracks.signUpFlowEntered);
+
+      if (metaData?.token) {
+        request(
+          `${API_PATH}/users/by_invite/${metaData.token}`,
+          null,
+          { method: 'GET' },
+          null
+        ).catch(() => {
+          setError(formatMessage(messages.invitationError));
+        });
+      }
+    }, []);
+
+    useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
+    useEffect(() => {
+      if (metaData?.error) {
+        setError(formatMessage(messages.somethingWentWrongText));
+      }
+    }, [metaData?.error]);
+
+    const helpText = activeStepConfiguration?.helperText?.(
+      !isNilOrError(tenant) ? tenant.data : undefined
+    );
+    const stepName = activeStepConfiguration?.stepName ?? '';
+
+    const [activeStepNumber, totalStepsCount] = useMemo(() => {
+      // base the steps on the stepName (grouping)
+      const uniqueSteps = [
+        ...new Set(
+          enabledSteps
+            .map((step: TSignUpSteps) => configuration?.[step]?.stepName)
+            .filter((v) => v !== undefined)
+        ),
+      ];
+      return [
+        indexOf(uniqueSteps, activeStepConfiguration?.stepName) > -1
+          ? indexOf(uniqueSteps, activeStepConfiguration?.stepName) + 1
+          : 1,
+        uniqueSteps.length,
+      ];
+    }, [configuration, enabledSteps, activeStep, activeStepConfiguration]);
+
+    console.log({
+      enabledSteps,
       activeStep,
       error,
-      steps,
-      headerHeight,
-      stepConfiguration,
-    } = this.state;
-    const { metaData, windowHeight, className } = this.props;
+      helpText,
+      stepName,
+      activeStepNumber,
+      totalStepsCount,
+    });
 
-    if (activeStep) {
-      const totalStepsCount = steps.length;
-      const activeStepNumber =
-        indexOf(steps, activeStep) > -1 ? indexOf(steps, activeStep) + 1 : 1;
+    return (
+      <Container id="e2e-sign-up-container" className={className ?? ''}>
+        {activeStep !== 'success' && (
+          <div>
+            <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
+              <div>
+                <StyledHeaderContainer inModal={!!metaData.inModal}>
+                  <StyledHeaderTitle inModal={!!metaData.inModal}>
+                    <FormattedMessage {...messages.signUp2} />
+                  </StyledHeaderTitle>
 
-      const { stepName = '', helperText = '' } = stepConfiguration[activeStep];
+                  {!error && stepName && (
+                    <HeaderSubtitle>
+                      <FormattedMessage
+                        {...messages.headerSubtitle}
+                        values={{
+                          activeStepNumber,
+                          stepName,
+                          totalStepsCount,
+                        }}
+                      />
+                    </HeaderSubtitle>
+                  )}
+                </StyledHeaderContainer>
+              </div>
+            </ReactResizeDetector>
+          </div>
+        )}
 
-      const showStepsCount = !!(
-        !error &&
-        totalStepsCount > 1 &&
-        activeStepNumber > 0 &&
-        stepName
-      );
-      const hasHeader = activeStep !== 'success';
-      const hasHeaderSubtitle = !!(
-        activeStep !== 'success' &&
-        !error &&
-        stepName
-      );
+        <StyledModalContentContainer
+          inModal={!!metaData.inModal}
+          windowHeight={`${windowHeight}px`}
+          headerHeight={headerHeight}
+          ref={modalContentRef}
+        >
+          {error ? (
+            <Error text={error} animate={false} marginBottom="30px" />
+          ) : (
+            <>
+              {helpText && (
+                <SignUpHelperText
+                  textColor={theme.colorText}
+                  fontSize="base"
+                  fontWeight={300}
+                >
+                  <T value={helpText} supportHtml />
+                </SignUpHelperText>
+              )}
 
-      return (
-        <Container id="e2e-sign-up-container" className={className || ''}>
-          {hasHeader && (
-            <div>
-              <ReactResizeDetector
-                handleWidth
-                handleHeight
-                onResize={this.onResize}
-              >
-                <div>
-                  <StyledHeaderContainer inModal={!!metaData.inModal}>
-                    <StyledHeaderTitle inModal={!!metaData.inModal}>
-                      <FormattedMessage {...messages.signUp2} />
-                    </StyledHeaderTitle>
-
-                    {hasHeaderSubtitle && (
-                      <HeaderSubtitle>
-                        {showStepsCount ? (
-                          <FormattedMessage
-                            {...messages.headerSubtitle}
-                            values={{
-                              activeStepNumber,
-                              stepName,
-                              totalStepsCount,
-                            }}
-                          />
-                        ) : (
-                          stepName
-                        )}
-                      </HeaderSubtitle>
-                    )}
-                  </StyledHeaderContainer>
-                </div>
-              </ReactResizeDetector>
-            </div>
-          )}
-
-          <StyledModalContentContainer
-            inModal={!!metaData.inModal}
-            windowHeight={`${windowHeight}px`}
-            headerHeight={headerHeight}
-            ref={this.setRef}
-          >
-            {error ? (
-              <Error text={error} animate={false} marginBottom="30px" />
-            ) : (
-              <>
-                {!isEmpty(helperText) && (
-                  <SignUpHelperText
-                    textColor={this.props.theme.colorText}
-                    fontSize="base"
-                    fontWeight={300}
-                  >
-                    <T value={helperText} supportHtml />
-                  </SignUpHelperText>
-                )}
-
-                {activeStep === 'auth-providers' && (
-                  <AuthProviders
-                    metaData={metaData}
-                    onAuthProviderSelected={this.handleOnAuthProviderSelected}
-                    goToOtherFlow={this.handleGoToSignInFlow}
-                  />
-                )}
-
-                {activeStep === 'password-signup' && (
-                  <PasswordSignup
-                    metaData={metaData}
-                    hasNextStep={steps.length > 1}
-                    onCompleted={this.handleCompleted}
-                    onGoToSignIn={this.props.onGoToSignIn}
-                    onGoBack={this.handleGoBackToSignUpOptions}
-                  />
-                )}
-
-                {activeStep === 'verification' && (
-                  <VerificationSteps
-                    context={metaData?.verificationContext || null}
-                    initialActiveStep="method-selection"
-                    inModal={!!metaData.inModal}
-                    showHeader={false}
-                    skippable={true}
-                    onComplete={this.handleCompleted}
-                    onSkipped={this.handleVerificationSkipped}
-                    onError={this.handleVerificationError}
-                  />
-                )}
-
-                <Outlet
-                  id="app.components.SignUpIn.SignUp.step"
-                  step={activeStep}
-                  onCompleted={this.handleCompleted}
+              {activeStep === 'auth-providers' && (
+                <AuthProviders
+                  metaData={metaData}
+                  onAuthProviderSelected={handleSelectedInStep}
+                  goToOtherFlow={onGoToSignIn}
                 />
+              )}
 
-                {activeStep === 'success' && (
-                  <Success onClose={this.handleSuccessOnClose} />
-                )}
-              </>
-            )}
-          </StyledModalContentContainer>
-        </Container>
-      );
-    }
+              {activeStep === 'password-signup' && (
+                <PasswordSignup
+                  metaData={metaData}
+                  hasNextStep={enabledSteps.length > 1}
+                  onCompleted={handleStepCompleted}
+                  onGoToSignIn={onGoToSignIn}
+                  onGoBack={() => setActiveStep('auth-providers')}
+                />
+              )}
 
-    return null;
+              {activeStep === 'verification' && (
+                <VerificationSteps
+                  context={metaData?.verificationContext || null}
+                  initialActiveStep="method-selection"
+                  inModal={!!metaData.inModal}
+                  showHeader={false}
+                  skippable={true}
+                  onCompleted={handleStepCompleted}
+                  onSkipped={handleStepSkipped}
+                  onError={handleStepError}
+                />
+              )}
+
+              <Outlet
+                id="app.components.SignUpIn.SignUp.step"
+                step={activeStep}
+                onData={({ key, configuration }) =>
+                  setConfiguration((oldConfiguration) => ({
+                    ...oldConfiguration,
+                    [key]: configuration,
+                  }))
+                }
+                onCompleted={handleStepCompleted}
+              />
+
+              {activeStep === 'success' && (
+                <Success onClose={handleFlowCompleted} />
+              )}
+            </>
+          )}
+        </StyledModalContentContainer>
+      </Container>
+    );
   }
-}
+);
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
   customFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
