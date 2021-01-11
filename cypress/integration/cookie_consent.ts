@@ -7,7 +7,7 @@ describe('Cookie consent form for not-signed-in users', () => {
     cy.wait(500);
   });
 
-  it('Shows the correct destinations when not signed in', () => {
+  it('Shows the correct options when not signed in', () => {
     cy.get('#e2e-cookie-banner');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');
@@ -31,7 +31,7 @@ describe('Cookie consent form for signed-in users', () => {
     });
   });
 
-  it('Shows the correct destinations when signed up as normal user', () => {
+  it('Shows the correct options when signed up as normal user', () => {
     cy.get('#e2e-cookie-banner');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');
@@ -48,7 +48,7 @@ describe('Cookie consent form for signed-in admins', () => {
     cy.wait(500);
   });
 
-  it('Shows the correct destinations when signed up as admin user', () => {
+  it('Shows the correct options when signed up as admin user', () => {
     cy.get('#e2e-cookie-banner');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');

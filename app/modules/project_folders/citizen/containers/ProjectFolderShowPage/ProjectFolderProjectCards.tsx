@@ -4,6 +4,9 @@ import { isEmpty } from 'lodash-es';
 // components
 import ProjectCard from 'components/ProjectCard';
 
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
+
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -14,10 +17,6 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-
-  ${media.smallerThanMinTablet`
-    margin: 0;
-  `};
 `;
 
 const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
@@ -27,29 +26,31 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
   margin-bottom: 20px;
 
-  &.onlyOneCard {
+  &.oneCardPerRow {
     width: 100%;
     margin-right: 0px;
   }
 
-  @media (max-width: 1285px) {
+  ${media.smallerThanMinTablet`
     width: 100%;
     margin: 0;
     margin-bottom: 20px;
-  }
+  `};
 `;
 
 const ProjectFolderProjectCards = memo<{
   list: IAdminPublicationContent[] | undefined | null;
   className?: string;
 }>(({ list, className }) => {
+  const { windowWidth } = useWindowSize();
+
   const filteredList = list?.filter(
     (item) => item.publicationType === 'project'
   );
-
   const hasNoDescriptionPreviews = filteredList?.every((item) =>
     isEmpty(item.attributes.publication_description_preview_multiloc)
   );
+  const hideDescriptionPreview = hasNoDescriptionPreviews;
 
   if (filteredList && filteredList?.length > 0) {
     return (
@@ -60,8 +61,13 @@ const ProjectFolderProjectCards = memo<{
             projectId={item.publicationId}
             size="small"
             isEven={index % 2 !== 1}
-            hideDescriptionPreview={hasNoDescriptionPreviews}
-            className={filteredList.length === 1 ? 'onlyOneCard' : ''}
+            hideDescriptionPreview={hideDescriptionPreview}
+            className={
+              filteredList.length === 1 ||
+              (windowWidth > 1100 && windowWidth < 1250)
+                ? 'oneCardPerRow'
+                : ''
+            }
           />
         ))}
       </Container>
