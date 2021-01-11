@@ -134,17 +134,17 @@ export default defineMessages({
     defaultMessage:
       "The number of times this has been included in other participants' participatory budgets",
   },
-  exportAllSubmissions: {
-    id: 'app.components.admin.PostManager.exportAllSubmissions',
-    defaultMessage: 'Export all submissions (.xslx)',
+  exportAllInputs: {
+    id: 'app.components.admin.PostManager.exportAllInputs',
+    defaultMessage: 'Export all inputs (.xslx)',
   },
-  exportSubmissionsProjects: {
-    id: 'app.components.admin.PostManager.exportSubmissionsProjects',
-    defaultMessage: 'Export submissions for this project (.xslx)',
+  exportInputsProjects: {
+    id: 'app.components.admin.PostManager.exportInputsProjects',
+    defaultMessage: 'Export inputs for this project (.xslx)',
   },
-  exportSelectedSubmissions: {
-    id: 'app.components.admin.PostManager.exportSelectedSubmissions',
-    defaultMessage: 'Export selected submissions (.xslx)',
+  exportSelectedInputs: {
+    id: 'app.components.admin.PostManager.exportSelectedInputs',
+    defaultMessage: 'Export selected inputs (.xslx)',
   },
   exportIdeasComments: {
     id: 'app.components.admin.PostManager.exportIdeasComments',
@@ -154,9 +154,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportIdeasCommentsProjects',
     defaultMessage: 'Export comments for this project (.xslx)',
   },
-  exportSelectedSubmissionsComments: {
-    id: 'app.components.admin.PostManager.exportSelectedSubmissionsComments',
-    defaultMessage: 'Export comments for selected submissions (.xslx)',
+  exportSelectedInputsComments: {
+    id: 'app.components.admin.PostManager.exportSelectedInputsComments',
+    defaultMessage: 'Export comments for selected inputs (.xslx)',
   },
   exportInitiatives: {
     id: 'app.components.admin.PostManager.exportInitiatives',
@@ -186,9 +186,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exports',
     defaultMessage: 'Exports',
   },
-  noInputsHere: {
-    id: 'app.components.admin.PostManager.noInputsHere',
-    defaultMessage: 'The filters you have selected do not return any results',
+  noFilteredResults: {
+    id: 'app.components.admin.PostManager.noFilteredResults',
+    defaultMessage: 'The filters you selected did not return any results',
   },
   noInitiativesHere: {
     id: 'app.components.admin.PostManager.noInitiativesHere',

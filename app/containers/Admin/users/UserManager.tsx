@@ -153,7 +153,7 @@ export class UserManager extends PureComponent<Props, State> {
       return search ? (
         <NoUsers noSuchSearchResult={true} />
       ) : (
-        <NoUsers smartGroup={groupType === 'rules'} />
+        <NoUsers groupType={groupType} />
       );
     }
 

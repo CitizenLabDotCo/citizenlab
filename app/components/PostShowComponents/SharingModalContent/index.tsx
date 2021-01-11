@@ -169,13 +169,13 @@ class SharingModalContent extends PureComponent<
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project.attributes.process_type,
         project,
         phases
       );
 
       emailSharingSubject = getInputTermMessage(inputTerm, {
-        idea: messages.ideaEmailSharingSubject,
+        idea: messages.ideaEmailSharingSubjectText,
         option: messages.optionEmailSharingSubject,
         project: messages.projectEmailSharingSubject,
         question: messages.questionEmailSharingSubject,
@@ -186,7 +186,7 @@ class SharingModalContent extends PureComponent<
         idea: messages.ideaEmailSharingBody,
         option: messages.optionEmailSharingBody,
         project: messages.projectEmailSharingBody,
-        question: messages.questionEmailSharingBody,
+        question: messages.questionEmailSharingModalContentBody,
         issue: messages.issueEmailSharingBody,
         contribution: messages.contributionEmailSharingBody,
       });

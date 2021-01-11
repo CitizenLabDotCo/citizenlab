@@ -3,17 +3,18 @@ import React from 'react';
 import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
-import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
 import { SectionField } from 'components/admin/Section';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { FooterContainer, Fill } from './NormalGroupForm';
+import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import Error from 'components/UI/Error';
 import { Label } from 'cl2-component-library';
+import { FormikUserFilterConditions } from 'modules/smart_groups/components/UserFilterConditions';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import adminUsersMessages from 'containers/Admin/users/messages';
 
 // Styling
 import styled from 'styled-components';
@@ -24,7 +25,8 @@ const SSectionField = styled(SectionField)`
 
 // Typings
 import { Multiloc } from 'typings';
-import { TRule } from 'components/admin/UserFilterConditions/rules';
+import { TRule } from 'modules/smart_groups/components/UserFilterConditions/rules';
+
 export interface Props {}
 export interface RulesFormValues {
   rules: TRule[];
@@ -46,7 +48,9 @@ export class RulesGroupForm extends React.PureComponent<
               id="group-title-field"
               name="title_multiloc"
               component={FormikInputMultiloc}
-              label={<FormattedMessage {...messages.fieldGroupName} />}
+              label={
+                <FormattedMessage {...adminUsersMessages.fieldGroupName} />
+              }
             />
             {touched.title_multiloc && (
               <Error

@@ -50,8 +50,8 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  userNotFound: {
-    id: 'app.containers.UsersShowPage.userNotFound',
+  user404NotFound: {
+    id: 'app.containers.UsersShowPage.user404NotFound',
     defaultMessage:
       "We couldn't find this user's profile. If it was here before, it may have been deleted.",
   },

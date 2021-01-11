@@ -85,7 +85,7 @@ export default (props: Props) => (
       {props.type === 'Initiatives' ? (
         <FormattedMessage {...messages.noInitiativesHere} />
       ) : (
-        <FormattedMessage {...messages.noInputsHere} />
+        <FormattedMessage {...messages.noFilteredResults} />
       )}
     </NoPostHeader>
     <NoPostDescription>

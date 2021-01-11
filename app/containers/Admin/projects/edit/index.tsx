@@ -138,7 +138,7 @@ export class AdminProjectEdition extends PureComponent<
         name: 'description',
       },
       {
-        label: formatMessage(messages.inputsTab),
+        label: formatMessage(messages.inputManagerTab),
         url: `${baseTabsUrl}/ideas`,
         name: 'ideas',
       },
@@ -387,7 +387,7 @@ export class AdminProjectEdition extends PureComponent<
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project.attributes.process_type,
         project,
         phases
       );
