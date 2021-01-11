@@ -1536,7 +1536,6 @@
   "app.containers.App.loading": "Chargement...",
   "app.containers.App.metaDescription": "Bienvenue sur la plateforme d'engagement citoyen de {orgName}.\nExplorez les projets et votez pour vos idées favorites. Rejoignez la discussion !",
   "app.containers.App.metaTitle": "Plateforme d'engagement citoyen de {orgName} | CitizenLab",
-  "app.containers.App.testMessage": "No need to translate. Just a test!",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails dans cette catégorie",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Enregistré !",
