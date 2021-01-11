@@ -3,7 +3,7 @@ import bowser from 'bowser';
 
 // components
 import Link from 'utils/cl-router/Link';
-import Image from 'components/Image';
+import Image from 'components/UI/Image';
 
 // styling
 import styled from 'styled-components';
