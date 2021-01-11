@@ -1536,6 +1536,7 @@
   "app.containers.App.loading": "Atuaaneq …",
   "app.containers.App.metaDescription": "Onlinekkut innuttaasut peqataasarfiannut isaaffimmut uunga tikilluarit {orgAteqe}. Sumiiffimmi suliniutit misissukkit aamma illit iluarinerusat taaguk. Eqqartuinerit ornigullutit peqataaffigiartukkit!}}",
   "app.containers.App.metaTitle": "Innuttaasunik peqataatsinermut isaaffik uannga {orgName} | CitizenLab",
+  "app.containers.App.testMessage": "No need to translate. Just a test!",
   "app.containers.CampaignsConsentForm.adminCategory": "Aqutsisoq",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Suussusermut tassunga e-mailit",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "iluatsilluarpoq",
