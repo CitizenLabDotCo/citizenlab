@@ -4,9 +4,12 @@ import React, { memo } from 'react';
 import Image from 'components/UI/Image';
 import ProjectFolderShareButton from 'modules/project_folders/citizen/components/ProjectFolderShareButton';
 
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
+
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -31,8 +34,8 @@ const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   bottom: 15px;
 
   ${media.smallerThanMaxTablet`
-    right: 12px;
-    top: 12px;
+    right: 10px;
+    top: 10px;
   `};
 `;
 
@@ -42,6 +45,10 @@ interface Props {
 }
 
 const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
+  const { windowWidth } = useWindowSize();
+
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+
   if (projectFolder.attributes?.header_bg?.large) {
     return (
       <Container className={`${className || ''} e2e-header-folder`}>
@@ -56,12 +63,14 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
         <StyledProjectFolderShareButton
           projectFolder={projectFolder}
           buttonStyle="primary"
-          bgColor="rgba(255,255,255,0.85)"
+          padding={smallerThanLargeTablet ? '4px 10px' : '6px 13px'}
+          bgColor="rgba(255,255,255,0.9)"
+          borderColor="#666"
+          iconColor="#000"
+          textColor="#000"
           bgHoverColor="#fff"
-          padding="6px 13px"
-          iconColor={colors.text}
+          borderHoverColor="#000"
           iconHoverColor="#000"
-          textColor={colors.text}
           textHoverColor="#000"
         />
       </Container>
