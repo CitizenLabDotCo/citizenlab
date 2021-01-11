@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -28,13 +28,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import {
-  media,
-  fontSizes,
-  colors,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -47,8 +41,11 @@ const Container = styled.main`
   );
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
   background: #fff;
+
+  ${media.smallerThan1100px`
+    background: ${colors.background};
+  `}
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -64,21 +61,29 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const EditButton = styled(Button)`
-  display: table;
-  margin: 0 0 10px auto;
+const StyledContentContainer = styled(ContentContainer)`
+  padding-top: 30px;
+  background: #fff;
+`;
 
-  ${isRtl`
-    margin: 0 0 auto 10px;
-  `}
+const ButtonBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+`;
+
+const EditButton = styled(Button)`
+  margin-left: 30px;
 `;
 
 const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   flex: 1;
+  height: 240px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
+  ${media.smallerThanMinTablet`
+    height: 140px;
   `};
 `;
 
@@ -86,9 +91,9 @@ const Content = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 100px;
+  margin-bottom: 110px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     flex-direction: column;
     align-items: stretch;
   `};
@@ -97,27 +102,27 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     margin-bottom: 40px;
   `};
 `;
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
-  flex: 0 0 790px;
-  width: 790px;
+  flex: 0 0 800px;
+  width: 800px;
   padding: 25px;
+  padding-bottom: 5px;
   margin-left: 80px;
   margin-top: 4px;
   background: ${colors.background};
-  background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
-  ${media.smallerThan1200px`
+  &.oneCardPerRow {
     flex: 0 0 500px;
     width: 500px;
-  `};
+  }
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     flex: 1;
     width: 100%;
     margin: 0;
@@ -155,9 +160,7 @@ const ProjectFolderShowPage = memo<{
   });
   const { windowWidth } = useWindowSize();
 
-  const smallerThanLargeTablet = windowWidth
-    ? windowWidth <= viewportWidths.largeTablet
-    : false;
+  const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);
   const loading =
     isUndefined(locale) ||
@@ -165,15 +168,12 @@ const ProjectFolderShowPage = memo<{
     isUndefined(projectFolder) ||
     isUndefined(adminPublication?.list);
 
-  const userCanEditProject =
-    !isNilOrError(authUser) && canModerate(projectFolder.id, authUser);
+  const userCanEditProject = isAdmin(authUser);
 
   return (
     <>
       <ProjectFolderShowPageMeta projectFolder={projectFolder} />
-      <Container
-        className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
-      >
+      <Container id="e2e-folder-page">
         {folderNotFound ? (
           <NotFoundWrapper>
             <p>
@@ -191,17 +191,19 @@ const ProjectFolderShowPage = memo<{
           </Loading>
         ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
           <>
-            {!smallerThanLargeTablet ? (
-              <ContentContainer maxWidth={maxPageWidth}>
+            {!smallerThan1100px ? (
+              <StyledContentContainer maxWidth={maxPageWidth}>
                 {userCanEditProject && (
-                  <EditButton
-                    icon="edit"
-                    linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                    buttonStyle="secondary"
-                    padding="5px 8px"
-                  >
-                    <FormattedMessage {...messages.editFolder} />
-                  </EditButton>
+                  <ButtonBar>
+                    <EditButton
+                      icon="edit"
+                      linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                      buttonStyle="secondary"
+                      padding="5px 8px"
+                    >
+                      <FormattedMessage {...messages.editFolder} />
+                    </EditButton>
+                  </ButtonBar>
                 )}
                 <StyledProjectFolderHeader projectFolder={projectFolder} />
                 <Content>
@@ -210,17 +212,25 @@ const ProjectFolderShowPage = memo<{
                   />
                   <StyledProjectFolderProjectCards
                     list={adminPublication.list}
+                    className={
+                      adminPublication.list?.filter(
+                        (item) => item.publicationType === 'project'
+                      )?.length === 1 ||
+                      (windowWidth > 1100 && windowWidth < 1250)
+                        ? 'oneCardPerRow'
+                        : ''
+                    }
                   />
                 </Content>
-              </ContentContainer>
+              </StyledContentContainer>
             ) : (
               <>
-                <ContentContainer maxWidth={maxPageWidth}>
+                <StyledContentContainer maxWidth={maxPageWidth}>
                   <StyledProjectFolderHeader projectFolder={projectFolder} />
                   <StyledProjectFolderDescription
                     projectFolder={projectFolder}
                   />
-                </ContentContainer>
+                </StyledContentContainer>
                 <CardsWrapper>
                   <ContentContainer maxWidth={maxPageWidth}>
                     <StyledProjectFolderProjectCards

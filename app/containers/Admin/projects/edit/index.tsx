@@ -72,7 +72,6 @@ interface DataProps {
 }
 
 interface State {
-  aboveProjectPageUrl: string | null;
   goBackUrl: string | null;
 }
 
@@ -85,48 +84,14 @@ export class AdminProjectEdition extends PureComponent<
   constructor(props) {
     super(props);
     this.state = {
-      aboveProjectPageUrl: null,
       goBackUrl: null,
     };
   }
 
   componentDidMount() {
-    const { previousPathName } = this.props;
-    const urlSegments = previousPathName?.replace(/^\/+/g, '').split('/');
-
-    if (urlSegments?.[1] === 'admin' && urlSegments?.[2] === 'projects') {
-      this.setState({
-        aboveProjectPageUrl: previousPathName,
-        goBackUrl: previousPathName,
-      });
-    }
-  }
-
-  componentDidUpdate(
-    prevProps: Props &
-      InjectedIntlProps &
-      InjectedLocalized &
-      WithRouterProps &
-      ITracks
-  ) {
-    const newPathname = this.props.location.pathname;
-    const prevPathname = prevProps.location.pathname;
-
-    if (
-      newPathname.length > prevPathname.length &&
-      newPathname.startsWith(prevPathname)
-    ) {
-      this.setState({ goBackUrl: prevPathname });
-    }
-
-    if (
-      newPathname.length < prevPathname.length &&
-      prevPathname.startsWith(newPathname)
-    ) {
-      this.setState(({ aboveProjectPageUrl }) => ({
-        goBackUrl: aboveProjectPageUrl,
-      }));
-    }
+    this.setState({
+      goBackUrl: this.props.previousPathName,
+    });
   }
 
   getTabs = (projectId: string, project: IProjectData) => {
