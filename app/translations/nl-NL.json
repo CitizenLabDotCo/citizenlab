@@ -1536,7 +1536,6 @@
   "app.containers.App.loading": "Bezig met laden...",
   "app.containers.App.metaDescription": "Welkom op het online participatieplatform van {orgName}.\nVerken lokale projecten en stem op je favoriete ideeën. Neem deel aan de discussies!",
   "app.containers.App.metaTitle": "Burgerparticipatieplatform van {orgName} | CitizenLab",
-  "app.containers.App.testMessage": "Niet nodig om te vertalen. Gewoon een test!",
   "app.containers.CampaignsConsentForm.adminCategory": "Beheerder",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails in deze categorie",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Opgeslagen",
