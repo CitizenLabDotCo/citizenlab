@@ -1536,6 +1536,7 @@
   "app.containers.App.loading": "Carregando…",
   "app.containers.App.metaDescription": "Bem-vindo à plataforma de Citizen {orgName}.\nExplore projectos locais e vote nas suas ideias favoritas. Venha participar das discussões!",
   "app.containers.App.metaTitle": "Plataforma de participação cidadã {orgName} | CitizenLab",
+  "app.containers.App.testMessage": "No need to translate. Just a test!",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrar",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails nesta categoria",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Sucesso",
