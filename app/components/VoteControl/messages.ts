@@ -9,10 +9,9 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledPhaseOver',
     defaultMessage: "It's no longer possible to vote in this phase",
   },
-  votingDisabledPhaseNotStarted: {
-    id: 'app.components.VoteControl.votingDisabledPhaseNotStarted',
-    defaultMessage:
-      "Voting is not yet possible because the phase hasn't started",
+  votingDisabledFutureEnabled: {
+    id: 'app.components.VoteControl.votingDisabledFutureEnabled',
+    defaultMessage: 'Voting will be enabled once this phase starts',
   },
   votingPossibleLater: {
     id: 'app.components.VoteControl.votingPossibleLater',

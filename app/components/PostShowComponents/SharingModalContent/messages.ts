@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.twitterMessage',
     defaultMessage: 'Vote for {postTitle} on',
   },
-  ideaEmailSharingSubject: {
+  ideaEmailSharingSubjectText: {
     id:
-      'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubject',
-    defaultMessage: 'Support my idea: {postTitle}.',
+      'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText',
+    defaultMessage: 'Support my idea: {postTitle}',
   },
   optionEmailSharingSubject: {
     id:
@@ -60,11 +60,11 @@ export default defineMessages({
       'app.components.PostComponents.SharingModalContent.contributionEmailSharingBody',
     defaultMessage: "Support my contribution '{postTitle}' at {postUrl}!",
   },
-  questionEmailSharingBody: {
+  questionEmailSharingModalContentBody: {
     id:
-      'app.components.PostComponents.SharingModalContent.questionEmailSharingBody',
+      'app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody',
     defaultMessage:
-      "Join the discussion about my question '{postTitle}' at {postUrl}!",
+      "Join the discussion about this question '{postTitle}' at {postUrl}!",
   },
   projectEmailSharingBody: {
     id:

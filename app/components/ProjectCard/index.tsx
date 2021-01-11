@@ -551,11 +551,7 @@ const ProjectCard = memo(
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
       const processType = project.attributes.process_type;
-      const inputTerm = getInputTerm(
-        processType === 'continuous' ? 'project' : 'phase',
-        project,
-        phases
-      );
+      const inputTerm = getInputTerm(processType, project, phases);
 
       if (isArchived) {
         countdown = (
@@ -614,8 +610,8 @@ const ProjectCard = memo(
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.submitYourIdea,
-              option: messages.seeTheOptions,
-              project: messages.seeTheProjects,
+              option: messages.addYourOption,
+              project: messages.submitYourProject,
               question: messages.joinDiscussion,
               issue: messages.submitAnIssue,
               contribution: messages.contributeYourInput,

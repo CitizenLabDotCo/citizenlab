@@ -333,9 +333,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         const projectId = project.id;
         const ideaId = idea.id;
         const inputTerm = getInputTerm(
-          project.attributes.process_type === 'continuous'
-            ? 'project'
-            : 'phase',
+          project.attributes.process_type,
           project,
           phases
         );

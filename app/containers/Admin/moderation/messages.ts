@@ -89,9 +89,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.goToThisContentType',
     defaultMessage: 'Open this {contentType} in a new tab',
   },
-  moderationHelpTooltipText: {
-    id: 'app.containers.Admin.Moderation.moderationHelpTooltipText',
+  moderationHelpTooltip: {
+    id: 'app.containers.Admin.Moderation.moderationHelpTooltip',
     defaultMessage:
-      "This page allows you to quickly check all new input that has been placed on your platform: posts, comments & initiatives. Everything that you checked, can be marked as 'Viewed'. This makes sure you keep an easy overview of what has been seen and what not.",
+      'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
   },
 });
