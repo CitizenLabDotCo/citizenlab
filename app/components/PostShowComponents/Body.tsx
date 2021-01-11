@@ -32,10 +32,19 @@ interface Props {
   translateButtonClicked?: boolean;
   className?: string;
   postType: 'idea' | 'initiative';
+  color?: string;
 }
 
 const Body = memo<Props>(
-  ({ postId, body, locale, translateButtonClicked, className, postType }) => {
+  ({
+    postId,
+    body,
+    locale,
+    translateButtonClicked,
+    className,
+    postType,
+    color,
+  }) => {
     // const [readMoreButtonClicked, setReadMoreButtonClicked] = useState(false);
     const windowSize = useWindowSize();
     const theme: any = useTheme();
@@ -84,7 +93,7 @@ const Body = memo<Props>(
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
-          textColor={theme.colorText}
+          textColor={color || theme.colorText}
           fontSize={smallerThanSmallTablet ? 'base' : 'large'}
           fontWeight={400}
         >

@@ -141,7 +141,7 @@ export function apiSignup(
       user: {
         email,
         password,
-        locale: 'en-GB',
+        locale: 'en',
         first_name: firstName,
         last_name: lastName,
       },
@@ -169,7 +169,7 @@ export function apiCreateAdmin(
         user: {
           email,
           password,
-          locale: 'en-GB',
+          locale: 'en',
           first_name: firstName,
           last_name: lastName,
           roles: [{ type: 'admin' }],
@@ -215,7 +215,7 @@ export function apiCreateModeratorForProject(
         user: {
           email,
           password,
-          locale: 'en-GB',
+          locale: 'en',
           first_name: firstName,
           last_name: lastName,
           roles: [
@@ -373,11 +373,11 @@ export function apiCreateIdea(
           project_id: projectId,
           publication_status: 'published',
           title_multiloc: {
-            'en-GB': ideaTitle,
+            en: ideaTitle,
             'nl-BE': ideaTitle,
           },
           body_multiloc: {
-            'en-GB': ideaContent,
+            en: ideaContent,
             'nl-BE': ideaContent,
           },
           location_point_geojson: locationGeoJSON,
@@ -444,11 +444,11 @@ export function apiCreateInitiative({
         initiative: {
           publication_status: 'published',
           title_multiloc: {
-            'en-GB': initiativeTitle,
+            en: initiativeTitle,
             'nl-BE': initiativeTitle,
           },
           body_multiloc: {
-            'en-GB': initiativeContent,
+            en: initiativeContent,
             'nl-BE': initiativeContent,
           },
           location_point_geojson: locationGeoJSON,
@@ -513,11 +513,11 @@ export function apiCreateOfficialFeedbackForIdea(
       body: {
         official_feedback: {
           body_multiloc: {
-            'en-GB': officialFeedbackContent,
+            en: officialFeedbackContent,
             'nl-BE': officialFeedbackContent,
           },
           author_multiloc: {
-            'en-GB': officialFeedbackAuthor,
+            en: officialFeedbackAuthor,
             'nl-BE': officialFeedbackAuthor,
           },
         },
@@ -544,11 +544,11 @@ export function apiCreateOfficialFeedbackForInitiative(
       body: {
         official_feedback: {
           body_multiloc: {
-            'en-GB': officialFeedbackContent,
+            en: officialFeedbackContent,
             'nl-BE': officialFeedbackContent,
           },
           author_multiloc: {
-            'en-GB': officialFeedbackAuthor,
+            en: officialFeedbackAuthor,
             'nl-BE': officialFeedbackAuthor,
           },
         },
@@ -575,7 +575,7 @@ export function apiAddComment(
       body: {
         comment: {
           body_multiloc: {
-            'en-GB': commentContent,
+            en: commentContent,
             'nl-BE': commentContent,
           },
           parent_id: commentParentId,
@@ -598,7 +598,7 @@ export function apiAddComment(
           body: {
             comment: {
               body_multiloc: {
-                'en-GB': commentContent,
+                en: commentContent,
                 'nl-BE': commentContent,
               },
               parent_id: commentParentId,
@@ -672,15 +672,15 @@ export function apiCreateProject({
             publication_status: publicationStatus,
           },
           title_multiloc: {
-            'en-GB': title,
+            en: title,
             'nl-BE': title,
           },
           description_preview_multiloc: {
-            'en-GB': descriptionPreview,
+            en: descriptionPreview,
             'nl-BE': descriptionPreview,
           },
           description_multiloc: {
-            'en-GB': description,
+            en: description,
             'nl-BE': description,
           },
           default_assignee_id: assigneeId,
@@ -727,15 +727,15 @@ export function apiCreateFolder({
             publication_status: publicationStatus,
           },
           title_multiloc: {
-            'en-GB': title,
+            en: title,
             'nl-BE': title,
           },
           description_preview_multiloc: {
-            'en-GB': descriptionPreview,
+            en: descriptionPreview,
             'nl-BE': descriptionPreview,
           },
           description_multiloc: {
-            'en-GB': description,
+            en: description,
             'nl-BE': description,
           },
         },
@@ -867,14 +867,14 @@ export function apiCreatePhase(
           start_at: startAt,
           end_at: endAt,
           title_multiloc: {
-            'en-GB': title,
+            en: title,
             'nl-BE': title,
           },
           participation_method: participationMethod,
           posting_enabled: canPost,
           voting_enabled: canVote,
           commenting_enabled: canComment,
-          description_multiloc: { 'en-GB': description },
+          description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
         },
@@ -904,7 +904,7 @@ export function apiCreateCustomField(
           required,
           input_type: 'text',
           title_multiloc: {
-            'en-GB': fieldName,
+            en: fieldName,
             'nl-BE': fieldName,
           },
         },

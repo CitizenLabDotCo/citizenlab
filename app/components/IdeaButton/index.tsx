@@ -17,7 +17,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import Button, { ButtonContainerProps } from 'components/UI/Button';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 import { Icon } from 'cl2-component-library';
 
@@ -104,7 +104,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
+interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;

@@ -102,7 +102,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-edit-save-button').click();
 
     // verify updated idea page
-    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
+    cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);

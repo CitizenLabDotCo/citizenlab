@@ -251,7 +251,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 hasProjectEnded &&
                 currentPhase?.attributes.participation_method ===
                   'ideation')) &&
-              isNumber(ideasCount) && (
+              isNumber(ideasCount) &&
+              ideasCount > 0 && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="idea-filled" />
                   {project.attributes.ideas_count > 0 ? (
@@ -291,20 +292,25 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               totalBudget > 0 && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="moneybag" />
-                  <FormattedMessage
-                    {...messages.budget}
-                    values={{
-                      amount: (
-                        <FormattedNumber
-                          value={totalBudget}
-                          style="currency"
-                          currency={currency}
-                          minimumFractionDigits={0}
-                          maximumFractionDigits={0}
-                        />
-                      ),
-                    }}
-                  />
+                  <ListItemButton
+                    id="e2e-project-sidebar-pb-budget"
+                    onClick={scrollTo('project-ideas')}
+                  >
+                    <FormattedMessage
+                      {...messages.budget}
+                      values={{
+                        amount: (
+                          <FormattedNumber
+                            value={totalBudget}
+                            style="currency"
+                            currency={currency}
+                            minimumFractionDigits={0}
+                            maximumFractionDigits={0}
+                          />
+                        ),
+                      }}
+                    />
+                  </ListItemButton>
                 </ListItem>
               )}
             {((projectType === 'continuous' &&

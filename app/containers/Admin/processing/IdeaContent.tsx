@@ -19,7 +19,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { stylingConsts, fontSizes } from 'utils/styleUtils';
+import { stylingConsts, fontSizes, colors } from 'utils/styleUtils';
 import { deleteTagging, ITagging } from 'services/taggings';
 import { trackEventByName } from 'utils/analytics';
 
@@ -53,6 +53,7 @@ const StyledBody = styled(Body)`
 `;
 
 const TagList = styled.div`
+  overflow-y: auto;
   flex: 1;
   margin-bottom: 20px;
   min-height: 52px;
@@ -69,7 +70,7 @@ const TagList = styled.div`
 
 const StyledTitle = styled(Title)`
   flex: 1;
-  margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 export interface InputProps {
@@ -110,12 +111,14 @@ export class IdeaContent extends PureComponent<
               postId={idea.id}
               postType="idea"
               title={localize(idea.attributes.title_multiloc)}
+              color={colors.adminTextColor}
             />
             <StyledBody
               postId={idea.id}
               postType="idea"
               body={localize(idea.attributes.body_multiloc)}
               locale={locale}
+              color={colors.adminTextColor}
             />
             <TagList>
               {manualTaggings.length > 0 &&

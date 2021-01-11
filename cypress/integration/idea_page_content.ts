@@ -30,7 +30,7 @@ describe('Idea Page', () => {
       // shows a link to author profile
       cy.get('.e2e-idea-author .e2e-author-link')
         .should('have.attr', 'href')
-        .and('include', '/en-GB/profile/casey-luettgen');
+        .and('include', '/en/profile/casey-luettgen');
 
       // shows the comments content correctly
       cy.get('.e2e-comments-container').contains(

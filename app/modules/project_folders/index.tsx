@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
@@ -11,12 +11,26 @@ import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const RenderOnPublicationType = ({ publication, children }) => {
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+type RenderOnPublicationTypeProps = {
+  publication: IAdminPublicationContent;
+  children: ReactNode;
+};
+
+const RenderOnPublicationType = ({
+  publication,
+  children,
+}: RenderOnPublicationTypeProps) => {
   if (publication.publicationType !== 'folder') return null;
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ children }) => {
+type RenderOnFeatureFlagProps = {
+  children: ReactNode;
+};
+
+const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
   if (isProjectFoldersEnabled) {
     return <>{children}</>;
