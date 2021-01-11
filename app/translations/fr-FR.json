@@ -2178,7 +2178,7 @@
   "app.containers.SignUpInPage.signUpPageMetaDescription": "Inscrivez-vous à la plateforme de participation de {orgName} pour rejoindre la conversation !",
   "app.containers.SignUpInPage.slogan": "Partagez vos idées et aidez-nous à améliorer la commune !",
   "app.containers.SiteMap.contributions": "Contributions",
-  "app.containers.SiteMap.issues": "Problémes",
+  "app.containers.SiteMap.issues": "Problèmes",
   "app.containers.SiteMap.options": "Options",
   "app.containers.SiteMap.projects": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.SiteMap.questions": "Questions",
