@@ -23,7 +23,7 @@ export async function generateTaggings(ideaIds, tagIds, tags, projectIds) {
     projects: projectIds,
   });
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`],
+    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
   });
   return response;
 }

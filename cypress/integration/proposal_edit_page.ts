@@ -68,7 +68,7 @@
 //     // verify redirect to the initiative page
 //     cy.location('pathname').should(
 //       'eq',
-//       `/en-GB/initiatives/${initiativeTitle}`
+//       `/en/initiatives/${initiativeTitle}`
 //     );
 
 //     // verify the content on the initiative page

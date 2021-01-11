@@ -8,7 +8,7 @@ export interface IMembershipTypeMap {
 
 export interface IGroupDataAttributes {
   title_multiloc: Multiloc;
-  slug: string;
+  slug?: string;
   memberships_count: number;
   membership_type: MembershipType;
 }
@@ -23,7 +23,7 @@ export interface IGroupData {
 
 export interface GroupDiff {
   title_multiloc?: IGroupData['attributes']['title_multiloc'];
-  membership_type?: IGroupData['attributes']['membership_type'];
+  membership_type: IGroupData['attributes']['membership_type'];
 }
 
 export interface IGroups {
