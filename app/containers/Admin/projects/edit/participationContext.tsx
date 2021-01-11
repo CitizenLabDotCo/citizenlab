@@ -36,7 +36,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -160,7 +159,6 @@ export interface IParticipationContextConfig {
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
   surveys_enabled: GetFeatureFlagChildProps;
   typeform_enabled: GetFeatureFlagChildProps;
   google_forms_enabled: GetFeatureFlagChildProps;
@@ -529,7 +527,6 @@ class ParticipationContext extends PureComponent<
   render() {
     const {
       tenant,
-      locale,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -560,7 +557,7 @@ class ParticipationContext extends PureComponent<
       input_term,
     } = this.state;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
+    if (!isNilOrError(tenant) && loaded) {
       const tenantCurrency = tenant.attributes.settings.core.currency;
 
       return (
@@ -1103,7 +1100,6 @@ const Data = adopt<DataProps, {}>({
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
   tenant: <GetTenant />,
-  locale: <GetLocale />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
