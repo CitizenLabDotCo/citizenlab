@@ -1536,6 +1536,7 @@
   "app.containers.App.loading": "crwdns15708:0crwdne15708:0",
   "app.containers.App.metaDescription": "crwdns19054:0{orgName}crwdne19054:0",
   "app.containers.App.metaTitle": "crwdns19055:0{orgName}crwdne19055:0",
+  "app.containers.App.testMessage": "crwdns122292:0crwdne122292:0",
   "app.containers.CampaignsConsentForm.adminCategory": "crwdns29229:0crwdne29229:0",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "crwdns29231:0crwdne29231:0",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "crwdns19302:0crwdne19302:0",
