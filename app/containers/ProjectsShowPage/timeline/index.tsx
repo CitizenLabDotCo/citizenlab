@@ -74,6 +74,10 @@ const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
 
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-bottom: 50px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -145,7 +149,12 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
       }
     }, [location, phases]);
 
-    if (!isNilOrError(project) && selectedPhase !== undefined) {
+    if (
+      !isNilOrError(project) &&
+      !isNilOrError(phases) &&
+      phases.length > 0 &&
+      selectedPhase !== undefined
+    ) {
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
       const isPBPhase =
         selectedPhase?.attributes?.participation_method === 'budgeting';
@@ -178,7 +187,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   phaseId={selectedPhaseId}
                 />
                 {isPBPhase && (
-                  <PBExpenses
+                  <StyledPBExpenses
                     participationContextId={selectedPhaseId}
                     participationContextType="phase"
                     viewMode={smallerThanSmallTablet ? 'column' : 'row'}

@@ -33,7 +33,8 @@ definePermissionRule(
         item.path === '/admin/emails' ||
         item.path === '/admin/ideas' ||
         item.path === '/admin/workshops' ||
-        item.path === '/admin/processing'
+        item.path === '/admin/processing' ||
+        item.path === '/admin/moderation'
       ) {
         return true;
       }

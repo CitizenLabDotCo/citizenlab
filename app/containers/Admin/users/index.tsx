@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import { Formik } from 'formik';
+import { Formik, FormikActions } from 'formik';
 
 // Resources
 import GetFeatureFlag, {
@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   background: #fff;
 `;
@@ -54,7 +54,7 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Services
-import { IGroupData, addGroup } from 'services/groups';
+import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
 // Typings
 import { CLErrorsJSON } from 'typings';
@@ -65,11 +65,10 @@ export interface Props {
   isVerificationEnabled: GetFeatureFlagChildProps;
 }
 
+export type GroupCreationModal = false | 'step1' | MembershipType;
+
 export interface State {
-  groupCreationModal:
-    | false
-    | 'step1'
-    | IGroupData['attributes']['membership_type'];
+  groupCreationModal: GroupCreationModal;
 }
 
 class UsersPage extends PureComponent<Props & WithRouterProps, State> {
@@ -105,7 +104,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
   handleSubmitForm = (
     values: NormalFormValues,
-    { setErrors, setSubmitting, setStatus }
+    { setErrors, setSubmitting, setStatus }: FormikActions<NormalFormValues>
   ) => {
     addGroup({ ...values })
       .then(() => {
@@ -172,7 +171,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
             {groupCreationModal === 'manual' && (
               <Formik
-                initialValues={{ title_multiloc: {} }}
+                initialValues={{
+                  title_multiloc: {},
+                  membership_type: 'manual',
+                }}
                 validate={NormalGroupForm.validate}
                 render={this.renderNormalGroupForm}
                 onSubmit={this.handleSubmitForm}

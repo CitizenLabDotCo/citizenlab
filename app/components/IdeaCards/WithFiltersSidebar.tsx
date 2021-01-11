@@ -40,8 +40,6 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-// utils
-
 // style
 import styled, { withTheme } from 'styled-components';
 import {
