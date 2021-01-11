@@ -151,7 +151,7 @@ const Avatar = memo(
       );
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSize = size > 160 ? 'large' : 'medium';
-      const avatarSrc = avatar && avatar[imageSize];
+      const avatarSrc = avatar ? avatar[imageSize] : '';
       const containerSize = size + padding + borderThickness * 2;
       const badgeSize = size / (size < 40 ? 1.8 : 2.3);
       const fillColor = props.avatarFillColor || lighten(0.2, colors.label);
