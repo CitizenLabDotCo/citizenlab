@@ -3,7 +3,7 @@ import bowser from 'bowser';
 
 // components
 import Link from 'utils/cl-router/Link';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/Image';
 
 // styling
 import styled from 'styled-components';
@@ -38,7 +38,7 @@ const Container = styled(Link)`
   `}
 `;
 
-const ImageWrapper = styled.div<{ hasImage: boolean }>`
+const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   flex: 0 0 ${cardInnerHeight};
   width: ${cardInnerHeight};
   height: ${cardInnerHeight};
@@ -59,7 +59,7 @@ const ImageWrapper = styled.div<{ hasImage: boolean }>`
   `}
 `;
 
-const Image = styled(LazyImage)`
+const IdeaCardImage = styled(Image)`
   flex: 0 0 ${cardInnerHeight};
   width: ${cardInnerHeight};
   height: ${cardInnerHeight};
@@ -155,13 +155,15 @@ export const Card = ({
     }`}
   >
     {!hideImage && image && (
-      <ImageWrapper hasImage={!!image}>
-        <Image src={image} cover={true} alt="" />
-      </ImageWrapper>
+      <IdeaCardImageWrapper hasImage={!!image}>
+        <IdeaCardImage src={image} cover={true} alt="" />
+      </IdeaCardImageWrapper>
     )}
 
     {!hideImagePlaceholder && !image && (
-      <ImageWrapper hasImage={!!image}>{imagePlaceholder}</ImageWrapper>
+      <IdeaCardImageWrapper hasImage={!!image}>
+        {imagePlaceholder}
+      </IdeaCardImageWrapper>
     )}
 
     <ContentWrapper>
