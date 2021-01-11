@@ -50,7 +50,7 @@ const User = ({ userId, isVerified }: Props) => {
       <StyledAvatar
         userId={userId}
         avatarSize="30px"
-        fillColor={theme?.navbarTextColor || colors.label}
+        avatarFillColor={theme?.navbarTextColor || colors.label}
         addVerificationBadge
       />
     </>

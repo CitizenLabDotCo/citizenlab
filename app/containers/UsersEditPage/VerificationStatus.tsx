@@ -164,10 +164,10 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
               <StyledAvatar
                 userId={authUser?.data?.id}
                 avatarSize="52px"
-                bgColor="transparent"
-                padding={0}
-                borderThickness="2px"
-                borderColor="#fff"
+                avatarBgColor="transparent"
+                avatarPadding={0}
+                avatarBorderThickness="2px"
+                avatarBorderColor="#fff"
               />
               <ShieldIcon name="verify_dark" />
             </AvatarAndShield>
