@@ -143,17 +143,17 @@ const Avatar = memo(
       // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const size = parseInt(props.avatarSize, 10);
+      const avatarSize = parseInt(props.avatarSize, 10);
       const padding = props.avatarPadding || 3;
       const borderThickness = parseInt(
         props.avatarBorderThickness || '1px',
         10
       );
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
-      const imageSize = size > 160 ? 'large' : 'medium';
-      const avatarSrc = avatar ? avatar[imageSize] : '';
-      const containerSize = size + padding + borderThickness * 2;
-      const badgeSize = size / (size < 40 ? 1.8 : 2.3);
+      const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
+      const avatarSrc = avatar ? avatar[imageSizeLabel] : '';
+      const containerSize = avatarSize + padding + borderThickness * 2;
+      const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
       const fillColor = props.avatarFillColor || lighten(0.2, colors.label);
       const borderHoverColor = colors.label;
       const borderColor = props.avatarBorderColor || 'transparent';
