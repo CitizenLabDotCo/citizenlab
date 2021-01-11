@@ -64,8 +64,8 @@ const ProjectFolderShowPageMeta = memo(
           <title>
             {`${
               !isNilOrError(authUser) &&
-              authUser.attributes.unread_notifications
-                ? `(${authUser.attributes.unread_notifications}) `
+              authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
             }
             ${metaTitle}`}
