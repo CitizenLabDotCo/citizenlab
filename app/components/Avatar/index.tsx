@@ -136,7 +136,6 @@ const Avatar = memo(
     ...props
   }: Props & InjectedIntlProps) => {
     const user = useUser({ userId });
-
     if (!isNilOrError(user)) {
       const { slug, avatar, verified } = user.attributes;
       const profileLink = `/profile/${slug}`;
@@ -151,10 +150,11 @@ const Avatar = memo(
       );
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
-      const avatarSrc = avatar ? avatar[imageSizeLabel] : '';
-      const containerSize = avatarSize + padding + borderThickness * 2;
+      const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
+      const containerSize = avatarSize + padding * 2 + borderThickness * 2;
       const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
       const fillColor = props.avatarFillColor || lighten(0.2, colors.label);
+      const fillHoverColor = colors.label;
       const borderHoverColor = colors.label;
       const borderColor = props.avatarBorderColor || 'transparent';
       const bgColor = props.avatarBgColor || 'transparent';
@@ -183,7 +183,7 @@ const Avatar = memo(
               name="user"
               size={containerSize}
               fillColor={fillColor}
-              fillHoverColor={colors.label}
+              fillHoverColor={fillHoverColor}
               borderThickness={borderThickness}
               borderColor={borderColor}
               borderHoverColor={
