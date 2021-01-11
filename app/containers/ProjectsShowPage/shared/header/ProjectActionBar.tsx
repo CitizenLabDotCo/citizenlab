@@ -22,6 +22,7 @@ import T from 'components/T';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { fontSizes, media, colors, viewportWidths } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const slideInOutTimeout = 250;
 const slideInOutDistance = 14;
@@ -135,7 +136,7 @@ const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxl - 2}px;
   line-height: normal;
-  font-weight: 600;
+  font-weight: 500;
   text-align: left;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -201,7 +202,7 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
       <Container
         className={`${className || ''} ${isVisible ? 'visible' : 'hidden'}`}
       >
-        <ContentContainer>
+        <ContentContainer maxWidth={maxPageWidth}>
           <InnerContainer>
             <Left>
               <ProjectTitle>

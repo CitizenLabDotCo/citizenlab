@@ -167,7 +167,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       verified,
     } = this.props;
 
-    if (!isNilOrError(user) && hideIfNoAvatar !== true) {
+    if (!isNilOrError(user)) {
       const profileLink = `/profile/${user.attributes.slug}`;
       // In dev mode, user.attributes.slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
@@ -189,6 +189,10 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       const badgeSize = this.props.badgeSize
         ? parseInt(this.props.badgeSize, 10)
         : size / (size < 40 ? 1.8 : 2.3);
+
+      if (!avatarSrc && hideIfNoAvatar) {
+        return null;
+      }
 
       const AvatarComponent = (
         <Container aria-hidden className={className} size={containerSize}>
