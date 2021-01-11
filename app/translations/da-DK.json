@@ -1536,6 +1536,7 @@
   "app.containers.App.loading": "Indlæser...",
   "app.containers.App.metaDescription": "{tenantName, select, DeloitteDK {Vær med til at definere, hvordan vi skal måle på verdensmålene i Danmark. Bidrag med dine ideer, forslag og holdninger.} other {Velkommen til online citizen engagement platform af {orgName}. Udforske lokale projekter og stemme på din favorit ideer. Kom og deltage i drøftelserne!}}",
   "app.containers.App.metaTitle": "{tenantName, select, DeloitteDK {Vores Mål | Giv dit input} other {Citizen engagement platform af {orgName} | CitizenLab}}",
+  "app.containers.App.testMessage": "",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails i denne kategori",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Succes",
