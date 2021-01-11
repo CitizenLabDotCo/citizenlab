@@ -40,6 +40,7 @@ const Fallback = styled.div<{ src: string | undefined }>`
 `;
 
 interface Props {
+  id?: string;
   src: HTMLImageElement['src'];
   alt?: HTMLImageElement['alt'];
   role?: string;
@@ -56,7 +57,7 @@ interface State {
   loaded: boolean;
 }
 
-export default class LazyImage extends PureComponent<Props, State> {
+export default class Image extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
     fadeIn: true,
@@ -88,6 +89,7 @@ export default class LazyImage extends PureComponent<Props, State> {
 
   render() {
     const {
+      id,
       src,
       alt,
       role,
@@ -111,6 +113,7 @@ export default class LazyImage extends PureComponent<Props, State> {
         placeholderBg={placeholderBg}
         loaded={loaded}
         onLoad={this.handleImageLoaded}
+        id={id || ''}
         className={className || ''}
       />
     );

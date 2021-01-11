@@ -56,7 +56,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 
   useEffect(() => {
-    (async function iife() {
+    (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
@@ -77,15 +77,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [mode, projectFolder]);
 
   useEffect(() => {
-    (async function iife() {
-      if (mode === 'edit' && !isNilOrError(adminPublication)) {
-        setPublicationStatus(adminPublication.attributes.publication_status);
-      }
-    })();
+    if (mode === 'edit' && !isNilOrError(adminPublication)) {
+      setPublicationStatus(adminPublication.attributes.publication_status);
+    }
   }, [mode, adminPublication]);
 
   useEffect(() => {
-    (async function iife() {
+    (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
         const imagePromises = projectFolderImagesRemote.data.map((img) =>
           img.attributes.versions.large
@@ -104,7 +102,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [mode, projectFolderImagesRemote]);
 
   useEffect(() => {
-    (async function iife() {
+    (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderFilesRemote)) {
         const filePromises = projectFolderFilesRemote.data.map((file) =>
           convertUrlToUploadFile(

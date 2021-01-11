@@ -44,8 +44,6 @@ const ProjectFolderShareButton = memo<Props>(
             <ShareButton
               icon="share"
               onClick={openShareModal}
-              buttonStyle="white"
-              padding="6px 12px"
               {...buttonContainerProps}
             >
               <FormattedMessage {...messages.share} />

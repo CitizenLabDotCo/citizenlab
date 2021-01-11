@@ -266,7 +266,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       for (
         let step = this.props.maxNumberOfImages;
         step < this.props.images.length;
-        step++
+        step += 1
       ) {
         this.props.onRemove(this.props.images[step]);
       }

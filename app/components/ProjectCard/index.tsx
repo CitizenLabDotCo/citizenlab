@@ -10,7 +10,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
@@ -49,17 +49,12 @@ import { rgba, darken } from 'polished';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
-  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
   position: relative;
   cursor: pointer;
   ${defaultCardStyle};
-
-  &.hideDescriptionPreview {
-    min-height: 527px;
-  }
 
   &.large {
     width: 100%;
@@ -89,6 +84,12 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   }
 
   &.small {
+    min-height: 540px;
+
+    &.hideDescriptionPreview {
+      min-height: 490px;
+    }
+
     &.threecolumns {
       ${media.smallerThanMaxTablet`
         width: calc(50% - 13px);
@@ -105,10 +106,14 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     `}
   }
 
-  &.small,
   &.medium {
     padding-top: 20px;
     padding-bottom: 30px;
+  }
+
+  &.small {
+    padding-top: 18px;
+    padding-bottom: 25px;
   }
 
   &.desktop {
@@ -139,6 +144,11 @@ const ProjectImageContainer = styled.div`
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
+
+  &.small {
+    height: 224px;
+    flex-basis: 224px;
+  }
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -154,7 +164,7 @@ const ProjectImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const ProjectImage = styled(LazyImage)`
+const ProjectImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;

@@ -7,7 +7,7 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import { Button } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -22,6 +22,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -45,7 +46,7 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const HeaderImage = styled(LazyImage)`
+const HeaderImage = styled(Image)`
   width: 100%;
   height: 240px;
   margin-bottom: 30px;
@@ -88,7 +89,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
 
       return (
         <Container className={className || ''}>
-          <ContentContainer>
+          <ContentContainer maxWidth={maxPageWidth}>
             {userCanEditProject && (
               <EditButton
                 icon="edit"
@@ -102,6 +103,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
             )}
             {projectHeaderImageLargeUrl && (
               <HeaderImage
+                id="e2e-project-header-image"
                 src={projectHeaderImageLargeUrl}
                 cover={true}
                 fadeIn={false}
