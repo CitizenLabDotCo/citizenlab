@@ -39,7 +39,9 @@ const Container = styled.main`
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+    min-height: calc(
+      100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+    );
   `}
 
   ${media.smallerThanMaxTablet`

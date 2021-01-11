@@ -43,7 +43,7 @@ import useTaggings from 'hooks/useTaggings';
 import EmptyState from './EmptyState';
 
 const Container = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   flex-direction: row;
   align-items: stretch;

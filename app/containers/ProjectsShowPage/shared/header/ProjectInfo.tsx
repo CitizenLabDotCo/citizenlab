@@ -37,7 +37,7 @@ import {
 } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const desktopCollapsedDescriptionMaxHeight = 400;
+const desktopCollapsedDescriptionMaxHeight = 380;
 const mobileCollapsedDescriptionMaxHeight = 180;
 
 const Container = styled.div`
@@ -98,8 +98,11 @@ const ProjectTitle = styled.h1`
     text-align: right;
   `}
 
+  ${media.smallerThan1280px`
+    font-size: ${fontSizes.xxl}px;
+  `}
+
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
     margin-bottom: 20px;
   `}
 `;
