@@ -1536,6 +1536,7 @@
   "app.containers.App.loading": "التحميل جارٍ...",
   "app.containers.App.metaDescription": "مرحبًا بك في منصة إشراك المواطن الإلكترونية الخاصة بـ {orgName}.\nاستكشف المشاريع المحلية وصوّت للأفكار المفضلة لديك. وتعال وشارك في النقاشات!",
   "app.containers.App.metaTitle": "منصة إشراك المواطن الخاصة بـ {orgName} | CitizenLab",
+  "app.containers.App.testMessage": "",
   "app.containers.CampaignsConsentForm.adminCategory": "المسؤول",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "الرسائل الإلكترونية في هذه الفئة",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "نجاح",
