@@ -35,15 +35,15 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   width: 100%;
-  padding: 30px;
+  padding: 23px;
   display: flex;
   flex-direction: row;
   ${defaultCardStyle};
+  box-shadow: none;
   border: solid 1px #ccc;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
-    padding: 25px;
   `}
 `;
 
@@ -202,7 +202,7 @@ const EventMetaItemText = styled.div`
 const EventTitle = styled.h3`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: normal;
   padding: 0;
   margin: 0;

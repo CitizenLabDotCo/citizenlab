@@ -11,7 +11,9 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
+import Tippy from '@tippyjs/react';
 import { Icon } from 'cl2-component-library';
+import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 
 // services
 import { addBasket, updateBasket } from 'services/baskets';
@@ -68,8 +70,8 @@ const BudgetBox = styled.div`
   justify-content: center;
   margin-bottom: 5px;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.separation};
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Budget = styled.div`
@@ -78,9 +80,15 @@ const Budget = styled.div`
   font-weight: 500;
 `;
 
-const IdeaCardButton = styled(Button)`
-  margin-right: 12px;
+const ButtonWrapper = styled.div``;
+
+const TooltipContent = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px;
 `;
+
+const IdeaCardButton = styled(Button)``;
 
 const AssignedContainer = styled.div`
   display: flex;
@@ -360,31 +368,59 @@ class AssignBudgetControl extends PureComponent<
       const fullClassName = `e2e-assign-budget ${className}`;
 
       if (view === 'ideaCard') {
+        const budgetingEnabled =
+          idea.attributes.action_descriptor.budgeting?.enabled;
+        const budgetingDisabledReason =
+          idea.attributes.action_descriptor.budgeting?.disabled_reason;
+        const budgetingDescriptor = idea.attributes.action_descriptor.budgeting;
+
+        const tippyContent =
+          !!authUser && !budgetingEnabled && !!budgetingDisabledReason ? (
+            <TooltipContent
+              id="tooltip-content"
+              className="e2e-disabled-tooltip"
+            >
+              <AssignBudgetDisabled
+                budgetingDescriptor={budgetingDescriptor}
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+              />
+            </TooltipContent>
+          ) : null;
+
         return (
           <IdeaCardContainer className={fullClassName} aria-live="polite">
-            <IdeaCardButton
-              onClick={this.assignBudget}
-              processing={processing}
-              bgColor={
-                disabled
-                  ? colors.disabledPrimaryButtonBg
-                  : isInBasket
-                  ? colors.adminSecondaryTextColor
-                  : colors.adminTextColor
-              }
-              bgHoverColor={
-                disabled ? colors.disabledPrimaryButtonBg : undefined
-              }
-              icon={!isInBasket ? 'basket-plus' : 'remove'}
-              className={`e2e-assign-budget-button ${
-                isInBasket ? 'in-basket' : 'not-in-basket'
-              }`}
-              ariaLabel={
-                !isInBasket
-                  ? formatMessage(messages.assign)
-                  : formatMessage(messages.undo)
-              }
-            />
+            <Tippy
+              disabled={!tippyContent}
+              interactive={true}
+              placement="bottom"
+              content={tippyContent || <></>}
+              theme="light"
+              hideOnClick={false}
+            >
+              <ButtonWrapper tabIndex={!budgetingEnabled ? 0 : -1}>
+                <IdeaCardButton
+                  onClick={this.assignBudget}
+                  disabled={!!authUser && !budgetingEnabled}
+                  processing={processing}
+                  bgColor={
+                    isInBasket
+                      ? colors.adminSecondaryTextColor
+                      : colors.adminTextColor
+                  }
+                  iconSize="18px"
+                  icon={!isInBasket ? 'basket-plus' : 'remove'}
+                  className={`e2e-assign-budget-button ${
+                    isInBasket ? 'in-basket' : 'not-in-basket'
+                  }`}
+                  ariaLabel={
+                    !isInBasket
+                      ? formatMessage(messages.assign)
+                      : formatMessage(messages.undo)
+                  }
+                />
+              </ButtonWrapper>
+            </Tippy>
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {

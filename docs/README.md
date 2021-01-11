@@ -3,6 +3,7 @@
 ## Next release
 
 ### Changed
+- Idea cards redesign
 - Project folder page redesign
 - Project folders now have a single folder card image instead of 5 folder images in the admin settings
 
