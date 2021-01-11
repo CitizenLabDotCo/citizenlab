@@ -39,9 +39,9 @@ const Container = styled.div`
   `}
 `;
 
-const AllocateBudgetButton = styled(Button)`
-  margin-bottom: 10px;
-`;
+// const AllocateBudgetButton = styled(Button)`
+//   margin-bottom: 10px;
+// `;
 
 const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
@@ -75,7 +75,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   useEffect(() => {
     const loop = (counter: number) => {
-      if (counter < 20) {
+      if (counter < 200) {
         setTimeout(() => {
           const viewportHeight = Math.max(
             document.documentElement.clientHeight || 0,
@@ -115,7 +115,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           }
 
           loop(counter + 1);
-        }, 100);
+        }, 10);
       }
     };
 
@@ -163,7 +163,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
     return (
       <Container className={className || ''}>
-        {ideasPresentOutsideViewport &&
+        {/* {ideasPresentOutsideViewport &&
           ((process_type === 'continuous' &&
             participation_method === 'budgeting') ||
             currentPhase?.attributes.participation_method === 'budgeting') &&
@@ -172,13 +172,13 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           ideas_count > 0 && (
             <AllocateBudgetButton
               id="e2e-project-allocate-budget-button"
-              buttonStyle="secondary"
+              buttonStyle="primary"
               onClick={scrollTo('project-ideas')}
               fontWeight="500"
             >
               <FormattedMessage {...messages.allocateBudget} />
             </AllocateBudgetButton>
-          )}
+          )} */}
         {ideasPresentOutsideViewport &&
           ((process_type === 'continuous' &&
             participation_method === 'ideation') ||
@@ -220,7 +220,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             currentPhase?.attributes.participation_method === 'survey') &&
           !hasProjectEnded && (
             <Button
-              buttonStyle="secondary"
+              buttonStyle="primary"
               onClick={scrollTo('project-survey')}
               fontWeight="500"
             >
@@ -232,7 +232,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             currentPhase?.attributes.participation_method === 'poll') &&
           !hasProjectEnded && (
             <Button
-              buttonStyle="secondary"
+              buttonStyle="primary"
               onClick={scrollTo('project-poll')}
               fontWeight="500"
             >
