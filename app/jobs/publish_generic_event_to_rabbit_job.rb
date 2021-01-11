@@ -1,10 +1,10 @@
 class PublishGenericEventToRabbitJob < ApplicationJob
   queue_as :default
 
-  def perform(event, routing_key)
-    return unless BUNNY_CON
+  def perform(event, routing_key, bunny=BUNNY_CON)
+    return unless bunny
     event = add_tenant_properties(event)
-    publish_to_rabbitmq(BUNNY_CON, event, routing_key)
+    publish_to_rabbitmq(bunny, event, routing_key)
   end
 
   private

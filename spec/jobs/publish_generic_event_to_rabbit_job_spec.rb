@@ -6,6 +6,7 @@ RSpec.describe PublishGenericEventToRabbitJob, type: :job do
 
   describe '#perform' do
 
+    let(:bunny) { instance_double(Bunny::Session) }
     let(:routing_key) { "routing_key" }
     let(:generic_event) { {field_1: "value1", field_2: "value2"} }
 
@@ -15,7 +16,7 @@ RSpec.describe PublishGenericEventToRabbitJob, type: :job do
         expect(actual_routing_key).to eq(routing_key)
       end
 
-      job.perform(generic_event, routing_key)
+      job.perform(generic_event, routing_key, bunny)
     end
 
     it "actually publishes the event to RabbitMQ when there is no current tenant" do
@@ -25,7 +26,7 @@ RSpec.describe PublishGenericEventToRabbitJob, type: :job do
       end
 
       Apartment::Tenant.switch('public') do
-        job.perform(generic_event, routing_key)
+        job.perform(generic_event, routing_key, bunny)
       end
     end
 
