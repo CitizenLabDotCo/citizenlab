@@ -1159,10 +1159,6 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-interface DataProps {
-  isProjectFoldersEnabled: GetFeatureFlagChildProps;
-}
-
 const AdminProjectEditGeneralWithHocs = withRouter(
   injectIntl(AdminProjectEditGeneral)
 );
