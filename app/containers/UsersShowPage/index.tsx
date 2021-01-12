@@ -25,6 +25,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -38,7 +39,9 @@ const NotFoundContainer = styled.main`
 `;
 
 const Container = styled.main`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,7 +122,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
               userId={user.id}
             />
 
-            <StyledContentContainer>
+            <StyledContentContainer maxWidth={maxPageWidth}>
               {currentTab === 'ideas' && (
                 <UserIdeas>
                   <IdeaCards

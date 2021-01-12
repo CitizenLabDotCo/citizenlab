@@ -96,7 +96,9 @@ const Loading = styled.div`
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -338,7 +340,7 @@ export class InitiativesShow extends PureComponent<
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();
-  timeoutRef: number;
+  timeoutRef: NodeJS.Timeout;
 
   constructor(props) {
     super(props);

@@ -26,6 +26,20 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.goBackToList',
     defaultMessage: 'Go back to the list',
   },
+  share: {
+    id: 'app.containers.ProjectFolderShowPage.share',
+    defaultMessage: 'Share',
+  },
+  readMore: {
+    id: 'app.containers.ProjectFolderShowPage.readMore',
+    defaultMessage: 'Read more',
+  },
+  seeLess: {
+    id: 'app.containers.ProjectFolderShowPage.seeLess',
+    defaultMessage: 'See less',
+  },
+  editFolder: {
+    id: 'app.containers.ProjectFolderShowPage.editFolder',
+    defaultMessage: 'Edit folder',
+  },
 });
-
-// TODO: perhaps change messages to include folder
