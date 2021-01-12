@@ -9,7 +9,9 @@ import { PublicationStatus } from 'resources/GetProjects';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -23,7 +25,7 @@ import messages from '../messages';
 
 interface DataProps {
   adminPublications: GetAdminPublicationsChildProps;
-  isProjectFoldersEnabled: boolean;
+  isProjectFoldersEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends DataProps {}
@@ -103,5 +105,7 @@ const Data = adopt<DataProps>({
 });
 
 export default () => (
-  <Data>{(dataProps) => <ModeratorProjectList {...dataProps} />}</Data>
+  <Data>
+    {(dataProps: DataProps) => <ModeratorProjectList {...dataProps} />}
+  </Data>
 );
