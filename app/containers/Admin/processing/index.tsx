@@ -149,13 +149,13 @@ const Processing = memo<Props & InjectedIntlProps>(
     const tenant = useTenant();
     const locale = useLocale();
 
-    const { taggings } = useTaggings();
+    const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
+
+    const { taggings, processing } = useTaggings();
 
     const [projectList, setProjectList] = useState<
       IFilterSelectorValue[] | null
     >(null);
-
-    const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
 
     const [exporting, setExporting] = useState<boolean>(false);
 
@@ -310,6 +310,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                         disabled={selectedRows.length === 0}
                         locale={locale}
                         onClick={handleAutoTag}
+                        processing={processing}
                       >
                         <FormattedMessage {...messages.autotag} />
                       </Button>
