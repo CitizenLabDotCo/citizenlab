@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2020_12_17_170635) do
+ActiveRecord::Schema.define(version: 2021_01_12_155555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -843,6 +842,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "confidence_score"
+    t.string "task_id"
     t.index ["idea_id", "tag_id"], name: "index_tagging_taggings_on_idea_id_and_tag_id", unique: true
     t.index ["idea_id"], name: "index_tagging_taggings_on_idea_id"
     t.index ["tag_id"], name: "index_tagging_taggings_on_tag_id"

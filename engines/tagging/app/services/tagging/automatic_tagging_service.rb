@@ -1,8 +1,22 @@
 module Tagging
-  class TaggingReceiverService
+  class AutomaticTaggingService
     def add_tags(body)
       switch_tenant(body) do
         save_tagging body["result"]["data"]["final_predictions"] if body["status"] == 'SUCCESS'
+      end
+    end
+
+    def cancel_tasks
+      if Tagging.pending&.map { |e| e.task_id }.uniq.map { |task_id|
+          r = NLP::TasksService.new.cancel(task_id)
+          Tagging.pending.where(task_id: task_id).destroy_all if r== 200
+          r
+        }.all? { |r|
+          r == 200
+        }
+        200
+      else
+        500
       end
     end
 

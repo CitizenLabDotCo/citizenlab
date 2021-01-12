@@ -4,6 +4,7 @@ Tagging::Engine.routes.draw do
       resources :tags, only: %i[index update destroy show]
       resources :taggings, only: %i[index create show destroy update]
       post 'taggings/generate' => 'taggings#generate'
+      post 'taggings/generate/cancel' => 'taggings#cancel_generate'
     end
   end
 end

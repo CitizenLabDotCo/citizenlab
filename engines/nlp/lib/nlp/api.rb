@@ -109,5 +109,14 @@ module NLP
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
+
+    def cancel_task(task_id)
+      resp = self.class.get(
+        "/v2/async_api/cancel/#{task_id}",
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
+      )
+      return resp.code
+    end
   end
 end
