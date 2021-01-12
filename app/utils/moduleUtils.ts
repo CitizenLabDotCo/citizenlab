@@ -30,7 +30,7 @@ export type OutletsPropertyMap = {
     publication: IAdminPublicationContent;
   };
   'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
-  'app.components.AdminPage.projects.form.additionalInputs.inputs': {
+  'app.components.AdminPage.projects.all.projectFolderSelect': {
     projectAttrs: IUpdatedProjectProperties;
     onChange: (fieldPath: string, value: any) => void;
   };

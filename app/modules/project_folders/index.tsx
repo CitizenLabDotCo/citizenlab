@@ -114,7 +114,7 @@ const configuration: ModuleConfiguration = {
         <ProjectFolderSiteMap {...props} />
       </RenderOnPublicationType>
     ),
-    'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
+    'app.components.AdminPage.projects.all.projectFolderSelect': ({
       onChange,
       projectAttrs,
     }) => (
