@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isString, isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import Outlet from 'components/Outlet';
 
 // tracking
 import { trackPage } from 'utils/analytics';
@@ -29,6 +28,7 @@ import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
+import Outlet from 'components/Outlet';
 
 const ModeratorProjectList = React.lazy(() =>
   import('./Lists/ModeratorProjectList')
@@ -78,7 +78,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
