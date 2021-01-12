@@ -31,7 +31,7 @@ const StyledSectionField = styled(SectionField)`
 `;
 
 interface Props {
-  onChange: (fieldPath: string, value: any) => void;
+  onChange: (value: string) => void;
   projectAttrs: IUpdatedProjectProperties;
 }
 
@@ -74,8 +74,10 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
     }, [folderOptions, noFolderOption, authUser]);
 
     const handleChange = useCallback(
-      ({ value }) => {
-        onChange('projectAttributesDiff.folder_id', value);
+      ({ value }: IOption) => {
+        if (typeof value === 'string') {
+          onChange(value);
+        }
       },
       [onChange]
     );
