@@ -35,7 +35,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfYourIdeaMailer, type: :mailer do
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('You received an update')
+      expect(mail.subject).to start_with('The status of your idea has been changed')
     end
 
     it 'renders the sender email' do

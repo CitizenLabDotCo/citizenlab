@@ -27,7 +27,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer, type: :mailer 
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('You received an update')
+      expect(mail.subject).to start_with('An idea you voted on has received an update')
     end
 
     it 'renders the sender email' do
