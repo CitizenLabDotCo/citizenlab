@@ -7,7 +7,7 @@ export interface ITagging {
   id: string;
   type: 'tagging';
   attributes: {
-    assignment_method: 'automatic' | 'manual';
+    assignment_method: 'automatic' | 'manual' | 'pending';
     confidence_score: number;
     tag_id: string;
     idea_id: string;

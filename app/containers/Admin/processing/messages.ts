@@ -149,4 +149,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.pickProject',
     defaultMessage: 'Please select a project to start with.',
   },
+  pendingTagText: {
+    id: 'app.components.admin.PostManager.PostPreview.pendingTagText',
+    defaultMessage: 'pending',
+  },
 });
