@@ -429,6 +429,7 @@
   "app.components.admin.PostManager.PostPreview.formTitle": "Edytowanie pomysłu",
   "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "Ten projekt nie zawiera żadnych pomysłów.",
   "app.components.admin.PostManager.PostPreview.noOne": "Nieprzypisany",
+  "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickProject": "Proszę wybrać projekt.",
   "app.components.admin.PostManager.PostPreview.picks": "Wybrane: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Zapisz",

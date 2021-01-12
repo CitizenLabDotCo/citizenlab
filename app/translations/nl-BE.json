@@ -429,6 +429,7 @@
   "app.components.admin.PostManager.PostPreview.formTitle": "Bewerken van het idee",
   "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "Dit project bevat geen ideeën.",
   "app.components.admin.PostManager.PostPreview.noOne": "Niet toegewezen",
+  "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickProject": "Selecteer een project om van start te gaan.",
   "app.components.admin.PostManager.PostPreview.picks": "Keuzes: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Opslaan",
