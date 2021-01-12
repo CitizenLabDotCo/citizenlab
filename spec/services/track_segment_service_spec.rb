@@ -113,8 +113,8 @@ describe TrackSegmentService do
           },
           integrations: {
             All: true,
-            Intercom: false,
-            SatisMeter: false
+            Intercom: true,
+            SatisMeter: true
           }
         })
       end
