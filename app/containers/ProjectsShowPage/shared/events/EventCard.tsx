@@ -127,7 +127,7 @@ const EventDate = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #fff;
+  background: #f4f4f4;
   border: solid 1px ${colors.label};
   border-bottom: none;
 `;
