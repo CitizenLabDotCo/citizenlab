@@ -429,6 +429,7 @@
   "app.components.admin.PostManager.PostPreview.formTitle": "Modifier l’idée",
   "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "Ce projet ne contient aucune idée.",
   "app.components.admin.PostManager.PostPreview.noOne": "Non attribué",
+  "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickProject": "Veuillez sélectionner un projet pour commencer.",
   "app.components.admin.PostManager.PostPreview.picks": "Sélections: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Enregistrer",

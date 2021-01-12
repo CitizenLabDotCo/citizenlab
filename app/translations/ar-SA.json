@@ -429,6 +429,7 @@
   "app.components.admin.PostManager.PostPreview.formTitle": "تعديل الفكرة",
   "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "This project doesn't contain any ideas.",
   "app.components.admin.PostManager.PostPreview.noOne": "غير مُعيّن",
+  "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickProject": "Please select a project to start with.",
   "app.components.admin.PostManager.PostPreview.picks": "الاختيارات: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "حفظ",

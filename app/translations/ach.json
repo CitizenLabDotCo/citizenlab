@@ -429,6 +429,7 @@
   "app.components.admin.PostManager.PostPreview.formTitle": "",
   "app.components.admin.PostManager.PostPreview.noIdeasInThisProject": "",
   "app.components.admin.PostManager.PostPreview.noOne": "",
+  "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickProject": "",
   "app.components.admin.PostManager.PostPreview.picks": "",
   "app.components.admin.PostManager.PostPreview.save": "",
