@@ -1064,7 +1064,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
             <StyledSectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.headerImageLabel} />
+                <FormattedMessage {...messages.headerImageLabelText} />
                 <IconTooltip
                   content={
                     <FormattedMessage
@@ -1102,7 +1102,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
             <StyledSectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.projectCardImageLabel} />
+                <FormattedMessage {...messages.projectCardImageLabelText} />
                 <IconTooltip
                   content={
                     <FormattedMessage
