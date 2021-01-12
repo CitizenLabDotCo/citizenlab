@@ -10,7 +10,8 @@ module NLP
       @documents.any? ? api.zeroshot_classification({
         candidate_labels: @candidate_labels,
         min_confidence_treshold: 0.5,
-        documents: @documents
+        documents: @documents,
+        tenant_id: Tenant.current.id
       }.freeze) : []
     end
 
