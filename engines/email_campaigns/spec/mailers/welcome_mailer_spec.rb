@@ -2,23 +2,22 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::WelcomeMailer, type: :mailer do
   describe 'Welcome' do
-    before do 
-      EmailCampaigns::Campaigns::Welcome.create!
-      @recipient = create(:user, locale: 'en')
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: @recipient.id)
+    let!(:recipient) { create(:admin, locale: 'en') }
+    let!(:campaign) { EmailCampaigns::Campaigns::Welcome.create! }
+    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before do
+      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
 
-    let(:command) {{
-      recipient: @recipient
-    }}
-    let(:mail) { described_class.campaign_mail(EmailCampaigns::Campaigns::Welcome.first, command).deliver_now }
+    let(:command) { { recipient: recipient } }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Welcome')
     end
 
     it 'renders the receiver email' do
-      expect(mail.to).to eq([@recipient.email])
+      expect(mail.to).to eq([recipient.email])
     end
 
     it 'renders the sender email' do

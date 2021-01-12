@@ -104,7 +104,12 @@ module Frontend
     end
 
     def unsubscribe_url tenant, campaign_id, user_id
-      "#{tenant.base_frontend_uri}/email-settings?unsubscription_token=#{EmailCampaigns::UnsubscriptionToken.find_by(user_id: user_id).token}&campaign_id=#{campaign_id}"
+      token = EmailCampaigns::UnsubscriptionToken.find_by(user_id: user_id)&.token
+      if token
+        "#{tenant.base_frontend_uri}/email-settings?unsubscription_token=#{token}&campaign_id=#{campaign_id}"
+      else
+        home_url tenant: tenant
+      end
     end
 
     def idea_edit_url(tenant, idea_id)
