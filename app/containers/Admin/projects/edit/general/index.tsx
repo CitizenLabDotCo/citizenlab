@@ -1057,7 +1057,7 @@ class AdminProjectEditGeneral extends PureComponent<
             </StyledSectionField>
 
             <Outlet
-              id="app.components.AdminPage.projects.form.additionalInputs.inputs"
+              id="app.components.AdminPage.projects.all.projectFolderSelect"
               projectAttrs={projectAttrs}
               onChange={this.handleUpdateField}
             />
