@@ -28,6 +28,7 @@ public/uploads
 
 doc/
 .yardoc/
+attractor_output/
 
 .custom_env
 
