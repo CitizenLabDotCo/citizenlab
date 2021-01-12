@@ -32,7 +32,7 @@ export type OutletsPropertyMap = {
   'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
   'app.components.AdminPage.projects.all.projectFolderSelect': {
     projectAttrs: IUpdatedProjectProperties;
-    onChange: (fieldPath: string, value: any) => void;
+    onChange: (value: string) => void;
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};

@@ -747,11 +747,11 @@ class AdminProjectEditGeneral extends PureComponent<
     });
   };
 
-  handleUpdateField = (fieldPath: string, value: any) => {
+  handleUpdateProjectFolderId = (value: string) => {
     this.setState((prevState) => {
       const newState = { ...prevState };
       set(newState, 'submitState', 'enabled');
-      set(newState, fieldPath, value);
+      set(newState, 'projectAttributesDiff.folder_id', value);
       return deepMerge(prevState, newState);
     });
   };
@@ -1059,7 +1059,7 @@ class AdminProjectEditGeneral extends PureComponent<
             <Outlet
               id="app.components.AdminPage.projects.all.projectFolderSelect"
               projectAttrs={projectAttrs}
-              onChange={this.handleUpdateField}
+              onChange={this.handleUpdateProjectFolderId}
             />
 
             <StyledSectionField>
