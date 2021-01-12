@@ -28,7 +28,6 @@ module Frontend
               event[:anonymous_id] = SecureRandom.base64
             end
 
-            PublishRawEventToSegmentJob.perform_later(event)
             head 200
           else
             render json: { errors: @product_feedback.errors.details }, status: :unprocessable_entity
