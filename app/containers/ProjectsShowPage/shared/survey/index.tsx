@@ -8,6 +8,7 @@ import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import EnalyzerSurvey from './EnalyzerSurvey';
 import Warning from 'components/UI/Warning';
+import SignUpIn from 'components/SignUpIn';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -31,6 +32,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // styling
 import styled from 'styled-components';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled.div`
   position: relative;
@@ -38,6 +40,18 @@ const Container = styled.div`
   &.enabled {
     min-height: 500px;
   }
+`;
+
+const SignUpInhWrapper = styled.div`
+  width: 100%;
+  padding: 20px;
+  ${defaultCardStyle};
+`;
+
+const StyledSignUpIn = styled(SignUpIn)`
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 interface InputProps {
@@ -110,6 +124,8 @@ class Survey extends PureComponent<Props, State> {
     this.signUpIn('signup');
   };
 
+  noOp = () => {};
+
   disabledMessage: {
     [key in ISurveyTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
   } = {
@@ -169,6 +185,28 @@ class Survey extends PureComponent<Props, State> {
             {surveyService === 'enalyzer' && (
               <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
             )}
+          </Container>
+        );
+      } else if (
+        isNilOrError(authUser) &&
+        disabledReason === 'maybeNotPermitted'
+      ) {
+        return (
+          <Container className={className || ''}>
+            <ProjectPageSectionTitle>
+              <FormattedMessage {...messages.survey} />
+            </ProjectPageSectionTitle>
+            <SignUpInhWrapper>
+              <StyledSignUpIn
+                metaData={{
+                  flow: 'signin',
+                  pathname: window.location.pathname,
+                  inModal: false,
+                  verification: undefined,
+                }}
+                onSignUpInCompleted={this.noOp}
+              />
+            </SignUpInhWrapper>
           </Container>
         );
       } else {
