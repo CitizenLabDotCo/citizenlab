@@ -52,7 +52,7 @@ const ProjectTemplatePreviewContainer = styled.div`
   }
 `;
 
-const CreateProjectWraper = styled.div`
+const CreateProjectWrapper = styled.div`
   margin-bottom: 18px;
 `;
 
@@ -224,13 +224,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </HasPermission>
           </SectionDescription>
 
-          <CreateProjectWraper>
+          <CreateProjectWrapper>
             {userIsAdmin ? (
               <CreateProject />
             ) : (
               <Outlet id="app.containers.AdminPage.projects.all.createProjectNotAdmin" />
             )}
-          </CreateProjectWraper>
+          </CreateProjectWrapper>
 
           <PageWrapper>
             <ListsContainer>
