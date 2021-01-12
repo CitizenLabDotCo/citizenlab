@@ -60,8 +60,7 @@ class SideFxTenantService
   private
 
   def update_group_by_identify
-    user = User.admin.first || User.first
-    TrackTenantJob.perform_later(user) if user
+    TrackTenantJob.perform_later
   end
 
 

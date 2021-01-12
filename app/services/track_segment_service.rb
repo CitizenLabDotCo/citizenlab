@@ -27,7 +27,7 @@ class TrackSegmentService
     )
   end
 
-  def identify_tenant(user, tenant)
+  def identify_tenant(tenant)
     traits = {
         name: tenant.name,
         website: "https://#{tenant.host}",
@@ -37,8 +37,11 @@ class TrackSegmentService
         **TrackingService.new.tenant_properties(tenant)
     }
 
+    # Segment provides no way to track a group of users directly.
+    # You have to piggyback the group traits/properties when associating a user to the group.
+    dummy_user_id = (User.admin.first || User.first).id
     Analytics && tenant && Analytics.group(
-        user_id: user.id,
+        user_id: dummy_user_id,
         group_id: tenant.id,
         traits: traits,
         integrations: integrations(user)
