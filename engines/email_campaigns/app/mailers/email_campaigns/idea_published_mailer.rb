@@ -3,7 +3,7 @@ module EmailCampaigns
     protected
 
     def subject
-      I18n.t('email_campaigns.idea_published.subject', organizationName: organization_name)
+      format_message('subject', values: { organizationName: organization_name })
     end
 
     private
