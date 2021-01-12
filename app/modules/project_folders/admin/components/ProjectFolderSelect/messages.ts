@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  folder: {
-    id: 'app.containers.AdminPage.ProjectEdit.folder',
-    defaultMessage: 'Select a Folder',
+  projectFolder: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolder',
+    defaultMessage: 'Project folder {optional}',
   },
   optional: {
     id: 'app.containers.AdminPage.ProjectEdit.optional',
