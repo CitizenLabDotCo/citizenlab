@@ -122,8 +122,6 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
     return null;
   }
 
-  console.log(publication);
-
   return (
     <Container>
       <FolderRowContent
