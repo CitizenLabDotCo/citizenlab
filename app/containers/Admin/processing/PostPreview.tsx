@@ -180,7 +180,9 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
 
   getAutomaticTaggings = (taggings: ITagging[]) =>
     taggings.filter(
-      (tagging) => tagging.attributes.assignment_method === 'automatic'
+      (tagging) =>
+        tagging.attributes.assignment_method === 'automatic' ||
+        tagging.attributes.assignment_method === 'pending'
     );
 
   getUnusedTags = (tags: ITag[], taggings: ITagging[]) => {

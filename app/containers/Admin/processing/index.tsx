@@ -41,6 +41,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import IdeasTable from './IdeasTable';
 import useTaggings from 'hooks/useTaggings';
 import EmptyState from './EmptyState';
+import { cancelGenerate } from 'services/taggings';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
@@ -232,6 +233,13 @@ const Processing = memo<Props & InjectedIntlProps>(
         ? setConfirmationModalOpen(true)
         : setShowAutotagView(true);
     };
+    const handleCancelAutoTag = (e: FormEvent) => {
+      e.preventDefault();
+      trackEventByName('Filter View', {
+        action: 'Clicked Cancel Autotag Button',
+      });
+      cancelGenerate();
+    };
 
     const handleCloseAutotagView = (e?: FormEvent) => {
       e?.preventDefault();
@@ -314,6 +322,11 @@ const Processing = memo<Props & InjectedIntlProps>(
                       >
                         <FormattedMessage {...messages.autotag} />
                       </Button>
+                      {processing && (
+                        <Button locale={locale} onClick={handleCancelAutoTag}>
+                          <FormattedMessage {...messages.cancel} />
+                        </Button>
+                      )}
                     </FeatureFlag>
 
                     <Button
