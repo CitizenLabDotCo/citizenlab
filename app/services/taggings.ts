@@ -28,6 +28,17 @@ export async function generateTaggings(ideaIds, tagIds, tags, projectIds) {
   return response;
 }
 
+export async function cancelGenerate() {
+  const response = await streams.add(
+    `${API_PATH}/taggings/generate/cancel`,
+    {}
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+  });
+  return response;
+}
+
 export function taggingStream(streamParams: IStreamParams | null = null) {
   return streams.get<ITaggingsData>({
     apiEndpoint: `${API_PATH}/taggings`,
