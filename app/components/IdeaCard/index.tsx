@@ -89,9 +89,9 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 
   ${isRtl`
-  margin-right: 0;
-  margin-left: 6px;
-`}
+    margin-right: 0;
+    margin-left: 6px;
+  `}
 `;
 
 const CommentCount = styled.div`

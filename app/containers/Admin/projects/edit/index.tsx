@@ -1,18 +1,24 @@
-// Libraries
 import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription } from 'rxjs';
-import eventEmitter from 'utils/eventEmitter';
+import { withRouter, WithRouterProps } from 'react-router';
 
-// Components
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 
-// Localisation
+// resources
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { PreviousPathnameContext } from 'context';
+
+// i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -25,15 +31,8 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { adopt } from 'react-adopt';
 
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
+// typings
 // services
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
@@ -60,9 +59,6 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-export type SetBackButtonUrl = string | null;
-export const setBackButtonUrlEventName = 'setBackButtonUrl';
-
 export interface InputProps {}
 
 interface DataProps {
@@ -75,10 +71,11 @@ interface DataProps {
   granularPermissionsEnabled: GetFeatureFlagChildProps;
   projectManagementEnabled: GetFeatureFlagChildProps;
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
+  previousPathName: string | null;
 }
 
 interface State {
-  backButtonUrl: string | null;
+  goBackUrl: string | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -87,28 +84,17 @@ export class AdminProjectEdition extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps & ITracks,
   State
 > {
-  subscriptions: Subscription[];
-
   constructor(props) {
     super(props);
     this.state = {
-      backButtonUrl: null,
+      goBackUrl: null,
     };
-    this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.subscriptions = [
-      eventEmitter
-        .observeEvent<SetBackButtonUrl>(setBackButtonUrlEventName)
-        .subscribe(({ eventValue: backButtonUrl }) => {
-          this.setState({ backButtonUrl });
-        }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.setState({
+      goBackUrl: this.props.previousPathName,
+    });
   }
 
   getTabs = (projectId: string, project: IProjectData) => {
@@ -334,26 +320,7 @@ export class AdminProjectEdition extends PureComponent<
   };
 
   goBack = () => {
-    const { backButtonUrl } = this.state;
-    if (backButtonUrl) {
-      clHistory.push(backButtonUrl);
-    } else {
-      // Automated fallback where we simply drop the last url segment
-      const currentPath = location.pathname;
-      const lastUrlSegment = currentPath.substr(
-        currentPath.lastIndexOf('/') + 1
-      );
-      const newPath = currentPath
-        .replace(lastUrlSegment, '')
-        .replace(/\/$/, '');
-      const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
-
-      if (newLastUrlSegment === this.props.params.projectId) {
-        clHistory.push('/admin/projects');
-      } else {
-        clHistory.push(newPath);
-      }
-    }
+    clHistory.push(this.state.goBackUrl || '/admin/projects');
   };
 
   onNewIdea = (pathname: string) => (_event) => {
@@ -454,6 +421,11 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
   project: ({ params, render }) => (
     <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
+  previousPathName: ({ render }) => (
+    <PreviousPathnameContext.Consumer>
+      {render as any}
+    </PreviousPathnameContext.Consumer>
   ),
 });
 

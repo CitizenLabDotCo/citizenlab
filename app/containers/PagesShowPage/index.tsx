@@ -40,7 +40,9 @@ import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 export const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   background: ${colors.background};

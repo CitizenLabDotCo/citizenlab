@@ -1,19 +1,36 @@
 import { useState, useEffect } from 'react';
-import { IProjectImageData, projectImagesStream } from 'services/projectImages';
+import { isNilOrError } from 'utils/helperUtils';
+import { Observable, of } from 'rxjs';
+import {
+  IProjectImages,
+  IProjectImageData,
+  projectImagesStream,
+} from 'services/projectImages';
 
-export default function useProjectImages(projectId: string) {
+interface Props {
+  projectId: string | null;
+}
+
+export default function useProjectImages({ projectId }: Props) {
   const [projectImages, setProjectImages] = useState<
     IProjectImageData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    const subscription = projectImagesStream(projectId).observable.subscribe(
-      (projectImages) => {
-        setProjectImages(projectImages?.data);
-      }
-    );
+    setProjectImages(undefined);
 
-    return () => subscription?.unsubscribe();
+    let observable: Observable<IProjectImages | null> = of(null);
+
+    if (projectId) {
+      observable = projectImagesStream(projectId).observable;
+    }
+
+    const subscription = observable.subscribe((response) => {
+      const project = !isNilOrError(response) ? response.data : response;
+      setProjectImages(project);
+    });
+
+    return () => subscription.unsubscribe();
   }, [projectId]);
 
   return projectImages;

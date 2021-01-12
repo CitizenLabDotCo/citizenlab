@@ -21,7 +21,9 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
-  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
