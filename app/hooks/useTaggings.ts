@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import { useState, useEffect, useCallback } from 'react';
-import { timer } from 'rxjs';
+import { of, timer } from 'rxjs';
 import { ITagging, taggingStream } from 'services/taggings';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
@@ -32,25 +32,24 @@ export default function useTaggings() {
             (tagging) => tagging.attributes.assignment_method === 'pending'
           )
         ) {
-          console.log('processing');
           setProcessing(true);
         } else {
           setProcessing(false);
         }
       }),
+      ...[
+        processing
+          ? timer(10000, 10000).subscribe((_) =>
+              streams.fetchAllWith({
+                apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+              })
+            )
+          : of(null).subscribe(),
+      ],
     ];
-    if (processing) {
-      subscriptions.push(
-        timer(10000, 10000).subscribe((_) =>
-          streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
-          })
-        )
-      );
-    }
 
     return () => subscriptions.forEach((sub) => sub.unsubscribe());
-  }, [ideaIds]);
+  }, [ideaIds, processing]);
 
   return { taggings, onIdeasChange, processing };
 }
