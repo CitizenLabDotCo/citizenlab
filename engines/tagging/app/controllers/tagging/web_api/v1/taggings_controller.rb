@@ -14,7 +14,7 @@ module Tagging
           render json: WebApi::V1::TaggingSerializer.new(
             @taggings,
             params: fastjson_params,
-            include: [:tag]
+            includes: [:tag]
           ).serialized_json, status: :ok
         end
 
@@ -22,7 +22,7 @@ module Tagging
           render json:  WebApi::V1::TaggingSerializer.new(
             @tagging,
             params: fastjson_params,
-            include: [:tag]
+            includes: [:tag]
           ).serialized_json
         end
 
@@ -38,7 +38,7 @@ module Tagging
             render json: WebApi::V1::TaggingSerializer.new(
               @tagging,
               params: fastjson_params,
-              include: [:tag]
+              includes: [:tag]
             ).serialized_json, status: :created
           else
             render json: { errors: @tagging.errors.details }, status: :unprocessable_entity
