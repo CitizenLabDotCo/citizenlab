@@ -22,14 +22,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface DataProps {
-  AdminPublications: GetAdminPublicationsChildProps;
+  adminPublications: GetAdminPublicationsChildProps;
   isProjectFoldersEnabled: boolean;
 }
 
 interface Props extends DataProps {}
 
 const ModeratorProjectList = memo<Props>(
-  ({ AdminPublications, isProjectFoldersEnabled }) => {
+  ({ adminPublications, isProjectFoldersEnabled }) => {
     const adminPublicationCard = (adminPublication) => {
       if (adminPublication.publicationType === 'project') {
         return <ProjectRow publication={adminPublication} />;
@@ -49,13 +49,13 @@ const ModeratorProjectList = memo<Props>(
     };
 
     if (
-      !isNilOrError(AdminPublications) &&
-      AdminPublications.list &&
-      AdminPublications.list.length > 0
+      !isNilOrError(adminPublications) &&
+      adminPublications.list &&
+      adminPublications.list.length > 0
     ) {
-      const AdminPublicationsList = AdminPublications.list;
+      const adminPublicationsList = adminPublications.list;
 
-      if (AdminPublicationsList && AdminPublicationsList.length > 0) {
+      if (adminPublicationsList && adminPublicationsList.length > 0) {
         return (
           <>
             <ListHeader>
@@ -65,12 +65,12 @@ const ModeratorProjectList = memo<Props>(
             </ListHeader>
 
             <List>
-              {AdminPublicationsList.map((adminPublication, index) => {
+              {adminPublicationsList.map((adminPublication, index) => {
                 return (
                   <Row
                     key={index}
                     id={adminPublication.id}
-                    isLastItem={index === AdminPublicationsList.length - 1}
+                    isLastItem={index === adminPublicationsList.length - 1}
                   >
                     {adminPublicationCard(adminPublication)}
                   </Row>
