@@ -5,7 +5,7 @@ module EmailCampaigns
     private
 
     def subject
-      format_message('subject', values: { organizationName: organization_name })
+      format_message('subject')
     end
 
     def header_title
