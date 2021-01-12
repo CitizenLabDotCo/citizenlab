@@ -18,7 +18,7 @@ if (ENV.fetch("RABBITMQ_URI", false))
 
     queue.subscribe() do |_delivery_info, _properties, payload|
       puts "Received #{payload}"
-      Tagging::TaggingReceiverService.new.add_tags(JSON.parse(payload))
+      Tagging::AutomaticTaggingService.new.add_tags(JSON.parse(payload))
     end
 
     rescue Bunny::TCPConnectionFailedForAllHosts => e

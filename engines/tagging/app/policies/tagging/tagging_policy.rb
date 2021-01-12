@@ -42,6 +42,10 @@ module Tagging
       user&.active_admin_or_moderator?(record.idea.project.id)
     end
 
+    def cancel_generate?
+      user&.active_admin_or_moderator?(record.idea.project.id)
+    end
+
     def permitted_attributes_for_create
       [
         :idea_id,

@@ -3,7 +3,7 @@ module Tagging
     module V1
       class TaggingsController < ApplicationController
         before_action :set_tagging, only: %i[show destroy update]
-        skip_after_action :verify_authorized, only: [:generate]
+        skip_after_action :verify_authorized, only: [:generate, :cancel_generate]
 
         def index
           @taggings = policy_scope(Tagging)
@@ -78,6 +78,7 @@ module Tagging
 
         def generate
           Tagging.automatic.destroy_all
+          AutomaticTaggingService.new.cancel_tasks
 
           tags = params['tags']
           tag_ids = params['tag_ids']
@@ -87,6 +88,7 @@ module Tagging
           @ideas = policy_scope(Idea)
           @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
           @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
+          @ideas.order_new
 
           @res = NLP::TaggingSuggestionService.new.suggest(
             @ideas,
@@ -95,17 +97,24 @@ module Tagging
           )
 
           if @res
-            @ideas.each do |i|
-              Tagging.create(
-                idea: i,
-                assignment_method: :pending
-              )
+            @res['batches'].each do |b|
+              b['doc_ids'].each do |idea_id|
+                Tagging.create(
+                  idea_id: idea_id,
+                  assignment_method: :pending,
+                  task_id: b['task_id']
+                )
+              end
             end
 
-            render json: { task_id: @res['task_id'] }, status: :ok
+            head :ok
           else
             render json: { errors: ['NO'] }, status: :unprocessable_entity
           end
+        end
+
+        def cancel_generate
+          head AutomaticTaggingService.new.cancel_tasks
         end
 
         private

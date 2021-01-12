@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe Tagging::TaggingReceiverService do
-  let(:service) { Tagging::TaggingReceiverService.new }
+describe Tagging::AutomaticTaggingService do
+  let(:service) { Tagging::AutomaticTaggingService.new }
 
   before do
     @ideas = create_list(:idea, 5)
