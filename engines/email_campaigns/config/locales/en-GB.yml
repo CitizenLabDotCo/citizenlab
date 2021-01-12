@@ -373,7 +373,7 @@ en-GB:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
       cta_view: 'Go to your idea'
-      event_description: '%{officialName} gave an update on your idea ''ideaTitle''. Click the button below to enter the conversation with %{officialName}.'
+      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       main_header: 'You received an update from %{organizationName}'
       subject: 'You received an update from %{organizationName}'
       preheader: '%{officialName} left an official update on your idea'
