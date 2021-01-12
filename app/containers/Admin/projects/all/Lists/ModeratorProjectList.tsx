@@ -95,7 +95,7 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 const Data = adopt<DataProps>({
-  AdminPublications: (
+  adminPublications: (
     <GetAdminPublications
       publicationStatusFilter={publicationStatuses}
       folderId={null}
