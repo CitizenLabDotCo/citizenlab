@@ -1,26 +1,29 @@
 import React, { ReactElement, useMemo, memo, useCallback } from 'react';
 import styled from 'styled-components';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // hooks
 import { useProjectFolders } from 'modules/project_folders/hooks';
 import useAuthUser from 'hooks/useAuthUser';
+import useLocalize from 'hooks/useLocalize';
+
+// services
 import { isAdmin } from 'services/permissions/roles';
+import { IUpdatedProjectProperties } from 'services/projects';
 
 // components
 import { Select, IconTooltip } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 // utils
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IOption } from 'typings';
-import { IUpdatedProjectProperties } from 'services/projects';
 
+// i18n
 import messages from './messages';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
@@ -32,31 +35,27 @@ export interface IProjectFolderSelectProps {
   projectAttrs: IUpdatedProjectProperties;
 }
 
-const ProjectFolderSelect = memo<
-  InjectedLocalized & InjectedIntlProps & IProjectFolderSelectProps
->(
-  ({
-    projectAttrs,
-    onChange,
-    localize,
-    intl: { formatMessage },
-  }): ReactElement => {
-    const { projectFolders } = useProjectFolders();
+const ProjectFolderSelect = memo<InjectedIntlProps & IProjectFolderSelectProps>(
+  ({ projectAttrs, onChange, intl: { formatMessage } }): ReactElement => {
+    const { projectFolders } = useProjectFolders({});
     const authUser = useAuthUser();
+    const localize = useLocalize();
 
     const noFolderOption = {
       value: '',
       label: formatMessage(messages.noFolder),
     };
 
-    const folderOptions = useMemo<IOption[]>(
-      () =>
-        projectFolders.map((folder) => ({
-          value: isNilOrError(folder) ? '' : folder.id,
+    const folderOptions = useMemo(() => {
+      if (!isNilOrError(projectFolders)) {
+        return projectFolders.map((folder) => ({
+          value: folder.id,
           label: localize(folder.attributes.title_multiloc),
-        })),
-      [projectFolders]
-    );
+        }));
+      }
+
+      return [];
+    }, [projectFolders]);
 
     const allOptions = useMemo<IOption[]>(() => {
       if (isAdmin(authUser)) {
@@ -100,6 +99,4 @@ const ProjectFolderSelect = memo<
   }
 );
 
-export default localize<IProjectFolderSelectProps>(
-  injectIntl(ProjectFolderSelect)
-);
+export default injectIntl(ProjectFolderSelect);
