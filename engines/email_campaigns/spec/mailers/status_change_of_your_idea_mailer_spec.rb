@@ -5,6 +5,8 @@ RSpec.describe EmailCampaigns::StatusChangeOfYourIdeaMailer, type: :mailer do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfYourIdea.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let(:idea) { create(:idea) }
+    let(:status) { idea.status }
 
     let(:command) do
       {
