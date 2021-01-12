@@ -142,7 +142,7 @@ fr:
     default_threshold_reached_message: >
       <p>Les porteurs de projets sont invités à présenter leur proposition à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
     default_eligibility_criteria: >
-      <ul> <li>Ca doit s’inscrire dans les compétences de l’autorité locale</li> <li>Ca doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ca ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ca ne peut pas nuire à autrui</li></ul>
+      <ul> <li>Doit s’inscrire dans les compétences de l’autorité locale</li> <li>Doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ne peut pas nuire à autrui</li></ul>
   smart_group_rules:
     is_empty: "%{property} n'a pas de valeur"
     not_is_empty: "%{property} a une valeur"
