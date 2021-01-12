@@ -37,6 +37,8 @@ class TrackSegmentService
         **TrackingService.new.tenant_properties(tenant)
     }
 
+    integrations = { All: true, Intercom: true, SatisMeter: true }
+
     # Segment provides no way to track a group of users directly.
     # You have to piggyback the group traits/properties when associating a user to the group.
     # This is the reason why we use a dummy user.
@@ -44,7 +46,7 @@ class TrackSegmentService
         user_id: dummy_user_id,
         group_id: tenant.id,
         traits: traits,
-        integrations: integrations(user)
+        integrations: integrations
     )
   end
 
@@ -98,6 +100,5 @@ class TrackSegmentService
   def anonymous_id
     SecureRandom.base64
   end
-
 
 end
