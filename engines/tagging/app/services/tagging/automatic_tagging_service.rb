@@ -9,15 +9,23 @@ module Tagging
     def cancel_tasks
       if Tagging.pending&.map { |e| e.task_id }.uniq.map { |task_id|
           r = NLP::TasksService.new.cancel(task_id)
-          Tagging.pending.where(task_id: task_id).destroy_all if r== 200
+          # for now we'll be very optimistic and just act as if cancelling always work.
+          # Tagging.pending.where(task_id: task_id).destroy_all if r== 200
           r
         }.all? { |r|
           r == 200
         }
+        Tagging.pending.destroy_all
+        TagService.new.remove_unused_tags
         200
       else
+        Tagging.pending.destroy_all
         500
       end
+    end
+
+    def processing?
+      Tagging.pending.length > 0
     end
 
 
@@ -48,6 +56,20 @@ module Tagging
           )
         end
       end
+
+      p '/n'
+      p '/n'
+      p '/n'
+      p '/n'
+      p '/n'
+      p '/n'
+      p 'processing?'
+      p processing?
+      p '/n'
+      p '/n'
+      p '/n'
+
+      TagService.new.remove_unused_tags unless processing?
     end
   end
 end

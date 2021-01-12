@@ -25,8 +25,4 @@ class SideFxTaggingService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_tagging), 'deleted', user, Time.now.to_i, payload: {tagging: serialized_tagging})
   end
 
-  def after_generate taggings
-    taggings.each{ |tagging| Tagging::Tag.find(tagging.tag_id).destroy! if Tagging::Tagging.where(tag_id: tagging.tag_id).empty? }
-  end
-
 end
