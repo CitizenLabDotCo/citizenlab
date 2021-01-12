@@ -1,193 +1,136 @@
-<mjml>
-<%= render partial: "application/header" %>
-  <mj-body>
-    <mj-section>
-      <mj-column>
-        <mj-text>
-          <span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-            <%=
-              formatMessage('preheader', values: {
-                organizationName: localize(@tenant.settings.dig('core','organization_name')),
-                firstName: @command.dig(:recipient).first_name,
-                ideaTitle: localize(@command.dig('event_payload', 'post_title_multiloc'))
-              })
-            %>
+<!-- Action list -->
+<mj-section padding="0 25px 10px">
+  <mj-column>
+    <mj-text>
+      <p style="margin-bottom: 20px; font-weight: 700;">
+        <%= format_message("message_get_votes") %>
+      </p>
+    </mj-text>
+    <mj-table>
+      <!-- Finished action: idea published -->
+      <tr>
+        <td style="width:22px; padding-bottom:15px">
+          <img style="vertical-align: middle;"
+          alt="Checked checkmark"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/checked_dmyvnl.png">
+        </td>
+        <td style="padding-left: 10px; padding-bottom:15px">
+          <span style="text-decoration: line-through;">
+            <%= format_message('action_published_idea') %>
           </span>
-        </mj-text>
-      </mj-column>
-    </mj-section>
+        </td>
+      </tr>
 
+      <!-- (Conditional) Action item 1: Add an idea image -->
+      <% if event.post_images.empty? %>
+        <tr>
+          <td style="width:22px; padding-bottom:15px">
+            <img style="vertical-align: middle;"
+            alt="Empty checkmark"
+            src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+          </td>
+          <td style="padding-left: 10px; padding-bottom:15px">
+            <%=
+              format_message('action_add_image', values: {
+                addImageLink: "<a href=\"#{url_service.idea_edit_url(tenant, event.post_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
+              }, escape_html: false)
+            %>
+          </td>
+          <td style="padding-bottom:15px">
+            <img alt="Image icon" width="22px" height="22px" style="vertical-align: middle;"
+              src="http://res.cloudinary.com/citizenlabco/image/upload/v1518602015/noun_332296_cc_qsjdtj.png">
+          </td>
+        </tr>
+      <% end %>
 
-    <%= render partial: "application/logo_medium_top" %>
+      <!-- Action item 2: Share on Facebook -->
+      <tr>
+        <td style="width:22px; padding-bottom:15px">
+          <img style="vertical-align: middle;"
+          alt="Empty checkmark"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+        </td>
+        <td style="padding-left: 10px; padding-bottom:15px">
+          <%=
+            format_message('action_share_fb', values: {
+              fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape event.post_url}\" style=\"text-decoration: underline;\">Facebook</a>"
+            }, escape_html: false)
+          %>
+        </td>
+        <td style="padding-bottom:15px">
+            <img style="vertical-align: middle;"
+            alt="Facebook icon"
+            src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/facebook_gle65v.png">
+        </td>
+      </tr>
 
-    <!-- Main header + event description -->
-    <mj-section padding="30px 25px 0">
-      <mj-column>
-        <mj-text color="black">
-          <h1 style="font-size: 25px; margin-bottom: 40px;">
-            <%= formatMessage('main_header') %>
-          </h1>
+      <!-- Action item 3: Share on Twitter -->
+      <tr>
+        <td style="width:22px; padding-bottom:15px;">
+          <img style="vertical-align: middle;"
+          alt="Empty checkmark"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+        </td>
+        <td style="padding-left: 10px; padding-bottom:15px;">
+          <%=
+            format_message('action_share_twitter', values: {
+              twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.post_url}\" style=\"text-decoration: underline;\">Twitter</a>"
+            }, escape_html: false)
+          %>
+        </td>
+        <td style="padding-bottom:15px;">
+          <img
+            alt="Twitter icon"
+            style="vertical-align: middle;"
+            src="http://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_26/v1510594149/Twitter-icon_rvyquq.png">
+        </td>
+      </tr>
 
-          <% if @tenant.name == "leuven" %>
-            <p style="margin-bottom: 20px;">
-              Bedankt om je idee te delen. We houden je verder op de hoogte van de volgende stappen binnen dit project.
-            </p>
-          <% else %>
-            <p>
-              <%=
-                formatMessage("message_next_steps", values: {
-                  firstName: @command.dig(:recipient).first_name,
-                  organizationName: localize(@tenant.settings.dig('core','organization_name')),
-                })
-              %>
-            </p>
-          <% end %>
-        </mj-text>
-      </mj-column>
-    </mj-section>
+      <!-- Action item 4: Send an email -->
+      <tr>
+        <td style="width:22px; padding-bottom:15px;">
+          <img style="vertical-align: middle;"
+          alt="Empty checkmark"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+        </td>
+        <td style="padding-left: 10px; padding-bottom:15px;">
+          <%=
+            format_message('action_send_email', values: {
+              sendEmailLink: "<a style=\"text-decoration: underline;\" href=\"mailto:?subject=\">#{format_message('send_email')}</a>"
+            }, escape_html: false)
+          %>
+        </td>
+        <td style="padding-bottom: 15px">
+          <img
+            alt="Paper plane"
+            style="vertical-align: middle;"
+            src="https://res.cloudinary.com/citizenlabco/image/upload/v1510237377/sent_ugwyr4.png">
+        </td>
+      </tr>
 
-    <!-- Action list -->
-    <mj-section padding="0 25px 10px">
-      <mj-column>
-        <mj-text>
-          <p style="margin-bottom: 20px; font-weight: 700;">
-            <%= formatMessage("message_get_votes") %>
-          </p>
-        </mj-text>
-        <mj-table>
-          <!-- Finished action: idea published -->
-          <tr>
-            <td style="width:22px; padding-bottom:15px">
-              <img style="vertical-align: middle;"
-              alt="Checked checkmark"
-              src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/checked_dmyvnl.png">
-            </td>
-            <td style="padding-left: 10px; padding-bottom:15px">
-              <span style="text-decoration: line-through;">
-                <%= formatMessage('action_published_idea') %>
-              </span>
-            </td>
-          </tr>
+      <!-- Action item 5: Share link -->
+      <tr>
+        <td style="width:22px; padding-bottom:15px;">
+          <img style="vertical-align: middle;"
+          alt="Empty checkmark"
+          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+        </td>
+        <td style="padding-left: 10px; padding-bottom:15px;">
+          <%=
+            format_message('action_share_link', values: {
+              link: "<a href=\"#{event.post_url}\" style=\"text-decoration: underline;\">#{format_message('link')}</a>"
+            }, escape_html: false)
+          %>
+        </td>
+        <td style="padding-bottom: 15px">
+          <img
+            alt="Copy"
+            style="vertical-align: middle;"
+            src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/copy_pxzq4g.png">
+        </td>
+      </tr>
+    </mj-table>
+  </mj-column>
+</mj-section>
 
-          <!-- (Conditional) Action item 1: Add an idea image -->
-          <% if @command.dig(:event_payload, :post_images).empty? || !@command.dig(:event_payload, :post_images).first.versions.medium %>
-            <tr>
-              <td style="width:22px; padding-bottom:15px">
-                <img style="vertical-align: middle;"
-                alt="Empty checkmark"
-                src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
-              </td>
-              <td style="padding-left: 10px; padding-bottom:15px">
-                <%=
-                  formatMessage('action_add_image', values: {
-                    addImageLink: "<a href=\"#{@url_service.idea_edit_url(@tenant, @command.dig(:event_payload, :post_id))}\" style=\"text-decoration: underline;\">#{formatMessage('add_image')}</a>"
-                  }, escape_html: false)
-                %>
-              </td>
-              <td style="padding-bottom:15px">
-                <img alt="Image icon" width="22px" height="22px" style="vertical-align: middle;"
-                  src="http://res.cloudinary.com/citizenlabco/image/upload/v1518602015/noun_332296_cc_qsjdtj.png">
-              </td>
-            </tr>
-          <% end %>
-
-          <!-- Action item 2: Share on Facebook -->
-          <tr>
-            <td style="width:22px; padding-bottom:15px">
-              <img style="vertical-align: middle;"
-              alt="Empty checkmark"
-              src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
-            </td>
-            <td style="padding-left: 10px; padding-bottom:15px">
-              <%=
-                formatMessage('action_share_fb', values: {
-                  fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape @command.dig(:event_payload, :post_url)}\" style=\"text-decoration: underline;\">Facebook</a>"
-                }, escape_html: false)
-              %>
-            </td>
-            <td style="padding-bottom:15px">
-                <img style="vertical-align: middle;"
-                alt="Facebook icon"
-                src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/facebook_gle65v.png">
-            </td>
-          </tr>
-
-          <!-- Action item 3: Share on Twitter -->
-          <tr>
-            <td style="width:22px; padding-bottom:15px;">
-              <img style="vertical-align: middle;"
-              alt="Empty checkmark"
-              src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
-            </td>
-            <td style="padding-left: 10px; padding-bottom:15px;">
-              <%=
-                formatMessage('action_share_twitter', values: {
-                  twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape @command.dig(:event_payload, :post_url)}\" style=\"text-decoration: underline;\">Twitter</a>"
-                }, escape_html: false)
-              %>
-            </td>
-            <td style="padding-bottom:15px;">
-              <img
-                alt="Twitter icon"
-                style="vertical-align: middle;"
-                src="http://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_26/v1510594149/Twitter-icon_rvyquq.png">
-            </td>
-          </tr>
-
-          <!-- Action item 4: Send an email -->
-          <tr>
-            <td style="width:22px; padding-bottom:15px;">
-              <img style="vertical-align: middle;"
-              alt="Empty checkmark"
-              src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
-            </td>
-            <td style="padding-left: 10px; padding-bottom:15px;">
-              <%=
-                formatMessage('action_send_email', values: {
-                  sendEmailLink: "<a style=\"text-decoration: underline;\" href=\"mailto:?subject=\">#{formatMessage('send_email')}</a>"
-                }, escape_html: false)
-              %>
-            </td>
-            <td style="padding-bottom: 15px">
-              <img
-                alt="Paper plane"
-                style="vertical-align: middle;"
-                src="https://res.cloudinary.com/citizenlabco/image/upload/v1510237377/sent_ugwyr4.png">
-            </td>
-          </tr>
-
-          <!-- Action item 5: Share link -->
-          <tr>
-            <td style="width:22px; padding-bottom:15px;">
-              <img style="vertical-align: middle;"
-              alt="Empty checkmark"
-              src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
-            </td>
-            <td style="padding-left: 10px; padding-bottom:15px;">
-              <%=
-                formatMessage('action_share_link', values: {
-                  link: "<a href=\"#{@command.dig(:event_payload, :post_url)}\" style=\"text-decoration: underline;\">#{formatMessage('link')}</a>"
-                }, escape_html: false)
-              %>
-            </td>
-            <td style="padding-bottom: 15px">
-              <img
-                alt="Copy"
-                style="vertical-align: middle;"
-                src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/copy_pxzq4g.png">
-            </td>
-          </tr>
-        </mj-table>
-      </mj-column>
-    </mj-section>
-
-    <!-- CTA button -->
-    <%= render partial: "application/cta_button", locals: {
-      href: @command.dig(:event_payload, :post_url),
-      message: formatMessage('cta_view_idea')
-    } %>
-
-
-    <%= render partial: "application/footer" %>
-  </mj-body>
-</mjml>
+<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_view_idea') } %>
