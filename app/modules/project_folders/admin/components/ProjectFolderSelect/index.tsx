@@ -30,12 +30,12 @@ const StyledSectionField = styled(SectionField)`
   margin-bottom: 40px;
 `;
 
-export interface IProjectFolderSelectProps {
+interface Props {
   onChange: (fieldPath: string, value: any) => void;
   projectAttrs: IUpdatedProjectProperties;
 }
 
-const ProjectFolderSelect = memo<InjectedIntlProps & IProjectFolderSelectProps>(
+const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
   ({ projectAttrs, onChange, intl: { formatMessage } }): ReactElement => {
     const { projectFolders } = useProjectFolders({});
     const authUser = useAuthUser();
