@@ -1,64 +1,70 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useState } from 'react';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import styled from 'styled-components';
 import Iframe from 'react-iframe';
-import { colors } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
+import { Spinner } from 'cl2-component-library';
+
+const surveyHeight = '500px';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 
   iframe {
-    border: solid 1px ${colors.separation};
+    border: solid 1px #ccc;
     border-radius: ${(props: any) => props.theme.borderRadius};
   }
 `;
 
-type Props = {
+const Placeholder = styled.div`
+  width: 100%;
+  height: ${surveyHeight};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${defaultCardStyle};
+`;
+
+interface Props {
   typeformUrl: string;
-  className?: string;
   email: string | null;
   user_id: string | null;
-};
+  className?: string;
+}
 
-type State = {
-  isIframeLoaded: boolean;
-};
-
-export default class TypeformSurvey extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isIframeLoaded: false,
-    };
-  }
-
-  handleIframeOnLoad = () => {
-    setTimeout(() => {
-      this.setState({ isIframeLoaded: true });
-    }, 1000);
-  };
-
-  render() {
-    const { isIframeLoaded } = this.state;
-    const { email, user_id, typeformUrl, className } = this.props;
+const TypeformSurvey = memo<Props>(
+  ({ typeformUrl, email, user_id, className }) => {
+    const [isIframeLoaded, setIsIframeLoaded] = useState(false);
 
     const queryString = stringify(omitBy({ email, user_id }, isNil));
     const surveyUrl = `${typeformUrl}?${queryString}`;
 
+    const handleIframeOnLoad = () => {
+      setTimeout(() => {
+        setIsIframeLoaded(true);
+      }, 1000);
+    };
+
     return (
-      <Container className={className}>
+      <Container className={className || ''}>
+        {!isIframeLoaded && (
+          <Placeholder>
+            <Spinner />
+          </Placeholder>
+        )}
         <Iframe
           url={surveyUrl}
           width="100%"
-          height="500px"
+          height={surveyHeight}
           display={isIframeLoaded ? 'block' : 'none'}
-          position="relative"
-          allowFullScreen
-          onLoad={this.handleIframeOnLoad}
+          overflow="hidden"
+          onLoad={handleIframeOnLoad}
         />
       </Container>
     );
   }
-}
+);
+
+export default TypeformSurvey;
