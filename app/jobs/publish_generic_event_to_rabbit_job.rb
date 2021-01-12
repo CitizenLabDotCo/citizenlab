@@ -3,7 +3,7 @@ class PublishGenericEventToRabbitJob < ApplicationJob
 
   def perform(event, routing_key, bunny=BUNNY_CON)
     return unless bunny
-    event = add_tenant_properties(event)
+    add_tenant_properties(event)
     publish_to_rabbitmq(bunny, event, routing_key)
   end
 
@@ -11,7 +11,7 @@ class PublishGenericEventToRabbitJob < ApplicationJob
 
   def add_tenant_properties(event)
     tenant_properties = TrackingService.new.tenant_properties(Tenant.current)
-    event.merge(tenant_properties)
+    event.merge!(tenant_properties)
   rescue ActiveRecord::RecordNotFound
     # Tenant can't be found, so we don't add anything
   end
