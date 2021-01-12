@@ -189,7 +189,7 @@ interface DataProps {
   isProjectFoldersEnabled: GetFeatureFlagChildProps;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends InputProps, DataProps {}
 
 class AdminProjectEditGeneral extends PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
@@ -1159,18 +1159,15 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 }
 
-const AdminProjectEditGeneralWithHocs = withRouter(
-  injectIntl(AdminProjectEditGeneral)
-);
-
-const Data = adopt<DataProps, Props>({
+const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
+const Data = adopt({
   isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
-export default (inputProps: Props & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <AdminProjectEditGeneralWithHocs {...inputProps} {...dataProps} />
     )}
   </Data>
-);
+));
