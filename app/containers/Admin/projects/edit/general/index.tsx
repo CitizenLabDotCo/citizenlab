@@ -9,6 +9,8 @@ import {
 import { isEmpty, get, isString, set } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import deepMerge from 'deepmerge';
+import eventEmitter from 'utils/eventEmitter';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -30,8 +32,6 @@ import ParticipationContext, {
 } from '../participationContext';
 import Warning from 'components/UI/Warning';
 import Outlet from 'components/Outlet';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-
 import Link from 'utils/cl-router/Link';
 
 // animation
@@ -64,7 +64,9 @@ import {
 import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-import eventEmitter from 'utils/eventEmitter';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
@@ -181,15 +183,16 @@ const SlugPreview = styled.div`
   font-size: ${fontSizes.base}px;
 `;
 
-type Props = {
-  params?: {
-    projectId: string;
-  };
-  isProjectFoldersEnabled?: boolean;
-};
+interface InputProps {}
+
+interface DataProps {
+  isProjectFoldersEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends DataProps, InputProps {}
 
 class AdminProjectEditGeneral extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & InjectedIntlProps & WithRouterProps,
   IProjectFormState
 > {
   projectId$: BehaviorSubject<string | null>;
@@ -1157,16 +1160,18 @@ class AdminProjectEditGeneral extends PureComponent<
 }
 
 interface DataProps {
-  isProjectFoldersEnabled: boolean;
+  isProjectFoldersEnabled: GetFeatureFlagChildProps;
 }
 
-const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
+const AdminProjectEditGeneralWithHocs = withRouter(
+  injectIntl(AdminProjectEditGeneral)
+);
 
 const Data = adopt<DataProps, Props>({
   isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
-export default (inputProps: Props) => (
+export default (inputProps: Props & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
       <AdminProjectEditGeneralWithHocs {...inputProps} {...dataProps} />
