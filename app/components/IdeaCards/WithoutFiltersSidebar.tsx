@@ -513,7 +513,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ideas: ({ render, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
-      pageSize={12}
+      pageSize={24}
       sort={
         getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
       }
