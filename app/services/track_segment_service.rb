@@ -39,7 +39,7 @@ class TrackSegmentService
 
     # Segment provides no way to track a group of users directly.
     # You have to piggyback the group traits/properties when associating a user to the group.
-    dummy_user_id = (User.admin.first || User.first).id
+    # This is the reason why we use a dummy user.
     Analytics && tenant && Analytics.group(
         user_id: dummy_user_id,
         group_id: tenant.id,
@@ -67,7 +67,7 @@ class TrackSegmentService
         event[:integrations] = integrations(activity.user)
       end
     else
-      event[:anonymous_id] = SecureRandom.base64
+      event[:anonymous_id] = anonymous_id
     end
 
     if tenant
@@ -87,4 +87,17 @@ class TrackSegmentService
         SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
     }
   end
+
+  private
+
+  def dummy_user_id
+    any_user = (User.admin.first || User.first)
+    any_user&.id || anonymous_id
+  end
+
+  def anonymous_id
+    SecureRandom.base64
+  end
+
+
 end
