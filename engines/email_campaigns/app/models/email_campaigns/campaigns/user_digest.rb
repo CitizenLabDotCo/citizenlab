@@ -36,6 +36,10 @@ module EmailCampaigns
       'scheduled'
     end
 
+    def mailer_class
+      UserDigestMailer
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       @tenant = Tenant.current
@@ -47,10 +51,10 @@ module EmailCampaigns
 
       @users_to_projects ||= users_to_projects
       discover_projects = discover_projects @users_to_projects[recipient.id]
-      
+
       @new_initiatives ||= new_initiatives(name_service, time: time)
-      @succesful_initiatives ||= succesful_initiatives(name_service, time: time)
-      @initiative_ids ||= (@new_initiatives + @succesful_initiatives).map do |d|
+      @successful_initiatives ||= successful_initiatives(name_service, time: time)
+      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map do |d|
         d[:id]
       end.compact
 
@@ -64,7 +68,7 @@ module EmailCampaigns
             discover_projects_payload project, recipient
           },
           new_initiatives: @new_initiatives,
-          succesful_initiatives: @succesful_initiatives
+          successful_initiatives: @successful_initiatives
         },
         tracked_content: {
           idea_ids: @top_ideas.map(&:id),
@@ -196,7 +200,7 @@ module EmailCampaigns
       end
     end
 
-    def succesful_initiatives name_service, time:
+    def successful_initiatives name_service, time:
       InitiativePolicy::Scope.new(nil, Initiative).resolve
         .published
         .left_outer_joins(:initiative_status_changes, :initiative_images)
