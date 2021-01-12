@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfYourIdeaMailer, type: :mailer do
     let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfYourIdea.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
     let(:idea) { create(:idea) }
-    let(:status) { idea.status }
+    let(:status) { idea.idea_status }
 
     let(:command) do
       {
