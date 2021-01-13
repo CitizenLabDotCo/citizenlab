@@ -137,10 +137,10 @@ const FolderPermissions = ({
 
   const noOptionsMessage = () => {
     if (isNonEmptyString(searchInput)) {
-      return formatMessage(messages.noOptions);
+      return formatMessage(messages.noMatch);
     }
 
-    return formatMessage(messages.typeUserName);
+    return null;
   };
 
   const isDropdownIconHidden = useMemo(() => !isNonEmptyString(searchInput), [
@@ -154,19 +154,19 @@ const FolderPermissions = ({
   return (
     <Container>
       <SubSectionTitle>
-        <FormattedMessage {...messages.moderatorsSectionTitle} />
+        <FormattedMessage {...messages.folderManagerSectionTitle} />
         <IconTooltip
           content={
             <FormattedMessage
-              {...messages.moderatorsTooltip}
+              {...messages.folderManagerTooltip}
               values={{
-                moderationInfoCenterLink: (
+                projectManagementInfoCenterLink: (
                   <StyledA
-                    href={formatMessage(messages.moreInfoModeratorLink)}
+                    href={formatMessage(messages.moreInfoFolderManagerLink)}
                     target="_blank"
                   >
                     <FormattedMessage
-                      {...messages.moderationInfoCenterLinkText}
+                      {...messages.projectManagementInfoCenterLinkText}
                     />
                   </StyledA>
                 ),
@@ -187,14 +187,14 @@ const FolderPermissions = ({
           isDisabled={processing}
           value={selectedUserOptions}
           onChange={handleModeratorsChange}
-          placeholder={formatMessage(messages.searchUsers)}
+          placeholder={formatMessage(messages.searchFolderManager)}
           styles={selectStyles}
           noOptionsMessage={noOptionsMessage}
           onInputChange={handleModeratorInputChange}
           components={isDropdownIconHidden && { DropdownIndicator: () => null }}
         />
         <UserSelectButton
-          text={formatMessage(messages.addModerators)}
+          text={formatMessage(messages.addFolderManager)}
           buttonStyle="cl-blue"
           icon="plus-circle"
           padding="13px 16px"
@@ -227,7 +227,7 @@ const FolderPermissions = ({
                     !isNilOrError(authUser) && authUser.data.id === moderator.id
                   }
                 >
-                  <FormattedMessage {...messages.deleteModeratorLabel} />
+                  <FormattedMessage {...messages.deleteFolderManagerLabel} />
                 </Button>
               </Row>
             ))}
