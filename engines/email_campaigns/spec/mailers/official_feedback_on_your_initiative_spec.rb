@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::OfficialFeedbackOnYourIdeaMailer, type: :mailer do
+RSpec.describe EmailCampaigns::OfficialFeedbackOnYourInitiativeMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea.create! }
+    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:command) do

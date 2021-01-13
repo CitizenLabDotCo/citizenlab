@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::StatusChangeOfVotedIdeaMailer, type: :mailer do
+RSpec.describe EmailCampaigns::StatusChangeOfVotedInitiativeMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfVotedIdea.create! }
+    let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
     let(:initiative) { create(:initiative) }
     let(:status) { initiative.initiative_status }
