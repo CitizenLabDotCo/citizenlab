@@ -191,7 +191,7 @@ const convertConfigurationToRoute = ({
 });
 
 const parseModuleRoutes = (
-  routes: RouteConfiguration[],
+  routes: RouteConfiguration[] = [],
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
@@ -225,10 +225,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   return {
     outlets: mergedOutlets,
     routes: {
-      citizen: parseModuleRoutes(mergedRoutes.citizen),
-      admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
+      citizen: parseModuleRoutes(mergedRoutes?.citizen),
+      admin: parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN),
       'admin.settings': parseModuleRoutes(
-        mergedRoutes['admin.settings'],
+        mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
     },
