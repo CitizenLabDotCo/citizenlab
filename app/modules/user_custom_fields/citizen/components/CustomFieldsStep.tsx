@@ -36,6 +36,10 @@ import styled from 'styled-components';
 
 // typings
 import { CLErrorsJSON } from 'typings';
+import {
+  TSignUpSteps,
+  TSignUpStepConfigurationObject,
+} from 'components/SignUpIn/SignUp';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -84,6 +88,11 @@ const SkipButton = styled.button`
 
 type InputProps = {
   onCompleted: () => void;
+  onData: (data: {
+    key: TSignUpSteps;
+    configuration: TSignUpStepConfigurationObject;
+  }) => void;
+  step: TSignUpSteps;
 };
 
 interface DataProps {
@@ -111,6 +120,26 @@ class CustomFieldsStep extends PureComponent<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
+    const { onData } = this.props;
+    const { formatMessage } = this.props.intl;
+
+    onData({
+      key: 'custom-fields',
+      configuration: {
+        position: 4,
+        stepName: formatMessage(messages.completeYourProfile),
+        helperText: (tenant) =>
+          tenant?.attributes?.settings?.core.custom_fields_signup_helper_text,
+        // isEnabled: ({ customFieldsSchema }) => {
+        //   return (
+        //     !isNilOrError(customFieldsSchema) &&
+        //     customFieldsSchema.hasCustomFields
+        //   );
+        // },
+        isEnabled: () => true,
+        isActive: (authUser) => !authUser?.attributes.registration_completed_at,
+      },
+    });
   }
 
   componentWillMount() {
