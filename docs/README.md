@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2021-01-13
+
 ### Changed
 - Idea cards redesign
 - Project folder page redesign
