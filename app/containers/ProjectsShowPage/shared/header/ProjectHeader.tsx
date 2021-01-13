@@ -22,6 +22,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -88,7 +89,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
 
       return (
         <Container className={className || ''}>
-          <ContentContainer>
+          <ContentContainer maxWidth={maxPageWidth}>
             {userCanEditProject && (
               <EditButton
                 icon="edit"

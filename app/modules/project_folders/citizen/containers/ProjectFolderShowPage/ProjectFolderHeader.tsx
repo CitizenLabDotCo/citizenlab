@@ -9,7 +9,7 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -31,9 +31,9 @@ const HeaderImage = styled(Image)`
 const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   position: absolute;
   right: 25px;
-  bottom: 15px;
+  bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     right: 10px;
     top: 10px;
   `};
@@ -47,7 +47,7 @@ interface Props {
 const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
   const { windowWidth } = useWindowSize();
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
 
   if (projectFolder.attributes?.header_bg?.large) {
     return (
@@ -62,16 +62,8 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
         />
         <StyledProjectFolderShareButton
           projectFolder={projectFolder}
-          buttonStyle="primary"
-          padding={smallerThanLargeTablet ? '4px 10px' : '6px 13px'}
-          bgColor="rgba(255,255,255,0.9)"
-          borderColor="#666"
-          iconColor="#000"
-          textColor="#000"
-          bgHoverColor="#fff"
-          borderHoverColor="#000"
-          iconHoverColor="#000"
-          textHoverColor="#000"
+          buttonStyle="white"
+          padding={smallerThan1100px ? '4px 10px' : '6px 13px'}
         />
       </Container>
     );

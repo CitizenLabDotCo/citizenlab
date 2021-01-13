@@ -28,8 +28,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -42,8 +41,11 @@ const Container = styled.main`
   );
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
   background: #fff;
+
+  ${media.smallerThan1100px`
+    background: ${colors.background};
+  `}
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -57,6 +59,11 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  padding-top: 30px;
+  background: #fff;
 `;
 
 const ButtonBar = styled.div`
@@ -75,11 +82,6 @@ const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
   height: 240px;
   margin-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
-    height: 200px;
-    margin-bottom: 20px;
-  `};
-
   ${media.smallerThanMinTablet`
     height: 140px;
   `};
@@ -91,7 +93,7 @@ const Content = styled.div`
   justify-content: flex-start;
   margin-bottom: 110px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     flex-direction: column;
     align-items: stretch;
   `};
@@ -100,7 +102,7 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     margin-bottom: 40px;
   `};
 `;
@@ -110,26 +112,17 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   width: 800px;
   padding: 25px;
   padding-bottom: 5px;
-  margin-left: 70px;
+  margin-left: 80px;
   margin-top: 4px;
-  background: ${darken(0.025, colors.background)};
+  background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
-  &.onlyOneCard {
+  &.oneCardPerRow {
     flex: 0 0 500px;
     width: 500px;
   }
 
-  @media (min-width: 1400px) {
-    margin-left: 80px;
-  }
-
-  @media (max-width: 1285px) {
-    flex: 0 0 500px;
-    width: 500px;
-  }
-
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     flex: 1;
     width: 100%;
     margin: 0;
@@ -167,9 +160,7 @@ const ProjectFolderShowPage = memo<{
   });
   const { windowWidth } = useWindowSize();
 
-  const smallerThanLargeTablet = windowWidth
-    ? windowWidth <= viewportWidths.largeTablet
-    : false;
+  const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);
   const loading =
     isUndefined(locale) ||
@@ -200,8 +191,8 @@ const ProjectFolderShowPage = memo<{
           </Loading>
         ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
           <>
-            {!smallerThanLargeTablet ? (
-              <ContentContainer maxWidth={maxPageWidth}>
+            {!smallerThan1100px ? (
+              <StyledContentContainer maxWidth={maxPageWidth}>
                 {userCanEditProject && (
                   <ButtonBar>
                     <EditButton
@@ -224,21 +215,22 @@ const ProjectFolderShowPage = memo<{
                     className={
                       adminPublication.list?.filter(
                         (item) => item.publicationType === 'project'
-                      )?.length === 1
-                        ? 'onlyOneCard'
+                      )?.length === 1 ||
+                      (windowWidth > 1100 && windowWidth < 1250)
+                        ? 'oneCardPerRow'
                         : ''
                     }
                   />
                 </Content>
-              </ContentContainer>
+              </StyledContentContainer>
             ) : (
               <>
-                <ContentContainer maxWidth={maxPageWidth}>
+                <StyledContentContainer maxWidth={maxPageWidth}>
                   <StyledProjectFolderHeader projectFolder={projectFolder} />
                   <StyledProjectFolderDescription
                     projectFolder={projectFolder}
                   />
-                </ContentContainer>
+                </StyledContentContainer>
                 <CardsWrapper>
                   <ContentContainer maxWidth={maxPageWidth}>
                     <StyledProjectFolderProjectCards
