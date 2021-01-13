@@ -1,44 +1,39 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // edit - index
-  moderatorsTooltip: {
-    id: 'app.containers.AdminPage.FolderPermissions.moderatorsTooltip',
+  folderManagerTooltip: {
+    id: 'app.containers.AdminPage.FolderPermissions.folderManagerTooltip',
     defaultMessage:
-      'Folder Moderators can modify the folder settings and become moderators of all projects included in it.',
+      'Folder managers can edit the folder description, create new projects within the folder, and have project management rights over all projects within the folder. They cannot delete projects and they do not have access to projects that are not within their folder. You can {projectManagementInfoCenterLink} to find more information on project management rights.',
   },
-  moderatorsSectionTitle: {
-    id: 'app.containers.AdminPage.FolderPermissions.moderatorsSectionTitle',
-    defaultMessage: 'Folder Moderators',
-  },
-  moreInfoModeratorLink: {
-    id: 'app.containers.AdminPage.FolderPermissions.moreInfoModeratorLink',
+  moreInfoFolderManagerLink: {
+    id: 'app.containers.AdminPage.FolderPermissions.moreInfoFolderManagerLink',
     defaultMessage:
       'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
-  moderationInfoCenterLinkText: {
+  projectManagementInfoCenterLinkText: {
     id:
-      'app.containers.AdminPage.FolderPermissions.moderationInfoCenterLinkText',
+      'app.containers.AdminPage.FolderPermissions.projectManagementInfoCenterLinkText',
     defaultMessage: 'visit our Help Center',
   },
-  searchUsers: {
-    id: 'app.containers.AdminPage.FolderPermissions.searchUsers',
+  folderManagerSectionTitle: {
+    id: 'app.containers.AdminPage.FolderPermissions.folderManagerSectionTitle',
+    defaultMessage: 'Folder managers',
+  },
+  searchFolderManager: {
+    id: 'app.containers.AdminPage.FolderPermissions.searchFolderManager',
     defaultMessage: 'Search users',
   },
-  noOptions: {
-    id: 'app.containers.AdminPage.FolderPermissions.noOptions',
-    defaultMessage: 'No users found',
+  noMatch: {
+    id: 'app.containers.AdminPage.FolderPermissions.noMatch',
+    defaultMessage: 'No match found',
   },
-  typeUserName: {
-    id: 'app.containers.AdminPage.FolderPermissions.typeUserName',
-    defaultMessage: 'start typing user names',
+  deleteFolderManagerLabel: {
+    id: 'app.containers.AdminPage.FolderPermissions.deleteFolderManagerLabel',
+    defaultMessage: 'Delete',
   },
-  deleteModeratorLabel: {
-    id: 'app.containers.AdminPage.FolderPermissions.deleteModeratorLabel',
-    defaultMessage: 'Remove',
-  },
-  addModerators: {
-    id: 'app.containers.AdminPage.FolderPermissions.addModerators',
-    defaultMessage: 'Add Moderators',
+  addFolderManager: {
+    id: 'app.containers.AdminPage.FolderPermissions.addFolderManager',
+    defaultMessage: 'Add',
   },
 });
