@@ -4,7 +4,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseStarted.create! }
-    let!(:project_with_phases) { create(:project) }
+    let!(:project) { create(:project_with_phases) }
     let!(:phase) { project.phases.first }
     let!(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
