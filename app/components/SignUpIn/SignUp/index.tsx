@@ -302,16 +302,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ];
     }, [configuration, enabledSteps, activeStep, activeStepConfiguration]);
 
-    console.log({
-      enabledSteps,
-      activeStep,
-      error,
-      helpText,
-      stepName,
-      activeStepNumber,
-      totalStepsCount,
-    });
-
     return (
       <Container id="e2e-sign-up-container" className={className ?? ''}>
         {activeStep !== 'success' && (
