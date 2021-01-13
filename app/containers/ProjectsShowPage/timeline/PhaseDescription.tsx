@@ -100,9 +100,6 @@ const PhaseDescription = memo<Props & InjectedLocalized & InjectedIntlProps>(
           <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
           {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
         </Header>
-        <ScreenReaderOnly>
-          <h3>{formatMessage(messages.invisibleTitleIdeasList)}</h3>
-        </ScreenReaderOnly>
         {hasContent && (
           <>
             <QuillEditedContent fontSize="base" textColor={theme.colorText}>
