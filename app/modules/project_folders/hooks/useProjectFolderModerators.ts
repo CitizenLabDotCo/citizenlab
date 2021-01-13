@@ -8,44 +8,44 @@ import {
 } from 'modules/project_folders/services/moderators';
 
 export default function useProjectFolderModerators(projectFolderId: string) {
-  const [moderators, setModerators] = useState<
+  const [folderModerators, setFolderModerators] = useState<
     IUsers | undefined | null | Error
   >(undefined);
 
   const isFolderModerator = useCallback(
     (user: IUserData) => {
-      if (isNilOrError(moderators)) {
+      if (isNilOrError(folderModerators)) {
         return false;
       }
 
-      return moderators.data.some((mod) => mod.id === user.id);
+      return folderModerators.data.some((mod) => mod.id === user.id);
     },
-    [moderators]
+    [folderModerators]
   );
 
   const isNotFolderModerator = useCallback(
     (user: IUserData) => {
-      if (isNilOrError(moderators)) {
+      if (isNilOrError(folderModerators)) {
         return true;
       }
 
-      return !moderators.data.some((mod) => mod.id === user.id);
+      return !folderModerators.data.some((mod) => mod.id === user.id);
     },
-    [moderators]
+    [folderModerators]
   );
 
   useEffect(() => {
     const subscription = folderModeratorsStream(
       projectFolderId
     ).observable.subscribe((streamModerators) => {
-      setModerators(streamModerators);
+      setFolderModerators(streamModerators);
     });
 
     return () => subscription?.unsubscribe();
   }, [projectFolderId]);
 
   return {
-    moderators,
+    folderModerators,
     isFolderModerator,
     addFolderModerator,
     deleteFolderModerator,

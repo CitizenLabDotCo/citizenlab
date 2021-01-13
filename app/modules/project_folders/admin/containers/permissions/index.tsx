@@ -59,7 +59,7 @@ const FolderPermissions = ({
   const authUser = useAuthUser();
 
   const {
-    moderators,
+    folderModerators,
     isFolderModerator,
     isNotFolderModerator,
     addFolderModerator,
@@ -206,25 +206,26 @@ const FolderPermissions = ({
 
       <List>
         <>
-          {!isNilOrError(moderators) &&
+          {!isNilOrError(folderModerators) &&
             !isNilOrError(authUser) &&
-            moderators.data.map((moderator, index) => (
+            folderModerators.data.map((folderModerator, index) => (
               <Row
-                key={moderator.id}
-                isLastItem={index === moderators.data.length - 1}
+                key={folderModerator.id}
+                isLastItem={index === folderModerators.data.length - 1}
               >
-                <Avatar userId={moderator.id} size="30px" />
-                <p className="expand">{userName(moderator)}</p>
-                <p className="expand">{moderator.attributes.email}</p>
+                <Avatar userId={folderModerator.id} size="30px" />
+                <p className="expand">{userName(folderModerator)}</p>
+                <p className="expand">{folderModerator.attributes.email}</p>
                 <Button
                   onClick={handleDeleteFolderModeratorClick(
                     projectFolderId,
-                    moderator.id
+                    folderModerator.id
                   )}
                   buttonStyle="text"
                   icon="delete"
                   disabled={
-                    !isNilOrError(authUser) && authUser.data.id === moderator.id
+                    !isNilOrError(authUser) &&
+                    authUser.data.id === folderModerator.id
                   }
                 >
                   <FormattedMessage {...messages.deleteFolderManagerLabel} />
