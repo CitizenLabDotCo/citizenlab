@@ -14,7 +14,7 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { getProjectUrl, IProjectData } from 'services/projects';
+import { getProjectUrl } from 'services/projects';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -460,7 +460,6 @@ export interface InputProps {
   layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
   hideDescriptionPreview?: boolean;
   className?: string;
-  project: IProjectData;
 }
 
 interface Props extends InputProps, InjectedIntlProps {}
@@ -468,18 +467,20 @@ interface Props extends InputProps, InjectedIntlProps {}
 const ProjectCard = memo<Props>(
   ({
     projectId,
-    project,
     size,
     layout,
     hideDescriptionPreview,
     className,
     intl: { formatMessage },
   }) => {
+    const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectImages = useProjectImages({ projectId });
-    const phase = usePhase(
-      project.relationships?.current_phase?.data?.id || null
-    );
+    const currentPhaseId =
+      !isNilOrError(project) && project.relationships.current_phase?.data?.id
+        ? project.relationships.current_phase.data.id
+        : null;
+    const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme: any = useTheme();
 
@@ -800,28 +801,6 @@ const ProjectCard = memo<Props>(
   }
 );
 
-const ProjectCardWrapper = memo<InputProps & InjectedIntlProps>(
-  ({ projectId, size, layout, hideDescriptionPreview, className, intl }) => {
-    const project = useProject({ projectId });
+const ProjectCardWithHoC = injectIntl(ProjectCard);
 
-    if (!isNilOrError(project)) {
-      return (
-        <ProjectCard
-          projectId={projectId}
-          project={project}
-          size={size}
-          layout={layout}
-          hideDescriptionPreview={hideDescriptionPreview}
-          intl={intl}
-          className={className}
-        />
-      );
-    }
-
-    return null;
-  }
-);
-
-const ProjectCardWrapperWithHoC = injectIntl(ProjectCardWrapper);
-
-export default ProjectCardWrapperWithHoC;
+export default ProjectCardWithHoC;
