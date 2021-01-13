@@ -1,20 +1,9 @@
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import CustomFieldGraphs from './admin/components/CustomFieldGraphs';
 import RegistrationFieldsToGraphs from './admin/components/RegistrationFieldsToGraphs';
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
-
-type RenderOnStepProps = {
-  step: TSignUpSteps;
-  children: ReactNode;
-};
-
-const RenderOnStep = ({ step, children }: RenderOnStepProps) => {
-  if (step === 'custom-fields') return <>{children}</>;
-  return null;
-};
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -27,10 +16,8 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.dashboard.users.graphs': RegistrationFieldsToGraphs,
-    'app.components.SignUpIn.SignUp.step': ({ step, ...props }) => (
-      <RenderOnStep step={step}>
-        <CustomFieldsStep {...props} />
-      </RenderOnStep>
+    'app.components.SignUpIn.SignUp.step': (props) => (
+      <CustomFieldsStep {...props} />
     ),
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
     'app.containers.UserEditPage.ProfileForm.forms': ({

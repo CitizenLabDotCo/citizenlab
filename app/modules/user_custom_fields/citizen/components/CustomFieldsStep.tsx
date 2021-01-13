@@ -163,6 +163,11 @@ class CustomFieldsStep extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   render() {
+    const { step } = this.props;
+    if (step !== 'custom-fields') {
+      return null;
+    }
+
     const { formatMessage } = this.props.intl;
     const { processing, unknownError } = this.state;
     const { authUser, userCustomFieldsSchema } = this.props;
