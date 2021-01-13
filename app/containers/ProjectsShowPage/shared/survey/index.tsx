@@ -147,6 +147,8 @@ class Survey extends PureComponent<Props, State> {
       className,
     } = this.props;
 
+    console.log(authUser);
+
     if (!isNilOrError(project)) {
       const { enabled, disabledReason } = getSurveyTakingRules({
         project,
@@ -199,7 +201,7 @@ class Survey extends PureComponent<Props, State> {
             <SignUpInhWrapper>
               <StyledSignUpIn
                 metaData={{
-                  flow: 'signin',
+                  flow: 'signup',
                   pathname: window.location.pathname,
                   inModal: false,
                   verification: undefined,
