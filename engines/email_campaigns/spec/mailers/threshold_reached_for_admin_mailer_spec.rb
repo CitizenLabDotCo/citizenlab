@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer, type: :mailer do
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('An idea you commented on has received an official update')
+      expect(mail.subject).to start_with('An initiative reached the voting threshold on your platform')
     end
 
     it 'renders the sender email' do

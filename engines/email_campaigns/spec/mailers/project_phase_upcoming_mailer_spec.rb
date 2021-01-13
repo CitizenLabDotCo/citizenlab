@@ -5,7 +5,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer, type: :mailer do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseUpcoming.create! }
     let!(:project) { create(:project) }
-    let!(:phase) { project.phase }
+    let!(:phase) { project.phases.first }
     let!(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
@@ -32,7 +32,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer, type: :mailer do
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('An idea you commented on has received an official update')
+      expect(mail.subject).to start_with('Get everything set up for the new phase of')
     end
 
     it 'renders the sender email' do
