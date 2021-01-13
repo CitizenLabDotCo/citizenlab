@@ -9,7 +9,7 @@ export default defineMessages({
   moreInfoFolderManagerLink: {
     id: 'app.containers.AdminPage.FolderPermissions.moreInfoFolderManagerLink',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+      'https://support.citizenlab.co/en/articles/4648650-assign-the-right-project-managers',
   },
   projectManagementInfoCenterLinkText: {
     id:
