@@ -36,7 +36,7 @@ const StyledCheckbox = styled(Checkbox)`
 `;
 
 interface Props {
-  onChange: (value: string) => void;
+  onChange: (fieldPath: string, value: any) => void;
   projectAttrs: IUpdatedProjectProperties;
 }
 
@@ -78,11 +78,9 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
       return folderOptions[0].value;
     }, [folderOptions, noFolderOption, authUser]);
 
-    const handleSelectChange = useCallback(
-      ({ value }: IOption) => {
-        if (typeof value === 'string') {
-          onChange(value);
-        }
+    const handleChange = useCallback(
+      ({ value }) => {
+        onChange('projectAttributesDiff.folder_id', value);
       },
       [onChange]
     );
