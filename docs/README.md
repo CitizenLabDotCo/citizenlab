@@ -2,11 +2,15 @@
 
 ## Next release 
 
+### Added
+- Ability to customize the input term for a project
+
 ### Changed
 - Idea cards redesign
 - Project folder page redesign
 - Project folders now have a single folder card image instead of 5 folder images in the admin settings
 - By default 24 instead of 12 ideas or shown now on the project page
+- The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
 
 ## 2020-12-17
 
