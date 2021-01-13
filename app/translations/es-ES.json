@@ -922,7 +922,7 @@
   "app.containers.AdminPage.DashboardPage.allProjects": "Todos los proyectos",
   "app.containers.AdminPage.DashboardPage.allTime": "Todas las fechas",
   "app.containers.AdminPage.DashboardPage.allTopics": "Todos los temas",
-  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Automatic location detection underway. Please wait until the processing is complete.",
+  "app.containers.AdminPage.DashboardPage.automaticLoadingMessage": "Se inicia detección de localización automática. Por favor, espere hasta que el proceso esté completo.",
   "app.containers.AdminPage.DashboardPage.comments": "Comentarios",
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Comentarios",
   "app.containers.AdminPage.DashboardPage.continuousType": "Continuo",
