@@ -48,6 +48,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import T from 'components/T';
+import useUserCustomFields from 'modules/user_custom_fields/hooks/useUserCustomFields';
 
 type ISupportedDataType =
   | IUsersByRegistrationField
@@ -363,15 +364,18 @@ const CustomFieldGraphs = ({
   participationMethods,
   startAt,
   endAt,
-  fields,
   project,
 }) => {
+  const userCustomFields = useUserCustomFields({
+    inputTypes: ['select', 'multiselect', 'checkbox', 'number'],
+  });
+
   return (
     participationMethods !== ['information'] &&
     startAt &&
     endAt &&
-    !isNilOrError(fields) &&
-    fields.map(
+    !isNilOrError(userCustomFields) &&
+    userCustomFields.map(
       (customField) =>
         // only show enabled fields, only supported number field is birthyear.
         customField.attributes.enabled &&
