@@ -158,20 +158,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         isEnabled: (metaData) => !!metaData?.verification,
         isActive: (authUser) => !authUser?.attributes?.verified,
       },
-      'custom-fields': {
-        position: 4,
-        stepName: formatMessage(messages.completeYourProfile),
-        helperText: (tenant) =>
-          tenant?.attributes?.settings?.core.custom_fields_signup_helper_text,
-        // isEnabled: ({ customFieldsSchema }) => {
-        //   return (
-        //     !isNilOrError(customFieldsSchema) &&
-        //     customFieldsSchema.hasCustomFields
-        //   );
-        // },
-        isEnabled: () => true,
-        isActive: (authUser) => !authUser?.attributes.registration_completed_at,
-      },
       success: {
         position: 5,
         isEnabled: (metaData) => !!metaData?.inModal,
