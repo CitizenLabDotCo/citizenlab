@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::StatusChangeOfCommentedIdeaMailer, type: :mailer do
+RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative.create! }

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer, type: :mailer do
+RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedInitiativeMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea.create! }
