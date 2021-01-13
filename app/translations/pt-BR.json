@@ -1864,7 +1864,7 @@
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Informações sobre este projeto",
   "app.containers.ProjectFolderShowPage.metaTitle": "Projeto: {title}",
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Faça o login para ver esta pasta.} other {Não há nenhuma pasta aqui.}}",
-  "app.containers.ProjectFolderShowPage.readMore": "Read more",
+  "app.containers.ProjectFolderShowPage.readMore": "Saiba mais",
   "app.containers.ProjectFolderShowPage.seeLess": "Ver menos",
   "app.containers.ProjectFolderShowPage.share": "Compartilhe",
   "app.containers.Projects.PollForm.formCompleted": "Obrigado por responder esta sondagem!",
