@@ -112,16 +112,20 @@ module Frontend
       end
     end
 
-    def idea_edit_url(tenant, idea_id)
-      "#{tenant.base_frontend_uri}/ideas/edit/#{idea_id}"
-    end
-
     def terms_conditions_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/pages/terms-and-conditions"
     end
 
     def privacy_policy_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/pages/privacy-policy"
+    end
+
+    def admin_ideas_url tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/admin/ideas"
+    end
+
+    def idea_edit_url tenant, idea_id
+      "#{tenant.base_frontend_uri}/ideas/edit/#{idea_id}"
     end
 
   end
