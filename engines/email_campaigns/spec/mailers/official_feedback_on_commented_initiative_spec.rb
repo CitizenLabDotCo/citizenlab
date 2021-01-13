@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::OfficialFeedbackOnCommentedIdeaMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea.create! }
+    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedInitiative.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:command) do
@@ -27,7 +27,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnCommentedIdeaMailer, type: :mai
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('A proposal you commented on has received an official update')
+      expect(mail.subject).to start_with('There\'s an update on an proposal you commented on')
     end
 
     it 'renders the sender email' do
