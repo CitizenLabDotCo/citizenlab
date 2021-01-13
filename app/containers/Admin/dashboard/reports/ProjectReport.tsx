@@ -39,10 +39,6 @@ import ResolutionControl from '../components/ResolutionControl';
 import T from 'components/T';
 import BarChartActiveUsersByTime from '../summary/charts/BarChartActiveUsersByTime';
 
-import GetUserCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFields';
-
 import Outlet from 'components/Outlet';
 
 const Section = styled.div`
@@ -84,7 +80,6 @@ interface InputProps {
 interface DataProps {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
-  customFields: GetUserCustomFieldsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -94,7 +89,6 @@ const ProjectReport = memo(
     project,
     phases,
     mostVotedIdeas,
-    customFields,
     intl: { formatMessage, formatDate },
   }: Props & InjectedIntlProps) => {
     const localize = useLocalize();
@@ -229,7 +223,6 @@ const ProjectReport = memo(
               />
               <Outlet
                 id="app.containers.Admin.dashboard.reports.ProjectReport.graphs"
-                fields={customFields}
                 startAt={startAt}
                 endAt={endAt}
                 participationMethods={participationMethods}
@@ -330,11 +323,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetIdeas>
-  ),
-  customFields: (
-    <GetUserCustomFields
-      inputTypes={['select', 'multiselect', 'checkbox', 'number']}
-    />
   ),
 });
 

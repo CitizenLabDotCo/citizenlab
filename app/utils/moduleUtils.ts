@@ -12,7 +12,6 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 import { mergeWith, castArray } from 'lodash-es';
-import { GetUserCustomFieldsChildProps } from 'modules/user_custom_fields/resources/GetUserCustomFields';
 
 import { FunctionComponent } from 'react';
 
@@ -91,7 +90,6 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
     startAt: string;
     endAt: string;
-    fields: GetUserCustomFieldsChildProps;
     participationMethods: ParticipationMethod[];
     project: IProjectData;
   };
