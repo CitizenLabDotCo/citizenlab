@@ -1,5 +1,4 @@
 import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { adopt } from 'react-adopt';
 import { indexOf } from 'lodash-es';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
@@ -18,10 +17,6 @@ import {
 } from 'components/SignUpIn/styles';
 import ReactResizeDetector from 'react-resize-detector';
 import Outlet from 'components/Outlet';
-
-import GetUserCustomFieldsSchema, {
-  GetUserCustomFieldsSchemaChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -94,11 +89,7 @@ export interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
-}
-
-interface Props extends InputProps, DataProps {
+interface Props extends InputProps {
   theme: any;
 }
 
@@ -395,14 +386,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  customFieldsSchema: <GetUserCustomFieldsSchema />,
-});
-
 const SignUpWithHoC = injectIntl(withTheme(SignUp));
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SignUpWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default SignUpWithHoC;
