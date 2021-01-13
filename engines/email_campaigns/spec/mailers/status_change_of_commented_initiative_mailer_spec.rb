@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::StatusChangeOfCommentedIdeaMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea.create! }
+    let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
     let(:initiative) { create(:initiative) }
     let(:status) { initiative.initiative_status }
@@ -37,7 +37,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfCommentedIdeaMailer, type: :mailer 
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('The status of a proposal you commented on has been changed')
+      expect(mail.subject).to start_with('A proposal you commented on has a new status')
     end
 
     it 'renders the sender email' do
