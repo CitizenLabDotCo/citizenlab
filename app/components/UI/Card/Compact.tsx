@@ -54,9 +54,7 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   border: solid 1px ${transparentize(0.72, colors.label)};
 
   ${media.smallerThanMinTablet`
-    flex: 0 0 100%;
     width: 100%;
-    height: ${cardInnerHeight};
     margin-bottom: 18px;
   `}
 `;
@@ -67,9 +65,7 @@ const IdeaCardImage = styled(Image)`
   height: ${cardInnerHeight};
 
   ${media.smallerThanMinTablet`
-    flex: 0 0 100%;
     width: 100%;
-    height: ${cardInnerHeight};
   `}
 `;
 
