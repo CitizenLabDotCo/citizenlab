@@ -5,6 +5,10 @@
 ### Added
 - Ability to customize the input term for a project
 
+/
+
+## 2021-01-13
+
 ### Changed
 - Idea cards redesign
 - Project folder page redesign
