@@ -94,6 +94,12 @@ const FiltersArea = styled.div`
     `}
   }
 
+  ${media.biggerThanMinTablet`
+    &.mapView {
+      margin-top: -65px;
+    }
+  `}
+
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
@@ -382,7 +388,10 @@ class WithoutFiltersSidebar extends PureComponent<
     );
 
     return (
-      <Container id="e2e-ideas-container" className={className}>
+      <Container
+        id="e2e-ideas-container"
+        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
+      >
         <FiltersArea
           id="e2e-ideas-filters"
           className={`${showMapView ? 'mapView' : 'listView'}`}
