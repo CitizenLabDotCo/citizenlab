@@ -1,23 +1,25 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import Header from './Header';
+import ProjectFolderHeader from './ProjectFolderHeader';
+import ProjectFolderDescription from './ProjectFolderDescription';
+import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
 import { Spinner } from 'cl2-component-library';
-import ProjectFolderInfo from './ProjectFolderInfo';
 import ContentContainer from 'components/ContentContainer';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProjectFolder, {
-  GetProjectFolderChildProps,
-} from 'modules/project_folders/resources/GetProjectFolder';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useLocale from 'hooks/useLocale';
+import useTenant from 'hooks/useTenant';
+import useProjectFolder from 'modules/project_folders/hooks/useProjectFolder';
+import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
+import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
 import messages from './messages';
@@ -25,28 +27,30 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+import { maxPageWidth } from './styles';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+
+// typings
+import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
 
 const Container = styled.main`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
-  background: ${colors.background};
+  background: #fff;
+
+  ${media.smallerThan1100px`
+    background: ${colors.background};
+  `}
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
-    background: ${colors.background};
-  `}
-
-  ${media.biggerThanMinTablet`
-    &.loaded {
-      min-height: 900px;
-    }
   `}
 `;
 
@@ -57,21 +61,74 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Content = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+const StyledContentContainer = styled(ContentContainer)`
+  padding-top: 30px;
+  background: #fff;
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  flex: 1 1 auto;
-  padding-top: 20px;
-  padding-bottom: 100px;
+const ButtonBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+`;
+
+const EditButton = styled(Button)`
+  margin-left: 30px;
+`;
+
+const StyledProjectFolderHeader = styled(ProjectFolderHeader)`
+  flex: 1;
+  height: 240px;
+  margin-bottom: 30px;
 
   ${media.smallerThanMinTablet`
-    padding-top: 30px;
-  `}
+    height: 140px;
+  `};
+`;
+
+const Content = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 110px;
+
+  ${media.smallerThan1100px`
+    flex-direction: column;
+    align-items: stretch;
+  `};
+`;
+
+const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
+  flex: 1;
+
+  ${media.smallerThan1100px`
+    margin-bottom: 40px;
+  `};
+`;
+
+const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
+  flex: 0 0 800px;
+  width: 800px;
+  padding: 25px;
+  padding-bottom: 5px;
+  margin-left: 80px;
+  margin-top: 4px;
+  background: ${colors.background};
+  border-radius: ${(props: any) => props.theme.borderRadius};
+
+  &.oneCardPerRow {
+    flex: 0 0 500px;
+    width: 500px;
+  }
+
+  ${media.smallerThan1100px`
+    flex: 1;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+  `};
 `;
 
 const NotFoundWrapper = styled.div`
@@ -85,91 +142,121 @@ const NotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-export interface InputProps {}
+const CardsWrapper = styled.div`
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: ${colors.background};
+`;
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
-  projectFolder: GetProjectFolderChildProps;
-}
+const ProjectFolderShowPage = memo<{
+  projectFolder: IProjectFolderData;
+}>(({ projectFolder }) => {
+  const authUser = useAuthUser();
+  const locale = useLocale();
+  const tenant = useTenant();
+  const adminPublication = useAdminPublicationPrefetchProjects({
+    folderId: projectFolder.id,
+    publicationStatusFilter: ['published', 'archived'],
+  });
+  const { windowWidth } = useWindowSize();
 
-interface Props extends InputProps, DataProps {}
+  const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
+  const folderNotFound = isError(projectFolder);
+  const loading =
+    isUndefined(locale) ||
+    isUndefined(tenant) ||
+    isUndefined(projectFolder) ||
+    isUndefined(adminPublication?.list);
 
-interface State {
-  hasEvents: boolean;
-  loaded: boolean;
-}
+  const userCanEditProject = isAdmin(authUser);
 
-class ProjectFolderShowPage extends PureComponent<
-  Props & WithRouterProps,
-  State
-> {
-  render() {
-    const { locale, tenant, projectFolder } = this.props;
-    const { slug } = this.props.params;
-    const folderNotFound = isError(projectFolder);
-    const loading =
-      isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder);
-
-    return (
-      <>
-        <ProjectFolderShowPageMeta projectFolderSlug={slug} />
-        <Container
-          className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}
-        >
-          {folderNotFound ? (
-            <NotFoundWrapper>
-              <p>
-                <FormattedMessage {...messages.noFolderFoundHere} />
-              </p>
-              <Button
-                linkTo="/projects"
-                text={<FormattedMessage {...messages.goBackToList} />}
-                icon="arrow-back"
-              />
-            </NotFoundWrapper>
-          ) : loading ? (
-            <Loading>
-              <Spinner />
-            </Loading>
-          ) : !isNilOrError(projectFolder) ? (
-            <>
-              <Header projectFolderId={projectFolder.id} />
-              <Content>
-                <StyledContentContainer mode="page">
-                  <ProjectFolderInfo projectFolderId={projectFolder.id} />
-                  <ProjectAndFolderCards
-                    pageSize={50}
-                    publicationStatusFilter={['published', 'archived']}
-                    showTitle={false}
-                    layout="twocolumns"
-                    folderId={projectFolder.id}
+  return (
+    <>
+      <ProjectFolderShowPageMeta projectFolder={projectFolder} />
+      <Container id="e2e-folder-page">
+        {folderNotFound ? (
+          <NotFoundWrapper>
+            <p>
+              <FormattedMessage {...messages.noFolderFoundHere} />
+            </p>
+            <Button
+              linkTo="/projects"
+              text={<FormattedMessage {...messages.goBackToList} />}
+              icon="arrow-back"
+            />
+          </NotFoundWrapper>
+        ) : loading ? (
+          <Loading>
+            <Spinner />
+          </Loading>
+        ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
+          <>
+            {!smallerThan1100px ? (
+              <StyledContentContainer maxWidth={maxPageWidth}>
+                {userCanEditProject && (
+                  <ButtonBar>
+                    <EditButton
+                      icon="edit"
+                      linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                      buttonStyle="secondary"
+                      padding="5px 8px"
+                    >
+                      <FormattedMessage {...messages.editFolder} />
+                    </EditButton>
+                  </ButtonBar>
+                )}
+                <StyledProjectFolderHeader projectFolder={projectFolder} />
+                <Content>
+                  <StyledProjectFolderDescription
+                    projectFolder={projectFolder}
+                  />
+                  <StyledProjectFolderProjectCards
+                    list={adminPublication.list}
+                    className={
+                      adminPublication.list?.filter(
+                        (item) => item.publicationType === 'project'
+                      )?.length === 1 ||
+                      (windowWidth > 1100 && windowWidth < 1250)
+                        ? 'oneCardPerRow'
+                        : ''
+                    }
+                  />
+                </Content>
+              </StyledContentContainer>
+            ) : (
+              <>
+                <StyledContentContainer maxWidth={maxPageWidth}>
+                  <StyledProjectFolderHeader projectFolder={projectFolder} />
+                  <StyledProjectFolderDescription
+                    projectFolder={projectFolder}
                   />
                 </StyledContentContainer>
-              </Content>
-            </>
-          ) : null}
-        </Container>
-      </>
-    );
-  }
-}
-
-// TODO: add vertical padding to ContentContainer
-// TODO: Meta
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locale: <GetLocale />,
-  tenant: <GetTenant />,
-  projectFolder: ({ params, render }) => (
-    <GetProjectFolder projectFolderSlug={params.slug}>
-      {render}
-    </GetProjectFolder>
-  ),
+                <CardsWrapper>
+                  <ContentContainer maxWidth={maxPageWidth}>
+                    <StyledProjectFolderProjectCards
+                      list={adminPublication.list}
+                    />
+                  </ContentContainer>
+                </CardsWrapper>
+              </>
+            )}
+          </>
+        ) : null}
+      </Container>
+    </>
+  );
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectFolderShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+const ProjectFolderShowPageWrapper = memo<WithRouterProps>(
+  ({ params: { slug } }) => {
+    const projectFolder = useProjectFolder({ projectFolderSlug: slug });
+
+    if (!isNilOrError(projectFolder)) {
+      return <ProjectFolderShowPage projectFolder={projectFolder} />;
+    }
+
+    return null;
+  }
+);
+
+export default withRouter(ProjectFolderShowPageWrapper);

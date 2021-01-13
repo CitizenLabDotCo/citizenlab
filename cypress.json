@@ -6,6 +6,5 @@
   "chromeWebSecurity": false,
   "numTestsKeptInMemory": 10,
   "defaultCommandTimeout": 15000,
-  "retries": 2,
-  "experimentalNetworkStubbing": true
+  "retries": 2
 }
