@@ -8,7 +8,7 @@ const indexPath = (projectFolderId: string) =>
 const showPath = (projectFolderId: string, moderatorId: string) =>
   `${indexPath(projectFolderId)}/${moderatorId}`;
 
-export function moderatorsStream(
+export function folderModeratorsStream(
   projectFolderId: string,
   cacheStream?: boolean
 ) {
@@ -19,7 +19,7 @@ export function moderatorsStream(
   });
 }
 
-export async function deleteModerator(
+export async function deleteFolderModerator(
   projectFolderId: string,
   moderatorId: string
 ) {
@@ -34,7 +34,7 @@ export async function deleteModerator(
   return response;
 }
 
-export async function addModerator(
+export async function addFolderModerator(
   projectFolderId: string,
   moderatorId: string
 ) {

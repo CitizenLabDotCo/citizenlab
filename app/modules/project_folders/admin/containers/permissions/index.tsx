@@ -60,10 +60,10 @@ const FolderPermissions = ({
 
   const {
     moderators,
-    isModerator,
-    isNotModerator,
-    addModerator,
-    deleteModerator,
+    isFolderModerator,
+    isNotFolderModerator,
+    addFolderModerator,
+    deleteFolderModerator,
   } = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
@@ -71,28 +71,28 @@ const FolderPermissions = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
 
-  const handleModeratorInputChange = (value: string) => {
+  const handleFolderModeratorInputChange = (value: string) => {
     setSearchInput(value);
   };
 
-  const handleModeratorsChange = async (selection: IOption[]) => {
+  const handleFolderModeratorsChange = async (selection: IOption[]) => {
     setSelectedUserOptions(selection);
   };
 
-  const handleOnAddModeratorsClick = useCallback(() => {
+  const handleOnAddFolderModeratorsClick = useCallback(() => {
     setProcessing(true);
     selectedUserOptions.forEach(({ value: userId }) =>
-      addModerator(projectFolderId, userId)
+      addFolderModerator(projectFolderId, userId)
     );
     setProcessing(false);
     setSelectedUserOptions([]);
   }, [selectedUserOptions]);
 
-  const handleDeleteModeratorClick = (
+  const handleDeleteFolderModeratorClick = (
     projectFolderId: string,
     moderatorId: string
   ) => () => {
-    deleteModerator(projectFolderId, moderatorId);
+    deleteFolderModerator(projectFolderId, moderatorId);
   };
 
   const loadUsers = (inputValue: string, callback) => {
@@ -112,22 +112,22 @@ const FolderPermissions = ({
     }
   };
 
-  const isNotModeratorOrAuthUser = (user: IUserData) => {
+  const isNotFolderModeratorOrAuthUser = (user: IUserData) => {
     if (!isNilOrError(authUser)) {
-      return isNotModerator(user) && user.id !== authUser.data.id;
+      return isNotFolderModerator(user) && user.id !== authUser.data.id;
     }
 
-    return isNotModerator(user);
+    return isNotFolderModerator(user);
   };
 
   const getOptions = (users: IUsers) => {
     if (!isNilOrError(users)) {
-      return users.data.filter(isNotModeratorOrAuthUser).map((user) => {
+      return users.data.filter(isNotFolderModeratorOrAuthUser).map((user) => {
         return {
           value: user.id,
           label: `${userName(user)} (${user.attributes.email})`,
           email: `${user.attributes.email}`,
-          disabled: isModerator(user),
+          disabled: isFolderModerator(user),
         };
       });
     }
@@ -186,11 +186,11 @@ const FolderPermissions = ({
           isLoading={loading}
           isDisabled={processing}
           value={selectedUserOptions}
-          onChange={handleModeratorsChange}
+          onChange={handleFolderModeratorsChange}
           placeholder={formatMessage(messages.searchFolderManager)}
           styles={selectStyles}
           noOptionsMessage={noOptionsMessage}
-          onInputChange={handleModeratorInputChange}
+          onInputChange={handleFolderModeratorInputChange}
           components={isDropdownIconHidden && { DropdownIndicator: () => null }}
         />
         <UserSelectButton
@@ -198,7 +198,7 @@ const FolderPermissions = ({
           buttonStyle="cl-blue"
           icon="plus-circle"
           padding="13px 16px"
-          onClick={handleOnAddModeratorsClick}
+          onClick={handleOnAddFolderModeratorsClick}
           disabled={!selectedUserOptions || selectedUserOptions.length === 0}
           processing={processing}
         />
@@ -217,7 +217,7 @@ const FolderPermissions = ({
                 <p className="expand">{userName(moderator)}</p>
                 <p className="expand">{moderator.attributes.email}</p>
                 <Button
-                  onClick={handleDeleteModeratorClick(
+                  onClick={handleDeleteFolderModeratorClick(
                     projectFolderId,
                     moderator.id
                   )}
