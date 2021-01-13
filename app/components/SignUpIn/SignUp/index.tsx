@@ -50,8 +50,8 @@ import { Multiloc } from 'typings';
 import useTenant from 'hooks/useTenant';
 import useAuthUser from 'hooks/useAuthUser';
 
-import { IUser } from 'services/users';
-import { ITenant } from 'services/tenant';
+import { IUserData } from 'services/users';
+import { ITenantData } from 'services/tenant';
 
 const Container = styled.div`
   width: 100%;
@@ -73,13 +73,13 @@ export type TSignUpSteps =
 export type TSignUpStepConfigurationObject = {
   position: number;
   stepName?: string;
-  helperText?: (tenant: ITenant | undefined) => Multiloc | null | undefined;
+  helperText?: (tenant: ITenantData | undefined) => Multiloc | null | undefined;
   onCompleted?: () => void;
   onSkipped?: () => void;
   onError?: () => void;
   onSelected?: (data: unknown) => void;
   isEnabled: (metaData: ISignUpInMetaData) => boolean;
-  isActive: (authUser: IUser | undefined) => boolean;
+  isActive: (authUser: IUserData | undefined) => boolean;
 };
 
 export type TSignUpStepConfiguration = {
