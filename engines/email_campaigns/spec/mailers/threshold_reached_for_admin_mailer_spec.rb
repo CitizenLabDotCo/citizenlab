@@ -5,7 +5,8 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer, type: :mailer do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:assignee) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseStarted.create! }
-    let!(:notification) { create(:threshold_reached_for_admin, recipient: recipient, assignee: assignee) }
+    let!(:initiative) { create(:initiative, assignee: assignee) }
+    let!(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: initiative) }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:command) do
