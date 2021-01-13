@@ -60,13 +60,9 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
 `;
 
 const IdeaCardImage = styled(Image)`
-  flex: 0 0 ${cardInnerHeight};
-  width: ${cardInnerHeight};
-  height: ${cardInnerHeight};
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `}
+  width: 100%;
+  height: 100%;
+  flex: 1;
 `;
 
 const ContentWrapper = styled.div`
