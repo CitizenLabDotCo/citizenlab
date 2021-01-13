@@ -18,9 +18,10 @@ import GetResourceFiles, {
 import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/ProjectsShowPage/messages';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -45,11 +46,11 @@ const Container = styled.div`
   `}
 `;
 
-const Header = styled.div`
+const Header = styled.div<{ hasContent: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => (props.hasContent ? '30px' : '0px')};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -74,8 +75,16 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const PhaseDescription = memo<Props & InjectedLocalized>(
-  ({ projectId, phaseId, phase, phaseFiles, className, localize }) => {
+const PhaseDescription = memo<Props & InjectedLocalized & InjectedIntlProps>(
+  ({
+    projectId,
+    phaseId,
+    phase,
+    phaseFiles,
+    className,
+    localize,
+    intl: { formatMessage },
+  }) => {
     const theme: any = useTheme();
     const { windowWidth } = useWindowSize();
 
@@ -83,41 +92,37 @@ const PhaseDescription = memo<Props & InjectedLocalized>(
     const content = localize(phase?.attributes?.description_multiloc);
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
+    const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
-    if (!contentIsEmpty || !isEmpty(phaseFiles)) {
-      return (
-        <Container className={`e2e-phase-description ${className || ''}`}>
-          <Header>
-            <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
-            {!smallerThanSmallTablet && (
-              <PhaseNavigation projectId={projectId} />
+    return (
+      <Container className={`e2e-phase-description ${className || ''}`}>
+        <Header hasContent={hasContent}>
+          <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
+          {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
+        </Header>
+        <ScreenReaderOnly>
+          <h3>{formatMessage(messages.invisibleTitleIdeasList)}</h3>
+        </ScreenReaderOnly>
+        {hasContent && (
+          <>
+            <QuillEditedContent fontSize="base" textColor={theme.colorText}>
+              <T
+                value={phase?.attributes?.description_multiloc}
+                supportHtml={true}
+              />
+            </QuillEditedContent>
+
+            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
+              <StyledFileAttachments files={phaseFiles} />
             )}
-          </Header>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h3"
-              {...messages.invisibleTitlePhaseAbout}
-            />
-          </ScreenReaderOnly>
-          <QuillEditedContent fontSize="base" textColor={theme.colorText}>
-            <T
-              value={phase?.attributes?.description_multiloc}
-              supportHtml={true}
-            />
-          </QuillEditedContent>
-
-          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
-            <StyledFileAttachments files={phaseFiles} />
-          )}
-        </Container>
-      );
-    }
-
-    return null;
+          </>
+        )}
+      </Container>
+    );
   }
 );
 
-const PhaseDescriptionWithHoC = injectLocalize(PhaseDescription);
+const PhaseDescriptionWithHoC = injectIntl(injectLocalize(PhaseDescription));
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,

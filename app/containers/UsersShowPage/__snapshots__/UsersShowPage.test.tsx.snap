@@ -52,7 +52,9 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
       selectTab={[Function]}
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
-    <UsersShowPage__StyledContentContainer>
+    <UsersShowPage__StyledContentContainer
+      maxWidth={1166}
+    >
       <UsersShowPage__UserIdeas>
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
@@ -122,7 +124,9 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
       selectTab={[Function]}
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
-    <UsersShowPage__StyledContentContainer>
+    <UsersShowPage__StyledContentContainer
+      maxWidth={1166}
+    >
       <UsersShowPage__UserIdeas>
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
