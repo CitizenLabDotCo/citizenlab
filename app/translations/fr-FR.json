@@ -276,7 +276,7 @@
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Votez pour {postTitle} sur",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Je viens de poster une proposition pour {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Liens vers la page d'accueil",
-  "app.components.PostComponents.readMore": "Lire la suite...",
+  "app.components.PostComponents.readMore": "Voir plus...",
   "app.components.Project.projectModeratorIndicator": "Vous êtes administrateur projet pour ce projet",
   "app.components.ProjectArchivedIndicator.archivedProject": "Malheureusement, vous ne pouvez plus participer à ce projet, celui-ci a été archivé",
   "app.components.ProjectCard.a11y_projectDescription": "Description du projet :",

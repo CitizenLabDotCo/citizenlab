@@ -1978,7 +1978,7 @@
   "app.containers.ProjectFolderShowPage.noFolderFoundHere": "{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}",
   "app.containers.ProjectFolderShowPage.projectFolderTwitterMessage": "",
   "app.containers.ProjectFolderShowPage.projectFolderWhatsAppMessage": "",
-  "app.containers.ProjectFolderShowPage.readMore": "Read more",
+  "app.containers.ProjectFolderShowPage.readMore": "Les mer",
   "app.containers.ProjectFolderShowPage.seeLess": "Se mindre",
   "app.containers.ProjectFolderShowPage.share": "Del",
   "app.containers.Projects.PollForm.formCompleted": "Takk for at du svarte på denne avstemmingen",
