@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -18,7 +18,6 @@ import Button from 'components/UI/Button';
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // Resources
@@ -29,6 +28,9 @@ import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -47,27 +49,23 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface State {}
-
 export interface Props extends InputProps, DataProps {}
 
-export class AdminProjectFolderEdition extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
-  State
-> {
-  goBack = () => {
-    clHistory.push('/admin/projects');
-  };
+const AdminProjectFolderEdition = memo<
+  Props & InjectedIntlProps & WithRouterProps
+>(
+  ({
+    authUser,
+    params: { projectFolderId },
+    intl: { formatMessage },
+    projectFolder,
+    children,
+  }) => {
+    const localize = useLocalize();
+    const goBack = () => {
+      clHistory.push('/admin/projects');
+    };
 
-  render() {
-    const { authUser } = this.props;
-    const { projectFolderId } = this.props.params;
-    const {
-      intl: { formatMessage },
-      localize,
-      projectFolder,
-      children,
-    } = this.props;
     let tabbedProps = {
       resource: {
         title: !isNilOrError(projectFolder)
@@ -99,7 +97,7 @@ export class AdminProjectFolderEdition extends PureComponent<
     return (
       <>
         <TopContainer>
-          <GoBackButton onClick={this.goBack} />
+          <GoBackButton onClick={goBack} />
           {!isNilOrError(projectFolder) && (
             <Button
               buttonStyle="cl-blue"
@@ -115,14 +113,10 @@ export class AdminProjectFolderEdition extends PureComponent<
       </>
     );
   }
-}
+);
 
 const AdminProjectFolderEditionWithHoCs = withAuthUser(
-  withRouter(
-    injectIntl<Props & WithRouterProps>(
-      injectLocalize(AdminProjectFolderEdition)
-    )
-  )
+  injectIntl(AdminProjectFolderEdition)
 );
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
@@ -133,10 +127,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
       <AdminProjectFolderEditionWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>
-);
+));
