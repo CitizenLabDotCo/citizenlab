@@ -26,13 +26,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // style
 import styled, { useTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import {
-  media,
-  fontSizes,
-  isRtl,
-  viewportWidths,
-  colors,
-} from 'utils/styleUtils';
+import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
@@ -67,7 +61,7 @@ const Title = styled.h1`
     font-size: ${fontSizes.xxxl}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1100px`
     margin-bottom: 20px;
   `}
 `;
@@ -134,9 +128,9 @@ const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
       null
     );
 
-    const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
 
-    const collapsedDescriptionMaxHeight = smallerThanLargeTablet
+    const collapsedDescriptionMaxHeight = smallerThan1100px
       ? mobileCollapsedDescriptionMaxHeight
       : desktopCollapsedDescriptionMaxHeight;
 

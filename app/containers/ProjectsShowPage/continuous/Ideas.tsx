@@ -8,6 +8,7 @@ import PBExpenses from '../shared/pb/PBExpenses';
 import {
   SectionContainer,
   ProjectPageSectionTitle,
+  maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 
 // hooks
@@ -68,7 +69,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
           id="e2e-continuos-project-idea-cards"
           className={className || ''}
         >
-          <StyledContentContainer id="project-ideas">
+          <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
             <SectionContainer>
               {isPBProject && (
                 <StyledPBExpenses
