@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:assignee) { create(:moderator, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseStarted.create! }
+    let!(:assignee) { create(:admin, locale: 'en') }
+    let!(:campaign) { EmailCampaigns::Campaigns::ThresholdReachedForAdmin.create! }
     let!(:initiative) { create(:initiative, assignee: assignee) }
     let!(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: initiative) }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
