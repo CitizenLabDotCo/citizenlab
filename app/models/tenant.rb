@@ -27,9 +27,10 @@ class Tenant < ApplicationRecord
     end
   end
 
-  after_create :create_apartment_tenant
+  after_create :create_apartment_tenant, :create_app_configuration
   after_destroy :delete_apartment_tenant
   after_update :update_tenant_schema, if: :saved_change_to_host?
+  after_update :update_app_configuration
 
   before_validation :validate_missing_feature_dependencies
 
@@ -127,6 +128,30 @@ class Tenant < ApplicationRecord
   end
 
   private
+
+  def create_app_configuration
+    AppConfiguration.create(
+        host: tenant.host,
+        logo: tenant.logo,
+        header_bg: tenant.header_bg,
+        favicon: tenant.favicon,
+        settings: tenant.settings,
+        style: tenant.style,
+        created_at: tenant.created_at
+    )
+  end
+
+  def update_app_configuration
+    AppConfiguration.instance.update!(
+        host: tenant.host,
+        logo: tenant.logo,
+        header_bg: tenant.header_bg,
+        favicon: tenant.favicon,
+        settings: tenant.settings,
+        style: tenant.style,
+        created_at: tenant.created_at
+    )
+  end
 
   def create_apartment_tenant
     Apartment::Tenant.create(self.schema_name)
