@@ -10,9 +10,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
-  inputsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputsTab',
-    defaultMessage: 'Inputs',
+  inputManagerTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
+    defaultMessage: 'Input manager',
   },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
@@ -83,9 +83,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage',
     defaultMessage: 'Not a valid amount',
   },
-  participationMethodTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitle',
-    defaultMessage: 'What do you want to do in this phase?',
+  participationMethodTitleText: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
+    defaultMessage: 'What do you want to do?',
   },
   participationMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
@@ -108,23 +108,24 @@ export default defineMessages({
     defaultMessage:
       'Create or collect inputs, votes and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
   },
-  createSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurvey',
-    defaultMessage: 'Create a survey',
+  createSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.createSurveyText',
+    defaultMessage: 'Create an advanced survey',
   },
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage: 'Embed a Typeform, Google Form or Enalyzer survey.',
   },
-  conductParticipatoryBudgeting: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgeting',
-    defaultMessage: 'Conduct participatory budgeting',
-  },
-  conductParticipatoryBudgetingDescription: {
+  conductParticipatoryBudgetingText: {
     id:
-      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescription',
+      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
+    defaultMessage: 'Conduct a budget allocation exercise',
+  },
+  conductParticipatoryBudgetingDescriptionText: {
+    id:
+      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
-      'Assign a budget to projects and ask participants to determine which projects they would choose within a pre-defined total budget.',
+      'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
   createPoll: {
     id: 'app.containers.AdminPage.ProjectEdit.createPoll',
@@ -138,46 +139,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.findVolunteers',
     defaultMessage: 'Find volunteers',
   },
-  findVolunteersDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescription',
-    defaultMessage:
-      'Ask participants to volunteer for different projects and causes.',
+  findVolunteersDescriptionText: {
+    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText',
+    defaultMessage: 'Ask participants to volunteer for activities and causes.',
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
     defaultMessage: 'Amount per citizen, in {currency}',
   },
-  postingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
-    defaultMessage: 'Posting ideas',
+  inputPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
+    defaultMessage: 'Submitting inputs',
   },
-  contributionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.contributionPostingEnabled',
-    defaultMessage: 'Posting ideas',
+  inputCommentingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
+    defaultMessage: 'Commenting on inputs',
   },
-  optionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.optionPostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  issuePostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.issuePostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  questionPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.questionPostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  projectPostingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectPostingEnabled',
-    defaultMessage: 'Posting ideas',
-  },
-  commentingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.commentingEnabled',
-    defaultMessage: 'Commenting',
-  },
-  votingEnabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingEnabled',
-    defaultMessage: 'Voting',
+  inputVotingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
+    defaultMessage: 'Voting on inputs',
   },
   votingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethod',

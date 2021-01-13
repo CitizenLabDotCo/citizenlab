@@ -12,14 +12,18 @@ import useProject from 'hooks/useProject';
 // i18n
 import T from 'components/T';
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
 
 const Container = styled.div`
-  padding: 25px;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 25px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 interface Props {
@@ -53,12 +57,12 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(project)) {
       return (
         <Modal
-          width={450}
+          width={550}
           opened={opened}
           close={onClose}
-          closeOnClickOutside={false}
+          closeOnClickOutside={true}
           noClose={false}
-          header={<FormattedMessage {...messages.shareThisProject} />}
+          header={<T value={project.attributes.title_multiloc} />}
         >
           <Container className={className}>
             {opened && (
@@ -82,7 +86,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                           }
                         )}
                         utmParams={utmParams}
-                        layout={'columnLayout'}
+                        layout="columnLayout"
                       />
                     );
                   }}

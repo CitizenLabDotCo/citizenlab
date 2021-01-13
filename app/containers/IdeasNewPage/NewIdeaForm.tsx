@@ -193,7 +193,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project.attributes.process_type,
         project,
         phases
       );

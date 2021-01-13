@@ -58,10 +58,6 @@ export default defineMessages({
     id: 'app.components.Comments.commentingDisabledUnverified',
     defaultMessage: '{verifyIdentityLink} to comment.',
   },
-  commentingNotAllowed: {
-    id: 'app.components.Comments.commentingNotAllowed',
-    defaultMessage: 'Commenting is currently not allowed.',
-  },
   commentingMaybeNotPermitted: {
     id: 'app.components.Comments.commentingMaybeNotPermitted',
     defaultMessage:

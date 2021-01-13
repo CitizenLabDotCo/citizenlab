@@ -2,10 +2,50 @@
 
 ## Next release 
 
+### Added
+- Ability to customize the input term for a project
+
+/
+
+## 2021-01-13
+
+### Changed
+- Idea cards redesign
+- Project folder page redesign
+- Project folders now have a single folder card image instead of 5 folder images in the admin settings
+- By default 24 instead of 12 ideas or shown now on the project page
+- The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
+
+## 2020-12-17
+
+### Fixed
+- When creating a project from a template, only templates that are supported by the tenant's locale will show up
+- Fixed several layout, interaction and data issues in the manual tagging feature of the Admin Processing page, making it ready for external use.
+- Fixed project managers access of the Admin Processing page.
+
+### Added
+- Admin activity feed access for project managers
+- Added empty state to processing list when no project is selected
+- Keyboard shortcut tooltip for navigation buttons of the Admin Processing page
+
+### Changed
+- Reduced spacing in sidebar menu, allowing for more items to be displayed
+- Style changes on the Admin Processing page
+
+## 2020-12-08
+
+### Fixed
+- Issues with password reset and invitation emails
+- No more idea duplicates showing up on idea overview pages
+- Images no longer disappear from a body of an idea, or description of a project on phase, if placed at the bottom.
+
 ### Changed
 - Increased color contrast of inactive timeline phases text to meet accesibility standard
 - Increased color contrast of event card left-hand event dates to meet accesibility standard
 - Increased color contrast of List/Map toggle component to meet accesibility standard
+
+### Added
+- Ability to tag ideas manually and automatically in the admin.
 
 ## 2020-12-02
 
@@ -38,6 +78,16 @@
   - Satismeter
   - Segment, disabled by default
 - Error messages for invitations, logins and password resets are now clearer.
+
+## 2020-11-27
+
+### Fixed
+
+- Social authentication with Google when the user has no avatar.
+
+### Changed
+
+- Random user demographics on project copy.
 
 ## 2020-11-26
 

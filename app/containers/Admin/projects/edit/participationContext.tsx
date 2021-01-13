@@ -36,7 +36,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -45,7 +44,6 @@ import GetFeatureFlag, {
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -161,7 +159,6 @@ export interface IParticipationContextConfig {
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
   surveys_enabled: GetFeatureFlagChildProps;
   typeform_enabled: GetFeatureFlagChildProps;
   google_forms_enabled: GetFeatureFlagChildProps;
@@ -530,7 +527,6 @@ class ParticipationContext extends PureComponent<
   render() {
     const {
       tenant,
-      locale,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -561,7 +557,7 @@ class ParticipationContext extends PureComponent<
       input_term,
     } = this.state;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && loaded) {
+    if (!isNilOrError(tenant) && loaded) {
       const tenantCurrency = tenant.attributes.settings.core.currency;
 
       return (
@@ -569,7 +565,7 @@ class ParticipationContext extends PureComponent<
           <StyledSection>
             <SectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.participationMethodTitle} />
+                <FormattedMessage {...messages.participationMethodTitleText} />
                 <IconTooltip
                   content={
                     <FormattedMessage
@@ -609,12 +605,12 @@ class ParticipationContext extends PureComponent<
                     <LabelText>
                       <span className="header">
                         <FormattedMessage
-                          {...messages.conductParticipatoryBudgeting}
+                          {...messages.conductParticipatoryBudgetingText}
                         />
                       </span>
                       <span className="description">
                         <FormattedMessage
-                          {...messages.conductParticipatoryBudgetingDescription}
+                          {...messages.conductParticipatoryBudgetingDescriptionText}
                         />
                       </span>
                     </LabelText>
@@ -640,27 +636,6 @@ class ParticipationContext extends PureComponent<
                   }
                 />
               </FeatureFlag>
-              <FeatureFlag name="volunteering">
-                <StyledRadio
-                  onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="volunteering"
-                  name="participationmethod"
-                  id={'participationmethod-volunteering'}
-                  label={
-                    <LabelText>
-                      <span className="header">
-                        <FormattedMessage {...messages.findVolunteers} />
-                      </span>
-                      <span className="description">
-                        <FormattedMessage
-                          {...messages.findVolunteersDescription}
-                        />
-                      </span>
-                    </LabelText>
-                  }
-                />
-              </FeatureFlag>
 
               {surveys_enabled &&
                 (google_forms_enabled ||
@@ -676,7 +651,7 @@ class ParticipationContext extends PureComponent<
                     label={
                       <LabelText>
                         <span className="header">
-                          <FormattedMessage {...messages.createSurvey} />
+                          <FormattedMessage {...messages.createSurveyText} />
                         </span>
                         <span className="description">
                           <FormattedMessage
@@ -687,6 +662,29 @@ class ParticipationContext extends PureComponent<
                     }
                   />
                 )}
+
+              <FeatureFlag name="volunteering">
+                <StyledRadio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participation_method}
+                  value="volunteering"
+                  name="participationmethod"
+                  id={'participationmethod-volunteering'}
+                  label={
+                    <LabelText>
+                      <span className="header">
+                        <FormattedMessage {...messages.findVolunteers} />
+                      </span>
+                      <span className="description">
+                        <FormattedMessage
+                          {...messages.findVolunteersDescriptionText}
+                        />
+                      </span>
+                    </LabelText>
+                  }
+                />
+              </FeatureFlag>
+
               <Radio
                 onChange={this.handleParticipationMethodOnChange}
                 currentValue={participation_method}
@@ -710,20 +708,19 @@ class ParticipationContext extends PureComponent<
             </SectionField>
 
             {(participation_method === 'budgeting' ||
-              participation_method === 'ideation') && (
-              // isCustomInputTermEnabled &&
-              // (locale === 'en' || locale === 'en-GB' || locale === 'en-CA') && (
-              <SectionField>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.inputTermSelectLabel} />
-                </SubSectionTitle>
-                <StyledSelect
-                  value={input_term}
-                  options={this.getInputTermOptions()}
-                  onChange={this.handleInputTermChange}
-                />
-              </SectionField>
-            )}
+              participation_method === 'ideation') &&
+              isCustomInputTermEnabled && (
+                <SectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.inputTermSelectLabel} />
+                  </SubSectionTitle>
+                  <StyledSelect
+                    value={input_term}
+                    options={this.getInputTermOptions()}
+                    onChange={this.handleInputTermChange}
+                  />
+                </SectionField>
+              )}
 
             {participation_method === 'budgeting' && (
               <>
@@ -753,7 +750,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      <FormattedMessage {...messages.commentingEnabled} />
+                      <FormattedMessage {...messages.inputCommentingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={commenting_enabled as boolean}
@@ -783,16 +780,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      <FormattedMessage
-                        {...getInputTermMessage(input_term, {
-                          idea: messages.postingEnabled,
-                          contribution: messages.contributionPostingEnabled,
-                          option: messages.optionPostingEnabled,
-                          issue: messages.issuePostingEnabled,
-                          question: messages.questionPostingEnabled,
-                          project: messages.projectPostingEnabled,
-                        })}
-                      />
+                      <FormattedMessage {...messages.inputPostingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={posting_enabled as boolean}
@@ -803,7 +791,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow>
                     <ToggleLabel>
-                      <FormattedMessage {...messages.commentingEnabled} />
+                      <FormattedMessage {...messages.inputCommentingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={commenting_enabled as boolean}
@@ -816,7 +804,7 @@ class ParticipationContext extends PureComponent<
 
                   <ToggleRow className="last">
                     <ToggleLabel>
-                      <FormattedMessage {...messages.votingEnabled} />
+                      <FormattedMessage {...messages.inputVotingEnabled} />
                     </ToggleLabel>
                     <Toggle
                       checked={voting_enabled as boolean}
@@ -1112,7 +1100,6 @@ const Data = adopt<DataProps, {}>({
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
   tenant: <GetTenant />,
-  locale: <GetLocale />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);

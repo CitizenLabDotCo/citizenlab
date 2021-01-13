@@ -58,7 +58,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     signUpActiveStep === 'verification' && hasParticipationConditions
   )
     ? 820
-    : 550;
+    : 580;
   const modalNoClose = !!(
     metaData?.error !== true &&
     (signUpActiveStep === 'verification' ||
