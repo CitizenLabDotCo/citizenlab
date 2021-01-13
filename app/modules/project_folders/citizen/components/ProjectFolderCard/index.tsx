@@ -21,6 +21,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 import {
   media,
   colors,
@@ -261,7 +262,7 @@ const FolderTitle = styled.h3`
 `;
 
 const FolderDescription = styled.div`
-  color: ${colors.label};
+  color: ${darken(0.2, colors.label)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
