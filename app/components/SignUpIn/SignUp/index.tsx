@@ -315,14 +315,18 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
                   {!error && stepName && (
                     <HeaderSubtitle>
-                      <FormattedMessage
-                        {...messages.headerSubtitle}
-                        values={{
-                          activeStepNumber,
-                          stepName,
-                          totalStepsCount,
-                        }}
-                      />
+                      {totalStepsCount > 1 ? (
+                        <FormattedMessage
+                          {...messages.headerSubtitle}
+                          values={{
+                            activeStepNumber,
+                            stepName,
+                            totalStepsCount,
+                          }}
+                        />
+                      ) : (
+                        stepName
+                      )}
                     </HeaderSubtitle>
                   )}
                 </StyledHeaderContainer>
