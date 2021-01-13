@@ -124,6 +124,10 @@ module Frontend
       "#{tenant.base_frontend_uri}/admin/ideas"
     end
 
+    def admin_project_ideas_url project_id, tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/admin/projects/#{project_id}/ideas"
+    end
+
     def admin_initiatives_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/admin/initiatives"
     end
