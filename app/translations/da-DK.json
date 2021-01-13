@@ -1208,6 +1208,7 @@
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "This image will be shown on the project card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Dette er billedet, der vises på projektfolderen. De ideelle dimensioner for dette billede er en bredde på 1440 pixels og en højde mellem 1440 og 720 pixels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderHeaderImageLabelTooltip": "Dette er billedet, der vises i overskriften på projektfolder siden. De ideelle dimensioner til dette billede er en bredde mellem 1480 og 1280 pixels og en højde på 250 pixels.",
+  "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "",
   "app.containers.AdminPage.ProjectEdit.projectName": "Project name",
   "app.containers.AdminPage.ProjectEdit.projectTypeTitle": "Project type",
   "app.containers.AdminPage.ProjectEdit.projectTypeTooltip": "Choose whether or not the project has a timeline. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.",
