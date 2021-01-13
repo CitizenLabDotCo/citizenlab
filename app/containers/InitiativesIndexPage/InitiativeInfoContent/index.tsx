@@ -63,7 +63,7 @@ const InitiativeInfoContent = memo<InjectedLocalized & Props>(
               ),
               link: (
                 <Link to="/pages/initiatives">
-                  <FormattedMessage {...messages.readMore} />
+                  <FormattedMessage {...messages.learnMoreAboutProposals} />
                 </Link>
               ),
               orgName: localize(

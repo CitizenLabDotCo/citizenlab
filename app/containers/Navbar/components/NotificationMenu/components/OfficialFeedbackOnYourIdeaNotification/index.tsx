@@ -32,7 +32,7 @@ const OfficialFeedbackOnYourIdeaNotification = memo<Props>((props) => {
 
   if (!isNilOrError(project)) {
     const inputTerm = getInputTerm(
-      project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+      project.attributes.process_type,
       project,
       phases
     );

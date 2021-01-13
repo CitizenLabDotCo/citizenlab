@@ -171,8 +171,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleRegistration',
     defaultMessage: 'Registration fields',
   },
-  subtitleRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
+  subtitleRegistration: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
     defaultMessage:
       'Specify what information people are asked to provide when signing up.',
   },

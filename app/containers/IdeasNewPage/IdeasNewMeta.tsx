@@ -56,7 +56,7 @@ const IdeasNewMeta = React.memo<Props>(
     if (!isNilOrError(project)) {
       const projectName = localize(project.attributes.title_multiloc);
       const inputTerm = getInputTerm(
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project.attributes.process_type,
         project,
         phases
       );

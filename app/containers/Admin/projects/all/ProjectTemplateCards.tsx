@@ -10,6 +10,7 @@ import { useQuery } from '@apollo/react-hooks';
 import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useTenant from 'hooks/useTenant';
+import useTenantLocales from 'hooks/useTenantLocales';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -119,6 +120,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
     const localize = useLocalize();
     const graphqlTenantLocales = useGraphqlTenantLocales();
     const tenant = useTenant();
+
     const locales = !isNilOrError(tenant)
       ? tenant.data.attributes.settings.core.locales
       : null;
@@ -175,6 +177,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
     }
   `;
 
+    const tenantLocales = useTenantLocales();
     const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
       variables: {
         departments,
@@ -183,6 +186,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
         search,
         organizationTypes,
         cursor: null,
+        locales: tenantLocales,
       },
     });
 

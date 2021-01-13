@@ -10,7 +10,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
@@ -50,9 +50,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
 
-const Container = styled(Link)`
+const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
-  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -88,6 +87,12 @@ const Container = styled(Link)`
   }
 
   &.small {
+    min-height: 540px;
+
+    &.hideDescriptionPreview {
+      min-height: 490px;
+    }
+
     &.threecolumns {
       ${media.smallerThanMaxTablet`
         width: calc(50% - 13px);
@@ -104,10 +109,14 @@ const Container = styled(Link)`
     `}
   }
 
-  &.small,
   &.medium {
     padding-top: 20px;
     padding-bottom: 30px;
+  }
+
+  &.small {
+    padding-top: 18px;
+    padding-bottom: 25px;
   }
 
   &.desktop {
@@ -138,6 +147,11 @@ const ProjectImageContainer = styled.div`
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
+
+  &.small {
+    height: 224px;
+    flex-basis: 224px;
+  }
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -153,13 +167,12 @@ const ProjectImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const ProjectImage = styled(LazyImage)`
+const ProjectImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 const ProjectContent = styled.div`
@@ -224,7 +237,7 @@ const ContentHeader = styled.div`
     &.large {
       margin-bottom: 0px;
       padding-bottom: ${ContentHeaderBottomMargin}px;
-      border-bottom: solid 1px #e8e8e8;
+      border-bottom: solid 1px #e0e0e0;
     }
   }
 
@@ -264,7 +277,7 @@ const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 `;
 
 const ProgressBar = styled.div`
@@ -295,19 +308,12 @@ const ProjectLabel = styled.div`
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
-  transition: all 200ms ease;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colorSecondary)};
-    background: ${({ theme }) => rgba(theme.colorSecondary, 0.15)};
-  }
 `;
 
 const ContentBody = styled.div`
@@ -356,16 +362,16 @@ const ProjectDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
-  height: 53px;
+  height: 45px;
   flex-shrink: 0;
   flex-grow: 0;
-  flex-basis: 53px;
+  flex-basis: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 16px;
   margin-top: 30px;
-  border-top: solid 1px #e8e8e8;
+  border-top: solid 1px #e0e0e0;
 
   &.hidden {
     border: none;
@@ -448,39 +454,44 @@ const MetaItemText = styled.div`
   margin-left: 3px;
 `;
 
-export interface Props {
+export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
   layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
+  hideDescriptionPreview?: boolean;
   className?: string;
 }
 
-const ProjectCard = memo(
+interface Props extends InputProps, InjectedIntlProps {}
+
+const ProjectCard = memo<Props>(
   ({
-    size,
-    intl: { formatMessage },
-    layout,
-    className,
     projectId,
-  }: Props & InjectedIntlProps) => {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
-    const theme: any = useTheme();
+    size,
+    layout,
+    hideDescriptionPreview,
+    className,
+    intl: { formatMessage },
+  }) => {
     const project = useProject({ projectId });
+    const authUser = useAuthUser();
+    const projectImages = useProjectImages({ projectId });
     const currentPhaseId =
-      (!isNilOrError(project) &&
-        project.relationships.current_phase?.data?.id) ||
-      null;
+      !isNilOrError(project) && project.relationships.current_phase?.data?.id
+        ? project.relationships.current_phase.data.id
+        : null;
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
-    const authUser = useAuthUser();
-    const projectImages = useProjectImages(projectId);
+    const theme: any = useTheme();
+
+    const [visible, setVisible] = useState(false);
 
     const handleIntersection = (
       event: IntersectionObserverEntry,
       unobserve: () => void
     ) => {
       if (event.isIntersecting) {
-        setIsVisible(true);
+        setVisible(true);
         unobserve();
       }
     };
@@ -551,11 +562,7 @@ const ProjectCard = memo(
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
       const processType = project.attributes.process_type;
-      const inputTerm = getInputTerm(
-        processType === 'continuous' ? 'project' : 'phase',
-        project,
-        phases
-      );
+      const inputTerm = getInputTerm(processType, project, phases);
 
       if (isArchived) {
         countdown = (
@@ -593,7 +600,7 @@ const ProjectCard = memo(
               <ProgressBar aria-hidden>
                 <ProgressBarOverlay
                   progress={progress}
-                  className={isVisible ? 'visible' : ''}
+                  className={visible ? 'visible' : ''}
                 />
               </ProgressBar>
             </Observer>
@@ -614,8 +621,8 @@ const ProjectCard = memo(
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.submitYourIdea,
-              option: messages.seeTheOptions,
-              project: messages.seeTheProjects,
+              option: messages.addYourOption,
+              project: messages.submitYourProject,
               question: messages.joinDiscussion,
               issue: messages.submitAnIssue,
               contribution: messages.contributeYourInput,
@@ -684,11 +691,18 @@ const ProjectCard = memo(
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${
-            isArchived ? 'archived' : ''
-          } ${
-            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-          } e2e-project-card e2e-admin-publication-card`}
+          className={[
+            className || '',
+            layout,
+            size,
+            'e2e-project-card',
+            'e2e-admin-publication-card',
+            isArchived ? 'archived' : '',
+            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile',
+            hideDescriptionPreview ? 'hideDescriptionPreview' : '',
+          ]
+            .filter((item) => item)
+            .join(' ')}
           to={projectUrl}
           onClick={handleProjectCardOnClick(project.id)}
         >
@@ -714,19 +728,21 @@ const ProjectCard = memo(
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
-              <T value={project.attributes.description_preview_multiloc}>
-                {(description) => {
-                  if (!isEmpty(description)) {
-                    return (
-                      <ProjectDescription className="e2e-project-card-project-description-preview">
-                        {description}
-                      </ProjectDescription>
-                    );
-                  }
+              {!hideDescriptionPreview && (
+                <T value={project.attributes.description_preview_multiloc}>
+                  {(description) => {
+                    if (!isEmpty(description)) {
+                      return (
+                        <ProjectDescription className="e2e-project-card-project-description-preview">
+                          {description}
+                        </ProjectDescription>
+                      );
+                    }
 
-                  return null;
-                }}
-              </T>
+                    return null;
+                  }}
+                </T>
+              )}
             </ContentBody>
 
             <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
@@ -785,4 +801,6 @@ const ProjectCard = memo(
   }
 );
 
-export default injectIntl(ProjectCard);
+const ProjectCardWithHoC = injectIntl(ProjectCard);
+
+export default ProjectCardWithHoC;

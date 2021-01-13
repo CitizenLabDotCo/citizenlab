@@ -94,7 +94,9 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,7 +115,9 @@ const Loading = styled.div`
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   background: #fff;
   opacity: 0;
 
@@ -704,7 +708,7 @@ export class IdeasShow extends PureComponent<
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase',
+        project.attributes.process_type,
         project,
         phases
       );

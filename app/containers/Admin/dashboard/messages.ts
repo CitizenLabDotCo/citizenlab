@@ -306,13 +306,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',
     defaultMessage: 'It should be almost ready, hang on!',
   },
-  downloadSvg: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadSvg',
-    defaultMessage: 'Download Svg',
+  downloadAsImage: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage',
+    defaultMessage: 'Download as image',
   },
   downloadXlsx: {
     id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx',
-    defaultMessage: 'Download Xlsx',
+    defaultMessage: 'Download Excel',
   },
   fromFilter: {
     id: 'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.fromFilter',
@@ -355,9 +355,9 @@ export default defineMessages({
     id: 'app.containers.Dashboards.ReportsTab.sectionWho',
     defaultMessage: 'Who participated ?',
   },
-  sectionWhat: {
-    id: 'app.containers.Dashboards.ReportsTab.sectionWhat',
-    defaultMessage: 'What ?',
+  sectionWhatInput: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWhatInput',
+    defaultMessage: 'What input did you collect?',
   },
   participantsOverTimeTitle: {
     id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',

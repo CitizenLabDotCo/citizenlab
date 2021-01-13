@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 
 // style
 import styled from 'styled-components';
@@ -106,13 +106,12 @@ const SuccessImagePlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const SuccessImage = styled(LazyImage)`
+const SuccessImage = styled(Image)`
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
 `;
 
 interface InputProps {

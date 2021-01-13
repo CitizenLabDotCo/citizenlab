@@ -89,9 +89,9 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 
   ${isRtl`
-  margin-right: 0;
-  margin-left: 6px;
-`}
+    margin-right: 0;
+    margin-left: 6px;
+  `}
 `;
 
 const CommentCount = styled.div`
@@ -246,11 +246,7 @@ class IdeaCard extends PureComponent<
       const projectId = project.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const processType = project.attributes.process_type;
-      const inputTerm = getInputTerm(
-        processType === 'continuous' ? 'project' : 'phase',
-        project,
-        phases
-      );
+      const inputTerm = getInputTerm(processType, project, phases);
       const a11y_postTitle = (
         <ScreenReaderOnly>
           {formatMessage(

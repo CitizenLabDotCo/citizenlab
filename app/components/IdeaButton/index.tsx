@@ -21,7 +21,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import Button, { ButtonContainerProps } from 'components/UI/Button';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 import { Icon } from 'cl2-component-library';
 
@@ -110,9 +110,9 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
+interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
-  projectId?: string | undefined | null;
+  projectId: string;
   phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
@@ -153,7 +153,6 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       phase,
       authUser,
     });
-    const inputTerm = getInputTerm(participationContextType, project, phases);
 
     const onClick = (event: React.FormEvent<HTMLButtonElement>) => {
       event.preventDefault();
@@ -295,44 +294,52 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
         );
       }
 
-      return (
-        <Container id={id || ''} className={className || ''}>
-          <Tippy
-            disabled={!tippyContent}
-            interactive={true}
-            placement="bottom"
-            content={tippyContent || <></>}
-            theme="light"
-            hideOnClick={false}
-          >
-            <ButtonWrapper
-              tabIndex={!enabled ? 0 : -1}
-              className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
-                disabledReason ? disabledReason : ''
-              }`}
+      if (!isNilOrError(project)) {
+        const inputTerm = getInputTerm(
+          project.attributes.process_type,
+          project,
+          phases
+        );
+
+        return (
+          <Container id={id || ''} className={className || ''}>
+            <Tippy
+              disabled={!tippyContent}
+              interactive={true}
+              placement="bottom"
+              content={tippyContent || <></>}
+              theme="light"
+              hideOnClick={false}
             >
-              <Button
-                {...buttonContainerProps}
-                aria-describedby="tooltip-content"
-                onClick={onClick}
-                disabled={!enabled}
-                ariaDisabled={false}
+              <ButtonWrapper
+                tabIndex={!enabled ? 0 : -1}
+                className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+                  disabledReason ? disabledReason : ''
+                }`}
               >
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.submitYourIdea,
-                    option: messages.addAnOption,
-                    project: messages.addAProject,
-                    question: messages.addAQuestion,
-                    issue: messages.submitAnIssue,
-                    contribution: messages.addAContribution,
-                  })}
-                />
-              </Button>
-            </ButtonWrapper>
-          </Tippy>
-        </Container>
-      );
+                <Button
+                  {...buttonContainerProps}
+                  aria-describedby="tooltip-content"
+                  onClick={onClick}
+                  disabled={!enabled}
+                  ariaDisabled={false}
+                >
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.submitYourIdea,
+                      option: messages.addAnOption,
+                      project: messages.addAProject,
+                      question: messages.addAQuestion,
+                      issue: messages.submitAnIssue,
+                      contribution: messages.addAContribution,
+                    })}
+                  />
+                </Button>
+              </ButtonWrapper>
+            </Tippy>
+          </Container>
+        );
+      }
     }
 
     return null;

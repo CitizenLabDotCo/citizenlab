@@ -237,6 +237,7 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_verified',
     defaultMessage: 'is not verified',
   },
+
   rulesFormLabelField: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',
     defaultMessage: 'Attribute',
