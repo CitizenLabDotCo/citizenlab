@@ -932,7 +932,7 @@
   "app.containers.AdminPage.DashboardPage.deletedUser": "Usuario eliminado",
   "app.containers.AdminPage.DashboardPage.false": "falso",
   "app.containers.AdminPage.DashboardPage.female": "mujer",
-  "app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes": "Top 5 inputs by votes",
+  "app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes": "Las 5 contribuciones más votadas",
   "app.containers.AdminPage.DashboardPage.fromTo": "de {from} a {to}",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Tablero de comandos para las actividades en la plataforma",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Página del tablero de administración",
