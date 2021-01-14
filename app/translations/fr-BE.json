@@ -817,7 +817,7 @@
   "app.containers.Admin.clusterViewer.title": "Titre",
   "app.containers.Admin.clusterViewer.titleClusterInformation": "Information du cluster",
   "app.containers.Admin.clusterViewer.titleClusterings": "Analyse des votes",
-  "app.containers.Admin.clusterViewer.titleInputFilters": "Filtres de contribution",
+  "app.containers.Admin.clusterViewer.titleInputFilters": "Input filters",
   "app.containers.Admin.clusterViewer.topic": "Thème",
   "app.containers.Admin.clusterViewer.upvotes": "Plus de votes positifs",
   "app.containers.Admin.clusterViewer.viewButtonLabel": "Voir",
