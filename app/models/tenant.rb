@@ -146,9 +146,7 @@ class Tenant < ApplicationRecord
   end
 
   def update_app_configuration
-    return if caller.any? { |s| s.match?(/tenant\.rb.*`update_app_configuration'/) }
-    # return if @syncing_off
-    # @syncing_off = true
+    return if caller.any? { |s| s.match?(/app_configuration\.rb.*`update_tenant'/) }
     Apartment::Tenant.switch(schema_name) do
       config = AppConfiguration.instance
       attrs_delta = attributes_delta(self, config)
