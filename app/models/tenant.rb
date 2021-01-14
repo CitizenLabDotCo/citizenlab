@@ -130,28 +130,50 @@ class Tenant < ApplicationRecord
   private
 
   def create_app_configuration
-    AppConfiguration.create(
-        host: tenant.host,
-        logo: tenant.logo,
-        header_bg: tenant.header_bg,
-        favicon: tenant.favicon,
-        settings: tenant.settings,
-        style: tenant.style,
-        created_at: tenant.created_at
-    )
+    Apartment::Tenant.switch(schema_name) do
+      AppConfiguration.create(
+          id: id,
+          name: name,
+          host: host,
+          logo: logo,
+          header_bg: header_bg,
+          favicon: favicon,
+          settings: settings,
+          style: style,
+          created_at: created_at
+      )
+    end
   end
 
   def update_app_configuration
-    AppConfiguration.instance.update!(
-        host: tenant.host,
-        logo: tenant.logo,
-        header_bg: tenant.header_bg,
-        favicon: tenant.favicon,
-        settings: tenant.settings,
-        style: tenant.style,
-        created_at: tenant.created_at
-    )
+    return if caller.any? { |s| s.match?(/tenant\.rb.*`update_app_configuration'/) }
+    # return if @syncing_off
+    # @syncing_off = true
+    Apartment::Tenant.switch(schema_name) do
+      config = AppConfiguration.instance
+      attrs_delta = attributes_delta(self, config)
+      return unless attrs_delta.present?
+      config.update!(attrs_delta)
+    end
+  ensure
+    # @syncing_off = false
   end
+
+  def attributes_delta(new_obj, old_obj)
+    new_attributes = new_obj.attributes
+    old_attributes = old_obj.attributes
+    carrierwave_attrs = %w[logo favicon header_bg]
+    common_attrs = (old_attributes.keys & new_attributes.keys) - carrierwave_attrs
+    new_attributes
+        .slice(*common_attrs)
+        .select { |k,v| v != old_attributes[k] }
+        .tap do |attrs|
+          attrs[:logo]      = new_obj.logo      if new_obj.logo_previously_changed?
+          attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
+          attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
+    end
+  end
+
 
   def create_apartment_tenant
     Apartment::Tenant.create(self.schema_name)
