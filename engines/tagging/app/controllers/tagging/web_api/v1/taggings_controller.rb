@@ -100,13 +100,15 @@ module Tagging
 
           if @res
             @res['batches'].each do |b|
-              b['doc_ids'].each do |idea_id|
-                Tagging.create(
-                  idea_id: idea_id,
-                  assignment_method: :pending,
-                  task_id: b['task_id']
-                )
-              end
+              Tagging.create(
+                b['doc_ids'].map do |idea_id|
+                  { 
+                    idea_id: idea_id,
+                    assignment_method: :pending,
+                    task_id: b['task_id']
+                  }
+                end
+              )
             end
 
             head :ok
