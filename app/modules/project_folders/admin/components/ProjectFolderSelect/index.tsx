@@ -63,7 +63,7 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
     }, [projectFolders]);
 
     const allOptions = useMemo<IOption[]>(() => {
-      if (isAdmin(authUser)) {
+      if (isAdmin({ data: authUser })) {
         return [...folderOptions];
       }
 
@@ -71,7 +71,7 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
     }, [folderOptions, noFolderOption, authUser]);
 
     const defaultValue = useMemo<string>(() => {
-      if (isAdmin(authUser) || !folderOptions[0]) {
+      if (isAdmin({ data: authUser }) || !folderOptions[0]) {
         return '';
       }
 
@@ -114,7 +114,7 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
             <FormattedMessage
               {...messages.projectFolder}
               values={{
-                optional: isAdmin(authUser)
+                optional: isAdmin({ data: authUser })
                   ? formatMessage(messages.optional)
                   : '',
               }}
