@@ -78,7 +78,7 @@ interface State {
   processing: string[];
 }
 
-class AdminFoldersProjectsList extends Component<
+class AdminFolderProjectsList extends Component<
   Props & WithRouterProps,
   State
 > {
@@ -90,40 +90,41 @@ class AdminFoldersProjectsList extends Component<
     };
   }
 
-  get projectFolderId() {
-    return !isNilOrError(this.props.projectFolder)
-      ? this.props.projectFolder.id
-      : undefined;
-  }
-
   handleReorder = (itemId, newOrder) => {
     reorderAdminPublication(itemId, newOrder);
   };
 
-  addProjectToFolder = (projectId: string) => async () => {
-    if (this.projectFolderId) {
-      this.setState(({ processing }) => ({
-        processing: [...processing, projectId],
-      }));
-      await updateProjectFolderMembership(projectId, this.projectFolderId);
-      this.setState(({ processing }) => ({
-        processing: processing.filter((item) => item !== projectId),
-      }));
-    }
-  };
-
-  removeProjectFromFolder = (projectId: string) => async () => {
+  addProjectToFolder = (projectFolderId: string) => (
+    projectId: string
+  ) => async () => {
     this.setState(({ processing }) => ({
       processing: [...processing, projectId],
     }));
-    await updateProjectFolderMembership(projectId, null, this.projectFolderId);
+    await updateProjectFolderMembership(projectId, projectFolderId);
+    this.setState(({ processing }) => ({
+      processing: processing.filter((item) => item !== projectId),
+    }));
+  };
+
+  removeProjectFromFolder = (projectFolderId: string) => (
+    projectId: string
+  ) => async () => {
+    this.setState(({ processing }) => ({
+      processing: [...processing, projectId],
+    }));
+    await updateProjectFolderMembership(projectId, null, projectFolderId);
     this.setState(({ processing }) => ({
       processing: processing.filter((item) => item !== projectId),
     }));
   };
 
   render() {
-    const { topLevelProjects, projectsInFolder, authUser } = this.props;
+    const {
+      topLevelProjects,
+      projectsInFolder,
+      authUser,
+      projectFolder,
+    } = this.props;
 
     const { processing } = this.state;
     const userIsAdmin = authUser && isAdmin({ data: authUser });
@@ -144,122 +145,127 @@ class AdminFoldersProjectsList extends Component<
           )
         : null;
 
-    if (!this.projectFolderId) {
-      return null;
-    }
+    if (!isNilOrError(projectFolder)) {
+      const projectFolderId = projectFolder.id;
+      return (
+        <Container>
+          <ListsContainer>
+            <ListHeader>
+              <StyledHeaderTitle>
+                <FormattedMessage {...messages.projectsAlreadyAdded} />
+              </StyledHeaderTitle>
+              <Spacer />
+            </ListHeader>
 
-    return (
-      <Container>
-        <ListsContainer>
-          <ListHeader>
-            <StyledHeaderTitle>
-              <FormattedMessage {...messages.projectsAlreadyAdded} />
-            </StyledHeaderTitle>
-            <Spacer />
-          </ListHeader>
+            {inFolderFinalList ? (
+              <SortableList
+                key={`IN_FOLDER_LIST${inFolderFinalList.length}`}
+                items={inFolderFinalList}
+                onReorder={this.handleReorder}
+                className="projects-list e2e-admin-folder-projects-list"
+                id="e2e-admin-folders-projects-list"
+              >
+                {({ itemsList, handleDragRow, handleDropRow }) => (
+                  <>
+                    {itemsList.map(
+                      (adminPublication: IAdminPublicationContent, index) => {
+                        return (
+                          <SortableRow
+                            key={adminPublication.id}
+                            id={adminPublication.id}
+                            index={index}
+                            moveRow={handleDragRow}
+                            dropRow={handleDropRow}
+                            lastItem={index === itemsList.length - 1}
+                          >
+                            <ProjectRow
+                              publication={adminPublication}
+                              actions={
+                                userIsAdmin
+                                  ? [
+                                      {
+                                        buttonContent: (
+                                          <FormattedMessage
+                                            {...messages.removeFromFolder}
+                                          />
+                                        ),
+                                        handler: this.removeProjectFromFolder(
+                                          projectFolderId
+                                        ),
+                                        icon: 'remove',
+                                        processing: processing.includes(
+                                          adminPublication.publicationId
+                                        ),
+                                      },
+                                      'manage',
+                                    ]
+                                  : ['manage']
+                              }
+                            />
+                          </SortableRow>
+                        );
+                      }
+                    )}
+                  </>
+                )}
+              </SortableList>
+            ) : (
+              <FormattedMessage {...messages.folderEmptyGoBackToAdd} />
+            )}
 
-          {inFolderFinalList ? (
-            <SortableList
-              key={`IN_FOLDER_LIST${inFolderFinalList.length}`}
-              items={inFolderFinalList}
-              onReorder={this.handleReorder}
-              className="projects-list e2e-admin-folder-projects-list"
-              id="e2e-admin-folders-projects-list"
-            >
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                <>
-                  {itemsList.map(
-                    (adminPublication: IAdminPublicationContent, index) => {
-                      return (
-                        <SortableRow
-                          key={adminPublication.id}
+            {userIsAdmin && (
+              <>
+                <ListHeader>
+                  <StyledHeaderTitle>
+                    <FormattedMessage {...messages.projectsYouCanAdd} />
+                  </StyledHeaderTitle>
+                </ListHeader>
+
+                {otherProjects ? (
+                  <List>
+                    <>
+                      {otherProjects.map((adminPublication, index: number) => (
+                        <Row
                           id={adminPublication.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={index === itemsList.length - 1}
+                          isLastItem={index === otherProjects.length - 1}
+                          key={adminPublication.id}
                         >
                           <ProjectRow
                             publication={adminPublication}
-                            actions={
-                              userIsAdmin
-                                ? [
-                                    {
-                                      buttonContent: (
-                                        <FormattedMessage
-                                          {...messages.removeFromFolder}
-                                        />
-                                      ),
-                                      handler: this.removeProjectFromFolder,
-                                      icon: 'remove',
-                                      processing: processing.includes(
-                                        adminPublication.publicationId
-                                      ),
-                                    },
-                                    'manage',
-                                  ]
-                                : ['manage']
-                            }
+                            actions={[
+                              {
+                                buttonContent: (
+                                  <FormattedMessage {...messages.addToFolder} />
+                                ),
+                                handler: this.addProjectToFolder(
+                                  projectFolderId
+                                ),
+                                processing: processing.includes(
+                                  adminPublication.publicationId
+                                ),
+                                icon: 'plus-circle',
+                              },
+                            ]}
                           />
-                        </SortableRow>
-                      );
-                    }
-                  )}
-                </>
-              )}
-            </SortableList>
-          ) : (
-            <FormattedMessage {...messages.folderEmptyGoBackToAdd} />
-          )}
+                        </Row>
+                      ))}
+                    </>
+                  </List>
+                ) : (
+                  <FormattedMessage {...messages.noProjectsToAdd} />
+                )}
+              </>
+            )}
+          </ListsContainer>
+        </Container>
+      );
+    }
 
-          {userIsAdmin && (
-            <>
-              <ListHeader>
-                <StyledHeaderTitle>
-                  <FormattedMessage {...messages.projectsYouCanAdd} />
-                </StyledHeaderTitle>
-              </ListHeader>
-
-              {otherProjects ? (
-                <List>
-                  <>
-                    {otherProjects.map((adminPublication, index: number) => (
-                      <Row
-                        id={adminPublication.id}
-                        isLastItem={index === otherProjects.length - 1}
-                        key={adminPublication.id}
-                      >
-                        <ProjectRow
-                          publication={adminPublication}
-                          actions={[
-                            {
-                              buttonContent: (
-                                <FormattedMessage {...messages.addToFolder} />
-                              ),
-                              handler: this.addProjectToFolder,
-                              processing: processing.includes(
-                                adminPublication.publicationId
-                              ),
-                              icon: 'plus-circle',
-                            },
-                          ]}
-                        />
-                      </Row>
-                    ))}
-                  </>
-                </List>
-              ) : (
-                <FormattedMessage {...messages.noProjectsToAdd} />
-              )}
-            </>
-          )}
-        </ListsContainer>
-      </Container>
-    );
+    return null;
   }
 }
-const AdminFoldersProjectsListWithHocs = withAuthUser(
-  withRouter(AdminFoldersProjectsList)
+const AdminFolderProjectsListWithHocs = withAuthUser(
+  withRouter(AdminFolderProjectsList)
 );
 
 const publicationStatuses: PublicationStatus[] = [
@@ -293,7 +299,7 @@ const Data = adopt<DataProps, WithRouterProps>({
 export default (inputProps: WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <AdminFoldersProjectsListWithHocs {...inputProps} {...dataProps} />
+      <AdminFolderProjectsListWithHocs {...inputProps} {...dataProps} />
     )}
   </Data>
 );
