@@ -117,7 +117,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
+const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
   ({ projectFolder, className, intl: { formatMessage } }) => {
     const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
     const { windowWidth } = useWindowSize();
@@ -233,4 +233,4 @@ const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(ProjectFolderInfo);
+export default injectIntl(ProjectFolderDescription);

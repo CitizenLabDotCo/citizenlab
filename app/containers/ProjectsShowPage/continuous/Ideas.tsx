@@ -18,6 +18,7 @@ import useWindowSize from 'hooks/useWindowSize';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -54,6 +55,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       (participationMethod === 'budgeting' ||
         participationMethod === 'ideation')
     );
+    const inputTerm = project.attributes.input_term;
 
     if (showIdeas) {
       const smallerThanBigTablet = windowSize?.windowWidth
@@ -79,7 +81,16 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 />
               )}
               <StyledProjectPageSectionTitle>
-                <FormattedMessage {...messages.ideas} />
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
+                  })}
+                />
               </StyledProjectPageSectionTitle>
               <IdeaCards
                 type="load-more"
@@ -90,7 +101,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 showViewToggle={true}
                 defaultSortingMethod={project.attributes.ideas_order || null}
                 defaultView={project.attributes.presentation_mode || null}
-                invisibleTitleMessage={messages.invisibleTitleIdeasList}
+                invisibleTitleMessage={messages.a11y_titleInputs}
               />
             </SectionContainer>
           </StyledContentContainer>

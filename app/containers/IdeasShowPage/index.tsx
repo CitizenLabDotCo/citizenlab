@@ -67,7 +67,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
     return (
       <IdeaNotFoundWrapper>
         <p>
-          <FormattedMessage {...messages.noIdeaFoundHere} />
+          <FormattedMessage {...messages.noResultsFound} />
         </p>
         <Button linkTo="/ideas" text={goBackToListMessage} icon="arrow-back" />
       </IdeaNotFoundWrapper>

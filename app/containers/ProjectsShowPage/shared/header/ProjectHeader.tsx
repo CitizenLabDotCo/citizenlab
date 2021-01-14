@@ -84,8 +84,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
     if (!isNilOrError(locale) && !isNilOrError(project)) {
       const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
       const userCanEditProject =
-        !isNilOrError(authUser) &&
-        canModerate(project.id, { data: authUser.data });
+        !isNilOrError(authUser) && canModerate(project.id, { data: authUser });
 
       return (
         <Container className={className || ''}>

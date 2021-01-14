@@ -344,9 +344,6 @@ class WithoutFiltersSidebar extends PureComponent<
     return true;
   };
 
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
-
   render() {
     const { selectedView } = this.state;
     const {
@@ -477,7 +474,7 @@ class WithoutFiltersSidebar extends PureComponent<
                     <IdeaIcon ariaHidden name="idea" />
                     <EmptyMessage>
                       <EmptyMessageLine>
-                        <FormattedMessage {...messages.noFilteredIdeas} />
+                        <FormattedMessage {...messages.noFilteredResults} />
                       </EmptyMessageLine>
                     </EmptyMessage>
                   </EmptyContainer>

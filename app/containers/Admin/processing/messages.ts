@@ -141,9 +141,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.suggestionLoading',
     defaultMessage: "We're retrieving suggestions to tag the selected ideas",
   },
-  noIdeasInThisProject: {
-    id: 'app.components.admin.PostManager.PostPreview.noIdeasInThisProject',
-    defaultMessage: "This project doesn't seem to contain any ideas.",
+  noInputInThisProject: {
+    id: 'app.components.admin.PostManager.PostPreview.noInputInThisProject',
+    defaultMessage: "This project doesn't seem to contain any input.",
   },
   pickProject: {
     id: 'app.components.admin.PostManager.PostPreview.pickProject',

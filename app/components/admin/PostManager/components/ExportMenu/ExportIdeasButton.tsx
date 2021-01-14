@@ -51,7 +51,7 @@ export default class ExportIdeasButton extends React.PureComponent<
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         queryParametersObject
       );
-      saveAs(blob, 'ideas-export.xlsx');
+      saveAs(blob, 'inputs-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
       reportError(error);
@@ -73,12 +73,14 @@ export default class ExportIdeasButton extends React.PureComponent<
         padding="0"
         fontSize={`${fontSizes.small}px`}
       >
-        {exportType === 'all' && <FormattedMessage {...messages.exportIdeas} />}
+        {exportType === 'all' && (
+          <FormattedMessage {...messages.exportAllInputs} />
+        )}
         {exportType === 'project' && (
-          <FormattedMessage {...messages.exportIdeasProjects} />
+          <FormattedMessage {...messages.exportInputsProjects} />
         )}
         {exportType === 'selected_posts' && (
-          <FormattedMessage {...messages.exportSelectedIdeas} />
+          <FormattedMessage {...messages.exportSelectedInputs} />
         )}
       </Button>
     );
