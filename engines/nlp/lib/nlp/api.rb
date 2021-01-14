@@ -118,5 +118,14 @@ module NLP
       )
       return resp.code
     end
+
+    def status_task(task_id)
+      resp = self.class.get(
+        "/v2/async_api/status/#{task_id}",
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
+      )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
+    end
   end
 end
