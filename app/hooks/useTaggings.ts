@@ -39,7 +39,7 @@ export default function useTaggings() {
       }),
       ...[
         processing
-          ? timer(10000, 10000).subscribe((_) =>
+          ? timer(50000, 50000).subscribe((_) =>
               streams.fetchAllWith({
                 apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
               })
