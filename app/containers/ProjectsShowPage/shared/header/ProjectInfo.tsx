@@ -123,7 +123,7 @@ const ProjectDescription = styled.div<{ maxHeight: number }>`
 `;
 
 const ReadMoreOuterWrapper = styled.div`
-  height: 90px;
+  height: 70px;
   content: '';
   display: flex;
   position: absolute;
@@ -133,7 +133,7 @@ const ReadMoreOuterWrapper = styled.div`
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,
-    rgba(255, 255, 255, 1) 40%,
+    rgba(255, 255, 255, 1) 60%,
     rgba(255, 255, 255, 0) 100%
   );
 `;

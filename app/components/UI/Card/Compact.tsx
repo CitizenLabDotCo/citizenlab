@@ -7,6 +7,7 @@ import Image from 'components/UI/Image';
 
 // styling
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import {
   defaultCardStyle,
   defaultCardHoverStyle,
@@ -50,25 +51,18 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px
     ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
+  border: solid 1px ${transparentize(0.72, colors.label)};
 
   ${media.smallerThanMinTablet`
-    flex: 0 0 100%;
     width: 100%;
-    height: ${cardInnerHeight};
     margin-bottom: 18px;
   `}
 `;
 
 const IdeaCardImage = styled(Image)`
-  flex: 0 0 ${cardInnerHeight};
-  width: ${cardInnerHeight};
-  height: ${cardInnerHeight};
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 100%;
-    width: 100%;
-    height: ${cardInnerHeight};
-  `}
+  width: 100%;
+  height: 100%;
+  flex: 1;
 `;
 
 const ContentWrapper = styled.div`

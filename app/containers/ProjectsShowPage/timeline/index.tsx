@@ -74,6 +74,12 @@ const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
 
+const StyledPhaseDescription = styled(PhaseDescription)<{
+  hasBottmMargin: boolean;
+}>`
+  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
+`;
+
 const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: 50px;
 `;
@@ -182,9 +188,13 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   </Header>
                 )}
                 <StyledTimeline projectId={project.id} />
-                <PhaseDescription
+                <StyledPhaseDescription
                   projectId={project.id}
                   phaseId={selectedPhaseId}
+                  hasBottmMargin={
+                    selectedPhase?.attributes?.participation_method !==
+                    'information'
+                  }
                 />
                 {isPBPhase && (
                   <StyledPBExpenses
