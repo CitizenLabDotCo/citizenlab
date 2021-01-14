@@ -57,8 +57,8 @@ describe EmailCampaigns::DeliveryService do
   end
 
   describe "send_on_activity" do
-    let!(:campaign) { create(:comment_on_your_comment_campaign) }
-    let(:notification) { create(:comment_on_your_comment) }
+    let!(:campaign) { create(:project_phase_upcoming_campaign) }
+    let(:notification) { create(:project_phase_upcoming) }
     let(:activity) {
       Activity.create(
         item: notification,
