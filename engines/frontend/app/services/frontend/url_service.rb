@@ -120,6 +120,10 @@ module Frontend
       "#{tenant.base_frontend_uri}/pages/privacy-policy"
     end
 
+    def initiatives_url tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/initiatives"
+    end
+
     def admin_ideas_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/admin/ideas"
     end
