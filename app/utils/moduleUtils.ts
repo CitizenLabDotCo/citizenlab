@@ -1,3 +1,4 @@
+import { TabProps } from 'components/admin/TabbedResource';
 import {
   TSignUpStepConfigurationObject,
   TSignUpSteps,
@@ -98,6 +99,9 @@ export type OutletsPropertyMap = {
     formData: any;
     onChange: (formData: any) => void;
     onSubmit: (formData: any) => void;
+  };
+  'app.containers.Admin.settings.SettingsPage': {
+    onData: (data: { after?: string; configuration: TabProps }) => void;
   };
 };
 
