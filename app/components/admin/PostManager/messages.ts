@@ -1,21 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.components.admin.PostManager.header',
-    defaultMessage: 'Ideas',
+  inputManagerHeader: {
+    id: 'app.components.admin.PostManager.inputManagerHeader',
+    defaultMessage: 'Inputs',
   },
-  anyFeedbackStatusIdeas: {
-    id: 'app.components.admin.PostManager.anyFeedbackStatusIdeas',
-    defaultMessage: 'All ideas',
-  },
-  anyFeedbackStatusInitiatives: {
-    id: 'app.components.admin.PostManager.anyFeedbackStatusInitiatives',
-    defaultMessage: 'All initiatives',
-  },
-  needFeedback: {
-    id: 'app.components.admin.PostManager.needFeedback',
-    defaultMessage: 'Need Feedback',
+  inputsNeedFeedbackToggle: {
+    id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
+    defaultMessage: 'Only show inputs that need feedback',
   },
   anyAssignment: {
     id: 'app.components.admin.PostManager.anyAssignment',
@@ -29,17 +21,17 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.delete',
     defaultMessage: 'Delete',
   },
-  deleteAllSelectedIdeas: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedIdeas',
-    defaultMessage: 'Delete {count} selected ideas',
+  deleteAllSelectedInputs: {
+    id: 'app.components.admin.PostManager.deleteAllSelectedInputs',
+    defaultMessage: 'Delete {count} inputs',
   },
-  deleteIdeaConfirmation: {
-    id: 'app.components.admin.PostManager.deleteIdeaConfirmation',
-    defaultMessage: 'Are you sure you want to delete this idea?',
+  deleteInputConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInputConfirmation',
+    defaultMessage: 'Are you sure you want to delete this input?',
   },
-  deleteIdeasConfirmation: {
-    id: 'app.components.admin.PostManager.deleteIdeasConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} ideas?',
+  deleteInputsConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInputsConfirmation',
+    defaultMessage: 'Are you sure you want to delete {count} inputs?',
   },
   deleteAllSelectedInitiatives: {
     id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
@@ -102,68 +94,57 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
     defaultMessage: 'Picks',
   },
-  multiDragAndDropHelpIdeas: {
-    id: 'app.components.admin.PostManager.multiDragAndDropHelpIdeas',
-    defaultMessage:
-      'Drag and drop the ideas on an item above to assign them all at once.',
-  },
-  multiDragAndDropHelpInitiatives: {
-    id: 'app.components.admin.PostManager.multiDragAndDropHelpInitiatives',
-    defaultMessage:
-      'Drag and drop the initiatives on an item above to assign them all at once.',
-  },
   timelineTab: {
     id: 'app.components.admin.PostManager.timelineTab',
     defaultMessage: 'Timeline',
   },
-  timelineTabTooltip: {
-    id: 'app.components.admin.PostManager.timelineTabTooltip',
+  timelineTabTooltipText: {
+    id: 'app.components.admin.PostManager.timelineTabTooltipText',
     defaultMessage:
-      'Drag and drop selected ideas to the phase you want to add them to. By doing so, they will also remain in the current phase(s).',
+      'Drag and drop inputs to copy them to different project phases.',
   },
   topicsTab: {
     id: 'app.components.admin.PostManager.topicsTab',
     defaultMessage: 'Topics',
   },
-  topicsTabTooltip: {
-    id: 'app.components.admin.PostManager.topicsTabTooltip',
-    defaultMessage:
-      'Drag and drop selected ideas to the topic you want to assign them to. An idea can have any number of topics.',
+  topicsTabTooltipText: {
+    id: 'app.components.admin.PostManager.topicsTabTooltipText',
+    defaultMessage: 'Add topics to an input using drag and drop.',
   },
   projectsTab: {
     id: 'app.components.admin.PostManager.projectsTab',
     defaultMessage: 'Projects',
   },
-  projectsTabTooltip: {
-    id: 'app.components.admin.PostManager.projectsTabTooltip',
+  projectsTabTooltipContent: {
+    id: 'app.components.admin.PostManager.projectsTabTooltipContent',
     defaultMessage:
-      'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
+      'You can drag and drop posts to move them from one project to another. Note that for timeline projects, you will still need to add the post to a specific phase.',
   },
   statusesTab: {
     id: 'app.components.admin.PostManager.statusesTab',
     defaultMessage: 'Status',
   },
-  statusesTabTooltip: {
-    id: 'app.components.admin.PostManager.statusesTabTooltip',
+  statusesTabTooltipContent: {
+    id: 'app.components.admin.PostManager.statusesTabTooltipContent',
     defaultMessage:
-      'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
+      'Change the status of a post using drag and drop. The original author and other contributors will receive a notification of the changed status.',
   },
-  basketsCountTooltip: {
-    id: 'app.components.admin.PostManager.basketsCountTooltip',
+  pbItemCountTooltip: {
+    id: 'app.components.admin.PostManager.pbItemCountTooltip',
     defaultMessage:
-      'The number of users that added this idea to their participatory budget',
+      "The number of times this has been included in other participants' participatory budgets",
   },
-  exportIdeas: {
-    id: 'app.components.admin.PostManager.exportIdeas',
-    defaultMessage: 'Export all ideas (.xslx)',
+  exportAllInputs: {
+    id: 'app.components.admin.PostManager.exportAllInputs',
+    defaultMessage: 'Export all inputs (.xslx)',
   },
-  exportIdeasProjects: {
-    id: 'app.components.admin.PostManager.exportIdeasProjects',
-    defaultMessage: 'Export ideas for this project (.xslx)',
+  exportInputsProjects: {
+    id: 'app.components.admin.PostManager.exportInputsProjects',
+    defaultMessage: 'Export inputs for this project (.xslx)',
   },
-  exportSelectedIdeas: {
-    id: 'app.components.admin.PostManager.exportSelectedIdeas',
-    defaultMessage: 'Export selected ideas (.xslx)',
+  exportSelectedInputs: {
+    id: 'app.components.admin.PostManager.exportSelectedInputs',
+    defaultMessage: 'Export selected inputs (.xslx)',
   },
   exportIdeasComments: {
     id: 'app.components.admin.PostManager.exportIdeasComments',
@@ -173,9 +154,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportIdeasCommentsProjects',
     defaultMessage: 'Export comments for this project (.xslx)',
   },
-  exportSelectedIdeasComments: {
-    id: 'app.components.admin.PostManager.exportSelectedIdeasComments',
-    defaultMessage: 'Export comments for selected ideas (.xslx)',
+  exportSelectedInputsComments: {
+    id: 'app.components.admin.PostManager.exportSelectedInputsComments',
+    defaultMessage: 'Export comments for selected inputs (.xslx)',
   },
   exportInitiatives: {
     id: 'app.components.admin.PostManager.exportInitiatives',
@@ -205,17 +186,17 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exports',
     defaultMessage: 'Exports',
   },
-  noIdeasHere: {
-    id: 'app.components.admin.PostManager.noIdeasHere',
-    defaultMessage: 'No ideas match the current filters',
+  noFilteredResults: {
+    id: 'app.components.admin.PostManager.noFilteredResults',
+    defaultMessage: 'The filters you selected did not return any results',
   },
   noInitiativesHere: {
     id: 'app.components.admin.PostManager.noInitiativesHere',
     defaultMessage: 'No initiatives match the current filters',
   },
-  resetFiltersDescription: {
-    id: 'app.components.admin.PostManager.resetFiltersDescription',
-    defaultMessage: 'Reset the filters to see all ideas.',
+  resetInputFiltersDescription: {
+    id: 'app.components.admin.PostManager.resetInputFiltersDescription',
+    defaultMessage: 'Reset the filters to see all inputs.',
   },
   resetFiltersButton: {
     id: 'app.components.admin.PostManager.resetFiltersButton',
@@ -237,13 +218,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.allPhases',
     defaultMessage: 'All phases',
   },
-  oneIdea: {
-    id: 'app.components.admin.PostManager.oneIdea',
-    defaultMessage: '1 idea',
+  oneInput: {
+    id: 'app.components.admin.InputManager.onePost',
+    defaultMessage: '1 input',
   },
-  multipleIdeas: {
-    id: 'app.components.admin.PostManager.multipleIdeas',
-    defaultMessage: '{ideaCount} ideas',
+  multipleInputs: {
+    id: 'app.components.admin.PostManager.multipleInputs',
+    defaultMessage: '{ideaCount} inputs',
   },
   oneInitiative: {
     id: 'app.components.admin.PostManager.oneInitiative',
@@ -299,9 +280,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.automatic',
     defaultMessage: '(automatic)',
   },
-  ideas: {
-    id: 'app.components.admin.PostManager.ideas',
-    defaultMessage: 'ideas',
+  inputs: {
+    id: 'app.components.admin.PostManager.inputs',
+    defaultMessage: 'inputs',
   },
   initiatives: {
     id: 'app.components.admin.PostManager.initiatives',

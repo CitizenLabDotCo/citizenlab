@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useState } from 'react';
 import { IParticipationContextType } from 'typings';
 
 // components
@@ -17,31 +17,19 @@ interface Props {
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
 }
 
-interface State {
-  error: 'budgetingDisabled' | null;
-}
+const AssignBudgetWrapper = memo(
+  ({
+    ideaId,
+    participationContextId,
+    participationContextType,
+    budgetingDescriptor,
+    projectId,
+  }: Props) => {
+    const [error, setError] = useState<'budgetingDisabled' | null>(null);
 
-class AssignBudgetWrapper extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
+    const disabledBudgetingClick = () => {
+      setError('budgetingDisabled');
     };
-  }
-
-  disabledBudgetingClick = () => {
-    this.setState({ error: 'budgetingDisabled' });
-  };
-
-  render() {
-    const {
-      ideaId,
-      participationContextId,
-      participationContextType,
-      budgetingDescriptor,
-      projectId,
-    } = this.props;
-    const { error } = this.state;
 
     return (
       <div aria-live="polite">
@@ -51,7 +39,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
             ideaId={ideaId}
             participationContextId={participationContextId}
             participationContextType={participationContextType}
-            disabledAssignBudgetClick={this.disabledBudgetingClick}
+            disabledAssignBudgetClick={disabledBudgetingClick}
             projectId={projectId}
           />
         )}
@@ -67,6 +55,6 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
       </div>
     );
   }
-}
+);
 
 export default AssignBudgetWrapper;

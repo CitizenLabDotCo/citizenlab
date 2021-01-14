@@ -56,15 +56,15 @@ class CommentingDisabled extends PureComponent<Props> {
     if (commentingEnabled) {
       return null;
     } else if (commentingDisabledReason === 'project_inactive') {
-      return messages.commentingDisabledProjectInactive;
+      return messages.commentingDisabledInactiveProject;
     } else if (commentingDisabledReason === 'commenting_disabled') {
-      return messages.commentingDisabledInContext;
+      return messages.commentingDisabledProject;
     } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
-      return messages.commentingDisabledIdeaNotInCurrentPhase;
+      return messages.commentingDisabledInCurrentPhase;
     } else if (isLoggedIn && commentingDisabledReason === 'not_verified') {
-      return messages.commentingDisabledNotVerified;
+      return messages.commentingDisabledUnverified;
     } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
-      return messages.commentingNotPermitted;
+      return messages.commentingDisabledProject;
     } else if (!isLoggedIn) {
       return messages.commentingMaybeNotPermitted;
     }
@@ -144,9 +144,9 @@ class CommentingDisabled extends PureComponent<Props> {
                     <FormattedMessage {...messages.signInLinkText} />
                   </button>
                 ),
-                verificationLink: (
+                verifyIdentityLink: (
                   <button onClick={this.onVerify}>
-                    <FormattedMessage {...messages.verificationLinkText} />
+                    <FormattedMessage {...messages.verifyIdentityLinkText} />
                   </button>
                 ),
                 projectName: projectTitle && <T value={projectTitle} />,

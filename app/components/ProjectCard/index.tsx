@@ -14,14 +14,16 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { getProjectUrl, IProjectData } from 'services/projects';
+import { getProjectUrl } from 'services/projects';
+import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
+// resources
 import useProject from 'hooks/useProject';
-import useProjectImages from 'hooks/useProjectImages';
 import usePhase from 'hooks/usePhase';
+import usePhases from 'hooks/usePhases';
+import useAuthUser from 'hooks/useAuthUser';
+import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -46,6 +48,7 @@ import {
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
+import { getInputTermMessage } from 'utils/i18n';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -344,7 +347,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${darken(0.2, colors.label)};
+  color: ${darken(0.1, colors.label)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -459,25 +462,26 @@ export interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, InjectedIntlProps {
-  project: IProjectData;
-}
+interface Props extends InputProps, InjectedIntlProps {}
 
 const ProjectCard = memo<Props>(
   ({
     projectId,
-    project,
     size,
     layout,
     hideDescriptionPreview,
     className,
     intl: { formatMessage },
   }) => {
+    const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectImages = useProjectImages({ projectId });
-    const phase = usePhase(
-      project.relationships?.current_phase?.data?.id || null
-    );
+    const currentPhaseId =
+      !isNilOrError(project) && project.relationships.current_phase?.data?.id
+        ? project.relationships.current_phase.data.id
+        : null;
+    const phase = usePhase(currentPhaseId);
+    const phases = usePhases(projectId);
     const theme: any = useTheme();
 
     const [visible, setVisible] = useState(false);
@@ -508,7 +512,7 @@ const ProjectCard = memo<Props>(
       const postingPermission = getIdeaPostingRules({
         project,
         phase: !isNilOrError(phase) ? phase : null,
-        authUser: !isNilOrError(authUser) ? authUser.data : null,
+        authUser: !isNilOrError(authUser) ? authUser : null,
       });
       const participationMethod = !isNilOrError(phase)
         ? phase.attributes.participation_method
@@ -557,6 +561,8 @@ const ProjectCard = memo<Props>(
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
+      const processType = project.attributes.process_type;
+      const inputTerm = getInputTerm(processType, project, phases);
 
       if (isArchived) {
         countdown = (
@@ -611,13 +617,35 @@ const ProjectCard = memo<Props>(
       } else if (participationMethod === 'poll') {
         ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
-        ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.submitYourIdea,
+              option: messages.addYourOption,
+              project: messages.submitYourProject,
+              question: messages.joinDiscussion,
+              issue: messages.submitAnIssue,
+              contribution: messages.contributeYourInput,
+            })}
+          />
+        );
       } else if (participationMethod === 'ideation' && canVote) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
-        ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
+        ctaMessage = (
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.viewTheIdeas,
+              option: messages.viewTheOptions,
+              project: messages.viewTheProjects,
+              question: messages.viewTheQuestions,
+              issue: messages.viewTheIssues,
+              contribution: messages.viewTheContributions,
+            })}
+          />
+        );
       }
 
       const contentHeader = (
@@ -737,7 +765,17 @@ const ProjectCard = memo<Props>(
                       <MetaItemIcon ariaHidden name="idea" />
                       <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
                       <ScreenReaderOnly>
-                        {formatMessage(messages.xIdeas, { ideasCount })}
+                        {formatMessage(
+                          getInputTermMessage(inputTerm, {
+                            idea: messages.xIdeas,
+                            option: messages.xOptions,
+                            contribution: messages.xContributions,
+                            project: messages.xProjects,
+                            issue: messages.xIssues,
+                            question: messages.xQuestions,
+                          }),
+                          { ideasCount }
+                        )}
                       </ScreenReaderOnly>
                     </MetaItem>
                   )}
@@ -763,28 +801,6 @@ const ProjectCard = memo<Props>(
   }
 );
 
-const ProjectCardWrapper = memo<InputProps & InjectedIntlProps>(
-  ({ projectId, size, layout, hideDescriptionPreview, className, intl }) => {
-    const project = useProject({ projectId });
+const ProjectCardWithHoC = injectIntl(ProjectCard);
 
-    if (!isNilOrError(project)) {
-      return (
-        <ProjectCard
-          projectId={projectId}
-          project={project}
-          size={size}
-          layout={layout}
-          hideDescriptionPreview={hideDescriptionPreview}
-          intl={intl}
-          className={className}
-        />
-      );
-    }
-
-    return null;
-  }
-);
-
-const ProjectCardWrapperWithHoC = injectIntl(ProjectCardWrapper);
-
-export default ProjectCardWrapperWithHoC;
+export default ProjectCardWithHoC;

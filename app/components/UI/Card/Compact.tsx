@@ -49,9 +49,7 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   margin-right: 23px;
   overflow: hidden;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px
-    ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
-  border: solid 1px ${transparentize(0.72, colors.label)};
+  border: solid 1px ${transparentize(0.75, colors.label)};
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -129,51 +127,53 @@ interface Props {
   className?: string;
 }
 
-export const Card = ({
-  to,
-  onClick,
-  image,
-  imagePlaceholder,
-  hideImage,
-  hideImagePlaceholder,
-  title,
-  body,
-  footer,
-  className,
-}: Props) => (
-  <Container
-    onClick={onClick}
-    to={to}
-    className={`e2e-card ${className} ${
-      !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-    }`}
-  >
-    {!hideImage && image && (
-      <IdeaCardImageWrapper hasImage={!!image}>
-        <IdeaCardImage src={image} cover={true} alt="" />
-      </IdeaCardImageWrapper>
-    )}
+export const Card = memo<Props>(
+  ({
+    to,
+    onClick,
+    image,
+    imagePlaceholder,
+    hideImage,
+    hideImagePlaceholder,
+    title,
+    body,
+    footer,
+    className,
+  }) => (
+    <Container
+      onClick={onClick}
+      to={to}
+      className={`e2e-card ${className} ${
+        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+      }`}
+    >
+      {!hideImage && image && (
+        <IdeaCardImageWrapper hasImage={!!image}>
+          <IdeaCardImage src={image} cover={true} alt="" />
+        </IdeaCardImageWrapper>
+      )}
 
-    {!hideImagePlaceholder && !image && (
-      <IdeaCardImageWrapper hasImage={!!image}>
-        {imagePlaceholder}
-      </IdeaCardImageWrapper>
-    )}
+      {!hideImagePlaceholder && !image && (
+        <IdeaCardImageWrapper hasImage={!!image}>
+          {imagePlaceholder}
+        </IdeaCardImageWrapper>
+      )}
 
-    <ContentWrapper>
-      <Header className="e2e-card-title">
-        {typeof title === 'string' ? (
-          <Title title={title}>{title}</Title>
-        ) : (
-          title
-        )}
-      </Header>
+      <ContentWrapper>
+        <Header className="e2e-card-title">
+          {typeof title === 'string' ? (
+            <Title title={title}>{title}</Title>
+          ) : (
+            title
+          )}
+        </Header>
 
-      <Body>{body}</Body>
+        <Body>{body}</Body>
 
-      {footer}
-    </ContentWrapper>
-  </Container>
+        {footer}
+      </ContentWrapper>
+    </Container>
+  )
 );
 
-export default memo<Props>(Card);
+export default Card;

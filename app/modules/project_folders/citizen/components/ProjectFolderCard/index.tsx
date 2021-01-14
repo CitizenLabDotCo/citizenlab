@@ -262,7 +262,7 @@ const FolderTitle = styled.h3`
 `;
 
 const FolderDescription = styled.div`
-  color: ${darken(0.2, colors.label)};
+  color: ${darken(0.1, colors.label)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;

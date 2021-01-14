@@ -90,7 +90,7 @@ class ClusteringForm extends PureComponent<
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldLevels} />
+              <FormattedMessage {...messages.fieldAttributes} />
             </Label>
             <Field name="levels" component={LevelsInput} />
           </SectionField>
@@ -99,14 +99,16 @@ class ClusteringForm extends PureComponent<
             <Field
               name="drop_empty"
               component={FormikToggle}
-              label={<FormattedMessage {...messages.fieldDropEmpty} />}
+              label={
+                <FormattedMessage {...messages.fieldExcludeEmptyCluster} />
+              }
             />
           </SectionField>
         </Section>
 
         <Section>
           <SectionTitle>
-            <FormattedMessage {...messages.titleFilters} />
+            <FormattedMessage {...messages.titleInputFilters} />
           </SectionTitle>
 
           <SectionField>
@@ -145,7 +147,7 @@ class ClusteringForm extends PureComponent<
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldIdeaStatus} />
+              <FormattedMessage {...messages.fieldStatuses} />
             </Label>
             <GetIdeaStatuses>
               {(ideaStatuses) =>
