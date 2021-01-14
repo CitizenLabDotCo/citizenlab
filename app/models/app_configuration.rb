@@ -105,9 +105,11 @@ class AppConfiguration < ApplicationRecord
     tenant = Tenant.current
     attrs_delta = tenant.send(:attributes_delta, self, tenant)
     return unless attrs_delta.present?
-    tenant.update!(attrs_delta)
-  ensure
-    # @syncing_off = false
+    tenant.attributes = attrs_delta
+    tenant.remove_logo! if logo_previously_changed? && logo.blank?
+    tenant.remove_favicon! if favicon_previously_changed? && favicon.blank?
+    tenant.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
+    tenant.save
   end
 
 end

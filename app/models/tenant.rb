@@ -151,10 +151,12 @@ class Tenant < ApplicationRecord
       config = AppConfiguration.instance
       attrs_delta = attributes_delta(self, config)
       return unless attrs_delta.present?
-      config.update!(attrs_delta)
+      config.attributes = attrs_delta
+      config.remove_logo! if logo_previously_changed? && logo.blank?
+      config.remove_favicon! if favicon_previously_changed? && favicon.blank?
+      config.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
+      config.save
     end
-  ensure
-    # @syncing_off = false
   end
 
   def attributes_delta(new_obj, old_obj)
