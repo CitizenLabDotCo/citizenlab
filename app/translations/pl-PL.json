@@ -817,7 +817,7 @@
   "app.containers.Admin.clusterViewer.title": "Tytuł",
   "app.containers.Admin.clusterViewer.titleClusterInformation": "Utwórz nowy wykres",
   "app.containers.Admin.clusterViewer.titleClusterings": "Wgląd w głosowanie",
-  "app.containers.Admin.clusterViewer.titleInputFilters": "Filtry inicjatyw",
+  "app.containers.Admin.clusterViewer.titleInputFilters": "Input filters",
   "app.containers.Admin.clusterViewer.topic": "Temat",
   "app.containers.Admin.clusterViewer.upvotes": "Więcej głosów za",
   "app.containers.Admin.clusterViewer.viewButtonLabel": "Widok",
