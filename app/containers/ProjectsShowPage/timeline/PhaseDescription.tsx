@@ -32,7 +32,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 const Container = styled.div`
   padding: 30px;
   padding-bottom: 35px;
-  margin-bottom: 50px;
   ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
