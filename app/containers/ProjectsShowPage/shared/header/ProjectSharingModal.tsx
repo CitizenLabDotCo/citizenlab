@@ -43,7 +43,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
       ? {
           source: 'share_project',
           campaign: 'share_content',
-          content: authUser.data.id,
+          content: authUser.id,
         }
       : {
           source: 'share_project',
@@ -79,9 +79,12 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                             projectName: title,
                           }
                         )}
-                        twitterMessage={formatMessage(messages.twitterMessage, {
-                          title,
-                        })}
+                        twitterMessage={formatMessage(
+                          messages.projectTwitterMessage,
+                          {
+                            projectName: title,
+                          }
+                        )}
                         utmParams={utmParams}
                         layout="columnLayout"
                       />

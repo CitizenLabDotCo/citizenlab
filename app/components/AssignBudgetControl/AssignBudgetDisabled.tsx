@@ -86,34 +86,34 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
       const { disabled_reason, future_enabled } = budgetingDescriptor;
 
       if (disabled_reason && future_enabled) {
-        return messages.budgetingDisabledFutureEnabled;
+        return messages.budgetingFutureEnabled;
       } else if (authUser && disabled_reason === 'not_verified') {
-        return messages.budgetingDisabledNotVerified;
+        return messages.budgetingNotVerified;
       } else if (disabled_reason === 'not_permitted') {
-        return messages.budgetingDisabledNotPermitted;
+        return messages.budgetingNotPermitted;
       }
     }
 
-    return messages.budgetingDisabled;
+    return messages.budgetingNotPossible;
   };
 
   render() {
     const { budgetingDescriptor } = this.props;
-    const message = this.reasonToMessage();
     const enabledFromDate = budgetingDescriptor?.future_enabled
       ? moment(budgetingDescriptor.future_enabled).format('LL')
       : null;
-    const verificationLink = (
+    const verifyAccountLink = (
       <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
-        <FormattedMessage {...messages.verificationLinkText} />
+        <FormattedMessage {...messages.verifyAccountLinkText} />
       </StyledButton>
     );
+    const message = this.reasonToMessage();
 
     return (
       <Container className="e2e-assign-disabled">
         <FormattedMessage
           {...message}
-          values={{ enabledFromDate, verificationLink }}
+          values={{ enabledFromDate, verifyAccountLink }}
         />
       </Container>
     );

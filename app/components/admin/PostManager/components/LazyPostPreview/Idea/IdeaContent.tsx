@@ -22,6 +22,7 @@ import { Top, Content, Container } from '../PostPreview';
 
 // services
 import { deleteIdea } from 'services/ideas';
+import { ProcessType } from 'services/projects';
 
 // resources
 import GetResourceFiles, {
@@ -180,14 +181,19 @@ export class IdeaContent extends PureComponent<
   Props & InjectedLocalized & InjectedIntlProps,
   State
 > {
-  handleClickDelete = () => {
-    const { idea, closePreview } = this.props;
-    const message = this.props.intl.formatMessage(
-      messages.deleteIdeaConfirmation
-    );
+  handleClickDelete = (processType: ProcessType) => () => {
+    const {
+      idea,
+      closePreview,
+      intl: { formatMessage },
+    } = this.props;
+    const deleteConfirmationMessage = {
+      continuous: messages.deleteInputConfirmation,
+      timeline: messages.deleteInputInTimelineConfirmation,
+    }[processType];
 
     if (!isNilOrError(idea)) {
-      if (window.confirm(message)) {
+      if (window.confirm(formatMessage(deleteConfirmationMessage))) {
         deleteIdea(idea.id);
         closePreview();
       }
@@ -206,7 +212,12 @@ export class IdeaContent extends PureComponent<
       handleClickEdit,
     } = this.props;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(tenant)) {
+    if (
+      !isNilOrError(idea) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(project)
+    ) {
       const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge =
@@ -219,6 +230,7 @@ export class IdeaContent extends PureComponent<
       const authorId = idea.relationships.author.data?.id || null;
       const proposedBudget = idea.attributes.proposed_budget;
       const currency = tenant.attributes.settings.core.currency;
+      const processType = project.attributes.process_type;
 
       return (
         <Container>
@@ -229,7 +241,7 @@ export class IdeaContent extends PureComponent<
             <Button
               icon="delete"
               buttonStyle="text"
-              onClick={this.handleClickDelete}
+              onClick={this.handleClickDelete(processType)}
             >
               <FormattedMessage {...messages.delete} />
             </Button>
@@ -334,7 +346,7 @@ export class IdeaContent extends PureComponent<
                         <IconTooltip
                           content={
                             <FormattedMessage
-                              {...messages.basketsCountTooltip}
+                              {...messages.pbItemCountTooltip}
                             />
                           }
                         />

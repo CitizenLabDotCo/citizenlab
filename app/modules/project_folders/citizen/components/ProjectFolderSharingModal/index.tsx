@@ -45,7 +45,7 @@ const ProjectFolderSharingModal = memo<
     ? {
         source: 'share_folder',
         campaign: 'share_content',
-        content: authUser.data.id,
+        content: authUser.id,
       }
     : {
         source: 'share_folder',
