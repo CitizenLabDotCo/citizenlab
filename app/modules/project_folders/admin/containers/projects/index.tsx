@@ -264,10 +264,7 @@ class AdminFolderProjectsList extends Component<
     return null;
   }
 }
-const AdminFolderProjectsListWithHocs = withAuthUser(
-  withRouter(AdminFolderProjectsList)
-);
-
+const AdminFolderProjectsListWithHocs = withAuthUser(AdminFolderProjectsList);
 const publicationStatuses: PublicationStatus[] = [
   'draft',
   'archived',
@@ -296,10 +293,10 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default (inputProps: WithRouterProps) => (
+export default withRouter((inputProps: WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
       <AdminFolderProjectsListWithHocs {...inputProps} {...dataProps} />
     )}
   </Data>
-);
+));
