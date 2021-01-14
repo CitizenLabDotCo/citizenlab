@@ -1,8 +1,14 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
+
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // services
 import {
@@ -10,10 +16,12 @@ import {
   IGlobalStateService,
   IIdeasPageGlobalState,
 } from 'services/globalState';
+import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // typings
 import { UploadFile } from 'typings';
@@ -58,10 +66,17 @@ const Title = styled.h1`
   `}
 `;
 
-interface Props {
+interface InputProps {
   onSubmit: () => void;
   projectId: string;
 }
+
+interface DataProps {
+  project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface GlobalState {
   title: string | null;
@@ -78,7 +93,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-export default class NewIdeaForm extends PureComponent<Props, State> {
+class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
@@ -174,26 +189,60 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       position,
       imageFile,
     } = this.state;
-    const { projectId } = this.props;
+    const { projectId, project, phases } = this.props;
 
-    return (
-      <Container id="e2e-new-idea-form">
-        <Title className="e2e-idea-form-title">
-          <FormattedMessage {...messages.formTitle} />
-        </Title>
+    if (!isNilOrError(project)) {
+      const inputTerm = getInputTerm(
+        project.attributes.process_type,
+        project,
+        phases
+      );
 
-        <IdeaForm
-          projectId={projectId}
-          title={title}
-          description={description}
-          selectedTopics={selectedTopics}
-          budget={budget}
-          proposedBudget={proposedBudget}
-          address={position}
-          imageFile={imageFile}
-          onSubmit={this.handleIdeaFormOutput}
-        />
-      </Container>
-    );
+      return (
+        <Container id="e2e-new-idea-form">
+          <Title className="e2e-idea-form-title">
+            <FormattedMessage
+              {...getInputTermMessage(inputTerm, {
+                idea: messages.ideaFormTitle,
+                option: messages.optionFormTitle,
+                project: messages.projectFormTitle,
+                question: messages.questionFormTitle,
+                issue: messages.issueFormTitle,
+                contribution: messages.contributionFormTitle,
+              })}
+            />
+          </Title>
+
+          <IdeaForm
+            projectId={projectId}
+            title={title}
+            description={description}
+            selectedTopics={selectedTopics}
+            budget={budget}
+            proposedBudget={proposedBudget}
+            address={position}
+            imageFile={imageFile}
+            onSubmit={this.handleIdeaFormOutput}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phases: ({ projectId, render }) => (
+    <GetPhases projectId={projectId}>{render}</GetPhases>
+  ),
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <NewIdeaForm {...inputProps} {...dataProps} />}
+  </Data>
+);

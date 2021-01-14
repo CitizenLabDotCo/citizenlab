@@ -73,7 +73,7 @@ export default memo(() => (
     <Container>
       <StyledContentContainer maxWidth="100%">
         <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
+          <FormattedMessage {...messages.inputsPageTitle} />
         </PageTitle>
         <IdeaCards
           type="load-more"
@@ -81,7 +81,7 @@ export default memo(() => (
           projectPublicationStatus="published"
           showViewToggle={false}
           showFiltersSidebar={true}
-          invisibleTitleMessage={messages.invisibleIdeasListTitle}
+          invisibleTitleMessage={messages.a11y_IdeasListTitle}
         />
       </StyledContentContainer>
       <CityLogoSection />

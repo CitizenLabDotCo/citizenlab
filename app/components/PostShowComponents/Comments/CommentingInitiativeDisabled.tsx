@@ -52,7 +52,7 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
     ) {
       return messages.commentingInitiativeNotPermitted;
     } else if (commetingPermissions?.action === 'verify') {
-      return messages.commentingInititativeDisabledNotVerified;
+      return messages.commentingDisabledUnverified;
     } else if (commetingPermissions?.action === 'sign_in_up') {
       return messages.signInToCommentInitiative;
     } else if (commetingPermissions?.action === 'sign_in_up_and_verify') {
@@ -121,7 +121,7 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
                 ),
                 verificationLink: (
                   <button onClick={this.onVerify}>
-                    <FormattedMessage {...messages.verificationLinkText} />
+                    <FormattedMessage {...messages.verifyIdentityLinkText} />
                   </button>
                 ),
               }}

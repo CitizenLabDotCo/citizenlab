@@ -128,7 +128,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
                   <IdeaCards
                     type="load-more"
                     authorId={user.id}
-                    invisibleTitleMessage={messages.invisibleTitleIdeasList}
+                    invisibleTitleMessage={messages.invisibleTitlePostsList}
                   />
                 </UserIdeas>
               )}

@@ -204,7 +204,7 @@ const Processing = memo<Props & InjectedIntlProps>(
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           { ideas: selectedRows }
         );
-        saveAs(blob, 'ideas-export.xlsx');
+        saveAs(blob, 'inputs-export.xlsx');
 
         setExporting(false);
       } catch (error) {
