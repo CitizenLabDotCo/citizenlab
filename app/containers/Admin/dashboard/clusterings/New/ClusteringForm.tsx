@@ -108,7 +108,7 @@ class ClusteringForm extends PureComponent<
 
         <Section>
           <SectionTitle>
-            <FormattedMessage {...messages.titleInputFilters} />
+            <FormattedMessage {...messages.titleInputFiltersText} />
           </SectionTitle>
 
           <SectionField>
