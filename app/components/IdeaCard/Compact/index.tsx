@@ -27,7 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { transparentize } from 'polished';
+import { transparentize, darken } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
@@ -44,7 +44,7 @@ const StyledAvatar = styled(Avatar)`
 const Body = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 300;
-  color: ${colors.label};
+  color: ${darken(0.1, colors.label)};
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -68,13 +68,11 @@ const ImagePlaceholderContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: ${transparentize(0.96, colors.label)};
-  /* border: solid 1px ${transparentize(0.72, colors.label)};
-  border-radius: ${(props: any) => props.theme.borderRadius}; */
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
   width: 34px;
-  fill: ${transparentize(0.5, colors.label)};
+  fill: ${transparentize(0.55, colors.label)};
 `;
 
 const Separator = styled.span`

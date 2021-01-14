@@ -4,19 +4,18 @@ import { Helmet } from 'react-helmet';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
-import { Icon, IconNames } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import FeatureFlag from 'components/FeatureFlag';
 import { PageTitle } from 'components/admin/Section';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import SetupSection from './SetupSection';
+import EngageSection from './EngageSection';
+import ManageSection from './ManageSection';
+import DecideSection from './DecideSection';
 
 // styles
 import styled from 'styled-components';
@@ -37,7 +36,7 @@ const HeaderContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const SectionWrapper = styled(PageWrapper)`
+export const SectionWrapper = styled(PageWrapper)`
   margin-bottom: 20px;
   padding: 0;
 
@@ -46,7 +45,7 @@ const SectionWrapper = styled(PageWrapper)`
   }
 `;
 
-const SectionHeader = styled.div`
+export const SectionHeader = styled.div`
   display: flex;
   padding: 20px 40px;
   justify-content: space-between;
@@ -62,7 +61,7 @@ const SectionHeader = styled.div`
   }
 `;
 
-const SectionTitle: any = styled.div`
+export const SectionTitle: any = styled.div`
   display: flex;
   align-items: center;
   h2 {
@@ -74,11 +73,11 @@ const SectionTitle: any = styled.div`
   }
 `;
 
-const SectionContent = styled.div`
+export const SectionContent = styled.div`
   padding: 20px 40px;
 `;
 
-const Article = styled(Link)`
+export const Article = styled(Link)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -103,7 +102,7 @@ const Article = styled(Link)`
   }
 `;
 
-const IconWrapper = styled.div`
+export const IconWrapper = styled.div`
   margin-left: 100px;
   flex: 0 0 auto;
   width: 16px;
@@ -113,106 +112,42 @@ const IconWrapper = styled.div`
   justify-content: center;
 `;
 
-type section = {
-  key: IconNames;
-  articles: string[];
-  color: string;
+export type TAdminGuideSection = 'setup' | 'engage' | 'manage' | 'decide';
+export type TSetupArticle = 'projects' | 'user_custom_fields' | 'widgets';
+export type TEngageArticle =
+  | 'invitations_colleagues'
+  | 'invitations_target_audience'
+  | 'manual_emailing';
+export type TManageArticle = 'projects' | 'users';
+export type TDecideArticle = 'ideas' | 'dashboard';
+export type TAdminGuideArticle =
+  | TSetupArticle
+  | TEngageArticle
+  | TManageArticle
+  | TDecideArticle;
+
+export const renderArticle = (
+  article: TAdminGuideArticle,
+  index: number,
+  articleComponent: JSX.Element
+) => {
+  if (
+    article === 'widgets' ||
+    article === 'user_custom_fields' ||
+    article === 'manual_emailing'
+  ) {
+    return (
+      <FeatureFlag name={article} key={index}>
+        {articleComponent}
+      </FeatureFlag>
+    );
+  } else {
+    return articleComponent;
+  }
 };
 
-const content: section[] = [
-  {
-    key: 'setup',
-    articles: ['projects', 'user_custom_fields', 'widgets'],
-    color: colors.clIconAccent,
-  },
-  {
-    key: 'engage',
-    articles: ['invitations', 'invitations', 'manual_emailing'],
-    color: colors.adminOrangeIcons,
-  },
-  {
-    key: 'manage',
-    articles: ['projects', 'users'],
-    color: colors.clGreen,
-  },
-  {
-    key: 'decide',
-    articles: ['ideas', 'dashboard'],
-    color: colors.clRed,
-  },
-];
-
-const trackExternal = (section: string) => () =>
-  trackEventByName(tracks.externalLink.name, { extra: { section } });
-const trackInternal = (section: string, article: number) => () =>
-  trackEventByName(tracks.internalLink.name, { extra: { section, article } });
-
-export const Onboarding = (props: InjectedIntlProps) => {
+export const AdminGuide = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
-
-  const renderFlags = (section: string, index: number, article: string) => {
-    if (
-      article === 'widgets' ||
-      article === 'user_custom_fields' ||
-      article === 'manual_emailing'
-    ) {
-      return (
-        <FeatureFlag name={article} key={index}>
-          {renderArticle(section, index)}
-        </FeatureFlag>
-      );
-    } else {
-      return renderArticle(section, index);
-    }
-  };
-
-  const renderArticle = (section: string, i: number) => (
-    <Article
-      to={formatMessage(messages[`${section}Article${i}Link`])}
-      key={i}
-      onClick={trackInternal(section, i)}
-    >
-      <div>
-        <FormattedMessage
-          tagName="h3"
-          {...messages[`${section}Article${i}Title`]}
-        />
-        <FormattedMessage
-          tagName="p"
-          {...messages[`${section}Article${i}Description`]}
-        />
-      </div>
-      <IconWrapper>
-        <Icon name="arrowLeft" />
-      </IconWrapper>
-    </Article>
-  );
-
-  const renderArticles = (section: string, articles: string[]) => {
-    return articles.map((article, index) =>
-      renderFlags(section, index + 1, article)
-    );
-  };
-
-  const renderSection = ({ key, articles, color }: section) => (
-    <SectionWrapper key={key}>
-      <SectionHeader>
-        <SectionTitle color={color}>
-          <Icon name={key} />
-          <FormattedMessage tagName="h2" {...messages[`${key}SectionTitle`]} />
-        </SectionTitle>
-        {/*tslint:disable-next-line*/}
-        <a
-          href={formatMessage(messages[`${key}SectionLink`])}
-          target="_blank"
-          onClick={trackExternal(key)}
-        >
-          <FormattedMessage {...messages.readCompleteGuide} />
-        </a>
-      </SectionHeader>
-      <SectionContent>{renderArticles(key, articles)}</SectionContent>
-    </SectionWrapper>
-  );
 
   return (
     <>
@@ -230,11 +165,13 @@ export const Onboarding = (props: InjectedIntlProps) => {
         <HeaderContainer>
           <PageTitle>{formatMessage(messages.title)}</PageTitle>
         </HeaderContainer>
-
-        {content.map((section) => renderSection(section))}
+        <SetupSection />
+        <EngageSection />
+        <ManageSection />
+        <DecideSection />
       </Container>
     </>
   );
 };
 
-export default injectIntl(Onboarding);
+export default injectIntl(AdminGuide);

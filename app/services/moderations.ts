@@ -3,7 +3,6 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc, ILinks } from 'typings';
 
 export type TModerationStatuses = 'read' | 'unread';
-
 export type TModeratableTypes = 'Idea' | 'Initiative' | 'Comment';
 
 export interface IModerationData {
@@ -17,7 +16,12 @@ export interface IModerationData {
     created_at: string;
     moderation_status?: TModerationStatuses;
     belongs_to: {
-      [key: string]: {
+      project: {
+        id: string;
+        slug: string;
+        title_multiloc: Multiloc;
+      };
+      idea?: {
         id: string;
         slug: string;
         title_multiloc: Multiloc;

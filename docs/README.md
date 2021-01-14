@@ -1,8 +1,16 @@
 # Changelog
 
-## Next release
+## Next release 
 
 /
+
+## 2021-01-14
+
+### Added
+- Ability to customize the input term for a project
+
+### Changed
+- The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
 
 ## 2021-01-13
 

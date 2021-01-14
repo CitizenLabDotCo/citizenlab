@@ -18,6 +18,8 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -27,6 +29,8 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
+
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from 'utils/styleUtils';
@@ -34,7 +38,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
-import { ParticipationMethod } from 'services/participationContexts';
+import {
+  ParticipationMethod,
+  getInputTerm,
+} from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
 const IdeaBudget = styled.div`
@@ -125,6 +132,8 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
+  project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -212,6 +221,8 @@ class IdeaCard extends PureComponent<
       ideaImage,
       ideaAuthor,
       tenant,
+      project,
+      phases,
       participationMethod,
       participationContextId,
       participationContextType,
@@ -223,6 +234,7 @@ class IdeaCard extends PureComponent<
     if (
       !isNilOrError(tenant) &&
       !isNilOrError(idea) &&
+      !isNilOrError(project) &&
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
@@ -231,16 +243,27 @@ class IdeaCard extends PureComponent<
         idea?.attributes?.action_descriptor?.commenting_idea;
       const budgetingDescriptor =
         idea?.attributes?.action_descriptor?.budgeting;
-      const projectId = idea?.relationships?.project.data?.id;
+      const projectId = project.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
-      const a11y_ideaTitle = (
+      const processType = project.attributes.process_type;
+      const inputTerm = getInputTerm(processType, project, phases);
+      const a11y_postTitle = (
         <ScreenReaderOnly>
-          {formatMessage(messages.a11y_ideaTitle)}
+          {formatMessage(
+            getInputTermMessage(inputTerm, {
+              idea: messages.a11y_ideaTitle,
+              option: messages.a11y_optionTitle,
+              project: messages.a11y_projectTitle,
+              question: messages.a11y_questionTitle,
+              issue: messages.a11y_issueTitle,
+              contribution: messages.a11y_contributionTitle,
+            })
+          )}
         </ScreenReaderOnly>
       );
       const title = (
         <span>
-          {a11y_ideaTitle}
+          {a11y_postTitle}
           {ideaTitle}
         </span>
       );
@@ -401,6 +424,24 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => (
     <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
   ),
+  project: ({ idea, render }) => {
+    return (
+      <GetProject
+        projectId={
+          !isNilOrError(idea) ? idea.relationships.project.data.id : null
+        }
+      >
+        {render}
+      </GetProject>
+    );
+  },
+  phases: ({ project, render }) => {
+    return (
+      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
+        {render}
+      </GetPhases>
+    );
+  },
 });
 
 const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
