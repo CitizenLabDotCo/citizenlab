@@ -37,7 +37,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer, type: :m
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('A proposal you commented on has a new status')
+      expect(mail.subject).to start_with('The status of a proposal you commented on has changed')
     end
 
     it 'renders the sender email' do

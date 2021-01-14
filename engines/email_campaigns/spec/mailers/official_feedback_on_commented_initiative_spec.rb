@@ -27,7 +27,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnCommentedInitiativeMailer, type
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('There\'s an update on an proposal you commented on')
+      expect(mail.subject).to start_with('A proposal you commented on')
     end
 
     it 'renders the sender email' do
