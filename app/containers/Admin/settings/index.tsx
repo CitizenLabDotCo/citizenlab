@@ -18,6 +18,7 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
+import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 
@@ -74,19 +75,6 @@ class SettingsPage extends React.PureComponent<
         },
       ],
     };
-  }
-
-  componentDidMount() {
-    const { formatMessage } = this.props.intl;
-
-    this.insertTab({
-      configuration: {
-        name: 'registration',
-        label: formatMessage(messages.tabRegistrationFields),
-        url: '/admin/settings/registration',
-      },
-      after: 'customize',
-    });
   }
 
   insertTab = ({
@@ -154,18 +142,24 @@ class SettingsPage extends React.PureComponent<
     };
 
     return (
-      <TabbedResource
-        resource={resource}
-        // TODO: optimization would be to use useMemo for tabs,
-        // as they get recalculated on every click
-        tabs={this.getTabs()}
-      >
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
+      <>
+        <Outlet
+          id="app.containers.Admin.settings.SettingsPage"
+          onData={this.insertTab}
         />
-        {children}
-      </TabbedResource>
+        <TabbedResource
+          resource={resource}
+          // TODO: optimization would be to use useMemo for tabs,
+          // as they get recalculated on every click
+          tabs={this.getTabs()}
+        >
+          <HelmetIntl
+            title={messages.helmetTitle}
+            description={messages.helmetDescription}
+          />
+          {children}
+        </TabbedResource>
+      </>
     );
   }
 }
