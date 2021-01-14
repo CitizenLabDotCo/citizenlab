@@ -12,7 +12,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectCard from './ProjectSelectionCard';
+import ProjectSelectionCard from './ProjectSelectionCard';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
 import { Spinner } from 'cl2-component-library';
@@ -306,7 +306,7 @@ class IdeasProjectSelectPage extends PureComponent<
                       <ProjectsList>
                         {cityProjects.map((project) => (
                           <ProjectCardWrapper key={project.id}>
-                            <ProjectCard
+                            <ProjectSelectionCard
                               onClick={this.handleProjectClick(project)}
                               projectId={project.id}
                               selected={selectedProjectId === project.id}
@@ -334,7 +334,7 @@ class IdeasProjectSelectPage extends PureComponent<
                       )}
                       <ProjectsList>
                         <ProjectCardWrapper>
-                          <ProjectCard
+                          <ProjectSelectionCard
                             key={openProject.id}
                             onClick={this.handleProjectClick(openProject)}
                             projectId={openProject.id}
