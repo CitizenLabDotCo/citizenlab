@@ -1,0 +1,6 @@
+touch engines/email_campaigns/app/mailers/email_campaigns/new_comment_on_commented_initiative_mailer.rb
+mkdir engines/email_campaigns/app/views/email_campaigns/new_comment_on_commented_initiative_mailer
+touch engines/email_campaigns/app/views/email_campaigns/new_comment_on_commented_initiative_mailer/campaign_mail.mjml
+touch engines/email_campaigns/spec/mailers/new_comment_on_commented_initiative_mailer_spec.rb
+touch engines/email_campaigns/spec/mailers/previews/email_campaigns/new_comment_on_commented_initiative_mailer_preview.rb
+
