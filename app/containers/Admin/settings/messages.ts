@@ -45,10 +45,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
   },
-  tabRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.tabRegistrationFields',
-    defaultMessage: 'Registration fields',
-  },
   tabTopics: {
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
     defaultMessage: 'Topic manager',
