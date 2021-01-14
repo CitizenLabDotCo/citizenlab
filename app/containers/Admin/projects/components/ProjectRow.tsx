@@ -82,7 +82,7 @@ export default ({
       disabled={
         isBeingDeleted ||
         (!isNilOrError(authUser) &&
-          !canModerate(publication.publicationId, authUser))
+          !canModerate(publication.publicationId, { data: authUser }))
       }
     >
       <FormattedMessage {...messages.editButtonLabel} />

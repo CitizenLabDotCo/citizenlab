@@ -57,11 +57,11 @@ const RenderOnProjectFolderModerator = ({
 
   if (
     isNilOrError(authUser) ||
-    (!isProjectFolderModerator(authUser) &&
-      !isAdmin(authUser) &&
+    (!isProjectFolderModerator({ data: authUser }) &&
+      !isAdmin({ data: authUser }) &&
       !isNilOrError(publication) &&
       publication.publicationType === 'folder' &&
-      !isProjectFolderModerator(authUser, publication.publicationId))
+      !isProjectFolderModerator({ data: authUser }, publication.publicationId))
   ) {
     return null;
   }
