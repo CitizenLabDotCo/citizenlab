@@ -4,10 +4,8 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::IdeaPublished.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
     
     let!(:idea) { create(:idea, author: recipient) }
-
     let(:command) do
       {
         recipient: recipient,
@@ -25,6 +23,8 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer, type: :mailer do
         }
       }
     end
+
+    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
