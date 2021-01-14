@@ -18,6 +18,7 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
 
   def import_from(tenant)
     AppConfiguration.create(
+        id: id,
         name: tenant.name,
         host: tenant.host,
         logo: tenant.logo,
