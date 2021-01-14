@@ -32,6 +32,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -262,27 +263,61 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     >
                       {projectType === 'continuous' && (
                         <FormattedMessage
-                          {...messages.xIdeas}
+                          {...getInputTermMessage(
+                            project.attributes.input_term,
+                            {
+                              idea: messages.xIdeas,
+                              option: messages.xOptions,
+                              project: messages.xProjects,
+                              question: messages.xQuestions,
+                              issue: messages.xIssues,
+                              contribution: messages.xContributions,
+                            }
+                          )}
                           values={{ ideasCount }}
                         />
                       )}
-                      {currentPhaseParticipationMethod === 'ideation' &&
+                      {!isNilOrError(currentPhase) &&
+                        currentPhaseParticipationMethod === 'ideation' &&
                         !hasProjectEnded && (
                           <FormattedMessage
-                            {...messages.xIdeasInCurrentPhase}
+                            {...getInputTermMessage(
+                              currentPhase.attributes.input_term,
+                              {
+                                idea: messages.xIdeasInCurrentPhase,
+                                option: messages.xOptionsInCurrentPhase,
+                                project: messages.xProjectsInCurrentPhase,
+                                question: messages.xQuestionsInCurrentPhase,
+                                issue: messages.xIssuesInCurrentPhase,
+                                contribution:
+                                  messages.xContributionsInCurrentPhase,
+                              }
+                            )}
                             values={{ ideasCount }}
                           />
                         )}
-                      {currentPhaseParticipationMethod === 'ideation' &&
+                      {!isNilOrError(currentPhase) &&
+                        currentPhaseParticipationMethod === 'ideation' &&
                         hasProjectEnded && (
                           <FormattedMessage
-                            {...messages.xIdeasInFinalPhase}
+                            {...getInputTermMessage(
+                              currentPhase.attributes.input_term,
+                              {
+                                idea: messages.xIdeasInFinalPhase,
+                                option: messages.xOptionsInFinalPhase,
+                                project: messages.xProjectsInFinalPhase,
+                                question: messages.xQuestionsInFinalPhase,
+                                issue: messages.xIssuesInFinalPhase,
+                                contribution:
+                                  messages.xContributionsInFinalPhase,
+                              }
+                            )}
                             values={{ ideasCount }}
                           />
                         )}
                     </ListItemButton>
                   ) : (
-                    <FormattedMessage {...messages.noIdeasYet} />
+                    <FormattedMessage {...messages.nothingPosted} />
                   )}
                 </ListItem>
               )}

@@ -67,11 +67,14 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
       firstName,
       lastName,
     });
-    const usersShowPageDescription = formatMessage(messages.metaDescription, {
-      firstName,
-      lastName,
-      tenantName,
-    });
+    const usersShowPageDescription = formatMessage(
+      messages.userShowPageMetaDescription,
+      {
+        firstName,
+        lastName,
+        tenantName,
+      }
+    );
 
     return (
       <Helmet>

@@ -54,7 +54,7 @@ export default () => {
   if (loaded && !isNilOrError(tenant) && !isNilOrError(authUser)) {
     return (
       <Container id="e2e-user-edit-profile-page">
-        <UsersEditPageMeta user={authUser.data} />
+        <UsersEditPageMeta user={authUser} />
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h1"

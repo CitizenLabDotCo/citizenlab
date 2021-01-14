@@ -257,9 +257,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   render() {
-    const { authUser, project } = this.props;
+    const { project } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(project)) {
+    if (!isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />

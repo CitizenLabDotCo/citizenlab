@@ -26,10 +26,10 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.domicile',
     defaultMessage: 'Domicile',
   },
-  relativeTooltip: {
-    id: 'app.containers.Admin.clusterViewer.relativeTooltip',
+  relativeImportanceInputsTooltip: {
+    id: 'app.containers.Admin.clusterViewer.relativeImportanceInputsTooltip',
     defaultMessage:
-      'This shows the percentage of all votes (on the whole platform) of that user segment (x-axis) that have been put on ideas in the current selection. It acts as weighted scoring for voting behaviour per user segment, allowing to compare user segments regardless of segment size.',
+      'This percentage represents the importance of these inputs for a user segment. It is calculated by dividing the number of votes for the selected inputs by the total number of votes cast by the user segment.',
   },
   addClusteringButton: {
     id: 'app.containers.Admin.clusterViewer.addClusteringButton',
@@ -59,17 +59,17 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.titleClusterInformation',
     defaultMessage: 'Clustering information',
   },
-  titleFilters: {
-    id: 'app.containers.Admin.clusterViewer.titleFilters',
-    defaultMessage: 'Idea filters',
+  titleInputFilters: {
+    id: 'app.containers.Admin.clusterViewer.titleInputFilters',
+    defaultMessage: 'Input filters',
   },
-  fieldLevels: {
-    id: 'app.containers.Admin.clusterViewer.fieldLevels',
-    defaultMessage: 'Levels',
+  fieldAttributes: {
+    id: 'app.containers.Admin.clusterViewer.fieldAttributes',
+    defaultMessage: 'What attributes would you like to use to create clusters?',
   },
-  fieldDropEmpty: {
-    id: 'app.containers.Admin.clusterViewer.fieldDropEmpty',
-    defaultMessage: "Don't include empty clusters",
+  fieldExcludeEmptyCluster: {
+    id: 'app.containers.Admin.clusterViewer.fieldExcludeEmptyCluster',
+    defaultMessage: 'Exclude empty clusters (no inputs)',
   },
   fieldProjects: {
     id: 'app.containers.Admin.clusterViewer.fieldProjects',
@@ -79,9 +79,9 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.fieldTopics',
     defaultMessage: 'Topics',
   },
-  fieldIdeaStatus: {
-    id: 'app.containers.Admin.clusterViewer.fieldIdeaStatus',
-    defaultMessage: 'Idea statuses',
+  fieldStatuses: {
+    id: 'app.containers.Admin.clusterViewer.fieldStatuses',
+    defaultMessage: 'Statuses',
   },
   fieldSearch: {
     id: 'app.containers.Admin.clusterViewer.fieldSearch',
@@ -111,13 +111,13 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.level_area',
     defaultMessage: 'Area',
   },
-  level_clustering: {
-    id: 'app.containers.Admin.clusterViewer.level_clustering',
-    defaultMessage: 'AI Magic',
+  level_description: {
+    id: 'app.containers.Admin.clusterViewer.level_description',
+    defaultMessage: 'Description',
   },
-  firstLevel: {
-    id: 'app.containers.Admin.clusterViewer.firstLevel',
-    defaultMessage: 'First group all ideas by {level}',
+  firstGroup: {
+    id: 'app.containers.Admin.clusterViewer.firstGroup',
+    defaultMessage: 'First group: {level}',
   },
   thenLevel: {
     id: 'app.containers.Admin.clusterViewer.thenLevel',
@@ -127,13 +127,13 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.keywords',
     defaultMessage: 'Keywords',
   },
-  clusterContains: {
-    id: 'app.containers.Admin.clusterViewer.clusterContains',
-    defaultMessage: 'This cluster contains the following ideas',
+  clusterContainsSelectedInputs: {
+    id: 'app.containers.Admin.clusterViewer.clusterContainsSelectedInputs',
+    defaultMessage: 'Selected inputs',
   },
-  idea: {
-    id: 'app.containers.Admin.clusterViewer.idea',
-    defaultMessage: 'Idea',
+  title: {
+    id: 'app.containers.Admin.clusterViewer.title',
+    defaultMessage: 'Title',
   },
   project: {
     id: 'app.containers.Admin.clusterViewer.project',

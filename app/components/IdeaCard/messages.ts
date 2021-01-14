@@ -10,4 +10,24 @@ export default defineMessages({
     id: 'app.containers.IdeaCard.a11y_ideaTitle',
     defaultMessage: 'Idea: ',
   },
+  a11y_optionTitle: {
+    id: 'app.containers.IdeaCard.a11y_optionTitle',
+    defaultMessage: 'Option: ',
+  },
+  a11y_projectTitle: {
+    id: 'app.containers.IdeaCard.a11y_projectTitle',
+    defaultMessage: 'Project: ',
+  },
+  a11y_questionTitle: {
+    id: 'app.containers.IdeaCard.a11y_questionTitle',
+    defaultMessage: 'Question: ',
+  },
+  a11y_issueTitle: {
+    id: 'app.containers.IdeaCard.a11y_issueTitle',
+    defaultMessage: 'Issue: ',
+  },
+  a11y_contributionTitle: {
+    id: 'app.containers.IdeaCard.a11y_contributionTitle',
+    defaultMessage: 'Contribution: ',
+  },
 });

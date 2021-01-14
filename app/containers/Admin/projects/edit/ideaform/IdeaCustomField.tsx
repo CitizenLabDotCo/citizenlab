@@ -284,7 +284,9 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                       />
                       <IconTooltip
                         content={
-                          <FormattedMessage {...messages.enabledTooltip} />
+                          <FormattedMessage
+                            {...messages.enabledTooltipContent}
+                          />
                         }
                       />
                     </ToggleContainer>
@@ -304,7 +306,9 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                       />
                       <IconTooltip
                         content={
-                          <FormattedMessage {...messages.requiredTooltip} />
+                          <FormattedMessage
+                            {...messages.requiredTooltipContent}
+                          />
                         }
                       />
                     </ToggleContainer>

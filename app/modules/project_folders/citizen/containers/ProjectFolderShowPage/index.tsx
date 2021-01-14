@@ -168,7 +168,8 @@ const ProjectFolderShowPage = memo<{
     isUndefined(projectFolder) ||
     isUndefined(adminPublication?.list);
 
-  const userCanEditProject = isAdmin(authUser);
+  const userCanEditProject =
+    !isNilOrError(authUser) && isAdmin({ data: authUser });
 
   return (
     <>
