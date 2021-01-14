@@ -10,7 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 2020_12_17_170635) do
 
   # These are extensions that must be enabled in order to support this database
@@ -49,6 +48,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
     t.string "host"
     t.string "logo"
     t.string "header_bg"
