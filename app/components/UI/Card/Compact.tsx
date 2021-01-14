@@ -49,9 +49,7 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   margin-right: 23px;
   overflow: hidden;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px
-    ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
-  border: solid 1px ${transparentize(0.72, colors.label)};
+  border: solid 1px ${transparentize(0.75, colors.label)};
 
   ${media.smallerThanMinTablet`
     width: 100%;

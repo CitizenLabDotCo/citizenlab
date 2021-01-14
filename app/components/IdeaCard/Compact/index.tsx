@@ -68,13 +68,11 @@ const ImagePlaceholderContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: ${transparentize(0.96, colors.label)};
-  /* border: solid 1px ${transparentize(0.72, colors.label)};
-  border-radius: ${(props: any) => props.theme.borderRadius}; */
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
   width: 34px;
-  fill: ${transparentize(0.5, colors.label)};
+  fill: ${transparentize(0.55, colors.label)};
 `;
 
 const Separator = styled.span`
