@@ -6,6 +6,7 @@ namespace :app_configurations do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         AppConfiguration.instance.update!(
+            name: tenant.name,
             host: tenant.host,
             logo: tenant.logo,
             header_bg: tenant.header_bg,
