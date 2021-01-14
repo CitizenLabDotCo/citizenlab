@@ -54,6 +54,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   before_validation :validate_missing_feature_dependencies
+  after_update :update_tenant
 
   def cleanup_settings
     ss = SettingsService.new
@@ -97,6 +98,18 @@ class AppConfiguration < ApplicationRecord
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
     end
+  end
+
+  def update_tenant
+    return if caller.any? { |s| s.match?(/app_configuration\.rb.*`update_tenant'/) }
+    # return if @syncing_off
+    # @syncing_off = true
+    tenant = Tenant.current
+    attrs_delta = tenant.send(:attributes_delta, self, tenant)
+    return unless attrs_delta.present?
+    tenant.update!(attrs_delta)
+  ensure
+    # @syncing_off = false
   end
 
 end
