@@ -28,7 +28,7 @@ const configuration: ModuleConfiguration = {
       if (hasCustomFields) return <UserCustomFieldsForm {...props} />;
       return null;
     },
-    'app.containers.Admin.settings.SettingsPage': Tab,
+    'app.containers.Admin.settings.SettingsPage': (props) => <Tab {...props} />,
   },
 };
 
