@@ -59,8 +59,8 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.titleClusterInformation',
     defaultMessage: 'Clustering information',
   },
-  titleInputFilters: {
-    id: 'app.containers.Admin.clusterViewer.titleInputFilters',
+  titleInputFiltersText: {
+    id: 'app.containers.Admin.clusterViewer.titleInputFiltersText',
     defaultMessage: 'Input filters',
   },
   fieldAttributes: {
