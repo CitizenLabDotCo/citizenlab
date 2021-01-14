@@ -37,7 +37,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfVotedInitiativeMailer, type: :maile
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('The status of a proposal you voted on has been changed')
+      expect(mail.subject).to start_with('The status of a proposal you voted on has changed')
     end
 
     it 'renders the sender email' do
