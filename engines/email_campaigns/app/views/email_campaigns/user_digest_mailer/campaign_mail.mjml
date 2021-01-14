@@ -143,6 +143,7 @@
               <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= new_initiative.url %>">
                 <%= localize_for_recipient(new_initiative.title_multiloc).first(80) %>
               </a>
+              <br/>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
                   <%= format_message('today_by_author', values: {author: new_initiative.author_name}) %>
@@ -202,6 +203,7 @@
               <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative.url %>">
                 <%= localize_for_recipient(succesful_initiative.title_multiloc).first(80) %>
               </a>
+              <br/>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
                   <%= format_message('today_by_author', values: {author: succesful_initiative.author_name}) %>

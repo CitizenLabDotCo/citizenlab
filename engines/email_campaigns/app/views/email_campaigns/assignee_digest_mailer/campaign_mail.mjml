@@ -2,7 +2,7 @@
 <mj-section padding="20px 25px">
   <mj-column>
     <mj-text>
-      <h2 style="padding: 20px 0">
+      <h2>
         <%= format_message('idea_section') %>
       </h2>
     </mj-text>
@@ -29,10 +29,10 @@
   </mj-column>
 </mj-section>
 
-<mj-section padding="20px 25px">
+<mj-section padding="20px 25px 30px">
   <mj-column>
     <mj-text>
-      <h3 style="padding: 20px 0">
+      <h3>
         <% if event.assigned_ideas.present? %>
           <%= format_message('title_assignment_past_week') %>
         <% else %>
@@ -41,16 +41,15 @@
       </h3>
     </mj-text>
 
-
-    <mj-table cellpadding="15">
-      <% event.assigned_ideas.each do |idea| %>
+    <mj-raw><% event.assigned_ideas.each do |idea| %></mj-raw>
+      <mj-table cellpadding="15" padding-top="20px">
         <% @diff_days = (Time.zone.today - idea.published_at.to_date).to_i %>
         <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
           <td width="200" style="text-align: left;">
             <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= idea.url %>">
               <%= localize_for_recipient(idea.title_multiloc).first(80) %>
             </a>
-            <br />
+            <br/>
             <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
               <% if @diff_days < 1 %>
                 <%= format_message('today_by_author', values: { author: idea.author_name }) %>
@@ -81,8 +80,8 @@
             <span style="font-size: 14px; font-weight: 700;"><%= idea.comments_count %></span>
           </td>
         </tr>
-      <% end %>
-    </mj-table>
+      </mj-table>
+    <mj-raw><% end %></mj-raw>
     <mj-text>&nbsp;</mj-text>
   </mj-column>
 </mj-section>
@@ -99,7 +98,7 @@
   </mj-column>
 </mj-section>
 
-<mj-section padding="20px 25px">
+<mj-section padding="20px 25px 30px">
   <mj-column>
     <mj-text>
       <h3 style="padding: 20px 0">
@@ -110,7 +109,7 @@
     </mj-text>
 
     <mj-raw><% event.assigned_initiatives.each do |assigned_initiative| %></mj-raw>
-      <mj-table cellpadding="15">
+      <mj-table cellpadding="15" padding-top="20px">
           <% @diff_days = (Time.zone.today - assigned_initiative.published_at.to_date).to_i %>
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
@@ -152,7 +151,7 @@
   </mj-column>
 </mj-section>
 
-<mj-section padding="20px 25px">
+<mj-section padding="20px 25px 30px">
   <mj-column>
     <mj-text>
       <h3 style="padding: 20px 0">
@@ -163,7 +162,7 @@
     </mj-text>
 
     <mj-raw><% event.succesful_assigned_initiatives.each do |succesful_assigned_initiative| %></mj-raw>
-      <mj-table cellpadding="15">
+      <mj-table cellpadding="15" padding-top="20px">
           <% @diff_days = (Time.zone.today - succesful_assigned_initiative.published_at.to_date).to_i %>
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
