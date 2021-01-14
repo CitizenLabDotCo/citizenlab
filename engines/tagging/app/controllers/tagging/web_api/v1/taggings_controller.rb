@@ -77,7 +77,6 @@ module Tagging
         end
 
         def generate
-          Tagging.automatic.destroy_all
           AutomaticTaggingService.new.cancel_tasks
 
           tags = params['tags']
@@ -88,7 +87,10 @@ module Tagging
           @ideas = policy_scope(Idea)
           @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
           @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
+
           @ideas.order_new
+
+          Tagging.automatic.where(idea: @ideas).destroy_all
 
           @res = NLP::TaggingSuggestionService.new.suggest(
             @ideas,
