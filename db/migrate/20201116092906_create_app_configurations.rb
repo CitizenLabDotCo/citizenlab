@@ -1,6 +1,7 @@
 class CreateAppConfigurations < ActiveRecord::Migration[6.0]
   def change
     create_table :app_configurations, id: :uuid do |t|
+      t.string :name
       t.string :host
       t.string :logo
       t.string :header_bg
@@ -16,7 +17,8 @@ class CreateAppConfigurations < ActiveRecord::Migration[6.0]
   end
 
   def import_from(tenant)
-    AppConfiguration.instance.update!(
+    AppConfiguration.create(
+        name: tenant.name,
         host: tenant.host,
         logo: tenant.logo,
         header_bg: tenant.header_bg,
