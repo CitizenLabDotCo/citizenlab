@@ -58,7 +58,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'moderate',
-  (_folder: IProjectFolderData, user: IUser) => {
-    return canModerate(user, _folder);
+  (folder: IProjectFolderData, user: IUser) => {
+    return canModerate(user, folder);
   }
 );
