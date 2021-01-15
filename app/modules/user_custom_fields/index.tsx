@@ -21,13 +21,9 @@ const configuration: ModuleConfiguration = {
       <CustomFieldsStep {...props} />
     ),
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
-    'app.containers.UserEditPage.ProfileForm.forms': ({
-      hasCustomFields,
-      ...props
-    }) => {
-      if (hasCustomFields) return <UserCustomFieldsForm {...props} />;
-      return null;
-    },
+    'app.containers.UserEditPage.ProfileForm.forms': (props) => (
+      <UserCustomFieldsForm {...props} />
+    ),
     'app.containers.Admin.settings.SettingsPage': (props) => <Tab {...props} />,
   },
 };

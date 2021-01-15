@@ -20,6 +20,7 @@ import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
+import { IUserData } from 'services/users';
 import { FormikSubmitHandler, Multiloc } from 'typings';
 
 type Localize = (
@@ -95,10 +96,10 @@ export type OutletsPropertyMap = {
     project: IProjectData;
   };
   'app.containers.UserEditPage.ProfileForm.forms': {
-    hasCustomFields: boolean;
-    formData: any;
-    onChange: (formData: any) => void;
-    onSubmit: (formData: any) => void;
+    authUser: IUserData;
+    onChange: () => void;
+    onSubmit: (data: { key: string; formData: Object }) => void;
+    onData: (data: { key: string; data: Object }) => void;
   };
   'app.containers.Admin.settings.SettingsPage': {
     onData: (data: { after?: string; configuration: TabProps }) => void;

@@ -29,9 +29,10 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
+import {
+  ExtraFormDataConfiguration,
+  ExtraFormDataKey,
+} from 'containers/UsersEditPage/ProfileForm';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -43,6 +44,7 @@ import styled from 'styled-components';
 
 // typings
 import { IOption } from 'typings';
+import { IUserData } from 'services/users';
 
 const Container = styled.div``;
 
@@ -85,11 +87,17 @@ const StyledDateInput = styled(DateInput)`
 `;
 
 export interface InputProps {
-  formData?: object;
-  onSubmit?: (arg: any) => void;
-  onChange?: (arg: any) => void;
-  id?: string;
-  className?: string;
+  authUser: IUserData;
+  onSubmit: (data: { key: string; formData: Object | null }) => void;
+  onChange: () => void;
+  onData: (data: {
+    key: ExtraFormDataKey;
+    data: ExtraFormDataConfiguration;
+  }) => void;
+}
+
+interface State {
+  formData: Object | null;
 }
 
 interface DataProps {
@@ -98,24 +106,28 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
+class UserCustomFieldsForm extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   submitbuttonElement: HTMLButtonElement | null;
   subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
-    this.submitbuttonElement = null;
     this.subscriptions = [];
+    this.state = {
+      formData: null,
+    };
   }
 
   componentDidMount() {
-    this.subscriptions = [
-      eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
-        if (this.submitbuttonElement) {
-          this.submitbuttonElement.click();
-        }
-      }),
-    ];
+    this.props.onData({
+      key: 'custom_field_values',
+      data: {
+        submit: () => this?.submitbuttonElement?.click?.(),
+      },
+    });
   }
 
   componentWillUnmount() {
@@ -129,27 +141,35 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   };
 
   handleOnChange = ({ formData }) => {
-    if (this.props.onChange) {
-      const sanitizedFormData = {};
+    const sanitizedFormData = {};
 
-      forOwn(formData, (value, key) => {
-        sanitizedFormData[key] = value === null ? undefined : value;
-      });
+    forOwn(formData, (value, key) => {
+      sanitizedFormData[key] = value === null ? undefined : value;
+    });
 
-      this.props.onChange(sanitizedFormData);
-    }
+    this.setState({ formData: sanitizedFormData }, () => this.props.onChange());
   };
 
   handleOnSubmit = ({ formData }) => {
-    if (this.props.onSubmit) {
-      const sanitizedFormData = {};
+    const sanitizedFormData = {};
+    const { userCustomFieldsSchema } = this.props;
 
-      forOwn(formData, (value, key) => {
-        sanitizedFormData[key] = value === null ? undefined : value;
-      });
+    forOwn(formData, (value, key) => {
+      sanitizedFormData[key] = value === null ? undefined : value;
+    });
 
-      this.props.onSubmit(sanitizedFormData);
-    }
+    const hasCustomFields =
+      !isNilOrError(userCustomFieldsSchema) &&
+      userCustomFieldsSchema.hasCustomFields;
+
+    console.log(hasCustomFields);
+
+    this.setState({ formData: sanitizedFormData }, () =>
+      this.props.onSubmit({
+        key: 'custom_field_values',
+        formData: this.state.formData,
+      })
+    );
   };
 
   handleOnError = (_errors) => {
@@ -453,11 +473,11 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { userCustomFieldsSchema, className } = this.props;
+    const { userCustomFieldsSchema, authUser } = this.props;
+    const { formData } = this.state;
 
     if (!isNilOrError(userCustomFieldsSchema)) {
       const { schema, uiSchema } = userCustomFieldsSchema;
-      const { id } = this.props;
       const widgets: any = {
         TextWidget: this.CustomInput,
         TextareaWidget: this.CustomTextarea,
@@ -467,12 +487,12 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
       };
 
       return (
-        <Container id={id || ''} className={className || ''}>
+        <Container>
           {schema && uiSchema && (
             <Form
               schema={schema}
               uiSchema={uiSchema}
-              formData={this.props.formData}
+              formData={formData || authUser.attributes.custom_field_values}
               widgets={widgets}
               FieldTemplate={this.CustomFieldTemplate as any}
               ObjectFieldTemplate={this.ObjectFieldTemplate}
