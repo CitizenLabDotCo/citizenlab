@@ -16,7 +16,7 @@ import { ITenantData } from 'services/tenant';
 export const canModerate = (user: IUser, folder: IProjectFolderData) =>
   isAdmin(user) || isProjectFolderModerator(user.data, folder.id);
 
-const canAccessRouteExtended = (
+const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
   user: IUser | null,
   tenant: ITenantData
@@ -29,7 +29,7 @@ const canAccessRouteExtended = (
   );
 };
 
-definePermissionRule('route', 'access', canAccessRouteExtended);
+definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
 
 definePermissionRule(
   'project_folder',
