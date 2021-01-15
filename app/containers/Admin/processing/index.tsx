@@ -152,7 +152,9 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
 
-    const { taggings, processing } = useTaggings();
+    const { taggings, processing, processingRemainingItems } = useTaggings();
+
+    console.log(processingRemainingItems);
 
     const [projectList, setProjectList] = useState<
       IFilterSelectorValue[] | null
@@ -313,19 +315,33 @@ const Processing = memo<Props & InjectedIntlProps>(
 
                   <StyledActions>
                     <FeatureFlag name="automatic_tagging">
-                      <Button
-                        buttonStyle="admin-dark"
-                        disabled={selectedRows.length === 0}
-                        locale={locale}
-                        onClick={handleAutoTag}
-                        processing={processing}
-                      >
-                        <FormattedMessage {...messages.autotag} />
-                      </Button>
-                      {processing && (
-                        <Button locale={locale} onClick={handleCancelAutoTag}>
-                          <FormattedMessage {...messages.cancel} />
+                      {!processing ? (
+                        <Button
+                          buttonStyle="admin-dark"
+                          disabled={selectedRows.length === 0}
+                          locale={locale}
+                          onClick={handleAutoTag}
+                        >
+                          <FormattedMessage {...messages.autotag} />
                         </Button>
+                      ) : (
+                        <>
+                          <div>
+                            <FormattedMessage
+                              {...messages.autotaggingProcessing}
+                              values={{
+                                remainingItems: processingRemainingItems,
+                              }}
+                            />
+                          </div>
+                          <Button
+                            locale={locale}
+                            buttonStyle="admin-dark"
+                            onClick={handleCancelAutoTag}
+                          >
+                            <FormattedMessage {...messages.cancel} />
+                          </Button>
+                        </>
                       )}
                     </FeatureFlag>
 

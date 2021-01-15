@@ -153,4 +153,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.pendingTagText',
     defaultMessage: 'pending',
   },
+  autotaggingProcessing: {
+    id: 'app.components.admin.PostManager.PostPreview.autotaggingProcessing',
+    defaultMessage: 'Automatic tagging : {remainingItems} items left',
+  },
 });
