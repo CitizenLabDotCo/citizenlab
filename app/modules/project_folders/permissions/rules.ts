@@ -13,8 +13,10 @@ import {
 import { IUser } from 'services/users';
 import { ITenantData } from 'services/tenant';
 
-export const canModerate = (user: IUser, folder: IProjectFolderData) =>
-  isAdmin(user) || isProjectFolderModerator(user.data, folder.id);
+export const canUserModerateFolder = (
+  user: IUser,
+  folder: IProjectFolderData
+) => isAdmin(user) || isProjectFolderModerator(user.data, folder.id);
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
@@ -59,6 +61,6 @@ definePermissionRule(
   'project_folder',
   'moderate',
   (folder: IProjectFolderData, user: IUser) => {
-    return canModerate(user, folder);
+    return canUserModerateFolder(user, folder);
   }
 );
