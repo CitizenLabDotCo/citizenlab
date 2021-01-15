@@ -172,6 +172,10 @@ module EmailCampaigns
       end
     end
 
+    def formatted_todays_date
+      I18n.l(Time.zone.today, format: :long)
+    end
+
     def days_since_publishing(resource)
       return unless resource.respond_to?(:published_at)
 
