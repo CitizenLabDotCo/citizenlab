@@ -1,34 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { IUserData } from 'services/users';
-import { isNilOrError } from 'utils/helperUtils';
 import { folderModeratorsStream } from 'modules/project_folders/services/moderators';
 
 export default function useProjectFolderModerators(projectFolderId: string) {
   const [folderModerators, setFolderModerators] = useState<
     IUserData[] | undefined | null | Error
   >(undefined);
-
-  const isFolderModerator = useCallback(
-    (user: IUserData) => {
-      if (isNilOrError(folderModerators)) {
-        return false;
-      }
-
-      return folderModerators.some((mod) => mod.id === user.id);
-    },
-    [folderModerators]
-  );
-
-  const isNotFolderModerator = useCallback(
-    (user: IUserData) => {
-      if (isNilOrError(folderModerators)) {
-        return true;
-      }
-
-      return !folderModerators.some((mod) => mod.id === user.id);
-    },
-    [folderModerators]
-  );
 
   useEffect(() => {
     const subscription = folderModeratorsStream(
@@ -40,9 +17,5 @@ export default function useProjectFolderModerators(projectFolderId: string) {
     return () => subscription.unsubscribe();
   }, [projectFolderId]);
 
-  return {
-    folderModerators,
-    isFolderModerator,
-    isNotFolderModerator,
-  };
+  return folderModerators;
 }

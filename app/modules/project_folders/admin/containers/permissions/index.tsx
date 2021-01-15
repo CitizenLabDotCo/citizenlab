@@ -1,9 +1,10 @@
-import React, { ReactElement, useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { WithRouterProps } from 'react-router';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
+import { isProjectFolderModerator } from '../../../permissions/roles';
 
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
@@ -55,18 +56,11 @@ const UserSelectButton = styled(Button)`
 `;
 
 const FolderPermissions = ({
-  params,
-  intl,
-}: WithRouterProps & InjectedIntlProps): ReactElement => {
-  const { projectFolderId } = params;
-  const { formatMessage } = intl;
+  params: { projectFolderId },
+  intl: { formatMessage },
+}: WithRouterProps & InjectedIntlProps) => {
   const authUser = useAuthUser();
-
-  const {
-    folderModerators,
-    isFolderModerator,
-    isNotFolderModerator,
-  } = useProjectFolderModerators(projectFolderId);
+  const folderModerators = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
@@ -116,10 +110,10 @@ const FolderPermissions = ({
 
   const isNotFolderModeratorOrAuthUser = (user: IUserData) => {
     if (!isNilOrError(authUser)) {
-      return isNotFolderModerator(user) && user.id !== authUser.id;
+      return !isProjectFolderModerator(user) && user.id !== authUser.id;
     }
 
-    return isNotFolderModerator(user);
+    return !isProjectFolderModerator(user);
   };
 
   const getOptions = (users: IUsers) => {
@@ -129,7 +123,7 @@ const FolderPermissions = ({
           value: user.id,
           label: `${userName(user)} (${user.attributes.email})`,
           email: `${user.attributes.email}`,
-          disabled: isFolderModerator(user),
+          disabled: isProjectFolderModerator(user),
         };
       });
     }

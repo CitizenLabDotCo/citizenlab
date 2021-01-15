@@ -2,13 +2,15 @@ import { memo } from 'react';
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
 import { IUserData } from 'services/users';
 
-export interface IGetModeratorHook {
-  folderModerators: IUserData[] | Error | null | undefined;
-  isFolderModerator: (authUser: IUserData) => boolean;
-  isNotFolderModerator: (authUser: IUserData) => boolean;
-}
+type GetProjectFolderModeratorsChildProps =
+  | IUserData[]
+  | Error
+  | null
+  | undefined;
 
-type children = (renderProps: IGetModeratorHook) => JSX.Element | null;
+type children = (
+  renderProps: GetProjectFolderModeratorsChildProps
+) => JSX.Element | null;
 
 interface Props {
   children?: children;
@@ -17,9 +19,9 @@ interface Props {
 
 const GetProjectFolderModerators = memo<Props>(
   ({ projectFolderId, children }) => {
-    const hook = useProjectFolderModerators(projectFolderId);
+    const folderModerators = useProjectFolderModerators(projectFolderId);
 
-    return (children as children)(hook);
+    return (children as children)(folderModerators);
   }
 );
 
