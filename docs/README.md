@@ -4,6 +4,11 @@
 
 /
 
+## 2021-01-15
+
+### Changed
+- Copy improvements across different languages
+
 ## 2021-01-14
 
 ### Added
