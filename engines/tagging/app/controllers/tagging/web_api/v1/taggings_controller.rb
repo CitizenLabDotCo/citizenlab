@@ -88,7 +88,7 @@ module Tagging
           @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
           @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
 
-          @ideas.order_new
+          @ideas = @ideas.order_new
 
           Tagging.automatic.where(idea: @ideas).destroy_all
 
@@ -102,7 +102,7 @@ module Tagging
             @res['batches'].each do |b|
               Tagging.create(
                 b['doc_ids'].map do |idea_id|
-                  { 
+                  {
                     idea_id: idea_id,
                     assignment_method: :pending,
                     task_id: b['task_id']
