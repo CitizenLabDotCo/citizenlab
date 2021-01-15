@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
-import { IUsers, IUserData } from 'services/users';
+import { IUserData } from 'services/users';
 
 export interface IGetModeratorHook {
-  moderators: IUsers | Error | null | undefined;
-  isModerator: (authUser: IUserData) => boolean;
-  isNotModerator: (authUser: IUserData) => boolean;
+  folderModerators: IUserData[] | Error | null | undefined;
+  isFolderModerator: (authUser: IUserData) => boolean;
+  isNotFolderModerator: (authUser: IUserData) => boolean;
 }
 
 type children = (renderProps: IGetModeratorHook) => JSX.Element | null;
