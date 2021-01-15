@@ -418,6 +418,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Saved successfully",
   "app.components.admin.PostManager.PostPreview.addTag": "Add a tag",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "Automatic tagging : {remainingItems} items left",
   "app.components.admin.PostManager.PostPreview.basketsCountTooltip": "The number of users who added this idea to their participatory budget",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancel editing",
   "app.components.admin.PostManager.PostPreview.createTag": "Create a tag",

@@ -418,6 +418,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "",
   "app.components.admin.PostManager.PostPreview.addTag": "",
   "app.components.admin.PostManager.PostPreview.assignee": "",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "",
   "app.components.admin.PostManager.PostPreview.basketsCountTooltip": "",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "",
   "app.components.admin.PostManager.PostPreview.createTag": "",
