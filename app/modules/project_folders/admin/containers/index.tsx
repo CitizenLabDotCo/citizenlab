@@ -24,7 +24,7 @@ import messages from './messages';
 import GetProjectFolder, {
   GetProjectFolderChildProps,
 } from 'modules/project_folders/resources/GetProjectFolder';
-import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';
@@ -115,11 +115,10 @@ const AdminProjectFolderEdition = memo<
   }
 );
 
-const AdminProjectFolderEditionWithHoCs = withAuthUser(
-  injectIntl(AdminProjectFolderEdition)
-);
+const AdminProjectFolderEditionWithHoCs = injectIntl(AdminProjectFolderEdition);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  authUser: <GetAuthUser />,
   projectFolder: ({ params, render }) => (
     <GetProjectFolder projectFolderId={params.projectFolderId}>
       {render}

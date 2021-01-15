@@ -47,11 +47,3 @@ export default class GetAuthUser extends React.Component<Props, State> {
     return (children as children)(authUser);
   }
 }
-
-export function withAuthUser(Component: React.ComponentType<any | string>) {
-  return (props: any): ReactElement => (
-    <GetAuthUser {...props}>
-      {(authUser) => <Component authUser={authUser} {...props} />}
-    </GetAuthUser>
-  );
-}

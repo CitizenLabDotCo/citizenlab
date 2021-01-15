@@ -15,7 +15,7 @@ import GetProjectFolder, {
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
-import { GetAuthUserChildProps, withAuthUser } from 'resources/GetAuthUser';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -264,7 +264,6 @@ class AdminFolderProjectsList extends Component<
     return null;
   }
 }
-const AdminFolderProjectsListWithHocs = withAuthUser(AdminFolderProjectsList);
 const publicationStatuses: PublicationStatus[] = [
   'draft',
   'archived',
@@ -272,6 +271,7 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 const Data = adopt<DataProps, WithRouterProps>({
+  authUser: <GetAuthUser />,
   projectFolder: ({ params, render }) => (
     <GetProjectFolder projectFolderId={params.projectFolderId}>
       {render}
@@ -295,8 +295,6 @@ const Data = adopt<DataProps, WithRouterProps>({
 
 export default withRouter((inputProps: WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
-      <AdminFolderProjectsListWithHocs {...inputProps} {...dataProps} />
-    )}
+    {(dataProps) => <AdminFolderProjectsList {...inputProps} {...dataProps} />}
   </Data>
 ));
