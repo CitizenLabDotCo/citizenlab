@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { IUsers, IUserData } from 'services/users';
+import { IUserData } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   folderModeratorsStream,
@@ -9,7 +9,7 @@ import {
 
 export default function useProjectFolderModerators(projectFolderId: string) {
   const [folderModerators, setFolderModerators] = useState<
-    IUsers | undefined | null | Error
+    IUserData[] | undefined | null | Error
   >(undefined);
 
   const isFolderModerator = useCallback(
@@ -18,7 +18,7 @@ export default function useProjectFolderModerators(projectFolderId: string) {
         return false;
       }
 
-      return folderModerators.data.some((mod) => mod.id === user.id);
+      return folderModerators.some((mod) => mod.id === user.id);
     },
     [folderModerators]
   );
@@ -29,7 +29,7 @@ export default function useProjectFolderModerators(projectFolderId: string) {
         return true;
       }
 
-      return !folderModerators.data.some((mod) => mod.id === user.id);
+      return !folderModerators.some((mod) => mod.id === user.id);
     },
     [folderModerators]
   );
@@ -37,11 +37,11 @@ export default function useProjectFolderModerators(projectFolderId: string) {
   useEffect(() => {
     const subscription = folderModeratorsStream(
       projectFolderId
-    ).observable.subscribe((streamModerators) => {
-      setFolderModerators(streamModerators);
+    ).observable.subscribe((response) => {
+      setFolderModerators(response.data);
     });
 
-    return () => subscription?.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [projectFolderId]);
 
   return {
