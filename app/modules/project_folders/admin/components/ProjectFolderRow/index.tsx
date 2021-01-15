@@ -18,8 +18,11 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// hooks
 import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -32,10 +35,6 @@ const FolderIcon = styled(Icon)`
 `;
 
 // types & services
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
-import { adopt } from 'react-adopt';
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
@@ -93,26 +92,16 @@ const InFolderProjectRow = styled(ProjectRow)`
   }
 `;
 
-interface InputProps {
+interface Props {
   publication: IAdminPublicationContent;
 }
 
-interface DataProps {
-  adminPublications: GetAdminPublicationsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
+const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
-
-  const hasProjects =
-    !isNilOrError(adminPublications) &&
-    !!adminPublications.list?.length &&
-    adminPublications.list.length > 0;
-  const userCanDeletePublication = !isNilOrError(authUser)
-    ? isAdmin({ data: authUser })
-    : false;
+  const adminPublications = useAdminPublications({
+    folderId: publication.id,
+    publicationStatusFilter: ['draft', 'published', 'archived'],
+  });
 
   const [folderOpen, setFolderOpen] = useState(false);
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
@@ -120,7 +109,13 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
+  const hasProjects =
+    !isNilOrError(adminPublications) &&
+    !!adminPublications.list?.length &&
+    adminPublications.list.length > 0;
+
   if (!isNilOrError(authUser)) {
+    const userCanDeletePublication = isAdmin({ data: authUser });
     return (
       <Container>
         <FolderRowContent
@@ -199,19 +194,4 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
   return null;
 });
 
-const Data = adopt<DataProps, InputProps>({
-  adminPublications: ({ publication: { publicationId }, render }) => (
-    <GetAdminPublications
-      folderId={publicationId}
-      publicationStatusFilter={['draft', 'published', 'archived']}
-    >
-      {render}
-    </GetAdminPublications>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <ProjectFolderRow {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default ProjectFolderRow;
