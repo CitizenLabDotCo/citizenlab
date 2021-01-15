@@ -2,9 +2,9 @@ class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
   include Frontend::TenantStyle
 
-  mount_base64_uploader :logo, LogoUploader
+  mount_base64_uploader :logo, TenantLogoUploader
   mount_base64_uploader :header_bg, TenantHeaderBgUploader
-  mount_base64_uploader :favicon, FaviconUploader
+  mount_base64_uploader :favicon, TenantFaviconUploader
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
@@ -27,9 +27,10 @@ class Tenant < ApplicationRecord
     end
   end
 
-  after_create :create_apartment_tenant
+  after_create :create_apartment_tenant, :create_app_configuration
   after_destroy :delete_apartment_tenant
   after_update :update_tenant_schema, if: :saved_change_to_host?
+  after_update :update_app_configuration
 
   before_validation :validate_missing_feature_dependencies
 
@@ -127,6 +128,52 @@ class Tenant < ApplicationRecord
   end
 
   private
+
+  def create_app_configuration
+    Apartment::Tenant.switch(schema_name) do
+      AppConfiguration.create(
+          id: id,
+          name: name,
+          host: host,
+          logo: logo,
+          header_bg: header_bg,
+          favicon: favicon,
+          settings: settings,
+          style: style,
+          created_at: created_at
+      )
+    end
+  end
+
+  def update_app_configuration
+    return if caller.any? { |s| s.match?(/app_configuration\.rb.*`update_tenant'/) }
+    Apartment::Tenant.switch(schema_name) do
+      config = AppConfiguration.instance
+      attrs_delta = attributes_delta(self, config)
+      return unless attrs_delta.present?
+      config.attributes = attrs_delta
+      config.remove_logo! if logo_previously_changed? && logo.blank?
+      config.remove_favicon! if favicon_previously_changed? && favicon.blank?
+      config.remove_header_bg! if header_bg_previously_changed? && header_bg.blank?
+      config.save
+    end
+  end
+
+  def attributes_delta(new_obj, old_obj)
+    new_attributes = new_obj.attributes
+    old_attributes = old_obj.attributes
+    carrierwave_attrs = %w[logo favicon header_bg]
+    common_attrs = (old_attributes.keys & new_attributes.keys) - carrierwave_attrs
+    new_attributes
+        .slice(*common_attrs)
+        .select { |k,v| v != old_attributes[k] }
+        .tap do |attrs|
+          attrs[:logo]      = new_obj.logo      if new_obj.logo_previously_changed?
+          attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
+          attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
+    end
+  end
+
 
   def create_apartment_tenant
     Apartment::Tenant.create(self.schema_name)
