@@ -47,8 +47,6 @@ export default function useProjectFolderModerators(projectFolderId: string) {
   return {
     folderModerators,
     isFolderModerator,
-    addFolderModerator,
-    deleteFolderModerator,
     isNotFolderModerator,
   };
 }
