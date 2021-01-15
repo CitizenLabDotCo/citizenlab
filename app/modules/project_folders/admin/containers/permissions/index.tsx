@@ -12,6 +12,10 @@ import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 import { useProjectFolderModerators } from 'modules/project_folders/hooks';
 import { IUsers, IUserData, usersStream } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
+import {
+  addFolderModerator,
+  deleteFolderModerator,
+} from 'modules/project_folders/services/moderators';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -62,8 +66,6 @@ const FolderPermissions = ({
     folderModerators,
     isFolderModerator,
     isNotFolderModerator,
-    addFolderModerator,
-    deleteFolderModerator,
   } = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
@@ -114,7 +116,7 @@ const FolderPermissions = ({
 
   const isNotFolderModeratorOrAuthUser = (user: IUserData) => {
     if (!isNilOrError(authUser)) {
-      return isNotFolderModerator(user) && user.id !== authUser.data.id;
+      return isNotFolderModerator(user) && user.id !== authUser.id;
     }
 
     return isNotFolderModerator(user);
@@ -208,10 +210,10 @@ const FolderPermissions = ({
         <>
           {!isNilOrError(folderModerators) &&
             !isNilOrError(authUser) &&
-            folderModerators.data.map((folderModerator, index) => (
+            folderModerators.map((folderModerator, index) => (
               <Row
                 key={folderModerator.id}
-                isLastItem={index === folderModerators.data.length - 1}
+                isLastItem={index === folderModerators.length - 1}
               >
                 <Avatar userId={folderModerator.id} size="30px" />
                 <p className="expand">{userName(folderModerator)}</p>
@@ -225,7 +227,7 @@ const FolderPermissions = ({
                   icon="delete"
                   disabled={
                     !isNilOrError(authUser) &&
-                    authUser.data.id === folderModerator.id
+                    authUser.id === folderModerator.id
                   }
                 >
                   <FormattedMessage {...messages.deleteFolderManagerLabel} />
