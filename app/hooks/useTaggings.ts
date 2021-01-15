@@ -12,6 +12,9 @@ export default function useTaggings() {
 
   const [ideaIds, setIdeaIds] = useState<string[] | null | undefined>([]);
   const [processing, setProcessing] = useState<boolean>(true);
+  const [processingRemainingItems, setProcessingRemainingItems] = useState<
+    number | null
+  >();
 
   const onIdeasChange = useCallback((ideas: string[]) => {
     setIdeaIds([...ideas]);
@@ -27,14 +30,15 @@ export default function useTaggings() {
     const subscriptions = [
       taggingObservable.subscribe((taggings) => {
         setTaggings(isNilOrError(taggings) ? taggings : taggings.data);
-        if (
-          taggings.data.find(
-            (tagging) => tagging.attributes.assignment_method === 'pending'
-          )
-        ) {
+        const remainingItems = taggings.data.filter(
+          (tagging) => tagging.attributes.assignment_method === 'pending'
+        ).length;
+        if (remainingItems > 0) {
           setProcessing(true);
+          setProcessingRemainingItems(remainingItems);
         } else {
           setProcessing(false);
+          setProcessingRemainingItems(null);
         }
       }),
       ...[
@@ -51,5 +55,5 @@ export default function useTaggings() {
     return () => subscriptions.forEach((sub) => sub.unsubscribe());
   }, [ideaIds, processing]);
 
-  return { taggings, onIdeasChange, processing };
+  return { taggings, onIdeasChange, processing, processingRemainingItems };
 }
