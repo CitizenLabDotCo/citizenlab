@@ -104,8 +104,8 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   });
 
   const [folderOpen, setFolderOpen] = useState(false);
-  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-  const [folderDeletionError, setFolderDeletionError] = useState<string>('');
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [folderDeletionError, setFolderDeletionError] = useState('');
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
@@ -116,6 +116,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   if (!isNilOrError(authUser)) {
     const userIsAdmin = isAdmin({ data: authUser });
+
     return (
       <Container>
         <FolderRowContent
