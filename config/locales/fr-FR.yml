@@ -2,9 +2,9 @@ fr:
   symbols:
     outside: autre lieu
   idea_statuses:
-    proposed: soumise
+    proposed: soumis.e
     proposed_description: Cette idée à été proposée à l'administration
-    viewed: vue
+    viewed: vu.e
     viewed_description: Cette idée a été vue par une personne de la ville
     under_consideration: prise en considération
     under_consideration_description: Cette idée a été prise en considération par l'administration
