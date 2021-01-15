@@ -14,6 +14,9 @@ module EmailCampaigns
 
     N_TOP_IDEAS = ENV.fetch("N_MODERATOR_DIGEST_IDEAS", 12).to_i
 
+    def mailer_class
+      ModeratorDigestMailer
+    end
 
     def self.default_schedule
       IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|

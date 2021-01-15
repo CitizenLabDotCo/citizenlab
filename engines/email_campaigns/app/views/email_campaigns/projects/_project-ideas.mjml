@@ -9,7 +9,7 @@
   </tr>
 
   <% serialized_project_ideas.top_ideas.each do |serialized_idea| %>
-    <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: serialized_idea %>
+    <%= render 'email_campaigns/ideas/idea-minimal-with-increments', serialized_idea: serialized_idea %>
   <% end %>
 
 </mj-table>
