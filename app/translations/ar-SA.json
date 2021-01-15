@@ -591,7 +591,7 @@
   "app.components.admin.pagination.next": "التالي",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "مساهمة ",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "الفكرة",
-  "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "بماذا يجب للمُدخل أن يُدعى؟ ",
+  "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "مشكلة",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "خيار",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Project",
