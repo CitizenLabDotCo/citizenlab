@@ -591,7 +591,7 @@
   "app.components.admin.pagination.next": "Next",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "{tenantName, select, DeloitteDK {Indlæg} other {Idé}}",
-  "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hvad skal et input kaldes?",
+  "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Problem",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Mulighed",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Project",
