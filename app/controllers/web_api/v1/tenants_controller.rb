@@ -29,7 +29,7 @@ class WebApi::V1::TenantsController < ApplicationController
     if @tenant.save
       SideFxTenantService.new.after_update @tenant, current_user
       render(
-        json: WebApi::V1::TenantSerializer.new(@tenant, params: fastjson_params).serialized_json, 
+        json: WebApi::V1::TenantSerializer.new(@tenant, params: fastjson_params).serialized_json,
         status: :ok
         )
     else

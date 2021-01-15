@@ -45,7 +45,7 @@ resource "Tenants" do
   end
 
   patch "web_api/v1/tenants/:id" do
-    with_options scope: :tenant do   
+    with_options scope: :tenant do
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
       parameter :favicon, "Base64 encoded favicon"
@@ -59,10 +59,10 @@ resource "Tenants" do
       Tenant.settings_json_schema["properties"].each do |feature, feature_descriptor|
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: [:tenant, :settings, feature]
-        feature_descriptor["properties"].each do |setting, setting_descriptor|
-          unless ["enabled", "allowed"].include?(setting)
-            parameter setting, "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}", scope: [:tenant, :settings, feature]
-          end
+        feature_descriptor['properties'].each do |setting, setting_descriptor|
+          next if %w[enabled allowed].include?(setting)
+
+          parameter setting, "#{setting_descriptor['description']}. Type: #{setting_descriptor['type']}", scope: [:tenant, :settings, feature]
         end
       end
       Tenant.style_json_schema["properties"].each do |style, style_descriptor|
@@ -75,17 +75,13 @@ resource "Tenants" do
     let(:logo) { base64_encoded_image("logo.png", "image/png") }
     let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg") }
     let(:favicon) { base64_encoded_image("favicon.png", "image/png") }
-    let(:settings) {
+    let(:organization_name) do
       {
-        "core" => {
-          "organization_name" => {
-            "en" => "TestTown",
-            "nl-BE" => "TestTowm",
-            "fr-FR" => "TestTown"
-          }
-        }
+        'en' => 'TestTown',
+        'nl-BE' => 'TestTowm',
+        'fr-FR' => 'TestTown'
       }
-    }
+    end
     let(:style) {
       {
         "signedOutHeaderOverlayColor" => "#3467eb",
@@ -127,7 +123,7 @@ resource "Tenants" do
           }
         }
       }
-      
+
       example "[error] Updating the tenant with unsupported settings fails", document: false do
         do_request
         expect(response_status).to eq 422
@@ -167,7 +163,7 @@ resource "Tenants" do
     end
   end
 
-    
+
   private
 
   def base64_encoded_image filename, mime

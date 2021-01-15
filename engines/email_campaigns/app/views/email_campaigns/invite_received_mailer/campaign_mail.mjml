@@ -1,55 +1,17 @@
-<mjml>
-  <%= render partial: "application/header" %>
-  <mj-body>
-    <mj-section>
-      <mj-column>
-        <mj-text>
-          <span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-            <%= formatMessage('preheader', values: {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
-          </span>
-        </mj-text>
-      </mj-column>
-    </mj-section>
+<mj-raw>
+  <% if event.invite_text.present? %>
+</mj-raw>
+<mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
+  <mj-column padding="30px 25px 20px" border-radius="5px" background-color="#F2F6F8">
+    <mj-text font-size="14px" color="#84939E">
+      <%= format_message('added_a_message', values: { organizationName: organization_name }) %>
+      <p style="color: #000"><%= event.invite_text.html_safe %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<mj-raw>
+  <% end %>
+</mj-raw>
 
-    <%= render partial: "application/logo_medium_top" %>
-
-    <!-- Main header + event description -->
-    <mj-section padding="30px 25px 0">
-      <mj-column>
-        <mj-text>
-          <h1>
-            <%= formatMessage('invitation_header') %>
-          </h1>
-          <p>
-            <%= formatMessage('invitation_header_message', values: {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
-          </p>
-        </mj-text>
-      </mj-column>
-    </mj-section>
-
-    <!-- Inviter message box -->
-    <mj-raw>
-      <% if @command[:event_payload][:invite_text].present? %>
-    </mj-raw>
-    <mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
-      <mj-column padding="30px 25px 20px" border-radius="5px" background-color="#F2F6F8">
-        <mj-text font-size="14px" color="#84939E">
-          <%= formatMessage('added_a_message', values: {organizationName: localize(@tenant.settings.dig('core','organization_name'))}) %>
-          <p style="color: #000"> <%= @command[:event_payload][:invite_text].html_safe %> </p>
-        </mj-text>
-      </mj-column>
-    </mj-section>
-    <mj-raw>
-      <% end %>
-    </mj-raw>
-
-    <!-- CTA button -->
-    <%= render partial: "application/cta_button", locals: {
-      href: @command[:event_payload][:activate_invite_url],
-      message: formatMessage('cta_accept_invitation')
-    } %>
-
-    <%= render partial: "application/footer" %>
-
-  </mj-body>
-</mjml>
+<!-- CTA button -->
+<%= render partial: 'application/cta_button', locals: { href: event.activate_invite_url, message: format_message('cta_accept_invitation') } %>
