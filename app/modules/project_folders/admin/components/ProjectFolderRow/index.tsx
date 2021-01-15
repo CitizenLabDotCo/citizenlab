@@ -115,7 +115,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
     adminPublications.list.length > 0;
 
   if (!isNilOrError(authUser)) {
-    const userCanDeletePublication = isAdmin({ data: authUser });
+    const userIsAdmin = isAdmin({ data: authUser });
     return (
       <Container>
         <FolderRowContent
@@ -141,7 +141,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             />
           </RowContentInner>
           <ActionsRowContainer>
-            {userCanDeletePublication && (
+            {userIsAdmin && (
               <DeleteProjectFolderButton
                 publication={publication}
                 processing={isBeingDeleted}
@@ -158,7 +158,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               icon="edit"
               disabled={
                 isBeingDeleted ||
-                (!isAdmin({ data: authUser }) &&
+                (userIsAdmin &&
                   !isProjectFolderModerator(
                     authUser,
                     publication.publicationId
@@ -178,11 +178,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               <InFolderProjectRow
                 publication={publication}
                 key={publication.id}
-                actions={
-                  isAdmin({ data: authUser })
-                    ? ['delete', 'manage']
-                    : ['manage']
-                }
+                actions={userIsAdmin ? ['delete', 'manage'] : ['manage']}
               />
             ))}
           </ProjectRows>
