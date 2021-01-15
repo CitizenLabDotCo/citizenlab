@@ -159,7 +159,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               icon="edit"
               disabled={
                 isBeingDeleted ||
-                (userIsAdmin &&
+                (!userIsAdmin &&
                   !isProjectFolderModerator(
                     authUser,
                     publication.publicationId
