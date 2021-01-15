@@ -165,7 +165,7 @@ const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
                 isBeingDeleted ||
                 (!isAdmin({ data: authUser }) &&
                   !isProjectFolderModerator(
-                    { data: authUser },
+                    authUser,
                     publication.publicationId
                   ))
               }
