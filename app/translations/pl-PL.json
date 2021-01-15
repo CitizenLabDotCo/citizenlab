@@ -418,6 +418,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Pomyślnie zapisano",
   "app.components.admin.PostManager.PostPreview.addTag": "Dodaj tag",
   "app.components.admin.PostManager.PostPreview.assignee": "Moderator",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "",
   "app.components.admin.PostManager.PostPreview.basketsCountTooltip": "Liczba użytkowników, którzy dodali ten pomysł do swojego budżetu partycypacyjnego",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Anuluj edycję",
   "app.components.admin.PostManager.PostPreview.createTag": "Utwórz tag",
