@@ -817,7 +817,7 @@
   "app.containers.Admin.clusterViewer.title": "Titel",
   "app.containers.Admin.clusterViewer.titleClusterInformation": "Clustering van informatie",
   "app.containers.Admin.clusterViewer.titleClusterings": "Inzichten stemgedrag",
-  "app.containers.Admin.clusterViewer.titleInputFilters": "Input filters",
+  "app.containers.Admin.clusterViewer.titleInputFilters": "Inputfilters",
   "app.containers.Admin.clusterViewer.topic": "Thema",
   "app.containers.Admin.clusterViewer.upvotes": "Meer stemmen voor",
   "app.containers.Admin.clusterViewer.viewButtonLabel": "Weergave",
