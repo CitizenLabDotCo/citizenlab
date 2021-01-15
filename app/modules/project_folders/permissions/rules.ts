@@ -14,7 +14,7 @@ import { IUser } from 'services/users';
 import { ITenantData } from 'services/tenant';
 
 export const canModerate = (user: IUser, folder: IProjectFolderData) =>
-  isAdmin(user) || isProjectFolderModerator(user, folder.id);
+  isAdmin(user) || isProjectFolderModerator(user.data, folder.id);
 
 const canAccessRouteExtended = (
   item: IRouteItem,
@@ -24,7 +24,7 @@ const canAccessRouteExtended = (
   return (
     canAccessRoute(item, user, tenant) ||
     (isAdminRoute(item) &&
-      isProjectFolderModerator(user) &&
+      isProjectFolderModerator(user?.data) &&
       MODERATOR_ROUTES.includes(item.path))
   );
 };
