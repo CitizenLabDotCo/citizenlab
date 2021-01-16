@@ -20,15 +20,12 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_users") %>
       </mj-text>
-      <mj-raw><% if change_users.positive? %></mj-raw>
-        <mj-text color="#2ecc71" font-size="16px" align="center" font-weight="700">
-          +<%= change_users %>%
-        </mj-text>
-      <mj-raw><% elsif change_users.negative? %></mj-raw>
-        <mj-text color="#fab1a0" font-size="16px" align="center" font-weight="700">
+      <% unless change_users.zero? %>
+        <mj-text color="<%= change_users.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
+          <%= '+' if change_users.positive? %>
           <%= change_users %>%
         </mj-text>
-      <mj-raw><% end %></mj-raw>
+      <% end %>
     </mj-column>
 
     <mj-column>
@@ -43,15 +40,12 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_ideas") %>
       </mj-text>
-      <mj-raw><% if change_ideas.positive? %></mj-raw>
-        <mj-text color="#2ecc71" font-size="16px" align="center" font-weight="700">
-          +<%= change_ideas %>%
-        </mj-text>
-      <mj-raw><% elsif change_ideas.negative? %></mj-raw>
-        <mj-text color="#fab1a0" font-size="16px" align="center" font-weight="700">
+      <% unless change_ideas.zero? %>
+        <mj-text color="<%= change_ideas.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
+          <%= '+' if change_ideas.positive? %>
           <%= change_ideas %>%
         </mj-text>
-      <mj-raw><% end %></mj-raw>
+      <% end %>
     </mj-column>
 
     <mj-column>
@@ -66,15 +60,12 @@
       <mj-text font-size="16px" align="center">
         <%= format_message("new_comments") %>
       </mj-text>
-      <mj-raw><% if change_comments.positive? %></mj-raw>
-        <mj-text color="#2ecc71" font-size="16px" align="center" font-weight="700">
-          +<%= change_comments %>%
-        </mj-text>
-      <mj-raw><% elsif change_comments.negative? %></mj-raw>
-        <mj-text color="#fab1a0" font-size="16px" align="center" font-weight="700">
+      <% unless change_comments.zero? %>
+        <mj-text color="<%= change_comments.positive? ? '#2ecc71' : '#fab1a0' %>" font-size="16px" align="center" font-weight="700">
+          <%= '+' if change_comments.positive? %>
           <%= change_comments %>%
         </mj-text>
-      <mj-raw><% end %></mj-raw>
+      <% end %>
     </mj-column>
   </mj-section>
 

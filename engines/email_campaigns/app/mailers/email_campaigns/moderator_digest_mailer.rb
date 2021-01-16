@@ -23,21 +23,21 @@ module EmailCampaigns
     end
 
     def increase_from(statistic)
-      return 0 unless statistic.increase&.positive?
+      return 0 if statistic.increase.zero?
 
-      ((statistic.increase * 100) / statistic.past_increase)
+      ((statistic.increase - statistic.past_increase) / statistic.increase.to_f * 100).round
     end
 
     def change_ideas
-      increase_from(event.statistics.activities.new_ideas)
+      @change_ideas ||= increase_from(event.statistics.activities.new_ideas)
     end
 
     def change_comments
-      increase_from(event.statistics.activities.new_comments)
+      @change_comments ||= increase_from(event.statistics.activities.new_comments)
     end
 
     def change_users
-      increase_from(event.statistics.users.new_participants)
+      @change_users ||= increase_from(event.statistics.users.new_participants)
     end
   end
 end
