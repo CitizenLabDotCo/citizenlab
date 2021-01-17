@@ -34,7 +34,7 @@ module EmailCampaigns
     delegate :first_name, to: :recipient, prefix: true
 
     helper_method :command, :campaign, :event, :header_title, :header_message, :show_header?, :preheader, :subject,
-                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing
+                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing, :text_direction
 
     helper_method :organization_name, :recipient_name,
                   :url_service, :multiloc_service, :organization_name,
@@ -176,6 +176,14 @@ module EmailCampaigns
       return unless resource.respond_to?(:published_at)
 
       (Time.zone.today - resource.published_at.to_date).to_i
+    end
+
+    def text_direction
+      if locale =~ /^ar.*$/
+        'rtl'
+      else
+        'ltr'
+      end
     end
   end
 end
