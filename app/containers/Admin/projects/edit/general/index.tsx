@@ -183,7 +183,7 @@ const SlugPreview = styled.div`
   font-size: ${fontSizes.base}px;
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 interface DataProps {
   isProjectFoldersEnabled: GetFeatureFlagChildProps;
