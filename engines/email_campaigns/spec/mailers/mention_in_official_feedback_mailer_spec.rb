@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer, type: :mailer do
+RSpec.describe EmailCampaigns::MentionInOfficialFeedbackMailer, type: :mailer do
   describe 'campaign_mail' do
     let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea.create! }
+    let!(:campaign) { EmailCampaigns::Campaigns::MentionInOfficialFeedback.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     let(:command) do
@@ -15,7 +15,8 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer, type: :mailer 
           official_feedback_url: 'https://demo.stg.citizenlab.co',
           post_published_at: Time.zone.today.prev_week.iso8601,
           post_title_multiloc: { 'en' => 'My post is great.' },
-          post_author_name: 'Chuck Norris'
+          post_author_name: 'Chuck Norris',
+          post_type: 'Idea'
         }
       }
     end
@@ -27,7 +28,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnVotedIdeaMailer, type: :mailer 
     let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('An idea you voted on has received an update')
+      expect(mail.subject).to end_with('mentioned you in their feedback')
     end
 
     it 'renders the sender email' do
