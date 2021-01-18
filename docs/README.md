@@ -8,6 +8,7 @@
 
 ### Fixed
 - Access rights tab for participatory budget projects
+- Admin moderation page access
 
 ## 2021-01-15
 
