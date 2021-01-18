@@ -112,7 +112,9 @@ const FolderPermissions = ({
     // note: this typing info of users above is not correc
     if (!isNilOrError(users)) {
       return users.data
-        .filter((user: IUserData) => !isProjectFolderModerator(user))
+        .filter(
+          (user: IUserData) => !isProjectFolderModerator(user, projectFolderId)
+        )
         .map((user: IUserData) => {
           return {
             value: user.id,
