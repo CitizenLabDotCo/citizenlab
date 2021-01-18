@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      OfficialFeedbackOnYourIdeaMailer
+    end
+
     def activity_triggers
       {'Notifications::OfficialFeedbackOnYourIdea' => {'created' => true}}
     end
