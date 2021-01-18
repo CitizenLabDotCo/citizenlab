@@ -3,8 +3,7 @@ require:
   - rubocop-performance
   - rubocop-rspec
   - rubocop-i18n
-  - rubocop-sequel
-  - rubocop-thread_safety
+  - rubocop-require_tools
 
 AllCops:
   NewCops: enable
