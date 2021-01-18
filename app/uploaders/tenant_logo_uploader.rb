@@ -1,8 +1,8 @@
-class LogoUploader < BaseImageUploader
-  
+class TenantLogoUploader < BaseImageUploader
+
   def store_dir
-    tenant = Tenant.find_by(host: model.host)
-    "uploads/#{tenant.id}/logo/#{model.id}"
+    tenant = model
+    "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   version :small do
