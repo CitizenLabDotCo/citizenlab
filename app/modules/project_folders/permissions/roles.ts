@@ -6,10 +6,10 @@ export type IProjectFolderModerator = {
   project_folder_id: string;
 };
 
-export const isProjectFolderModerator = (
+export function isProjectFolderModerator(
   user: IUserData,
   projectFolderId?: string
-) => {
+) {
   if (isAdmin({ data: user })) {
     return true;
   } else {
@@ -26,4 +26,4 @@ export const isProjectFolderModerator = (
       }
     );
   }
-};
+}
