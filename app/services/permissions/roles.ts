@@ -1,5 +1,4 @@
 import { IUser, IRole, IProjectModeratorRole } from 'services/users';
-import { IProjectData } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 
 const hasRole = (user: IUser, role: IRole['type']) => {
