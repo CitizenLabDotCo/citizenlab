@@ -62,7 +62,7 @@ module EmailCampaigns
     end
 
     def show_header?
-      header_title.present?
+      false
     end
 
     def preheader
