@@ -86,6 +86,29 @@ class AppConfiguration < ApplicationRecord
     self.save!
   end
 
+  def configuration
+    # [TODO] temporary
+    Rails.logger.warn("Calling +configuration+ on an AppConfiguration", caller: caller)
+    self
+  end
+
+  def settings(*path)
+    value = read_attribute(:settings)
+    path.blank? ? value : value.dig(*path)
+  end
+
+  def base_frontend_uri
+    return "http://localhost:3000" if Rails.env.development?
+    transport = Rails.env.test? ? 'http' : 'https'
+    "#{transport}://#{host}"
+  end
+
+  def base_backend_uri
+    return "http://localhost:4000" if Rails.env.development?
+    transport = Rails.env.test? ? 'http' : 'https'
+    "#{transport}://#{host}"
+  end
+
   private
 
   def validate_missing_feature_dependencies
