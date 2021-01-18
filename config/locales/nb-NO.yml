@@ -1,6 +1,6 @@
 nb:
   symbols:
-    outside: somewhere else
+    outside: annet sted
   idea_statuses:
     proposed: foreslått
     proposed_description: Ideen har blitt forslått til kommunen
@@ -163,8 +163,8 @@ nb:
     custom_field_select:
       has_value: "%{property} er %{value}"
       not_has_value: "%{property} er ikke %{value}"
-      is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the following values: %{value}"
+      is_one_of: "%{property} har en av følgende verdier: %{value}"
+      not_is_one_of: "%{property} har ingen av følgende verdier: %{value}"
     custom_field_text:
       is: "%{property} er %{value}"
       not_is: "%{property} er ikke %{value}"

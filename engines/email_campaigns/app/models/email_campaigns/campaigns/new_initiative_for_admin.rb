@@ -14,6 +14,10 @@ module EmailCampaigns
       ['admin']
     end
 
+    def mailer_class
+      NewInitiativeForAdminMailer
+    end
+
     def activity_triggers
       {'Initiative' => {'published' => true}}
     end

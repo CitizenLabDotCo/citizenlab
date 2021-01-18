@@ -1,7 +1,8 @@
 class FaviconUploader < BaseImageUploader
 
   def store_dir
-    "uploads/#{Tenant.current.id}/favicon/#{model.id}"
+    tenant = Tenant.find_by(host: model.host)
+    "uploads/#{tenant.id}/favicon/#{model.id}"
   end
   
   version :large do

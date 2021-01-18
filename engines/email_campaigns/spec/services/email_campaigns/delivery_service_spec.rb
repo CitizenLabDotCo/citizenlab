@@ -57,8 +57,8 @@ describe EmailCampaigns::DeliveryService do
   end
 
   describe "send_on_activity" do
-    let!(:campaign) { create(:comment_on_your_comment_campaign) }
-    let(:notification) { create(:comment_on_your_comment) }
+    let!(:campaign) { create(:project_phase_upcoming_campaign) }
+    let(:notification) { create(:project_phase_upcoming) }
     let(:activity) {
       Activity.create(
         item: notification,
@@ -96,7 +96,7 @@ describe EmailCampaigns::DeliveryService do
       it "delays enqueueing a job because the command specifies a delay" do
         travel_to Time.now do
           expect{service.send_on_activity(activity)}
-            .to have_enqueued_job(PublishGenericEventToRabbitJob)
+            .to have_enqueued_job(ActionMailer::MailDeliveryJob)
             .exactly(1).times
             .at(Time.now + 8.hours)
         end

@@ -113,7 +113,7 @@ en-CA:
       inappropriate_reason: 'Your comment was considered to be inappropriate'
       irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
       no_reason: 'No reason was specified'
-      subject: 'Your comment has been deleted on the platform of %{organizationName}'
+      subject: 'Your comment has been deleted from the platform of %{organizationName}'
       preheader: 'Your comment has been deleted'
     admin_digest:
       subject: 'Your weekly admin report of %{time}'
@@ -198,9 +198,9 @@ en-CA:
       title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_marked_as_spam:
       by_author: 'by %{authorName}'
-      cta_review_idea: 'Review initiative'
+      cta_review_initiative: 'Review proposal'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_idea: 'This content is not an idea and does not belong here.'
+      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
       reported_this_because: '%{reporterFirstName} reported this because:'
