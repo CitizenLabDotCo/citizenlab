@@ -149,7 +149,7 @@ class PasswordSignin extends PureComponent<
   handleGoToSignUp = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (this.props.metaData?.inModal) {
+    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
       this.props.onGoToSignUp();
     } else {
       clHistory.push('/sign-up');

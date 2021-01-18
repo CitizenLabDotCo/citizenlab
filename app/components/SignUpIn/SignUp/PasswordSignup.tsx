@@ -218,7 +218,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   handleOnGoToSignIn = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (this.props.metaData?.inModal) {
+    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
       this.props.onGoToSignIn();
     } else {
       clHistory.push('/sign-in');
@@ -351,7 +351,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   goBackToSignUpOptions = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    if (this.props.metaData?.inModal) {
+    if (this.props.metaData?.inModal || this.props.metaData?.noPushLinks) {
       this.props.onGoBack?.();
     } else {
       clHistory.push('/sign-up');
