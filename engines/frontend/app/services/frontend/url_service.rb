@@ -112,14 +112,32 @@ module Frontend
       end
     end
 
-    
-
     def terms_conditions_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/pages/terms-and-conditions"
     end
 
     def privacy_policy_url tenant: Tenant.current
       "#{tenant.base_frontend_uri}/pages/privacy-policy"
+    end
+
+    def initiatives_url tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/initiatives"
+    end
+
+    def admin_ideas_url tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/admin/ideas"
+    end
+
+    def admin_project_ideas_url project_id, tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/admin/projects/#{project_id}/ideas"
+    end
+
+    def admin_initiatives_url tenant: Tenant.current
+      "#{tenant.base_frontend_uri}/admin/initiatives"
+    end
+
+    def idea_edit_url tenant, idea_id
+      "#{tenant.base_frontend_uri}/ideas/edit/#{idea_id}"
     end
 
   end
