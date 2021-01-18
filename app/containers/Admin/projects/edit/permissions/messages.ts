@@ -183,10 +183,10 @@ export default defineMessages({
       'app.containers.AdminPage.groups.permissions.permissionAction_take_poll',
     defaultMessage: 'Take the poll',
   },
-  permissionAction_allocatingBudget: {
+  permissionAction_budgeting: {
     id:
-      'app.containers.AdminPage.groups.permissions.permissionAction_allocatingBudget',
-    defaultMessage: 'Allocating budget',
+      'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
+    defaultMessage: 'Spending budget',
   },
   noActionsCanBeTakenInThisProject: {
     id:
