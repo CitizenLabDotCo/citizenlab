@@ -201,11 +201,13 @@ class Tenant < ApplicationRecord
   end
 
   def valid_host_format
-    if host != 'localhost' && (!host.include?('.') || host.include?(' ') || (host =~ /[A-Z]/) || host.include?('_'))
+    return if host == 'localhost'
+
+    if !host.include?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
       self.errors.add(
-        :host,
-        :invalid_format,
-        message: 'The chosen host does not have a valid format'
+          :host,
+          :invalid_format,
+          message: 'The chosen host does not have a valid format'
       )
     end
   end
