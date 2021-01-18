@@ -198,7 +198,7 @@ kl:
       title_spam_report: '%{firstName} %{lastName} spam nalunaarutigaa'
     initiative_marked_as_spam:
       by_author: 'uannga %{authorName}'
-      cta_review_initiative: 'Review proposal'
+      cta_review_initiative: 'Innuttaasunut siunnersuut unnerluutigiuk'
       report_inappropriate_offensive_content: 'Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.'
       report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit'
