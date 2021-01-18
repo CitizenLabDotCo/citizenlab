@@ -1,6 +1,0 @@
-touch engines/email_campaigns/app/mailers/email_campaigns/moderator_report_mailer.rb
-mkdir engines/email_campaigns/app/views/email_campaigns/moderator_report_mailer
-touch engines/email_campaigns/app/views/email_campaigns/moderator_report_mailer/campaign_mail.mjml
-touch engines/email_campaigns/spec/mailers/moderator_report_mailer_spec.rb
-touch engines/email_campaigns/spec/mailers/previews/email_campaigns/moderator_report_mailer_preview.rb
-
