@@ -1,6 +1,5 @@
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
-  include Frontend::TenantStyle
 
   mount_base64_uploader :logo, TenantLogoUploader
   mount_base64_uploader :header_bg, TenantHeaderBgUploader

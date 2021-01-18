@@ -1,5 +1,5 @@
 class AppConfiguration < ApplicationRecord
-  include Frontend::TenantStyle
+  include Frontend::StyleSettings
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
@@ -34,16 +34,6 @@ class AppConfiguration < ApplicationRecord
 
     def settings_json_schema
       @settings_json_schema ||= JSON.parse(settings_json_schema_str)
-    end
-
-    # [TODO] dependency to front-end engine ok?
-    def style_json_schema_str
-      style_schema_filepath = Rails.root.join('engines', 'frontend', 'config', 'schemas', 'tenant_style.json_schema.erb')
-      @style_json_schema_str ||= ERB.new(File.read(style_schema_filepath)).result(binding)
-    end
-
-    def style_json_schema
-      @style_json_schema ||= JSON.parse(style_json_schema_str)
     end
 
   end
