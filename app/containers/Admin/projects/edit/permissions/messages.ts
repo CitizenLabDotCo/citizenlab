@@ -64,9 +64,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  granularPermissionsTitle: {
-    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
-    defaultMessage: 'What can different users do?',
+  granularPermissionsTitleText: {
+    id:
+      'app.containers.AdminPage.groups.permissions.granularPermissionsTitleText',
+    defaultMessage: 'Who can contribute?',
   },
   permissionAction_comment_ideas: {
     id:
