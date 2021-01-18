@@ -46,12 +46,10 @@ class AppConfiguration < ApplicationRecord
       options: { errors_as_objects: true }
   }
 
-  validate(on: :update) do |record|
-    missing_locales = User.where.not(locale: settings.dig('core', 'locales')).pluck(:locale).uniq
-    if missing_locales.present?
-      record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales}")
-    end
-  end
+  validates :host, presence: true
+  validate :validate_host_format
+  validate :validate_locales, on: :update
+  validate :validate_singleton, on: :create
 
   before_validation :validate_missing_feature_dependencies
   after_update :update_tenant
@@ -97,6 +95,29 @@ class AppConfiguration < ApplicationRecord
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
     end
+  end
+
+  def validate_locales
+    missing_locales = User.where.not(locale: settings('core', 'locales')).pluck(:locale).uniq
+    if missing_locales.present?
+      errors.add(:settings, "is missing locales that are still used by some users: #{missing_locales}")
+    end
+  end
+
+  def validate_host_format
+    return if host == 'localhost'
+
+    if !host.include?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
+      self.errors.add(
+          :host,
+          :invalid_format,
+          message: 'The chosen host does not have a valid format'
+      )
+    end
+  end
+
+  def validate_singleton
+    self.errors.add(:base, "there can be only one instance of AppConfiguration") if AppConfiguration.count > 0
   end
 
   def update_tenant
