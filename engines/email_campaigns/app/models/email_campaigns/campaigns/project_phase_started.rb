@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      ProjectPhaseStartedMailer
+    end
+
     def activity_triggers
       {'Notifications::ProjectPhaseStarted' => {'created' => true}}
     end

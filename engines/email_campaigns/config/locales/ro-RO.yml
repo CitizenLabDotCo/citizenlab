@@ -198,9 +198,9 @@ ro:
       title_spam_report: '%{firstName} %{lastName} a raportat spam'
     initiative_marked_as_spam:
       by_author: 'De către %{authorName}'
-      cta_review_idea: 'Propunere de revizuire'
+      cta_review_initiative: 'Propunere de revizuire'
       report_inappropriate_offensive_content: 'Consider acest conținut inadecvat sau jignitor.'
-      report_not_an_idea: 'Acest conținut nu este o idee și nu aparține aici.'
+      report_not_an_initiative: 'Acest conținut nu este o propunere și nu aparține aici.'
       subject: 'Aveți un raport spam pe platforma %{organizationName}'
       preheader: 'Acționați asupra acestui raport de spam'
       reported_this_because: '%{reporterFirstName} a raportat acest lucru, deoarece:'

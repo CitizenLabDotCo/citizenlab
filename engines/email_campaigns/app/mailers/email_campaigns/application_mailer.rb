@@ -151,7 +151,7 @@ module EmailCampaigns
                  when OpenStruct then multiloc_or_struct.to_h.stringify_keys
                  end
 
-      multiloc_service.t(multiloc, recipient) if multiloc
+      multiloc_service.t(multiloc, recipient).html_safe if multiloc
     end
 
     def tenant_settings
@@ -170,6 +170,10 @@ module EmailCampaigns
       @logo_url ||= tenant.logo.versions.yield_self do |versions|
         versions[:medium].url || versions[:small].url || versions[:large].url || ''
       end
+    end
+
+    def formatted_todays_date
+      I18n.l(Time.zone.today, format: :long)
     end
 
     def days_since_publishing(resource)
