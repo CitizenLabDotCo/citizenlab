@@ -24,7 +24,7 @@ class AppConfiguration < ApplicationRecord
     private :new  # We need a singleton
 
     def instance
-      self.first
+      self.first!
     end
 
     def settings_json_schema_str
