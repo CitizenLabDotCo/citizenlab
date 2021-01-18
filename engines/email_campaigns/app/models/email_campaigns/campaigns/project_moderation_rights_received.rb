@@ -9,6 +9,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      ProjectModerationRightsReceivedMailer
+    end
+
     def activity_triggers
       {'Notifications::ProjectModerationRightsReceived' => {'created' => true}}
     end
