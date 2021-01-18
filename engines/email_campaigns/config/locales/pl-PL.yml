@@ -373,7 +373,7 @@ pl:
       by_author: 'wg %{authorName}'
       updated: '%{officialName} napisał:'
       cta_view: 'Przejdź do swojego pomysłu'
-      event_description: '%{officialName} zaktualizował Twój pomysł "%{ideaTitle}". Kliknij przycisk poniżej, aby przejść do rozmowy z %{officialName}.'
+      event_description: '%{officialName} zaktualizował Twój pomysł "ideaTitle". Kliknij przycisk poniżej, aby przejść do rozmowy z %{officialName}.'
       main_header: 'Otrzymałeś aktualizację od %{organizationName}'
       subject: 'Otrzymałeś aktualizację od %{organizationName}'
       preheader: '%{officialName} oficjalnie zaktualizował Twój pomysł'
