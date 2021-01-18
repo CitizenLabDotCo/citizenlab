@@ -8,7 +8,7 @@ import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // permissions
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // typings
 import { ICommentData } from 'services/comments';
@@ -203,7 +203,7 @@ export class PostCommentGroup extends PureComponent<Props> {
                   commentId={comment.id}
                   commentType="parent"
                   commentCreatedAt={comment.attributes.created_at}
-                  moderator={canModerate(projectId, { data: user })}
+                  moderator={canModerateProject(projectId, { data: user })}
                 />
                 <CommentBody
                   commentId={comment.id}

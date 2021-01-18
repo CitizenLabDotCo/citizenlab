@@ -26,7 +26,7 @@ import {
   addCommentToIdeaComment,
   addCommentToInitiativeComment,
 } from 'services/comments';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProjectProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

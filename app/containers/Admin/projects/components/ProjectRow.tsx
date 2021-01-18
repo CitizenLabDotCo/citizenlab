@@ -21,7 +21,7 @@ import Error from 'components/UI/Error';
 
 // resources
 import useProjectGroups from 'hooks/useProjectGroups';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import useAuthUser from 'hooks/useAuthUser';
 
 // types
@@ -82,7 +82,7 @@ export default ({
       disabled={
         isBeingDeleted ||
         (!isNilOrError(authUser) &&
-          !canModerate(publication.publicationId, { data: authUser }))
+          !canModerateProject(publication.publicationId, { data: authUser }))
       }
     >
       <FormattedMessage {...messages.editButtonLabel} />

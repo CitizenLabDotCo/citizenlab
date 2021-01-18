@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -136,7 +136,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
       const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
       const userCanEditProject =
         !isNilOrError(authUser) &&
-        canModerate(project.id, { data: authUser.data });
+        canModerateProject(project.id, { data: authUser });
       const projectImage = getProjectImage(projectHeaderImageLargeUrl);
 
       return (
