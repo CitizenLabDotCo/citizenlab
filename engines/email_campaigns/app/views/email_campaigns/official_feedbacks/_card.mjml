@@ -6,7 +6,7 @@
     <mj-text font-size="14px">
       <%= format_message('updated', values: { officialName: author_name }) %>
       <p style="margin: 15px 0 0;">
-        <%= localize_for_recipient(event.official_feedback_body_multiloc).first(140) %>
+        <%= localize_for_recipient(event.official_feedback_body_multiloc).html_safe.first(140) %>
       </p>
     </mj-text>
   </mj-column>
