@@ -100,6 +100,7 @@ const ActionsForm = memo(
           }),
           taking_survey: messages.permissionAction_take_survey,
           taking_poll: messages.permissionAction_take_poll,
+          budgeting: messages.permissionAction_budgeting,
         }[permissionAction];
       }
 
