@@ -22,7 +22,7 @@ class Granular extends Component<Props> {
     return (
       <StyledSection>
         <SubSectionTitle>
-          <FormattedMessage {...messages.granularPermissionsTitleText} />
+          <FormattedMessage {...messages.granularPermissionsTitle} />
         </SubSectionTitle>
         {project && project.attributes.process_type === 'timeline' && (
           <Timeline projectId={projectId} />
