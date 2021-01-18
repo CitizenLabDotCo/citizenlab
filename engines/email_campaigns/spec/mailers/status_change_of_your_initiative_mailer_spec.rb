@@ -48,9 +48,8 @@ RSpec.describe EmailCampaigns::StatusChangeOfYourInitiativeMailer, type: :mailer
       expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name', 'en'))
     end
 
-    it 'assigns home url' do
-      expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
+    it 'assigns cta url' do
+      expect(mail.body.encoded).to match(command.dig(:event_payload, :post_url))
     end
   end
 end
