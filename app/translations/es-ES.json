@@ -1971,7 +1971,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Retiro mi oferta de ser voluntario",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {ningún voluntario} one {# voluntario} other {# voluntarios}}",
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "conectarte",
-  "app.containers.ProjectsShowPage.process.survey.logInToTakeSurvey": "Please log in to take the survey",
+  "app.containers.ProjectsShowPage.process.survey.logInToTakeSurvey": "Por favor, inicie sesión para realizar la encuesta",
   "app.containers.ProjectsShowPage.process.survey.signUpLinkText": "inscríbete",
   "app.containers.ProjectsShowPage.process.survey.signUpToTakeSurvey": "Please sign up to take the survey",
   "app.containers.ProjectsShowPage.process.survey.survey": "Encuesta",
