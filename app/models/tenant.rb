@@ -88,8 +88,8 @@ class Tenant < ApplicationRecord
   end
 
   def has_feature?(f)
-    settings = configuration.settings
-    settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
+    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#has_feature? instead.")
+    configuration.has_feature?(f)
   end
 
   def closest_locale_to(locale)
