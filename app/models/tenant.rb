@@ -129,6 +129,10 @@ class Tenant < ApplicationRecord
     switch { AppConfiguration.instance }
   end
 
+  def switch
+    Apartment::Tenant.switch(schema_name) { yield }
+  end
+
   private
 
   def create_app_configuration
