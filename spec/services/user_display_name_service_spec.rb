@@ -12,7 +12,7 @@ describe UserDisplayNameService do
   context "when 'abbreviated_user_names' is enabled" do
 
     before(:all) do
-      @tenant = build(:tenant)
+      @tenant = create(:tenant)
       @tenant.settings["abbreviated_user_names"] = {"allowed" => true, "enabled" => true}
     end
 
