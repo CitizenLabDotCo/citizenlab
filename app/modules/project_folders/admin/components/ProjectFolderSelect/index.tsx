@@ -63,7 +63,7 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
     }, [projectFolders]);
 
     const allOptions = useMemo<IOption[]>(() => {
-      if (isAdmin({ data: authUser })) {
+      if (!isNilOrError(authUser) && isAdmin({ data: authUser })) {
         return [...folderOptions];
       }
 
@@ -71,7 +71,10 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
     }, [folderOptions, noFolderOption, authUser]);
 
     const defaultValue = useMemo<string>(() => {
-      if (isAdmin({ data: authUser }) || !folderOptions[0]) {
+      if (
+        (!isNilOrError(authUser) && isAdmin({ data: authUser })) ||
+        !folderOptions[0]
+      ) {
         return '';
       }
 
@@ -85,18 +88,6 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
       [onChange]
     );
 
-    const handleMultipleSelectChange = useCallback(
-      (options: IOption[]) => {
-        options.forEach((option) => {
-          const { value } = option;
-          if (typeof value === 'string') {
-            onChange(value);
-          }
-        });
-      },
-      [onChange]
-    );
-
     const getFolderOption = (folderOptions: IOption[], folderId: string) => {
       const folderOption = folderOptions.find(
         (folderOption: IOption) => folderOption.value === folderId
@@ -105,8 +96,6 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
       return folderOption;
     };
 
-    const onCheckProjectFolder = () => {};
-
     if (folderOptions.length > 0) {
       return (
         <StyledSectionField>
@@ -114,37 +103,21 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
             <FormattedMessage
               {...messages.projectFolder}
               values={{
-                optional: isAdmin({ data: authUser })
-                  ? formatMessage(messages.optional)
-                  : '',
+                optional:
+                  !isNilOrError(authUser) && isAdmin({ data: authUser })
+                    ? formatMessage(messages.optional)
+                    : '',
               }}
             />
             <IconTooltip
               content={<FormattedMessage {...messages.folderTooltip} />}
             />
           </SubSectionTitle>
-          {/* {isAdmin(authUser) ? (
-            <MultipleSelect
-              value={
-                folder_id ? getFolderOption(folderOptions, folder_id) : null
-              }
-              options={allOptions}
-              onChange={handleMultipleSelectChange}
-              max={1}
-            />
-          ) : ( */}
-          <StyledCheckbox
-            checked={false}
-            onChange={onCheckProjectFolder}
-            label={'Add to folder?'}
-          />
           <Select
             value={folder_id || defaultValue}
             options={allOptions}
-            onChange={handleSelectChange}
-            disabled
+            onChange={handleChange}
           />
-          {/* )} */}
         </StyledSectionField>
       );
     }
