@@ -174,6 +174,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                     {...{
                       idea: messages.post,
                       project: messages.project,
+                      initiative: messages.initiative,
                     }[key]}
                   />
                   :
