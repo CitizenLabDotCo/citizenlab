@@ -151,7 +151,7 @@ module EmailCampaigns
                  when OpenStruct then multiloc_or_struct.to_h.stringify_keys
                  end
 
-      multiloc_service.t(multiloc, recipient) if multiloc
+      multiloc_service.t(multiloc, recipient).html_safe if multiloc
     end
 
     def tenant_settings

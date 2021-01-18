@@ -96,7 +96,7 @@ describe EmailCampaigns::DeliveryService do
       it "delays enqueueing a job because the command specifies a delay" do
         travel_to Time.now do
           expect{service.send_on_activity(activity)}
-            .to have_enqueued_job(PublishGenericEventToRabbitJob)
+            .to have_enqueued_job(ActionMailer::MailDeliveryJob)
             .exactly(1).times
             .at(Time.now + 8.hours)
         end
