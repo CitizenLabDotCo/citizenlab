@@ -103,29 +103,24 @@ const FolderPermissions = ({
         .observable.pipe(first())
         .subscribe((response) => {
           setLoading(false);
-          callback(getOptions(response));
+          callback(getFolderModeratorOptions(response));
         });
     }
   };
 
-  const isNotFolderModeratorOrAuthUser = (user: IUserData) => {
-    if (!isNilOrError(authUser)) {
-      return !isProjectFolderModerator(user) && user.id !== authUser.id;
-    }
-
-    return !isProjectFolderModerator(user);
-  };
-
-  const getOptions = (users: IUsers) => {
+  const getFolderModeratorOptions = (users: IUsers) => {
+    // note: this typing info of users above is not correc
     if (!isNilOrError(users)) {
-      return users.data.filter(isNotFolderModeratorOrAuthUser).map((user) => {
-        return {
-          value: user.id,
-          label: `${userName(user)} (${user.attributes.email})`,
-          email: `${user.attributes.email}`,
-          disabled: isProjectFolderModerator(user),
-        };
-      });
+      return users.data
+        .filter((user: IUserData) => !isProjectFolderModerator(user))
+        .map((user: IUserData) => {
+          return {
+            value: user.id,
+            label: `${userName(user)} (${user.attributes.email})`,
+            email: `${user.attributes.email}`,
+            disabled: isProjectFolderModerator(user),
+          };
+        });
     }
 
     return [];
