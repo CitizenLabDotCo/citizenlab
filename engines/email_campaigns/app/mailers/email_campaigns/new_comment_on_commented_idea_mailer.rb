@@ -3,7 +3,7 @@ module EmailCampaigns
     protected
 
     def subject
-      I18n.t('email_campaigns.new_comment_on_commented_idea.subject')
+      format_message('subject')
     end
 
     def header_title
