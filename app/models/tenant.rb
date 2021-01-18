@@ -55,7 +55,7 @@ class Tenant < ApplicationRecord
 
   def self.style(*path)
     ActiveSupport::Deprecation.warn("Tenant::style is deprecated. Use AppConfiguration::style instead.")
-    configuration.style(*path)
+    AppConfiguration.instance.style(*path)
   end
 
   def self.style_json_schema_str
