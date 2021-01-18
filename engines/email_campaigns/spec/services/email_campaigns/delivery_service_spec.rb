@@ -69,9 +69,9 @@ describe EmailCampaigns::DeliveryService do
     }
     let(:user) { create(:user) }
 
-    it "enqueues an external event job" do
+    it "enqueues an internal event job" do
       expect{service.send_on_activity(activity)}
-        .to have_enqueued_job(PublishGenericEventToRabbitJob)
+        .to have_enqueued_job(ActionMailer::MailDeliveryJob)
         .exactly(1).times
     end
 

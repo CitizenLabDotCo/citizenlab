@@ -3,7 +3,7 @@ module EmailCampaigns
     private
 
     def subject
-      I18n.t('email_campaigns.user_digest.subject', organizationName: organization_name)
+      format_message('subject', values: { organizationName: organization_name })
     end
 
     def header_title

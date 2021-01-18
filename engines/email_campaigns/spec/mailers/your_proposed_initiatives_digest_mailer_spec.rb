@@ -4,14 +4,14 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :maile
   describe 'YourProposedInitiativesDigest' do
     let!(:recipient) { create(:admin, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::YourProposedInitiativesDigest.create! }
-    
+
     let(:initiatives) { create_list(:assigned_initiative, 3) }
     let(:command) do {
         recipient: recipient,
         event_payload: {
           initiatives: initiatives.map{ |initiative|
             {
-              title_multiloc: initiative.title_multiloc,                
+              title_multiloc: initiative.title_multiloc,
               body_multiloc: initiative.body_multiloc,
               url: Frontend::UrlService.new.model_to_url(initiative),
               published_at: initiative.published_at&.iso8601,
@@ -42,7 +42,7 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :maile
     end
 
     # Copy should change from "proposal" to "proposals".
-    pending 'renders the subject' do
+    it 'renders the subject' do
       expect(mail.subject).to start_with('Weekly update of your proposals')
     end
 
