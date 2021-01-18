@@ -1,4 +1,3 @@
-import { IProjectFolderData } from 'modules/project_folders/services/projectFolders';
 import { IUserData, IRole } from 'services/users';
 
 export type IProjectFolderModerator = {
@@ -7,13 +6,11 @@ export type IProjectFolderModerator = {
 };
 
 export const isProjectFolderModerator = (
-  user?: IUserData | null,
-  projectFolderId?: IProjectFolderData['id'] | null
+  user: IUserData,
+  projectFolderId?: string
 ) => {
-  return !!(
-    user &&
-    user.attributes?.roles &&
-    user.attributes?.roles?.find((role: IRole | IProjectFolderModerator) => {
+  return !!user.attributes?.roles?.find(
+    (role: IRole | IProjectFolderModerator) => {
       if (projectFolderId) {
         return (
           role.type === 'project_folder_moderator' &&
@@ -22,6 +19,6 @@ export const isProjectFolderModerator = (
       }
 
       return role.type === 'project_folder_moderator';
-    })
+    }
   );
 };
