@@ -1973,7 +1973,7 @@
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "conectarte",
   "app.containers.ProjectsShowPage.process.survey.logInToTakeSurvey": "Por favor, inicie sesión para realizar la encuesta",
   "app.containers.ProjectsShowPage.process.survey.signUpLinkText": "inscríbete",
-  "app.containers.ProjectsShowPage.process.survey.signUpToTakeSurvey": "Please sign up to take the survey",
+  "app.containers.ProjectsShowPage.process.survey.signUpToTakeSurvey": "Por favor regístrese para realizar esta encuesta",
   "app.containers.ProjectsShowPage.process.survey.survey": "Encuesta",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Para saber si puedes participar en esta encuesta, primero debes {logInLink} a la plataforma.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Sólo los usuarios verificados pueden responder esta encuesta. Por favor {signUpLink} o {logInLink} primero.",
