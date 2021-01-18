@@ -1,5 +1,5 @@
 require 'rails_helper'
-require Rails.root.join "engines/frontend/spec/models/tenant_style_spec.rb"
+require Rails.root.join "engines/frontend/spec/models/style_settings_spec.rb"
 
 RSpec.describe Tenant, type: :model do
   it_behaves_like "TenantStyle"
