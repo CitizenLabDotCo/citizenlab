@@ -4,6 +4,11 @@
 
 /
 
+## 2021-01-18
+
+### Fixed
+- Access rights tab for participatory budget projects
+
 ## 2021-01-15
 
 ### Changed
