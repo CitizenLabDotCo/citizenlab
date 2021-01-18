@@ -4,16 +4,16 @@ import { ImageSizes, Multiloc, Locale } from 'typings';
 
 const apiEndpoint = `${API_PATH}/users`;
 
-export type IProjectModerator = {
+export type IProjectModeratorRole = {
   type: 'project_moderator';
   project_id: string;
 };
 
-type IAdmin = {
+type IAdminRole = {
   type: 'admin';
 };
 
-export type IRole = IAdmin | IProjectModerator;
+export type IRole = IAdminRole | IProjectModeratorRole;
 
 export interface IUserData {
   id: string;
