@@ -100,6 +100,7 @@ const ActionsForm = memo(
           }),
           taking_survey: messages.permissionAction_take_survey,
           taking_poll: messages.permissionAction_take_poll,
+          budgeting: messages.permissionAction_allocatingBudget,
         }[permissionAction];
       }
 
@@ -123,6 +124,7 @@ const ActionsForm = memo(
         <>
           {permissions.map((permission, index) => {
             const permissionAction = permission.attributes.action;
+            console.log(permissionAction);
 
             return (
               <ActionPermissionWrapper
