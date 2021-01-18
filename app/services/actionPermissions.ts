@@ -30,7 +30,8 @@ export type IPCPermissionAction =
   | 'commenting_idea'
   | 'commenting_idea'
   | 'taking_survey'
-  | 'taking_poll';
+  | 'taking_poll'
+  | 'budgeting';
 export interface IPCPermissionData {
   id: string;
   type: string;
