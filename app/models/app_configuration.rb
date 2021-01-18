@@ -28,7 +28,7 @@ class AppConfiguration < ApplicationRecord
     end
 
     def settings_json_schema_str
-      settings_schema_filepath = Rails.root.join('config', 'schemas', 'tenant_settings.json_schema.erb')
+      settings_schema_filepath = Rails.root.join('config', 'schemas', 'settings.schema.json.erb')
       @settings_json_schema_str ||= ERB.new(File.read(settings_schema_filepath)).result(binding)
     end
 
