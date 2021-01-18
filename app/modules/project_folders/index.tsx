@@ -17,7 +17,6 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { isAdmin } from 'services/permissions/roles';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
@@ -56,17 +55,13 @@ const RenderOnProjectFolderModerator = ({
   const authUser = useAuthUser();
 
   if (
-    isNilOrError(authUser) ||
-    (!isProjectFolderModerator(authUser) &&
-      !isAdmin({ data: authUser }) &&
-      !isNilOrError(publication) &&
-      publication.publicationType === 'folder' &&
-      !isProjectFolderModerator(authUser, publication.publicationId))
+    !isNilOrError(authUser) &&
+    isProjectFolderModerator(authUser, publication?.publicationId)
   ) {
-    return null;
+    return <>{children}</>;
   }
 
-  return <>{children}</>;
+  return null;
 };
 
 const configuration: ModuleConfiguration = {
