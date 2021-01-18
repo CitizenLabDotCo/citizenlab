@@ -159,11 +159,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               icon="edit"
               disabled={
                 isBeingDeleted ||
-                (!userIsAdmin &&
-                  !isProjectFolderModerator(
-                    authUser,
-                    publication.publicationId
-                  ))
+                !isProjectFolderModerator(authUser, publication.publicationId)
               }
             >
               <FormattedMessage {...messages.manageButtonLabel} />
