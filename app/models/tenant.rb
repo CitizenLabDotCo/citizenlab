@@ -127,6 +127,12 @@ class Tenant < ApplicationRecord
     self.save!
   end
 
+  # @return [AppConfiguration]
+  def configuration
+    # TODO OS only works for getting the configuration, cannot modify/update it (bc it switches back to the previous schema).
+    switch { AppConfiguration.instance }
+  end
+
   private
 
   def create_app_configuration
