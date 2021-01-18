@@ -49,7 +49,7 @@ RSpec.describe EmailCampaigns::StatusChangeOfYourIdeaMailer, type: :mailer do
     end
 
     it 'assigns cta url' do
-      expect(mail.body.encoded).to match(comment.dig(:event_payload, :post_url))
+      expect(mail.body.encoded).to match(command.dig(:event_payload, :post_url))
     end
   end
 end
