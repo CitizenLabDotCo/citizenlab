@@ -8,6 +8,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      AdminRightsReceivedMailer
+    end
+
     def activity_triggers
       {'Notifications::AdminRightsReceived' => {'created' => true}}
     end
