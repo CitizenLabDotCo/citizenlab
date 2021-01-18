@@ -10,7 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 2020_12_17_170635) do
 
   # These are extensions that must be enabled in order to support this database
@@ -46,6 +45,18 @@ ActiveRecord::Schema.define(version: 2020_12_17_170635) do
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "host"
+    t.string "logo"
+    t.string "header_bg"
+    t.string "favicon"
+    t.jsonb "settings", default: {}
+    t.jsonb "style", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
