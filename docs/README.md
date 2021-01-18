@@ -4,6 +4,17 @@
 
 /
 
+## 2021-01-18
+
+### Fixed
+- Access rights tab for participatory budget projects
+- Admin moderation page access
+
+## 2021-01-15
+
+### Changed
+- Copy improvements across different languages
+
 ## 2021-01-14
 
 ### Added
