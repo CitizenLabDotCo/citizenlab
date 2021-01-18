@@ -38,30 +38,39 @@ class Tenant < ApplicationRecord
     Current.tenant || find_by!(host: Apartment::Tenant.current.gsub(/_/, "."))
   end
 
-  def self.settings *path
-   self.current.settings.dig(*path)
+  def self.settings(*path)
+    ActiveSupport::Deprecation.warn("Tenant::settings is deprecated. Use AppConfiguration::settings instead.")
+    configuration.settings(*path)
   end
 
   def self.settings_json_schema_str
-    @@settings_json_schema_str ||= ERB.new(File.read(Rails.root.join('config', 'schemas', 'tenant_settings.json_schema.erb')))
-      .result(binding)
+    ActiveSupport::Deprecation.warn("Tenant::settings_json_schema_str is deprecated. Use AppConfiguration::settings_json_schema_str instead.")
+    AppConfiguration.settings_json_schema_str
   end
 
   def self.settings_json_schema
-    @@settings_json_schema ||= JSON.parse(settings_json_schema_str)
+    ActiveSupport::Deprecation.warn("Tenant::settings_json_schema is deprecated. Use AppConfiguration::settings_json_schema instead.")
+    AppConfiguration.settings_json_schema
   end
 
-  def self.style *path
-   self.current.style.dig(*path)
+  def self.style(*path)
+    ActiveSupport::Deprecation.warn("Tenant::style is deprecated. Use AppConfiguration::style instead.")
+    configuration.style(*path)
   end
 
   def self.style_json_schema_str
-    @@style_json_schema_str ||= ERB.new(File.read(Rails.root.join('engines', 'frontend', 'config', 'schemas', 'tenant_style.json_schema.erb')))
-      .result(binding)
+    ActiveSupport::Deprecation.warn("Tenant::style_json_schema_str is deprecated. Use AppConfiguration::style_json_schema_str instead.")
+    AppConfiguration.style_json_schema_str
   end
 
   def self.style_json_schema
-    @@style_json_schema ||= JSON.parse(style_json_schema_str)
+    ActiveSupport::Deprecation.warn("Tenant::settings_json_schema is deprecated. Use AppConfiguration::settings_json_schema instead.")
+    AppConfiguration.style_json_schema
+  end
+
+  def self.available_style_attributes
+    ActiveSupport::Deprecation.warn("Tenant::available_style_attributes is deprecated. Use AppConfiguration::available_style_attributes instead.")
+    AppConfiguration.available_style_attributes
   end
 
   def schema_name
@@ -74,51 +83,38 @@ class Tenant < ApplicationRecord
   end
 
   def cleanup_settings
-    ss = SettingsService.new
-    self.settings = ss.remove_additional_features(self.settings, self.class.settings_json_schema)
-    self.settings = ss.remove_additional_settings(self.settings, self.class.settings_json_schema)
-    self.settings = ss.add_missing_features(self.settings, self.class.settings_json_schema)
-    self.settings = ss.add_missing_settings(self.settings, self.class.settings_json_schema)
+    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#cleanup_settings instead.")
+    configuration.cleanup_settings
   end
 
-  def has_feature? f
+  def has_feature?(f)
+    settings = configuration.settings
     settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
   end
 
-  def closest_locale_to locale
-    locales = settings.dig('core', 'locales')
-    if locales && locales.include?(locale.to_s)
-      locale
-    else
-      locales.first
-    end
+  def closest_locale_to(locale)
+    ActiveSupport::Deprecation.warn("Tenant#closest_locale_to is deprecated. Use AppConfiguration#closest_locale_to instead.")
+    configuration.closest_locale_to(locale)
   end
 
   def public_settings
-    ss = SettingsService.new
-    ss.remove_private_settings(self.settings, self.class.settings_json_schema)
+    ActiveSupport::Deprecation.warn("Tenant#public_settings is deprecated. Use AppConfiguration#public_settings instead.")
+    configuration.public_settings
   end
 
   def base_frontend_uri
-    if Rails.env.development?
-      "http://localhost:3000"
-    else
-      transport = Rails.env.test? ? 'http' : 'https'
-      "#{transport}://#{self.host}"
-    end
+    ActiveSupport::Deprecation.warn("Tenant#base_frontend_uri is deprecated. Use AppConfiguration#base_frontend_uri instead.")
+    configuration.base_frontend_uri
   end
 
   def base_backend_uri
-    if Rails.env.development?
-      "http://localhost:4000"
-    else
-      transport = Rails.env.test? ? 'http' : 'https'
-      "#{transport}://#{self.host}"
-    end
+    ActiveSupport::Deprecation.warn("Tenant#base_backend_uri is deprecated. Use AppConfiguration#base_backend_uri instead.")
+    configuration.base_backend_uri
   end
 
   def location
-    RGeo::Geographic.spherical_factory(:srid => 4326).point(settings.dig('maps', 'map_center', 'long'), settings.dig('maps', 'map_center', 'lat'))
+    ActiveSupport::Deprecation.warn("Tenant#location is deprecated. Use AppConfiguration#location instead.")
+    configuration.location
   end
 
   def turn_on_abbreviated_user_names!
