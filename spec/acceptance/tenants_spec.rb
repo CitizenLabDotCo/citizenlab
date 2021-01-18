@@ -138,7 +138,8 @@ resource "Tenants" do
         tenant.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
         expect(tenant.reload.header_bg_url).to be_present
         do_request tenant: {header_bg: nil}
-        expect(tenant.reload.header_bg_url).to be nil
+        expect(tenant.reload.header_bg.blank?).to be true
+        expect(AppConfiguration.instance.header_bg.blank?).to be true
       end
     end
 
@@ -148,7 +149,9 @@ resource "Tenants" do
         tenant.update(logo: Rails.root.join("spec/fixtures/logo.png").open)
         expect(tenant.reload.logo_url).to be_present
         do_request tenant: {logo: nil}
-        expect(tenant.reload.logo_url).to be nil
+        expect(tenant.reload.logo.blank?).to be true
+        expect(AppConfiguration.instance.logo.blank?).to be true
+
       end
     end
 
@@ -158,7 +161,8 @@ resource "Tenants" do
         tenant.update(favicon: Rails.root.join("spec/fixtures/favicon.png").open)
         expect(tenant.reload.favicon_url).to be_present
         do_request tenant: {favicon: nil}
-        expect(tenant.reload.favicon_url).to be nil
+        expect(tenant.reload.favicon.blank?).to be true
+        expect(AppConfiguration.instance.favicon.blank?).to be true
       end
     end
   end
