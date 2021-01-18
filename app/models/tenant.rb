@@ -39,7 +39,7 @@ class Tenant < ApplicationRecord
 
   def self.settings(*path)
     ActiveSupport::Deprecation.warn("Tenant::settings is deprecated. Use AppConfiguration::settings instead.")
-    configuration.settings(*path)
+    AppConfiguration.instance.settings(*path)
   end
 
   def self.settings_json_schema_str
