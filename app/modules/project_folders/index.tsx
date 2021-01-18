@@ -97,7 +97,9 @@ const configuration: ModuleConfiguration = {
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
+    'app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow': (
+      props
+    ) => (
       <RenderOnPublicationType publication={props.publication}>
         <RenderOnProjectFolderModerator publication={props.publication}>
           <ProjectFolderRow {...props} />
