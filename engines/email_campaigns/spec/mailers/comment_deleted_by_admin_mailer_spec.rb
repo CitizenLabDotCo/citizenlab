@@ -5,7 +5,7 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer, type: :mailer do
     let!(:recipient) { create(:user, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::CommentDeletedByAdmin.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    
+
     let!(:comment) { create(:comment) }
 
     let(:command) do
