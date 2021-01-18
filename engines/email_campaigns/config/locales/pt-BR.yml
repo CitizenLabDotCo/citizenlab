@@ -373,7 +373,7 @@ pt:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
       cta_view: 'Ir para a sua proposta'
-      event_description: '%{officialName} Reagiu sobre a sua idéia ''%{ideaTitle}''. Clique no botão embaixo para entrar na conversa com %{officialName}.'
+      event_description: '%{officialName} Reagiu sobre a sua idéia ''ideaTitle''. Clique no botão embaixo para entrar na conversa com %{officialName}.'
       main_header: 'Você recebeu uma atualização de %{organizationName}'
       subject: 'Você recebeu uma atualização de %{organizationName}'
       preheader: '%{officialName} deixou uma actualização oficial sobre a sua idéia'
