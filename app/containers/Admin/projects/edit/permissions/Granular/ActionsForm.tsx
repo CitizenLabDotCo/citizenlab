@@ -124,7 +124,6 @@ const ActionsForm = memo(
         <>
           {permissions.map((permission, index) => {
             const permissionAction = permission.attributes.action;
-            console.log(permissionAction);
 
             return (
               <ActionPermissionWrapper
