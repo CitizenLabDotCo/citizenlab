@@ -198,9 +198,9 @@ nl:
       title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
     initiative_marked_as_spam:
       by_author: 'door %{authorName}'
-      cta_review_idea: 'Review dit initiatief'
+      cta_review_initiative: 'Review proposal'
       report_inappropriate_offensive_content: 'Ik vind deze inhoud ongepast of aanstootgevend.'
-      report_not_an_idea: 'Dit is geen idee en hoort hier niet thuis.'
+      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'Je hebt een spamrapport op het platform van %{organizationName}'
       preheader: 'Neem actie'
       reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
