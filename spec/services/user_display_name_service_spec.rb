@@ -54,7 +54,7 @@ describe UserDisplayNameService do
   context "when 'abbreviated_user_names' is disabled" do
 
     before(:all) do
-      @tenant = build(:tenant)
+      @tenant = create(:tenant)
       @tenant.settings["abbreviated_user_names"] = {"allowed" => false, "enabled" => false}
     end
 
