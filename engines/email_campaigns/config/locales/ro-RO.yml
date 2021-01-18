@@ -373,7 +373,7 @@ ro:
       by_author: 'De către %{authorName}'
       updated: '%{officialName} a scris:'
       cta_view: 'Du-te la ideea ta'
-      event_description: '%{officialName} a oferit o actualizare a ideii „%{ideaTitle}”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{officialName}.'
+      event_description: '%{officialName} a oferit o actualizare a ideii „ideTitle”. Faceți clic pe butonul de mai jos pentru a intra în conversația cu %{officialName}.'
       main_header: 'Ați primit o actualizare de la %{organizationName}'
       subject: 'Ați primit o actualizare de la %{organizationName}'
       preheader: '%{officialName} a lăsat o actualizare oficială la ideea dvs.'
