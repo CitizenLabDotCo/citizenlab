@@ -86,14 +86,6 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer, type: :mailer do
       expect(mail.body.encoded).to match(Tenant.current.settings.dig('core', 'organization_name', 'en'))
     end
 
-    it 'shows all ideas' do
-      expect(mail_document.css('.idea').length).to eq 3
-    end
-
-    it 'shows all initiatives' do
-      expect(mail_document.css('.initiative').length).to eq 5
-    end
-
     it 'assigns home url' do
       expect(mail.body.encoded)
         .to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
