@@ -62,7 +62,7 @@ module EmailCampaigns
     end
 
     def show_header?
-      !header_title.nil? && header_title != false
+      false
     end
 
     def preheader
