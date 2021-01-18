@@ -113,7 +113,7 @@ en:
       inappropriate_reason: 'Your comment was considered to be inappropriate'
       irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
       no_reason: 'No reason was specified'
-      subject: 'Your comment has been deleted on the platform of %{organizationName}'
+      subject: 'Your comment has been deleted from the platform of %{organizationName}'
       preheader: 'Your comment has been deleted'
     admin_digest:
       subject: 'Your weekly admin report of %{time}'
@@ -198,9 +198,9 @@ en:
       title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_marked_as_spam:
       by_author: 'by %{authorName}'
-      cta_review_idea: 'Review proposal'
+      cta_review_initiative: 'Review proposal'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_idea: 'This content is not an idea and does not belong here.'
+      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
       reported_this_because: '%{reporterFirstName} reported this because:'
@@ -541,11 +541,11 @@ en:
       subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposal'
-      preheader: 'What happened to your proposal in the past week?'
-      title_your_weekly_report: 'How has your proposal been doing?'
-      text_introduction: 'Find the key numbers below and go to your proposal''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposal'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
       total_votes: 'Total votes'
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'

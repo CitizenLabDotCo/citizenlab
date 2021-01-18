@@ -28,7 +28,7 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer, type: :mailer do
 
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Your comment has been deleted on the platform of')
+      expect(mail.subject).to start_with('Your comment has been deleted from the platform of')
     end
 
     it 'renders the receiver email' do
