@@ -113,7 +113,7 @@ en-GB:
       inappropriate_reason: 'Your comment was considered to be inappropriate'
       irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
       no_reason: 'No reason was specified'
-      subject: 'Your comment has been deleted on the platform of %{organizationName}'
+      subject: 'Your comment has been deleted from the platform of %{organizationName}'
       preheader: 'Your comment has been deleted'
     admin_digest:
       subject: 'Your weekly admin report of %{time}'
@@ -373,7 +373,7 @@ en-GB:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
       cta_view: 'Go to your idea'
-      event_description: '%{officialName} gave an update on your idea ''ideaTitle''. Click the button below to enter the conversation with %{officialName}.'
+      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       main_header: 'You received an update from %{organizationName}'
       subject: 'You received an update from %{organizationName}'
       preheader: '%{officialName} left an official update on your idea'
