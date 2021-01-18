@@ -1,6 +1,24 @@
 class AppConfiguration < ApplicationRecord
   include Frontend::TenantStyle
 
+  mount_base64_uploader :logo, LogoUploader
+  mount_base64_uploader :header_bg, AppHeaderBgUploader
+  mount_base64_uploader :favicon, FaviconUploader
+
+  validates :settings, presence: true, json: {
+      schema: -> { AppConfiguration.settings_json_schema_str },
+      message: ->(errors) { errors.map { |e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
+      options: { errors_as_objects: true }
+  }
+
+  validates :host, presence: true
+  validate :validate_host_format
+  validate :validate_locales, on: :update
+  validate :validate_singleton, on: :create
+
+  before_validation :validate_missing_feature_dependencies
+  after_update :update_tenant
+
   class << self
 
     private :new  # We need a singleton
@@ -28,36 +46,16 @@ class AppConfiguration < ApplicationRecord
       @style_json_schema ||= JSON.parse(style_json_schema_str)
     end
 
-    def create_default
-      # [TODO] create a default configuration
-      self.create
-    end
   end
 
-  mount_base64_uploader :logo, LogoUploader
-  mount_base64_uploader :header_bg, AppHeaderBgUploader
-  mount_base64_uploader :favicon, FaviconUploader
-
-  validates :settings, presence: true, json: {
-      schema: -> { AppConfiguration.settings_json_schema_str },
-      message: ->(errors) { errors.map { |e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
-      options: { errors_as_objects: true }
-  }
-
-  validates :host, presence: true
-  validate :validate_host_format
-  validate :validate_locales, on: :update
-  validate :validate_singleton, on: :create
-
-  before_validation :validate_missing_feature_dependencies
-  after_update :update_tenant
-
+  # @return [AppConfiguration] self
   def cleanup_settings
     ss = SettingsService.new
     self.settings = ss.remove_additional_features(self.settings, self.class.settings_json_schema)
     self.settings = ss.remove_additional_settings(self.settings, self.class.settings_json_schema)
     self.settings = ss.add_missing_features(self.settings, self.class.settings_json_schema)
     self.settings = ss.add_missing_settings(self.settings, self.class.settings_json_schema)
+    self
   end
 
   def has_feature?(f)
