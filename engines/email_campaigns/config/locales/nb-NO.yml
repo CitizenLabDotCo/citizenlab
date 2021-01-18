@@ -373,7 +373,7 @@ nb:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
       cta_view: 'Gå til din idé'
-      event_description: '%{officialName} ga en oppdatering på din idé ''ideaTitle''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
+      event_description: '%{officialName} ga en oppdatering på din idé ''%{ideaTitle}''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
       main_header: 'Du mottok en oppdatering fra %{organizationName}'
       subject: 'Du mottok en oppdatering fra %{organizationName}'
       preheader: '%{officialName} la igjen en offisiell oppdatering på din idé'
