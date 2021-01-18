@@ -42,8 +42,6 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-require_tools', require: false
   gem 'rubocop-rspec', require: false
-  gem 'rubocop-sequel', require: false
-  gem 'rubocop-thread_safety'
   gem 'simplecov-rcov'
   gem 'simplecov'
  end
