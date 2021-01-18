@@ -9,7 +9,7 @@ import GoogleFormsSurvey from './GoogleFormsSurvey';
 import EnalyzerSurvey from './EnalyzerSurvey';
 import Warning from 'components/UI/Warning';
 import SignUpIn from 'components/SignUpIn';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+// import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
 import {
@@ -32,7 +32,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardStyle, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   position: relative;
@@ -45,13 +45,35 @@ const Container = styled.div`
 const SignUpInhWrapper = styled.div`
   width: 100%;
   padding: 20px;
+  padding-top: 40px;
   ${defaultCardStyle};
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const StyledSignUpIn = styled(SignUpIn)`
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
+
+  & .signuphelpertext {
+    display: none !important;
+  }
+`;
+
+const SignUpInHeader = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxl}px;
+  line-height: normal;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.xl}px;
+  `}
 `;
 
 interface InputProps {
@@ -147,14 +169,50 @@ class Survey extends PureComponent<Props, State> {
       className,
     } = this.props;
 
-    console.log(authUser);
-
     if (!isNilOrError(project)) {
       const { enabled, disabledReason } = getSurveyTakingRules({
         project,
         phaseContext: phase,
         signedIn: !isNilOrError(authUser),
       });
+      const registrationNotCompleted =
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
+
+      if (disabledReason === 'maybeNotPermitted' || registrationNotCompleted) {
+        return (
+          <Container className={className || ''}>
+            {/*
+            <ProjectPageSectionTitle>
+              <FormattedMessage {...messages.survey} />
+            </ProjectPageSectionTitle>
+            */}
+
+            <SignUpInhWrapper>
+              <StyledSignUpIn
+                metaData={{
+                  flow: 'signup',
+                  pathname: window.location.pathname,
+                  inModal: false,
+                  verification: undefined,
+                  noPushLinks: true,
+                }}
+                customSignInHeader={
+                  <SignUpInHeader>
+                    <FormattedMessage {...messages.logInToTakeSurvey} />
+                  </SignUpInHeader>
+                }
+                customSignUpHeader={
+                  <SignUpInHeader>
+                    <FormattedMessage {...messages.signUpToTakeSurvey} />
+                  </SignUpInHeader>
+                }
+                onSignUpInCompleted={this.noOp}
+              />
+            </SignUpInhWrapper>
+          </Container>
+        );
+      }
 
       if (enabled) {
         const email = authUser ? authUser.attributes.email : null;
@@ -165,9 +223,11 @@ class Survey extends PureComponent<Props, State> {
             id="project-survey"
             className={`${className} e2e-${surveyService}-survey enabled`}
           >
+            {/*
             <ProjectPageSectionTitle>
               <FormattedMessage {...messages.survey} />
             </ProjectPageSectionTitle>
+            */}
 
             {surveyService === 'typeform' && (
               <TypeformSurvey
@@ -184,65 +244,42 @@ class Survey extends PureComponent<Props, State> {
             {surveyService === 'google_forms' && (
               <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
             )}
+
             {surveyService === 'enalyzer' && (
               <EnalyzerSurvey enalyzerUrl={surveyEmbedUrl} />
             )}
           </Container>
         );
-      } else if (
-        isNilOrError(authUser) &&
-        disabledReason === 'maybeNotPermitted'
-      ) {
-        return (
-          <Container className={className || ''}>
-            <ProjectPageSectionTitle>
-              <FormattedMessage {...messages.survey} />
-            </ProjectPageSectionTitle>
-            <SignUpInhWrapper>
-              <StyledSignUpIn
-                metaData={{
-                  flow: 'signup',
-                  pathname: window.location.pathname,
-                  inModal: false,
-                  verification: undefined,
-                }}
-                onSignUpInCompleted={this.noOp}
-              />
-            </SignUpInhWrapper>
-          </Container>
-        );
-      } else {
-        const message = disabledReason
-          ? this.disabledMessage[disabledReason]
-          : messages.surveyDisabledNotPossible;
-
-        return (
-          <Container className={`warning ${className || ''}`}>
-            <Warning icon="lock">
-              <FormattedMessage
-                {...message}
-                values={{
-                  verificationLink: (
-                    <button onClick={this.onVerify}>
-                      <FormattedMessage {...messages.verificationLinkText} />
-                    </button>
-                  ),
-                  signUpLink: (
-                    <button onClick={this.signUp}>
-                      <FormattedMessage {...messages.signUpLinkText} />
-                    </button>
-                  ),
-                  logInLink: (
-                    <button onClick={this.signIn}>
-                      <FormattedMessage {...messages.logInLinkText} />
-                    </button>
-                  ),
-                }}
-              />
-            </Warning>
-          </Container>
-        );
       }
+
+      return (
+        <Container className={`warning ${className || ''}`}>
+          <Warning icon="lock">
+            <FormattedMessage
+              {...(disabledReason
+                ? this.disabledMessage[disabledReason]
+                : messages.surveyDisabledNotPossible)}
+              values={{
+                verificationLink: (
+                  <button onClick={this.onVerify}>
+                    <FormattedMessage {...messages.verificationLinkText} />
+                  </button>
+                ),
+                signUpLink: (
+                  <button onClick={this.signUp}>
+                    <FormattedMessage {...messages.signUpLinkText} />
+                  </button>
+                ),
+                logInLink: (
+                  <button onClick={this.signIn}>
+                    <FormattedMessage {...messages.logInLinkText} />
+                  </button>
+                ),
+              }}
+            />
+          </Warning>
+        </Container>
+      );
     }
 
     return null;
