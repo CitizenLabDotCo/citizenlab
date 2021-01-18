@@ -28,7 +28,7 @@ RSpec.describe EmailCampaigns::InviteReminderMailer, type: :mailer do
     end
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('You are invited to')
+      expect(mail.subject).to start_with('Pending invitation for the participation platform')
     end
 
     it 'renders the receiver email' do
@@ -46,11 +46,6 @@ RSpec.describe EmailCampaigns::InviteReminderMailer, type: :mailer do
     it 'assigns invite url' do
       expect(mail.body.encoded)
         .to include(command[:event_payload][:activate_invite_url])
-    end
-
-    it 'assigns invite text' do
-      expect(mail.body.encoded)
-        .to match(invite_text)
     end
   end
 end
