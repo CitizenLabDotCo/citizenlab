@@ -1,4 +1,4 @@
-import { IUser, IRole, IProjectModerator } from 'services/users';
+import { IUser, IRole, IProjectModeratorRole } from 'services/users';
 import { IProjectData } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -40,7 +40,7 @@ export const isProjectModerator = (
         projectId &&
         user.data.attributes?.roles &&
         user.data.attributes?.roles?.find(
-          (r: IProjectModerator) => r.project_id === projectId
+          (r: IProjectModeratorRole) => r.project_id === projectId
         )
       ))
   );
