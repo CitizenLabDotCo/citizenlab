@@ -12,9 +12,9 @@ RSpec.describe Tenant, type: :model do
 
   describe "Apartment tenant" do
     it "is created on create" do
-      host = "something.else-than-the-default-test-tenant"
-      expect(Apartment::Tenant).to receive(:create).with(host.gsub(/\./, "_"))
-      create(:tenant, host: host)
+      host = "something-else.com"  # a different host than the default test tenant
+      tenant = create(:tenant, host: host)
+      expect {Apartment::Tenant.switch!(tenant.schema_name) }.to_not raise_error(Apartment::TenantNotFound)
     end
 
     it "is deleted on destroy" do
