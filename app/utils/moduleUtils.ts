@@ -26,7 +26,7 @@ export type OutletsPropertyMap = {
     localize: Localize;
   };
   'app.containers.Navbar.projectsAndFolders.title': {};
-  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
+  'app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow': {
     publication: IAdminPublicationContent;
   };
   'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};

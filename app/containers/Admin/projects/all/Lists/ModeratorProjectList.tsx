@@ -41,7 +41,7 @@ const ModeratorProjectList = memo<Props>(
       ) {
         return (
           <Outlet
-            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+            id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
             publication={adminPublication}
           />
         );

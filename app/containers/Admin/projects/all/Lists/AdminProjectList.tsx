@@ -90,7 +90,7 @@ const AdminProjectList = memo<Props>((_props) => {
                             />
                           )}
                           <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                            id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
                             publication={item}
                           />
                         </SortableRow>
