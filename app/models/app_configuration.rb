@@ -1,6 +1,4 @@
 class AppConfiguration < ApplicationRecord
-  # [TODO] checks mixins
-  include PublicApi::TenantDecorator
   include Frontend::TenantStyle
 
   class << self
