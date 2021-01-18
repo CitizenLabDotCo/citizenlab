@@ -23,6 +23,10 @@ module EmailCampaigns
       'scheduled'
     end
 
+    def mailer_class
+      YourProposedInitiativesDigestMailer
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       initiatives = recipient.initiatives.published.proposed.order(:published_at)
@@ -31,9 +35,10 @@ module EmailCampaigns
           event_payload: {
             initiatives: initiatives.includes(:initiative_images).map{ |initiative|
               {
-                title_multiloc: initiative.title_multiloc,                body_multiloc: initiative.body_multiloc,
+                title_multiloc: initiative.title_multiloc,                
+                body_multiloc: initiative.body_multiloc,
                 url: Frontend::UrlService.new.model_to_url(initiative),
-                published_at: initiative.published_at.iso8601,
+                published_at: initiative.published_at&.iso8601,
                 upvotes_count: initiative.upvotes_count,
                 votes_needed: initiative.votes_needed,
                 votes_this_week: initiative.upvotes.where('created_at > ?', time - 1.week).count,
