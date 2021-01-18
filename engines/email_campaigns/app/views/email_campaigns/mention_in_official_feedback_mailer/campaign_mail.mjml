@@ -32,4 +32,4 @@
 </mj-section>
 
 <!-- CTA button -->
-<%= render partial: 'application/cta_button', locals: { href: event.comment_url , message: format_message('cta_reply_to', values: { organizationName: organization_name }) } %>
+<%= render partial: 'application/cta_button', locals: { href: event.official_feedback_url , message: format_message('cta_reply_to', values: { organizationName: organization_name }) } %>
