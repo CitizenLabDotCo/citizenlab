@@ -154,8 +154,6 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const { taggings, processing, processingRemainingItems } = useTaggings();
 
-    console.log(processingRemainingItems);
-
     const [projectList, setProjectList] = useState<
       IFilterSelectorValue[] | null
     >(null);
