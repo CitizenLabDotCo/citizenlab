@@ -68,10 +68,16 @@ const ProjectFolderSelect = memo<Props>(
     );
 
     const onAddProjectToFolderChange = useCallback(
-      (addProjectToFolder: boolean) => {
+      (defaultFolderValue: string) => (addProjectToFolder: boolean) => {
         const projectFormStateUpdates = {
           addProjectToFolder,
         };
+
+        if (!folder_id) {
+          projectFormStateUpdates[
+            'projectAttributesDiff.folder_id'
+          ] = defaultFolderValue;
+        }
 
         if (addProjectToFolder === false) {
           projectFormStateUpdates['projectAttributesDiff.folder_id'] = null;
@@ -86,9 +92,17 @@ const ProjectFolderSelect = memo<Props>(
       const userIsProjectFolderModerator = hasProjectFolderModeratorRole(
         authUser
       );
-      const addProjectToFolder = userIsProjectFolderModerator
-        ? true
-        : props.addProjectToFolder;
+      function showProjectFolderSelect() {
+        if (userIsProjectFolderModerator) {
+          return true;
+        } else if (folder_id !== null || folder_id !== undefined) {
+          return true;
+        } else {
+          return props.addProjectToFolder;
+        }
+      }
+      const addProjectToFolder = showProjectFolderSelect();
+      const defaultFolderValue = folderOptions[0].value;
 
       return (
         <StyledSectionField>
@@ -99,7 +113,7 @@ const ProjectFolderSelect = memo<Props>(
             />
           </SubSectionTitle>
           <Radio
-            onChange={onAddProjectToFolderChange}
+            onChange={onAddProjectToFolderChange(defaultFolderValue)}
             currentValue={addProjectToFolder}
             value={false}
             name="folderSelect"
@@ -108,7 +122,7 @@ const ProjectFolderSelect = memo<Props>(
             disabled={userIsProjectFolderModerator}
           />
           <Radio
-            onChange={onAddProjectToFolderChange}
+            onChange={onAddProjectToFolderChange(defaultFolderValue)}
             currentValue={addProjectToFolder}
             value={true}
             name="folderSelect"
@@ -118,7 +132,7 @@ const ProjectFolderSelect = memo<Props>(
           />
           {addProjectToFolder && (
             <Select
-              value={folder_id || folderOptions[0].value}
+              value={folder_id}
               options={folderOptions}
               onChange={handleFolderChange}
             />
