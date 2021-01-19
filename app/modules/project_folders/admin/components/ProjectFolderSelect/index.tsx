@@ -8,12 +8,13 @@ import useLocalize from 'hooks/useLocalize';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { IUpdatedProjectProperties } from 'services/projects';
+import { IProjectFormState } from 'services/projects';
+import { hasProjectFolderModeratorRole } from 'modules/project_folders/permissions/roles';
+import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
 // components
-import { Select, IconTooltip, Checkbox } from 'cl2-component-library';
+import { Radio, Select, IconTooltip } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import MultipleSelect from 'components/UI/MultipleSelect';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -31,17 +32,19 @@ const StyledSectionField = styled(SectionField)`
   margin-bottom: 40px;
 `;
 
-const StyledCheckbox = styled(Checkbox)`
-  margin-bottom: 20px;
-`;
-
 interface Props {
-  onChange: (fieldPath: string, value: any) => void;
-  projectAttrs: IUpdatedProjectProperties;
+  onChange: onProjectFormStateChange;
+  projectAttrs: IProjectFormState;
+  addProjectToFolder: boolean;
 }
 
 const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
-  ({ projectAttrs: { folder_id }, onChange, intl: { formatMessage } }) => {
+  ({
+    projectAttrs: { folder_id },
+    onChange,
+    intl: { formatMessage },
+    ...props
+  }) => {
     const { projectFolders } = useProjectFolders({});
     const authUser = useAuthUser();
     const localize = useLocalize();
@@ -62,14 +65,6 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
       return [];
     }, [projectFolders]);
 
-    const allOptions = useMemo<IOption[]>(() => {
-      if (!isNilOrError(authUser) && isAdmin({ data: authUser })) {
-        return [...folderOptions];
-      }
-
-      return folderOptions;
-    }, [folderOptions, noFolderOption, authUser]);
-
     const defaultValue = useMemo<string>(() => {
       if (
         (!isNilOrError(authUser) && isAdmin({ data: authUser })) ||
@@ -81,43 +76,70 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
       return folderOptions[0].value;
     }, [folderOptions, noFolderOption, authUser]);
 
-    const handleChange = useCallback(
-      ({ value }) => {
-        onChange('projectAttributesDiff.folder_id', value);
+    const handleFolderChange = useCallback(
+      ({ value: folderId }) => {
+        onChange({ 'projectAttributesDiff.folder_id': folderId });
       },
       [onChange]
     );
 
-    const getFolderOption = (folderOptions: IOption[], folderId: string) => {
-      const folderOption = folderOptions.find(
-        (folderOption: IOption) => folderOption.value === folderId
+    const onAddProjectToFolderChange = useCallback(
+      (addProjectToFolder: boolean) => {
+        const projectFormStateUpdates = {
+          addProjectToFolder,
+        };
+
+        if (addProjectToFolder === false) {
+          projectFormStateUpdates['projectAttributesDiff.folder_id'] = null;
+        }
+
+        onChange(projectFormStateUpdates);
+      },
+      [onChange]
+    );
+
+    if (!isNilOrError(authUser) && folderOptions.length > 0) {
+      const userIsProjectFolderModerator = hasProjectFolderModeratorRole(
+        authUser
       );
+      const addProjectToFolder = userIsProjectFolderModerator
+        ? true
+        : props.addProjectToFolder;
 
-      return folderOption;
-    };
-
-    if (folderOptions.length > 0) {
       return (
         <StyledSectionField>
           <SubSectionTitle>
-            <FormattedMessage
-              {...messages.projectFolder}
-              values={{
-                optional:
-                  !isNilOrError(authUser) && isAdmin({ data: authUser })
-                    ? formatMessage(messages.optional)
-                    : '',
-              }}
-            />
+            <FormattedMessage {...messages.projectFolder} />
             <IconTooltip
-              content={<FormattedMessage {...messages.folderTooltip} />}
+              content={<FormattedMessage {...messages.projectFolderTooltip} />}
             />
           </SubSectionTitle>
-          <Select
-            value={folder_id || defaultValue}
-            options={allOptions}
-            onChange={handleChange}
+          <Radio
+            onChange={onAddProjectToFolderChange}
+            currentValue={addProjectToFolder}
+            value={false}
+            name="folderSelect"
+            id="folderSelect-no"
+            label={<FormattedMessage {...messages.no} />}
+            disabled={userIsProjectFolderModerator}
           />
+          <Radio
+            onChange={onAddProjectToFolderChange}
+            currentValue={addProjectToFolder}
+            value={true}
+            name="folderSelect"
+            id="folderSelect-yes"
+            label={<FormattedMessage {...messages.yes} />}
+            disabled={userIsProjectFolderModerator}
+          />
+
+          {addProjectToFolder && (
+            <Select
+              value={folder_id || defaultValue}
+              options={folderOptions}
+              onChange={handleFolderChange}
+            />
+          )}
         </StyledSectionField>
       );
     }

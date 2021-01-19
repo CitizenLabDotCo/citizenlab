@@ -27,3 +27,10 @@ export function isProjectFolderModerator(
     );
   }
 }
+
+export function hasProjectFolderModeratorRole(user: IUserData) {
+  return !!user.attributes.roles?.find(
+    (role: IRole | IProjectFolderModerator) =>
+      role.type === 'project_folder_moderator'
+  );
+}

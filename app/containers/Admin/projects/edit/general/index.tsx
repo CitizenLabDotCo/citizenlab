@@ -191,6 +191,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
+export type onProjectFormStateChange = (fieldUpdates: {
+  [fieldPath: string]: any;
+}) => void;
+
 class AdminProjectEditGeneral extends PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
   IProjectFormState
@@ -228,6 +232,7 @@ class AdminProjectEditGeneral extends PureComponent<
       submitState: 'disabled',
       slug: null,
       showSlugErrorMessage: false,
+      addProjectToFolder: false,
     };
 
     this.state = initialState;
@@ -747,11 +752,13 @@ class AdminProjectEditGeneral extends PureComponent<
     });
   };
 
-  handleUpdateField = (fieldPath: string, value: any) => {
+  handleUpdateField = (fieldUpdates: { [fieldPath: string]: any }) => {
     this.setState((prevState) => {
       const newState = { ...prevState };
       set(newState, 'submitState', 'enabled');
-      set(newState, fieldPath, value);
+      for (const fieldPath in fieldUpdates) {
+        set(newState, fieldPath, fieldUpdates[fieldPath]);
+      }
       return deepMerge(prevState, newState);
     });
   };
@@ -775,6 +782,7 @@ class AdminProjectEditGeneral extends PureComponent<
       showSlugErrorMessage,
       currentTenant,
       locale,
+      addProjectToFolder,
     } = this.state;
 
     const {
@@ -1060,6 +1068,7 @@ class AdminProjectEditGeneral extends PureComponent<
               id="app.components.AdminPage.projects.form.additionalInputs.inputs"
               projectAttrs={projectAttrs}
               onChange={this.handleUpdateField}
+              addProjectToFolder={addProjectToFolder}
             />
 
             <StyledSectionField>
