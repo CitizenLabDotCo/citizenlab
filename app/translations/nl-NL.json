@@ -418,6 +418,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Succesvol opgeslagen",
   "app.components.admin.PostManager.PostPreview.addTag": "Een tag toevoegen",
   "app.components.admin.PostManager.PostPreview.assignee": "Toegewezen aan",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "",
   "app.components.admin.PostManager.PostPreview.basketsCountTooltip": "Het aantal gebruikers dat dit idee aan hun burgerbegroting heeft toegevoegd",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuleer de wijzigingen",
   "app.components.admin.PostManager.PostPreview.createTag": "Maak een tag aan",
