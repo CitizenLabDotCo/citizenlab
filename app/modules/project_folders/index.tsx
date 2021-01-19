@@ -114,13 +114,13 @@ const configuration: ModuleConfiguration = {
     'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
       onChange,
       projectAttrs,
-      addProjectToFolder,
+      showProjectFolderSelect,
     }) => (
       <RenderOnFeatureFlag>
         <ProjectFolderSelect
           onChange={onChange}
           projectAttrs={projectAttrs}
-          addProjectToFolder={addProjectToFolder}
+          showProjectFolderSelect={showProjectFolderSelect}
         />
       </RenderOnFeatureFlag>
     ),

@@ -33,7 +33,7 @@ export type OutletsPropertyMap = {
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
     onChange: onProjectFormStateChange;
-    addProjectToFolder: boolean;
+    showProjectFolderSelect: boolean;
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
