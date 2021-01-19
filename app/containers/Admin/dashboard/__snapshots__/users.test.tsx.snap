@@ -58,7 +58,7 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     <WithTheme(MostActiveUsersList)
       className="dynamicHeight"
       endAt="2010-01-01T04:06:07.000Z"
-      infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
+      infoMessage="The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant."
     />
   </dashboard__GraphsContainer>
 </ThemeProvider>

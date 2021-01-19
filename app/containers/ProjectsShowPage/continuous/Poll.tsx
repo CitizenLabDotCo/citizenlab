@@ -8,6 +8,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import {
   SectionContainer,
   ProjectPageSectionTitle,
+  maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 
 // hooks
@@ -46,7 +47,7 @@ const PollContainer = memo<Props & InjectedIntlProps>(
         <Container
           className={`e2e-continuous-project-poll-container ${className || ''}`}
         >
-          <StyledContentContainer>
+          <StyledContentContainer maxWidth={maxPageWidth}>
             <SectionContainer>
               <ProjectPageSectionTitle>
                 <FormattedMessage {...messages.navPoll} />

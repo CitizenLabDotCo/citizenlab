@@ -45,10 +45,10 @@ export default defineMessages({
     defaultMessage:
       'We strive to make our content inclusive for all. However, in some instances there may be inaccessible content on the platform as outlined below:',
   },
-  exception1: {
-    id: 'app.containers.AccessibilityStatement.exception1',
+  exception_1: {
+    id: 'app.containers.AccessibilityStatement.exception_1',
     defaultMessage:
-      'Our digital engagement platforms facilitate user-generated content, including ideas, comments and other content posted by individuals and organisations. It is possible that PDFs, images or other file types including multi-media are uploaded to the platform as attachments or added into text fields by platform users. These documents may not be fully accessible.',
+      'Our digital engagement platforms facilitate user-generated content posted by individuals and organisations. It is possible that PDFs, images or other file types including multi-media are uploaded to the platform as attachments or added into text fields by platform users. These documents may not be fully accessible.',
   },
   exception2: {
     id: 'app.containers.AccessibilityStatement.exception2',

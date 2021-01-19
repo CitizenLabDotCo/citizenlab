@@ -1,4 +1,5 @@
 import React, { memo, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -36,7 +37,6 @@ const FolderIcon = styled(Icon)`
 
 // types & services
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import DeleteProjectFolderButton from '../DeleteProjectFolderButton';

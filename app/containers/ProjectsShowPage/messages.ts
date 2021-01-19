@@ -13,13 +13,13 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
-  invisibleTitleIdeasList: {
-    id: 'app.containers.Projects.invisibleTitleIdeasList',
-    defaultMessage: 'All the ideas for this project',
+  a11y_titleInputs: {
+    id: 'app.containers.Projects.a11y_titleInputs',
+    defaultMessage: 'All inputs submitted to this project',
   },
-  invisibleTitleIdeasListPhase: {
-    id: 'app.containers.Projects.invisibleTitleIdeasListPhase',
-    defaultMessage: 'All the ideas for this phase',
+  a11y_titleInputsPhase: {
+    id: 'app.containers.Projects.a11y_titleInputsPhase',
+    defaultMessage: 'All inputs submitted to this phase',
   },
   invisibleTitleSurvey: {
     id: 'app.containers.Projects.invisibleTitleSurvey',
@@ -45,49 +45,9 @@ export default defineMessages({
     id: 'app.containers.Projects.metaTitle',
     defaultMessage: 'Project: {projectTitle}',
   },
-  navInformation: {
-    id: 'app.containers.Projects.navInformation',
-    defaultMessage: 'Information',
-  },
-  navIdeas: {
-    id: 'app.containers.Projects.navIdeas',
-    defaultMessage: 'Ideas',
-  },
-  navProcess: {
-    id: 'app.containers.Projects.navProcess',
-    defaultMessage: 'Process',
-  },
-  navPoll: {
-    id: 'app.containers.Projects.navPoll',
-    defaultMessage: 'Poll',
-  },
-  navVolunteering: {
-    id: 'app.containers.Projects.navVolunteering',
-    defaultMessage: 'Volunteering',
-  },
-  navEvents: {
-    id: 'app.containers.Projects.navEvents',
-    defaultMessage: 'Events',
-  },
-  pastEvents: {
-    id: 'app.containers.Projects.pastEvents',
-    defaultMessage: 'Past events',
-  },
-  noPastEvents: {
-    id: 'app.containers.Projects.noPastEvents',
-    defaultMessage: 'There are no past events',
-  },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',
     defaultMessage: 'Upcoming events',
-  },
-  noUpcomingEvents: {
-    id: 'app.containers.Projects.noUpcomingEvents',
-    defaultMessage: 'There are no upcoming events at this time',
-  },
-  allEvents: {
-    id: 'app.containers.Projects.allEvents',
-    defaultMessage: 'All events',
   },
   location: {
     id: 'app.containers.Projects.location',
@@ -101,18 +61,6 @@ export default defineMessages({
     id: 'app.containers.Projects.endedOn',
     defaultMessage: 'Ended on {date}',
   },
-  endsOn: {
-    id: 'app.containers.Projects.endsOn',
-    defaultMessage: 'Ends on {date}',
-  },
-  startsOn: {
-    id: 'app.containers.Projects.startsOn',
-    defaultMessage: 'Starts on {date}',
-  },
-  startedOn: {
-    id: 'app.containers.Projects.startedOn',
-    defaultMessage: 'Started on {date}',
-  },
   previousPhase: {
     id: 'app.containers.Projects.previousPhase',
     defaultMessage: 'Previous phase',
@@ -124,6 +72,10 @@ export default defineMessages({
   currentPhase: {
     id: 'app.containers.Projects.currentPhase',
     defaultMessage: 'Current phase',
+  },
+  navPoll: {
+    id: 'app.containers.Projects.navPoll',
+    defaultMessage: 'Poll',
   },
   navSurvey: {
     id: 'app.containers.Projects.navSurvey',
@@ -190,22 +142,15 @@ export default defineMessages({
     defaultMessage:
       'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
   },
-  a11y_projectNav: {
-    id: 'app.containers.Projects.a11y_projectNav',
-    defaultMessage: 'Project navigation',
-  },
-  twitterMessage: {
-    id: 'app.containers.Projects.twitterMessage',
-    defaultMessage: '{title}: Share your ideas on',
+  projectTwitterMessage: {
+    id: 'app.containers.Projects.projectTwitterMessage',
+    defaultMessage:
+      'Make your voice heard! Participate in {projectName} | {orgName}',
   },
   whatsAppMessage: {
     id: 'app.containers.Projects.whatsAppMessage',
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
-  },
-  aboutThisProject: {
-    id: 'app.containers.Projects.aboutThisProject',
-    defaultMessage: 'About this project',
   },
   about: {
     id: 'app.containers.Projects.about',
@@ -225,6 +170,81 @@ export default defineMessages({
     id: 'app.containers.Projects.xIdeasInFinalPhase',
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the final phase',
+  },
+  xContributions: {
+    id: 'app.containers.Projects.xContributions',
+    defaultMessage:
+      '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}}',
+  },
+  xContributionsInCurrentPhase: {
+    id: 'app.containers.Projects.xContributionsInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}} in the current phase',
+  },
+  xContributionsInFinalPhase: {
+    id: 'app.containers.Projects.xContributionsInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}} in the final phase',
+  },
+  xProjects: {
+    id: 'app.containers.Projects.xProjects',
+    defaultMessage:
+      '{ideasCount, plural, no {# projects} one {# project} other {# projects}}',
+  },
+  xProjectsInCurrentPhase: {
+    id: 'app.containers.Projects.xProjectsInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# projects} one {# project} other {# projects}} in the current phase',
+  },
+  xProjectsInFinalPhase: {
+    id: 'app.containers.Projects.xProjectsInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# projects} one {# project} other {# projects}} in the final phase',
+  },
+  xOptions: {
+    id: 'app.containers.Projects.xOptions',
+    defaultMessage:
+      '{ideasCount, plural, no {# options} one {# option} other {# options}}',
+  },
+  xOptionsInCurrentPhase: {
+    id: 'app.containers.Projects.xOptionsInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# options} one {# option} other {# options}} in the current phase',
+  },
+  xOptionsInFinalPhase: {
+    id: 'app.containers.Projects.xOptionsInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# options} one {# option} other {# options}} in the final phase',
+  },
+  xIssues: {
+    id: 'app.containers.Projects.xIssues',
+    defaultMessage:
+      '{ideasCount, plural, no {# issues} one {# issue} other {# issues}}',
+  },
+  xIssuesInCurrentPhase: {
+    id: 'app.containers.Projects.xIssuesInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# issues} one {# issue} other {# issues}} in the current phase',
+  },
+  xIssuesInFinalPhase: {
+    id: 'app.containers.Projects.xIssuesInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# issues} one {# issue} other {# issues}} in the final phase',
+  },
+  xQuestions: {
+    id: 'app.containers.Projects.xQuestions',
+    defaultMessage:
+      '{ideasCount, plural, no {# questions} one {# questions} other {# questions}}',
+  },
+  xQuestionsInCurrentPhase: {
+    id: 'app.containers.Projects.xQuestionsInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the current phase',
+  },
+  xQuestionsInFinalPhase: {
+    id: 'app.containers.Projects.xQuestionsInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the final phase',
   },
   xSurveys: {
     id: 'app.containers.Projects.xSurveys',
@@ -248,9 +268,9 @@ export default defineMessages({
     id: 'app.containers.Projects.budget',
     defaultMessage: '{amount} budget',
   },
-  noIdeasYet: {
-    id: 'app.containers.Projects.noIdeasYet',
-    defaultMessage: 'No ideas yet',
+  nothingPosted: {
+    id: 'app.containers.Projects.nothingPosted',
+    defaultMessage: 'Nothing posted yet',
   },
   xPhases: {
     id: 'app.containers.Projects.xPhases',
@@ -267,22 +287,9 @@ export default defineMessages({
     defaultMessage:
       '{upcomingEventsCount, plural, no {# upcoming events} one {# upcoming event} other {# upcoming events}}',
   },
-  xEvents: {
-    id: 'app.containers.Projects.xEvents',
-    defaultMessage:
-      '{eventsCount, plural, no {# events} one {# event} other {# events}}',
-  },
   allocateBudget: {
     id: 'app.containers.Projects.allocateBudget',
     defaultMessage: 'Allocate your budget',
-  },
-  seeTheIdeas: {
-    id: 'app.containers.Projects.seeTheIdeas',
-    defaultMessage: 'See the ideas',
-  },
-  postYourIdea: {
-    id: 'app.containers.Projects.postYourIdea',
-    defaultMessage: 'Post your idea',
   },
   takeTheSurvey: {
     id: 'app.containers.Projects.takeTheSurvey',
@@ -295,6 +302,26 @@ export default defineMessages({
   ideas: {
     id: 'app.containers.Projects.ideas',
     defaultMessage: 'Ideas',
+  },
+  contributions: {
+    id: 'app.containers.Projects.contributions',
+    defaultMessage: 'Contributions',
+  },
+  issues: {
+    id: 'app.containers.Projects.issues',
+    defaultMessage: 'Issues',
+  },
+  options: {
+    id: 'app.containers.Projects.options',
+    defaultMessage: 'Options',
+  },
+  questions: {
+    id: 'app.containers.Projects.questions',
+    defaultMessage: 'Questions',
+  },
+  projects: {
+    id: 'app.containers.Projects.projects',
+    defaultMessage: 'Projects',
   },
   survey: {
     id: 'app.containers.Projects.survey',
@@ -320,14 +347,6 @@ export default defineMessages({
     id: 'app.containers.Projects.seeLess',
     defaultMessage: 'See less',
   },
-  phaseEnded: {
-    id: 'app.containers.Projects.phaseEnded',
-    defaultMessage: 'This phase has ended',
-  },
-  phaseNotStartedYet: {
-    id: 'app.containers.Projects.phaseNotStartedYet',
-    defaultMessage: `This phase hasn't started yet`,
-  },
   startsAt: {
     id: 'app.containers.Projects.startsAt',
     defaultMessage: 'Starts at',
@@ -335,5 +354,33 @@ export default defineMessages({
   endsAt: {
     id: 'app.containers.Projects.endsAt',
     defaultMessage: 'Ends at',
+  },
+  xEvents: {
+    id: 'app.containers.Projects.xEvents',
+    defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',
+  },
+  seeTheIdeas: {
+    id: 'app.containers.Projects.seeTheIdeas',
+    defaultMessage: 'See the ideas',
+  },
+  seeTheOptions: {
+    id: 'app.containers.Projects.seeTheOptions',
+    defaultMessage: 'See the options',
+  },
+  seeTheProjects: {
+    id: 'app.containers.Projects.seeTheProjects',
+    defaultMessage: 'See the projects',
+  },
+  seeTheQuestions: {
+    id: 'app.containers.Projects.seeTheQuestions',
+    defaultMessage: 'See the questions',
+  },
+  seeTheIssues: {
+    id: 'app.containers.Projects.seeTheIssues',
+    defaultMessage: 'See the issues',
+  },
+  seeTheContributions: {
+    id: 'app.containers.Projects.seeTheContributions',
+    defaultMessage: 'See the contributions',
   },
 });

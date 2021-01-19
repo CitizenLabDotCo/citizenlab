@@ -39,7 +39,9 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   background: ${colors.background};
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -50,7 +52,9 @@ const Container = styled.div`
 
 const PageContainer = styled.main`
   width: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -253,9 +257,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   render() {
-    const { authUser, project } = this.props;
+    const { project } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(project)) {
+    if (!isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />

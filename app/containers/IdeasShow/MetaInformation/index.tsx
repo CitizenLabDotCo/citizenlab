@@ -29,12 +29,13 @@ export const Item = styled.div<{ isFirstItem?: boolean }>`
   border-top: ${({ isFirstItem }) =>
     isFirstItem ? `1px solid #e0e0e0` : 'none'};
   border-bottom: 1px solid #e0e0e0;
-  padding-top: 20px;
-  padding-bottom: 23px;
+  padding-top: 18px;
+  padding-bottom: 21px;
 `;
 
 const StyledPostedBy = styled(PostedBy)`
   margin-top: -4px;
+  margin-bottom: -6px;
 `;
 
 export const Header = styled.h3`

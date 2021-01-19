@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  error: {
+    id: 'app.errors.error',
+    defaultMessage: 'Error: ',
+  },
   blank: {
     id: 'app.errors.generics.blank',
     defaultMessage: 'This field cannot be empty.',
@@ -18,32 +22,6 @@ export default defineMessages({
     defaultMessage:
       'This field should be unique. Another instance with the same value already exists.',
   },
-  token_invalid: {
-    id: 'app.errors.token_invalid',
-    defaultMessage:
-      'Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.',
-  },
-  title_multiloc_blank: {
-    id: 'app.errors.title_multiloc_blank',
-    defaultMessage: 'The title cannot be empty.',
-  },
-  email_taken: {
-    id: 'app.errors.email_taken',
-    defaultMessage: 'This email is already taken. Please try another one.',
-  },
-  email_taken_by_invite: {
-    id: 'app.errors.email_taken_by_invite',
-    defaultMessage:
-      'An invitation has already been sent to {value}. Please check your mailbox. Chances are it landed in your spam folder. If you can’t find the invitation, leave us a message at support@citizenlab.co and we’ll make sure you get access.',
-  },
-  email_invalid: {
-    id: 'app.errors.email_invalid',
-    defaultMessage: 'Please use a valid email address.',
-  },
-  email_domain_blacklisted: {
-    id: 'app.errors.email_domain_blacklisted',
-    defaultMessage: 'Please use a different email domain to register.',
-  },
   locale_blank: {
     id: 'app.errors.locale_blank',
     defaultMessage: 'Please choose a language',
@@ -51,26 +29,6 @@ export default defineMessages({
   locale_inclusion: {
     id: 'app.errors.locale_inclusion',
     defaultMessage: 'Please choose a supported language',
-  },
-  first_name_blank: {
-    id: 'app.errors.first_name_blank',
-    defaultMessage: 'Please enter your first name',
-  },
-  last_name_blank: {
-    id: 'app.errors.last_name_blank',
-    defaultMessage: 'Please enter your last name',
-  },
-  email_blank: {
-    id: 'app.errors.email_blank',
-    defaultMessage: 'Please enter your email address',
-  },
-  password_blank: {
-    id: 'app.errors.password_blank',
-    defaultMessage: 'Please enter a password',
-  },
-  password_too_short: {
-    id: 'app.errors.password_too_short',
-    defaultMessage: 'The password must be at least 8 characters long',
   },
   too_short: {
     id: 'app.errors.too_short',
@@ -174,11 +132,7 @@ export default defineMessages({
   cannot_contain_ideas: {
     id: 'app.errors.cannot_contain_ideas',
     defaultMessage:
-      "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
-  },
-  error: {
-    id: 'app.errors.error',
-    defaultMessage: 'Error: ',
+      'The participation method you selected does not support this type of input. Please edit your selection and try again.',
   },
   slug_taken: {
     id: 'app.errors.slug_taken',
@@ -206,5 +160,52 @@ export default defineMessages({
   avatar_carrierwave_download_error: {
     id: 'app.errors.avatar_carrierwave_download_error',
     defaultMessage: 'Could not download avatar file.',
+  },
+  // field errors
+  token_invalid: {
+    id: 'app.errors.token_invalid',
+    defaultMessage:
+      'Password reset links can only be used once and are valid for one hour after being sent. {passwordResetLink}.',
+  },
+  title_multiloc_blank: {
+    id: 'app.errors.title_multiloc_blank',
+    defaultMessage: 'The title cannot be empty.',
+  },
+  email_taken: {
+    id: 'app.errors.email_taken',
+    defaultMessage: 'This email is already taken. Please try another one.',
+  },
+  email_taken_by_invite: {
+    id: 'app.errors.email_taken_by_invite',
+    defaultMessage:
+      'An invitation has already been sent to {value}. Please check your mailbox. Chances are it landed in your spam folder. If you can’t find the invitation, leave us a message at support@citizenlab.co and we’ll make sure you get access.',
+  },
+  email_invalid: {
+    id: 'app.errors.email_invalid',
+    defaultMessage: 'Please use a valid email address.',
+  },
+  email_domain_blacklisted: {
+    id: 'app.errors.email_domain_blacklisted',
+    defaultMessage: 'Please use a different email domain to register.',
+  },
+  email_blank: {
+    id: 'app.errors.email_blank',
+    defaultMessage: 'Please enter your email address',
+  },
+  first_name_blank: {
+    id: 'app.errors.first_name_blank',
+    defaultMessage: 'Please enter your first name',
+  },
+  last_name_blank: {
+    id: 'app.errors.last_name_blank',
+    defaultMessage: 'Please enter your last name',
+  },
+  password_blank: {
+    id: 'app.errors.password_blank',
+    defaultMessage: 'Please enter a password',
+  },
+  password_too_short: {
+    id: 'app.errors.password_too_short',
+    defaultMessage: 'The password must be at least 8 characters long',
   },
 });

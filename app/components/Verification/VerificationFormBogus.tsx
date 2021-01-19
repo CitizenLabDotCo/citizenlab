@@ -73,7 +73,7 @@ const VerificationFormBogus = memo<Props>(
           ];
 
           if (!isNilOrError(authUser)) {
-            endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+            endpointsToRefetch.push(`${API_PATH}/users/${authUser.id}`);
           }
 
           await streams.fetchAllWith({

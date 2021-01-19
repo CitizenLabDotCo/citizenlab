@@ -19,6 +19,7 @@ import {
   SurveyServices,
   ParticipationMethod,
   IdeaDefaultSortMethod,
+  InputTerm,
 } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
@@ -190,6 +191,7 @@ export interface IUpdatedProjectProperties {
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  input_term?: InputTerm;
   slug?: string;
 }
 
@@ -345,4 +347,8 @@ export function getProjectIdeasUrl(project: IProjectData) {
   }
 
   return projectUrl;
+}
+
+export function getProjectInputTerm(project: IProjectData) {
+  return project.attributes.input_term;
 }
