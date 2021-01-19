@@ -63,8 +63,12 @@ const StyledSignUpIn = styled(SignUpIn)`
     display: none !important;
   }
 
-  & .headercontainer {
+  & .signupinheadercontainer {
     border-bottom: none !important;
+  }
+
+  & .signupincontentcontainer {
+    max-height: unset !important;
   }
 `;
 
@@ -183,8 +187,10 @@ class Survey extends PureComponent<Props, State> {
       const registrationNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
-
-      console.log(disabledReason);
+      const shouldVerify = !!(
+        disabledReason === 'maybeNotVerified' ||
+        disabledReason === 'notVerified'
+      );
 
       if (
         disabledReason === 'maybeNotPermitted' ||
@@ -206,9 +212,7 @@ class Survey extends PureComponent<Props, State> {
                   flow: 'signup',
                   pathname: window.location.pathname,
                   inModal: true,
-                  verification:
-                    disabledReason === 'maybeNotVerified' ||
-                    disabledReason === 'notVerified',
+                  verification: shouldVerify,
                   noPushLinks: true,
                 }}
                 customSignInHeader={

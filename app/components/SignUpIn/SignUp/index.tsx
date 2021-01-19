@@ -376,7 +376,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
               >
                 <div>
                   <StyledHeaderContainer
-                    className="headercontainer"
+                    className="signupinheadercontainer"
                     inModal={!!metaData.inModal}
                   >
                     {!customHeader ? (
@@ -414,6 +414,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             windowHeight={`${windowHeight}px`}
             headerHeight={headerHeight}
             ref={this.setRef}
+            className="signupincontentcontainer"
           >
             {error ? (
               <Error text={error} animate={false} marginBottom="30px" />
