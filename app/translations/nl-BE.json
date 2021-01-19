@@ -2091,7 +2091,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "in te loggen",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "aan te melden",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "{tenantName, select, Almere {Ik wil me uitschrijven} other {Ik wil mijn aanmelding intrekken}}",
-  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {nog geen personen} one {# persoon} other {# personen}}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {nog geen vrijwilligers} one {# vrijwilliger} other {# vrijwilligers}}",
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "inloggen",
   "app.containers.ProjectsShowPage.process.survey.signUpLinkText": "registreren",
   "app.containers.ProjectsShowPage.process.survey.survey": "Enquête",
