@@ -418,6 +418,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Enregistré avec succès",
   "app.components.admin.PostManager.PostPreview.addTag": "Ajouter une étiquette",
   "app.components.admin.PostManager.PostPreview.assignee": "Attribué",
+  "app.components.admin.PostManager.PostPreview.autotaggingProcessing": "",
   "app.components.admin.PostManager.PostPreview.basketsCountTooltip": "Le nombre d’utilisateurs qui ont ajouté cette idée à leur budget participatif",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuler la modification",
   "app.components.admin.PostManager.PostPreview.createTag": "Créer une étiquette",
