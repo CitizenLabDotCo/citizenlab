@@ -13,7 +13,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { Formik } from 'formik';
-import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
