@@ -5,7 +5,7 @@ module EmailCampaigns
     private
 
     def subject
-      I18n.t('email_campaigns.admin_digest.subject', time: I18n.l(Time.zone.today, format: :long))
+      format_message('subject', values: { time: formatted_todays_date })
     end
 
     def header_title
@@ -14,6 +14,10 @@ module EmailCampaigns
 
     def header_message
       format_message('text_introduction')
+    end
+
+    def preheader
+      format_message('preheader', values: { organizationName: organization_name })
     end
   end
 end
