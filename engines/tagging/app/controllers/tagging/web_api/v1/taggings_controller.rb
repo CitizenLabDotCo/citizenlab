@@ -97,7 +97,6 @@ module Tagging
             @new_tags + @old_tags,
             current_user.locale
           )
-
           if @res
             @res['batches'].each do |b|
               Tagging.create(
