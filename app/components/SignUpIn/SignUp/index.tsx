@@ -150,8 +150,6 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       }
     }
 
-    console.log('nextActiveStep: ' + nextActiveStep);
-
     return {
       activeStep: nextActiveStep,
       error: metaData.error
@@ -366,10 +364,6 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
         !error &&
         stepName
       );
-
-      console.log('metaData:');
-      console.log(metaData);
-      console.log('activeStep: ' + activeStep);
 
       return (
         <Container id="e2e-sign-up-container" className={className || ''}>

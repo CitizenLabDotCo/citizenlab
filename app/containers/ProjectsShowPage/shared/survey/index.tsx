@@ -184,8 +184,6 @@ class Survey extends PureComponent<Props, State> {
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
 
-      console.log('disabledReason: ' + disabledReason);
-
       if (
         disabledReason === 'maybeNotPermitted' ||
         disabledReason === 'maybeNotVerified' ||
