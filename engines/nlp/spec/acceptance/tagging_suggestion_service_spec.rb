@@ -11,12 +11,13 @@ describe NLP::TaggingSuggestionService do
     Tagging::Tag.create(title_multiloc: {'en' => 'item'})
     @tags = Tagging::Tag.all()
     @ideas = Idea.all()
+    @tenant_id = Tenant.current.id
     @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
   end
 
   describe "suggest" do
     it "parses args and pass down" do
-      allow(@api).to receive(:zeroshot_classification)
+      allow(@api).to receive(:zeroshot_classification).and_return(nil)
       service.suggest(@ideas, @tags, 'en', @api)
       expect(@api).to have_received(:zeroshot_classification).with(
         {:candidate_labels=>
@@ -30,12 +31,13 @@ describe NLP::TaggingSuggestionService do
           {:doc_id=>@ideas[2].id,
             :text=>"But I\'m not ideal."}
           ],
-         :min_confidence_treshold=>0.5
+         :min_confidence_treshold=>0.5,
+         :tenant_id=> @tenant_id
        }
       )
     end
     it "parses args and pass down" do
-      allow(@api).to receive(:zeroshot_classification)
+      allow(@api).to receive(:zeroshot_classification).and_return(nil)
       service.suggest(@ideas, @tags, 'fr-BE', @api)
       expect(@api).to have_received(:zeroshot_classification).with(
         {:candidate_labels=>
@@ -44,7 +46,8 @@ describe NLP::TaggingSuggestionService do
           [{:doc_id=>@ideas[2].id,
             :text=>"Mais je ne suis pas idéale."}
           ],
-         :min_confidence_treshold=>0.5
+         :min_confidence_treshold=>0.5,
+         :tenant_id=> @tenant_id
        }
       )
     end
