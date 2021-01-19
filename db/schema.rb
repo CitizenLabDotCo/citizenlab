@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_161115) do
+ActiveRecord::Schema.define(version: 2020_12_17_170635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -45,6 +45,18 @@ ActiveRecord::Schema.define(version: 2020_11_30_161115) do
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "host"
+    t.string "logo"
+    t.string "header_bg"
+    t.string "favicon"
+    t.jsonb "settings", default: {}
+    t.jsonb "style", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -659,6 +671,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_161115) do
     t.boolean "downvoting_enabled", default: true, null: false
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
+    t.string "input_term", default: "idea"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -780,6 +793,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_161115) do
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
+    t.string "input_term", default: "idea"
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -833,7 +847,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_161115) do
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
-  create_table "tagging_taggings", id: :serial, force: :cascade do |t|
+  create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "assignment_method", default: 0
     t.uuid "idea_id"
     t.uuid "tag_id"
