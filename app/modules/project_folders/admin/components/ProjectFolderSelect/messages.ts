@@ -1,20 +1,21 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projectFolder: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectFolder',
-    defaultMessage: 'Project folder',
+  projectFolderSelectTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle',
+    defaultMessage: 'Add project to a folder?',
   },
-  projectFolderTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectFolderTooltip',
-    defaultMessage: 'Select a folder to which this project will be added.',
+  projectFolderSelectTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderSelectTooltip',
+    defaultMessage:
+      'You can add your project to an existing folder. You can also do this later in the Projects tab.',
   },
-  yes: {
-    id: 'app.containers.AdminPage.ProjectEdit.yes',
-    defaultMessage: 'Yes',
+  optionYes: {
+    id: 'app.containers.AdminPage.ProjectEdit.optionYes',
+    defaultMessage: 'Yes (select folder)',
   },
-  no: {
-    id: 'app.containers.AdminPage.ProjectEdit.no',
+  optionNo: {
+    id: 'app.containers.AdminPage.ProjectEdit.optionNo',
     defaultMessage: 'No',
   },
 });

@@ -115,9 +115,11 @@ const ProjectFolderSelect = memo<Props>(
       return (
         <StyledSectionField>
           <SubSectionTitle>
-            <FormattedMessage {...messages.projectFolder} />
+            <FormattedMessage {...messages.projectFolderSelectTitle} />
             <IconTooltip
-              content={<FormattedMessage {...messages.projectFolderTooltip} />}
+              content={
+                <FormattedMessage {...messages.projectFolderSelectTooltip} />
+              }
             />
           </SubSectionTitle>
           <Radio
@@ -126,7 +128,7 @@ const ProjectFolderSelect = memo<Props>(
             value={false}
             name="folderSelect"
             id="folderSelect-no"
-            label={<FormattedMessage {...messages.no} />}
+            label={<FormattedMessage {...messages.optionNo} />}
             disabled={userIsProjectFolderModerator}
           />
           <Radio
@@ -135,7 +137,7 @@ const ProjectFolderSelect = memo<Props>(
             value={true}
             name="folderSelect"
             id="folderSelect-yes"
-            label={<FormattedMessage {...messages.yes} />}
+            label={<FormattedMessage {...messages.optionYes} />}
             disabled={userIsProjectFolderModerator}
           />
           {showProjectFolderSelect && (
