@@ -168,16 +168,26 @@ resource "Taggings" do
     end
 
     example "Generates taggings from tag_ids" do
-      # response = {"task_id"=>"424bf84c-904e-4377-9d94-e0e9dfe70be3"}
-      # allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
+      response = {
+                "batches" => [{
+                  "task_id"=>"424bf84c-904e-4377-9d94-e0e9dfe70be3",
+                  "doc_ids" =>  @ideas.map(&:id)
+                }]
+            }
+      allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
       do_request idea_ids: @ideas.map(&:id), tag_ids: @tags.map(&:id)
       expect(response_status).to eq 200
     end
 
     example "Generates taggings from new tags" do
-      # response = {"task_id"=>"424bf84c-904e-4377-9d94-e0e9dfe70be3"}
-      # allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
+      response = {
+                "batches" => [{
+                  "task_id"=>"424bf84c-904e-4377-9d94-e0e9dfe70be3",
+                  "doc_ids" =>  @ideas.map(&:id)
+                }]
+            }
+      allow_any_instance_of(NLP::TaggingSuggestionService).to receive(:suggest).and_return(response)
 
       do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha', 'lilila', 'leela', 'lou' ]
 
