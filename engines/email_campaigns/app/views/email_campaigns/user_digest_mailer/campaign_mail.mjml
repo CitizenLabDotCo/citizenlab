@@ -136,7 +136,7 @@
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= new_initiative.images.first[:versions][:small] %>">
+                <img width="96px" src="<%= new_initiative.images.first&.versions&.small %>">
               </span>
             </td>
             <td width="200" style="text-align: left;">
@@ -196,7 +196,7 @@
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= succesful_initiative.images.first[:versions][:small] %>">
+                <img width="96px" src="<%= succesful_initiative.images.first&.versions&.small %>">
               </span>
             </td>
             <td width="200" style="text-align: left;">
