@@ -9,7 +9,7 @@ module Tagging
       end
 
       def resolve
-        if user&.active? && user&.admin?
+        if user&.active? && (user&.admin? || user&.project_moderator?)
           scope.all
         else
           scope.none
@@ -18,11 +18,11 @@ module Tagging
     end
 
     def show?
-      user&.active? && user.admin?
+      user&.active? && (user&.admin? || user&.project_moderator?)
     end
 
     def update?
-      user&.active? && user.admin?
+      user&.active? && (user&.admin? || user&.project_moderator?)
     end
 
     def permitted_attributes

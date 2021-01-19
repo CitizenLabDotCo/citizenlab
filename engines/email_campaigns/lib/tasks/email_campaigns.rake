@@ -84,5 +84,4 @@ namespace :email_campaigns do
     end
     logs.each{|l| Rails.logger.info l}
   end
-
 end

@@ -198,9 +198,9 @@ nl-BE:
       title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
     initiative_marked_as_spam:
       by_author: 'door %{authorName}'
-      cta_review_idea: 'Review dit voorstel'
+      cta_review_initiative: 'Review dit voorstel'
       report_inappropriate_offensive_content: 'Ik vind deze inhoud ongepast of aanstootgevend.'
-      report_not_an_idea: 'Dit is geen idee en hoort hier niet thuis.'
+      report_not_an_initiative: 'Dit is geen voorstel en hoort hier niet thuis.'
       subject: 'Je hebt een spamrapport op het platform van %{organizationName}'
       preheader: 'Neem actie'
       reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
@@ -474,23 +474,23 @@ nl-BE:
       commented: "%{authorFirstName} schreef:"
       preheader: "Dit gebeurde er vorige week op het platform"
       title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
       cta_go_to_the_platform: "Ga naar het platform"
       title_no_activity_past_week: "Geen activiteit de afgelopen week"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      title_proposals: "Gestarte voorstellen"
+      proposals_started_text: "Voorstellen zijn ideeën die steun moeten vinden van anderen (mensen zoals jij!) om vooruit te geraken. Hieronder is een lijst met voorstellen die vorige week naar voren werden gebracht. Klik op de voorstellen om hen in detail te bekijken, feedback te geven en hen te steunen!"
+      title_successful_proposals: "Ontdek de voorstellen"
+      successful_proposals_text: "Deze voorstellen hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het voorstel om meer te weten te komen over wat er hierna gebeurt."
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
-      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
+      trending_ideas: "Populaire ideeën"
+      trending_ideas_text: "Geïnteresseerd in wat er is gebeurd op het platform? Bekijk de drie meest populaire ideeën, wat mensen erover te zeggen hebben en neem deel aan het gesprek."
+      no_notifications: "Geen meldingen"
+      one_notification: "1 melding"
+      multiple_notifications: "%{notifCount} meldingen"
+      no_unread_notifications: "Tijd om deel te nemen!  Bezoek het platform om te ontdekken wat er aan het gebeuren is."
+      unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
       by_author: 'door %{authorName}'
       cta_process_initiative: 'Zet de volgende stappen met dit voorstel'

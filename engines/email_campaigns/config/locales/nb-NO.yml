@@ -198,9 +198,9 @@ nb:
       title_spam_report: '%{firstName} %{lastName} rapporterte spa'
     initiative_marked_as_spam:
       by_author: 'av %{authorName}'
-      cta_review_idea: 'Review initiative'
+      cta_review_initiative: 'Gå gjennom forslag'
       report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
-      report_not_an_idea: 'Dette innholdet er ikke en idé og hører ikke hjemme her.'
+      report_not_an_initiative: 'Dette innholdet er ikke en forslag og hører ikke hjemme her.'
       subject: 'Du har fått en spam rapport på %{organizationName}''s platform'
       preheader: 'Håndter spamrapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
@@ -373,7 +373,7 @@ nb:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
       cta_view: 'Gå til din idé'
-      event_description: '%{officialName} ga en oppdatering på din idé ''ideaTitle''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
+      event_description: '%{officialName} ga en oppdatering på din idé ''%{ideaTitle}''. Klikk på knappen nedenfor for å bli med i samtalen %{officialName}.'
       main_header: 'Du mottok en oppdatering fra %{organizationName}'
       subject: 'Du mottok en oppdatering fra %{organizationName}'
       preheader: '%{officialName} la igjen en offisiell oppdatering på din idé'
@@ -479,16 +479,16 @@ nb:
       title_no_activity_past_week: "Ingen aktivitet den siste uken"
       title_proposals: "Proposals started"
       proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
+      title_successful_proposals: "Oppdag forslag"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
       today_by_author: "I dag av %{author}"
       yesterday_by_author: "I går av %{author}"
       x_days_ago_by_author: "%{x} dager siden av %{author}"
-      trending_ideas: "Trending ideas"
+      trending_ideas: "Trending ideer"
       trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
       no_notifications: "No notifications"
       one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
+      multiple_notifications: "%{notifCount} varsler"
       no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
       unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
