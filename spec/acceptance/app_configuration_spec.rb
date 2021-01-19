@@ -144,7 +144,6 @@ resource "AppConfigurations" do
         configuration.update(logo: Rails.root.join("spec/fixtures/logo.png").open)
         expect(configuration.reload.logo_url).to be_present
         do_request app_configuration: {logo: nil}
-        require 'pry' ; binding.pry
         expect(configuration.reload.logo_url).to be nil
       end
     end
