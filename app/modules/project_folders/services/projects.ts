@@ -10,11 +10,6 @@ declare module 'services/projects' {
     folder_id?: string;
   }
 
-  export interface IProjectFormState {
-    folder_id?: string;
-    addProjectToFolder: boolean;
-  }
-
   export interface IProjectAttributes {
     folder_id?: string;
   }

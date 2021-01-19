@@ -7,7 +7,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 
 // services
-import { IProjectFormState } from 'services/projects';
+import { IUpdatedProjectProperties } from 'services/projects';
 import { hasProjectFolderModeratorRole } from 'modules/project_folders/permissions/roles';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
@@ -30,9 +30,16 @@ const StyledSectionField = styled(SectionField)`
   margin-bottom: 40px;
 `;
 
+declare module 'services/projects' {
+  export interface IProjectFormState {
+    folder_id?: string;
+    addProjectToFolder: boolean;
+  }
+}
+
 interface Props {
   onChange: onProjectFormStateChange;
-  projectAttrs: IProjectFormState;
+  projectAttrs: IUpdatedProjectProperties;
   addProjectToFolder: boolean;
 }
 
