@@ -80,7 +80,7 @@ resource "AppConfigurations" do
         "core" => {
           "organization_name" => {
             "en" => "TestTown",
-            "nl-BE" => "TestTowm",
+            "nl-BE" => "TestTown",
             "fr-FR" => "TestTown"
           }
         }
