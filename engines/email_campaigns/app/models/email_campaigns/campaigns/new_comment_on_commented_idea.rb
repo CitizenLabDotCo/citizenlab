@@ -10,6 +10,9 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      NewCommentOnCommentedIdeaMailer
+    end
 
     def activity_triggers
       {'Comment' => {'created' => true}}
@@ -29,6 +32,10 @@ module EmailCampaigns
 
     def self.category
       'commented'
+    end
+
+    def mailer_class
+      NewCommentOnCommentedIdeaMailer
     end
 
     def generate_commands recipient:, activity:, time: nil

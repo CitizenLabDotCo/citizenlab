@@ -29,6 +29,10 @@ module EmailCampaigns
       'admin'
     end
 
+    def mailer_class
+      AssigneeDigestMailer
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       assigned = {
@@ -75,8 +79,8 @@ module EmailCampaigns
             id: idea.id,
             title_multiloc: idea.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(idea),
-            published_at: idea.published_at.iso8601,
-            assigned_at: idea.assigned_at.iso8601,
+            published_at: idea.published_at&.iso8601,
+            assigned_at: idea.assigned_at&.iso8601,
             author_name: name_service.display_name!(idea.author),
             upvotes_count: idea.upvotes_count,
             downvotes_count: idea.downvotes_count,
@@ -96,8 +100,8 @@ module EmailCampaigns
             id: initiative.id,
             title_multiloc: initiative.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: initiative.published_at.iso8601,
-            assigned_at: initiative.assigned_at.iso8601,
+            published_at: initiative.published_at&.iso8601,
+            assigned_at: initiative.assigned_at&.iso8601,
             author_name: name_service.display_name!(initiative.author),
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
@@ -132,12 +136,12 @@ module EmailCampaigns
             id: initiative.id,
             title_multiloc: initiative.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: initiative.published_at.iso8601,
-            assigned_at: initiative.assigned_at.iso8601,
+            published_at: initiative.published_at&.iso8601,
+            assigned_at: initiative.assigned_at&.iso8601,
             author_name: name_service.display_name!(initiative.author),
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
-            threshold_reached_at: initiative.threshold_reached_at.iso8601,
+            threshold_reached_at: initiative.threshold_reached_at&.iso8601,
             images: initiative.initiative_images.map{ |image|
               {
                 ordering: image.ordering,

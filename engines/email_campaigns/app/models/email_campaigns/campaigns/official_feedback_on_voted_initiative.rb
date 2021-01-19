@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      OfficialFeedbackOnVotedInitiativeMailer
+    end
+
     def activity_triggers
       {'Notifications::OfficialFeedbackOnVotedInitiative' => {'created' => true}}
     end

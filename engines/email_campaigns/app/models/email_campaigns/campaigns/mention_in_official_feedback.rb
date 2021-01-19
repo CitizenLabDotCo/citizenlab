@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      MentionInOfficialFeedbackMailer
+    end
+
     def activity_triggers
       {'Notifications::MentionInOfficialFeedback' => {'created' => true}}
     end
@@ -37,7 +41,6 @@ module EmailCampaigns
         }
       }]
     end
-
 
     protected
 

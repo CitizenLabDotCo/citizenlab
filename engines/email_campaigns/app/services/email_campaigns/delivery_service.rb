@@ -177,7 +177,10 @@ module EmailCampaigns
     # This method is triggered when the given sending command should be sent
     # out through the interal Rails mailing stack
     def send_command_internal(campaign, command)
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail.deliver_later
+      campaign.mailer_class
+              .with(campaign: campaign, command: command)
+              .campaign_mail
+              .deliver_later(wait: command[:delay] || 0)
     end
   end
 end
