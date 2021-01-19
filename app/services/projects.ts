@@ -216,6 +216,7 @@ export interface IProjectFormState {
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
+  addProjectToFolder: boolean;
 }
 
 export interface IProject {

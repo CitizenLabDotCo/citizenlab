@@ -114,9 +114,14 @@ const configuration: ModuleConfiguration = {
     'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
       onChange,
       projectAttrs,
+      addProjectToFolder,
     }) => (
       <RenderOnFeatureFlag>
-        <ProjectFolderSelect onChange={onChange} projectAttrs={projectAttrs} />
+        <ProjectFolderSelect
+          onChange={onChange}
+          projectAttrs={projectAttrs}
+          addProjectToFolder={addProjectToFolder}
+        />
       </RenderOnFeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (

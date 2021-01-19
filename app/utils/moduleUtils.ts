@@ -6,7 +6,7 @@ import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IUpdatedProjectProperties } from 'services/projects';
-
+import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { mergeWith, castArray } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
@@ -32,7 +32,8 @@ export type OutletsPropertyMap = {
   'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
-    onChange: (fieldPath: string, value: any) => void;
+    onChange: onProjectFormStateChange;
+    addProjectToFolder: boolean;
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
