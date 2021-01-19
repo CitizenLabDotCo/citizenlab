@@ -144,6 +144,7 @@ resource "AppConfigurations" do
         configuration.update(logo: Rails.root.join("spec/fixtures/logo.png").open)
         expect(configuration.reload.logo_url).to be_present
         do_request app_configuration: {logo: nil}
+        require 'pry' ; binding.pry
         expect(configuration.reload.logo_url).to be nil
       end
     end
@@ -161,7 +162,7 @@ resource "AppConfigurations" do
 
   private
 
-  def base64_encoded_image filename, mime
+  def base64_encoded_image(filename, mime)
     "data:#{mime};base64,#{encode_image_as_base64(filename)}"
   end
 
