@@ -2,7 +2,6 @@ require "rails_helper"
 
 describe UserDisplayNameService do
 
-
   before(:all) do
     @regular_user = build(:user, first_name: 'Regular', last_name: 'User')
     @another_user = build(:user, first_name: 'Another', last_name: 'User')
@@ -11,9 +10,11 @@ describe UserDisplayNameService do
 
   context "when 'abbreviated_user_names' is enabled" do
 
-    before(:all) do
-      @tenant = create(:tenant)
-      @tenant.settings["abbreviated_user_names"] = {"allowed" => true, "enabled" => true}
+    before(:each) do
+      # @tenant = create(:tenant)
+      # TODO_MT replace with a build(:app_configuration)  (not a 'create') and replace before(:each) by before(:all)
+      @tenant = Tenant.current
+      @tenant.turn_on_abbreviated_user_names!
     end
 
     it "admins should see full names" do
@@ -53,8 +54,10 @@ describe UserDisplayNameService do
 
   context "when 'abbreviated_user_names' is disabled" do
 
-    before(:all) do
-      @tenant = create(:tenant)
+    before(:each) do
+      # @tenant = create(:tenant)
+      # TODO_MT replace with a build(:app_configuration)  (not a 'create') and replace before(:each) by before(:all)
+      @tenant = Tenant.current
       @tenant.settings["abbreviated_user_names"] = {"allowed" => false, "enabled" => false}
     end
 
