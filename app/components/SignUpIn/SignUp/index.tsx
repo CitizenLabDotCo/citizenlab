@@ -95,11 +95,6 @@ interface Props extends InputProps {
   theme: any;
 }
 
-//   componentWillUnmount() {
-//     trackEventByName(tracks.signUpFlowExited);
-//     signUpActiveStepChange(undefined);
-//   }
-
 const SignUp: FC<Props & InjectedIntlProps> = memo(
   ({
     intl: { formatMessage },
@@ -250,6 +245,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
           setError(formatMessage(messages.invitationError));
         });
       }
+      return () => {
+        trackEventByName(tracks.signUpFlowExited);
+        signUpActiveStepChange(undefined);
+      };
     }, []);
 
     useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
