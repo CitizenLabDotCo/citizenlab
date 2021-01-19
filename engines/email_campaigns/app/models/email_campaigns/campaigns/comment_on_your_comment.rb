@@ -22,6 +22,10 @@ module EmailCampaigns
       'own'
     end
 
+    def mailer_class
+      CommentOnYourCommentMailer
+    end
+
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
       name_service = UserDisplayNameService.new(Tenant.current, recipient)
