@@ -9,7 +9,7 @@ import GoogleFormsSurvey from './GoogleFormsSurvey';
 import EnalyzerSurvey from './EnalyzerSurvey';
 import Warning from 'components/UI/Warning';
 import SignUpIn from 'components/SignUpIn';
-// import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // services
 import {
@@ -45,7 +45,7 @@ const Container = styled.div`
 const SignUpInhWrapper = styled.div`
   width: 100%;
   padding: 20px;
-  padding-top: 40px;
+  padding-top: 45px;
   ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
@@ -54,12 +54,17 @@ const SignUpInhWrapper = styled.div`
 `;
 
 const StyledSignUpIn = styled(SignUpIn)`
+  width: 100%;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
 
   & .signuphelpertext {
     display: none !important;
+  }
+
+  & .headercontainer {
+    border-bottom: none !important;
   }
 `;
 
@@ -179,7 +184,13 @@ class Survey extends PureComponent<Props, State> {
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
 
-      if (disabledReason === 'maybeNotPermitted' || registrationNotCompleted) {
+      console.log('disabledReason: ' + disabledReason);
+
+      if (
+        disabledReason === 'maybeNotPermitted' ||
+        disabledReason === 'maybeNotVerified' ||
+        registrationNotCompleted
+      ) {
         return (
           <Container className={className || ''}>
             {/*
@@ -193,18 +204,18 @@ class Survey extends PureComponent<Props, State> {
                 metaData={{
                   flow: 'signup',
                   pathname: window.location.pathname,
-                  inModal: false,
-                  verification: undefined,
+                  inModal: true,
+                  verification: true,
                   noPushLinks: true,
                 }}
                 customSignInHeader={
                   <SignUpInHeader>
-                    <FormattedMessage {...messages.logInToTakeSurvey} />
+                    <FormattedMessage {...messages.logInToTakeTheSurvey} />
                   </SignUpInHeader>
                 }
                 customSignUpHeader={
                   <SignUpInHeader>
-                    <FormattedMessage {...messages.signUpToTakeSurvey} />
+                    <FormattedMessage {...messages.signUpToTakeTheSurvey} />
                   </SignUpInHeader>
                 }
                 onSignUpInCompleted={this.noOp}
@@ -223,11 +234,9 @@ class Survey extends PureComponent<Props, State> {
             id="project-survey"
             className={`${className} e2e-${surveyService}-survey enabled`}
           >
-            {/*
             <ProjectPageSectionTitle>
               <FormattedMessage {...messages.survey} />
             </ProjectPageSectionTitle>
-            */}
 
             {surveyService === 'typeform' && (
               <TypeformSurvey

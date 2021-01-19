@@ -58,12 +58,12 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.process.survey.survey',
     defaultMessage: 'Survey',
   },
-  signUpToTakeSurvey: {
-    id: 'app.containers.ProjectsShowPage.process.survey.signUpToTakeSurvey',
-    defaultMessage: 'Please sign up to take the survey',
+  signUpToTakeTheSurvey: {
+    id: 'app.containers.ProjectsShowPage.process.survey.signUpToTakeTheSurvey',
+    defaultMessage: 'Sign up to take the survey',
   },
-  logInToTakeSurvey: {
-    id: 'app.containers.ProjectsShowPage.process.survey.logInToTakeSurvey',
-    defaultMessage: 'Please log in to take the survey',
+  logInToTakeTheSurvey: {
+    id: 'app.containers.ProjectsShowPage.process.survey.logInToTakeTheSurvey',
+    defaultMessage: 'Log in to take the survey',
   },
 });
