@@ -26,7 +26,7 @@ import {
   addCommentToIdeaComment,
   addCommentToInitiativeComment,
 } from 'services/comments';
-import { canModerateProjectProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -307,7 +307,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         focused,
       } = this.state;
       const isModerator =
-        !isNilOrError(authUser) && canModerate(postId, { data: authUser });
+        !isNilOrError(authUser) &&
+        canModerateProject(postId, { data: authUser });
       const smallerThanSmallTablet =
         !isNilOrError(windowSize) && windowSize <= viewportWidths.smallTablet;
 
