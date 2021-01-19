@@ -67,8 +67,8 @@ const ProjectFolderSelect = memo<Props>(
       [onChange]
     );
 
-    const onAddProjectToFolderChange = useCallback(
-      (defaultFolderValue: string) => (showProjectFolderSelect: boolean) => {
+    const onShowProjectFolderSelectChange = useCallback(
+      (defaultFolderId: string) => (showProjectFolderSelect: boolean) => {
         const projectFormStateUpdates = {
           showProjectFolderSelect,
         };
@@ -76,7 +76,7 @@ const ProjectFolderSelect = memo<Props>(
         if (!folder_id) {
           projectFormStateUpdates[
             'projectAttributesDiff.folder_id'
-          ] = defaultFolderValue;
+          ] = defaultFolderId;
         }
 
         if (showProjectFolderSelect === false) {
@@ -92,16 +92,24 @@ const ProjectFolderSelect = memo<Props>(
       const userIsProjectFolderModerator = hasProjectFolderModeratorRole(
         authUser
       );
-      function showProjectFolderSelect() {
+      function getShowProjectFolderSelect() {
         if (userIsProjectFolderModerator) {
+          // folder moderators always need to pick a folder
+          // when they create a project
           return true;
-        } else if (folder_id !== null || folder_id !== undefined) {
+        } else if (folder_id) {
+          // when we already have a folder_id for our project,
+          // the project folder select should be turned on
+          // so we can see our selected folder.
+          // This will not block the UI
+          // because when we choose no folder
+          // folder_id will be set to null (see onShowProjectFolderSelectChange)
           return true;
         } else {
           return props.showProjectFolderSelect;
         }
       }
-      const showProjectFolderSelect = showProjectFolderSelect();
+      const showProjectFolderSelect = getShowProjectFolderSelect();
       const defaultFolderValue = folderOptions[0].value;
 
       return (
@@ -113,7 +121,7 @@ const ProjectFolderSelect = memo<Props>(
             />
           </SubSectionTitle>
           <Radio
-            onChange={onAddProjectToFolderChange(defaultFolderValue)}
+            onChange={onShowProjectFolderSelectChange(defaultFolderValue)}
             currentValue={showProjectFolderSelect}
             value={false}
             name="folderSelect"
@@ -122,7 +130,7 @@ const ProjectFolderSelect = memo<Props>(
             disabled={userIsProjectFolderModerator}
           />
           <Radio
-            onChange={onAddProjectToFolderChange(defaultFolderValue)}
+            onChange={onShowProjectFolderSelectChange(defaultFolderValue)}
             currentValue={showProjectFolderSelect}
             value={true}
             name="folderSelect"
