@@ -58,12 +58,14 @@ const SignUpHelperText = styled(QuillEditedContent)`
   padding-bottom: 25px;
 `;
 
-export type TSignUpSteps =
-  | 'auth-providers'
-  | 'password-signup'
-  | 'verification'
-  | 'custom-fields'
-  | 'success';
+export interface TSignUpStepsMap {
+  'auth-providers': 'auth-providers';
+  'password-signup': 'password-signup';
+  verification: 'verification';
+  success: 'success';
+}
+
+export type TSignUpSteps = TSignUpStepsMap[keyof TSignUpStepsMap];
 
 export type TSignUpStepConfigurationObject = {
   position: number;
