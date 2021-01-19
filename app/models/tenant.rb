@@ -106,9 +106,16 @@ class Tenant < ApplicationRecord
     configuration.base_frontend_uri
   end
 
+  # TODO_MT Duplicate code with AppConfiguration
+  # (Needed by tenant uploaders to compute +asset_host+ when creating a new tenant with uploads, bc app config does not
+  # exist yet).
   def base_backend_uri
-    ActiveSupport::Deprecation.warn("Tenant#base_backend_uri is deprecated. Use AppConfiguration#base_backend_uri instead.")
-    configuration.base_backend_uri
+    if Rails.env.development?
+      "http://localhost:4000"
+    else
+      transport = Rails.env.test? ? 'http' : 'https'
+      "#{transport}://#{self.host}"
+    end
   end
 
   def location
