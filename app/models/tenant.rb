@@ -142,7 +142,7 @@ class Tenant < ApplicationRecord
   private
 
   def create_app_configuration
-    Apartment::Tenant.switch(schema_name) do
+    switch do
       AppConfiguration.create(
           id: id,
           name: name,
@@ -159,7 +159,7 @@ class Tenant < ApplicationRecord
 
   def update_app_configuration
     return if caller.any? { |s| s.match?(/app_configuration\.rb.*`update_tenant'/) }
-    Apartment::Tenant.switch(schema_name) do
+    switch do
       config = AppConfiguration.instance
       attrs_delta = attributes_delta(self, config)
       return unless attrs_delta.present?
