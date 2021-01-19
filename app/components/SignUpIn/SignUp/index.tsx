@@ -232,6 +232,14 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       onSignUpCompleted();
     };
 
+    const handleOnOutletData = ({ key, configuration }) =>
+      setConfiguration((oldConfiguration) => ({
+        ...oldConfiguration,
+        [key]: configuration,
+      }));
+
+    const handleGoBack = () => setActiveStep('auth-providers');
+
     useEffect(() => {
       trackEventByName(tracks.signUpFlowEntered);
 
@@ -347,7 +355,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                   hasNextStep={enabledSteps.length > 1}
                   onCompleted={handleStepCompleted}
                   onGoToSignIn={onGoToSignIn}
-                  onGoBack={() => setActiveStep('auth-providers')}
+                  onGoBack={handleGoBack}
                 />
               )}
 
@@ -367,12 +375,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
               <Outlet
                 id="app.components.SignUpIn.SignUp.step"
                 step={activeStep}
-                onData={({ key, configuration }) =>
-                  setConfiguration((oldConfiguration) => ({
-                    ...oldConfiguration,
-                    [key]: configuration,
-                  }))
-                }
+                onData={handleOnOutletData}
                 onCompleted={handleStepCompleted}
               />
 
