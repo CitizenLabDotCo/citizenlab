@@ -91,7 +91,7 @@ const SignIn = memo<Props>(
     return (
       <Container id="e2e-sign-in-container" className={className}>
         <StyledHeaderContainer
-          className="headercontainer"
+          className="signupinheadercontainer"
           inModal={!!metaData.inModal}
         >
           {!customHeader ? (
@@ -107,6 +107,7 @@ const SignIn = memo<Props>(
           inModal={!!metaData.inModal}
           windowHeight={`${windowHeight}px`}
           headerHeight="68px"
+          className="signupincontentcontainer"
         >
           {metaData.error ? (
             <Error
