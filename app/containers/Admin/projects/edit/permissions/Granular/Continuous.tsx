@@ -11,7 +11,6 @@ import {
   IPermissionData,
   updateProjectPermission,
 } from 'services/actionPermissions';
-import { IProjectData } from 'services/projects';
 
 import { fontSizes } from 'utils/styleUtils';
 
@@ -28,7 +27,7 @@ const Container = styled.div`
 `;
 
 interface InputProps {
-  project: IProjectData;
+  projectId: string;
 }
 
 interface DataProps {
@@ -44,30 +43,34 @@ class Continuous extends PureComponent<Props> {
   ) => {
     updateProjectPermission(
       permission.id,
-      this.props.project.id,
+      this.props.projectId,
       permission.attributes.action,
       { permitted_by: permittedBy, group_ids: groupIds }
     );
   };
 
   render() {
-    const { permissions } = this.props;
+    const { permissions, projectId } = this.props;
 
-    if (isNilOrError(permissions)) return null;
+    if (!isNilOrError(permissions)) {
+      return (
+        <Container>
+          <ActionsForm
+            permissions={permissions}
+            onChange={this.handlePermissionChange}
+            postType="idea"
+            projectId={projectId}
+          />
+        </Container>
+      );
+    }
 
-    return (
-      <Container>
-        <ActionsForm
-          permissions={permissions}
-          onChange={this.handlePermissionChange}
-        />
-      </Container>
-    );
+    return null;
   }
 }
 
-export default (inputProps) => (
-  <GetProjectPermissions projectId={inputProps.project.id}>
+export default (inputProps: InputProps) => (
+  <GetProjectPermissions projectId={inputProps.projectId}>
     {(permissions) => <Continuous {...inputProps} permissions={permissions} />}
   </GetProjectPermissions>
 );

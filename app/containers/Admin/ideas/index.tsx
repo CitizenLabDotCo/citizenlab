@@ -29,8 +29,8 @@ const IdeasPage = memo(
       'custom_idea_statuses'
     );
     const resource = {
-      title: formatMessage(messages.pageTitle),
-      subtitle: formatMessage(messages.pageSubtitle),
+      title: formatMessage(messages.inputManagerPageTitle),
+      subtitle: formatMessage(messages.inputManagerPageSubtitle),
     };
 
     const getTabs = () => {
@@ -55,8 +55,8 @@ const IdeasPage = memo(
     return (
       <TabbedResource resource={resource} tabs={getTabs()}>
         <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
+          title={messages.inputManagerMetaTitle}
+          description={messages.inputManagerMetaDescription}
         />
         {children}
       </TabbedResource>
