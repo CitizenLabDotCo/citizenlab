@@ -42,7 +42,7 @@ const Container = styled.div`
   }
 `;
 
-const SignUpInhWrapper = styled.div`
+const SignUpInWrapper = styled.div`
   width: 100%;
   padding: 20px;
   padding-top: 45px;
@@ -184,9 +184,12 @@ class Survey extends PureComponent<Props, State> {
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
 
+      console.log(disabledReason);
+
       if (
         disabledReason === 'maybeNotPermitted' ||
         disabledReason === 'maybeNotVerified' ||
+        disabledReason === 'notVerified' ||
         registrationNotCompleted
       ) {
         return (
@@ -197,13 +200,15 @@ class Survey extends PureComponent<Props, State> {
             </ProjectPageSectionTitle>
             */}
 
-            <SignUpInhWrapper>
+            <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
                   flow: 'signup',
                   pathname: window.location.pathname,
                   inModal: true,
-                  verification: true,
+                  verification:
+                    disabledReason === 'maybeNotVerified' ||
+                    disabledReason === 'notVerified',
                   noPushLinks: true,
                 }}
                 customSignInHeader={
@@ -218,7 +223,7 @@ class Survey extends PureComponent<Props, State> {
                 }
                 onSignUpInCompleted={this.noOp}
               />
-            </SignUpInhWrapper>
+            </SignUpInWrapper>
           </Container>
         );
       }
