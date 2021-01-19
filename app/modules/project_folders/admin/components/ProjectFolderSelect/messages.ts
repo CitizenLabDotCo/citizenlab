@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectFolderTooltip',
     defaultMessage: 'Select a folder to which this project will be added.',
   },
-  noFolder: {
-    id: 'app.containers.AdminPage.ProjectEdit.noFolder',
-    defaultMessage: 'No Folder (at the top level).',
-  },
   yes: {
     id: 'app.containers.AdminPage.ProjectEdit.yes',
     defaultMessage: 'Yes',
