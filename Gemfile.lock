@@ -507,6 +507,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.0.0)
       activesupport (>= 3.0.0)
+    que (0.14.3)
     rack (2.2.3)
     rack-attack (6.3.1)
       rack (>= 1.0, < 3)
@@ -754,6 +755,7 @@ DEPENDENCIES
   public_api!
   puma
   pundit (~> 2.0)
+  que
   rack-attack (~> 6)
   rack-cors
   rack-mini-profiler
@@ -773,7 +775,6 @@ DEPENDENCIES
   scenic
   sentry-raven
   shoulda-matchers (~> 3.1)
-  sidekiq (~> 6.1)
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
