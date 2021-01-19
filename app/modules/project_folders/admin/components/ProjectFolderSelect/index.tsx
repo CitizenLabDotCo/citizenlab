@@ -7,7 +7,6 @@ import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 
 // services
-import { isAdmin } from 'services/permissions/roles';
 import { IProjectFormState } from 'services/projects';
 import { hasProjectFolderModeratorRole } from 'modules/project_folders/permissions/roles';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
@@ -24,8 +23,7 @@ import { IOption } from 'typings';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
@@ -38,21 +36,11 @@ interface Props {
   addProjectToFolder: boolean;
 }
 
-const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
-  ({
-    projectAttrs: { folder_id },
-    onChange,
-    intl: { formatMessage },
-    ...props
-  }) => {
+const ProjectFolderSelect = memo<Props>(
+  ({ projectAttrs: { folder_id }, onChange, ...props }) => {
     const { projectFolders } = useProjectFolders({});
     const authUser = useAuthUser();
     const localize = useLocalize();
-
-    const noFolderOption = {
-      value: '',
-      label: formatMessage(messages.noFolder),
-    };
 
     const folderOptions: IOption[] = useMemo(() => {
       if (!isNilOrError(projectFolders)) {
@@ -64,17 +52,6 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
 
       return [];
     }, [projectFolders]);
-
-    const defaultValue = useMemo<string>(() => {
-      if (
-        (!isNilOrError(authUser) && isAdmin({ data: authUser })) ||
-        !folderOptions[0]
-      ) {
-        return '';
-      }
-
-      return folderOptions[0].value;
-    }, [folderOptions, noFolderOption, authUser]);
 
     const handleFolderChange = useCallback(
       ({ value: folderId }) => {
@@ -132,10 +109,9 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
             label={<FormattedMessage {...messages.yes} />}
             disabled={userIsProjectFolderModerator}
           />
-
           {addProjectToFolder && (
             <Select
-              value={folder_id || defaultValue}
+              value={folder_id || folderOptions[0].value}
               options={folderOptions}
               onChange={handleFolderChange}
             />
@@ -148,4 +124,4 @@ const ProjectFolderSelect = memo<InjectedIntlProps & Props>(
   }
 );
 
-export default injectIntl(ProjectFolderSelect);
+export default ProjectFolderSelect;
