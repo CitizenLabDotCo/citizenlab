@@ -18,6 +18,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
     false
   end
 
+  # TODO_MT SideFx
   def update_configuration(configuration, params)
     configuration.attributes = {
         settings:  configuration.settings.deep_merge!(params[:settings].to_h),
