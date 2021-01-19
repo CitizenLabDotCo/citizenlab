@@ -108,6 +108,7 @@ export interface IProjectAttributes {
   ordering: number;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
+  input_term: InputTerm;
   action_descriptor: {
     posting_idea: {
       enabled: boolean;
@@ -218,7 +219,7 @@ export interface IProjectFormState {
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
-  addProjectToFolder: boolean;
+  // addProjectToFolder: boolean;
 }
 
 export interface IProject {
