@@ -2,7 +2,6 @@ require 'rails_helper'
 require Rails.root.join "engines/frontend/spec/models/style_settings_spec.rb"
 
 RSpec.describe Tenant, type: :model do
-  it_behaves_like "TenantStyle"
 
   describe "Default factory" do
     it "is valid" do
