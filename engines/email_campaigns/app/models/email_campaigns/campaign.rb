@@ -13,7 +13,6 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-
     def self.before_send action_symbol
       @before_send_hooks ||= []
       @before_send_hooks << action_symbol

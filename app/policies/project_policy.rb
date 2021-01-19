@@ -120,6 +120,7 @@ class ProjectPolicy < ApplicationPolicy
       :default_assignee_id,
       :poll_anonymous,
       :ideas_order,
+      :input_term,
       admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
