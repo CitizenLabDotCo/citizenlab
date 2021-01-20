@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import isFieldEnabled from '../isFieldEnabled';
+import isFieldEnabled from '../../../modules/idea_custom_fields/citizen/containers/IdeasShow/isFieldEnabled';
 
 // styles
 import { fontSizes } from 'utils/styleUtils';
@@ -16,7 +16,7 @@ import PostedBy from './PostedBy';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useIdeaCustomFieldsSchemas from 'modules/idea_custom_fields/hooks/useIdeaCustomFieldsSchemas';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
