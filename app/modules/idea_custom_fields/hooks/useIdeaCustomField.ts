@@ -4,7 +4,7 @@ import {
   IIdeaCustomField,
   IIdeaCustomFieldData,
   CustomFieldCodes,
-} from 'services/ideaCustomFields';
+} from '../services/ideaCustomFields';
 import { Observable, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
