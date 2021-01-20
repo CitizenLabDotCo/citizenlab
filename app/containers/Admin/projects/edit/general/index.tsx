@@ -232,7 +232,6 @@ class AdminProjectEditGeneral extends PureComponent<
       submitState: 'disabled',
       slug: null,
       showSlugErrorMessage: false,
-      showProjectFolderSelect: false,
     };
 
     this.state = initialState;
@@ -782,7 +781,6 @@ class AdminProjectEditGeneral extends PureComponent<
       showSlugErrorMessage,
       currentTenant,
       locale,
-      showProjectFolderSelect,
     } = this.state;
 
     const {
@@ -1068,7 +1066,6 @@ class AdminProjectEditGeneral extends PureComponent<
               id="app.components.AdminPage.projects.form.additionalInputs.inputs"
               projectAttrs={projectAttrs}
               onChange={this.handleUpdateField}
-              showProjectFolderSelect={showProjectFolderSelect}
             />
 
             <StyledSectionField>

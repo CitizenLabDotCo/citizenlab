@@ -1,4 +1,4 @@
-import React, { useMemo, memo, useCallback } from 'react';
+import React, { useMemo, memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 // hooks
@@ -33,21 +33,20 @@ const StyledSectionField = styled(SectionField)`
 declare module 'services/projects' {
   export interface IProjectFormState {
     folder_id?: string;
-    showProjectFolderSelect: boolean;
   }
 }
 
 interface Props {
   onChange: onProjectFormStateChange;
   projectAttrs: IUpdatedProjectProperties;
-  showProjectFolderSelect: boolean;
 }
 
 const ProjectFolderSelect = memo<Props>(
-  ({ projectAttrs: { folder_id }, onChange, ...props }) => {
+  ({ projectAttrs: { folder_id }, onChange }) => {
     const { projectFolders } = useProjectFolders({});
     const authUser = useAuthUser();
     const localize = useLocalize();
+    const [radioFolderSelect, setRadioFolderSelect] = useState(false);
 
     const folderOptions: IOption[] = useMemo(() => {
       if (!isNilOrError(projectFolders)) {
@@ -67,23 +66,20 @@ const ProjectFolderSelect = memo<Props>(
       [onChange]
     );
 
-    const onShowProjectFolderSelectChange = useCallback(
-      (defaultFolderId: string) => (showProjectFolderSelect: boolean) => {
-        const projectFormStateUpdates = {
-          showProjectFolderSelect,
-        };
+    const onRadioFolderSelectChange = useCallback(
+      (defaultFolderId) => (newRadioProjectFolderSelect: boolean) => {
+        if (newRadioProjectFolderSelect === true) {
+          setRadioFolderSelect(true);
 
-        if (!folder_id) {
-          projectFormStateUpdates[
-            'projectAttributesDiff.folder_id'
-          ] = defaultFolderId;
+          if (!folder_id) {
+            onChange({ 'projectAttributesDiff.folder_id': defaultFolderId });
+          }
         }
 
-        if (showProjectFolderSelect === false) {
-          projectFormStateUpdates['projectAttributesDiff.folder_id'] = null;
+        if (newRadioProjectFolderSelect === false) {
+          setRadioFolderSelect(false);
+          onChange({ 'projectAttributesDiff.folder_id': null });
         }
-
-        onChange(projectFormStateUpdates);
       },
       [onChange]
     );
@@ -101,12 +97,11 @@ const ProjectFolderSelect = memo<Props>(
           // when we already have a folder_id for our project,
           // the project folder select should be turned on
           // so we can see our selected folder.
-          // This will not block the UI
-          // because when we choose no folder
-          // folder_id will be set to null (see onShowProjectFolderSelectChange)
+          // This will not block the UI because when we choose no folder
+          // folder_id will be set to null (see onRadioFolderSelectChange)
           return true;
         } else {
-          return props.showProjectFolderSelect;
+          return radioFolderSelect;
         }
       }
       const showProjectFolderSelect = getShowProjectFolderSelect();
@@ -123,7 +118,7 @@ const ProjectFolderSelect = memo<Props>(
             />
           </SubSectionTitle>
           <Radio
-            onChange={onShowProjectFolderSelectChange(defaultFolderValue)}
+            onChange={onRadioFolderSelectChange(defaultFolderValue)}
             currentValue={showProjectFolderSelect}
             value={false}
             name="folderSelect"
@@ -132,7 +127,7 @@ const ProjectFolderSelect = memo<Props>(
             disabled={userIsProjectFolderModerator}
           />
           <Radio
-            onChange={onShowProjectFolderSelectChange(defaultFolderValue)}
+            onChange={onRadioFolderSelectChange(defaultFolderValue)}
             currentValue={showProjectFolderSelect}
             value={true}
             name="folderSelect"
@@ -142,7 +137,7 @@ const ProjectFolderSelect = memo<Props>(
           />
           {showProjectFolderSelect && (
             <Select
-              value={folder_id}
+              value={folder_id || defaultFolderValue}
               options={folderOptions}
               onChange={handleFolderChange}
             />
