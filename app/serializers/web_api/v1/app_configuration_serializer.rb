@@ -1,5 +1,5 @@
 class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
-  attributes :style
+  attributes :name, :host, :style
 
   attribute :logo do |object|
     object.logo && object.logo.versions.map{|k, v| [k.to_s, v.url]}.to_h
