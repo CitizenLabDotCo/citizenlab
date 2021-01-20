@@ -4,7 +4,7 @@ module EmailCampaigns
       campaign = EmailCampaigns::Campaigns::NewCommentOnVotedInitiative.first
       comment = Comment.find_by_post_type('Initiative')
       recipient = User.first
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       command = {
         recipient: recipient,
