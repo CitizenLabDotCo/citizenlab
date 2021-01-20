@@ -3,6 +3,7 @@
 require 'project_folders/monkey_patches/admin_publication_policy'
 require 'project_folders/monkey_patches/project_policy'
 require 'project_folders/monkey_patches/project_serializer'
+require 'project_folders/monkey_patches/user_policy'
 
 # rubocop:disable Lint/SuppressedException
 begin
@@ -36,6 +37,7 @@ module ProjectFolders
 
     ActiveSupport.on_load(:action_controller) do
       ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
+      ::UserPolicy.prepend ProjectFolders::MonkeyPatches::UserPolicy
       ::AdminPublicationPolicy.prepend ProjectFolders::MonkeyPatches::AdminPublicationPolicy
       ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
       ::WebApi::V1::ProjectSerializer.prepend ProjectFolders::MonkeyPatches::ProjectSerializer
