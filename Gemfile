@@ -65,7 +65,7 @@ gem "active_model_serializers", "~> 0.10.8"
 # See https://github.com/nsarno/knock/issues/250
 # Installs v2.2 which is not available on rubygems.org
 gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
-gem 'que'
+gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
 
 gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem "activerecord-import", '~> 1.0'
