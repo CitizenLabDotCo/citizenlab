@@ -17,7 +17,7 @@ module EmailCampaigns
 
 
     def self.default_schedule
-      day, hour = random_boolean ? [:thursday, 13] : [:saturday, 8]
+      day, hour = [[:thursday, 13], [:saturday, 8]].sample
       IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core','timezone')).local(2020)) do |s|
         rule = IceCube::Rule.weekly(1).day(day).hour_of_day(hour)
         s.add_recurrence_rule(rule)
@@ -73,10 +73,6 @@ module EmailCampaigns
     end
 
     private
-
-    def self.random_boolean
-      [true, false].sample
-    end
 
     def user_filter_no_invitees users_scope, options={}
       users_scope.active
