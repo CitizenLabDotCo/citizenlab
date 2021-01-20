@@ -74,7 +74,10 @@ export default () => ({
           path: '/:locale/admin/projects/:projectId/ideaform',
           name: 'admin projects idea form',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/ideaform'),
+            loader: () =>
+              import(
+                'modules/idea_custom_fields/admin/containers/projects/edit/ideaform'
+              ),
             loading: () => null,
           }),
         },
