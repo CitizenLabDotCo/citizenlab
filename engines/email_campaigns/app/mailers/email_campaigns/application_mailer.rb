@@ -88,7 +88,11 @@ module EmailCampaigns
     end
 
     def recipient_name
-      @recipient_name ||= UserDisplayNameService.new(tenant, recipient).display_name(recipient)
+      @recipient_name ||= UserDisplayNameService.new(app_configuration, recipient).display_name(recipient)
+    end
+
+    def app_configuration
+      @app_configuration ||= AppConfiguration.instance
     end
 
     def tenant
