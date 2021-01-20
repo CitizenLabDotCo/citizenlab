@@ -39,7 +39,7 @@ import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import isFieldEnabled from './isFieldEnabled';
+import isFieldEnabled from '../../modules/idea_custom_fields/citizen/containers/IdeasShow/isFieldEnabled';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -60,7 +60,7 @@ import GetPermission, {
 } from 'resources/GetPermission';
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
-} from 'resources/GetIdeaCustomFieldsSchemas';
+} from 'modules/idea_custom_fields/resources/GetIdeaCustomFieldsSchemas';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
@@ -548,6 +548,7 @@ export class IdeasShow extends PureComponent<
       const smallerThanLargeTablet = windowSize
         ? windowSize <= viewportWidths.largeTablet
         : false;
+
       const proposedBudgetEnabled = isFieldEnabled(
         'proposed_budget',
         ideaCustomFieldsSchemas,
