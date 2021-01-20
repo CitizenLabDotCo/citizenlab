@@ -73,7 +73,7 @@ module EmailCampaigns
 
     private
 
-    def random_boolean
+    def self.random_boolean
       [true, false].sample
     end
 
