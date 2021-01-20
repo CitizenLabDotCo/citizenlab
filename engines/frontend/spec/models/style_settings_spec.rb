@@ -6,7 +6,7 @@ RSpec.shared_examples_for "TenantStyle" do
 
   it "validates style using a valid json schema" do
     metaschema = JSON::Validator.validator_for_name("draft4").metaschema
-    schema = Frontend::TenantStyle::STYLE_JSON_SCHEMA
+    schema = AppConfiguration.style_json_schema
     expect(JSON::Validator.validate!(metaschema, schema)).to be true
   end
 
