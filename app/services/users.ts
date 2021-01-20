@@ -71,7 +71,7 @@ export interface IUserUpdate {
   password?: string;
   locale?: string;
   avatar?: string;
-  roles?: any[];
+  roles?: IRole[];
   birthyear?: number;
   gender?: string;
   domicile?: string;
@@ -110,6 +110,11 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     userId,
     { user: object }
   );
+
+  await streams.fetchAllWith({
+    dataId: [userId],
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
+  });
   return response;
 }
 
