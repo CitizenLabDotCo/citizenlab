@@ -13,7 +13,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import {
   IIdeaCustomFieldData,
   IUpdatedIdeaCustomFieldProperties /*Visibility*/,
-} from 'services/ideaCustomFields';
+} from 'modules/idea_custom_fields/services/ideaCustomFields';
 
 // components
 import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
@@ -23,7 +23,7 @@ const QuillMutilocWithLocaleSwitcher = lazy(() =>
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
+import messages from 'containers/Admin/projects/edit/ideaform/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
