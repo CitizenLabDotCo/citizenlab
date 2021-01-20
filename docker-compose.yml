@@ -42,10 +42,10 @@ services:
       - cow_ssl_cert_key_file
 
   que:
+    container_name: cl2-que
     depends_on:
       - 'postgres'
-      - 'redis'
-      - 'rabbitmq'
+      - 'web'
     build: .
     image: citizenlabdotco/cl2-back:latest
     command: bundle exec que
