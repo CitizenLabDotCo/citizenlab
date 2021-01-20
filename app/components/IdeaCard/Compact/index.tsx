@@ -67,12 +67,12 @@ const ImagePlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${transparentize(0.96, colors.label)};
+  background: ${transparentize(0.94, colors.label)};
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
   width: 34px;
-  fill: ${transparentize(0.55, colors.label)};
+  fill: ${transparentize(0.62, colors.label)};
 `;
 
 const Separator = styled.span`

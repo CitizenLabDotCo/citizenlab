@@ -49,7 +49,9 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   margin-right: 23px;
   overflow: hidden;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px ${transparentize(0.75, colors.label)};
+  /* border: solid 1px ${transparentize(0.75, colors.label)}; */
+  /* border: ${({ hasImage }) =>
+    hasImage ? `solid 1px ${colors.separation}` : 'none'}; */
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -90,8 +92,8 @@ const Title = styled.h3`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  line-height: 25px;
-  max-height: 75px;
+  line-height: 26px;
+  max-height: 78px;
   padding: 0;
   margin: 0;
   overflow: hidden;
