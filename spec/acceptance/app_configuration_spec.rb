@@ -35,7 +35,7 @@ resource "AppConfigurations" do
     example_request "Get the current configuration" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      # expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org' todo os maybe this will be added to the app configuration
+      expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({})
     end
 
