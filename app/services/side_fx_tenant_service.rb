@@ -15,7 +15,7 @@ class SideFxTenantService
       EmailCampaigns::AssureCampaignsService.new.assure_campaigns
       # fix permissions
       PermissionsService.new.update_permissions_for_current_tenant
-      track_tenant_async
+      track_tenant_async(tenant)
     end
   ensure
     LogActivityJob.perform_later(tenant, 'template_loaded', current_user, tenant.created_at.to_i)
@@ -41,7 +41,7 @@ class SideFxTenantService
       end
     end
     Apartment::Tenant.switch(tenant.schema_name) do
-      track_tenant_async
+      track_tenant_async(tenant)
     end
   end
 
@@ -59,8 +59,9 @@ class SideFxTenantService
 
   private
 
-  def track_tenant_async
-    TrackTenantJob.perform_later
+  # @param [Tenant] tenant
+  def track_tenant_async(tenant)
+    TrackTenantJob.perform_later(tenant)
   end
 
 
