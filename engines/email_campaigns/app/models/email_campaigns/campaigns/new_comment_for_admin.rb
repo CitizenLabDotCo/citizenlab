@@ -39,6 +39,10 @@ module EmailCampaigns
       'admin'
     end
 
+    def mailer_class
+      NewCommentForAdminMailer
+    end
+
     def generate_commands recipient:, activity:, time: nil
       comment = activity.item
       post = comment.post
