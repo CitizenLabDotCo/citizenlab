@@ -45,6 +45,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   def config_params
     return @config_params if @config_params
     @config_params = params.require(:app_configuration)
-    @config_params.permit(:logo, :header_bg, :favicon, settings: {}, style: {})
+                           .permit(:logo, :header_bg, :favicon, settings: {}, style: {})
   end
 end
