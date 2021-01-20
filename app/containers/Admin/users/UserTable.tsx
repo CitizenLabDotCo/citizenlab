@@ -114,14 +114,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
         newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
       }
 
-      updateUser(user.id, { roles: newRoles }).then(() => {
-        setTimeout(() => {
-          streams.fetchAllWith({
-            dataId: [user.id],
-            apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
-          });
-        }, 2000);
-      });
+      updateUser(user.id, { roles: newRoles });
     }
   };
 
