@@ -51,7 +51,11 @@ const ProjectFolderSelect = memo<Props>(
     const folderOptions: IOption[] = useMemo(() => {
       if (!isNilOrError(projectFolders)) {
         return projectFolders
-          .filter((folder) => isProjectFolderModerator(authUser, folder.id))
+          .filter(
+            (folder) =>
+              !isNilOrError(authUser) &&
+              isProjectFolderModerator(authUser, folder.id)
+          )
           .map((folder) => {
             return {
               value: folder.id,
