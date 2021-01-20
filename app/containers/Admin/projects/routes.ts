@@ -71,17 +71,6 @@ export default () => ({
           }),
         },
         {
-          path: '/:locale/admin/projects/:projectId/ideaform',
-          name: 'admin projects idea form',
-          component: Loadable({
-            loader: () =>
-              import(
-                'modules/idea_custom_fields/admin/containers/projects/edit/ideaform'
-              ),
-            loading: () => null,
-          }),
-        },
-        {
           path: '/:locale/admin/projects/:projectId/topics',
           name: 'admin projects topics',
           component: Loadable({
