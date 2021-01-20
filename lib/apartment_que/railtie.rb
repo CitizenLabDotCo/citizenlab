@@ -5,9 +5,6 @@ module ApartmentQue
     autoload :MonkeyPatches, 'apartment_que/monkey_patches'
 
     config.after_initialize do
-      # ActiveJob::QueueAdapters::QueAdapter.prepend(
-      #   ApartmentQue::MonkeyPatches::ActiveJob::QueueAdapters::QueAdapter
-      # )
       ActiveJob::QueueAdapters::QueAdapter::JobWrapper.prepend(
         ApartmentQue::MonkeyPatches::ActiveJob::QueueAdapters::QueAdapter::JobWrapper
       )
