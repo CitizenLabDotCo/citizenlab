@@ -45,7 +45,8 @@ services:
     container_name: cl2-que
     depends_on:
       - 'postgres'
-      - 'web'
+      - 'mailcatcher'
+      - 'rabbitmq'
     build: .
     image: citizenlabdotco/cl2-back:latest
     command: bundle exec que
