@@ -34,6 +34,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, time: nil
       time ||= Time.now
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       @users_to_projects ||= users_to_projects
       discover_projects = discover_projects @users_to_projects[recipient.id]
