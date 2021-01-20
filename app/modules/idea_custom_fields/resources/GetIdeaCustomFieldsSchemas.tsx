@@ -1,5 +1,5 @@
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import { IIdeaCustomFieldsSchemas } from 'services/ideaCustomFields';
+import useIdeaCustomFieldsSchemas from '../hooks/useIdeaCustomFieldsSchemas';
+import { IIdeaCustomFieldsSchemas } from '../services/ideaCustomFields';
 
 export type GetIdeaCustomFieldsSchemasChildProps =
   | IIdeaCustomFieldsSchemas
