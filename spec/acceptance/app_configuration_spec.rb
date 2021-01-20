@@ -54,12 +54,10 @@ resource "AppConfigurations" do
       will not be merged, but override their values.", extra: ""
 
       AppConfiguration.settings_json_schema["properties"].each do |feature, feature_descriptor|
-
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: [:app_configuration, :settings, feature]
-
-        feature_descriptor["properties"].without("allowed", "enabled").each do |setting, setting_descriptor|
-          parameter_description = "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}"
+        feature_descriptor['properties'].without("allowed", "enabled").each do |setting, setting_descriptor|
+          parameter_description = "#{setting_descriptor['description']}. Type: #{setting_descriptor['type']}"
           parameter setting, parameter_description, scope: [:app_configuration, :settings, feature]
         end
       end
@@ -75,17 +73,15 @@ resource "AppConfigurations" do
     let(:logo) { base64_encoded_image("logo.png", "image/png") }
     let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg") }
     let(:favicon) { base64_encoded_image("favicon.png", "image/png") }
-    let(:settings) {
+
+    let(:organization_name) do
       {
-        "core" => {
-          "organization_name" => {
-            "en" => "TestTown",
-            "nl-BE" => "TestTown",
-            "fr-FR" => "TestTown"
-          }
-        }
+        'en' => 'TestTown',
+        'nl-BE' => 'TestTowm',
+        'fr-FR' => 'TestTown'
       }
-    }
+    end
+
     let(:style) {
       {
         "signedOutHeaderOverlayColor" => "#3467eb",
