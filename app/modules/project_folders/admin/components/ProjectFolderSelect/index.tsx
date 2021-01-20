@@ -8,7 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // services
 import { IUpdatedProjectProperties } from 'services/projects';
-import { hasProjectFolderModeratorRole } from 'modules/project_folders/permissions/roles';
+import { isProjectFolderModerator } from 'modules/project_folders/permissions/roles';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
 // components
@@ -50,10 +50,14 @@ const ProjectFolderSelect = memo<Props>(
 
     const folderOptions: IOption[] = useMemo(() => {
       if (!isNilOrError(projectFolders)) {
-        return projectFolders.map((folder) => ({
-          value: folder.id,
-          label: localize(folder.attributes.title_multiloc),
-        }));
+        return projectFolders
+          .filter((folder) => isProjectFolderModerator(authUser, folder.id))
+          .map((folder) => {
+            return {
+              value: folder.id,
+              label: localize(folder.attributes.title_multiloc),
+            };
+          });
       }
 
       return [];
@@ -85,9 +89,7 @@ const ProjectFolderSelect = memo<Props>(
     );
 
     if (!isNilOrError(authUser) && folderOptions.length > 0) {
-      const userIsProjectFolderModerator = hasProjectFolderModeratorRole(
-        authUser
-      );
+      const userIsProjectFolderModerator = isProjectFolderModerator(authUser);
       function getShowProjectFolderSelect() {
         if (userIsProjectFolderModerator) {
           // folder moderators always need to pick a folder
