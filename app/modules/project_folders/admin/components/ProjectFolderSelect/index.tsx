@@ -8,6 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // services
 import { IUpdatedProjectProperties } from 'services/projects';
+import { userHasRole } from 'services/permissions/roles';
 import { isProjectFolderModerator } from 'modules/project_folders/permissions/roles';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
@@ -112,6 +113,9 @@ const ProjectFolderSelect = memo<Props>(
       }
       const showProjectFolderSelect = getShowProjectFolderSelect();
       const defaultFolderValue = folderOptions[0].value;
+      const areRadiosDisabled =
+        userIsProjectFolderModerator &&
+        !userHasRole({ data: authUser }, 'admin');
 
       return (
         <StyledSectionField>
@@ -130,7 +134,7 @@ const ProjectFolderSelect = memo<Props>(
             name="folderSelect"
             id="folderSelect-no"
             label={<FormattedMessage {...messages.optionNo} />}
-            disabled={userIsProjectFolderModerator}
+            disabled={areRadiosDisabled}
           />
           <Radio
             onChange={onRadioFolderSelectChange(defaultFolderValue)}
@@ -139,7 +143,7 @@ const ProjectFolderSelect = memo<Props>(
             name="folderSelect"
             id="folderSelect-yes"
             label={<FormattedMessage {...messages.optionYes} />}
-            disabled={userIsProjectFolderModerator}
+            disabled={areRadiosDisabled}
           />
           {showProjectFolderSelect && (
             <Select
