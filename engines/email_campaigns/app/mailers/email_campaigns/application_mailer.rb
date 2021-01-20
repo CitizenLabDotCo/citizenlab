@@ -34,7 +34,7 @@ module EmailCampaigns
     delegate :first_name, to: :recipient, prefix: true
 
     helper_method :command, :campaign, :event, :header_title, :header_message, :show_header?, :preheader, :subject,
-                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing
+                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing, :text_direction
 
     helper_method :organization_name, :recipient_name,
                   :url_service, :multiloc_service, :organization_name,
@@ -62,7 +62,7 @@ module EmailCampaigns
     end
 
     def show_header?
-      header_title.present?
+      true
     end
 
     def preheader
@@ -151,7 +151,7 @@ module EmailCampaigns
                  when OpenStruct then multiloc_or_struct.to_h.stringify_keys
                  end
 
-      multiloc_service.t(multiloc, recipient) if multiloc
+      multiloc_service.t(multiloc, recipient).html_safe if multiloc
     end
 
     def tenant_settings
@@ -172,10 +172,22 @@ module EmailCampaigns
       end
     end
 
+    def formatted_todays_date
+      I18n.l(Time.zone.today, format: :long)
+    end
+
     def days_since_publishing(resource)
       return unless resource.respond_to?(:published_at)
 
       (Time.zone.today - resource.published_at.to_date).to_i
+    end
+
+    def text_direction
+      if locale =~ /^ar.*$/
+        'rtl'
+      else
+        'ltr'
+      end
     end
   end
 end
