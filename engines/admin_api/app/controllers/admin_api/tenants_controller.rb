@@ -61,7 +61,7 @@ module AdminApi
     end
 
     def style_schema
-      render json: Frontend::TenantStyle::STYLE_JSON_SCHEMA
+      render json: AppConfiguration.style_json_schema
     end
 
     def templates
