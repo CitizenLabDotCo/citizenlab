@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   ideaCustomFieldsSchemasStream,
   IIdeaCustomFieldsSchemas,
-} from 'services/ideaCustomFields';
+} from '../services/ideaCustomFields';
 import { Observable, of } from 'rxjs';
 
 interface Props {
