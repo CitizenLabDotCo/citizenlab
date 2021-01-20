@@ -28,6 +28,8 @@ module Frontend
               event[:anonymous_id] = SecureRandom.base64
             end
 
+            # TODO: Do something with the feedback! Currently it is sent into the void.
+            # Originally, the feedback was pushed to Segment, but not anymore.
             head 200
           else
             render json: { errors: @product_feedback.errors.details }, status: :unprocessable_entity
