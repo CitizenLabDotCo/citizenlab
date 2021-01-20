@@ -94,7 +94,7 @@ class AdminFolderProjectsList extends Component<
     reorderAdminPublication(itemId, newOrder);
   };
 
-  showProjectFolderSelect = (projectFolderId: string) => (
+  addProjectToFolder = (projectFolderId: string) => (
     projectId: string
   ) => async () => {
     this.setState(({ processing }) => ({
@@ -237,7 +237,7 @@ class AdminFolderProjectsList extends Component<
                                 buttonContent: (
                                   <FormattedMessage {...messages.addToFolder} />
                                 ),
-                                handler: this.showProjectFolderSelect(
+                                handler: this.addProjectToFolder(
                                   projectFolderId
                                 ),
                                 processing: processing.includes(
