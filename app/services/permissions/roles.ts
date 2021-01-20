@@ -1,7 +1,7 @@
 import { IUser, IRole, IProjectModeratorRole } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 
-const hasRole = (user: IUser, role: IRole['type']) => {
+export const userHasRole = (user: IUser, role: IRole['type']) => {
   return !!(
     user.data.attributes?.roles &&
     user.data.attributes.roles?.find((r) => r.type === role)
@@ -10,7 +10,7 @@ const hasRole = (user: IUser, role: IRole['type']) => {
 
 export const isAdmin = (user?: IUser | null | undefined | Error) => {
   if (!isNilOrError(user)) {
-    return !!user && hasRole(user, 'admin');
+    return !!user && userHasRole(user, 'admin');
   }
 
   return false;
@@ -32,7 +32,7 @@ export const isSuperAdmin = (user?: IUser | null | Error) => {
 };
 
 export const isModerator = (user?: IUser | null) => {
-  return !!user && hasRole(user, 'project_moderator');
+  return !!user && userHasRole(user, 'project_moderator');
 };
 
 export const isProjectModerator = (user?: IUser | null, projectId?: string) => {
