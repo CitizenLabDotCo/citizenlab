@@ -23,7 +23,7 @@ const QuillMutilocWithLocaleSwitcher = lazy(() =>
 
 // i18n
 import T from 'components/T';
-import messages from 'containers/Admin/projects/edit/ideaform/messages';
+import messages from 'modules/idea_custom_fields/admin/containers/projects/edit/ideaform/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
