@@ -1,4 +1,4 @@
-require 'rspec'
+require "rails_helper"
 
 describe 'SideFxAppConfigurationService' do
   let(:service) { SideFxAppConfigurationService.new }
