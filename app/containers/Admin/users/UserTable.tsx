@@ -12,10 +12,6 @@ import UserTableRow from './UserTableRow';
 // Services
 import { IUserData, IRole, updateUser } from 'services/users';
 
-// Utils
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
