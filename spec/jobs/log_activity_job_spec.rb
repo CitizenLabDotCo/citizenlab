@@ -72,5 +72,14 @@ RSpec.describe LogActivityJob, type: :job do
       expect{job.perform(item, 'created', user, Time.now)}.not_to have_enqueued_job(TrackEventJob)
     end
 
+    it "converts AppConfiguration activities to Tenant activities" do
+      item = AppConfiguration.instance
+      user = create(:user)
+
+      expect{job.perform(item, 'changed', user, Time.now)}
+        .to change{Activity.where(item_type: 'Tenant').count}.by(1)
+      expect(Activity.where(item_type: 'AppConfiguration').empty?).to be true
+    end
+
   end
 end
