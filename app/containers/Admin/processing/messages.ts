@@ -145,9 +145,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.noIdeasInThisProject',
     defaultMessage: "This project doesn't seem to contain any ideas.",
   },
-  pickProject: {
-    id: 'app.components.admin.PostManager.PostPreview.pickProject',
-    defaultMessage: 'Please select a project to start with.',
+  pickInputCollection: {
+    id: 'app.components.admin.PostManager.PostPreview.pickInputCollection',
+    defaultMessage: 'Please select an input collection project to start with.',
   },
   pendingTagText: {
     id: 'app.components.admin.PostManager.PostPreview.pendingTagText',
@@ -155,6 +155,7 @@ export default defineMessages({
   },
   autotaggingProcessing: {
     id: 'app.components.admin.PostManager.PostPreview.autotaggingProcessing',
-    defaultMessage: 'Automatic tagging : {remainingItems} items left',
+    defaultMessage:
+      'Automatic tagging : {remainingItems} items are being processed',
   },
 });
