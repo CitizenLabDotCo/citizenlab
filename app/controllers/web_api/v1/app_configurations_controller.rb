@@ -38,8 +38,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def app_configuration
-    return @app_configuration if @app_configuration
-    @app_configuration = authorize AppConfiguration.instance
+    @app_configuration ||= authorize AppConfiguration.instance
   end
 
   def config_params
