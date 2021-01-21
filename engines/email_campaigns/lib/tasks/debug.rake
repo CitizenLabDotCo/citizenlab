@@ -16,7 +16,7 @@ namespace :debug do
       campaign.mailer_class
               .with(campaign: campaign, command: command)
               .campaign_mail
-              .deliver_later(wait: 2.minutes)
+              .deliver_later
     end
   end
 end

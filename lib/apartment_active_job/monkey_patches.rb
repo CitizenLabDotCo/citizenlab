@@ -1,4 +1,4 @@
-module ApartmentQue
+module ApartmentActiveJob
   module MonkeyPatches
   end
 end
