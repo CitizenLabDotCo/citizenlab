@@ -95,8 +95,13 @@ const ProjectFolderSelect = memo<Props>(
 
     if (!isNilOrError(authUser) && folderOptions.length > 0) {
       const userIsProjectFolderModerator = isProjectFolderModerator(authUser);
+      const showProjectFolderSelect = getShowProjectFolderSelect();
+      const defaultFolderValue = folderOptions[0].value;
+      const areRadiosDisabled =
+        userIsProjectFolderModerator &&
+        !userHasRole({ data: authUser }, 'admin');
       function getShowProjectFolderSelect() {
-        if (userIsProjectFolderModerator) {
+        if (areRadiosDisabled) {
           // folder moderators always need to pick a folder
           // when they create a project
           return true;
@@ -111,11 +116,6 @@ const ProjectFolderSelect = memo<Props>(
           return radioFolderSelect;
         }
       }
-      const showProjectFolderSelect = getShowProjectFolderSelect();
-      const defaultFolderValue = folderOptions[0].value;
-      const areRadiosDisabled =
-        userIsProjectFolderModerator &&
-        !userHasRole({ data: authUser }, 'admin');
 
       return (
         <StyledSectionField>
