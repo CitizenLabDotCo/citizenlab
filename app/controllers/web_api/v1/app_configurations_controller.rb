@@ -5,7 +5,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def update
-    update_configuration!(app_configuration, params)
+    update_configuration!(app_configuration, config_params)
     # TODO_MT Using +SideFxAppConfigurationService+ instead of +SideFxTenantService+
     side_fx_service = SideFxAppConfigurationService.new
     side_fx_service.before_update(app_configuration, current_user)
