@@ -5,12 +5,10 @@ describe NLP::TaggingSuggestionService do
   let(:service) { NLP::TaggingSuggestionService.new }
 
   before do
-    create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'}, body_multiloc: {'en' => 'But I\'m not ideal.'})
-    create(:idea, title_multiloc: {'en' => 'I\'m an idea.', 'fr-BE': 'Je suis une idée.'}, body_multiloc: {'en' => 'But I\'m not ideal.', 'fr-BE' => 'Mais je ne suis pas idéale.'})
     Tagging::Tag.create(title_multiloc: {'en' => 'label', 'fr-BE' => 'label'})
     Tagging::Tag.create(title_multiloc: {'en' => 'item'})
     @tags = Tagging::Tag.all()
-    @ideas = Idea.all()
+    @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'}, body_multiloc: {'en' => 'But I\'m not ideal.'}).push(create(:idea, title_multiloc: {'en' => 'I\'m an idea.', 'fr-BE': 'Je suis une idée.'}, body_multiloc: {'en' => 'But I\'m not ideal.', 'fr-BE' => 'Mais je ne suis pas idéale.'}))
     @tenant_id = Tenant.current.id
     @api ||= NLP::API.new ENV.fetch('CL2_NLP_HOST')
   end
