@@ -5,14 +5,6 @@ exports[`<FeedbackToggle /> renders correctly checked for initiatives 1`] = `
   className="feedback_needed_filter_toggle"
   id="e2e-feedback_needed_filter_toggle"
 >
-  <FeedbackToggle__StyledLabel
-    onClick={[Function]}
-  >
-    <FormattedMessage
-      defaultMessage="All initiatives"
-      id="app.components.admin.PostManager.anyFeedbackStatusInitiatives"
-    />
-  </FeedbackToggle__StyledLabel>
   <FeedbackToggle__ToggleContainer
     checked={true}
     onClick={[Function]}
@@ -28,8 +20,8 @@ exports[`<FeedbackToggle /> renders correctly checked for initiatives 1`] = `
     onClick={[Function]}
   >
     <FormattedMessage
-      defaultMessage="Need Feedback"
-      id="app.components.admin.PostManager.needFeedback"
+      defaultMessage="Only show inputs that need feedback"
+      id="app.components.admin.PostManager.inputsNeedFeedbackToggle"
     />
     <CountBadge
       count={6}
@@ -43,14 +35,6 @@ exports[`<FeedbackToggle /> renders correctly unchecked for ideas 1`] = `
   className="feedback_needed_filter_toggle"
   id="e2e-feedback_needed_filter_toggle"
 >
-  <FeedbackToggle__StyledLabel
-    onClick={[Function]}
-  >
-    <FormattedMessage
-      defaultMessage="All ideas"
-      id="app.components.admin.PostManager.anyFeedbackStatusIdeas"
-    />
-  </FeedbackToggle__StyledLabel>
   <FeedbackToggle__ToggleContainer
     checked={false}
     onClick={[Function]}
@@ -66,8 +50,8 @@ exports[`<FeedbackToggle /> renders correctly unchecked for ideas 1`] = `
     onClick={[Function]}
   >
     <FormattedMessage
-      defaultMessage="Need Feedback"
-      id="app.components.admin.PostManager.needFeedback"
+      defaultMessage="Only show inputs that need feedback"
+      id="app.components.admin.PostManager.inputsNeedFeedbackToggle"
     />
     <CountBadge
       count={6}

@@ -16,11 +16,7 @@ import GetResourceFiles, {
 
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/ProjectsShowPage/messages';
+import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -30,14 +26,12 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   padding: 30px;
   padding-bottom: 35px;
-  margin-bottom: 50px;
   ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
@@ -45,11 +39,11 @@ const Container = styled.div`
   `}
 `;
 
-const Header = styled.div`
+const Header = styled.div<{ hasContent: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => (props.hasContent ? '30px' : '0px')};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -74,50 +68,44 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const PhaseDescription = memo<Props & InjectedLocalized>(
-  ({ projectId, phaseId, phase, phaseFiles, className, localize }) => {
+const PhaseDescription = memo<Props>(
+  ({ projectId, phaseId, phase, phaseFiles, className }) => {
     const theme: any = useTheme();
     const { windowWidth } = useWindowSize();
+    const localize = useLocalize();
 
     const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
-    const content = localize(phase?.attributes?.description_multiloc);
+    const content = !isNilOrError(phase)
+      ? localize(phase.attributes.description_multiloc)
+      : '';
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
+    const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
-    if (!contentIsEmpty || !isEmpty(phaseFiles)) {
-      return (
-        <Container className={`e2e-phase-description ${className || ''}`}>
-          <Header>
-            <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
-            {!smallerThanSmallTablet && (
-              <PhaseNavigation projectId={projectId} />
+    return (
+      <Container className={`e2e-phase-description ${className || ''}`}>
+        <Header hasContent={hasContent}>
+          <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
+          {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
+        </Header>
+        {hasContent && (
+          <>
+            <QuillEditedContent fontSize="base" textColor={theme.colorText}>
+              <T
+                value={phase?.attributes?.description_multiloc}
+                supportHtml={true}
+              />
+            </QuillEditedContent>
+
+            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
+              <StyledFileAttachments files={phaseFiles} />
             )}
-          </Header>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              tagName="h3"
-              {...messages.invisibleTitlePhaseAbout}
-            />
-          </ScreenReaderOnly>
-          <QuillEditedContent fontSize="base" textColor={theme.colorText}>
-            <T
-              value={phase?.attributes?.description_multiloc}
-              supportHtml={true}
-            />
-          </QuillEditedContent>
-
-          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
-            <StyledFileAttachments files={phaseFiles} />
-          )}
-        </Container>
-      );
-    }
-
-    return null;
+          </>
+        )}
+      </Container>
+    );
   }
 );
-
-const PhaseDescriptionWithHoC = injectLocalize(PhaseDescription);
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
@@ -130,7 +118,7 @@ const Data = adopt<DataProps, InputProps>({
 
 const PhaseDescriptionWithHoCAndData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <PhaseDescriptionWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseDescription {...inputProps} {...dataProps} />}
   </Data>
 );
 

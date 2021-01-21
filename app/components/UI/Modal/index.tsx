@@ -69,7 +69,7 @@ const CloseButton = styled.button`
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 20px;
+  top: 19px;
   right: 25px;
   cursor: pointer;
   margin: 0;
@@ -215,7 +215,6 @@ const Overlay = styled.div`
 `;
 
 export const HeaderContainer = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -223,7 +222,6 @@ export const HeaderContainer = styled.div`
   padding-right: 30px;
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-right: 45px;
   border-bottom: solid 1px #e0e0e0;
   background: transparent;
 
@@ -236,16 +234,26 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  width: 100%;
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
   margin: 0;
+  margin-right: 45px;
   padding: 0;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 35px;
+  `}
 
   ${isRtl`
     text-align: right;
+    margin: 0;
+    margin-left: 45px;
+
+    ${media.smallerThanMinTablet`
+      margin-left: 35px;
+    `}
   `}
 `;
 

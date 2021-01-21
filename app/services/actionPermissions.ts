@@ -2,14 +2,16 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
+export type IGlobalPermissionAction =
+  | 'voting_initiative'
+  | 'commenting_initiative'
+  | 'posting_initiative';
+
 export interface IGlobalPermissionData {
   id: string;
   type: string;
   attributes: {
-    action:
-      | 'voting_initiative'
-      | 'commenting_initiative'
-      | 'posting_initiative';
+    action: IGlobalPermissionAction;
     permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
     created_at: string;
     updated_at: string;
@@ -23,17 +25,18 @@ export interface IGlobalPermissionData {
     };
   };
 }
-
+export type IPCPermissionAction =
+  | 'voting_idea'
+  | 'commenting_idea'
+  | 'commenting_idea'
+  | 'taking_survey'
+  | 'taking_poll'
+  | 'budgeting';
 export interface IPCPermissionData {
   id: string;
   type: string;
   attributes: {
-    action:
-      | 'voting_idea'
-      | 'commenting_idea'
-      | 'posting_idea'
-      | 'taking_survey'
-      | 'taking_poll';
+    action: IPCPermissionAction;
     permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
     created_at: string;
     updated_at: string;

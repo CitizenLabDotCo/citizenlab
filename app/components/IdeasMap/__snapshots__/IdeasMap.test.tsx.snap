@@ -4,8 +4,8 @@ exports[`IdeasMap renders correctly 1`] = `
 <IdeasMap__Container>
   <a11y__ScreenReaderOnly>
     <FormattedMessage
-      defaultMessage="Map with overview of ideas based on location"
-      id="app.components.IdeasMap.mapTitle"
+      defaultMessage="Map overview"
+      id="app.components.IdeasMap.a11y_mapTitle"
     />
   </a11y__ScreenReaderOnly>
   <Component

@@ -28,12 +28,13 @@ export default defineMessages({
     defaultMessage: 'Contributed to project',
   },
   field_participated_in_topic: {
-    id: 'app.components.admin.UserFilterConditions.field_topic',
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_topic',
     defaultMessage: 'Contributed to topic',
   },
-  field_participated_in_idea_status: {
-    id: 'app.components.admin.UserFilterConditions.field_idea_status',
-    defaultMessage: 'Contributed to idea(s) with status',
+  field_participated_in_input_status: {
+    id:
+      'app.components.admin.UserFilterConditions.field_participated_in_input_status',
+    defaultMessage: 'Interacted with an input with status',
   },
   field_verified: {
     id: 'app.components.admin.UserFilterConditions.field_verified',
@@ -177,13 +178,13 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_in',
     defaultMessage: "didn't contribute",
   },
-  predicate_posted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_posted_in',
-    defaultMessage: 'posted',
+  predicate_posted_input: {
+    id: 'app.components.admin.UserFilterConditions.predicate_posted_input',
+    defaultMessage: 'posted an input',
   },
-  predicate_not_posted_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_posted_in',
-    defaultMessage: "didn't post",
+  predicate_not_posted_input: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_posted_input',
+    defaultMessage: "didn't post an input",
   },
   predicate_commented_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_commented_in',
@@ -193,13 +194,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_commented_in',
     defaultMessage: "didn't comment",
   },
-  predicate_voted_idea_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_voted_idea_in',
-    defaultMessage: 'voted on idea',
+  predicate_voted_input_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_input_in',
+    defaultMessage: 'voted on input',
   },
-  predicate_not_voted_idea_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_idea_in',
-    defaultMessage: "didn't vote on idea",
+  predicate_not_voted_input_in: {
+    id:
+      'app.components.admin.UserFilterConditions.predicate_not_voted_input_in',
+    defaultMessage: "didn't vote on input",
   },
   predicate_voted_comment_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_voted_comment_in',
