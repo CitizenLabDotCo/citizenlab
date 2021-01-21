@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage:
       'Generate as many widgets as you like, and add the html-code to your website.',
   },
-  titleIdeaContent: {
-    id: 'app.containers.AdminPage.widgets.titleIdeaContent',
-    defaultMessage: 'Idea Content',
+  titleInputSelection: {
+    id: 'app.containers.AdminPage.widgets.titleInputSelection',
+    defaultMessage: 'Input selection',
   },
   titleDimensions: {
     id: 'app.containers.AdminPage.widgets.titleDimensions',
@@ -131,9 +131,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.sortNewest',
     defaultMessage: 'Newest',
   },
-  fieldLimit: {
-    id: 'app.containers.AdminPage.widgets.fieldLimit',
-    defaultMessage: 'Limit',
+  fieldInputsLimit: {
+    id: 'app.containers.AdminPage.widgets.fieldInputsLimit',
+    defaultMessage: 'Number of inputs',
   },
   settingsTitle: {
     id: 'app.containers.AdminPage.widgets.settingsTitle',

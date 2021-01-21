@@ -173,7 +173,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCard extends PureComponent<Props, State> {
+class ProjectSelectionCard extends PureComponent<Props, State> {
   disabledMessage = () => {
     const { project, authUser } = this.props;
 
@@ -326,6 +326,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <ProjectCard {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectSelectionCard {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -48,13 +48,13 @@ describe('Project selection page', () => {
 
   beforeEach(() => {
     cy.visit(`/folders/${folderSlug}`);
-    cy.get('.e2e-folder-page');
+    cy.get('#e2e-folder-page');
     cy.acceptCookies();
     cy.wait(500);
   });
 
   it('shows the page', () => {
-    cy.get('.e2e-folder-page');
+    cy.get('#e2e-folder-page');
   });
 
   it('shows where you are', () => {
@@ -64,7 +64,7 @@ describe('Project selection page', () => {
   });
 
   it('shows the folder title', () => {
-    cy.get('.e2e-header-folder').contains(folderTitle);
+    cy.get('#e2e-folder-title').contains(folderTitle);
   });
 
   it('shows the folder description', () => {
@@ -72,8 +72,9 @@ describe('Project selection page', () => {
   });
 
   it('shows the contained projects', () => {
-    cy.get('#e2e-projects-container').contains(projectOneTitle);
-    cy.get('#e2e-projects-container').contains(projectTwoTitle);
+    cy.get('#e2e-folder-page');
+    cy.get('.e2e-project-card-project-title').eq(0).contains(projectTwoTitle);
+    cy.get('.e2e-project-card-project-title').eq(1).contains(projectOneTitle);
   });
 
   after(() => {

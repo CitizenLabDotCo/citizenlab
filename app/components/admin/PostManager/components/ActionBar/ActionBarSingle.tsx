@@ -22,7 +22,7 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
       resetSelection,
       intl: { formatMessage },
     } = this.props;
-    const message = formatMessage(messages.deleteIdeaConfirmation);
+    const message = formatMessage(messages.deleteInputConfirmation);
 
     if (window.confirm(message)) {
       deleteIdea(postId);

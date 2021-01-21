@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo, useState } from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // utils
@@ -11,8 +10,9 @@ import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,6 +22,7 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
+import { ProcessType } from 'services/projects';
 
 // styling
 import styled from 'styled-components';
@@ -40,58 +41,59 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   idea: IIdeaData;
   hasLeftMargin: boolean;
   className?: string;
+  projectId: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  spamModalVisible: boolean;
-}
-
-class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      spamModalVisible: false,
-    };
-  }
-
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
-  };
-
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
-  };
-
-  onEditIdea = () => {
-    clHistory.push(`/ideas/edit/${this.props.idea.id}`);
-  };
-
-  onDeleteIdea = (ideaId: string) => () => {
-    const message = this.props.intl.formatMessage(
-      messages.deleteIdeaConfirmation
+const IdeaMoreActions = memo(
+  ({
+    idea,
+    hasLeftMargin,
+    className,
+    projectId,
+    intl: { formatMessage },
+  }: Props & InjectedIntlProps) => {
+    const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(
+      false
     );
+    const authUser = useAuthUser();
+    const project = useProject({ projectId });
 
-    if (window.confirm(message)) {
-      deleteIdea(ideaId);
-      clHistory.goBack();
-    }
-  };
+    const openSpamModal = () => {
+      setIsSpamModalVisible(true);
+    };
 
-  render() {
-    const { idea, hasLeftMargin, className, authUser } = this.props;
-    const { spamModalVisible } = this.state;
+    const closeSpamModal = () => {
+      setIsSpamModalVisible(false);
+    };
 
-    if (!isNilOrError(authUser) && !isNilOrError(idea)) {
+    const onEditIdea = () => {
+      clHistory.push(`/ideas/edit/${idea.id}`);
+    };
+
+    const onDeleteIdea = (ideaId: string, processType: ProcessType) => () => {
+      const deleteConfirmationMessage = {
+        continuous: messages.deleteInputConfirmation,
+        timeline: messages.deleteInputInTimelineConfirmation,
+      }[processType];
+
+      if (window.confirm(formatMessage(deleteConfirmationMessage))) {
+        deleteIdea(ideaId);
+        clHistory.goBack();
+      }
+    };
+
+    if (
+      !isNilOrError(authUser) &&
+      !isNilOrError(idea) &&
+      !isNilOrError(project)
+    ) {
+      const ideaId = idea.id;
+      const processType = project.attributes.process_type;
+
       return (
         <Container className={className}>
           <MoreActionsMenuWrapper
@@ -104,15 +106,15 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
                 actions={[
                   {
                     label: <FormattedMessage {...messages.reportAsSpam} />,
-                    handler: this.openSpamModal,
+                    handler: openSpamModal,
                   },
                   {
-                    label: <FormattedMessage {...messages.editIdea} />,
-                    handler: this.onEditIdea,
+                    label: <FormattedMessage {...messages.editPost} />,
+                    handler: onEditIdea,
                   },
                   {
-                    label: <FormattedMessage {...messages.deleteIdea} />,
-                    handler: this.onDeleteIdea(idea.id),
+                    label: <FormattedMessage {...messages.deletePost} />,
+                    handler: onDeleteIdea(ideaId, processType),
                   },
                 ]}
               />
@@ -122,7 +124,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
                   actions={[
                     {
                       label: <FormattedMessage {...messages.reportAsSpam} />,
-                      handler: this.openSpamModal,
+                      handler: openSpamModal,
                     },
                   ]}
                   ariaLabel={<FormattedMessage {...messages.moreOptions} />}
@@ -131,8 +133,8 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
             </HasPermission>
           </MoreActionsMenuWrapper>
           <Modal
-            opened={spamModalVisible}
-            close={this.closeSpamModal}
+            opened={isSpamModalVisible}
+            close={closeSpamModal}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
             <SpamReportForm resourceId={idea.id} resourceType="ideas" />
@@ -143,16 +145,6 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
 
     return null;
   }
-}
-
-const IdeaMoreActionsWithHOCs = injectIntl(IdeaMoreActions);
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaMoreActionsWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
 );
+
+export default injectIntl(IdeaMoreActions);

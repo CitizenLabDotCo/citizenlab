@@ -9,7 +9,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useWindowSize from 'hooks/useWindowSize';
 
 // components
-import LazyImage from 'components/LazyImage';
+import Image from 'components/UI/Image';
 import { Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -122,7 +122,7 @@ const PlaceholderIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const StyledLazyImage = styled(LazyImage)`
+const StyledImage = styled(Image)`
   width: 100%;
 `;
 
@@ -217,7 +217,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       <Left>
         {cause.attributes.image.medium ? (
           <ImageWrapper>
-            <StyledLazyImage src={cause.attributes.image.medium} alt="" />
+            <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
               <VolunteersCountText>

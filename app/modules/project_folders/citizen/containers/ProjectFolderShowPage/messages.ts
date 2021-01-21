@@ -1,14 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  twitterMessage: {
-    id: 'app.containers.ProjectFolderShowPage.twitterMessage',
-    defaultMessage: '{title}',
+  projectFolderTwitterMessage: {
+    id: 'app.containers.ProjectFolderShowPage.projectFolderTwitterMessage',
+    defaultMessage: '{title} | {orgName}',
   },
-  whatsAppMessage: {
-    id: 'app.containers.ProjectFolderShowPage.whatsAppMessage',
-    defaultMessage:
-      '{projectFolderName} | from the participation platform of {orgName}',
+  projectFolderWhatsAppMessage: {
+    id: 'app.containers.ProjectFolderShowPage.projectFolderWhatsAppMessage',
+    defaultMessage: '{title} | {orgName}',
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
@@ -27,6 +26,20 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.goBackToList',
     defaultMessage: 'Go back to the list',
   },
+  share: {
+    id: 'app.containers.ProjectFolderShowPage.share',
+    defaultMessage: 'Share',
+  },
+  readMore: {
+    id: 'app.containers.ProjectFolderShowPage.readMore',
+    defaultMessage: 'Read more',
+  },
+  seeLess: {
+    id: 'app.containers.ProjectFolderShowPage.seeLess',
+    defaultMessage: 'See less',
+  },
+  editFolder: {
+    id: 'app.containers.ProjectFolderShowPage.editFolder',
+    defaultMessage: 'Edit folder',
+  },
 });
-
-// TODO: perhaps change messages to include folder

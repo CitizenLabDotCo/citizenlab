@@ -62,10 +62,10 @@ export class IdeasCount extends React.PureComponent<Props, State> {
         {!isNilOrError(ideasMatchingFiltersCount) &&
           ideasMatchingFiltersCount > 0 &&
           (ideasMatchingFiltersCount === 1 ? (
-            <FormattedMessage {...messages.oneIdea} />
+            <FormattedMessage {...messages.oneInput} />
           ) : (
             <FormattedMessage
-              {...messages.multipleIdeas}
+              {...messages.multipleInputs}
               values={{ ideaCount: ideasMatchingFiltersCount }}
             />
           ))}

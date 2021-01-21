@@ -31,7 +31,7 @@ const NoUsers = memo(({ reason }: Props) => {
     return (
       <NoUsersPage>
         <Icon name="search" />
-        <FormattedMessage {...messages.noIdeasInThisProject} />
+        <FormattedMessage {...messages.noInputInThisProject} />
       </NoUsersPage>
     );
   }
