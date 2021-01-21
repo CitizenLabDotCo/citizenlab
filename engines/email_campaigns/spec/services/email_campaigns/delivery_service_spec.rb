@@ -29,10 +29,10 @@ describe EmailCampaigns::DeliveryService do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
 
-    it "enqueues an external event job" do
+    it "enqueues an internal delivery job" do
       travel_to campaign.ic_schedule.start_time do
         expect{service.send_on_schedule(Time.now)}
-          .to have_enqueued_job(PublishGenericEventToRabbitJob)
+          .to have_enqueued_job(ActionMailer::MailDeliveryJob)
           .exactly(1).times
       end
     end
@@ -47,7 +47,7 @@ describe EmailCampaigns::DeliveryService do
     it "creates deliveries for a trackable campaign" do
       travel_to campaign.ic_schedule.start_time do
         service.send_on_schedule(Time.now)
-        expect(EmailCampaigns::Delivery.first).to have_attributes({
+        expect(campaign.deliveries.first).to have_attributes({
           campaign_id: campaign.id,
           user_id: admin.id,
           delivery_status: 'sent'
@@ -57,9 +57,9 @@ describe EmailCampaigns::DeliveryService do
   end
 
   describe "send_on_activity" do
-    let!(:campaign) { create(:comment_on_your_comment_campaign) }
-    let(:notification) { create(:comment_on_your_comment) }
-    let(:activity) { 
+    let!(:campaign) { create(:project_phase_upcoming_campaign) }
+    let(:notification) { create(:project_phase_upcoming) }
+    let(:activity) {
       Activity.create(
         item: notification,
         item_type: notification.class.name,
@@ -69,9 +69,9 @@ describe EmailCampaigns::DeliveryService do
     }
     let(:user) { create(:user) }
 
-    it "enqueues an external event job" do
+    it "enqueues an internal event job" do
       expect{service.send_on_activity(activity)}
-        .to have_enqueued_job(PublishGenericEventToRabbitJob)
+        .to have_enqueued_job(ActionMailer::MailDeliveryJob)
         .exactly(1).times
     end
 
@@ -83,7 +83,7 @@ describe EmailCampaigns::DeliveryService do
     context "on project_phase_upcoming notification" do
       let!(:campaign) { create(:project_phase_upcoming_campaign) }
       let(:notification) { create(:project_phase_upcoming) }
-      let(:activity) { 
+      let(:activity) {
         Activity.create(
           item: notification,
           item_type: notification.class.name,
@@ -96,7 +96,7 @@ describe EmailCampaigns::DeliveryService do
       it "delays enqueueing a job because the command specifies a delay" do
         travel_to Time.now do
           expect{service.send_on_activity(activity)}
-            .to have_enqueued_job(PublishGenericEventToRabbitJob)
+            .to have_enqueued_job(ActionMailer::MailDeliveryJob)
             .exactly(1).times
             .at(Time.now + 8.hours)
         end
@@ -108,19 +108,12 @@ describe EmailCampaigns::DeliveryService do
     let!(:campaign) { create(:manual_campaign) }
     let!(:users) { create_list(:user, 3) }
 
+    it 'created a different command for each recipient' do
+      expect(service.send_now(campaign).length).to eq User.count
+    end
+
     it "launches deliver_later on an ActionMailer" do
-      message_delivery = instance_double(ActionMailer::MessageDelivery)
-      expect(EmailCampaigns::CampaignMailer)
-        .to receive(:campaign_mail)
-        .with(campaign, anything)
-        .and_return(message_delivery)
-        .exactly(User.count).times
-      expect(message_delivery)
-        .to receive(:deliver_later)
-        .exactly(User.count).times
-
-      service.send_now(campaign)
-
+      expect { service.send_now(campaign) }.to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(User.count).times
     end
 
     it "creates deliveries for a Trackable campaign" do
@@ -162,7 +155,7 @@ describe EmailCampaigns::DeliveryService do
       ConsentableDisableableCampaignB.create!(enabled: false)
       ConsentableDisableableCampaignB.create!(enabled: true)
       stub_const(
-        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES", 
+        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES",
         [NonConsentableCampaign, ConsentableDisableableCampaignA, ConsentableDisableableCampaignB, ConsentableCampaign]
       )
       user = create(:user)
