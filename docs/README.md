@@ -4,6 +4,11 @@
 
 /
 
+## 2021-01-21
+
+### Added
+- Added right-to-left rendering to emails
+
 ## 2021-01-18
 
 ### Fixed
