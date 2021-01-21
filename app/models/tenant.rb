@@ -32,6 +32,7 @@ class Tenant < ApplicationRecord
   after_update :update_app_configuration
 
   before_validation :validate_missing_feature_dependencies
+  before_validation :ensure_style
 
   def self.current
     Current.tenant || find_by!(host: Apartment::Tenant.current.gsub(/_/, "."))
@@ -220,6 +221,10 @@ class Tenant < ApplicationRecord
           message: 'The chosen host does not have a valid format'
       )
     end
+  end
+
+  def ensure_style
+    self.style ||= {}
   end
 
 end
