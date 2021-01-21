@@ -751,7 +751,7 @@ class AdminProjectEditGeneral extends PureComponent<
     });
   };
 
-  handleUpdateField = (fieldUpdates: { [fieldPath: string]: any }) => {
+  handleFieldUpdate = (fieldUpdates: { [fieldPath: string]: any }) => {
     this.setState((prevState) => {
       const newState = { ...prevState };
       set(newState, 'submitState', 'enabled');
@@ -1065,7 +1065,7 @@ class AdminProjectEditGeneral extends PureComponent<
             <Outlet
               id="app.components.AdminPage.projects.form.additionalInputs.inputs"
               projectAttrs={projectAttrs}
-              onChange={this.handleUpdateField}
+              onChange={this.handleFieldUpdate}
             />
 
             <StyledSectionField>
