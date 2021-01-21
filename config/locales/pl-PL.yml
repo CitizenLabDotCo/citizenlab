@@ -6,8 +6,8 @@ pl:
     proposed_description: Ten pomysł został zaproponowany miastu
     viewed: obejrzany
     viewed_description: Ten pomysł został obejrzany przez kogoś z miasta
-    under_consideration: rozważany
-    under_consideration_description: Pomysł ten został wzięty pod uwagę przez miasto
+    under_consideration: rozpatrywany
+    under_consideration_description: Ten pomysł został wzięty pod uwagę przez miasto
     accepted: przyjęty
     accepted_description: Ten pomysł został zaakceptowany i będzie realizowany przez miasto
     implemented: wdrożony

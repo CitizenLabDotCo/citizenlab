@@ -265,7 +265,7 @@ en-GB:
     gender:
       male: Male
       female: Female
-      unspecified: Unspecified
+      unspecified: Other
     domicile:
       outside: Somewhere else
     education:
