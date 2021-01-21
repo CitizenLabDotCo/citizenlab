@@ -1859,7 +1859,7 @@
   "app.containers.ProjectCards.areasTitle": "التصفية بحسب المنطقة",
   "app.containers.ProjectFolderCards.allProjects": "جميع المشاريع",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "تعمل {orgName} حاليًا على",
-  "app.containers.ProjectFolderShowPage.editFolder": "Edit folder",
+  "app.containers.ProjectFolderShowPage.editFolder": "تعديل",
   "app.containers.ProjectFolderShowPage.goBackToList": "عودة إلى القائمة",
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "معلومات حول هذا المشروع",
   "app.containers.ProjectFolderShowPage.metaTitle": "المشروع: {title}",
