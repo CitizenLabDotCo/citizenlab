@@ -46,13 +46,11 @@ module Tagging
         end
 
         def update
-          if params['assignment_method'] == 'manual'
+          if params['assignment_method'] == 'manual' && @tagging.assignment_method == 'automatic'
             @tagging.confidence_score = 1
             @tagging.assignment_method = 'manual'
             authorize @tagging
-            # SideFxTagService.new.before_update(@tag, current_user)
             if @tagging.save
-              # SideFxTagService.new.after_update(@tag, current_user)
               render json: WebApi::V1::TaggingSerializer.new(
                 @tagging,
                 params: fastjson_params
