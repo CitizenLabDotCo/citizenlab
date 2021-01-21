@@ -7,11 +7,12 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   def update
     update_configuration!(app_configuration, params)
     # TODO_MT Using +SideFxAppConfigurationService+ instead of +SideFxTenantService+
-    SideFxTenantService.new.before_update(app_configuration, current_user)
+    side_fx_service = SideFxAppConfigurationService.new
+    side_fx_service.before_update(app_configuration, current_user)
 
     if app_configuration.save
       # TODO_MT Using +SideFxAppConfigurationService+ instead of +SideFxTenantService+
-      SideFxTenantService.new.after_update(app_configuration, current_user)
+      side_fx_service.after_update(app_configuration, current_user)
       render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serialized_json
     else
       render json: { errors: app_configuration.errors.details }, status: :unprocessable_entity
