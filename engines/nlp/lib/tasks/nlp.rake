@@ -9,6 +9,15 @@ namespace :nlp do
     File.open("tmp/#{data[:name]}_dump.json", 'w') {|f| f.write data.to_json }
   end
 
+  task :dump_all_tenants_to_nlp_now, [] => [:environment] do |t, args|
+    Tenant.all.each do |tn|
+      api = NLP::API.new ENV.fetch("CL2_NLP_HOST")
+      dump = NLP::TenantDumpService.new.dump tn
+      api.update_tenant dump
+      puts "Dumped tenant #{tn.host}"
+    end
+  end
+
   task :dump_all_tenants_to_nlp, [] => [:environment] do |t, args|
     Tenant.all.each do |tn|
       DumpTenantJob.perform_later tn
@@ -27,7 +36,7 @@ namespace :nlp do
         3.times do
           idea = Idea.all.shuffle.first
           sim = service.similarity tenant.id, idea, min_score: 0.2
-          
+
           logs += ['-------']
           logs += ["Subject: #{idea.title_multiloc.values.first}"]
           sim.each do |h|
@@ -83,9 +92,9 @@ namespace :nlp do
                           guessed_lat: geo['lat'],
                           guessed_lon: geo['lon'],
                           guessed_location_description: geo['address'],
-                          picky_poi: picky_poi, 
-                          include_phrases: include_phrases, 
-                          case_sensitive: case_sensitive, 
+                          picky_poi: picky_poi,
+                          include_phrases: include_phrases,
+                          case_sensitive: case_sensitive,
                           geocoder: geocoder,
                           reverse_query: reverse_query,
                           filter_by_city: filter_by_city
