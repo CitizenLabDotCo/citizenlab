@@ -9,6 +9,10 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      FirstIdeaPublishedMailer
+    end
+
     def activity_triggers
       {'Idea' => {'first_published_by_user' => true}}
     end

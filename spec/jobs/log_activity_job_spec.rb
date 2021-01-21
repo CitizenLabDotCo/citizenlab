@@ -54,14 +54,10 @@ RSpec.describe LogActivityJob, type: :job do
       expect{job.perform(spam_report, "created", user, Time.now)}.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
     end
 
-    it "enqueues a LogToEventbusJob when bunny is initialized" do
+    it "enqueues a PublishActivityToRabbitJob when bunny is initialized" do
       idea = create(:idea)
       user = create(:user)
-      if BUNNY_CON
-        expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(LogToEventbusJob)
-      else
-        expect{job.perform(idea, "created", user, Time.now)}.not_to have_enqueued_job(LogToEventbusJob)
-      end
+      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(PublishActivityToRabbitJob)
     end
 
     it "enqueues a TrackEventJob when Analytics is initialized" do

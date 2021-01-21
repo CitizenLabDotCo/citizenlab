@@ -197,7 +197,7 @@ module EmailCampaigns
               }
             }
           ],
-          succesful_initiatives: [
+          successful_initiatives: [
             {
               id: "61bdec68-222e-47b2-8933-6d0ca61410eb",
               title_multiloc: {
@@ -233,7 +233,7 @@ module EmailCampaigns
       }
       campaign = EmailCampaigns::Campaigns::UserDigest.first
 
-      campaign.mailer_class.campaign_mail campaign, command
+      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end
 end

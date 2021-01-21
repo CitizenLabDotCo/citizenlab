@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      InitiativePublishedMailer
+    end
+
     def activity_triggers
       {'Initiative' => {'published' => true}}
     end

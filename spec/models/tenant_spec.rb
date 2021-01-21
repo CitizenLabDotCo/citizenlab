@@ -1,8 +1,7 @@
 require 'rails_helper'
-require Rails.root.join "engines/frontend/spec/models/tenant_style_spec.rb"
+require Rails.root.join "engines/frontend/spec/models/style_settings_spec.rb"
 
 RSpec.describe Tenant, type: :model do
-  it_behaves_like "TenantStyle"
 
   describe "Default factory" do
     it "is valid" do
@@ -12,9 +11,9 @@ RSpec.describe Tenant, type: :model do
 
   describe "Apartment tenant" do
     it "is created on create" do
-      host = "something.else-than-the-default-test-tenant"
-      expect(Apartment::Tenant).to receive(:create).with(host.gsub(/\./, "_"))
-      create(:tenant, host: host)
+      host = "something-else.com"  # a different host than the default test tenant
+      tenant = create(:tenant, host: host)
+      expect {Apartment::Tenant.switch!(tenant.schema_name) }.to_not raise_error(Apartment::TenantNotFound)
     end
 
     it "is deleted on destroy" do
@@ -74,7 +73,7 @@ RSpec.describe Tenant, type: :model do
   end
 
   describe "closest_locale_to" do
-    let(:tenant) { build(:tenant, host: 'something.else-than-the-default-test-tenant') }
+    let(:tenant) { create(:tenant, host: 'something.else-than-the-default-test-tenant') }
 
     it "returns the locale itself if it's present" do
       tenant.settings['core']['locales'] = ['en', 'nl-BE']
@@ -84,6 +83,14 @@ RSpec.describe Tenant, type: :model do
     it "returns the first tenant locale when it's not present" do
       tenant.settings['core']['locales'] = ['en', 'nl-BE']
       expect(tenant.closest_locale_to('de-DE')).to eq 'en'
+    end
+  end
+
+  describe "Style" do
+    it "can never be nil" do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      tenant.update(style: nil)
+      expect(tenant.style).to eq({})
     end
   end
 
