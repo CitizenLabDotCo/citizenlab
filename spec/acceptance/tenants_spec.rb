@@ -41,7 +41,6 @@ resource "Tenants" do
       do_request
       expect(response_status).to eq 404
       # json_response = json_parse(response_body)
-
     end
   end
 
