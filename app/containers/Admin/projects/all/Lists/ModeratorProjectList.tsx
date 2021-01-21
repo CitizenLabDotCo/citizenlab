@@ -26,7 +26,7 @@ const ModeratorProjectList = memo<Props>(() => {
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
-  const adminPublicationCard = (adminPublication) => {
+  const adminPublicationRow = (adminPublication) => {
     if (adminPublication.publicationType === 'project') {
       return <ProjectRow publication={adminPublication} />;
     } else if (
@@ -68,7 +68,7 @@ const ModeratorProjectList = memo<Props>(() => {
                   id={adminPublication.id}
                   isLastItem={index === adminPublicationsList.length - 1}
                 >
-                  {adminPublicationCard(adminPublication)}
+                  {adminPublicationRow(adminPublication)}
                 </Row>
               );
             })}
