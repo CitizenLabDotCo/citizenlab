@@ -94,14 +94,21 @@ const ProjectFolderSelect = memo<Props>(
     );
 
     if (!isNilOrError(authUser) && folderOptions.length > 0) {
-      const userIsProjectFolderModerator = isProjectFolderModerator(authUser);
-      const showProjectFolderSelect = getShowProjectFolderSelect();
       const defaultFolderValue = folderOptions[0].value;
-      const areRadiosDisabled =
+      const userIsProjectFolderModerator = isProjectFolderModerator(authUser);
+      const userIsProjectFolderModeratorNotAdmin =
         userIsProjectFolderModerator &&
         !userHasRole({ data: authUser }, 'admin');
-      function getShowProjectFolderSelect() {
-        if (areRadiosDisabled) {
+      const showProjectFolderSelect = getShowProjectFolderSelect(
+        userIsProjectFolderModeratorNotAdmin,
+        folder_id
+      );
+
+      function getShowProjectFolderSelect(
+        userIsProjectFolderModeratorNotAdmin: boolean,
+        folder_id?: string
+      ) {
+        if (userIsProjectFolderModeratorNotAdmin) {
           // folder moderators always need to pick a folder
           // when they create a project
           return true;
@@ -123,7 +130,11 @@ const ProjectFolderSelect = memo<Props>(
             <FormattedMessage {...messages.projectFolderSelectTitle} />
             <IconTooltip
               content={
-                <FormattedMessage {...messages.projectFolderSelectTooltip} />
+                <FormattedMessage
+                  {...(userIsProjectFolderModeratorNotAdmin
+                    ? messages.adminProjectFolderSelectTooltip
+                    : messages.folderAdminProjectFolderSelectTooltip)}
+                />
               }
             />
           </SubSectionTitle>
@@ -134,7 +145,7 @@ const ProjectFolderSelect = memo<Props>(
             name="folderSelect"
             id="folderSelect-no"
             label={<FormattedMessage {...messages.optionNo} />}
-            disabled={areRadiosDisabled}
+            disabled={userIsProjectFolderModeratorNotAdmin}
           />
           <Radio
             onChange={onRadioFolderSelectChange(defaultFolderValue)}
@@ -143,7 +154,7 @@ const ProjectFolderSelect = memo<Props>(
             name="folderSelect"
             id="folderSelect-yes"
             label={<FormattedMessage {...messages.optionYes} />}
-            disabled={areRadiosDisabled}
+            disabled={userIsProjectFolderModeratorNotAdmin}
           />
           {showProjectFolderSelect && (
             <Select
