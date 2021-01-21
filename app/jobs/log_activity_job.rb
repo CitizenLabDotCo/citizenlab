@@ -19,7 +19,6 @@ class LogActivityJob < ApplicationJob
       activity.user = user
       activity.acted_at = Time.at(acted_at)
       activity.payload = options[:payload] || {}
-      activity.item_type = 'Tenant' if activity.item_type == 'AppConfiguration' # MT_TODO Refactor Tenant/AppConfiguration SideFx
     end.save!
 
     Notification.classes_for(activity).each do |notification_class|
