@@ -10,6 +10,9 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      NewCommentOnVotedInitiativeMailer
+    end
 
     def activity_triggers
       {'Comment' => {'created' => true}}

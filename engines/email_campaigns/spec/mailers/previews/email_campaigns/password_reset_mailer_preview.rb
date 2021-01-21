@@ -11,7 +11,7 @@ module EmailCampaigns
       }
       campaign = EmailCampaigns::Campaigns::PasswordReset.first
 
-      campaign.mailer_class.campaign_mail campaign, command
+      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end
 end

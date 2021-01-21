@@ -163,7 +163,7 @@ class XlsxService
       {header: 'project',              f: -> (i) { @@multiloc_service.t(i&.project&.title_multiloc) }},
       {header: 'topics',               f: -> (i) { i.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(',') }},
       {header: 'areas',                f: -> (i) { i.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',') }},
-      {header: 'idea_status',          f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
+      {header: 'status',               f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
       {header: 'assignee',             f: -> (i) { i.assignee&.full_name }},
       {header: 'assignee_email',       f: -> (i) { i.assignee&.email }},
       {header: 'latitude',             f: -> (i) { i.location_point&.coordinates&.last },         skip_sanitization: true},
@@ -224,7 +224,7 @@ class XlsxService
   def generate_idea_comments_xlsx comments, view_private_attributes: false
     columns = [
       {header: 'id',            f: -> (c) { c.id },            skip_sanitization: true},
-      {header: 'idea',          f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
+      {header: 'input',         f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
       {header: 'body',          f: -> (c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) }},
       {header: 'upvotes_count', f: -> (c) { c.upvotes_count }, skip_sanitization: true},
       {header: 'author_name',   f: -> (c) { c.author_name }},

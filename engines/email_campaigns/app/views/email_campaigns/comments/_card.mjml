@@ -1,0 +1,13 @@
+<mj-section
+  padding="25px"
+  border-radius="5px"
+  text-align="left">
+  <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px">
+    <mj-text font-size="14px">
+      <%= format_message('commented', values: { commentAuthor: content_tag(:span, comment_author, style: 'font-weight:bold; color: #000;') }).html_safe %>
+      <p style="margin: 15px 0 0;">
+        <%= localize_for_recipient(event.comment_body_multiloc).html_safe.first(140) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
