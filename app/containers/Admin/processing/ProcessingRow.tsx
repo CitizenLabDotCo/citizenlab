@@ -39,6 +39,11 @@ const StyledTagWrapper = styled(TagWrapper)`
   margin-right: 4px;
 `;
 
+const TagContainer = styled.td`
+  display: flex;
+  align-items: center;
+`;
+
 const ContentTitle = styled.div`
   display: inline-block;
   font-size: ${fontSizes.base}px;
@@ -112,10 +117,21 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [openPreview]
     );
 
+    const sortTagsByMethod = (taggingA: ITagging, taggingB: ITagging) => {
+      switch (taggingA.attributes.assignment_method) {
+        case 'pending':
+          return 1;
+        case 'automatic':
+          return taggingB.attributes.assignment_method === 'manual' ? 1 : -1;
+        case 'manual':
+          return -1;
+      }
+    };
+
     const ideaTaggings = useMemo(() => {
-      return taggings.filter(
-        (tagging) => tagging.attributes.idea_id === idea.id
-      );
+      return taggings
+        .filter((tagging) => tagging.attributes.idea_id === idea.id)
+        .sort(sortTagsByMethod);
     }, [taggings, idea]);
 
     return (
@@ -136,7 +152,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
           </ContentTitle>
         </td>
         {showTagColumn && ideaTaggings && (
-          <td className="tags">
+          <TagContainer className="tags">
             {ideaTaggings.map((tagging) => (
               <StyledTagWrapper
                 isAutoTag={tagging.attributes.assignment_method === 'automatic'}
@@ -154,7 +170,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 text={addTagMessage}
               />
             )}
-          </td>
+          </TagContainer>
         )}
       </Container>
     );

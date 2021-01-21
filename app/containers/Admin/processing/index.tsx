@@ -130,6 +130,15 @@ const KeyboardShortcuts = styled.div`
   background: ${colors.clBlueDarkBg};
   font-size: ${fontSizes.xs}px;
 `;
+
+export const WarningTitle = styled.h2`
+  font-size: ${fontSizes.large}px !important;
+  margin-right: 20px !important;
+`;
+export const WarningMessage = styled.div`
+  margin-bottom: 20px !important;
+`;
+
 interface DataProps {
   projects: GetProjectsChildProps;
 }
@@ -397,12 +406,12 @@ const Processing = memo<Props & InjectedIntlProps>(
             close={handleCloseConfirmationModal}
           >
             <QuillEditedContent textColor={colors.adminTextColor}>
-              <h2>
+              <WarningTitle>
                 <FormattedMessage {...messages.autotagOverwriteAlert} />
-              </h2>
-              <h4>
+              </WarningTitle>
+              <WarningMessage>
                 <FormattedMessage {...messages.autotagOverwriteExplanation} />
-              </h4>
+              </WarningMessage>
               <ButtonRow>
                 <Button
                   locale={locale}
