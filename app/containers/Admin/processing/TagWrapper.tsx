@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
 
 // components
-import { Tag } from 'cl2-component-library';
+import { Spinner, Tag } from 'cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 import useTag from 'hooks/useTag';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 type TagProps = React.ComponentProps<typeof Tag>;
 
@@ -29,14 +27,7 @@ export default memo<Props>(({ tagId, ...tagProps }) => {
       );
     }
   } else {
-    return (
-      <Tag
-        {...tagProps}
-        isAutoTag={true}
-        key={Math.random()}
-        text={<FormattedMessage {...messages.pendingTagText} />}
-      />
-    );
+    return <Spinner color="#666" size="20px" />;
   }
 
   return null;

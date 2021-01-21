@@ -180,9 +180,11 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
 
   getAutomaticTaggings = (taggings: ITagging[]) =>
     taggings.filter(
-      (tagging) =>
-        tagging.attributes.assignment_method === 'automatic' ||
-        tagging.attributes.assignment_method === 'pending'
+      (tagging) => tagging.attributes.assignment_method === 'automatic'
+    );
+  getPendingTaggings = (taggings: ITagging[]) =>
+    taggings.filter(
+      (tagging) => tagging.attributes.assignment_method === 'pending'
     );
 
   getUnusedTags = (tags: ITag[], taggings: ITagging[]) => {
@@ -271,6 +273,9 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
     const automaticTaggings = isNilOrError(taggings)
       ? []
       : this.getAutomaticTaggings(taggings);
+    const pendingTaggings = isNilOrError(taggings)
+      ? []
+      : this.getPendingTaggings(taggings);
 
     return (
       <Container>
@@ -330,7 +335,8 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                 <h4>
                   <FormattedMessage {...messages.approveAutoTags} />
                 </h4>
-                {automaticTaggings.length > 0 && (
+                {(automaticTaggings.length > 0 ||
+                  pendingTaggings.length > 0) && (
                   <TagList>
                     {automaticTaggings.map((tagging) => (
                       <StyledTagWrapper
@@ -340,6 +346,14 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
                         isAutoTag={true}
                         isSelected={false}
                         tagId={tagging.attributes.tag_id}
+                      />
+                    ))}
+                    {pendingTaggings.map((tagging) => (
+                      <StyledTagWrapper
+                        key={tagging.id}
+                        isAutoTag={true}
+                        tagId={null}
+                        isSelected={false}
                       />
                     ))}
                   </TagList>
