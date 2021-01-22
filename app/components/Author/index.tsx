@@ -170,7 +170,7 @@ class Author extends PureComponent<Props, State> {
               size={size}
               isLinkToProfile={isLinkToProfile}
               moderator={authorCanModerate}
-              avatarBgColor={avatarBadgeBgColor}
+              bgColor={avatarBadgeBgColor}
             />
           )}
 
