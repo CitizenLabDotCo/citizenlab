@@ -164,7 +164,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
               <StyledAvatar
                 userId={authUser?.id}
                 size={52}
-                avatarBgColor="transparent"
+                bgColor="transparent"
                 avatarPadding={0}
                 borderThickness={2}
                 borderColor="#fff"

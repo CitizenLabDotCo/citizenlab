@@ -116,7 +116,7 @@ interface Props {
   fillColor?: string;
   borderThickness?: number;
   borderColor?: string;
-  avatarBgColor?: string;
+  bgColor?: string;
   className?: string;
   moderator?: boolean | null;
   addVerificationBadge?: boolean | null;
@@ -151,7 +151,7 @@ const Avatar = memo(
       const fillHoverColor = colors.label;
       const borderHoverColor = colors.label;
       const borderColor = props.borderColor || 'transparent';
-      const bgColor = props.avatarBgColor || 'transparent';
+      const bgColor = props.bgColor || 'transparent';
 
       const AvatarComponent = (
         <Container aria-hidden className={className} size={containerSize}>
