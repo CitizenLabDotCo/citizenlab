@@ -3,7 +3,6 @@ require:
   - rubocop-performance
   - rubocop-rspec
   - rubocop-i18n
-  - rubocop-require_tools
 
 AllCops:
   NewCops: enable
