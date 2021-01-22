@@ -139,6 +139,7 @@ rubocop app spec lib/something.rb
 # running rubocop on modified files only
 git diff --name-only --diff-filter=MA | xargs rubocop
 
+# autofixing the files you modified
 git diff --name-only --diff-filter=MA | xargs rubocop -a
 ```
 
