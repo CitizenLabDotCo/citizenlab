@@ -393,7 +393,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                     size={50}
                     fillColor="#fff"
                     avatarPadding={0}
-                    avatarBorderThickness={0}
+                    borderThickness={0}
                   />
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
@@ -452,7 +452,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                       size={50}
                       fillColor="#fff"
                       avatarPadding={0}
-                      avatarBorderThickness={0}
+                      borderThickness={0}
                     />
                     <ShieldIcon name="verify_light" />
                   </AvatarAndShield>
