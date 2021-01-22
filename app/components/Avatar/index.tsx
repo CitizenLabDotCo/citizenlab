@@ -156,7 +156,7 @@ const Avatar = memo(
       const bgColor = props.bgColor || 'transparent';
 
       const avatarComponentMainContent = getAvatarComponentMainContent();
-      function getAvatarComponentContent() {
+      function getAvatarComponentMainContent() {
         if (avatarSrc) {
           return (
             <AvatarImage
