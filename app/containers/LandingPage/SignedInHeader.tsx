@@ -390,7 +390,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 <Icons>
                   <StyledAvatar
                     userId={authUser?.id}
-                    avatarSize={50}
+                    size={50}
                     avatarFillColor="#fff"
                     avatarPadding={0}
                     avatarBorderThickness={0}
@@ -449,7 +449,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <AvatarAndShield aria-hidden>
                     <StyledAvatar
                       userId={authUser?.id}
-                      avatarSize={50}
+                      size={50}
                       avatarFillColor="#fff"
                       avatarPadding={0}
                       avatarBorderThickness={0}
