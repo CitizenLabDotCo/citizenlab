@@ -6,20 +6,20 @@ export default defineMessages({
     defaultMessage:
       'Sign up for the CitizenLab platform of {tenantName} | CitizenLab',
   },
-  signUpMetaDescription: {
-    id: 'app.containers.SignUpInPage.signUpMetaDescription',
+  signUpPageMetaDescription: {
+    id: 'app.containers.SignUpInPage.signUpPageMetaDescription',
     defaultMessage:
-      'Sign up for the CitizenLab platform of {tenantName} to share your ideas or start an initiative. Vote and comment on the ideas or initiatives of others.',
+      'Sign up for the participation platform of {orgName} to join the conversation!',
   },
   signInMetaTitle: {
     id: 'app.containers.SignUpInPage.signInMetaTitle',
     defaultMessage:
       'Log into the CitizenLab platform of {tenantName} | CitizenLab',
   },
-  signInMetaDescription: {
-    id: 'app.containers.SignUpInPage.signInMetaDescription',
+  signInPageMetaDescription: {
+    id: 'app.containers.SignUpInPage.signInPageMetaDescription',
     defaultMessage:
-      'Log into the CitizenLab platform of {tenantName} to share your ideas, start an initiative or contribute to those of others.',
+      'Log into the participation platform of {orgName} to join the conversation!',
   },
   slogan: {
     id: 'app.containers.SignUpInPage.slogan',

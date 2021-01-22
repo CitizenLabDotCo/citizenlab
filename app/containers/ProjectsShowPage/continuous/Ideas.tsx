@@ -8,6 +8,7 @@ import PBExpenses from '../shared/pb/PBExpenses';
 import {
   SectionContainer,
   ProjectPageSectionTitle,
+  maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 
 // hooks
@@ -17,6 +18,7 @@ import useWindowSize from 'hooks/useWindowSize';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -30,6 +32,10 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   margin-bottom: 20px;
+`;
+
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-bottom: 50px;
 `;
 
 interface Props {
@@ -49,6 +55,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       (participationMethod === 'budgeting' ||
         participationMethod === 'ideation')
     );
+    const inputTerm = project.attributes.input_term;
 
     if (showIdeas) {
       const smallerThanBigTablet = windowSize?.windowWidth
@@ -64,17 +71,26 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
           id="e2e-continuos-project-idea-cards"
           className={className || ''}
         >
-          <StyledContentContainer id="project-ideas">
+          <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
             <SectionContainer>
               {isPBProject && (
-                <PBExpenses
+                <StyledPBExpenses
                   participationContextId={projectId}
                   participationContextType="project"
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               )}
               <StyledProjectPageSectionTitle>
-                <FormattedMessage {...messages.ideas} />
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
+                  })}
+                />
               </StyledProjectPageSectionTitle>
               <IdeaCards
                 type="load-more"
@@ -85,7 +101,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 showViewToggle={true}
                 defaultSortingMethod={project.attributes.ideas_order || null}
                 defaultView={project.attributes.presentation_mode || null}
-                invisibleTitleMessage={messages.invisibleTitleIdeasList}
+                invisibleTitleMessage={messages.a11y_titleInputs}
               />
             </SectionContainer>
           </StyledContentContainer>
