@@ -69,7 +69,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
           <StyledAuthor
             authorId={authorId}
             isLinkToProfile={hasAuthorId}
-            size="30px"
+            size={30}
             projectId={projectId}
             showModeration={moderator}
             createdAt={commentCreatedAt}

@@ -100,7 +100,7 @@ const TimeAgo = styled.div`
 export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
-  size: string;
+  size: number;
   isLinkToProfile?: boolean;
   projectId?: string | null;
   showAvatar?: boolean;
