@@ -111,7 +111,7 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
 
 interface Props {
   userId: string | null;
-  avatarSize: number;
+  size: number;
   isLinkToProfile?: boolean;
   avatarFillColor?: string;
   avatarBorderThickness?: number;
@@ -139,7 +139,7 @@ const Avatar = memo(
       // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const avatarSize = props.avatarSize;
+      const avatarSize = props.size;
       const padding = props.avatarPadding || 3;
       const borderThickness = props.avatarBorderThickness || 1;
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;

@@ -100,7 +100,7 @@ const TimeAgo = styled.div`
 export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
-  size: string;
+  size: number;
   isLinkToProfile?: boolean;
   projectId?: string | null;
   showAvatar?: boolean;
@@ -167,7 +167,7 @@ class Author extends PureComponent<Props, State> {
           {showAvatar && (
             <StyledAvatar
               userId={authorId}
-              avatarSize={size}
+              size={size}
               isLinkToProfile={isLinkToProfile}
               moderator={authorCanModerate}
               avatarBgColor={avatarBadgeBgColor}

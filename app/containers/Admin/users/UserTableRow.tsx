@@ -206,7 +206,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
           />
         </td>
         <td>
-          <Avatar userId={user.id} avatarSize={30} />
+          <Avatar userId={user.id} size={30} />
         </td>
         <td>
           {user.attributes.first_name} {user.attributes.last_name}

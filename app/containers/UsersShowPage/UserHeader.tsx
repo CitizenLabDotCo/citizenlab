@@ -114,10 +114,7 @@ export const UserHeader = memo<Props>((props) => {
     return (
       <Container>
         <UserAvatar>
-          <Avatar
-            userId={user.id}
-            avatarSize={smallerThanSmallTablet ? 120 : 150}
-          />
+          <Avatar userId={user.id} size={smallerThanSmallTablet ? 120 : 150} />
         </UserAvatar>
 
         <UserInfo>
