@@ -157,8 +157,8 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
               content={
                 <FormattedMessage
                   {...(userIsProjectFolderModeratorNotAdmin
-                    ? messages.adminProjectFolderSelectTooltip
-                    : messages.folderAdminProjectFolderSelectTooltip)}
+                    ? messages.folderAdminProjectFolderSelectTooltip
+                    : messages.adminProjectFolderSelectTooltip)}
                 />
               }
             />
