@@ -1,53 +1,7 @@
 module EmailCampaigns
   class CampaignMailer < ActionMailer::Base
-    default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
-    layout false
 
     attr_reader :command, :campaign, :recipient, :tenant
-
-    before_action do
-      @command, @campaign = params.values_at(:command, :campaign)
-    end
-
-    def campaign_mail
-      @recipient = command[:recipient]
-      multiloc_service = MultilocService.new
-      frontend_service = Frontend::UrlService.new
-      @tenant = Tenant.current
-
-      body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
-      template = Liquid::Template.parse(body_html_with_liquid)
-      @body_html = template.render(liquid_params(recipient))
-      @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
-
-      url = frontend_service.unsubscribe_url_template(tenant, campaign.id)
-      url_template = Liquid::Template.parse(url)
-      @unsubscribe_url = url_template.render(liquid_params(recipient))
-
-      @tenant_logo_url = tenant.logo.versions[:medium].url
-      @terms_conditions_url = frontend_service.terms_conditions_url(tenant: tenant)
-      @privacy_policy_url = frontend_service.privacy_policy_url(tenant: tenant)
-      @host_url = frontend_service.home_url(tenant: tenant)
-      @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
-
-      I18n.with_locale(recipient.locale) do
-        message = mail(
-          from: "#{from_name(command[:sender], command[:author], recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
-          to: recipient.email,
-          reply_to: command[:reply_to] || ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co'),
-          subject: multiloc_service.t(command[:subject_multiloc], recipient),
-        )
-        if (ActionMailer::Base.delivery_method == :mailgun)
-          message.mailgun_headers = {
-            'X-Mailgun-Variables' => {
-              'cl_tenant_id' => tenant.id,
-              'cl_campaign_id' => campaign.id,
-              'cl_user_id' => recipient.id,
-            }.to_json,
-          }
-        end
-      end
-    end
 
     private
 
