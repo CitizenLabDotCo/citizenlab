@@ -1168,6 +1168,7 @@
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Trouver des bénévoles",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Demandez aux participants de se porter volontaires pour des activités et des causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "",
+  "app.containers.AdminPage.ProjectEdit.folderSelectError": "",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "A partir d'un modèle",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "À partir de zéro",
   "app.containers.AdminPage.ProjectEdit.generalTab": "Général",
