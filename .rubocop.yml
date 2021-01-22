@@ -2,7 +2,6 @@ require:
   - rubocop-rails
   - rubocop-performance
   - rubocop-rspec
-  - rubocop-i18n
 
 AllCops:
   NewCops: enable
