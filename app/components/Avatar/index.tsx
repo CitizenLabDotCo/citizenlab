@@ -39,7 +39,7 @@ export const AvatarImage = styled.img<{
   padding: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
-  borderThickness: number | undefined;
+  borderThickness: number;
   borderHoverColor: string | undefined;
 }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -49,8 +49,7 @@ export const AvatarImage = styled.img<{
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
-  border-width: ${({ borderThickness }) =>
-    isNumber(borderThickness) ? borderThickness : 1}px;
+  border-width: ${({ borderThickness }) => `${borderThickness}px`};
   border-color: ${({ borderColor }) => borderColor || 'transparent'};
   background: ${({ bgColor }) => bgColor || 'transparent'};
 
@@ -72,7 +71,7 @@ const AvatarIcon = styled(Icon)<{
   padding: number;
   bgColor: string | undefined;
   borderColor: string | undefined;
-  borderThickness: number | undefined;
+  borderThickness: number;
   borderHoverColor: string | undefined;
 }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -83,8 +82,7 @@ const AvatarIcon = styled(Icon)<{
   border-radius: 50%;
   border-style: ${({ borderThickness }) =>
     borderThickness === 0 ? 'none' : 'solid'};
-  border-width: ${({ borderThickness }) =>
-    isNumber(borderThickness) ? borderThickness : 1}px;
+  border-width: ${({ borderThickness }) => `${borderThickness}px`};
   border-color: ${({ borderColor }) => borderColor || 'transparent'};
   background: ${({ bgColor }) => bgColor || 'transparent'};
 
@@ -114,10 +112,10 @@ const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
 
 interface Props {
   userId: string | null;
-  avatarSize: string;
+  avatarSize: number;
   isLinkToProfile?: boolean;
   avatarFillColor?: string;
-  avatarBorderThickness?: string;
+  avatarBorderThickness?: number;
   avatarBorderColor?: string;
   avatarBgColor?: string;
   className?: string;
@@ -142,12 +140,9 @@ const Avatar = memo(
       // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const avatarSize = parseInt(props.avatarSize, 10);
+      const avatarSize = props.avatarSize;
       const padding = props.avatarPadding || 3;
-      const borderThickness = parseInt(
-        props.avatarBorderThickness || '1px',
-        10
-      );
+      const borderThickness = props.avatarBorderThickness || 1;
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
       const avatarSrc = avatar ? avatar[imageSizeLabel] : null;

@@ -116,7 +116,7 @@ export const UserHeader = memo<Props>((props) => {
         <UserAvatar>
           <Avatar
             userId={user.id}
-            avatarSize={smallerThanSmallTablet ? '120px' : '150px'}
+            avatarSize={smallerThanSmallTablet ? 120 : 150}
           />
         </UserAvatar>
 
