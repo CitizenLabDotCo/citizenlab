@@ -86,4 +86,12 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
+  describe "Style" do
+    it "can never be nil" do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      tenant.update(style: nil)
+      expect(tenant.style).to eq({})
+    end
+  end
+
 end
