@@ -120,7 +120,7 @@ interface Props {
   className?: string;
   moderator?: boolean | null;
   addVerificationBadge?: boolean | null;
-  avatarPadding?: number;
+  padding?: number;
 }
 
 const Avatar = memo(
@@ -140,7 +140,7 @@ const Avatar = memo(
       // while !isNilOrError(user) passes... To be solved properly
       const hasValidProfileLink = profileLink !== '/profile/undefined';
       const avatarSize = props.size;
-      const padding = props.avatarPadding || 3;
+      const padding = props.padding || 3;
       const borderThickness = props.borderThickness || 1;
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';

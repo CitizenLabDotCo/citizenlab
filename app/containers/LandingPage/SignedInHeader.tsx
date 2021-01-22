@@ -392,7 +392,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                     userId={authUser?.id}
                     size={50}
                     fillColor="#fff"
-                    avatarPadding={0}
+                    padding={0}
                     borderThickness={0}
                   />
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
@@ -451,7 +451,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                       userId={authUser?.id}
                       size={50}
                       fillColor="#fff"
-                      avatarPadding={0}
+                      padding={0}
                       borderThickness={0}
                     />
                     <ShieldIcon name="verify_light" />
