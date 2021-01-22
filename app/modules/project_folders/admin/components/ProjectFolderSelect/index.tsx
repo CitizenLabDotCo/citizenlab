@@ -77,8 +77,6 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
         // when we already have a folder_id for our project,
         // the project folder select should be turned on
         // so we can see our selected folder.
-        // This will not block the UI because when we choose no folder
-        // folder_id will be set to null (see onRadioFolderSelectChange)
         return true;
       } else {
         return false;
