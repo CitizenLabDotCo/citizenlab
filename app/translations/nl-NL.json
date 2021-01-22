@@ -718,7 +718,7 @@
   "app.containers.Admin.Processing.helpTooltipText": "Gebruik de pijlen op je toetsenbord om door de inhoud te browsen",
   "app.containers.Admin.Processing.items": "{selectedCount} {selectedCount, plural, =0 {items} one {item} other {items}} geselecteerd van de {totalCount}",
   "app.containers.Admin.Processing.keyboardShortcuts": "Sneltoetsen",
-  "app.containers.Admin.Processing.pleaseSelectAProject": "Gelieve een project te selecteren",
+  "app.containers.Admin.Processing.pleaseSelectAProject": "Selecteer een project",
   "app.containers.Admin.Processing.project": "Project",
   "app.containers.Admin.Processing.projectTags": "Projecttags",
   "app.containers.Admin.Processing.proposedBudgetTitle": "Voorgesteld budget",
