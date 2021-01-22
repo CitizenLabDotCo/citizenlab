@@ -198,9 +198,9 @@ es-CL:
       title_spam_report: '%{firstName} %{lastName} reportó esta idea como spam'
     initiative_marked_as_spam:
       by_author: 'por %{authorName}'
-      cta_review_idea: 'Revisar la iniciativa'
+      cta_review_initiative: 'Revisar la propuesta'
       report_inappropriate_offensive_content: 'Encuentro este contenido inapropiado u ofensivo.'
-      report_not_an_idea: 'Este contenido no es una iniciativa y no pertenece aquí.'
+      report_not_an_initiative: 'Este contenido no es una propuesta y no pertenece aquí.'
       subject: 'Tienes un informe de spam en la plataforma de %{organizationName}'
       preheader: 'Actuar sobre este informe de spam'
       reported_this_because: '%{reporterFirstName} reportó esto porque:'

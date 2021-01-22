@@ -18,6 +18,10 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
+    def mailer_class
+      CommentOnYourIdeaMailer
+    end
+
     def self.category
       'own'
     end

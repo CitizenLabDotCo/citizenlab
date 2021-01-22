@@ -14,6 +14,10 @@ module EmailCampaigns
       ['admin', 'project_moderator']
     end
 
+    def mailer_class
+      NewIdeaForAdminMailer
+    end
+
     def activity_triggers
       {'Idea' => {'published' => true}}
     end
