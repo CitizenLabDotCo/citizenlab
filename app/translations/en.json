@@ -1441,7 +1441,7 @@
   "app.containers.AdminPage.Topics.confirmHeader": "Are you sure you want to delete this project topic?",
   "app.containers.AdminPage.Topics.delete": "Delete",
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Delete",
-  "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "This topic will no longer be able to used in projects.",
+  "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "This topic will no longer be able to be added to new posts in this project. ",
   "app.containers.AdminPage.Topics.inputForm": "Input form",
   "app.containers.AdminPage.Topics.lastTopicWarning": "At least one topic is required. If you do not want to use topics, they can be disabled in the {ideaFormLink} tab.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "You can add and delete the topics that can be assigned to inputs in this project.",
