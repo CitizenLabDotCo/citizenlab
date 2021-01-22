@@ -121,6 +121,7 @@ interface Props {
   moderator?: boolean | null;
   addVerificationBadge?: boolean | null;
   padding?: number;
+  hideIfNoAvatar?: boolean;
 }
 
 const Avatar = memo(
@@ -130,6 +131,7 @@ const Avatar = memo(
     className,
     addVerificationBadge,
     userId,
+    hideIfNoAvatar,
     ...props
   }: Props & InjectedIntlProps) => {
     const user = useUser({ userId });
@@ -153,9 +155,10 @@ const Avatar = memo(
       const borderColor = props.borderColor || 'transparent';
       const bgColor = props.bgColor || 'transparent';
 
-      const AvatarComponent = (
-        <Container aria-hidden className={className} size={containerSize}>
-          {avatarSrc ? (
+      const avatarComponentMainContent = getAvatarComponentMainContent();
+      function getAvatarComponentContent() {
+        if (avatarSrc) {
+          return (
             <AvatarImage
               className={`avatarImage ${
                 hasHoverEffect ? 'hasHoverEffect' : ''
@@ -171,7 +174,9 @@ const Avatar = memo(
               bgColor={bgColor}
               padding={padding}
             />
-          ) : (
+          );
+        } else if (!hideIfNoAvatar) {
+          return (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               name="user"
@@ -186,8 +191,14 @@ const Avatar = memo(
               bgColor={bgColor}
               padding={padding}
             />
-          )}
-
+          );
+        } else {
+          return null;
+        }
+      }
+      const AvatarComponent = (
+        <Container aria-hidden className={className} size={containerSize}>
+          {avatarComponentMainContent}
           {moderator && (
             <BadgeIcon
               name="clShield"
