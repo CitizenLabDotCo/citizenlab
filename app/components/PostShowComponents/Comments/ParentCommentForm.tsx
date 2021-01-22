@@ -289,7 +289,7 @@ class ParentCommentForm extends PureComponent<
         <Container className={className || ''}>
           <StyledAvatar
             userId={authUser?.id}
-            avatarSize="30px"
+            avatarSize={30}
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />

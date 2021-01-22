@@ -54,7 +54,7 @@ const ChangeLogEntry = memo<Props>(({ activity, postType }) => {
 
   return (
     <Entry className="e2e-idea-changelog-entry">
-      <Avatar userId={userId} avatarSize="36px" />
+      <Avatar userId={userId} avatarSize={36} />
       <TextWrapper>
         <p>
           <FormattedMessage

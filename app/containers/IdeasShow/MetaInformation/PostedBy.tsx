@@ -75,7 +75,7 @@ const PostedBy = memo<Props & InjectedIntlProps>(
           <Container className={`e2e-idea-author ${className || ''}`}>
             <StyledAvatar
               userId={authorId}
-              avatarSize="30px"
+              avatarSize={30}
               isLinkToProfile={!!authorId}
             />
             <FormattedMessage
