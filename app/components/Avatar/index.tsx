@@ -115,7 +115,7 @@ interface Props {
   isLinkToProfile?: boolean;
   fillColor?: string;
   borderThickness?: number;
-  avatarBorderColor?: string;
+  borderColor?: string;
   avatarBgColor?: string;
   className?: string;
   moderator?: boolean | null;
@@ -150,7 +150,7 @@ const Avatar = memo(
       const fillColor = props.fillColor || lighten(0.2, colors.label);
       const fillHoverColor = colors.label;
       const borderHoverColor = colors.label;
-      const borderColor = props.avatarBorderColor || 'transparent';
+      const borderColor = props.borderColor || 'transparent';
       const bgColor = props.avatarBgColor || 'transparent';
 
       const AvatarComponent = (
