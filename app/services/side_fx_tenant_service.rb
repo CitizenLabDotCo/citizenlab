@@ -14,7 +14,7 @@ class SideFxTenantService
       # fix campaigns
       EmailCampaigns::AssureCampaignsService.new.assure_campaigns
       # fix permissions
-      PermissionsService.new.update_permissions_for_current_tenant
+      PermissionsService.new.update_all_permissions
       update_group_by_identify
     end
   ensure
