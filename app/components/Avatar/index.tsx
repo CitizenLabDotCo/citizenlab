@@ -113,7 +113,7 @@ interface Props {
   userId: string | null;
   size: number;
   isLinkToProfile?: boolean;
-  avatarFillColor?: string;
+  fillColor?: string;
   avatarBorderThickness?: number;
   avatarBorderColor?: string;
   avatarBgColor?: string;
@@ -147,7 +147,7 @@ const Avatar = memo(
       const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
       const containerSize = avatarSize + padding * 2 + borderThickness * 2;
       const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
-      const fillColor = props.avatarFillColor || lighten(0.2, colors.label);
+      const fillColor = props.fillColor || lighten(0.2, colors.label);
       const fillHoverColor = colors.label;
       const borderHoverColor = colors.label;
       const borderColor = props.avatarBorderColor || 'transparent';
