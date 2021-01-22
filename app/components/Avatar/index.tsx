@@ -114,7 +114,7 @@ interface Props {
   size: number;
   isLinkToProfile?: boolean;
   fillColor?: string;
-  avatarBorderThickness?: number;
+  borderThickness?: number;
   avatarBorderColor?: string;
   avatarBgColor?: string;
   className?: string;
@@ -141,7 +141,7 @@ const Avatar = memo(
       const hasValidProfileLink = profileLink !== '/profile/undefined';
       const avatarSize = props.size;
       const padding = props.avatarPadding || 3;
-      const borderThickness = props.avatarBorderThickness || 1;
+      const borderThickness = props.borderThickness || 1;
       const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
       const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
       const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
