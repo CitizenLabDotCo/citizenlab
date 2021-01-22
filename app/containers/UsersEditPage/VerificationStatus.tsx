@@ -119,7 +119,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   if (isNilOrError(authUser)) return null;
 
-  const authUserIsVerified = authUser.data.attributes.verified;
+  const authUserIsVerified = authUser.attributes.verified;
 
   const reverifyButton = (
     <ReverifyButton className="e2e-reverify-user-button" onClick={onVerify}>
@@ -138,7 +138,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
         {authUserIsVerified ? (
           <>
             <StyledAvatar
-              userId={authUser.data.id}
+              userId={authUser.id}
               avatarSize={52}
               addVerificationBadge
               aria-hidden
@@ -162,7 +162,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           <>
             <AvatarAndShield aria-hidden>
               <StyledAvatar
-                userId={authUser?.data?.id}
+                userId={authUser?.id}
                 avatarSize={52}
                 avatarBgColor="transparent"
                 avatarPadding={0}

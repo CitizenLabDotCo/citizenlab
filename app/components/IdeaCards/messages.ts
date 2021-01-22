@@ -1,26 +1,19 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loadMore: {
-    id: 'app.components.IdeaCards.loadMore',
-    defaultMessage: 'Load more ideas',
-  },
   showMore: {
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
   },
-  empty: {
-    id: 'app.components.IdeaCards.empty',
-    defaultMessage: 'It looks like there are no ideas yet.',
-  },
-  noFilteredIdeas: {
-    id: 'app.containers.IdeaCards.noFilteredIdeas',
-    defaultMessage: 'No ideas found',
-  },
-  tryOtherFilter: {
-    id: 'app.containers.IdeaCards.tryOtherFilter',
+  noFilteredResults: {
+    id: 'app.containers.IdeaCards.noFilteredResults',
     defaultMessage:
-      "Try adjusting your search or filter to find what you're looking for",
+      'No results found. Please try a different filter or search term.',
+  },
+  tryDifferentFilters: {
+    id: 'app.containers.IdeaCards.tryDifferentFilters',
+    defaultMessage:
+      'No results found. Please try a different filter or search term.',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
@@ -70,18 +63,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.list',
     defaultMessage: 'List',
   },
-  searchPlaceholder: {
-    id: 'app.containers.IdeaCards.searchPlaceholder',
-    defaultMessage: 'Search for an idea',
-  },
-  searchAriaLabel: {
-    id: 'app.containers.IdeaCards.searchAriaLabel',
-    defaultMessage: 'Search for an idea',
-  },
-  xIdeas: {
-    id: 'app.containers.IdeaCards.xIdeas',
+  xResults: {
+    id: 'app.containers.IdeaCards.xResults',
     defaultMessage:
-      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+      '{ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
   all: {
     id: 'app.containers.IdeaCards.all',
@@ -91,21 +76,21 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
   },
-  showIdeas: {
-    id: 'app.containers.IdeaCards.showIdeas',
-    defaultMessage: 'Show ideas',
+  showResults: {
+    id: 'app.containers.IdeaCards.showResults',
+    defaultMessage: 'Show results',
   },
-  showXIdeas: {
-    id: 'app.containers.IdeaCards.showXIdeas',
+  showXResults: {
+    id: 'app.containers.IdeaCards.showXResults',
     defaultMessage:
-      'Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+      'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
     defaultMessage: 'Reset filters',
   },
-  a11y_totalIdeas: {
-    id: 'app.containers.IdeaCards.a11y_totalIdeas',
-    defaultMessage: 'Total ideas: {ideasCount}',
+  a11y_totalItems: {
+    id: 'app.containers.IdeaCards.a11y_totalItems',
+    defaultMessage: 'Total items: {ideasCount}',
   },
 });

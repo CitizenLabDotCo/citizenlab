@@ -4,7 +4,6 @@
  */
 
 import React, { memo } from 'react';
-import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components

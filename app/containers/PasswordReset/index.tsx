@@ -29,7 +29,9 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   background: ${colors.background};
 `;
 
@@ -74,6 +76,8 @@ interface IApiErrors {
   token?: CLError[];
   password?: CLError[];
 }
+
+type ApiErrorFieldName = keyof IApiErrors;
 
 type State = {
   token: string | null;
@@ -224,7 +228,7 @@ class PasswordReset extends React.PureComponent<
                 setRef={this.handlePasswordInputSetRef}
               />
               {apiErrors &&
-                Object.keys(apiErrors).map((errorField) => (
+                Object.keys(apiErrors).map((errorField: ApiErrorFieldName) => (
                   <Error
                     key={errorField}
                     apiErrors={apiErrors[errorField]}
