@@ -1168,6 +1168,7 @@
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Zoek vrijwilligers",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Vraag de deelnemers om zich als vrijwilliger op te geven voor een reeks acties.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "",
+  "app.containers.AdminPage.ProjectEdit.folderSelectError": "",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Start van een sjabloon",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Start van nul",
   "app.containers.AdminPage.ProjectEdit.generalTab": "Algemeen",

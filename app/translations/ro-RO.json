@@ -1168,6 +1168,7 @@
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Find volunteers",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Ask participants to volunteer for activities and causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "",
+  "app.containers.AdminPage.ProjectEdit.folderSelectError": "",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "From a template",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "From scratch",
   "app.containers.AdminPage.ProjectEdit.generalTab": "General",
