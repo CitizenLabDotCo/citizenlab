@@ -1168,6 +1168,7 @@
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "",
+  "app.containers.AdminPage.ProjectEdit.folderSelectError": "",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "",
   "app.containers.AdminPage.ProjectEdit.generalTab": "",
