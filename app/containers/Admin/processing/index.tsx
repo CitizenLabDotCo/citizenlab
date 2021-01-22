@@ -454,7 +454,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: ({ render }) => {
     return (
       <GetProjects
-        publicationStatuses={['published', 'archived']}
+        publicationStatuses={['published', 'archived', 'draft']}
         filterCanModerate={true}
         sort="new"
       >
