@@ -64,9 +64,12 @@ import {
 import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
+
+// resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
@@ -187,6 +190,7 @@ export interface InputProps {}
 
 interface DataProps {
   isProjectFoldersEnabled: GetFeatureFlagChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -785,11 +789,13 @@ class AdminProjectEditGeneral extends PureComponent<
 
     const {
       intl: { formatMessage },
+      authUser,
     } = this.props;
 
     if (
-      !get(this.props, 'params.projectId') ||
-      (get(this.props, 'params.projectId') && project !== undefined)
+      !isNilOrError(authUser) &&
+      (!get(this.props, 'params.projectId') ||
+        (get(this.props, 'params.projectId') && project !== undefined))
     ) {
       const projectAttrs = {
         ...(project ? project.data.attributes : {}),
@@ -1066,6 +1072,7 @@ class AdminProjectEditGeneral extends PureComponent<
               id="app.components.AdminPage.projects.form.additionalInputs.inputs"
               projectAttrs={projectAttrs}
               onChange={this.handleFieldUpdate}
+              authUser={authUser}
             />
 
             <StyledSectionField>
@@ -1168,6 +1175,7 @@ class AdminProjectEditGeneral extends PureComponent<
 const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
 const Data = adopt({
   isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
+  authUser: <GetAuthUser />,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

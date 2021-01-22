@@ -14,6 +14,7 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { FormikSubmitHandler, Multiloc } from 'typings';
+import { IUserData } from 'services/users';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -33,6 +34,7 @@ export type OutletsPropertyMap = {
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
     onChange: onProjectFormStateChange;
+    authUser: IUserData;
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};

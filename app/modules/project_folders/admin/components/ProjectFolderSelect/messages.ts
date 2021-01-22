@@ -24,4 +24,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.optionNo',
     defaultMessage: 'No',
   },
+  folderSelectError: {
+    id: 'app.containers.AdminPage.ProjectEdit.folderSelectError',
+    defaultMessage: 'Select a folder to add this project to.',
+  },
 });
