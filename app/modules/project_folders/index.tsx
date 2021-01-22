@@ -24,7 +24,6 @@ type RenderOnPublicationTypeProps = {
 };
 
 type RenderOnProjectFolderModeratorProps = {
-  publication?: IAdminPublicationContent;
   children: ReactNode;
 };
 
@@ -50,14 +49,10 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
 
 const RenderOnProjectFolderModerator = ({
   children,
-  publication,
 }: RenderOnProjectFolderModeratorProps) => {
   const authUser = useAuthUser();
 
-  if (
-    !isNilOrError(authUser) &&
-    isProjectFolderModerator(authUser, publication?.publicationId)
-  ) {
+  if (!isNilOrError(authUser) && isProjectFolderModerator(authUser)) {
     return <>{children}</>;
   }
 
@@ -96,7 +91,7 @@ const configuration: ModuleConfiguration = {
       props
     ) => (
       <RenderOnPublicationType publication={props.publication}>
-        <RenderOnProjectFolderModerator publication={props.publication}>
+        <RenderOnProjectFolderModerator>
           <ProjectFolderRow {...props} />
         </RenderOnProjectFolderModerator>
       </RenderOnPublicationType>
