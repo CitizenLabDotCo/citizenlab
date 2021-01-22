@@ -167,7 +167,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 avatarBgColor="transparent"
                 avatarPadding={0}
                 borderThickness={2}
-                avatarBorderColor="#fff"
+                borderColor="#fff"
               />
               <ShieldIcon name="verify_dark" />
             </AvatarAndShield>
