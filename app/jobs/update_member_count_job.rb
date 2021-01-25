@@ -13,5 +13,4 @@ class UpdateMemberCountJob < ApplicationJob
       end
     end
   end
-
 end
