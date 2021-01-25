@@ -65,7 +65,7 @@ module EmailCampaigns
       {
         subject: subject,
         from: from_email,
-        to: recipient.email,
+        to: to_email,
         reply_to: reply_to_email
       }
     end
@@ -119,7 +119,7 @@ module EmailCampaigns
     end
 
     def to_email
-      recipient.email
+      email_address_with_name recipient.email, "#{recipient.first_name} #{recipient.last_name}"
     end
 
     def reply_to_email
