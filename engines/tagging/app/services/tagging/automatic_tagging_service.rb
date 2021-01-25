@@ -61,7 +61,11 @@ module Tagging
 
     def switch_tenant(body)
       tenant_id = body['result']['data']['tenant_id']
-      Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
+      if tenant_id
+        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
+          yield
+        end
+      else
         yield
       end
     end
