@@ -37,10 +37,10 @@ resource "Tenants" do
     end
     example "[Error] Get the current tenant if it doesn't exist" do
       Tenant.current.update!(host: 'changedhost.com')
+      Apartment::Tenant.reset
       do_request
       expect(response_status).to eq 404
       # json_response = json_parse(response_body)
-
     end
   end
 
