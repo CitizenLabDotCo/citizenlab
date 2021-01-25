@@ -192,7 +192,7 @@ resource "Taggings" do
       do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha', 'lilila', 'leela', 'lou' ]
 
       expect(response_status).to eq 200
-      expect(Tagging::Tag.all.length).to eq 5
+      expect(Tagging::Tag.count).to eq 5
     end
 
   end

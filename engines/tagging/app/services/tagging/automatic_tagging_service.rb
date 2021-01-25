@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Tagging
   class AutomaticTaggingService
     def save_tags_from_prediction(body)
@@ -14,9 +16,8 @@ module Tagging
     end
 
     def cancel_tasks
-      if Tagging.pending&.map { |e| e.task_id }.uniq.map do |task_id|
+      if Tagging.pending.map(&:task_id).uniq.map do |task_id|
         cancelling_status = NLP::TasksService.new.cancel(task_id)
-        # for now we'll be very optimistic and just act as if cancelling always work.
         if cancelling_status != 200
           if NLP::TasksService.new.status(task_id)['status'] != 'PENDING'
             Tagging.pending.where(task_id: task_id).destroy_all
@@ -39,18 +40,28 @@ module Tagging
     end
 
     def processing?
-      !Tagging.pending.empty?
+      Tagging.pending.any?
+    end
+
+    def create_processing_taggings(batches)
+      batches.each do |b|
+        Tagging.create(
+          b['doc_ids'].map do |idea_id|
+            {
+              idea_id: idea_id,
+              assignment_method: :pending,
+              task_id: b['task_id']
+            }
+          end
+        )
+      end
     end
 
     private
 
     def switch_tenant(body)
       tenant_id = body['result']['data']['tenant_id']
-      if tenant_id
-        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
-          yield
-        end
-      else
+      Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
         yield
       end
     end
