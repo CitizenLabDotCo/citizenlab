@@ -1,7 +1,7 @@
 class PublishRawEventToSegmentJob < ApplicationJob
   queue_as :default
 
-  def perform(event)
+  def run(event)
     service = TrackingService.new
 
     begin

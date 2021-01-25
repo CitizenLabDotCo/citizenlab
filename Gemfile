@@ -76,7 +76,6 @@ gem "activerecord_json_validator", "~> 1.3.0"
 # requires activerecord < 6.0, while activerecord = 6.0.1 is
 # required by Rails 6.0.1.
 gem "apartment", github: 'influitive/apartment', branch: 'development'
-gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 2.0.2"
 gem "carrierwave-base64", "~> 2.6"
 gem "kaminari", "~> 1.2"

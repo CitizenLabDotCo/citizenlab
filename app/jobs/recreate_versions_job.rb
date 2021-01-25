@@ -1,7 +1,7 @@
 class RecreateVersionsJob < ApplicationJob
   queue_as :image_background
 
-  def perform(instance, attribute)
+  def run(instance, attribute)
     puts "Recreating #{Tenant.current.name} #{instance.class.name} #{instance.id} #{attribute} versions"
     begin
       if instance.valid? && instance.send("#{attribute}?")
