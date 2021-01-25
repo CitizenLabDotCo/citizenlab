@@ -26,7 +26,7 @@ module EmailCampaigns
       @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
 
       I18n.with_locale(locale) do
-        mail(default_config, &:mjml).tap do |message|
+        mail(default_config).tap do |message|
           message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
         end
       end
