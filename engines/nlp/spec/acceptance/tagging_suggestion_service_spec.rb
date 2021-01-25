@@ -29,7 +29,6 @@ describe NLP::TaggingSuggestionService do
           {:doc_id=>@ideas[2].id,
             :text=>"But I\'m not ideal."}
           ],
-         :min_confidence_treshold=>0.5,
          :tenant_id=> @tenant_id
        }
       )
@@ -44,7 +43,6 @@ describe NLP::TaggingSuggestionService do
           [{:doc_id=>@ideas[2].id,
             :text=>"Mais je ne suis pas idéale."}
           ],
-         :min_confidence_treshold=>0.5,
          :tenant_id=> @tenant_id
        }
       )

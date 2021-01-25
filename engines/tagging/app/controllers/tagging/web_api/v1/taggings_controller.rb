@@ -96,17 +96,7 @@ module Tagging
             current_user.locale
           )
           if @res
-            @res['batches'].each do |b|
-              Tagging.create(
-                b['doc_ids'].map do |idea_id|
-                  {
-                    idea_id: idea_id,
-                    assignment_method: :pending,
-                    task_id: b['task_id']
-                  }
-                end
-              )
-            end
+            AutomaticTaggingService.new.create_processing_taggings @res['batches']
 
             head :ok
           else
