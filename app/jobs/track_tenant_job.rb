@@ -2,7 +2,7 @@ class TrackTenantJob < ApplicationJob
   queue_as :default
   # creates or updates tenants in tracking destinations, should be called every tenant change
 
-  def perform(user=nil)
+  def run(user=nil)
     tenant = nil
 
     begin
