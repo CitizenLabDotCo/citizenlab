@@ -200,7 +200,7 @@ pl:
       by_author: 'wg %{authorName}'
       cta_review_initiative: 'Przejrzyj propozycję'
       report_inappropriate_offensive_content: 'Uważam tę treść za nieodpowiednią lub obraźliwą.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      report_not_an_initiative: 'Ta treść nie jest propozycją i nie jest stąd.'
       subject: 'Masz raport dot. spamu na platformie %{organizationName}'
       preheader: 'Podejmij działanie w związku ze zgłoszeniem spamu'
       reported_this_because: '%{reporterFirstName} zgłosił to, ponieważ:'
