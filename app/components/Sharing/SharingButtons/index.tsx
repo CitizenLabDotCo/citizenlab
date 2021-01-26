@@ -64,7 +64,7 @@ const Buttons = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 12px;
+    padding: 11px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
@@ -98,7 +98,7 @@ const Buttons = styled.div`
     }
 
     &.columnLayout {
-      margin-bottom: 12px;
+      margin-bottom: 15px;
 
       &.last {
         margin-bottom: 0px;
@@ -318,7 +318,7 @@ const SharingButtons = memo(
       ) : null;
 
     const titleMessage = {
-      idea: <FormattedMessage {...messages.shareIdea} />,
+      idea: <FormattedMessage {...messages.share} />,
       project: <FormattedMessage {...messages.share} />,
       initiative: <FormattedMessage {...messages.shareThisInitiative} />,
       folder: <FormattedMessage {...messages.shareThisFolder} />,

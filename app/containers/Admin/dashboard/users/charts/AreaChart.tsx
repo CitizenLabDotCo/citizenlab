@@ -55,7 +55,7 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
       if (series.users['outside']) {
         res.push({
           value: series.users['outside'],
-          name: formatMessage(messages.outsideArea),
+          name: formatMessage(messages.otherArea),
           code: 'outside',
         });
       }

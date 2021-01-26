@@ -91,7 +91,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
       (value) => isNil(value) || isEmpty(value)
     ) as Multiloc;
     const contentType = intl.formatMessage(
-      messages[moderation.attributes?.moderatable_type.toLowerCase()]
+      {
+        idea: messages.post,
+        comment: messages.comment,
+        initiative: messages.initiative,
+      }[moderation.attributes?.moderatable_type.toLowerCase()]
     );
     const bgColor = selected
       ? rgba(colors.adminTextColor, 0.1)
@@ -166,10 +170,19 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
                 }
               >
                 <BelongsToType>
-                  <FormattedMessage {...messages[key]} />:
+                  <FormattedMessage
+                    {...{
+                      idea: messages.post,
+                      project: messages.project,
+                      initiative: messages.initiative,
+                    }[key]}
+                  />
+                  :
                 </BelongsToType>
                 <a
-                  href={`/${key}s/${moderation.attributes.belongs_to[key].slug}`}
+                  href={`/${key === 'idea' ? 'idea' : 'project'}s/${
+                    moderation.attributes.belongs_to[key].slug
+                  }`}
                   role="button"
                   onClick={handleBelongsToLinkOnClick}
                   data-belongstotype={key}

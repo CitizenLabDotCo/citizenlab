@@ -23,6 +23,159 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 /**
  * Schema for validating the rules used in smart groups
  */
+
+export type TRuleType = TStaticRuleType | TCustomRuleType;
+
+export type TStaticRuleType =
+  | 'email'
+  | 'lives_in'
+  | 'registration_completed_at'
+  | 'role'
+  | 'participated_in_project'
+  | 'participated_in_topic'
+  | 'participated_in_idea_status'
+  | 'verified';
+
+export type TCustomRuleType =
+  | 'custom_field_text'
+  | 'custom_field_select'
+  | 'custom_field_checkbox'
+  | 'custom_field_date'
+  | 'custom_field_number';
+
+export type TPredicate = TStaticPredicate | TCustomPredicate;
+
+type TStaticPredicate =
+  | TRolePredicate
+  | TEmailPredicate
+  | TResidencePredicate
+  | TRegistrationCompletedPredicate
+  | TParticipatedInProjectPredicate
+  | TParticipatedInTopicPredicate
+  | TParticipatedInStatusPredicate
+  | TVerifiedPredicate;
+
+type TRolePredicate =
+  | 'is_admin'
+  | 'not_is_admin'
+  | 'is_project_moderator'
+  | 'not_is_project_moderator'
+  | 'is_normal_user'
+  | 'not_is_normal_user';
+
+type TEmailPredicate =
+  | 'is'
+  | 'not_is'
+  | 'contains'
+  | 'not_contains'
+  | 'begins_with'
+  | 'not_begins_with'
+  | 'ends_on'
+  | 'not_ends_on';
+
+type TResidencePredicate =
+  | 'has_value'
+  | 'not_has_value'
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_one_of'
+  | 'not_is_one_of';
+
+type TRegistrationCompletedPredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_before'
+  | 'is_exactly'
+  | 'is_after';
+
+type TParticipatedInProjectPredicate =
+  | 'in'
+  | 'not_in'
+  | 'posted_in'
+  | 'not_posted_in'
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'voted_idea_in'
+  | 'not_voted_idea_in'
+  | 'voted_comment_in'
+  | 'not_voted_comment_in'
+  | 'budgeted_in'
+  | 'not_budgeted_in'
+  | 'volunteered_in'
+  | 'not_volunteered_in';
+
+type TParticipatedInTopicPredicate =
+  | 'in'
+  | 'not_in'
+  | 'posted_in'
+  | 'not_posted_in'
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'voted_idea_in'
+  | 'not_voted_idea_in'
+  | 'voted_comment_in'
+  | 'not_voted_comment_in';
+
+type TParticipatedInStatusPredicate =
+  | 'in'
+  | 'not_in'
+  | 'posted_in'
+  | 'not_posted_in'
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'voted_idea_in'
+  | 'not_voted_idea_in'
+  | 'voted_comment_in'
+  | 'not_voted_comment_in';
+
+type TVerifiedPredicate = 'is_verified' | 'not_is_verified';
+
+type TCustomPredicate =
+  | TCustomFieldSelectPredicate
+  | TCustomFieldCheckboxPredicate
+  | TCustomFieldDatePredicate
+  | TCustomFieldTextPredicate
+  | TCustomFieldNumberPredicate;
+
+type TCustomFieldTextPredicate =
+  | 'is'
+  | 'not_is'
+  | 'contains'
+  | 'not_contains'
+  | 'begins_with'
+  | 'not_begins_with'
+  | 'ends_on'
+  | 'not_ends_on'
+  | 'is_empty'
+  | 'not_is_empty';
+
+type TCustomFieldSelectPredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_one_of'
+  | 'not_is_one_of'
+  | 'has_value'
+  | 'not_has_value';
+
+type TCustomFieldCheckboxPredicate = 'is_checked' | 'not_is_checked';
+
+type TCustomFieldDatePredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_before'
+  | 'is_exactly'
+  | 'is_after';
+
+type TCustomFieldNumberPredicate =
+  | 'is_equal'
+  | 'not_is_equal'
+  | 'is_larger_than'
+  | 'is_larger_than_or_equal'
+  | 'is_smaller_than'
+  | 'is_smaller_than_or_equal'
+  | 'is_empty'
+  | 'not_is_empty';
+
 export type TRule =
   | {
       ruleType?: 'custom_field_text';

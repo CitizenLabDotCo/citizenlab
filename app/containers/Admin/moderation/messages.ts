@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.project',
     defaultMessage: 'Project',
   },
-  idea: {
-    id: 'app.containers.Admin.Moderation.idea',
-    defaultMessage: 'Idea',
+  post: {
+    id: 'app.containers.Admin.Moderation.post',
+    defaultMessage: 'Post',
   },
   initiative: {
     id: 'app.containers.Admin.Moderation.initiative',
@@ -89,9 +89,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.goToThisContentType',
     defaultMessage: 'Open this {contentType} in a new tab',
   },
-  helpTooltipText: {
-    id: 'app.containers.Admin.Moderation.helpTooltipText',
+  moderationHelpTooltip: {
+    id: 'app.containers.Admin.Moderation.moderationHelpTooltip',
     defaultMessage:
-      "This page allows you to quickly check all new input that has been placed on your platform: ideas, comments & initiatives. Everything that you checked, can be marked as 'Viewed'. This makes sure you keep an easy overview of what has been checked by you or your colleagues and what not.",
+      'This page allows you to quickly check all new input that has been added to your platform, including posts and comments. You can mark posts as being ‘viewed’ so that others know which inputs still need to be processed.',
   },
 });
