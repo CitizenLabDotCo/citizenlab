@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::NewCommentOnCommentedInitiativeMailer, type: :mai
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
     let(:initiative) { create(:initiative) }
     let(:comment) { create(:comment, post: initiative) }
-    let(:name_service) { UserDisplayNameService.new(Tenant.current, recipient) }
+    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
 
     let(:command) do
       {

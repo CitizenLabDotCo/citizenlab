@@ -35,7 +35,7 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.map do |project_id|
         project = Project.find project_id
         statistics = statistics project
