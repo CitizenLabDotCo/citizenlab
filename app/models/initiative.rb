@@ -82,12 +82,12 @@ class Initiative < ApplicationRecord
 
 
   def votes_needed(configuration = AppConfiguration.instance)
-    [configuration.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
+    [configuration.settings('initiatives', 'voting_threshold') - upvotes_count, 0].max
   end
 
   def expires_at(configuration = AppConfiguration.instance)
     return nil unless published?
-    published_at + configuration.settings.dig('initiatives', 'days_limit').days
+    published_at + configuration.settings('initiatives', 'days_limit').days
   end
 
   def threshold_reached_at
