@@ -126,7 +126,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
     franceconnectLoginEnabled,
     intl: { formatMessage },
   }) => {
-    const { flow, inModal } = metaData;
+    const { flow, inModal, noPushLinks } = metaData;
     const azureProviderName = !isNilOrError(tenant)
       ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name
       : null;
@@ -179,7 +179,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (inModal) {
+        if (inModal || noPushLinks) {
           goToOtherFlow();
         } else {
           clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in');

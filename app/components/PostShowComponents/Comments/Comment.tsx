@@ -11,7 +11,7 @@ import CommentFooter from './CommentFooter';
 import { Icon } from 'cl2-component-library';
 
 // services
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
@@ -130,7 +130,8 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
         (commentType === 'parent' && !hasChildComments) ||
         (commentType === 'child' && last === true);
       const moderator =
-        !isNilOrError(author) && canModerate(projectId, { data: author });
+        !isNilOrError(author) &&
+        canModerateProject(projectId, { data: author });
 
       return (
         <Container
