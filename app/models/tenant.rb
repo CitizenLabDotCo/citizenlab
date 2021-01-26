@@ -1,6 +1,5 @@
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
-  include Frontend::TenantStyle
 
   mount_base64_uploader :logo, TenantLogoUploader
   mount_base64_uploader :header_bg, TenantHeaderBgUploader
@@ -10,8 +9,8 @@ class Tenant < ApplicationRecord
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
   validate :valid_host_format
 
-  validates :settings, presence: true, json: { 
-    schema: -> { Tenant.settings_json_schema_str }, 
+  validates :settings, presence: true, json: {
+    schema: -> { AppConfiguration.settings_json_schema_str },
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
     options: {
       errors_as_objects: true
@@ -19,7 +18,7 @@ class Tenant < ApplicationRecord
   }
 
   validate(on: :update) do |record|
-    missing_locales = Apartment::Tenant.switch(schema_name) do 
+    missing_locales = switch do
       User.where.not(locale: settings.dig('core', 'locales')).pluck(:locale)
     end
     if missing_locales.present?
@@ -33,35 +32,45 @@ class Tenant < ApplicationRecord
   after_update :update_app_configuration
 
   before_validation :validate_missing_feature_dependencies
+  before_validation :ensure_style
 
   def self.current
     Current.tenant || find_by!(host: Apartment::Tenant.current.gsub(/_/, "."))
   end
 
-  def self.settings *path
-   self.current.settings.dig(*path)
+  def self.settings(*path)
+    ActiveSupport::Deprecation.warn("Tenant::settings is deprecated. Use AppConfiguration::settings instead.")
+    AppConfiguration.instance.settings(*path)
   end
 
   def self.settings_json_schema_str
-    @@settings_json_schema_str ||= ERB.new(File.read(Rails.root.join('config', 'schemas', 'tenant_settings.json_schema.erb')))
-      .result(binding)
+    ActiveSupport::Deprecation.warn("Tenant::settings_json_schema_str is deprecated. Use AppConfiguration::settings_json_schema_str instead.")
+    AppConfiguration.settings_json_schema_str
   end
 
   def self.settings_json_schema
-    @@settings_json_schema ||= JSON.parse(settings_json_schema_str)
+    ActiveSupport::Deprecation.warn("Tenant::settings_json_schema is deprecated. Use AppConfiguration::settings_json_schema instead.")
+    AppConfiguration.settings_json_schema
   end
 
-  def self.style *path
-   self.current.style.dig(*path)
+  def self.style(*path)
+    ActiveSupport::Deprecation.warn("Tenant::style is deprecated. Use AppConfiguration::style instead.")
+    AppConfiguration.instance.style(*path)
   end
 
   def self.style_json_schema_str
-    @@style_json_schema_str ||= ERB.new(File.read(Rails.root.join('engines', 'frontend', 'config', 'schemas', 'tenant_style.json_schema.erb')))
-      .result(binding)
+    ActiveSupport::Deprecation.warn("Tenant::style_json_schema_str is deprecated. Use AppConfiguration::style_json_schema_str instead.")
+    AppConfiguration.style_json_schema_str
   end
 
   def self.style_json_schema
-    @@style_json_schema ||= JSON.parse(style_json_schema_str)
+    ActiveSupport::Deprecation.warn("Tenant::settings_json_schema is deprecated. Use AppConfiguration::settings_json_schema instead.")
+    AppConfiguration.style_json_schema
+  end
+
+  def self.available_style_attributes
+    ActiveSupport::Deprecation.warn("Tenant::available_style_attributes is deprecated. Use AppConfiguration::available_style_attributes instead.")
+    AppConfiguration.available_style_attributes
   end
 
   def schema_name
@@ -74,40 +83,33 @@ class Tenant < ApplicationRecord
   end
 
   def cleanup_settings
-    ss = SettingsService.new
-    self.settings = ss.remove_additional_features(self.settings, self.class.settings_json_schema)
-    self.settings = ss.remove_additional_settings(self.settings, self.class.settings_json_schema)
-    self.settings = ss.add_missing_features(self.settings, self.class.settings_json_schema)
-    self.settings = ss.add_missing_settings(self.settings, self.class.settings_json_schema)
+    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#cleanup_settings instead.")
+    configuration.cleanup_settings
   end
 
-  def has_feature? f
-    settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
+  def has_feature?(f)
+    ActiveSupport::Deprecation.warn("Tenant#cleanup_settings is deprecated. Use AppConfiguration#has_feature? instead.")
+    configuration.has_feature?(f)
   end
 
-  def closest_locale_to locale
-    locales = settings.dig('core', 'locales')
-    if locales && locales.include?(locale.to_s)
-      locale
-    else
-      locales.first
-    end
+  def closest_locale_to(locale)
+    ActiveSupport::Deprecation.warn("Tenant#closest_locale_to is deprecated. Use AppConfiguration#closest_locale_to instead.")
+    configuration.closest_locale_to(locale)
   end
 
   def public_settings
-    ss = SettingsService.new
-    ss.remove_private_settings(self.settings, self.class.settings_json_schema)
+    ActiveSupport::Deprecation.warn("Tenant#public_settings is deprecated. Use AppConfiguration#public_settings instead.")
+    configuration.public_settings
   end
 
   def base_frontend_uri
-    if Rails.env.development?
-      "http://localhost:3000"
-    else
-      transport = Rails.env.test? ? 'http' : 'https'
-      "#{transport}://#{self.host}"
-    end
+    ActiveSupport::Deprecation.warn("Tenant#base_frontend_uri is deprecated. Use AppConfiguration#base_frontend_uri instead.")
+    configuration.base_frontend_uri
   end
 
+  # TODO_MT Duplicate code with AppConfiguration
+  # (Needed by tenant uploaders to compute +asset_host+ when creating a new tenant with uploads, bc app config does not
+  # exist yet).
   def base_backend_uri
     if Rails.env.development?
       "http://localhost:4000"
@@ -118,7 +120,8 @@ class Tenant < ApplicationRecord
   end
 
   def location
-    RGeo::Geographic.spherical_factory(:srid => 4326).point(settings.dig('maps', 'map_center', 'long'), settings.dig('maps', 'map_center', 'lat'))
+    ActiveSupport::Deprecation.warn("Tenant#location is deprecated. Use AppConfiguration#location instead.")
+    configuration.location
   end
 
   def turn_on_abbreviated_user_names!
@@ -127,10 +130,20 @@ class Tenant < ApplicationRecord
     self.save!
   end
 
+  # @return [AppConfiguration]
+  def configuration
+    # TODO OS only works for getting the configuration, cannot modify/update it (bc it switches back to the previous schema).
+    switch { AppConfiguration.instance }
+  end
+
+  def switch
+    Apartment::Tenant.switch(schema_name) { yield }
+  end
+
   private
 
   def create_app_configuration
-    Apartment::Tenant.switch(schema_name) do
+    switch do
       AppConfiguration.create(
           id: id,
           name: name,
@@ -147,7 +160,7 @@ class Tenant < ApplicationRecord
 
   def update_app_configuration
     return if caller.any? { |s| s.match?(/app_configuration\.rb.*`update_tenant'/) }
-    Apartment::Tenant.switch(schema_name) do
+    switch do
       config = AppConfiguration.instance
       attrs_delta = attributes_delta(self, config)
       return unless attrs_delta.present?
@@ -187,6 +200,8 @@ class Tenant < ApplicationRecord
     old_schema = self.saved_change_to_host.first.gsub(/\./, "_")
     new_schema = self.schema_name
     ActiveRecord::Base.connection.execute("ALTER SCHEMA \"#{old_schema}\" RENAME TO \"#{new_schema}\"")
+    # If we were in the apartment of the altered tenant, we switch to the new schema.
+    Apartment::Tenant.switch!(new_schema) if old_schema == Apartment::Tenant.current
   end
 
 
@@ -199,13 +214,19 @@ class Tenant < ApplicationRecord
   end
 
   def valid_host_format
-    if host != 'localhost' && (!host.include?('.') || host.include?(' ') || (host =~ /[A-Z]/) || host.include?('_'))
+    return if host == 'localhost'
+
+    if !host.include?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
       self.errors.add(
-        :host,
-        :invalid_format,
-        message: 'The chosen host does not have a valid format'
+          :host,
+          :invalid_format,
+          message: 'The chosen host does not have a valid format'
       )
     end
+  end
+
+  def ensure_style
+    self.style ||= {}
   end
 
 end
