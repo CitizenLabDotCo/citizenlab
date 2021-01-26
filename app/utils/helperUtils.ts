@@ -7,7 +7,6 @@ import {
 import { isString } from 'util';
 import { trim } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
-import { appGraphqlLocalePairs } from 'containers/App/constants';
 
 export function capitalizeParticipationContextType(
   type: IParticipationContextType
@@ -150,18 +149,10 @@ export function stripHtmlTags(str: string | null | undefined) {
 
 // e.g. 'en-GB' -> 'enGb'
 export function convertToGraphqlLocale(locale: Locale) {
-  let graphqlLocale;
-  if (Object.values(appGraphqlLocalePairs).includes(locale)) {
-    graphqlLocale = Object.keys(appGraphqlLocalePairs).find(
-      (graphqlLoc) => appGraphqlLocalePairs[graphqlLoc] === locale
-    );
-  } else {
-    const newLocale = locale.replace('-', '');
-    const length = newLocale.length - 1;
-    graphqlLocale =
-      newLocale.substring(0, length) + newLocale.substr(length).toLowerCase();
-  }
-  return graphqlLocale as GraphqlLocale;
+  const newLocale = locale.replace('-', '');
+  const length = newLocale.length - 1;
+  return (newLocale.substring(0, length) +
+    newLocale.substr(length).toLowerCase()) as GraphqlLocale;
 }
 
 export const uuidRegExp =
