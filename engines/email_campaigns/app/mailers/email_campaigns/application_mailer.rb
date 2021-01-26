@@ -6,11 +6,7 @@ module EmailCampaigns
 
     add_template_helper CampaignHelper
 
-    DEFAULT_SENDER = ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')
-
     layout 'mailer'
-
-    default from: DEFAULT_SENDER, reply_to: DEFAULT_SENDER
 
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
@@ -24,17 +20,13 @@ module EmailCampaigns
       end
     end
 
-    def self.sender_email
-      DEFAULT_SENDER
-    end
-
     attr_reader :command, :campaign
 
     delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, to: :url_service
     delegate :first_name, to: :recipient, prefix: true
 
     helper_method :command, :campaign, :event, :header_title, :header_message, :show_header?, :preheader, :subject,
-                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing
+                  :tenant, :user, :recipient, :locale, :count_from, :days_since_publishing, :text_direction
 
     helper_method :organization_name, :recipient_name,
                   :url_service, :multiloc_service, :organization_name,
@@ -72,8 +64,9 @@ module EmailCampaigns
     def default_config
       {
         subject: subject,
-        from: email_address_with_name(self.class.sender_email, organization_name),
-        to: recipient.email
+        from: from_email,
+        to: to_email,
+        reply_to: reply_to_email
       }
     end
 
@@ -119,6 +112,18 @@ module EmailCampaigns
 
     def subject
       raise NotImplementedError
+    end
+
+    def from_email
+      email_address_with_name ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co'), organization_name
+    end
+
+    def to_email
+      email_address_with_name recipient.email, "#{recipient.first_name} #{recipient.last_name}"
+    end
+
+    def reply_to_email
+      command[:reply_to] || ENV.fetch("DEFAULT_REPLY_TO_EMAIL", nil) || ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     end
 
     def event
@@ -180,6 +185,14 @@ module EmailCampaigns
       return unless resource.respond_to?(:published_at)
 
       (Time.zone.today - resource.published_at.to_date).to_i
+    end
+
+    def text_direction
+      if locale =~ /^ar.*$/
+        'rtl'
+      else
+        'ltr'
+      end
     end
   end
 end
