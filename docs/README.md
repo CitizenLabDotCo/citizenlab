@@ -1,19 +1,19 @@
 # Changelog
 
 ## Next release 
-
-### Added
-- Folder admin rights
-
+/
 
 ## 2021-01-26
 
 ### Added
-- The “from” and “reply-to” emails can be customized by cluster.
+- Folder admin rights
+- The 'from' and 'reply-to' emails can be customized by cluster.
+
 ### Fixed
-- “reply-to” email occurred twice, now only occurs once.
+- 'reply-to' email occurred twice, now only occurs once.
+
 ### Changed
-- Added the recipient first and last name to the “to” email field.
+- Added the recipient first and last name to the 'to' email field.
 
 ## 2021-01-21
 
