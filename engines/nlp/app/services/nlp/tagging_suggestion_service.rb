@@ -13,7 +13,8 @@ module NLP
       documents.any? ? @api.zeroshot_classification({
         candidate_labels: candidate_labels,
         documents: documents,
-        tenant_id: Tenant.current.id
+        tenant_id: Tenant.current.id,
+        locale: locale
       }.freeze) : []
     end
 
