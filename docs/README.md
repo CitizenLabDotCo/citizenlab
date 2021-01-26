@@ -2,7 +2,8 @@
 
 ## Next release 
 
-/
+### Added
+- Folder admin rights
 
 ## 2021-01-21
 
