@@ -6,11 +6,7 @@ module EmailCampaigns
 
     add_template_helper CampaignHelper
 
-    DEFAULT_SENDER = ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')
-
     layout 'mailer'
-
-    default from: DEFAULT_SENDER, reply_to: DEFAULT_SENDER
 
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
@@ -22,10 +18,6 @@ module EmailCampaigns
           message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
         end
       end
-    end
-
-    def self.sender_email
-      DEFAULT_SENDER
     end
 
     attr_reader :command, :campaign
@@ -72,8 +64,9 @@ module EmailCampaigns
     def default_config
       {
         subject: subject,
-        from: email_address_with_name(self.class.sender_email, organization_name),
-        to: recipient.email
+        from: from_email,
+        to: to_email,
+        reply_to: reply_to_email
       }
     end
 
@@ -119,6 +112,18 @@ module EmailCampaigns
 
     def subject
       raise NotImplementedError
+    end
+
+    def from_email
+      email_address_with_name ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co'), organization_name
+    end
+
+    def to_email
+      email_address_with_name recipient.email, "#{recipient.first_name} #{recipient.last_name}"
+    end
+
+    def reply_to_email
+      command[:reply_to] || ENV.fetch("DEFAULT_REPLY_TO_EMAIL", nil) || ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     end
 
     def event
