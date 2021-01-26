@@ -163,7 +163,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   componentDidMount() {
     const { tenant, locale, authUser } = this.props;
-    this.handlePotentialCustomRedirect(this.props.location.pathname);
     this.subscriptions = getSubscriptions();
     this.unlisten = getUnlisten();
     setTimeZone();
@@ -282,6 +281,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const { pathname, search } = this.props.location;
     const { verificationModalMounted } = this.state;
 
+    this.handlePotentialCustomRedirect(this.props.location.pathname);
     handleSignUpInModal();
     handleVerificationModal();
 
