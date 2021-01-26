@@ -206,7 +206,7 @@ const FolderPermissions = ({
                 key={folderModerator.id}
                 isLastItem={index === folderModerators.length - 1}
               >
-                <Avatar userId={folderModerator.id} size="30px" />
+                <Avatar userId={folderModerator.id} size={30} />
                 <p className="expand">{userName(folderModerator)}</p>
                 <p className="expand">{folderModerator.attributes.email}</p>
                 <Button
