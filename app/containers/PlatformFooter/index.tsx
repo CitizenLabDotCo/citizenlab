@@ -174,7 +174,7 @@ const PagesNav = styled.nav`
 
 const PagesNavList = styled.ul`
   display: flex;
-
+  flex-wrap: wrap;
   align-items: center;
   list-style: none;
   margin: 0;
@@ -285,12 +285,12 @@ const PoweredBy = styled.div`
 
 const PoweredByText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;
 
-  ${media.smallerThan1100px`
+  ${media.smallerThan1280px`
     display: none;
   `}
 
@@ -551,6 +551,24 @@ class PlatformFooter extends PureComponent<Props, State> {
               <PagesNavListItem>
                 <StyledLink to="/site-map">
                   <FormattedMessage {...messages.siteMap} />
+                </StyledLink>
+              </PagesNavListItem>
+
+              <PagesNavListItem>
+                <StyledLink to="/site-map">Test one and a half</StyledLink>
+              </PagesNavListItem>
+
+              <PagesNavListItem>
+                <StyledLink to="/site-map">Test two</StyledLink>
+              </PagesNavListItem>
+
+              <PagesNavListItem>
+                <StyledLink to="/site-map">Test three and a half</StyledLink>
+              </PagesNavListItem>
+
+              <PagesNavListItem>
+                <StyledLink to="/site-map">
+                  Very long test four and a half
                 </StyledLink>
               </PagesNavListItem>
             </PagesNavList>
