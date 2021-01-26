@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { reportError } from 'utils/loggingUtils';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -24,13 +25,14 @@ import tracks from './tracks';
 
 // services
 import { removeUrlLocale } from 'services/locale';
-import { LEGAL_PAGES } from 'services/pages';
+import { LEGAL_PAGES, TLegalPage } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // style
 import styled from 'styled-components';
@@ -340,6 +342,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -425,6 +428,18 @@ class PlatformFooter extends PureComponent<Props, State> {
 
   openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
+  };
+
+  getLinkTo = (slug: TLegalPage) => () => {
+    const { tenant } = this.props;
+    if (
+      !isNilOrError(tenant) &&
+      tenant.attributes.name === 'hillerod' &&
+      slug === 'accessibility-statement'
+    ) {
+    }
+
+    return `/pages/${slug}`;
   };
 
   render() {
@@ -528,21 +543,27 @@ class PlatformFooter extends PureComponent<Props, State> {
         >
           <PagesNav>
             <PagesNavList>
-              {LEGAL_PAGES
-                // to be added back when we do the footer redesign
-                .filter((slug) => slug !== 'accessibility-statement')
-                .map((slug, index) => (
-                  <React.Fragment key={slug}>
-                    <PagesNavListItem>
-                      <StyledLink
-                        to={`/pages/${slug}`}
-                        className={index === 0 ? 'first' : ''}
-                      >
-                        <FormattedMessage {...messages[slug]} />
-                      </StyledLink>
-                    </PagesNavListItem>
-                  </React.Fragment>
-                ))}
+              {LEGAL_PAGES.map((slug: TLegalPage, index) => (
+                <React.Fragment key={slug}>
+                  <PagesNavListItem>
+                    <StyledLink
+                      to={this.getLinkTo(slug)()}
+                      className={index === 0 ? 'first' : ''}
+                    >
+                      <FormattedMessage
+                        {...{
+                          information: messages.information,
+                          'terms-and-conditions': messages.termsAndConditions,
+                          'privacy-policy': messages.privacyPolicy,
+                          'cookie-policy': messages.cookiePolicy,
+                          'accessibility-statement':
+                            messages.accessibilityStatement,
+                        }[slug]}
+                      />
+                    </StyledLink>
+                  </PagesNavListItem>
+                </React.Fragment>
+              ))}
               <PagesNavListItem>
                 <StyledButton onClick={this.openConsentManager}>
                   <FormattedMessage {...messages.cookieSettings} />
@@ -580,6 +601,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 const Data = adopt<Props>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
+  tenant: <GetTenant />,
 });
 
 export default (inputProps: InputProps) => (
