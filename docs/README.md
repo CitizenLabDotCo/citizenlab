@@ -2,7 +2,18 @@
 
 ## Next release 
 
-/
+### Added
+- Folder admin rights
+
+
+## 2021-01-26
+
+### Added
+- The “from” and “reply-to” emails can be customized by cluster.
+### Fixed
+- “reply-to” email occurred twice, now only occurs once.
+### Changed
+- Added the recipient first and last name to the “to” email field.
 
 ## 2021-01-21
 
@@ -29,6 +40,9 @@
 - The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
 
 ## 2021-01-13
+
+### Added
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
 
 ### Changed
 - Idea cards redesign

@@ -1,40 +1,57 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+// hooks
+import useAdminPublications from 'hooks/useAdminPublications';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import GetAdminPublication from 'resources/GetAdminPublication';
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
+interface Props {}
 
-interface Props extends DataProps {}
+const ModeratorProjectList = memo<Props>(() => {
+  const adminPublications = useAdminPublications({
+    publicationStatusFilter: ['published', 'draft', 'archived'],
+    folderId: null,
+  });
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
-const ModeratorProjectList = memo<Props>(({ projects }) => {
+  const adminPublicationRow = (adminPublication) => {
+    if (adminPublication.publicationType === 'project') {
+      return <ProjectRow publication={adminPublication} />;
+    } else if (
+      adminPublication.publicationType === 'folder' &&
+      isProjectFoldersEnabled
+    ) {
+      return (
+        <Outlet
+          id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
+          publication={adminPublication}
+        />
+      );
+    }
+
+    return null;
+  };
+
   if (
-    !isNilOrError(projects) &&
-    projects.projectsList &&
-    projects.projectsList.length > 0
+    !isNilOrError(adminPublications) &&
+    adminPublications.list &&
+    adminPublications.list.length > 0
   ) {
-    const { projectsList } = projects;
+    const adminPublicationsList = adminPublications.list;
 
-    if (projectsList && projectsList.length > 0) {
+    if (adminPublicationsList && adminPublicationsList.length > 0) {
       return (
         <>
           <ListHeader>
@@ -44,30 +61,14 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
           </ListHeader>
 
           <List>
-            {projectsList.map((project, index) => {
+            {adminPublicationsList.map((adminPublication, index) => {
               return (
                 <Row
                   key={index}
-                  id={project.id}
-                  isLastItem={index === projectsList.length - 1}
+                  id={adminPublication.id}
+                  isLastItem={index === adminPublicationsList.length - 1}
                 >
-                  <GetAdminPublication
-                    adminPublicationId={
-                      project.relationships.admin_publication?.data?.id || null
-                    }
-                  >
-                    {({ adminPublication }) =>
-                      !isNilOrError(adminPublication) ? (
-                        <ProjectRow
-                          publication={{
-                            ...adminPublication,
-                            publicationId: project.id,
-                            publicationType: 'project',
-                          }}
-                        />
-                      ) : null
-                    }
-                  </GetAdminPublication>
+                  {adminPublicationRow(adminPublication)}
                 </Row>
               );
             })}
@@ -80,21 +81,4 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
   return null;
 });
 
-const publicationStatuses: PublicationStatus[] = [
-  'published',
-  'draft',
-  'archived',
-];
-
-const Data = adopt<DataProps>({
-  projects: (
-    <GetProjects
-      publicationStatuses={publicationStatuses}
-      filterCanModerate={true}
-    />
-  ),
-});
-
-export default () => (
-  <Data>{(dataProps) => <ModeratorProjectList {...dataProps} />}</Data>
-);
+export default ModeratorProjectList;
