@@ -5,7 +5,12 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def update
-    if update_configuration(app_configuration, config_params)
+    update_configuration!(app_configuration, config_params)
+    side_fx_service = SideFxAppConfigurationService.new
+    side_fx_service.before_update(app_configuration, current_user)
+
+    if app_configuration.save
+      side_fx_service.after_update(app_configuration, current_user)
       render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serialized_json
     else
       render json: { errors: app_configuration.errors.details }, status: :unprocessable_entity
@@ -18,8 +23,8 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
     false
   end
 
-  # TODO_MT SideFx
-  def update_configuration(configuration, params)
+  # Update the configuration attributes according to config params without saving it.
+  def update_configuration!(configuration, params)
     configuration.attributes = {
         settings:  configuration.settings.deep_merge!(params[:settings].to_h),
         style:     configuration.style.deep_merge!(params[:style].to_h),
@@ -28,7 +33,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
         favicon:   params[:favicon],
     }.compact
     remove_images!(configuration, params)
-    configuration.save
+    configuration
   end
 
   def remove_images!(configuration, config_params)
@@ -38,8 +43,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def app_configuration
-    return @app_configuration if @app_configuration
-    @app_configuration = authorize AppConfiguration.instance
+    @app_configuration ||= authorize AppConfiguration.instance
   end
 
   def config_params

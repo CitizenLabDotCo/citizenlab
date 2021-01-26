@@ -10,6 +10,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)
                                                  .where(publication_type: Project.name)
+
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
     # AdminPublicationsFilteringService is also making a request on projects).
     # But could not find a way to eager-load the polymorphic type in the publication
@@ -61,10 +62,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @project = Project.new(project_params)
     SideFxProjectService.new.before_create(@project, current_user)
 
-    authorize @project
-    saved = ActiveRecord::Base.transaction { save_project(@project) }
-
-    if saved
+    if save_project
       SideFxProjectService.new.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -87,12 +85,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
     end
-    authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
 
-    saved = ActiveRecord::Base.transaction { save_project(@project) }
-
-    if saved
+    if save_project
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -106,9 +101,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def destroy
     SideFxProjectService.new.before_destroy(@project, current_user)
-    project = @project.destroy
-    if project.destroyed?
-      SideFxProjectService.new.after_destroy(project, current_user)
+    if @project.destroy
+      SideFxProjectService.new.after_destroy(@project, current_user)
       head :ok
     else
       head 500
@@ -117,12 +111,15 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   private
 
-  def save_project(project)
-    result = run_callbacks(:save_project) do
-      saved = project.save
-      [saved, project]  # We include the project bc the result of the block can
-    end                 # be used by :around callbacks. But there is no point
-    result[0]           # to include it in the value returned by the method.
+  def save_project
+    ActiveRecord::Base.transaction do
+      run_callbacks(:save_project) do
+        # authorize is placed within the block so we can prepare
+        # the @project to be authorized from a callback.
+        authorize @project
+        @project.save
+      end
+    end
   end
 
   def secure_controller?
@@ -130,8 +127,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def set_project
-    @project = Project.find params[:id]
+    @project = Project.find(params[:id])
     authorize @project
   end
-
 end

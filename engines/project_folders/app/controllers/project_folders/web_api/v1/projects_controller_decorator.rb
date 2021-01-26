@@ -14,18 +14,15 @@ module ProjectFolders
 
     def self.included(base)
       base.class_eval do
-        set_callback :save_project, :around, :set_folder!
+        set_callback :save_project, :before, :set_folder
       end
     end
 
-    def set_folder!
-      project_saved, project = yield
-      return unless project_saved
-      return unless params.require(:project).key? :folder_id
-      folder_id = params.dig(:project, :folder_id)
-      project.set_folder!(folder_id)
-    end
+    def set_folder
+      return unless params.require(:project).key?(:folder_id)
 
+      @project.folder_id = params.dig(:project, :folder_id)
+    end
   end
 end
 
