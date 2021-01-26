@@ -10,7 +10,7 @@ resource 'ProjectFolder' do
     @projects = ['published','published','draft','published','archived','archived','published']
       .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
     @folders = [
-      create(:project_folder, projects: @projects.take(3)), 
+      create(:project_folder, projects: @projects.take(3)),
       create(:project_folder, projects: [@projects.last])
     ]
   end
@@ -122,7 +122,7 @@ resource 'ProjectFolder' do
       example "Update a folder" do
         old_publcation_ids = AdminPublication.ids
         do_request
-        
+
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
@@ -136,6 +136,7 @@ resource 'ProjectFolder' do
     delete "web_api/v1/project_folders/:id" do
       let(:project_folder) { @folders.first }
       let!(:id) { project_folder.id }
+      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
 
       example "Delete a folder" do
         old_count = ProjectFolders::Folder.count
@@ -144,13 +145,94 @@ resource 'ProjectFolder' do
         do_request
 
         expect(response_status).to eq 200
-        expect{ProjectFolders::Folder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(ProjectFolders::Folder.count).to eq (old_count - 1)
-        expect(AdminPublication.count).to eq (old_publications_count - 4)
-        expect(Project.count).to eq (old_project_count - 3)
+        expect { ProjectFolders::Folder.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(ProjectFolders::Folder.count).to eq(old_count - 1)
+        expect(AdminPublication.count).to eq(old_publications_count - 4)
+        expect(Project.count).to eq(old_project_count - 3)
+        expect(User.project_folder_moderator(id).count).to eq 0
+      end
+    end
+  end
+
+  context 'when project folder moderator' do
+    let(:moderated_folder) { create(:project_folder) }
+    let!(:user) { create(:project_folder_moderator, project_folder: moderated_folder) }
+
+    before do
+      header_token_for(user)
+    end
+
+    post 'web_api/v1/project_folders' do
+      with_options scope: :project_folder do
+        parameter :title_multiloc, 'The title of the folder', required: true
+        parameter :description_multiloc, 'HTML info about the folder', required: false
+        parameter :description_preview_multiloc, 'Text info about the folder', required: false
+        parameter :header_bg, 'Base64 encoded header image', required: false
+      end
+
+      with_options scope: %i[project_folder admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      end
+
+      ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
+
+      let(:title_multiloc) { { 'en' => 'Folder title' } }
+      let(:description_multiloc) { { 'en' => 'Folder desc' } }
+      let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
+      let(:publication_status) { 'draft' }
+
+      example_request 'Create a folder' do
+        expect(response_status).to eq 401
       end
     end
 
-  end
+    patch 'web_api/v1/project_folders/:id' do
+      with_options scope: :project_folder do
+        parameter :title_multiloc, 'The title of the folder', required: true
+        parameter :description_multiloc, 'HTML info about the folder', required: false
+        parameter :description_preview_multiloc, 'Text info about the folder', required: false
+        parameter :header_bg, 'Base64 encoded header image', required: false
+      end
 
+      with_options scope: %i[project_folder admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      end
+
+      ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
+
+      let(:title_multiloc) { { 'en' => 'Folder title' } }
+      let(:description_multiloc) { { 'en' => 'Folder desc' } }
+      let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
+      let(:publication_status) { 'draft' }
+
+      example 'Update a folder the user moderates' do
+        old_publcation_ids = AdminPublication.ids
+        do_request id: moderated_folder.id
+
+        expect(response_status).to eq 200
+        # admin publications should not be replaced, but rather should be updated
+        expect(AdminPublication.ids).to match_array old_publcation_ids
+
+        json_response = json_parse(response_body)
+        response_admin_publication = json_response[:included].find { |inc| inc[:type] == 'admin_publication' }
+        attributes = json_response.dig(:data, :attributes)
+
+        expect(attributes.dig(:title_multiloc).stringify_keys).to match title_multiloc
+        expect(attributes.dig(:description_multiloc).stringify_keys).to match description_multiloc
+        expect(response_admin_publication.dig(:attributes, :publication_status)).to eq publication_status
+      end
+    end
+
+    delete 'web_api/v1/project_folders/:id' do
+      let(:project_folder) { @folders.first }
+      let!(:id) { project_folder.id }
+      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folder: project_folder) }
+
+      example 'Delete a folder' do
+        do_request id: moderated_folder.id
+
+        expect(response_status).to eq 401
+      end
+    end
+  end
 end

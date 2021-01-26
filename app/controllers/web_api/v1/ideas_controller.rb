@@ -51,7 +51,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def index_idea_markers
     @ideas = policy_scope(Idea).includes(:author)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
@@ -101,7 +101,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def filter_counts
     @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
     counts = {
       'idea_status_id' => {},
@@ -227,7 +227,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def search_and_sort params
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params, search_last_names
 
     if params[:sort].present? && !params[:search].present?

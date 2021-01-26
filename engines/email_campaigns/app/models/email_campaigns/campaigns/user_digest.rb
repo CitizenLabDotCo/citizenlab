@@ -17,18 +17,10 @@ module EmailCampaigns
 
 
     def self.default_schedule
-      if [true, false].sample
-        IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2020)) do |s|
-          s.add_recurrence_rule(
-            IceCube::Rule.weekly(1).day(:thursday).hour_of_day(13)
-          )
-        end
-      else
-        IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2020)) do |s|
-          s.add_recurrence_rule(
-            IceCube::Rule.weekly(1).day(:saturday).hour_of_day(8)
-          )
-        end
+      day, hour = [[:thursday, 13], [:saturday, 8]].sample
+      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core','timezone')).local(2020)) do |s|
+        rule = IceCube::Rule.weekly(1).day(day).hour_of_day(hour)
+        s.add_recurrence_rule(rule)
       end
     end
 
@@ -42,21 +34,16 @@ module EmailCampaigns
 
     def generate_commands recipient:, time: nil
       time ||= Time.now
-      @tenant = Tenant.current
-      name_service = UserDisplayNameService.new(@tenant, recipient)
-
-      @notifications_counts ||= notifications_counts
-
-      @top_ideas ||= top_ideas.all
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       @users_to_projects ||= users_to_projects
       discover_projects = discover_projects @users_to_projects[recipient.id]
 
+      @notifications_counts ||= notifications_counts
+      @top_ideas ||= top_ideas.all
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @successful_initiatives ||= successful_initiatives(name_service, time: time)
-      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map do |d|
-        d[:id]
-      end.compact
+      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map{|d| d[:id]}.compact
 
       [{
         event_payload: {
@@ -129,7 +116,7 @@ module EmailCampaigns
     end
 
     def top_idea_payload idea, recipient
-      name_service = UserDisplayNameService.new(@tenant, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       {
         title_multiloc: idea.title_multiloc,
         body_multiloc: idea.body_multiloc,
