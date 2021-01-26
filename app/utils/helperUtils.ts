@@ -187,3 +187,11 @@ export function endsWith(
 
   return false;
 }
+
+export function getUrlSegments(pathname: string | null) {
+  if (pathname) {
+    return pathname?.replace(/^\/+/g, '').split('/');
+  }
+
+  return [];
+}
