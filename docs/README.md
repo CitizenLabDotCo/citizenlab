@@ -1,8 +1,56 @@
 # Changelog
 
-## Next release
+## Next release 
 
 /
+
+## 2021-01-21
+
+### Added
+- Added right-to-left rendering to emails
+
+## 2021-01-18
+
+### Fixed
+- Access rights tab for participatory budget projects
+- Admin moderation page access
+
+## 2021-01-15
+
+### Changed
+- Copy improvements across different languages
+
+## 2021-01-14
+
+### Added
+- Ability to customize the input term for a project
+
+### Changed
+- The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
+
+## 2021-01-13
+
+### Changed
+- Idea cards redesign
+- Project folder page redesign
+- Project folders now have a single folder card image instead of 5 folder images in the admin settings
+- By default 24 instead of 12 ideas or shown now on the project page
+
+## 2020-12-17
+
+### Fixed
+- When creating a project from a template, only templates that are supported by the tenant's locale will show up
+- Fixed several layout, interaction and data issues in the manual tagging feature of the Admin Processing page, making it ready for external use.
+- Fixed project managers access of the Admin Processing page.
+
+### Added
+- Admin activity feed access for project managers
+- Added empty state to processing list when no project is selected
+- Keyboard shortcut tooltip for navigation buttons of the Admin Processing page
+
+### Changed
+- Reduced spacing in sidebar menu, allowing for more items to be displayed
+- Style changes on the Admin Processing page
 
 ## 2020-12-08
 

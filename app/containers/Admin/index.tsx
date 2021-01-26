@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState } from 'services/globalState';
 import { isAdmin, isModerator } from 'services/permissions/roles';
+import { IUserData } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
@@ -11,7 +12,7 @@ import { colors, media } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { endsWith } from 'utils/helperUtils';
+import { endsWith, isNilOrError } from 'utils/helperUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -56,7 +57,7 @@ const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   padding-top: 45px;
   padding-right: 51px;
   padding-bottom: 0px;
@@ -107,20 +108,18 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const userCanViewAdmin = (user) => isAdmin(user) || isModerator(user);
-
     useEffect(() => {
       if (
         authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin(authUser))
+        (!isNilOrError(authUser) && !userCanViewAdmin(authUser))
       ) {
         clHistory.push('/');
       }
     }, [authUser]);
 
-    if (!userCanViewAdmin(authUser)) {
-      return null;
-    }
+    const userCanViewAdmin = (user: IUserData) => {
+      return isAdmin({ data: user }) || isModerator({ data: user });
+    };
 
     const noPadding =
       adminNoPadding ||
@@ -137,8 +136,8 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/dashboard') ||
       pathname.includes('admin/processing');
 
-    return (
-      <>
+    if (!isNilOrError(authUser) && userCanViewAdmin(authUser)) {
+      return (
         <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn
@@ -149,8 +148,10 @@ const AdminPage = memo<Props & WithRouterProps>(
             {children}
           </RightColumn>
         </Container>
-      </>
-    );
+      );
+    }
+
+    return null;
   }
 );
 

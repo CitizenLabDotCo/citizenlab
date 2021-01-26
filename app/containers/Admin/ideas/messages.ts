@@ -1,22 +1,22 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  helmetTitle: {
-    id: 'app.containers.admin.ideas.all.helmetTitle',
-    defaultMessage: 'Admin ideas page',
+  inputManagerMetaTitle: {
+    id: 'app.containers.admin.ideas.all.inputManagerMetaTitle',
+    defaultMessage: 'Input manager | Participation platform of {orgName}',
   },
-  helmetDescription: {
-    id: 'app.containers.admin.ideas.all.helmetDescription',
-    defaultMessage: 'Admin ideas page',
+  inputManagerMetaDescription: {
+    id: 'app.containers.admin.ideas.all.inputManagerMetaDescription',
+    defaultMessage: 'Manage inputs and their statuses.',
   },
-  pageTitle: {
-    id: 'app.containers.admin.ideas.all.pageTitle',
-    defaultMessage: 'Ideas',
+  inputManagerPageTitle: {
+    id: 'app.containers.admin.ideas.all.inputManagerPageTitle',
+    defaultMessage: 'Input manager',
   },
-  pageSubtitle: {
-    id: 'app.containers.admin.ideas.all.pageSubtitle',
+  inputManagerPageSubtitle: {
+    id: 'app.containers.admin.ideas.all.inputManagerPageSubtitle',
     defaultMessage:
-      'Give feedback on ideas, add topics to them or bring them from one project to ancustom.',
+      'Give feedback, add topics and move inputs from one project to another',
   },
   tabManage: {
     id: 'app.containers.admin.ideas.all.tabManage',

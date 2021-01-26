@@ -14,13 +14,13 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.invisibleTitleUserComments',
     defaultMessage: 'All the comments posted by this user',
   },
-  invisibleTitleIdeasList: {
-    id: 'app.containers.UsersShowPage.invisibleTitleIdeasList',
-    defaultMessage: 'All the ideas posted by this user',
+  invisibleTitlePostsList: {
+    id: 'app.containers.UsersShowPage.invisibleTitlePostsList',
+    defaultMessage: 'All posts submitted by this participant',
   },
-  ideasWithCount: {
-    id: 'app.containers.UsersShowPage.ideasWithCount',
-    defaultMessage: 'Ideas ({ideasCount})',
+  postsWithCount: {
+    id: 'app.containers.UsersShowPage.postsWithCount',
+    defaultMessage: 'Posts ({ideasCount})',
   },
   commentsWithCount: {
     id: 'app.containers.UsersShowPage.commentsWithCount',
@@ -42,16 +42,16 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.noCommentsForUser',
     defaultMessage: 'This user has not posted any comment yet.',
   },
-  seeIdea: {
-    id: 'app.containers.UsersShowPage.seeIdea',
-    defaultMessage: 'See idea',
+  seePost: {
+    id: 'app.containers.UsersShowPage.seePost',
+    defaultMessage: 'See post',
   },
   seeInitiative: {
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  userNotFound: {
-    id: 'app.containers.UsersShowPage.userNotFound',
+  user404NotFound: {
+    id: 'app.containers.UsersShowPage.user404NotFound',
     defaultMessage:
       "We couldn't find this user's profile. If it was here before, it may have been deleted.",
   },
@@ -71,14 +71,14 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.metaTitle',
     defaultMessage: 'Profile page of {firstName} {lastName} | CitizenLab',
   },
-  metaDescription: {
-    id: 'app.containers.UsersShowPage.metaDescription',
+  userShowPageMetaDescription: {
+    id: 'app.containers.UsersShowPage.userShowPageMetaDescription',
     defaultMessage:
-      'This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.',
+      'This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here is an overview of all of their posts.',
   },
-  a11y_ideaPostedIn: {
-    id: 'app.containers.UsersShowPage.a11y_ideaPostedIn',
-    defaultMessage: 'Idea in which this comment was posted: ',
+  a11y_postCommentPostedIn: {
+    id: 'app.containers.UsersShowPage.a11y_postCommentPostedIn',
+    defaultMessage: 'Post in which this comment was posted: ',
   },
   a11y_initiativePostedIn: {
     id: 'app.containers.UsersShowPage.a11y_initiativePostedIn',

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
-import { IInputType } from 'services/userCustomFields';
+import { IUserCustomFieldInputType } from 'services/userCustomFields';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
 import FormikToggle from 'components/UI/FormikToggle';
@@ -25,7 +25,7 @@ const StyledLabel = styled(Label)``;
 
 export interface FormValues {
   enabled: boolean;
-  input_type: IInputType;
+  input_type: IUserCustomFieldInputType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   required: boolean;
@@ -140,7 +140,7 @@ class RegistrationCustomFieldForm extends React.Component<
                 component={FormikToggle}
               />
               <StyledSpan>
-                <FormattedMessage {...messages.fieldRequired} />
+                <FormattedMessage {...messages.isFieldRequired} />
               </StyledSpan>
             </StyledLabel>
             {touched.required && (

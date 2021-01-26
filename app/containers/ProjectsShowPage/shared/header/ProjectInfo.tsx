@@ -37,7 +37,7 @@ import {
 } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-const desktopCollapsedDescriptionMaxHeight = 400;
+const desktopCollapsedDescriptionMaxHeight = 380;
 const mobileCollapsedDescriptionMaxHeight = 180;
 
 const Container = styled.div`
@@ -67,10 +67,10 @@ const Left = styled.div`
 const Right = styled.div`
   flex: 0 0 300px;
   width: 300px;
-  margin-left: 110px;
+  margin-left: 120px;
 
   ${isRtl`
-    margin-right: 110px;
+    margin-right: 120px;
     margin-left: auto;
   `}
 
@@ -85,7 +85,7 @@ const ProjectTitle = styled.h1`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
-  font-weight: 600;
+  font-weight: 500;
   text-align: left;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -98,8 +98,11 @@ const ProjectTitle = styled.h1`
     text-align: right;
   `}
 
+  ${media.smallerThan1280px`
+    font-size: ${fontSizes.xxl}px;
+  `}
+
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
     margin-bottom: 20px;
   `}
 `;
@@ -120,7 +123,7 @@ const ProjectDescription = styled.div<{ maxHeight: number }>`
 `;
 
 const ReadMoreOuterWrapper = styled.div`
-  height: 90px;
+  height: 130px;
   content: '';
   display: flex;
   position: absolute;
@@ -130,7 +133,7 @@ const ReadMoreOuterWrapper = styled.div`
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,
-    rgba(255, 255, 255, 1) 40%,
+    rgba(255, 255, 255, 1) 30%,
     rgba(255, 255, 255, 0) 100%
   );
 `;

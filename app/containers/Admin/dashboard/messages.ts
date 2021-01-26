@@ -52,21 +52,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.DashboardPage.ideas',
-    defaultMessage: 'Ideas',
+  inputs: {
+    id: 'app.containers.AdminPage.DashboardPage.inputs ',
+    defaultMessage: 'Inputs',
   },
   votes: {
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
-  ideaVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
-    defaultMessage: 'Votes on ideas',
-  },
-  fiveIdeasWithMostVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.fiveIdeasWithMostVotes',
-    defaultMessage: '5 Ideas With Most Votes',
+  fiveInputsWithMostVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostVotes',
+    defaultMessage: 'Top 5 inputs by votes',
   },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
@@ -151,26 +147,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
-  activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+  numberOfActiveParticipantsDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription',
     defaultMessage:
-      'The number of users that either voted, commented or posted an idea on a given day.',
+      'The number of participants that posted inputs, voted or commented.',
   },
-  ideasByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas',
-  },
-  ideasByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByStatusTitle',
-    defaultMessage: 'Ideas By Status',
+  inputsByStatusTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle',
+    defaultMessage: 'Inputs by status',
   },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
-  },
-  ideaVotesByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle',
-    defaultMessage: 'Votes on ideas',
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
@@ -271,14 +260,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  outsideArea: {
-    id: 'app.containers.AdminPage.DashboardPage.outsideArea',
-    defaultMessage: 'Somewhere else',
+  otherArea: {
+    id: 'app.containers.AdminPage.DashboardPage.otherArea',
+    defaultMessage: 'Other',
   },
-  top10activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
+  mostActiveUsersRankingDescription: {
+    id:
+      'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription',
     defaultMessage:
-      'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.',
+      'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -297,15 +287,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
-  mapHelperText: {
-    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+  mapExplanationText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapExplanationText',
     defaultMessage:
-      'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+      'This map automatically detects locations from the title and description of the input. The location data may not be accurate; inputs where no locational data is detected are not displayed.',
   },
-  startLoadingMessage: {
-    id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
+  automaticLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.automaticLoadingMessage',
     defaultMessage:
-      'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
+      'Automatic location detection underway. Please wait until the processing is complete.',
   },
   thenLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',
@@ -316,13 +306,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',
     defaultMessage: 'It should be almost ready, hang on!',
   },
-  downloadSvg: {
-    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadSvg',
-    defaultMessage: 'Download Svg',
+  downloadAsImage: {
+    id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadAsImage',
+    defaultMessage: 'Download as image',
   },
   downloadXlsx: {
     id: 'app.containers.AdminPage.DashboardPage.ExportMenu.downloadXlsx',
-    defaultMessage: 'Download Xlsx',
+    defaultMessage: 'Download Excel',
   },
   fromFilter: {
     id: 'app.containers.AdminPage.DashboardPage.ExportMenu.FileName.fromFilter',
@@ -365,9 +355,9 @@ export default defineMessages({
     id: 'app.containers.Dashboards.ReportsTab.sectionWho',
     defaultMessage: 'Who participated ?',
   },
-  sectionWhat: {
-    id: 'app.containers.Dashboards.ReportsTab.sectionWhat',
-    defaultMessage: 'What ?',
+  sectionWhatInput: {
+    id: 'app.containers.Dashboards.ReportsTab.sectionWhatInput',
+    defaultMessage: 'What input did you collect?',
   },
   participantsOverTimeTitle: {
     id: 'app.containers.Dashboards.ReportsTab.participantsOverTimeTitle',
@@ -393,9 +383,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.noPhase',
     defaultMessage: 'No phase created for this project',
   },
-  ideation: {
-    id: 'app.containers.AdminPage.ReportsTab.ideation',
-    defaultMessage: 'ideation',
+  ideationAndFeedback: {
+    id: 'app.containers.AdminPage.ReportsTab.ideationAndFeedback',
+    defaultMessage: 'ideation and feedback',
   },
   information: {
     id: 'app.containers.AdminPage.ReportsTab.information',

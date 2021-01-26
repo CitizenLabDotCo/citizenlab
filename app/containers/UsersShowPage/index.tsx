@@ -25,6 +25,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -38,7 +39,9 @@ const NotFoundContainer = styled.main`
 `;
 
 const Container = styled.main`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,7 +101,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
           <Helmet>
             <meta name="prerender-status-code" content="404" />
           </Helmet>
-          <p>{formatMessage(messages.userNotFound)}</p>
+          <p>{formatMessage(messages.user404NotFound)}</p>
           <Button
             linkTo={previousPathName || '/'}
             text={formatMessage(messages.goBackToPreviousPage)}
@@ -119,13 +122,13 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
               userId={user.id}
             />
 
-            <StyledContentContainer>
+            <StyledContentContainer maxWidth={maxPageWidth}>
               {currentTab === 'ideas' && (
                 <UserIdeas>
                   <IdeaCards
                     type="load-more"
                     authorId={user.id}
-                    invisibleTitleMessage={messages.invisibleTitleIdeasList}
+                    invisibleTitleMessage={messages.invisibleTitlePostsList}
                   />
                 </UserIdeas>
               )}

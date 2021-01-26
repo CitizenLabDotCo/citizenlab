@@ -33,7 +33,9 @@ import { IProjectData } from 'services/projects';
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
-  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;

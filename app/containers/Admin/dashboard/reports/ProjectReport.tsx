@@ -162,6 +162,16 @@ const ProjectReport = memo(
     ) as ParticipationMethod[];
 
     const projectTitle = localize(project.attributes.title_multiloc);
+    const participationMethodMessages: {
+      [key in ParticipationMethod]: ReactIntl.FormattedMessage.MessageDescriptor;
+    } = {
+      ideation: messages.ideationAndFeedback,
+      information: messages.information,
+      survey: messages.survey,
+      budgeting: messages.budgeting,
+      poll: messages.poll,
+      volunteering: messages.volunteering,
+    };
 
     return (
       <>
@@ -194,7 +204,9 @@ const ProjectReport = memo(
                         />
                       </p>
                       <FormattedMessage
-                        {...messages[phase.attributes.participation_method]}
+                        {...participationMethodMessages[
+                          phase.attributes.participation_method
+                        ]}
                       />
                       <div>{localize(phase.attributes.title_multiloc)}</div>
                     </Phase>
@@ -250,12 +262,12 @@ const ProjectReport = memo(
         {participationMethods.includes('ideation') && startAt && endAt && (
           <Section>
             <SectionTitle>
-              <FormattedMessage {...messages.sectionWhat} />
+              <FormattedMessage {...messages.sectionWhatInput} />
             </SectionTitle>
             <GraphsContainer>
               <>
                 <LineBarChart
-                  graphTitle={formatMessage(messages.ideasByTimeTitle)}
+                  graphTitle={formatMessage(messages.inputs)}
                   graphUnit="ideas"
                   graphUnitMessageKey="ideas"
                   startAt={startAt}
@@ -302,7 +314,7 @@ const ProjectReport = memo(
                 <HorizontalBarChartWithoutStream
                   serie={mostVotedIdeasSerie}
                   graphTitleString={formatMessage(
-                    messages.fiveIdeasWithMostVotes
+                    messages.fiveInputsWithMostVotes
                   )}
                   graphUnit="votes"
                   className="dynamicHeight"
