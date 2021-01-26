@@ -14,6 +14,7 @@
 
 ### Changed
 - Added the recipient first and last name to the 'to' email field.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. the addition of a link to an accsibility statement)
 
 ## 2021-01-21
 
