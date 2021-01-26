@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Added
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
+
 ### Changed
 - Idea cards redesign
 - Project folder page redesign
