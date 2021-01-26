@@ -8,7 +8,7 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer, type: :mailer do
     let(:assigned_at) { Time.now }
     let(:ideas) { create_list(:assigned_idea, 3, assigned_at: assigned_at) }
     let(:initiatives) { create_list(:assigned_initiative, 3, assigned_at: assigned_at) }
-    let(:name_service) { UserDisplayNameService.new(Tenant.current, recipient) }
+    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
     let(:command) do {
         recipient: recipient,
         event_payload: {

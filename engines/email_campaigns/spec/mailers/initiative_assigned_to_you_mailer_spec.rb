@@ -8,7 +8,7 @@ RSpec.describe EmailCampaigns::InitiativeAssignedToYouMailer, type: :mailer do
     
     let(:assigned_at) { Time.now }
     let!(:initiative) { create(:assigned_initiative, author: recipient, assigned_at: assigned_at) }
-    let(:author_name) { UserDisplayNameService.new(Tenant.current, recipient).display_name!(initiative.author) }
+    let(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(initiative.author) }
 
     let(:command) do
       {
