@@ -219,7 +219,7 @@ class App extends PureComponent<Props, State> {
 
     function getUnlisten() {
       return clHistory.listenBefore((newLocation) => {
-        this.handlePotentialCustomRedirect(newLocation.pathname);
+        this.handleCustomRedirect();
 
         const newPreviousPathname = location.pathname;
         const pathsToIgnore = [
@@ -255,7 +255,7 @@ class App extends PureComponent<Props, State> {
       prevProps.tenant !== tenant ||
       prevProps.location.pathname !== pathname
     ) {
-      this.handlePotentialCustomRedirect();
+      this.handleCustomRedirect();
     }
 
     handleSignUpInModal();
@@ -402,7 +402,7 @@ class App extends PureComponent<Props, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  handlePotentialCustomRedirect() {
+  handleCustomRedirect() {
     const {
       tenant,
       redirectsEnabled,
