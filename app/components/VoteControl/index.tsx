@@ -46,15 +46,30 @@ import { lighten } from 'polished';
 interface IVoteComponent {
   active: boolean;
   enabled: boolean | null;
+  compact: boolean;
 }
 
-const vote = keyframes`
+const voteKeyframeAnimation = keyframes`
   from {
     transform: scale3d(1, 1, 1);
   }
 
-  50% {
+  40% {
     transform: scale3d(1.25, 1.25, 1.25);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+`;
+
+const voteCompactKeyframeAnimation = keyframes`
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  40% {
+    transform: scale3d(1.5, 1.5, 1.5);
   }
 
   to {
@@ -79,7 +94,6 @@ const VoteIconContainer = styled.div<{
   size: '1' | '2' | '3';
   votingEnabled: boolean | null;
 }>`
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -134,6 +148,21 @@ const VoteIconContainer = styled.div<{
           height: 50px;
         `
       : css``}
+
+    &.compact {
+      border: none;
+      ${(props) => {
+        let size = `width: 24px; height: 24px;`;
+        if (props.size === '2') {
+          size = `width: 28px; height: 28px;`;
+        } else if (props.size === '3') {
+          size = `width: 32px; height: 32px;`;
+        }
+        return css`
+          ${size}
+        `;
+      }}
+    }
 `;
 
 const VoteIcon = styled(Icon)<{
@@ -190,16 +219,27 @@ const Vote = styled.button<IVoteComponent>`
   align-items: center;
   padding: 0;
   margin: 0;
+  cursor: pointer;
   border: none;
 
-${isRtl`
+  ${isRtl`
     flex-direction: row-reverse;
-`}
+  `}
 
-  &.voteClick ${VoteIconContainer} {
+  &:not(.compact).voteClick ${VoteIconContainer} {
     animation: ${css`
-      ${vote} 350ms
+      ${voteKeyframeAnimation} 350ms
     `};
+  }
+
+  &.compact.voteClick ${VoteIconContainer} {
+    animation: ${css`
+      ${voteCompactKeyframeAnimation} 300ms
+    `};
+  }
+
+  &:not(.enabled).compact {
+    pointer-events: none;
   }
 
   &:not(.enabled) {
@@ -227,10 +267,14 @@ const Upvote = styled(Vote)`
     ${VoteCount} {
       margin-right: 14px;
 
+      &.compact {
+        margin-right: 0px;
+      }
+
       ${isRtl`
         margin-right: 5px;
         margin-left: 14px;
-        `}
+      `}
     }
   }
 
@@ -238,13 +282,29 @@ const Upvote = styled(Vote)`
     ${(props) =>
       props.active &&
       `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
+    &.compact {
+      background: none;
+    }
   }
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${(props) =>
-      props.active &&
-      (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
+
+    ${({ active, enabled, compact }) => {
+      if (!compact && active && enabled) {
+        return css`
+          fill: #fff;
+        `;
+      }
+
+      if ((compact && active) || (!compact && active && !enabled)) {
+        return css`
+          fill: ${colors.clGreen};
+        `;
+      }
+
+      return;
+    }};
   }
 
   ${VoteCount} {
@@ -269,16 +329,37 @@ const Upvote = styled(Vote)`
 `;
 
 const Downvote = styled(Vote)`
+  &.compact {
+    margin-right: 27px;
+  }
+
   ${VoteIconContainer} {
     ${(props) =>
       props.active &&
       `border-color: ${colors.clRed}; background: ${colors.clRed};`}
+    &.compact {
+      background: none;
+    }
   }
 
   ${VoteIcon} {
     margin-top: 4px;
-    ${(props) =>
-      props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
+
+    ${({ active, enabled, compact }) => {
+      if (!compact && active && enabled) {
+        return css`
+          fill: #fff;
+        `;
+      }
+
+      if ((compact && active) || (!compact && active && !enabled)) {
+        return css`
+          fill: ${colors.clRed};
+        `;
+      }
+
+      return;
+    }};
   }
 
   ${VoteCount} {
@@ -308,7 +389,7 @@ interface Props {
   ariaHidden?: boolean;
   className?: string;
   showDownvote: boolean;
-  style: 'border' | 'shadow';
+  style: 'border' | 'shadow' | 'compact';
 }
 
 interface State {
@@ -829,8 +910,10 @@ class VoteControl extends PureComponent<
               votingAnimation === 'up' ? 'voteClick' : 'upvote',
               upvotingEnabled ? 'enabled' : 'disabled',
               myVoteMode === 'up' ? 'active' : '',
+              style,
             ].join(' ')}
             enabled={upvotingEnabled}
+            compact={style === 'compact'}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer
@@ -839,6 +922,7 @@ class VoteControl extends PureComponent<
               votingEnabled={upvotingEnabled}
             >
               <VoteIcon
+                className={style}
                 name="upvote"
                 size={size}
                 enabled={upvotingEnabled}
@@ -848,7 +932,10 @@ class VoteControl extends PureComponent<
                 <FormattedMessage {...messages.upvote} />
               </ScreenReaderOnly>
             </VoteIconContainer>
-            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>
+            <VoteCount
+              aria-hidden
+              className={[votingEnabled ? 'enabled' : '', style].join(' ')}
+            >
               {upvotesCount}
             </VoteCount>
           </Upvote>
@@ -863,8 +950,10 @@ class VoteControl extends PureComponent<
                 'e2e-ideacard-downvote-button',
                 votingAnimation === 'down' ? 'voteClick' : 'downvote',
                 downvotingEnabled ? 'enabled' : 'disabled',
+                style,
               ].join(' ')}
               enabled={downvotingEnabled}
+              compact={style === 'compact'}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer
@@ -874,6 +963,7 @@ class VoteControl extends PureComponent<
               >
                 <VoteIcon
                   name="downvote"
+                  className={style}
                   size={size}
                   enabled={downvotingEnabled}
                   ariaHidden

@@ -152,6 +152,7 @@ export interface ITenantSettings {
   project_management?: TenantFeature;
   idea_assignment?: TenantFeature;
   custom_idea_statuses?: TenantFeature;
+  idea_custom_copy?: TenantFeature;
   intercom?: TenantFeature;
   satismeter?: TenantFeature & {
     write_key: string;

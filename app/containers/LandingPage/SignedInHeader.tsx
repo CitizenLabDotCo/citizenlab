@@ -390,10 +390,10 @@ class SignedInHeader extends PureComponent<Props, State> {
                 <Icons>
                   <StyledAvatar
                     userId={authUser?.id}
-                    size="50px"
+                    size={50}
                     fillColor="#fff"
-                    padding="0px"
-                    borderThickness="0px"
+                    padding={0}
+                    borderThickness={0}
                   />
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
@@ -449,10 +449,10 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <AvatarAndShield aria-hidden>
                     <StyledAvatar
                       userId={authUser?.id}
-                      size="50px"
+                      size={50}
                       fillColor="#fff"
-                      padding="0px"
-                      borderThickness="0px"
+                      padding={0}
+                      borderThickness={0}
                     />
                     <ShieldIcon name="verify_light" />
                   </AvatarAndShield>

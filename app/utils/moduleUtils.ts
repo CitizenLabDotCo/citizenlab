@@ -2,30 +2,83 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
+import { GroupCreationModal } from 'containers/Admin/users';
+import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 import { mergeWith, castArray } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
+import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { FormikSubmitHandler, Multiloc } from 'typings';
 
-export type OutletId =
-  | 'app.containers.Navbar.projectlist.item'
-  | 'app.containers.AdminPage.projects.all.projectsAndFolders.title'
-  | 'app.containers.AdminPage.projects.all.projectsAndFolders.row'
-  | 'app.containers.AdminPage.projects.all.projectsAndFolders.actions'
-  | 'app.components.ProjectAndFolderCards.card'
-  | 'app.containers.SiteMap.ProjectsSection.listitem';
+type Localize = (
+  multiloc: Multiloc | null | undefined,
+  maxChar?: number | undefined
+) => string;
 
-export type Outlets = {
-  [key in OutletId]?: FunctionComponent<any>;
+export type OutletsPropertyMap = {
+  'app.containers.Navbar.projectlist.item': {
+    publication: IAdminPublicationContent;
+    localize: Localize;
+  };
+  'app.containers.Navbar.projectsAndFolders.title': {};
+  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
+    publication: IAdminPublicationContent;
+  };
+  'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
+  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
+  'app.components.ProjectAndFolderCards.card': {
+    publication: IAdminPublicationContent;
+    size: 'small' | 'medium' | 'large';
+    layout: 'dynamic' | 'threecolumns' | 'twocolumns';
+  };
+  'app.containers.SiteMap.ProjectsSection.listitem': {
+    adminPublication: IAdminPublicationContent;
+    hightestTitle: 'h3' | 'h4';
+  };
+  'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
+    type: MembershipType;
+  };
+  'app.containers.Admin.users.GroupCreationStep1.type': {
+    onClick: (groupType: MembershipType) => () => void;
+    formattedLink: string;
+  };
+  'app.containers.Admin.users.form': {
+    type: GroupCreationModal;
+    onSubmit: FormikSubmitHandler<NormalFormValues>;
+    isVerificationEnabled: boolean;
+  };
+  'app.containers.Admin.users.header': {
+    type: GroupCreationModal;
+  };
+  'app.containers.Admin.users.UsersGroup.form': {
+    initialValues: IGroupDataAttributes;
+    type: GroupCreationModal;
+    onSubmit: FormikSubmitHandler<NormalFormValues>;
+    isVerificationEnabled: boolean;
+  };
+  'app.containers.Admin.users.UsersGroup.header': {
+    type: GroupCreationModal;
+  };
+  'app.containers.Admin.users.UsersHeader.icon': {
+    type: GroupCreationModal;
+  };
 };
 
-export type MergedOutlets = {
-  [key in OutletId]?: FunctionComponent<any>[];
+type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
+
+type OutletComponents<O> = {
+  [K in keyof O]?: Outlet<O[K]>;
 };
 
-interface RouteConfiguration {
+export type Outlets = OutletComponents<OutletsPropertyMap>;
+
+export type OutletId = keyof Outlets;
+
+export interface RouteConfiguration {
   path?: string;
   name: string;
   container: () => Promise<any>;
@@ -39,14 +92,24 @@ interface Routes {
   admin: RouteConfiguration[];
 }
 
-export interface ModuleConfiguration {
+export interface ParsedModuleConfiguration {
   routes: Routes;
   outlets: Outlets;
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication: () => void;
 }
+
+type OptionalKeys<T> = {
+  [P in keyof T]?: T[P];
+};
+
+export type ModuleConfiguration = OptionalKeys<ParsedModuleConfiguration>;
 
 type Modules = {
   configuration: ModuleConfiguration;
-  enabled: boolean;
+  isEnabled: boolean;
 }[];
 
 export const RouteTypes = {
@@ -85,9 +148,11 @@ const parseModuleRoutes = (
   type = RouteTypes.CITIZEN
 ) => routes.map((route) => convertConfigurationToRoute({ ...route, type }));
 
-export const loadModules = (modules: Modules) => {
+type LifecycleMethod = 'beforeMountApplication' | 'afterMountApplication';
+
+export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   const enabledModuleConfigurations = modules
-    .filter((module) => module.enabled)
+    .filter((module) => module.isEnabled)
     .map((module) => module.configuration);
 
   const mergedRoutes: Routes = mergeWith(
@@ -97,12 +162,18 @@ export const loadModules = (modules: Modules) => {
       castArray(objValue).concat(castArray(srcValue))
   );
 
-  const mergedOutlets: MergedOutlets = mergeWith(
+  const mergedOutlets: Outlets = mergeWith(
     {},
     ...enabledModuleConfigurations.map(({ outlets }) => outlets),
     (objValue = [], srcValue = []) =>
       castArray(objValue).concat(castArray(srcValue))
   );
+
+  const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
+    enabledModuleConfigurations.forEach((module: ModuleConfiguration) =>
+      module?.[lifecycleMethod]?.()
+    );
+  };
 
   return {
     outlets: mergedOutlets,
@@ -110,5 +181,7 @@ export const loadModules = (modules: Modules) => {
       citizen: parseModuleRoutes(mergedRoutes.citizen),
       admin: parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN),
     },
+    beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
+    afterMountApplication: callLifecycleMethods('afterMountApplication'),
   };
 };

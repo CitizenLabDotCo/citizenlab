@@ -56,6 +56,15 @@ const FormContainer = styled(clickOutside)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  position: relative;
+`;
+
+const Anchor = styled.div`
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  top: -100px;
+  left: 0px;
 `;
 
 const Form = styled.form`
@@ -289,7 +298,7 @@ class ParentCommentForm extends PureComponent<
         <Container className={className || ''}>
           <StyledAvatar
             userId={authUser?.id}
-            size="30px"
+            size={30}
             isLinkToProfile={!!authUser?.id}
             moderator={isModerator}
           />
@@ -298,6 +307,7 @@ class ParentCommentForm extends PureComponent<
             onClickOutside={this.close}
             closeOnClickOutsideEnabled={false}
           >
+            <Anchor id="submit-comment-anchor" />
             <Form className={focused ? 'focused' : ''}>
               <label htmlFor="submit-comment">
                 <HiddenLabel>

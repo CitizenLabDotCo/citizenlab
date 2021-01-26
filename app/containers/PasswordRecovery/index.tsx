@@ -24,7 +24,9 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   background: ${colors.background};
 `;
 
