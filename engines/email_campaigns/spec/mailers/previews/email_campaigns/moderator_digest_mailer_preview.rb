@@ -4,7 +4,7 @@ module EmailCampaigns
       campaign = EmailCampaigns::Campaigns::ModeratorDigest.first
       top_ideas = Idea.first(3)
       recipient = User.first
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       command = {
         recipient: recipient,

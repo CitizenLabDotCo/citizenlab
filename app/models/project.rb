@@ -58,7 +58,6 @@ class Project < ApplicationRecord
   before_validation :strip_title
   before_validation :set_admin_publication
 
-
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     subquery = Project.unscoped.all
@@ -97,6 +96,9 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  def moderators
+    User.project_moderator(id)
+  end
 
   def continuous?
     self.process_type == 'continuous'
