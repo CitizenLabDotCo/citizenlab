@@ -37,13 +37,6 @@ describe EmailCampaigns::DeliveryService do
       end
     end
 
-    it "does not send any email commands through Segment" do
-      travel_to campaign.ic_schedule.start_time do
-        expect{service.send_on_schedule(Time.now)}
-          .not_to have_enqueued_job(PublishRawEventToSegmentJob)
-      end
-    end
-
     it "creates deliveries for a trackable campaign" do
       travel_to campaign.ic_schedule.start_time do
         service.send_on_schedule(Time.now)
@@ -73,11 +66,6 @@ describe EmailCampaigns::DeliveryService do
       expect{service.send_on_activity(activity)}
         .to have_enqueued_job(ActionMailer::MailDeliveryJob)
         .exactly(1).times
-    end
-
-    it "does not send any email commands through Segment" do
-      expect{service.send_on_activity(activity)}
-        .not_to have_enqueued_job(PublishRawEventToSegmentJob)
     end
 
     context "on project_phase_upcoming notification" do

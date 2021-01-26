@@ -1,13 +1,8 @@
 module EmailCampaigns
-  class CampaignMailer < ActionMailer::Base
-    default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
+  class ManualCampaignMailer < ApplicationMailer
     layout false
 
     attr_reader :command, :campaign, :recipient, :tenant
-
-    before_action do
-      @command, @campaign = params.values_at(:command, :campaign)
-    end
 
     def campaign_mail
       @recipient = command[:recipient]
@@ -30,23 +25,21 @@ module EmailCampaigns
       @host_url = frontend_service.home_url(tenant: tenant)
       @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
 
-      I18n.with_locale(recipient.locale) do
-        message = mail(
-          from: "#{from_name(command[:sender], command[:author], recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
-          to: recipient.email,
-          reply_to: command[:reply_to] || ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co'),
-          subject: multiloc_service.t(command[:subject_multiloc], recipient),
-        )
-        if (ActionMailer::Base.delivery_method == :mailgun)
-          message.mailgun_headers = {
-            'X-Mailgun-Variables' => {
-              'cl_tenant_id' => tenant.id,
-              'cl_campaign_id' => campaign.id,
-              'cl_user_id' => recipient.id,
-            }.to_json,
-          }
+      I18n.with_locale(locale) do
+        mail(default_config).tap do |message|
+          message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
         end
       end
+    end
+
+    protected
+
+    def subject
+      multiloc_service.t(command[:subject_multiloc], recipient)
+    end
+
+    def from_email
+      email_address_with_name ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co'), from_name(command[:sender], command[:author], recipient)
     end
 
     private

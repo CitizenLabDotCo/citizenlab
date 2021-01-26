@@ -14,7 +14,7 @@ resource "AppConfigurations" do
   end
 
 
-  get "web_api/v1/configuration" do
+  get "web_api/v1/app_configuration" do
     with_options scope: :style do
       AppConfiguration.available_style_attributes.each do |attr|
         response_field attr[:name], attr[:description]
@@ -41,7 +41,7 @@ resource "AppConfigurations" do
 
   end
 
-  patch "web_api/v1/configuration" do
+  patch "web_api/v1/app_configuration" do
     with_options scope: :app_configuration do
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
