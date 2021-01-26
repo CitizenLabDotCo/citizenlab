@@ -162,49 +162,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { tenant, locale, authUser } = this.props;
+    const { locale, authUser } = this.props;
     this.subscriptions = getSubscriptions();
     this.unlisten = getUnlisten();
-    setTimeZone();
-    loadCustomFont();
-    loadMomentFilesForTenantLocales();
     setMomentLocales();
     handleSentryScope();
     trackPage(location.pathname);
     smoothscroll.polyfill();
-
-    function setTimeZone() {
-      if (!isNilOrError(tenant)) {
-        moment.tz.setDefault(tenant.attributes.settings.core.timezone);
-      }
-    }
-
-    function loadCustomFont() {
-      if (!isNilOrError(tenant)) {
-        if (
-          tenant.attributes.style &&
-          tenant.attributes.style.customFontAdobeId
-        ) {
-          import('webfontloader').then((WebfontLoader) => {
-            WebfontLoader.load({
-              typekit: {
-                id: (tenant.attributes.style as ITenantStyle).customFontAdobeId,
-              },
-            });
-          });
-        }
-      }
-    }
-
-    function loadMomentFilesForTenantLocales() {
-      if (!isNilOrError(tenant)) {
-        uniq(
-          tenant.attributes.settings.core.locales
-            .filter((locale) => locale !== 'en' && locale !== 'ach')
-            .map((locale) => appLocalesMomentPairs[locale])
-        ).forEach((locale) => require(`moment/locale/${locale}.js`));
-      }
-    }
 
     function setMomentLocales() {
       if (!isNilOrError(locale)) {
@@ -275,12 +239,17 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const { signUpInModalMounted } = this.state;
-    const { authUser } = this.props;
+    const { authUser, tenant } = this.props;
     const { pathname, search } = this.props.location;
     const { verificationModalMounted } = this.state;
 
+    if (prevProps.tenant !== tenant) {
+      setTimeZone();
+      loadCustomFont();
+      loadMomentFilesForTenantLocales();
+    }
     this.handlePotentialCustomRedirect(this.props.location.pathname);
     handleSignUpInModal();
     handleVerificationModal();
@@ -384,6 +353,39 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             context: null,
           });
         }
+      }
+    }
+
+    function setTimeZone() {
+      if (!isNilOrError(tenant)) {
+        moment.tz.setDefault(tenant.attributes.settings.core.timezone);
+      }
+    }
+
+    function loadCustomFont() {
+      if (!isNilOrError(tenant)) {
+        if (
+          tenant.attributes.style &&
+          tenant.attributes.style.customFontAdobeId
+        ) {
+          import('webfontloader').then((WebfontLoader) => {
+            WebfontLoader.load({
+              typekit: {
+                id: (tenant.attributes.style as ITenantStyle).customFontAdobeId,
+              },
+            });
+          });
+        }
+      }
+    }
+
+    function loadMomentFilesForTenantLocales() {
+      if (!isNilOrError(tenant)) {
+        uniq(
+          tenant.attributes.settings.core.locales
+            .filter((locale) => locale !== 'en' && locale !== 'ach')
+            .map((locale) => appLocalesMomentPairs[locale])
+        ).forEach((locale) => require(`moment/locale/${locale}.js`));
       }
     }
   }
