@@ -113,6 +113,8 @@ Rails.application.routes.draw do
         patch 'reorder', on: :member
       end
 
+      resource :app_configuration, only: [:show, :update]
+
       resources :tenants, only: [:update] do
         get :current, on: :collection
       end

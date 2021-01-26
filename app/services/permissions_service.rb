@@ -55,7 +55,7 @@ class PermissionsService
     end
   end
 
-  def update_permissions_for_current_tenant
+  def update_all_permissions
     PermissionsService.new.update_global_permissions
     Project.all.each do |project|
       PermissionsService.new.update_permissions_for_context project

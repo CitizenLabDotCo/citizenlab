@@ -200,6 +200,8 @@ class Tenant < ApplicationRecord
     old_schema = self.saved_change_to_host.first.gsub(/\./, "_")
     new_schema = self.schema_name
     ActiveRecord::Base.connection.execute("ALTER SCHEMA \"#{old_schema}\" RENAME TO \"#{new_schema}\"")
+    # If we were in the apartment of the altered tenant, we switch to the new schema.
+    Apartment::Tenant.switch!(new_schema) if old_schema == Apartment::Tenant.current
   end
 
 

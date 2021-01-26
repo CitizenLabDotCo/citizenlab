@@ -83,14 +83,14 @@ resource "Users" do
 
       context "with phone password_login turned on" do
         before do
-          settings = Tenant.current.settings
+          settings = AppConfiguration.instance.settings
           settings['password_login'] = {
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
             "phone_email_pattern" => "phone+__PHONE__@test.com"
           }
-          Tenant.current.update!(settings: settings)
+          AppConfiguration.instance.update!(settings: settings)
         end
 
         describe do
@@ -189,14 +189,14 @@ resource "Users" do
 
       context "with phone password_login turned on" do
         before do
-          settings = Tenant.current.settings
+          settings = AppConfiguration.instance.settings
           settings['password_login'] = {
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
             "phone_email_pattern" => "phone+__PHONE__@test.com"
           }
-          Tenant.current.update!(settings: settings)
+          AppConfiguration.instance.update!(settings: settings)
         end
 
         describe do

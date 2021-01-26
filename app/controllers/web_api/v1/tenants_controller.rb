@@ -35,6 +35,7 @@ class WebApi::V1::TenantsController < ApplicationController
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
     end
+    response.set_header('Warning', '299 - "Deprecated API"')
   end
 
   private

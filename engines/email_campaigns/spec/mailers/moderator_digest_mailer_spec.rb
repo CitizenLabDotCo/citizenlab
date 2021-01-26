@@ -5,7 +5,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer, type: :mailer do
     let!(:recipient) { create(:admin, locale: 'en') }
     let!(:campaign) { EmailCampaigns::Campaigns::ModeratorDigest.create! }
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    let(:name_service) { UserDisplayNameService.new(Tenant.current, recipient) }
+    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
 
     let!(:top_ideas) { create_list(:idea, 3) }
 
