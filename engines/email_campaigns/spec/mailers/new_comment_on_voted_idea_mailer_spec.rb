@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::NewCommentOnVotedIdeaMailer, type: :mailer do
     let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
     let(:idea) { create(:idea) }
     let(:comment) { create(:comment, post: idea) }
-    let(:name_service) { UserDisplayNameService.new(Tenant.current, recipient) }
+    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
 
     let(:command) do
       {
