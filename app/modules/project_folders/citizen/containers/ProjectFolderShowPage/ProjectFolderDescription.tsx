@@ -78,7 +78,7 @@ const Description = styled.div<{ maxHeight: number }>`
 `;
 
 const ReadMoreOuterWrapper = styled.div`
-  height: 90px;
+  height: 130px;
   content: '';
   display: flex;
   position: absolute;
@@ -88,7 +88,7 @@ const ReadMoreOuterWrapper = styled.div`
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,
-    rgba(255, 255, 255, 1) 40%,
+    rgba(255, 255, 255, 1) 30%,
     rgba(255, 255, 255, 0) 100%
   );
 `;
@@ -117,7 +117,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
+const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
   ({ projectFolder, className, intl: { formatMessage } }) => {
     const projectFolderFiles = useProjectFolderFiles(projectFolder.id);
     const { windowWidth } = useWindowSize();
@@ -233,4 +233,4 @@ const ProjectFolderInfo = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(ProjectFolderInfo);
+export default injectIntl(ProjectFolderDescription);

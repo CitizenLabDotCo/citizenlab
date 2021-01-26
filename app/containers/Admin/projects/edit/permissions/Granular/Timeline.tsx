@@ -43,7 +43,9 @@ const Permissions = styled.div`
   background: #fff;
 `;
 
-interface InputProps {}
+interface InputProps {
+  projectId: string;
+}
 
 interface DataProps {
   phases: GetPhasesChildProps;
@@ -82,7 +84,7 @@ class Timeline extends PureComponent<Props, State> {
   };
 
   render() {
-    const { phases } = this.props;
+    const { phases, projectId } = this.props;
     const { openedPhase } = this.state;
 
     return (
@@ -103,6 +105,8 @@ class Timeline extends PureComponent<Props, State> {
                         <ActionsForm
                           permissions={permissions}
                           onChange={this.handlePermissionChange}
+                          postType="idea"
+                          projectId={projectId}
                         />
                       );
                     }}
@@ -124,7 +128,7 @@ class Timeline extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetPhases projectId={inputProps.projectId}>
     {(phases) => <Timeline {...inputProps} phases={phases} />}
   </GetPhases>

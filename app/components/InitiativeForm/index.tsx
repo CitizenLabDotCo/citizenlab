@@ -385,7 +385,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 {touched.title_multiloc && errors.title_multiloc ? (
                   <Error
                     id="e2e-proposal-title-error"
-                    message={errors.title_multiloc.message}
+                    text={formatMessage(errors.title_multiloc.message)}
                   />
                 ) : (
                   apiErrors &&
@@ -414,7 +414,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 setRef={this.handleDescriptionSetRef}
               />
               {touched.body_multiloc && errors.body_multiloc ? (
-                <Error message={errors.body_multiloc.message} />
+                <Error text={formatMessage(errors.body_multiloc.message)} />
               ) : (
                 apiErrors &&
                 apiErrors.body_multiloc && (
@@ -441,7 +441,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 availableTopics={availableTopics}
               />
               {touched.topic_ids && errors.topic_ids ? (
-                <Error message={errors.topic_ids.message} />
+                <Error text={formatMessage(errors.topic_ids.message)} />
               ) : (
                 apiErrors &&
                 apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
@@ -504,7 +504,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onRemove={this.removeImage}
               />
               {touched.image && errors.image && (
-                <Error message={errors.image.message} />
+                <Error text={formatMessage(errors.image.message)} />
               )}
             </SectionField>
             <SectionField>

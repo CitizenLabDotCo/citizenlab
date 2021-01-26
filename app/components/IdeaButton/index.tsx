@@ -12,8 +12,12 @@ import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
 } from 'services/actionTakingRules';
+import { getInputTerm } from 'services/participationContexts';
+
+// resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
@@ -25,6 +29,7 @@ import { Icon } from 'cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import { openSignUpInModal } from 'components/SignUpIn/events';
@@ -101,17 +106,18 @@ const TooltipContentText = styled.div`
 interface DataProps {
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
+  phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
 }
 
 interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
-  projectId?: string | undefined | null;
+  projectId: string;
   phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
-  participationContextType: IParticipationContextType | null;
+  participationContextType: IParticipationContextType;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -121,6 +127,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     id,
     project,
     phase,
+    phases,
     authUser,
     participationContextType,
     phaseId,
@@ -134,14 +141,13 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
     } = {
-      notPermitted: messages.postingNotPermitted,
-      postingDisabled: messages.postingHereImpossible,
-      projectInactive: messages.postingProjectInactive,
-      futureEnabled: messages.postingHereNotYetPossible,
-      notActivePhase: messages.postingNotActivePhase,
-      maybeNotPermitted: messages.postingMaybeNotPermitted,
+      notPermitted: messages.postingNoPermission,
+      postingDisabled: messages.postingDisabled,
+      projectInactive: messages.postingInactive,
+      futureEnabled: messages.postingNotYetPossible,
+      notActivePhase: messages.postingInNonActivePhases,
+      maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-
     const { show, enabled, disabledReason, action } = getIdeaPostingRules({
       project,
       phase,
@@ -288,35 +294,52 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
         );
       }
 
-      return (
-        <Container id={id || ''} className={className || ''}>
-          <Tippy
-            disabled={!tippyContent}
-            interactive={true}
-            placement="bottom"
-            content={tippyContent || <></>}
-            theme="light"
-            hideOnClick={false}
-          >
-            <ButtonWrapper
-              tabIndex={!enabled ? 0 : -1}
-              className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
-                disabledReason ? disabledReason : ''
-              }`}
+      if (!isNilOrError(project)) {
+        const inputTerm = getInputTerm(
+          project.attributes.process_type,
+          project,
+          phases
+        );
+
+        return (
+          <Container id={id || ''} className={className || ''}>
+            <Tippy
+              disabled={!tippyContent}
+              interactive={true}
+              placement="bottom"
+              content={tippyContent || <></>}
+              theme="light"
+              hideOnClick={false}
             >
-              <Button
-                {...buttonContainerProps}
-                aria-describedby="tooltip-content"
-                onClick={onClick}
-                disabled={!enabled}
-                ariaDisabled={false}
+              <ButtonWrapper
+                tabIndex={!enabled ? 0 : -1}
+                className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+                  disabledReason ? disabledReason : ''
+                }`}
               >
-                <FormattedMessage {...messages.startAnIdea} />
-              </Button>
-            </ButtonWrapper>
-          </Tippy>
-        </Container>
-      );
+                <Button
+                  {...buttonContainerProps}
+                  aria-describedby="tooltip-content"
+                  onClick={onClick}
+                  disabled={!enabled}
+                  ariaDisabled={false}
+                >
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.submitYourIdea,
+                      option: messages.addAnOption,
+                      project: messages.addAProject,
+                      question: messages.addAQuestion,
+                      issue: messages.submitAnIssue,
+                      contribution: messages.addAContribution,
+                    })}
+                  />
+                </Button>
+              </ButtonWrapper>
+            </Tippy>
+          </Container>
+        );
+      }
     }
 
     return null;
@@ -327,6 +350,9 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phases: ({ projectId, render }) => (
+    <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });

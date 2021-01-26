@@ -212,13 +212,13 @@ const EventTitle = styled.h3`
 const EventDescription = styled.div``;
 
 const EventLocationWrapper = styled.div`
-  width: 300px;
-  flex: 0 0 300px;
+  width: 250px;
+  flex: 0 0 250px;
   padding: 20px;
   display: flex;
   align-items: center;
   border-left: 1px solid #ccc;
-  margin-left: 60px;
+  margin-left: 40px;
 `;
 
 const EventLocation = styled.div`

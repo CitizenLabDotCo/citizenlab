@@ -30,7 +30,7 @@ const TranslateButton = (props: Props) => {
       iconColor={colors.label}
       fontSize={`${fontSizes.small}px`}
       fontWeight={'bold'}
-      padding="5px 10px"
+      padding="10px 10px"
       textColor={theme.colorText}
     >
       {translateButtonClicked ? (

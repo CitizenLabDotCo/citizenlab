@@ -27,7 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { transparentize } from 'polished';
+import { transparentize, darken } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
@@ -44,7 +44,7 @@ const StyledAvatar = styled(Avatar)`
 const Body = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 300;
-  color: ${colors.label};
+  color: ${darken(0.1, colors.label)};
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -64,15 +64,15 @@ const ImagePlaceholderContainer = styled.div`
   width: 100%;
   height: 100%;
   flex: 1;
-  background: ${transparentize(0.92, colors.label)};
   display: flex;
   align-items: center;
   justify-content: center;
+  background: ${transparentize(0.94, colors.label)};
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
   width: 34px;
-  fill: ${transparentize(0.65, colors.label)};
+  fill: ${transparentize(0.62, colors.label)};
 `;
 
 const Separator = styled.span`
@@ -170,7 +170,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
           <BodyWrapper>
             {authorId && (
               <StyledAvatar
-                size="34"
+                size={34}
                 userId={authorId}
                 hideIfNoAvatar={true}
                 fillColor={transparentize(0.6, colors.label)}

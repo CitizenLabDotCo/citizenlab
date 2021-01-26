@@ -7,6 +7,7 @@ import Image from 'components/UI/Image';
 
 // styling
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import {
   defaultCardStyle,
   defaultCardHoverStyle,
@@ -48,27 +49,20 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   margin-right: 23px;
   overflow: hidden;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px
-    ${({ hasImage }) => (hasImage ? colors.separation : 'transparent')};
+  /* border: solid 1px ${transparentize(0.75, colors.label)}; */
+  /* border: ${({ hasImage }) =>
+    hasImage ? `solid 1px ${colors.separation}` : 'none'}; */
 
   ${media.smallerThanMinTablet`
-    flex: 0 0 100%;
     width: 100%;
-    height: ${cardInnerHeight};
     margin-bottom: 18px;
   `}
 `;
 
 const IdeaCardImage = styled(Image)`
-  flex: 0 0 ${cardInnerHeight};
-  width: ${cardInnerHeight};
-  height: ${cardInnerHeight};
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 100%;
-    width: 100%;
-    height: ${cardInnerHeight};
-  `}
+  width: 100%;
+  height: 100%;
+  flex: 1;
 `;
 
 const ContentWrapper = styled.div`
@@ -98,8 +92,8 @@ const Title = styled.h3`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  line-height: 25px;
-  max-height: 75px;
+  line-height: 26px;
+  max-height: 78px;
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -135,51 +129,53 @@ interface Props {
   className?: string;
 }
 
-export const Card = ({
-  to,
-  onClick,
-  image,
-  imagePlaceholder,
-  hideImage,
-  hideImagePlaceholder,
-  title,
-  body,
-  footer,
-  className,
-}: Props) => (
-  <Container
-    onClick={onClick}
-    to={to}
-    className={`e2e-card ${className} ${
-      !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-    }`}
-  >
-    {!hideImage && image && (
-      <IdeaCardImageWrapper hasImage={!!image}>
-        <IdeaCardImage src={image} cover={true} alt="" />
-      </IdeaCardImageWrapper>
-    )}
+export const Card = memo<Props>(
+  ({
+    to,
+    onClick,
+    image,
+    imagePlaceholder,
+    hideImage,
+    hideImagePlaceholder,
+    title,
+    body,
+    footer,
+    className,
+  }) => (
+    <Container
+      onClick={onClick}
+      to={to}
+      className={`e2e-card ${className} ${
+        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+      }`}
+    >
+      {!hideImage && image && (
+        <IdeaCardImageWrapper hasImage={!!image}>
+          <IdeaCardImage src={image} cover={true} alt="" />
+        </IdeaCardImageWrapper>
+      )}
 
-    {!hideImagePlaceholder && !image && (
-      <IdeaCardImageWrapper hasImage={!!image}>
-        {imagePlaceholder}
-      </IdeaCardImageWrapper>
-    )}
+      {!hideImagePlaceholder && !image && (
+        <IdeaCardImageWrapper hasImage={!!image}>
+          {imagePlaceholder}
+        </IdeaCardImageWrapper>
+      )}
 
-    <ContentWrapper>
-      <Header className="e2e-card-title">
-        {typeof title === 'string' ? (
-          <Title title={title}>{title}</Title>
-        ) : (
-          title
-        )}
-      </Header>
+      <ContentWrapper>
+        <Header className="e2e-card-title">
+          {typeof title === 'string' ? (
+            <Title title={title}>{title}</Title>
+          ) : (
+            title
+          )}
+        </Header>
 
-      <Body>{body}</Body>
+        <Body>{body}</Body>
 
-      {footer}
-    </ContentWrapper>
-  </Container>
+        {footer}
+      </ContentWrapper>
+    </Container>
+  )
 );
 
-export default memo<Props>(Card);
+export default Card;

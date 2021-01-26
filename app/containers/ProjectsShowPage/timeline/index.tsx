@@ -26,7 +26,7 @@ import {
   getCurrentPhase,
   getFirstPhase,
   getLastPhase,
-  getLastActivePhase,
+  getLastPastPhase,
 } from 'services/phases';
 
 // events
@@ -74,6 +74,12 @@ const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
 
+const StyledPhaseDescription = styled(PhaseDescription)<{
+  hasBottmMargin: boolean;
+}>`
+  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
+`;
+
 const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: 50px;
 `;
@@ -111,7 +117,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         const currentPhase = getCurrentPhase(phases);
         const firstPhase = getFirstPhase(phases);
         const lastPhase = getLastPhase(phases);
-        const lastActivePhase = getLastActivePhase(phases);
+        const lastPastPhase = getLastPastPhase(phases);
 
         // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
         // then remove the param so that when the user navigates to other phases there is no mismatch
@@ -135,14 +141,14 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         ) {
           selectPhase(firstPhase);
         } else if (
-          lastActivePhase &&
+          lastPastPhase &&
           lastPhase &&
           pastPresentOrFuture([
             lastPhase.attributes.start_at,
             lastPhase.attributes.end_at,
           ]) === 'future'
         ) {
-          selectPhase(lastActivePhase);
+          selectPhase(lastPastPhase);
         } else {
           selectPhase(lastPhase || null);
         }
@@ -182,9 +188,13 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   </Header>
                 )}
                 <StyledTimeline projectId={project.id} />
-                <PhaseDescription
+                <StyledPhaseDescription
                   projectId={project.id}
                   phaseId={selectedPhaseId}
+                  hasBottmMargin={
+                    selectedPhase?.attributes?.participation_method !==
+                    'information'
+                  }
                 />
                 {isPBPhase && (
                   <StyledPBExpenses
