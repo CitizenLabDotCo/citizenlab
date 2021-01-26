@@ -12,14 +12,14 @@ class SideFxAppConfigurationService
       log_activity(app_config, 'changed_lifecycle_stage', current_user, payload)
     end
 
-    update_group_by_identify
+    track_tenant_async(Tenant.current)
   end
 
   private
 
-  def update_group_by_identify
-    user = User.admin.first || User.first
-    TrackTenantJob.perform_later(user) if user
+  # @param [Tenant] tenant
+  def track_tenant_async(tenant)
+    TrackTenantJob.perform_later(tenant)
   end
 
   # @param  [AppConfiguration] app_config
