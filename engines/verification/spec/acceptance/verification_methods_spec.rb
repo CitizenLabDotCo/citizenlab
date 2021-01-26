@@ -8,8 +8,8 @@ resource "Verification methods" do
 
   before do
     header "Content-Type", "application/json"
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['verification'] = {
       allowed: true,
       enabled: true,
@@ -18,7 +18,7 @@ resource "Verification methods" do
         {name: 'id_card_lookup', method_name_multiloc: {en: 'By social security number'}, card_id_multiloc: {en: 'Social security number'}, card_id_placeholder: "xx-xxxxx-xx", card_id_tooltip_multiloc: {en: 'You can find this number on you card. We just check, we don\'t store it'}, explainer_image_url: "https://some.fake/image.png"},
       ],
     }
-    @tenant.save!
+    configuration.save!
   end
 
   get "web_api/v1/verification_methods" do
