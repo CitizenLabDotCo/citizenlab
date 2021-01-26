@@ -214,6 +214,7 @@ class Survey extends PureComponent<Props, State> {
                   inModal: true,
                   verification: shouldVerify,
                   noPushLinks: true,
+                  noAutofocus: true,
                 }}
                 customSignInHeader={
                   <SignUpInHeader>

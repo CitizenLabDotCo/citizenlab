@@ -271,7 +271,7 @@ class PasswordSignin extends PureComponent<
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
-              autoFocus={!!isDesktop}
+              autoFocus={!!(isDesktop && !this.props.metaData?.noAutofocus)}
             />
           </FormElement>
 

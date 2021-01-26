@@ -37,6 +37,7 @@ export interface ISignUpInMetaData {
   token?: string;
   inModal?: boolean;
   noPushLinks?: boolean;
+  noAutofocus?: boolean;
   action?: () => void;
 }
 
