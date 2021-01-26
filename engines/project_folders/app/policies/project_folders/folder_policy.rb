@@ -11,10 +11,16 @@ module ProjectFolders
       def resolve
         if user&.admin?
           scope.all
+        elsif user&.project_folder_moderator?
+          published_folders.or(scope.left_outer_joins(:admin_publication).where(id: user.moderated_project_folder_ids))
         else
-          scope.left_outer_joins(:admin_publication)
-               .where(admin_publications: {publication_status: ['published', 'archived']})
+          published_folders
         end
+      end
+
+      def published_folders
+        scope.left_outer_joins(:admin_publication)
+             .where(admin_publications: { publication_status: %w[published archived] })
       end
     end
 
@@ -27,15 +33,19 @@ module ProjectFolders
     end
 
     def create?
-      user&.active? && user.admin?
+      return unless user&.active?
+
+      user.admin?
     end
 
     def update?
-      user&.active? && user.admin?
+      return unless user&.active?
+
+      create? || user&.project_folder_moderator?(record.id)
     end
 
     def destroy?
-      user&.active? && user.admin?
+      create?
     end
   end
 end

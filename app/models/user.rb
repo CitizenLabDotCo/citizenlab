@@ -97,7 +97,7 @@ class User < ApplicationRecord
   validate :validate_email_domain_blacklist
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
-  validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
+  validates :roles, json: { schema: -> { roles_json_schema }, message: ->(errors) { errors } }
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
@@ -209,11 +209,11 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(" ")
+    [first_name, last_name].compact.join(' ')
   end
 
   def admin?
-    !!self.roles.find{|r| r["type"] == "admin"}
+    roles.any? { |r| r['type'] == 'admin' }
   end
 
   def super_admin?
@@ -250,13 +250,17 @@ class User < ApplicationRecord
       .map{|role| role['project_id']}.compact
   end
 
-  def add_role type, options={}
-    self.roles << {"type" => type}.merge(options)
-    self.roles.uniq!
+  def moderatable_projects
+    Project.where(id: moderatable_project_ids)
   end
 
-  def delete_role type, options={}
-    self.roles.delete({"type" => type}.merge(options.stringify_keys))
+  def add_role(type, options = {})
+    roles << { 'type' => type.to_s }.merge(options.stringify_keys)
+    roles.uniq!
+  end
+
+  def delete_role(type, options = {})
+    roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
   end
 
   def authenticate unencrypted_password
@@ -347,4 +351,7 @@ class User < ApplicationRecord
     end
   end
 
+  def roles_json_schema
+    ROLES_JSON_SCHEMA
+  end
 end

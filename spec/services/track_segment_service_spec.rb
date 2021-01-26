@@ -94,11 +94,10 @@ describe TrackSegmentService do
   describe 'identify_tenant' do
     it "calls segment's group() method with the correct payload" do
       tenant = Tenant.current
-      user = create(:user)
 
       expect(Analytics).to receive(:group) do |grouping|
         expect(grouping).to match({
-          :user_id=>user.id,
+          :user_id=>grouping[:user_id],  # we don't care about the user id when tracking a tenant
           :group_id=>Tenant.current.id,
           :traits=>{
             :name=>"test-tenant",
@@ -114,12 +113,12 @@ describe TrackSegmentService do
           },
           integrations: {
             All: true,
-            Intercom: false,
-            SatisMeter: false
+            Intercom: true,
+            SatisMeter: true
           }
         })
       end
-      service.identify_tenant(user, tenant)
+      service.identify_tenant(tenant)
     end
   end
 
