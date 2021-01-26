@@ -123,7 +123,7 @@ interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends WithRouterProps, InputProps, DataProps {}
 
 type State = {
   previousPathname: string | null;
@@ -139,7 +139,7 @@ type State = {
   mobileNavbarRef: HTMLElement | null;
 };
 
-class App extends PureComponent<Props & WithRouterProps, State> {
+class App extends PureComponent<Props, State> {
   subscriptions: Subscription[];
   unlisten: () => void;
 
@@ -250,7 +250,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       loadCustomFont();
       loadMomentFilesForTenantLocales();
     }
-    this.handlePotentialCustomRedirect(this.props.location.pathname);
+
+    if (
+      prevProps.tenant !== tenant ||
+      prevProps.location.pathname !== pathname
+    ) {
+      this.handlePotentialCustomRedirect();
+    }
+
     handleSignUpInModal();
     handleVerificationModal();
 
@@ -395,8 +402,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  handlePotentialCustomRedirect(pathname: string) {
-    const { tenant, redirectsEnabled } = this.props;
+  handlePotentialCustomRedirect() {
+    const {
+      tenant,
+      redirectsEnabled,
+      location: { pathname },
+    } = this.props;
     const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
     if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
