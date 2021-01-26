@@ -267,7 +267,7 @@ const VerificationMethods = memo<Props>(
               <AboveTitle aria-hidden>
                 <StyledAvatar
                   userId={!isNilOrError(authUser) ? authUser.id : null}
-                  size="55px"
+                  size={55}
                 />
                 <ShieldIcon name="verify_dark" />
               </AboveTitle>

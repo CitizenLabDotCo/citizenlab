@@ -1,8 +1,27 @@
 # Changelog
 
 ## Next release 
-
 /
+
+## 2021-01-26
+
+### Added
+- Folder admin rights
+- The 'from' and 'reply-to' emails can be customized by cluster.
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
+
+
+### Fixed
+- 'reply-to' email occurred twice, now only occurs once.
+
+### Changed
+- Added the recipient first and last name to the 'to' email field.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. the addition of a link to an accsibility statement)
+
+## 2021-01-21
+
+### Added
+- Added right-to-left rendering to emails
 
 ## 2021-01-18
 
