@@ -64,6 +64,4 @@ class SideFxTenantService
     TrackTenantJob.perform_later(tenant)
   end
 
-
-
 end
