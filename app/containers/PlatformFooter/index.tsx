@@ -553,24 +553,6 @@ class PlatformFooter extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.siteMap} />
                 </StyledLink>
               </PagesNavListItem>
-
-              <PagesNavListItem>
-                <StyledLink to="/site-map">Test one and a half</StyledLink>
-              </PagesNavListItem>
-
-              <PagesNavListItem>
-                <StyledLink to="/site-map">Test two</StyledLink>
-              </PagesNavListItem>
-
-              <PagesNavListItem>
-                <StyledLink to="/site-map">Test three and a half</StyledLink>
-              </PagesNavListItem>
-
-              <PagesNavListItem>
-                <StyledLink to="/site-map">
-                  Very long test four and a half
-                </StyledLink>
-              </PagesNavListItem>
             </PagesNavList>
           </PagesNav>
 
