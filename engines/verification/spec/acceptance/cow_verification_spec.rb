@@ -12,14 +12,14 @@ resource "Verifications" do
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['verification'] = {
       allowed: true,
       enabled: true,
       verification_methods: [{name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa'}],
     }
-    @tenant.save!
+    configuration.save!
   end
 
   post "web_api/v1/verification_methods/cow/verification" do
@@ -39,22 +39,22 @@ resource "Verifications" do
 
 
     # Uncomment this and fill out the credentials to do a real, non-mocked test
-    # 
+    #
     # describe do
     #   before do
-    #     @tenant = Tenant.current
-    #     settings = @tenant.settings
+    #     configuration = AppConfiguration.instance
+    #     settings = configuration.settings
     #     settings['verification'] = {
     #       allowed: true,
     #       enabled: true,
     #       verification_methods: [{
     #         name: 'cow',
     #         api_username:'usr_im_penalolen_01',
-    #         api_password: 'realpasswordhere', 
+    #         api_password: 'realpasswordhere',
     #         rut_empresa: 'realempresahere'
     #       }],
     #     }
-    #     @tenant.save!
+    #     configuration.save!
     #     savon.unmock!
     #   end
     #   let(:run) { "14.533.402-0" }

@@ -8,15 +8,15 @@ resource "Verifications" do
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['verification'] = {
       allowed: true,
       enabled: true,
       verification_methods: [{name: 'bogus'}],
     }
     create(:custom_field, key: 'gender')
-    @tenant.save!
+    configuration.save!
   end
 
   post "web_api/v1/verification_methods/bogus/verification" do
