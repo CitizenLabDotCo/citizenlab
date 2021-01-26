@@ -35,6 +35,7 @@ export const Item = styled.div<{ isFirstItem?: boolean }>`
 
 const StyledPostedBy = styled(PostedBy)`
   margin-top: -4px;
+  margin-bottom: -6px;
 `;
 
 export const Header = styled.h3`

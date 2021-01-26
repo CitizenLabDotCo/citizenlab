@@ -28,6 +28,7 @@ interface InputProps {
   projectId?: string | null;
   assignee?: string | null;
   type: ManagerType;
+  className?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -95,10 +96,11 @@ export class AssigneeFilter extends PureComponent<
   };
 
   render() {
-    const { assignee, prospectAssignees, authUser } = this.props;
+    const { assignee, prospectAssignees, authUser, className } = this.props;
 
     return (
       <Dropdown
+        className={className}
         id="e2e-select-assignee-filter"
         options={this.getAssigneeOptions(prospectAssignees, authUser)}
         onChange={this.onAssigneeChange}

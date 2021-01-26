@@ -94,6 +94,12 @@ const FiltersArea = styled.div`
     `}
   }
 
+  ${media.biggerThanMinTablet`
+    &.mapView {
+      margin-top: -65px;
+    }
+  `}
+
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
@@ -338,9 +344,6 @@ class WithoutFiltersSidebar extends PureComponent<
     return true;
   };
 
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
-
   render() {
     const { selectedView } = this.state;
     const {
@@ -382,7 +385,10 @@ class WithoutFiltersSidebar extends PureComponent<
     );
 
     return (
-      <Container id="e2e-ideas-container" className={className}>
+      <Container
+        id="e2e-ideas-container"
+        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
+      >
         <FiltersArea
           id="e2e-ideas-filters"
           className={`${showMapView ? 'mapView' : 'listView'}`}
@@ -468,7 +474,7 @@ class WithoutFiltersSidebar extends PureComponent<
                     <IdeaIcon ariaHidden name="idea" />
                     <EmptyMessage>
                       <EmptyMessageLine>
-                        <FormattedMessage {...messages.noFilteredIdeas} />
+                        <FormattedMessage {...messages.noFilteredResults} />
                       </EmptyMessageLine>
                     </EmptyMessage>
                   </EmptyContainer>

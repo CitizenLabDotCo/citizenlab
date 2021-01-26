@@ -108,7 +108,7 @@ export class UsersDashboard extends PureComponent<
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(
-      messages.top10activeUsersDescription
+      messages.mostActiveUsersRankingDescription
     );
 
     return (

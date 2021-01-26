@@ -60,8 +60,8 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
           invisibleTitleMessage={
             Object {
-              "defaultMessage": "All the ideas posted by this user",
-              "id": "app.containers.UsersShowPage.invisibleTitleIdeasList",
+              "defaultMessage": "All posts submitted by this participant",
+              "id": "app.containers.UsersShowPage.invisibleTitlePostsList",
             }
           }
           type="load-more"
@@ -132,8 +132,8 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
           invisibleTitleMessage={
             Object {
-              "defaultMessage": "All the ideas posted by this user",
-              "id": "app.containers.UsersShowPage.invisibleTitleIdeasList",
+              "defaultMessage": "All posts submitted by this participant",
+              "id": "app.containers.UsersShowPage.invisibleTitlePostsList",
             }
           }
           type="load-more"

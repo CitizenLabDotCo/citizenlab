@@ -16,12 +16,7 @@ import GetResourceFiles, {
 
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -31,14 +26,12 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   padding: 30px;
   padding-bottom: 35px;
-  margin-bottom: 50px;
   ${defaultCardStyle};
 
   ${media.smallerThanMinTablet`
@@ -75,21 +68,16 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const PhaseDescription = memo<Props & InjectedLocalized & InjectedIntlProps>(
-  ({
-    projectId,
-    phaseId,
-    phase,
-    phaseFiles,
-    className,
-    localize,
-    intl: { formatMessage },
-  }) => {
+const PhaseDescription = memo<Props>(
+  ({ projectId, phaseId, phase, phaseFiles, className }) => {
     const theme: any = useTheme();
     const { windowWidth } = useWindowSize();
+    const localize = useLocalize();
 
     const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
-    const content = localize(phase?.attributes?.description_multiloc);
+    const content = !isNilOrError(phase)
+      ? localize(phase.attributes.description_multiloc)
+      : '';
     const contentIsEmpty =
       content === '' || content === '<p></p>' || content === '<p><br></p>';
     const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
@@ -100,9 +88,6 @@ const PhaseDescription = memo<Props & InjectedLocalized & InjectedIntlProps>(
           <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
           {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
         </Header>
-        <ScreenReaderOnly>
-          <h3>{formatMessage(messages.invisibleTitleIdeasList)}</h3>
-        </ScreenReaderOnly>
         {hasContent && (
           <>
             <QuillEditedContent fontSize="base" textColor={theme.colorText}>
@@ -122,8 +107,6 @@ const PhaseDescription = memo<Props & InjectedLocalized & InjectedIntlProps>(
   }
 );
 
-const PhaseDescriptionWithHoC = injectIntl(injectLocalize(PhaseDescription));
-
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
   phaseFiles: ({ phaseId, render }) => (
@@ -135,7 +118,7 @@ const Data = adopt<DataProps, InputProps>({
 
 const PhaseDescriptionWithHoCAndData = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <PhaseDescriptionWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseDescription {...inputProps} {...dataProps} />}
   </Data>
 );
 
