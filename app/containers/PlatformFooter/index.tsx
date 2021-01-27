@@ -472,7 +472,7 @@ class PlatformFooter extends PureComponent<Props, State> {
         // Hillerod
         tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240'
       ) {
-        return '';
+        return 'https://www.was.digst.dk/hillerod-citizenlab-co-da-DK';
       }
 
       if (
