@@ -15,8 +15,8 @@ module LiquidTemplateHelpers
 
   def default_liquid_params
     {
-      "organization_name" => MultilocService.new.t(Tenant.settings('core', 'organization_name')),
-      "organization_type" => Tenant.settings('core', 'organization_type')
+      "organization_name" => MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name')),
+      "organization_type" => AppConfiguration.instance.settings('core', 'organization_type')
     }
   end
 

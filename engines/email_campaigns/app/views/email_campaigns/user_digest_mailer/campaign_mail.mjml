@@ -114,7 +114,7 @@
 <mj-raw><% end %></mj-raw>
 
 <!-- New initiatives -->
-<mj-section padding="0 25px 30px">
+<mj-section padding="20px 25px 30px">
   <mj-column>
     <mj-text>
       <h2>
@@ -136,13 +136,14 @@
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= new_initiative.images.first[:versions][:small] %>">
+                <img width="96px" src="<%= new_initiative.images.first&.versions&.small %>">
               </span>
             </td>
             <td width="200" style="text-align: left;">
               <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= new_initiative.url %>">
                 <%= localize_for_recipient(new_initiative.title_multiloc).first(80) %>
               </a>
+              <br/>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
                   <%= format_message('today_by_author', values: {author: new_initiative.author_name}) %>
@@ -195,13 +196,14 @@
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
             <td style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= succesful_initiative.images.first[:versions][:small] %>">
+                <img width="96px" src="<%= succesful_initiative.images.first&.versions&.small %>">
               </span>
             </td>
             <td width="200" style="text-align: left;">
               <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative.url %>">
                 <%= localize_for_recipient(succesful_initiative.title_multiloc).first(80) %>
               </a>
+              <br/>
               <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
                 <% if @diff_days < 1 %>
                   <%= format_message('today_by_author', values: {author: succesful_initiative.author_name}) %>

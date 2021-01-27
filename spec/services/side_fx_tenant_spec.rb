@@ -15,6 +15,7 @@ describe SideFxTenantService do
 
   describe "after_update" do
     it "logs a 'changed' action job when the tenant has changed" do
+      # MT_TODO to refactor
       tenant = Tenant.current
       settings = tenant.settings
       settings['core']['organization_name'] = {'en' => "New name"}

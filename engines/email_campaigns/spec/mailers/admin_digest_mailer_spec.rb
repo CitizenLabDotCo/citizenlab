@@ -47,7 +47,6 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
       }
     end
 
-
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end

@@ -198,9 +198,9 @@ da:
       title_spam_report: '%{firstName} %{lastName} rapporterede spam'
     initiative_marked_as_spam:
       by_author: 'af %{authorName}'
-      cta_review_idea: 'Anmeld borgerforslag'
+      cta_review_initiative: 'Anmeld borgerforslag'
       report_inappropriate_offensive_content: 'Jeg fandt dette indhold upassende eller stødende.'
-      report_not_an_idea: 'Dette indhold er ikke en idé og hører ikke til her.'
+      report_not_an_initiative: 'Dette indhold er ikke en borgerforslag og hører ikke til her.'
       subject: 'Du har en spam-rapport på platformen for %{organizationName}'
       preheader: 'Tag handling ud fra denne spamrapport'
       reported_this_because: '%{reporterFirstName} rapporterede dette fordi:'

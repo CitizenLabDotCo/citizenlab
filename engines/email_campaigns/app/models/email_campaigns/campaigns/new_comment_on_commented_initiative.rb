@@ -10,6 +10,9 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      NewCommentOnCommentedInitiativeMailer
+    end
 
     def activity_triggers
       {'Comment' => {'created' => true}}
@@ -34,7 +37,7 @@ module EmailCampaigns
     def generate_commands recipient:, activity:, time: nil
       comment = activity.item
       return [] if comment.post_type != 'Initiative'
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,

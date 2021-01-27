@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Manifest" do
  
-  explanation "Small endpoint that generates Web App Manifest for the tenant. See https://developers.google.com/web/fundamentals/web-app-manifest/"
+  explanation "Small endpoint that generates Web App Manifest. See https://developers.google.com/web/fundamentals/web-app-manifest/"
 
   before do
     header "Content-Type", "application/json"
