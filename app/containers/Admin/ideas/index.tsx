@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
@@ -14,6 +14,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Tab } from 'typings';
 
 export interface Props {
   children: JSX.Element;
@@ -34,7 +35,7 @@ const IdeasPage = memo(
     };
 
     const getTabs = () => {
-      const tabs: TabProps[] = [
+      const tabs: Tab[] = [
         {
           label: formatMessage(messages.tabManage),
           url: '/admin/ideas',

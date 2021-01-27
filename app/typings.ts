@@ -17,6 +17,14 @@ declare global {
   }
 }
 
+export type Tab = {
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+  name?: string;
+};
+
 export interface IRelationship {
   id: string;
   type: string;

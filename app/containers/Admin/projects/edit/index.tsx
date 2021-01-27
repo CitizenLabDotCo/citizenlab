@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
@@ -31,6 +31,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { IProjectData } from 'services/projects';
 import { Subscription } from 'rxjs';
 import eventEmitter from 'utils/eventEmitter';
+import Outlet from 'components/Outlet';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -373,6 +374,28 @@ export class AdminProjectEdition extends PureComponent<
     });
   };
 
+  insertTab = ({
+    configuration,
+    after,
+  }: {
+    configuration: Tab;
+    after?: string;
+  }) => {
+    this.setState(({ tabs }) => {
+      const insertIndex = tabs.findIndex((tab) => tab.name === after) + 1;
+      if (insertIndex > 0) {
+        return {
+          tabs: [
+            ...tabs.slice(0, insertIndex),
+            configuration,
+            ...tabs.slice(insertIndex),
+          ],
+        };
+      }
+      return { tabs: [...tabs, configuration] };
+    });
+  };
+
   render() {
     const { projectId } = this.props.params;
     const {
@@ -401,6 +424,10 @@ export class AdminProjectEdition extends PureComponent<
 
     return (
       <>
+        <Outlet
+          id="app.containers.Admin.projects.edit"
+          onData={this.insertTab}
+        />
         <TopContainer>
           <GoBackButton onClick={this.goBack} />
           <ActionsContainer>

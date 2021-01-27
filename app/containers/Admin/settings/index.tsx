@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
@@ -19,6 +19,7 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
 import Outlet from 'components/Outlet';
+import { Tab } from 'typings';
 
 export interface InputProps {}
 
@@ -30,7 +31,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  tabs: TabProps[];
+  tabs: Tab[];
 }
 
 class SettingsPage extends React.PureComponent<
@@ -81,7 +82,7 @@ class SettingsPage extends React.PureComponent<
     configuration,
     after,
   }: {
-    configuration: TabProps;
+    configuration: Tab;
     after?: string;
   }) => {
     this.setState(({ tabs }) => {
@@ -122,7 +123,7 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
-    let enabledTabs: TabProps[] = [];
+    let enabledTabs: Tab[] = [];
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions?.[tabName]?.()) {

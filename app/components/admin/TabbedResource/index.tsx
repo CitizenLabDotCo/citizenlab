@@ -11,7 +11,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Message } from 'typings';
+import { Message, Tab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -99,14 +99,6 @@ const ChildWrapper = styled.div`
   }
 `;
 
-export type TabProps = {
-  label: string;
-  url: string;
-  active?: boolean;
-  feature?: string;
-  name?: string;
-};
-
 type Props = {
   resource: {
     title: string;
@@ -116,7 +108,7 @@ type Props = {
   messages?: {
     viewPublicResource: Message;
   };
-  tabs?: TabProps[];
+  tabs?: Tab[];
 };
 
 type State = {};
@@ -129,7 +121,7 @@ class TabbedResource extends React.PureComponent<
   Props & WithRouterProps,
   State
 > {
-  activeClassForTab = (tab: TabProps) => {
+  activeClassForTab = (tab: Tab) => {
     const {
       location: { pathname },
     } = this.props;
