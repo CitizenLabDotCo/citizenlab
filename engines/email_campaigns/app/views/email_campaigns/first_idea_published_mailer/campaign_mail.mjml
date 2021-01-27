@@ -30,7 +30,7 @@
         </td>
         <td style="padding-left: 10px; padding-bottom:15px">
           <%= format_message('action_add_image', values: {
-                addImageLink: "<a href=\"#{url_service.idea_edit_url(tenant, event.post_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
+                addImageLink: "<a href=\"#{url_service.idea_edit_url(app_configuration, event.post_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
             }, escape_html: false)
           %>
         </td>

@@ -18,4 +18,4 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: tenant_home_url, message: format_message('cta_moderate_platform') } %>
+<%= render partial: 'application/cta_button', locals: { href: home_url, message: format_message('cta_moderate_platform') } %>
