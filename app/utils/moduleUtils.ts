@@ -103,6 +103,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.SettingsPage': {
     onData: (data: { after?: string; configuration: ITab }) => void;
   };
+  'app.containers.Admin.projects.edit': {
+    onData: (data: { after?: string; configuration: ITab }) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
