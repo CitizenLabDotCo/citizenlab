@@ -19,7 +19,7 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
 import Outlet from 'components/Outlet';
-import { Tab } from 'typings';
+import { ITab } from 'typings';
 
 export interface InputProps {}
 
@@ -31,7 +31,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  tabs: Tab[];
+  tabs: ITab[];
 }
 
 class SettingsPage extends React.PureComponent<
@@ -82,7 +82,7 @@ class SettingsPage extends React.PureComponent<
     configuration,
     after,
   }: {
-    configuration: Tab;
+    configuration: ITab;
     after?: string;
   }) => {
     this.setState(({ tabs }) => {
@@ -123,7 +123,7 @@ class SettingsPage extends React.PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
-    let enabledTabs: Tab[] = [];
+    let enabledTabs: ITab[] = [];
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions?.[tabName]?.()) {

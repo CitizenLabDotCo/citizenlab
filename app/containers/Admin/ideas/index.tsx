@@ -14,7 +14,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { Tab } from 'typings';
+import { ITab } from 'typings';
 
 export interface Props {
   children: JSX.Element;
@@ -35,7 +35,7 @@ const IdeasPage = memo(
     };
 
     const getTabs = () => {
-      const tabs: Tab[] = [
+      const tabs: ITab[] = [
         {
           label: formatMessage(messages.tabManage),
           url: '/admin/ideas',

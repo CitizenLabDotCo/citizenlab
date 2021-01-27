@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 // typings
-import { Message, Tab } from 'typings';
+import { Message, ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -107,7 +107,7 @@ interface Props {
   messages?: {
     viewPublicResource: Message;
   };
-  tabs?: Tab[];
+  tabs?: ITab[];
 }
 
 function getRegularExpression(tabUrl: string) {

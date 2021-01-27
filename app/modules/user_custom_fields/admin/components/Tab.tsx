@@ -1,13 +1,13 @@
 import { FC, useEffect } from 'react';
 
 import { InjectedIntlProps } from 'react-intl';
-import { Tab } from 'typings';
+import { ITab } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
-  onData: (data: { after?: string; configuration: Tab }) => void;
+  onData: (data: { after?: string; configuration: ITab }) => void;
 }
 
 const Tab: FC<Props & InjectedIntlProps> = ({
