@@ -87,6 +87,67 @@ export class AdminProjectEdition extends PureComponent<
     super(props);
     this.state = {
       backButtonUrl: null,
+      tabs: [
+        {
+          label: formatMessage(messages.generalTab),
+          url: `${baseTabsUrl}/edit`,
+          name: 'general',
+        },
+        {
+          label: formatMessage(messages.descriptionTab),
+          url: `${baseTabsUrl}/description`,
+          name: 'description',
+        },
+        {
+          label: formatMessage(messages.ideasTab),
+          url: `${baseTabsUrl}/ideas`,
+          name: 'ideas',
+        },
+        {
+          label: formatMessage(messages.pollTab),
+          url: `${baseTabsUrl}/poll`,
+          feature: 'polls',
+          name: 'poll',
+        },
+        {
+          label: formatMessage(messages.surveyResultsTab),
+          url: `${baseTabsUrl}/survey-results`,
+          name: 'survey-results',
+        },
+        {
+          label: formatMessage(messages.ideaFormTab),
+          url: `${baseTabsUrl}/ideaform`,
+          feature: 'idea_custom_fields',
+          name: 'ideaform',
+        },
+        {
+          label: formatMessage(messages.phasesTab),
+          url: `${baseTabsUrl}/timeline`,
+          name: 'phases',
+        },
+        {
+          label: formatMessage(messages.topicsTab),
+          url: `${baseTabsUrl}/topics`,
+          name: 'topics',
+        },
+        {
+          label: formatMessage(messages.volunteeringTab),
+          url: `${baseTabsUrl}/volunteering`,
+          feature: 'volunteering',
+          name: 'volunteering',
+        },
+        {
+          label: formatMessage(messages.eventsTab),
+          url: `${baseTabsUrl}/events`,
+          name: 'events',
+        },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `${baseTabsUrl}/permissions`,
+          feature: 'private_projects',
+          name: 'permissions',
+        },
+      ],
     };
     this.subscriptions = [];
   }
@@ -106,6 +167,7 @@ export class AdminProjectEdition extends PureComponent<
   }
 
   getTabs = (projectId: string, project: IProjectData) => {
+    const { tabs } = this.state;
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const { formatMessage } = this.props.intl;
     const {
@@ -120,67 +182,6 @@ export class AdminProjectEdition extends PureComponent<
     } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
-    let tabs: TabProps[] = [
-      {
-        label: formatMessage(messages.generalTab),
-        url: `${baseTabsUrl}/edit`,
-        name: 'general',
-      },
-      {
-        label: formatMessage(messages.descriptionTab),
-        url: `${baseTabsUrl}/description`,
-        name: 'description',
-      },
-      {
-        label: formatMessage(messages.ideasTab),
-        url: `${baseTabsUrl}/ideas`,
-        name: 'ideas',
-      },
-      {
-        label: formatMessage(messages.pollTab),
-        url: `${baseTabsUrl}/poll`,
-        feature: 'polls',
-        name: 'poll',
-      },
-      {
-        label: formatMessage(messages.surveyResultsTab),
-        url: `${baseTabsUrl}/survey-results`,
-        name: 'survey-results',
-      },
-      {
-        label: formatMessage(messages.ideaFormTab),
-        url: `${baseTabsUrl}/ideaform`,
-        feature: 'idea_custom_fields',
-        name: 'ideaform',
-      },
-      {
-        label: formatMessage(messages.phasesTab),
-        url: `${baseTabsUrl}/timeline`,
-        name: 'phases',
-      },
-      {
-        label: formatMessage(messages.topicsTab),
-        url: `${baseTabsUrl}/topics`,
-        name: 'topics',
-      },
-      {
-        label: formatMessage(messages.volunteeringTab),
-        url: `${baseTabsUrl}/volunteering`,
-        feature: 'volunteering',
-        name: 'volunteering',
-      },
-      {
-        label: formatMessage(messages.eventsTab),
-        url: `${baseTabsUrl}/events`,
-        name: 'events',
-      },
-      {
-        label: formatMessage(messages.permissionsTab),
-        url: `${baseTabsUrl}/permissions`,
-        feature: 'private_projects',
-        name: 'permissions',
-      },
-    ];
 
     const tabHideConditions = {
       general: function isGeneralTabHidden() {
@@ -318,13 +319,15 @@ export class AdminProjectEdition extends PureComponent<
 
     const tabNames = tabs.map((tab) => tab.name);
 
+    let cleanedTabs = tabs;
+
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions[tabName]()) {
-        tabs = reject(tabs, { name: tabName });
+        cleanedTabs = reject(tabs, { name: tabName });
       }
     });
 
-    return tabs;
+    return cleanedTabs;
   };
 
   goBack = () => {
