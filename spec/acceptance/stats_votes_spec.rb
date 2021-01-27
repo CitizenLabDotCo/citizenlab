@@ -36,7 +36,7 @@ resource "Stats - Votes" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 3.month)
-    @timezone = Tenant.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core','timezone')
     @idea_status = create(:idea_status)
   end
 
