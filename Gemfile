@@ -156,3 +156,5 @@ gem 'maps', path: 'engines/maps'
 
 gem 'project_folders', path: 'engines/project_folders'
 gem 'tagging', path: 'engines/tagging'
+
+gem 'multi_tenancy', path: 'engines/multi_tenancy'
