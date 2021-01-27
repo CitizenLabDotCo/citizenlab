@@ -4,7 +4,11 @@ FactoryBot.define do
     invitee { create(:user, registration_completed_at: nil, invite_status: 'pending') }
 
     transient do
-      email { 'invitee@citizenlab.co' }
+      # email { 'invitee@citizenlab.co' }
+      sequence(:email) do |n|
+        name, domain = Faker::Internet.email.split('@')
+        "#{name}#{n}@#{domain}"
+      end
     end
 
     after(:create) do |invite, evaluator|
