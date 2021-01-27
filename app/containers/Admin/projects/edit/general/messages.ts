@@ -86,18 +86,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasSelectionLabel',
     defaultMessage: 'Selection',
   },
-  headerImageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabel',
-    defaultMessage: 'Header Image',
+  headerImageLabelText: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelText',
+    defaultMessage: 'Header image',
   },
   headerImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip',
     defaultMessage:
       'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
-  projectCardImageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabel',
-    defaultMessage: 'Project Card Image',
+  projectCardImageLabelText: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelText',
+    defaultMessage: 'Project card image',
   },
   projectCardImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip',

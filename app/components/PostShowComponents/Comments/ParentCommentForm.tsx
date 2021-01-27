@@ -20,7 +20,7 @@ import messages from './messages';
 
 // services
 import { addCommentToIdea, addCommentToInitiative } from 'services/comments';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -285,7 +285,8 @@ class ParentCommentForm extends PureComponent<
     );
     const commentButtonDisabled = !inputValue || inputValue === '';
     const isModerator =
-      !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
+      !isNilOrError(authUser) &&
+      canModerateProject(projectId, { data: authUser });
     const canComment = authUser && commentingEnabled;
     const placeholder = formatMessage(
       messages[`${postType}CommentBodyPlaceholder`]
