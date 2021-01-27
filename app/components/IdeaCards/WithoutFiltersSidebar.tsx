@@ -30,8 +30,8 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
-} from 'modules/idea_custom_fields/resources/GetIdeaCustomFieldsSchemas';
-import { CustomFieldCodes } from 'modules/idea_custom_fields/services/ideaCustomFields';
+} from 'resources/GetIdeaCustomFieldsSchemas';
+import { CustomFieldCodes } from 'services/ideaCustomFields';
 
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 

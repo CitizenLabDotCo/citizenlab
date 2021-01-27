@@ -1,7 +1,7 @@
 import {
   IIdeaCustomFieldsSchemas,
   CustomFieldCodes,
-} from 'modules/idea_custom_fields/services/ideaCustomFields';
+} from 'services/ideaCustomFields';
 import { Locale } from 'typings';
 
 export default function isFieldEnabled(

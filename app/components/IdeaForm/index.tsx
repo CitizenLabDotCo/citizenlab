@@ -32,7 +32,7 @@ import {
   ideaCustomFieldsSchemasStream,
   IIdeaCustomFieldsSchemas,
   CustomFieldCodes,
-} from 'modules/idea_custom_fields/services/ideaCustomFields';
+} from 'services/ideaCustomFields';
 
 // resources
 import GetFeatureFlag, {
