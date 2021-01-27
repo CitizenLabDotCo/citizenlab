@@ -73,13 +73,6 @@ interface DataProps {
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
 }
 
-interface TabConfiguration {
-  label: string;
-  url: string;
-  feature?: string;
-  name: string;
-}
-
 interface State {
   backButtonUrl: string | null;
   tabs: ITab[];
