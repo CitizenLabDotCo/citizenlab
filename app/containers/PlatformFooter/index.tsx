@@ -479,7 +479,7 @@ class PlatformFooter extends PureComponent<Props, State> {
         // Linz
         tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
       ) {
-        return '';
+        return 'https://res.cloudinary.com/citizenlabco/image/upload/v1611739984/Linz_Web_Content_Accessibility_Guidlines_WCAG_2.1_nduhob.pdf';
       }
     }
 
