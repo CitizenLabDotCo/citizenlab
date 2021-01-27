@@ -1,20 +1,29 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import NewProjectFolderButton from './admin/components/NewProjectFolderButton';
 import ProjectFolderRow from './admin/components/ProjectFolderRow';
 import ProjectFolderTitle from './admin/components/ProjectFolderTitle';
+import ProjectFolderSelect from './admin/components/ProjectFolderSelect';
 
 import ProjectFolderCard from './citizen/components/ProjectFolderCard';
 import ProjectFolderSiteMap from './citizen/components/ProjectFolderSiteMap';
+import CreateProject from 'containers/Admin/projects/all/CreateProject';
 
 import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { isProjectFolderModerator } from './permissions/roles';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
+  children: ReactNode;
+};
+
+type RenderOnProjectFolderModeratorProps = {
   children: ReactNode;
 };
 
@@ -38,7 +47,22 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   return null;
 };
 
+const RenderOnProjectFolderModerator = ({
+  children,
+}: RenderOnProjectFolderModeratorProps) => {
+  const authUser = useAuthUser();
+
+  if (!isNilOrError(authUser) && isProjectFolderModerator(authUser)) {
+    return <>{children}</>;
+  }
+
+  return null;
+};
+
 const configuration: ModuleConfiguration = {
+  afterMountApplication: () => {
+    import('./permissions/rules');
+  },
   outlets: {
     'app.containers.Navbar.projectlist.item': (props) => {
       const { localize, publication } = props;
@@ -63,9 +87,13 @@ const configuration: ModuleConfiguration = {
         <NewProjectFolderButton />
       </RenderOnFeatureFlag>
     ),
-    'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
+    'app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow': (
+      props
+    ) => (
       <RenderOnPublicationType publication={props.publication}>
-        <ProjectFolderRow {...props} />
+        <RenderOnProjectFolderModerator>
+          <ProjectFolderRow {...props} />
+        </RenderOnProjectFolderModerator>
       </RenderOnPublicationType>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (
@@ -77,6 +105,26 @@ const configuration: ModuleConfiguration = {
       <RenderOnPublicationType publication={props.adminPublication}>
         <ProjectFolderSiteMap {...props} />
       </RenderOnPublicationType>
+    ),
+    'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
+      onChange,
+      projectAttrs,
+      authUser,
+    }) => (
+      <RenderOnFeatureFlag>
+        <ProjectFolderSelect
+          onChange={onChange}
+          projectAttrs={projectAttrs}
+          authUser={authUser}
+        />
+      </RenderOnFeatureFlag>
+    ),
+    'app.containers.AdminPage.projects.all.createProjectNotAdmin': () => (
+      <RenderOnFeatureFlag>
+        <RenderOnProjectFolderModerator>
+          <CreateProject />
+        </RenderOnProjectFolderModerator>
+      </RenderOnFeatureFlag>
     ),
   },
   routes: {
@@ -106,6 +154,11 @@ const configuration: ModuleConfiguration = {
             path: 'settings',
             name: 'admin projects edit folder settings',
             container: () => import('./admin/containers/settings'),
+          },
+          {
+            path: 'permissions',
+            name: 'admin projects edit folder permissions',
+            container: () => import('./admin/containers/permissions'),
           },
         ],
       },
