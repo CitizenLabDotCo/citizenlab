@@ -110,15 +110,15 @@ const NoTemplates = styled.div`
 
 interface Props {
   className?: string;
+  graphqlTenantLocales: string[];
 }
 
 const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
-  ({ intl, className }) => {
+  ({ intl, className, graphqlTenantLocales }) => {
     const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
     const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
     const localize = useLocalize();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
     const tenant = useTenant();
 
     const locales = !isNilOrError(tenant)
@@ -339,4 +339,17 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(ProjectTemplateCards);
+const ProjectTemplateCardsWrapper = memo<InjectedIntlProps>((props) => {
+  const graphqlTenantLocales = useGraphqlTenantLocales();
+
+  if (isNilOrError(graphqlTenantLocales)) return null;
+
+  return (
+    <ProjectTemplateCards
+      graphqlTenantLocales={graphqlTenantLocales}
+      {...props}
+    />
+  );
+});
+
+export default injectIntl(ProjectTemplateCardsWrapper);
