@@ -493,6 +493,8 @@ class PlatformFooter extends PureComponent<Props, State> {
     const smallerThanSmallTablet = windowSize
       ? windowSize <= viewportWidths.smallTablet
       : false;
+    const hasCustomizedA11yFooterLink = this.getHasCustomizedA11yFooterLink();
+    const customizedA11yHref = this.getCustomizedA11yHref();
 
     return (
       <Container
@@ -579,9 +581,6 @@ class PlatformFooter extends PureComponent<Props, State> {
           <PagesNav>
             <PagesNavList>
               {LEGAL_PAGES.map((slug: TLegalPage, index) => {
-                const hasCustomizedA11yFooterLink = this.getHasCustomizedA11yFooterLink();
-                const customizedA11yHref = this.getCustomizedA11yHref();
-
                 return (
                   <React.Fragment key={slug}>
                     <PagesNavListItem>
