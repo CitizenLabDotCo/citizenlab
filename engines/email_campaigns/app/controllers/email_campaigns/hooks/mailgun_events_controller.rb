@@ -7,7 +7,7 @@ module EmailCampaigns
     skip_after_action :verify_authorized
 
     before_action :verify, only: [:create]
-    around_action :switch_tenant
+    around_action :switch_tenant  # MT_TODO to be injected from the multi-tenant engine
 
 
     MAILGUN_STATUS_MAPPING = {
