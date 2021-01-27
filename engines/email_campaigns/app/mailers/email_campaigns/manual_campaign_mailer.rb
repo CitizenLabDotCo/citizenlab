@@ -20,8 +20,8 @@ module EmailCampaigns
       @unsubscribe_url = url_template.render(liquid_params(recipient))
 
       @logo_url = app_configuration.logo.versions[:medium].url
-      @terms_conditions_url = frontend_service.terms_conditions_url(app_configuration: app_configuration)
-      @privacy_policy_url = frontend_service.privacy_policy_url(app_configuration: app_configuration)
+      @terms_conditions_url = frontend_service.terms_conditions_url(app_configuration)
+      @privacy_policy_url = frontend_service.privacy_policy_url(app_configuration)
       @host_url = frontend_service.home_url(app_configuration: app_configuration)
       @organization_name = multiloc_service.t(app_configuration.settings('core', 'organization_name'), recipient)
 
