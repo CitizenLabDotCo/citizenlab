@@ -293,8 +293,56 @@
         "properties": {
           "title": "Properties",
           "oneOf": [
-            { "type": "object" },
-            { "type": "null" }
+            {
+              "type": "object",
+              "properties": {
+                "stroke": {
+                  "$ref": "#/definitions/hexcolor",
+                  "default": "#555555"
+                },
+                "stroke-width": {
+                  "type": "number",
+                  "minimum": 0,
+                  "default": 2
+                },
+                "stroke-opacity": {
+                  "$ref": "#/definitions/opacity",
+                  "default": 1.0
+                },
+                "fill": {
+                  "$ref": "#/definitions/hexcolor",
+                  "default": "#555555"
+                },
+                "fill-opacity": {
+                  "$ref": "#/definitions/opacity",
+                  "default": 0.6
+                },
+                "title": {
+                  "type": "string",
+                  "default": ""
+                },
+                "description": {
+                  "type": "string",
+                  "default": ""
+                },
+                "marker-size": {
+                  "type": "string",
+                  "enum": ["small", "medium", "large"],
+                  "default": "medium"
+                },
+                "marker-symbol": {
+                  "default": "",
+                  "type": "string"
+                },
+                "marker-color": {
+                  "$ref": "#/definitions/hexcolor",
+                  "default": "#7e7e7e"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
           ]
         },
 
@@ -346,8 +394,23 @@
       "items": {
         "type": "number"
       }
-    }
+    },
 
+    "hexcolor": {
+      "description": "Hexadecimal color code",
+      "format": "hexcolor",
+      "pattern": "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
+      "example": "#aa33cc",
+      "type": "string"
+    },
+
+    "opacity": {
+      "description": "Opacity value of a color in CSS",
+      "format": "opacity",
+      "example": 0.1,
+      "minimum": 0,
+      "maximum": 1
+      "type": "number"
+    },
   }
-
 }
