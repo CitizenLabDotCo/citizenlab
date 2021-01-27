@@ -7,7 +7,6 @@ import React, {
   MouseEvent,
 } from 'react';
 import { get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -18,7 +17,6 @@ import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
 // hooks
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useTenant from 'hooks/useTenant';
 
 // utils
@@ -177,11 +175,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     },
   ];
 
-  const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
-  const organizationTypes = !isNilOrError(tenant)
-    ? tenant.data.attributes.settings.core.organization_type
-    : null;
   const projectTemplatesEnabled: boolean = get(
     tenant,
     'data.attributes.settings.admin_project_templates.enabled',
