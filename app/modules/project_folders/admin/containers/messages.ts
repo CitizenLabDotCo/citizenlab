@@ -19,6 +19,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab',
     defaultMessage: 'Settings',
   },
+  projectFolderPermissionsTab: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectFolderPermissionsTab',
+    defaultMessage: 'Permissions',
+  },
   projectFolderProjectsTab: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab',
     defaultMessage: 'Projects',
@@ -96,9 +100,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAdd',
     defaultMessage: 'Projects you can add to this folder',
   },
-  emptyFolder: {
-    id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',
-    defaultMessage: 'There are no projects in this folder.',
+  folderEmptyGoBackToAdd: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd',
+    defaultMessage:
+      'There are no projects in this folder. Go back to the main Projects tab to create and add projects.',
   },
   addToFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.addToFolder',
