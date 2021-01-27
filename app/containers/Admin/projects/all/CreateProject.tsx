@@ -17,7 +17,7 @@ import { useQuery } from '@apollo/react-hooks';
 // components
 import { Icon } from 'cl2-component-library';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import ProjectTemplateCards from './ProjectTemplateCards';
+import ProjectTemplatesContainer from './ProjectTemplatesContainer';
 import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
@@ -238,7 +238,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   `;
 
-  // prefetch templates query used in ProjectTemplateCards so the data is
+  // prefetch templates query used in ProjectTemplatesContainer so the data is
   // already loaded when expanding the 'create project' section
   useQuery(TEMPLATES_QUERY, {
     variables: {
@@ -346,7 +346,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   onClick={handleTabOnClick}
                 />
                 {selectedTabValue === 'template' ? (
-                  <ProjectTemplateCards />
+                  <ProjectTemplatesContainer />
                 ) : (
                   <AdminProjectEditGeneral />
                 )}

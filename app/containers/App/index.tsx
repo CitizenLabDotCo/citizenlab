@@ -549,7 +549,12 @@ const authLink = new ApolloLink((operation, forward) => {
 
   operation.setContext({
     headers: {
+      origin: '*',
       authorization: jwt ? `Bearer ${jwt}` : '',
+      'Access-Control-Allow-Origin': '*',
+    },
+    fetchOptions: {
+      mode: 'cors',
     },
   });
 
