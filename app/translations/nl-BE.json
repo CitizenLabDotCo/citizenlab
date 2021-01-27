@@ -2036,7 +2036,7 @@
   "app.containers.Projects.issues": "Stellingen",
   "app.containers.Projects.location": "Locatie:",
   "app.containers.Projects.manageBudget": "Beheer uitgaven",
-  "app.containers.Projects.metaTitle": "Project  • {projectTitle}",
+  "app.containers.Projects.metaTitle": "Project - {projectTitle}",
   "app.containers.Projects.myExpenses": "Mijn uitgaven",
   "app.containers.Projects.navPoll": "Peiling",
   "app.containers.Projects.navSurvey": "Enquête",
