@@ -14,7 +14,7 @@
 
       <% if show_terms_link? %>
         <a
-          href="<%= terms_conditions_url(app_configuration: app_configuration) %>"
+          href="<%= terms_conditions_url(app_configuration) %>"
           style="color: #84939E; text-decoration: none; margin: 0 10px;"
         >
           <%= format_message('link_terms_conditions', component: 'footer') %>
