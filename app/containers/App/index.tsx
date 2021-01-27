@@ -170,6 +170,7 @@ class App extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    const { redirectsEnabled } = this.props;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
@@ -188,7 +189,9 @@ class App extends PureComponent<Props, State> {
           ? newPreviousPathname
           : state.previousPathname,
       }));
-      this.handleCustomRedirect();
+      if (redirectsEnabled) {
+        this.handleCustomRedirect();
+      }
       trackPage(newLocation.pathname);
     });
 
@@ -280,13 +283,15 @@ class App extends PureComponent<Props, State> {
       signUpInModalMounted,
       verificationModalMounted,
     } = this.state;
+    const { redirectsEnabled } = this.props;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
 
     if (
-      prevState.tenant !== tenant ||
-      prevProps.location.pathname !== this.props.location.pathname
+      redirectsEnabled &&
+      (prevState.tenant !== tenant ||
+        prevProps.location.pathname !== this.props.location.pathname)
     ) {
       this.handleCustomRedirect();
     }
@@ -398,7 +403,6 @@ class App extends PureComponent<Props, State> {
 
   handleCustomRedirect() {
     const {
-      redirectsEnabled,
       location: { pathname },
     } = this.props;
     const { tenant } = this.state;
@@ -407,17 +411,15 @@ class App extends PureComponent<Props, State> {
     if (!isNilOrError(tenant) && tenant.data.attributes.settings.redirects) {
       const { rules } = tenant.data.attributes.settings.redirects;
 
-      if (redirectsEnabled) {
-        rules.forEach((rule) => {
-          if (
-            urlSegments.length === 2 &&
-            includes(locales, urlSegments[0]) &&
-            urlSegments[1] === rule.path
-          ) {
-            window.location.href = rule.target;
-          }
-        });
-      }
+      rules.forEach((rule) => {
+        if (
+          urlSegments.length === 2 &&
+          includes(locales, urlSegments[0]) &&
+          urlSegments[1] === rule.path
+        ) {
+          window.location.href = rule.target;
+        }
+      });
     }
   }
 
