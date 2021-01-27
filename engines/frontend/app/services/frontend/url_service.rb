@@ -105,7 +105,7 @@ module Frontend
       if token
         "#{configuration.base_frontend_uri}/email-settings?unsubscription_token=#{token}&campaign_id=#{campaign_id}"
       else
-        home_url(configuration: configuration)
+        home_url(app_configuration: configuration)
       end
     end
 

@@ -28,7 +28,7 @@
       color="#fff"
       background-color="#044D6C"
       border-radius="5px"
-      href="<%= url_service.home_url(tenant: @tenant, locale: @locale) %>"
+      href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>"
       align="left"
     >
       <%= format_message('cta_go_to_the_platform') %>
