@@ -6,17 +6,16 @@
 ## 2021-01-26
 
 ### Added
-- Folder admin rights
-- The 'from' and 'reply-to' emails can be customized by cluster.
+- Folder admin rights. Folder admins or 'managers' can be assigned per folder. They can create projects inside folders they have rights for, and moderate/change the folder and all projects that are inside.
+- The 'from' and 'reply-to' emails can be customized by cluster (by our developers, not in Admin HQ). E.g. Benelux notification emails could be sent out by notifications@citizenlab.eu, US emails could be sent out by notifications@citizenlab.us etc., as long as those emails are owned by us. We can choose any email for "reply-to", so also email addresses we don't own. This means "reply-to" could potentially be configured to be an email address of the city, e.g. support@leuven.be. It is currently not possible to customize the reply-to (except for manual campaigns) and from fields for individual tenants.
 - When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
 
-
 ### Fixed
-- 'reply-to' email occurred twice, now only occurs once.
+- The 'reply-to' field of our emails showed up twice in recipient's email clients, now only once.
 
 ### Changed
-- Added the recipient first and last name to the 'to' email field.
-- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. the addition of a link to an accsibility statement)
+- Added the recipient first and last name to the 'to' email field in their email client, so not only their email adress is shown.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. soon the addition of a link to the accesibility statement)
 
 ## 2021-01-21
 
