@@ -35,7 +35,7 @@ import GetWindowSize, {
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { transparentize } from 'polished';
 import {
   media,
@@ -236,7 +236,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledLink = styled(Link)`
+const linkStyle = css`
   color: ${colors.label};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
@@ -254,22 +254,12 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const StyledA = styled.a`
-  color: ${colors.label};
-  font-weight: 400;
-  font-size: ${fontSizes.small}px;
-  line-height: 21px;
-  text-decoration: none;
-  hyphens: auto;
-  padding: 0;
-  margin: 0;
-  border: none;
-  cursor: pointer;
+const StyledLink = styled(Link)`
+  ${linkStyle}
+`;
 
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
+const StyledA = styled.a`
+  ${linkStyle}
 `;
 
 const Right = styled.div`
