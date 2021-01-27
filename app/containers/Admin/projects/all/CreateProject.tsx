@@ -10,10 +10,6 @@ import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
-// graphql
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
-
 // components
 import { Icon } from 'cl2-component-library';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -196,60 +192,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
 
   const isFirstRun = useRef(true);
-
-  const TEMPLATES_QUERY = gql`
-    query PublishedProjectTemplatesQuery(
-      $cursor: String,
-      $departments: [ID!],
-      $purposes: [ID!],
-      $participationLevels: [ID!],
-      $search: String,
-      $locales: [String!],
-      $organizationTypes: [String!]
-    ) {
-      publishedProjectTemplates(
-        first: 24,
-        after: $cursor,
-        departments: $departments,
-        purposes: $purposes,
-        participationLevels: $participationLevels,
-        search: $search,
-        locales: $locales,
-        organizationTypes: $organizationTypes
-      ) {
-        edges {
-          node {
-            id,
-            projectFolderImage,
-            titleMultiloc {
-              ${graphqlTenantLocales}
-            },
-            subtitleMultiloc {
-              ${graphqlTenantLocales}
-            }
-          }
-          cursor
-        }
-        pageInfo{
-          endCursor
-          hasNextPage
-        }
-      }
-    }
-  `;
-
-  // prefetch templates query used in ProjectTemplatesContainer so the data is
-  // already loaded when expanding the 'create project' section
-  useQuery(TEMPLATES_QUERY, {
-    variables: {
-      organizationTypes,
-      departments: null,
-      purposes: null,
-      participationLevels: null,
-      search: null,
-      cursor: null,
-    },
-  });
 
   useEffect(() => {
     const subscription = eventEmitter
