@@ -450,6 +450,7 @@ class PlatformFooter extends PureComponent<Props, State> {
 
   getHasCustomizedA11yFooterLink = () => {
     const { tenant } = this.props;
+
     if (!isNilOrError(tenant)) {
       if (
         // Hillerod
@@ -594,21 +595,15 @@ class PlatformFooter extends PureComponent<Props, State> {
                 return (
                   <React.Fragment key={slug}>
                     <PagesNavListItem>
-                      {hasCustomizedA11yFooterLink && customizedA11yHref ? (
+                      {slug === 'accessibility-statement' &&
+                      hasCustomizedA11yFooterLink &&
+                      customizedA11yHref ? (
                         <StyledA
                           href={customizedA11yHref}
                           className={index === 0 ? 'first' : ''}
                         >
                           <FormattedMessage
-                            {...{
-                              information: messages.information,
-                              'terms-and-conditions':
-                                messages.termsAndConditions,
-                              'privacy-policy': messages.privacyPolicy,
-                              'cookie-policy': messages.cookiePolicy,
-                              'accessibility-statement':
-                                messages.accessibilityStatement,
-                            }[slug]}
+                            {...messages.accessibilityStatement}
                           />
                         </StyledA>
                       ) : (
