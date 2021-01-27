@@ -32,6 +32,7 @@ import { IProjectData } from 'services/projects';
 import { Subscription } from 'rxjs';
 import eventEmitter from 'utils/eventEmitter';
 import Outlet from 'components/Outlet';
+import { ITab } from 'typings';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -81,7 +82,7 @@ interface TabConfiguration {
 
 interface State {
   backButtonUrl: string | null;
-  tabs: TabConfiguration[];
+  tabs: ITab[];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -126,12 +127,6 @@ export class AdminProjectEdition extends PureComponent<
           label: formatMessage(messages.surveyResultsTab),
           url: `survey-results`,
           name: 'survey-results',
-        },
-        {
-          label: formatMessage(messages.ideaFormTab),
-          url: `ideaform`,
-          feature: 'idea_custom_fields',
-          name: 'ideaform',
         },
         {
           label: formatMessage(messages.phasesTab),
@@ -378,7 +373,7 @@ export class AdminProjectEdition extends PureComponent<
     configuration,
     after,
   }: {
-    configuration: Tab;
+    configuration: ITab;
     after?: string;
   }) => {
     this.setState(({ tabs }) => {
