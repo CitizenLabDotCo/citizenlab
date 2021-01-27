@@ -2,7 +2,7 @@ module EmailCampaigns
   class AssigneeDigestMailerPreview < ActionMailer::Preview
     def campaign_mail
       recipient = User.first
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       ideas = Idea.take(2)
       initiatives = Initiative.take(3)
       command = {

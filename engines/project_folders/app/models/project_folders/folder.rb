@@ -18,11 +18,13 @@ module ProjectFolders
   before_validation :strip_title
   before_validation :set_admin_publication
 
-
   def projects
     Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
   end
 
+  def moderators
+    User.project_folder_moderator(id)
+  end
 
   private
 

@@ -60,7 +60,7 @@ class TextImageService
               imageable_id: imageable.id,
               imageable_created_at: imageable.created_at,
               imageable_field: field,
-              tenant_created_at: Tenant.current.created_at
+              tenant_created_at: AppConfiguration.instance.created_at
             })
           return multiloc
         end
@@ -81,7 +81,7 @@ class TextImageService
                   imageable_id: imageable.id,
                   imageable_created_at: imageable.created_at,
                   imageable_field: field,
-                  tenant_created_at: Tenant.current.created_at
+                  tenant_created_at: AppConfiguration.instance.created_at
                 })
             end
           end
