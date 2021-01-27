@@ -1,8 +1,8 @@
 class ActivitiesService
 
-  def create_periodic_activities_for_current_tenant now: Time.now, since: 1.hour
+  def create_periodic_activities now: Time.now, since: 1.hour
     now = Time.at now
-    now = now.in_time_zone(Tenant.settings('core', 'timezone'))
+    now = now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone'))
     last_time = now - since
 
     create_phase_started_activities now, last_time 

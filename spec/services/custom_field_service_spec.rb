@@ -18,7 +18,7 @@ describe CustomFieldService do
       )
     ]}
     it "creates localized schemas with titles and descriptions for all languages" do
-      schema = service.fields_to_json_schema_multiloc(Tenant.current, fields)
+      schema = service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
       expect(schema['en'][:properties]['field1'][:title]).to eq title_multiloc['en']
       expect(schema['nl-NL'][:properties]['field1'][:title]).to eq title_multiloc['nl-NL']
       expect(schema['en'][:properties]['field1'][:description]).to eq description_multiloc['en']
