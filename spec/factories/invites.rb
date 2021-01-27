@@ -5,10 +5,6 @@ FactoryBot.define do
 
     transient do
       email { nil }
-      # sequence(:email) do |n|
-      #   name, domain = Faker::Internet.email.split('@')
-      #   "#{name}#{n}@#{domain}"
-      # end
     end
 
     after(:create) do |invite, evaluator|
