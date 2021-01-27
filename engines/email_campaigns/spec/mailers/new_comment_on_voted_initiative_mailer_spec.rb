@@ -43,7 +43,7 @@ RSpec.describe EmailCampaigns::NewCommentOnVotedInitiativeMailer, type: :mailer 
 
     it 'assigns home url' do
       expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(tenant: Tenant.current, locale: 'en'))
+        .to match(Frontend::UrlService.new.home_url(configuration: AppConfiguration.instance, locale: 'en'))
     end
   end
 end
