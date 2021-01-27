@@ -29,7 +29,7 @@ RSpec.describe EmailCampaigns::Schedulable, type: :model do
   end
 
   describe "schedule" do
-    it "is always stored with the start_time in the tenant timezone" do
+    it "is always stored with the start_time in the configured timezone" do
       @schedule.start_time = Time.find_zone('US/Arizona').local(2018,8,13,10)
       @campaign.ic_schedule=@schedule
       @campaign.save
