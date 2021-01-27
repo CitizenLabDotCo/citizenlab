@@ -254,6 +254,24 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const StyledA = styled.a`
+  color: ${colors.label};
+  font-weight: 400;
+  font-size: ${fontSizes.small}px;
+  line-height: 21px;
+  text-decoration: none;
+  hyphens: auto;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+`;
+
 const Right = styled.div`
   display: flex;
   align-items: center;
@@ -430,17 +448,42 @@ class PlatformFooter extends PureComponent<Props, State> {
     eventEmitter.emit('openConsentManager');
   };
 
-  getLinkTo = (slug: TLegalPage) => () => {
+  getHasCustomizedA11yFooterLink = () => {
     const { tenant } = this.props;
-    if (
-      // Hard-coded Hillerod customization
-      !isNilOrError(tenant) &&
-      tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240' &&
-      slug === 'accessibility-statement'
-    ) {
+    if (!isNilOrError(tenant)) {
+      if (
+        // Hillerod
+        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240' ||
+        // Linz
+        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
+      ) {
+        return true;
+      }
     }
 
-    return `/pages/${slug}`;
+    return false;
+  };
+
+  getCustomizedA11yHref = () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant)) {
+      if (
+        // Hillerod
+        tenant.id === '6964ee76-97bb-4106-8be0-cfba7a027240'
+      ) {
+        return '';
+      }
+
+      if (
+        // Linz
+        tenant.id === '7413b333-a14a-4a3a-a037-da6ac4caf440'
+      ) {
+        return '';
+      }
+    }
+
+    return null;
   };
 
   render() {
@@ -544,27 +587,52 @@ class PlatformFooter extends PureComponent<Props, State> {
         >
           <PagesNav>
             <PagesNavList>
-              {LEGAL_PAGES.map((slug: TLegalPage, index) => (
-                <React.Fragment key={slug}>
-                  <PagesNavListItem>
-                    <StyledLink
-                      to={this.getLinkTo(slug)()}
-                      className={index === 0 ? 'first' : ''}
-                    >
-                      <FormattedMessage
-                        {...{
-                          information: messages.information,
-                          'terms-and-conditions': messages.termsAndConditions,
-                          'privacy-policy': messages.privacyPolicy,
-                          'cookie-policy': messages.cookiePolicy,
-                          'accessibility-statement':
-                            messages.accessibilityStatement,
-                        }[slug]}
-                      />
-                    </StyledLink>
-                  </PagesNavListItem>
-                </React.Fragment>
-              ))}
+              {LEGAL_PAGES.map((slug: TLegalPage, index) => {
+                const hasCustomizedA11yFooterLink = this.getHasCustomizedA11yFooterLink();
+                const customizedA11yHref = this.getCustomizedA11yHref();
+
+                return (
+                  <React.Fragment key={slug}>
+                    <PagesNavListItem>
+                      {hasCustomizedA11yFooterLink && customizedA11yHref ? (
+                        <StyledA
+                          href={customizedA11yHref}
+                          className={index === 0 ? 'first' : ''}
+                        >
+                          <FormattedMessage
+                            {...{
+                              information: messages.information,
+                              'terms-and-conditions':
+                                messages.termsAndConditions,
+                              'privacy-policy': messages.privacyPolicy,
+                              'cookie-policy': messages.cookiePolicy,
+                              'accessibility-statement':
+                                messages.accessibilityStatement,
+                            }[slug]}
+                          />
+                        </StyledA>
+                      ) : (
+                        <StyledLink
+                          to={`/pages/${slug}`}
+                          className={index === 0 ? 'first' : ''}
+                        >
+                          <FormattedMessage
+                            {...{
+                              information: messages.information,
+                              'terms-and-conditions':
+                                messages.termsAndConditions,
+                              'privacy-policy': messages.privacyPolicy,
+                              'cookie-policy': messages.cookiePolicy,
+                              'accessibility-statement':
+                                messages.accessibilityStatement,
+                            }[slug]}
+                          />
+                        </StyledLink>
+                      )}
+                    </PagesNavListItem>
+                  </React.Fragment>
+                );
+              })}
               <PagesNavListItem>
                 <StyledButton onClick={this.openConsentManager}>
                   <FormattedMessage {...messages.cookieSettings} />
