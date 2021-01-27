@@ -20,8 +20,8 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     @custom_fields = IdeaCustomFieldService.new.db_and_built_in_fields(@custom_form)
 
     service = CustomFieldService.new
-    json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, @custom_fields)
-    ui_schema_multiloc = service.fields_to_ui_schema_multiloc(Tenant.current, @custom_fields)
+    json_schema_multiloc = service.fields_to_json_schema_multiloc(AppConfiguration.instance, @custom_fields)
+    ui_schema_multiloc = service.fields_to_ui_schema_multiloc(AppConfiguration.instance, @custom_fields)
 
     render json: {json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc}
   end

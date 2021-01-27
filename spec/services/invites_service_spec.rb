@@ -4,9 +4,9 @@ describe InvitesService do
   let(:service) { InvitesService.new }
 
   before do
-    settings = Tenant.current.settings
+    settings = AppConfiguration.instance.settings
     settings['core']['locales'] = ['fr','en','nl']
-    Tenant.current.update(settings: settings)
+    AppConfiguration.instance.update(settings: settings)
   end
 
   describe "bulk_create_xlsx" do

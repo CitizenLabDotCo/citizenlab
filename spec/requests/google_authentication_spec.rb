@@ -61,15 +61,15 @@ describe "google authentication" do
         body: lambda { |request| File.new(Rails.root.join("spec/fixtures/female_avatar_2.jpg")) },
       )
 
-    @tenant = Tenant.current
-    settings = @tenant.settings
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
     settings['google_login'] = {
       allowed: true,
       enabled: true,
       client_id: 'fakeclientid',
       client_secret: 'fakeclientsecret'
     }
-    @tenant.save!
+    configuration.save!
     host! 'example.org'
   end
 
