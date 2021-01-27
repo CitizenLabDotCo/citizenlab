@@ -11,7 +11,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Message, Tab } from 'typings';
+import { Message, ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -108,7 +108,7 @@ type Props = {
   messages?: {
     viewPublicResource: Message;
   };
-  tabs?: Tab[];
+  tabs?: ITab[];
 };
 
 type State = {};
@@ -121,7 +121,7 @@ class TabbedResource extends React.PureComponent<
   Props & WithRouterProps,
   State
 > {
-  activeClassForTab = (tab: Tab) => {
+  activeClassForTab = (tab: ITab) => {
     const {
       location: { pathname },
     } = this.props;
