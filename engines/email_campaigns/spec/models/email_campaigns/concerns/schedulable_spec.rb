@@ -8,7 +8,7 @@ RSpec.describe EmailCampaigns::Schedulable, type: :model do
   end
 
   before do
-    @tenant_zone = Tenant.settings('core','timezone')
+    @tenant_zone = AppConfiguration.instance.settings('core','timezone')
     @schedule = IceCube::Schedule.new(Time.find_zone(@tenant_zone).local(2018)) do |s|
       s.add_recurrence_rule(
         IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)

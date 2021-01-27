@@ -12,7 +12,7 @@ module EmailCampaigns
     def filter_campaign_scheduled time:, activity: nil
       # TODO prevent being here when time is nil
       # This happened when triggering comment on your comment notification
-      time = time&.in_time_zone(Tenant.settings('core', 'timezone'))
+      time = time&.in_time_zone(AppConfiguration.instance.settings('core', 'timezone'))
       time && ic_schedule.occurs_between?(time - 30.minutes, time + 30.minutes)
     end
 
@@ -32,7 +32,7 @@ module EmailCampaigns
     # start_time, so we force it to be in the tenant timezone
     def force_schedule_start_in_tenant_timezone
       ics = ic_schedule
-      ics.start_time = ics.start_time.in_time_zone(Tenant.settings('core','timezone'))
+      ics.start_time = ics.start_time.in_time_zone(AppConfiguration.instance.settings('core','timezone'))
       self.ic_schedule = ics
     end
   end
