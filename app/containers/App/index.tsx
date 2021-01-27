@@ -73,7 +73,6 @@ import {
 import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -123,7 +122,6 @@ export interface IOpenPostPageModalEvent {
 interface InputProps {}
 
 interface DataProps {
-  tenant: GetTenantChildProps;
   redirectsEnabled: GetFeatureFlagChildProps;
 }
 
@@ -278,6 +276,7 @@ class App extends PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     const {
       authUser,
+      tenant,
       signUpInModalMounted,
       verificationModalMounted,
     } = this.state;
@@ -286,7 +285,7 @@ class App extends PureComponent<Props, State> {
     const isInvitation = endsWith(pathname, '/invite');
 
     if (
-      prevProps.tenant !== this.props.tenant ||
+      prevState.tenant !== tenant ||
       prevProps.location.pathname !== this.props.location.pathname
     ) {
       this.handleCustomRedirect();
@@ -399,14 +398,14 @@ class App extends PureComponent<Props, State> {
 
   handleCustomRedirect() {
     const {
-      tenant,
       redirectsEnabled,
       location: { pathname },
     } = this.props;
+    const { tenant } = this.state;
     const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
-    if (!isNilOrError(tenant) && tenant.attributes.settings.redirects) {
-      const { rules } = tenant.attributes.settings.redirects;
+    if (!isNilOrError(tenant) && tenant.data.attributes.settings.redirects) {
+      const { rules } = tenant.data.attributes.settings.redirects;
 
       if (redirectsEnabled) {
         rules.forEach((rule) => {
@@ -588,7 +587,6 @@ class App extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
 });
 
