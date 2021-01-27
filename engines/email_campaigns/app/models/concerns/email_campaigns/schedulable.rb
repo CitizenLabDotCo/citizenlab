@@ -6,7 +6,7 @@ module EmailCampaigns
       validates :schedule, presence: true
 
       before_send :filter_campaign_scheduled
-      before_validation :force_schedule_start_in_tenant_timezone
+      before_validation :force_schedule_start_in_config_timezone
     end
 
     def filter_campaign_scheduled time:, activity: nil
@@ -29,8 +29,8 @@ module EmailCampaigns
     end
 
     # Ice cube assumes all rules are expressed in the same timezone as the
-    # start_time, so we force it to be in the tenant timezone
-    def force_schedule_start_in_tenant_timezone
+    # start_time, so we force it to be in the timezone from settings.
+    def force_schedule_start_in_config_timezone
       ics = ic_schedule
       ics.start_time = ics.start_time.in_time_zone(AppConfiguration.instance.settings('core','timezone'))
       self.ic_schedule = ics
