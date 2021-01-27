@@ -1,4 +1,6 @@
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import Tab from './admin/components/Tab';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -9,6 +11,9 @@ const configuration: ModuleConfiguration = {
         container: () => import('./admin/containers/projects/edit/ideaform'),
       },
     ],
+  },
+  outlets: {
+    'app.containers.Admin.projects.edit': (props) => <Tab {...props} />,
   },
 };
 
