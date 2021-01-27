@@ -3,10 +3,10 @@ module EmailCampaigns
     protected
 
     def subject
-      I18n.t('email_campaigns.password_reset.subject', organizationName: organization_name)
+      format_message('subject', values: { organizationName: organization_name })
     end
 
-    def header_title
+    def show_header?
       false
     end
   end

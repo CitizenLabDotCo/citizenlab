@@ -18,7 +18,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
     @users = @users.admin if params[:can_admin].present?
-    
+
     @users = case params[:sort]
       when "created_at"
         @users.order(created_at: :asc)
@@ -102,7 +102,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       SideFxUserService.new.after_create(@user, current_user)
       permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
-        @user, 
+        @user,
         params: fastjson_params(granted_permissions: permissions)
         ).serialized_json, status: :created
     else
@@ -112,13 +112,12 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def update
     permissions_before = Permission.for_user(@user)
-    
+
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
     user_params = user_params.to_h
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
-
     @user.assign_attributes user_params
 
     if user_params.keys.include?('avatar') && user_params['avatar'] == nil
@@ -130,7 +129,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       SideFxUserService.new.after_update(@user, current_user)
       permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
       render json: WebApi::V1::UserSerializer.new(
-        @user, 
+        @user,
         params: fastjson_params(granted_permissions: permissions),
         include: [:granted_permissions, :'granted_permissions.permission_scope']
         ).serialized_json, status: :ok
@@ -152,7 +151,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
-        @user, 
+        @user,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
@@ -183,13 +182,13 @@ class WebApi::V1::UsersController < ::ApplicationController
     published_comments = @user.comments.published
     if !params[:post_type] || params[:post_type] == 'Idea'
       count += policy_scope(
-        published_comments.where(post_type: 'Idea'), 
+        published_comments.where(post_type: 'Idea'),
         policy_scope_class: IdeaCommentPolicy::Scope
         ).count
     end
     if !params[:post_type] || params[:post_type] == 'Initiative'
       count += policy_scope(
-        published_comments.where(post_type: 'Initiative'), 
+        published_comments.where(post_type: 'Initiative'),
         policy_scope_class: InitiativeCommentPolicy::Scope
         ).count
     end
@@ -212,8 +211,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   def mark_custom_field_values_to_clear!
     # We need to explicitly mark which custom field values
     # should be cleared so we can distinguish those from
-    # the custom field value updates cleared out by the 
-    # policy (which should stay like before instead of 
+    # the custom field value updates cleared out by the
+    # policy (which should stay like before instead of
     # being cleared out).
     if current_user&.custom_field_values && params[:user][:custom_field_values]
       (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|

@@ -4,9 +4,9 @@ describe MultilocService do
   let(:service) { MultilocService.new }
 
   before do
-    settings = Tenant.current.settings
+    settings = AppConfiguration.instance.settings
     settings['core']['locales'] = ['fr-FR','en','nl-BE']
-    Tenant.current.update(settings: settings)
+    AppConfiguration.instance.update(settings: settings)
   end
 
   describe "t" do
