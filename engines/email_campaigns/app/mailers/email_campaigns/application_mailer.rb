@@ -169,7 +169,7 @@ module EmailCampaigns
     end
 
     def home_url
-      @home_url ||= url_service.home_url(configuration: app_configuration, locale: locale)
+      @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale)
     end
 
     def logo_url
