@@ -1,5 +1,5 @@
 class TestJob < ApplicationJob
-  perform_retries count: 2
+  perform_retries max: 2
 
   def run
     raise
