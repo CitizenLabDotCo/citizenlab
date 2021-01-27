@@ -131,6 +131,7 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.projects': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -234,6 +235,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       admin: parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.projects': parseModuleRoutes(
+        mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
     },
