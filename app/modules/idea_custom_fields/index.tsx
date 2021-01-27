@@ -4,9 +4,9 @@ import Tab from './admin/components/Tab';
 
 const configuration: ModuleConfiguration = {
   routes: {
-    admin: [
+    'admin.projects': [
       {
-        path: 'projects/:projectId/ideaform',
+        path: '/:locale/admin/projects/:projectId/ideaform',
         name: 'admin projects idea form',
         container: () => import('./admin/containers/projects/edit/ideaform'),
       },
