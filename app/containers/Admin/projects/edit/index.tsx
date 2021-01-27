@@ -71,8 +71,16 @@ interface DataProps {
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
 }
 
+interface TabConfiguration {
+  label: string;
+  url: string;
+  feature?: string;
+  name: string;
+}
+
 interface State {
   backButtonUrl: string | null;
+  tabs: TabConfiguration[];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -85,65 +93,69 @@ export class AdminProjectEdition extends PureComponent<
 
   constructor(props) {
     super(props);
+    const {
+      intl: { formatMessage },
+    } = props;
+
     this.state = {
       backButtonUrl: null,
       tabs: [
         {
           label: formatMessage(messages.generalTab),
-          url: `${baseTabsUrl}/edit`,
+          url: `edit`,
           name: 'general',
         },
         {
           label: formatMessage(messages.descriptionTab),
-          url: `${baseTabsUrl}/description`,
+          url: `description`,
           name: 'description',
         },
         {
           label: formatMessage(messages.ideasTab),
-          url: `${baseTabsUrl}/ideas`,
+          url: `ideas`,
           name: 'ideas',
         },
         {
           label: formatMessage(messages.pollTab),
-          url: `${baseTabsUrl}/poll`,
+          url: `poll`,
           feature: 'polls',
           name: 'poll',
         },
         {
           label: formatMessage(messages.surveyResultsTab),
-          url: `${baseTabsUrl}/survey-results`,
+          url: `survey-results`,
           name: 'survey-results',
         },
         {
           label: formatMessage(messages.ideaFormTab),
-          url: `${baseTabsUrl}/ideaform`,
+          url: `ideaform`,
           feature: 'idea_custom_fields',
           name: 'ideaform',
         },
         {
           label: formatMessage(messages.phasesTab),
-          url: `${baseTabsUrl}/timeline`,
+          url: `timeline`,
           name: 'phases',
         },
         {
           label: formatMessage(messages.topicsTab),
-          url: `${baseTabsUrl}/topics`,
+          url: `topics`,
           name: 'topics',
         },
         {
           label: formatMessage(messages.volunteeringTab),
-          url: `${baseTabsUrl}/volunteering`,
+          url: `volunteering`,
           feature: 'volunteering',
           name: 'volunteering',
         },
         {
           label: formatMessage(messages.eventsTab),
-          url: `${baseTabsUrl}/events`,
+          url: `events`,
           name: 'events',
         },
         {
           label: formatMessage(messages.permissionsTab),
-          url: `${baseTabsUrl}/permissions`,
+          url: `permissions`,
           feature: 'private_projects',
           name: 'permissions',
         },
@@ -169,7 +181,7 @@ export class AdminProjectEdition extends PureComponent<
   getTabs = (projectId: string, project: IProjectData) => {
     const { tabs } = this.state;
     const baseTabsUrl = `/admin/projects/${projectId}`;
-    const { formatMessage } = this.props.intl;
+
     const {
       typeform_enabled,
       surveys_enabled,
@@ -318,7 +330,6 @@ export class AdminProjectEdition extends PureComponent<
     };
 
     const tabNames = tabs.map((tab) => tab.name);
-
     let cleanedTabs = tabs;
 
     tabNames.forEach((tabName) => {
@@ -327,7 +338,10 @@ export class AdminProjectEdition extends PureComponent<
       }
     });
 
-    return cleanedTabs;
+    return cleanedTabs.map((tab) => ({
+      ...tab,
+      url: `${baseTabsUrl}/${tab.url}`,
+    }));
   };
 
   goBack = () => {
