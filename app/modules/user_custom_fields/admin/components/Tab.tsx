@@ -1,13 +1,13 @@
-import { TabProps } from 'containers/Admin/dashboard/components/DashboardTabs';
 import { FC, useEffect } from 'react';
 
 import { InjectedIntlProps } from 'react-intl';
+import { Tab } from 'typings';
 import { injectIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
-  onData: (data: { after?: string; configuration: TabProps }) => void;
+  onData: (data: { after?: string; configuration: Tab }) => void;
 }
 
 const Tab: FC<Props & InjectedIntlProps> = ({

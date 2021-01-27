@@ -1,4 +1,3 @@
-import { TabProps } from 'components/admin/TabbedResource';
 import {
   TSignUpStepConfigurationObject,
   TSignUpSteps,
@@ -21,7 +20,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 import { IUserData } from 'services/users';
-import { FormikSubmitHandler, Multiloc } from 'typings';
+import { FormikSubmitHandler, Multiloc, Tab } from 'typings';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -102,7 +101,7 @@ export type OutletsPropertyMap = {
     onData: (data: { key: string; data: Object }) => void;
   };
   'app.containers.Admin.settings.SettingsPage': {
-    onData: (data: { after?: string; configuration: TabProps }) => void;
+    onData: (data: { after?: string; configuration: Tab }) => void;
   };
 };
 

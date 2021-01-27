@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 // typings
-import { Message } from 'typings';
+import { Message, Tab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -98,14 +98,6 @@ const ChildWrapper = styled.div`
   }
 `;
 
-export type TabProps = {
-  label: string;
-  url: string;
-  active?: boolean;
-  feature?: string;
-  name?: string;
-};
-
 interface Props {
   resource: {
     title: string;
@@ -115,7 +107,7 @@ interface Props {
   messages?: {
     viewPublicResource: Message;
   };
-  tabs?: TabProps[];
+  tabs?: Tab[];
 }
 
 function getRegularExpression(tabUrl: string) {
