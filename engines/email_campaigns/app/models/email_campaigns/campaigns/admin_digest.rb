@@ -19,7 +19,7 @@ module EmailCampaigns
     N_TOP_IDEAS = ENV.fetch('N_ADMIN_WEEKLY_REPORT_IDEAS', 12).to_i
 
     def self.default_schedule
-      tenant_timezone = Time.find_zone(Tenant.settings('core', 'timezone'))
+      tenant_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
 
       IceCube::Schedule.new(tenant_timezone.local(2019)) do |schedule|
         every_monday_at_10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)

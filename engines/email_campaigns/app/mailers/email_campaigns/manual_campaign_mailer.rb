@@ -23,7 +23,7 @@ module EmailCampaigns
       @terms_conditions_url = frontend_service.terms_conditions_url(tenant: tenant)
       @privacy_policy_url = frontend_service.privacy_policy_url(tenant: tenant)
       @host_url = frontend_service.home_url(tenant: tenant)
-      @organization_name = multiloc_service.t(Tenant.settings('core', 'organization_name'), recipient)
+      @organization_name = multiloc_service.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
 
       I18n.with_locale(locale) do
         mail(default_config).tap do |message|
@@ -48,7 +48,7 @@ module EmailCampaigns
       if sender_type == 'author'
         "#{author.first_name} #{author.last_name}"
       elsif sender_type == 'organization'
-        MultilocService.new.t(Tenant.settings('core', 'organization_name'), recipient)
+        MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
       end
     end
 
