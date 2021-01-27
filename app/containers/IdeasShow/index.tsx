@@ -39,7 +39,7 @@ import RightColumnDesktop from './RightColumnDesktop';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import isFieldEnabled from '../../modules/idea_custom_fields/citizen/containers/IdeasShow/isFieldEnabled';
+import isFieldEnabled from './isFieldEnabled';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -60,7 +60,7 @@ import GetPermission, {
 } from 'resources/GetPermission';
 import GetIdeaCustomFieldsSchemas, {
   GetIdeaCustomFieldsSchemasChildProps,
-} from 'modules/idea_custom_fields/resources/GetIdeaCustomFieldsSchemas';
+} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
