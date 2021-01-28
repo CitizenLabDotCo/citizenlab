@@ -33,6 +33,7 @@ de:
       "official_feedback_on_your_initiative": Update zu meinem Vorschlag
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projekt-Moderatorrechte erhalten
+      "project_folder_moderation_rights_received": Project folder moderation rights received
       "project_phase_started": Neue Projekt-Phase
       "project_phase_upcoming": Bevorstehende neue Projektphase
       "status_change_of_commented_idea": Status-Änderung einer Idee, die ich kommentiert habe
@@ -82,6 +83,7 @@ de:
       "official_feedback_on_your_initiative": Update zu Ihrem Vorschlag - alle Nutzer
       "password_reset": Passwort zurücksetzen - alle Benutzer
       "project_moderation_rights_received": Projekt-Moderationsrechte erhalten - Projektleiter
+      "project_folder_moderation_rights_received": Project folder moderation rights received
       "project_phase_started": Neue Projektphase - alle Nutzer
       "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und Projektleiter
       "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle Nutzer
@@ -407,6 +409,21 @@ de:
       title_what_can_you_do_moderator: 'Was können Sie als Projekt-Moderator tun?'
       title_you_became_moderator: 'Sie sind ein Projekt Manager geworden'
       x_ideas: '%{numberOfIdeas} Ideen'
+    project_folder_moderation_rights_received:
+      cta_moderate_project: 'Moderate this folder'
+      message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you a manager of the following projects folder:'
+      no_projects: 'No projects yet'
+      preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a manager of the following projects folder'
+      subject: 'You became a project folder manager on the platform of %{organizationName}'
+      text_design_participatory_process: 'As a folder manager, you can configure how users interact within the projects contained within it. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
+      text_moderate_analyse_input: 'Once the project is launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview in your project manager view will help you understand which ideas got the most upvotes and downvotes.'
+      text_share_project_information: 'In order to increase the quality of the ideas you''re getting, it is key to share sufficient information: add a project description, attach images (incl. sketches and plans), and communicate all related events going on. Remember: good information precedes good participation!'
+      title_design_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
+      title_share_project_information: 'Provide project information'
+      title_what_can_you_do_moderator: 'What can you do as a project folder manager?'
+      title_you_became_moderator: 'You became a manager of a projects folder'
+      x_projects: '%{numberOfProjects} projects'
     password_reset:
       cta_reset_password: 'Setzen Sie ihr Passwort zurück'
       message_you_reset_your_password: 'Du hast eine Passwortrücksetzung für die Beteiligungsplattform von %{organizationName} beantragt. Klicke auf die untere Schaltfläche, um ein neues und sicheres Passwort auszuwählen. Der Link läuft in 1 Stunde ab.'
