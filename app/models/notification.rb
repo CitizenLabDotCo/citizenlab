@@ -13,8 +13,7 @@ class Notification < ApplicationRecord
 
   has_many :activities, as: :item
 
-  scope :unread,  -> {where(read_at: nil)}
-
+  scope :unread, -> {where(read_at: nil)}
 
   def self.classes_for activity
     Dir[File.join(__dir__, 'notifications', '*.rb')].each { |file| require file }
@@ -40,7 +39,6 @@ class Notification < ApplicationRecord
   def policy_class
     NotificationPolicy
   end
-
 
   private
 

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require 'project_folders/monkey_patches/admin_publication_policy'
+require 'project_folders/monkey_patches/user_policy'
 require 'project_folders/monkey_patches/project_policy'
 require 'project_folders/monkey_patches/project_serializer'
-require 'project_folders/monkey_patches/user_policy'
+require 'project_folders/monkey_patches/admin_publication_policy'
+require 'project_folders/monkey_patches/frontend/url_service'
 
 # rubocop:disable Lint/SuppressedException
 begin
@@ -14,6 +15,7 @@ end
 
 module ProjectFolders
   class Engine < ::Rails::Engine
+
     isolate_namespace ProjectFolders
 
     config.generators.api_only = true
@@ -33,14 +35,21 @@ module ProjectFolders
 
     config.after_initialize do
       ::User.prepend(ProjectFolders::UserDecorator)
+      ::Frontend::UrlService.prepend(ProjectFolders::MonkeyPatches::Frontend::UrlService)
+
+      if defined? ::EmailCampaigns
+        ::EmailCampaigns::DeliveryService.add_campaign_types(
+          EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived
+        )
+      end
     end
 
     ActiveSupport.on_load(:action_controller) do
-      ::ProjectPolicy.prepend ProjectFolders::MonkeyPatches::ProjectPolicy
-      ::UserPolicy.prepend ProjectFolders::MonkeyPatches::UserPolicy
-      ::AdminPublicationPolicy.prepend ProjectFolders::MonkeyPatches::AdminPublicationPolicy
-      ::ProjectPolicy::Scope.prepend ProjectFolders::MonkeyPatches::ProjectPolicy::Scope
-      ::WebApi::V1::ProjectSerializer.prepend ProjectFolders::MonkeyPatches::ProjectSerializer
+      ::ProjectPolicy.prepend(ProjectFolders::MonkeyPatches::ProjectPolicy)
+      ::UserPolicy.prepend(ProjectFolders::MonkeyPatches::UserPolicy)
+      ::AdminPublicationPolicy.prepend(ProjectFolders::MonkeyPatches::AdminPublicationPolicy)
+      ::ProjectPolicy::Scope.prepend(ProjectFolders::MonkeyPatches::ProjectPolicy::Scope)
+      ::WebApi::V1::ProjectSerializer.prepend(ProjectFolders::MonkeyPatches::ProjectSerializer)
     end
   end
 end
