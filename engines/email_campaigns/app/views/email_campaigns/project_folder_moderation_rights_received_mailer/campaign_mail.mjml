@@ -12,10 +12,10 @@
         <%= localize_for_recipient(event.project_title_multiloc) %>
       </h2>
       <p style="margin-top: 10px">
-        <% if event.project_ideas_count == 0 %>
+        <% if event.project_folder_projects_count.zero? %>
           <%= format_message("no_ideas") %>
         <% else %>
-          <%= format_message("x_ideas", values: { numberOfIdeas: event.project_ideas_count }) %>
+          <%= format_message("x_ideas", values: { numberOfProjects: event.project_folder_projects_count }) %>
         <% end %>
       </p>
     </mj-text>
@@ -24,12 +24,12 @@
 <mj-section padding="0 0 80px">
   <mj-column>
     <mj-button
-      href="<%= url_service.admin_project_ideas_url(event.project_id) %>"
+      href="<%= event.project_folder_url %>"
       border-radius="5px"
       background-color="#044D6C"
       color="#fff"
       width="100%"
-      padding="0 25px"><%= format_message('cta_moderate_project') %></mj-button>
+      padding="0 25px"><%= format_message('cta_moderate_project_folder') %></mj-button>
   </mj-column>
 </mj-section>
 

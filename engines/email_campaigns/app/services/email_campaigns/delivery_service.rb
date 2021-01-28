@@ -1,6 +1,5 @@
 module EmailCampaigns
   class DeliveryService
-
     CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
@@ -49,11 +48,19 @@ module EmailCampaigns
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
-    ]
+    ].freeze
 
-    def campaign_types
-      CAMPAIGN_CLASSES.map(&:name).uniq
+    class << self
+      def campaign_types
+        @campaign_types ||= CAMPAIGN_CLASSES.map(&:name).uniq
+      end
+
+      def add_campaign_types(*campaign_classes)
+        campaign_types.concat(campaign_classes.map(&:name).uniq)
+      end
     end
+
+    delegate :campaign_types, to: :class
 
     def consentable_campaign_types_for user
       consentable_types = Consentable.consentable_campaign_types(CAMPAIGN_CLASSES, user)
