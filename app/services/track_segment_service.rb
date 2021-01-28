@@ -21,11 +21,9 @@ class TrackSegmentService
       isAdmin: user.admin?,
       isProjectModerator: user.project_moderator?,
       highestRole: user.highest_role,
+      timezone: AppConfiguration.instance.settings('core', 'timezone'),
       **@tracking_service.tenant_properties(tenant)
     }
-    if tenant
-      traits[:timezone] = tenant.settings.dig('core', 'timezone')
-    end
 
     Analytics.identify(
       user_id: user.id,
@@ -35,7 +33,8 @@ class TrackSegmentService
   end
 
   def identify_tenant(tenant)
-    return unless Analytics
+    return unless Analytics && tenant
+
     traits = {
       name: tenant.name,
       website: "https://#{tenant.host}",
@@ -68,6 +67,8 @@ class TrackSegmentService
     Analytics.track(event)
   end
 
+  private
+
   def integrations(user)
     {
       All: true,
@@ -75,8 +76,6 @@ class TrackSegmentService
       SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
     }
   end
-
-  private
 
   def event_from_activity(activity)
     event = {
