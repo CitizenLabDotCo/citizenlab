@@ -151,10 +151,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     return height;
   };
 
-  noIdeasWithLocationMessage = (
-    <FormattedMessage {...messages.noIdeasWithLocation} />
-  );
-
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const {
@@ -163,15 +159,19 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
       selectedLatLng: selectedPosition,
     } = this.state;
     const mapHeight = this.getMapHeight();
+    const projectId =
+      projectIds && projectIds.length === 1 ? projectIds[0] : null;
 
     return (
       <Container className={className}>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 && (
-          <StyledWarning text={this.noIdeasWithLocationMessage} />
+          <StyledWarning
+            text={<FormattedMessage {...messages.nothingOnMapWarning} />}
+          />
         )}
 
         <ScreenReaderOnly>
-          <FormattedMessage {...messages.mapTitle} />
+          <FormattedMessage {...messages.a11y_mapTitle} />
         </ScreenReaderOnly>
 
         <Map
@@ -189,13 +189,13 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           }
         />
 
-        {projectIds && projectIds.length === 1 && (
+        {projectId && (
           <IdeaButtonWrapper
             className="create-idea-wrapper"
             ref={this.setIdeaButtonRef}
           >
             <IdeaButton
-              projectId={projectIds[0]}
+              projectId={projectId}
               phaseId={phaseId || undefined}
               participationContextType={phaseId ? 'phase' : 'project'}
               latLng={selectedPosition}

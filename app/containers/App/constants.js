@@ -1,15 +1,10 @@
 'use strict';
 exports.__esModule = true;
-exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGraphqlLocalePairs = exports.appLocalePairs = exports.graphqlLocales = exports.locales = exports.DEFAULT_LOCALE = exports.GRAPHQL_PORT = exports.GRAPHQL_HOST = exports.API_PORT = exports.API_HOST = exports.CL_SEGMENT_API_KEY = exports.CL_GA_TRACKER_NAME = exports.CL_GA_TRACKING_ID = exports.GOOGLE_MAPS_API_KEY = exports.ADMIN_TEMPLATES_GRAPHQL_PATH = exports.API_PATH = exports.AUTH_PATH = void 0;
+exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGraphqlLocalePairs = exports.appLocalePairs = exports.graphqlLocales = exports.locales = exports.DEFAULT_LOCALE = exports.GRAPHQL_PORT = exports.GRAPHQL_HOST = exports.API_PORT = exports.API_HOST = exports.GOOGLE_MAPS_API_KEY = exports.ADMIN_TEMPLATES_GRAPHQL_PATH = exports.API_PATH = exports.AUTH_PATH = void 0;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
 exports.ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 exports.GOOGLE_MAPS_API_KEY = '***REMOVED***';
-exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
-exports.CL_GA_TRACKER_NAME = 'CitizenLab2';
-exports.CL_SEGMENT_API_KEY =
-  process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
-exports.INTERCOM_APP_ID = process.env.INTERCOM_APP_ID || 'p4lr69wg';
 exports.API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);

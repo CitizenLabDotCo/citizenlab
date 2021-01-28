@@ -3,8 +3,8 @@ describe('Locale switcher', () => {
     cy.goToLandingPage();
   });
 
-  it('shows the en-GB version of the page by default', () => {
-    cy.location('pathname').should('eq', '/en-GB/');
+  it('shows the en version of the page by default', () => {
+    cy.location('pathname').should('eq', '/en/');
     cy.get('#e2e-navbar-login-menu-item').contains('Log in');
   });
 
@@ -21,7 +21,7 @@ describe('Locale switcher', () => {
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.goToLandingPage();
     cy.location('pathname').should('eq', '/nl-BE/');
-    cy.visit('/en-GB/');
+    cy.visit('/en/');
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.get('#e2e-navbar-login-menu-item').contains('Inloggen');
   });
@@ -31,23 +31,23 @@ describe('Locale switcher', () => {
     cy.get('.e2e-langage-nl-BE').click();
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.login('admin@citizenlab.co', 'democracy2.0');
-    cy.location('pathname').should('eq', '/en-GB/');
+    cy.location('pathname').should('eq', '/en/');
   });
 
   it('keeps users locale', () => {
     cy.login('admin@citizenlab.co', 'democracy2.0');
-    cy.location('pathname').should('eq', '/en-GB/');
+    cy.location('pathname').should('eq', '/en/');
     cy.visit('/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak');
     cy.location('pathname').should(
       'eq',
-      '/en-GB/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
+      '/en/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
     );
     cy.visit(
       '/fr/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
     );
     cy.location('pathname').should(
       'eq',
-      '/en-GB/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
+      '/en/projects/omgevingsanalyse-meerjarenplan-een-gefaseerde-aanpak'
     );
   });
 });

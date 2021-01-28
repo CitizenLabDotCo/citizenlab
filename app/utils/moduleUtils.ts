@@ -10,7 +10,8 @@ import {
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-
+import { IUpdatedProjectProperties, IProjectData } from 'services/projects';
+import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { mergeWith, castArray } from 'lodash-es';
 
 import { FunctionComponent } from 'react';
@@ -18,7 +19,6 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
-import { IProjectData } from 'services/projects';
 import { IUserData } from 'services/users';
 import { FormikSubmitHandler, Multiloc, ITab } from 'typings';
 
@@ -33,10 +33,16 @@ export type OutletsPropertyMap = {
     localize: Localize;
   };
   'app.containers.Navbar.projectsAndFolders.title': {};
-  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
+  'app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow': {
     publication: IAdminPublicationContent;
   };
   'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
+  'app.components.AdminPage.projects.form.additionalInputs.inputs': {
+    projectAttrs: IUpdatedProjectProperties;
+    onChange: onProjectFormStateChange;
+    authUser: IUserData;
+  };
+  'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
   'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;

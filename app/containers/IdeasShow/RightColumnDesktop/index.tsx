@@ -1,8 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { IParticipationContextType } from 'typings';
-
-// hooks
-import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import MetaInformation from '../MetaInformation';
@@ -11,30 +8,19 @@ import ParticipatoryBudgetingCTABox from '../CTABox/ParticipatoryBudgetingCTABox
 import Buttons from '../CTABox/Buttons';
 
 // styling
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import {
   rightColumnWidthDesktop,
   rightColumnWidthTablet,
 } from '../styleConstants';
 
-const Container = styled.div<{ isSticky: boolean; insideModal: boolean }>`
+const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
   width: ${rightColumnWidthDesktop}px;
-
-  ${({ isSticky, insideModal }) => {
-    const top = insideModal ? '30px' : '110px';
-
-    if (isSticky) {
-      return css`
-        position: sticky;
-        top: ${top};
-        align-self: flex-start;
-      `;
-    }
-
-    return;
-  }}
+  position: sticky;
+  top: ${(props) => (props.insideModal ? '30px' : '110px')};
+  align-self: flex-start;
 
   ${media.tablet`
     flex: 0 0 ${rightColumnWidthTablet}px;
@@ -95,24 +81,9 @@ const RightColumnDesktop = ({
   budgetingDescriptor,
   insideModal,
 }: Props) => {
-  const { windowHeight } = useWindowSize();
-  const [isSticky, setIsSticky] = useState(true);
-
-  const callBackRef = useCallback((domNode) => {
-    if (domNode) {
-      setTimeout(() => {
-        const elementDimensions = domNode.getBoundingClientRect();
-
-        if (elementDimensions?.height > windowHeight - 120) {
-          setIsSticky(false);
-        }
-      }, 1000);
-    }
-  }, []);
-
   return (
-    <Container isSticky={isSticky} insideModal={insideModal}>
-      <InnerContainer ref={callBackRef}>
+    <Container insideModal={insideModal}>
+      <InnerContainer>
         {showVoteControl && (
           <StyledVotingCTABox ideaId={ideaId} projectId={projectId} />
         )}

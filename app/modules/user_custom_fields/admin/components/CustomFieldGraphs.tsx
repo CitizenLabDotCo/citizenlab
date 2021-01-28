@@ -196,7 +196,7 @@ export class CustomFieldsComparison extends React.PureComponent<
       res.push({
         total: totalSerie.series.users['outside'] || 0,
         participants: participantSerie.series.users['outside'] || 0,
-        name: formatMessage(messages.outsideArea),
+        name: formatMessage(messages.otherArea),
         code: 'outside',
       });
 

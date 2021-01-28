@@ -474,8 +474,6 @@ class PBExpenses extends PureComponent<
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
                   icon="submit"
-                  iconAriaHidden
-                  iconPos="right"
                   bgColor={colors.adminTextColor}
                   disabled={
                     validationStatus === 'validationSuccess' ||

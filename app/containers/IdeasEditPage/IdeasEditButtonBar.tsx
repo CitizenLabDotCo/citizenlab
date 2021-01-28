@@ -42,7 +42,7 @@ const ButtonBarInner = styled.div`
 
 interface Props {
   form?: string;
-  id?: string;
+  elementId?: string;
 }
 
 interface GlobalState {
@@ -88,27 +88,34 @@ export default class IdeasEditButtonBar extends PureComponent<Props, State> {
     eventEmitter.emit('IdeaFormSubmitEvent');
   };
 
-  render() {
-    const { processing, fileOrImageError, submitError } = this.state;
-    const { id } = this.props;
-    let { form } = this.props;
-    const submitErrorMessage = submitError ? (
-      <FormattedMessage {...messages.submitError} />
-    ) : fileOrImageError ? (
-      <FormattedMessage {...messages.fileOrImageError} />
-    ) : null;
+  getSubmitErrorMessage = () => {
+    const { fileOrImageError, submitError } = this.state;
 
+    if (submitError) {
+      return <FormattedMessage {...messages.submitError} />;
+    } else if (fileOrImageError) {
+      return <FormattedMessage {...messages.fileUploadError} />;
+    }
+
+    return null;
+  };
+
+  render() {
+    const { processing } = this.state;
+    const { elementId } = this.props;
+    let { form } = this.props;
+    const submitErrorMessage = this.getSubmitErrorMessage();
     form = form || '';
 
     return (
       <ButtonBar>
         <ButtonBarInner>
           <Button
-            id={id}
+            id={elementId}
             form={form}
             className="e2e-submit-idea-form"
             processing={processing}
-            text={<FormattedMessage {...messages.submit} />}
+            text={<FormattedMessage {...messages.editedPostSave} />}
             onClick={this.handleOnSubmitButtonClick}
           />
           {submitErrorMessage && (

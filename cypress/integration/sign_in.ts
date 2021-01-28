@@ -33,7 +33,7 @@ describe('Sign in page', () => {
 
   it('has a working link to the password recovery page', () => {
     cy.get('.e2e-password-recovery-link').click();
-    cy.location('pathname').should('eq', '/en-GB/password-recovery');
+    cy.location('pathname').should('eq', '/en/password-recovery');
   });
 
   it('has a working link to the sign up flow', () => {

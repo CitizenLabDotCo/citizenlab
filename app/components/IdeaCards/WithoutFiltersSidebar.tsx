@@ -7,7 +7,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard/Compact';
 import IdeasMap from 'components/IdeasMap';
 import { Icon, Spinner } from 'cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
@@ -96,6 +96,12 @@ const FiltersArea = styled.div`
     `}
   }
 
+  ${media.biggerThanMinTablet`
+    &.mapView {
+      margin-top: -65px;
+    }
+  `}
+
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
@@ -170,8 +176,8 @@ const StyledSearchInput = styled(SearchInput)`
 `;
 
 const IdeasList = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
+  margin-left: -12px;
+  margin-right: -12px;
   display: flex;
   flex-wrap: wrap;
 
@@ -182,13 +188,8 @@ const IdeasList = styled.div`
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(100% * (1 / 3) - 26px);
-  margin-left: 13px;
-  margin-right: 13px;
-
-  ${media.smallerThanMaxTablet`
-    width: calc(100% * (1/2) - 26px);
-  `};
+  width: calc(50% - 20px);
+  margin: 10px;
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -345,9 +346,6 @@ class WithoutFiltersSidebar extends PureComponent<
     return true;
   };
 
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
-
   render() {
     const { selectedView } = this.state;
     const {
@@ -371,13 +369,28 @@ class WithoutFiltersSidebar extends PureComponent<
     const showListView =
       !locationEnabled || (locationEnabled && selectedView === 'card');
     const showMapView = locationEnabled && selectedView === 'map';
-    const smallerThanSmallTablet =
-      windowSize && windowSize <= viewportWidths.smallTablet;
-    const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.largeTablet;
+    const smallerThanBigTablet = !!(
+      windowSize && windowSize <= viewportWidths.largeTablet
+    );
+    const smallerThanSmallTablet = !!(
+      windowSize && windowSize <= viewportWidths.smallTablet
+    );
+    const biggerThanSmallTablet = !!(
+      windowSize && windowSize >= viewportWidths.smallTablet
+    );
+    const biggerThanLargeTablet = !!(
+      windowSize && windowSize >= viewportWidths.largeTablet
+    );
+    const smallerThan1100px = !!(windowSize && windowSize <= 1100);
+    const smallerThanPhone = !!(
+      windowSize && windowSize <= viewportWidths.phone
+    );
 
     return (
-      <Container id="e2e-ideas-container" className={className}>
+      <Container
+        id="e2e-ideas-container"
+        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
+      >
         <FiltersArea
           id="e2e-ideas-filters"
           className={`${showMapView ? 'mapView' : 'listView'}`}
@@ -447,6 +460,14 @@ class WithoutFiltersSidebar extends PureComponent<
                         participationMethod={participationMethod}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
+                        hideImage={
+                          smallerThanBigTablet && biggerThanSmallTablet
+                        }
+                        hideImagePlaceholder={smallerThanBigTablet}
+                        hideIdeaStatus={
+                          (biggerThanLargeTablet && smallerThan1100px) ||
+                          smallerThanPhone
+                        }
                       />
                     ))}
                   </IdeasList>
@@ -455,7 +476,7 @@ class WithoutFiltersSidebar extends PureComponent<
                     <IdeaIcon ariaHidden name="idea" />
                     <EmptyMessage>
                       <EmptyMessageLine>
-                        <FormattedMessage {...messages.noFilteredIdeas} />
+                        <FormattedMessage {...messages.noFilteredResults} />
                       </EmptyMessageLine>
                     </EmptyMessage>
                   </EmptyContainer>
@@ -500,7 +521,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ideas: ({ render, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
-      pageSize={12}
+      pageSize={24}
       sort={
         getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
       }
