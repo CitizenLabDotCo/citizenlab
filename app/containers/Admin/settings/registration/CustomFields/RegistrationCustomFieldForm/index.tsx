@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { IUserCustomFieldInputType } from 'services/userCustomFields';
-import FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSelect from 'components/UI/FormikSelect';
@@ -102,9 +102,7 @@ class RegistrationCustomFieldForm extends React.Component<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={
-                FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher
-              }
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={formatMessage(messages.fieldName)}
               disabled={builtInField}
             />
