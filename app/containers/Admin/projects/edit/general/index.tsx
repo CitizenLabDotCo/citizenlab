@@ -13,7 +13,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import InputMultiloc from 'components/UI/InputMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import { Radio, IconTooltip, Input } from 'cl2-component-library';
@@ -89,7 +89,7 @@ const StyledForm = styled.form`
   width: 500px;
 `;
 
-const StyledInputMultiloc = styled(InputMultiloc)`
+const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
   width: 497px;
 `;
 
