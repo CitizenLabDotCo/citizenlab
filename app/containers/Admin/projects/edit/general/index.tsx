@@ -225,7 +225,7 @@ class AdminProjectEditGeneral extends PureComponent<
       projectImagesToRemove: [],
       projectFiles: [],
       projectFilesToRemove: [],
-      noTitleError: null,
+      titleError: null,
       apiErrors: {},
       saved: false,
       areas: [],
@@ -449,10 +449,10 @@ class AdminProjectEditGeneral extends PureComponent<
   }
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc, locale: Locale) => {
-    this.setState(({ noTitleError, projectAttributesDiff }) => ({
+    this.setState(({ titleError, projectAttributesDiff }) => ({
       submitState: 'enabled',
-      noTitleError: {
-        ...noTitleError,
+      titleError: {
+        ...titleError,
         [locale]: null,
       },
       projectAttributesDiff: {
@@ -629,14 +629,14 @@ class AdminProjectEditGeneral extends PureComponent<
       ...(project ? project.data.attributes : {}),
       ...projectAttributesDiff,
     } as IUpdatedProjectProperties;
-    const noTitleError = {} as Multiloc;
+    const titleError = {} as Multiloc;
 
     if (currentTenantLocales) {
       currentTenantLocales.forEach((currentTenantLocale) => {
         const title = get(projectAttrs.title_multiloc, currentTenantLocale);
 
         if (isEmpty(title)) {
-          noTitleError[currentTenantLocale] = formatMessage(
+          titleError[currentTenantLocale] = formatMessage(
             messages.noTitleErrorMessage
           );
           hasErrors = true;
@@ -645,8 +645,7 @@ class AdminProjectEditGeneral extends PureComponent<
     }
 
     this.setState({
-      noTitleError:
-        !noTitleError || isEmpty(noTitleError) ? null : noTitleError,
+      titleError: !titleError || isEmpty(titleError) ? null : titleError,
     });
 
     return !hasErrors;
@@ -770,7 +769,7 @@ class AdminProjectEditGeneral extends PureComponent<
     const {
       publicationStatus,
       projectType,
-      noTitleError,
+      titleError,
       project,
       projectHeaderImage,
       projectImages,
@@ -884,7 +883,7 @@ class AdminProjectEditGeneral extends PureComponent<
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
                 onChange={this.handleTitleMultilocOnChange}
-                errorMultiloc={noTitleError}
+                errorMultiloc={titleError}
               />
               <Error
                 fieldName="title_multiloc"
