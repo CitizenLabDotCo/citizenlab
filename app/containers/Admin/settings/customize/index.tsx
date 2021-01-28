@@ -17,7 +17,7 @@ import {
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
 
 // resources
@@ -637,7 +637,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SubSectionTitle>
 
             <WideSectionField>
-              <QuillMultiloc
+              <QuillMultilocWithLocaleSwitcher
                 id="custom-section"
                 label={this.customSectionLabel}
                 labelTooltipText={formatMessage(messages.customSectionInfo)}

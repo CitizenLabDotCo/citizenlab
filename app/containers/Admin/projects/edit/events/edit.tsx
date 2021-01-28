@@ -9,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -336,7 +336,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField className="fullWidth">
-                <QuillMultiloc
+                <QuillMultilocWithLocaleSwitcher
                   id="description"
                   label={this.descriptionLabel}
                   valueMultiloc={eventAttrs.description_multiloc}
