@@ -13,6 +13,10 @@ module EmailCampaigns
       users_scope.where(id: activity.item.id)
     end
 
+    def mailer_class
+      PasswordResetMailer
+    end
+
     def generate_commands recipient:, activity: 
       [{
         event_payload: {

@@ -24,15 +24,19 @@ class IdeaPolicy < ApplicationPolicy
   def index_xlsx?
     user&.admin?
   end
+  
+  def index_mini?
+    user&.admin?
+  end
 
   def create?
-    pcs = ParticipationContextService.new 
+    pcs = ParticipationContextService.new
     record.draft? ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
       user&.active? &&
       record.author_id == user.id &&
-      !pcs.posting_disabled_reason_for_project(record.project, user) &&
+      !pcs.posting_idea_disabled_reason_for_project(record.project, user) &&
       ProjectPolicy.new(user, record.project).show?
     )
   end
@@ -54,7 +58,14 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    pcs_posting_reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
+    record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
+      (
+        user&.active? &&
+        record.author_id == user.id &&
+        (pcs_posting_reason.nil? || pcs_posting_reason == 'posting_disabled') &&
+        ProjectPolicy.new(user, record.project).show?
+      )
   end
 
   def destroy?
@@ -67,6 +78,7 @@ class IdeaPolicy < ApplicationPolicy
       :project_id,
       :author_id,
       :location_description,
+      :proposed_budget,
       location_point_geojson: [:type, coordinates: []],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       body_multiloc: CL2_SUPPORTED_LOCALES,

@@ -25,9 +25,8 @@ class ResetPasswordService
   end
 
   def log_password_reset_to_segment user, token
-    IdentifyToSegmentJob.perform_later(user)
     LogActivityJob.set(wait: 2.seconds).perform_later(
-      user, 'requested_password_reset', user, Time.now.to_i, 
+      user, 'requested_password_reset', user, Time.now.to_i,
       payload: {token: token}
       )
   end

@@ -20,7 +20,18 @@ class CommentVotePolicy < ApplicationPolicy
   end
 
   def create?
-    (user&.active? && (record.user_id == user.id) && !ParticipationContextService.new.voting_disabled_reason_for_comment(record.votable, user))
+    if user&.active? && (record.user_id == user.id) 
+      case record.votable&.post_type
+      when Idea.name
+        !ParticipationContextService.new.voting_disabled_reason_for_idea_comment record.votable, user
+      when Initiative.name
+        !PermissionsService.new.voting_disabled_reason_for_initiative_comment user
+      else
+        false
+      end
+    else 
+      false
+    end
   end
 
   def show?

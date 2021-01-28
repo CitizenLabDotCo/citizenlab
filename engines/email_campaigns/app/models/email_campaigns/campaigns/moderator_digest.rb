@@ -14,6 +14,9 @@ module EmailCampaigns
 
     N_TOP_IDEAS = ENV.fetch("N_MODERATOR_DIGEST_IDEAS", 12).to_i
 
+    def mailer_class
+      ModeratorDigestMailer
+    end
 
     def self.default_schedule
       IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|
@@ -32,11 +35,12 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.map do |project_id|
         project = Project.find project_id
         statistics = statistics project
         if has_nonzero_statistics statistics
-          top_ideas = top_ideas project
+          top_ideas = top_ideas project, name_service
           idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
           {
             event_payload: {
@@ -98,7 +102,7 @@ module EmailCampaigns
             increase: participants_increase,
             past_increase: participants_past_increase
           },
-          total_participants: ps.projects_participants([project]).size
+          total_participants: ps.project_participants(project).size
         }
       }
     end
@@ -128,7 +132,8 @@ module EmailCampaigns
       }
     end
 
-    def top_ideas project
+    # @param [UserDisplayNameService] name_service
+    def top_ideas project, name_service
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
       top_ideas = top_ideas.all.select do |idea|
@@ -145,7 +150,7 @@ module EmailCampaigns
           title_multiloc: idea.title_multiloc,
           url: Frontend::UrlService.new.model_to_url(idea),
           published_at: idea.published_at.iso8601,
-          author_name: idea.author_name,
+          author_name: name_service.display_name!(idea.author),
           upvotes_count: idea.upvotes_count,
           upvotes_increment: new_votes.where(mode: 'up').count,
           downvotes_count: idea.downvotes_count,

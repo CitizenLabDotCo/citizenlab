@@ -115,13 +115,13 @@ module AdminApi
     end
 
     def project_folder args
-      ProjectFolder.find(args[:id])
+      ProjectFolders::Folder.find(args[:id])
     end
 
     field :public_project_folders , Types::ProjectFolderType.connection_type, null:false
 
     def public_project_folders
-      ::ProjectFolderPolicy::Scope.new(nil, ProjectFolder).resolve.includes(:admin_publication)
+      ::ProjectFolders::FolderPolicy::Scope.new(nil, ::ProjectFolders::Folder).resolve.includes(:admin_publication)
     end
 
     field :idea, Types::IdeaType, null: false do

@@ -41,7 +41,9 @@ group :development, :test do
 end
 
 group :development do
+  gem 'bullet'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'pry'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -60,19 +62,16 @@ end
 gem "pundit", "~> 2.0"
 gem "active_model_serializers", "~> 0.10.8"
 
-# Fork was made for the following reasons:
-# 1) To update the version of jws which is required for
-#    the google omniauth gem.
-# 2) To not auto load Generators::Base which would result
-#    in an error.
-gem "knock", github: 'CitizenLabDotCo/knock'
-gem "sidekiq" # , "~> 5.0.5"
+# See https://github.com/nsarno/knock/issues/250
+# Installs v2.2 which is not available on rubygems.org
+gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
+gem "sidekiq", "~> 6.1"
 
 gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem "activerecord-import", '~> 1.0'
 gem "activerecord_json_validator", "~> 1.3.0"
 
-# This branch must be used because the latest version (2.1.1) 
+# This branch must be used because the latest version (2.1.1)
 # requires activerecord < 6.0, while activerecord = 6.0.1 is
 # required by Rails 6.0.1.
 gem "apartment", github: 'influitive/apartment', branch: 'development'
@@ -97,7 +96,7 @@ gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
-gem 'simple_segment', '~> 0.3'
+gem 'simple_segment', '~>1.2'
 gem 'okcomputer'
 gem 'sentry-raven'
 gem 'omniauth' # , '~> 1.7.1'
@@ -121,7 +120,11 @@ gem 'faker'
 # and Rails.
 gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 gem 'skylight'
-gem 'mailgun-ruby'
+# Also required here to be able to initialize Mailgun in 
+# e.g. production.rb, which would otherwise result in an 
+# "undefined method 'mailgun_settings=' for ActionMailer::Base:Class" 
+# exception.
+gem 'mailgun-ruby', '~>1.2.0'
 gem 'dalli'
 gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'
@@ -129,18 +132,29 @@ gem 'rails_semantic_logger'
 gem 'bootsnap', require: false
 # For serialization of heterogeneous collections (i.e. notifications), see
 # https://github.com/Netflix/fast_jsonapi/pull/410.
-gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection' 
+gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'
 gem 'rack-attack', '~> 6'
+
+# mjml-rails cannot find the MJML parser when installed
+# through the emails engine and is therefore specified
+# in the main app.
+gem "mjml-rails", "~> 4.4"
+gem 'intercom', '~> 4.1'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
-gem 'machine_translations', path: 'engines/machine_translations'
-gem 'nlp', path: 'engines/nlp'
-gem 'public_api', path: 'engines/public_api'
-gem 'onboarding', path: 'engines/onboarding'
-gem 'surveys', path: 'engines/surveys'
 gem 'frontend', path: 'engines/frontend'
+gem 'machine_translations', path: 'engines/machine_translations'
+gem 'maps', path: 'engines/maps'
+gem 'multi_tenancy', path: 'engines/multi_tenancy'
+gem 'nlp', path: 'engines/nlp'
+gem 'onboarding', path: 'engines/onboarding'
 gem 'polls', path: 'engines/polls'
+gem 'project_folders', path: 'engines/project_folders'
+gem 'public_api', path: 'engines/public_api'
+gem 'surveys', path: 'engines/surveys'
+gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
-gem 'maps', path: 'engines/maps'
+
+

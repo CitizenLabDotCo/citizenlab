@@ -1,4 +1,6 @@
 nl-BE:
+  symbols:
+    outside: ergens anders
   idea_statuses:
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
@@ -113,6 +115,9 @@ nl-BE:
       location:
         title: Locatie
         description:
+      proposed_budget:
+        title: Voorgesteld budget
+        description:
       images:
         title: Afbeeldingen
         description:
@@ -159,6 +164,8 @@ nl-BE:
     custom_field_select:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} is niet %{value}"
+      is_one_of: "%{property} heeft een van de volgende waarden: %{value}"
+      not_is_one_of: "%{property} heeft geen van de volgende waarden: %{value}"
     custom_field_text:
       is: "%{property} is %{value}"
       not_is: "%{property} is niet %{value}"

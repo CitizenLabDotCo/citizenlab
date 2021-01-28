@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe InitiativeVotePolicy do
+  before do
+    PermissionsService.new.update_global_permissions
+  end
 
   subject { InitiativeVotePolicy.new(user, vote) }
   let(:scope) { InitiativeVotePolicy::Scope.new(user, Vote) }

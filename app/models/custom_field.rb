@@ -6,7 +6,7 @@ class CustomField < ApplicationRecord
 
   FIELDABLE_TYPES = %w(User CustomForm)
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
-  CODES = %w(gender birthyear domicile education title body topic_ids location images attachments)
+  CODES = %w(gender birthyear domicile education title body topic_ids location proposed_budget images attachments)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
   validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
@@ -16,6 +16,7 @@ class CustomField < ApplicationRecord
   validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
   validates :enabled, inclusion: {in: [true, false]}
+  validates :hidden, inclusion: {in: [true, false]}
   validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
 
 
@@ -26,6 +27,9 @@ class CustomField < ApplicationRecord
 
   scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
+  scope :disabled, -> { where(enabled: false) }
+  scope :not_hidden, -> { where(hidden: false) }
+  scope :hidden, -> { where(hidden: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
 
@@ -58,9 +62,9 @@ class CustomField < ApplicationRecord
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
       self.description_multiloc,
-      %i{decoration link}
+      %i{decoration link list title}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 end

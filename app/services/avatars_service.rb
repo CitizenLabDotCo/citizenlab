@@ -6,7 +6,7 @@ class AvatarsService
 
   def avatars_for_project project, users: User.active, limit: 5
     Rails.cache.fetch("#{project.cache_key}/avatars", expires_in: 1.day) do
-      participants = @participants_service.projects_participants([project])
+      participants = @participants_service.project_participants(project)
       add_count(users.merge(participants), limit)
     end
   end
@@ -34,7 +34,7 @@ class AvatarsService
     avatars_for_post initiative, 'Initiative', users: users, limit: limit
   end
 
-  def avatars_for_tenant users: User.active, limit: 5
+  def some_avatars users: User.active, limit: 5
     Rails.cache.fetch(users, expires_in: 1.day) do
       add_count(users, limit)
     end

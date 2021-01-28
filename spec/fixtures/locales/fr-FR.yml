@@ -1,4 +1,6 @@
 fr:
+  symbols:
+    outside: quelque part d'autre
   smart_group_rules:
     is_empty: "%{property} n'as pas de value"
     not_is_empty: "%{property} peut avoir n'importe quel value"
@@ -19,6 +21,8 @@ fr:
     custom_field_select:
       has_value: "%{property} est %{value}"
       not_has_value: "%{property} n'est pas %{value}"
+      is_one_of: "%{property} est un de: %{value}"
+      not_is_one_of: "%{property} n'est pas un de: %{value}"
     custom_field_text:
       is: "%{property} est %{value}"
       not_is: "%{property} n'est pas %{value}"

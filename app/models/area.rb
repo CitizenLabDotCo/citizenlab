@@ -1,4 +1,7 @@
 class Area < ApplicationRecord
+  acts_as_list column: :ordering, top_of_list: 0
+  default_scope -> { order(ordering: :asc) }
+
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
   has_many :areas_ideas, dependent: :destroy
@@ -12,6 +15,10 @@ class Area < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
+  validates :ordering, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 0,
+  }, unless: ->(area) { area.ordering.nil? }
 
   private
 
@@ -21,7 +28,7 @@ class Area < ApplicationRecord
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 
@@ -30,5 +37,5 @@ class Area < ApplicationRecord
       self.title_multiloc[key] = value.strip
     end
   end
-  
+
 end

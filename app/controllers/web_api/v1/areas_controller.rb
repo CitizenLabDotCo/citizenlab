@@ -1,13 +1,11 @@
 class WebApi::V1::AreasController < ApplicationController
-  before_action :set_area, only: [:show, :update, :destroy]
+  before_action :set_area, except: %i[index create]
+  before_action :set_side_effects_service, only: %i[create update reorder destroy]
 
   def index
-    @areas = policy_scope(Area)
-      .order(created_at: :desc)
+    @areas = policy_scope(Area).order(created_at: :desc)
+    @areas = @areas.page(params.dig(:page, :number)).per(params.dig(:page, :size))
 
-    @areas = @areas
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
     render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
   end
 
@@ -19,11 +17,11 @@ class WebApi::V1::AreasController < ApplicationController
     @area = Area.new(area_params)
     authorize @area
 
-    SideFxAreaService.new.before_create(@area, current_user)
+    @side_fx_service.before_create(@area, current_user)
     if @area.save
-      SideFxAreaService.new.after_create(@area, current_user)
+      @side_fx_service.after_create(@area, current_user)
       render json: WebApi::V1::AreaSerializer.new(
-        @area, 
+        @area,
         params: fastjson_params
         ).serialized_json, status: :created
     else
@@ -34,11 +32,11 @@ class WebApi::V1::AreasController < ApplicationController
   def update
     @area.assign_attributes area_params
     authorize @area
-    SideFxAreaService.new.before_update(@area, current_user)
+    @side_fx_service.before_update(@area, current_user)
     if @area.save
-      SideFxAreaService.new.after_update(@area, current_user)
+      @side_fx_service.after_update(@area, current_user)
       render json: WebApi::V1::AreaSerializer.new(
-        @area, 
+        @area,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
@@ -47,16 +45,25 @@ class WebApi::V1::AreasController < ApplicationController
   end
 
   def destroy
-    SideFxAreaService.new.before_destroy(@area, current_user)
+    @side_fx_service.before_destroy(@area, current_user)
     area = @area.destroy
     if area.destroyed?
-      SideFxAreaService.new.after_destroy(area, current_user)
+      @side_fx_service.after_destroy(area, current_user)
       head :ok
     else
       head 500
     end
   end
 
+  def reorder
+    @side_fx_service.before_update(@area, current_user)
+    if @area.insert_at(permitted_attributes(@area)[:ordering])
+      @side_fx_service.after_update(@area, current_user)
+      render json: WebApi::V1::AreaSerializer.new(@area.reload, params: fastjson_params).serialized_json, status: :ok
+    else
+      render json: { errors: @area.errors.details }, status: :unprocessable_entity
+    end
+  end
 
   private
 
@@ -67,6 +74,7 @@ class WebApi::V1::AreasController < ApplicationController
 
   def area_params
     params.require(:area).permit(
+      :ordering,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
@@ -74,5 +82,9 @@ class WebApi::V1::AreasController < ApplicationController
 
   def secure_controller?
     false
+  end
+
+  def set_side_effects_service
+    @side_fx_service = SideFxAreaService.new
   end
 end

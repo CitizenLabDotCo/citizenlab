@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Areas" do
- 
+
   explanation "Areas are geographical regions. Each tenant has its own custom set of areas."
 
   before do
@@ -88,7 +88,7 @@ resource "Areas" do
           ordering: 2,
           enabled: true,
           code: 'domicile'
-        ) 
+        )
       end
 
       let(:area) { create(:area) }
@@ -110,6 +110,29 @@ resource "Areas" do
         expect(response_status).to eq 200
         expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
+      end
+    end
+
+    patch "web_api/v1/areas/:id/reorder" do
+      with_options scope: :area do
+        parameter :ordering, "The position, starting from 0, where the area should be at. Publications after will move down.", required: true
+      end
+
+      before do
+        create_list(:area, 4)
+      end
+
+      let(:id) { Area.last.id }
+      let(:ordering) { 1 }
+
+      example "Reorder an Area" do
+        area = Area.find_by(ordering: ordering)
+        do_request
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
+        expect(Area.find_by(ordering: ordering).id).to eq id
+        expect(area.reload.ordering).to eq 2 # previous second is now third
       end
     end
   end

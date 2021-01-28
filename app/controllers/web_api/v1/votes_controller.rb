@@ -154,18 +154,34 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def user_not_authorized exception
+    vote = exception.record
     pcs = ParticipationContextService.new
-    reason = if exception.record.votable.kind_of? Idea
+    ps = PermissionsService.new
+    reason = if vote.votable.kind_of? Idea
       ( 
-        pcs.voting_disabled_reason_for_vote(exception.record, exception.record.user) ||
-        pcs.cancelling_votes_disabled_reason_for_idea(exception.record.votable, exception.record.user)
+        pcs.voting_disabled_reason_for_idea_vote(vote, vote.user) ||
+        pcs.cancelling_votes_disabled_reason_for_idea(vote.votable, vote.user)
       )
-    elsif exception.record.votable.kind_of?(Initiative) && exception.record.mode == 'down'
-      'downvoting_not_supported'
-    elsif exception.record.votable.kind_of? Comment
-      pcs.voting_disabled_reason_for_comment exception.record.votable, exception.record.user
+    elsif vote.votable.kind_of? Initiative
+      if vote.mode == 'down'
+        'downvoting_not_supported'
+      else
+        (
+          ps.voting_initiative_disabled_reason(vote.user) ||
+          ps.cancelling_votes_disabled_reason_for_initiative(vote.user)
+        )
+      end
+    elsif vote.votable.kind_of? Comment
+      case vote.votable.post_type
+      when Idea.name
+        pcs.voting_disabled_reason_for_idea_comment vote.votable, vote.user
+      when Initiative.name
+        ps.voting_disabled_reason_for_initiative_comment vote.user
+      else
+        raise "No voting disabled reasons can be determined for #{vote.votable.post_type} model" 
+      end
     else
-      raise "No voting disabled reasons can be determined for #{exception.record.votable.class} models"
+      raise "No voting disabled reasons can be determined for #{vote.votable_type} model"
     end
     if reason
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized

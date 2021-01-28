@@ -4,7 +4,7 @@ class AdminPublication < ApplicationRecord
   acts_as_nested_set dependent: :destroy, order_column: :ordering
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
 
-  belongs_to :publication, polymorphic: true
+  belongs_to :publication, polymorphic: true, touch: true
 
   validates :publication, presence: true
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
@@ -27,6 +27,14 @@ class AdminPublication < ApplicationRecord
     publication_status == 'draft'
   end
 
+  # Infers the publication types from existing records in the table.
+  #
+  # @return [Array<Class>]
+  def self.publication_types
+    # If we ever need in the future to iterate over all publication types (classes) -- even those that are not yet
+    # represented in the table -- we can complement this with a public method to register new types explicitly.
+    self.distinct.pluck(:publication_type).map(&:constantize)
+  end
 
   private
 

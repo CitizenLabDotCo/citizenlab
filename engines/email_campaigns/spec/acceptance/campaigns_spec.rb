@@ -18,7 +18,7 @@ resource "Campaigns" do
 
     before do
       @campaigns = create_list(:manual_campaign, 3)
-      create_list(:mention_in_comment_campaign, 2)
+      create_list(:official_feedback_on_voted_initiative_campaign, 2)
     end
 
     with_options scope: :page do

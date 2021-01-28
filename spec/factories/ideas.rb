@@ -11,6 +11,7 @@ FactoryBot.define do
     sequence(:slug) {|n| "plant-more-trees-#{n}"}
     publication_status { "published" }
     budget { 750 }
+    proposed_budget { 500 }
     association :project, factory: :continuous_project
     author
     assignee { nil }
@@ -36,6 +37,17 @@ FactoryBot.define do
         evaluator.areas_count.times do |i|
           idea.areas << create(:area)
         end
+      end
+    end
+
+    factory :assigned_idea do
+      transient do
+        assigned_at { Time.now }
+      end
+      after(:create) do |idea, evaluator|
+        assignee = create(:moderator, project: idea.project)
+        idea.assignee = assignee
+        idea.assigned_at = evaluator.assigned_at
       end
     end
   end

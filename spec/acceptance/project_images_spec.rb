@@ -80,6 +80,7 @@ resource "ProjectImage" do
       parameter :image, "The base64 encoded image"
       parameter :ordering, "An integer that is used to order the images within a project"
     end
+
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
     let(:project_id) { @project.id }
     let(:image_id) { ProjectImage.first.id }

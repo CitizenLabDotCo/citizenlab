@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_07_132541) do
+ActiveRecord::Schema.define(version: 2020_12_17_170635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -47,11 +47,24 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
+  create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "host"
+    t.string "logo"
+    t.string "header_bg"
+    t.string "favicon"
+    t.jsonb "settings", default: {}
+    t.jsonb "style", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "description_multiloc", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "ordering"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -110,7 +123,6 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.integer "lft", null: false
     t.integer "rgt", null: false
     t.jsonb "body_multiloc", default: {}
-    t.string "author_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
@@ -157,6 +169,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.uuid "resource_id"
+    t.boolean "hidden", default: false, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -321,6 +334,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "description_multiloc", default: {}
+    t.integer "ideas_count", default: 0
   end
 
   create_table "ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -330,7 +344,6 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.datetime "published_at"
     t.uuid "project_id"
     t.uuid "author_id"
-    t.string "author_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
@@ -345,6 +358,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
     t.datetime "assigned_at"
+    t.integer "proposed_budget"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -357,6 +371,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.uuid "phase_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["idea_id", "phase_id"], name: "index_ideas_phases_on_idea_id_and_phase_id", unique: true
     t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
   end
@@ -427,7 +442,6 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.string "publication_status"
     t.datetime "published_at"
     t.uuid "author_id"
-    t.string "author_name"
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
@@ -508,7 +522,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.string "tile_provider"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_id"], name: "index_maps_map_configs_on_project_id"
+    t.index ["project_id"], name: "index_maps_map_configs_on_project_id", unique: true
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -617,12 +631,12 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
-    t.uuid "permittable_id", null: false
-    t.string "permittable_type", null: false
+    t.uuid "permission_scope_id"
+    t.string "permission_scope_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_permissions_on_action"
-    t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
+    t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
   end
 
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -655,6 +669,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.integer "max_budget"
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
+    t.integer "ideas_count", default: 0, null: false
+    t.string "ideas_order"
+    t.string "input_term", default: "idea"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -709,26 +726,17 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
-  create_table "project_folder_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "project_folders_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_folder_id"
     t.string "file"
     t.string "name"
     t.integer "ordering"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_folder_id"], name: "index_project_folder_files_on_project_folder_id"
+    t.index ["project_folder_id"], name: "index_project_folders_files_on_project_folder_id"
   end
 
-  create_table "project_folder_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "project_folder_id"
-    t.string "image"
-    t.integer "ordering"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_folder_id"], name: "index_project_folder_images_on_project_folder_id"
-  end
-
-  create_table "project_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "project_folders_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.jsonb "description_multiloc"
     t.jsonb "description_preview_multiloc"
@@ -736,7 +744,16 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["slug"], name: "index_project_folders_on_slug"
+    t.index ["slug"], name: "index_project_folders_folders_on_slug"
+  end
+
+  create_table "project_folders_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_folder_id"
+    t.string "image"
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_folder_id"], name: "index_project_folders_images_on_project_folder_id"
   end
 
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -775,6 +792,8 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.boolean "poll_anonymous", default: false, null: false
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
+    t.string "ideas_order"
+    t.string "input_term", default: "idea"
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -826,6 +845,24 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
     t.datetime "updated_at", null: false
     t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
+  end
+
+  create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "assignment_method", default: 0
+    t.uuid "idea_id"
+    t.uuid "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "confidence_score"
+    t.index ["idea_id", "tag_id"], name: "index_tagging_taggings_on_idea_id_and_tag_id", unique: true
+    t.index ["idea_id"], name: "index_tagging_taggings_on_idea_id"
+    t.index ["tag_id"], name: "index_tagging_taggings_on_tag_id"
+  end
+
+  create_table "tagging_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -999,14 +1036,16 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
-  add_foreign_key "project_folder_files", "project_folders"
-  add_foreign_key "project_folder_images", "project_folders"
+  add_foreign_key "project_folders_files", "project_folders_folders", column: "project_folder_id"
+  add_foreign_key "project_folders_images", "project_folders_folders", column: "project_folder_id"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "tagging_taggings", "ideas"
+  add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 
@@ -1028,41 +1067,6 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
              FROM votes
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
-  SQL
-  create_view "union_posts", sql_definition: <<-SQL
-      SELECT ideas.id,
-      ideas.title_multiloc,
-      ideas.body_multiloc,
-      ideas.publication_status,
-      ideas.published_at,
-      ideas.author_id,
-      ideas.author_name,
-      ideas.created_at,
-      ideas.updated_at,
-      ideas.upvotes_count,
-      ideas.location_point,
-      ideas.location_description,
-      ideas.comments_count,
-      ideas.slug,
-      ideas.official_feedbacks_count
-     FROM ideas
-  UNION ALL
-   SELECT initiatives.id,
-      initiatives.title_multiloc,
-      initiatives.body_multiloc,
-      initiatives.publication_status,
-      initiatives.published_at,
-      initiatives.author_id,
-      initiatives.author_name,
-      initiatives.created_at,
-      initiatives.updated_at,
-      initiatives.upvotes_count,
-      initiatives.location_point,
-      initiatives.location_description,
-      initiatives.comments_count,
-      initiatives.slug,
-      initiatives.official_feedbacks_count
-     FROM initiatives;
   SQL
   create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
@@ -1149,5 +1153,38 @@ ActiveRecord::Schema.define(version: 2020_08_07_132541) do
        LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
+  SQL
+  create_view "union_posts", sql_definition: <<-SQL
+      SELECT ideas.id,
+      ideas.title_multiloc,
+      ideas.body_multiloc,
+      ideas.publication_status,
+      ideas.published_at,
+      ideas.author_id,
+      ideas.created_at,
+      ideas.updated_at,
+      ideas.upvotes_count,
+      ideas.location_point,
+      ideas.location_description,
+      ideas.comments_count,
+      ideas.slug,
+      ideas.official_feedbacks_count
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      initiatives.title_multiloc,
+      initiatives.body_multiloc,
+      initiatives.publication_status,
+      initiatives.published_at,
+      initiatives.author_id,
+      initiatives.created_at,
+      initiatives.updated_at,
+      initiatives.upvotes_count,
+      initiatives.location_point,
+      initiatives.location_description,
+      initiatives.comments_count,
+      initiatives.slug,
+      initiatives.official_feedbacks_count
+     FROM initiatives;
   SQL
 end

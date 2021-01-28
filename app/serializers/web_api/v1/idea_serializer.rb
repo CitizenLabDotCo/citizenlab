@@ -1,5 +1,14 @@
 class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :baskets_count
+  attributes :title_multiloc, :body_multiloc, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :proposed_budget, :baskets_count
+
+  attribute :author_name do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+    name_service.display_name!(object.author)
+  end
+
+  attribute :body_multiloc do |object|
+    TextImageService.new.render_data_images object, :body_multiloc
+  end
 
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
@@ -7,25 +16,25 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user(params))
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason_for_idea(object, current_user(params))
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user(params))
-    comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_comment(Comment.new(post: object), current_user(params))
+    comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea_comment(Comment.new(post: object), current_user(params))
 
     {
-      commenting: {
+      commenting_idea: {
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason,
-        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user(params))&.start_at
+        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_idea_enabled_phase(object.project, current_user(params))&.start_at
       },
-      voting: {
+      voting_idea: {
         enabled: !voting_disabled_reason,
         downvoting_enabled: @participation_context_service.get_participation_context(object.project)&.downvoting_enabled,
         disabled_reason: voting_disabled_reason,
-        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user(params))&.start_at,
+        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_idea_enabled_phase(object.project, current_user(params))&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
-      },   
-      comment_voting: {
+      },
+      comment_voting_idea: {
         enabled: !comment_voting_disabled_reason,
         disabled_reason: comment_voting_disabled_reason,
-        future_enabled: comment_voting_disabled_reason && @participation_context_service.future_comment_voting_enabled_phase(object.project, current_user(params))&.start_at
+        future_enabled: comment_voting_disabled_reason && @participation_context_service.future_comment_voting_idea_enabled_phase(object.project, current_user(params))&.start_at
       },
       budgeting: {
         enabled: !budgeting_disabled_reason,
@@ -62,6 +71,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       params.dig(:vbii, object.id)
     else
        object.votes.where(user_id: current_user(params)&.id).first
-     end
+    end
   end
 end

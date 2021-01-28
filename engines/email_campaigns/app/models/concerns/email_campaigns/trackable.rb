@@ -3,7 +3,6 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-
       after_send :save_delivery
 
       has_many :deliveries, class_name: 'EmailCampaigns::Delivery', foreign_key: :campaign_id, dependent: :destroy
@@ -29,6 +28,5 @@ module EmailCampaigns
         tracked_content: command[:tracked_content]
       )
     end
-
   end
 end

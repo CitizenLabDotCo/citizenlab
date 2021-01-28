@@ -16,11 +16,24 @@ describe SmartGroupRules::LivesIn do
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
 
+    it "successfully saves the valid multi-value rule" do
+      json_rule = valid_json_rule.tap{|r| r['predicate']='is_one_of'; r['value'] = [r['value']]}
+      expect(SmartGroupRules::LivesIn.from_json(json_rule)).to be_valid
+      expect(build(:smart_group, rules: [json_rule])).to be_valid
+    end
+
+    it "fails on saving a non-existing custom field option" do
+      json_rule = valid_json_rule.tap{|r| r['predicate']='is_one_of'; r['value']=[r['value'], 'garbage']}
+      expect(SmartGroupRules::LivesIn.from_json(json_rule)).to be_invalid
+      # TODO
+      # expect(build(:smart_group, rules: [json_rule])).to be_invalid
+    end
   end
 
   describe "validations" do
     it "successfully validate the valid rule" do
       expect(valid_rule).to be_valid
+      expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
@@ -59,6 +72,16 @@ describe SmartGroupRules::LivesIn do
     it "correctly filters on 'not_has_value' predicate" do
       rule = SmartGroupRules::LivesIn.new('not_has_value', 'outside')
       expect(rule.filter(User).count).to eq 4
+    end
+
+    it "correctly filters on 'is_one_of' predicate" do
+      rule = SmartGroupRules::LivesIn.new('is_one_of', [area1.id, 'outside'])
+      expect(rule.filter(User).count).to eq 3
+    end
+
+    it "correctly filters on 'not_is_one_of' predicate" do
+      rule = SmartGroupRules::LivesIn.new('not_is_one_of', [area2.id])
+      expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'is_empty' predicate" do
@@ -112,6 +135,16 @@ describe SmartGroupRules::LivesIn do
       'predicate' => 'not_has_value',
       'value'     => 'outside'
     })}
+    let(:lives_in_is_one_of_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'      => 'lives_in',
+      'predicate'     => 'is_one_of',
+      'value'         => [area.id, 'outside']
+    })}
+    let(:lives_in_not_is_one_of_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'      => 'lives_in',
+      'predicate'     => 'not_is_one_of',
+      'value'         => [area.id]
+    })}
     let(:lives_in_is_empty_rule) {SmartGroupRules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'is_empty'
@@ -144,6 +177,16 @@ describe SmartGroupRules::LivesIn do
         'en'    => 'Place of residence is not somewhere else',
         'fr-FR' => 'Domicile n\'est pas ailleurs',
         'nl-NL' => 'Woonplaats is niet ergens anders'
+      })
+      expect(lives_in_is_one_of_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence has one of the following values: Brussels, somewhere else',
+        'fr-FR' => 'Domicile est un de: Bruxelles, quelque part d\'autre',
+        'nl-NL' => 'Woonplaats heeft een van de volgende waarden: Brussel, ergens anders'
+      })
+      expect(lives_in_not_is_one_of_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence does not have any of the follow values: Brussels',
+        'fr-FR' => 'Domicile n\'est pas un de: Bruxelles',
+        'nl-NL' => 'Woonplaats heeft geen van de volgende waarden: Brussel'
       })
       expect(lives_in_is_empty_rule.description_multiloc).to eq ({
         'en'    => 'Place of residence has no value',

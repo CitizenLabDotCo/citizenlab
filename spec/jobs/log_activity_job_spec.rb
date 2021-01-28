@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe LogActivityJob, type: :job do
-  
+
   subject(:job) { LogActivityJob.new }
 
   describe '#perform' do
@@ -54,26 +54,22 @@ RSpec.describe LogActivityJob, type: :job do
       expect{job.perform(spam_report, "created", user, Time.now)}.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
     end
 
-    it "enqueues a LogToEventbusJob when bunny is initialized" do
+    it "enqueues a PublishActivityToRabbitJob when bunny is initialized" do
       idea = create(:idea)
       user = create(:user)
-      if BUNNY_CON
-        expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(LogToEventbusJob)
-      else
-        expect{job.perform(idea, "created", user, Time.now)}.not_to have_enqueued_job(LogToEventbusJob)
-      end
+      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(PublishActivityToRabbitJob)
     end
 
-    it "enqueues a LogToSegmentJob when Analytics is initialized" do
+    it "enqueues a TrackEventJob when Analytics is initialized" do
       idea = create(:idea)
       user = create(:user)
-      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(LogToSegmentJob)
+      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(TrackEventJob)
     end
 
-    it "doesn't enqueue a LogToSegmentJob when the item is a notification" do
+    it "doesn't enqueue a TrackEventJob when the item is a notification" do
       item = create(:notification)
       user = create(:user)
-      expect{job.perform(item, 'created', user, Time.now)}.not_to have_enqueued_job(LogToSegmentJob)
+      expect{job.perform(item, 'created', user, Time.now)}.not_to have_enqueued_job(TrackEventJob)
     end
 
   end

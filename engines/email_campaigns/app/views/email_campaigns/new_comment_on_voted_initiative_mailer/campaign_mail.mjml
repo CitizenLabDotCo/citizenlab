@@ -1,0 +1,2 @@
+<%= render 'email_campaigns/comments/card' %>
+<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_reply_to', values: { commentAuthor: comment_author }) } %>

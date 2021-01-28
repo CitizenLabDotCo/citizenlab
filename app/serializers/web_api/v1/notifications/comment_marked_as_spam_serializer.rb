@@ -5,8 +5,9 @@ class WebApi::V1::Notifications::CommentMarkedAsSpamSerializer < WebApi::V1::Not
     object.initiating_user&.first_name
   end
 
-  attribute :initiating_user_last_name do |object|
-    object.initiating_user&.last_name
+  attribute :initiating_user_last_name do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+    name_service.last_name!(object.initiating_user)
   end
 
   attribute :initiating_user_slug do |object|

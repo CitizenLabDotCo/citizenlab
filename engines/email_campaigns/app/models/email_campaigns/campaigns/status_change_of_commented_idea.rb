@@ -10,6 +10,9 @@ module EmailCampaigns
 
     recipient_filter :filter_recipient
 
+    def mailer_class
+      StatusChangeOfCommentedIdeaMailer
+    end
 
     def activity_triggers
       {'Idea' => {'changed_status' => true}}
