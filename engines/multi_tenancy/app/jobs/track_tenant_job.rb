@@ -4,9 +4,7 @@ class TrackTenantJob < ApplicationJob
 
   # @param [Tenant] tenant
   def perform(tenant)
-    if tenant
-      TrackIntercomService.new.identify_tenant(tenant) if AppConfiguration.instance.has_feature?('intercom')
-      TrackSegmentService.new.identify_tenant(tenant)  if AppConfiguration.instance.has_feature?('segment')
-    end
+    TrackIntercomService.new.identify_tenant(tenant) if AppConfiguration.instance.has_feature?('intercom')
+    TrackSegmentService.new.identify_tenant(tenant) if AppConfiguration.instance.has_feature?('segment')
   end
 end
