@@ -5,13 +5,13 @@ FactoryBot.define do
     sender { "author" }
     reply_to { "someguy@somecity.com" }
     subject_multiloc {{
-      "en" => "We're almost done with your feedback"  
+      "en" => "We're almost done with your feedback"
     }}
     body_multiloc {{
-      "en" => "Time to check it all out!"  
+      "en" => "Time to check it all out!"
     }}
   end
-  
+
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
     enabled { true }
@@ -137,6 +137,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_folder_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived do
+    enabled { true }
+  end
+
   factory :project_phase_started_campaign, class: EmailCampaigns::Campaigns::ProjectPhaseStarted do
     enabled { true }
   end
@@ -177,7 +181,7 @@ FactoryBot.define do
     enabled { true }
   end
 
-  
+
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled { true }
     schedule { weekly_schedule }

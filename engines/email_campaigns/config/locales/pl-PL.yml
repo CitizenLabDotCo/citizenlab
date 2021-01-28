@@ -410,7 +410,7 @@ pl:
       title_you_became_moderator: 'Zostałeś moderatorem'
       x_ideas: 'ilość pomysłów: %{numberOfIdeas}'
     project_folder_moderation_rights_received:
-      cta_moderate_project: 'Moderate this folder'
+      cta_moderate_project_folder: 'Moderate this folder'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you a manager of the following projects folder:'
       no_projects: 'No projects yet'
       preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a manager of the following projects folder'
@@ -422,7 +422,7 @@ pl:
       title_moderate_analyse_input: 'Moderate and analyse the input'
       title_share_project_information: 'Provide project information'
       title_what_can_you_do_moderator: 'What can you do as a project folder manager?'
-      title_you_became_moderator: 'You became a manager of a projects folder'
+      title_you_became_moderator: 'You became a manager of a project folder'
       x_projects: '%{numberOfProjects} projects'
     password_reset:
       cta_reset_password: 'Zresetuj swoje hasło'
