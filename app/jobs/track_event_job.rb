@@ -2,22 +2,11 @@ class TrackEventJob < ApplicationJob
   queue_as :default
   # creates or updates users in tracking destinations
 
-  def perform activity
-    tenant = nil
-
-    begin
-      tenant = Tenant.current
-      if tenant
-        if tenant.has_feature?('intercom')
-          intercom_service = TrackIntercomService.new()
-          intercom_service.track(activity, tenant)
-        end
-        if tenant.has_feature?('segment')
-          segment_service = TrackSegmentService.new()
-          segment_service.track_activity(activity)
-        end
-      end
-    rescue ActiveRecord::RecordNotFound => e
-    end
+  def perform(activity)
+    return unless (tenant = Tenant.current)
+    TrackIntercomService.new.track(activity, tenant) if tenant.has_feature?('intercom')
+    TrackSegmentService.new.track_activity(activity) if tenant.has_feature?('segment')
+  rescue ActiveRecord::RecordNotFound => e
+    # Ignored
   end
 end
