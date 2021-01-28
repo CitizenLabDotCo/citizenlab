@@ -2,7 +2,7 @@ import React from 'react';
 import GetUserCustomFieldOptions, {
   GetUserCustomFieldOptionsChildProps,
 } from 'modules/user_custom_fields/resources/GetUserCustomFieldOptions';
-import { TRule } from '../../../smart_groups/components/UserFilterConditions/rules';
+import { TRule } from 'modules/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
 import { Select } from 'cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
