@@ -63,24 +63,22 @@ class TrackIntercomService
     end
   end
 
-  def identify_tenant tenant
-    if @intercom
-      begin
-        company = @intercom.companies.find(id: tenant.id)
-        company.name = tenant.name
-        company.website = "https://#{tenant.host}"
-        company.custom_attributes = TrackingService.new.tenant_properties(tenant)
-        @intercom.companies.save(company)
-      rescue Intercom::ResourceNotFound
-        @intercom.companies.create({
-          company_id: tenant.id,
-          name: tenant.name,
-          website: "https://#{tenant.host}",
-          remote_created_at: tenant.created_at,
-          custom_attributes: TrackingService.new.tenant_properties(tenant)
-        })
-      end
-    end
+  def identify_tenant(tenant)
+    return unless @intercom
+    company = @intercom.companies.find(id: tenant.id)
+  rescue Intercom::ResourceNotFound
+    @intercom.companies.create(
+      company_id: tenant.id,
+      name: tenant.name,
+      website: "https://#{tenant.host}",
+      remote_created_at: tenant.created_at,
+      custom_attributes: TrackingService.new.tenant_properties(tenant)
+    )
+  else
+    company.name = tenant.name
+    company.website = "https://#{tenant.host}"
+    company.custom_attributes = TrackingService.new.tenant_properties(tenant)
+    @intercom.companies.save(company)
   end
 
   def track activity, tenant
