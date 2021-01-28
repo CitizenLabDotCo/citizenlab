@@ -11,7 +11,7 @@ import messages from '../messages';
 
 // components
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -69,9 +69,7 @@ class RegistrationCustomFieldOptionsForm extends React.Component<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={
-                FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher
-              }
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={formatMessage(messages.answerOption)}
             />
             {touched.title_multiloc && (
