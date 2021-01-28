@@ -178,8 +178,8 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       return (
         <Container id="e2e-signup-custom-fields-container">
           <UserCustomFieldsForm
-            formData={authUser.data.attributes.custom_field_values}
             onSubmit={handleCustomFieldsFormOnSubmit}
+            authUser={authUser}
           />
 
           <ButtonWrapper>
