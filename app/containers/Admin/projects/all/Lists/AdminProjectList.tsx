@@ -44,8 +44,6 @@ const AdminProjectList = memo<Props>((_props) => {
   const adminPublicationsList = adminPublications.list;
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
-  console.log(adminPublicationsList);
-
   if (
     !isNilOrError(adminPublicationsList) &&
     adminPublicationsList.length > 0
