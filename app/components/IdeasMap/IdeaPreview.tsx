@@ -261,7 +261,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
             <ViewIdeaButtonContainer>
               <Button fullWidth={true} onClick={this.createIdeaClickHandler}>
-                <FormattedMessage {...messages.seeIdea} />
+                <FormattedMessage {...messages.ideaOnMapReadMore} />
               </Button>
             </ViewIdeaButtonContainer>
           </Footer>

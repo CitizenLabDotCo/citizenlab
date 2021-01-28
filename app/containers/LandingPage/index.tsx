@@ -43,7 +43,9 @@ import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
   height: 100%;
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   align-items: center;

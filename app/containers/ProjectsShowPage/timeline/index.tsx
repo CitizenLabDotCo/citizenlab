@@ -17,6 +17,7 @@ import PhaseNavigation from './PhaseNavigation';
 import {
   SectionContainer,
   ProjectPageSectionTitle,
+  maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 
 // services
@@ -25,7 +26,7 @@ import {
   getCurrentPhase,
   getFirstPhase,
   getLastPhase,
-  getLastActivePhase,
+  getLastPastPhase,
 } from 'services/phases';
 
 // events
@@ -73,6 +74,16 @@ const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
 
+const StyledPhaseDescription = styled(PhaseDescription)<{
+  hasBottmMargin: boolean;
+}>`
+  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
+`;
+
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-bottom: 50px;
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -106,7 +117,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         const currentPhase = getCurrentPhase(phases);
         const firstPhase = getFirstPhase(phases);
         const lastPhase = getLastPhase(phases);
-        const lastActivePhase = getLastActivePhase(phases);
+        const lastPastPhase = getLastPastPhase(phases);
 
         // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
         // then remove the param so that when the user navigates to other phases there is no mismatch
@@ -130,21 +141,26 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         ) {
           selectPhase(firstPhase);
         } else if (
-          lastActivePhase &&
+          lastPastPhase &&
           lastPhase &&
           pastPresentOrFuture([
             lastPhase.attributes.start_at,
             lastPhase.attributes.end_at,
           ]) === 'future'
         ) {
-          selectPhase(lastActivePhase);
+          selectPhase(lastPastPhase);
         } else {
           selectPhase(lastPhase || null);
         }
       }
     }, [location, phases]);
 
-    if (!isNilOrError(project) && selectedPhase !== undefined) {
+    if (
+      !isNilOrError(project) &&
+      !isNilOrError(phases) &&
+      phases.length > 0 &&
+      selectedPhase !== undefined
+    ) {
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
       const isPBPhase =
         selectedPhase?.attributes?.participation_method === 'budgeting';
@@ -159,7 +175,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         <Container className={`${className || ''} e2e-project-process-page`}>
           <StyledSectionContainer>
             <div>
-              <ContentContainer>
+              <ContentContainer maxWidth={maxPageWidth}>
                 {smallerThanSmallTablet && (
                   <Header>
                     <StyledProjectPageSectionTitle>
@@ -172,12 +188,16 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   </Header>
                 )}
                 <StyledTimeline projectId={project.id} />
-                <PhaseDescription
+                <StyledPhaseDescription
                   projectId={project.id}
                   phaseId={selectedPhaseId}
+                  hasBottmMargin={
+                    selectedPhase?.attributes?.participation_method !==
+                    'information'
+                  }
                 />
                 {isPBPhase && (
-                  <PBExpenses
+                  <StyledPBExpenses
                     participationContextId={selectedPhaseId}
                     participationContextType="phase"
                     viewMode={smallerThanSmallTablet ? 'column' : 'row'}
@@ -187,7 +207,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
               </ContentContainer>
             </div>
             <div>
-              <ContentContainer>
+              <ContentContainer maxWidth={maxPageWidth}>
                 <PhasePoll projectId={project.id} phaseId={selectedPhaseId} />
                 <PhaseVolunteering
                   projectId={project.id}
@@ -200,7 +220,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
               participationMethod === 'budgeting') &&
               selectedPhaseId && (
                 <div>
-                  <ContentContainer>
+                  <ContentContainer maxWidth={maxPageWidth}>
                     <PhaseIdeas
                       projectId={project.id}
                       phaseId={selectedPhaseId}

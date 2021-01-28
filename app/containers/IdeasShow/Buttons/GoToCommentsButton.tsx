@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
@@ -10,54 +10,34 @@ interface Props {
   className?: string;
 }
 
-const GoToCommentsButton = ({
-  className,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
-  const onClick = () => {
-    const commentInputField = document.getElementById('submit-comment');
+const GoToCommentsButton = memo<Props & InjectedIntlProps>(
+  ({ className, intl: { formatMessage } }) => {
+    const onClick = useCallback(() => {
+      const commentInputElementAnchor = document.getElementById(
+        'submit-comment-anchor'
+      );
+      const commentInputElement = document.getElementById('submit-comment');
 
-    // We wait until the component is scrolled too, then the text area is focused
-    // https://stackoverflow.com/questions/46795955/how-to-know-scroll-to-element-is-done-in-javascript
-    if (commentInputField) {
-      let observer: IntersectionObserver;
+      if (commentInputElementAnchor && commentInputElement) {
+        commentInputElement.focus({ preventScroll: true });
+        setTimeout(() => {
+          commentInputElementAnchor.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }, 200);
+      }
+    }, []);
 
-      const callback = (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            commentInputField.focus();
-            observer.unobserve(commentInputField);
-          }, 100);
-        }
-      };
-
-      observer = new IntersectionObserver(callback);
-      observer.observe(commentInputField);
-
-      // commentInputField.scrollIntoView({ behavior: 'smooth' });
-
-      const scrollContainer =
-        document.getElementsByClassName(
-          'fullscreenmodal-scrollcontainer'
-        )?.[0] || window;
-      const top =
-        commentInputField.getBoundingClientRect().top +
-        window.pageYOffset -
-        150;
-      const behavior = 'smooth';
-      scrollContainer.scrollTo({ top, behavior });
-    }
-  };
-
-  return (
-    <IdeaCTAButton
-      onClick={onClick}
-      className={className}
-      buttonText={formatMessage(messages.commentCTA)}
-      iconName="comments"
-    />
-  );
-};
+    return (
+      <IdeaCTAButton
+        onClick={onClick}
+        className={className}
+        buttonText={formatMessage(messages.commentCTA)}
+        iconName="comments"
+      />
+    );
+  }
+);
 
 export default injectIntl(GoToCommentsButton);

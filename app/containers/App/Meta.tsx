@@ -69,7 +69,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({
       tenantLocales
     );
     metaDescription =
-      metaDescription || formatMessage(messages.metaDescription);
+      metaDescription || formatMessage(messages.appMetaDescription);
 
     const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);

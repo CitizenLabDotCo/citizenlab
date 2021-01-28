@@ -3,6 +3,9 @@ import { sortBy, last, isUndefined, isString } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
+// services
+import { getInputTerm } from 'services/participationContexts';
+
 // typings
 import { IParticipationContextType } from 'typings';
 
@@ -71,6 +74,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { getInputTermMessage } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -78,7 +82,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
   columnsGapTablet,
@@ -91,7 +94,9 @@ const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   width: 100vw;
-  height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
+  height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +115,9 @@ const Loading = styled.div`
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${({ theme: { menuHeight } }) => menuHeight}px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   background: #fff;
   opacity: 0;
 
@@ -508,6 +515,8 @@ export class IdeasShow extends PureComponent<
       ideaCustomFieldsSchemas,
       tenant,
       insideModal,
+      project,
+      phases,
     } = this.props;
     const {
       loaded,
@@ -570,7 +579,11 @@ export class IdeasShow extends PureComponent<
                 projectId={projectId}
                 insideModal={insideModal}
               />
-              <StyledIdeaMoreActions idea={idea} hasLeftMargin={true} />
+              <StyledIdeaMoreActions
+                idea={idea}
+                hasLeftMargin={true}
+                projectId={projectId}
+              />
             </TopBar>
 
             <Content id="e2e-idea-show-page-content">
@@ -583,19 +596,17 @@ export class IdeasShow extends PureComponent<
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
-                  <MobileIdeaMoreActions idea={idea} hasLeftMargin={true} />
+                  <MobileIdeaMoreActions
+                    idea={idea}
+                    hasLeftMargin={true}
+                    projectId={projectId}
+                  />
                 </IdeaHeader>
 
                 {ideaImageLarge && (
                   <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
                 )}
 
-                <ScreenReaderOnly>
-                  <FormattedMessage
-                    tagName="h2"
-                    {...messages.invisibleTitleContent}
-                  />
-                </ScreenReaderOnly>
                 <FeatureFlag name="machine_translations">
                   {showTranslateButton && (
                     <StyledTranslateButton
@@ -696,48 +707,66 @@ export class IdeasShow extends PureComponent<
       );
     }
 
-    return (
-      <>
-        {!loaded && (
-          <Loading>
-            <Spinner />
-          </Loading>
-        )}
+    if (!isNilOrError(project)) {
+      const inputTerm = getInputTerm(
+        project.attributes.process_type,
+        project,
+        phases
+      );
 
-        <CSSTransition
-          classNames="content"
-          in={loaded}
-          timeout={{
-            enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0,
-          }}
-          enter={true}
-          exit={false}
-        >
-          <Container id="e2e-idea-show" className={className}>
-            {content}
-          </Container>
-        </CSSTransition>
-
-        <FeatureFlag name="ideaflow_social_sharing">
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
+      return (
+        <>
+          {!loaded && (
+            <Loading>
+              <Spinner />
+            </Loading>
+          )}
+          <CSSTransition
+            classNames="content"
+            in={loaded}
+            timeout={{
+              enter: contentFadeInDuration + contentFadeInDelay,
+              exit: 0,
+            }}
+            enter={true}
+            exit={false}
           >
-            {ideaIdForSocialSharing && (
-              <SharingModalContent
-                postType="idea"
-                postId={ideaIdForSocialSharing}
-                title={formatMessage(messages.shareTitle)}
-                subtitle={formatMessage(messages.shareSubtitle)}
-              />
-            )}
-          </Modal>
-        </FeatureFlag>
-      </>
-    );
+            <Container id="e2e-idea-show" className={className}>
+              {content}
+            </Container>
+          </CSSTransition>
+
+          <FeatureFlag name="ideaflow_social_sharing">
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+            >
+              {ideaIdForSocialSharing && (
+                <SharingModalContent
+                  postType="idea"
+                  postId={ideaIdForSocialSharing}
+                  title={formatMessage(
+                    getInputTermMessage(inputTerm, {
+                      idea: messages.sharingModalTitle,
+                      option: messages.optionSharingModalTitle,
+                      project: messages.projectSharingModalTitle,
+                      question: messages.questionSharingModalTitle,
+                      issue: messages.issueSharingModalTitle,
+                      contribution: messages.contributionSharingModalTitle,
+                    })
+                  )}
+                  subtitle={formatMessage(messages.sharingModalSubtitle)}
+                />
+              )}
+            </Modal>
+          </FeatureFlag>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 

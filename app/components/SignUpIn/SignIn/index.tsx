@@ -34,13 +34,21 @@ export type TSignInSteps = 'auth-providers' | 'password-signin';
 export interface Props {
   metaData: ISignUpInMetaData;
   windowHeight: number;
+  customHeader?: JSX.Element;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
 }
 
 const SignIn = memo<Props>(
-  ({ metaData, windowHeight, onSignInCompleted, onGoToSignUp, className }) => {
+  ({
+    metaData,
+    windowHeight,
+    customHeader,
+    onSignInCompleted,
+    onGoToSignUp,
+    className,
+  }) => {
     const [activeStep, setActiveStep] = useState<TSignInSteps>(
       'auth-providers'
     );
@@ -82,16 +90,24 @@ const SignIn = memo<Props>(
 
     return (
       <Container id="e2e-sign-in-container" className={className}>
-        <StyledHeaderContainer inModal={!!metaData.inModal}>
-          <StyledHeaderTitle inModal={!!metaData.inModal}>
-            <FormattedMessage {...messages.logIn} />
-          </StyledHeaderTitle>
+        <StyledHeaderContainer
+          className="signupinheadercontainer"
+          inModal={!!metaData.inModal}
+        >
+          {!customHeader ? (
+            <StyledHeaderTitle inModal={!!metaData.inModal}>
+              <FormattedMessage {...messages.logIn} />
+            </StyledHeaderTitle>
+          ) : (
+            customHeader
+          )}
         </StyledHeaderContainer>
 
         <StyledModalContentContainer
           inModal={!!metaData.inModal}
           windowHeight={`${windowHeight}px`}
           headerHeight="68px"
+          className="signupincontentcontainer"
         >
           {metaData.error ? (
             <Error

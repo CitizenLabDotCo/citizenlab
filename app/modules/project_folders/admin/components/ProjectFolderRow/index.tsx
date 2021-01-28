@@ -1,4 +1,5 @@
 import React, { memo, useState } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -18,11 +19,15 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// hooks
 import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
+import { isProjectFolderModerator } from '../../../permissions/roles';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -31,12 +36,7 @@ const FolderIcon = styled(Icon)`
 `;
 
 // types & services
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
-import { adopt } from 'react-adopt';
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
@@ -92,106 +92,99 @@ const InFolderProjectRow = styled(ProjectRow)`
   }
 `;
 
-interface InputProps {
+interface Props {
   publication: IAdminPublicationContent;
 }
 
-interface DataProps {
-  adminPublications: GetAdminPublicationsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ProjectFolderRow = memo<Props>(({ publication, adminPublications }) => {
+const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
+  const adminPublications = useAdminPublications({
+    folderId: publication.id,
+    publicationStatusFilter: ['draft', 'published', 'archived'],
+  });
+
+  const [folderOpen, setFolderOpen] = useState(false);
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [folderDeletionError, setFolderDeletionError] = useState('');
+
+  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
   const hasProjects =
     !isNilOrError(adminPublications) &&
     !!adminPublications.list?.length &&
     adminPublications.list.length > 0;
-  const userCanDeletePublication = isAdmin(authUser);
 
-  const [folderOpen, setFolderOpen] = useState(false);
-  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-  const [folderDeletionError, setFolderDeletionError] = useState<string>('');
+  if (!isNilOrError(authUser)) {
+    const userIsAdmin = isAdmin({ data: authUser });
 
-  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
-
-  return (
-    <Container>
-      <FolderRowContent
-        className="e2e-admin-adminPublications-list-item"
-        expanded={hasProjects && folderOpen}
-        hasProjects={hasProjects}
-        role="button"
-        onClick={toggleExpand}
-      >
-        <RowContentInner className="expand primary">
-          {hasProjects && (
-            <ArrowIcon
-              expanded={hasProjects && folderOpen}
-              name="chevron-right"
+    return (
+      <Container>
+        <FolderRowContent
+          className="e2e-admin-adminPublications-list-item"
+          expanded={hasProjects && folderOpen}
+          hasProjects={hasProjects}
+          role="button"
+          onClick={toggleExpand}
+        >
+          <RowContentInner className="expand primary">
+            {hasProjects && (
+              <ArrowIcon
+                expanded={hasProjects && folderOpen}
+                name="chevron-right"
+              />
+            )}
+            <FolderIcon name="simpleFolder" />
+            <RowTitle
+              value={publication.attributes.publication_title_multiloc}
             />
-          )}
-          <FolderIcon name="simpleFolder" />
-          <RowTitle value={publication.attributes.publication_title_multiloc} />
-          <PublicationStatusLabel
-            publicationStatus={publication.attributes.publication_status}
-          />
-        </RowContentInner>
-        <ActionsRowContainer>
-          {userCanDeletePublication && (
-            <DeleteProjectFolderButton
-              publication={publication}
-              processing={isBeingDeleted}
-              setDeletionError={setFolderDeletionError}
-              setDeleteIsProcessing={setIsBeingDeleted}
+            <PublicationStatusLabel
+              publicationStatus={publication.attributes.publication_status}
             />
-          )}
-          <RowButton
-            className={`e2e-admin-edit-project ${
-              publication.attributes.publication_title_multiloc['en-GB'] || ''
-            }`}
-            linkTo={`/admin/projects/folders/${publication.publicationId}`}
-            buttonStyle="secondary"
-            icon="edit"
-            disabled={isBeingDeleted}
-          >
-            <FormattedMessage {...messages.manageButtonLabel} />
-          </RowButton>
-        </ActionsRowContainer>
-      </FolderRowContent>
+          </RowContentInner>
+          <ActionsRowContainer>
+            {userIsAdmin && (
+              <DeleteProjectFolderButton
+                publication={publication}
+                processing={isBeingDeleted}
+                setDeletionError={setFolderDeletionError}
+                setDeleteIsProcessing={setIsBeingDeleted}
+              />
+            )}
+            <RowButton
+              className={`e2e-admin-edit-project ${
+                publication.attributes.publication_title_multiloc['en-GB'] || ''
+              }`}
+              linkTo={`/admin/projects/folders/${publication.publicationId}`}
+              buttonStyle="secondary"
+              icon="edit"
+              disabled={
+                isBeingDeleted ||
+                !isProjectFolderModerator(authUser, publication.publicationId)
+              }
+            >
+              <FormattedMessage {...messages.manageButtonLabel} />
+            </RowButton>
+          </ActionsRowContainer>
+        </FolderRowContent>
 
-      {folderDeletionError && <Error text={folderDeletionError} />}
+        {folderDeletionError && <Error text={folderDeletionError} />}
 
-      {hasProjects && folderOpen && (
-        <ProjectRows>
-          {adminPublications?.list?.map((publication) => (
-            <InFolderProjectRow
-              publication={publication}
-              key={publication.id}
-              actions={isAdmin(authUser) ? ['delete', 'manage'] : ['manage']}
-            />
-          ))}
-        </ProjectRows>
-      )}
-    </Container>
-  );
+        {hasProjects && folderOpen && (
+          <ProjectRows>
+            {adminPublications?.list?.map((publication) => (
+              <InFolderProjectRow
+                publication={publication}
+                key={publication.id}
+                actions={userIsAdmin ? ['delete', 'manage'] : ['manage']}
+              />
+            ))}
+          </ProjectRows>
+        )}
+      </Container>
+    );
+  }
+
+  return null;
 });
 
-const Data = adopt<DataProps, InputProps>({
-  adminPublications: ({ publication: { publicationId }, render }) => (
-    <GetAdminPublications
-      folderId={publicationId}
-      publicationStatusFilter={['draft', 'published', 'archived']}
-    >
-      {render}
-    </GetAdminPublications>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <ProjectFolderRow {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default ProjectFolderRow;

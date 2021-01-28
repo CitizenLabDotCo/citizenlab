@@ -86,6 +86,7 @@ export type TSignUpStepConfiguration = {
 export interface InputProps {
   metaData: ISignUpInMetaData;
   windowHeight: number;
+  customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;

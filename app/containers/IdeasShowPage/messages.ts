@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  noIdeaFoundHere: {
-    id: 'app.components.IdeasShowPage.noIdeaFoundHere',
-    defaultMessage: 'No idea was found here.',
+  noResultsFound: {
+    id: 'app.components.IdeasShowPage.noResultsFound',
+    defaultMessage: 'No results found.',
   },
   goBack: {
     id: 'app.components.IdeasShowPage.goBack',

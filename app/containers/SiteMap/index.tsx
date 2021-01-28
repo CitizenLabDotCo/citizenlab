@@ -27,7 +27,9 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   display: flex;
   flex-direction: column;
   background: ${colors.background};

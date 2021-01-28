@@ -45,7 +45,7 @@ const VotingCTABox = ({
   return (
     <Container className={className}>
       <ScreenReaderOnly>
-        <h2>{formatMessage(messages.a11y_votingCTABox)}</h2>
+        <h2>{formatMessage(messages.a11y_voting)}</h2>
       </ScreenReaderOnly>
       <StyledVoting ideaId={ideaId} projectId={projectId} />
       <ControlWrapperHorizontalRule aria-hidden />

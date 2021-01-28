@@ -206,11 +206,11 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
           <Header>
             <TitleContainer>
               <StyledSectionTitle>
-                <FormattedMessage {...messages.title} />
+                <FormattedMessage {...messages.inputForm} />
               </StyledSectionTitle>
             </TitleContainer>
             <SectionDescription>
-              <FormattedMessage {...messages.description} />
+              <FormattedMessage {...messages.postDescription} />
             </SectionDescription>
           </Header>
 
