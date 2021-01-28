@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
-import { IUserCustomFieldInputType } from 'services/userCustomFields';
+import { IUserCustomFieldInputType } from 'modules/user_custom_fields/services/userCustomFields';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
 import FormikToggle from 'components/UI/FormikToggle';

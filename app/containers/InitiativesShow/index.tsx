@@ -340,7 +340,7 @@ export class InitiativesShow extends PureComponent<
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();
-  timeoutRef: NodeJS.Timeout;
+  timeoutRef: number;
 
   constructor(props) {
     super(props);
