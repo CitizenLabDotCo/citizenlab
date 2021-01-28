@@ -67,8 +67,6 @@ class TrackSegmentService
     Analytics.track(event)
   end
 
-  private
-
   def integrations(user)
     {
       All: true,
@@ -76,6 +74,8 @@ class TrackSegmentService
       SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
     }
   end
+
+  private
 
   def event_from_activity(activity)
     event = {
