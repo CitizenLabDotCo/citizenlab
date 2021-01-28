@@ -21,7 +21,7 @@ const ShowPasswordButton = styled(Button)`
 interface Props {
   id: string;
   value: string | null;
-  error?: string;
+  error?: string | null;
   onChange: (password: string) => void;
   onBlur?: () => void;
   autocomplete?: 'current-password' | 'new-password';
