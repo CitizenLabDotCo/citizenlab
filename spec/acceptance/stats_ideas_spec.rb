@@ -42,7 +42,7 @@ resource "Stats - Ideas" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 3.year)
-    @timezone = Tenant.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core','timezone')
 
     @project1 = create(:project)
     @project2 = create(:project)

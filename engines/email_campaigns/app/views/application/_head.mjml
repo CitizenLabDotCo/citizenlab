@@ -1,0 +1,18 @@
+<mj-head>
+  <mj-style inline="inline">
+    h1 {
+      font-size: 25px;
+      margin-bottom: 40px;
+    }
+    a {text-decoration: none;}
+
+    <%# From https://github.com/mjmlio/mjml/issues/230 %>
+    <% if text_direction == "rtl" %>
+      * { direction: rtl; text-align: right !important; }
+    <% end %>
+
+  </mj-style>
+  <mj-attributes>
+    <mj-all padding="0" font-family="Arial" font-size="15px" line-height="150%" color="black" />
+  </mj-attributes>
+</mj-head>

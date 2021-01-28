@@ -1,15 +1,13 @@
 module EmailCampaigns
   class PasswordResetMailer < ApplicationMailer
-
-
     protected
 
     def subject
-      I18n.t(
-        'email_campaigns.password_reset.subject', 
-        organizationName: MultilocService.new.t(@tenant.settings.dig('core', 'organization_name'))
-        )
+      format_message('subject', values: { organizationName: organization_name })
     end
 
+    def show_header?
+      false
+    end
   end
 end

@@ -1,6 +1,6 @@
 da:
   symbols:
-    outside: somewhere else
+    outside: et andet sted
   idea_statuses:
     proposed: foreslået
     proposed_description: Denne idé er blevet foreslået til byen
@@ -163,8 +163,8 @@ da:
     custom_field_select:
       has_value: "%{property} er %{value}"
       not_has_value: "%{property} er ikke %{value}"
-      is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the following values: %{value}"
+      is_one_of: "%{property} har en af følgende værdier:%{value}"
+      not_is_one_of: "%{property} har ikke nogen af følgende værdier:%{value}"
     custom_field_text:
       is: "%{property} er %{value}"
       not_is: "%{property} er ikke %{value}"

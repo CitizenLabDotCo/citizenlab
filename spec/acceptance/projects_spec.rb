@@ -510,18 +510,18 @@ resource "Projects" do
       end
 
       example "Disable downvoting", document: false do
-        tn = Tenant.current
-        tn.settings['disable_downvoting'] = {'allowed' => true, 'enabled' => true}
-        tn.save!
+        configuration = AppConfiguration.instance
+        configuration.settings['disable_downvoting'] = {'allowed' => true, 'enabled' => true}
+        configuration.save!
         do_request(project: {downvoting_enabled: false})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq false
       end
 
       example "Disable downvoting when feature is not enabled", document: false do
-        tn = Tenant.current
-        tn.settings['disable_downvoting'] = {'allowed' => false, 'enabled' => false}
-        tn.save!
+        configuration = AppConfiguration.instance
+        configuration.settings['disable_downvoting'] = {'allowed' => false, 'enabled' => false}
+        configuration.save!
         do_request(project: {downvoting_enabled: false})
         expect(@project.reload.downvoting_enabled).to eq true
       end

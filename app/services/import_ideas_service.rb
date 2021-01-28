@@ -92,7 +92,7 @@ class ImportIdeasService
 
   def multiloculate value
   	multiloc = {}
-  	Tenant.current.settings.dig('core', 'locales').each do |loc|
+  	AppConfiguration.instance.settings('core', 'locales').each do |loc|
   		multiloc[loc] = value
   	end
   	multiloc
