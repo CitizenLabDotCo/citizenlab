@@ -11,7 +11,7 @@ namespace :cl2back do
           slug: 'homepage-info',
           title_multiloc: multiloc_service.i18n_to_multiloc('pages.homepage_info_title'),
           body_multiloc: multiloc_service.i18n_to_multiloc('pages.homepage_info_body'),
-        )        
+        )
       end
     end
   end
