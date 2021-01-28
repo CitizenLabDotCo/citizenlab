@@ -11,7 +11,7 @@ import {
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IUpdatedProjectProperties } from 'services/projects';
+import { IUpdatedProjectProperties, IProjectData } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { mergeWith, castArray } from 'lodash-es';
 
@@ -20,10 +20,8 @@ import { FunctionComponent } from 'react';
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
-import { IProjectData } from 'services/projects';
 import { IUserData } from 'services/users';
 import { FormikSubmitHandler, Multiloc } from 'typings';
-import { IUserData } from 'services/users';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
