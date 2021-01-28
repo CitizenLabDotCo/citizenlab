@@ -9,7 +9,7 @@ class TrackIntercomService
 
   # @param [User] user
   # @param [Tenant] tenant
-  def identify_user(user, tenant)
+  def identify_user(user, tenant = Tenant.current)
     return unless @intercom && track_user?(user)
 
     contact = search_contact(user)

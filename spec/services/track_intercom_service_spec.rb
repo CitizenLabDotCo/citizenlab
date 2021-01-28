@@ -9,14 +9,13 @@ describe TrackIntercomService do
   describe "identify_user" do
 
     it "doesn't interact with intercom when the given user is not an admin or moderator" do
-      tenant = Tenant.current
       user = create(:user)
       super_admin = create(:super_admin)
 
       expect(intercom).not_to receive(:search)
 
-      service.identify_user(user, tenant)
-      service.identify_user(super_admin, tenant)
+      service.identify_user(user)
+      service.identify_user(super_admin)
     end
 
     it "creates an intercom contact if the contact didn't exist yet" do
@@ -58,7 +57,7 @@ describe TrackIntercomService do
         .and_return(double(id: "123"))
       expect(contact).to receive(:add_company).with(id: "123")
 
-      service.identify_user(user, tenant)
+      service.identify_user(user)
     end
 
     it "updates an intercom contact if it already exist" do
@@ -100,7 +99,7 @@ describe TrackIntercomService do
         .and_return(double(id: "123"))
       expect(contact).to receive(:add_company).with(id: "123")
 
-      service.identify_user(user, tenant)
+      service.identify_user(user)
     end
 
   end
