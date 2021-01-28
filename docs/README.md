@@ -1,7 +1,7 @@
 # Changelog
 
 ## Next release 
-/
+- Fixed a bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs.
 
 ## 2021-01-26
 
