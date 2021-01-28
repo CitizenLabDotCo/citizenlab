@@ -13,7 +13,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import { Label, IconTooltip } from 'cl2-component-library';
 import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
-import FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
@@ -111,7 +111,7 @@ const IdeaStatusForm = ({
         <SectionField>
           <Field
             name="title_multiloc"
-            component={FormikInputMultilocWithLocaleSwitcherWithLocaleSwitcher}
+            component={FormikInputMultilocWithLocaleSwitcher}
             label={formatMessage(messages.fieldTitle)}
           />
           {touched.title_multiloc && (
