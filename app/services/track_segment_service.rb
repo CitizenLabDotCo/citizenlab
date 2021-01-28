@@ -37,12 +37,12 @@ class TrackSegmentService
   def identify_tenant(tenant)
     return unless Analytics
     traits = {
-        name: tenant.name,
-        website: "https://#{tenant.host}",
-        avatar: tenant&.logo&.medium&.url,
-        createdAt: tenant.created_at,
-        tenantLocales: tenant.settings.dig('core', 'locales'),
-        **@tracking_service.tenant_properties(tenant)
+      name: tenant.name,
+      website: "https://#{tenant.host}",
+      avatar: tenant&.logo&.medium&.url,
+      createdAt: tenant.created_at,
+      tenantLocales: tenant.settings.dig('core', 'locales'),
+      **@tracking_service.tenant_properties(tenant)
     }
 
     integrations = { All: true, Intercom: true, SatisMeter: true }
@@ -50,11 +50,11 @@ class TrackSegmentService
     # Segment provides no way to track a group of users directly.
     # You have to piggyback the group traits/properties when associating a user to the group.
     # This is the reason why we use a dummy user.
-    Analytics && tenant && Analytics.group(
-        user_id: dummy_user_id,
-        group_id: tenant.id,
-        traits: traits,
-        integrations: integrations
+    Analytics.group(
+      user_id: dummy_user_id,
+      group_id: tenant.id,
+      traits: traits,
+      integrations: integrations
     )
   end
 
@@ -70,9 +70,9 @@ class TrackSegmentService
 
   def integrations(user)
     {
-        All: true,
-        Intercom: [:admin, :project_moderator].include?(user.highest_role),
-        SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
+      All: true,
+      Intercom: [:admin, :project_moderator].include?(user.highest_role),
+      SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
     }
   end
 
