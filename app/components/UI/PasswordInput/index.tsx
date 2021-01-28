@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Input, Button } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+
+const Container = styled.div`
+  position: relative;
+  display: flex;
+`;
+
+const StyledInput = styled(Input)``;
+
+const ShowPasswordButton = styled(Button)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 15px;
+`;
 
 interface Props {
   id: string;
@@ -30,8 +45,8 @@ const PasswordInput = ({
 
   if (!isNilOrError(locale)) {
     return (
-      <>
-        <Input
+      <Container>
+        <StyledInput
           type={showPassword ? 'text' : 'password'}
           id={id}
           value={value}
@@ -41,10 +56,10 @@ const PasswordInput = ({
           autocomplete={autocomplete}
           placeholder={placeholder}
         />
-        <Button locale={locale} onClick={handleOnClick}>
+        <ShowPasswordButton locale={locale} onClick={handleOnClick}>
           {showPassword ? 'Hide password' : 'Show password'}
-        </Button>
-      </>
+        </ShowPasswordButton>
+      </Container>
     );
   }
 
