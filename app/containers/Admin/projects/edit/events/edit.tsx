@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import InputMultiloc from 'components/UI/InputMultiloc';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
@@ -292,7 +292,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
           >
             <Section>
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
@@ -303,7 +303,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField>
-                <InputMultiloc
+                <InputMultilocWithLocaleSwitcher
                   id="location"
                   label={<FormattedMessage {...messages.locationLabel} />}
                   type="text"
