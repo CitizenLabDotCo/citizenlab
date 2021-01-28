@@ -92,10 +92,6 @@ type InputProps = {
 
 interface Props extends InputProps, InjectedIntlProps {}
 
-//   componentWillMount() {
-//     trackEventByName(tracks.signUpCustomFieldsStepExited);
-//   }
-
 const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
   ({ onData, intl: { formatMessage }, onCompleted, step }) => {
     const [processing, setProcessing] = useState<boolean>(false);
@@ -106,6 +102,9 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
 
     useEffect(() => {
       trackEventByName(tracks.signUpCustomFieldsStepEntered);
+      return () => {
+        trackEventByName(tracks.signUpCustomFieldsStepExited);
+      };
     }, []);
 
     useEffect(() => {
