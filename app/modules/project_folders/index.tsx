@@ -91,9 +91,7 @@ const configuration: ModuleConfiguration = {
       props
     ) => (
       <RenderOnPublicationType publication={props.publication}>
-        <RenderOnProjectFolderModerator>
-          <ProjectFolderRow {...props} />
-        </RenderOnProjectFolderModerator>
+        <ProjectFolderRow {...props} />
       </RenderOnPublicationType>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (

@@ -22,17 +22,13 @@ interface Props {}
 const ModeratorProjectList = memo<Props>(() => {
   const adminPublications = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
-    folderId: null,
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   const adminPublicationRow = (adminPublication) => {
     if (adminPublication.publicationType === 'project') {
       return <ProjectRow publication={adminPublication} />;
-    } else if (
-      adminPublication.publicationType === 'folder' &&
-      isProjectFoldersEnabled
-    ) {
+    } else {
       return (
         <Outlet
           id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
@@ -63,13 +59,16 @@ const ModeratorProjectList = memo<Props>(() => {
           <List>
             {adminPublicationsList.map((adminPublication, index) => {
               return (
-                <Row
-                  key={index}
-                  id={adminPublication.id}
-                  isLastItem={index === adminPublicationsList.length - 1}
-                >
-                  {adminPublicationRow(adminPublication)}
-                </Row>
+                !isProjectFoldersEnabled ||
+                (!adminPublication.relationships.parent.data && (
+                  <Row
+                    key={index}
+                    id={adminPublication.id}
+                    isLastItem={index === adminPublicationsList.length - 1}
+                  >
+                    {adminPublicationRow(adminPublication)}
+                  </Row>
+                ))
               );
             })}
           </List>
