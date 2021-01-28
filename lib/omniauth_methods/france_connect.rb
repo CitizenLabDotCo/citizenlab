@@ -2,13 +2,13 @@ module OmniauthMethods
   class FranceConnect
     include Verification::Methods::FranceConnect
 
-    def profile_to_user_attrs auth
+    def profile_to_user_attrs(auth)
       # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
         last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
-        locale: Tenant.current.closest_locale_to('fr-FR'),
+        locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
         remote_avatar_url: auth.info['image'],
       }.tap do |attrs|
         custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
@@ -21,37 +21,38 @@ module OmniauthMethods
       end
     end
 
-    def omniauth_setup tenant, env
-      if tenant.has_feature?('franceconnect_login')
-        options = env['omniauth.strategy'].options
-        options[:scope] = [:openid, :profile, :email, :address]
-        options[:response_type] = :code
-        options[:state] = true # Requis par France connect
-        options[:nonce] = true # Requis par France connect
-        options[:issuer] = "https://#{host}" # L'environnement d'intégration utilise à présent 'https'
-        options[:client_auth_method] = 'Custom' # France connect n'utilise pas l'authent "BASIC".
-        options[:client_signing_alg] = :HS256   # Format de hashage France Connect
-        options[:client_options] = {
-          identifier: Tenant.settings("franceconnect_login", "identifier"),
-          secret: Tenant.settings("franceconnect_login", "secret"),
+    # @param [AppConfiguration] configuration
+    def omniauth_setup(configuration, env)
+      return unless configuration.has_feature?('franceconnect_login')
+
+      env['omniauth.strategy'].options.merge!({
+        scope: [:openid, :profile, :email, :address],
+        response_type: :code,
+        state: true, # required by France connect
+        nonce: true, # required by France connect
+        issuer: "https://#{host}", # the integration env is now using 'https'
+        client_auth_method: 'Custom', # France connect does not use BASIC authentication
+        client_signing_alg: :HS256, # hashing function of France Connect
+        client_options: {
+          identifier: configuration.settings("franceconnect_login", "identifier"),
+          secret: configuration.settings("franceconnect_login", "secret"),
           port: 443,
           scheme: 'https',
           host: host,
-          redirect_uri: "#{tenant.base_backend_uri}/auth/franceconnect/callback",
+          redirect_uri: redirect_uri(configuration),
           authorization_endpoint: '/api/v1/authorize',
           token_endpoint: '/api/v1/token',
           userinfo_endpoint: '/api/v1/userinfo'
         }
-
-      end
+      })
     end
 
-    def logout_url user
+    def logout_url(user)
       last_identity = user.identities
-        .where(provider: 'franceconnect')
-        .order(created_at: :desc)
-        .limit(1)
-        &.first
+                          .where(provider: 'franceconnect')
+                          .order(created_at: :desc)
+                          .limit(1)
+                        &.first
 
       id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 
@@ -64,16 +65,23 @@ module OmniauthMethods
     end
 
     def host
-      case Tenant.settings("franceconnect_login", "environment")
-      when "integration"
+      case AppConfiguration.instance.settings("franceconnect_login", "environment")
+      when "integration" then
         'fcp.integ01.dev-franceconnect.fr'
-      when "production"
+      when "production" then
         'app.franceconnect.gouv.fr'
       end
     end
 
     def updateable_user_attrs
       [:first_name, :last_name, :birthyear, :remote_avatar_url]
+    end
+
+    private
+
+    # @param [AppConfiguration] configuration
+    def redirect_uri(configuration)
+      "#{configuration.base_backend_uri}/auth/franceconnect/callback"
     end
 
   end
