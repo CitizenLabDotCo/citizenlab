@@ -163,8 +163,8 @@ const StatusFilter = memo<Props>(
                 {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
                 {type === 'idea' && (
                   <FormattedMessage
-                    {...messages.a11y_numberOfIdeas}
-                    values={{ ideasCount: allPostsCount }}
+                    {...messages.a11y_numberOfInputs}
+                    values={{ inputsCount: allPostsCount }}
                   />
                 )}
                 {type === 'initiative' && (
@@ -219,8 +219,8 @@ const StatusFilter = memo<Props>(
                     {/* Pronounce number of ideas per status when focus/hover it */}
                     {type === 'idea' && (
                       <FormattedMessage
-                        {...messages.a11y_numberOfIdeas}
-                        values={{ ideasCount: filterPostCount }}
+                        {...messages.a11y_numberOfInputs}
+                        values={{ inputsCount: filterPostCount }}
                       />
                     )}
                     {type === 'initiative' && (

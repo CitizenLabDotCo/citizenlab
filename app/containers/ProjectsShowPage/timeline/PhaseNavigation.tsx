@@ -124,7 +124,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
       }
     }, [phases]);
 
-    if (!isNilOrError(locale) && !isNilOrError(phases) && phases.length > 0) {
+    if (!isNilOrError(locale) && !isNilOrError(phases) && phases.length > 1) {
       const navButtonSize = '34px';
       const navButtonStyle = buttonStyle || 'secondary';
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;

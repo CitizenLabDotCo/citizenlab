@@ -1,108 +1,135 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { keys } from 'lodash-es';
 import { Select } from 'cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { IOption } from 'typings';
-import { TRule, ruleTypeConstraints } from './rules';
-import GetCustomFields, {
-  GetUserCustomFieldsChildProps,
-} from 'modules/user_custom_fields/resources/GetUserCustomFields';
-import { IUserCustomFieldData } from 'modules/user_custom_fields/services/userCustomFields';
+import {
+  TRule,
+  TStaticRuleType,
+  TCustomRuleType,
+  ruleTypeConstraints,
+} from './rules';
+import {
+  IUserCustomFieldData,
+  IUserCustomFieldInputType,
+} from 'services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];
   customFieldId?: string;
 }
 
-type Props = {
+interface Props {
   field: FieldDescriptor;
   onChange: (FieldDescriptor: FieldDescriptor) => void;
-  customFields: GetUserCustomFieldsChildProps;
   fieldName?: string;
-};
-
-type State = {};
-
-class FieldSelector extends React.PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { localize } = this.props;
-
-    const staticOptions = keys(ruleTypeConstraints)
-      .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
-      .map((ruleType) => ({
-        value: this.descriptorToOptionValue({
-          ruleType: ruleType as TRule['ruleType'],
-        }),
-        label: this.props.intl.formatMessage(messages[`field_${ruleType}`]),
-      }));
-    const customFieldOptions = (this.props.customFields || [])
-      .filter((customField) => customField.attributes.code !== 'domicile')
-      .map((customField) => ({
-        value: this.descriptorToOptionValue(
-          this.customFieldToDescriptor(customField)
-        ),
-        label: localize(customField.attributes.title_multiloc),
-      }));
-    return staticOptions.concat(customFieldOptions);
-  };
-
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(this.optionValueToDescriptor(option.value));
-  };
-
-  customFieldToDescriptor = (customField: IUserCustomFieldData) => {
-    let ruleType;
-    switch (customField.attributes.input_type) {
-      case 'multiline_text':
-        ruleType = 'custom_field_text';
-        break;
-      case 'multiselect':
-        ruleType = 'custom_field_select';
-        break;
-      default:
-        ruleType = `custom_field_${customField.attributes.input_type}`;
-    }
-    return {
-      ruleType,
-      customFieldId: customField.id,
-    };
-  };
-
-  descriptorToOptionValue = (fieldDescriptor: FieldDescriptor) => {
-    return JSON.stringify(fieldDescriptor);
-  };
-
-  optionValueToDescriptor = (value) => {
-    return JSON.parse(value);
-  };
-
-  render() {
-    const { field, fieldName } = this.props;
-    return (
-      <Select
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-        value={this.descriptorToOptionValue(field)}
-        id={`${fieldName}-e2e`}
-      />
-    );
-  }
 }
 
-const FieldSelectorWithHocs = injectIntl(localize(FieldSelector));
+const FieldSelector = memo(
+  ({
+    intl: { formatMessage },
+    onChange,
+    field,
+    fieldName,
+  }: Props & InjectedIntlProps) => {
+    const localize = useLocalize();
+    const userCustomFields = useUserCustomFields({});
 
-export default (inputProps) => (
-  <GetCustomFields>
-    {(customFields) => (
-      <FieldSelectorWithHocs {...inputProps} customFields={customFields} />
-    )}
-  </GetCustomFields>
+    const generateOptions = (
+      userCustomFields: IUserCustomFieldData[]
+    ): IOption[] => {
+      const labelMessages: {
+        [key in TStaticRuleType]: ReactIntl.FormattedMessage.MessageDescriptor;
+      } = {
+        email: messages.field_email,
+        lives_in: messages.field_lives_in,
+        registration_completed_at: messages.field_registration_completed_at,
+        role: messages.field_role,
+        participated_in_project: messages.field_participated_in_project,
+        participated_in_topic: messages.field_participated_in_topic,
+        participated_in_idea_status:
+          messages.field_participated_in_input_status,
+        verified: messages.field_verified,
+      };
+      const staticOptions = keys(ruleTypeConstraints)
+        .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
+        .map((ruleType) => {
+          return {
+            value: descriptorToOptionValue({
+              ruleType: ruleType as TRule['ruleType'],
+            }),
+            label: formatMessage(labelMessages[ruleType]),
+          };
+        });
+      const customFieldOptions = userCustomFields
+        .filter(
+          (userCustomField) => userCustomField.attributes.code !== 'domicile'
+        )
+        .map((userCustomField) => ({
+          value: descriptorToOptionValue(
+            customFieldToDescriptor(userCustomField)
+          ),
+          label: localize(userCustomField.attributes.title_multiloc),
+        }));
+
+      return staticOptions.concat(customFieldOptions);
+    };
+
+    const handleOnChange = (option: IOption) => {
+      onChange(optionValueToDescriptor(option.value));
+    };
+
+    const customFieldToDescriptor = (customField: IUserCustomFieldData) => {
+      const inputType = customField.attributes.input_type;
+      const ruleTypes: {
+        [key in IUserCustomFieldInputType]: TCustomRuleType;
+      } = {
+        text: 'custom_field_text',
+        number: 'custom_field_number',
+        multiline_text: 'custom_field_text',
+        select: 'custom_field_select',
+        multiselect: 'custom_field_select',
+        checkbox: 'custom_field_checkbox',
+        date: 'custom_field_date',
+      };
+      const ruleType = ruleTypes[inputType];
+
+      return {
+        ruleType,
+        customFieldId: customField.id,
+      };
+    };
+
+    const descriptorToOptionValue = (fieldDescriptor: FieldDescriptor) => {
+      return JSON.stringify(fieldDescriptor);
+    };
+
+    const optionValueToDescriptor = (value) => {
+      return JSON.parse(value);
+    };
+
+    if (!isNilOrError(userCustomFields)) {
+      return (
+        <Select
+          options={generateOptions(userCustomFields)}
+          onChange={handleOnChange}
+          value={descriptorToOptionValue(field)}
+          id={`${fieldName}-e2e`}
+        />
+      );
+    }
+
+    return null;
+  }
 );
+
+export default injectIntl(FieldSelector);

@@ -20,7 +20,9 @@ import messages from './messages';
 
 const Container = styled.main`
   background: ${colors.background};
-  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
   width: 100%;
   position: relative;
 `;

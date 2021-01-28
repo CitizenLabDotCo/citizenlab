@@ -19,7 +19,7 @@ interface InputProps {
 
 export default function useModerations(props: InputProps) {
   const [pageNumber, setPageNumber] = useState(props.pageNumber);
-  const [pageSize, setPageSize] = useState(props.pageNumber);
+  const [pageSize, setPageSize] = useState(props.pageSize);
   const [moderationStatus, setModerationStatus] = useState(
     props.moderationStatus
   );
