@@ -14,6 +14,10 @@ module EmailCampaigns
       ['admin', 'project_moderator']
     end
 
+    def mailer_class
+      IdeaMarkedAsSpamMailer
+    end
+
     def activity_triggers
       {'Notifications::IdeaMarkedAsSpam' => {'created' => true}}
     end

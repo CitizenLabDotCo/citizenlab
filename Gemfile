@@ -120,7 +120,11 @@ gem 'faker'
 # and Rails.
 gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 gem 'skylight'
-gem 'mailgun-ruby'
+# Also required here to be able to initialize Mailgun in 
+# e.g. production.rb, which would otherwise result in an 
+# "undefined method 'mailgun_settings=' for ActionMailer::Base:Class" 
+# exception.
+gem 'mailgun-ruby', '~>1.2.0'
 gem 'dalli'
 gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'

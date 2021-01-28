@@ -1,21 +1,21 @@
 class TimelineService
 
   def future_phases project, time=Time.now
-    date = time.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     project.phases.select do |phase|
       phase.start_at > date
     end
   end
 
   def past_phases project, time=Time.now
-    date = time.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     project.phases.select do |phase|
       phase.end_at < date
     end
   end
 
   def current_phase project, time=Time.now
-    date = time.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.timeline?
       project.phases.find do |phase|
         phase.start_at <= date && phase.end_at >= date
@@ -24,7 +24,7 @@ class TimelineService
   end
 
   def current_and_future_phases project, time=Time.now
-    date = time.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.timeline?
       project.phases.select do |phase|
         phase.end_at >= date
@@ -45,7 +45,7 @@ class TimelineService
   end
 
   def timeline_active project
-    today = Time.now.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.continuous? || project.phases.blank?
       nil
     elsif today > project.phases.maximum(:end_at)  
@@ -58,7 +58,7 @@ class TimelineService
   end
 
   def timeline_active_on_collection projects
-    today = Time.now.in_time_zone(Tenant.settings('core', 'timezone')).to_date
+    today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at) 
     projects.map do |project|

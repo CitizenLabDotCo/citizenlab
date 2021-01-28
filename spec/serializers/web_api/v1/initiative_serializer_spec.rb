@@ -5,7 +5,7 @@ describe WebApi::V1::InitiativeSerializer do
   context "with 'abbreviated user names' enabled" do
 
     before do
-      Tenant.current.turn_on_abbreviated_user_names!
+      AppConfiguration.instance.turn_on_abbreviated_user_names!
     end
 
     let(:jane) { create(:user, first_name: "Jane", last_name: "Doe")}

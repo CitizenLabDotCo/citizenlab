@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      OfficialFeedbackOnVotedInitiativeMailer
+    end
+
     def activity_triggers
       {'Notifications::OfficialFeedbackOnVotedInitiative' => {'created' => true}}
     end
@@ -24,7 +28,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
