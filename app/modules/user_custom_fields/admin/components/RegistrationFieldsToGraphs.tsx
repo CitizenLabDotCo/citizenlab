@@ -16,14 +16,14 @@ import {
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
-import messages from '../../../../containers/Admin/dashboard/messages';
+import messages from 'containers/Admin/dashboard/messages';
 
 // components
-import BarChartByCategory from '../../../../containers/Admin/dashboard/users/charts/BarChartByCategory';
-import PieChartByCategory from '../../../../containers/Admin/dashboard/users/charts/PieChartByCategory';
-import AreaChart from '../../../../containers/Admin/dashboard/users/charts/AreaChart';
-import GenderChart from '../../../../containers/Admin/dashboard/users/charts/GenderChart';
-import AgeChart from '../../../../containers/Admin/dashboard/users/charts/AgeChart';
+import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChartByCategory';
+import PieChartByCategory from 'containers/Admin/dashboard/users/charts/PieChartByCategory';
+import AreaChart from 'containers/Admin/dashboard/users/charts/AreaChart';
+import GenderChart from 'containers/Admin/dashboard/users/charts/GenderChart';
+import AgeChart from 'containers/Admin/dashboard/users/charts/AgeChart';
 
 import GetUserCustomFields, {
   GetUserCustomFieldsChildProps,
