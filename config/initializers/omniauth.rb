@@ -1,4 +1,4 @@
-FACEBOOK_SETUP_PROC = lambda do |env| 
+FACEBOOK_SETUP_PROC = lambda do |env|
   OmniauthMethods::Facebook.new.omniauth_setup(AppConfiguration.instance, env)
 end
 
@@ -17,7 +17,7 @@ end
 BOSA_FAS_SETUP_PROC = lambda do |env|
   OmniauthMethods::BosaFas.new.omniauth_setup(AppConfiguration.instance, env)
 end
- 
+
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, :setup => FACEBOOK_SETUP_PROC
   provider :google_oauth2, :setup => GOOGLE_SETUP_PROC, name: 'google'
@@ -26,7 +26,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, :setup => BOSA_FAS_SETUP_PROC, name: 'bosa_fas'
 end
 
-
-OmniAuth.config.full_host = -> (env) {
+OmniAuth.config.full_host = -> (_env) {
   AppConfiguration.instance&.base_backend_uri
 }
