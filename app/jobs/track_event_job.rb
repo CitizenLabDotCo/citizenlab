@@ -3,10 +3,10 @@ class TrackEventJob < ApplicationJob
   # creates or updates users in tracking destinations
 
   def perform(activity)
-    return unless (tenant = Tenant.current)
-    TrackIntercomService.new.track(activity, tenant) if tenant.has_feature?('intercom')
-    TrackSegmentService.new.track_activity(activity) if tenant.has_feature?('segment')
-  rescue ActiveRecord::RecordNotFound => e
+    tenant = Tenant.current
+    TrackIntercomService.new.track(activity, tenant) if AppConfiguration.instance.has_feature?('intercom')
+    TrackSegmentService.new.track_activity(activity) if AppConfiguration.instance.has_feature?('segment')
+  rescue ActiveRecord::RecordNotFound
     # Ignored
   end
 end
