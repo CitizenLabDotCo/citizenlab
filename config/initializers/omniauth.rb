@@ -28,5 +28,5 @@ end
 
 
 OmniAuth.config.full_host = -> (env) {
-  Tenant.current&.base_backend_uri
+  AppConfiguration.instance&.base_backend_uri
 }
