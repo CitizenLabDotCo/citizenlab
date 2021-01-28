@@ -157,13 +157,13 @@ resource "Users" do
 
       describe do
         before do
-          tn = Tenant.current
-          tn.settings['password_login'] = {
+          settings = AppConfiguration.instance.settings
+          settings['password_login'] = {
             'enabled' => true,
             'allowed' => true,
             'minimum_length' => 5
           }
-          tn.save!
+          AppConfiguration.instance.update! settings: settings
         end
         let(:password) { "ab" }
 
