@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe TrackIntercomService do
   let(:intercom) {
-    double(IntercomInstance)
+    double(IntercomClient)
   }
   let(:service) { TrackIntercomService.new intercom }
 

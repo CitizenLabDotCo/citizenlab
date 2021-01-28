@@ -1,6 +1,6 @@
 class TrackIntercomService
 
-  def initialize intercom_client=IntercomInstance
+  def initialize(intercom_client = IntercomClient)
     @intercom = intercom_client
   end
 
