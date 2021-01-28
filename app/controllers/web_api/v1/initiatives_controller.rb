@@ -7,7 +7,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   
   def index
     @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
 
     if params[:sort].present? && !params[:search].present?
@@ -61,7 +61,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def index_initiative_markers
     @initiatives = policy_scope(Initiative)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
     @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
@@ -87,7 +87,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def filter_counts
     @initiatives = policy_scope(Initiative)
-    search_last_names = !UserDisplayNameService.new(Tenant.current, current_user).restricted?
+    search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params, search_last_names
     counts = {
       'initiative_status_id' => {},
