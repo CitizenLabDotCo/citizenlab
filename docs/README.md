@@ -1,7 +1,11 @@
 # Changelog
 
 ## Next release 
-/
+
+### Added
+- The password fields show an error when the password is too short
+- The password fields have a 'show password' button to let people check their password while typing
+- The password fields have a strength checker with appropriate informative message on how to increase the strength
 
 ## 2021-01-26
 
