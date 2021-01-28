@@ -27,6 +27,8 @@ import {
 // style
 import styled from 'styled-components';
 
+// TO FIX : handle no close logic in a generic way
+// tslint:disable-next-line
 import useUserCustomFieldsSchema from 'modules/user_custom_fields/hooks/useUserCustomFieldsSchema';
 
 const Container = styled.div``;

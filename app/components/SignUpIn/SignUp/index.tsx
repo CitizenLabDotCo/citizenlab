@@ -188,7 +188,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       const step = enabledSteps[indexOf(enabledSteps, activeStep) + 1];
       if (!step) return undefined;
       const isActive = configuration?.[step]?.isActive?.(
-        !isNilOrError(authUser) ? authUser.data : undefined
+        !isNilOrError(authUser) ? authUser : undefined
       );
       return isActive ? step : undefined;
     };
