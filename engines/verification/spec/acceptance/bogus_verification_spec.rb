@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Verifications" do
- 
+
   before do
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
@@ -13,7 +13,7 @@ resource "Verifications" do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{name: 'bogus'}],
+      verification_methods: [{ name: 'bogus' }],
     }
     create(:custom_field, key: 'gender')
     configuration.save!
@@ -23,7 +23,6 @@ resource "Verifications" do
     with_options scope: :verification do
       parameter :desired_error, "Let's you fake errors. Pick your flavour: no_match, not_entitled, taken. Leave empty for success.", required: false
     end
-
 
     describe do
       let(:desired_error) { nil }
@@ -53,7 +52,7 @@ resource "Verifications" do
       example_request "[error] Fake verify with bogus without a match" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
-        expect(json_response).to eq ({:errors => {:base=>[{:error=>"no_match"}]}})
+        expect(json_response).to eq ({ :errors => { :base => [{ :error => "no_match" }] } })
       end
     end
 
@@ -62,17 +61,16 @@ resource "Verifications" do
       example_request "[error] Fake verify with bogus with a match that's not entitled to verification" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
-        expect(json_response).to eq ({:errors => {:base=>[{:error=>"not_entitled"}]}})
+        expect(json_response).to eq ({ :errors => { :base => [{ :error => "not_entitled" }] } })
       end
     end
-
 
     describe do
       let(:desired_error) { "any_none_suported_value" }
       example_request "[error] Fake verify with bogus using invalid desired_error" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
-        expect(json_response).to eq ({:errors => {:desired_error=>[{:error=>"invalid"}]}})
+        expect(json_response).to eq ({ :errors => { :desired_error => [{ :error => "invalid" }] } })
       end
     end
 
@@ -82,14 +80,14 @@ resource "Verifications" do
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: "bogus",
-          verification_parameters: {desired_error: "taken"}
+          verification_parameters: { desired_error: "taken" }
         )
       end
       let(:desired_error) { "taken" }
       example_request "[error] Fake verify with bogus using credentials that are already taken (2nd call)" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
-        expect(json_response).to eq ({:errors => {:base=>[{:error=>"taken"}]}})
+        expect(json_response).to eq ({ :errors => { :base => [{ :error => "taken" }] } })
       end
     end
   end

@@ -11,11 +11,11 @@ module OmniauthMethods
 
     def profile_to_user_attrs(auth)
       {
-          first_name: auth.info['first_name'],
-          last_name: auth.info['last_name'],
-          email: auth.info['email'],
-          remote_avatar_url: auth.info['image'],
-          locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
+        first_name: auth.info['first_name'],
+        last_name: auth.info['last_name'],
+        email: auth.info['email'],
+        remote_avatar_url: auth.info['image'],
+        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
     end
   end

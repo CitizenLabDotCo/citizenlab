@@ -5,8 +5,8 @@ module OmniauthMethods
 
     def profile_to_user_attrs(auth)
       {}.tap do |info|
-        info[:first_name] = auth.dig('extra','raw_info','givenName') if auth.dig('extra','raw_info','givenName')
-        info[:last_name] =  auth.dig('extra','raw_info','surname')   if auth.dig('extra','raw_info','surname')
+        info[:first_name] = auth.dig('extra', 'raw_info', 'givenName') if auth.dig('extra', 'raw_info', 'givenName')
+        info[:last_name] = auth.dig('extra', 'raw_info', 'surname') if auth.dig('extra', 'raw_info', 'surname')
       end
     end
 
