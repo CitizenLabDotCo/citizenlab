@@ -320,7 +320,13 @@ export class AdminProjectEdition extends PureComponent<
   };
 
   goBack = () => {
-    clHistory.push(this.state.goBackUrl || '/admin/projects');
+    const backUrl =
+      this.state.goBackUrl &&
+      this.state.goBackUrl !== this.props.location.pathname
+        ? this.state.goBackUrl
+        : '/admin/projects';
+
+    clHistory.push(backUrl);
   };
 
   onNewIdea = (pathname: string) => (_event) => {

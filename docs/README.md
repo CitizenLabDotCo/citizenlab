@@ -1,7 +1,11 @@
 # Changelog
 
-## Next release 
-/
+## Next release
+- Fixed issue affecting project managers that blocked access to their managed projects, when these are placed inside a folder.
+
+### Fixed
+- A bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs
+- Scrolling on the admin users page
 
 ## 2021-01-26
 
