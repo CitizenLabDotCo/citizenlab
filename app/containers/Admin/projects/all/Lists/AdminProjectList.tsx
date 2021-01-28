@@ -40,10 +40,11 @@ function handleReorderAdminPublication(itemId, newOrder) {
 const AdminProjectList = memo<Props>((_props) => {
   const adminPublications = useAdminPublications({
     publicationStatusFilter: ['published', 'archived', 'draft'],
-    folderId: null,
   });
   const adminPublicationsList = adminPublications.list;
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
+
+  console.log(adminPublicationsList);
 
   if (
     !isNilOrError(adminPublicationsList) &&
@@ -74,27 +75,32 @@ const AdminProjectList = memo<Props>((_props) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <>
-                        <SortableRow
-                          key={item.id}
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={index === adminPublicationsList.length - 1}
-                        >
-                          {item.publicationType === 'project' && (
-                            <ProjectRow
-                              actions={['delete', 'manage']}
+                      (!item.relationships.parent.data ||
+                        !isProjectFoldersEnabled) && (
+                        <>
+                          <SortableRow
+                            key={item.id}
+                            id={item.id}
+                            index={index}
+                            moveRow={handleDragRow}
+                            dropRow={handleDropRow}
+                            lastItem={
+                              index === adminPublicationsList.length - 1
+                            }
+                          >
+                            {item.publicationType === 'project' && (
+                              <ProjectRow
+                                actions={['delete', 'manage']}
+                                publication={item}
+                              />
+                            )}
+                            <Outlet
+                              id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
                               publication={item}
                             />
-                          )}
-                          <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
-                            publication={item}
-                          />
-                        </SortableRow>
-                      </>
+                          </SortableRow>
+                        </>
+                      )
                     );
                   }
                 )}

@@ -14,6 +14,7 @@ export interface InputProps {
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   noEmptyFolder?: boolean;
+  // TODO: remove folder id
   folderId?: string | null;
 }
 
@@ -22,6 +23,7 @@ export type IAdminPublicationContent = {
   publicationType: AdminPublicationType;
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
+  relationships: any;
 };
 
 export interface IOutput {
@@ -39,7 +41,6 @@ export default function useAdminPublications({
   areaFilter,
   publicationStatusFilter,
   noEmptyFolder,
-  folderId,
 }: InputProps) {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
@@ -79,7 +80,6 @@ export default function useAdminPublications({
     const subscription = listAdminPublications({
       queryParameters: {
         areas,
-        folder: folderId,
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize,
@@ -106,6 +106,7 @@ export default function useAdminPublications({
                 publicationId,
                 publicationType,
                 id: adminPublication.id,
+                relationships: adminPublication.relationships,
                 attributes: {
                   ...adminPublication.attributes,
                 },

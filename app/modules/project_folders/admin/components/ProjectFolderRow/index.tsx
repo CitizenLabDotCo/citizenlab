@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -98,21 +98,32 @@ interface Props {
 
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
-  const adminPublications = useAdminPublications({
-    folderId: publication.id,
+
+  const { list: allAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
   });
+
+  const childPublicationIds = publication.relationships.children.data.map(
+    ({ id }) => id
+  );
+
+  const adminPublications = useMemo(() => {
+    if (isNilOrError(allAdminPublications)) return [];
+
+    return allAdminPublications.filter(({ id }) =>
+      childPublicationIds.includes(id)
+    );
+  }, [allAdminPublications]);
 
   const [folderOpen, setFolderOpen] = useState(false);
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState('');
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
-
   const hasProjects =
     !isNilOrError(adminPublications) &&
-    !!adminPublications.list?.length &&
-    adminPublications.list.length > 0;
+    !!adminPublications.length &&
+    adminPublications.length > 0;
 
   if (!isNilOrError(authUser)) {
     const userIsAdmin = isAdmin({ data: authUser });
@@ -171,7 +182,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
         {hasProjects && folderOpen && (
           <ProjectRows>
-            {adminPublications?.list?.map((publication) => (
+            {adminPublications.map((publication) => (
               <InFolderProjectRow
                 publication={publication}
                 key={publication.id}
