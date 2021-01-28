@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, TAutocomplete } from 'cl2-component-library';
+import { Input } from 'cl2-component-library';
 
 interface Props {
   id: string;
@@ -7,7 +7,7 @@ interface Props {
   error?: string;
   onChange: () => void;
   onBlur?: () => void;
-  autocomplete: TAutocomplete;
+  autocomplete: 'current-password' | 'new-password';
   placeholder?: string;
 }
 
