@@ -1,25 +1,69 @@
 # Changelog
 
-## Next release
+## Next release 
+/
 
-### Fixed
-- When creating a project from template, only templates that are supported by the tenant's locale will show up
-- Processing : fixed "existing tags" layout
-- Processing : made feature unreachable when browsing to the url and not logged in
-- Processing : fixed project title overflowing the selection dropdown
-- Processing : only show relevant tags in the existing tags list
-- Processing : fixed keyboard shortcut overlap when creating an new tag
+## 2021-01-26
 
 ### Added
-- Activity feed access for project managers
+- Folder admin rights. Folder admins or 'managers' can be assigned per folder. They can create projects inside folders they have rights for, and moderate/change the folder and all projects that are inside.
+- The 'from' and 'reply-to' emails can be customized by cluster (by our developers, not in Admin HQ). E.g. Benelux notification emails could be sent out by notifications@citizenlab.eu, US emails could be sent out by notifications@citizenlab.us etc., as long as those emails are owned by us. We can choose any email for "reply-to", so also email addresses we don't own. This means "reply-to" could potentially be configured to be an email address of the city, e.g. support@leuven.be. It is currently not possible to customize the reply-to (except for manual campaigns) and from fields for individual tenants.
+- When a survey requires the user to be signed-in, we now show the sign in/up form directly on the page when not logged in (instead of the green infobox with a link to the sign-up popup)
+
+### Fixed
+- The 'reply-to' field of our emails showed up twice in recipient's email clients, now only once.
+
+### Changed
+- Added the recipient first and last name to the 'to' email field in their email client, so not only their email adress is shown.
+- The links in the footer can now expand to multiple lines, and therefore accomodate more items (e.g. soon the addition of a link to the accesibility statement)
+
+## 2021-01-21
+
+### Added
+- Added right-to-left rendering to emails
+
+## 2021-01-18
+
+### Fixed
+- Access rights tab for participatory budget projects
+- Admin moderation page access
+
+## 2021-01-15
+
+### Changed
+- Copy improvements across different languages
+
+## 2021-01-14
+
+### Added
+- Ability to customize the input term for a project
+
+### Changed
+- The word 'idea' was removed from as many places as possible from the platform, replaced with more generic copy.
+
+## 2021-01-13
+
+### Changed
+- Idea cards redesign
+- Project folder page redesign
+- Project folders now have a single folder card image instead of 5 folder images in the admin settings
+- By default 24 instead of 12 ideas or shown now on the project page
+
+## 2020-12-17
+
+### Fixed
+- When creating a project from a template, only templates that are supported by the tenant's locale will show up
+- Fixed several layout, interaction and data issues in the manual tagging feature of the Admin Processing page, making it ready for external use.
+- Fixed project managers access of the Admin Processing page.
+
+### Added
+- Admin activity feed access for project managers
 - Added empty state to processing list when no project is selected
-- Processing : improved validation upon tag creation
-- Processing : added access for moderators to the projects they manage- Processing : improved validation upon tag creation
-- Processing : improved validation upon tag creation
-- Processing : keyboard shortcut tooltip on navigation buttons
+- Keyboard shortcut tooltip for navigation buttons of the Admin Processing page
+
 ### Changed
 - Reduced spacing in sidebar menu, allowing for more items to be displayed
-- Processing : is now using admin text color for idea title and body
+- Style changes on the Admin Processing page
 
 ## 2020-12-08
 

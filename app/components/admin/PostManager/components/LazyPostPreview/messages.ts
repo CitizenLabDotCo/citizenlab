@@ -9,9 +9,16 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.delete',
     defaultMessage: 'Delete',
   },
-  deleteIdeaConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deleteIdeaConfirmation',
-    defaultMessage: 'Are you sure you want to delete this idea?',
+  deleteInputConfirmation: {
+    id: 'app.components.admin.PostManager.PostPreview.deleteInputConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this input? This action cannot be undone.',
+  },
+  deleteInputInTimelineConfirmation: {
+    id:
+      'app.components.admin.PostManager.PostPreview.deleteInputInTimelineConfirmation',
+    defaultMessage:
+      'Are you sure you want to delete this input? The input will be deleted from all project phases and cannot be recovered.',
   },
   deleteInitiativeConfirmation: {
     id:
@@ -34,10 +41,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.picks',
     defaultMessage: 'Picks: {picksNumber}',
   },
-  basketsCountTooltip: {
-    id: 'app.components.admin.PostManager.PostPreview.basketsCountTooltip',
+  pbItemCountTooltip: {
+    id: 'app.components.admin.PostManager.PostPreview.pbItemCountTooltip',
     defaultMessage:
-      'The number of users that added this idea to their participatory budget',
+      "The number of times this has been included in other participants' participatory budgets",
   },
   cancelEdit: {
     id: 'app.components.admin.PostManager.PostPreview.cancelEdit',
@@ -46,10 +53,6 @@ export default defineMessages({
   noOne: {
     id: 'app.components.admin.PostManager.PostPreview.noOne',
     defaultMessage: 'Unassigned',
-  },
-  formTitle: {
-    id: 'app.components.admin.PostManager.PostPreview.formTitle',
-    defaultMessage: 'Editing idea',
   },
   save: {
     id: 'app.components.admin.PostManager.PostPreview.save',

@@ -49,10 +49,9 @@ const User = ({ userId, isVerified }: Props) => {
 
       <StyledAvatar
         userId={userId}
-        size="30px"
-        hasHoverEffect={false}
+        size={30}
         fillColor={theme?.navbarTextColor || colors.label}
-        verified
+        addVerificationBadge
       />
     </>
   );

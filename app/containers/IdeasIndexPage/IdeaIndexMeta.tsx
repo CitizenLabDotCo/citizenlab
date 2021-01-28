@@ -31,8 +31,10 @@ const IdeaMeta = React.memo<Props & InjectedIntlProps>(
   ({ intl, authUser, tenantLocales }) => {
     const { formatMessage } = intl;
     const { location } = window;
-    const ideasIndexTitle = formatMessage(messages.metaTitle);
-    const ideasIndexDescription = formatMessage(messages.metaDescription);
+    const ideasIndexTitle = formatMessage(messages.inputsIndexMetaTitle);
+    const ideasIndexDescription = formatMessage(
+      messages.inputsIndexMetaDescription
+    );
 
     return (
       <Helmet>

@@ -12,8 +12,8 @@ import TabbedResource from 'components/admin/TabbedResource';
 import {
   IUserCustomFieldData,
   isBuiltInField,
-  IInputType,
-} from 'modules/user_custom_fields/services/userCustomFields';
+  IUserCustomFieldInputType,
+} from 'services/userCustomFields';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -41,7 +41,7 @@ const RegistrationCustomFieldEdit = memo(
   }: Props & WithRouterProps & InjectedIntlProps) => {
     const localize = useLocalize();
     const userCustomField = useUserCustomField(userCustomFieldId);
-    const hasOptions = (inputType: IInputType) => {
+    const hasOptions = (inputType: IUserCustomFieldInputType) => {
       return inputType === 'select' || inputType === 'multiselect';
     };
 

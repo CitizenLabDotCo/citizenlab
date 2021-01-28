@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 import {
   userCustomFieldsStream,
   IUserCustomFieldData,
-  IInputType,
-} from 'modules/user_custom_fields/services/userCustomFields';
+  IUserCustomFieldInputType,
+} from 'services/userCustomFields';
 import { isBoolean } from 'lodash-es';
 
 interface InputProps {}
@@ -15,7 +15,7 @@ type children = (
 
 interface Props extends InputProps {
   children?: children;
-  inputTypes?: IInputType[];
+  inputTypes?: IUserCustomFieldInputType[];
   cache?: boolean;
 }
 
