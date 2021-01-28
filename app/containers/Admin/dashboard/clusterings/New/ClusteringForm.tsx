@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -77,7 +77,7 @@ class ClusteringForm extends PureComponent<
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.fieldTitle} />}
             />
             {touched.title_multiloc && (
