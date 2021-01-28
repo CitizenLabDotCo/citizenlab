@@ -4,7 +4,7 @@ import {
   userCustomFieldsStream,
   IUserCustomFieldData,
   IUserCustomFieldInputType,
-} from 'services/userCustomFields';
+} from '../services/userCustomFields';
 import { isBoolean } from 'lodash-es';
 
 interface InputProps {}
