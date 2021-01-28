@@ -28,7 +28,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
-      name_service = UserDisplayNameService.new(Tenant.current, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
           initiating_user_first_name: notification.initiating_user&.first_name,

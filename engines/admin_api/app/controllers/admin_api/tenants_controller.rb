@@ -57,7 +57,7 @@ module AdminApi
     end
 
     def settings_schema
-      render json: Tenant.settings_json_schema
+      render json: AppConfiguration.settings_json_schema
     end
 
     def style_schema

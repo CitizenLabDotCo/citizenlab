@@ -25,7 +25,7 @@ class User < ApplicationRecord
                   :using => { :tsearch => {:prefix => true} }
 
   scope :by_username, -> (username) {
-    Tenant.current.has_feature?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
+    AppConfiguration.instance.has_feature?("abbreviated_user_names") ? by_first_name(username) : by_full_name(username)
   }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
@@ -58,7 +58,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
-  validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
+  validates :locale, inclusion: { in: proc {AppConfiguration.instance.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
   validates :gender, inclusion: {in: GENDERS}, allow_nil: true
   validates :birthyear, numericality: {only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.now.year}, allow_nil: true
@@ -79,9 +79,8 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
-    if record.email && User.find_by_cimail(record.email).present?
-      duplicate_user = User.find_by_cimail(record.email)
-      if duplicate_user.invite_pending? && duplicate_user.id != id
+    if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
+      if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
         record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
       elsif duplicate_user.email != record.email
@@ -176,10 +175,10 @@ class User < ApplicationRecord
     email = request.params["auth"]["email"]
 
     # Hack to embed phone numbers in email
-    if Tenant.current.has_feature?('password_login') && Tenant.settings('password_login','phone')
+    if AppConfiguration.instance.has_feature?('password_login') && AppConfiguration.instance.settings('password_login','phone')
       phone_service = PhoneService.new
       if phone_service.phone_or_email(email) == :phone
-        pattern = Tenant.settings('password_login', 'phone_email_pattern')
+        pattern = AppConfiguration.instance.settings('password_login', 'phone_email_pattern')
         email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
       end
     end
@@ -295,7 +294,7 @@ class User < ApplicationRecord
 
   def generate_slug
     return if self.slug.present?
-    if Tenant.current.has_feature?("abbreviated_user_names")
+    if AppConfiguration.instance.has_feature?("abbreviated_user_names")
       self.slug = SecureRandom.uuid
     elsif self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.full_name
