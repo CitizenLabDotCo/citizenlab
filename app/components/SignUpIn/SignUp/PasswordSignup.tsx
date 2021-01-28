@@ -8,6 +8,7 @@ import request from 'utils/request';
 // components
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import PasswordInput from 'components/UI/PasswordInput';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
@@ -68,6 +69,10 @@ const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-top: 8px;
+`;
+
+const StyledPasswordInput = styled(PasswordInput)`
+  margin-bottom: 20px;
 `;
 
 type InputProps = {
@@ -526,15 +531,14 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             <FormElement id="e2e-password-container">
               <FormLabel
                 labelMessage={messages.passwordLabel}
-                htmlFor="password"
+                htmlFor="signup-password-input"
               />
-              <Input
-                type="password"
-                id="password"
-                value={password}
+              <StyledPasswordInput
+                id="signup-password-input"
                 placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
+                value={password}
                 onChange={this.handlePasswordOnChange}
+                error={passwordError}
                 autocomplete="new-password"
               />
               <Error
