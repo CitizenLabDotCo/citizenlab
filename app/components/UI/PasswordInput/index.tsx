@@ -32,7 +32,7 @@ const PasswordInput = ({
     return (
       <>
         <Input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           id={id}
           value={value}
           error={error}
