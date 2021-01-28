@@ -3,21 +3,10 @@ class TrackUserJob < ApplicationJob
   # creates or updates users in tracking destinations
 
   def perform(user)
-    tenant = nil
-
-    begin
-      tenant = Tenant.current
-      if tenant
-        if tenant.has_feature?('intercom')
-          intercom_service = TrackIntercomService.new()
-          intercom_service.identify_user(user, tenant)
-        end
-        if tenant.has_feature?('segment')
-          segment_service = TrackSegmentService.new()
-          segment_service.identify_user(user)
-        end
-      end
-    rescue ActiveRecord::RecordNotFound => e
-    end
+    return unless (tenant = Tenant.current)
+    TrackIntercomService.new.identify_user(user, tenant) if tenant.has_feature?('intercom')
+    TrackSegmentService.new.identify_user(user) if tenant.has_feature?('segment')
+  rescue ActiveRecord::RecordNotFound
+    # Ignored
   end
 end
