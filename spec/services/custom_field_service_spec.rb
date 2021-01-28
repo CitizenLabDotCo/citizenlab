@@ -18,7 +18,7 @@ describe CustomFieldService do
       )
     ]}
     it "creates localized schemas with titles and descriptions for all languages" do
-      schema = service.fields_to_json_schema_multiloc(Tenant.current, fields)
+      schema = service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
       expect(schema['en'][:properties]['field1'][:title]).to eq title_multiloc['en']
       expect(schema['nl-NL'][:properties]['field1'][:title]).to eq title_multiloc['nl-NL']
       expect(schema['en'][:properties]['field1'][:description]).to eq description_multiloc['en']
@@ -167,7 +167,8 @@ describe CustomFieldService do
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
         field5 = create(:custom_field, key: 'field5', input_type: 'checkbox'),
         field6 = create(:custom_field, key: 'field6', input_type: 'date'),
-        create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true)
+        create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
+        create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
       ]
       field5.insert_at(3)
       field6.insert_at(3)
@@ -185,8 +186,9 @@ describe CustomFieldService do
          "field5"=>{},
          "field6"=>{},
          "field7"=>{:"ui:widget"=>"hidden"},
+         "field8"=>{:"ui:widget"=>"hidden"},
          "ui:order"=>
-          ["field1", "field2", "field3", "field6", "field5", "field4", "field7"]}
+             %w[field1 field2 field3 field6 field5 field4 field7 field8]}
       )
     end
   end

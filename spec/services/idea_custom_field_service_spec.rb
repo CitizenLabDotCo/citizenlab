@@ -17,6 +17,7 @@ describe IdeaCustomFieldService do
         'body',
         'topic_ids',
         'location',
+        'proposed_budget',
         'images',
         'attachments',
         nil
@@ -46,6 +47,7 @@ describe IdeaCustomFieldService do
       expect(output.map(&:code)).to eq [
         'title',
         'body',
+        'proposed_budget',
         'topic_ids',
         'location',
         'images',

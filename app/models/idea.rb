@@ -4,18 +4,24 @@ class Idea < ApplicationRecord
   include Moderatable
 
   belongs_to :project, touch: true
-  counter_culture :project, 
-    column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
+  belongs_to :idea_status, optional: true
+
+  counter_culture :idea_status, touch: true
+  counter_culture :project,
+    column_name: proc { |idea| idea.publication_status == 'published' ? "ideas_count" : nil },
     column_names: {
       ["ideas.publication_status = ?", 'published'] => 'ideas_count'
     },
     touch: true
-  counter_culture :project, 
-    column_name: 'comments_count', 
+
+  counter_culture :project,
+    column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
 
   belongs_to :assignee, class_name: 'User', optional: true
 
+  has_many :tagging_taggings
+  has_many :tagging_tags, through: :tagging_taggings
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
@@ -24,13 +30,14 @@ class Idea < ApplicationRecord
   has_many :phases, through: :ideas_phases
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
-
-  belongs_to :idea_status, optional: true
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
 
+  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, allow_nil: true
   with_options unless: :draft? do |idea|
     idea.validates :idea_status, presence: true
     idea.validates :project, presence: true
@@ -50,7 +57,7 @@ class Idea < ApplicationRecord
 
   scope :with_some_topics, (Proc.new do |topic_ids|
     with_dups = joins(:ideas_topics).where(ideas_topics: {topic_id: topic_ids})
-    # Removing duplicate results in this manner, 
+    # Removing duplicate results in this manner,
     # because .distinct gives SQL errors when
     # combined with other queries.
     where(id: with_dups)
@@ -80,6 +87,7 @@ class Idea < ApplicationRecord
 
   scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
+
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
     .order("idea_statuses.ordering #{direction}, ideas.id")
@@ -90,23 +98,35 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  
+  scope :order_with, lambda { |scope_name|
+    case scope_name
+    when 'random'   then order_random
+    when 'trending' then order_trending
+    when 'popular'  then order_popular
+    when 'new'      then order_new
+    when '-new'     then order_new(:asc)
+    else order_trending
+    end
+  }
+
+  scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
+
   private
 
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
       self.body_multiloc,
-      %i{title alignment list decoration link video}
+      %i{title alignment list decoration link image video}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 
   def set_idea_status
     self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
-  
+
   def assignee_can_moderate_project
     if self.assignee && self.project &&
       !ProjectPolicy.new(self.assignee, self.project).moderate?
@@ -123,5 +143,4 @@ class Idea < ApplicationRecord
       Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
   end
-
 end

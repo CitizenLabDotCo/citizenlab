@@ -16,4 +16,15 @@ class IdeaStatusPolicy < ApplicationPolicy
     true
   end
 
+  def create?
+    user&.active? && user&.admin?
+  end
+
+  def update?
+    create?
+  end
+
+  def destroy?
+    update?
+  end
 end

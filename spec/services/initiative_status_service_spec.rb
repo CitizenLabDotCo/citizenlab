@@ -6,14 +6,17 @@ describe InitiativeStatusService do
   describe "#automated_transitions!" do
     before do
       @initiative = create(:initiative)
-      tenant = Tenant.current
-      tenant.settings['initiatives'] = {
+      configuration = AppConfiguration.instance
+      configuration.settings['initiatives'] = {
         enabled: true,
         allowed: true,
         voting_threshold: 2,
-        days_limit: 20
+        days_limit: 20,
+        threshold_reached_message: {"en" => "Threshold reached"},
+        eligibility_criteria: {"en" => "Eligibility criteria"},
+        success_stories: []
       }
-      tenant.save!
+      configuration.save!
       TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
     end
 

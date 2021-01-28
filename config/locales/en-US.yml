@@ -134,6 +134,9 @@ en:
       location:
         title: Location
         description:
+      proposed_budget:
+        title: Proposed Budget
+        description:     
       images:
         title: Images
         description:

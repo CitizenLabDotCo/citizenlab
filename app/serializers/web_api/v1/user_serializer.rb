@@ -1,13 +1,21 @@
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
-  attributes :first_name, :last_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
+  attributes :first_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
   
+  attribute :last_name do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+    name_service.last_name(object)
+  end
+
   attribute :email, if: Proc.new { |object, params|
     view_private_attributes? object, params
   }
 
   attribute :custom_field_values, if: Proc.new { |object, params|
     view_private_attributes? object, params
-  }
+  } do |object|
+    custom_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    CustomFieldService.remove_disabled_custom_fields(custom_field_values)
+  end
 
   attribute :verified, if: Proc.new {|object, params|
     view_private_attributes? object, params
@@ -31,5 +39,4 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   def self.view_private_attributes? object, params={}
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end
-
 end

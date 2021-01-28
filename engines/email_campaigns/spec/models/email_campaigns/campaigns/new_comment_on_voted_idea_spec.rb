@@ -18,6 +18,16 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea, type: :model do
   		command = campaign.generate_commands(recipient: vote.user, activity: activity).first
 
       expect(command.dig(:event_payload, :comment_body_multiloc)).to eq(comment.body_multiloc)
-  	end
+    end
+
+    it "generates a command with an abbreviated name" do
+      Tenant.current.turn_on_abbreviated_user_names!
+      expect(vote.user.admin?).to be false
+      expect(comment.author.admin?).to be false
+
+      command = campaign.generate_commands(recipient: vote.user, activity: activity).first
+      initial = "#{comment.author.last_name[0]}."
+      expect(command.dig(:event_payload, :initiating_user_last_name)).to eq(initial)
+    end
   end
 end

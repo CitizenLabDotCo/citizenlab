@@ -24,7 +24,6 @@ class Phase < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
-
   private
 
   def sanitize_description_multiloc
@@ -33,7 +32,7 @@ class Phase < ApplicationRecord
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 
@@ -61,7 +60,7 @@ class Phase < ApplicationRecord
   def validate_no_other_budgeting_phases
     if budgeting? && project.phases.where.not(id: id).select(&:budgeting?).present?
       errors.add(
-        :base, :has_other_budgeting_phases, 
+        :base, :has_other_budgeting_phases,
         message: 'has other budgeting phases'
         )
     end

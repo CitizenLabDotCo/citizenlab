@@ -345,8 +345,7 @@ module AdminApi
 
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
-          yml_user = service.anonymized_attributes Tenant.settings('core', 'locales'), user: u
-          yml_user.delete 'custom_field_values'
+          yml_user = service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: u
           yml_user
         else
            yml_user = { 
@@ -429,12 +428,12 @@ module AdminApi
     end
 
     def yml_permissions shift_timestamps: 0
-      permittable_ids = [@project.id] + @project.phases.ids
-      Permission.where(permittable_id: permittable_ids).map do |p|
+      permission_scope_ids = [@project.id] + @project.phases.ids
+      Permission.where(permission_scope_id: permission_scope_ids).map do |p|
         yml_permission = {
           'action'          => p.action,
           'permitted_by'    => p.permitted_by,
-          'permittable_ref' => lookup_ref(p.permittable_id, [:project, :phase]),
+          'permission_scope_ref' => lookup_ref(p.permission_scope_id, [:project, :phase]),
           'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
           'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }
@@ -456,7 +455,17 @@ module AdminApi
           'updated_at'             => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
           'location_point_geojson' => i.location_point_geojson,
           'location_description'   => i.location_description,
-          'budget'                 => i.budget
+          'budget'                 => i.budget,
+          'proposed_budget'       => i.proposed_budget,
+          'text_images_attributes'       => @project.text_images.map{ |i|
+            {
+              'imageable_field'          => i.imageable_field,
+              'remote_image_url'         => i.image_url,
+              'text_reference'           => i.text_reference,
+              'created_at'               => i.created_at.to_s,
+              'updated_at'               => i.updated_at.to_s
+            }
+          }
         }
         store_ref yml_idea, i.id, :idea
         yml_idea

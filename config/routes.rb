@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   mount Verification::Engine => "", as: 'verification'
   mount Volunteering::Engine => "", as: 'volunteering'
   mount Maps::Engine => "", as: 'maps'
+  mount Tagging::Engine => "", as: 'tagging'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -46,6 +47,8 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_type: 'Idea'}
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        get :as_xlsx_with_tags, on: :collection, action: 'index_with_tags_xlsx'
+        get :mini, on: :collection, action: 'index_mini'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
@@ -67,7 +70,7 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
       end
 
-      resources :idea_statuses, only: [:index, :show]
+      resources :idea_statuses
       resources :initiative_statuses, only: [:index, :show]
 
       # auth
@@ -101,10 +104,16 @@ Rails.application.routes.draw do
       resources :topics do
         patch 'reorder', on: :member
       end
+
       resources :projects_topics, only: [:index, :show, :create, :reorder, :destroy] do
         patch 'reorder', on: :member
       end
-      resources :areas
+
+      resources :areas do
+        patch 'reorder', on: :member
+      end
+
+      resource :app_configuration, only: [:show, :update]
 
       resources :tenants, only: [:update] do
         get :current, on: :collection
@@ -114,6 +123,10 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
+      # :action is already used as param, so we chose :permission_action instead
+      resources :permissions, param: :permission_action do
+        get 'participation_conditions', on: :member
+      end
       concern :participation_context do
         # :action is already used as param, so we chose :permission_action instead
         resources :permissions, param: :permission_action do
@@ -125,41 +138,45 @@ Rails.application.routes.draw do
       # resource (i.e. files) nested in a shallow resource. File resources have
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
-      resources :events, only: [:show, :edit, :update, :destroy] do
-        resources :files, defaults: {container_type: 'Event'}, shallow: false
+
+      resources :events, only: %i[show edit update destroy] do
+        resources :files, defaults: { container_type: 'Event' }, shallow: false
       end
-      resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
-        resources :files, defaults: {container_type: 'Phase'}, shallow: false
+
+      resources :phases,
+                only: %i[show edit update destroy],
+                concerns: %i[participation_context],
+                defaults: { parent_param: :phase_id } do
+        resources :files, defaults: { container_type: 'Phase' }, shallow: false
       end
-      resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
-        resources :events, only: [:index, :new, :create]
+
+      resources :projects,
+                concerns: %i[participation_context],
+                defaults: { parent_param: :project_id } do
+
+        resources :events, only: %i[index new create]
         resources :projects_topics, only: [:index]
-        resources :topics, only: [:index, :reorder] do
+        resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end
-        resources :phases, only: [:index, :new, :create]
-        resources :images, defaults: {container_type: 'Project'}
-        resources :files, defaults: {container_type: 'Project'}
+        resources :phases, only: %i[index new create]
+        resources :images, defaults: { container_type: 'Project' }
+        resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
-        resources :custom_fields, controller: 'idea_custom_fields', only: [:index, :show] do
+        resources :custom_fields, controller: 'idea_custom_fields', only: %i[index show] do
           get 'schema', on: :collection
           patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
-      resources :admin_publications, only: [:index, :show] do
+      resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
       end
-      resources :project_folders do
-        resources :images, defaults: {container_type: 'ProjectFolder'}
-        resources :files, defaults: {container_type: 'ProjectFolder'}
-        get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
-      end
 
-      resources :notifications, only: [:index, :show] do
+      resources :notifications, only: %i[index show] do
         post 'mark_read', on: :member
         post 'mark_all_read', on: :collection
       end
@@ -184,9 +201,11 @@ Rails.application.routes.draw do
       scope 'stats' do
         route_params = {controller: 'stats_users'}
         get 'users_count', **route_params
+
         get 'users_by_time', **route_params
         get 'users_by_time_cumulative', **route_params
         get 'active_users_by_time', **route_params
+        get 'active_users_by_time_cumulative', **route_params
         get 'users_by_gender', **route_params
         get 'users_by_birthyear', **route_params
         get 'users_by_domicile', **route_params
@@ -194,14 +213,31 @@ Rails.application.routes.draw do
         get 'users_engagement_scores', **route_params
         get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
+        get 'users_by_time_as_xlsx', **route_params
+        get 'users_by_time_cumulative_as_xlsx', **route_params
+        get 'active_users_by_time_as_xlsx', **route_params
+        get 'users_by_gender_as_xlsx', **route_params
+        get 'users_by_birthyear_as_xlsx', **route_params
+        get 'users_by_domicile_as_xlsx', **route_params
+        get 'users_by_education_as_xlsx', **route_params
+        get 'users_by_custom_field_as_xlsx/:custom_field_id', action: :users_by_custom_field_as_xlsx, **route_params
 
         route_params = {controller: 'stats_ideas'}
         get 'ideas_count', **route_params
+
         get 'ideas_by_time', **route_params
         get 'ideas_by_time_cumulative', **route_params
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
         get 'ideas_by_area', **route_params
+        get 'ideas_by_status', **route_params
+        get 'ideas_by_status_as_xlsx', **route_params
+
+        get 'ideas_by_time_as_xlsx', **route_params
+        get 'ideas_by_time_cumulative_as_xlsx', **route_params
+        get 'ideas_by_topic_as_xlsx', **route_params
+        get 'ideas_by_project_as_xlsx', **route_params
+        get 'ideas_by_area_as_xlsx', **route_params
 
         route_params = { controller: 'stats_initiatives' }
         get 'initiatives_count', **route_params
@@ -217,6 +253,11 @@ Rails.application.routes.draw do
         get 'comments_by_topic', **route_params
         get 'comments_by_project', **route_params
 
+        get 'comments_by_time_as_xlsx', **route_params
+        get 'comments_by_time_cumulative_as_xlsx', **route_params
+        get 'comments_by_topic_as_xlsx', **route_params
+        get 'comments_by_project_as_xlsx', **route_params
+
         route_params = { controller: 'stats_votes' }
         get 'votes_count', **route_params
         get 'votes_by_birthyear', **route_params
@@ -228,10 +269,24 @@ Rails.application.routes.draw do
         get 'votes_by_time_cumulative', **route_params
         get 'votes_by_topic', **route_params
         get 'votes_by_project', **route_params
+
+        get 'votes_by_birthyear_as_xlsx', **route_params
+        get 'votes_by_education_as_xlsx', **route_params
+        get 'votes_by_domicile_as_xlsx', **route_params
+        get 'votes_by_gender_as_xlsx', **route_params
+        get 'votes_by_custom_field_as_xlsx', **route_params
+        get 'votes_by_time_as_xlsx', **route_params
+        get 'votes_by_time_cumulative_as_xlsx', **route_params
+        get 'votes_by_topic_as_xlsx', **route_params
+        get 'votes_by_project_as_xlsx', **route_params
       end
 
       scope 'mentions', controller: 'mentions' do
         get 'users'
+      end
+
+      scope 'action_descriptors', controller: 'action_descriptors' do
+        get 'initiatives'
       end
 
       resources :baskets, except: [:index]

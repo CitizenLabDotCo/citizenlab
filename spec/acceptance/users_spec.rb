@@ -83,14 +83,14 @@ resource "Users" do
 
       context "with phone password_login turned on" do
         before do
-          settings = Tenant.current.settings
+          settings = AppConfiguration.instance.settings
           settings['password_login'] = {
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
             "phone_email_pattern" => "phone+__PHONE__@test.com"
           }
-          Tenant.current.update!(settings: settings)
+          AppConfiguration.instance.update!(settings: settings)
         end
 
         describe do
@@ -198,14 +198,14 @@ resource "Users" do
 
       context "with phone password_login turned on" do
         before do
-          settings = Tenant.current.settings
+          settings = AppConfiguration.instance.settings
           settings['password_login'] = {
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
             "phone_email_pattern" => "phone+__PHONE__@test.com"
           }
-          Tenant.current.update!(settings: settings)
+          AppConfiguration.instance.update!(settings: settings)
         end
 
         describe do
@@ -540,7 +540,7 @@ resource "Users" do
             }
           ])
           project = create(:continuous_project, with_permissions: true)
-          granted_permission = project.permissions.find_by(action: 'posting')
+          granted_permission = project.permissions.find_by(action: 'posting_idea')
           granted_permission.update!(permitted_by: 'groups', groups: [oldtimers])
           do_request
           expect(response_status).to eq 200
@@ -586,6 +586,30 @@ resource "Users" do
           expect(response_status).to eq 200
           expect(@user.reload.custom_field_values).to eq ({})
         end
+
+        example "Cannot modify values of hidden custom fields" do
+          cf = create(:custom_field, hidden: true, enabled: true)
+          some_value = "some_value"
+          @user.update!(custom_field_values: { cf.key => some_value })
+
+          do_request(user: {custom_field_values: {cf.key => "another_value"}})
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+          expect(@user.custom_field_values[cf.key]).to eq(some_value)
+        end
+
+        example "Cannot modify values of disabled custom fields" do
+          cf = create(:custom_field, hidden: false, enabled: false)
+          some_value = "some_value"
+          @user.update!(custom_field_values: {cf.key => some_value})
+
+          do_request(user: {custom_field_values: {cf.key => "another_value"}})
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+          expect(@user.custom_field_values[cf.key]).to eq(some_value)
+        end
       end
 
       describe do
@@ -623,7 +647,10 @@ resource "Users" do
           expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
         end
       end
+
     end
+
+
 
     post "web_api/v1/users/complete_registration" do
       with_options scope: :user do

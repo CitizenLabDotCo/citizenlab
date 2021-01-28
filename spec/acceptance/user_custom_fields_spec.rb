@@ -96,6 +96,7 @@ resource "User Custom Fields" do
           expect(json_response.dig(:data,:attributes,:input_type)).to match input_type
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data,:attributes,:hidden)).to be false
           expect(json_response.dig(:data,:attributes,:required)).to match required
           expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
         end

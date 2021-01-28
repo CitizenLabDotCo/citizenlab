@@ -105,7 +105,7 @@ describe CommentVotePolicy do
     let(:user) { vote.user }
 
     before do
-      project.permissions.where(action: 'commenting').first.update!(permitted_by: 'admins_moderators')
+      project.permissions.where(action: 'commenting_idea').first.update!(permitted_by: 'admins_moderators')
     end
 
     it { should permit(:show) }

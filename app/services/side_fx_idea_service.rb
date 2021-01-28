@@ -11,12 +11,14 @@ class SideFxIdeaService
   end
 
   def after_create idea, user
+    idea.update!(body_multiloc: TextImageService.new.swap_data_images(idea, :body_multiloc))
     if idea.published?
       after_publish idea, user
     end
   end
 
   def before_update idea, user
+    idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
     if idea.project_id_changed?
       unless ProjectPolicy.new(idea.assignee, idea.project).moderate?
         idea.assignee = nil
@@ -54,6 +56,10 @@ class SideFxIdeaService
   end
 
   def before_destroy idea, user
+    begin
+     Tagging::Tagging.find(idea_id: idea.id).destroy_all
+   rescue ActiveRecord::RecordNotFound => _
+   end
   end
 
   def after_destroy frozen_idea, user
@@ -104,9 +110,9 @@ class SideFxIdeaService
   end
 
   def log_activity_jobs_after_published idea, user
-    LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
+    LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'published', user, idea.published_at.to_i)
     if first_user_idea?(idea, user)
-      LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first_published_by_user', user, idea.created_at.to_i)
+      LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'first_published_by_user', user, idea.published_at.to_i)
     end
   end
 

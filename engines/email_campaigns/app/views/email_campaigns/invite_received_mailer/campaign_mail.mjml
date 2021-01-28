@@ -1,0 +1,17 @@
+<mj-raw>
+  <% if event.invite_text.present? %>
+</mj-raw>
+<mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
+  <mj-column padding="30px 25px 20px" border-radius="5px" background-color="#F2F6F8">
+    <mj-text font-size="14px" color="#84939E">
+      <%= format_message('added_a_message', values: { organizationName: organization_name }) %>
+      <p style="color: #000"><%= event.invite_text.html_safe %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<mj-raw>
+  <% end %>
+</mj-raw>
+
+<!-- CTA button -->
+<%= render partial: 'application/cta_button', locals: { href: event.activate_invite_url, message: format_message('cta_accept_invitation') } %>

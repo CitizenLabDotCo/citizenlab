@@ -18,7 +18,7 @@ RSpec.describe Initiative, type: :model do
     it "should set the author name on creation" do
       u = create(:user)
       initiative = create(:initiative, author: u)
-      expect(initiative.author_name).to eq u.display_name
+      expect(initiative.author_name).to eq u.full_name
     end
 
     it "should generate a slug on creation" do

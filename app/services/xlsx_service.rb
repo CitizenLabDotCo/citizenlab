@@ -14,7 +14,7 @@ class XlsxService
     end
   end
 
-  # Converts this hash array: 
+  # Converts this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   # into this xlsx:
   # | name  | size | age |
@@ -34,7 +34,7 @@ class XlsxService
         end
       end
     end
-    
+
     pa.to_stream
   end
 
@@ -42,7 +42,7 @@ class XlsxService
   # | name  | size | age |
   # | Ron   | xl   |     |
   # | John  |      | 35  |
-  # into this hash array: 
+  # into this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   def xlsx_to_hash_array xlsx
     workbook = RubyXL::Parser.parse_buffer(xlsx)
@@ -71,8 +71,8 @@ class XlsxService
           row = columns.map do |c|
             value = c[:f].call instance
             if c[:skip_sanitization]
-              value 
-            else 
+              value
+            else
               escape_formula value.to_s
             end
           end
@@ -80,6 +80,41 @@ class XlsxService
         end
       end
     end
+  end
+
+  def generate_time_stats_xlsx serie, name
+    columns = [
+      {header: 'date',   f: -> (item) {item[0]}},
+      {header: 'amount', f: -> (item) {item[1]}}
+    ]
+    generate_xlsx name, columns, serie
+  end
+  def generate_field_stats_xlsx serie, key_name, value_name
+    columns = [
+      {header: key_name,   f: -> (item) {item[0]}},
+      {header: value_name, f: -> (item) {item[1]}}
+    ]
+    generate_xlsx value_name + '_by_' + key_name, columns, serie
+  end
+
+  def generate_res_stats_xlsx serie, resource_name, grouped_by
+    grouped_by_id = "#{grouped_by}_id"
+    columns = [
+      {header: grouped_by,    f: -> (item) {item[grouped_by]}},
+      {header: grouped_by_id,    f: -> (item) {item[grouped_by_id]}},
+      {header: resource_name, f: -> (item) {item[resource_name]}}
+    ]
+    generate_xlsx resource_name + '_by_' + grouped_by, columns, serie
+  end
+
+  def generate_votes_by_time_xlsx serie, name
+    columns = [
+      {header: 'date',  f: -> (item) {item["date"]}},
+      {header: 'up',    f: -> (item) {item["up"]}},
+      {header: 'down',  f: -> (item) {item["down"]}},
+      {header: 'total', f: -> (item) {item["total"]}}
+    ]
+    generate_xlsx name, columns, serie
   end
 
   def generate_users_xlsx users, view_private_attributes: false
@@ -111,13 +146,14 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_ideas_xlsx ideas, view_private_attributes: false
+  def generate_ideas_xlsx ideas, view_private_attributes: false, with_tags: false
     columns = [
       {header: 'id',                   f: -> (i) { i.id },                                        skip_sanitization: true},
       {header: 'title',                f: -> (i) { @@multiloc_service.t(i.title_multiloc) }},
       {header: 'body',                 f: -> (i) { convert_to_text(@@multiloc_service.t(i.body_multiloc)) }},
       {header: 'author_name',          f: -> (i) { i.author_name }},
       {header: 'author_email',         f: -> (i) { i.author&.email }},
+      {header: 'proposed_budget',      f: -> (i) { i.proposed_budget },                           skip_sanitization: true},
       {header: 'publication_status',   f: -> (i) { i.publication_status },                        skip_sanitization: true},
       {header: 'published_at',         f: -> (i) { i.published_at },                              skip_sanitization: true},
       {header: 'upvotes_count',        f: -> (i) { i.upvotes_count },                             skip_sanitization: true},
@@ -127,8 +163,8 @@ class XlsxService
       {header: 'project',              f: -> (i) { @@multiloc_service.t(i&.project&.title_multiloc) }},
       {header: 'topics',               f: -> (i) { i.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(',') }},
       {header: 'areas',                f: -> (i) { i.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',') }},
-      {header: 'idea_status',          f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
-      {header: 'assignee',             f: -> (i) { i.assignee&.display_name }},
+      {header: 'status',               f: -> (i) { @@multiloc_service.t(i&.idea_status&.title_multiloc) }},
+      {header: 'assignee',             f: -> (i) { i.assignee&.full_name }},
       {header: 'assignee_email',       f: -> (i) { i.assignee&.email }},
       {header: 'latitude',             f: -> (i) { i.location_point&.coordinates&.last },         skip_sanitization: true},
       {header: 'longitude',            f: -> (i) { i.location_point&.coordinates&.first },        skip_sanitization: true},
@@ -141,6 +177,15 @@ class XlsxService
       columns.select! do |c|
         !%w(author_email assignee_email).include?(c[:header])
       end
+    end
+
+    if with_tags
+      Tagging::Tag.joins(:taggings).where({tagging_taggings: {idea_id: ideas.map(&:id)}}).each { |tag|
+        columns.insert(3,{header: @@multiloc_service.t(tag.title_multiloc), f: -> (i) {
+          tagging = Tagging::Tagging.where(tag_id: tag.id, idea_id: i.id)
+          !tagging.empty? ? tagging.first.confidence_score : '0'
+          }})
+      }
     end
     generate_xlsx 'Ideas', columns, ideas
   end
@@ -159,7 +204,7 @@ class XlsxService
       {header: 'topics',               f: -> (i) { i.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(',') }},
       {header: 'areas',                f: -> (i) { i.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',') }},
       {header: 'initiative_status',    f: -> (i) { @@multiloc_service.t(i&.initiative_status&.title_multiloc) }},
-      {header: 'assignee',             f: -> (i) { i.assignee&.display_name }},
+      {header: 'assignee',             f: -> (i) { i.assignee&.full_name }},
       {header: 'assignee_email',       f: -> (i) { i.assignee&.email }},
       {header: 'latitude',             f: -> (i) { i.location_point&.coordinates&.last },               skip_sanitization: true},
       {header: 'longitude',            f: -> (i) { i.location_point&.coordinates&.first },              skip_sanitization: true},
@@ -179,7 +224,7 @@ class XlsxService
   def generate_idea_comments_xlsx comments, view_private_attributes: false
     columns = [
       {header: 'id',            f: -> (c) { c.id },            skip_sanitization: true},
-      {header: 'idea',          f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
+      {header: 'input',         f: -> (c) { @@multiloc_service.t(c&.post.title_multiloc) }},
       {header: 'body',          f: -> (c) { convert_to_text(@@multiloc_service.t(c.body_multiloc)) }},
       {header: 'upvotes_count', f: -> (c) { c.upvotes_count }, skip_sanitization: true},
       {header: 'author_name',   f: -> (c) { c.author_name }},

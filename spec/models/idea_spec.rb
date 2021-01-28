@@ -15,7 +15,7 @@ RSpec.describe Idea, type: :model do
     it "should set the author name on creation" do
       u = create(:user)
       idea = create(:idea, author: u)
-      expect(idea.author_name).to eq u.display_name
+      expect(idea.author_name).to eq u.full_name
     end
 
     it "should generate a slug on creation" do
@@ -24,7 +24,7 @@ RSpec.describe Idea, type: :model do
     end
   end
 
-  context "feedback_needed" do 
+  context "feedback_needed" do
     it "should select ideas with no official feedback or no idea status change" do
       TenantTemplateService.new.resolve_and_apply_template('base')
       i1 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
@@ -85,7 +85,7 @@ RSpec.describe Idea, type: :model do
   describe "order_new" do
     before do
       5.times do |i|
-        travel_to Time.now+i.week do 
+        travel_to Time.now+i.week do
           create(:idea)
         end
       end
@@ -103,7 +103,7 @@ RSpec.describe Idea, type: :model do
 
     it "sorts from old to new when asking asc" do
       time_serie = Idea.order_new(:asc).pluck(:published_at)
-      expect(time_serie).to eq time_serie.sort      
+      expect(time_serie).to eq time_serie.sort
     end
   end
 
@@ -127,7 +127,7 @@ RSpec.describe Idea, type: :model do
 
     it "sorts from unpopular to popular when asking asc" do
       score_serie = Idea.order_popular(:asc).map(&:score)
-      expect(score_serie).to eq score_serie.sort      
+      expect(score_serie).to eq score_serie.sort
     end
   end
 
@@ -179,7 +179,7 @@ RSpec.describe Idea, type: :model do
 
   describe "body" do
     let(:idea) { build(:idea) }
-    
+
     it "is invalid if it has no true content" do
       idea.body_multiloc = {'en' => '<p> </p>'}
       expect(idea).to be_invalid

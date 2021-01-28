@@ -47,11 +47,11 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def check_voting_allowed vote, user
-    true
+    !PermissionsService.new.voting_initiative_disabled_reason user
   end
 
   def check_cancelling_votes_allowed vote, user
-    true
+    !PermissionsService.new.cancelling_votes_disabled_reason_for_initiative user
   end
 
 end

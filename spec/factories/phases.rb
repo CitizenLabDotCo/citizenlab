@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :phase do
     project
+    ideas_order { nil }
+    input_term { nil }
     title_multiloc {{
       "en" => "Idea phase",
       "nl-BE" => "Ideeën fase"
@@ -18,7 +20,7 @@ FactoryBot.define do
     end
 
     after(:create) do |phase, evaluator|
-      PermissionsService.new.update_permissions_for(phase) if evaluator.with_permissions
+      PermissionsService.new.update_permissions_for_context(phase) if evaluator.with_permissions
     end
 
     factory :active_phase do
@@ -47,6 +49,11 @@ FactoryBot.define do
       participation_method { "volunteering" }
     end
 
+    trait :with_ideas do
+      after(:create) do |phase|
+        phase.ideas = create_list(:idea, 3, project: phase.project)
+        phase.save
+      end
+    end
   end
-
 end

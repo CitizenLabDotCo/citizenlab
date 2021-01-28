@@ -13,7 +13,7 @@ class Comment < ApplicationRecord
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
   before_destroy :remove_notifications
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
-  
+
   counter_culture :post,
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
@@ -45,17 +45,18 @@ class Comment < ApplicationRecord
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
-  before_validation :set_author_name, :set_publication_status, on: :create
+  before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
 
   scope :published, -> {where publication_status: 'published'}
-  
-  def set_author_name
-    self.author_name = self.author.display_name if self.author
-  end
+
 
   def published?
     self.publication_status == 'published'
+  end
+
+  def author_name
+    @author_name ||= author.nil? ? nil : author.full_name
   end
 
   private
@@ -70,7 +71,7 @@ class Comment < ApplicationRecord
       self.body_multiloc,
       %i{mention}
     )
-    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 

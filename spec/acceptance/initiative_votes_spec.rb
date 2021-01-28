@@ -47,6 +47,9 @@ resource "Votes" do
     ValidationErrorHelper.new.error_fields(self, Vote)
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
     let(:mode) { "up" }
   
@@ -58,11 +61,10 @@ resource "Votes" do
       expect(@initiative.reload.upvotes_count).to eq 3
     end
 
-    example "Reaching the voting threshold immediately trigers status change", document: false do
-      tn = Tenant.current
-      settings = tn.settings
+    example "Reaching the voting threshold immediately triggers status change", document: false do
+      settings = AppConfiguration.instance.settings
       settings['initiatives']['voting_threshold'] = 3
-      tn.update! settings: settings
+      AppConfiguration.instance.update! settings: settings
 
       do_request
       expect(response_status).to eq 201
@@ -74,6 +76,9 @@ resource "Votes" do
     ValidationErrorHelper.new.error_fields(self, Vote)
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
 
     example_request "Upvote an initiative that doesn't have your vote yet" do
@@ -105,6 +110,9 @@ resource "Votes" do
     ValidationErrorHelper.new.error_fields(self, Vote)
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
 
     example_request "[error] Downvote an initiative that doesn't have your vote yet" do
@@ -117,6 +125,9 @@ resource "Votes" do
   end
 
   delete "web_api/v1/votes/:id" do
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:vote) { create(:vote, user: @user, votable: @initiative) }
     let(:id) { vote.id }
     

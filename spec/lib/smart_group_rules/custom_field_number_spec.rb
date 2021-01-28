@@ -17,6 +17,7 @@ describe SmartGroupRules::CustomFieldNumber do
 
     it "successfully validates a valid rule" do
       expect(valid_rule).to be_valid
+      expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 

@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def mailer_class
+      OfficialFeedbackOnYourInitiativeMailer
+    end
+
     def activity_triggers
       {'Notifications::OfficialFeedbackOnYourInitiative' => {'created' => true}}
     end
@@ -24,6 +28,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
@@ -31,7 +36,7 @@ module EmailCampaigns
           official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale),
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: notification.post.author_name
+          post_author_name: name_service.display_name!(notification.post.author)
         }
       }]
     end

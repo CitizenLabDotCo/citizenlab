@@ -8,6 +8,7 @@ resource "Permissions" do
 
   before do
     header "Content-Type", "application/json"
+    PermissionsService.new.update_global_permissions
     @project = create(:continuous_project, with_permissions: true)
     @phase = ParticipationContextService.new.get_participation_context(
       create(:project_with_current_phase, with_permissions: true)
@@ -49,10 +50,23 @@ resource "Permissions" do
       end
     end
 
+    get "web_api/v1/permissions" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of permissions per page"
+      end
+
+      example_request "List all global permissions" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq PermissionsService::ACTIONS[nil].size
+      end
+    end
+
     get "web_api/v1/projects/:project_id/permissions/:action" do
       let(:action) { @project.permissions.first.action }
 
-      example_request "Get one permission by id" do
+      example_request "Get one permission by action" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @project.permissions.first.id
@@ -62,10 +76,20 @@ resource "Permissions" do
     get "web_api/v1/phases/:phase_id/permissions/:action" do
       let(:action) { @phase.permissions.first.action }
 
-      example_request "Get one permission by id" do
+      example_request "Get one permission by action" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @phase.permissions.first.id
+      end
+    end
+
+    get "web_api/v1/permissions/:action" do
+      let(:action) { 'posting_initiative' }
+
+      example_request "Get one global permission by action" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq Permission.find_by!(permission_scope: nil, action: action).id
       end
     end
 
@@ -100,6 +124,25 @@ resource "Permissions" do
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
       example_request "Update a permission" do
+         expect(response_status).to eq 200
+         json_response = json_parse(response_body)
+         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
+         expect(json_response.dig(:data, :relationships, :groups, :data).map{|h| h[:id]}).to match_array group_ids
+       end
+    end
+
+    patch "web_api/v1/permissions/:action" do
+      with_options scope: :permission do
+        parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(",")}.", required: false
+        parameter :group_ids, "An array of group id's associated to this permission", required: false
+      end
+      ValidationErrorHelper.new.error_fields(self, Permission)
+
+      let(:action) { 'voting_initiative' }
+      let(:permitted_by) { 'groups' }
+      let(:group_ids) { create_list(:group, 3).map(&:id) }
+
+      example_request "Update a global permission" do
          expect(response_status).to eq 200
          json_response = json_parse(response_body)
          expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by

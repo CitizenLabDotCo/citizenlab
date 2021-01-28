@@ -1,4 +1,6 @@
 en:
+  symbols:
+    outside: somewhere else
   smart_group_rules:
     is_empty: "%{property} has no value"
     not_is_empty: "%{property} has any value"
@@ -19,6 +21,8 @@ en:
     custom_field_select:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} isn't %{value}"
+      is_one_of: "%{property} has one of the following values: %{value}"
+      not_is_one_of: "%{property} does not have any of the follow values: %{value}"
     custom_field_text:
       is: "%{property} is %{value}"
       not_is: "%{property} is not %{value}"

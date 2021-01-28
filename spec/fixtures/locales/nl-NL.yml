@@ -1,4 +1,6 @@
 nl:
+  symbols:
+    outside: ergens anders
   smart_group_rules:
     is_empty: "%{property} heeft geen waarde"
     not_is_empty: "%{property} heeft om het even welke waarde"
@@ -19,6 +21,8 @@ nl:
     custom_field_select:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} is niet %{value}"
+      is_one_of: "%{property} heeft een van de volgende waarden: %{value}"
+      not_is_one_of: "%{property} heeft geen van de volgende waarden: %{value}"
     custom_field_text:
       is: "%{property} is %{value}"
       not_is: "%{property} is niet %{value}"

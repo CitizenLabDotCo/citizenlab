@@ -57,7 +57,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   private
 
   def check_commenting_allowed comment, user
-    true
+    !PermissionsService.new.commenting_initiative_disabled_reason user
   end
 
 end

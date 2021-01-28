@@ -17,7 +17,6 @@ nl-BE:
       "initiative_published": Posten van mijn voorstel
       "invite_received": Uitnodiging
       "invite_reminder": Herinnering uitnodiging
-      "mention_in_comment": Vermelding in een reactie
       "mention_in_official_feedback": Vermelding in een update
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
       "new_comment_on_commented_idea": Nieuwe reactie op een idee waar ik op reageerde
@@ -98,3 +97,457 @@ nl-BE:
       "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectbeheerders
       "user_digest": Weekoverzicht - alle gebruikers
       "your_proposed_initiatives_digest": Weekoverzicht van je eigen voorstellen - alle gebruikers
+    footer:
+      "link_privacy_policy": "Privacybeleid"
+      "link_terms_conditions": "Gebruiksvoorwaarden"
+      "link_unsubscribe": "Uitschrijven"
+      "powered_by": "Mogelijk gemaakt door"
+      "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
+      "unsubscribe_text": "uitschrijven"
+    comment_deleted_by_admin:
+      reason: 'De reden waarom je reactie is verwijderd:'
+      cta_view: 'Bekijk dit idee'
+      event_description: '%{organizationName} verwijderde de reactie dat je bij een idee schreef.'
+      main_header: '%{organizationName} verwijderde je reactie'
+      other_reason: '%{otherReason}'
+      inappropriate_reason: 'Je reactie werd als ongepast beschouwd'
+      irrelevant_reason: 'Je reactie werd als niet relevant beschouwd'
+      no_reason: 'Er werd geen reden opgegeven'
+      subject: 'Je reactie werd verwijderd op het platform van %{organizationName}'
+      preheader: 'Je reactie werd verwijderd'
+    admin_digest:
+      subject: 'Je wekelijks admin-rapport van %{time}'
+      preheader: 'Weekoverzicht van %{organizationName}'
+      title_your_weekly_report: '%{firstName}, je wekelijks overzicht'
+      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
+      cta_visit_the_platform: 'Ga naar het platform'
+      new_users: 'Nieuwe gebruikers'
+      new_ideas: 'Nieuwe ideeën'
+      new_comments: 'Nieuwe reacties'
+      title_activity_past_week: 'Activiteit van de afgelopen week'
+      title_no_activity_past_week: 'Er was geen activiteit in de afgelopen week'
+      title_initiatives_past_week: 'Nieuwe voorstellen van de afgelopen week'
+      title_successful_initiatives_past_week: 'Voorstellen die de afgelopen week de drempel hebben bereikt'
+      yesterday_by_author: 'Gisteren door %{author}'
+      today_by_author: 'Vandaag door %{author}'
+      x_days_ago_by_author: '%{x} dagen geleden door %{author}'
+    admin_rights_received:
+      cta_moderate_platform: 'Beheer je platform'
+      message_you_became_administrator: 'Je bent beheerder geworden van het participatieplatform van %{organizationName}.'
+      preheader: 'Je bent beheerder geworden van het participatieplatform van %{organizationName}'
+      subject: 'Je bent nu een beheerder op het platform van %{organizationName}'
+      text_create_participatory_process: 'Als beheerder kun je nieuwe participatieprojecten aanmaken en vormgeven. Je kunt nieuwe projectfases toevoegen met behulp van een tijdslijn. Elke projectfase heeft een inspraakmethode, bijvoorbeeld een poll, ideeëngeneratie, een inspraakworkshop of een stemronde.'
+      text_moderate_analyse_input: 'Zodra een project gelanceerd is, zullen de eerste ideeën binnenkomen. Om goed op de hoogte te blijven, krijg je een wekelijks overzicht van alle belangrijke activiteiten op het platform. In de ideeënsectie van het dashboard kun je alle input beheren, erover terugkoppelen naar je inwoners en analyseren.'
+      text_platform_setup: 'Als een beheerder kan je je participatieplatform vormgeven. Kies een logo, voeg afbeeldingen en kleuren toe, schrijf een persoonlijk bericht op de homepagina, verstuur uitnodigingen, bepaal wat je wil weten van de mensen op je platform, ...'
+      title_create_participatory_process: 'Geef het participatieproces vorm'
+      title_moderate_analyse_input: 'Beheer en analyseer de input'
+      title_platform_setup: 'Zet je platform klaar'
+      title_what_can_you_do_administrator: 'Wat kan je doen als beheerder?'
+      title_you_became_administrator: 'Je bent een beheerder geworden'
+    comment_marked_as_spam:
+      by_author: 'door %{authorName}'
+      commented: '%{authorName} schreef:'
+      cta_review_comment: 'Beoordeel reactie'
+      days_ago: '%{numberOfDays} dagen geleden'
+      event_description: 'De volgende reactie gepost bij <strong>''%{post}''</strong> werd gerapporteerd:'
+      inappropriate_content: 'De reactie is ongepast of aanstootgevend.'
+      preheader: 'Onderneem actie tegen dit idee dat als spam gerapporteerd werd'
+      reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
+      subject: '%{organizationName}: %{firstName} %{lastName} rapporteerde deze reactie als spam'
+      title_comment_spam_report: '%{firstName} %{lastName} rapporteerde deze reactie als spam'
+      today: Vandaag
+      wrong_content: 'De reactie is niet relevant.'
+      yesterday: Gisteren
+    comment_on_your_initiative:
+      commented: '%{authorFirstName} schreef:'
+      cta_reply_to: 'Reageer op %{commentAuthor}'
+      event_description: '%{authorNameFull} reageerde op jouw voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
+      main_header: '%{commentAuthor} heeft gereageerd op je voorstel'
+      subject: 'Je hebt een reactie gekregen op het platform van %{organizationName}'
+      preheader: '%{authorName} reageerde op jouw voorstel voor %{organizationName}'
+    idea_assigned_to_you:
+      by_author: 'door %{authorName}'
+      cta_reply_to: 'Geef %{authorName} feedback'
+      event_description_idea: 'Je kreeg een idee toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van het idee.'
+      main_header: '%{firstName}, je hebt een nieuwe toewijzing'
+      subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
+      preheader_idea: 'Je kreeg het idee van %{authorName} toegewezen'
+    assignee_digest:
+      subject: 'Aantal ideeën die je feedback nodig hebben: %{numberIdeas}'
+      preheader: 'Overzicht van %{organizationName}'
+      title_your_weekly_report: '%{firstName}, de input van de burgers wacht op je feedback'
+      cta_manage_your_input: 'Beheer je input'
+      assigned_ideas: 'Ideeën die jouw feedback nodig hebben'
+      title_assignment_past_week: 'Ideeën die recent aan jou werden toegewezen'
+      title_no_assignment_past_week: 'De afgelopen week werden geen nieuwe ideeën aan jou toegewezen'
+      yesterday_by_author: 'Gisteren door %{author}'
+      today_by_author: 'Vandaag door %{author}'
+      x_days_ago_by_author: '%{x} dagen geleden door %{author}'
+      idea_section: Ideeën
+      initiative_section: Voorstellen
+      title_initiatives_past_week: 'Nieuwe voorstellen die aan jou zijn toegewezen'
+      title_successful_initiatives_past_week: 'Aan jou toegewezen voorstellen die de drempel hebben bereikt'
+    idea_marked_as_spam:
+      by_author: 'door %{authorName}'
+      cta_review_idea: 'Bekijk idee'
+      report_inappropriate_offensive_content: 'Ik vind deze inhoud ongepast of aanstootgevend.'
+      report_not_an_idea: 'Dit is geen idee en hoort hier niet thuis.'
+      subject: 'Je hebtt een spamrapport op het platform van %{organizationName}'
+      preheader: 'Neem actie'
+      reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
+      title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
+    initiative_marked_as_spam:
+      by_author: 'door %{authorName}'
+      cta_review_initiative: 'Review dit voorstel'
+      report_inappropriate_offensive_content: 'Ik vind deze inhoud ongepast of aanstootgevend.'
+      report_not_an_initiative: 'Dit is geen voorstel en hoort hier niet thuis.'
+      subject: 'Je hebt een spamrapport op het platform van %{organizationName}'
+      preheader: 'Neem actie'
+      reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
+      title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
+    initiative_assigned_to_you:
+      by_author: 'door %{authorName}'
+      cta_reply_to: 'Geef feedback op %{authorName}'
+      event_description_initiative: 'Je kreeg een voorstel toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
+      main_header: '%{firstName}, je hebt een nieuwe toewijzing'
+      subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
+      preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
+    invite_reminder:
+      cta_accept_invitation: 'Aanvaard je uitnodiging'
+      invitation_header: 'Je hebt je uitnodiging nog niet geaccepteerd'
+      preheader: 'Werk mee aan de toekomst van %{organizationName}.'
+      subject: 'Reminder: registreer je op het participatieplatform van %{organizationName}'
+    invite_received:
+      added_a_message: '%{organizationName} schreef het volgende bericht:'
+      cta_accept_invitation: 'Aanvaard je uitnodiging'
+      invitation_header: 'Je bent uitgenodigd!'
+      invitation_header_message: '%{organizationName} nodigde je uit op hun participatieplatform.'
+      preheader: '%{organizationName} stuurde je een uitnodiging om je te registreren op hun participatieplatform.'
+      subject: 'Je bent uitgenodigd om je te registeren op het participatieplatform van %{organizationName}'
+    initiative_published:
+      action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
+      action_published_initiative: 'Geplaatst voorstel'
+      action_send_email: 'Stuur je contactpersonen een %{sendEmailLink}'
+      action_share_fb: 'Breng je vrienden op de hoogte op %{fbLink}'
+      action_share_link: 'Deel het op een kanaal naar keuze met deze %{link}'
+      action_share_twitter: 'Informeer je volgers op %{twitterLink}'
+      cta_view_initiative: 'Ga naar je voorstel'
+      link: link
+      main_header: 'Je hebt een voorstel geplaatst! Nu is het tijd om er steun voor te verzamelen.'
+      message_next_steps: '%{userFirstName}, je voorstel werd succesvol geplaatst op het participatieplatform van %{organizationName}. Je wordt op de hoogte gebracht wanneer anderen op je voorstel reageren. Ontdek hieronder welke volgende stappen je kan nemen.'
+      message_get_votes: 'Bereik het benodigd aantal stemmen:'
+      preheader: 'Bedankt voor het delen van je voorstel %{initiativeTitle} voor %{organizationName}. De volgende stap is steun zoeken door het te delen in je netwerk.'
+      send_email: e-mail
+      subject: 'Je voorstel werd gepubliceerd op het platform van %{organizationName}'
+    mention_in_official_feedback:
+      by_author: 'door %{authorName}'
+      commented: '%{organizationName} schreef:'
+      cta_reply_to: 'Antwoord op %{organizationName}'
+      event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
+      main_header: 'Je bent genoemd'
+      subject: '%{organizationName} noemde je in hun feedback'
+      preheader: '%{commentAuthor} heeft je genoemd in feedback'
+    new_comment_on_commented_idea:
+      commented: '%{commentAuthor} schreef:'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
+      event_description: '%{commentAuthorFull} schreef ook een reactie op het idee ''%{ideaTitle}'' op het participatieplatform van %{organizationName}. Klik op de knop onderaan om de reactie te lezen en het gesprek te starten met %{commentAuthor}.'
+      main_header: '%{commentAuthor} schreef een reactie op hetzelfde idee'
+      subject: 'Er is een nieuwe reactie op het idee waarop jij ook reageerde'
+      preheader: '%{commentAuthor} reageerde ook op een idee voor %{organizationName}'
+    mention_in_comment:
+      by_author: 'door %{authorName}'
+      commented: '%{commentAuthor} schreef:'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
+      event_description: '%{commentAuthorFull} heeft je genoemd in zijn reactie op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{commentAuthor}'
+      main_header: 'Je werd vermeld in een comment'
+      subject: 'Iemand heeft je vernoemd op het platform van %{organizationName}'
+      preheader: '%{commentAuthor} heeft je vermeld in een reactie'
+    moderator_digest:
+      subject: 'Je weekoverzicht als projectbeheerder van %{time}'
+      preheader: 'Het weekoverzicht voor projectbeheerders van %{organizationName}'
+      title_your_weekly_report: '%{firstName}, je wekelijks overzicht'
+      text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er leeft in je project!'
+      cta_moderate: 'Beheer je project'
+      new_users: 'Nieuwe gebruikers'
+      new_ideas: 'Nieuwe ideeën'
+      new_comments: 'Nieuwe reacties'
+      title_activity_past_week: 'Activiteit van de afgelopen week'
+      title_no_activity_past_week: 'Geen activiteit de afgelopen week'
+      yesterday_by_author: 'Gisteren door %{author}'
+      today_by_author: 'Vandaag door %{author}'
+      x_days_ago_by_author: '%{x} dagen geleden door %{author}'
+    new_comment_on_commented_initiative:
+      commented: '%{commentAuthor} schreef:'
+      cta_reply_to: 'Reageer op %{commentAuthor}'
+      event_description: '%{commentAuthorFull} schreef ook een reactie op het voorstel ''%{initiativeTitle}'' op het participatieplatform van %{organizationName}. Klik op de knop onderaan om het gesprek te starten met %{commentAuthor}.'
+      main_header: '%{commentAuthor} schreef een reactie op hetzelfde voorstel'
+      subject: 'Er is een nieuwe reactie op het voorstel waarop je ook reageerde'
+      preheader: '%{commentAuthor} reageerde ook op een voorstel voor %{organizationName}'
+    new_comment_for_admin:
+      by_author: 'door %{authorName}'
+      commented: '%{authorFirstName} schreef:'
+      cta_reply_to: 'Bekijk de reactie van %{commentAuthor}'
+      days_ago: '%{numberOfDays} dagen geleden'
+      event_description: '%{authorName} schreef een reactie op je platform. Aarzel niet om aan de discussie deel te nemen en het gesprek gaande te houden!'
+      main_header: '%{firstName}, er werd een nieuwe reactie geplaatst op je platform'
+      subject: 'Er is een nieuwe reactie op het platform van %{organizationName}'
+      preheader: '%{authorName} schreef een reactie'
+      today: Vandaag
+      yesterday: Gisteren
+    comment_on_your_idea:
+      by_author: 'door %{authorName}'
+      commented: '%{authorFirstName} schreef:'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
+      event_description: '%{authorNameFull} reageerde op jouw idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
+      main_header: '%{authorName} heeft gereageerd op je idee'
+      subject: 'Je hebt een reactie gekregen op het platform van %{organizationName}'
+      preheader: '%{authorName} reageerde op jouw idee voor %{organizationName}'
+    new_comment_on_voted_initiative:
+      commented: '%{commentAuthor} schreef:'
+      cta_reply_to: 'Bekijk dit voorstel'
+      event_description: '%{commentAuthor} reageerde op het voorstel ''%{initiativeTitle}'' waarop jij je stem uitbracht. Neem deel aan het gesprek op het platform van %{organizationName}!'
+      main_header: '%{firstName}, er is een nieuwe reactie op het voorstel waar je op stemde'
+      subject: 'Er is een nieuwe reactie op het voorstel waar je op stemde'
+      preheader: '%{commentAuthor} plaatste een reactie bij het voorstel waarop je stemde op het platform van %{organizationName}'
+    new_comment_on_voted_idea:
+      commented: '%{commentAuthor} schreef:'
+      cta_reply_to: 'Antwoord op %{commentAuthor}'
+      days_ago: '%{numberOfDays} dagen geleden'
+      event_description: '%{commentAuthor} reageerde op het idee ''%{ideaTitle}'' waarop jij je stem uitbracht. Neem deel aan het gesprek op het platform van %{organizationName}!'
+      main_header: '%{firstName}, er is een nieuwe reactie op het idee waarop je stemde'
+      subject: 'Er is een nieuwe reactie op het idee waarop je stemde'
+      preheader: '%{commentAuthor} plaatste een reactie bij het idee waarop je stemde op het platform van %{organizationName}'
+      today: Vandaag
+      yesterday: Gisteren
+    new_initiative_for_admin:
+      by_author: 'door %{authorName}'
+      commented: '%{authorFirstName} schreef:'
+      cta_reply_to: 'Geef feedback op %{authorName}'
+      event_description: '%{authorName} plaatste een nieuw voorstel op je platform. Ontdek het, geef feedback of wijzig de status!'
+      main_header: '%{firstName}, er werd een nieuw voorstel geplaatst op je platform'
+      subject: 'Iemand plaatste een nieuw voorstel op het platform van %{organizationName}'
+      preheader: '%{authorName} heeft een nieuw voorstel geplaatst op jouw platform'
+    new_idea_for_admin:
+      by_author: 'door %{authorName}'
+      commented: '%{authorFirstName} schreef:'
+      cta_reply_to: 'Geef %{authorName} feedback'
+      days_ago: '%{numberOfDays} dagen geleden'
+      event_description: '%{authorName} plaatste een nieuw idee op je platform. Ontdek het, geef wat feedback of wijzig de status!'
+      main_header: '%{firstName}, er werd een nieuw idee geplaatst op je platform'
+      subject: 'Iemand plaatste een nieuw idee op het platform van %{organizationName}'
+      preheader: '%{authorName} heeft een nieuw idee geplaatst op jouw platform'
+      today: Vandaag
+      yesterday: Gisteren
+    comment_on_your_comment:
+      cta_reply_to: 'Antwoord op %{firstName}'
+      event_description: '%{authorNameFull} schreef een antwoord op je reactie op ''%{post}'' op het participatieplatform. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
+      subject: 'Je hebt een reactie gekregen in een gesprek op het platform van %{organizationName}'
+      main_header: '%{authorName} antwoordde op je reactie'
+      preheader: '%{authorName} antwoordde op je reactie op het platform van %{organizationName}'
+      replied: '%{authorFirstName} reageerde:'
+    official_feedback_on_commented_initiative:
+      by_author: 'door %{authorName}'
+      updated: '%{officialName} schreef:'
+      cta_view: 'Ga naar dit voorstel'
+      event_description: '%{officialName} gaf een update bij het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
+      main_header: 'Er is een update bij het voorstel waarop je reageerde'
+      subject: 'Een voorstel waar je op reageerde, heeft een officiële update ontvangen op het platform van %{organizationName}'
+      preheader: '%{officialName} schreef een officiële update bij het voorstel waarop je reageerde'
+    official_feedback_on_voted_idea:
+      by_author: 'door %{authorName}'
+      updated: '%{officialName} schreef:'
+      cta_view: 'Ga naar dit idee'
+      event_description: '%{officialName} gaf een update bij het idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{officialName}.'
+      subject: 'Een idee waar je op gestemd hebt, heeft een update ontvangen op het platform van %{organizationName}'
+      preheader: '%{officialName} schreef een update bij het idee waarop je stemde'
+      main_header: ""
+    official_feedback_on_commented_idea:
+      by_author: 'door %{authorName}'
+      updated: '%{officialName} schreef:'
+      cta_view: 'Ga naar dit idee'
+      event_description: '%{officialName} gaf een update bij jouw idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{officialName}.'
+      main_header: 'Er is een update bij het idee waarop je reageerde'
+      subject: 'Een idee waar je op reageerde, heeft een officiële update ontvangen op het platform van %{organizationName}'
+      preheader: '%{officialName} schreef een officiële update bij het idee waarop je reageerde'
+    official_feedback_on_your_idea:
+      by_author: 'door %{authorName}'
+      updated: '%{officialName} schreef:'
+      cta_view: 'Ga naar je idee'
+      event_description: '%{officialName} gaf een update bij je idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{officialName}.'
+      main_header: 'Je hebt een update ontvangen van %{organizationName}'
+      subject: 'Je hebt een update ontvangen van %{organizationName}'
+      preheader: '%{officialName} schreef een officiële update bij je idee'
+    official_feedback_on_voted_initiative:
+      by_author: 'door %{authorName}'
+      updated: '%{officialName} schreef:'
+      cta_view: 'Ga naar dit voorstel'
+      event_description: '%{officialName} gaf een update bij het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
+      main_header: 'Er is een update bij het voorstel waarop je hebt gestemd'
+      subject: 'Een voorstel waar je op gestemd hebt, heeft een update ontvangen op het platform van %{organizationName}'
+      preheader: '%{officialName} schreef een officiële update bij het voorstel waarop je stemde'
+    official_feedback_on_your_initiative:
+      updated: '%{officialName} schreef:'
+      cta_view: 'Ga naar je voorstel'
+      event_description: '%{officialName} gaf een update bij je voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
+      main_header: 'Je hebt een update ontvangen van %{officialName}'
+      subject: 'Je hebt een update ontvangen op het platform van %{organizationName}'
+      preheader: '%{officialName} schreef een update bij je voorstel'
+    project_moderation_rights_received:
+      cta_moderate_project: 'Beheer dit project'
+      message_you_became_moderator: 'Een beheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
+      no_ideas: 'Nog geen ideeën'
+      preheader: 'Een beheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
+      subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
+      text_design_participatory_process: 'Als projectbeheerder kan je mee het project instellen en vormgeven en bepalen hoe andere gebruikers binnen je project werken. Je kan de tijdslijn aanpassen en de verschillende fases instellen. Kies bij elke fase de ''inspraakmethode'': ideeën posten, reacties verzamelen en/of stemmen of gebruik een fase om enkel informatie te geven.'
+      text_moderate_analyse_input: 'Wanneer het project eenmaal is gelanceerd zullen de eerste ideeën binnenkomen. Je ontvangt wekelijks een rapport met alle kernactiviteiten (nieuwe ideeën, stemmen, reacties) zodat je altijd op de hoogte blijft. In het ideeën-overzicht binnen je project kan je zien welke ideeën de meeste voor- en tegenstemmen kregen, en je kan de projectstatus aanpassen of thema''s toevoegen.'
+      text_share_project_information: 'Om de kwaliteit van de ideeën die binnenkomen te verhogen is het belangrijk om voldoende informatie aan je doelpubliek te geven: vul de beschrijving van het project in, voeg afbeeldingen toe (bv. ook schetsen en plannen) en communiceer ook over verwante evenementen. Onthoud: kwaliteitsvolle informatie gaat vooraf aan goede participatie!'
+      title_design_participatory_process: 'Geef vorm aan het participatieproces'
+      title_moderate_analyse_input: 'Beheer en analyseer de input'
+      title_share_project_information: 'Geef informatie bij het project.'
+      title_what_can_you_do_moderator: 'Wat kan je doen als projectbeheerder?'
+      title_you_became_moderator: 'Je werd net projectbeheerder'
+      x_ideas: '%{numberOfIdeas} ideeën'
+    password_reset:
+      cta_reset_password: 'Stel je wachtwoord opnieuw in'
+      message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
+      preheader: 'Hier is de link die je gevraagd hebt om je wachtwoord opnieuw in te stellen'
+      subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
+      title_reset_your_password: 'Kies een nieuw wachtwoord'
+    project_phase_started:
+      cta_view_phase: 'Ontdek deze nieuwe fase'
+      event_description: 'Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
+      main_header: 'Project ''%{projectName}'' in een nieuwe fase'
+      new_phase: 'Het project ging de fase ''%{phaseTitle}'' in'
+      subject: '%{projectName} ging een nieuwe fase in'
+      preheader: 'Een nieuwe fase is gestart voor %{projectName}'
+    project_phase_upcoming:
+      cta_view_phase: 'Zet deze fase klaar'
+      event_description: 'Het project ''%{projectName}'' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde ideeën al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?'
+      main_header: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      new_phase: 'Het project gaat de fase ''%{phaseTitle}'' in'
+      subject: 'Zet alles klaar voor de nieuwe fase van %{projectName}'
+      preheader: 'Een nieuwe fase gaat binnenkort van start voor %{projectName}'
+    status_change_of_commented_idea:
+      status_change: 'De nieuwe status van dit idee is ''%{ideaStatus}'''
+      cta_view_idea: 'Ga naar dit idee'
+      event_description: '%{organizationName} heeft de status van het idee ''%{ideaTitle}'' op hun digitale participatieplatform bijgewerkt.'
+      main_header: 'Een idee waar je op hebt gereageerd, heeft een nieuwe status'
+      subject: 'De status van een idee waarop je reageerde werd gewijzigd'
+      preheader: '%{organizationName} wijzigde de status van een idee waarop je reageerde'
+    status_change_of_your_idea:
+      status_change: 'De nieuwe status van je idee is ''%{ideaStatus}'''
+      cta_view_idea: 'Ga naar je idee'
+      event_description: '%{organizationName} heeft de status van je idee ''%{ideaTitle}'' op hun digitale participatieplatform bijgewerkt.'
+      main_header: 'Je idee heeft een nieuwe status'
+      subject: 'De status van je idee werd gewijzigd'
+      preheader: '%{organizationName} wijzigde de status van jouw idee'
+    status_change_of_voted_idea:
+      status_change: 'De nieuwe status van dit idee is ''%{ideaStatus}'''
+      cta_view_idea: 'Ga naar het idee'
+      event_description: '%{organizationName} heeft de status van het idee ''%{ideaTitle}'' op hun digitale participatieplatform bijgewerkt.'
+      main_header: 'Een idee waar je op gestemd hebt, heeft een nieuwe status'
+      subject: 'De status van een idee waarop je je stem uitbracht werd gewijzigd'
+      preheader: '%{organizationName} wijzigde de status van een idee waarop je stemde'
+    status_change_of_voted_initiative:
+      status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Ga naar dit voorstel'
+      event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
+      main_header: 'Een voorstel waar je op gestemd hebt, heeft een nieuwe status'
+      subject: 'De status van een voorstel waarop je je stem uitbracht werd gewijzigd'
+      preheader: 'De status van een voorstel waarop je stemde werd gewijzigd'
+    status_change_of_commented_initiative:
+      status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Ga naar dit voorstel'
+      event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
+      main_header: 'Een voorstel waar je op hebt gereageerd, heeft een nieuwe status'
+      subject: 'De status van een voorstel waarop je reageerde werd gewijzigd'
+      preheader: 'De status van een voorstel waarop je reageerde werd gewijzigd'
+    status_change_of_your_initiative:
+      status_change: 'De nieuwe status van je voorstel is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Ga naar je voorstel'
+      event_description: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
+      main_header: 'Je voorstel heeft een nieuwe status'
+      subject: 'De status van je voorstel werd gewijzigd'
+      preheader: 'De status van je voorstel werd gewijzigd'
+    user_digest:
+      subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
+      commented: "%{authorFirstName} schreef:"
+      preheader: "Dit gebeurde er vorige week op het platform"
+      title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
+      intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
+      cta_go_to_the_platform: "Ga naar het platform"
+      title_no_activity_past_week: "Geen activiteit de afgelopen week"
+      title_proposals: "Gestarte voorstellen"
+      proposals_started_text: "Voorstellen zijn ideeën die steun moeten vinden van anderen (mensen zoals jij!) om vooruit te geraken. Hieronder is een lijst met voorstellen die vorige week naar voren werden gebracht. Klik op de voorstellen om hen in detail te bekijken, feedback te geven en hen te steunen!"
+      title_successful_proposals: "Ontdek de voorstellen"
+      successful_proposals_text: "Deze voorstellen hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het voorstel om meer te weten te komen over wat er hierna gebeurt."
+      today_by_author: "Vandaag door %{author}"
+      yesterday_by_author: "Gisteren door %{author}"
+      x_days_ago_by_author: "%{x} dagen geleden door %{author}"
+      trending_ideas: "Populaire ideeën"
+      trending_ideas_text: "Geïnteresseerd in wat er is gebeurd op het platform? Bekijk de drie meest populaire ideeën, wat mensen erover te zeggen hebben en neem deel aan het gesprek."
+      no_notifications: "Geen meldingen"
+      one_notification: "1 melding"
+      multiple_notifications: "%{notifCount} meldingen"
+      no_unread_notifications: "Tijd om deel te nemen!  Bezoek het platform om te ontdekken wat er aan het gebeuren is."
+      unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
+    threshold_reached_for_admin:
+      by_author: 'door %{authorName}'
+      cta_process_initiative: 'Zet de volgende stappen met dit voorstel'
+      event_description: 'Een voorstel heeft voldoende stemmen bereikt. Klik op de onderstaande knop om naar de volgende stappen te gaan!'
+      main_header: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
+      subject: 'Een voorstel heeft het benodigd aantal stemmen op je platform bereikt'
+      preheader: 'Tijd om de volgende stappen te nemen'
+    first_idea_published:
+      action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
+      action_comment: '%{textComment} op bestaande ideeën'
+      action_published_idea: 'Idee gepubliceerd'
+      action_send_email: 'Stuur je contactpersonen een %{sendEmailLink}'
+      action_share_fb: 'Breng je vrienden op de hoogte op %{fbLink}'
+      action_share_link: 'Deel het op een kanaal naar keuze met deze %{link}'
+      action_share_twitter: 'Informeer je volgers op %{twitterLink}'
+      add_image: 'Voeg een afbeelding toe'
+      cta_view_idea: 'Ga naar je idee'
+      event_description: '%{firstName}, je hebt met succes je eerste idee geplaatst op het participatieplatform van %{organizationName}. Wat fijn! We geven je een seintje wanneer anderen op je idee reageren. Ontdek hieronder welke volgende stappen je kan nemen.'
+      link: link
+      main_header: '%{firstName}, je hebt zonet je eerste idee gepost!'
+      message_get_votes: 'Bereik meer mensen met je idee:'
+      preheader: '%{firstName}, leuk dat je de tijd nam om je eerste idee te posten op het platform van %{organizationName}. Zoek nu steun voor je idee'
+      see_you: 'Tot snel op het platform!'
+      send_email: e-mail
+      subject: 'Jouw eerste idee op het platform van %{organizationName}'
+    welcome:
+      cta_join_platform: 'Ontdek het platform'
+      subject: 'Welkom op het platform van %{organizationName}'
+      main_header: Welkom!
+      message_welcome: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
+      preheader: 'Hier is wat je kan doen op het platform van %{organizationName}'
+    idea_published:
+      action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
+      action_published_idea: 'Idee gepubliceerd'
+      action_send_email: 'Stuur je contactpersonen een %{sendEmailLink}'
+      action_share_fb: 'Breng je vrienden op de hoogte op %{fbLink}'
+      action_share_link: 'Deel het op een kanaal naar keuze met deze %{link}'
+      action_share_twitter: 'Informeer je volgers op %{twitterLink}'
+      add_image: 'Voeg een afbeelding toe'
+      cta_view_idea: 'Ga naar je idee'
+      event_description: '%{firstName}, je idee werd succesvol geplaatst op het participatieplatform van %{organizationName}. Je wordt op de hoogte gebracht wanneer anderen op je idee reageren. Ontdek hieronder welke volgende stappen je kan nemen.'
+      link: link
+      main_header: 'Je hebt een idee geplaatst! Laten we er nu voor zorgen dat het gelezen wordt.'
+      message_get_votes: 'Bereik meer mensen met je idee:'
+      preheader: '%{firstName}, gefeliciteerd voor het publiceren van je idee op het platform van %{organizationName}. Zoek nu steun voor je idee.'
+      see_you: 'Tot snel op het platform!'
+      send_email: e-mail
+      subject: 'Jouw idee op het platform van %{organizationName}'
+      message_next_steps: ""
+    your_proposed_initiatives_digest:
+      subject: 'Wekelijkse update van je voorstel'
+      preheader: 'Wat is er de afgelopen week met je voorstel gebeurd?'
+      title_your_weekly_report: 'Hoe gaat het met je voorstel?'
+      text_introduction: 'Hieronder vind je een update van de belangrijkste cijfers. Ga naar de pagina van je voorstel om actie te ondernemen en op tijd voldoende stemmen te verzamelen.'
+      cta_see_your_initiative: 'Ga naar je voorstel'
+      total_votes: 'Totale aantal stemmen'
+      new_votes: 'Nieuwe stemmen'
+      remaining_votes: 'Resterende stemmen'
+      remaining_days: 'Resterende dagen'
+

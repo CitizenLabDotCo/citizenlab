@@ -4,9 +4,9 @@ describe InvitesService do
   let(:service) { InvitesService.new }
 
   before do
-    settings = Tenant.current.settings
+    settings = AppConfiguration.instance.settings
     settings['core']['locales'] = ['fr','en','nl']
-    Tenant.current.update(settings: settings)
+    AppConfiguration.instance.update(settings: settings)
   end
 
   describe "bulk_create_xlsx" do
@@ -30,6 +30,104 @@ describe InvitesService do
 
       it "correctly creates invites when all is fine" do
         expect{ service.bulk_create_xlsx(xlsx, {}, inviter) }.to change{Invite.count}.from(0).to(10)
+      end
+    end
+
+    context "with user custom fields configured" do
+      before do
+        create(:custom_field,
+          key: 'text_field',
+          input_type: 'text',
+          title_multiloc: {'en' => 'size', 'nl-NL' => 'grootte'},
+          description_multiloc: {'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}
+        )
+        create(:custom_field,
+          key: 'checkbox_field',
+          input_type: 'checkbox'
+        )
+        create(:custom_field,
+          key: 'float_field',
+          input_type: 'number'
+        )
+        create(:custom_field,
+          key: 'integer_field',
+          input_type: 'number'
+        )
+      end
+
+      let(:hash_array) {[
+        {email: "user1@domain.net", text_field: "some_value"},
+
+        {email: "user2@domain.net", checkbox_field: "1"},
+        {email: "user3@domain.net", checkbox_field: "true"},
+        {email: "user4@domain.net", checkbox_field: 0},
+        {email: "user5@domain.net", checkbox_field: "FALSE"},
+
+        {email: "user6@domain.net", float_field: "666.34"},
+        {email: "user7@domain.net", integer_field: "1873050293742134"}
+      ]}
+
+      it "initializes custom_field_values with matching column names and appropriate types" do
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(7)
+
+        user = User.find_by(email: "user1@domain.net")
+        expect(user.custom_field_values).to eq({"text_field" => "some_value"})
+
+        user = User.find_by(email: "user2@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => true})
+
+        user = User.find_by(email: "user3@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => true})
+
+        user = User.find_by(email: "user4@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => false})
+
+        user = User.find_by(email: "user5@domain.net")
+        expect(user.custom_field_values).to eq({"checkbox_field" => false})
+
+        user = User.find_by(email: "user6@domain.net")
+        expect(user.custom_field_values).to eq({"float_field" => 666.34})
+
+        user = User.find_by(email: "user7@domain.net")
+        expect(user.custom_field_values).to eq({"integer_field" => 1873050293742134})
+      end
+    end
+
+    context "with custom field that has the wrong type" do
+
+      before do
+        create(:custom_field,
+               key: 'checkbox_field',
+               input_type: 'checkbox'
+        )
+        create(:custom_field,
+               key: 'number_field',
+               input_type: 'number'
+        )
+      end
+
+      let(:hash_array) {[
+          {email: "user1@domain.net", number_field: "nan"},
+          {email: "user2@domain.net", checkbox_field: "non-truthy"},
+      ]}
+
+      it "raises 'InviteError' errors" do
+
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
+          expect(e).to be_a(InvitesService::InvitesFailedError)
+          expect(e.errors.length).to be(2)
+
+          error = e.errors[0]
+          expect(error).to be_a(InvitesService::InviteError)
+          expect(error.error_key).to eq('malformed_custom_field_value')
+          expect(error.value).to eq('nan')
+
+          error = e.errors[1]
+          expect(error).to be_a(InvitesService::InviteError)
+          expect(error.error_key).to eq('malformed_custom_field_value')
+          expect(error.value).to eq('non-truthy')
+
+        end
       end
     end
 
@@ -176,6 +274,42 @@ describe InvitesService do
       end
     end
 
+    context "with send_invite_email set to false" do
+      let(:hash_array) {[
+        {email: "test1@example.com", send_invite_email: "FALSE"},
+        {email: "test2@example.com", send_invite_email: "0"},
+        {email: "test3@example.com", send_invite_email: "false"},
+      ]}
+
+      it "sets send_invite_email attribute to false in the invite" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(3)
+        expect(Invite.all.pluck(:send_invite_email)).to eq [false, false, false]
+      end
+    end
+
+    context "with send_invite_email set to true" do
+      let(:hash_array) {[
+        {email: "test1@example.com", send_invite_email: "TRUE"},
+        {email: "test2@example.com", send_invite_email: "1"},
+        {email: "test3@example.com", send_invite_email: "true"},
+      ]}
+
+      it "sets send_invite_email attribute to true in the invite" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(3)
+        expect(Invite.all.pluck(:send_invite_email)).to eq [true, true, true]
+      end
+    end
+
+    context "with send_invite_email missing" do
+      let(:hash_array) {[
+        {email: "test1@example.com"}
+      ]}
+
+      it "sets send_invite_email attribute to true in the invite" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
+        expect(Invite.first.send_invite_email).to be true
+      end
+    end
   end
 
 end

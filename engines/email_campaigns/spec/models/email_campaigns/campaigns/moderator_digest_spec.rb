@@ -36,7 +36,18 @@ RSpec.describe EmailCampaigns::Campaigns::ModeratorDigest, type: :model do
         command.dig(:event_payload, :top_ideas).map{|ti| ti[:id]}
         ).not_to include(other_idea.id)
       expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
-  	end
+    end
+
+    it "generates a command with abbreviated names" do
+      Tenant.current.turn_on_abbreviated_user_names!
+      expect(moderator.admin?).to be false
+      command = campaign.generate_commands(recipient: moderator).first
+
+      expected_author_name = "#{new_ideas.first.author.first_name} #{new_ideas.first.author.last_name[0]}."
+      expect(
+          command.dig(:event_payload, :top_ideas, 0, :author_name),
+      ).to eq(expected_author_name)
+    end
   end
 
   describe "apply_recipient_filters" do

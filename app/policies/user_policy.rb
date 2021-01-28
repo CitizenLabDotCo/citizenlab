@@ -74,11 +74,13 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes
     shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES]
-    if user&.admin?
-      shared += [roles: [:type, :project_id]]
-    end
+    shared += role_permitted_params if user&.admin?
     locked_attributes = Verification::VerificationService.new.locked_attributes(record)
     shared - locked_attributes
+  end
+
+  def role_permitted_params
+    [roles: %i[type project_id]]
   end
 
   def permitted_attributes_for_complete_registration
@@ -93,6 +95,7 @@ class UserPolicy < ApplicationPolicy
       .with_resource_type('User')
       .where.not(key: locked_keys)
       .enabled
+      .not_hidden
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
     array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
 

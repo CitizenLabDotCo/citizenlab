@@ -52,7 +52,7 @@ jobs:
 
   test:
     resource_class: small
-    executor: 
+    executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
@@ -75,7 +75,7 @@ jobs:
 
   slow-tests:
     resource_class: small
-    executor: 
+    executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
@@ -132,7 +132,7 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker pull citizenlabdotco/cl2-back:$CIRCLE_SHA1
       - run: docker tag citizenlabdotco/cl2-back:$CIRCLE_SHA1 citizenlabdotco/cl2-back:$CIRCLE_BRANCH
-      - deploy: 
+      - deploy:
           command: docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
 
   deploy-to-swarm:
@@ -156,7 +156,7 @@ jobs:
         default: .env-production
     steps:
       - run:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/cl2-back:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/cl2-back:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 

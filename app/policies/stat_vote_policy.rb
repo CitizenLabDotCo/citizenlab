@@ -60,4 +60,40 @@ class StatVotePolicy < ApplicationPolicy
   def votes_by_project?
     user&.active? && (user.admin? || user.project_moderator?)
   end
+
+  def votes_by_birthyear_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_domicile_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_education_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_gender_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_custom_field_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_time_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_time_cumulative_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_topic_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
+  def votes_by_project_as_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
 end

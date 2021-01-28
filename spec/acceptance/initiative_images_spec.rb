@@ -42,6 +42,10 @@ resource "InitiativeImage" do
       parameter :ordering, "An integer that is used to order the images within an initiative", required: false
     end
     ValidationErrorHelper.new.error_fields(self, InitiativeImage)
+
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
     let(:image) { encode_image_as_base64("image13.png") }
     let(:ordering) { 1 }
@@ -60,6 +64,10 @@ resource "InitiativeImage" do
       parameter :ordering, "An integer that is used to order the images within an initiative"
     end
     ValidationErrorHelper.new.error_fields(self, InitiativeImage)
+
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
     let(:image_id) { InitiativeImage.first.id }
     let(:image) { encode_image_as_base64("image14.png") }
@@ -74,6 +82,9 @@ resource "InitiativeImage" do
   end
 
   delete "web_api/v1/initiatives/:initiative_id/images/:image_id" do
+    before do
+      PermissionsService.new.update_global_permissions
+    end
     let(:initiative_id) { @initiative.id }
     let(:image_id) { InitiativeImage.first.id }
 

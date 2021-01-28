@@ -58,7 +58,7 @@ RSpec.describe Permission, type: :model do
       @past_phase, @current_phase, @future_phase = @p1.phases.sort_by(&:end_at)
       @p2 = create(:continuous_project, with_permissions: true)
       Permission.all.each{|pm| pm.update!(permitted_by: 'admins_moderators')}
-      @permission_everyone = @current_phase.permissions.find_by action: 'posting'
+      @permission_everyone = @current_phase.permissions.find_by action: 'posting_idea'
       @permission_everyone.update!(permitted_by: 'everyone')
       @g1 = create(:group)
       @g2 = create(:group)
@@ -75,9 +75,9 @@ RSpec.describe Permission, type: :model do
           value: 1988
         }
       ])
-      @permission_groups1 = @current_phase.permissions.find_by action: 'commenting'
+      @permission_groups1 = @current_phase.permissions.find_by action: 'commenting_idea'
       @permission_groups1.update!(permitted_by: 'groups', groups: [@g1,@cl_veterans])
-      @permission_groups2 = @current_phase.permissions.find_by action: 'voting'
+      @permission_groups2 = @current_phase.permissions.find_by action: 'voting_idea'
       @permission_groups2.update!(permitted_by: 'groups', groups: [@g2])
     end
     it 'returns all permissions for admins' do

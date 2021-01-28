@@ -23,7 +23,7 @@ module EmailCampaigns
       initiator = comment.author
 
       recipient_ids = [] 
-      if initiator && !initiator&.admin?
+      unless initiator&.admin?
         recipients = User.admin
         if comment.post_type == 'Idea' && !initiator.project_moderator?(comment.post.project.id)
           recipient_ids = recipients.or(User.project_moderator(comment.post.project.id)).ids
@@ -37,6 +37,10 @@ module EmailCampaigns
 
     def self.category
       'admin'
+    end
+
+    def mailer_class
+      NewCommentForAdminMailer
     end
 
     def generate_commands recipient:, activity:, time: nil

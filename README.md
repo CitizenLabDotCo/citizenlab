@@ -112,7 +112,9 @@ docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2
 
 ## Using Customized Tenants for Development
 
-Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
+In order to have more fake data in your localhost tenant, set the `SEED_SIZE` environment variable in `.env` to `small`, `medium`, `large` or `empty`. Defaults to medium. Then, run `rake db:reset`.
+
+If you would like to access another tenant than the `localhost` tenant, created through e.d. cl2-admin, you can set the `OVERRIDE_HOST` environment variable in `.env` prior to starting the container. This makes cl2-back believe that all requests are coming from that tenants host, letting you access the tenant at localhost:3000 through cl2-front.
 
 NOTE: Watch out that you don't accidently commit these changes!
 
@@ -174,7 +176,11 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 
 4. Add your rule to `spec/models/group_spec.rb`.
 
-5. Create a frontend task to support the new smart groups rule.
+5. Add rule descriptions by overriding `description_value`, `description_rule_type` and `description_property` as desired, and by adding translations under the `smart_group_rules` key.
+
+6. Add specs for the rule descriptions in the spec file you created in `spec/lib/smart_group_rules/`.
+
+7. Create a frontend task to support the new smart groups rule.
 
 
 ## Running the profiler
@@ -209,3 +215,40 @@ Uncomment `require 'bootsnap/setup'` in `config/boot.rb`
 ### Rails generate commands result in uninitialized constant errors
 
 This issue was introduced since we're using Zeitwerk for autoloading and remains unresolved. Commenting `config.eager_load = true` in development.rb will allow you to run the command.
+
+## Fixing N+1 Queries
+
+### How to
+To check for n+1 queries, a developer will have to **proactively check** the `log/bullet.log` file, which is in `.gitignore` as of now, and solve issue by issue. Issues are very self explanatory and look something like this:
+
+```log
+2020-10-14 21:55:54[WARN] user: root
+GET /web_api/v1/ideas?page%5Bnumber%5D=1&page%5Bsize%5D=12&sort=random&project_publication_status=published
+USE eager loading detected
+  Project => [:admin_publication]
+  Add to your query: .includes([:admin_publication])
+Call stack
+  /cl2_back/app/services/participation_context_service.rb:67:in `get_participation_context'
+  /cl2_back/app/services/participation_context_service.rb:120:in `commenting_disabled_reason_for_idea'
+  /cl2_back/app/serializers/web_api/v1/idea_serializer.rb:11:in `block in <class:IdeaSerializer>'
+  /cl2_back/app/controllers/application_controller.rb:82:in `linked_json'
+  /cl2_back/app/controllers/web_api/v1/ideas_controller.rb:78:in `index'
+  /cl2_back/config/initializers/apartment.rb:91:in `block in call'
+  /cl2_back/config/initializers/apartment.rb:91:in `call'
+```
+
+Following the callstack, you will be able to understand that extra queries are being performed to retrieve the `admin_publication` in the `participation_context_service.rb` of each idea of the` Ideas#index` action. (adding `:admin_publication` to the includes args would fix it)
+
+### Testing (not enabled by default)
+
+The second alternative is to switch:
+
+````ruby
+# config/application.rb
+Bullet.raise = true
+```
+
+And add the gem a `:testing` group as well, it will then fail tests when errors occur.
+
+### In case an issue should be ignored (e.g. some gems)
+Add it to the `Bullet.stacktrace_excludes = []` blacklist in `config/application.rb`

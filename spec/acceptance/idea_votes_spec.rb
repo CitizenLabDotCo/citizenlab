@@ -125,7 +125,7 @@ resource "Votes" do
     describe do
       before do
         project = @idea.project
-        project.permissions.find_by(action: 'voting').update!(permitted_by: 'admins_moderators')
+        project.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
       end
 
