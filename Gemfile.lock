@@ -108,6 +108,14 @@ PATH
       rails (~> 6.0.0)
 
 PATH
+  remote: engines/multi_tenancy
+  specs:
+    multi_tenancy (0.1.0)
+      apartment (>= 2.2.1)
+      apartment-sidekiq (~> 1.2.0)
+      rails (~> 6.0.0)
+
+PATH
   remote: engines/nlp
   specs:
     nlp (0.1.0)
@@ -735,6 +743,7 @@ DEPENDENCIES
   maps!
   mini_magick (~> 4.9)
   mjml-rails (~> 4.4)
+  multi_tenancy!
   nlp!
   okcomputer
   omniauth
