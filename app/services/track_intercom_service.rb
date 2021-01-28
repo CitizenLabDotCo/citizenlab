@@ -54,7 +54,7 @@ class TrackIntercomService
     @intercom.companies.save(company)
   end
 
-  def track(activity, tenant)
+  def track(activity, tenant = Tenant.current)
     return unless @intercom
     return unless activity.user && track_user?(activity.user)
 

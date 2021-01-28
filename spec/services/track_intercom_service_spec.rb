@@ -159,13 +159,11 @@ describe TrackIntercomService do
   describe "track" do
 
     it "doesn't interact with intercom when the given user is not an admin or moderator" do
-      tenant = Tenant.current
-
       user = create(:user)
       super_admin = create(:super_admin)
 
-      service.track(build(:activity, user: user), tenant)
-      service.track(build(:activity, user: super_admin), tenant)
+      service.track(build(:activity, user: user))
+      service.track(build(:activity, user: super_admin))
     end
 
     it "sends the activity to Intercom" do
@@ -195,7 +193,7 @@ describe TrackIntercomService do
         }
       })
 
-      service.track(activity, tenant)
+      service.track(activity)
     end
 
   end
