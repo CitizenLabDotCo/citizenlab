@@ -29,16 +29,20 @@ gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'factory_bot_rails'
-  gem 'rspec_api_documentation'
-  gem 'rspec-rails'
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner'
-  gem 'simplecov'
-  gem 'simplecov-rcov'
-  gem 'rspec_junit_formatter'
+  gem 'factory_bot_rails'
   gem 'rack-mini-profiler'
-end
+  gem 'rspec_api_documentation'
+  gem 'rspec_junit_formatter'
+  gem 'rspec-rails'
+  gem 'rubocop-ast', '~> 0.7.1', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'simplecov-rcov'
+  gem 'simplecov'
+ end
 
 group :development do
   gem 'bullet'
