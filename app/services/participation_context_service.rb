@@ -108,8 +108,8 @@ class ParticipationContextService
         POSTING_DISABLED_REASONS[:not_verified]
       elsif not_signed_in? user, permission
         POSTING_DISABLED_REASONS[:not_signed_in]
-      else
-        POSTING_DISABLED_REASONS[:not_permitted]
+        else
+          POSTING_DISABLED_REASONS[:not_permitted]
       end
     else
       nil
