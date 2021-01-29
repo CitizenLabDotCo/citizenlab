@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -20,7 +20,7 @@ import messages from '../messages';
 interface Props {}
 
 const ModeratorProjectList = memo<Props>(() => {
-  const adminPublications = useAdminPublications({
+  const { topLevel: topLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
@@ -31,7 +31,7 @@ const ModeratorProjectList = memo<Props>(() => {
     } else {
       return (
         <Outlet
-          id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
+          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
           publication={adminPublication}
         />
       );
@@ -41,13 +41,12 @@ const ModeratorProjectList = memo<Props>(() => {
   };
 
   if (
-    !isNilOrError(adminPublications) &&
-    adminPublications.list &&
-    adminPublications.list.length > 0
+    !isNilOrError(topLevelAdminPublications) &&
+    topLevelAdminPublications &&
+    topLevelAdminPublications.length > 0
   ) {
-    const adminPublicationsList = adminPublications.list;
-
-    if (adminPublicationsList && adminPublicationsList.length > 0) {
+    topLevelAdminPublications;
+    if (topLevelAdminPublications && topLevelAdminPublications.length > 0) {
       return (
         <>
           <ListHeader>
@@ -57,14 +56,14 @@ const ModeratorProjectList = memo<Props>(() => {
           </ListHeader>
 
           <List>
-            {adminPublicationsList.map((adminPublication, index) => {
+            {topLevelAdminPublications.map((adminPublication, index) => {
               return (
                 !isProjectFoldersEnabled ||
                 (!adminPublication.relationships.parent.data && (
                   <Row
                     key={index}
                     id={adminPublication.id}
-                    isLastItem={index === adminPublicationsList.length - 1}
+                    isLastItem={index === topLevelAdminPublications.length - 1}
                   >
                     {adminPublicationRow(adminPublication)}
                   </Row>
