@@ -99,25 +99,16 @@ interface Props {
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
 
-  const { list: allAdminPublications } = useAdminPublications({
+  const { childrenOf: publicationChildrenOf } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
   });
-
-  const childPublicationIds = publication.relationships.children.data.map(
-    ({ id }) => id
-  );
-
-  const adminPublications = useMemo(() => {
-    if (isNilOrError(allAdminPublications)) return [];
-
-    return allAdminPublications.filter(({ id }) =>
-      childPublicationIds.includes(id)
-    );
-  }, [allAdminPublications]);
-
   const [folderOpen, setFolderOpen] = useState(false);
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState('');
+
+  const adminPublications = useMemo(() => {
+    return publicationChildrenOf(publication);
+  }, [publicationChildrenOf]);
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =

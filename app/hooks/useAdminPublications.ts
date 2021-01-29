@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   listAdminPublications,
@@ -8,6 +8,8 @@ import {
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { IRelationship } from 'typings';
 
 export interface InputProps {
   pageSize?: number;
@@ -23,7 +25,17 @@ export type IAdminPublicationContent = {
   publicationType: AdminPublicationType;
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
-  relationships: any;
+  relationships: {
+    children: {
+      data: IRelationship[];
+    };
+    parent: {
+      data?: IRelationship;
+    };
+    publication: {
+      data: IRelationship;
+    };
+  };
 };
 
 export interface IOutput {
@@ -53,6 +65,7 @@ export default function useAdminPublications({
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -94,7 +107,7 @@ export default function useAdminPublications({
         } else {
           const selfLink = adminPublications?.links?.self;
           const lastLink = adminPublications?.links?.last;
-
+          console.log(adminPublications);
           const receivedItems = adminPublications.data
             .map((adminPublication) => {
               const publicationType =
@@ -133,11 +146,36 @@ export default function useAdminPublications({
     return () => subscription.unsubscribe();
   }, [pageNumber, pageSize, areas, publicationStatuses]);
 
+  const topLevel = useMemo<IAdminPublicationContent[]>(() => {
+    if (isNilOrError(list)) return [];
+
+    if (isProjectFoldersEnabled) {
+      return list.filter(({ relationships }) => !relationships.parent.data);
+    }
+
+    return list;
+  }, [list, isProjectFoldersEnabled]);
+
+  const childrenOf = useCallback<IAdminPublicationContent[]>(
+    (publication: IAdminPublicationContent) => {
+      if (isNilOrError(list)) return [];
+
+      const childPublicationIds = publication.relationships.children.data.map(
+        ({ id }) => id
+      );
+
+      return list.filter(({ id }) => childPublicationIds.includes(id));
+    },
+    [list]
+  );
+
   return {
+    topLevel,
     list,
     hasMore,
     loadingInitial,
     loadingMore,
+    childrenOf,
     onLoadMore,
     onChangeAreas,
     onChangePublicationStatus,
