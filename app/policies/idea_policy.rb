@@ -24,7 +24,7 @@ class IdeaPolicy < ApplicationPolicy
   def index_xlsx?
     user&.admin?
   end
-  
+
   def index_mini?
     user&.admin?
   end
@@ -58,12 +58,13 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
+    still_updatable_when = %w[posting_disabled not_permitted]
     pcs_posting_reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
       (
         user&.active? &&
         record.author_id == user.id &&
-        (pcs_posting_reason.nil? || pcs_posting_reason == 'posting_disabled') &&
+        (pcs_posting_reason.nil? || still_updatable_when.include?(pcs_posting_reason)) &&
         ProjectPolicy.new(user, record.project).show?
       )
   end
