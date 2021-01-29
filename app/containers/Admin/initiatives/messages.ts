@@ -115,10 +115,6 @@ export default defineMessages({
     defaultMessage:
       'Give a clear description of what proposal initiators can expect when their proposal reaches the voting threshold in time.',
   },
-  granularPermissionsTitle: {
-    id: 'app.containers.Admin.initiatives.granularPermissionsTitle',
-    defaultMessage: 'Who can contribute ?',
-  },
   addNewProposal: {
     id: 'app.containers.Admin.initiatives.addNewProposal',
     defaultMessage: 'Add a proposal',

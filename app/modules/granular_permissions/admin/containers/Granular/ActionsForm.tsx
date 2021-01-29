@@ -16,7 +16,7 @@ import ActionForm from './ActionForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../../containers/Admin/projects/edit/permissions/messages';
+import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
