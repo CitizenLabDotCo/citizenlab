@@ -1684,7 +1684,7 @@
   "app.containers.IdeaButton.postingDisabled": "Novos envios não estão sendo aceitos no momento",
   "app.containers.IdeaButton.postingInNonActivePhases": "Novos envios só podem ser adicionados em fases ativas.",
   "app.containers.IdeaButton.postingInactive": "Novos envios não estão sendo aceitos no momento.",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "{SignInLink} para a plataforma para ver quais ações você pode realizar.",
+  "app.containers.IdeaButton.postingMayNotBePermitted": "{signInLink} para a plataforma para ver quais ações você pode realizar.",
   "app.containers.IdeaButton.postingNoPermission": "Novos envios estão habilitados apenas para determinados grupos",
   "app.containers.IdeaButton.postingNotYetPossible": "Novos envios ainda não são aceitos aqui.",
   "app.containers.IdeaButton.signInLinkText": "conecte-se",
