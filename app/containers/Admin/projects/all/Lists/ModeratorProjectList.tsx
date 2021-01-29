@@ -36,8 +36,6 @@ const ModeratorProjectList = memo<Props>(() => {
         />
       );
     }
-
-    return null;
   };
 
   if (
@@ -45,7 +43,6 @@ const ModeratorProjectList = memo<Props>(() => {
     topLevelAdminPublications &&
     topLevelAdminPublications.length > 0
   ) {
-    topLevelAdminPublications;
     if (topLevelAdminPublications && topLevelAdminPublications.length > 0) {
       return (
         <>
