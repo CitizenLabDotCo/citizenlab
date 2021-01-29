@@ -296,6 +296,18 @@
             {
               "type": "object",
               "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "popupContent": {
+                  "type": "string",
+                  "default": ""
+                },
+                "tooltipContent": {
+                  "type": "string",
+                  "default": ""
+                },
                 "stroke": {
                   "$ref": "#/definitions/hexcolor",
                   "default": "#555555"
