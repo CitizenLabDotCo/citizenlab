@@ -107,7 +107,7 @@ export default function useAdminPublications({
         } else {
           const selfLink = adminPublications?.links?.self;
           const lastLink = adminPublications?.links?.last;
-          console.log(adminPublications);
+
           const receivedItems = adminPublications.data
             .map((adminPublication) => {
               const publicationType =
