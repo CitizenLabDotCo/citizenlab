@@ -5,7 +5,7 @@ import {
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IUpdatedProjectProperties } from 'services/projects';
+import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 import { mergeWith, castArray } from 'lodash-es';
 
@@ -73,6 +73,10 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
+  };
+  'app.containers.Admin.project.edit.permissions': {
+    project: IProjectData;
+    onData: () => boolean;
   };
 };
 
