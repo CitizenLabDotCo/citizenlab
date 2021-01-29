@@ -1684,7 +1684,7 @@
   "app.containers.IdeaButton.postingDisabled": "Actualmente no se aceptan nuevos envíos",
   "app.containers.IdeaButton.postingInNonActivePhases": "Los nuevos envíos solo se pueden agregar en fases activas.",
   "app.containers.IdeaButton.postingInactive": "Actualmente no se aceptan nuevas presentaciones.",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "{SignInLink} a la plataforma para ver qué medidas puedes tomar.",
+  "app.containers.IdeaButton.postingMayNotBePermitted": "{signInLink} a la plataforma para ver qué medidas puedes tomar.",
   "app.containers.IdeaButton.postingNoPermission": "Los nuevos envíos solo están habilitados para ciertos grupos",
   "app.containers.IdeaButton.postingNotYetPossible": "Aún no se aceptan nuevas presentaciones aquí.",
   "app.containers.IdeaButton.signInLinkText": "conectarte",

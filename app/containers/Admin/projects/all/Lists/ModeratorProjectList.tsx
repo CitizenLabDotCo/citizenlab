@@ -20,38 +20,30 @@ import messages from '../messages';
 interface Props {}
 
 const ModeratorProjectList = memo<Props>(() => {
-  const adminPublications = useAdminPublications({
+  const { topLevel: topLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
-    folderId: null,
   });
   const isProjectFoldersEnabled = useFeatureFlag('project_folders');
 
   const adminPublicationRow = (adminPublication) => {
     if (adminPublication.publicationType === 'project') {
       return <ProjectRow publication={adminPublication} />;
-    } else if (
-      adminPublication.publicationType === 'folder' &&
-      isProjectFoldersEnabled
-    ) {
+    } else {
       return (
         <Outlet
-          id="app.containers.AdminPage.projects.all.projectsAndFolders.projectFolderRow"
+          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
           publication={adminPublication}
         />
       );
     }
-
-    return null;
   };
 
   if (
-    !isNilOrError(adminPublications) &&
-    adminPublications.list &&
-    adminPublications.list.length > 0
+    !isNilOrError(topLevelAdminPublications) &&
+    topLevelAdminPublications &&
+    topLevelAdminPublications.length > 0
   ) {
-    const adminPublicationsList = adminPublications.list;
-
-    if (adminPublicationsList && adminPublicationsList.length > 0) {
+    if (topLevelAdminPublications && topLevelAdminPublications.length > 0) {
       return (
         <>
           <ListHeader>
@@ -61,15 +53,18 @@ const ModeratorProjectList = memo<Props>(() => {
           </ListHeader>
 
           <List>
-            {adminPublicationsList.map((adminPublication, index) => {
+            {topLevelAdminPublications.map((adminPublication, index) => {
               return (
-                <Row
-                  key={index}
-                  id={adminPublication.id}
-                  isLastItem={index === adminPublicationsList.length - 1}
-                >
-                  {adminPublicationRow(adminPublication)}
-                </Row>
+                !isProjectFoldersEnabled ||
+                (!adminPublication.relationships.parent.data && (
+                  <Row
+                    key={index}
+                    id={adminPublication.id}
+                    isLastItem={index === topLevelAdminPublications.length - 1}
+                  >
+                    {adminPublicationRow(adminPublication)}
+                  </Row>
+                ))
               );
             })}
           </List>
