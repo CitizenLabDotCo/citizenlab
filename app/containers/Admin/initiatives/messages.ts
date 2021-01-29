@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.manageTab',
     defaultMessage: 'Manage',
   },
-  permissionTab: {
-    id: 'app.containers.Admin.initiatives.permissionTab',
-    defaultMessage: 'Participation Rights',
-  },
   settingsTabTitle: {
     id: 'app.containers.Admin.initiatives.settingsTabTitle',
     defaultMessage: 'Configure your proposals',
