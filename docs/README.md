@@ -4,6 +4,7 @@
 
 ### Added
 - Ability to redirect URLs through AdminHQ
+- Accessibility statement link in the footer
 
 ## 2021-01-28
 
