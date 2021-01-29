@@ -31,12 +31,13 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     pcs = ParticipationContextService.new
+    context = pcs.get_participation_context(record.project)
     record.draft? ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
       user&.active? &&
       record.author_id == user.id &&
-      !pcs.posting_idea_disabled_reason_for_project(record.project, user) &&
+      !pcs.posting_idea_disabled_reason_for_context(context, user) &&
       ProjectPolicy.new(user, record.project).show?
     )
   end
@@ -59,8 +60,11 @@ class IdeaPolicy < ApplicationPolicy
 
   def update?
     # TODO: remove this after Gents project
-    bypassable_reasons = %w[posting_disabled not_permitted]
-    pcs_posting_reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
+    bypassable_reasons = %w[posting_disabled]
+    bypassable_reasons << 'not_permitted' if Apartment::Tenant.current == 'participatie_stad_gent'
+    pcs = ParticipationContextService.new
+    context = pcs.get_participation_context(record.project)
+    pcs_posting_reason = pcs.posting_idea_disabled_reason_for_context(context, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
       (
         user&.active? &&
