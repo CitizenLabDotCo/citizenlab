@@ -8,9 +8,7 @@ export const API_HOST =
 export const API_PORT = process.env.API_PORT || 4000;
 export const GRAPHQL_HOST =
   process.env.GRAPHQL_HOST ||
-  (typeof window === 'undefined'
-    ? 'localhost'
-    : 'https://singapore-mom.citizenlab.co');
+  (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 export const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 export const DEFAULT_LOCALE = 'en';
 
