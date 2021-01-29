@@ -17,6 +17,8 @@ import tracks from './tracks';
 
 // styles
 import styled from 'styled-components';
+import { ITab } from 'typings';
+import Outlet from 'components/Outlet';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -37,19 +39,16 @@ const ActionsContainer = styled.div`
 `;
 const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
   ({ children, intl: { formatMessage }, location }) => {
-    const [tabs] = useState([
+    const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
+        name: 'initiatives',
         url: '/admin/initiatives',
       },
       {
         label: formatMessage(messages.manageTab),
+        name: 'manage',
         url: '/admin/initiatives/manage',
-      },
-      {
-        label: formatMessage(messages.permissionTab),
-        url: '/admin/initiatives/permissions',
-        feature: 'granular_permissions',
       },
     ]);
 
@@ -63,9 +62,35 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
       });
     };
 
+    const insertTab = ({
+      configuration,
+      after,
+    }: {
+      configuration: ITab;
+      after?: string;
+    }) => {
+      console.log({ configuration, after });
+      setTabs((tabs) => {
+        const insertIndex = tabs.findIndex((tab) => tab.name === after) + 1;
+        if (insertIndex > 0) {
+          return [
+            ...tabs.slice(0, insertIndex),
+            configuration,
+            ...tabs.slice(insertIndex),
+          ];
+        }
+        return [...tabs, configuration];
+      });
+    };
+
     const { pathname } = location;
     return (
       <>
+        <Outlet
+          id="app.containers.Admin.initiatives.tabs"
+          onData={insertTab}
+          formatMessage={formatMessage}
+        />
         <TopContainer>
           <ActionsContainer>
             <Button
