@@ -13,8 +13,14 @@ import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { FormikSubmitHandler, ITab, Multiloc } from 'typings';
+import {
+  FormikSubmitHandler,
+  ITab,
+  MessageDescriptor,
+  Multiloc,
+} from 'typings';
 import { IUserData } from 'services/users';
+import { MessageValue } from 'react-intl';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -78,7 +84,10 @@ export type OutletsPropertyMap = {
     project: IProjectData;
   };
   'app.containers.Admin.initiatives.tabs': {
-    formatMessage: (value: string) => string;
+    formatMessage: (
+      messageDescriptor: MessageDescriptor,
+      values?: { [key: string]: MessageValue } | undefined
+    ) => string;
     onData: (data: { after?: string; configuration: ITab }) => void;
   };
 };
