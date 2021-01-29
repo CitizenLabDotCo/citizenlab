@@ -156,7 +156,7 @@ export default function useAdminPublications({
     return list;
   }, [list, isProjectFoldersEnabled]);
 
-  const childrenOf = useCallback<IAdminPublicationContent[]>(
+  const childrenOf = useCallback(
     (publication: IAdminPublicationContent) => {
       if (isNilOrError(list)) return [];
 

@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
