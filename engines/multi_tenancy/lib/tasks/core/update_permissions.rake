@@ -3,7 +3,7 @@ namespace :fix_existing_tenants do
   task :update_permissions => [:environment] do |t, args|
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        PermissionsService.new.update_permissions_for_current_tenant
+        PermissionsService.new.update_all_permissions
       end
     end
   end

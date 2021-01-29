@@ -8,10 +8,11 @@ class SideFxUserService
     end
 
     # Hack to embed phone numbers in email
-    if Tenant.current.has_feature?('password_login') && Tenant.settings('password_login','phone')
+    app_config = AppConfiguration.instance
+    if app_config.has_feature?('password_login') && app_config.settings('password_login','phone')
       phone_service = PhoneService.new
       if phone_service.phone_or_email(user.email) == :phone
-        pattern = Tenant.settings('password_login', 'phone_email_pattern')
+        pattern = app_config.settings('password_login', 'phone_email_pattern')
         user.email = pattern.gsub('__PHONE__', phone_service.normalize_phone(user.email))
       end
     end

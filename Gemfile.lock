@@ -77,7 +77,7 @@ PATH
       ice_cube
       kaminari (~> 1.2)
       liquid (~> 4.0)
-      mailgun-ruby (~> 1.1.6)
+      mailgun-ruby (~> 1.2.0)
       pundit (~> 2.0)
       rails (~> 6.0.0)
 
@@ -105,6 +105,14 @@ PATH
     maps (0.1.0)
       apartment (~> 2.2.1)
       pundit (~> 2.0)
+      rails (~> 6.0.0)
+
+PATH
+  remote: engines/multi_tenancy
+  specs:
+    multi_tenancy (0.1.0)
+      apartment (>= 2.2.1)
+      apartment-sidekiq (~> 1.2.0)
       rails (~> 6.0.0)
 
 PATH
@@ -341,7 +349,7 @@ GEM
     database_cleaner (1.7.0)
     diff-lcs (1.3)
     docile (1.3.1)
-    domain_name (0.5.20180417)
+    domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     easy_translate (0.5.1)
       thread
@@ -433,14 +441,14 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    mailgun-ruby (1.1.11)
+    mailgun-ruby (1.2.0)
       rest-client (~> 2.0.2)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
-    mime-types (3.3)
+    mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2019.1009)
+    mime-types-data (3.2020.1104)
     mimemagic (0.3.3)
     mini_magick (4.9.5)
     mini_mime (1.0.2)
@@ -696,8 +704,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.5)
-    unicode-display_width (1.7.0)
+    unf_ext (0.0.7.7)
     uniform_notifier (1.13.0)
     validate_email (0.1.6)
       activemodel (>= 3.0)
@@ -760,10 +767,11 @@ DEPENDENCIES
   liquid (~> 4.0)
   listen (>= 3.0.5, < 3.2)
   machine_translations!
-  mailgun-ruby
+  mailgun-ruby (~> 1.2.0)
   maps!
   mini_magick (~> 4.9)
   mjml-rails (~> 4.4)
+  multi_tenancy!
   nlp!
   okcomputer
   omniauth

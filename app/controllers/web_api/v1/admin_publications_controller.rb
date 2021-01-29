@@ -7,6 +7,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     publications = publication_filterer.filter(publications, params)
 
     @publications = publications
+      .includes(:publication)
       .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -38,7 +39,6 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       ).serialized_json, status: :ok
   end
 
-
   private
 
   def secure_controller?
@@ -49,5 +49,4 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     @publication = AdminPublication.find params[:id]
     authorize @publication
   end
-
 end

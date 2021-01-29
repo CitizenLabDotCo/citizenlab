@@ -124,7 +124,11 @@ gem 'faker'
 # and Rails.
 gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 gem 'skylight'
-gem 'mailgun-ruby'
+# Also required here to be able to initialize Mailgun in 
+# e.g. production.rb, which would otherwise result in an 
+# "undefined method 'mailgun_settings=' for ActionMailer::Base:Class" 
+# exception.
+gem 'mailgun-ruby', '~>1.2.0'
 gem 'dalli'
 gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'
@@ -143,16 +147,18 @@ gem 'intercom', '~> 4.1'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
-gem 'machine_translations', path: 'engines/machine_translations'
-gem 'nlp', path: 'engines/nlp'
-gem 'public_api', path: 'engines/public_api'
-gem 'onboarding', path: 'engines/onboarding'
-gem 'surveys', path: 'engines/surveys'
 gem 'frontend', path: 'engines/frontend'
+gem 'machine_translations', path: 'engines/machine_translations'
+gem 'maps', path: 'engines/maps'
+gem 'multi_tenancy', path: 'engines/multi_tenancy'
+gem 'nlp', path: 'engines/nlp'
+gem 'onboarding', path: 'engines/onboarding'
 gem 'polls', path: 'engines/polls'
+gem 'project_folders', path: 'engines/project_folders'
+gem 'public_api', path: 'engines/public_api'
+gem 'surveys', path: 'engines/surveys'
+gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
-gem 'maps', path: 'engines/maps'
 
-gem 'project_folders', path: 'engines/project_folders'
-gem 'tagging', path: 'engines/tagging'
+

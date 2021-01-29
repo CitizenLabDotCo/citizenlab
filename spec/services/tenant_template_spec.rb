@@ -195,8 +195,8 @@ describe TenantTemplateService do
       load Rails.root.join("db","seeds.rb")
       localhost = Tenant.find_by(host: 'localhost')
       settings = localhost.settings
-      settings['core']['locales'] = Tenant.current.settings.dig('core', 'locales')
-      localhost.update! settings: settings
+      settings['core']['locales'] = AppConfiguration.instance.settings('core', 'locales')
+      localhost.update!(settings: settings) # TODO OS how will tenant templates work?
       Apartment::Tenant.switch('localhost') do
         load Rails.root.join("db","seeds.rb")
       end
