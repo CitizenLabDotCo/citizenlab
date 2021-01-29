@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2021-01-29
+
 ### Added
 - Ability to redirect URLs through AdminHQ
 - Accessibility statement link in the footer
