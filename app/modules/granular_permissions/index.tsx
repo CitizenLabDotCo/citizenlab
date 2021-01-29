@@ -17,6 +17,14 @@ const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
 };
 
 const configuration: ModuleConfiguration = {
+  routes: {
+    'admin.initiatives': [
+      {
+        path: 'permissions',
+        container: () => import('./admin/containers/permissions'),
+      },
+    ],
+  },
   outlets: {
     'app.containers.Admin.project.edit.permissions': (props) => (
       <RenderOnFeatureFlag>

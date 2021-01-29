@@ -3,7 +3,7 @@ import { IProjectData } from 'services/projects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/Admin/projects/edit/permissions/messages';
+import messages from './messages';
 
 // components
 import { SubSectionTitle } from 'components/admin/Section';
