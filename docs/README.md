@@ -2,7 +2,8 @@
 
 ## Next release 
 
-/
+### Added
+- Ability to redirect URLs through AdminHQ
 
 ## 2021-01-28
 
