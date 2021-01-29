@@ -270,7 +270,7 @@ const Data = adopt<DataProps, WithRouterProps>({
       {render}
     </GetProjectFolder>
   ),
-  adminPublications: ({ params, render }) => (
+  adminPublications: ({ render }) => (
     <GetAdminPublications publicationStatusFilter={publicationStatuses}>
       {render}
     </GetAdminPublications>
