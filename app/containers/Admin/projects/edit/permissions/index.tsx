@@ -21,7 +21,6 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import Moderators from './Moderators';
-import Granular from './Granular';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
@@ -45,6 +44,7 @@ import GetFeatureFlag, {
 // style
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import Outlet from 'components/Outlet';
 
 export const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -94,7 +94,6 @@ interface InputProps {}
 interface DataProps {
   moderators: GetModeratorsChildProps;
   projectVisibilityEnabled: GetFeatureFlagChildProps;
-  granularPermissionsEnabled: GetFeatureFlagChildProps;
   projectManagementEnabled: GetFeatureFlagChildProps;
   ideaAssignmentEnabled: GetFeatureFlagChildProps;
 }
@@ -110,6 +109,7 @@ interface State {
   loading: boolean;
   saving: boolean;
   status: 'disabled' | 'enabled' | 'error' | 'success';
+  isPermissionsOutletEmpty: boolean;
 }
 
 class ProjectPermissions extends PureComponent<
@@ -129,6 +129,7 @@ class ProjectPermissions extends PureComponent<
       loading: true,
       saving: false,
       status: 'disabled',
+      isPermissionsOutletEmpty: true,
     };
     this.subscriptions = [];
   }
@@ -288,22 +289,34 @@ class ProjectPermissions extends PureComponent<
     this.saveChanges();
   };
 
+  handleOutletData = () => {
+    this.setState({ isPermissionsOutletEmpty: false });
+  };
+
   render() {
     const { formatMessage } = this.props.intl;
+
     const {
       projectVisibilityEnabled,
-      granularPermissionsEnabled,
       projectManagementEnabled,
       ideaAssignmentEnabled,
     } = this.props;
-    const { project, unsavedVisibleTo, loading, saving, status } = this.state;
+
+    const {
+      project,
+      unsavedVisibleTo,
+      loading,
+      saving,
+      status,
+      isPermissionsOutletEmpty,
+    } = this.state;
 
     if (!loading && unsavedVisibleTo && project) {
       const projectId = project.data.id;
 
       return (
         <>
-          {(projectVisibilityEnabled || granularPermissionsEnabled) && (
+          {(projectVisibilityEnabled || !isPermissionsOutletEmpty) && (
             <StyledSection>
               <StyledSectionTitle>
                 <FormattedMessage
@@ -372,11 +385,14 @@ class ProjectPermissions extends PureComponent<
                   )}
                 </SubSection>
               )}
-              {granularPermissionsEnabled && (
-                <SubSection>
-                  <Granular project={project.data} />
-                </SubSection>
-              )}
+
+              <SubSection>
+                <Outlet
+                  id="app.containers.Admin.project.edit.permissions"
+                  onData={handleOutletData}
+                  project={project.data}
+                />
+              </SubSection>
             </StyledSection>
           )}
 
@@ -440,7 +456,6 @@ const Data = adopt<DataProps, WithRouterProps>({
     <GetModerators projectId={params.projectId}>{render}</GetModerators>
   ),
   projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
-  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
   projectManagementEnabled: <GetFeatureFlag name="project_management" />,
   ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
 });
