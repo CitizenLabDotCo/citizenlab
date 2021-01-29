@@ -31,13 +31,12 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     pcs = ParticipationContextService.new
-    context = pcs.get_participation_context(record.project)
     record.draft? ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
       user&.active? &&
       record.author_id == user.id &&
-      !pcs.posting_idea_disabled_reason_for_context(context, user) &&
+      !pcs.posting_idea_disabled_reason_for_project(record.project, user) &&
       ProjectPolicy.new(user, record.project).show?
     )
   end
@@ -63,8 +62,7 @@ class IdeaPolicy < ApplicationPolicy
     bypassable_reasons = %w[posting_disabled]
     bypassable_reasons << 'not_permitted' if Tenant.current.host == 'participatie.stad.gent'
     pcs = ParticipationContextService.new
-    context = pcs.get_participation_context(record.project)
-    pcs_posting_reason = pcs.posting_idea_disabled_reason_for_context(context, user)
+    pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
       (
         user&.active? &&
@@ -97,6 +95,4 @@ class IdeaPolicy < ApplicationPolicy
       shared
     end
   end
-
-
 end
