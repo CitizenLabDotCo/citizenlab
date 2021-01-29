@@ -1,6 +1,15 @@
 # Changelog
 
-## Next release 
+## Next release
+
+### Added
+- Ability to redirect URLs through AdminHQ
+- Accessibility statement link in the footer
+
+### Fixed
+- Fixed issue affecting project managers that blocked access to their managed projects, when these are placed inside a folder.
+
+## 2021-01-28
 
 ### Fixed
 - A bug in Admin project edit page that did not allow a user to Go Back to the projects list after switching tabs

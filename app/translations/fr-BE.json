@@ -1456,7 +1456,7 @@
   "app.containers.AdminPage.Topics.confirmHeader": "Êtes-vous sûr de vouloir supprimer ce thème ?",
   "app.containers.AdminPage.Topics.delete": "Supprimer",
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Supprimer",
-  "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ce sujet ne pourra plus être utilisé dans les projets.",
+  "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ce sujet ne pourra plus être utilisé dans ce projet.",
   "app.containers.AdminPage.Topics.inputForm": "Formulaire de contribution",
   "app.containers.AdminPage.Topics.lastTopicWarning": "Au moins un sujet est requis. Si vous ne souhaitez pas utiliser de sujets, ils peuvent être désactivés dans l'onglet {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Vous pouvez ajouter et supprimer les rubriques pouvant être affectées aux contributions de ce projet.",
