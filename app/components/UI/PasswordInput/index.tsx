@@ -34,11 +34,19 @@ const PasswordInput = ({
   error,
   autocomplete,
   placeholder,
+  onChange,
+  onBlur,
 }: Props) => {
   const locale = useLocale();
   const [showPassword, setShowPassword] = useState(false);
-  const handleOnChange = () => {};
-  const handleOnBlur = () => {};
+  const handleOnChange = (password: string) => {
+    onChange(password);
+  };
+  const handleOnBlur = () => {
+    if (onBlur) {
+      onBlur();
+    }
+  };
   const handleOnClick = () => {
     setShowPassword(!showPassword);
   };
