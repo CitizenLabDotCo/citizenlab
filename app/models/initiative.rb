@@ -81,16 +81,13 @@ class Initiative < ApplicationRecord
   }
 
 
-  def votes_needed tenant=Tenant.current
-    [tenant.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
+  def votes_needed(configuration = AppConfiguration.instance)
+    [configuration.settings('initiatives', 'voting_threshold') - upvotes_count, 0].max
   end
 
-  def expires_at tenant=Tenant.current
-    if published?
-      published_at + tenant.settings.dig('initiatives', 'days_limit').days
-    else
-      nil
-    end
+  def expires_at(configuration = AppConfiguration.instance)
+    return nil unless published?
+    published_at + configuration.settings('initiatives', 'days_limit').days
   end
 
   def threshold_reached_at

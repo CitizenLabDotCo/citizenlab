@@ -112,7 +112,7 @@ class InvitesService
         email: 'someuser@somedomain.com',
         first_name: 'John',
         last_name: 'Johnson',
-        language: Tenant.settings('core', 'locales').first,
+        language: AppConfiguration.instance.settings('core', 'locales').first,
         groups: MultilocService.new.t(Group.first&.title_multiloc),
         admin: false,
       }
@@ -262,7 +262,7 @@ class InvitesService
       email: params["email"],
       first_name: params["first_name"], 
       last_name: params["last_name"], 
-      locale: params["locale"] || default_params["locale"] || Tenant.settings('core', 'locales').first, 
+      locale: params["locale"] || default_params["locale"] || AppConfiguration.instance.settings('core', 'locales').first,
       manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],
       custom_field_values: params.slice(*custom_field_keys),
