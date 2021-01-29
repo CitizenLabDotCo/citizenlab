@@ -3,15 +3,16 @@ module OmniauthMethods
 
     include Verification::Methods::BosaFas
 
-    def profile_to_user_attrs auth
+    def profile_to_user_attrs(auth)
       {}.tap do |info|
-        info[:first_name] = auth.dig('extra','raw_info','givenName') if auth.dig('extra','raw_info','givenName')
-        info[:last_name] = auth.dig('extra','raw_info','surname') if auth.dig('extra','raw_info','surname')
+        info[:first_name] = auth.dig('extra', 'raw_info', 'givenName') if auth.dig('extra', 'raw_info', 'givenName')
+        info[:last_name] = auth.dig('extra', 'raw_info', 'surname') if auth.dig('extra', 'raw_info', 'surname')
       end
     end
 
-    def omniauth_setup tenant, env
-      if Verification::VerificationService.new.is_active?(tenant, name)
+    # @param [AppConfiguration] configuration
+    def omniauth_setup(configuration, env)
+      if Verification::VerificationService.new.is_active?(configuration, name)
         options = env['omniauth.strategy'].options
         options[:scope] = [:openid, :profile, :egovnrn]
         options[:response_type] = :code
@@ -29,7 +30,7 @@ module OmniauthMethods
           authorization_endpoint: '/fas/oauth2/authorize',
           token_endpoint: '/fas/oauth2/access_token',
           userinfo_endpoint: '/fas/oauth2/userinfo',
-          redirect_uri: "#{tenant.base_backend_uri}/auth/bosa_fas/callback",
+          redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback",
         }
       end
     end
