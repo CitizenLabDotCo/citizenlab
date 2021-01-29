@@ -76,7 +76,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
-    onData: () => boolean;
   };
 };
 

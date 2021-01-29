@@ -129,7 +129,6 @@ class ProjectPermissions extends PureComponent<
       loading: true,
       saving: false,
       status: 'disabled',
-      isPermissionsOutletEmpty: true,
     };
     this.subscriptions = [];
   }
@@ -289,10 +288,6 @@ class ProjectPermissions extends PureComponent<
     this.saveChanges();
   };
 
-  handleOutletData = () => {
-    this.setState({ isPermissionsOutletEmpty: false });
-  };
-
   render() {
     const { formatMessage } = this.props.intl;
 
@@ -302,99 +297,83 @@ class ProjectPermissions extends PureComponent<
       ideaAssignmentEnabled,
     } = this.props;
 
-    const {
-      project,
-      unsavedVisibleTo,
-      loading,
-      saving,
-      status,
-      isPermissionsOutletEmpty,
-    } = this.state;
+    const { project, unsavedVisibleTo, loading, saving, status } = this.state;
 
     if (!loading && unsavedVisibleTo && project) {
       const projectId = project.data.id;
 
       return (
         <>
-          {(projectVisibilityEnabled || !isPermissionsOutletEmpty) && (
-            <StyledSection>
-              <StyledSectionTitle>
-                <FormattedMessage
-                  {...messages.participationAccessRightsTitle}
-                />
-              </StyledSectionTitle>
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.participationAccessRightsTitle} />
+            </StyledSectionTitle>
 
-              {projectVisibilityEnabled && (
-                <SubSection>
-                  <StyledSectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.viewingRightsTitle} />
-                    </SubSectionTitle>
-
-                    <RadioButtonsWrapper>
-                      <StyledRadio
-                        onChange={this.handlePermissionTypeChange}
-                        currentValue={unsavedVisibleTo}
-                        name="permissionsType"
-                        label={formatMessage(messages.permissionsEveryoneLabel)}
-                        value="public"
-                        id="permissions-all"
-                      />
-                      <StyledRadio
-                        onChange={this.handlePermissionTypeChange}
-                        currentValue={unsavedVisibleTo}
-                        name="permissionsType"
-                        label={formatMessage(
-                          messages.permissionsAdministrators
-                        )}
-                        value="admins"
-                        id="permissions-administrators"
-                      />
-                      <StyledRadio
-                        onChange={this.handlePermissionTypeChange}
-                        currentValue={unsavedVisibleTo}
-                        name="permissionsType"
-                        label={formatMessage(
-                          messages.permissionsSelectionLabel
-                        )}
-                        value="groups"
-                        id="permissions-selection"
-                      />
-                    </RadioButtonsWrapper>
-                  </StyledSectionField>
-
-                  {unsavedVisibleTo === 'groups' && (
-                    <ProjectGroupsList
-                      projectId={projectId}
-                      onAddButtonClicked={this.handleGroupsAdded}
-                    />
-                  )}
-
-                  {unsavedVisibleTo !== 'groups' && (
-                    <SubmitWrapper
-                      loading={saving}
-                      status={status}
-                      onClick={this.saveChanges}
-                      messages={{
-                        buttonSave: messages.save,
-                        buttonSuccess: messages.saveSuccess,
-                        messageError: messages.saveErrorMessage,
-                        messageSuccess: messages.saveSuccessMessage,
-                      }}
-                    />
-                  )}
-                </SubSection>
-              )}
-
+            {projectVisibilityEnabled && (
               <SubSection>
-                <Outlet
-                  id="app.containers.Admin.project.edit.permissions"
-                  onData={handleOutletData}
-                  project={project.data}
-                />
+                <StyledSectionField>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.viewingRightsTitle} />
+                  </SubSectionTitle>
+
+                  <RadioButtonsWrapper>
+                    <StyledRadio
+                      onChange={this.handlePermissionTypeChange}
+                      currentValue={unsavedVisibleTo}
+                      name="permissionsType"
+                      label={formatMessage(messages.permissionsEveryoneLabel)}
+                      value="public"
+                      id="permissions-all"
+                    />
+                    <StyledRadio
+                      onChange={this.handlePermissionTypeChange}
+                      currentValue={unsavedVisibleTo}
+                      name="permissionsType"
+                      label={formatMessage(messages.permissionsAdministrators)}
+                      value="admins"
+                      id="permissions-administrators"
+                    />
+                    <StyledRadio
+                      onChange={this.handlePermissionTypeChange}
+                      currentValue={unsavedVisibleTo}
+                      name="permissionsType"
+                      label={formatMessage(messages.permissionsSelectionLabel)}
+                      value="groups"
+                      id="permissions-selection"
+                    />
+                  </RadioButtonsWrapper>
+                </StyledSectionField>
+
+                {unsavedVisibleTo === 'groups' && (
+                  <ProjectGroupsList
+                    projectId={projectId}
+                    onAddButtonClicked={this.handleGroupsAdded}
+                  />
+                )}
+
+                {unsavedVisibleTo !== 'groups' && (
+                  <SubmitWrapper
+                    loading={saving}
+                    status={status}
+                    onClick={this.saveChanges}
+                    messages={{
+                      buttonSave: messages.save,
+                      buttonSuccess: messages.saveSuccess,
+                      messageError: messages.saveErrorMessage,
+                      messageSuccess: messages.saveSuccessMessage,
+                    }}
+                  />
+                )}
               </SubSection>
-            </StyledSection>
-          )}
+            )}
+
+            <SubSection>
+              <Outlet
+                id="app.containers.Admin.project.edit.permissions"
+                project={project.data}
+              />
+            </SubSection>
+          </StyledSection>
 
           {(projectManagementEnabled || ideaAssignmentEnabled) && (
             <StyledSection>
