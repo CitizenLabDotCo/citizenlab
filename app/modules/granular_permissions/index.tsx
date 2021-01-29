@@ -1,6 +1,7 @@
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import Tab from './admin/components/Tab';
 import Granular from './admin/containers/Granular';
 
 type RenderOnFeatureFlagProps = {
@@ -22,6 +23,7 @@ const configuration: ModuleConfiguration = {
         <Granular {...props} />
       </RenderOnFeatureFlag>
     ),
+    'app.containers.Admin.initiatives.tabs': (props) => <Tab {...props} />,
   },
 };
 

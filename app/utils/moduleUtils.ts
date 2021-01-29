@@ -13,7 +13,7 @@ import { FunctionComponent } from 'react';
 
 import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { FormikSubmitHandler, Multiloc } from 'typings';
+import { FormikSubmitHandler, ITab, Multiloc } from 'typings';
 import { IUserData } from 'services/users';
 
 type Localize = (
@@ -76,6 +76,10 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.project.edit.permissions': {
     project: IProjectData;
+  };
+  'app.containers.Admin.initiatives.tabs': {
+    formatMessage: (value: string) => string;
+    onData: (data: { after?: string; configuration: ITab }) => void;
   };
 };
 
