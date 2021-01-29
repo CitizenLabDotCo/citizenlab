@@ -59,13 +59,13 @@ class IdeaPolicy < ApplicationPolicy
 
   def update?
     # TODO: remove this after Gents project
-    still_updatable_when = %w[posting_disabled not_permitted]
+    bypassable_reasons = %w[posting_disabled not_permitted]
     pcs_posting_reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
     record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
       (
         user&.active? &&
         record.author_id == user.id &&
-        (pcs_posting_reason.nil? || still_updatable_when.include?(pcs_posting_reason)) &&
+        (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
         ProjectPolicy.new(user, record.project).show?
       )
   end
