@@ -38,12 +38,17 @@ export type IAdminPublicationContent = {
   };
 };
 
+export interface ChildrenOfProps {
+  id?: string;
+}
 export interface IOutput {
   list: IAdminPublicationContent[] | undefined | null;
+  topLevel: IAdminPublicationContent[];
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
+  childrenOf: ({ id }: ChildrenOfProps) => IAdminPublicationContent[];
   onChangeAreas: (areas: string[] | null) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
@@ -157,8 +162,11 @@ export default function useAdminPublications({
   }, [list, isProjectFoldersEnabled]);
 
   const childrenOf = useCallback(
-    (publication: IAdminPublicationContent) => {
+    ({ id: publicationId }: ChildrenOfProps) => {
       if (isNilOrError(list)) return [];
+
+      const publication = list.find(({ id }) => id === publicationId);
+      if (isNilOrError(publication)) return [];
 
       const childPublicationIds = publication.relationships.children.data.map(
         ({ id }) => id
