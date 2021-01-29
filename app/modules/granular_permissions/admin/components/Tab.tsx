@@ -1,10 +1,14 @@
 import { FC, useEffect } from 'react';
-import { ITab } from 'typings';
+import { MessageValue } from 'react-intl';
+import { ITab, MessageDescriptor } from 'typings';
 import messages from './messages';
 
 type Props = {
   onData: (data: { after?: string; configuration: ITab }) => void;
-  formatMessage: (string) => string;
+  formatMessage: (
+    messageDescriptor: MessageDescriptor,
+    values?: { [key: string]: MessageValue } | undefined
+  ) => string;
 };
 
 const Tab: FC<Props> = ({ onData, formatMessage }) => {

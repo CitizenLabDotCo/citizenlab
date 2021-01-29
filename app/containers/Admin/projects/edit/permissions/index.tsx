@@ -109,7 +109,6 @@ interface State {
   loading: boolean;
   saving: boolean;
   status: 'disabled' | 'enabled' | 'error' | 'success';
-  isPermissionsOutletEmpty: boolean;
 }
 
 class ProjectPermissions extends PureComponent<
