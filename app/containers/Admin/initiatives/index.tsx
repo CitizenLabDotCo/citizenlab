@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -37,7 +37,7 @@ const ActionsContainer = styled.div`
 `;
 const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
   ({ children, intl: { formatMessage }, location }) => {
-    const tabs = [
+    const [tabs] = useState([
       {
         label: formatMessage(messages.settingsTab),
         url: '/admin/initiatives',
@@ -51,7 +51,7 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
         url: '/admin/initiatives/permissions',
         feature: 'granular_permissions',
       },
-    ];
+    ]);
 
     const resource = {
       title: formatMessage(messages.titleInitiatives),
