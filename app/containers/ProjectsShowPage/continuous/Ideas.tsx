@@ -3,7 +3,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
+// import IdeaCards from 'components/IdeaCards';
+import MapPoC from './MapPoC';
 import PBExpenses from '../shared/pb/PBExpenses';
 import {
   SectionContainer,
@@ -46,6 +47,8 @@ interface Props {
 const IdeasContainer = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const windowSize = useWindowSize();
+
+  const noOp = () => {};
 
   if (!isNilOrError(project)) {
     const projectType = project?.attributes.process_type;
@@ -92,7 +95,10 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                   })}
                 />
               </StyledProjectPageSectionTitle>
-              <IdeaCards
+
+              <MapPoC />
+
+              {/* <IdeaCards
                 type="load-more"
                 projectIds={projectIds}
                 participationMethod={project.attributes.participation_method}
@@ -102,7 +108,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
                 defaultSortingMethod={project.attributes.ideas_order || null}
                 defaultView={project.attributes.presentation_mode || null}
                 invisibleTitleMessage={messages.a11y_titleInputs}
-              />
+              /> */}
             </SectionContainer>
           </StyledContentContainer>
         </Container>

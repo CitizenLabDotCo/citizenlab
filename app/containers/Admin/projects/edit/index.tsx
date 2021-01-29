@@ -146,6 +146,12 @@ export class AdminProjectEdition extends PureComponent<
         name: 'ideaform',
       },
       {
+        label: formatMessage(messages.mapTab),
+        url: `${baseTabsUrl}/map`,
+        // feature: 'mapping',
+        name: 'map',
+      },
+      {
         label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
         name: 'phases',
@@ -231,6 +237,25 @@ export class AdminProjectEdition extends PureComponent<
         return false;
       },
       ideaform: function isIdeaformTabHidden() {
+        if (
+          (processType === 'continuous' &&
+            participationMethod !== 'ideation' &&
+            participationMethod !== 'budgeting') ||
+          (processType === 'timeline' &&
+            !isNilOrError(phases) &&
+            phases.filter((phase) => {
+              return (
+                phase.attributes.participation_method === 'ideation' ||
+                phase.attributes.participation_method === 'budgeting'
+              );
+            }).length === 0)
+        ) {
+          return true;
+        }
+
+        return false;
+      },
+      map: function isMapTabHidden() {
         if (
           (processType === 'continuous' &&
             participationMethod !== 'ideation' &&
