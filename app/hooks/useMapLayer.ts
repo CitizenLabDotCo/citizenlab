@@ -42,7 +42,7 @@ export default ({ projectId, mapLayerId }: Props): IOutput => {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [mapLayerId]);
 
   const createMapLayer = useCallback(
     (mapLayerAttributes: IMapLayerAttributes) => {
@@ -53,7 +53,7 @@ export default ({ projectId, mapLayerId }: Props): IOutput => {
 
   const updateMapLayer = useCallback(
     (mapLayerAttributes: IMapLayerAttributes) => {
-      if (isNilOrError(mapLayerId)) return;
+      if (isNilOrError(mapLayerId) && !mapLayerId) return;
 
       return updateProjectMapLayer(projectId, mapLayerId, mapLayerAttributes);
     },
@@ -61,7 +61,7 @@ export default ({ projectId, mapLayerId }: Props): IOutput => {
   );
 
   const deleteMapLayer = useCallback(() => {
-    if (isNilOrError(mapLayerId)) return;
+    if (isNilOrError(mapLayerId) && !mapLayerId) return;
 
     return deleteProjectMapLayer(projectId, mapLayerId);
   }, [projectId, mapLayerId]);
