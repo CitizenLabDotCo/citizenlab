@@ -1,8 +1,15 @@
 Maps::Engine.routes.draw do
-
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
-      get 'projects/:project_id/map_config' => 'map_configs#show'
+      resources :projects, only: [] do
+        resource :map_config, except: %i[index] do
+          resources :layers, except: %i[except] do
+            member do
+              patch :reorder
+            end
+          end
+        end
+      end
     end
   end
 
@@ -13,5 +20,4 @@ Maps::Engine.routes.draw do
       end
     end
   end
-
 end
