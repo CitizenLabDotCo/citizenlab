@@ -1,28 +1,29 @@
 FactoryBot.define do
+  sequence :tile_provider do |n|
+    "https://some.map.service/maps/basic/{z}/{x}/{y}/#{n}.png?key=abcdefg"
+  end
+
   factory :map_config, class: 'Maps::MapConfig' do
     project
 
-    trait :with_positioning do 
-      center { RGeo::Cartesian.factory.point(4.3517, 50.8503) }
-      zoom_level { 14.25 }
+    trait :with_positioning do
+      center { RGeo::Cartesian.factory.point(Faker::Address.longitude, Faker::Address.latitude) }
+      zoom_level { rand(1..20) }
     end
 
-    trait :with_tile_provider do 
-      tile_provider { "https://some.map.service/maps/basic/{z}/{x}/{y}.png?key=abcdefg" }
+    trait :with_tile_provider do
+      tile_provider { generate :tile_provider }
     end
 
     trait :with_layers do
-      after(:create) do |map_config, evaluator|
-        map_config.layers = [create(:layer, :with_marker_svg, map_config: map_config)]
+      after(:create) do |map_config, _evaluator|
+        create(:layer, :with_marker_svg, map_config: map_config)
       end
     end
 
     trait :with_legend do
-      after(:create) do |map_config, evaluator|
-        map_config.legend_items = [
-          create(:legend_item, map_config: map_config),
-          create(:legend_item, map_config: map_config),
-        ]
+      after(:create) do |map_config, _evaluator|
+        create_list(:legend_item, 2, map_config: map_config)
       end
     end
   end
