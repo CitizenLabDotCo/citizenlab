@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { Multiloc } from 'typings';
-import { UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 export interface IMapLayerAttributes {
   title_multiloc: Multiloc;
