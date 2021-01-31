@@ -24,8 +24,11 @@ module Maps
         end
 
         def destroy
-          @layer.destroy
-          head :no_content
+          if @layer.destroy
+            head :no_content
+          else
+            render json: layer_errors, status: :unprocessable_entity
+          end
         end
 
         def show
