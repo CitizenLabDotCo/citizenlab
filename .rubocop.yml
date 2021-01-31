@@ -48,7 +48,8 @@ RSpec/DescribeClass:
   - '**/spec/acceptance/**/*'
   - '**/spec/lint/**/*'
 Rspec/SharedContext:
-  Enabled: false
+  Exclude:
+  - '**/spec/acceptance/**/*'
 Rspec/MultipleMemoizedHelpers:
   Enabled: false
 Rspec/EmptyExampleGroup:
