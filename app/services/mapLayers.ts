@@ -3,6 +3,7 @@ import streams from 'utils/streams';
 import { Multiloc, UploadFile } from 'typings';
 
 export interface IMapLayerAttributes {
+  id: string;
   title_multiloc: Multiloc;
   geojson: GeoJSON.GeoJsonObject;
   default_enabled: boolean;
