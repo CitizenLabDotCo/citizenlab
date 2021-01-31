@@ -59,7 +59,7 @@ module Maps
         end
 
         def serialized_layer
-          LayerSerializer.new(@layer).serialized_json
+          Maps::WebApi::V1::LayerSerializer.new(@layer).serialized_json
         end
 
         def layer_errors

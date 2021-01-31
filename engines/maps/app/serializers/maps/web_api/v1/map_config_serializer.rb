@@ -9,6 +9,7 @@ class Maps::WebApi::V1::MapConfigSerializer < ::WebApi::V1::BaseSerializer
         geojson: layer.geojson,
         default_enabled: layer.default_enabled,
         marker_svg_url: layer.marker_svg_url,
+        id: layer.id
       }
     end
   end
