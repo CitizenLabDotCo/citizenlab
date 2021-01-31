@@ -24,7 +24,7 @@ resource 'Map Layers' do
     header 'Content-Type', 'application/json'
   end
 
-  shared_examples 'successful GET map layer' do
+  shared_examples 'successful GET map layers' do
     get 'web_api/v1/projects/:project_id/map_config/layers/:id' do
       let(:layer) { map_config.layers.first }
       let(:id)    { layer.id }
@@ -61,7 +61,7 @@ resource 'Map Layers' do
   end
 
   context 'when not logged in' do
-    include_examples 'successful GET map layer'
+    include_examples 'successful GET map layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
@@ -70,7 +70,7 @@ resource 'Map Layers' do
       user_header_token
     end
 
-    include_examples 'successful GET map layer'
+    include_examples 'successful GET map layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
@@ -79,7 +79,7 @@ resource 'Map Layers' do
       admin_header_token
     end
 
-    include_examples 'successful GET map layer'
+    include_examples 'successful GET map layers'
 
     post 'web_api/v1/projects/:project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do

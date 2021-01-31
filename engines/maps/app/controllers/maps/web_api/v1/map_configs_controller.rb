@@ -2,8 +2,6 @@ module Maps
   module WebApi
     module V1
       class MapConfigsController < MapsController
-        skip_before_action :authenticate_user, only: %i[show]
-
         before_action :set_map_config, only: %i[update destroy]
 
         def create
@@ -25,8 +23,11 @@ module Maps
         end
 
         def destroy
-          @map_config.destroy
-          head :no_content
+          if @map_config.destroy
+            head :no_content
+          else
+            render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
+          end
         end
 
         def show
@@ -43,7 +44,8 @@ module Maps
         end
 
         def serialized_map_config
-          MapConfigSerializer.new(@map_config, params: fastjson_params).serialized_json
+          Maps::WebApi::V1::MapConfigSerializer.new(@map_config, params: fastjson_params)
+                                               .serialized_json
         end
 
         def map_config_params
