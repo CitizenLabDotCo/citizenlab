@@ -51,7 +51,8 @@ Rspec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
 Rspec/MultipleMemoizedHelpers:
-  Enabled: false
+  Exclude:
+  - '**/spec/acceptance/**/*'
 Rspec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
