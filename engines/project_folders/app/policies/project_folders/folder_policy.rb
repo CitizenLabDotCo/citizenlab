@@ -17,8 +17,7 @@ module ProjectFolders
       end
 
       def published_folders
-        scope.left_outer_joins(:admin_publication)
-             .where(admin_publications: { publication_status: %w[published archived] })
+        scope.includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
       end
     end
 
