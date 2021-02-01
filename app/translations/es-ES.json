@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "Editar",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "Este proyecto no parece contener ninguna entrada.",
   "app.components.admin.PostManager.PostPreview.noOne": "Sin asignar",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "El número de veces que esto se ha incluido en los presupuestos participativos de otros participantes.",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",
