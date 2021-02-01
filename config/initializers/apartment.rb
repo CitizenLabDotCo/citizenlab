@@ -3,8 +3,6 @@
 # Require whichever Elevator you're using below or none if you have a custom one.
 #
 require 'apartment/elevators/generic'
-require 'apartment_active_job'
-
 # require 'apartment/elevators/domain'
 # require 'apartment/elevators/subdomain'
 # require 'apartment/elevators/first_subdomain'
