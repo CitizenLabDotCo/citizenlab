@@ -2346,7 +2346,7 @@
   "app.containers.app.navbar.search": "Søg",
   "app.containers.app.navbar.signOut": "Log ud",
   "app.containers.app.navbar.signUp": "Registrer dig",
-  "app.containers.footer.accessibility-statement": "Erklæring om webtilgængelighed",
+  "app.containers.footer.accessibility-statement": "{tenantName, select, HillerodKommune {WAS} other {Erklæring om webtilgængelighed}}",
   "app.containers.footer.close": "Tæt",
   "app.containers.footer.cookie-policy": "Cookiepolitik",
   "app.containers.footer.cookieSettings": "Cookie-indstillinger",
