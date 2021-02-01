@@ -9,7 +9,7 @@ module Tagging
           parse_prediction prediction do |tag_id, document_id, confidence_score|
             create_tag tag_id, document_id, confidence_score
           end
-          PendingTask.delete(nlp_task_id: body['task_id'])
+          PendingTask.where(nlp_task_id: body['task_id']).destroy_all
           TagService.new.remove_unused_tags unless processing?
         end
       end
@@ -17,6 +17,7 @@ module Tagging
 
     def cancel_tasks
       if PendingTask.all.map do |task|
+        puts task.nlp_task_id
         cancelling_status = NLP::TasksService.new.cancel(task.nlp_task_id)
         if cancelling_status != 200
           if NLP::TasksService.new.status(task_id)['status'] != 'PENDING'
@@ -26,7 +27,7 @@ module Tagging
             500
           end
         else
-          task.delete
+          task.destroy
           200
         end
       end.all? do |r|
