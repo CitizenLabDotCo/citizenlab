@@ -40,6 +40,7 @@ interface Props {
   error?: string | null;
   onChange: (password: string) => void;
   onBlur?: () => void;
+  setRef?: (element: HTMLInputElement) => void;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
 }
@@ -52,6 +53,7 @@ const PasswordInput = ({
   placeholder,
   onChange,
   onBlur,
+  setRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
@@ -81,6 +83,7 @@ const PasswordInput = ({
           onBlur={handleOnBlur}
           autocomplete={autocomplete}
           placeholder={placeholder}
+          setRef={setRef}
         />
         <ShowPasswordButton
           locale={locale}
