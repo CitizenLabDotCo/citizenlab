@@ -71,10 +71,6 @@ const ButtonWrapper = styled.div`
   padding-top: 8px;
 `;
 
-const StyledPasswordInput = styled(PasswordInput)`
-  margin-bottom: 20px;
-`;
-
 type InputProps = {
   metaData: ISignUpInMetaData;
   hasNextStep?: boolean;
@@ -533,9 +529,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 labelMessage={messages.passwordLabel}
                 htmlFor="signup-password-input"
               />
-              <StyledPasswordInput
+              <PasswordInput
                 id="signup-password-input"
-                placeholder={formatMessage(messages.passwordPlaceholder)}
                 value={password}
                 onChange={this.handlePasswordOnChange}
                 error={passwordError}
