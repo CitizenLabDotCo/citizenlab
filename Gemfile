@@ -29,16 +29,20 @@ gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'factory_bot_rails'
-  gem 'rspec_api_documentation'
-  gem 'rspec-rails'
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner'
-  gem 'simplecov'
-  gem 'simplecov-rcov'
-  gem 'rspec_junit_formatter'
+  gem 'factory_bot_rails'
   gem 'rack-mini-profiler'
-end
+  gem 'rspec_api_documentation'
+  gem 'rspec_junit_formatter'
+  gem 'rspec-rails'
+  gem 'rubocop-ast', '~> 0.7.1', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'simplecov-rcov'
+  gem 'simplecov'
+ end
 
 group :development do
   gem 'bullet'
@@ -143,16 +147,18 @@ gem 'intercom', '~> 4.1'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
-gem 'machine_translations', path: 'engines/machine_translations'
-gem 'nlp', path: 'engines/nlp'
-gem 'public_api', path: 'engines/public_api'
-gem 'onboarding', path: 'engines/onboarding'
-gem 'surveys', path: 'engines/surveys'
 gem 'frontend', path: 'engines/frontend'
+gem 'machine_translations', path: 'engines/machine_translations'
+gem 'maps', path: 'engines/maps'
+gem 'multi_tenancy', path: 'engines/multi_tenancy'
+gem 'nlp', path: 'engines/nlp'
+gem 'onboarding', path: 'engines/onboarding'
 gem 'polls', path: 'engines/polls'
+gem 'project_folders', path: 'engines/project_folders'
+gem 'public_api', path: 'engines/public_api'
+gem 'surveys', path: 'engines/surveys'
+gem 'tagging', path: 'engines/tagging'
 gem 'verification', path: 'engines/verification'
 gem 'volunteering', path: 'engines/volunteering'
-gem 'maps', path: 'engines/maps'
 
-gem 'project_folders', path: 'engines/project_folders'
-gem 'tagging', path: 'engines/tagging'
+
