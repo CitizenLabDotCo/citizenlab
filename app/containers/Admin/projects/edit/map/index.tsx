@@ -89,34 +89,34 @@ const Map = memo<Props & WithRouterProps & InjectedIntlProps>(
 
         setMap(map);
       }
-
-      // if (map && layers) {
-      //   layers.clearLayers();
-      //   layers.addData(geoJson);
-      // }
     }, [map, layer]);
 
     useEffect(() => {
-      console.log(geoJsonFeatureCollections);
-    }, [geoJsonFeatureCollections]);
+      if (layer) {
+        layer.clearLayers();
+        geoJsonFeatureCollections.forEach((geoJsonFeatureCollection) => {
+          layer.addData(geoJsonFeatureCollection);
+        });
+      }
+    }, [layer, geoJsonFeatureCollections]);
 
     const handleChange = (event: any) => {
       const fileReader = new FileReader();
       fileReader.readAsText(event.target.files[0], 'UTF-8');
+      event.target.value = null;
       fileReader.onload = (event: any) => {
         const newGeoJsonFeatureCollection = JSON.parse(event.target.result);
-        console.log(gjv.valid(newGeoJsonFeatureCollection));
-        layer?.addData(newGeoJsonFeatureCollection);
-        setGeoJsonFeatureCollections((geoJsonFeatureCollections) => [
-          ...geoJsonFeatureCollections,
-          newGeoJsonFeatureCollection,
-        ]);
+
+        if (gjv.valid(newGeoJsonFeatureCollection)) {
+          setGeoJsonFeatureCollections((geoJsonFeatureCollections) => {
+            return [...geoJsonFeatureCollections, newGeoJsonFeatureCollection];
+          });
+        }
       };
     };
 
     const removeLayer = (index: number) => (event: React.FormEvent) => {
       event?.preventDefault();
-      // layer?.removeLayer(geoJsonFeatureCollections[index])
       setGeoJsonFeatureCollections((geoJsonFeatureCollections) =>
         geoJsonFeatureCollections.filter((_item, i) => i !== index)
       );
@@ -131,6 +131,7 @@ const Map = memo<Props & WithRouterProps & InjectedIntlProps>(
             <Layer key={index}>
               <div>geoJsonFeatureCollections {index + 1}</div>
               <button onClick={removeLayer(index)}>Remove</button>
+              <button onClick={removeLayer(index)}>Edit</button>
             </Layer>
           ))}
         </Layers>
