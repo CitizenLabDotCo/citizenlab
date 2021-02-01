@@ -10,8 +10,8 @@ class ProjectPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
-      elsif user&.project_moderator?
-        Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
+      elsif user_moderates?
+        scope.all.where.not(visible_to: 'admins')
       elsif user
         filter_for_normal_user normal_user_result, user
       else
@@ -27,6 +27,10 @@ class ProjectPolicy < ApplicationPolicy
       else
         scope.none
       end
+    end
+
+    def user_moderates?
+      user&.project_moderator?
     end
 
     private
