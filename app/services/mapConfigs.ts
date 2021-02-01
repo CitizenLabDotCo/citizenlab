@@ -1,25 +1,26 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
+import { IMapLayerAttributes } from './mapLayers';
+
+export interface IMapConfigAttributes {
+  zoom_level?: string;
+  tile_provider?: string;
+  center_geojson?: GeoJSON.Point;
+}
+
+export interface IMapConfigRelationships {
+  layers: IMapLayerAttributes[];
+  legend: {
+    title_multiloc: Multiloc;
+    color: string;
+  }[];
+}
 
 export interface IMapConfigData {
   id: string;
   type: string;
-  attributes: {
-    zoom_level?: string;
-    tile_provider?: string;
-    center_geojson?: GeoJSON.Point;
-    layers: {
-      title_multiloc: Multiloc;
-      geojson: GeoJSON.GeoJsonObject;
-      default_enabled: boolean;
-      marker_svg_url?: string;
-    }[];
-    legend: {
-      title_multiloc: Multiloc;
-      color: string;
-    }[];
-  };
+  attributes: IMapConfigAttributes & IMapConfigRelationships;
 }
 
 export interface IMapConfig {
@@ -30,4 +31,32 @@ export const mapConfigByProjectStream = (projectId: string) => {
   return streams.get<IMapConfig>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/map_config`,
   });
+};
+
+export const createProjectMapConfig = (
+  projectId: string,
+  mapConfig: IMapConfigAttributes
+) => {
+  return streams.add<IMapConfig>(
+    `${API_PATH}/projects/${projectId}/map_config`,
+    { map_config: mapConfig }
+  );
+};
+
+export const updateProjectMapConfig = (
+  projectId: string,
+  mapConfig: IMapConfigAttributes
+) => {
+  return streams.update<IMapConfig>(
+    `${API_PATH}/projects/${projectId}/map_config`,
+    projectId,
+    { map_config: mapConfig }
+  );
+};
+
+export const deleteProjectMapConfig = (projectId: string) => {
+  return streams.delete(
+    `${API_PATH}/projects/${projectId}/map_config`,
+    projectId
+  );
 };
