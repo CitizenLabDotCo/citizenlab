@@ -158,4 +158,8 @@ export default defineMessages({
     defaultMessage:
       'Automatic tagging : {remainingItems} items are being processed',
   },
+  noSuggestions: {
+    id: 'app.components.admin.PostManager.PostPreview.noSuggestions',
+    defaultMessage: 'No suggestions found.',
+  },
 });

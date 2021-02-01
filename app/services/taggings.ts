@@ -7,7 +7,7 @@ export interface ITagging {
   id: string;
   type: 'tagging';
   attributes: {
-    assignment_method: 'automatic' | 'manual' | 'pending';
+    assignment_method: 'automatic' | 'manual';
     confidence_score: number;
     tag_id: string;
     idea_id: string;
@@ -23,18 +23,23 @@ export async function generateTaggings(ideaIds, tagIds, tags, projectIds) {
     projects: projectIds,
   });
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+    apiEndpoint: [
+      `${API_PATH}/taggings`,
+      `${API_PATH}/tags`,
+      `${API_PATH}/pending_tasks`,
+    ],
   });
   return response;
 }
 
 export async function cancelGenerate() {
-  const response = await streams.add(
-    `${API_PATH}/taggings/generate/cancel`,
-    {}
-  );
+  const response = await streams.delete(`${API_PATH}/taggings/generate`, '');
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`, `${API_PATH}/tags`],
+    apiEndpoint: [
+      `${API_PATH}/taggings`,
+      `${API_PATH}/tags`,
+      `${API_PATH}/pending_tasks`,
+    ],
   });
   return response;
 }
