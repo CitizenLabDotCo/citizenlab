@@ -72,7 +72,9 @@ const PasswordInput = ({
           placeholder={placeholder}
         />
         <ShowPasswordButton locale={locale} onClick={handleOnClick}>
-          {showPassword ? 'Hide password' : 'Show password'}
+          {formatMessage(
+            showPassword ? messages.hidePassword : messages.showPassword
+          )}
         </ShowPasswordButton>
         <ScreenReaderOnly aria-live="polite">
           {formatMessage(

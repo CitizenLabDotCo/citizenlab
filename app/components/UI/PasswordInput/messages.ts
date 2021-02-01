@@ -9,4 +9,12 @@ export default defineMessages({
     id: 'app.components.Modal.a11y_passwordHidden',
     defaultMessage: 'Password hidden',
   },
+  hidePassword: {
+    id: 'app.components.Modal.hidePassword',
+    defaultMessage: 'Hide password',
+  },
+  showPassword: {
+    id: 'app.components.Modal.showPassword',
+    defaultMessage: 'Show password',
+  },
 });
