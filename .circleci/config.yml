@@ -50,6 +50,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/cl2-back:$CIRCLE_SHA1
 
+
   test:
     resource_class: small
     executor:
