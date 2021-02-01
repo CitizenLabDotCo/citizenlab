@@ -256,7 +256,7 @@ class PostPreview extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    const { taggings, tags } = this.props;
+    const { taggings, tags, pending } = this.props;
     const manualTaggings = isNilOrError(taggings)
       ? []
       : this.getManualTaggings(taggings);
