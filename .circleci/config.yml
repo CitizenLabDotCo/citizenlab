@@ -305,21 +305,25 @@ workflows:
               only:
                 - production
     jobs:
-      - check-for-inconsistent-data-benelux:
+      # Benelux
+      - check-for-inconsistent-data:
           ssh_host: "52.57.74.84"
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
-      - check-for-inconsistent-data-south-america:
+      # South America
+      - check-for-inconsistent-data:
           ssh_host: "52.67.181.38"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-      - check-for-inconsistent-data-canada:
+      # Canada
+      - check-for-inconsistent-data:
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
-      - check-for-inconsistent-data-us-west:
+      # US West
+      - check-for-inconsistent-data:
           ssh_host: "52.13.59.174"
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
