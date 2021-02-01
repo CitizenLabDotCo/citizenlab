@@ -64,6 +64,7 @@ interface Props {
   rowRef?: RefObject<any>;
   taggings: ITagging[];
   showTagColumn: boolean;
+  processing: boolean;
 }
 
 const addTagMessage = <FormattedMessage {...messages.addTag} />;
@@ -79,6 +80,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
     rowRef,
     taggings,
     showTagColumn,
+    processing,
   }) => {
     const contentTitle = omitBy(
       idea.attributes.title_multiloc,
@@ -117,12 +119,10 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
       [openPreview]
     );
 
-    const sortTagsByMethod = (taggingA: ITagging, taggingB: ITagging) => {
+    const sortTagsByMethod = (taggingA: ITagging) => {
       switch (taggingA.attributes.assignment_method) {
-        case 'pending':
-          return 1;
         case 'automatic':
-          return taggingB.attributes.assignment_method === 'manual' ? 1 : -1;
+          return 1;
         case 'manual':
           return -1;
       }
@@ -161,6 +161,13 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
                 key={tagging.attributes.tag_id}
               />
             ))}
+            {processing && (
+              <StyledTagWrapper
+                isSelected={selected}
+                tagId={null}
+                isAutoTag={true}
+              />
+            )}
             {highlighted && ideaTaggings.length === 0 && (
               <Tag
                 isAutoTag={true}

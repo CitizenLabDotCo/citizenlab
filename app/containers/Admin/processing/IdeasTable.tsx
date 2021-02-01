@@ -128,6 +128,7 @@ interface InputProps {
   setSelectedRows: Dispatch<React.SetStateAction<string[]>>;
   tags: ITag[];
   taggings: ITagging[] | null | undefined | Error;
+  processingRemainingItemsIds: string[] | null | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -141,6 +142,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
     setSelectedRows,
     tags,
     taggings,
+    processingRemainingItemsIds,
   }) => {
     const [ideaList, setIdeaList] = useState<
       IIdeaData[] | undefined | null | Error
@@ -343,6 +345,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
                   openPreview={openPreview}
                   taggings={taggings}
                   showTagColumn={!previewPostId}
+                  processing={processingRemainingItemsIds?.includes(idea.id)!!}
                 />
               ))}
             </tbody>
@@ -368,6 +371,9 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
               taggings={getIdeaTaggings(previewPostId)}
               tags={tags}
               handlePreventNavigation={handlePreventNavigation}
+              pending={
+                processingRemainingItemsIds?.includes(previewPostId || '')!!
+              }
             />
           </PostPreviewTransitionWrapper>
         </CSSTransition>

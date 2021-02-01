@@ -42,6 +42,7 @@ import IdeasTable from './IdeasTable';
 import useTaggings from 'hooks/useTaggings';
 import EmptyState from './EmptyState';
 import { cancelGenerate } from 'services/taggings';
+import usePendingTasks from 'hooks/usePendingTasks';
 
 const Container = styled.div`
   height: calc(100vh - ${(props) => props.theme.menuHeight}px);
@@ -161,7 +162,7 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const { tags, onProjectsChange: changeTagsProjectFilter } = useTags();
 
-    const { taggings, processing, processingRemainingItems } = useTaggings();
+    const { taggings } = useTaggings();
 
     const [projectList, setProjectList] = useState<
       IFilterSelectorValue[] | null
@@ -170,6 +171,12 @@ const Processing = memo<Props & InjectedIntlProps>(
     const [exporting, setExporting] = useState<boolean>(false);
 
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
+
+    const {
+      processing,
+      processingRemainingItemsIds,
+      processingRemainingItemsCount,
+    } = usePendingTasks();
 
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
     const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
@@ -337,7 +344,7 @@ const Processing = memo<Props & InjectedIntlProps>(
                             <FormattedMessage
                               {...messages.autotaggingProcessing}
                               values={{
-                                remainingItems: processingRemainingItems,
+                                remainingItems: processingRemainingItemsCount,
                               }}
                             />
                           </div>
@@ -397,6 +404,7 @@ const Processing = memo<Props & InjectedIntlProps>(
               setSelectedRows={setSelectedRows}
               tags={tags}
               taggings={taggings}
+              processingRemainingItemsIds={processingRemainingItemsIds}
             />
           ) : (
             <EmptyState reason="projectSelection" />
@@ -432,7 +440,7 @@ const Processing = memo<Props & InjectedIntlProps>(
       );
     }
     if (showAutotagView) {
-      if (selectedRows.length > 500) {
+      if (selectedRows.length > 100) {
         return (
           <AutotagView
             closeView={handleCloseAutotagView}
