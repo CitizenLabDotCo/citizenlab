@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "Edit",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "Dette projekt ser ikke ud til at indeholde nogen input.",
   "app.components.admin.PostManager.PostPreview.noOne": "Unassigned",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "Antallet af gange dette er inkluderet i andre deltageres borgerbudgetter",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",

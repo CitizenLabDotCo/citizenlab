@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "Modifier",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "Ce projet ne semble contenir aucune contribution.",
   "app.components.admin.PostManager.PostPreview.noOne": "Non attribué",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "Le nombre de fois que cela a été inclus dans les budgets participatifs des autres participants",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",

@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "Edycja",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "Wydaje się, że ten projekt nie ma żadnych danych.",
   "app.components.admin.PostManager.PostPreview.noOne": "Nieprzypisany",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "Liczba przypadków, w których zostało to uwzględnione w budżetach obywatelskich innych uczestników",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",
