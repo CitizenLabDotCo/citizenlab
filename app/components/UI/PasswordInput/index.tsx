@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Input, Button } from 'cl2-component-library';
+import { Input, Button, Icon } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -16,11 +16,22 @@ const Container = styled.div`
 
 const StyledInput = styled(Input)``;
 
+const EyeIcon = styled(Icon)`
+  width: 22px;
+  height: 15px;
+`;
+
+const EyeClosedIcon = styled(Icon)`
+  width: 22px;
+  height: 19px;
+  margin-bottom: -1px;
+`;
+
 const ShowPasswordButton = styled(Button)`
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 15px;
+  right: 0;
 `;
 
 interface Props {
@@ -71,9 +82,19 @@ const PasswordInput = ({
           autocomplete={autocomplete}
           placeholder={placeholder}
         />
-        <ShowPasswordButton locale={locale} onClick={handleOnClick}>
-          {formatMessage(
-            showPassword ? messages.hidePassword : messages.showPassword
+        <ShowPasswordButton
+          locale={locale}
+          onClick={handleOnClick}
+          buttonStyle="text"
+          height={'100%'}
+        >
+          {showPassword ? (
+            <EyeIcon name="eye" title={formatMessage(messages.hidePassword)} />
+          ) : (
+            <EyeClosedIcon
+              name="eyeClosed"
+              title={formatMessage(messages.showPassword)}
+            />
           )}
         </ShowPasswordButton>
         <ScreenReaderOnly aria-live="polite">
