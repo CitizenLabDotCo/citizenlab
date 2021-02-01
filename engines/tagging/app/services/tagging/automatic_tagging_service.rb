@@ -9,24 +9,24 @@ module Tagging
           parse_prediction prediction do |tag_id, document_id, confidence_score|
             create_tag tag_id, document_id, confidence_score
           end
-          Tagging.pending.where(idea_id: prediction&.map { |document| document['id'] })&.delete_all
+          PendingTask.delete(nlp_task_id: body['task_id'])
           TagService.new.remove_unused_tags unless processing?
         end
       end
     end
 
     def cancel_tasks
-      if Tagging.pending.map(&:task_id).uniq.map do |task_id|
-        cancelling_status = NLP::TasksService.new.cancel(task_id)
+      if PendingTask.all.map do |task|
+        cancelling_status = NLP::TasksService.new.cancel(task.nlp_task_id)
         if cancelling_status != 200
           if NLP::TasksService.new.status(task_id)['status'] != 'PENDING'
-            Tagging.pending.where(task_id: task_id).destroy_all
+            PendingTask.where(nlp_task_id: task_id).destroy_all
             200
           else
             500
           end
         else
-          Tagging.pending.where(task_id: task_id).destroy_all
+          task.delete
           200
         end
       end.all? do |r|
@@ -40,19 +40,15 @@ module Tagging
     end
 
     def processing?
-      Tagging.pending.any?
+      PendingTask.count.positive?
     end
 
-    def create_processing_taggings(batches)
+    def create_pending_tasks(batches)
       batches.each do |b|
-        Tagging.create(
-          b['doc_ids'].map do |idea_id|
-            {
-              idea_id: idea_id,
-              assignment_method: :pending,
-              task_id: b['task_id']
-            }
-          end
+        PendingTask.create(
+          tagging_tags_id: b['tags_ids'],
+          idea_ids: b['doc_ids'],
+          nlp_task_id: b['task_id']
         )
       end
     end

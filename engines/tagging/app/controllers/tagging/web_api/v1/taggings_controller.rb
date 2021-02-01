@@ -96,7 +96,7 @@ module Tagging
             current_user.locale
           )
           if @res
-            AutomaticTaggingService.new.create_processing_taggings @res['batches']
+            AutomaticTaggingService.new.create_pending_tasks @res['batches']
 
             head :ok
           else
