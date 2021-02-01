@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "",
   "app.components.admin.PostManager.PostPreview.noOne": "",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",

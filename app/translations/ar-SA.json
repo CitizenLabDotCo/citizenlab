@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "تعديل",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "يبدو أن هذا المشروع لا يحتوي على أي مُدخل. ",
   "app.components.admin.PostManager.PostPreview.noOne": "غير مُعيّن",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "عدد المرات التي تمّ فيها إدراج هذا في الميزانيات القائمة على المشاركة لمُشاركين آخرين ",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",

@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "Edit",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "49 / 5000\nDette prosjektet ser ikke ut til å ha fått noen innspill.",
   "app.components.admin.PostManager.PostPreview.noOne": "Unassigned",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "The number of times this has been included in other participants' participatory budgets",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",

@@ -450,6 +450,7 @@
   "app.components.admin.PostManager.PostPreview.edit": "Bewerk",
   "app.components.admin.PostManager.PostPreview.noInputInThisProject": "Dit project lijkt geen input te bevatten.",
   "app.components.admin.PostManager.PostPreview.noOne": "Niet toegewezen",
+  "app.components.admin.PostManager.PostPreview.noSuggestions": "",
   "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "Het aantal keren dat dit in de burgerbudgetten van andere deelnemers is opgenomen",
   "app.components.admin.PostManager.PostPreview.pendingTagText": "",
   "app.components.admin.PostManager.PostPreview.pickInputCollection": "",
