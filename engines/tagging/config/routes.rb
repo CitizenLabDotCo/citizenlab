@@ -3,9 +3,9 @@ Tagging::Engine.routes.draw do
     namespace :v1 do
       resources :tags, only: %i[index update destroy show]
       resources :pending_tasks, only: %i[index]
-      resources :taggings, only: %i[index create show destroy update]
-      post 'taggings/generate' => 'taggings#generate'
       delete 'taggings/generate' => 'taggings#cancel_generate'
+      post 'taggings/generate' => 'taggings#generate'
+      resources :taggings, only: %i[index create show destroy update]
     end
   end
 end
