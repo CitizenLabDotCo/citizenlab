@@ -11,7 +11,7 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user_moderates?
-        scope.all.where.not(visible_to: 'admins')
+        scope.where.not(visible_to: 'admins')
       elsif user
         filter_for_normal_user normal_user_result, user
       else
