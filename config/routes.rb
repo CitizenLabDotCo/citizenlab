@@ -308,7 +308,8 @@ Rails.application.routes.draw do
   get '/auth/:provider/logout', to: 'omniauth_callback#logout'
 
   if Rails.env.development?
-    require 'que/web'
-    mount Que::Web => '/que'
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
   end
+
 end
