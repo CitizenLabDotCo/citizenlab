@@ -6,8 +6,9 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Input, Success } from 'cl2-component-library';
+import { Success } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import PasswordInput from 'components/UI/PasswordInput';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -51,8 +52,6 @@ const Title = styled.h1`
   padding-top: 60px;
   margin-bottom: 50px;
 `;
-
-const StyledInput = styled(Input)``;
 
 const StyledButton = styled(Button)`
   margin-top: 20px;
@@ -218,8 +217,7 @@ class PasswordReset extends React.PureComponent<
                 htmlFor="password"
                 labelMessage={messages.passwordLabel}
               />
-              <StyledInput
-                type="password"
+              <PasswordInput
                 id="password"
                 value={password}
                 error={errorMessage}

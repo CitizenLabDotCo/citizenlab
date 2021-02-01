@@ -8,6 +8,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import { Input } from 'cl2-component-library';
+import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -280,8 +281,7 @@ class PasswordSignin extends PureComponent<
               htmlFor="password"
               labelMessage={messages.passwordLabel}
             />
-            <Input
-              type="password"
+            <PasswordInput
               id="password"
               value={password}
               error={passwordError}

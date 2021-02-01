@@ -20,6 +20,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
+import PasswordInput from 'components/UI/PasswordInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
@@ -368,9 +369,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <FormLabel htmlFor="password" labelMessage={messages.password} />
-            <Input
-              type="password"
-              name="password"
+            <PasswordInput
               id="password"
               value={values.password}
               onChange={createChangeHandler('password')}
