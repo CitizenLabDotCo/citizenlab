@@ -121,5 +121,57 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include archived_folder
       end
     end
+
+    context 'when project moderator of a project contained in the folder' do
+      let(:project) { create(:project) }
+      let(:user) { create(:moderator, project: project) }
+
+      before do
+        project.admin_publication.update(parent_id: published_folder.admin_publication.id)
+      end
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'returns the published folder' do
+        expect(scope.resolve).to include published_folder
+      end
+
+      it 'does not return the draft folder to the user' do
+        expect(scope.resolve).to include draft_folder
+      end
+
+      it 'does not return the archived folder to the user' do
+        expect(scope.resolve).to include archived_folder
+      end
+    end
+
+    context 'when project moderator of a project contained in another folder' do
+      let(:project) { create(:project) }
+      let(:user) { create(:moderator, project: project) }
+
+      before do
+        project.admin_publication.update(parent_id: draft_folder.admin_publication.id)
+      end
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'returns the published folder' do
+        expect(scope.resolve).to include published_folder
+      end
+
+      it 'does not return the draft folder to the user' do
+        expect(scope.resolve).to include draft_folder
+      end
+
+      it 'does not return the archived folder to the user' do
+        expect(scope.resolve).to include archived_folder
+      end
+    end
   end
 end
