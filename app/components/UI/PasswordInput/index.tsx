@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import { Input, Button } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;
@@ -36,9 +41,11 @@ const PasswordInput = ({
   placeholder,
   onChange,
   onBlur,
-}: Props) => {
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const locale = useLocale();
   const [showPassword, setShowPassword] = useState(false);
+
   const handleOnChange = (password: string) => {
     onChange(password);
   };
@@ -67,6 +74,13 @@ const PasswordInput = ({
         <ShowPasswordButton locale={locale} onClick={handleOnClick}>
           {showPassword ? 'Hide password' : 'Show password'}
         </ShowPasswordButton>
+        <ScreenReaderOnly aria-live="polite">
+          {formatMessage(
+            showPassword
+              ? messages.a11y_passwordVisible
+              : messages.a11y_passwordHidden
+          )}
+        </ScreenReaderOnly>
       </Container>
     );
   }
@@ -74,4 +88,4 @@ const PasswordInput = ({
   return null;
 };
 
-export default PasswordInput;
+export default injectIntl(PasswordInput);
