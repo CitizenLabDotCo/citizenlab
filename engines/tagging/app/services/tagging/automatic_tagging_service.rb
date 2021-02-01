@@ -46,7 +46,7 @@ module Tagging
     def create_pending_tasks(batches)
       batches.each do |b|
         PendingTask.create(
-          tagging_tags_id: b['tags_ids'],
+          tag_ids: b['tags_ids'],
           idea_ids: b['doc_ids'],
           nlp_task_id: b['task_id']
         )

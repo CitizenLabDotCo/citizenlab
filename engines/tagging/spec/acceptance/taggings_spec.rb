@@ -125,7 +125,7 @@ resource "Taggings" do
       rescue ActiveRecord::RecordNotFound
     end
 
-    example 'Destroy the only tagging' do
+    example 'Destroy a tagging' do
       do_request id: @tagging.id
       expect(status).to eq(200)
       begin
