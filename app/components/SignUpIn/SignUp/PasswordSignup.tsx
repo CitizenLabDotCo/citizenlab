@@ -532,8 +532,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <PasswordInput
                 id="signup-password-input"
                 value={password}
-                onChange={this.handlePasswordOnChange}
+                placeholder={formatMessage(messages.passwordPlaceholder)}
                 error={passwordError}
+                onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
               />
               <Error
