@@ -372,7 +372,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
               tags={tags}
               handlePreventNavigation={handlePreventNavigation}
               pending={
-                processingRemainingItemsIds?.includes(previewPostId || '')!!
+                !!processingRemainingItemsIds?.includes(previewPostId || '')
               }
             />
           </PostPreviewTransitionWrapper>
