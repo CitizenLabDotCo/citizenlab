@@ -1193,6 +1193,7 @@
   "app.containers.AdminPage.ProjectEdit.limited": "",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "",
+  "app.containers.AdminPage.ProjectEdit.mapTab": "",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "",
