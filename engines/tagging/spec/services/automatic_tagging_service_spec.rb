@@ -9,7 +9,7 @@ describe Tagging::AutomaticTaggingService do
     @sea_lion = Tagging::Tag.create(title_multiloc: { en: 'Sea Lion' })
     @dolphin = Tagging::Tag.create(title_multiloc: { en: 'Dolphin' })
     @shark = Tagging::Tag.create(title_multiloc: { en: 'Shark' })
-    @ideas.each { |idea| Tagging::Tagging.create(idea: idea, assignment_method: 'pending')}
+    # @ideas.each { |idea| Tagging::Tagging.create(idea: idea, assignment_method: 'pending')}
     @response = {
       'status' => 'SUCCESS',
       'result' => {
@@ -30,7 +30,7 @@ describe Tagging::AutomaticTaggingService do
     it "creates the tags corresponding to the response" do
       service.save_tags_from_prediction(@response)
       expect(Tagging::Tagging.automatic.length).to eq 7
-      expect(Tagging::Tagging.pending.length).to eq 0
+      # expect(Tagging::Tagging.pending.length).to eq 0
     end
 
 

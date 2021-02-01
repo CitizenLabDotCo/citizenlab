@@ -108,10 +108,10 @@ resource "Taggings" do
     before do
       @ideas = create_list(:idea, 2)
       @tag = Tagging::Tag.create(title_multiloc: { en: 'Banana' })
-      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @tag.id, assignment_method: 'automatic', confidence_score: 0.22)
-      Tagging::Tagging.create(idea_id: @ideas[1].id, tag_id:  @tag.id, assignment_method: 'manual', confidence_score: 0.22)
+      @tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id: @tag.id, assignment_method: 'automatic', confidence_score: 0.22)
+      Tagging::Tagging.create(idea_id: @ideas[1].id, tag_id: @tag.id, assignment_method: 'manual', confidence_score: 0.22)
       @lone_tag = Tagging::Tag.create(title_multiloc: { en: 'Fish' })
-      @lone_tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id:  @lone_tag.id, assignment_method: 'automatic', confidence_score: 0.22)
+      @lone_tagging = Tagging::Tagging.create(idea_id: @ideas[0].id, tag_id: @lone_tag.id, assignment_method: 'automatic', confidence_score: 0.22)
     end
 
     example 'Destroy the only tagging associaed whith a tag also destroys the tag' do
@@ -125,7 +125,7 @@ resource "Taggings" do
       rescue ActiveRecord::RecordNotFound
     end
 
-    example 'Destroy the only tagging associaed whith a tag also destroys the tag' do
+    example 'Destroy the only tagging' do
       do_request id: @tagging.id
       expect(status).to eq(200)
       begin
@@ -191,8 +191,10 @@ resource "Taggings" do
 
       do_request idea_ids: @ideas.map(&:id), tags: [ 'Lalalal' ,  'chachacha', 'lilila', 'leela', 'lou' ]
 
+      debugger
+
       expect(response_status).to eq 200
-      expect(Tagging::Tag.count).to eq 5
+      expect(Tagging::PendingTask.count).to eq 1
     end
 
   end
