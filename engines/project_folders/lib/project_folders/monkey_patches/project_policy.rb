@@ -3,7 +3,7 @@ module ProjectFolders
     module ProjectPolicy
       module Scope
         def user_moderates?
-          super || user.project_folder_moderator?
+          super || user&.project_folder_moderator?
         end
       end
 
