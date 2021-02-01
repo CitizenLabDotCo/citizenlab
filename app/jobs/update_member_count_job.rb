@@ -1,7 +1,7 @@
 class UpdateMemberCountJob < ApplicationJob
   queue_as :default
 
-  def run group=nil
+  def perform group=nil
     if group
       group.update_memberships_count!
     else
@@ -13,4 +13,5 @@ class UpdateMemberCountJob < ApplicationJob
       end
     end
   end
+
 end
