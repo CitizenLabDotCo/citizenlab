@@ -806,6 +806,7 @@
   "app.containers.Admin.clusterViewer.keywords": "Słowa kluczowe",
   "app.containers.Admin.clusterViewer.legend": "Legenda",
   "app.containers.Admin.clusterViewer.level_area": "obszary geograficzne",
+  "app.containers.Admin.clusterViewer.level_clustering": "",
   "app.containers.Admin.clusterViewer.level_description": "Opis",
   "app.containers.Admin.clusterViewer.level_project": "projekty",
   "app.containers.Admin.clusterViewer.level_topic": "tematy",

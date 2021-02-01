@@ -806,6 +806,7 @@
   "app.containers.Admin.clusterViewer.keywords": "Mots-clés",
   "app.containers.Admin.clusterViewer.legend": "Légende",
   "app.containers.Admin.clusterViewer.level_area": "localités",
+  "app.containers.Admin.clusterViewer.level_clustering": "",
   "app.containers.Admin.clusterViewer.level_description": "Description",
   "app.containers.Admin.clusterViewer.level_project": "{tenantName, select, frw {communes} other {projets}}",
   "app.containers.Admin.clusterViewer.level_topic": "thèmes",
