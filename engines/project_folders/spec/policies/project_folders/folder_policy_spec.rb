@@ -71,7 +71,7 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'does not return the draft folder to the user' do
+      it 'returns the draft folder to the user' do
         expect(scope.resolve).to include draft_folder
       end
 
@@ -92,11 +92,11 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'does not return the draft folder to the user' do
+      it 'returns the draft folder to the user' do
         expect(scope.resolve).to include draft_folder
       end
 
-      it 'does not return the archived folder to the user' do
+      it 'returns the archived folder to the user' do
         expect(scope.resolve).to include archived_folder
       end
     end
@@ -113,11 +113,11 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'does not return the draft folder to the user' do
+      it 'returns the draft folder to the user' do
         expect(scope.resolve).to include draft_folder
       end
 
-      it 'does not return the archived folder to the user' do
+      it 'returns the archived folder to the user' do
         expect(scope.resolve).to include archived_folder
       end
     end
@@ -139,11 +139,11 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'does not return the draft folder to the user' do
+      it 'returns the draft folder to the user' do
         expect(scope.resolve).to include draft_folder
       end
 
-      it 'does not return the archived folder to the user' do
+      it 'returns the archived folder to the user' do
         expect(scope.resolve).to include archived_folder
       end
     end
@@ -165,11 +165,11 @@ describe ProjectFolders::FolderPolicy do
         expect(scope.resolve).to include published_folder
       end
 
-      it 'does not return the draft folder to the user' do
+      it 'returns the draft folder to the user' do
         expect(scope.resolve).to include draft_folder
       end
 
-      it 'does not return the archived folder to the user' do
+      it 'returns the archived folder to the user' do
         expect(scope.resolve).to include archived_folder
       end
     end
