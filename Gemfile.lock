@@ -588,7 +588,7 @@ GEM
       ffi (>= 1.0.6)
       msgpack (>= 0.4.3)
       optimist (>= 3.0.0)
-    redcarpet (3.4.0)
+    redcarpet (3.5.1)
     redis (4.2.5)
     regexp_parser (2.0.3)
     rest-client (2.0.2)
