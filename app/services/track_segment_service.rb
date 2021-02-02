@@ -133,4 +133,3 @@ class TrackSegmentService
 
   setup
 end
-
