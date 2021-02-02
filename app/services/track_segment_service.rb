@@ -1,7 +1,7 @@
 class TrackSegmentService
 
   class Configuration
-    attr_accessor :user_traits_getters, :tenant_traits_getters, :activity_traits_builder
+    attr_accessor :user_traits_builder, :tenant_traits_builder, :activity_traits_builder
 
     def initialize
       @user_traits_builder = TrackSegmentService::Helpers.method(:default_user_traits)
