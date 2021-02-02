@@ -7,7 +7,7 @@ module MultiTenancy
     end
 
     def add_tenant_properties(event)
-      tenant_properties = TrackingService.new.tenant_properties(Tenant.current)
+      tenant_properties = TrackingTenantService.new.tenant_properties(Tenant.current)
       event.merge!(tenant_properties)
     rescue ActiveRecord::RecordNotFound
       # Tenant can't be found, so we don't add anything

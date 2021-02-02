@@ -1,5 +1,5 @@
 module MultiTenancy
-  module TrackingServiceDecorator
+  class TrackingTenantService
     # @param [Tenant, nil] tenant
     # @return [Hash]
     def tenant_properties(tenant = Tenant.current)
@@ -21,5 +21,3 @@ module MultiTenancy
     end
   end
 end
-
-::TrackingService.include(MultiTenancy::TrackingServiceDecorator)

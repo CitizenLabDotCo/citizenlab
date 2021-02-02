@@ -33,6 +33,7 @@ class TrackSegmentService
       {
         source: 'cl2-back',
         item_content: TrackingService.new.activity_item_content(activity),
+        **TrackingService.new.activity_properties(activity)
       }
     end
   end
