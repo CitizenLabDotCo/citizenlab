@@ -42,8 +42,15 @@ interface Props extends WrapperProps {
   minimumPasswordLength: number;
 }
 
-function isPasswordTooShort(password: string, passwordMinimumLength: number) {
-  return password.length < passwordMinimumLength;
+function isPasswordTooShort(
+  password: string | null,
+  passwordMinimumLength: number
+) {
+  if (typeof password === 'string') {
+    return password.length < passwordMinimumLength;
+  }
+
+  return true;
 }
 
 const PasswordInputComponent = ({
@@ -53,24 +60,29 @@ const PasswordInputComponent = ({
   placeholder,
   onChange,
   onBlur,
-  setRef,
   minimumPasswordLength,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
   const tenant = useTenant();
+  let inputEl: HTMLInputElement | null = null;
   const [showPassword, setShowPassword] = useState(false);
-  const minimumPasswordLengthError =
-    typeof password === 'string' &&
-    minimumPasswordLength &&
-    isPasswordTooShort(password, minimumPasswordLength)
-      ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
-          minimumPasswordLength,
-        })
-      : null;
+  const hasMinimumLengthError = isPasswordTooShort(
+    password,
+    minimumPasswordLength
+  );
+  const minimumPasswordLengthError = hasMinimumLengthError
+    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+        minimumPasswordLength,
+      })
+    : null;
 
   const handleOnChange = (password: string) => {
-    onChange(password);
+    onChange(password, hasMinimumLengthError);
+
+    if (hasMinimumLengthError && inputEl) {
+      inputEl.focus();
+    }
   };
   const handleOnBlur = () => {
     if (onBlur) {
@@ -79,6 +91,10 @@ const PasswordInputComponent = ({
   };
   const handleOnClick = () => {
     setShowPassword(!showPassword);
+  };
+
+  const setRef = (inputElement: HTMLInputElement) => {
+    inputEl = inputElement;
   };
 
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
