@@ -118,7 +118,6 @@ PATH
   specs:
     multi_tenancy (0.1.0)
       apartment (>= 2.2.1)
-      apartment-sidekiq (~> 1.2.0)
       rails (~> 6.0.0)
 
 PATH
@@ -284,9 +283,6 @@ GEM
       gyoku (>= 0.4.0)
       nokogiri
     amq-protocol (2.3.0)
-    apartment-sidekiq (1.2.0)
-      apartment (>= 1.0)
-      sidekiq (>= 2.11)
     api-pagination (4.8.2)
     ast (2.4.1)
     attr_required (1.0.1)
@@ -339,7 +335,6 @@ GEM
       activesupport
     coderay (1.1.3)
     concurrent-ruby (1.1.6)
-    connection_pool (2.2.3)
     counter_culture (2.2.4)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
@@ -589,7 +584,6 @@ GEM
       msgpack (>= 0.4.3)
       optimist (>= 3.0.0)
     redcarpet (3.5.1)
-    redis (4.2.5)
     regexp_parser (2.0.3)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
@@ -678,10 +672,6 @@ GEM
       faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
-    sidekiq (6.1.3)
-      connection_pool (>= 2.2.2)
-      rack (~> 2.0)
-      redis (>= 4.2.0)
     simple_segment (1.2.0)
     simplecov (0.16.1)
       docile (~> 1.1)
