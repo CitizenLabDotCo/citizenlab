@@ -38,10 +38,10 @@ const ShowPasswordButton = styled(Button)`
 interface Props {
   id: string;
   value: string | null;
-  error?: string | null;
+  error: string | null | undefined;
   onChange: (password: string) => void;
-  onBlur?: () => void;
-  setRef?: (element: HTMLInputElement) => void;
+  onBlur: (() => void) | undefined;
+  setRef: ((element: HTMLInputElement) => void) | undefined;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
 }
