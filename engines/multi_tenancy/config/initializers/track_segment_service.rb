@@ -1,6 +1,6 @@
 
 TrackSegmentService.setup do |config|
-  config.user_traits_getters = lambda do |user|
+  config.user_traits_builder = lambda do |user|
     TrackSegmentService::Helpers
       .default_user_traits(user)
       .merge(TrackingService.new.tenant_properties)
@@ -14,7 +14,7 @@ TrackSegmentService.setup do |config|
       .merge(tracking_service.environment_properties)
   end
 
-  config.tenant_traits_getters = lambda do |tenant|
+  config.tenant_traits_builder = lambda do |tenant|
     configuration = tenant.configuration
     {
       name: tenant.name,
