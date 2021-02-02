@@ -1413,7 +1413,7 @@
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Saved!",
   "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Your changes have been saved.",
-  "app.containers.AdminPage.SettingsPage.subtitleAreas": "Define the geographic subdivisions of your territory.",
+  "app.containers.AdminPage.SettingsPage.subtitleAreas": "Define your geographic areas: neighbourhoods, regions, ... Areas can be linked to projects and can be used to create Smart Groups and to define project access permissions.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Choose how people will see your name, select the languages of your platform and link to your website.",
   "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Apply your own style and add personal messages.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "The provided subtitle exceeds the maximum allowed character limit of 90",
