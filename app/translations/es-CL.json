@@ -221,6 +221,7 @@
   "app.components.Modal.a11y_passwordVisible": "",
   "app.components.Modal.closeModal": "Cerrar esta ventana",
   "app.components.Modal.hidePassword": "",
+  "app.components.Modal.minimumPasswordLengthErrorMessage": "",
   "app.components.Modal.showPassword": "",
   "app.components.PagesForm.dontChange": "No cambies esto! (a menos realmente sepas lo que estás haciendo)",
   "app.components.PagesForm.editContent": "Contenido",

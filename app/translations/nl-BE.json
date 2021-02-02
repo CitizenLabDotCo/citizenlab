@@ -221,6 +221,7 @@
   "app.components.Modal.a11y_passwordVisible": "",
   "app.components.Modal.closeModal": "Sluit deze pop-up",
   "app.components.Modal.hidePassword": "",
+  "app.components.Modal.minimumPasswordLengthErrorMessage": "",
   "app.components.Modal.showPassword": "",
   "app.components.PagesForm.dontChange": "Dit niet veranderen! (tenzij je goed weet waar je mee bezig bent)",
   "app.components.PagesForm.editContent": "Inhoud",

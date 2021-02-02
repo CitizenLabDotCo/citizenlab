@@ -221,6 +221,7 @@
   "app.components.Modal.a11y_passwordVisible": "",
   "app.components.Modal.closeModal": "Lukk denne modulen",
   "app.components.Modal.hidePassword": "",
+  "app.components.Modal.minimumPasswordLengthErrorMessage": "",
   "app.components.Modal.showPassword": "",
   "app.components.PagesForm.dontChange": "Ikke endre dette! (med mindre du vet hva du gjør)",
   "app.components.PagesForm.editContent": "Innhold",
