@@ -7,20 +7,14 @@ class SideFxAppConfigurationService
   def after_update(app_config, current_user)
     log_activity(app_config, 'changed', current_user)
 
+    # TODO_MT to be removed after the lifecycle stage has been move to Tenant
     if ( lifecycle_change = get_lifecycle_change(app_config) )
       payload = {changes: lifecycle_change}
       log_activity(app_config, 'changed_lifecycle_stage', current_user, payload)
     end
-
-    track_tenant_async(Tenant.current)
   end
 
   private
-
-  # @param [Tenant] tenant
-  def track_tenant_async(tenant)
-    TrackTenantJob.perform_later(tenant)
-  end
 
   # @param  [AppConfiguration] app_config
   # @return [nil,Array(String,String)] An array of two strings if the lifecycle changed. Otherwise, nil.
