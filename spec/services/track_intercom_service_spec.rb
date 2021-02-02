@@ -1,9 +1,8 @@
 require "rails_helper"
 
 describe TrackIntercomService do
-  let(:intercom) { double(INTERCOM_CLIENT) }
-  let(:service) { TrackIntercomService.new intercom }
-  let(:tenant) { Tenant.current }
+  let(:intercom) { double(INTERCOM_CLIENT).as_null_object }
+  let(:service) { TrackIntercomService.new(intercom) }
 
   describe "identify_user" do
 
@@ -26,7 +25,7 @@ describe TrackIntercomService do
       expect(contacts_api).to receive(:search)
         .and_return(OpenStruct.new({count: 0}))
 
-      contact = double
+      _contact = double.as_null_object
       expect(contacts_api).to receive(:create).with({
         role: 'user',
         external_id: user.id,
@@ -42,13 +41,7 @@ describe TrackIntercomService do
           lastName: user.last_name,
           locale: user.locale
         )
-      }).and_return(contact)
-
-      companies_api = double
-      expect(intercom).to receive(:companies).and_return(companies_api)
-      expect(companies_api).to receive(:find).with(id: tenant.id)
-        .and_return(double(id: "123"))
-      expect(contact).to receive(:add_company).with(id: "123")
+      }).and_return(_contact)
 
       service.identify_user(user)
     end
@@ -59,7 +52,7 @@ describe TrackIntercomService do
       contacts_api = double
       expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
 
-      contact = double
+      contact = double.as_null_object
       expect(contacts_api).to receive(:search)
         .and_return(double({count: 1, :[] => contact}))
 
@@ -77,12 +70,6 @@ describe TrackIntercomService do
       ))
 
       expect(contacts_api).to receive(:save).with(contact).and_return(contact)
-
-      companies_api = double
-      expect(intercom).to receive(:companies).and_return(companies_api)
-      expect(companies_api).to receive(:find).with(id: tenant.id)
-        .and_return(double(id: "123"))
-      expect(contact).to receive(:add_company).with(id: "123")
 
       service.identify_user(user)
     end
