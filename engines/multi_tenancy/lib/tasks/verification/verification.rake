@@ -1,12 +1,11 @@
 
 namespace :verification do
   desc "Modifies tenants using FranceConnect (Orsay) to use the new verification system"
-  task :migrate_franceconnect => :environment do |t, args|
-    time = Time.now
+  task :migrate_franceconnect => :environment do |_t, _args|
     verification_service = Verification::VerificationService.new
     Tenant.all.each do |tenant|
-      if tenant.has_feature?('franceconnect_login')
-        Apartment::Tenant.switch(tenant.schema_name) do
+      tenant.switch do
+        if AppConfiguration.instance.has_feature?('franceconnect_login')
           Identity.where(provider: 'franceconnect').each do |identity|
             verification = ::Verification::Verification.new(
               method_name: 'franceconnect',
