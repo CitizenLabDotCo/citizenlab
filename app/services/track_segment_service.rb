@@ -43,6 +43,11 @@ class TrackSegmentService
     yield @configuration if block_given?
   end
 
+  def self.method_missing(method_name, *args, &block)
+    @configuration.respond_to?(method_name) ?
+      @configuration.send(method_name, *args, &block) : super
+  end
+
   def initialize(segment_client = SEGMENT_CLIENT)
     @tracking_service = TrackingService.new
     @segment_client = SEGMENT_CLIENT

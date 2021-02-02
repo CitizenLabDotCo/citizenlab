@@ -38,6 +38,11 @@ class TrackIntercomService
     yield @configuration if block_given?
   end
 
+  def self.method_missing(method_name, *args, &block)
+    @configuration.respond_to?(method_name) ?
+      @configuration.send(method_name, *args, &block) : super
+  end
+
   def initialize(intercom_client = INTERCOM_CLIENT)
     @intercom = intercom_client
   end
