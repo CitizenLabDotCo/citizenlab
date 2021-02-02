@@ -283,7 +283,7 @@ class PasswordSignin extends PureComponent<
             />
             <PasswordInput
               id="password"
-              value={password}
+              password={password}
               error={passwordError}
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}

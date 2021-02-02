@@ -219,7 +219,7 @@ class PasswordReset extends React.PureComponent<
               />
               <PasswordInput
                 id="password"
-                value={password}
+                password={password}
                 error={errorMessage}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
