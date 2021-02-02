@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe TrackIntercomService do
   let(:intercom) {
-    double(IntercomClient)
+    double(INTERCOM_CLIENT)
   }
   let(:service) { TrackIntercomService.new intercom }
 
@@ -161,8 +161,8 @@ describe TrackIntercomService do
       user = create(:user)
       super_admin = create(:super_admin)
 
-      service.track(build(:activity, user: user))
-      service.track(build(:activity, user: super_admin))
+      service.track_activity(build(:activity, user: user))
+      service.track_activity(build(:activity, user: super_admin))
     end
 
     it "sends the activity to Intercom" do
@@ -192,7 +192,7 @@ describe TrackIntercomService do
         }
       })
 
-      service.track(activity)
+      service.track_activity(activity)
     end
 
   end
