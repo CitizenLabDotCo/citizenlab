@@ -22,4 +22,4 @@ module MultiTenancy
   end
 end
 
-::TrackingService.prepend(MultiTenancy::TrackingServiceDecorator)
+::TrackingService.include(MultiTenancy::TrackingServiceDecorator)
