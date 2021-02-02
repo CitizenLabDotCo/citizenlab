@@ -1,6 +1,4 @@
-require 'pry' ; binding.pry
 TrackIntercomService.setup do |config|
-
   config.user_attributes_builder = lambda do |user|
     TrackIntercomService::Helpers
       .default_user_attributes(user)

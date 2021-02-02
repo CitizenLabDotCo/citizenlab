@@ -1,4 +1,3 @@
-require 'pry' ; binding.pry
 TrackSegmentService.setup do |config|
   config.user_traits_builder = lambda do |user|
     TrackSegmentService::Helpers
