@@ -20,7 +20,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
-import PasswordInput from 'components/UI/PasswordInput';
+import PasswordInput from 'components/UI/PasswordInput/PasswordInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
@@ -418,6 +418,7 @@ class ProfileForm extends PureComponent<Props, State> {
   render() {
     const { authUser } = this.props;
 
+    console.log(authUser);
     if (!isNilOrError(authUser)) {
       return (
         <Formik
