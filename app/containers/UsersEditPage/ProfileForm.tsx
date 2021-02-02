@@ -371,7 +371,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <FormLabel htmlFor="password" labelMessage={messages.password} />
             <PasswordInput
               id="password"
-              value={values.password}
+              password={values.password}
               onChange={createChangeHandler('password')}
               onBlur={createBlurHandler('password')}
             />
