@@ -9,7 +9,7 @@ import PasswordInputComponent from './PasswordInput';
 
 export interface Props {
   id: string;
-  value: string | null;
+  password: string | null;
   error?: string | null;
   onChange: (password: string) => void;
   onBlur?: () => void;
