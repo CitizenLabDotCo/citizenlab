@@ -1,7 +1,6 @@
 class PublishActivityToRabbitJob < ApplicationJob
   queue_as :default
 
-
   # @param [Activity] activity
   def perform(activity)
     event = event_from(activity)
@@ -17,8 +16,8 @@ class PublishActivityToRabbitJob < ApplicationJob
     event = {
       event: service.activity_event_name(activity),
       timestamp: activity.acted_at,
-      **service.activity_properties(activity),
-      item_content: service.activity_item_content(activity)
+      item_content: service.activity_item_content(activity),
+      **service.activity_properties(activity)
     }
 
     event[:user_id] = activity.user_id if activity.user_id
