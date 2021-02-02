@@ -20,7 +20,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Error from 'components/UI/Error';
-import PasswordInput from 'components/UI/PasswordInput/PasswordInput';
+import PasswordInput from 'components/UI/PasswordInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
