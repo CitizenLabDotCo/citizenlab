@@ -118,7 +118,6 @@ PATH
   specs:
     multi_tenancy (0.1.0)
       apartment (>= 2.2.1)
-      apartment-sidekiq (~> 1.2.0)
       rails (~> 6.0.0)
 
 PATH
@@ -452,7 +451,7 @@ GEM
     mimemagic (0.3.3)
     mini_magick (4.9.5)
     mini_mime (1.0.2)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.0)
     minitest (5.14.1)
     mjml-rails (4.4.0)
     msgpack (1.3.3)
@@ -464,8 +463,9 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.2)
-    nokogiri (1.10.9)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.1)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     nori (2.6.0)
     oauth (0.5.4)
     oauth2 (1.4.1)
@@ -523,6 +523,7 @@ GEM
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
       sinatra
+    racc (1.5.2)
     rack (2.2.3)
     rack-attack (6.3.1)
       rack (>= 1.0, < 3)
@@ -582,7 +583,8 @@ GEM
       ffi (>= 1.0.6)
       msgpack (>= 0.4.3)
       optimist (>= 3.0.0)
-    redcarpet (3.4.0)
+    redcarpet (3.5.1)
+    regexp_parser (2.0.3)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
