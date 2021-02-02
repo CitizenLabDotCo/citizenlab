@@ -158,7 +158,21 @@ describe SanitizationService do
         <p>Test</p><script> Hello! <script>This should be removed!</script></script> Bye!
       HTML
       features = []
-      expect(service.sanitize(input, features)).to eq "<p>Test</p> Hello! This should be removed! Bye!\n"
+      expect(service.sanitize(input, features)).to eq "<p>Test</p> Hello! &lt;script&gt;This should be removed! Bye!\n"
+    end
+
+    it "sanitizes malicious javascript" do
+      input = <<~HTML
+        <p>
+          test 
+        <SCRIPT SRC=%(jscript)s?<B>
+        <BODY onload!#$%%&()*~+-_.,:;?@[/|\]^`=javascript:alert(1)>
+        <SCRIPT/SRC="%(jscript)s"></SCRIPT>
+        <iframe src="javascript:javascript:alert('ThisPlatformWasHacked!');"></iframe>
+        </p>
+      HTML
+      features = %i{title alignment list decoration link video}
+      expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
   end
 
