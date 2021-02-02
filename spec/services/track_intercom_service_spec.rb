@@ -71,8 +71,6 @@ describe TrackIntercomService do
       expect(contacts_api).to receive(:search)
         .and_return(double({count: 1, :[] => contact}))
 
-      expect(contact).to receive(:role=).with('user')
-      expect(contact).to receive(:external_id=).with(user.id)
       expect(contact).to receive(:email=).with(user.email)
       expect(contact).to receive(:name=).with("#{user.first_name} #{user.last_name}")
       expect(contact).to receive(:signed_up_at=).with(user.registration_completed_at)

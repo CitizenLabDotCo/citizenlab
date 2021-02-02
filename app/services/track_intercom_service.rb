@@ -115,7 +115,6 @@ class TrackIntercomService
   end
 
   def update_contact(contact, user)
-    contact.role = "user"
     contact.email = user.email
     contact.name = user.full_name
     contact.signed_up_at = user.registration_completed_at
