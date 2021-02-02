@@ -1,4 +1,5 @@
 class Initiative < ApplicationRecord
+  include MachineTranslations::InitiativeDecorator
   include Post
   include Moderatable
 
