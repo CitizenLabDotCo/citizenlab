@@ -6,9 +6,11 @@ TrackSegmentService.setup do |config|
   end
 
   config.activity_traits_builder = lambda do |activity|
+    tenant_tracker = MultiTenancy::TrackingTenantService.new
     TrackSegmentService::Helpers
       .default_activity_traits(activity)
-      .merge(MultiTenancy::TrackingTenantService.new.environment_properties)
+      .merge(tenant_tracker.environment_properties)
+      .merge(tenant_tracker.tenant_properties)
   end
 
   config.tenant_traits_builder = lambda do |tenant|
