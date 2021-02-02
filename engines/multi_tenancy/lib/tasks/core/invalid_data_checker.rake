@@ -23,7 +23,9 @@ namespace :checks do
     end.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Processing #{tenant.host}..."
-        Cl2DataListingService.new.cl2_tenant_models.each do |claz|
+        Cl2DataListingService.new.cl2_tenant_models.select do |claz|
+          !skip_class_for_inconsistent_data_checking? claz
+        end.each do |claz|
           t1 = Time.now
           claz.all.find_each do |object|
             errors = validation_errors object
@@ -74,6 +76,14 @@ namespace :checks do
     if object.class.name == 'User' && !object.custom_field_values.values.select{|v| v.class == Array ? v.include?(nil) : v.nil?}.empty?
       return {custom_field_values: "Contains null values"}
     end
+  end
+
+  def skip_class_for_inconsistent_data_checking? claz
+    # Skip checking for less crucial classes that require
+    # a lot of processing.
+    return true if claz.name == 'EmailCampaigns::Delivery'
+    return true if claz.name.starts_with? 'Notifications::'
+    false
   end
 
 end
