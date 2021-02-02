@@ -8,16 +8,6 @@ class TrackingService
     end
   end
 
-  def tenant_properties tenant
-    {
-      tenantId:               tenant.id,
-      tenantName:             tenant.name,
-      tenantHost:             tenant.host,
-      tenantOrganizationType: tenant.settings.dig('core', 'organization_type'),
-      tenantLifecycleStage:   tenant.settings.dig('core', 'lifecycle_stage'),
-    }
-  end
-
   def activity_properties activity
     {
       item_type: activity.item_type,
@@ -43,17 +33,10 @@ class TrackingService
     end
   end
 
-  def environment_properties
-    {
-      cl2_cluster: CL2_CLUSTER
-    }
-  end
-
   def serialize serializer, object
     ActiveModelSerializers::SerializableResource.new(object, {
       serializer: serializer,
       adapter: :json
       }).serializable_hash
   end
-
 end
