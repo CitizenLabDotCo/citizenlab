@@ -6,7 +6,7 @@ class TrackSegmentService
     def initialize
       @user_traits_builder = TrackSegmentService::Helpers.method(:default_user_traits)
       @activity_traits_builder = TrackSegmentService::Helpers.method(:default_activity_traits)
-      @tenant_traits_builder = nil  # no default builder
+      @tenant_traits_builder = nil # no default builder
     end
   end
 
@@ -57,7 +57,7 @@ class TrackSegmentService
     )
   end
 
-  def identify_tenant(tenant=nil)
+  def identify_tenant(tenant = nil)
     return unless @segment_client
     tenant ||= Tenant.current
     traits = build_tenant_traits(tenant)
@@ -89,7 +89,7 @@ class TrackSegmentService
   end
 
   private
-  
+
   def build_user_traits(user)
     return {} unless TrackSegmentService.user_traits_builder
     TrackSegmentService.user_traits_builder.call(user)
@@ -99,7 +99,7 @@ class TrackSegmentService
     return {} unless TrackSegmentService.tenant_traits_builder
     TrackSegmentService.tenant_traits_builder.call(tenant)
   end
-  
+
   def build_activity_traits(activity)
     return {} unless TrackSegmentService.activity_traits_builder
     TrackSegmentService.activity_traits_builder.call(activity)
