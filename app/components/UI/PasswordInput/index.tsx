@@ -1,4 +1,15 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
+// hooks
+import useTenant from 'hooks/useTenant';
+
+// components
 import PasswordInput from './PasswordInput';
 
 interface Props {
@@ -21,19 +32,34 @@ const Component = ({
   autocomplete,
   placeholder,
   setRef,
-}: Props) => {
-  return (
-    <PasswordInput
-      id={id}
-      value={value}
-      error={error}
-      onChange={onChange}
-      onBlur={onBlur}
-      autocomplete={autocomplete}
-      placeholder={placeholder}
-      setRef={setRef}
-    />
-  );
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const tenant = useTenant();
+
+  if (!isNilOrError(tenant)) {
+    const minimumPasswordLength =
+      tenant.data.attributes.settings.password_login?.minimum_length;
+    const minimumPasswordLengthError = minimumPasswordLength
+      ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+          minimumPasswordLength,
+        })
+      : null;
+
+    return (
+      <PasswordInput
+        id={id}
+        value={value}
+        error={minimumPasswordLengthError}
+        onChange={onChange}
+        onBlur={onBlur}
+        autocomplete={autocomplete}
+        placeholder={placeholder}
+        setRef={setRef}
+      />
+    );
+  }
+
+  return null;
 };
 
-export default Component;
+export default injectIntl(Component);

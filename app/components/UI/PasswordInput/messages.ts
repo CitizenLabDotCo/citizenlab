@@ -17,4 +17,9 @@ export default defineMessages({
     id: 'app.components.Modal.showPassword',
     defaultMessage: 'Show password',
   },
+  minimumPasswordLengthErrorMessage: {
+    id: 'app.components.Modal.minimumPasswordLengthErrorMessage',
+    defaultMessage:
+      'Your password needs to be at least {minimumPasswordLength} characters long.',
+  },
 });
