@@ -130,10 +130,23 @@ class Tenant < ApplicationRecord
     self.save!
   end
 
-  # @return [AppConfiguration]
+  # Returns the app configuration of the tenant.
+  #   config = tenant.configuration
+  # If the optional code block is specified, it will be run in the context of
+  # the tenant and the result returned. This is particularly suitable for
+  # modifying the configuration. (Otherwise, there is no guarantee that any
+  # modifications made to the returned object are run in the context of the
+  # tenant).
+  #   tenant.configuration do |config|
+  #     config.update(...)
+  #   end
+  #
+  # @return [AppConfiguration, Object]
   def configuration
-    # TODO OS only works for getting the configuration, cannot modify/update it (bc it switches back to the previous schema).
-    switch { AppConfiguration.instance }
+    switch do
+      app_config = AppConfiguration.instance
+      block_given? ? (yield app_config) : app_config
+    end
   end
 
   def switch
