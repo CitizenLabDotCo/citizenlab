@@ -42,9 +42,13 @@ interface Props extends WrapperProps {
   minimumPasswordLength: number;
 }
 
+function isPasswordTooShort(password: string, passwordMinimumLength: number) {
+  return password.length < passwordMinimumLength;
+}
+
 const PasswordInputComponent = ({
   id,
-  value,
+  password,
   autocomplete,
   placeholder,
   onChange,
@@ -56,11 +60,15 @@ const PasswordInputComponent = ({
   const locale = useLocale();
   const tenant = useTenant();
   const [showPassword, setShowPassword] = useState(false);
-  const minimumPasswordLengthError = minimumPasswordLength
-    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
-        minimumPasswordLength,
-      })
-    : null;
+  const minimumPasswordLengthError =
+    typeof password === 'string' &&
+    minimumPasswordLength &&
+    isPasswordTooShort(password, minimumPasswordLength)
+      ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+          minimumPasswordLength,
+        })
+      : null;
+
   const handleOnChange = (password: string) => {
     onChange(password);
   };
@@ -79,7 +87,7 @@ const PasswordInputComponent = ({
         <StyledInput
           type={showPassword ? 'text' : 'password'}
           id={id}
-          value={value}
+          value={password}
           error={minimumPasswordLengthError}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
