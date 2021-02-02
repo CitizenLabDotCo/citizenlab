@@ -489,8 +489,8 @@ nb:
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} varsler"
-      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
-      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
+      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
+      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
       by_author: 'av %{authorName}'
       cta_process_initiative: 'Ta dette forslaget til neste steg'
