@@ -10,29 +10,11 @@ import messages from './messages';
 import useTenant from 'hooks/useTenant';
 
 // components
-import PasswordInput from './PasswordInput';
-
-interface Props {
-  id: string;
-  value: string | null;
-  error?: string | null;
-  onChange: (password: string) => void;
-  onBlur?: () => void;
-  setRef?: (element: HTMLInputElement) => void;
-  autocomplete?: 'current-password' | 'new-password';
-  placeholder?: string;
-}
+import PasswordInput, { Props } from './PasswordInput';
 
 const Component = ({
-  id,
-  value,
-  error,
-  onChange,
-  onBlur,
-  autocomplete,
-  placeholder,
-  setRef,
   intl: { formatMessage },
+  ...props
 }: Props & InjectedIntlProps) => {
   const tenant = useTenant();
 
@@ -45,18 +27,7 @@ const Component = ({
         })
       : null;
 
-    return (
-      <PasswordInput
-        id={id}
-        value={value}
-        error={minimumPasswordLengthError}
-        onChange={onChange}
-        onBlur={onBlur}
-        autocomplete={autocomplete}
-        placeholder={placeholder}
-        setRef={setRef}
-      />
-    );
+    return <PasswordInput error={minimumPasswordLengthError} {...props} />;
   }
 
   return null;

@@ -35,13 +35,13 @@ const ShowPasswordButton = styled(Button)`
   right: 0;
 `;
 
-interface Props {
+export interface Props {
   id: string;
   value: string | null;
-  error: string | null | undefined;
+  error?: string | null;
   onChange: (password: string) => void;
-  onBlur: (() => void) | undefined;
-  setRef: ((element: HTMLInputElement) => void) | undefined;
+  onBlur?: () => void;
+  setRef?: (element: HTMLInputElement) => void;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
 }
