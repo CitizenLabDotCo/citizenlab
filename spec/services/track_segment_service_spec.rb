@@ -52,96 +52,59 @@ describe TrackSegmentService do
 
   describe 'identify_user' do
     it "calls segment's identify() method with the correct payload" do
-      tenant = Tenant.current
       user = create(:user)
 
+      expect(SEGMENT_CLIENT).to receive(:identify).with(
+        user_id: user.id,
+        traits: hash_including(
+          id: user.id,
+          email: user.email,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          createdAt: user.created_at,
+          locale: "en",
+          birthday: nil,
+          gender: nil,
+          isSuperAdmin: false,
+          isAdmin: false,
+          isProjectModerator: false,
+          highestRole: :user,
+          timezone: "Brussels",
+        ),
+        integrations: {
+          All: true,
+          Intercom: false,
+          SatisMeter: false
+        }
+      )
 
-      expect(SEGMENT_CLIENT).to receive(:identify) do |identification|
-        expect(identification).to match ({
-          :user_id=>user.id,
-          :traits=>
-          {
-            :id=>user.id,
-            :email=>user.email,
-            :firstName=>user.first_name,
-            :lastName=>user.last_name,
-            :createdAt=>user.created_at,
-            :locale=>"en",
-            :birthday=>nil,
-            :gender=>nil,
-            :isSuperAdmin=>false,
-            :isAdmin=>false,
-            :isProjectModerator=>false,
-            :highestRole=>:user,
-            :timezone=>"Brussels",
-            :tenantId=>Tenant.current.id,
-            :tenantName=>"test-tenant",
-            :tenantHost=>"example.org",
-            :tenantOrganizationType=>"medium_city",
-            :tenantLifecycleStage=>"active"
-          },
-          integrations: {
-            All: true,
-            Intercom: false,
-            SatisMeter: false
-          }
-        })
-      end
       service.identify_user(user)
     end
   end
 
-  describe 'identify_tenant' do
-    it "calls segment's group() method with the correct payload" do
-      tenant = Tenant.current
-
-      expect(SEGMENT_CLIENT).to receive(:group) do |grouping|
-        expect(grouping).to match({
-          :user_id=>grouping[:user_id],  # we don't care about the user id when tracking a tenant
-          :group_id=>Tenant.current.id,
-          :traits=>{
-            :name=>"test-tenant",
-            :website=>"https://example.org",
-            :avatar=>nil,
-            :createdAt=>Tenant.current.created_at,
-            :tenantLocales=>["en","fr-FR","nl-NL"],
-            :tenantId=>Tenant.current.id,
-            :tenantName=>"test-tenant",
-            :tenantHost=>"example.org",
-            :tenantOrganizationType=>"medium_city",
-            :tenantLifecycleStage=>"active"
-          },
-          integrations: {
-            All: true,
-            Intercom: true,
-            SatisMeter: true
-          }
-        })
-      end
-      service.identify_tenant(tenant)
-    end
-  end
-
-  describe 'track' do
+  describe 'track_activity' do
     it "generates an event with the desired content for (normal) activities" do
       user = create(:user)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 
-      expect(SEGMENT_CLIENT).to receive(:track) do |event|
-        expect(event[:event]).to eq("Comment created")
-        expect(event[:user_id]).to eq(user.id)
-        expect(event.dig(:properties, :source)).to eq("cl2-back")
-        expect(event.dig(:properties, :tenantId)).to eq(Tenant.current.id)
-        expect(event.dig(:properties, :action)).to eq("created")
-        expect(event.dig(:properties, :item_id)).to eq(comment.id)
-        expect(event.dig(:properties, :item_type)).to eq('Comment')
-        expect(event.dig(:properties, :item_content, :comment, :id)).to eq(comment.id)
-        expect(event.dig(:properties, :cl2_cluster)).to eq 'local'
-        expect(event.dig(:integrations, :All)).to be true
-        expect(event.dig(:integrations, :Intercom)).to be false
-        expect(event.dig(:integrations, :SatisMeter)).to be false
-      end
+      expect(SEGMENT_CLIENT).to receive(:track).with(hash_including(
+        event: 'Comment created',
+        user_id: user.id,
+        properties: hash_including(
+          source: 'cl2-back',
+          action: 'created',
+          item_id: comment.id,
+          item_type: 'Comment',
+          item_content: hash_including(comment: hash_including(id: comment.id))
+        ),
+        integrations: {
+          All: true,
+          Intercom: false,
+          SatisMeter: false
+        }
+      ))
+
       service.track_activity(activity)
     end
 
@@ -151,16 +114,17 @@ describe TrackSegmentService do
       activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
       activity.update!(item_type: notification.class.name)
 
-      expect(SEGMENT_CLIENT).to receive(:track) do |event|
-        expect(event[:event]).to eq("Notification for Comment on your comment created")
-        expect(event[:user_id]).to eq(user.id)
-        expect(event.dig(:properties, :source)).to eq("cl2-back")
-        expect(event.dig(:properties, :tenantId)).to eq(Tenant.current.id)
-        expect(event.dig(:properties, :action)).to eq("created")
-        expect(event.dig(:properties, :item_id)).to eq(notification.id)
-        expect(event.dig(:properties, :item_type)).to eq('Notifications::CommentOnYourComment')
-        expect(event.dig(:properties, :cl2_cluster)).to eq 'local'
-      end
+      expect(SEGMENT_CLIENT).to receive(:track).with(hash_including(
+        event: 'Notification for Comment on your comment created',
+        user_id: user.id,
+        properties: hash_including(
+          source: 'cl2-back',
+          action: 'created',
+          item_id: notification.id,
+          item_type: 'Notifications::CommentOnYourComment'
+        )
+      ))
+
       service.track_activity(activity)
     end
   end
