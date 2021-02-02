@@ -14,13 +14,14 @@ RSpec.describe PublishActivityToRabbitJob, type: :job do
       expect(PublishGenericEventToRabbitJob).to receive(:perform_now) do |event, routing_key|
         expect(routing_key).to eq('comment.created')
 
-        expect(event[:event]).to eq("Comment created")
-        expect(event[:user_id]).to eq(user.id)
-        expect(event[:action]).to eq("created")
-        expect(event[:item_id]).to eq(comment.id)
-        expect(event[:item_type]).to eq('Comment')
-        expect(event.dig(:item_content, :comment, :id)).to eq(comment.id)
-        expect(event[:cl2_cluster]).to eq 'local'
+        expect(event).to include(
+          event: 'Comment created',
+          user_id: user.id,
+          action: 'created',
+          item_id: comment.id,
+          item_type: 'Comment',
+          item_content: hash_including(comment: hash_including(id: comment.id))
+        )
       end
 
       job.perform activity
