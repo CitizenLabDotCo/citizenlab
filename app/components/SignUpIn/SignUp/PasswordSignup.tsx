@@ -107,7 +107,7 @@ type State = {
   lastNameError: string | null;
   emailError: string | null;
   privacyError: boolean;
-  passwordError: string | null;
+  hasPasswordError: boolean;
   tacError: boolean;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
@@ -129,7 +129,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
-      passwordError: null,
+      hasPasswordError: false,
       tacError: false,
       privacyError: false,
       unknownError: null,
@@ -205,10 +205,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  handlePasswordOnChange = (password: string) => {
+  handlePasswordOnChange = (password: string, hasPasswordError: boolean) => {
     this.setState((state) => ({
       password,
-      passwordError: null,
+      hasPasswordError,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.password', null)
@@ -256,6 +256,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacAccepted,
       privacyAccepted,
       processing,
+      hasPasswordError,
     } = this.state;
     let invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.noTokenError) : null;
@@ -275,20 +276,13 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       : null;
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
-    let passwordError: string | null = null;
-
-    if (!password) {
-      passwordError = formatMessage(messages.noPasswordError);
-    } else if (password.length < 8) {
-      passwordError = formatMessage(messages.noValidPasswordError);
-    }
 
     const hasErrors = [
       invitationRedeemError,
       emailError,
       firstNameError,
       lastNameError,
-      passwordError,
+      hasPasswordError,
       tacError,
       privacyError,
     ].some((error) => error);
@@ -298,7 +292,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       emailError,
       firstNameError,
       lastNameError,
-      passwordError,
+      hasPasswordError,
       tacError,
       privacyError,
     });
@@ -384,7 +378,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       firstNameError,
       lastNameError,
       emailError,
-      passwordError,
       apiErrors,
     } = this.state;
     const phone =
@@ -533,7 +526,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 id="signup-password-input"
                 password={password}
                 placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
               />
