@@ -1,15 +1,15 @@
-
+require 'pry' ; binding.pry
 TrackSegmentService.setup do |config|
   config.user_traits_builder = lambda do |user|
     TrackSegmentService::Helpers
       .default_user_traits(user)
-      .merge(TrackingTenantService.new.tenant_properties)
+      .merge(MultiTenancy::TrackingTenantService.new.tenant_properties)
   end
 
   config.activity_traits_builder = lambda do |activity|
     TrackSegmentService::Helpers
       .default_activity_traits(activity)
-      .merge(TrackingTenantService.new.environment_properties)
+      .merge(MultiTenancy::TrackingTenantService.new.environment_properties)
   end
 
   config.tenant_traits_builder = lambda do |tenant|
@@ -20,7 +20,7 @@ TrackSegmentService.setup do |config|
       createdAt: tenant.created_at,
       avatar: configuration.logo&.medium&.url,
       tenantLocales: configuration.settings('core', 'locales'),
-      **TrackingTenantService.new.tenant_properties(tenant)
+      **MultiTenancy::TrackingTenantService.new.tenant_properties(tenant)
     }
   end
 end
