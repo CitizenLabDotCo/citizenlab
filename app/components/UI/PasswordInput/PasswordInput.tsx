@@ -5,6 +5,9 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+import { Props as WrapperProps } from './';
+
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -35,32 +38,29 @@ const ShowPasswordButton = styled(Button)`
   right: 0;
 `;
 
-export interface Props {
-  id: string;
-  value: string | null;
-  error?: string | null;
-  onChange: (password: string) => void;
-  onBlur?: () => void;
-  setRef?: (element: HTMLInputElement) => void;
-  autocomplete?: 'current-password' | 'new-password';
-  placeholder?: string;
+interface Props extends WrapperProps {
+  minimumPasswordLength: number;
 }
 
-const PasswordInput = ({
+const PasswordInputComponent = ({
   id,
   value,
-  error,
   autocomplete,
   placeholder,
   onChange,
   onBlur,
   setRef,
+  minimumPasswordLength,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
   const tenant = useTenant();
   const [showPassword, setShowPassword] = useState(false);
-
+  const minimumPasswordLengthError = minimumPasswordLength
+    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+        minimumPasswordLength,
+      })
+    : null;
   const handleOnChange = (password: string) => {
     onChange(password);
   };
@@ -80,7 +80,7 @@ const PasswordInput = ({
           type={showPassword ? 'text' : 'password'}
           id={id}
           value={value}
-          error={error}
+          error={minimumPasswordLengthError}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
           autocomplete={autocomplete}
@@ -116,4 +116,4 @@ const PasswordInput = ({
   return null;
 };
 
-export default injectIntl(PasswordInput);
+export default injectIntl(PasswordInputComponent);
