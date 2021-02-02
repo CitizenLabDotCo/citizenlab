@@ -56,7 +56,7 @@ describe TrackSegmentService do
       user = create(:user)
 
 
-      expect(Analytics).to receive(:identify) do |identification|
+      expect(SEGMENT_CLIENT).to receive(:identify) do |identification|
         expect(identification).to match ({
           :user_id=>user.id,
           :traits=>
@@ -95,7 +95,7 @@ describe TrackSegmentService do
     it "calls segment's group() method with the correct payload" do
       tenant = Tenant.current
 
-      expect(Analytics).to receive(:group) do |grouping|
+      expect(SEGMENT_CLIENT).to receive(:group) do |grouping|
         expect(grouping).to match({
           :user_id=>grouping[:user_id],  # we don't care about the user id when tracking a tenant
           :group_id=>Tenant.current.id,
@@ -128,7 +128,7 @@ describe TrackSegmentService do
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 
-      expect(Analytics).to receive(:track) do |event|
+      expect(SEGMENT_CLIENT).to receive(:track) do |event|
         expect(event[:event]).to eq("Comment created")
         expect(event[:user_id]).to eq(user.id)
         expect(event.dig(:properties, :source)).to eq("cl2-back")
@@ -151,7 +151,7 @@ describe TrackSegmentService do
       activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
       activity.update!(item_type: notification.class.name)
 
-      expect(Analytics).to receive(:track) do |event|
+      expect(SEGMENT_CLIENT).to receive(:track) do |event|
         expect(event[:event]).to eq("Notification for Comment on your comment created")
         expect(event[:user_id]).to eq(user.id)
         expect(event.dig(:properties, :source)).to eq("cl2-back")

@@ -1,8 +1,7 @@
-Analytics = if ENV.fetch("SEGMENT_WRITE_KEY", false)
+SEGMENT_CLIENT =
   SimpleSegment::Client.new({
-    write_key: ENV.fetch("SEGMENT_WRITE_KEY"),
-    logger: Rails.logger
-  })
-else
-  nil
-end
+    write_key: ENV["SEGMENT_WRITE_KEY"],
+    logger: Rails.logger }
+  ) if ENV["SEGMENT_WRITE_KEY"]
+
+
