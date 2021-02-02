@@ -8,7 +8,7 @@ import request from 'utils/request';
 // components
 import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import PasswordInput from 'components/UI/PasswordInput';
+import PasswordInput from 'components/UI/PasswordInput/PasswordInput';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';

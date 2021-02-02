@@ -8,7 +8,7 @@ import Link from 'utils/cl-router/Link';
 // components
 import { Success } from 'cl2-component-library';
 import Button from 'components/UI/Button';
-import PasswordInput from 'components/UI/PasswordInput';
+import PasswordInput from 'components/UI/PasswordInput/PasswordInput';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
