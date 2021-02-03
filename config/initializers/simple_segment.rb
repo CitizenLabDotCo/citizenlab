@@ -1,5 +1,3 @@
-SEGMENT_CLIENT =
-  SimpleSegment::Client.new({
-    write_key: ENV["SEGMENT_WRITE_KEY"],
-    logger: Rails.logger }
-  ) if ENV["SEGMENT_WRITE_KEY"]
+SEGMENT_CLIENT = ENV["SEGMENT_WRITE_KEY"] ?
+    SimpleSegment::Client.new(write_key: ENV["SEGMENT_WRITE_KEY"], logger: Rails.logger) : nil
+
