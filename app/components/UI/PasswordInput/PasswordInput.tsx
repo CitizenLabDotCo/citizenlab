@@ -42,18 +42,18 @@ const ShowPasswordButton = styled(Button)`
 `;
 
 interface Props extends WrapperProps {
-  minimumPasswordLength: number | null;
+  minimumPasswordLength: number;
 }
 
 function isPasswordTooShort(
   password: string | null,
-  passwordMinimumLength: number | null
+  minimumPasswordLength: number
 ) {
-  if (passwordMinimumLength && typeof password === 'string') {
-    return password.length < passwordMinimumLength;
+  if (typeof password === 'string') {
+    return password.length < minimumPasswordLength;
   }
 
-  return false;
+  return true;
 }
 
 const PasswordInputComponent = ({
@@ -65,16 +65,16 @@ const PasswordInputComponent = ({
   onBlur,
   minimumPasswordLength,
   error,
+  isLoginPasswordInput,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
   const tenant = useTenant();
   let inputEl: HTMLInputElement | null = null;
   const [showPassword, setShowPassword] = useState(false);
-  const hasMinimumLengthError = isPasswordTooShort(
-    password,
-    minimumPasswordLength
-  );
+  const hasMinimumLengthError =
+    !isLoginPasswordInput &&
+    isPasswordTooShort(password, minimumPasswordLength);
   const minimumPasswordLengthError = hasMinimumLengthError
     ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
         minimumPasswordLength,
