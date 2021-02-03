@@ -27,7 +27,7 @@ export default defineMessages({
   },
   strength3Password: {
     id: 'app.components.Modal.strength3Password',
-    defaultMessage: 'Solid',
+    defaultMessage: 'Decent',
   },
   strength4Password: {
     id: 'app.components.Modal.strength4Password',
@@ -36,6 +36,26 @@ export default defineMessages({
   strength5Password: {
     id: 'app.components.Modal.strength5Password',
     defaultMessage: 'Very strong',
+  },
+  a11y_strength1Password: {
+    id: 'app.components.Modal.a11y_strength1Password',
+    defaultMessage: 'Weak password strength',
+  },
+  a11y_strength2Password: {
+    id: 'app.components.Modal.a11y_strength2Password',
+    defaultMessage: 'Reasonable password strength',
+  },
+  a11y_strength3Password: {
+    id: 'app.components.Modal.a11y_strength3Password',
+    defaultMessage: 'Decent password strength',
+  },
+  a11y_strength4Password: {
+    id: 'app.components.Modal.a11y_strength4Password',
+    defaultMessage: 'Strong password strength',
+  },
+  a11y_strength5Password: {
+    id: 'app.components.Modal.a11y_strength5Password',
+    defaultMessage: 'Very strong password strength',
   },
   initialPasswordStrengthCheckerMessage: {
     id: 'app.components.Modal.initialPasswordStrengthCheckerMessage',

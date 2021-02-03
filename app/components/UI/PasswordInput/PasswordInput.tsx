@@ -6,7 +6,6 @@ import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PasswordStrengthBar from 'react-password-strength-bar';
-
 import { Props as WrapperProps } from './';
 
 // components
@@ -58,6 +57,8 @@ function isPasswordTooShort(
   return false;
 }
 
+type PasswordScore = 0 | 1 | 2 | 3 | 4;
+
 const PasswordInputComponent = ({
   id,
   password,
@@ -74,6 +75,7 @@ const PasswordInputComponent = ({
   const tenant = useTenant();
   let inputEl: HTMLInputElement | null = null;
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const hasMinimumLengthError =
     !isLoginPasswordInput &&
     isPasswordTooShort(password, minimumPasswordLength);
@@ -101,6 +103,10 @@ const PasswordInputComponent = ({
 
   const setRef = (inputElement: HTMLInputElement) => {
     inputEl = inputElement;
+  };
+
+  const handleOnChangeScore = (score: PasswordScore) => {
+    setPasswordScore(score);
   };
 
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
@@ -148,20 +154,34 @@ const PasswordInputComponent = ({
           </ScreenReaderOnly>
         </Container>
         {!isLoginPasswordInput && (
-          <PasswordStrengthBar
-            password={password || undefined}
-            minLength={minimumPasswordLength}
-            shortScoreWord={formatMessage(
-              messages.initialPasswordStrengthCheckerMessage
-            )}
-            scoreWords={[
-              formatMessage(messages.strength1Password),
-              formatMessage(messages.strength2Password),
-              formatMessage(messages.strength3Password),
-              formatMessage(messages.strength4Password),
-              formatMessage(messages.strength5Password),
-            ]}
-          />
+          <>
+            <PasswordStrengthBar
+              password={password || undefined}
+              minLength={minimumPasswordLength}
+              shortScoreWord={formatMessage(
+                messages.initialPasswordStrengthCheckerMessage
+              )}
+              scoreWords={[
+                formatMessage(messages.strength1Password),
+                formatMessage(messages.strength2Password),
+                formatMessage(messages.strength3Password),
+                formatMessage(messages.strength4Password),
+                formatMessage(messages.strength5Password),
+              ]}
+              onChangeScore={handleOnChangeScore}
+            />
+            <ScreenReaderOnly aria-live="polite">
+              {formatMessage(
+                {
+                  0: messages.a11y_strength1Password,
+                  1: messages.a11y_strength2Password,
+                  2: messages.a11y_strength3Password,
+                  3: messages.a11y_strength4Password,
+                  4: messages.a11y_strength5Password,
+                }[passwordScore]
+              )}
+            </ScreenReaderOnly>
+          </>
         )}
         <Error text={error} />
         <Error text={minimumPasswordLengthError} />
