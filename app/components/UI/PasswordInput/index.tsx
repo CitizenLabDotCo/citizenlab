@@ -19,7 +19,7 @@ export interface Props {
   isLoginPasswordInput?: boolean;
 }
 
-const PasswordInput = ({ isLoginPasswordInput, ...props }: Props) => {
+const PasswordInput = (props: Props) => {
   const tenant = useTenant();
 
   if (!isNilOrError(tenant)) {
