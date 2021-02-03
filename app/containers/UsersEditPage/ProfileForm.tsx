@@ -418,7 +418,6 @@ class ProfileForm extends PureComponent<Props, State> {
   render() {
     const { authUser } = this.props;
 
-    console.log(authUser);
     if (!isNilOrError(authUser)) {
       return (
         <Formik
