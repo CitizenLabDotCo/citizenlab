@@ -3,7 +3,7 @@ module MultiTenancy
 
     def after_update(app_config, current_user)
       super
-      TrackTenantJob.perform_later(tenant)
+      TrackTenantJob.perform_later(Tenant.current)
     end
 
   end
