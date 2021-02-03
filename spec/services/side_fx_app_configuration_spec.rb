@@ -19,7 +19,7 @@ describe 'SideFxAppConfigurationService' do
 
       expect { service.after_update(config, current_user) }
         .to  have_enqueued_job(LogActivityJob).with(config, 'changed', current_user, config.updated_at.to_i, {})
-        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed', current_user, config.updated_at.to_i, {})
+        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed', current_user, config.updated_at.to_i, {}) # TODO_MT to be removed
     end
 
     it "logs a 'changed_lifecycle_stage' action job when the lifecycle has changed" do
@@ -32,7 +32,7 @@ describe 'SideFxAppConfigurationService' do
       updated_at = config.updated_at.to_i
       expect {service.after_update(config, current_user)}
         .to  have_enqueued_job(LogActivityJob).with(config, 'changed_lifecycle_stage', current_user, updated_at, options)
-        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user, updated_at, options)
+        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user, updated_at, options) # TODO_MT to be removed
     end
   end
 end
