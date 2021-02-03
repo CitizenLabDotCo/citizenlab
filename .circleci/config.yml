@@ -300,7 +300,7 @@ workflows:
   check-for-inconsistent-data:
     triggers:
       - schedule:
-          cron: "0 2 * * 3"
+          cron: "0 2 * * 1"
           filters:
             branches:
               only:
