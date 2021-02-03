@@ -15,7 +15,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 6.0.0"
   spec.add_dependency "apartment", ">= 2.2.1"
-  spec.add_dependency "apartment-sidekiq", "~> 1.2.0"
 end
 
 
