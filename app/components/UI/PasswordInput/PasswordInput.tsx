@@ -53,7 +53,7 @@ function isPasswordTooShort(
     return password.length < minimumPasswordLength;
   }
 
-  return true;
+  return false;
 }
 
 const PasswordInputComponent = ({
