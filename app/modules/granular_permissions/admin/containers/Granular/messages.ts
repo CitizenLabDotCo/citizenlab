@@ -1,21 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  permissionsEveryoneLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
-    defaultMessage: 'Everyone',
-  },
   permissionsUsersLabel: {
     id: 'app.containers.admin.project.permissions.permissionsUsersLabel',
     defaultMessage: 'All users',
-  },
-  permissionsAdministrators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdministrators',
-    defaultMessage: 'Administrators',
-  },
-  permissionsSelectionLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
-    defaultMessage: 'Selection',
   },
   selectGroups: {
     id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
