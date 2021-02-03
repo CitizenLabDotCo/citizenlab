@@ -5,6 +5,7 @@ import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 import { Props as WrapperProps } from './';
 
@@ -19,6 +20,7 @@ import messages from './messages';
 const Container = styled.div`
   position: relative;
   display: flex;
+  margin-bottom: 10px;
 `;
 
 const StyledInput = styled(Input)``;
@@ -145,6 +147,14 @@ const PasswordInputComponent = ({
             )}
           </ScreenReaderOnly>
         </Container>
+        {!isLoginPasswordInput && (
+          <PasswordStrengthBar
+            password={password || undefined}
+            minLength={minimumPasswordLength}
+            // shortScoreWord={'Te kort'}
+            // scoreWords={['Zwak', 'Redelijk', 'Goed', 'Sterk', 'Heel sterk']}
+          />
+        )}
         <Error text={error} />
         <Error text={minimumPasswordLengthError} />
       </>
