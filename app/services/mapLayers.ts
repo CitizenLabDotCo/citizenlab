@@ -5,8 +5,16 @@ import { Multiloc, UploadFile } from 'typings';
 export interface IMapLayerAttributes {
   id: string;
   title_multiloc: Multiloc;
-  geojson: GeoJSON.GeoJsonObject;
+  geojson?: GeoJSON.FeatureCollection;
   default_enabled: boolean;
+  geojson_file?: UploadFile;
+  marker_svg_url?: string;
+}
+
+export interface IMapLayerUpdateAttributes {
+  title_multiloc?: Multiloc;
+  geojson: GeoJSON.FeatureCollection;
+  default_enabled?: boolean;
   geojson_file?: UploadFile;
   marker_svg_url?: string;
 }
@@ -49,11 +57,11 @@ export const createProjectMapLayer = async (
 export const updateProjectMapLayer = async (
   projectId: string,
   mapLayerId: string,
-  mapLayer: IMapLayerAttributes
+  mapLayer: IMapLayerUpdateAttributes
 ) => {
   const response = await streams.update<IMapLayer>(
     `${API_PATH}/projects/${projectId}/map_config/layers/${mapLayerId}`,
-    projectId,
+    mapLayerId,
     { layer: mapLayer }
   );
 
@@ -71,7 +79,7 @@ export const reorderProjectMapLayer = async (
 ) => {
   const response = await streams.update<IMapLayer>(
     `${API_PATH}/projects/${projectId}/map_config/layers/${mapLayerId}`,
-    projectId,
+    mapLayerId,
     { layer: { ordering } }
   );
 

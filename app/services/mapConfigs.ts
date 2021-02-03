@@ -33,30 +33,34 @@ export const mapConfigByProjectStream = (projectId: string) => {
   });
 };
 
-export const createProjectMapConfig = (
+export async function createProjectMapConfig(
   projectId: string,
   mapConfig: IMapConfigAttributes
-) => {
-  return streams.add<IMapConfig>(
+) {
+  return await streams.add<IMapConfig>(
     `${API_PATH}/projects/${projectId}/map_config`,
     { map_config: mapConfig }
   );
-};
+}
 
-export const updateProjectMapConfig = (
+export async function updateProjectMapConfig(
   projectId: string,
+  mapConfigId: string,
   mapConfig: IMapConfigAttributes
-) => {
-  return streams.update<IMapConfig>(
+) {
+  return await streams.update<IMapConfig>(
     `${API_PATH}/projects/${projectId}/map_config`,
-    projectId,
+    mapConfigId,
     { map_config: mapConfig }
   );
-};
+}
 
-export const deleteProjectMapConfig = (projectId: string) => {
-  return streams.delete(
+export async function deleteProjectMapConfig(
+  projectId: string,
+  mapConfigId: string
+) {
+  return await streams.delete(
     `${API_PATH}/projects/${projectId}/map_config`,
-    projectId
+    mapConfigId
   );
-};
+}

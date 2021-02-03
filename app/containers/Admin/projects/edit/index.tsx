@@ -383,7 +383,7 @@ export class AdminProjectEdition extends PureComponent<
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
