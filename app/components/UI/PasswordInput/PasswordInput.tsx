@@ -109,6 +109,7 @@ const PasswordInputComponent = ({
             // don't use the error prop in this component
             // because it will mess up the vertical alignment
             // of the ShowPasswordButton
+            // We should remove Error from the Input component in the future
             type={showPassword ? 'text' : 'password'}
             id={id}
             value={password}
