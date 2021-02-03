@@ -16,14 +16,16 @@ export interface Props {
   setRef?: (element: HTMLInputElement) => void;
   autocomplete?: 'current-password' | 'new-password';
   placeholder?: string;
+  isLoginPasswordInput?: boolean;
 }
 
-const PasswordInput = (props: Props) => {
+const PasswordInput = ({ isLoginPasswordInput, ...props }: Props) => {
   const tenant = useTenant();
 
   if (!isNilOrError(tenant)) {
-    const minimumPasswordLength =
-      tenant.data.attributes.settings.password_login?.minimum_length || 8;
+    const minimumPasswordLength = !isLoginPasswordInput
+      ? tenant.data.attributes.settings.password_login?.minimum_length || 8
+      : null;
 
     return (
       <PasswordInputComponent

@@ -288,6 +288,7 @@ class PasswordSignin extends PureComponent<
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
+              isLoginPasswordInput
             />
           </FormElement>
 
