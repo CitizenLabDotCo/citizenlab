@@ -4,7 +4,7 @@ class PublishGenericEventToRabbitJob < ApplicationJob
   # @param [Hash] event
   # @param [String] routing_key
   # @param [Bunny::Session] bunny
-  def perform(event, routing_key, bunny = BUNNY_CON)
+  def run(event, routing_key, bunny = BUNNY_CON)
     return unless bunny
     add_extra_properties(event)
     publish_to_rabbitmq(bunny, event, routing_key)
