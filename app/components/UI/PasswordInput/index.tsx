@@ -23,9 +23,8 @@ const PasswordInput = ({ isLoginPasswordInput, ...props }: Props) => {
   const tenant = useTenant();
 
   if (!isNilOrError(tenant)) {
-    const minimumPasswordLength = !isLoginPasswordInput
-      ? tenant.data.attributes.settings.password_login?.minimum_length || 8
-      : null;
+    const minimumPasswordLength =
+      tenant.data.attributes.settings.password_login?.minimum_length || 8;
 
     return (
       <PasswordInputComponent
