@@ -8,6 +8,9 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 import { Props as WrapperProps } from './';
 
+// components
+import Error from 'components/UI/Error';
+
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -39,18 +42,18 @@ const ShowPasswordButton = styled(Button)`
 `;
 
 interface Props extends WrapperProps {
-  minimumPasswordLength: number;
+  minimumPasswordLength: number | null;
 }
 
 function isPasswordTooShort(
   password: string | null,
-  passwordMinimumLength: number
+  passwordMinimumLength: number | null
 ) {
-  if (typeof password === 'string') {
+  if (passwordMinimumLength && typeof password === 'string') {
     return password.length < passwordMinimumLength;
   }
 
-  return true;
+  return false;
 }
 
 const PasswordInputComponent = ({
@@ -61,6 +64,7 @@ const PasswordInputComponent = ({
   onChange,
   onBlur,
   minimumPasswordLength,
+  error,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const locale = useLocale();
@@ -99,41 +103,50 @@ const PasswordInputComponent = ({
 
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
     return (
-      <Container>
-        <StyledInput
-          type={showPassword ? 'text' : 'password'}
-          id={id}
-          value={password}
-          error={minimumPasswordLengthError}
-          onChange={handleOnChange}
-          onBlur={handleOnBlur}
-          autocomplete={autocomplete}
-          placeholder={placeholder}
-          setRef={setRef}
-        />
-        <ShowPasswordButton
-          locale={locale}
-          onClick={handleOnClick}
-          buttonStyle="text"
-          height={'100%'}
-        >
-          {showPassword ? (
-            <EyeIcon name="eye" title={formatMessage(messages.hidePassword)} />
-          ) : (
-            <EyeClosedIcon
-              name="eyeClosed"
-              title={formatMessage(messages.showPassword)}
-            />
-          )}
-        </ShowPasswordButton>
-        <ScreenReaderOnly aria-live="polite">
-          {formatMessage(
-            showPassword
-              ? messages.a11y_passwordVisible
-              : messages.a11y_passwordHidden
-          )}
-        </ScreenReaderOnly>
-      </Container>
+      <>
+        <Container>
+          <StyledInput
+            // don't use the error prop in this component
+            // because it will mess up the vertical alignment
+            // of the ShowPasswordButton
+            type={showPassword ? 'text' : 'password'}
+            id={id}
+            value={password}
+            onChange={handleOnChange}
+            onBlur={handleOnBlur}
+            autocomplete={autocomplete}
+            placeholder={placeholder}
+            setRef={setRef}
+          />
+          <ShowPasswordButton
+            locale={locale}
+            onClick={handleOnClick}
+            buttonStyle="text"
+            height={'100%'}
+          >
+            {showPassword ? (
+              <EyeIcon
+                name="eye"
+                title={formatMessage(messages.hidePassword)}
+              />
+            ) : (
+              <EyeClosedIcon
+                name="eyeClosed"
+                title={formatMessage(messages.showPassword)}
+              />
+            )}
+          </ShowPasswordButton>
+          <ScreenReaderOnly aria-live="polite">
+            {formatMessage(
+              showPassword
+                ? messages.a11y_passwordVisible
+                : messages.a11y_passwordHidden
+            )}
+          </ScreenReaderOnly>
+        </Container>
+        <Error text={error} />
+        <Error text={minimumPasswordLengthError} />
+      </>
     );
   }
 
