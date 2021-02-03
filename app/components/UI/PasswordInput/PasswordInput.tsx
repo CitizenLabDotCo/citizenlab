@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Input, Button, Icon } from 'cl2-component-library';
+import { Input, Button, Icon, colors } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
@@ -169,6 +169,9 @@ const PasswordInputComponent = ({
                 formatMessage(messages.strength5Password),
               ]}
               onChangeScore={handleOnChangeScore}
+              scoreWordStyle={{
+                color: colors.label,
+              }}
             />
             <ScreenReaderOnly aria-live="polite">
               {formatMessage(
