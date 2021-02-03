@@ -151,8 +151,16 @@ const PasswordInputComponent = ({
           <PasswordStrengthBar
             password={password || undefined}
             minLength={minimumPasswordLength}
-            // shortScoreWord={'Te kort'}
-            // scoreWords={['Zwak', 'Redelijk', 'Goed', 'Sterk', 'Heel sterk']}
+            shortScoreWord={formatMessage(
+              messages.initialPasswordStrengthCheckerMessage
+            )}
+            scoreWords={[
+              formatMessage(messages.strength1Password),
+              formatMessage(messages.strength2Password),
+              formatMessage(messages.strength3Password),
+              formatMessage(messages.strength4Password),
+              formatMessage(messages.strength5Password),
+            ]}
           />
         )}
         <Error text={error} />
