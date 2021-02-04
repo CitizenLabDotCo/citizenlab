@@ -56,6 +56,14 @@ export interface ITheme {
   };
 }
 
+export interface ITab {
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+  name?: string;
+}
+
 export interface ILinks {
   self: string;
   first: string;
