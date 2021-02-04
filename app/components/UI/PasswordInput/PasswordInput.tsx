@@ -75,6 +75,7 @@ const PasswordInputComponent = ({
   const hasMinimumLengthError =
     !isLoginPasswordInput &&
     isPasswordTooShort(password, minimumPasswordLength);
+  const hasPasswordError = hasMinimumLengthError;
   const minimumPasswordLengthError = hasMinimumLengthError
     ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
         minimumPasswordLength,
@@ -82,7 +83,7 @@ const PasswordInputComponent = ({
     : null;
 
   const handleOnChange = (password: string) => {
-    onChange(password, hasMinimumLengthError);
+    onChange(password, hasPasswordError);
 
     if (hasMinimumLengthError && inputEl) {
       inputEl.focus();
