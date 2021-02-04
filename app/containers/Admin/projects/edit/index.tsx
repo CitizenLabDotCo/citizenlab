@@ -316,7 +316,7 @@ export class AdminProjectEdition extends PureComponent<
 
     tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions[tabName]()) {
-        cleanedTabs = reject(tabs, { name: tabName });
+        cleanedTabs = reject(cleanedTabs, { name: tabName });
       }
     });
 
