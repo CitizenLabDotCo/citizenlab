@@ -45,17 +45,6 @@ interface Props extends WrapperProps {
   minimumPasswordLength: number;
 }
 
-function isPasswordTooShort(
-  password: string | null,
-  minimumPasswordLength: number
-) {
-  if (typeof password === 'string') {
-    return password.length < minimumPasswordLength;
-  }
-
-  return false;
-}
-
 const PasswordInputComponent = ({
   id,
   password,
@@ -69,20 +58,44 @@ const PasswordInputComponent = ({
   setRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  let inputEl: HTMLInputElement | null = null;
   const locale = useLocale();
   const tenant = useTenant();
-  let inputEl: HTMLInputElement | null = null;
   const [showPassword, setShowPassword] = useState(false);
-  const hasMinimumLengthError =
-    !isLoginPasswordInput &&
-    isPasswordTooShort(password, minimumPasswordLength);
-  const hasPropError = !!error;
-  const hasPasswordError = hasPropError || hasMinimumLengthError;
-  const minimumPasswordLengthError = hasMinimumLengthError
-    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
-        minimumPasswordLength,
-      })
-    : null;
+  const hasPasswordError = getHasPasswordError();
+  const minimumPasswordLengthError = getMinimumPasswordLengthError();
+
+  function isPasswordTooShort(
+    password: string | null,
+    minimumPasswordLength: number
+  ) {
+    if (typeof password === 'string') {
+      return password.length < minimumPasswordLength;
+    }
+
+    return false;
+  }
+
+  function getHasMinimumLengthError() {
+    return (
+      !isLoginPasswordInput &&
+      isPasswordTooShort(password, minimumPasswordLength)
+    );
+  }
+
+  function getHasPasswordError() {
+    const hasPropError = !!error;
+    const hasMinimumLengthError = getHasMinimumLengthError();
+    return hasPropError || hasMinimumLengthError;
+  }
+
+  function getMinimumPasswordLengthError() {
+    return minimumPasswordLength
+      ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+          minimumPasswordLength,
+        })
+      : null;
+  }
 
   const handleOnChange = (password: string) => {
     onChange(password, hasPasswordError);
