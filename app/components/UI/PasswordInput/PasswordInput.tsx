@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { Input, Button, Icon, colors } from 'cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import useTenant from 'hooks/useTenant';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import PasswordStrengthBar from 'react-password-strength-bar';
 import { Props as WrapperProps } from './';
-
+const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 // components
 import Error from 'components/UI/Error';
 
@@ -155,24 +154,26 @@ const PasswordInputComponent = ({
         </Container>
         {!isLoginPasswordInput && (
           <>
-            <PasswordStrengthBar
-              password={password || undefined}
-              minLength={minimumPasswordLength}
-              shortScoreWord={formatMessage(
-                messages.initialPasswordStrengthCheckerMessage
-              )}
-              scoreWords={[
-                formatMessage(messages.strength1Password),
-                formatMessage(messages.strength2Password),
-                formatMessage(messages.strength3Password),
-                formatMessage(messages.strength4Password),
-                formatMessage(messages.strength5Password),
-              ]}
-              onChangeScore={handleOnChangeScore}
-              scoreWordStyle={{
-                color: colors.label,
-              }}
-            />
+            <Suspense fallback={null}>
+              <PasswordStrengthBar
+                password={password || undefined}
+                minLength={minimumPasswordLength}
+                shortScoreWord={formatMessage(
+                  messages.initialPasswordStrengthCheckerMessage
+                )}
+                scoreWords={[
+                  formatMessage(messages.strength1Password),
+                  formatMessage(messages.strength2Password),
+                  formatMessage(messages.strength3Password),
+                  formatMessage(messages.strength4Password),
+                  formatMessage(messages.strength5Password),
+                ]}
+                onChangeScore={handleOnChangeScore}
+                scoreWordStyle={{
+                  color: colors.label,
+                }}
+              />
+            </Suspense>
             <ScreenReaderOnly aria-live="polite">
               {formatMessage(
                 {
