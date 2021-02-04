@@ -40,23 +40,11 @@ const ShowPasswordButton = styled(Button)`
   bottom: 0;
   right: 0;
 `;
+type PasswordScore = 0 | 1 | 2 | 3 | 4;
 
 interface Props extends WrapperProps {
   minimumPasswordLength: number;
 }
-
-function isPasswordTooShort(
-  password: string | null,
-  minimumPasswordLength: number
-) {
-  if (typeof password === 'string') {
-    return password.length < minimumPasswordLength;
-  }
-
-  return false;
-}
-
-type PasswordScore = 0 | 1 | 2 | 3 | 4;
 
 const PasswordInputComponent = ({
   id,
@@ -68,26 +56,53 @@ const PasswordInputComponent = ({
   minimumPasswordLength,
   error,
   isLoginPasswordInput,
+  setRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  let inputEl: HTMLInputElement | null = null;
   const locale = useLocale();
   const tenant = useTenant();
-  let inputEl: HTMLInputElement | null = null;
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
-  const hasMinimumLengthError =
-    !isLoginPasswordInput &&
-    isPasswordTooShort(password, minimumPasswordLength);
-  const minimumPasswordLengthError = hasMinimumLengthError
-    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
-        minimumPasswordLength,
-      })
-    : null;
+  const hasPasswordError = getHasPasswordError();
+  const minimumPasswordLengthError = getMinimumPasswordLengthError();
+
+  function isPasswordTooShort(
+    password: string | null,
+    minimumPasswordLength: number
+  ) {
+    if (typeof password === 'string') {
+      return password.length < minimumPasswordLength;
+    }
+
+    return false;
+  }
+
+  function getHasMinimumLengthError() {
+    return (
+      !isLoginPasswordInput &&
+      isPasswordTooShort(password, minimumPasswordLength)
+    );
+  }
+
+  function getHasPasswordError() {
+    const hasPropError = !!error;
+    const hasMinimumLengthError = getHasMinimumLengthError();
+    return hasPropError || hasMinimumLengthError;
+  }
+
+  function getMinimumPasswordLengthError() {
+    return minimumPasswordLength
+      ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+          minimumPasswordLength,
+        })
+      : null;
+  }
 
   const handleOnChange = (password: string) => {
-    onChange(password, hasMinimumLengthError);
+    onChange(password, hasPasswordError);
 
-    if (hasMinimumLengthError && inputEl) {
+    if (hasPasswordError && inputEl) {
       inputEl.focus();
     }
   };
@@ -100,7 +115,10 @@ const PasswordInputComponent = ({
     setShowPassword(!showPassword);
   };
 
-  const setRef = (inputElement: HTMLInputElement) => {
+  const setInputRef = (inputElement: HTMLInputElement) => {
+    if (setRef) {
+      setRef(inputElement);
+    }
     inputEl = inputElement;
   };
 
@@ -124,7 +142,7 @@ const PasswordInputComponent = ({
             onBlur={handleOnBlur}
             autocomplete={autocomplete}
             placeholder={placeholder}
-            setRef={setRef}
+            setRef={setInputRef}
           />
           <ShowPasswordButton
             locale={locale}
